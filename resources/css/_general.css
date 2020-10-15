@@ -1,0 +1,30 @@
+html {
+    @apply min-h-full bg-white;
+}
+
+body {
+    @apply font-sans text-theme-secondary-700;
+}
+
+/* Footer bottom fix */
+#app {
+    min-height: calc(100vh - 64px);
+    /* 100vh - footer height */
+}
+
+/* Custom content container */
+.content-container {
+    @apply flex px-8 mx-auto;
+}
+
+@screen sm {
+    .content-container {
+        @apply px-8;
+    }
+}
+
+@screen lg {
+    .content-container {
+        @apply max-w-7xl;
+    }
+}

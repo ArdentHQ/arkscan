@@ -1,0 +1,58 @@
+name: Test
+
+on: [push]
+
+jobs:
+  merge_conflict_finder:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Merge Conflict finder
+        uses: olivernybroe/action-conflict-finder@v1.1
+
+  pest:
+    needs: [merge_conflict_finder]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+          extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
+          coverage: pcov
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-composer-${{ hashFiles('composer.json') }}
+
+      - name: Authenticate Nova
+        run: composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_PASSWORD }}
+
+      - name: Authenticate Packagist
+        run: composer config http-basic.repo.packagist.com arkecosystem ${{ secrets.PACKAGIST_TOKEN }}
+
+      - name: Install Composer dependencies
+        run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Prepare the application
+        run: cp .env.example .env && php artisan key:generate
+
+      - name: Clear Config
+        run: php artisan config:clear && php artisan route:clear
+
+      - name: Run Tests
+        run: ./vendor/bin/pest --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml

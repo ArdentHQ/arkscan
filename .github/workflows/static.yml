@@ -1,0 +1,121 @@
+name: "Static Analysis"
+
+on:
+  push:
+    branches:
+      - "master"
+      - "develop"
+  pull_request:
+    types: [ready_for_review, synchronize, opened]
+
+jobs:
+  phpstan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+          extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
+          coverage: pcov
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-composer-${{ hashFiles('composer.json') }}
+
+      - name: Authenticate Nova
+        run: composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_PASSWORD }}
+
+      - name: Authenticate Packagist
+        run: composer config http-basic.repo.packagist.com arkecosystem ${{ secrets.PACKAGIST_TOKEN }}
+
+      - name: Authenticate Private Repo
+        run: composer config github-oauth.github.com ${{ secrets.REPO_TOKEN }}
+
+      - name: Install Composer dependencies
+        run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Prepare the application
+        run: cp .env.example .env && php artisan key:generate
+
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyse --memory-limit=2G
+
+  psalm:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+          extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
+          coverage: pcov
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-composer-${{ hashFiles('composer.json') }}
+
+      - name: Authenticate Nova
+        run: composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_PASSWORD }}
+
+      - name: Authenticate Packagist
+        run: composer config http-basic.repo.packagist.com arkecosystem ${{ secrets.PACKAGIST_TOKEN }}
+
+      - name: Authenticate Private Repo
+        run: composer config github-oauth.github.com ${{ secrets.REPO_TOKEN }}
+
+      - name: Install Composer dependencies
+        run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Prepare the application
+        run: cp .env.example .env && php artisan key:generate
+
+      - name: Run Psalm
+        run: ./vendor/bin/psalm
+
+  rector:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+          extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
+          coverage: pcov
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-composer-${{ hashFiles('composer.json') }}
+
+      - name: Authenticate Nova
+        run: composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_PASSWORD }}
+
+      - name: Authenticate Packagist
+        run: composer config http-basic.repo.packagist.com arkecosystem ${{ secrets.PACKAGIST_TOKEN }}
+
+      - name: Authenticate Private Repo
+        run: composer config github-oauth.github.com ${{ secrets.REPO_TOKEN }}
+
+      - name: Install Composer dependencies
+        run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Run Rector
+        run: ./vendor/bin/rector process app --dry-run

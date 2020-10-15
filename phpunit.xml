@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         printerClass="NunoMaduro\Collision\Adapters\Phpunit\Printer">
+    <testsuites>
+        <testsuite name="Analysis">
+            <directory suffix="Test.php">./tests/Analysis</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./app</directory>
+            <exclude>
+                <!-- Framework Code -->
+                <directory suffix=".php">./app/Actions/Fortify</directory>
+                <directory suffix=".php">./app/Actions/Jetstream</directory>
+                <directory suffix=".php">./app/Exceptions</directory>
+                <directory suffix=".php">./app/Http/Middleware</directory>
+                <directory suffix=".php">./app/Nova</directory>
+                <directory suffix=".php">./app/Providers</directory>
+                <directory suffix=".php">./app/View/Components</directory>
+                <file>./app/Console/Kernel.php</file>
+                <file>./app/Http/Kernel.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
+    <php>
+        <server name="APP_ENV" value="testing"/>
+        <server name="BCRYPT_ROUNDS" value="4"/>
+        <server name="CACHE_DRIVER" value="array"/>
+        <server name="MAIL_MAILER" value="array"/>
+        <server name="QUEUE_CONNECTION" value="sync"/>
+        <server name="SESSION_DRIVER" value="array"/>
+    </php>
+    <listeners>
+        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
+    </listeners>
+</phpunit>
