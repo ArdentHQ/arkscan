@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
+/**
+ * @property float $fee
+ * @property float $amount
+ */
 class Transaction extends Model
 {
     use HasFactory;

@@ -10,6 +10,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
+/**
+ * @property float $totalAmount
+ * @property float $totalFee
+ * @property float $reward
+ */
 class Block extends Model
 {
     use HasFactory;
