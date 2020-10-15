@@ -51,7 +51,6 @@
             </x-navbar>
 
             @section('breadcrumbs')
-                <div class="w-full h-4 bg-theme-secondary-100"></div>
             @show
 
             <main class="container flex-1 w-full mx-auto @unless($isLanding ?? false) pb-14 mt-16 @endif sm:max-w-full @unless($fullWidth ?? false) px-4 sm:px-8 lg:max-w-7xl @endif">
