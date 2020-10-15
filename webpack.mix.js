@@ -12,11 +12,13 @@ const mix = require('laravel-mix');
  */
 
 mix
-    .ts('resources/js/app.ts', 'public/js')
+    .js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss'),
     ])
+    // .copy('resources/js/vendor/ark/clipboard.js', 'public/js/clipboard.js')
+    // .copy('node_modules/swiper/swiper-bundle.min.js', 'public/js/swiper.js')
     .copyDirectory('resources/images', 'public/images')
     .copyDirectory('resources/fonts', 'public/fonts')
     .extract();

@@ -8,7 +8,7 @@ body {
 
 /* Footer bottom fix */
 #app {
-    min-height: calc(100vh - 64px);
+    min-height: calc(100vh - 73px);
     /* 100vh - footer height */
 }
 
