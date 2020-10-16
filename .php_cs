@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
@@ -17,6 +19,7 @@ $rules = [
     'combine_consecutive_unsets'                  => true,
     'concat_space'                                => true,
     'declare_equal_normalize'                     => true,
+    'declare_strict_types'                        => true,
     'elseif'                                      => true,
     'encoding'                                    => true,
     'final_class'                                 => true,
