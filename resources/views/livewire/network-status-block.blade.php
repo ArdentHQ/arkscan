@@ -1,4 +1,4 @@
-<div class="inline-block bg-theme-secondary-200 rounded-lg">
+<div class="inline-block bg-theme-secondary-200 rounded-lg border border-transparent dark:bg-theme-secondary-900 dark:border-theme-secondary-800">
     <div class="flex space-x-5 text-xs font-medium px-4 py-2">
         <div>@lang('general.height'): {{ $height }}</div>
         <div>@lang('general.network'): {{ $network }}</div>

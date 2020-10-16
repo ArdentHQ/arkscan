@@ -1,7 +1,7 @@
 <div x-data="{ open: false, openDropdown: null, selectedChild: null }">
     <div x-show="openDropdown !== null || open" class="fixed inset-0 z-30 overflow-y-auto opacity-75 bg-theme-secondary-900" x-cloak @click="openDropdown = null; open = false;"></div>
 
-    <nav class="relative z-30 bg-white shadow-header-smooth dark:bg-theme-secondary-900">
+    <nav class="relative z-30 bg-white shadow-header-smooth dark:shadow-none dark:bg-theme-secondary-900">
         <div class="px-4 sm:px-6 lg:px-8">
             <div class="relative flex justify-between h-20 md:h-24">
 
@@ -25,7 +25,8 @@
                                 @if(isset($navItem['children']))
                                     <a
                                         href="#"
-                                        class="relative inline-flex justify-center items-center px-1 pt-1 font-semibold leading-5 border-b-2 border-transparent text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300 focus:outline-none transition duration-150 ease-in-out h-full @if(!$loop->first) ml-8 @endif"
+                                        class="relative inline-flex justify-center items-center px-1 pt-1 font-semibold leading-5 border-b-2 border-transparent text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300 focus:outline-none transition duration-150 ease-in-out h-full dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400
+                                            @if(!$loop->first) ml-8 @endif"
                                         @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
                                     >
                                         <span :class="{ 'text-theme-primary-600': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
@@ -54,7 +55,14 @@
                                 @else
                                     <a
                                         href="{{ route($navItem['route'], $navItem['params'] ?? []) }}"
-                                        class="inline-flex items-center px-1 pt-1 font-semibold leading-5 border-b-2 @if(Route::current()->getName() === $navItem['route']) border-theme-primary-600 text-theme-secondary-900 @else border-transparent text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300 @endif focus:outline-none transition duration-150 ease-in-out h-full @if(!$loop->first) ml-8 @endif"
+                                        class="inline-flex items-center px-1 pt-1 font-semibold leading-5 border-b-2
+                                            focus:outline-none transition duration-150 ease-in-out h-full
+                                            @if(Route::current()->getName() === $navItem['route'])
+                                                border-theme-primary-600 text-theme-secondary-900 dark:text-theme-secondary-400
+                                            @else
+                                                border-transparent text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400
+                                            @endif
+                                            @if(!$loop->first) ml-8 @endif"
                                         @click="openDropdown = null;"
                                     >
                                         {{ $navItem['label'] }}
@@ -65,7 +73,7 @@
                     </div>
 
                     <div class="flex items-center ml-8">
-                        <div class="pl-8 border-l border-theme-primary-100">
+                        <div class="pl-8 border-l border-theme-primary-100 dark:border-theme-secondary-800">
                             <livewire:navbar-price />
                         </div>
                     </div>
