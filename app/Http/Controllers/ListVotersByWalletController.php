@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+declare(strict_types=1);
+
+namespace  App\Http\Controllers;
 
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 
-class ListVotersByWalletController extends Controller
+final class ListVotersByWalletController extends Controller
 {
     public function __invoke(Request $request, Wallet $wallet)
     {

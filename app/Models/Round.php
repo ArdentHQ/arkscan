@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Models;
+declare(strict_types=1);
+
+namespace  App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property float $balance
  */
-class Round extends Model
+final class Round extends Model
 {
     use HasFactory;
 

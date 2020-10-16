@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Services\Blockchain\Networks\ARK;
+declare(strict_types=1);
+
+namespace  App\Services\Blockchain\Networks\ARK;
 
 use App\Contracts\Network;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
-class Production implements Network
+final class Production implements Network
 {
     public function knownWallets(): array
     {

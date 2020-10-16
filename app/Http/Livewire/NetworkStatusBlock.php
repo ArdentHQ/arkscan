@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Livewire;
+declare(strict_types=1);
+
+namespace  App\Http\Livewire;
 
 use Livewire\Component;
 
-class NetworkStatusBlock extends Component
+final class NetworkStatusBlock extends Component
 {
     public function render()
     {

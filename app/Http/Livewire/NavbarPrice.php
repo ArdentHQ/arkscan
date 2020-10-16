@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Livewire;
+declare(strict_types=1);
+
+namespace  App\Http\Livewire;
 
 use Livewire\Component;
 
-class NavbarPrice extends Component
+final class NavbarPrice extends Component
 {
     public function render()
     {

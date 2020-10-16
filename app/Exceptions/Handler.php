@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Exceptions;
+declare(strict_types=1);
+
+namespace  App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
-class Handler extends ExceptionHandler
+final class Handler extends ExceptionHandler
 {
     /**
      * A list of the exception types that are not reported.

@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Providers;
+declare(strict_types=1);
+
+namespace  App\Providers;
 
 use App\Contracts\Network;
 use App\Services\Blockchain\NetworkFactory;
 use Illuminate\Support\ServiceProvider;
 
-class ExplorerServiceProvider extends ServiceProvider
+final class ExplorerServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
