@@ -5,14 +5,8 @@
         <meta property="og:description" content="@lang('metatags.home.description')">
     @endpush
 
-    @section('breadcrumbs')
-        <x-breadcrumbs :crumbs="[
-            ['label' => trans('menus.home')],
-        ]" />
-    @endsection
-
     @section('content')
-
+        <x-home.header />
     @endsection
 
 @endcomponent

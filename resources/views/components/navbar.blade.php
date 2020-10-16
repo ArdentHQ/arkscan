@@ -3,7 +3,7 @@
 
     <nav class="relative z-30 bg-white shadow-header-smooth dark:shadow-none dark:bg-theme-secondary-900">
         <div class="px-4 sm:px-6 lg:px-8">
-            <div class="relative flex justify-between h-20 md:h-24">
+            <div class="relative flex justify-between h-20 lg:h-24">
 
                 {{-- LOGO --}}
                 <div class="flex items-center flex-shrink-0">
@@ -20,7 +20,7 @@
                 <div class="flex justify-end">
                     <div class="flex items-center justify-end flex-1 sm:items-stretch sm:justify-between">
                         {{-- Desktop Navbar Items --}}
-                        <div class="items-center hidden md:ml-6 md:flex">
+                        <div class="items-center hidden lg:ml-6 lg:flex">
                             @foreach ($navigation as $navItem)
                                 @if(isset($navItem['children']))
                                     <a
@@ -74,7 +74,7 @@
 
                     <div class="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-4 sm:pr-0">
                         {{-- Mobile Hamburger icon --}}
-                        <div class="flex items-center pr-6 md:hidden">
+                        <div class="flex items-center lg:hidden">
                             <button @click="open = !open" class="inline-flex items-center justify-center p-2 transition duration-150 ease-in-out rounded-md text-theme-secondary-900">
                                 <span :class="{'hidden': open, 'inline-flex': !open }">@svg('menu-open', 'h-4 w-4')</span>
                                 <span :class="{'hidden': !open, 'inline-flex': open }" x-cloak>@svg('menu-close', 'h-4 w-4')</span>
@@ -82,8 +82,19 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center ml-6 lg:ml-8">
-                        <div class="pl-8 border-l border-theme-primary-100 font-semibold text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-800">
+                    <div class="flex items-center ml-6 md:hidden">
+                        <div class="pl-8 border-l border-theme-primary-100 text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-800">
+                            <button
+                                @click="$dispatch('mobile-search')"
+                                class="inline-flex items-center justify-center p-2 transition duration-150 ease-in-out rounded-md text-theme-primary-300"
+                            >
+                                <span class="inline-flex">@svg('search', 'h-4 w-4')</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="items-center hidden ml-6 md:flex lg:ml-8">
+                        <div class="pl-8 font-semibold border-l border-theme-primary-100 text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-800">
                             <livewire:price-ticker />
                         </div>
                     </div>
@@ -92,7 +103,7 @@
         </div>
 
         {{-- Mobile dropdown --}}
-        <div :class="{'block': open, 'hidden': !open}" class="border-t-2 md:hidden border-theme-secondary-200">
+        <div :class="{'block': open, 'hidden': !open}" class="border-t-2 lg:hidden border-theme-secondary-200">
             <div class="pt-2 pb-4 rounded-b-lg">
                 @foreach ($navigation as $navItem)
                     @if(isset($navItem['children']))

@@ -20,8 +20,7 @@ mix
     // .copy('resources/js/vendor/ark/clipboard.js', 'public/js/clipboard.js')
     // .copy('node_modules/swiper/swiper-bundle.min.js', 'public/js/swiper.js')
     .copyDirectory('resources/images', 'public/images')
-    .copyDirectory('resources/fonts', 'public/fonts')
-    .extract();
+    .copyDirectory('resources/fonts', 'public/fonts');
 
 if (mix.inProduction()) {
     mix.version();

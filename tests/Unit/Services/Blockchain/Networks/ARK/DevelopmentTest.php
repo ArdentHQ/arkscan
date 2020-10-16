@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Services\Blockchain\NetworkFactory;
 use Illuminate\Support\Facades\Http;
 

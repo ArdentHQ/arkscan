@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\User;
@@ -17,7 +19,7 @@ use Illuminate\Support\Str;
 |
 */
 
-class UserFactory extends Factory
+final class UserFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

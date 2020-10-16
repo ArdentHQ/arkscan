@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Analysis;
 
 use GrahamCampbell\Analyzer\AnalysisTrait;
@@ -8,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversNothing
  */
-class AnalysisTest extends TestCase
+final class AnalysisTest extends TestCase
 {
     use AnalysisTrait;
 

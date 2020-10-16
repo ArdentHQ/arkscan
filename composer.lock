@@ -47,7 +47,20 @@
                     "ArkEcosystem\\Crypto\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "ArkEcosystem\\Tests\\Crypto\\": "tests"
+                }
+            },
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
+            "scripts": {
+                "format": [
+                    "vendor/bin/php-cs-fixer fix"
+                ],
+                "test": [
+                    "./vendor/bin/pest --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -66,6 +79,10 @@
                 "crypto",
                 "currency"
             ],
+            "support": {
+                "source": "https://github.com/ArkEcosystem/php-crypto/tree/1.3.4",
+                "issues": "https://github.com/ArkEcosystem/php-crypto/issues"
+            },
             "time": "2020-10-14T02:42:28+00:00"
         },
         {
@@ -137,16 +154,16 @@
         },
         {
             "name": "arkecosystem/ui",
-            "version": "1.0.7",
+            "version": "1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-ui.git",
-                "reference": "61cd4b1b7dfa14e47785a101563bb99a2d3aa112"
+                "reference": "0ee34d2e96813c72e3896ed497b9b7757dbec63a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-ui/zipball/61cd4b1b7dfa14e47785a101563bb99a2d3aa112",
-                "reference": "61cd4b1b7dfa14e47785a101563bb99a2d3aa112",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-ui/zipball/0ee34d2e96813c72e3896ed497b9b7757dbec63a",
+                "reference": "0ee34d2e96813c72e3896ed497b9b7757dbec63a",
                 "shasum": ""
             },
             "require": {
@@ -203,7 +220,7 @@
                 }
             ],
             "description": "User-Interface Scaffolding for Laravel. Powered by TailwindCSS.",
-            "time": "2020-10-15T19:09:22+00:00"
+            "time": "2020-10-16T10:35:17+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -613,7 +630,7 @@
                     "Composer\\Semver\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -641,6 +658,11 @@
                 "validation",
                 "versioning"
             ],
+            "support": {
+                "irc": "irc://irc.freenode.org/composer",
+                "issues": "https://github.com/composer/semver/issues",
+                "source": "https://github.com/composer/semver/tree/1.7.1"
+            },
             "funding": [
                 {
                     "url": "https://packagist.com",
@@ -681,7 +703,7 @@
                     "DASPRiD\\Enum\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-2-Clause"
             ],
@@ -698,6 +720,10 @@
                 "enum",
                 "map"
             ],
+            "support": {
+                "issues": "https://github.com/DASPRiD/Enum/issues",
+                "source": "https://github.com/DASPRiD/Enum/tree/1.0.3"
+            },
             "time": "2020-10-02T16:03:48+00:00"
         },
         {
@@ -876,7 +902,7 @@
                     "Doctrine\\DBAL\\": "lib/Doctrine/DBAL"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -921,6 +947,10 @@
                 "sqlserver",
                 "sqlsrv"
             ],
+            "support": {
+                "issues": "https://github.com/doctrine/dbal/issues",
+                "source": "https://github.com/doctrine/dbal/tree/2.11.1"
+            },
             "funding": [
                 {
                     "url": "https://www.doctrine-project.org/sponsorship.html",
@@ -1224,7 +1254,7 @@
                     "Cron\\": "src/Cron/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1240,6 +1270,10 @@
                 "cron",
                 "schedule"
             ],
+            "support": {
+                "issues": "https://github.com/dragonmantank/cron-expression/issues",
+                "source": "https://github.com/dragonmantank/cron-expression/tree/v3.0.2"
+            },
             "funding": [
                 {
                     "url": "https://github.com/dragonmantank",
@@ -1286,7 +1320,7 @@
                     "Egulias\\EmailValidator\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1304,6 +1338,10 @@
                 "validation",
                 "validator"
             ],
+            "support": {
+                "issues": "https://github.com/egulias/EmailValidator/issues",
+                "source": "https://github.com/egulias/EmailValidator/tree/2.1.22"
+            },
             "time": "2020-09-26T15:48:38+00:00"
         },
         {
@@ -1706,7 +1744,7 @@
                     "src/functions_include.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1721,6 +1759,10 @@
             "keywords": [
                 "promise"
             ],
+            "support": {
+                "issues": "https://github.com/guzzle/promises/issues",
+                "source": "https://github.com/guzzle/promises/tree/1.4.0"
+            },
             "time": "2020-09-30T07:37:28+00:00"
         },
         {
@@ -1766,7 +1808,7 @@
                     "src/functions_include.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1792,6 +1834,10 @@
                 "uri",
                 "url"
             ],
+            "support": {
+                "issues": "https://github.com/guzzle/psr7/issues",
+                "source": "https://github.com/guzzle/psr7/tree/1.7.0"
+            },
             "time": "2020-09-30T07:37:11+00:00"
         },
         {
@@ -1841,7 +1887,7 @@
                     "Intervention\\Image\\": "src/Intervention/Image"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1891,7 +1937,7 @@
                     "Jaybizzle\\CrawlerDetect\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1911,6 +1957,10 @@
                 "crawlerdetect",
                 "php crawler detect"
             ],
+            "support": {
+                "issues": "https://github.com/JayBizzle/Crawler-Detect/issues",
+                "source": "https://github.com/JayBizzle/Crawler-Detect/tree/v1.2.100"
+            },
             "time": "2020-10-11T18:08:38+00:00"
         },
         {
@@ -2140,7 +2190,7 @@
                     "Laravel\\Fortify\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2155,6 +2205,10 @@
                 "auth",
                 "laravel"
             ],
+            "support": {
+                "issues": "https://github.com/laravel/fortify/issues",
+                "source": "https://github.com/laravel/fortify"
+            },
             "time": "2020-10-12T19:22:53+00:00"
         },
         {
@@ -2302,7 +2356,7 @@
                     ]
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2318,6 +2372,10 @@
                 "framework",
                 "laravel"
             ],
+            "support": {
+                "issues": "https://github.com/laravel/framework/issues",
+                "source": "https://github.com/laravel/framework"
+            },
             "time": "2020-10-13T14:20:53+00:00"
         },
         {
@@ -2357,7 +2415,7 @@
                     "Laravel\\Telescope\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2377,6 +2435,10 @@
                 "laravel",
                 "monitoring"
             ],
+            "support": {
+                "issues": "https://github.com/laravel/telescope/issues",
+                "source": "https://github.com/laravel/telescope/tree/v4.1.0"
+            },
             "time": "2020-10-06T16:19:53+00:00"
         },
         {
@@ -2722,7 +2784,7 @@
                     "League\\Glide\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2775,7 +2837,7 @@
                     "League\\MimeTypeDetection\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2786,6 +2848,10 @@
                 }
             ],
             "description": "Mime-type detection for Flysystem",
+            "support": {
+                "issues": "https://github.com/thephpleague/mime-type-detection/issues",
+                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.5.0"
+            },
             "funding": [
                 {
                     "url": "https://github.com/frankdejonge",
@@ -2844,7 +2910,7 @@
                     "Livewire\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2855,6 +2921,10 @@
                 }
             ],
             "description": "A front-end framework for Laravel.",
+            "support": {
+                "issues": "https://github.com/livewire/livewire/issues",
+                "source": "https://github.com/livewire/livewire/tree/v2.2.9"
+            },
             "funding": [
                 {
                     "url": "https://github.com/calebporzio",
@@ -2895,7 +2965,7 @@
                     "ZipStream\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3174,7 +3244,7 @@
                     "MyCLabs\\Enum\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3246,7 +3316,7 @@
                     "Carbon\\": "src/Carbon/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3268,6 +3338,10 @@
                 "datetime",
                 "time"
             ],
+            "support": {
+                "issues": "https://github.com/briannesbitt/Carbon/issues",
+                "source": "https://github.com/briannesbitt/Carbon"
+            },
             "funding": [
                 {
                     "url": "https://opencollective.com/Carbon",
@@ -3316,7 +3390,7 @@
                     "PhpParser\\": "lib/PhpParser"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -3330,6 +3404,10 @@
                 "parser",
                 "php"
             ],
+            "support": {
+                "issues": "https://github.com/nikic/PHP-Parser/issues",
+                "source": "https://github.com/nikic/PHP-Parser/tree/v4.10.2"
+            },
             "time": "2020-09-26T10:30:38+00:00"
         },
         {
@@ -3373,7 +3451,7 @@
                     "Nyholm\\Psr7\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3393,6 +3471,10 @@
                 "psr-17",
                 "psr-7"
             ],
+            "support": {
+                "issues": "https://github.com/Nyholm/psr7/issues",
+                "source": "https://github.com/Nyholm/psr7/tree/1.3.1"
+            },
             "funding": [
                 {
                     "url": "https://github.com/Zegnat",
@@ -3440,7 +3522,7 @@
                     "functions.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3464,6 +3546,10 @@
                 "serialization",
                 "serialize"
             ],
+            "support": {
+                "issues": "https://github.com/opis/closure/issues",
+                "source": "https://github.com/opis/closure/tree/3.6.0"
+            },
             "time": "2020-10-11T21:42:15+00:00"
         },
         {
@@ -3830,7 +3916,7 @@
                     "PragmaRX\\Google2FALaravel\\Tests\\": "tests/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -3848,6 +3934,10 @@
                 "google2fa",
                 "laravel"
             ],
+            "support": {
+                "issues": "https://github.com/antonioribeiro/google2fa-laravel/issues",
+                "source": "https://github.com/antonioribeiro/google2fa-laravel/tree/v1.4.1"
+            },
             "time": "2020-09-20T21:01:48+00:00"
         },
         {
@@ -4506,7 +4596,7 @@
                     "Spatie\\Image\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4556,7 +4646,7 @@
                     "Spatie\\ImageOptimizer\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4607,7 +4697,7 @@
                     "src/helpers.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4625,6 +4715,10 @@
                 "laravel-flash",
                 "spatie"
             ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-flash/issues",
+                "source": "https://github.com/spatie/laravel-flash/tree/1.7.0"
+            },
             "funding": [
                 {
                     "url": "https://spatie.be/open-source/support-us",
@@ -4697,7 +4791,7 @@
                     "Spatie\\MediaLibrary\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4721,6 +4815,10 @@
                 "media",
                 "spatie"
             ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-medialibrary/issues",
+                "source": "https://github.com/spatie/laravel-medialibrary/tree/8.10.1"
+            },
             "funding": [
                 {
                     "url": "https://spatie.be/open-source/support-us",
@@ -4773,7 +4871,7 @@
                     "Spatie\\PersonalDataExport\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4794,6 +4892,10 @@
                 "spatie",
                 "zip"
             ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-personal-data-export/issues",
+                "source": "https://github.com/spatie/laravel-personal-data-export/tree/1.3.2"
+            },
             "funding": [
                 {
                     "url": "https://spatie.be/open-source/support-us",
@@ -4847,7 +4949,7 @@
                     "Spatie\\ResponseCache\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4869,6 +4971,10 @@
                 "response",
                 "spatie"
             ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-responsecache/issues",
+                "source": "https://github.com/spatie/laravel-responsecache/tree/6.6.5"
+            },
             "funding": [
                 {
                     "url": "https://spatie.be/open-source/support-us",
@@ -4915,7 +5021,7 @@
                     "Spatie\\SchemalessAttributes\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4933,6 +5039,10 @@
                 "laravel-schemaless-attributes",
                 "spatie"
             ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-schemaless-attributes/issues",
+                "source": "https://github.com/spatie/laravel-schemaless-attributes/tree/1.8.2"
+            },
             "funding": [
                 {
                     "url": "https://spatie.be/open-source/support-us",
@@ -4967,7 +5077,7 @@
                     "Spatie\\TemporaryDirectory\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4985,6 +5095,10 @@
                 "spatie",
                 "temporary-directory"
             ],
+            "support": {
+                "issues": "https://github.com/spatie/temporary-directory/issues",
+                "source": "https://github.com/spatie/temporary-directory/tree/master"
+            },
             "time": "2020-09-07T20:41:15+00:00"
         },
         {
@@ -5110,7 +5224,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5126,6 +5240,9 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/console/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -5173,7 +5290,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5193,6 +5310,9 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/css-selector/tree/v5.1.4"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -5315,7 +5435,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5331,6 +5451,9 @@
             ],
             "description": "Symfony ErrorHandler Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/error-handler/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -5402,7 +5525,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5418,6 +5541,9 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/event-dispatcher/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -5544,7 +5670,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5560,6 +5686,9 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/finder/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -5695,7 +5824,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5711,6 +5840,9 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/http-foundation/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -5809,7 +5941,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5825,6 +5957,9 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/http-kernel/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -5882,7 +6017,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5902,6 +6037,9 @@
                 "mime",
                 "mime-type"
             ],
+            "support": {
+                "source": "https://github.com/symfony/mime/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -6730,7 +6868,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -6746,6 +6884,9 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/process/tree/5.1"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -6802,7 +6943,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -6824,6 +6965,10 @@
                 "psr-17",
                 "psr-7"
             ],
+            "support": {
+                "issues": "https://github.com/symfony/psr-http-message-bridge/issues",
+                "source": "https://github.com/symfony/psr-http-message-bridge/tree/v2.0.2"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -6894,7 +7039,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -6916,6 +7061,9 @@
                 "uri",
                 "url"
             ],
+            "support": {
+                "source": "https://github.com/symfony/routing/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -7056,7 +7204,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -7080,6 +7228,9 @@
                 "utf-8",
                 "utf8"
             ],
+            "support": {
+                "source": "https://github.com/symfony/string/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -7156,7 +7307,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -7172,6 +7323,9 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/translation/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -7223,7 +7377,7 @@
                     "Symfony\\Contracts\\Translation\\": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -7247,6 +7401,9 @@
                 "interoperability",
                 "standards"
             ],
+            "support": {
+                "source": "https://github.com/symfony/translation-contracts/tree/v2.3.0"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -7317,7 +7474,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -7337,6 +7494,9 @@
                 "debug",
                 "dump"
             ],
+            "support": {
+                "source": "https://github.com/symfony/var-dumper/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -7444,7 +7604,7 @@
                     "Dotenv\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -7466,6 +7626,10 @@
                 "env",
                 "environment"
             ],
+            "support": {
+                "issues": "https://github.com/vlucas/phpdotenv/issues",
+                "source": "https://github.com/vlucas/phpdotenv/tree/v5.2.0"
+            },
             "funding": [
                 {
                     "url": "https://github.com/GrahamCampbell",
@@ -7591,7 +7755,7 @@
                     "lib/Internal/functions.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -7674,7 +7838,7 @@
                     "lib/functions.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -7712,13 +7876,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/233c10688f4c1a6e66ed2ef123038b1363d1bedc",
                 "reference": "233c10688f4c1a6e66ed2ef123038b1363d1bedc",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "illuminate/routing": "^6|^7|^8",
@@ -7837,7 +7995,7 @@
                     "Barryvdh\\LaravelIdeHelper\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -7859,6 +8017,10 @@
                 "phpstorm",
                 "sublime"
             ],
+            "support": {
+                "issues": "https://github.com/barryvdh/laravel-ide-helper/issues",
+                "source": "https://github.com/barryvdh/laravel-ide-helper/tree/master"
+            },
             "funding": [
                 {
                     "url": "https://github.com/barryvdh",
@@ -7904,7 +8066,7 @@
                     ]
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -7951,7 +8113,7 @@
                     "Composer\\CaBundle\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -8041,7 +8203,7 @@
                     "Composer\\": "src/Composer"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -8064,6 +8226,11 @@
                 "dependency",
                 "package"
             ],
+            "support": {
+                "irc": "irc://irc.freenode.org/composer",
+                "issues": "https://github.com/composer/composer/issues",
+                "source": "https://github.com/composer/composer/tree/1.10.15"
+            },
             "funding": [
                 {
                     "url": "https://packagist.com",
@@ -8118,7 +8285,7 @@
                     "PackageVersions\\": "src/PackageVersions"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -8180,7 +8347,7 @@
                     "Composer\\Spdx\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -8235,13 +8402,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/ebd27a9866ae8254e873866f795491f02418c5a5",
                 "reference": "ebd27a9866ae8254e873866f795491f02418c5a5",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "php": "^5.3.2 || ^7.0 || ^8.0",
@@ -8299,13 +8460,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/annotations/zipball/bfe91e31984e2ba76df1c1339681770401ec262f",
                 "reference": "bfe91e31984e2ba76df1c1339681770401ec262f",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "doctrine/lexer": "1.*",
@@ -8375,13 +8530,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/instantiator/zipball/f350df0268e904597e3bd9c4685c53e0e333feea",
                 "reference": "f350df0268e904597e3bd9c4685c53e0e333feea",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "php": "^7.1 || ^8.0"
@@ -8553,7 +8702,7 @@
                     "src/helpers.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -8565,6 +8714,10 @@
                 "flare",
                 "reporting"
             ],
+            "support": {
+                "issues": "https://github.com/facade/flare-client-php/issues",
+                "source": "https://github.com/facade/flare-client-php/tree/1.3.6"
+            },
             "funding": [
                 {
                     "url": "https://github.com/spatie",
@@ -8631,7 +8784,7 @@
                     "src/helpers.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -8643,6 +8796,12 @@
                 "laravel",
                 "page"
             ],
+            "support": {
+                "docs": "https://flareapp.io/docs/ignition-for-laravel/introduction",
+                "forum": "https://twitter.com/flareappio",
+                "issues": "https://github.com/facade/ignition/issues",
+                "source": "https://github.com/facade/ignition"
+            },
             "time": "2020-10-14T08:59:59+00:00"
         },
         {
@@ -8657,13 +8816,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/facade/ignition-contracts/zipball/aeab1ce8b68b188a43e81758e750151ad7da796b",
                 "reference": "aeab1ce8b68b188a43e81758e750151ad7da796b",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "php": "^7.1"
@@ -8728,7 +8881,7 @@
                     "AdvancedJsonRpc\\": "lib/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "ISC"
             ],
@@ -8769,7 +8922,7 @@
                     "LanguageServerProtocol\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "ISC"
             ],
@@ -8800,13 +8953,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/filp/whoops/zipball/5d5fe9bb3d656b514d455645b3addc5f7ba7714d",
                 "reference": "5d5fe9bb3d656b514d455645b3addc5f7ba7714d",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "php": "^5.5.9 || ^7.0",
@@ -8867,13 +9014,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/1023c3458137ab052f6ff1e09621a721bfdeca13",
                 "reference": "1023c3458137ab052f6ff1e09621a721bfdeca13",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "composer/semver": "^1.4",
@@ -8970,13 +9111,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/fc10d778e4b84d5bd315dad194661e091d307c6f",
                 "reference": "fc10d778e4b84d5bd315dad194661e091d307c6f",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "php": "^5.3.3 || ^7.0"
@@ -9047,7 +9182,7 @@
                     "GrahamCampbell\\Analyzer\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -9066,6 +9201,10 @@
                 "classes",
                 "testing"
             ],
+            "support": {
+                "issues": "https://github.com/GrahamCampbell/Analyzer/issues",
+                "source": "https://github.com/GrahamCampbell/Analyzer/tree/v3.0.4"
+            },
             "funding": [
                 {
                     "url": "https://github.com/GrahamCampbell",
@@ -9090,13 +9229,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/hamcrest/hamcrest-php/zipball/8c3d0a3f6af734494ad8f6fbbee0ba92422859f3",
                 "reference": "8c3d0a3f6af734494ad8f6fbbee0ba92422859f3",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "php": "^5.3|^7.0|^8.0"
@@ -9163,7 +9296,7 @@
                     "Jean85\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -9180,6 +9313,10 @@
                 "release",
                 "versions"
             ],
+            "support": {
+                "issues": "https://github.com/Jean85/pretty-package-versions/issues",
+                "source": "https://github.com/Jean85/pretty-package-versions/tree/1.5.1"
+            },
             "time": "2020-09-14T08:43:34+00:00"
         },
         {
@@ -9211,7 +9348,7 @@
                     "JohnKary\\PHPUnit\\Listener\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -9266,7 +9403,7 @@
                     "JsonSchema\\": "src/JsonSchema/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -9346,7 +9483,7 @@
                     "Laravel\\Dusk\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -9362,6 +9499,10 @@
                 "testing",
                 "webdriver"
             ],
+            "support": {
+                "issues": "https://github.com/laravel/dusk/issues",
+                "source": "https://github.com/laravel/dusk/tree/v6.8.0"
+            },
             "time": "2020-10-06T15:32:20+00:00"
         },
         {
@@ -9376,13 +9517,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/maximebf/php-debugbar/zipball/1a1605b8e9bacb34cc0c6278206d699772e1d372",
                 "reference": "1a1605b8e9bacb34cc0c6278206d699772e1d372",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "php": "^7.1",
@@ -9437,12 +9572,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/migrify/migrify-kernel.git",
-                "reference": "27bb88b615a7c6a5f700425e7b0ab5c476bd63e3"
+                "reference": "c10a3cb237a26b1abffca6632cbb51095c4cbf17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/migrify/migrify-kernel/zipball/27bb88b615a7c6a5f700425e7b0ab5c476bd63e3",
-                "reference": "27bb88b615a7c6a5f700425e7b0ab5c476bd63e3",
+                "url": "https://api.github.com/repos/migrify/migrify-kernel/zipball/c10a3cb237a26b1abffca6632cbb51095c4cbf17",
+                "reference": "c10a3cb237a26b1abffca6632cbb51095c4cbf17",
                 "shasum": ""
             },
             "require": {
@@ -9463,11 +9598,15 @@
                     "Migrify\\MigrifyKernel\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Kernel for small CLI applications",
+            "support": {
+                "issues": "https://github.com/migrify/migrify-kernel/issues",
+                "source": "https://github.com/migrify/migrify-kernel/tree/0.3.49"
+            },
             "time": "2020-09-21T16:33:48+00:00"
         },
         {
@@ -9476,12 +9615,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/migrify/php-config-printer.git",
-                "reference": "c02a3602260d73ba9d08ebdfb7f9d5dbc4aaa2e6"
+                "reference": "b95e9ce8d323b952f7c1d9f68c040008e7e4edca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/migrify/php-config-printer/zipball/c02a3602260d73ba9d08ebdfb7f9d5dbc4aaa2e6",
-                "reference": "c02a3602260d73ba9d08ebdfb7f9d5dbc4aaa2e6",
+                "url": "https://api.github.com/repos/migrify/php-config-printer/zipball/b95e9ce8d323b952f7c1d9f68c040008e7e4edca",
+                "reference": "b95e9ce8d323b952f7c1d9f68c040008e7e4edca",
                 "shasum": ""
             },
             "require": {
@@ -9501,11 +9640,15 @@
                     "Migrify\\PhpConfigPrinter\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Print Symfony services array with configuration to to plain PHP file format thanks to this simple php-parser wrapper",
+            "support": {
+                "issues": "https://github.com/migrify/php-config-printer/issues",
+                "source": "https://github.com/migrify/php-config-printer/tree/0.3.49"
+            },
             "time": "2020-10-12T21:46:55+00:00"
         },
         {
@@ -9520,13 +9663,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/mockery/mockery/zipball/20cab678faed06fac225193be281ea0fddb43b93",
                 "reference": "20cab678faed06fac225193be281ea0fddb43b93",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "hamcrest/hamcrest-php": "^2.0.1",
@@ -9594,13 +9731,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/969b211f9a51aa1f6c01d1d2aef56d3bd91598e5",
                 "reference": "969b211f9a51aa1f6c01d1d2aef56d3bd91598e5",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "php": "^7.1 || ^8.0"
@@ -9673,7 +9804,7 @@
                     "JsonMapper": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "OSL-3.0"
             ],
@@ -9725,7 +9856,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause",
                 "GPL-2.0",
@@ -9787,7 +9918,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause",
                 "GPL-2.0-only",
@@ -9812,6 +9943,10 @@
                 "nette",
                 "trait"
             ],
+            "support": {
+                "issues": "https://github.com/nette/robot-loader/issues",
+                "source": "https://github.com/nette/robot-loader/tree/v3.3.1"
+            },
             "time": "2020-09-15T15:14:17+00:00"
         },
         {
@@ -9856,7 +9991,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause",
                 "GPL-2.0-only",
@@ -9904,13 +10039,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/nunomaduro/collision/zipball/4a343299054e9368d0db4a982a780cc4ffa12707",
                 "reference": "4a343299054e9368d0db4a982a780cc4ffa12707",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "facade/ignition-contracts": "^1.0",
@@ -10034,7 +10163,7 @@
                     "NunoMaduro\\Larastan\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -10055,6 +10184,10 @@
                 "php",
                 "static analysis"
             ],
+            "support": {
+                "issues": "https://github.com/nunomaduro/larastan/issues",
+                "source": "https://github.com/nunomaduro/larastan/tree/master"
+            },
             "funding": [
                 {
                     "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L",
@@ -10087,13 +10220,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/nunomaduro/laravel-mojito/zipball/3d6f502d57c3ec9c18a57c7b59853e149d9dee4f",
                 "reference": "3d6f502d57c3ec9c18a57c7b59853e149d9dee4f",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "php": "^7.2",
@@ -10173,7 +10300,7 @@
                     "OndraM\\CiDetector\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -10207,6 +10334,10 @@
                 "teamcity",
                 "travis"
             ],
+            "support": {
+                "issues": "https://github.com/OndraM/ci-detector/issues",
+                "source": "https://github.com/OndraM/ci-detector/tree/main"
+            },
             "time": "2020-09-04T11:21:14+00:00"
         },
         {
@@ -10232,7 +10363,7 @@
                     "LSS": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -10285,7 +10416,7 @@
                     "dev-master": "6.0-dev"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -10306,6 +10437,10 @@
                 "orchestral",
                 "testing"
             ],
+            "support": {
+                "issues": "https://github.com/orchestral/testbench/issues",
+                "source": "https://github.com/orchestral/testbench/tree/v6.2.0"
+            },
             "funding": [
                 {
                     "url": "https://paypal.me/crynobone",
@@ -10365,7 +10500,7 @@
                     "Orchestra\\Testbench\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -10386,6 +10521,10 @@
                 "orchestral",
                 "testing"
             ],
+            "support": {
+                "issues": "https://github.com/orchestral/testbench/issues",
+                "source": "https://github.com/orchestral/testbench-core"
+            },
             "funding": [
                 {
                     "url": "https://paypal.me/crynobone",
@@ -10454,7 +10593,7 @@
                     "src/Pest.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -10473,6 +10612,10 @@
                 "testing",
                 "unit"
             ],
+            "support": {
+                "issues": "https://github.com/pestphp/pest/issues",
+                "source": "https://github.com/pestphp/pest/tree/v0.3.9"
+            },
             "funding": [
                 {
                     "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L",
@@ -10501,13 +10644,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/pestphp/pest-plugin/zipball/635f8c33a3eed910ac3cd5cb02a7163c5c70c033",
                 "reference": "635f8c33a3eed910ac3cd5cb02a7163c5c70c033",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.1 || ^2.0",
@@ -10576,13 +10713,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/pestphp/pest-plugin-coverage/zipball/f209bb62728841f21f267759a374d66172a162ea",
                 "reference": "f209bb62728841f21f267759a374d66172a162ea",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "pestphp/pest-plugin": "^0.3",
@@ -10655,13 +10786,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/pestphp/pest-plugin-faker/zipball/3a57e4803c4b6c0d0dde2ed8f0b1ca1a575001e3",
                 "reference": "3a57e4803c4b6c0d0dde2ed8f0b1ca1a575001e3",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "fzaninotto/faker": "^1.9.1",
@@ -10757,7 +10882,7 @@
                     "Pest\\Init\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -10772,6 +10897,9 @@
                 "testing",
                 "unit"
             ],
+            "support": {
+                "source": "https://github.com/pestphp/pest-plugin-init/tree/v0.3.1"
+            },
             "funding": [
                 {
                     "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L",
@@ -10800,13 +10928,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/pestphp/pest-plugin-laravel/zipball/0ec53f5cc2d661088683318629ca16dcd72c41d1",
                 "reference": "0ec53f5cc2d661088683318629ca16dcd72c41d1",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "laravel/framework": "^7.0 || ^8.0",
@@ -10873,13 +10995,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/pestphp/pest-plugin-livewire/zipball/22bc3324752590a0232d4e091084b8d5cac59faa",
                 "reference": "22bc3324752590a0232d4e091084b8d5cac59faa",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "livewire/livewire": "^1.2|^2.0",
@@ -10950,13 +11066,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/phar-io/manifest/zipball/85265efd3af7ba3ca4b2a2c34dbfc5788dd29133",
                 "reference": "85265efd3af7ba3ca4b2a2c34dbfc5788dd29133",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
@@ -11012,13 +11122,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/phar-io/version/zipball/c6bb6825def89e0a32220f88337f8ceaf1975fa0",
                 "reference": "c6bb6825def89e0a32220f88337f8ceaf1975fa0",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "php": "^7.2 || ^8.0"
@@ -11080,7 +11184,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -11102,6 +11206,10 @@
             "keywords": [
                 "diff"
             ],
+            "support": {
+                "issues": "https://github.com/PHP-CS-Fixer/diff/issues",
+                "source": "https://github.com/PHP-CS-Fixer/diff/tree/v1.3.1"
+            },
             "time": "2020-10-14T08:39:05+00:00"
         },
         {
@@ -11158,7 +11266,7 @@
                     "lib/Exception/TimeoutException.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -11171,6 +11279,10 @@
                 "selenium",
                 "webdriver"
             ],
+            "support": {
+                "issues": "https://github.com/php-webdriver/php-webdriver/issues",
+                "source": "https://github.com/php-webdriver/php-webdriver/tree/1.8.3"
+            },
             "time": "2020-10-06T19:10:04+00:00"
         },
         {
@@ -11185,13 +11297,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/1d01c49d4ed62f25aa84a747ad35d5a16924662b",
                 "reference": "1d01c49d4ed62f25aa84a747ad35d5a16924662b",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "php": "^7.2 || ^8.0"
@@ -11263,7 +11369,7 @@
                     "phpDocumentor\\Reflection\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -11278,6 +11384,10 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
+            "support": {
+                "issues": "https://github.com/phpDocumentor/ReflectionDocBlock/issues",
+                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/master"
+            },
             "time": "2020-09-03T19:13:55+00:00"
         },
         {
@@ -11312,7 +11422,7 @@
                     "phpDocumentor\\Reflection\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -11323,6 +11433,10 @@
                 }
             ],
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
+            "support": {
+                "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
+                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.4.0"
+            },
             "time": "2020-09-17T18:55:26+00:00"
         },
         {
@@ -11361,7 +11475,7 @@
                     "Prophecy\\": "src/Prophecy"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -11386,6 +11500,10 @@
                 "spy",
                 "stub"
             ],
+            "support": {
+                "issues": "https://github.com/phpspec/prophecy/issues",
+                "source": "https://github.com/phpspec/prophecy/tree/1.12.1"
+            },
             "time": "2020-09-29T09:10:42+00:00"
         },
         {
@@ -11430,7 +11548,7 @@
                     ]
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -11472,11 +11590,15 @@
                     "bootstrap.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
+            "support": {
+                "issues": "https://github.com/phpstan/phpstan/issues",
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.49"
+            },
             "funding": [
                 {
                     "url": "https://github.com/ondrejmirtes",
@@ -11542,7 +11664,7 @@
                     "PHPStan\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -11596,7 +11718,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -11614,6 +11736,10 @@
                 "testing",
                 "xunit"
             ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.0"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -11653,7 +11779,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -11670,6 +11796,10 @@
                 "filesystem",
                 "iterator"
             ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/php-file-iterator/issues",
+                "source": "https://github.com/sebastianbergmann/php-file-iterator/tree/3.0.5"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -11713,7 +11843,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -11729,6 +11859,10 @@
             "keywords": [
                 "process"
             ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/php-invoker/issues",
+                "source": "https://github.com/sebastianbergmann/php-invoker/tree/3.1.1"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -11768,7 +11902,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -11784,6 +11918,10 @@
             "keywords": [
                 "template"
             ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/php-text-template/issues",
+                "source": "https://github.com/sebastianbergmann/php-text-template/tree/2.0.3"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -11823,7 +11961,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -11839,6 +11977,10 @@
             "keywords": [
                 "timer"
             ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/php-timer/issues",
+                "source": "https://github.com/sebastianbergmann/php-timer/tree/5.0.2"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -11916,7 +12058,7 @@
                     "src/Framework/Assert/Functions.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -11934,6 +12076,10 @@
                 "testing",
                 "xunit"
             ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/phpunit/issues",
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.4.1"
+            },
             "funding": [
                 {
                     "url": "https://phpunit.de/donate.html",
@@ -11994,7 +12140,7 @@
                     "Psalm\\LaravelPlugin\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -12005,6 +12151,10 @@
                 }
             ],
             "description": "A Laravel plugin for Psalm",
+            "support": {
+                "issues": "https://github.com/psalm/psalm-plugin-laravel/issues",
+                "source": "https://github.com/psalm/psalm-plugin-laravel/tree/master"
+            },
             "time": "2020-09-09T10:56:37+00:00"
         },
         {
@@ -12035,7 +12185,7 @@
                     "Psr\\Cache\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -12272,13 +12422,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/scrivo/highlight.php/zipball/efb6e445494a9458aa59b0af5edfa4bdcc6809d9",
                 "reference": "efb6e445494a9458aa59b0af5edfa4bdcc6809d9",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "ext-json": "*",
@@ -12372,7 +12516,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -12385,6 +12529,10 @@
             ],
             "description": "Library for parsing CLI options",
             "homepage": "https://github.com/sebastianbergmann/cli-parser",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/cli-parser/issues",
+                "source": "https://github.com/sebastianbergmann/cli-parser/tree/1.0.1"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -12424,7 +12572,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -12437,6 +12585,10 @@
             ],
             "description": "Collection of value objects that represent the PHP code units",
             "homepage": "https://github.com/sebastianbergmann/code-unit",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/code-unit/issues",
+                "source": "https://github.com/sebastianbergmann/code-unit/tree/1.0.7"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -12476,7 +12628,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -12488,6 +12640,10 @@
             ],
             "description": "Looks up which function or method a line of code belongs to",
             "homepage": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/issues",
+                "source": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/tree/2.0.3"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -12529,7 +12685,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -12558,6 +12714,10 @@
                 "compare",
                 "equality"
             ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/comparator/issues",
+                "source": "https://github.com/sebastianbergmann/comparator/tree/4.0.5"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -12598,7 +12758,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -12611,6 +12771,10 @@
             ],
             "description": "Library for calculating the complexity of PHP code units",
             "homepage": "https://github.com/sebastianbergmann/complexity",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/complexity/issues",
+                "source": "https://github.com/sebastianbergmann/complexity/tree/2.0.1"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -12651,7 +12815,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -12673,6 +12837,10 @@
                 "unidiff",
                 "unified diff"
             ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/diff/issues",
+                "source": "https://github.com/sebastianbergmann/diff/tree/4.0.3"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -12715,7 +12883,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -12732,6 +12900,10 @@
                 "environment",
                 "hhvm"
             ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/environment/issues",
+                "source": "https://github.com/sebastianbergmann/environment/tree/5.1.3"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -12773,7 +12945,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -12805,6 +12977,10 @@
                 "export",
                 "exporter"
             ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/exporter/issues",
+                "source": "https://github.com/sebastianbergmann/exporter/tree/4.0.3"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -12850,7 +13026,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -12865,6 +13041,10 @@
             "keywords": [
                 "global state"
             ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/global-state/issues",
+                "source": "https://github.com/sebastianbergmann/global-state/tree/5.0.1"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -12905,7 +13085,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -12918,6 +13098,10 @@
             ],
             "description": "Library for counting the lines of code in PHP source code",
             "homepage": "https://github.com/sebastianbergmann/lines-of-code",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/lines-of-code/issues",
+                "source": "https://github.com/sebastianbergmann/lines-of-code/tree/1.0.1"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -12959,7 +13143,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -12971,6 +13155,10 @@
             ],
             "description": "Traverses array structures and object graphs to enumerate all referenced objects",
             "homepage": "https://github.com/sebastianbergmann/object-enumerator/",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/object-enumerator/issues",
+                "source": "https://github.com/sebastianbergmann/object-enumerator/tree/4.0.3"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -13010,7 +13198,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -13022,6 +13210,10 @@
             ],
             "description": "Allows reflection of object attributes, including inherited and non-public ones",
             "homepage": "https://github.com/sebastianbergmann/object-reflector/",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/object-reflector/issues",
+                "source": "https://github.com/sebastianbergmann/object-reflector/tree/2.0.3"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -13061,7 +13253,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -13081,6 +13273,10 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/recursion-context/issues",
+                "source": "https://github.com/sebastianbergmann/recursion-context/tree/4.0.3"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -13120,7 +13316,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -13132,6 +13328,10 @@
             ],
             "description": "Provides a list of PHP built-in functions that operate on resources",
             "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/resource-operations/issues",
+                "source": "https://github.com/sebastianbergmann/resource-operations/tree/3.0.3"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -13171,7 +13371,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -13184,6 +13384,10 @@
             ],
             "description": "Collection of value objects that represent the types of the PHP type system",
             "homepage": "https://github.com/sebastianbergmann/type",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/type/issues",
+                "source": "https://github.com/sebastianbergmann/type/tree/2.3.0"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -13220,7 +13424,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -13233,6 +13437,10 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/version/issues",
+                "source": "https://github.com/sebastianbergmann/version/tree/3.0.2"
+            },
             "funding": [
                 {
                     "url": "https://github.com/sebastianbergmann",
@@ -13270,7 +13478,7 @@
                     "Seld\\JsonLint\\": "src/Seld/JsonLint/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -13328,7 +13536,7 @@
                     "Seld\\PharUtils\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -13402,7 +13610,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -13422,6 +13630,9 @@
                 "caching",
                 "psr6"
             ],
+            "support": {
+                "source": "https://github.com/symfony/cache/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -13474,7 +13685,7 @@
                     "Symfony\\Contracts\\Cache\\": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -13498,6 +13709,9 @@
                 "interoperability",
                 "standards"
             ],
+            "support": {
+                "source": "https://github.com/symfony/cache-contracts/tree/v2.2.0"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -13562,7 +13776,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -13578,6 +13792,9 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/config/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -13633,7 +13850,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -13649,6 +13866,9 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/debug/tree/4.4"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -13722,7 +13942,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -13738,6 +13958,9 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/dependency-injection/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -13798,7 +14021,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -13814,6 +14037,9 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/dom-crawler/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -13862,7 +14088,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -13878,6 +14104,9 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/filesystem/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -13927,7 +14156,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -13948,6 +14177,9 @@
                 "configuration",
                 "options"
             ],
+            "support": {
+                "source": "https://github.com/symfony/options-resolver/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -13996,7 +14228,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -14012,6 +14244,9 @@
             ],
             "description": "Symfony Stopwatch Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/stopwatch/tree/v5.1.4"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -14063,7 +14298,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -14087,6 +14322,9 @@
                 "instantiate",
                 "serialize"
             ],
+            "support": {
+                "source": "https://github.com/symfony/var-exporter/tree/5.1"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -14148,7 +14386,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -14164,6 +14402,9 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/yaml/tree/v5.1.7"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -14186,12 +14427,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/autowire-array-parameter.git",
-                "reference": "6ba4f532f4727ea6d5f7e14f31b693503dbddb07"
+                "reference": "6a516039b636206c645b06a3f6d22998be49d165"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/autowire-array-parameter/zipball/6ba4f532f4727ea6d5f7e14f31b693503dbddb07",
-                "reference": "6ba4f532f4727ea6d5f7e14f31b693503dbddb07",
+                "url": "https://api.github.com/repos/symplify/autowire-array-parameter/zipball/6a516039b636206c645b06a3f6d22998be49d165",
+                "reference": "6a516039b636206c645b06a3f6d22998be49d165",
                 "shasum": ""
             },
             "require": {
@@ -14237,12 +14478,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/composer-json-manipulator.git",
-                "reference": "98fa7ddbdcd76c352877c79546b069406cdd7051"
+                "reference": "ac3956b653a5ee6b909d4b6cb25290e2d137063d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/composer-json-manipulator/zipball/98fa7ddbdcd76c352877c79546b069406cdd7051",
-                "reference": "98fa7ddbdcd76c352877c79546b069406cdd7051",
+                "url": "https://api.github.com/repos/symplify/composer-json-manipulator/zipball/ac3956b653a5ee6b909d4b6cb25290e2d137063d",
+                "reference": "ac3956b653a5ee6b909d4b6cb25290e2d137063d",
                 "shasum": ""
             },
             "require": {
@@ -14293,12 +14534,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/console-color-diff.git",
-                "reference": "aeca754f1ec79d8ba9747fd982ed851dccb94f58"
+                "reference": "ea75d48aa88b312248be6e1a567d8414e5ab181c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/console-color-diff/zipball/aeca754f1ec79d8ba9747fd982ed851dccb94f58",
-                "reference": "aeca754f1ec79d8ba9747fd982ed851dccb94f58",
+                "url": "https://api.github.com/repos/symplify/console-color-diff/zipball/ea75d48aa88b312248be6e1a567d8414e5ab181c",
+                "reference": "ea75d48aa88b312248be6e1a567d8414e5ab181c",
                 "shasum": ""
             },
             "require": {
@@ -14347,12 +14588,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/easy-testing.git",
-                "reference": "495ea9616f628dd837a2a4af37c36a074edba1a9"
+                "reference": "649c76a0b6050265ce0cdb012a5f1f5c8bce5d85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/easy-testing/zipball/495ea9616f628dd837a2a4af37c36a074edba1a9",
-                "reference": "495ea9616f628dd837a2a4af37c36a074edba1a9",
+                "url": "https://api.github.com/repos/symplify/easy-testing/zipball/649c76a0b6050265ce0cdb012a5f1f5c8bce5d85",
+                "reference": "649c76a0b6050265ce0cdb012a5f1f5c8bce5d85",
                 "shasum": ""
             },
             "require": {
@@ -14400,12 +14641,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/package-builder.git",
-                "reference": "e5f6fa8cbff976e4d0ad668d41148f15553adfcb"
+                "reference": "55efad89c73789590824ac40e9e99e8fc9abb328"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/package-builder/zipball/e5f6fa8cbff976e4d0ad668d41148f15553adfcb",
-                "reference": "e5f6fa8cbff976e4d0ad668d41148f15553adfcb",
+                "url": "https://api.github.com/repos/symplify/package-builder/zipball/55efad89c73789590824ac40e9e99e8fc9abb328",
+                "reference": "55efad89c73789590824ac40e9e99e8fc9abb328",
                 "shasum": ""
             },
             "require": {
@@ -14458,12 +14699,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/set-config-resolver.git",
-                "reference": "c7f312d5bb47981a78e424fae34d48e9eb3c05ac"
+                "reference": "86e0fa9ee17efdf6cb1910d68509357d2fadf5f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/set-config-resolver/zipball/c7f312d5bb47981a78e424fae34d48e9eb3c05ac",
-                "reference": "c7f312d5bb47981a78e424fae34d48e9eb3c05ac",
+                "url": "https://api.github.com/repos/symplify/set-config-resolver/zipball/86e0fa9ee17efdf6cb1910d68509357d2fadf5f1",
+                "reference": "86e0fa9ee17efdf6cb1910d68509357d2fadf5f1",
                 "shasum": ""
             },
             "require": {
@@ -14515,12 +14756,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/smart-file-system.git",
-                "reference": "fa74737c039e51f4aefe203100c4dc55538b4b97"
+                "reference": "dc65437feb2f3e3079fa51a6fc6cf9ca4aee9d09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/smart-file-system/zipball/fa74737c039e51f4aefe203100c4dc55538b4b97",
-                "reference": "fa74737c039e51f4aefe203100c4dc55538b4b97",
+                "url": "https://api.github.com/repos/symplify/smart-file-system/zipball/dc65437feb2f3e3079fa51a6fc6cf9ca4aee9d09",
+                "reference": "dc65437feb2f3e3079fa51a6fc6cf9ca4aee9d09",
                 "shasum": ""
             },
             "require": {
@@ -14567,12 +14808,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/symplify-kernel.git",
-                "reference": "803d56aeb48bd87e810a8b2799f4f88e09ab3176"
+                "reference": "e7c867acfc98797697a1969cf1e1dd93326aa3e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/symplify-kernel/zipball/803d56aeb48bd87e810a8b2799f4f88e09ab3176",
-                "reference": "803d56aeb48bd87e810a8b2799f4f88e09ab3176",
+                "url": "https://api.github.com/repos/symplify/symplify-kernel/zipball/e7c867acfc98797697a1969cf1e1dd93326aa3e3",
+                "reference": "e7c867acfc98797697a1969cf1e1dd93326aa3e3",
                 "shasum": ""
             },
             "require": {
@@ -14616,13 +14857,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/theseer/tokenizer/zipball/75a63c33a8577608444246075ea0af0d052e452a",
                 "reference": "75a63c33a8577608444246075ea0af0d052e452a",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
@@ -14768,13 +15003,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/webmozart/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/arkecosystem/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "php": "^5.3.3 || ^7.0 || ^8.0",
@@ -14845,7 +15074,7 @@
                     "Webmozart\\Glob\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],
@@ -14891,7 +15120,7 @@
                     "Webmozart\\PathUtil\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/arkecosystem/downloads/",
             "license": [
                 "MIT"
             ],

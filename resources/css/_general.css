@@ -17,6 +17,10 @@ body {
     @apply flex px-8 mx-auto;
 }
 
+.content-container-full-width {
+    @apply flex mx-auto;
+}
+
 @screen sm {
     .content-container {
         @apply px-8;
@@ -24,6 +28,7 @@ body {
 }
 
 @screen lg {
+    .content-container-full-width,
     .content-container {
         @apply max-w-7xl;
     }
@@ -53,5 +58,75 @@ body {
 @screen lg {
     .network-status-block {
         @apply w-auto;
+    }
+}
+
+/* Searchbar */
+.searchbar {
+    @apply hidden fixed inset-0 overflow-y-auto z-40;
+}
+.search-container {
+    @apply flex flex-col rounded-lg bg-white absolute top-24 left-8 right-8 z-50 overflow-hidden;
+}
+.theme-dark .search-container {
+    @apply bg-theme-secondary-900;
+}
+
+.search-advanced .search-container {
+    @apply mb-24;
+}
+
+.search-mobile {
+    @apply block;
+}
+
+.search-advanced-options {
+    @apply grid grid-cols-1 border-t border-theme-secondary-300;
+}
+.theme-dark .search-advanced-options {
+    @apply border-theme-secondary-800;
+}
+
+.search-advanced-option {
+    @apply flex flex-col max-w-full px-8 py-8 border-theme-secondary-300 border-t;
+}
+.search-advanced-option:first-child {
+    @apply border-t-0;
+}
+.theme-dark .search-advanced-option {
+    @apply border-theme-secondary-800;
+}
+
+@screen md {
+    .searchbar {
+        position: unset;
+        @apply block;
+    }
+    .search-container {
+        position: unset;
+    }
+    .search-advanced-options {
+        @apply grid-cols-2 pt-8;
+    }
+    .search-advanced-option {
+        @apply py-0 mb-8 border-r border-t-0;
+    }
+    .search-advanced-option:nth-child(3)::before,
+    .search-advanced-option:nth-child(4)::before {
+        content: "";
+        @apply border-t border-theme-secondary-300 border-t w-full pb-8;
+    }
+}
+
+@screen xl {
+    .search-advanced-options {
+        @apply grid-cols-4;
+    }
+    .search-advanced-option {
+        @apply flex-1;
+    }
+    .search-advanced-option:nth-child(3)::before,
+    .search-advanced-option:nth-child(4)::before {
+        @apply hidden;
     }
 }
