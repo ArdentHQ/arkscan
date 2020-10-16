@@ -1,8 +1,12 @@
-<div class="inline-block bg-theme-secondary-200 rounded-lg border border-transparent dark:bg-theme-secondary-900 dark:border-theme-secondary-800">
-    <div class="flex space-x-5 text-xs font-medium px-4 py-2">
+<div class="network-status-block">
+    <div class="network-status-block-entries space-x-5">
         <div>@lang('general.height'): {{ $height }}</div>
-        <div>@lang('general.network'): {{ $network }}</div>
-        <div>@lang('general.supply'): {{ $supply }}</div>
-        <div>@lang('general.market_cap'): {{ $marketCap }}</div>
+        <div class="hidden md:block">@lang('general.network'): {{ $network }}</div>
+        <div class="hidden md:block">@lang('general.supply'): {{ $supply }}</div>
+        <div class="hidden sm:block">@lang('general.market_cap'): {{ $marketCap }}</div>
+
+        <div class="md:hidden">
+            <livewire:price-ticker />
+        </div>
     </div>
 </div>

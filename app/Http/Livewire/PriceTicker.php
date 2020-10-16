@@ -6,11 +6,11 @@ namespace  App\Http\Livewire;
 
 use Livewire\Component;
 
-final class NavbarPrice extends Component
+final class PriceTicker extends Component
 {
     public function render()
     {
-        return view('livewire.navbar-price', [
+        return view('livewire.price-ticker', [
             'from'  => 'ARK',
             'to'    => 'USD',
             'price' => 7.48,

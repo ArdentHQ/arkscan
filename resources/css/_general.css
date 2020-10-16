@@ -28,3 +28,30 @@ body {
         @apply max-w-7xl;
     }
 }
+
+/* Network Status Block */
+.network-status-block {
+    @apply inline-block bg-theme-secondary-200 text-center w-full border border-transparent;
+}
+.theme-dark .network-status-block {
+    @apply bg-theme-secondary-900 border-theme-secondary-800;
+}
+
+.network-status-block-entries {
+    @apply flex text-xs items-center justify-center font-medium px-4 py-2;
+}
+
+@screen md {
+    .network-status-block {
+        @apply rounded-lg px-0;
+    }
+    .network-status-block-entries {
+        @apply justify-start;
+    }
+}
+
+@screen lg {
+    .network-status-block {
+        @apply w-auto;
+    }
+}
