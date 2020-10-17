@@ -1,5 +1,14 @@
 <div x-data="{ open: false, openDropdown: null, selectedChild: null }">
-    <div x-show="openDropdown !== null || open" class="fixed inset-0 z-30 overflow-y-auto opacity-75 bg-theme-secondary-900" x-cloak @click="openDropdown = null; open = false;"></div>
+    <div
+        x-show="openDropdown !== null || open"
+        class="fixed inset-0 z-30 overflow-y-auto bg-theme-secondary-900"
+        :class="{
+            'opacity-75': openDropdown !== 'settings',
+            'opacity-0': openDropdown === 'settings',
+        }"
+        x-cloak
+        @click="openDropdown = null; open = false;"
+    ></div>
 
     <nav class="relative z-30 bg-white shadow-header-smooth dark:shadow-none dark:bg-theme-secondary-900">
         <div class="px-4 sm:px-6 lg:px-8">
@@ -86,7 +95,7 @@
                         <div class="pl-8 border-l border-theme-primary-100 text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-800">
                             <button
                                 @click="$dispatch('mobile-search')"
-                                class="inline-flex items-center justify-center p-2 transition duration-150 ease-in-out rounded-md text-theme-primary-300"
+                                class="inline-flex items-center justify-center py-2 transition duration-150 ease-in-out rounded-md text-theme-primary-300"
                             >
                                 <span class="inline-flex">@svg('search', 'h-4 w-4')</span>
                             </button>
@@ -98,6 +107,8 @@
                             <livewire:price-ticker />
                         </div>
                     </div>
+
+                    <livewire:navbar-settings />
                 </div>
             </div>
         </div>
