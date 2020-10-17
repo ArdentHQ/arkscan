@@ -26,5 +26,8 @@
         "tailwind": "^4.0.0",
         "tailwindcss": "^1.9.1",
         "vue-template-compiler": "^2.6.12"
+    },
+    "dependencies": {
+        "@vechain/picasso": "^2.0.1"
     }
 }
