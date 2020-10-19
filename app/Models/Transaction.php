@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace  App\Models;
+namespace App\Models;
 
 use ArkEcosystem\Crypto\Configuration\Network;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace  App\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
-final class ListTransactionsController extends Controller
+final class ListTransactionsController
 {
     public function __invoke(Request $request)
     {

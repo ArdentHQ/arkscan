@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace  App\Exceptions;
+namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;

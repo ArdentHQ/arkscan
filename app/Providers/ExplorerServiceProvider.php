@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace  App\Providers;
+namespace App\Providers;
 
 use App\Contracts\Network;
 use App\Services\Blockchain\NetworkFactory;

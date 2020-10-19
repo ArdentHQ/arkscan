@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace  App\Http\Controllers;
+namespace App\Http\Controllers;
 
 use App\Models\Block;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
-final class ListTransactionsByBlockController extends Controller
+final class ListTransactionsByBlockController
 {
     public function __invoke(Request $request, Block $block)
     {

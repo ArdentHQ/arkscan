@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace  App\Services\Blockchain\Networks\ARK;
+namespace App\Services\Blockchain\Networks\ARK;
 
 use App\Contracts\Network;
 use Illuminate\Support\Facades\Cache;

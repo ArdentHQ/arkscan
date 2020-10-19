@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace  App\Services\Blockchain;
+namespace App\Services\Blockchain;
 
 use App\Contracts\Network;
 use App\Services\Blockchain\Networks\ARK\Development;
