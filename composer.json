@@ -27,6 +27,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
+        "ergebnis/composer-normalize": "^2.8",
         "ergebnis/phpstan-rules": "^0.15.2",
         "facade/ignition": "^2.3.6",
         "friendsofphp/php-cs-fixer": "^2.16",
@@ -93,11 +94,11 @@
             "yarn format",
             "yarn prod"
         ],
-        "fresh": [
-            "php artisan migrate:fresh --seed"
-        ],
         "format": [
             "vendor/bin/php-cs-fixer fix"
+        ],
+        "fresh": [
+            "php artisan migrate:fresh --seed"
         ],
         "test": [
             "./vendor/bin/pest --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml"
