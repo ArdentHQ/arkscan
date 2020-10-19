@@ -21,6 +21,7 @@ final class CreateTransactionsTable extends Migration
             $table->string('amount');
             $table->string('fee');
             $table->binary('vendor_field_hex')->nullable();
+            $table->text('asset')->nullable();
             $table->timestamps();
         });
     }
