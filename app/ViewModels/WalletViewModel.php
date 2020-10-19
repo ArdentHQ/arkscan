@@ -30,6 +30,11 @@ final class WalletViewModel extends ViewModel
         return NumberFormatter::currency($this->model->balance / 1e8, Network::currency());
     }
 
+    public function balancePercentage(): float
+    {
+        return Percentage::calculate($this->model->balance / 1e8, NetworkStatus::supply());
+    }
+
     public function nonce(): string
     {
         return NumberFormatter::number($this->model->nonce);

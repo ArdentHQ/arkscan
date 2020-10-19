@@ -22,6 +22,17 @@ it('should get the balance', function () {
     expect($this->subject->balance())->toBe('ARK 1,000.00');
 });
 
+it('should get the balance as percentage from supply', function () {
+    Http::fakeSequence()->push([
+        'data' => [
+            'supply' => 10000 * 1e8,
+        ],
+    ]);
+
+    expect($this->subject->balancePercentage())->toBeFloat();
+    expect($this->subject->balancePercentage())->toBe(10.0);
+});
+
 it('should get the votes', function () {
     expect($this->subject->votes())->toBeString();
     expect($this->subject->votes())->toBe('ARK 1,000.00');
