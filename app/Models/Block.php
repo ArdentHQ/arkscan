@@ -96,6 +96,16 @@ final class Block extends Model
     }
 
     /**
+     * Get the human readable representation of the height.
+     *
+     * @return string
+     */
+    public function getFormattedHeightAttribute(): string
+    {
+        return NumberFormatter::number($this->height);
+    }
+
+    /**
      * Get the human readable representation of the total.
      *
      * @return string

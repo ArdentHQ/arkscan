@@ -6,7 +6,7 @@ namespace App\Services;
 
 final class NumberFormatter
 {
-    public static function number(int $value): string
+    public static function number($value): string
     {
         $formatter = new \NumberFormatter('en_US', \NumberFormatter::DECIMAL);
 

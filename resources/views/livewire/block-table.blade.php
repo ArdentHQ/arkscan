@@ -17,7 +17,7 @@
                     <td>{{ $block->id }}</td>
                     <td>{{ $block->timestamp_carbon }}</td>
                     <td>{{ $block->delegate->username }}</td>
-                    <td>{{ $block->height }}</td>
+                    <td>{{ $block->formatted_height }}</td>
                     <td>{{ $block->number_of_transactions }}</td>
                     <td>{{ $block->formatted_total_amount }}</td>
                     <td>{{ $block->formatted_total_fee }}</td>

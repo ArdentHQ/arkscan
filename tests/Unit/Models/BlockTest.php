@@ -20,7 +20,7 @@ beforeEach(function () {
 
     $this->subject = Block::factory()->create([
         'previous_block' => $previousBlock->id,
-        'height'         => 2,
+        'height'         => 10000,
         'total_amount'   => 50 * 1e8,
         'total_fee'      => 48 * 1e8,
         'reward'         => 2 * 1e8,
@@ -55,6 +55,11 @@ it('should only query blocks that were forged by the given public key', function
 it('should get the timestamp as a Carbon instance', function () {
     expect($this->subject->timestamp_carbon)->toBeInstanceOf(Carbon::class);
     expect((string) $this->subject->timestamp_carbon)->toBe('2020-10-19 04:54:16');
+});
+
+it('should get the formatted height', function () {
+    expect($this->subject->formatted_height)->toBeString();
+    expect($this->subject->formatted_height)->toBe('10,000');
 });
 
 it('should get the formatted total', function () {

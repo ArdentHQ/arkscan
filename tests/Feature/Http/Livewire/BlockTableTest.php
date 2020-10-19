@@ -19,7 +19,7 @@ it('should list the first page of records', function () {
         $component->assertSee($block->id);
         $component->assertSee((string) $block->timestamp_carbon);
         $component->assertSee($block->delegate->username);
-        $component->assertSee($block->height);
+        $component->assertSee($block->formatted_height);
         $component->assertSee($block->number_of_transactions);
         $component->assertSee($block->formatted_total_amount);
         $component->assertSee($block->formatted_total_fee);
