@@ -19,6 +19,10 @@ it('should have a currency symbol', function () {
     expect($this->subject->currencySymbol())->toBe('DѦ');
 });
 
+it('should have a required number of confirmations', function () {
+    expect($this->subject->confirmations())->toBe(51);
+});
+
 it('should fetch known wallets', function () {
     Http::fake([
         'github.com' => [],

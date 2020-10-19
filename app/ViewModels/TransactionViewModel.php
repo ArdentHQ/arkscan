@@ -69,6 +69,13 @@ final class TransactionViewModel extends ViewModel
         return NumberFormatter::number(NetworkStatus::height() - $this->model->block->height);
     }
 
+    public function isConfirmed(): bool
+    {
+        $confirmations = NetworkStatus::height() - $this->model->block->height;
+
+        return $confirmations >= Network::confirmations();
+    }
+
     public function isTransfer(): bool
     {
         return $this->isCoreTypeGroup() && $this->model->type === CoreTransactionTypeEnum::TRANSFER;

@@ -25,6 +25,11 @@ final class Production implements Network
         return 'Ѧ';
     }
 
+    public function confirmations(): int
+    {
+        return 51;
+    }
+
     public function knownWallets(): array
     {
         return Cache::rememberForever(

@@ -25,6 +25,11 @@ final class Development implements Network
         return 'DѦ';
     }
 
+    public function confirmations(): int
+    {
+        return 51;
+    }
+
     public function knownWallets(): array
     {
         return Cache::rememberForever(

@@ -47,6 +47,10 @@ it('should get the confirmations', function () {
     expect($this->subject->confirmations())->toBe('4,999,999');
 });
 
+it('should determine if the transaction is confirmed', function () {
+    expect($this->subject->isConfirmed())->toBeTrue();
+});
+
 it('should determine the transaction type', function (string $method, int $type, int $typeGroup, array $asset) {
     $subject = new TransactionViewModel(Transaction::factory()->create([
         'type'       => $type,

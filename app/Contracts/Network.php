@@ -12,6 +12,8 @@ interface Network
 
     public function currencySymbol(): string;
 
+    public function confirmations(): int;
+
     public function knownWallets(): array;
 
     public function canBeExchanged(): bool;
