@@ -41,23 +41,11 @@ it('should only query wallets that vote for the given public key', function () {
 });
 
 it('should get the formatted balance', function () {
-    expect($this->subject->formatted_balance)->toBeFloat();
-    expect($this->subject->formatted_balance)->toBe(1000.0);
+    expect($this->subject->formatted_balance)->toBeString();
+    expect($this->subject->formatted_balance)->toBe('ARK 1,000.00');
 });
 
 it('should get the formatted vote_balance', function () {
-    expect($this->subject->formatted_vote_balance)->toBeFloat();
-    expect($this->subject->formatted_vote_balance)->toBe(2000.0);
-});
-
-it('should find a wallet by its address', function () {
-    expect(Wallet::findByAddress($this->subject->address))->toBeInstanceOf(Wallet::class);
-});
-
-it('should find a wallet by its public_key', function () {
-    expect(Wallet::findByPublicKey($this->subject->public_key))->toBeInstanceOf(Wallet::class);
-});
-
-it('should find a wallet by its username', function () {
-    expect(Wallet::findByUsername($this->subject->username))->toBeInstanceOf(Wallet::class);
+    expect($this->subject->formatted_vote_balance)->toBeString();
+    expect($this->subject->formatted_vote_balance)->toBe('ARK 2,000.00');
 });

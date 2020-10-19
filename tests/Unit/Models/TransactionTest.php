@@ -67,11 +67,11 @@ it('should get the vendor field', function () {
 })->skip();
 
 it('should get the formatted fee', function () {
-    expect($this->subject->formatted_fee)->toBeFloat();
-    expect($this->subject->formatted_fee)->toBe(1.0);
+    expect($this->subject->formatted_fee)->toBeString();
+    expect($this->subject->formatted_fee)->toBe('ARK 1.00');
 });
 
 it('should get the formatted amount', function () {
-    expect($this->subject->formatted_amount)->toBeFloat();
-    expect($this->subject->formatted_amount)->toBe(2.0);
+    expect($this->subject->formatted_amount)->toBeString();
+    expect($this->subject->formatted_amount)->toBe('ARK 2.00');
 });

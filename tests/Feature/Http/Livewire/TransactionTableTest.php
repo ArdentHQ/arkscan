@@ -17,12 +17,12 @@ it('should list the first page of records', function () {
 
     foreach (Transaction::latestByTimestamp()->paginate()->items() as $transaction) {
         $component->assertSee($transaction->id);
-        $component->assertSee($transaction->timestamp);
+        $component->assertSee((string) $transaction->timestamp_carbon);
         $component->assertSee($transaction->type);
         $component->assertSee($transaction->type_group);
-        $component->assertSee($transaction->sender_public_key);
-        $component->assertSee($transaction->recipient_id);
-        $component->assertSee($transaction->amount);
-        $component->assertSee($transaction->fee);
+        $component->assertSee($transaction->sender->address);
+        $component->assertSee($transaction->recipient->address);
+        $component->assertSee($transaction->formatted_amount);
+        $component->assertSee($transaction->formatted_fee);
     }
 });

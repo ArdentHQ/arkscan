@@ -13,7 +13,7 @@
                 <tr>
                     <td>{{ $wallet->address }}</td>
                     <td>n/a</td>
-                    <td>{{ $wallet->balance }}</td>
+                    <td>{{ $wallet->formatted_balance }}</td>
                     <td>n/a</td>
                 </tr>
             @endforeach

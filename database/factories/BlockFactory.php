@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Block;
+use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class BlockFactory extends Factory
@@ -25,7 +26,7 @@ final class BlockFactory extends Factory
             'reward'                 => $this->faker->numberBetween(1, 100) * 1e8,
             'payload_length'         => $this->faker->numberBetween(1, 100),
             'payload_hash'           => $this->faker->word,
-            'generator_public_key'   => $this->faker->word,
+            'generator_public_key'   => Wallet::factory()->create()->public_key,
             'block_signature'        => $this->faker->word,
         ];
     }

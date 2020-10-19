@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Services\NumberFormatter;
 use ArkEcosystem\Crypto\Configuration\Network;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -97,31 +98,31 @@ final class Block extends Model
     /**
      * Get the human readable representation of the total.
      *
-     * @return float
+     * @return string
      */
-    public function getFormattedTotalAttribute(): float
+    public function getFormattedTotalAttribute(): string
     {
-        return $this->total_amount / 1e8;
+        return NumberFormatter::currency($this->total_amount / 1e8, \App\Facades\Network::currency());
     }
 
     /**
      * Get the human readable representation of the fee.
      *
-     * @return float
+     * @return string
      */
-    public function getFormattedFeeAttribute(): float
+    public function getFormattedFeeAttribute(): string
     {
-        return $this->total_fee / 1e8;
+        return NumberFormatter::currency($this->total_fee / 1e8, \App\Facades\Network::currency());
     }
 
     /**
      * Get the human readable representation of the reward.
      *
-     * @return float
+     * @return string
      */
-    public function getFormattedRewardAttribute(): float
+    public function getFormattedRewardAttribute(): string
     {
-        return $this->reward / 1e8;
+        return NumberFormatter::currency($this->reward / 1e8, \App\Facades\Network::currency());
     }
 
     /**

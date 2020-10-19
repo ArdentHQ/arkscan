@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Facades\Network;
+use App\Services\NumberFormatter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -81,57 +83,21 @@ final class Wallet extends Model
     /**
      * Get the human readable representation of the balance.
      *
-     * @return float
+     * @return string
      */
-    public function getFormattedBalanceAttribute(): float
+    public function getFormattedBalanceAttribute(): string
     {
-        return $this->balance / 1e8;
+        return NumberFormatter::currency($this->balance / 1e8, Network::currency());
     }
 
     /**
      * Get the human readable representation of the vote balance.
      *
-     * @return float
+     * @return string
      */
-    public function getFormattedVoteBalanceAttribute(): float
+    public function getFormattedVoteBalanceAttribute(): string
     {
-        return $this->vote_balance / 1e8;
-    }
-
-    /**
-     * Find a wallet by its address.
-     *
-     * @param string $value
-     *
-     * @return Wallet
-     */
-    public static function findByAddress(string $value): self
-    {
-        return static::whereAddress($value)->firstOrFail();
-    }
-
-    /**
-     * Find a wallet by its public-key.
-     *
-     * @param string $value
-     *
-     * @return Wallet
-     */
-    public static function findByPublicKey(string $value): self
-    {
-        return static::wherePublicKey($value)->firstOrFail();
-    }
-
-    /**
-     * Find a wallet by its username.
-     *
-     * @param string $value
-     *
-     * @return Wallet
-     */
-    public static function findByUsername(string $value): self
-    {
-        return static::whereUsername($value)->firstOrFail();
+        return NumberFormatter::currency($this->vote_balance / 1e8, Network::currency());
     }
 
     /**

@@ -21,5 +21,5 @@ it('should have a delegate that forged the block', function () {
 });
 
 it('should have transactions', function () {
-    expect($this->subject->formatted_balance)->toBe(5000.0);
+    expect($this->subject->formatted_balance)->toBe('ARK 5,000.00');
 });

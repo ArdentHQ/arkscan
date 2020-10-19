@@ -58,16 +58,16 @@ it('should get the timestamp as a Carbon instance', function () {
 });
 
 it('should get the formatted total', function () {
-    expect($this->subject->formatted_total)->toBeFloat();
-    expect($this->subject->formatted_total)->toBe(50.0);
+    expect($this->subject->formatted_total)->toBeString();
+    expect($this->subject->formatted_total)->toBe('ARK 50.00');
 });
 
 it('should get the formatted fee', function () {
-    expect($this->subject->formatted_fee)->toBeFloat();
-    expect($this->subject->formatted_fee)->toBe(48.0);
+    expect($this->subject->formatted_fee)->toBeString();
+    expect($this->subject->formatted_fee)->toBe('ARK 48.00');
 });
 
 it('should get the formatted reward', function () {
-    expect($this->subject->formatted_reward)->toBeFloat();
-    expect($this->subject->formatted_reward)->toBe(2.0);
+    expect($this->subject->formatted_reward)->toBeString();
+    expect($this->subject->formatted_reward)->toBe('ARK 2.00');
 });

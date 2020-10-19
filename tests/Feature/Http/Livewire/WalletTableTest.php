@@ -17,6 +17,6 @@ it('should list the first page of records', function () {
 
     foreach (Wallet::wealthy()->paginate()->items() as $wallet) {
         $component->assertSee($wallet->address);
-        $component->assertSee($wallet->balance);
+        $component->assertSee($wallet->formatted_balance);
     }
 });

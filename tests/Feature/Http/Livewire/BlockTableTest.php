@@ -17,11 +17,11 @@ it('should list the first page of records', function () {
 
     foreach (Block::latestByHeight()->paginate()->items() as $block) {
         $component->assertSee($block->id);
-        $component->assertSee($block->timestamp);
-        $component->assertSee($block->generator_public_key);
+        $component->assertSee((string) $block->timestamp_carbon);
+        $component->assertSee($block->delegate->username);
         $component->assertSee($block->height);
         $component->assertSee($block->number_of_transactions);
-        $component->assertSee($block->total_amount);
-        $component->assertSee($block->total_fee);
+        $component->assertSee($block->formatted_total_amount);
+        $component->assertSee($block->formatted_total_fee);
     }
 });

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Services\NumberFormatter;
 use ArkEcosystem\Crypto\Configuration\Network;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -140,21 +141,21 @@ final class Transaction extends Model
     /**
      * Get the human readable representation of the fee.
      *
-     * @return float
+     * @return string
      */
-    public function getFormattedFeeAttribute(): float
+    public function getFormattedFeeAttribute(): string
     {
-        return $this->fee / 1e8;
+        return NumberFormatter::currency($this->fee / 1e8, \App\Facades\Network::currency());
     }
 
     /**
      * Get the human readable representation of the amount.
      *
-     * @return float
+     * @return string
      */
-    public function getFormattedAmountAttribute(): float
+    public function getFormattedAmountAttribute(): string
     {
-        return $this->amount / 1e8;
+        return NumberFormatter::currency($this->amount / 1e8, \App\Facades\Network::currency());
     }
 
     /**

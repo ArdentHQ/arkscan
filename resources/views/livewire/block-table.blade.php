@@ -15,12 +15,12 @@
             @foreach($blocks as $block)
                 <tr>
                     <td>{{ $block->id }}</td>
-                    <td>{{ $block->timestamp }}</td>
-                    <td>{{ $block->generator_public_key }}</td>
+                    <td>{{ $block->timestamp_carbon }}</td>
+                    <td>{{ $block->delegate->username }}</td>
                     <td>{{ $block->height }}</td>
                     <td>{{ $block->number_of_transactions }}</td>
-                    <td>{{ $block->total_amount }}</td>
-                    <td>{{ $block->total_fee }}</td>
+                    <td>{{ $block->formatted_total_amount }}</td>
+                    <td>{{ $block->formatted_total_fee }}</td>
                 </tr>
             @endforeach
         </tbody>
