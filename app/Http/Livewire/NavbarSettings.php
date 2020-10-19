@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use Illuminate\Support\Facades\Cookie;
+use App\Services\Settings;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 final class NavbarSettings extends Component
@@ -13,21 +14,11 @@ final class NavbarSettings extends Component
 
     public function mount(): void
     {
-        if (Cookie::has('settings')) {
-            $this->state = json_decode(Cookie::get('settings'), true);
-        } else {
-            $this->state = [
-                'language'        => 'en',
-                'currency'        => 'usd',
-                'priceSource'     => 'cryptocompare',
-                'statisticsChart' => true,
-                'darkTheme'       => true,
-            ];
-        }
+        $this->state = Settings::all();
     }
 
     public function updatedState(): void
     {
-        Cookie::queue('settings', json_encode($this->state));
+        Session::put('settings', json_encode($this->state));
     }
 }

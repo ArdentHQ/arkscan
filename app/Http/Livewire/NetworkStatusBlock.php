@@ -8,6 +8,7 @@ use App\Facades\Network;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\CryptoCompare;
 use App\Services\NumberFormatter;
+use App\Services\Settings;
 use Livewire\Component;
 
 final class NetworkStatusBlock extends Component
@@ -17,14 +18,14 @@ final class NetworkStatusBlock extends Component
         $marketCap = 0;
 
         if (Network::canBeExchanged()) {
-            $marketCap = NetworkStatus::supply() * CryptoCompare::price(Network::currency(), 'USD'); // @TODO: use currency from settings
+            $marketCap = NetworkStatus::supply() * CryptoCompare::price(Network::currency(), Settings::currency());
         }
 
         return view('livewire.network-status-block', [
             'height'    => NumberFormatter::number(NetworkStatus::height()),
             'network'   => Network::name(),
             'supply'    => NumberFormatter::currencyWithSymbol(NetworkStatus::supply(), Network::currencySymbol()),
-            'marketCap' => NumberFormatter::currency($marketCap, 'USD'), // @TODO: use currency from settings
+            'marketCap' => NumberFormatter::currency($marketCap, Settings::currency()),
         ]);
     }
 }
