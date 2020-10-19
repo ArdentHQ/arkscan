@@ -14,10 +14,12 @@ final class WalletFactory extends Factory
     public function definition()
     {
         return [
-            'id'         => $this->faker->unique()->randomNumber(),
-            'address'    => $this->faker->unique()->word,
-            'public_key' => $this->faker->unique()->word,
-            'username'   => $this->faker->unique()->word,
+            'id'           => $this->faker->unique()->randomNumber(),
+            'address'      => $this->faker->unique()->word,
+            'public_key'   => $this->faker->unique()->word,
+            'username'     => $this->faker->unique()->word,
+            'balance'      => $this->faker->numberBetween(1, 1000) * 1e8,
+            'vote_balance' => $this->faker->numberBetween(1, 1000) * 1e8,
         ];
     }
 }
