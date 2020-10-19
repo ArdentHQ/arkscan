@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4ed271685e269feb7feac82227a4ca3",
+    "content-hash": "45afb982097e00a4267792773516c903",
     "packages": [
         {
             "name": "arkecosystem/crypto",
@@ -2923,6 +2923,54 @@
                 }
             ],
             "time": "2020-05-30T13:11:16+00:00"
+        },
+        {
+            "name": "mattiasgeniar/php-percentages",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mattiasgeniar/php-percentages.git",
+                "reference": "6341be4cab938dd37dbf762f9521053773986d63"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mattiasgeniar/php-percentages/zipball/6341be4cab938dd37dbf762f9521053773986d63",
+                "reference": "6341be4cab938dd37dbf762f9521053773986d63",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "orchestra/testbench": "5.*",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mattiasgeniar\\Percentage\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mattias Geniar",
+                    "email": "m@ttias.be",
+                    "homepage": "https://ma.ttias.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A clean interface to calculate percentages in PHP: changes between values, percentage increases, partial values, ...",
+            "homepage": "https://github.com/mattiasgeniar/php-percentages",
+            "keywords": [
+                "mattiasgeniar",
+                "php-percentages"
+            ],
+            "time": "2020-05-22T13:51:21+00:00"
         },
         {
             "name": "mdanter/ecc",

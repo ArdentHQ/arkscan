@@ -21,6 +21,7 @@ final class WalletFactory extends Factory
             'vote'              => $this->faker->word,
             'username'          => $this->faker->word,
             'balance'           => $this->faker->numberBetween(1, 1000) * 1e8,
+            'nonce'             => $this->faker->numberBetween(1, 1000),
             'vote_balance'      => $this->faker->numberBetween(1, 1000) * 1e8,
             'produced_blocks'   => $this->faker->numberBetween(1, 1000),
             'missed_blocks'     => $this->faker->numberBetween(1, 1000),

@@ -11,6 +11,7 @@ use App\Enums\MagistrateTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
 use App\Models\Transaction;
+use App\Models\Wallet;
 use App\ViewModels\TransactionViewModel;
 use function Tests\configureExplorerDatabase;
 
@@ -21,10 +22,22 @@ beforeEach(function () {
     Block::factory()->create(['height' => 5000000]);
 
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'block_id' => $block->id,
-        'fee'      => 1 * 1e8,
-        'amount'   => 2 * 1e8,
+        'block_id'          => $block->id,
+        'fee'               => 1 * 1e8,
+        'amount'            => 2 * 1e8,
+        'sender_public_key' => Wallet::factory()->create(['address' => 'sender'])->public_key,
+        'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]));
+});
+
+it('should determine if the transaction is incoming', function () {
+    expect($this->subject->isSent('sender'))->toBeTrue();
+    expect($this->subject->isSent('recipient'))->toBeFalse();
+});
+
+it('should determine if the transaction is outgoing', function () {
+    expect($this->subject->isReceived('recipient'))->toBeTrue();
+    expect($this->subject->isReceived('sender'))->toBeFalse();
 });
 
 it('should get the timestamp', function () {

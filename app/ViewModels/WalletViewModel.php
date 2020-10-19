@@ -28,6 +28,11 @@ final class WalletViewModel extends ViewModel
         return NumberFormatter::currency($this->model->balance / 1e8, Network::currency());
     }
 
+    public function nonce(): string
+    {
+        return NumberFormatter::number($this->model->nonce);
+    }
+
     public function voteBalance(): string
     {
         return NumberFormatter::currency($this->model->vote_balance / 1e8, Network::currency());

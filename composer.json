@@ -21,6 +21,7 @@
         "laravel/telescope": "^4.0",
         "laravel/tinker": "^3.0",
         "livewire/livewire": "^2.0",
+        "mattiasgeniar/php-percentages": "^1.1",
         "nyholm/psr7": "^1.3",
         "spatie/laravel-responsecache": "^6.6",
         "spatie/laravel-view-models": "^1.3",

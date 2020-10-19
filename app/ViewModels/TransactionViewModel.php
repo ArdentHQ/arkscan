@@ -32,6 +32,11 @@ final class TransactionViewModel extends ViewModel
         return $this->model->id;
     }
 
+    public function blockId(): string
+    {
+        return $this->model->block_id;
+    }
+
     public function timestamp(): string
     {
         return Carbon::parse(\ArkEcosystem\Crypto\Configuration\Network::get()->epoch())
@@ -74,6 +79,16 @@ final class TransactionViewModel extends ViewModel
         $confirmations = NetworkStatus::height() - $this->model->block->height;
 
         return $confirmations >= Network::confirmations();
+    }
+
+    public function isSent(string $address): bool
+    {
+        return $this->model->sender->address === $address;
+    }
+
+    public function isReceived(string $address): bool
+    {
+        return $this->model->recipient->address === $address;
     }
 
     public function isTransfer(): bool

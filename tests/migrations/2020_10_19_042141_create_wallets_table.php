@@ -18,6 +18,7 @@ final class CreateWalletsTable extends Migration
             $table->string('vote')->nullable();
             $table->string('username')->nullable();
             $table->string('balance');
+            $table->string('nonce');
             $table->string('vote_balance');
             $table->string('produced_blocks')->nullable();
             $table->string('missed_blocks')->nullable();
