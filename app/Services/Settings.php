@@ -31,7 +31,7 @@ final class Settings
 
     public static function currency(): string
     {
-        return static::setting('currency', 'usd');
+        return static::setting('currency', 'USD');
     }
 
     public static function priceSource(): string
