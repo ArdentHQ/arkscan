@@ -23,7 +23,7 @@
                     type="text"
                     placeholder="@lang('forms.search.term_placeholder')"
                     class="hidden w-full dark:text-theme-secondary-700 dark:bg-theme-secondary-900 sm:block"
-                    wire:model="term"
+                    wire:model="state.term"
                     wire:keydown.enter="performSearch"
                 />
 
@@ -31,7 +31,7 @@
                     type="text"
                     placeholder="@lang('forms.search.term_placeholder_mobile')"
                     class="w-full dark:text-theme-secondary-700 dark:bg-theme-secondary-900 sm:hidden"
-                    wire:model="term"
+                    wire:model="state.term"
                     wire:keydown.enter="performSearch"
                 />
             </div>
@@ -84,7 +84,7 @@
                             type="number"
                             placeholder="0.00"
                             class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
-                            wire:model="amountRangeFrom"
+                            wire:model="state.amountFrom"
                             wire:keydown.enter="performSearch"
                         />
 
@@ -94,7 +94,7 @@
                             type="number"
                             placeholder="0.00"
                             class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
-                            wire:model="amountRangeTo"
+                            wire:model="state.amountTo"
                             wire:keydown.enter="performSearch"
                         />
                     </div>
@@ -106,7 +106,7 @@
                             type="number"
                             placeholder="0.00"
                             class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
-                            wire:model="feeRangeFrom"
+                            wire:model="state.feeFrom"
                             wire:keydown.enter="performSearch"
                         />
 
@@ -116,7 +116,7 @@
                             type="number"
                             placeholder="0.00"
                             class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
-                            wire:model="feeRangeTo"
+                            wire:model="state.feeTo"
                             wire:keydown.enter="performSearch"
                         />
                     </div>
@@ -127,7 +127,7 @@
                         <input
                             type="date"
                             class="bg-transparent -ml-7"
-                            wire:model="dateFrom"
+                            wire:model="state.dateFrom"
                             style="width: 49px;"
                         />
 
@@ -136,7 +136,7 @@
                         <input
                             type="date"
                             class="-ml-6 bg-transparent"
-                            wire:model="dateTo"
+                            wire:model="state.dateTo"
                             style="width: 49px;"
                         />
                     </div>
@@ -151,7 +151,7 @@
                         type="text"
                         placeholder="@lang('forms.search.smartbridge_placeholder')"
                         class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
-                        wire:model="term"
+                        wire:model="state.smartBridge"
                         wire:keydown.enter="performSearch"
                     />
                 </div>

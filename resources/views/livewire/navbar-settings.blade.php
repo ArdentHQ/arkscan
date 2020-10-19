@@ -12,7 +12,6 @@
         x-show.transition.origin.top="openDropdown === 'settings'"
         class="navbar-settings-dropdown"
         x-cloak
-        wire:ignore
     >
         <div class="flex flex-col divide-y divide-dotted divide-theme-secondary-300">
             <x-navbar.setting-option title="Language" subtitle="Select display language">

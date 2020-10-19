@@ -111,6 +111,7 @@ final class Transaction extends Model
      *
      * @return string
      */
+    // @codeCoverageIgnoreStart
     public function getVendorFieldAttribute(): ?string
     {
         $vendorFieldHex = Arr::get($this->attributes, 'vendor_field_hex');
@@ -121,6 +122,8 @@ final class Transaction extends Model
 
         return hex2bin(bin2hex(stream_get_contents($vendorFieldHex)));
     }
+
+    // @codeCoverageIgnoreEnd
 
     /**
      * Get the human readable representation of the fee.
@@ -140,18 +143,6 @@ final class Transaction extends Model
     public function getFormattedAmountAttribute(): float
     {
         return $this->amount / 1e8;
-    }
-
-    /**
-     * Find a wallet by its address.
-     *
-     * @param string $value
-     *
-     * @return Wallet
-     */
-    public static function findById(string $value): self
-    {
-        return static::whereId($value)->firstOrFail();
     }
 
     /**
