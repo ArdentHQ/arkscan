@@ -6,5 +6,11 @@ namespace  App\Contracts;
 
 interface Network
 {
+    public function name(): string;
+
+    public function symbol(): string;
+
     public function knownWallets(): array;
+
+    public function canBeExchanged(): bool;
 }
