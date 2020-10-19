@@ -226,6 +226,7 @@ return [
         'Validator'    => Illuminate\Support\Facades\Validator::class,
         'View'         => Illuminate\Support\Facades\View::class,
         'Network'      => App\Facades\Network::class,
+        'Explorer'     => App\Explorer::class,
 
     ],
 
