@@ -7,9 +7,7 @@ use Illuminate\Support\Facades\Session;
 
 it('should have all settings with defaults', function () {
     expect(Settings::all())->toBe([
-        'language'        => 'en',
         'currency'        => 'usd',
-        'priceSource'     => 'cryptocompare',
         'statisticsChart' => true,
         'darkTheme'       => true,
     ]);
@@ -17,9 +15,7 @@ it('should have all settings with defaults', function () {
 
 it('should have all settings with values from a session', function () {
     $settings = [
-        'language'        => 'en',
         'currency'        => 'chf',
-        'priceSource'     => 'cryptocompare',
         'statisticsChart' => true,
         'darkTheme'       => true,
     ];
@@ -37,16 +33,8 @@ it('should have all settings with values from a session', function () {
     expect(Settings::all())->toBe($settings);
 });
 
-it('should have a language setting', function () {
-    expect(Settings::language())->toBe('en');
-});
-
 it('should have a currency setting', function () {
     expect(Settings::currency())->toBe('usd');
-});
-
-it('should have a price source setting', function () {
-    expect(Settings::priceSource())->toBe('cryptocompare');
 });
 
 it('should have a statistics chart setting', function () {

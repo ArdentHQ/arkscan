@@ -16,27 +16,15 @@ final class Settings
         }
 
         return [
-            'language'        => 'en',
             'currency'        => 'usd',
-            'priceSource'     => 'cryptocompare',
             'statisticsChart' => true,
             'darkTheme'       => true,
         ];
     }
 
-    public static function language(): string
-    {
-        return static::setting('language', 'en');
-    }
-
     public static function currency(): string
     {
         return static::setting('currency', 'USD');
-    }
-
-    public static function priceSource(): string
-    {
-        return static::setting('priceSource', 'cryptocompare');
     }
 
     public static function statisticsChart(): bool

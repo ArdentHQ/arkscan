@@ -14,12 +14,6 @@
         x-cloak
     >
         <div class="flex flex-col divide-y divide-dotted divide-theme-secondary-300">
-            <x-navbar.setting-option title="Language" subtitle="Select display language">
-                <select wire:model="state.language" class="font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">
-                    <option value="en">English</option>
-                </select>
-            </x-navbar.setting-option>
-
             @if(Network::canBeExchanged())
                 <x-navbar.setting-option title="Currency" subtitle="Select display currency">
                     <select wire:model="state.currency" class="font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">
@@ -38,12 +32,6 @@
                         <option value="NZD">NZD</option>
                         <option value="RUB">RUB</option>
                         <option value="USD">USD</option>
-                    </select>
-                </x-navbar.setting-option>
-
-                <x-navbar.setting-option title="Price Source" subtitle="Select price source">
-                    <select wire:model="state.priceSource" class="font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">
-                        <option value="cryptocompare">CryptoCompare</option>
                     </select>
                 </x-navbar.setting-option>
             @endif
