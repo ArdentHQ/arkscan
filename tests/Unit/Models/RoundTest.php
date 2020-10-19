@@ -19,7 +19,3 @@ it('should have a delegate that forged the block', function () {
     expect($this->subject->delegate())->toBeInstanceOf(BelongsTo::class);
     expect($this->subject->delegate)->toBeInstanceOf(Wallet::class);
 });
-
-it('should have transactions', function () {
-    expect($this->subject->formatted_balance)->toBe('ARK 5,000.00');
-});

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Models\Concerns\HasTimestamp;
-use App\Services\NumberFormatter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +16,6 @@ use Illuminate\Support\Arr;
 final class Transaction extends Model
 {
     use HasFactory;
-    use HasTimestamp;
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -127,26 +124,6 @@ final class Transaction extends Model
     }
 
     // @codeCoverageIgnoreEnd
-
-    /**
-     * Get the human readable representation of the fee.
-     *
-     * @return string
-     */
-    public function getFormattedFeeAttribute(): string
-    {
-        return NumberFormatter::currency($this->fee / 1e8, \App\Facades\Network::currency());
-    }
-
-    /**
-     * Get the human readable representation of the amount.
-     *
-     * @return string
-     */
-    public function getFormattedAmountAttribute(): string
-    {
-        return NumberFormatter::currency($this->amount / 1e8, \App\Facades\Network::currency());
-    }
 
     /**
      * Get the current connection name for the model.

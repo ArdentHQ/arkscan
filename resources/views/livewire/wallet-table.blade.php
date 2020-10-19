@@ -11,9 +11,9 @@
         <tbody>
             @foreach($wallets as $wallet)
                 <tr>
-                    <td>{{ $wallet->address }}</td>
+                    <td>{{ $wallet->address() }}</td>
                     <td>n/a</td>
-                    <td>{{ $wallet->formatted_balance }}</td>
+                    <td>{{ $wallet->balance() }}</td>
                     <td>n/a</td>
                 </tr>
             @endforeach

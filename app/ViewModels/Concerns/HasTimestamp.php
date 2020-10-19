@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Models\Concerns;
+namespace App\ViewModels\Concerns;
 
 use ArkEcosystem\Crypto\Configuration\Network;
 use ARKEcosystem\UserInterface\Support\DateFormat;
@@ -15,10 +15,10 @@ trait HasTimestamp
      *
      * @return string
      */
-    public function getFormattedTimestampAttribute(): string
+    public function timestamp(): string
     {
         return Carbon::parse(Network::get()->epoch())
-            ->addSeconds($this->attributes['timestamp'])
+            ->addSeconds($this->model->timestamp)
             ->format(DateFormat::TIME);
     }
 }

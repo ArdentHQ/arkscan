@@ -59,18 +59,3 @@ it('should get the vendor field', function () {
     expect($this->subject->vendor_field)->toBeString();
     expect($this->subject->vendor_field)->toBe('Hello World');
 })->skip();
-
-it('should get the formatted timestamp', function () {
-    expect($this->subject->formatted_timestamp)->toBeString();
-    expect($this->subject->formatted_timestamp)->toBe('19 Oct 2020 (04:54:16)');
-});
-
-it('should get the formatted fee', function () {
-    expect($this->subject->formatted_fee)->toBeString();
-    expect($this->subject->formatted_fee)->toBe('ARK 1.00');
-});
-
-it('should get the formatted amount', function () {
-    expect($this->subject->formatted_amount)->toBeString();
-    expect($this->subject->formatted_amount)->toBe('ARK 2.00');
-});

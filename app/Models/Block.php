@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Models\Concerns\HasTimestamp;
-use App\Services\NumberFormatter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 final class Block extends Model
 {
     use HasFactory;
-    use HasTimestamp;
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -82,46 +79,6 @@ final class Block extends Model
     public function scopeGenerator($query, $publicKey)
     {
         return $query->where('generator_public_key', $publicKey);
-    }
-
-    /**
-     * Get the human readable representation of the height.
-     *
-     * @return string
-     */
-    public function getFormattedHeightAttribute(): string
-    {
-        return NumberFormatter::number($this->height);
-    }
-
-    /**
-     * Get the human readable representation of the total.
-     *
-     * @return string
-     */
-    public function getFormattedTotalAttribute(): string
-    {
-        return NumberFormatter::currency($this->total_amount / 1e8, \App\Facades\Network::currency());
-    }
-
-    /**
-     * Get the human readable representation of the fee.
-     *
-     * @return string
-     */
-    public function getFormattedFeeAttribute(): string
-    {
-        return NumberFormatter::currency($this->total_fee / 1e8, \App\Facades\Network::currency());
-    }
-
-    /**
-     * Get the human readable representation of the reward.
-     *
-     * @return string
-     */
-    public function getFormattedRewardAttribute(): string
-    {
-        return NumberFormatter::currency($this->reward / 1e8, \App\Facades\Network::currency());
     }
 
     /**

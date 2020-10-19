@@ -14,13 +14,13 @@
         <tbody>
             @foreach($blocks as $block)
                 <tr>
-                    <td>{{ $block->id }}</td>
-                    <td>{{ $block->formatted_timestamp }}</td>
-                    <td>{{ $block->delegate->username }}</td>
-                    <td>{{ $block->formatted_height }}</td>
-                    <td>{{ $block->number_of_transactions }}</td>
-                    <td>{{ $block->formatted_total_amount }}</td>
-                    <td>{{ $block->formatted_total_fee }}</td>
+                    <td>{{ $block->id() }}</td>
+                    <td>{{ $block->timestamp() }}</td>
+                    <td>{{ $block->delegate() }}</td>
+                    <td>{{ $block->height() }}</td>
+                    <td>{{ $block->transactionCount() }}</td>
+                    <td>{{ $block->amount() }}</td>
+                    <td>{{ $block->fee() }}</td>
                 </tr>
             @endforeach
         </tbody>

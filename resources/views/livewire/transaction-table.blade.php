@@ -14,13 +14,13 @@
         <tbody>
             @foreach($transactions as $transaction)
                 <tr>
-                    <td>{{ $transaction->id }}</td>
-                    <td>{{ $transaction->formatted_timestamp }}</td>
-                    <td>{{ $transaction->type }} / {{ $transaction->type_group }}</td>
-                    <td>{{ $transaction->sender->address }}</td>
-                    <td>{{ $transaction->recipient->address }}</td>
-                    <td>{{ $transaction->formatted_amount }}</td>
-                    <td>{{ $transaction->formatted_fee }}</td>
+                    <td>{{ $transaction->id() }}</td>
+                    <td>{{ $transaction->timestamp() }}</td>
+                    <td>{{ $transaction->type() }}</td>
+                    <td>{{ $transaction->sender() }}</td>
+                    <td>{{ $transaction->recipient() }}</td>
+                    <td>{{ $transaction->fee() }}</td>
+                    <td>{{ $transaction->amount() }}</td>
                 </tr>
             @endforeach
         </tbody>

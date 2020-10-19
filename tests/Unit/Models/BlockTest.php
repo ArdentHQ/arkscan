@@ -50,28 +50,3 @@ it('should order blocks by their height from new to old', function () {
 it('should only query blocks that were forged by the given public key', function () {
     expect($this->subject->generator('some-public-key'))->toBeInstanceOf(Builder::class);
 });
-
-it('should get the formatted timestamp', function () {
-    expect($this->subject->formatted_timestamp)->toBeString();
-    expect($this->subject->formatted_timestamp)->toBe('19 Oct 2020 (04:54:16)');
-});
-
-it('should get the formatted height', function () {
-    expect($this->subject->formatted_height)->toBeString();
-    expect($this->subject->formatted_height)->toBe('10,000');
-});
-
-it('should get the formatted total', function () {
-    expect($this->subject->formatted_total)->toBeString();
-    expect($this->subject->formatted_total)->toBe('ARK 50.00');
-});
-
-it('should get the formatted fee', function () {
-    expect($this->subject->formatted_fee)->toBeString();
-    expect($this->subject->formatted_fee)->toBe('ARK 48.00');
-});
-
-it('should get the formatted reward', function () {
-    expect($this->subject->formatted_reward)->toBeString();
-    expect($this->subject->formatted_reward)->toBe('ARK 2.00');
-});

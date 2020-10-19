@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Facades\Network;
-use App\Services\NumberFormatter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -78,26 +76,6 @@ final class Wallet extends Model
     public function scopeWealthy($query)
     {
         return $query->orderBy('balance', 'desc');
-    }
-
-    /**
-     * Get the human readable representation of the balance.
-     *
-     * @return string
-     */
-    public function getFormattedBalanceAttribute(): string
-    {
-        return NumberFormatter::currency($this->balance / 1e8, Network::currency());
-    }
-
-    /**
-     * Get the human readable representation of the vote balance.
-     *
-     * @return string
-     */
-    public function getFormattedVoteBalanceAttribute(): string
-    {
-        return NumberFormatter::currency($this->vote_balance / 1e8, Network::currency());
     }
 
     /**
