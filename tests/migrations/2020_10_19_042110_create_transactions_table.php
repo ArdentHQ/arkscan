@@ -15,6 +15,10 @@ final class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger('block_id');
             $table->string('sender_public_key');
             $table->string('recipient_id');
+            $table->unsignedBigInteger('timestamp');
+            $table->unsignedBigInteger('amount');
+            $table->unsignedBigInteger('fee');
+            $table->binary('vendor_field_hex')->nullable();
             $table->timestamps();
         });
     }

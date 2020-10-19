@@ -8,6 +8,7 @@ use ArkEcosystem\Crypto\Configuration\Network;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 
 /**
@@ -112,7 +113,7 @@ final class Transaction extends Model
      */
     public function getVendorFieldAttribute(): ?string
     {
-        $vendorFieldHex = $this->attributes['vendor_field'];
+        $vendorFieldHex = Arr::get($this->attributes, 'vendor_field_hex');
 
         if (is_null($vendorFieldHex)) {
             return null;
