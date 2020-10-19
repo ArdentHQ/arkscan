@@ -15,7 +15,7 @@
             @foreach($transactions as $transaction)
                 <tr>
                     <td>{{ $transaction->id }}</td>
-                    <td>{{ $transaction->timestamp_carbon }}</td>
+                    <td>{{ $transaction->formatted_timestamp }}</td>
                     <td>{{ $transaction->type }} / {{ $transaction->type_group }}</td>
                     <td>{{ $transaction->sender->address }}</td>
                     <td>{{ $transaction->recipient->address }}</td>

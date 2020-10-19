@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use function Tests\configureExplorerDatabase;
@@ -50,11 +49,6 @@ it('should only query transactions that were received by the given address', fun
     expect($this->subject->receivedBy('some-address'))->toBeInstanceOf(Builder::class);
 });
 
-it('should get the timestamp as a Carbon instance', function () {
-    expect($this->subject->timestamp_carbon)->toBeInstanceOf(Carbon::class);
-    expect((string) $this->subject->timestamp_carbon)->toBe('2020-10-19 04:54:16');
-});
-
 it('should get the vendor field', function () {
     expect($this->subject->vendor_field)->toBeNull();
 
@@ -65,6 +59,11 @@ it('should get the vendor field', function () {
     expect($this->subject->vendor_field)->toBeString();
     expect($this->subject->vendor_field)->toBe('Hello World');
 })->skip();
+
+it('should get the formatted timestamp', function () {
+    expect($this->subject->formatted_timestamp)->toBeString();
+    expect($this->subject->formatted_timestamp)->toBe('19 Oct 2020 (04:54:16)');
+});
 
 it('should get the formatted fee', function () {
     expect($this->subject->formatted_fee)->toBeString();

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Block;
 use App\Models\Wallet;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -52,9 +51,9 @@ it('should only query blocks that were forged by the given public key', function
     expect($this->subject->generator('some-public-key'))->toBeInstanceOf(Builder::class);
 });
 
-it('should get the timestamp as a Carbon instance', function () {
-    expect($this->subject->timestamp_carbon)->toBeInstanceOf(Carbon::class);
-    expect((string) $this->subject->timestamp_carbon)->toBe('2020-10-19 04:54:16');
+it('should get the formatted timestamp', function () {
+    expect($this->subject->formatted_timestamp)->toBeString();
+    expect($this->subject->formatted_timestamp)->toBe('19 Oct 2020 (04:54:16)');
 });
 
 it('should get the formatted height', function () {

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTimestamp;
 use App\Services\NumberFormatter;
-use ArkEcosystem\Crypto\Configuration\Network;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Carbon;
 
 /**
  * @property float $total_amount
@@ -21,6 +20,7 @@ use Illuminate\Support\Carbon;
 final class Block extends Model
 {
     use HasFactory;
+    use HasTimestamp;
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -82,17 +82,6 @@ final class Block extends Model
     public function scopeGenerator($query, $publicKey)
     {
         return $query->where('generator_public_key', $publicKey);
-    }
-
-    /**
-     * Get the human readable representation of the timestamp.
-     *
-     * @return \Illuminate\Support\Carbon
-     */
-    public function getTimestampCarbonAttribute(): Carbon
-    {
-        return Carbon::parse(Network::get()->epoch())
-            ->addSeconds($this->attributes['timestamp']);
     }
 
     /**
