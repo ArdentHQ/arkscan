@@ -14,13 +14,14 @@ final class BlockFactory extends Factory
     public function definition()
     {
         return [
-            'id'             => $this->faker->unique()->randomNumber(),
-            'previous_block' => 1,
-            'height'         => $this->faker->numberBetween(1, 10000),
-            'timestamp'      => 112982056,
-            'totalAmount'    => $this->faker->numberBetween(1, 100) * 1e8,
-            'totalFee'       => $this->faker->numberBetween(1, 100) * 1e8,
-            'reward'         => $this->faker->numberBetween(1, 100) * 1e8,
+            'id'                   => $this->faker->unique()->randomNumber(),
+            'previous_block'       => 1,
+            'height'               => $this->faker->numberBetween(1, 10000),
+            'generator_public_key' => $this->faker->word,
+            'timestamp'            => 112982056,
+            'totalAmount'          => $this->faker->numberBetween(1, 100) * 1e8,
+            'totalFee'             => $this->faker->numberBetween(1, 100) * 1e8,
+            'reward'               => $this->faker->numberBetween(1, 100) * 1e8,
         ];
     }
 }

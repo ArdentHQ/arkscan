@@ -12,7 +12,9 @@ final class CreateWalletsTable extends Migration
     {
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
-            // ...
+            $table->string('address');
+            $table->string('public_key');
+            $table->string('username');
             $table->timestamps();
         });
     }
