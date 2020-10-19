@@ -6,7 +6,9 @@ namespace App\ViewModels;
 
 use App\Facades\Network;
 use App\Models\Wallet;
+use App\Services\Blockchain\NetworkStatus;
 use App\Services\NumberFormatter;
+use Mattiasgeniar\Percentage\Percentage;
 use Spatie\ViewModels\ViewModel;
 
 final class WalletViewModel extends ViewModel
@@ -33,8 +35,13 @@ final class WalletViewModel extends ViewModel
         return NumberFormatter::number($this->model->nonce);
     }
 
-    public function voteBalance(): string
+    public function votes(): string
     {
         return NumberFormatter::currency($this->model->vote_balance / 1e8, Network::currency());
+    }
+
+    public function votesPercentage(): float
+    {
+        return Percentage::calculate($this->model->vote_balance / 1e8, NetworkStatus::supply());
     }
 }
