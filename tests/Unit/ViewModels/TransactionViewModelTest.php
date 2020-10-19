@@ -2,17 +2,22 @@
 
 declare(strict_types=1);
 
+use App\Models\Block;
 use App\Models\Transaction;
-use App\ViewModels\TransactionViewModel;
 
+use App\ViewModels\TransactionViewModel;
 use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
     configureExplorerDatabase();
 
+    $block = Block::factory()->create(['height' => 1]);
+    Block::factory()->create(['height' => 5000000]);
+
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'fee'    => 1 * 1e8,
-        'amount' => 2 * 1e8,
+        'block_id' => $block->id,
+        'fee'      => 1 * 1e8,
+        'amount'   => 2 * 1e8,
     ]));
 });
 
@@ -29,4 +34,9 @@ it('should get the fee', function () {
 it('should get the amount', function () {
     expect($this->subject->amount())->toBeString();
     expect($this->subject->amount())->toBe('ARK 2.00');
+});
+
+it('should get the confirmations', function () {
+    expect($this->subject->confirmations())->toBeString();
+    expect($this->subject->confirmations())->toBe('4,999,999');
 });

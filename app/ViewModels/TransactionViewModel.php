@@ -6,6 +6,7 @@ namespace App\ViewModels;
 
 use App\Facades\Network;
 use App\Models\Transaction;
+use App\Services\Blockchain\NetworkStatus;
 use App\Services\NumberFormatter;
 use App\ViewModels\Concerns\HasTimestamp;
 use Spatie\ViewModels\ViewModel;
@@ -49,5 +50,10 @@ final class TransactionViewModel extends ViewModel
     public function amount(): string
     {
         return NumberFormatter::currency($this->model->amount / 1e8, Network::currency());
+    }
+
+    public function confirmations(): string
+    {
+        return NumberFormatter::number(NetworkStatus::height() - $this->model->block->height);
     }
 }
