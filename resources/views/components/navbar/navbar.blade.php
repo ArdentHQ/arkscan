@@ -102,11 +102,13 @@
                         </div>
                     </div>
 
-                    <div class="items-center hidden ml-6 md:flex lg:ml-8">
-                        <div class="pl-8 font-semibold border-l border-theme-primary-100 text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-800">
-                            <livewire:price-ticker />
+                    @if(Network::canBeExchanged())
+                        <div class="items-center hidden ml-6 md:flex lg:ml-8">
+                            <div class="pl-8 font-semibold border-l border-theme-primary-100 text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-800">
+                                <livewire:price-ticker />
+                            </div>
                         </div>
-                    </div>
+                    @endif
 
                     <livewire:navbar-settings />
                 </div>

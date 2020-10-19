@@ -3,10 +3,17 @@
 declare(strict_types=1);
 
 use App\Http\Livewire\NetworkStatusBlock;
+use App\Models\Block;
 use Illuminate\Support\Facades\Http;
+
 use Livewire\Livewire;
+use function Tests\configureExplorerDatabase;
 
 it('should render with a height, name, supply and market cap', function () {
+    configureExplorerDatabase();
+
+    Block::factory()->create(['height' => 5651290]);
+
     $blockchainStatus = [
         'data' => [
             'block' => [
