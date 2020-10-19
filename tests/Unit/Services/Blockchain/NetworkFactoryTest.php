@@ -13,3 +13,7 @@ it('should handle ARK Production', function () {
 it('should handle ARK Development', function () {
     expect(NetworkFactory::make('ark.development'))->toBeInstanceOf(Development::class);
 });
+
+it('should handle ARK Development', function () {
+    NetworkFactory::make('invalid');
+})->theows(InvalidArgumentException::class);

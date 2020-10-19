@@ -15,9 +15,14 @@ final class Production implements Network
         return 'ARK Public Network';
     }
 
-    public function symbol(): string
+    public function currency(): string
     {
         return 'ARK';
+    }
+
+    public function currencySymbol(): string
+    {
+        return 'Ѧ';
     }
 
     public function knownWallets(): array
@@ -31,5 +36,10 @@ final class Production implements Network
     public function canBeExchanged(): bool
     {
         return true;
+    }
+
+    public function host(): string
+    {
+        return 'https://wallets.ark.io/api';
     }
 }

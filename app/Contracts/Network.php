@@ -8,9 +8,13 @@ interface Network
 {
     public function name(): string;
 
-    public function symbol(): string;
+    public function currency(): string;
+
+    public function currencySymbol(): string;
 
     public function knownWallets(): array;
 
     public function canBeExchanged(): bool;
+
+    public function host(): string;
 }

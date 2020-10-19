@@ -5,12 +5,18 @@ declare(strict_types=1);
 use App\Services\Blockchain\NetworkFactory;
 use Illuminate\Support\Facades\Http;
 
+beforeEach(fn () => $this->subject = NetworkFactory::make('ark.production'));
+
 it('should have a name', function () {
-    expect(NetworkFactory::make('ark.production')->name())->toBe('ARK Public Network');
+    expect($this->subject->name())->toBe('ARK Public Network');
 });
 
-it('should have a symbol', function () {
-    expect(NetworkFactory::make('ark.production')->symbol())->toBe('ARK');
+it('should have a currency name', function () {
+    expect($this->subject->currency())->toBe('ARK');
+});
+
+it('should have a currency symbol', function () {
+    expect($this->subject->currencySymbol())->toBe('Ѧ');
 });
 
 it('should fetch known wallets', function () {
@@ -45,10 +51,14 @@ it('should fetch known wallets', function () {
         ],
     ]);
 
-    expect(NetworkFactory::make('ark.production')->knownWallets())->toBeArray();
-    expect(NetworkFactory::make('ark.production')->knownWallets())->toHaveCount(26);
+    expect($this->subject->knownWallets())->toBeArray();
+    expect($this->subject->knownWallets())->toHaveCount(26);
 });
 
 it('should determine if the network currency can be exchanged', function () {
-    expect(NetworkFactory::make('ark.production')->canBeExchanged())->toBeTrue();
+    expect($this->subject->canBeExchanged())->toBeTrue();
+});
+
+it('should have a host', function () {
+    expect($this->subject->host())->toBe('https://wallets.ark.io/api');
 });

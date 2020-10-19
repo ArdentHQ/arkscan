@@ -15,9 +15,14 @@ final class Development implements Network
         return 'ARK Development Network';
     }
 
-    public function symbol(): string
+    public function currency(): string
     {
         return 'DARK';
+    }
+
+    public function currencySymbol(): string
+    {
+        return 'DѦ';
     }
 
     public function knownWallets(): array
@@ -31,5 +36,10 @@ final class Development implements Network
     public function canBeExchanged(): bool
     {
         return false;
+    }
+
+    public function host(): string
+    {
+        return 'https://dwallets.ark.io/api';
     }
 }

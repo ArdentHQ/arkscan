@@ -59,6 +59,18 @@ final class Block extends Model
     }
 
     /**
+     * Scope a query to sort blocks by their height, new to old.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeLatestByHeight($query)
+    {
+        return $query->orderBy('height', 'desc');
+    }
+
+    /**
      * Scope a query to only include blocks by the generator.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query

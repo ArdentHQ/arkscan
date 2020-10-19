@@ -33,12 +33,15 @@
         </whitelist>
     </filter>
     <php>
+        <!-- Framework -->
         <server name="APP_ENV" value="testing"/>
         <server name="BCRYPT_ROUNDS" value="4"/>
         <server name="CACHE_DRIVER" value="array"/>
         <server name="MAIL_MAILER" value="array"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
+        <!-- App -->
+        <server name="EXPLORER_NETWORK" value="ark.production"/>
     </php>
     <listeners>
         <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
