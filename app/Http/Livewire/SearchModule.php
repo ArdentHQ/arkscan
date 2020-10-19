@@ -76,19 +76,19 @@ final class SearchModule extends Component
         $query = Block::query();
 
         if ($parameters['totalAmountFrom'] && $parameters['totalAmountTo']) {
-            $query->whereBetween('totalAmount', [$parameters['totalAmountFrom'], $parameters['totalAmountTo']]);
+            $query->whereBetween('total_amount', [$parameters['totalAmountFrom'], $parameters['totalAmountTo']]);
         } elseif ($parameters['totalAmountFrom']) {
-            $query->where('totalAmount', '>=', $parameters['totalAmountFrom']);
+            $query->where('total_amount', '>=', $parameters['totalAmountFrom']);
         } elseif ($parameters['totalAmountTo']) {
-            $query->where('totalAmount', '<=', $parameters['totalAmountTo']);
+            $query->where('total_amount', '<=', $parameters['totalAmountTo']);
         }
 
         if ($parameters['totalFeeFrom'] && $parameters['totalFeeTo']) {
-            $query->whereBetween('totalFee', [$parameters['totalFeeFrom'], $parameters['totalFeeTo']]);
+            $query->whereBetween('total_fee', [$parameters['totalFeeFrom'], $parameters['totalFeeTo']]);
         } elseif ($parameters['totalFeeFrom']) {
-            $query->where('totalFee', '>=', $parameters['totalFeeFrom']);
+            $query->where('total_fee', '>=', $parameters['totalFeeFrom']);
         } elseif ($parameters['totalFeeTo']) {
-            $query->where('totalFee', '<=', $parameters['totalFeeTo']);
+            $query->where('total_fee', '<=', $parameters['totalFeeTo']);
         }
 
         // @TODO: take the genesis timestamp into account

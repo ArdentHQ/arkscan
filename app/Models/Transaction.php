@@ -71,6 +71,18 @@ final class Transaction extends Model
     }
 
     /**
+     * Scope a query to sort transactions by their forging time, new to old.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeLatestByTimestamp($query)
+    {
+        return $query->orderBy('timestamp', 'desc');
+    }
+
+    /**
      * Scope a query to only include transactions by the sender.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query

@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
- * @property float $totalAmount
- * @property float $totalFee
+ * @property float $total_amount
+ * @property float $total_fee
  * @property float $reward
  */
 final class Block extends Model
@@ -101,7 +101,7 @@ final class Block extends Model
      */
     public function getFormattedTotalAttribute(): float
     {
-        return $this->totalAmount / 1e8;
+        return $this->total_amount / 1e8;
     }
 
     /**
@@ -111,7 +111,7 @@ final class Block extends Model
      */
     public function getFormattedFeeAttribute(): float
     {
-        return $this->totalFee / 1e8;
+        return $this->total_fee / 1e8;
     }
 
     /**

@@ -17,6 +17,7 @@ final class RoundFactory extends Factory
             'id'         => $this->faker->unique()->randomNumber(),
             'public_key' => $this->faker->unique()->word,
             'balance'    => $this->faker->numberBetween(1, 1000) * 1e8,
+            'round'      => $this->faker->numberBetween(1, 10000),
         ];
     }
 }

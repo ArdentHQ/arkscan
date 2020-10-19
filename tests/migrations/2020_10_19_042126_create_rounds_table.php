@@ -13,7 +13,8 @@ final class CreateRoundsTable extends Migration
         Schema::create('rounds', function (Blueprint $table) {
             $table->id();
             $table->string('public_key');
-            $table->unsignedBigInteger('balance');
+            $table->string('balance');
+            $table->string('round');
             $table->timestamps();
         });
     }

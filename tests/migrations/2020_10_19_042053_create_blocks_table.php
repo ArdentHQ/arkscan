@@ -12,13 +12,18 @@ final class CreateBlocksTable extends Migration
     {
         Schema::create('blocks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('previous_block');
-            $table->unsignedBigInteger('height');
+            $table->string('version');
+            $table->string('timestamp');
+            $table->string('previous_block');
+            $table->string('height');
+            $table->string('number_of_transactions');
+            $table->string('total_amount');
+            $table->string('total_fee');
+            $table->string('reward');
+            $table->string('payload_length');
+            $table->string('payload_hash');
             $table->string('generator_public_key');
-            $table->unsignedBigInteger('timestamp');
-            $table->unsignedBigInteger('totalAmount');
-            $table->unsignedBigInteger('totalFee');
-            $table->unsignedBigInteger('reward');
+            $table->string('block_signature');
             $table->timestamps();
         });
     }

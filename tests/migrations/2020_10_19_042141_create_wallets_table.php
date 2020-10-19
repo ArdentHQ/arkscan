@@ -14,9 +14,13 @@ final class CreateWalletsTable extends Migration
             $table->id();
             $table->string('address');
             $table->string('public_key');
-            $table->string('username');
-            $table->unsignedBigInteger('balance');
-            $table->unsignedBigInteger('vote_balance');
+            $table->string('second_public_key');
+            $table->string('vote')->nullable();
+            $table->string('username')->nullable();
+            $table->string('balance');
+            $table->string('vote_balance');
+            $table->string('produced_blocks')->nullable();
+            $table->string('missed_blocks')->nullable();
             $table->timestamps();
         });
     }

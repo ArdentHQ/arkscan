@@ -17,6 +17,8 @@ final class TransactionFactory extends Factory
         return [
             'id'                => $this->faker->unique()->randomNumber(),
             'block_id'          => Block::factory(),
+            'type'              => $this->faker->word,
+            'type_group'        => $this->faker->word,
             'sender_public_key' => $this->faker->word,
             'recipient_id'      => $this->faker->word,
             'timestamp'         => 112982056,

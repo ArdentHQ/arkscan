@@ -67,6 +67,18 @@ final class Wallet extends Model
     }
 
     /**
+     * Scope a query to sort wallets by balance.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWealthy($query)
+    {
+        return $query->orderBy('balance', 'desc');
+    }
+
+    /**
      * Get the human readable representation of the balance.
      *
      * @return float

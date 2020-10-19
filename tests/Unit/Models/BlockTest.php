@@ -21,8 +21,8 @@ beforeEach(function () {
     $this->subject = Block::factory()->create([
         'previous_block' => $previousBlock->id,
         'height'         => 2,
-        'totalAmount'    => 50 * 1e8,
-        'totalFee'       => 48 * 1e8,
+        'total_amount'   => 50 * 1e8,
+        'total_fee'      => 48 * 1e8,
         'reward'         => 2 * 1e8,
     ]);
 });
