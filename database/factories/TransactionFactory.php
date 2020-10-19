@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Transaction;
+use App\Models\Block;
+use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 final class TransactionFactory extends Factory
 {
@@ -14,6 +14,9 @@ final class TransactionFactory extends Factory
 
     public function definition()
     {
-        return [];
+        return [
+            'id'       => $this->faker->unique()->randomNumber(),
+            'block_id' => Block::factory(),
+        ];
     }
 }

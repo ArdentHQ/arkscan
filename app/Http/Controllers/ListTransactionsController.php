@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace  App\Http\Controllers;
 
-use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 final class ListTransactionsController extends Controller
 {
     public function __invoke(Request $request)
     {
-        return Transaction::paginate();
+        return Response::noContent();
     }
 }

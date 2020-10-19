@@ -28,21 +28,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'app.home')->name('home');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+//     return view('dashboard');
+// })->name('dashboard');
 
-Route::get('/wallets/{wallet}', ShowWalletController::class);
-Route::get('/wallets/{wallet}/voters', ListVotersByWalletController::class);
-Route::get('/wallets/{wallet}/blocks', ListBlocksByWalletController::class);
-Route::get('/wallets/{wallet}/transactions', ListTransactionsByWalletController::class);
+Route::get('/wallets/{wallet}', ShowWalletController::class)->name('wallet');
+Route::get('/wallets/{wallet}/voters', ListVotersByWalletController::class)->name('wallet.voters');
+Route::get('/wallets/{wallet}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
+Route::get('/wallets/{wallet}/transactions', ListTransactionsByWalletController::class)->name('wallet.transactions');
 
-Route::get('/blocks', ListBlocksController::class);
-Route::get('/blocks/{block}', ShowBlockController::class);
-Route::get('/blocks/{block}/transactions', ListTransactionsByBlockController::class);
+Route::get('/blocks', ListBlocksController::class)->name('blocks');
+Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
+Route::get('/blocks/{block}/transactions', ListTransactionsByBlockController::class)->name('block.transactions');
 
-Route::get('/transactions', ListTransactionsController::class);
-Route::get('/transactions/{transaction}', ShowTransactionController::class);
+Route::get('/transactions', ListTransactionsController::class)->name('transactions');
+Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
 
-Route::get('/delegate-monitor', ShowDelegateMonitorController::class);
-Route::get('/top-wallets', ShowTopWalletsController::class);
+Route::get('/delegate-monitor', ShowDelegateMonitorController::class)->name('monitor');
+Route::get('/top-wallets', ShowTopWalletsController::class)->name('top-wallets');

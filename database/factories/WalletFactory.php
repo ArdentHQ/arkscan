@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Wallet;
+use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class WalletFactory extends Factory
@@ -13,6 +13,8 @@ final class WalletFactory extends Factory
 
     public function definition()
     {
-        return [];
+        return [
+            'id' => $this->faker->unique()->randomNumber(),
+        ];
     }
 }

@@ -6,11 +6,12 @@ namespace  App\Http\Controllers;
 
 use App\Models\Block;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 final class ShowBlockController extends Controller
 {
     public function __invoke(Request $request, Block $block)
     {
-        return $block;
+        return Response::noContent();
     }
 }

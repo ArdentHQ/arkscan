@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Round;
+use App\Models\Round;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 final class RoundFactory extends Factory
 {
@@ -14,6 +13,8 @@ final class RoundFactory extends Factory
 
     public function definition()
     {
-        return [];
+        return [
+            'id' => $this->faker->unique()->randomNumber(),
+        ];
     }
 }
