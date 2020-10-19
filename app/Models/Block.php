@@ -55,7 +55,7 @@ final class Block extends Model
      */
     public function previous(): HasOne
     {
-        return $this->hasOne(self::class, 'previous_block', 'id');
+        return $this->hasOne(self::class, 'id', 'previous_block');
     }
 
     /**

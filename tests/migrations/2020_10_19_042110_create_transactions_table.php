@@ -12,7 +12,7 @@ final class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            // ...
+            $table->unsignedBigInteger('block_id');
             $table->timestamps();
         });
     }
