@@ -105,6 +105,9 @@
         ],
         "test": [
             "./vendor/bin/pest --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml"
+        ],
+        "play": [
+            "@php artisan playbook:run DevelopmentPlaybook"
         ]
     }
 }

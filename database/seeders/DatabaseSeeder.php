@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use RuntimeException;
 
 final class DatabaseSeeder extends Seeder
 {
@@ -15,6 +16,6 @@ final class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        throw new RuntimeException('Cannot run seeders this way, please use `artisan playbook:run {playbook} {--clean}`');
     }
 }
