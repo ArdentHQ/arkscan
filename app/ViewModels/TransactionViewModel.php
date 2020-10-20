@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\ViewModels;
 
-use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\MagistrateTransactionEntityActionEnum;
-use App\Enums\MagistrateTransactionEntitySubTypeEnum;
-use App\Enums\MagistrateTransactionEntityTypeEnum;
-use App\Enums\MagistrateTransactionTypeEnum;
-use App\Enums\TransactionTypeGroupEnum;
 use App\Facades\Network;
 use App\Models\Transaction;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\NumberFormatter;
+use App\Services\Transactions\TransactionDirection;
+use App\Services\Transactions\TransactionDirectionIcon;
+use App\Services\Transactions\TransactionState;
+use App\Services\Transactions\TransactionStateIcon;
+use App\Services\Transactions\TransactionType;
+use App\Services\Transactions\TransactionTypeIcon;
 use ARKEcosystem\UserInterface\Support\DateFormat;
 use Illuminate\Support\Carbon;
 use Spatie\ViewModels\ViewModel;
@@ -22,9 +22,18 @@ final class TransactionViewModel extends ViewModel
 {
     private Transaction $model;
 
+    private TransactionType $type;
+
+    private TransactionState $state;
+
+    private TransactionDirection $direction;
+
     public function __construct(Transaction $transaction)
     {
-        $this->model = $transaction;
+        $this->model     = $transaction;
+        $this->type      = new TransactionType($transaction);
+        $this->state     = new TransactionState($transaction);
+        $this->direction = new TransactionDirection($transaction);
     }
 
     public function url(): string
@@ -74,285 +83,208 @@ final class TransactionViewModel extends ViewModel
         return NumberFormatter::number(NetworkStatus::height() - $this->model->block->height);
     }
 
+    public function iconState(): string
+    {
+        return (new TransactionStateIcon($this->model))->name();
+    }
+
+    public function iconType(): string
+    {
+        return (new TransactionTypeIcon($this->model))->name();
+    }
+
+    public function iconDirection(string $address): string
+    {
+        return (new TransactionDirectionIcon($this->model))->name($address);
+    }
+
     public function isConfirmed(): bool
     {
-        $confirmations = NetworkStatus::height() - $this->model->block->height;
-
-        return $confirmations >= Network::confirmations();
+        return $this->state->isConfirmed();
     }
 
     public function isSent(string $address): bool
     {
-        return $this->model->sender->address === $address;
+        return $this->direction->isSent($address);
     }
 
     public function isReceived(string $address): bool
     {
-        return $this->model->recipient->address === $address;
+        return $this->direction->isReceived($address);
     }
 
     public function isTransfer(): bool
     {
-        return $this->isCoreTypeGroup() && $this->model->type === CoreTransactionTypeEnum::TRANSFER;
+        return $this->type->isTransfer();
     }
 
     public function isSecondSignature(): bool
     {
-        return $this->isCoreTypeGroup() && $this->model->type === CoreTransactionTypeEnum::SECOND_SIGNATURE;
+        return $this->type->isSecondSignature();
     }
 
     public function isDelegateRegistration(): bool
     {
-        return $this->isCoreTypeGroup() && $this->model->type === CoreTransactionTypeEnum::DELEGATE_REGISTRATION;
+        return $this->type->isDelegateRegistration();
     }
 
     public function isVote(): bool
     {
-        return $this->isCoreTypeGroup() && $this->model->type === CoreTransactionTypeEnum::VOTE;
+        return $this->type->isVote();
     }
 
     public function isMultiSignature(): bool
     {
-        return $this->isCoreTypeGroup() && $this->model->type === CoreTransactionTypeEnum::MULTI_SIGNATURE;
+        return $this->type->isMultiSignature();
     }
 
     public function isIpfs(): bool
     {
-        return $this->isCoreTypeGroup() && $this->model->type === CoreTransactionTypeEnum::IPFS;
+        return $this->type->isIpfs();
     }
 
     public function isDelegateResignation(): bool
     {
-        return $this->isCoreTypeGroup() && $this->model->type === CoreTransactionTypeEnum::DELEGATE_RESIGNATION;
+        return $this->type->isDelegateResignation();
     }
 
     public function isMultiPayment(): bool
     {
-        return $this->isCoreTypeGroup() && $this->model->type === CoreTransactionTypeEnum::MULTI_PAYMENT;
+        return $this->type->isMultiPayment();
     }
 
     public function isTimelock(): bool
     {
-        return $this->isCoreTypeGroup() && $this->model->type === CoreTransactionTypeEnum::TIMELOCK;
+        return $this->type->isTimelock();
     }
 
     public function isTimelockClaim(): bool
     {
-        return $this->isCoreTypeGroup() && $this->model->type === CoreTransactionTypeEnum::TIMELOCK_CLAIM;
+        return $this->type->isTimelockClaim();
     }
 
     public function isTimelockRefund(): bool
     {
-        return $this->isCoreTypeGroup() && $this->model->type === CoreTransactionTypeEnum::TIMELOCK_REFUND;
+        return $this->type->isTimelockRefund();
     }
 
     public function isEntityRegistration(): bool
     {
-        return
-            $this->isMagistrateTypeGroup() &
-            $this->model->type === MagistrateTransactionTypeEnum::ENTITY &&
-            $this->model->asset &&
-            $this->model->asset['action'] === MagistrateTransactionEntityActionEnum::REGISTER;
+        return $this->type->isEntityRegistration();
     }
 
     public function isEntityResignation(): bool
     {
-        return
-            $this->isMagistrateTypeGroup() &
-            $this->model->type === MagistrateTransactionTypeEnum::ENTITY &&
-            $this->model->asset &&
-            $this->model->asset['action'] === MagistrateTransactionEntityActionEnum::RESIGN;
+        return $this->type->isEntityResignation();
     }
 
     public function isEntityUpdate(): bool
     {
-        return
-            $this->isMagistrateTypeGroup() &
-            $this->model->type === MagistrateTransactionTypeEnum::ENTITY &&
-            $this->model->asset &&
-            $this->model->asset['action'] === MagistrateTransactionEntityActionEnum::UPDATE;
+        return $this->type->isEntityUpdate();
     }
 
     public function isBusinessEntityRegistration(): bool
     {
-        if (! $this->isEntityRegistration()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::BUSINESS, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isBusinessEntityRegistration();
     }
 
     public function isBusinessEntityResignation(): bool
     {
-        if (! $this->isEntityResignation()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::BUSINESS, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isBusinessEntityResignation();
     }
 
     public function isBusinessEntityUpdate(): bool
     {
-        if (! $this->isEntityUpdate()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::BUSINESS, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isBusinessEntityUpdate();
     }
 
     public function isProductEntityRegistration(): bool
     {
-        if (! $this->isEntityRegistration()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::PRODUCT, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isProductEntityRegistration();
     }
 
     public function isProductEntityResignation(): bool
     {
-        if (! $this->isEntityResignation()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::PRODUCT, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isProductEntityResignation();
     }
 
     public function isProductEntityUpdate(): bool
     {
-        if (! $this->isEntityUpdate()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::PRODUCT, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isProductEntityUpdate();
     }
 
     public function isPluginEntityRegistration(): bool
     {
-        if (! $this->isEntityRegistration()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::PLUGIN, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isPluginEntityRegistration();
     }
 
     public function isPluginEntityResignation(): bool
     {
-        if (! $this->isEntityResignation()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::PLUGIN, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isPluginEntityResignation();
     }
 
     public function isPluginEntityUpdate(): bool
     {
-        if (! $this->isEntityUpdate()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::PLUGIN, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isPluginEntityUpdate();
     }
 
     public function isModuleEntityRegistration(): bool
     {
-        if (! $this->isEntityRegistration()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::PLUGIN, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isModuleEntityRegistration();
     }
 
     public function isModuleEntityResignation(): bool
     {
-        if (! $this->isEntityResignation()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::PLUGIN, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isModuleEntityResignation();
     }
 
     public function isModuleEntityUpdate(): bool
     {
-        if (! $this->isEntityUpdate()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::PLUGIN, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isModuleEntityUpdate();
     }
 
     public function isDelegateEntityRegistration(): bool
     {
-        if (! $this->isEntityRegistration()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::DELEGATE, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isDelegateEntityRegistration();
     }
 
     public function isDelegateEntityResignation(): bool
     {
-        if (! $this->isEntityResignation()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::DELEGATE, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isDelegateEntityResignation();
     }
 
     public function isDelegateEntityUpdate(): bool
     {
-        if (! $this->isEntityUpdate()) {
-            return false;
-        }
-
-        return $this->isTypeWithSubType(MagistrateTransactionEntityTypeEnum::DELEGATE, MagistrateTransactionEntitySubTypeEnum::NONE);
+        return $this->type->isDelegateEntityUpdate();
     }
 
     public function isLegacyBusinessRegistration(): bool
     {
-        return $this->isMagistrateTypeGroup() && $this->model->type === MagistrateTransactionTypeEnum::BUSINESS_REGISTRATION;
+        return $this->type->isLegacyBusinessRegistration();
     }
 
     public function isLegacyBusinessResignation(): bool
     {
-        return $this->isMagistrateTypeGroup() && $this->model->type === MagistrateTransactionTypeEnum::BUSINESS_RESIGNATION;
+        return $this->type->isLegacyBusinessResignation();
     }
 
     public function isLegacyBusinessUpdate(): bool
     {
-        return $this->isMagistrateTypeGroup() && $this->model->type === MagistrateTransactionTypeEnum::BUSINESS_UPDATE;
+        return $this->type->isLegacyBusinessUpdate();
     }
 
     public function isLegacyBridgechainRegistration(): bool
     {
-        return $this->isMagistrateTypeGroup() && $this->model->type === MagistrateTransactionTypeEnum::BRIDGECHAIN_REGISTRATION;
+        return $this->type->isLegacyBridgechainRegistration();
     }
 
     public function isLegacyBridgechainResignation(): bool
     {
-        return $this->isMagistrateTypeGroup() && $this->model->type === MagistrateTransactionTypeEnum::BRIDGECHAIN_RESIGNATION;
+        return $this->type->isLegacyBridgechainResignation();
     }
 
     public function isLegacyBridgechainUpdate(): bool
     {
-        return $this->isMagistrateTypeGroup() && $this->model->type === MagistrateTransactionTypeEnum::BRIDGECHAIN_UPDATE;
-    }
-
-    private function isCoreTypeGroup(): bool
-    {
-        return $this->model->type_group === TransactionTypeGroupEnum::CORE;
-    }
-
-    private function isMagistrateTypeGroup(): bool
-    {
-        return $this->model->type_group === TransactionTypeGroupEnum::MAGISTRATE;
-    }
-
-    private function isTypeWithSubType(int $type, int $subType): bool
-    {
-        $matchesType    = $this->model->asset['type'] === $type;
-        $matchesTSubype = $this->model->asset['subType'] === $subType;
-
-        return $matchesType && $matchesTSubype;
+        return $this->type->isLegacyBridgechainUpdate();
     }
 }
