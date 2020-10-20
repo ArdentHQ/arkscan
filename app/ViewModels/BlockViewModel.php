@@ -20,6 +20,11 @@ final class BlockViewModel extends ViewModel
         $this->model = $block;
     }
 
+    public function url(): string
+    {
+        return route('block', $this->model->id);
+    }
+
     public function id(): string
     {
         return $this->model->id;

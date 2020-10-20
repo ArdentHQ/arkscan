@@ -32,7 +32,7 @@ it('should make a view model collection', function ($modelClass, $viewModel) {
 
     $models = $modelClass::factory(10)->create();
 
-    expect(ViewModelFactory::makeCollection($models))->toBeInstanceOf(Collection::class);
+    expect(ViewModelFactory::collection($models))->toBeInstanceOf(Collection::class);
 
     foreach ($models as $model) {
         expect($model)->toBeInstanceOf($viewModel);

@@ -21,6 +21,11 @@ beforeEach(function () {
     ]));
 });
 
+it('should get the url', function () {
+    expect($this->subject->url())->toBeString();
+    expect($this->subject->url())->toBe(route('block', $this->subject->id()));
+});
+
 it('should get the timestamp', function () {
     expect($this->subject->timestamp())->toBeString();
     expect($this->subject->timestamp())->toBe('19 Oct 2020 (04:54:16)');

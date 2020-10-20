@@ -28,5 +28,5 @@ beforeEach(function () {
 });
 
 it('should aggregate and format', function () {
-    expect($this->subject->aggregate())->toBe('65.439');
+    expect($this->subject->aggregate())->toBe('65.437');
 });

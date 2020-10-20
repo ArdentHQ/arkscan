@@ -158,3 +158,23 @@ body {
         @apply border-t-0 left-auto rounded-lg w-120 px-8 mx-0 mt-24;
     }
 }
+
+/* Table List */
+.table-list-mobile {
+    @apply w-full;
+}
+.table-list-mobile-row {
+    @apply flex border-theme-secondary-300 pt-8;
+}
+.table-list-mobile-row:first-child {
+    @apply pt-0;
+}
+.theme-dark .table-list-mobile-row {
+    @apply flex border-theme-secondary-800 pt-8;
+}
+
+@screen md {
+    .table-list-mobile {
+        @apply hidden;
+    }
+}

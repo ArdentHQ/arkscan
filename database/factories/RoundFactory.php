@@ -14,7 +14,7 @@ final class RoundFactory extends Factory
     public function definition()
     {
         return [
-            'id'         => $this->faker->unique()->randomNumber(),
+            'id'         => $this->faker->uuid,
             'public_key' => $this->faker->unique()->word,
             'balance'    => $this->faker->numberBetween(1, 1000) * 1e8,
             'round'      => $this->faker->numberBetween(1, 10000),

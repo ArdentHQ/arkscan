@@ -12,6 +12,6 @@ final class TransactionPlaybook extends Playbook
 {
     public function run(InputInterface $input, OutputInterface $output): void
     {
-        Transaction::factory(100)->create();
+        Transaction::factory(60)->create();
     }
 }

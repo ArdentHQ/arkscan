@@ -1,30 +1,16 @@
-<div>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Timestamp</th>
-                <th>Type</th>
-                <th>Sender</th>
-                <th>Recipient</th>
-                <th>Amount</th>
-                <th>Fee</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($transactions as $transaction)
-                <tr>
-                    <td>{{ $transaction->id() }}</td>
-                    <td>{{ $transaction->timestamp() }}</td>
-                    <td>{{ $transaction->type() }}</td>
-                    <td>{{ $transaction->sender() }}</td>
-                    <td>{{ $transaction->recipient() }}</td>
-                    <td>{{ $transaction->fee() }}</td>
-                    <td>{{ $transaction->amount() }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+<div id="transaction-list" class="w-full">
+    <x-transactions.table-desktop :transactions="$transactions" />
+    <x-transactions.list-mobile :transactions="$transactions" />
 
-    {{ $transactions->links() }}
+    @unless ($viewMore)
+        <x-general.pagination :results="$transactions" class="mt-8" />
+
+        <script>
+            window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#transaction-list')));
+        </script>
+    @else
+        <div class="pt-4 mt-8 border-t border-theme-secondary-300 dark:border-theme-secondary-800 md:mt-0 md:border-dashed">
+            <a href="{{ route('transactions') }}" class="w-full button-secondary">@lang('actions.view_all')</a>
+        </div>
+    @endunless
 </div>

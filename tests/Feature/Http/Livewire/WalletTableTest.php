@@ -12,7 +12,7 @@ use function Tests\configureExplorerDatabase;
 beforeEach(fn () => configureExplorerDatabase());
 
 it('should list the first page of records', function () {
-    Wallet::factory(100)->create();
+    Wallet::factory(60)->create();
 
     $component = Livewire::test(WalletTable::class);
 

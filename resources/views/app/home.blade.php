@@ -7,6 +7,8 @@
 
     @section('content')
         <x-home.header />
+
+        <x-home.content />
     @endsection
 
 @endcomponent

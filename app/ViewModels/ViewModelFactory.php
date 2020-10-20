@@ -37,7 +37,7 @@ final class ViewModelFactory
         throw new InvalidArgumentException('Invalid View Model Type.');
     }
 
-    public static function makeCollection(Collection $models): Collection
+    public static function collection(Collection $models): Collection
     {
         return $models->transform(fn ($model) => static::make($model));
     }

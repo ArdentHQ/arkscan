@@ -16,7 +16,7 @@ final class TransactionFactory extends Factory
     public function definition()
     {
         return [
-            'id'                => $this->faker->unique()->randomNumber(),
+            'id'                => $this->faker->uuid,
             'block_id'          => fn () => Block::factory(),
             'type'              => $this->faker->word,
             'type_group'        => $this->faker->word,

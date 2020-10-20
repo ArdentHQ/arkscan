@@ -1,4 +1,5 @@
-<div x-data="{ open: false, openDropdown: null, selectedChild: null }">
+<div class="h-20 lg:h-24"></div>
+<div x-data="{ open: false, openDropdown: null, selectedChild: null }" id="navbar" class="fixed z-20 w-full">
     <div
         x-show="openDropdown !== null || open"
         class="fixed inset-0 z-30 overflow-y-auto bg-theme-secondary-900"

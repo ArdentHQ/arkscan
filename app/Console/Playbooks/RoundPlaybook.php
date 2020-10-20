@@ -12,6 +12,6 @@ final class RoundPlaybook extends Playbook
 {
     public function run(InputInterface $input, OutputInterface $output): void
     {
-        Round::factory(100)->create();
+        Round::factory(60)->create();
     }
 }

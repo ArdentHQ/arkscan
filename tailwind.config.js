@@ -4,6 +4,15 @@ const selectorParser = require("postcss-selector-parser");
 
 module.exports = {
     ...defaultConfig,
+    theme: {
+        ...defaultConfig.theme,
+        extend: {
+            ...defaultConfig.theme.extend,
+            borderWidth: {
+                20: '20px',
+            },
+        },
+    },
 
     // TODO: Move to UI package if no issues
     // Source: https://dev.to/smartmointy/tailwind-css-dark-mode-switch-with-javascript-2kl9

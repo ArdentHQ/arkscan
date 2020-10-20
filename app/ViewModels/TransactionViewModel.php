@@ -27,6 +27,11 @@ final class TransactionViewModel extends ViewModel
         $this->model = $transaction;
     }
 
+    public function url(): string
+    {
+        return route('transaction', $this->model->id);
+    }
+
     public function id(): string
     {
         return $this->model->id;
@@ -42,11 +47,6 @@ final class TransactionViewModel extends ViewModel
         return Carbon::parse(\ArkEcosystem\Crypto\Configuration\Network::get()->epoch())
             ->addSeconds($this->model->timestamp)
             ->format(DateFormat::TIME);
-    }
-
-    public function type(): string
-    {
-        return $this->model->type;
     }
 
     public function sender(): string

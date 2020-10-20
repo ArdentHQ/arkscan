@@ -21,6 +21,11 @@ final class WalletViewModel extends ViewModel
         $this->model = $wallet;
     }
 
+    public function url(): string
+    {
+        return route('wallet', $this->model->address);
+    }
+
     public function address(): string
     {
         return $this->model->address;

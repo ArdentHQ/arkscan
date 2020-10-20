@@ -33,6 +33,8 @@
                 <file>./app/Http/Kernel.php</file>
                 <!-- Application Code -->
                 <directory suffix=".php">./app/Models/Scopes</directory>
+                <!-- FIXME -->
+                <file>./app/Http/Livewire/SearchModule.php</file>
             </exclude>
         </whitelist>
     </filter>

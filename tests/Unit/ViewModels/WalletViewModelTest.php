@@ -29,6 +29,11 @@ beforeEach(function () {
     ]);
 });
 
+it('should get the url', function () {
+    expect($this->subject->url())->toBeString();
+    expect($this->subject->url())->toBe(route('wallet', $this->subject->address()));
+});
+
 it('should get the balance', function () {
     expect($this->subject->balance())->toBeString();
     expect($this->subject->balance())->toBe('ARK 1,000.00');
