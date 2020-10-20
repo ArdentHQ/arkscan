@@ -28,6 +28,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "@arkecosystem/crypto": "^2.7.1",
         "@vechain/picasso": "^2.0.1"
     }
 }

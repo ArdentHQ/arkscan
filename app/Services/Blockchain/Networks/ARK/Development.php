@@ -15,6 +15,11 @@ final class Development implements Network
         return 'ARK Development Network';
     }
 
+    public function alias(): string
+    {
+        return 'devnet';
+    }
+
     public function currency(): string
     {
         return 'DARK';

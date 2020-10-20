@@ -31,13 +31,13 @@ beforeEach(function () {
 });
 
 it('should determine if the transaction is incoming', function () {
-    expect($this->subject->isSent('sender'))->toBeTrue();
-    expect($this->subject->isSent('recipient'))->toBeFalse();
+    expect($this->subject->isReceived('recipient'))->toBeTrue();
+    expect($this->subject->isReceived('sender'))->toBeFalse();
 });
 
 it('should determine if the transaction is outgoing', function () {
-    expect($this->subject->isReceived('recipient'))->toBeTrue();
-    expect($this->subject->isReceived('sender'))->toBeFalse();
+    expect($this->subject->isSent('sender'))->toBeTrue();
+    expect($this->subject->isSent('recipient'))->toBeFalse();
 });
 
 it('should get the timestamp', function () {

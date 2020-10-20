@@ -8,6 +8,8 @@ interface Network
 {
     public function name(): string;
 
+    public function alias(): string;
+
     public function currency(): string;
 
     public function currencySymbol(): string;

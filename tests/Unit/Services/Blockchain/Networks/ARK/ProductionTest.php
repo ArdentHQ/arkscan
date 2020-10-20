@@ -11,6 +11,10 @@ it('should have a name', function () {
     expect($this->subject->name())->toBe('ARK Public Network');
 });
 
+it('should have an alias', function () {
+    expect($this->subject->alias())->toBe('mainnet');
+});
+
 it('should have a currency name', function () {
     expect($this->subject->currency())->toBe('ARK');
 });

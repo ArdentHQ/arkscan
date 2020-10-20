@@ -15,6 +15,11 @@ final class Production implements Network
         return 'ARK Public Network';
     }
 
+    public function alias(): string
+    {
+        return 'mainnet';
+    }
+
     public function currency(): string
     {
         return 'ARK';
