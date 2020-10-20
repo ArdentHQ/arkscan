@@ -70,4 +70,32 @@ final class WalletViewModel extends ViewModel
     {
         return NumberFormatter::currency($this->model->blocks()->sum('reward') / 1e8, Network::currency());
     }
+
+    public function isKnown(): bool
+    {
+        return ! is_null($this->findWalletByKnown());
+    }
+
+    public function isOwnedByTeam(): bool
+    {
+        if (! $this->isKnown()) {
+            return false;
+        }
+
+        return optional($this->findWalletByKnown())['type'] === 'team';
+    }
+
+    public function isOwnedByExchange(): bool
+    {
+        if (! $this->isKnown()) {
+            return false;
+        }
+
+        return optional($this->findWalletByKnown())['type'] === 'exchange';
+    }
+
+    private function findWalletByKnown(): ?array
+    {
+        return collect(Network::knownWallets())->firstWhere('address', $this->model->address);
+    }
 }

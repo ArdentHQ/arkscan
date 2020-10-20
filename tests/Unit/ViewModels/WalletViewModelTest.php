@@ -8,13 +8,14 @@ use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Support\Facades\Http;
 use function Tests\configureExplorerDatabase;
+use function Tests\fakeKnownWallets;
 
 beforeEach(function () {
     configureExplorerDatabase();
 
     $wallet = Wallet::factory()->create([
         'balance'      => 1000 * 1e8,
-        'nonce'        => 1000 * 1e8,
+        'nonce'        => 1000,
         'vote_balance' => 1000 * 1e8,
     ]);
 
@@ -35,7 +36,7 @@ it('should get the balance', function () {
 
 it('should get the nonce', function () {
     expect($this->subject->nonce())->toBeString();
-    expect($this->subject->nonce())->toBe('ARK 1,000.00');
+    expect($this->subject->nonce())->toBe('1,000');
 });
 
 it('should get the balance as percentage from supply', function () {
@@ -83,4 +84,40 @@ it('should sum up the fees forged', function () {
 it('should sum up the rewards forged', function () {
     expect($this->subject->rewardsForged())->toBeString();
     expect($this->subject->rewardsForged())->toBe('ARK 2.00');
+});
+
+it('should determine if the wallet is known', function () {
+    fakeKnownWallets();
+
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67']));
+
+    expect($subject->isKnown())->toBeTrue();
+
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'unknown']));
+
+    expect($subject->isKnown())->toBeFalse();
+});
+
+it('should determine if the wallet is owned by the team', function () {
+    fakeKnownWallets();
+
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67']));
+
+    expect($subject->isOwnedByTeam())->toBeTrue();
+
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'unknown']));
+
+    expect($subject->isOwnedByTeam())->toBeFalse();
+});
+
+it('should determine if the wallet is owned by an exchange', function () {
+    fakeKnownWallets();
+
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'ANvR7ny44GrLy4NTfuVqjGYr4EAwK7vnkW']));
+
+    expect($subject->isOwnedByExchange())->toBeTrue();
+
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'unknown']));
+
+    expect($subject->isOwnedByExchange())->toBeFalse();
 });

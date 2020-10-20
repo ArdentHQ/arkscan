@@ -15,7 +15,7 @@ final class BlockFactory extends Factory
     public function definition()
     {
         return [
-            'id'                     => $this->faker->unique()->randomNumber,
+            'id'                     => $this->faker->uuid,
             'version'                => 2,
             'timestamp'              => 112982056,
             'previous_block'         => 1,
