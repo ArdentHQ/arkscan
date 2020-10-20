@@ -31,6 +31,8 @@
                 <file>./app/Console/Commands/RunPlaybookCommand.php</file>
                 <file>./app/Console/Kernel.php</file>
                 <file>./app/Http/Kernel.php</file>
+                <!-- Application Code -->
+                <directory suffix=".php">./app/Models/Scopes</directory>
             </exclude>
         </whitelist>
     </filter>
