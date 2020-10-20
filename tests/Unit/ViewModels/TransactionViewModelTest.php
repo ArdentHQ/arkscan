@@ -18,11 +18,11 @@ use function Tests\configureExplorerDatabase;
 beforeEach(function () {
     configureExplorerDatabase();
 
-    $block = Block::factory()->create(['height' => 1]);
+    $this->block = Block::factory()->create(['height' => 1]);
     Block::factory()->create(['height' => 5000000]);
 
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'block_id'          => $block->id,
+        'block_id'          => $this->block->id,
         'fee'               => 1 * 1e8,
         'amount'            => 2 * 1e8,
         'sender_public_key' => Wallet::factory()->create(['address' => 'sender'])->public_key,
@@ -43,6 +43,11 @@ it('should determine if the transaction is outgoing', function () {
 it('should get the timestamp', function () {
     expect($this->subject->timestamp())->toBeString();
     expect($this->subject->timestamp())->toBe('19 Oct 2020 (04:54:16)');
+});
+
+it('should get the block ID', function () {
+    expect($this->subject->blockId())->toBeString();
+    expect($this->subject->blockId())->toBe($this->block->id);
 });
 
 it('should get the fee', function () {

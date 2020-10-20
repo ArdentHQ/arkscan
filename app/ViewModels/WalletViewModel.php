@@ -55,4 +55,19 @@ final class WalletViewModel extends ViewModel
     {
         return QRCode::generate('ark:'.$this->model->address);
     }
+
+    public function amountForged(): string
+    {
+        return NumberFormatter::currency($this->model->blocks()->sum('total_amount') / 1e8, Network::currency());
+    }
+
+    public function feesForged(): string
+    {
+        return NumberFormatter::currency($this->model->blocks()->sum('total_fee') / 1e8, Network::currency());
+    }
+
+    public function rewardsForged(): string
+    {
+        return NumberFormatter::currency($this->model->blocks()->sum('reward') / 1e8, Network::currency());
+    }
 }
