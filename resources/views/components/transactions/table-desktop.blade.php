@@ -24,7 +24,7 @@
                     <td class="hidden lg:table-cell">{{ $transaction->timestamp() }}</td>
                     <td class="hidden xl:table-cell">
                         <div class="flex items-center justify-center w-10 h-10 mx-auto border-2 rounded-full text-theme-secondary-900 border-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-600">
-                            @svg('app-transactions.transfer', 'w-4 h-4')
+                            @svg('app-transactions.'.$transaction->iconType(), 'w-4 h-4')
                         </div>
                     </td>
                     <td><x-general.address :address="$transaction->sender()" /></td>

@@ -10,96 +10,85 @@ use App\Enums\MagistrateTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Transaction;
 use App\Services\Transactions\TransactionTypeIcon;
-use Illuminate\Support\Str;
 use function Tests\configureExplorerDatabase;
 
 beforeEach(fn () => configureExplorerDatabase());
 
-it('should determine the icon that matches the type', function (string $method, int $type, int $typeGroup, array $asset) {
+it('should determine the icon that matches the type', function (string $method, int $type, int $typeGroup, array $asset, string $icon) {
     $transaction = Transaction::factory()->create([
         'type'       => $type,
         'type_group' => $typeGroup,
         'asset'      => $asset,
     ]);
 
-    expect((new TransactionTypeIcon($transaction))->name())->toBe(str_replace('_', '-', Str::snake(substr($method, 2))));
+    expect((new TransactionTypeIcon($transaction))->name())->toBe($icon);
 })->with([
     [
         'isTransfer',
         CoreTransactionTypeEnum::TRANSFER,
         TransactionTypeGroupEnum::CORE,
         [],
+        'transfer',
     ], [
         'isSecondSignature',
         CoreTransactionTypeEnum::SECOND_SIGNATURE,
         TransactionTypeGroupEnum::CORE,
         [],
+        'second-signature',
     ], [
         'isDelegateRegistration',
         CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
         TransactionTypeGroupEnum::CORE,
         [],
+        'delegate-registration',
     ], [
         'isVote',
         CoreTransactionTypeEnum::VOTE,
         TransactionTypeGroupEnum::CORE,
         [],
+        'vote',
     ], [
         'isMultiSignature',
         CoreTransactionTypeEnum::MULTI_SIGNATURE,
         TransactionTypeGroupEnum::CORE,
         [],
+        'multi-signature',
     ], [
         'isIpfs',
         CoreTransactionTypeEnum::IPFS,
         TransactionTypeGroupEnum::CORE,
         [],
+        'ipfs',
     ], [
         'isDelegateResignation',
         CoreTransactionTypeEnum::DELEGATE_RESIGNATION,
         TransactionTypeGroupEnum::CORE,
         [],
+        'delegate-resignation',
     ], [
         'isMultiPayment',
         CoreTransactionTypeEnum::MULTI_PAYMENT,
         TransactionTypeGroupEnum::CORE,
         [],
+        'multi-payment',
     ], [
         'isTimelock',
         CoreTransactionTypeEnum::TIMELOCK,
         TransactionTypeGroupEnum::CORE,
         [],
+        'timelock',
     ], [
         'isTimelockClaim',
         CoreTransactionTypeEnum::TIMELOCK_CLAIM,
         TransactionTypeGroupEnum::CORE,
         [],
+        'timelock',
     ], [
         'isTimelockRefund',
         CoreTransactionTypeEnum::TIMELOCK_REFUND,
         TransactionTypeGroupEnum::CORE,
         [],
-    ], [
-        'isEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        'isEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        'isEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
+        'timelock',
     ], [
         'isBusinessEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -109,6 +98,7 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
         ],
+        'business',
     ], [
         'isBusinessEntityResignation',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -118,6 +108,7 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
         ],
+        'business',
     ], [
         'isBusinessEntityUpdate',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -127,6 +118,7 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
         ],
+        'business',
     ], [
         'isProductEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -136,6 +128,7 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
         ],
+        'product',
     ], [
         'isProductEntityResignation',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -145,6 +138,7 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
         ],
+        'product',
     ], [
         'isProductEntityUpdate',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -154,6 +148,7 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
         ],
+        'product',
     ], [
         'isPluginEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -163,6 +158,7 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
         ],
+        'plugin',
     ], [
         'isPluginEntityResignation',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -172,6 +168,7 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
         ],
+        'plugin',
     ], [
         'isPluginEntityUpdate',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -181,6 +178,7 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
         ],
+        'plugin',
     ], [
         'isModuleEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -190,6 +188,7 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
         ],
+        'module',
     ], [
         'isModuleEntityResignation',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -199,6 +198,7 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
         ],
+        'module',
     ], [
         'isModuleEntityUpdate',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -208,6 +208,7 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
         ],
+        'module',
     ], [
         'isDelegateEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -217,6 +218,7 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
         ],
+        'delegate-registration',
     ], [
         'isDelegateEntityResignation',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -226,6 +228,7 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
         ],
+        'delegate-registration',
     ], [
         'isDelegateEntityUpdate',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -235,35 +238,42 @@ it('should determine the icon that matches the type', function (string $method, 
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
         ],
+        'delegate-registration',
     ], [
         'isLegacyBusinessRegistration',
         MagistrateTransactionTypeEnum::BUSINESS_REGISTRATION,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
+        'business',
     ], [
         'isLegacyBusinessResignation',
         MagistrateTransactionTypeEnum::BUSINESS_RESIGNATION,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
+        'business',
     ], [
         'isLegacyBusinessUpdate',
         MagistrateTransactionTypeEnum::BUSINESS_UPDATE,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
+        'business',
     ], [
         'isLegacyBridgechainRegistration',
         MagistrateTransactionTypeEnum::BRIDGECHAIN_REGISTRATION,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
+        'bridgechain',
     ], [
         'isLegacyBridgechainResignation',
         MagistrateTransactionTypeEnum::BRIDGECHAIN_RESIGNATION,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
+        'bridgechain',
     ], [
         'isLegacyBridgechainUpdate',
         MagistrateTransactionTypeEnum::BRIDGECHAIN_UPDATE,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
+        'bridgechain',
     ],
 ]);

@@ -5,49 +5,44 @@ declare(strict_types=1);
 namespace App\Services\Transactions;
 
 use App\Models\Transaction;
-use Illuminate\Support\Str;
 
 final class TransactionTypeIcon
 {
     private TransactionType $type;
 
     private array $types = [
-        'isTransfer',
-        'isSecondSignature',
-        'isDelegateRegistration',
-        'isVote',
-        'isMultiSignature',
-        'isIpfs',
-        'isDelegateResignation',
-        'isMultiPayment',
-        'isTimelock',
-        'isTimelockClaim',
-        'isTimelockRefund',
-        'isBusinessEntityRegistration',
-        'isBusinessEntityResignation',
-        'isBusinessEntityUpdate',
-        'isProductEntityRegistration',
-        'isProductEntityResignation',
-        'isProductEntityUpdate',
-        'isPluginEntityRegistration',
-        'isPluginEntityResignation',
-        'isPluginEntityUpdate',
-        'isModuleEntityRegistration',
-        'isModuleEntityResignation',
-        'isModuleEntityUpdate',
-        'isDelegateEntityRegistration',
-        'isDelegateEntityResignation',
-        'isDelegateEntityUpdate',
-        'isLegacyBusinessRegistration',
-        'isLegacyBusinessResignation',
-        'isLegacyBusinessUpdate',
-        'isLegacyBridgechainRegistration',
-        'isLegacyBridgechainResignation',
-        'isLegacyBridgechainUpdate',
-        // Run these last because they are generic.
-        'isEntityRegistration',
-        'isEntityResignation',
-        'isEntityUpdate',
+        'isTransfer'                      => 'transfer',
+        'isSecondSignature'               => 'second-signature',
+        'isDelegateRegistration'          => 'delegate-registration',
+        'isVote'                          => 'vote',
+        'isMultiSignature'                => 'multi-signature',
+        'isIpfs'                          => 'ipfs',
+        'isDelegateResignation'           => 'delegate-resignation',
+        'isMultiPayment'                  => 'multi-payment',
+        'isTimelock'                      => 'timelock',
+        'isTimelockClaim'                 => 'timelock',
+        'isTimelockRefund'                => 'timelock',
+        'isBusinessEntityRegistration'    => 'business',
+        'isBusinessEntityResignation'     => 'business',
+        'isBusinessEntityUpdate'          => 'business',
+        'isProductEntityRegistration'     => 'product',
+        'isProductEntityResignation'      => 'product',
+        'isProductEntityUpdate'           => 'product',
+        'isPluginEntityRegistration'      => 'plugin',
+        'isPluginEntityResignation'       => 'plugin',
+        'isPluginEntityUpdate'            => 'plugin',
+        'isModuleEntityRegistration'      => 'module',
+        'isModuleEntityResignation'       => 'module',
+        'isModuleEntityUpdate'            => 'module',
+        'isDelegateEntityRegistration'    => 'delegate-registration',
+        'isDelegateEntityResignation'     => 'delegate-registration',
+        'isDelegateEntityUpdate'          => 'delegate-registration',
+        'isLegacyBusinessRegistration'    => 'business',
+        'isLegacyBusinessResignation'     => 'business',
+        'isLegacyBusinessUpdate'          => 'business',
+        'isLegacyBridgechainRegistration' => 'bridgechain',
+        'isLegacyBridgechainResignation'  => 'bridgechain',
+        'isLegacyBridgechainUpdate'       => 'bridgechain',
     ];
 
     public function __construct(Transaction $transaction)
@@ -57,9 +52,9 @@ final class TransactionTypeIcon
 
     public function name(): string
     {
-        foreach ($this->types as $type) {
-            if ($this->type->$type()) {
-                return str_replace('_', '-', Str::snake(substr($type, 2)));
+        foreach ($this->types as $method => $icon) {
+            if ($this->type->$method()) {
+                return $icon;
             }
         }
 

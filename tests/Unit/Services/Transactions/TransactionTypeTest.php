@@ -79,27 +79,6 @@ it('should determine the icon that matches the type', function (string $method, 
         TransactionTypeGroupEnum::CORE,
         [],
     ], [
-        'isEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        'isEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        'isEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
         'isBusinessEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
         TransactionTypeGroupEnum::MAGISTRATE,
