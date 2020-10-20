@@ -15,7 +15,7 @@ final class NumberFormatter
 
     public static function currency($value, string $currency): string
     {
-        $formatter = new \NumberFormatter('en_US', \NumberFormatter::CURRENCY);
+        $formatter = new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
 
         return $formatter->formatCurrency($value, $currency);
     }
