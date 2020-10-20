@@ -8,6 +8,7 @@ use App\Facades\Network;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\NumberFormatter;
+use App\Services\QRCode;
 use Mattiasgeniar\Percentage\Percentage;
 use Spatie\ViewModels\ViewModel;
 
@@ -48,5 +49,10 @@ final class WalletViewModel extends ViewModel
     public function votesPercentage(): float
     {
         return Percentage::calculate($this->model->vote_balance / 1e8, NetworkStatus::supply());
+    }
+
+    public function qrCode(): string
+    {
+        return QRCode::generate('ark:'.$this->model->address);
     }
 }
