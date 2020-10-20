@@ -12,6 +12,8 @@ use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\ViewModels\TransactionViewModel;
+
+use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
@@ -56,12 +58,14 @@ it('should get the block ID', function () {
 
 it('should get the fee', function () {
     expect($this->subject->fee())->toBeString();
-    expect($this->subject->fee())->toBe('ARK 1.00');
+
+    assertMatchesSnapshot($this->subject->fee());
 });
 
 it('should get the amount', function () {
     expect($this->subject->amount())->toBeString();
-    expect($this->subject->amount())->toBe('ARK 2.00');
+
+    assertMatchesSnapshot($this->subject->amount());
 });
 
 it('should get the confirmations', function () {

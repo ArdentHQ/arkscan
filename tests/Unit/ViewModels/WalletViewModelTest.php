@@ -7,6 +7,8 @@ use App\Models\Block;
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Support\Facades\Http;
+
+use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
 use function Tests\fakeKnownWallets;
 
@@ -36,7 +38,8 @@ it('should get the url', function () {
 
 it('should get the balance', function () {
     expect($this->subject->balance())->toBeString();
-    expect($this->subject->balance())->toBe('ARK 1,000.00');
+
+    assertMatchesSnapshot($this->subject->balance());
 });
 
 it('should get the nonce', function () {
@@ -57,7 +60,8 @@ it('should get the balance as percentage from supply', function () {
 
 it('should get the votes', function () {
     expect($this->subject->votes())->toBeString();
-    expect($this->subject->votes())->toBe('ARK 1,000.00');
+
+    assertMatchesSnapshot($this->subject->votes());
 });
 
 it('should get the votes as percentage from supply', function () {
@@ -78,17 +82,20 @@ it('should generate a QR Code', function () {
 
 it('should sum up the amount forged', function () {
     expect($this->subject->amountForged())->toBeString();
-    expect($this->subject->amountForged())->toBe('ARK 10.00');
+
+    assertMatchesSnapshot($this->subject->amountForged());
 });
 
 it('should sum up the fees forged', function () {
     expect($this->subject->feesForged())->toBeString();
-    expect($this->subject->feesForged())->toBe('ARK 8.00');
+
+    assertMatchesSnapshot($this->subject->feesForged());
 });
 
 it('should sum up the rewards forged', function () {
     expect($this->subject->rewardsForged())->toBeString();
-    expect($this->subject->rewardsForged())->toBe('ARK 2.00');
+
+    assertMatchesSnapshot($this->subject->rewardsForged());
 });
 
 it('should determine if the wallet is known', function () {

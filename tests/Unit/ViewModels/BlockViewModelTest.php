@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Block;
 use App\ViewModels\BlockViewModel;
 
+use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
@@ -38,15 +39,18 @@ it('should get the height', function () {
 
 it('should get the amount', function () {
     expect($this->subject->amount())->toBeString();
-    expect($this->subject->amount())->toBe('ARK 50.00');
+
+    assertMatchesSnapshot($this->subject->amount());
 });
 
 it('should get the fee', function () {
     expect($this->subject->fee())->toBeString();
-    expect($this->subject->fee())->toBe('ARK 48.00');
+
+    assertMatchesSnapshot($this->subject->fee());
 });
 
 it('should get the reward', function () {
     expect($this->subject->reward())->toBeString();
-    expect($this->subject->reward())->toBe('ARK 2.00');
+
+    assertMatchesSnapshot($this->subject->reward());
 });

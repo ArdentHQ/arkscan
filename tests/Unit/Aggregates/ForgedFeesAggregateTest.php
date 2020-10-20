@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Aggregates\ForgedFeesAggregate;
 use App\Models\Block;
 
+use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
@@ -20,5 +21,5 @@ beforeEach(function () {
 });
 
 it('should aggregate and format', function () {
-    expect($this->subject->aggregate())->toBe('ARK 80.00');
+    assertMatchesSnapshot($this->subject->aggregate());
 });

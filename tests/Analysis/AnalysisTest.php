@@ -28,7 +28,7 @@ final class AnalysisTest extends TestCase
             'Laravel\Scout\Builder',
             'Tests\configureExplorerDatabase',
             'Tests\fakeKnownWallets',
-            'Tests\transactionTypeSchemas',
+            'Spatie\Snapshots\assertMatchesSnapshot',
         ];
     }
 }
