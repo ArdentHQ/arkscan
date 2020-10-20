@@ -27,3 +27,12 @@ it('should determine if the transaction is received', function () {
 
     expect((new TransactionDirectionIcon($transaction))->name('recipient'))->toBe('received');
 });
+
+it('should determine if the transaction is unknown', function () {
+    $transaction = Transaction::factory()->create([
+        'sender_public_key' => Wallet::factory()->create(['address' => 'sender'])->public_key,
+        'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
+    ]);
+
+    expect((new TransactionDirectionIcon($transaction))->name('unknown'))->toBe('unknown');
+});
