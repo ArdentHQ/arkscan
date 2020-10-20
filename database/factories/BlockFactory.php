@@ -26,7 +26,7 @@ final class BlockFactory extends Factory
             'reward'                 => $this->faker->numberBetween(1, 100) * 1e8,
             'payload_length'         => $this->faker->numberBetween(1, 100),
             'payload_hash'           => $this->faker->word,
-            'generator_public_key'   => Wallet::factory()->create()->public_key,
+            'generator_public_key'   => fn () => Wallet::factory()->create()->public_key,
             'block_signature'        => $this->faker->word,
         ];
     }

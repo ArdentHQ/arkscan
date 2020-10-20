@@ -27,6 +27,7 @@ final class AnalysisTest extends TestCase
         return [
             'Laravel\Scout\Builder',
             'Tests\configureExplorerDatabase',
+            'Tests\fakeKnownWallets',
         ];
     }
 }

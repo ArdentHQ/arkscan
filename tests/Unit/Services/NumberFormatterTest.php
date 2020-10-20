@@ -11,7 +11,3 @@ it('should format a number without a currency symbol', function () {
 it('should format a number with a currency symbol', function () {
     expect(NumberFormatter::currency(123, 'ARK'))->toBe('ARK 123.00');
 });
-
-it('should format a number without a custom currency symbol', function () {
-    expect(NumberFormatter::currencyWithSymbol(123, 'Ѧ'))->toBe('Ѧ 123');
-});

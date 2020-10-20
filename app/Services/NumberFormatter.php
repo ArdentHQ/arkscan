@@ -19,9 +19,4 @@ final class NumberFormatter
 
         return $formatter->formatCurrency($value, $currency);
     }
-
-    public static function currencyWithSymbol(int $value, string $currencySymbol): string
-    {
-        return $currencySymbol.' '.self::number($value);
-    }
 }

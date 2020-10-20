@@ -11,7 +11,7 @@ final class CreateTransactionsTable extends Migration
     public function up()
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
+            $table->string('id');
             $table->string('block_id');
             $table->string('type');
             $table->string('type_group');

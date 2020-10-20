@@ -24,7 +24,7 @@ final class NetworkStatusBlock extends Component
         return view('livewire.network-status-block', [
             'height'    => NumberFormatter::number(NetworkStatus::height()),
             'network'   => Network::name(),
-            'supply'    => NumberFormatter::currencyWithSymbol(NetworkStatus::supply(), Network::currencySymbol()),
+            'supply'    => NumberFormatter::currency(NetworkStatus::supply(), Network::currency()),
             'marketCap' => NumberFormatter::currency($marketCap, Settings::currency()),
         ]);
     }

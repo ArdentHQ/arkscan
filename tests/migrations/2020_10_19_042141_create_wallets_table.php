@@ -11,7 +11,7 @@ final class CreateWalletsTable extends Migration
     public function up()
     {
         Schema::create('wallets', function (Blueprint $table) {
-            $table->id();
+            $table->string('id');
             $table->string('address');
             $table->string('public_key');
             $table->string('second_public_key');
