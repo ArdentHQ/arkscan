@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Response;
 
 final class ShowTopWalletsController
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): \Illuminate\Http\Response
     {
         return Response::noContent();
     }

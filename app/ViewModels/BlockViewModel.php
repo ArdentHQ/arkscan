@@ -39,7 +39,13 @@ final class BlockViewModel extends ViewModel
 
     public function delegate(): string
     {
-        return $this->model->delegate->username;
+        $delegate = $this->model->delegate;
+
+        if (is_null($delegate)) {
+            return 'n/a';
+        }
+
+        return $delegate->username;
     }
 
     public function height(): string
@@ -47,7 +53,7 @@ final class BlockViewModel extends ViewModel
         return NumberFormatter::number($this->model->height);
     }
 
-    public function transactionCount(): string
+    public function transactionCount(): int
     {
         return $this->model->number_of_transactions;
     }

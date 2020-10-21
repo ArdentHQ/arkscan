@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Response;
 
 final class ShowWalletController
 {
-    public function __invoke(Request $request, Wallet $wallet)
+    public function __invoke(Request $request, Wallet $wallet): \Illuminate\Http\Response
     {
         return Response::noContent();
     }

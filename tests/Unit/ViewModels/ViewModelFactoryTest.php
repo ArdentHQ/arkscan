@@ -44,7 +44,7 @@ it('should make a view model collection', function ($modelClass, $viewModel) {
     [Wallet::class, WalletViewModel::class],
 ]);
 
-it('cannot_make_an_invalid_view_model', function () {
+it('cannot make an invalid view model', function () {
     $this->expectException(InvalidArgumentException::class);
 
     ViewModelFactory::make(new InvalidModel());

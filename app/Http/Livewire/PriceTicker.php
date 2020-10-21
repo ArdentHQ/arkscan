@@ -7,11 +7,12 @@ namespace App\Http\Livewire;
 use App\Facades\Network;
 use App\Services\CryptoCompare;
 use App\Services\Settings;
+use Illuminate\View\View;
 use Livewire\Component;
 
 final class PriceTicker extends Component
 {
-    public function render()
+    public function render(): View
     {
         return view('livewire.price-ticker', [
             'from'  => Network::currency(),

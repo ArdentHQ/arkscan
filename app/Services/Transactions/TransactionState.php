@@ -19,7 +19,13 @@ final class TransactionState
 
     public function isConfirmed(): bool
     {
-        $confirmations = NetworkStatus::height() - $this->transaction->block->height;
+        $block = $this->transaction->block;
+
+        if (is_null($block)) {
+            return false;
+        }
+
+        $confirmations = NetworkStatus::height() - $block->height;
 
         return $confirmations >= Network::confirmations();
     }

@@ -12,7 +12,7 @@ final class ResolveScientificNotation
 
         if (count($parts) === 2) {
             $exp     = abs(end($parts)) + strlen($parts[0]);
-            $decimal = number_format($float, $exp);
+            $decimal = number_format($float, (int) $exp);
 
             return strval(rtrim($decimal, '.0'));
         }

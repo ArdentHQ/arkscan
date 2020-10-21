@@ -9,11 +9,12 @@ use App\Services\Blockchain\NetworkStatus;
 use App\Services\CryptoCompare;
 use App\Services\NumberFormatter;
 use App\Services\Settings;
+use Illuminate\View\View;
 use Livewire\Component;
 
 final class NetworkStatusBlock extends Component
 {
-    public function render()
+    public function render(): View
     {
         $marketCap = 0;
 

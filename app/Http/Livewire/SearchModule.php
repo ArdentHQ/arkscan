@@ -7,6 +7,7 @@ namespace App\Http\Livewire;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
 final class SearchModule extends Component
@@ -38,12 +39,12 @@ final class SearchModule extends Component
 
     public bool $isSlim = false;
 
-    public function mount(bool $isSlim = false)
+    public function mount(bool $isSlim = false): void
     {
         $this->isSlim = $isSlim;
     }
 
-    public function performSearch()
+    public function performSearch(): void
     {
         $data = $this->validate([
             // Generic
@@ -78,7 +79,7 @@ final class SearchModule extends Component
         $this->searchWallets($data);
     }
 
-    private function searchBlocks(array $parameters)
+    private function searchBlocks(array $parameters): LengthAwarePaginator
     {
         $query = Block::query();
 
@@ -114,7 +115,7 @@ final class SearchModule extends Component
         return $query->paginate();
     }
 
-    private function searchTransactions(array $parameters)
+    private function searchTransactions(array $parameters): LengthAwarePaginator
     {
         $query = Transaction::query();
 
@@ -150,7 +151,7 @@ final class SearchModule extends Component
         return $query->paginate();
     }
 
-    private function searchWallets(array $parameters)
+    private function searchWallets(array $parameters): LengthAwarePaginator
     {
         $query = Wallet::query();
 

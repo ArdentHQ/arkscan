@@ -14,3 +14,9 @@ it('should get the height', function () {
 
     expect(NetworkStatus::height())->toBe(5651290);
 });
+
+it('should return 0 if the height can not be retrieved', function () {
+    configureExplorerDatabase();
+
+    expect(NetworkStatus::height())->toBe(0);
+});

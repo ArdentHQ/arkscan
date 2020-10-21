@@ -349,3 +349,30 @@ it('should determine the type icon', function () {
 it('should determine the direction icon', function () {
     expect($this->subject->iconDirection('sender'))->toBeString();
 });
+
+it('should fail to get the confirmations', function () {
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+        'block_id' => 'unknown',
+    ]));
+
+    expect($this->subject->confirmations())->toBeString();
+    expect($this->subject->confirmations())->toBe('0');
+});
+
+it('should fail to get the sender', function () {
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+        'sender_public_key' => 'unknown',
+    ]));
+
+    expect($this->subject->sender())->toBeString();
+    expect($this->subject->sender())->toBe('n/a');
+});
+
+it('should fail to get the recipient', function () {
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+        'recipient_id' => 'unknown',
+    ]));
+
+    expect($this->subject->recipient())->toBeString();
+    expect($this->subject->recipient())->toBe('n/a');
+});

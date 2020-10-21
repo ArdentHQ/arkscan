@@ -10,13 +10,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 
 /**
+ * @property string $id
  * @property array $asset
  * @property int $amount
  * @property int $fee
  * @property int $timestamp
  * @property int $type
  * @property int $type_group
- * @property int|string $block_id
+ * @property string $block_id
  * @property string $recipient_id
  * @property string $sender_public_key
  */
@@ -43,7 +44,14 @@ final class Transaction extends Model
      *
      * @var array
      */
-    protected $casts = ['asset' => 'array'];
+    protected $casts = [
+        'amount'     => 'int',
+        'asset'      => 'array',
+        'fee'        => 'int',
+        'timestamp'  => 'int',
+        'type_group' => 'int',
+        'type'       => 'int',
+    ];
 
     /**
      * A transaction belongs to a block.
@@ -116,9 +124,10 @@ final class Transaction extends Model
     /**
      * Get the human readable representation of the vendor field.
      *
+     * @codeCoverageIgnore
+     *
      * @return string
      */
-    // @codeCoverageIgnoreStart
     public function getVendorFieldAttribute(): ?string
     {
         $vendorFieldHex = Arr::get($this->attributes, 'vendor_field_hex');
@@ -127,10 +136,20 @@ final class Transaction extends Model
             return null;
         }
 
-        return hex2bin(bin2hex(stream_get_contents($vendorFieldHex)));
-    }
+        $vendorFieldStream = stream_get_contents($vendorFieldHex);
 
-    // @codeCoverageIgnoreEnd
+        if ($vendorFieldStream === false) {
+            return null;
+        }
+
+        $vendorField = hex2bin(bin2hex($vendorFieldStream));
+
+        if ($vendorField === false) {
+            return null;
+        }
+
+        return $vendorField;
+    }
 
     /**
      * Get the current connection name for the model.

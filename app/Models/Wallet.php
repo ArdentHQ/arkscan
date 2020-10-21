@@ -28,6 +28,17 @@ final class Wallet extends Model
     public $incrementing = false;
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'balance'      => 'int',
+        'nonce'        => 'int',
+        'vote_balance' => 'int',
+    ];
+
+    /**
      * A wallet has many sent transactions.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

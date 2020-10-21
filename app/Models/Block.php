@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
+ * @property string $id
  * @property int $height
  * @property int $number_of_transactions
  * @property int $reward
@@ -28,6 +29,20 @@ final class Block extends Model
      * @var bool
      */
     public $incrementing = false;
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'height'                 => 'int',
+        'number_of_transactions' => 'int',
+        'reward'                 => 'int',
+        'timestamp'              => 'int',
+        'total_amount'           => 'int',
+        'total_fee'              => 'int',
+    ];
 
     /**
      * A block has many transactions.

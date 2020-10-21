@@ -60,12 +60,24 @@ final class TransactionViewModel extends ViewModel
 
     public function sender(): string
     {
-        return $this->model->sender->address;
+        $wallet = $this->model->sender;
+
+        if (is_null($wallet)) {
+            return 'n/a';
+        }
+
+        return $wallet->address;
     }
 
     public function recipient(): string
     {
-        return $this->model->recipient->address;
+        $wallet = $this->model->recipient;
+
+        if (is_null($wallet)) {
+            return 'n/a';
+        }
+
+        return $wallet->address;
     }
 
     public function fee(): string
@@ -80,7 +92,13 @@ final class TransactionViewModel extends ViewModel
 
     public function confirmations(): string
     {
-        return NumberFormatter::number(NetworkStatus::height() - $this->model->block->height);
+        $block = $this->model->block;
+
+        if (is_null($block)) {
+            return NumberFormatter::number(0);
+        }
+
+        return NumberFormatter::number(NetworkStatus::height() - $block->height);
     }
 
     public function iconState(): string

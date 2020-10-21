@@ -24,21 +24,16 @@ final class Settings
 
     public static function currency(): string
     {
-        return static::setting('currency', 'USD');
+        return Arr::get(static::all(), 'currency', 'USD');
     }
 
     public static function statisticsChart(): bool
     {
-        return static::setting('statisticsChart', true);
+        return Arr::get(static::all(), 'statisticsChart', true);
     }
 
     public static function darkTheme(): bool
     {
-        return static::setting('darkTheme', true);
-    }
-
-    private static function setting(string $key, $default)
-    {
-        return Arr::get(static::all(), $key, $default);
+        return Arr::get(static::all(), 'darkTheme', true);
     }
 }

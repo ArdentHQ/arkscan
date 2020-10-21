@@ -15,7 +15,13 @@ final class NetworkStatus
     public static function height(): int
     {
         return Cache::remember('status.height:'.Network::name(), 8000, function (): int {
-            return (int) Block::latestByHeight()->first()['height'];
+            $block = Block::latestByHeight()->first();
+
+            if (is_null($block)) {
+                return 0;
+            }
+
+            return $block->height;
         });
     }
 

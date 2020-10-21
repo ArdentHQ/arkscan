@@ -17,11 +17,23 @@ final class TransactionDirection
 
     public function isSent(string $address): bool
     {
-        return $this->transaction->sender->address === $address;
+        $wallet = $this->transaction->sender;
+
+        if (is_null($wallet)) {
+            return false;
+        }
+
+        return $wallet->address === $address;
     }
 
     public function isReceived(string $address): bool
     {
-        return $this->transaction->recipient->address === $address;
+        $wallet = $this->transaction->recipient;
+
+        if (is_null($wallet)) {
+            return false;
+        }
+
+        return $wallet->address === $address;
     }
 }

@@ -54,3 +54,17 @@ it('should get the reward', function () {
 
     assertMatchesSnapshot($this->subject->reward());
 });
+
+it('should get the delegate', function () {
+    expect($this->subject->delegate())->toBeString();
+    expect($this->subject->delegate())->not()->toBe('n/a');
+});
+
+it('should fail to get the delegate', function () {
+    $this->subject = new BlockViewModel(Block::factory()->create([
+        'generator_public_key' => 'unknown',
+    ]));
+
+    expect($this->subject->delegate())->toBeString();
+    expect($this->subject->delegate())->toBe('n/a');
+});

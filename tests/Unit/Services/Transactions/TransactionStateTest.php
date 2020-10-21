@@ -31,3 +31,11 @@ it('should determine if the transaction is not confirmed', function () {
 
     expect((new TransactionState($transaction))->isConfirmed())->toBeFalse();
 });
+
+it('should determine if the transaction is not confirmed if the block is missing', function () {
+    $transaction = Transaction::factory()->create([
+        'block_id' => 'unknown',
+    ]);
+
+    expect((new TransactionState($transaction))->isConfirmed())->toBeFalse();
+});

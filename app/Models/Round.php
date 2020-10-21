@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property float $balance
+ * @property int $balance
  */
 final class Round extends Model
 {
@@ -21,6 +21,15 @@ final class Round extends Model
      * @var bool
      */
     public $incrementing = false;
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'balance' => 'int',
+    ];
 
     /**
      * A round slot belongs to a delegate.

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Response;
 
 final class ShowBlockController
 {
-    public function __invoke(Request $request, Block $block)
+    public function __invoke(Request $request, Block $block): \Illuminate\Http\Response
     {
         return Response::noContent();
     }

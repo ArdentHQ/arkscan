@@ -42,6 +42,7 @@ use App\Models\Scopes\VoteScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
 use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasPagination;
+use Illuminate\View\View;
 use Livewire\Component;
 
 final class TransactionTable extends Component
@@ -50,7 +51,7 @@ final class TransactionTable extends Component
 
     public bool $viewMore = false;
 
-    public function mount(bool $viewMore = false)
+    public function mount(bool $viewMore = false): void
     {
         $this->viewMore = $viewMore;
     }
@@ -97,7 +98,7 @@ final class TransactionTable extends Component
         'vote'                          => VoteScope::class,
     ];
 
-    public function render()
+    public function render(): View
     {
         if ($this->state['type'] !== 'all') {
             $scopeClass = $this->scopes[$this->state['type']];

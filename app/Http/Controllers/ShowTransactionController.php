@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Response;
 
 final class ShowTransactionController
 {
-    public function __invoke(Request $request, Transaction $transaction)
+    public function __invoke(Request $request, Transaction $transaction): \Illuminate\Http\Response
     {
         return Response::noContent();
     }
