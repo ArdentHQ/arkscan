@@ -1,24 +1,10 @@
-<div>
-    <table>
-        <thead>
-            <tr>
-                <th>Address</th>
-                <th>Info</th>
-                <th>Balance</th>
-                <th>Supply</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($wallets as $wallet)
-                <tr>
-                    <td>{{ $wallet->address() }}</td>
-                    <td>n/a</td>
-                    <td>{{ $wallet->balance() }}</td>
-                    <td>n/a</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+<div id="wallet-list" class="w-full">
+    <x-wallets.table-desktop :wallets="$wallets" with-rank />
+    <x-wallets.list-mobile :wallets="$wallets" with-rank />
 
-    {{ $wallets->links() }}
+    <x-general.pagination :results="$wallets" class="mt-8" />
+
+    <script>
+        window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#wallet-list')));
+    </script>
 </div>
