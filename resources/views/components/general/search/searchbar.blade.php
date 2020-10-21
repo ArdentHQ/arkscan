@@ -3,12 +3,14 @@
     x-data="{
         showAdvanced: false,
         isMobileOpen: false,
+        isFocused: false,
     }"
     @mobile-search.window="isMobileOpen = true"
-    class="searchbar"
+    class="searchbar @if ($slim ?? false) searchbar-slim @endif"
     x-bind:class="{
         'search-mobile': isMobileOpen,
         'search-advanced': showAdvanced,
+        'search-focused': isFocused,
     }"
 >
     <div
@@ -17,59 +19,74 @@
     ></div>
 
     <div class="search-container">
-        <div class="flex items-center px-8 py-6 space-x-8">
-            <div class="flex-1">
+        <div class="search-simple">
+            @if ($slim ?? false)
+                <div
+                    x-show="isFocused"
+                    class="mr-4 cursor-pointer text-theme-primary-600 hover:text-theme-primary-700"
+                    @click="showAdvanced = false; isFocused = false; $dispatch('search-slim-close')"
+                >
+                    @svg('close', 'w-6 h-6')
+                </div>
+            @endif
+
+            <div class="flex-1 mr-8">
                 <input
                     type="text"
                     placeholder="@lang('forms.search.term_placeholder')"
-                    class="hidden w-full dark:text-theme-secondary-700 dark:bg-theme-secondary-900 sm:block"
+                    class="hidden w-full dark:text-theme-secondary-700 dark:bg-theme-secondary-900 {{ ($slim ?? false) ? 'xl:block' : 'sm:block' }}"
                     wire:model="state.term"
                     wire:keydown.enter="performSearch"
+                    @if ($slim ?? false) x-on:focus="isFocused = true; $dispatch('search-slim-expand')" @endif
                 />
 
                 <input
                     type="text"
                     placeholder="@lang('forms.search.term_placeholder_mobile')"
-                    class="w-full dark:text-theme-secondary-700 dark:bg-theme-secondary-900 sm:hidden"
+                    class="w-full dark:text-theme-secondary-700 dark:bg-theme-secondary-900 {{ ($slim ?? false) ? 'xl:hidden' : 'sm:hidden' }}"
                     wire:model="state.term"
                     wire:keydown.enter="performSearch"
                 />
             </div>
 
-            <div
-                class="hidden text-theme-secondary-900 dark:text-theme-secondary-600 md:block"
-                x-on:click="showAdvanced = !showAdvanced"
+            <button
+                type="button"
+                class="hidden text-theme-secondary-900 mr-8 rounded text-center transition-default font-normal hover:bg-theme-primary-100 dark:hover:bg-theme-secondary-800 dark:text-theme-secondary-600 md:block {{ ($slim ?? false) ? 'px-2 py-1 -my-2' : 'px-4 py-2' }}"
+                @click="showAdvanced = !showAdvanced; isFocused = true; $dispatch('search-slim-expand')"
             >
                 <span x-show="!showAdvanced">@lang('actions.advanced_search')</span>
                 <span x-show="showAdvanced">@lang('actions.hide_search')</span>
-            </div>
-
-            <button
-                type="button"
-                class="hidden button-primary md:block"
-                wire:click="performSearch"
-            >
-                @lang('actions.find_it')
             </button>
 
-            <div
-                class="text-theme-primary-300 md:hidden"
-                wire:click="performSearch"
-            >
-                @svg('search', 'h-5 w-5')
-            </div>
+            @unless($slim ?? false)
+                <button
+                    type="button"
+                    class="hidden button-primary md:block"
+                    wire:click="performSearch"
+                >
+                    @lang('actions.find_it')
+                </button>
+            @else
+                <div
+                    class="cursor-pointer text-theme-primary-300 hover:text-theme-primary-400 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400 @unless($slim ?? false) md:hidden @endif"
+                    wire:click="performSearch"
+                >
+                    @svg('search', 'h-5 w-5')
+                </div>
+            @endunless
         </div>
 
         <div
             x-show="showAdvanced"
-            x-transition:enter="transition ease-out duration-100"
-            x-transition:enter-start="opacity-0 transform"
-            x-transition:enter-end="opacity-100 transform"
-            x-transition:leave="transition ease-in duration-100"
-            x-transition:leave-start="opacity-100 transform"
-            x-transition:leave-end="opacity-0 transform"
+            @unless($slim ?? false)
+                x-transition:enter="transition ease-out duration-100"
+                x-transition:enter-start="opacity-0 transform"
+                x-transition:enter-end="opacity-100 transform"
+                x-transition:leave="transition ease-in duration-100"
+                x-transition:leave-start="opacity-100 transform"
+                x-transition:leave-end="opacity-0 transform"
+            @endunless
         >
-            {{-- <div class="flex flex-wrap items-center py-8 border-t border-theme-secondary-300 dark:border-theme-secondary-800"> --}}
             <div class="search-advanced-options">
                 <x-general.search.advanced-option :title="trans('forms.search.type')">
                     {{-- TODO: Enum of types and their values? --}}

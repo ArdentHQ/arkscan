@@ -36,6 +36,13 @@ final class SearchModule extends Component
         'balanceTo'   => null,
     ];
 
+    public bool $isSlim = false;
+
+    public function mount(bool $isSlim = false)
+    {
+        $this->isSlim = $isSlim;
+    }
+
     public function performSearch()
     {
         $data = $this->validate([

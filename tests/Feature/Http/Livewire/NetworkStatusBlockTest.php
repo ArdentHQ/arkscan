@@ -33,5 +33,5 @@ it('should render with a height, name, supply and market cap', function () {
         ->assertSee('Height: 5,651,290')
         ->assertSee('Network: ARK Public Network')
         ->assertSee('Supply: 136,280,982 ARK')
-        ->assertSee('Market Cap: 39,616,881.467 USD');
+        ->assertSee('Market Cap: 39,616,881.467 USD');
 });

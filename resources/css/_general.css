@@ -65,11 +65,25 @@ body {
 .searchbar {
     @apply hidden fixed inset-0 overflow-y-auto z-40;
 }
+
 .search-container {
     @apply flex flex-col rounded-lg bg-white absolute top-24 left-8 right-8 z-50 overflow-hidden;
 }
 .theme-dark .search-container {
     @apply bg-theme-secondary-900;
+}
+.searchbar-slim .search-container {
+    @apply border border-theme-secondary-400;
+}
+.searchbar-slim.search-focused .search-container {
+    @apply border-theme-primary-600;
+}
+
+.search-simple {
+    @apply flex items-center px-8 py-6;
+}
+.searchbar-slim .search-simple {
+    @apply py-4 px-5;
 }
 
 .search-advanced .search-container {
@@ -83,6 +97,7 @@ body {
 .search-advanced-options {
     @apply grid grid-cols-1 border-t border-theme-secondary-300;
 }
+.theme-dark .searchbar-slim .search-container,
 .theme-dark .search-advanced-options {
     @apply border-theme-secondary-800;
 }

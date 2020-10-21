@@ -7,4 +7,5 @@ return [
     'home'         => 'Home',
     'registered'   => 'Registered',
     'top_accounts' => 'Top Accounts',
+    'block'        => 'Block',
 ];

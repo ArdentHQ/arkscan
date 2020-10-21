@@ -27,6 +27,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::view('/', 'app.home')->name('home');
+// TODO: Remove once /blocks is implemented
+Route::view('/block', 'app.block')->name('block');
 
 // Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 //     return view('dashboard');
