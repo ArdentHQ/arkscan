@@ -23,7 +23,7 @@ it('should determine if the transaction is sent', function () {
         'timestamp' => 122982056,
     ])->sortByDesc('timestamp');
 
-    $result = FeeByRangeAggregate::aggregate(
+    $result = (new FeeByRangeAggregate())->aggregate(
     Timestamp::fromGenesis($start->last()->timestamp)->startOfDay(),
     Timestamp::fromGenesis($end->last()->timestamp)->endOfDay()
     );
