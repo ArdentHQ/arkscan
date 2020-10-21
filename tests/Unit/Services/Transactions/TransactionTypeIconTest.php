@@ -45,8 +45,27 @@ it('should determine the icon that matches the type', function (string $method, 
         'isVote',
         CoreTransactionTypeEnum::VOTE,
         TransactionTypeGroupEnum::CORE,
-        [],
+        [
+            '+publicKey',
+        ],
         'vote',
+    ], [
+        'isUnvote',
+        CoreTransactionTypeEnum::VOTE,
+        TransactionTypeGroupEnum::CORE,
+        [
+            '-publicKey',
+        ],
+        'unvote',
+    ], [
+        'isVoteCombination',
+        CoreTransactionTypeEnum::VOTE,
+        TransactionTypeGroupEnum::CORE,
+        [
+            '-publicKey',
+            '+publicKey',
+        ],
+        'vote-combination',
     ], [
         'isMultiSignature',
         CoreTransactionTypeEnum::MULTI_SIGNATURE,

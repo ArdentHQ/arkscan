@@ -14,6 +14,8 @@ final class TransactionTypeIcon
         'isTransfer'                      => 'transfer',
         'isSecondSignature'               => 'second-signature',
         'isDelegateRegistration'          => 'delegate-registration',
+        'isVoteCombination'               => 'vote-combination',
+        'isUnvote'                        => 'unvote',
         'isVote'                          => 'vote',
         'isMultiSignature'                => 'multi-signature',
         'isIpfs'                          => 'ipfs',

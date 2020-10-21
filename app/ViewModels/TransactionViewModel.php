@@ -151,6 +151,16 @@ final class TransactionViewModel extends ViewModel
         return $this->type->isVote();
     }
 
+    public function isUnvote(): bool
+    {
+        return $this->type->isUnvote();
+    }
+
+    public function isVoteCombination(): bool
+    {
+        return $this->type->isVoteCombination();
+    }
+
     public function isMultiSignature(): bool
     {
         return $this->type->isMultiSignature();

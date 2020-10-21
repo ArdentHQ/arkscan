@@ -11,7 +11,7 @@ use Illuminate\Support\Arr;
 
 /**
  * @property string $id
- * @property array $asset
+ * @property array|null $asset
  * @property int $amount
  * @property int $fee
  * @property int $timestamp

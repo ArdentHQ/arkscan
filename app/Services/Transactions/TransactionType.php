@@ -11,6 +11,7 @@ use App\Enums\MagistrateTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Transaction;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 final class TransactionType
 {
@@ -38,7 +39,19 @@ final class TransactionType
 
     public function isVote(): bool
     {
-        return $this->isCoreType(CoreTransactionTypeEnum::VOTE);
+        return $this->determineVoteTypes()[0] === true;
+    }
+
+    public function isUnvote(): bool
+    {
+        return $this->determineVoteTypes()[1] === true;
+    }
+
+    public function isVoteCombination(): bool
+    {
+        [$containsVote, $containsUnvote] = $this->determineVoteTypes();
+
+        return $containsVote && $containsUnvote;
     }
 
     public function isMultiSignature(): bool
@@ -241,7 +254,7 @@ final class TransactionType
 
     private function isEntityType(int $type): bool
     {
-        return Arr::get($this->transaction->asset, 'type') === $type;
+        return Arr::get($this->transaction->asset ?? [], 'type') === $type;
     }
 
     private function isEntityAction(int $action): bool
@@ -251,7 +264,7 @@ final class TransactionType
         }
 
         $matchesType   = $this->transaction->type === MagistrateTransactionTypeEnum::ENTITY;
-        $matchesAction = Arr::get($this->transaction->asset, 'action') === $action;
+        $matchesAction = Arr::get($this->transaction->asset ?? [], 'action') === $action;
 
         return $matchesType && $matchesAction;
     }
@@ -259,5 +272,31 @@ final class TransactionType
     private function isMagistrateTypeGroup(): bool
     {
         return $this->transaction->type_group === TransactionTypeGroupEnum::MAGISTRATE;
+    }
+
+    private function determineVoteTypes(): array
+    {
+        $containsVote   = false;
+        $containsUnvote = false;
+
+        if (! $this->isCoreType(CoreTransactionTypeEnum::VOTE)) {
+            return [$containsVote, $containsUnvote];
+        }
+
+        if (! is_array($this->transaction->asset)) {
+            return [$containsVote, $containsUnvote];
+        }
+
+        foreach ($this->transaction->asset as $vote) {
+            if (Str::startsWith($vote, '+')) {
+                $containsVote = true;
+            }
+
+            if (Str::startsWith($vote, '-')) {
+                $containsUnvote = true;
+            }
+        }
+
+        return [$containsVote, $containsUnvote];
     }
 }
