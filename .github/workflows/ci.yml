@@ -87,7 +87,7 @@ jobs:
                   branch: ${{ github.head_ref }}
 
     unit:
-        needs: [merge_conflict_finder]
+        needs: [conflicts, analyse, format]
 
         runs-on: ubuntu-latest
 
