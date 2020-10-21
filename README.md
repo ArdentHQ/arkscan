@@ -4,11 +4,11 @@
     <img src="./banner.png" />
 </p>
 
-[![Build Status](https://badgen.now.sh/circleci/github/ARKEcosystem/template-laravel)](https://circleci.com/gh/ARKEcosystem/template-laravel)
-[![Codecov](https://badgen.now.sh/codecov/c/github/arkecosystem/template-laravel)](https://codecov.io/gh/arkecosystem/template-laravel)
+[![Build Status](https://badgen.now.sh/github/status/ArkEcosystem/explorer/develop)](https://github.com/ArkEcosystem/explorer/actions?query=branch%3Adevelop)
+[![Codecov](https://badgen.now.sh/codecov/c/github/arkecosystem/explorer)](https://codecov.io/gh/arkecosystem/explorer)
 [![License: MIT](https://badgen.now.sh/badge/license/MIT/green)](https://opensource.org/licenses/MIT)
 
-> Lead Maintainer: [John Doe](https://github.com/username)
+> Lead Maintainer: [Michel Kraaijeveld](https://github.com/ItsANameToo)
 
 ## Installation
 
