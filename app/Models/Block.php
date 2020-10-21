@@ -11,9 +11,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * @property float $total_amount
- * @property float $total_fee
- * @property float $reward
+ * @property int $height
+ * @property int $number_of_transactions
+ * @property int $reward
+ * @property int $timestamp
+ * @property int $total_amount
+ * @property int $total_fee
  */
 final class Block extends Model
 {

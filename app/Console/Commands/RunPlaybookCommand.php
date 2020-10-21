@@ -26,7 +26,7 @@ final class RunPlaybookCommand extends Command
 
         $playbookName = $this->argument('playbook');
 
-        if (! $playbookName) {
+        if (is_null($playbookName)) {
             $availablePlaybooks = $this->getAvailablePlaybooks();
 
             $this->comment('Choose a playbook: '.PHP_EOL);
@@ -93,7 +93,7 @@ final class RunPlaybookCommand extends Command
 
         $playbookName = (string) $helper->ask($this->input, $this->output, $question);
 
-        if (! $playbookName) {
+        if (is_null($playbookName)) {
             $this->error('Please choose a playbook');
 
             return $this->askPlaybookName($availablePlaybooks);

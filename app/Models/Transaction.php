@@ -10,8 +10,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 
 /**
- * @property float $fee
- * @property float $amount
+ * @property array $asset
+ * @property int $amount
+ * @property int $fee
+ * @property int $timestamp
+ * @property int $type
+ * @property int $type_group
+ * @property int|string $block_id
+ * @property string $recipient_id
+ * @property string $sender_public_key
  */
 final class Transaction extends Model
 {
