@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ListBlocksByWalletController;
 use App\Http\Controllers\ListBlocksController;
 use App\Http\Controllers\ListTransactionsByBlockController;
@@ -27,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', HomeController::class)->name('home');
+Route::view('/', 'app.home')->name('home');
 // TODO: Remove once /blocks is implemented
 Route::view('/block', 'app.block')->name('block');
 

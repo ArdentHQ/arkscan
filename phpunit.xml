@@ -32,6 +32,7 @@
                 <file>./app/Console/Kernel.php</file>
                 <file>./app/Http/Kernel.php</file>
                 <!-- Application Code -->
+                <directory suffix=".php">./app/Console/Commands</directory>
                 <directory suffix=".php">./app/Models/Scopes</directory>
                 <!-- FIXME -->
                 <file>./app/Http/Livewire/SearchModule.php</file>

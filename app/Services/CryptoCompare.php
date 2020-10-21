@@ -26,7 +26,10 @@ final class CryptoCompare
 
     public static function historical(string $source, string $target, string $format = 'Y-m-d'): Collection
     {
-        return Cache::remember('cryptocompare.historical:'.$source.':'.$target.':'.$format, 1800, function () use ($source, $target, $format): Collection {
+        $cacheKey = 'cryptocompare.historical:'.$source.':'.$target.':'.$format;
+        $ttl      = Carbon::now()->addDay();
+
+        return Cache::remember($cacheKey, $ttl, function () use ($source, $target, $format): Collection {
             $result = Http::get('https://min-api.cryptocompare.com/data/histoday', [
                 'fsym'  => $source,
                 'tsym'  => $target,
