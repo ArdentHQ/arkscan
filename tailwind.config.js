@@ -9,6 +9,7 @@ module.exports = {
         extend: {
             ...defaultConfig.theme.extend,
             borderWidth: {
+                3: '3px',
                 20: '20px',
             },
         },

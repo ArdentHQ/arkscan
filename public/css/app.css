@@ -3654,6 +3654,18 @@ video {
   border-left-width: calc(2px * calc(1 - var(--divide-x-reverse)));
 }
 
+.divide-y-3 > :not(template) ~ :not(template){
+  --divide-y-reverse: 0;
+  border-top-width: calc(3px * calc(1 - var(--divide-y-reverse)));
+  border-bottom-width: calc(3px * var(--divide-y-reverse));
+}
+
+.divide-x-3 > :not(template) ~ :not(template){
+  --divide-x-reverse: 0;
+  border-right-width: calc(3px * var(--divide-x-reverse));
+  border-left-width: calc(3px * calc(1 - var(--divide-x-reverse)));
+}
+
 .divide-y-4 > :not(template) ~ :not(template){
   --divide-y-reverse: 0;
   border-top-width: calc(4px * calc(1 - var(--divide-y-reverse)));
@@ -10999,6 +11011,10 @@ video {
   border-width: 2px;
 }
 
+.border-3{
+  border-width: 3px;
+}
+
 .border-4{
   border-width: 4px;
 }
@@ -11045,6 +11061,22 @@ video {
 
 .border-l-2{
   border-left-width: 2px;
+}
+
+.border-t-3{
+  border-top-width: 3px;
+}
+
+.border-r-3{
+  border-right-width: 3px;
+}
+
+.border-b-3{
+  border-bottom-width: 3px;
+}
+
+.border-l-3{
+  border-left-width: 3px;
 }
 
 .border-t-4{
@@ -31982,25 +32014,98 @@ body {
 }
 
 .table-list-mobile-row {
-  display: flex;
-  border-color: var(--theme-color-secondary-300);
   padding-top: 2rem;
+  border-top-width: 1px;
+  border-color: var(--theme-color-secondary-300);
 }
 
 .table-list-mobile-row:first-child {
   padding-top: 0;
+  border-top-width: 0;
 }
 
 .theme-dark .table-list-mobile-row {
-  display: flex;
   border-color: var(--theme-color-secondary-800);
-  padding-top: 2rem;
+}
+
+.table-list-mobile-row td {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 @media (min-width: 768px) {
   .table-list-mobile {
     display: none;
   }
+}
+
+/* Tabs */
+
+.tabs {
+  background-color: var(--theme-color-secondary-100);
+  border-radius: 0.5rem;
+  font-weight: 600;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin-bottom: 1rem;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none
+}
+
+.theme-dark .tabs {
+  background-color: var(--theme-color-secondary-900);
+  --bg-opacity: 1;
+  background-color: #121213;
+  background-color: rgba(18, 18, 19, var(--bg-opacity));
+}
+
+.tab-item {
+  position: relative;
+  padding-top: 2rem;
+  padding-bottom: 1.75rem;
+  margin-left: 4rem;
+  border-bottom-width: 3px;
+  border-color: transparent;
+  cursor: pointer;
+}
+
+.tab-item:first-child {
+  margin-left: 0;
+}
+
+.tab-item-current,
+.tab-item:hover {
+  color: var(--theme-color-secondary-900);
+  border-color: var(--theme-color-primary-600);
+}
+
+.theme-dark .tab-item:hover {
+  color: var(--theme-color-secondary-600);
+}
+
+.theme-dark .tab-item-current,
+.theme-dark .tab-item:hover {
+  color: var(--theme-color-secondary-200);
+}
+
+.tab-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  margin-left: -2rem;
+  height: 1.5rem;
+  border-left-width: 1px;
+  border-color: var(--theme-color-secondary-300);
+}
+
+.tab-item:first-child::before {
+  border-left-width: 0;
+}
+
+.theme-dark .tab-item::before {
+  border-color: var(--theme-color-secondary-800);
 }
 
 /** 3rd party **/
@@ -36957,6 +37062,18 @@ span.swiper-pagination-bullet {
     --divide-x-reverse: 0;
     border-right-width: calc(2px * var(--divide-x-reverse));
     border-left-width: calc(2px * calc(1 - var(--divide-x-reverse)));
+  }
+
+  .sm\:divide-y-3 > :not(template) ~ :not(template){
+    --divide-y-reverse: 0;
+    border-top-width: calc(3px * calc(1 - var(--divide-y-reverse)));
+    border-bottom-width: calc(3px * var(--divide-y-reverse));
+  }
+
+  .sm\:divide-x-3 > :not(template) ~ :not(template){
+    --divide-x-reverse: 0;
+    border-right-width: calc(3px * var(--divide-x-reverse));
+    border-left-width: calc(3px * calc(1 - var(--divide-x-reverse)));
   }
 
   .sm\:divide-y-4 > :not(template) ~ :not(template){
@@ -44304,6 +44421,10 @@ span.swiper-pagination-bullet {
     border-width: 2px;
   }
 
+  .sm\:border-3{
+    border-width: 3px;
+  }
+
   .sm\:border-4{
     border-width: 4px;
   }
@@ -44350,6 +44471,22 @@ span.swiper-pagination-bullet {
 
   .sm\:border-l-2{
     border-left-width: 2px;
+  }
+
+  .sm\:border-t-3{
+    border-top-width: 3px;
+  }
+
+  .sm\:border-r-3{
+    border-right-width: 3px;
+  }
+
+  .sm\:border-b-3{
+    border-bottom-width: 3px;
+  }
+
+  .sm\:border-l-3{
+    border-left-width: 3px;
   }
 
   .sm\:border-t-4{
@@ -67755,6 +67892,18 @@ span.swiper-pagination-bullet {
     border-left-width: calc(2px * calc(1 - var(--divide-x-reverse)));
   }
 
+  .md\:divide-y-3 > :not(template) ~ :not(template){
+    --divide-y-reverse: 0;
+    border-top-width: calc(3px * calc(1 - var(--divide-y-reverse)));
+    border-bottom-width: calc(3px * var(--divide-y-reverse));
+  }
+
+  .md\:divide-x-3 > :not(template) ~ :not(template){
+    --divide-x-reverse: 0;
+    border-right-width: calc(3px * var(--divide-x-reverse));
+    border-left-width: calc(3px * calc(1 - var(--divide-x-reverse)));
+  }
+
   .md\:divide-y-4 > :not(template) ~ :not(template){
     --divide-y-reverse: 0;
     border-top-width: calc(4px * calc(1 - var(--divide-y-reverse)));
@@ -75100,6 +75249,10 @@ span.swiper-pagination-bullet {
     border-width: 2px;
   }
 
+  .md\:border-3{
+    border-width: 3px;
+  }
+
   .md\:border-4{
     border-width: 4px;
   }
@@ -75146,6 +75299,22 @@ span.swiper-pagination-bullet {
 
   .md\:border-l-2{
     border-left-width: 2px;
+  }
+
+  .md\:border-t-3{
+    border-top-width: 3px;
+  }
+
+  .md\:border-r-3{
+    border-right-width: 3px;
+  }
+
+  .md\:border-b-3{
+    border-bottom-width: 3px;
+  }
+
+  .md\:border-l-3{
+    border-left-width: 3px;
   }
 
   .md\:border-t-4{
@@ -98551,6 +98720,18 @@ span.swiper-pagination-bullet {
     border-left-width: calc(2px * calc(1 - var(--divide-x-reverse)));
   }
 
+  .lg\:divide-y-3 > :not(template) ~ :not(template){
+    --divide-y-reverse: 0;
+    border-top-width: calc(3px * calc(1 - var(--divide-y-reverse)));
+    border-bottom-width: calc(3px * var(--divide-y-reverse));
+  }
+
+  .lg\:divide-x-3 > :not(template) ~ :not(template){
+    --divide-x-reverse: 0;
+    border-right-width: calc(3px * var(--divide-x-reverse));
+    border-left-width: calc(3px * calc(1 - var(--divide-x-reverse)));
+  }
+
   .lg\:divide-y-4 > :not(template) ~ :not(template){
     --divide-y-reverse: 0;
     border-top-width: calc(4px * calc(1 - var(--divide-y-reverse)));
@@ -105896,6 +106077,10 @@ span.swiper-pagination-bullet {
     border-width: 2px;
   }
 
+  .lg\:border-3{
+    border-width: 3px;
+  }
+
   .lg\:border-4{
     border-width: 4px;
   }
@@ -105942,6 +106127,22 @@ span.swiper-pagination-bullet {
 
   .lg\:border-l-2{
     border-left-width: 2px;
+  }
+
+  .lg\:border-t-3{
+    border-top-width: 3px;
+  }
+
+  .lg\:border-r-3{
+    border-right-width: 3px;
+  }
+
+  .lg\:border-b-3{
+    border-bottom-width: 3px;
+  }
+
+  .lg\:border-l-3{
+    border-left-width: 3px;
   }
 
   .lg\:border-t-4{
@@ -129347,6 +129548,18 @@ span.swiper-pagination-bullet {
     border-left-width: calc(2px * calc(1 - var(--divide-x-reverse)));
   }
 
+  .xl\:divide-y-3 > :not(template) ~ :not(template){
+    --divide-y-reverse: 0;
+    border-top-width: calc(3px * calc(1 - var(--divide-y-reverse)));
+    border-bottom-width: calc(3px * var(--divide-y-reverse));
+  }
+
+  .xl\:divide-x-3 > :not(template) ~ :not(template){
+    --divide-x-reverse: 0;
+    border-right-width: calc(3px * var(--divide-x-reverse));
+    border-left-width: calc(3px * calc(1 - var(--divide-x-reverse)));
+  }
+
   .xl\:divide-y-4 > :not(template) ~ :not(template){
     --divide-y-reverse: 0;
     border-top-width: calc(4px * calc(1 - var(--divide-y-reverse)));
@@ -136692,6 +136905,10 @@ span.swiper-pagination-bullet {
     border-width: 2px;
   }
 
+  .xl\:border-3{
+    border-width: 3px;
+  }
+
   .xl\:border-4{
     border-width: 4px;
   }
@@ -136738,6 +136955,22 @@ span.swiper-pagination-bullet {
 
   .xl\:border-l-2{
     border-left-width: 2px;
+  }
+
+  .xl\:border-t-3{
+    border-top-width: 3px;
+  }
+
+  .xl\:border-r-3{
+    border-right-width: 3px;
+  }
+
+  .xl\:border-b-3{
+    border-bottom-width: 3px;
+  }
+
+  .xl\:border-l-3{
+    border-left-width: 3px;
   }
 
   .xl\:border-t-4{
