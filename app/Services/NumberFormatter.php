@@ -15,8 +15,6 @@ final class NumberFormatter
 
     public static function currency($value, string $currency): string
     {
-        $formatter = new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
-
-        return $formatter->formatCurrency($value, $currency);
+        return static::number($value).' '.strtoupper($currency);
     }
 }
