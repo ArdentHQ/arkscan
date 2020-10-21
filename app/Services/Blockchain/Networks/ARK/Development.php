@@ -52,4 +52,9 @@ final class Development implements Network
     {
         return 'https://dwallets.ark.io/api';
     }
+
+    public function usesMarketsquare(): bool
+    {
+        return false;
+    }
 }

@@ -10,9 +10,4 @@ final class Explorer
     {
         return config('explorer.network');
     }
-
-    public static function usesMarketsquare(): bool
-    {
-        return config('explorer.usesMarketsquare');
-    }
 }

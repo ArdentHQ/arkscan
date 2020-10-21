@@ -42,3 +42,7 @@ it('should determine if the network currency can be exchanged', function () {
 it('should have a host', function () {
     expect($this->subject->host())->toBe('https://wallets.ark.io/api');
 });
+
+it('should determine if the network is on marketsquare', function () {
+    expect($this->subject->usesMarketsquare())->toBeTrue();
+});

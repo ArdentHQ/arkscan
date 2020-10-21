@@ -52,4 +52,9 @@ final class Production implements Network
     {
         return 'https://wallets.ark.io/api';
     }
+
+    public function usesMarketsquare(): bool
+    {
+        return true;
+    }
 }
