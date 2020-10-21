@@ -34,7 +34,7 @@ final class Wallet extends Model
      */
     public function sentTransactions(): HasMany
     {
-        return $this->hasMany(self::class, 'sender_public_key', 'public_key');
+        return $this->hasMany(Transaction::class, 'sender_public_key', 'public_key');
     }
 
     /**
@@ -44,7 +44,7 @@ final class Wallet extends Model
      */
     public function receivedTransactions(): HasMany
     {
-        return $this->hasMany(self::class, 'recipient_id', 'address');
+        return $this->hasMany(Transaction::class, 'recipient_id', 'address');
     }
 
     /**

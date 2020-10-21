@@ -22,5 +22,5 @@ interface Network
 
     public function host(): string;
 
-    public function usesMarketsquare(): string;
+    public function usesMarketsquare(): bool;
 }
