@@ -1,7 +1,7 @@
 # Template - Laravel
 
 <p align="center">
-    <img src="https://github.com/ArkEcosystem/template-laravel/blob/master/banner.png?raw=true" />
+    <img src="./banner.png" />
 </p>
 
 [![Build Status](https://badgen.now.sh/circleci/github/ARKEcosystem/template-laravel)](https://circleci.com/gh/ARKEcosystem/template-laravel)
