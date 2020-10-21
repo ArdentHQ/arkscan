@@ -1,0 +1,144 @@
+name: CI
+
+on:
+    push:
+        branches:
+            - "master"
+            - "develop"
+    pull_request:
+        types: [ready_for_review, synchronize, opened]
+
+jobs:
+    conflicts:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+              with:
+                  ref: ${{ github.head_ref }}
+
+            - name: Merge Conflict finder
+              uses: olivernybroe/action-conflict-finder@v1.1
+
+    analyse:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "7.4"
+                  extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
+                  coverage: pcov
+
+            - name: Cache dependencies
+              uses: actions/cache@v1
+              with:
+                  path: ~/.composer/cache/files
+                  key: dependencies-composer-${{ hashFiles('composer.json') }}
+
+            - name: Install Composer dependencies
+              run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader
+
+            - name: Prepare the application
+              run: cp .env.example .env && php artisan key:generate
+
+            - name: Run PHPStan
+              run: ./vendor/bin/phpstan analyse --memory-limit=2G
+
+    format:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  ref: ${{ github.head_ref }}
+                  token: ${{ secrets.GH_TOKEN }}
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "7.4"
+                  extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
+                  coverage: pcov
+
+            - name: Authenticate Nova
+              run: composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_PASSWORD }}
+
+            - name: Authenticate Packagist
+              run: composer config http-basic.repo.packagist.com arkecosystem ${{ secrets.PACKAGIST_TOKEN }}
+
+            - name: Authenticate Packagist
+              run: composer config http-basic.repo.packagist.com arkecosystem ${{ secrets.PACKAGIST_TOKEN }}
+
+            - name: Install
+              run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist --optimize-autoloader
+
+            - name: Run php-cs-fixer
+              run: composer format
+
+            - uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  commit_message: "style: resolve style guide violations"
+                  branch: ${{ github.head_ref }}
+
+    unit:
+        needs: [merge_conflict_finder]
+
+        runs-on: ubuntu-latest
+
+        services:
+            postgres:
+                image: postgres:12
+                env:
+                    POSTGRES_DB: explorer
+                    POSTGRES_USER: explorer
+                    POSTGRES_PASSWORD: password
+                ports:
+                    - 5432:5432
+                options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+              with:
+                  ref: ${{ github.head_ref }}
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "7.4"
+                  extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
+                  coverage: pcov
+
+            - name: Cache dependencies
+              uses: actions/cache@v2
+              with:
+                  path: ~/.composer/cache/files
+                  key: dependencies-composer-${{ hashFiles('composer.json') }}
+
+            - name: Install Composer dependencies
+              run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader
+
+            - name: Install Yarn dependencies
+              run: yarn --frozen-lockfile
+
+            - name: Prepare the application
+              run: cp .env.example .env && php artisan key:generate
+
+            - name: Clear Config
+              run: php artisan config:clear && php artisan route:clear
+
+            - name: Run Tests
+              run: ./vendor/bin/pest --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml
+              env:
+                  DB_CONNECTION: pgsql
+                  DB_HOST: 127.0.0.1
+                  DB_PORT: 5432
+                  DB_DATABASE: explorer
+                  DB_USERNAME: explorer
+                  DB_PASSWORD: password
