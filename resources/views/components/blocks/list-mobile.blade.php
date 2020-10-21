@@ -3,60 +3,34 @@
         <div class="table-list-mobile-row">
             <table>
                 <tr>
-                    <td width="150">
-                        <div>@lang('general.block.id')</div>
-                    </td>
+                    <td width="150">@lang('general.block.id')</td>
                     <td>
-                        <div><a href="{{ $block->url() }}" class="font-semibold link">{{ $block->id() }}</a></div>
+                        <a href="{{ $block->url() }}" class="font-semibold link">{{ $block->id() }}</a>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <div>@lang('general.block.timestamp')</div>
-                    </td>
-                    <td>
-                        <div>{{ $block->timestamp() }}</div>
-                    </td>
+                    <td>@lang('general.block.timestamp')</td>
+                    <td>{{ $block->timestamp() }}</td>
                 </tr>
                 <tr>
-                    <td>
-                        <div>@lang('general.block.generated_by')</div>
-                    </td>
-                    <td>
-                        <div><x-general.address :address="$block->delegate()" /></div>
-                    </td>
+                    <td>@lang('general.block.generated_by')</td>
+                    <td><x-general.address :address="$block->delegate()" /></td>
                 </tr>
                 <tr>
-                    <td>
-                        <div>@lang('general.block.height')</div>
-                    </td>
-                    <td>
-                        <div>{{ $block->height() }}</div>
-                    </td>
+                    <td>@lang('general.block.height')</td>
+                    <td>{{ $block->height() }}</td>
                 </tr>
                 <tr>
-                    <td>
-                        <div>@lang('general.block.transactions')</div>
-                    </td>
-                    <td>
-                        <div>{{ $block->transactionCount() }}</div>
-                    </td>
+                    <td>@lang('general.block.transactions')</td>
+                    <td>{{ $block->transactionCount() }}</td>
                 </tr>
                 <tr>
-                    <td>
-                        <div>@lang('general.block.amount')</div>
-                    </td>
-                    <td>
-                        <div>{{ $block->amount() }}</div>
-                    </td>
+                    <td>@lang('general.block.amount')</td>
+                    <td>{{ $block->amount() }}</td>
                 </tr>
                 <tr>
-                    <td>
-                        <div>@lang('general.block.fee')</div>
-                    </td>
-                    <td>
-                        <div>{{ $block->fee() }}</div>
-                    </td>
+                    <td>@lang('general.block.fee')</td>
+                    <td>{{ $block->fee() }}</td>
                 </tr>
             </table>
         </div>

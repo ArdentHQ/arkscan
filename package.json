@@ -29,6 +29,7 @@
     },
     "dependencies": {
         "@arkecosystem/crypto": "^2.7.1",
-        "@vechain/picasso": "^2.0.1"
+        "@vechain/picasso": "^2.0.1",
+        "tippy.js": "^6.2.7"
     }
 }

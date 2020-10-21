@@ -191,6 +191,9 @@ body {
 .table-list-mobile-row td {
     @apply py-2;
 }
+.table-list-mobile-row td:first-child {
+    @apply align-top;
+}
 
 @screen md {
     .table-list-mobile {

@@ -3,52 +3,30 @@
         <div class="table-list-mobile-row">
             <table>
                 <tr>
-                    <td width="150">
-                        <div>@lang('general.transaction.id')</div>
-                    </td>
+                    <td width="150">@lang('general.transaction.id')</td>
                     <td>
-                        <div><a href="{{ $transaction->url() }}" class="font-semibold link">{{ $transaction->id() }}</a></div>
+                        <a href="{{ $transaction->url() }}" class="font-semibold link">{{ $transaction->id() }}</a>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <div>@lang('general.transaction.timestamp')</div>
-                    </td>
-                    <td>
-                        <div>{{ $transaction->timestamp() }}</div>
-                    </td>
+                    <td>@lang('general.transaction.timestamp')</td>
+                    <td>{{ $transaction->timestamp() }}</td>
                 </tr>
                 <tr>
-                    <td>
-                        <div>@lang('general.transaction.sender')</div>
-                    </td>
-                    <td>
-                        <div><x-general.address :address="$transaction->sender()" /></div>
-                    </td>
+                    <td>@lang('general.transaction.sender')</td>
+                    <td><x-general.address :address="$transaction->sender()" /></td>
                 </tr>
                 <tr>
-                    <td>
-                        <div>@lang('general.transaction.recipient')</div>
-                    </td>
-                    <td>
-                        <div><x-general.address :address="$transaction->recipient() ?? $transaction->sender()" /></div>
-                    </td>
+                    <td>@lang('general.transaction.recipient')</td>
+                    <td><x-general.address :address="$transaction->recipient() ?? $transaction->sender()" /></td>
                 </tr>
                 <tr>
-                    <td>
-                        <div>@lang('general.transaction.amount')</div>
-                    </td>
-                    <td>
-                        <div>{{ $transaction->amount() }}</div>
-                    </td>
+                    <td>@lang('general.transaction.amount')</td>
+                    <td>{{ $transaction->amount() }}</td>
                 </tr>
                 <tr>
-                    <td>
-                        <div>@lang('general.transaction.fee')</div>
-                    </td>
-                    <td>
-                        <div>{{ $transaction->fee() }}</div>
-                    </td>
+                    <td>@lang('general.transaction.fee')</td>
+                    <td>{{ $transaction->fee() }}</td>
                 </tr>
             </table>
         </div>

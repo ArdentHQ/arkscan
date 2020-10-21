@@ -8,6 +8,6 @@ it('should render the page without any errors', function () {
     configureExplorerDatabase();
 
     $this
-        ->get(route('top-wallets'))
+        ->get(route('wallets'))
         ->assertNoContent();
 });
