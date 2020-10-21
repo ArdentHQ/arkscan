@@ -8,14 +8,13 @@ use App\Facades\Network;
 use App\Models\Transaction;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\NumberFormatter;
+use App\Services\Timestamp;
 use App\Services\Transactions\TransactionDirection;
 use App\Services\Transactions\TransactionDirectionIcon;
 use App\Services\Transactions\TransactionState;
 use App\Services\Transactions\TransactionStateIcon;
 use App\Services\Transactions\TransactionType;
 use App\Services\Transactions\TransactionTypeIcon;
-use ARKEcosystem\UserInterface\Support\DateFormat;
-use Illuminate\Support\Carbon;
 use Spatie\ViewModels\ViewModel;
 
 final class TransactionViewModel extends ViewModel
@@ -53,9 +52,7 @@ final class TransactionViewModel extends ViewModel
 
     public function timestamp(): string
     {
-        return Carbon::parse(\ArkEcosystem\Crypto\Configuration\Network::get()->epoch())
-            ->addSeconds($this->model->timestamp)
-            ->format(DateFormat::TIME);
+        return Timestamp::fromGenesisHuman($this->model->timestamp);
     }
 
     public function sender(): string

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Services\Blockchain\NetworkFactory;
+use Carbon\Carbon;
 
 use function Tests\fakeKnownWallets;
 
@@ -45,4 +46,8 @@ it('should have a host', function () {
 
 it('should determine if the network is on marketsquare', function () {
     expect($this->subject->usesMarketsquare())->toBeTrue();
+});
+
+it('should have an epoch', function () {
+    expect($this->subject->epoch())->toBeInstanceOf(Carbon::class);
 });

@@ -14,7 +14,7 @@ final class NetworkStatus
 {
     public static function height(): int
     {
-        return Cache::remember('status.height:'.Network::name(), 8000, function (): int {
+        return (int) Cache::remember('status.height:'.Network::name(), 8000, function (): int {
             $block = Block::latestByHeight()->first();
 
             if (is_null($block)) {
@@ -28,10 +28,10 @@ final class NetworkStatus
     // @TODO: use the wallets table once it is available.
     public static function supply(): int
     {
-        return Cache::remember('status.supply:'.Network::name(), 8000, function (): int {
+        return (int) Cache::remember('status.supply:'.Network::name(), 8000, function (): float {
             $supply = Http::baseUrl(Network::host())->get('blockchain')['data']['supply'];
 
-            return intval($supply / 1e8);
+            return $supply / 1e8;
         });
 
         // return Cache::remember('status.supply:'.Network::name(), 8000, fn () => Wallet::sum('balance'));

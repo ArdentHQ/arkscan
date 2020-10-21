@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Services\Blockchain\Networks\ARK;
 
 use App\Contracts\Network;
+use ArkEcosystem\Crypto\Networks\Mainnet;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
@@ -56,5 +58,10 @@ final class Production implements Network
     public function usesMarketsquare(): bool
     {
         return true;
+    }
+
+    public function epoch(): Carbon
+    {
+        return Carbon::parse(Mainnet::new()->epoch());
     }
 }

@@ -7,8 +7,7 @@ namespace App\ViewModels;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Services\NumberFormatter;
-use ARKEcosystem\UserInterface\Support\DateFormat;
-use Illuminate\Support\Carbon;
+use App\Services\Timestamp;
 use Spatie\ViewModels\ViewModel;
 
 final class BlockViewModel extends ViewModel
@@ -32,9 +31,7 @@ final class BlockViewModel extends ViewModel
 
     public function timestamp(): string
     {
-        return Carbon::parse(\ArkEcosystem\Crypto\Configuration\Network::get()->epoch())
-            ->addSeconds($this->model->timestamp)
-            ->format(DateFormat::TIME);
+        return Timestamp::fromGenesisHuman($this->model->timestamp);
     }
 
     public function delegate(): string

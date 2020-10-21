@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Contracts;
 
+use Carbon\Carbon;
+
 interface Network
 {
     public function name(): string;
@@ -23,4 +25,6 @@ interface Network
     public function host(): string;
 
     public function usesMarketsquare(): bool;
+
+    public function epoch(): Carbon;
 }
