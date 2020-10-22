@@ -8,6 +8,10 @@
     @section('content')
         <x-general.search.header />
 
+        <div class="justify-center py-16 content-container">
+            <x-charts.price identifier="price" colours-scheme="#339A51" />
+        </div>
+
         <x-home.content />
     @endsection
 

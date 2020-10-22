@@ -1,5 +1,6 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
-    "/js/tippy.js": "/js/tippy.js"
+    "/js/app.js": "/js/app.js?id=2ca34aab5918f2a90156",
+    "/css/app.css": "/css/app.css?id=f116c889b7203254c3c8",
+    "/js/tippy.js": "/js/tippy.js?id=f356b61d5a198cabc4b9",
+    "/js/chart.js": "/js/chart.js?id=360b7ae77d279910b9a2"
 }
