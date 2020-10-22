@@ -5,7 +5,9 @@
                 <tr>
                     <td width="150">@lang('general.block.id')</td>
                     <td>
-                        <a href="{{ $block->url() }}" class="font-semibold link">{{ $block->id() }}</a>
+                        <a href="{{ $block->url() }}" class="font-semibold link">
+                            <x-truncate-middle :value="$block->id()" />
+                        </a>
                     </td>
                 </tr>
                 <tr>
