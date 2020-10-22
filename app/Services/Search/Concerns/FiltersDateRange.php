@@ -11,22 +11,22 @@ use Illuminate\Database\Eloquent\Builder;
 trait FiltersDateRange
 {
     /** @phpstan-ignore-next-line */
-    private function queryDateRange(Builder $query, ?string $dateFrom, ?string $dateTo): Builder
+    private function queryDateRange(Builder $query, ?string $from, ?string $to): Builder
     {
-        if (! is_null($dateFrom)) {
-            $dateFrom = Timestamp::fromUnix(Carbon::parse($dateFrom)->unix())->unix();
+        if (is_null($from) && is_null($to)) {
+            return $query;
         }
 
-        if (! is_null($dateTo)) {
-            $dateTo = Timestamp::fromUnix(Carbon::parse($dateTo)->unix())->unix();
+        if (! is_null($from)) {
+            $from = Timestamp::fromUnix(Carbon::parse($from)->unix())->unix();
+
+            $query->where('timestamp', '>=', $from);
         }
 
-        if (! is_null($dateFrom) && ! is_null($dateTo)) {
-            $query->whereBetween('timestamp', [$dateFrom, $dateTo]);
-        } elseif (! is_null($dateFrom)) {
-            $query->where('timestamp', '>=', $dateFrom);
-        } elseif (! is_null($dateTo)) {
-            $query->where('timestamp', '<=', $dateTo);
+        if (! is_null($to)) {
+            $to = Timestamp::fromUnix(Carbon::parse($to)->unix())->unix();
+
+            $query->where('timestamp', '<=', $to);
         }
 
         return $query;

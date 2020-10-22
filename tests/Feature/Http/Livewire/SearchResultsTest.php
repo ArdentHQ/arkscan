@@ -6,7 +6,10 @@ use App\Http\Livewire\SearchResults;
 use Livewire\Livewire;
 use function Tests\configureExplorerDatabase;
 
-$searchDefaults = [
+beforeEach(function () {
+    configureExplorerDatabase();
+
+    $this->searchDefaults = [
     // Generic
     'term'        => '2510ed26-691f-3c51-ba2f-66263ced6c93',
     'type'        => 'block',
@@ -31,23 +34,22 @@ $searchDefaults = [
     'balanceFrom' => null,
     'balanceTo'   => null,
 ];
+});
 
-beforeEach(fn () => configureExplorerDatabase());
-
-it('should search for blocks', function () use ($searchDefaults) {
+it('should search for blocks', function () {
     Livewire::test(SearchResults::class)
-        ->emit('searchTriggered', array_merge($searchDefaults, ['type' => 'block']))
+        ->emit('searchTriggered', array_merge($this->searchDefaults, ['type' => 'block']))
         ->assertSet('state.type', 'block');
 });
 
-it('should search for transactions', function () use ($searchDefaults) {
+it('should search for transactions', function () {
     Livewire::test(SearchResults::class)
-        ->emit('searchTriggered', array_merge($searchDefaults, ['type' => 'transaction']))
+        ->emit('searchTriggered', array_merge($this->searchDefaults, ['type' => 'transaction']))
         ->assertSet('state.type', 'transaction');
 });
 
-it('should search for wallets', function () use ($searchDefaults) {
+it('should search for wallets', function () {
     Livewire::test(SearchResults::class)
-        ->emit('searchTriggered', array_merge($searchDefaults, ['type' => 'wallet']))
+        ->emit('searchTriggered', array_merge($this->searchDefaults, ['type' => 'wallet']))
         ->assertSet('state.type', 'wallet');
 });

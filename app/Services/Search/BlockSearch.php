@@ -9,6 +9,7 @@ use App\Models\Block;
 use App\Services\Search\Concerns\FiltersDateRange;
 use App\Services\Search\Concerns\FiltersValueRange;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 
 final class BlockSearch implements Search
 {
@@ -19,19 +20,19 @@ final class BlockSearch implements Search
     {
         $query = Block::query();
 
-        if ($parameters['term']) {
+        if (! is_null(Arr::get($parameters, 'term'))) {
             $query = $query->where('id', $parameters['term']);
         }
 
-        // $this->queryValueRange($query, $parameters['totalAmountFrom'], $parameters['totalAmountTo']);
+        $this->queryValueRange($query, 'total_amount', Arr::get($parameters, 'totalAmountFrom'), Arr::get($parameters, 'totalAmountTo'));
 
-        // $this->queryValueRange($query, $parameters['totalFeeFrom'], $parameters['totalFeeTo']);
+        $this->queryValueRange($query, 'total_fee', Arr::get($parameters, 'totalFeeFrom'), Arr::get($parameters, 'totalFeeTo'));
 
-        // $this->queryDateRange($query, $parameters['dateFrom'], $parameters['dateTo']);
+        $this->queryDateRange($query, Arr::get($parameters, 'dateFrom'), Arr::get($parameters, 'dateTo'));
 
-        // if ($parameters['generatorPublicKey']) {
-        //     $query->where('generator_public_key', $parameters['generatorPublicKey']);
-        // }
+        if (! is_null(Arr::get($parameters, 'generatorPublicKey'))) {
+            $query->where('generator_public_key', $parameters['generatorPublicKey']);
+        }
 
         return $query;
     }

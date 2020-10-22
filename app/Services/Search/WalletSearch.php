@@ -9,6 +9,7 @@ use App\Models\Wallet;
 use App\Services\Search\Concerns\FiltersDateRange;
 use App\Services\Search\Concerns\FiltersValueRange;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 
 final class WalletSearch implements Search
 {
@@ -19,18 +20,18 @@ final class WalletSearch implements Search
     {
         $query = Wallet::query();
 
-        $this->queryValueRange($query, $parameters['balanceFrom'], $parameters['balanceTo']);
+        $this->queryValueRange($query, 'balance', (int) Arr::get($parameters, 'balanceFrom', 0), (int) Arr::get($parameters, 'balanceTo', 0));
 
-        if ($parameters['term']) {
+        if (! is_null(Arr::get($parameters, 'term'))) {
             $query->where('address', $parameters['term']);
             $query->orWhere('public_key', $parameters['term']);
         }
 
-        if ($parameters['username']) {
+        if (! is_null(Arr::get($parameters, 'username'))) {
             $query->where('username', $parameters['username']);
         }
 
-        if ($parameters['vote']) {
+        if (! is_null(Arr::get($parameters, 'vote'))) {
             $query->where('vote', $parameters['vote']);
         }
 

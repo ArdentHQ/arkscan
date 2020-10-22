@@ -9,14 +9,18 @@ use Illuminate\Database\Eloquent\Builder;
 trait FiltersValueRange
 {
     /** @phpstan-ignore-next-line */
-    private function queryValueRange(Builder $query, ?string $from, ?string $to): Builder
+    private function queryValueRange(Builder $query, string $column, ?int $from, ?int $to): Builder
     {
-        if (! is_null($from) && ! is_null($to)) {
-            $query->whereBetween('total_amount', [$from, $to]);
-        } elseif (! is_null($from)) {
-            $query->where('total_amount', '>=', $from);
-        } elseif (! is_null($to)) {
-            $query->where('total_amount', '<=', $to);
+        if (is_null($from) && is_null($to)) {
+            return $query;
+        }
+
+        if (! is_null($from) && $from > 0) {
+            $query->where($column, '>=', $from);
+        }
+
+        if (! is_null($to) && $to > 0) {
+            $query->where($column, '<=', $to);
         }
 
         return $query;

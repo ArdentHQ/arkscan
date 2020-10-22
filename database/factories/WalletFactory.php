@@ -15,11 +15,11 @@ final class WalletFactory extends Factory
     {
         return [
             'id'                => $this->faker->uuid,
-            'address'           => $this->faker->word,
-            'public_key'        => $this->faker->word,
-            'second_public_key' => $this->faker->word,
-            'vote'              => $this->faker->word,
-            'username'          => $this->faker->word,
+            'address'           => $this->faker->uuid,
+            'public_key'        => $this->faker->uuid,
+            'second_public_key' => $this->faker->uuid,
+            'vote'              => $this->faker->uuid,
+            'username'          => $this->faker->uuid,
             'balance'           => $this->faker->numberBetween(1, 1000) * 1e8,
             'nonce'             => $this->faker->numberBetween(1, 1000),
             'vote_balance'      => $this->faker->numberBetween(1, 1000) * 1e8,

@@ -44,6 +44,7 @@ use App\Models\Transaction;
 use App\Services\Search\Concerns\FiltersDateRange;
 use App\Services\Search\Concerns\FiltersValueRange;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 
 final class TransactionSearch implements Search
 {
@@ -90,26 +91,28 @@ final class TransactionSearch implements Search
 
     public function search(array $parameters): Builder
     {
-        if ($parameters['transactionType'] !== 'all') {
-            $scopeClass = $this->scopes[$parameters['transactionType']];
+        if (Arr::has($parameters, 'transactionType')) {
+            if (Arr::get($parameters, 'transactionType') !== 'all') {
+                $scopeClass = $this->scopes[$parameters['transactionType']];
 
-            /* @var \Illuminate\Database\Eloquent\Model */
-            Transaction::addGlobalScope(new $scopeClass());
+                /* @var \Illuminate\Database\Eloquent\Model */
+                Transaction::addGlobalScope(new $scopeClass());
+            }
         }
 
         $query = Transaction::query();
 
-        if ($parameters['term']) {
+        if (! is_null(Arr::get($parameters, 'term'))) {
             $query->where('id', $parameters['term']);
         }
 
-        $this->queryValueRange($query, $parameters['amountFrom'], $parameters['amountTo']);
+        $this->queryValueRange($query, 'amount', Arr::get($parameters, 'amountFrom'), Arr::get($parameters, 'amountTo'));
 
-        $this->queryValueRange($query, $parameters['feeFrom'], $parameters['feeTo']);
+        $this->queryValueRange($query, 'fee', Arr::get($parameters, 'feeFrom'), Arr::get($parameters, 'feeTo'));
 
-        $this->queryDateRange($query, $parameters['dateFrom'], $parameters['dateTo']);
+        $this->queryDateRange($query, Arr::get($parameters, 'dateFrom'), Arr::get($parameters, 'dateTo'));
 
-        if ($parameters['smartBridge']) {
+        if (! is_null(Arr::get($parameters, 'smartBridge'))) {
             $query->where('vendor_field_hex', $parameters['smartBridge']);
         }
 
