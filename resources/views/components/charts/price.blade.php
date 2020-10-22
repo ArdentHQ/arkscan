@@ -1,6 +1,216 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.9.1/dayjs.min.js"></script>
-    <script src="{{ mix('js/chart.js')}}"></script>
+    <script>
+        window.makeChart = (identifier, coloursScheme) => {
+            return {
+                period: "Day",
+                identifier,
+                coloursScheme,
+                chart: null,
+                data: {
+                    marketHistoricalDay: @json($data['day']),
+                    marketHistoricalWeek: @json($data['week']),
+                    marketHistoricalMonth: @json($data['month']),
+                    marketHistoricalQuarter: @json($data['quarter']),
+                    marketHistoricalYear: @json($data['year']),
+                },
+                currency: "{{ Network::currency() }}",
+                dateAt: "",
+                priceAt: null,
+                priceMin: null,
+                priceMax: null,
+                priceAvg: null,
+                dropdownOpen: false,
+                localizedPeriod: null,
+                getMarketAverage(period) {
+                    const market = this.data[`marketHistorical${period}`]
+
+                    this.priceMin = market.min;
+                    this.priceAvg = market.avg;
+                    this.priceMax = market.max;
+
+                    return market;
+                },
+                renderChart() {
+                    const themeColours = {
+                        gridLines: "#DBDEE5",
+                        ticks: "#B0B0B8",
+                    };
+
+                    const fontConfig = {
+                        fontColor: themeColours.ticks,
+                        fontSize: 14,
+                        fontStyle: 600,
+                    };
+
+                    const scaleCorrection = 1000;
+
+                    let ctx = document.getElementById(this.identifier).getContext("2d");
+
+                    this.chart = new Chart(ctx, {
+                        type: "line",
+                        data: {
+                            labels: this.getMarketAverage('Day').labels,
+                            datasets: [
+                                {
+                                    borderColor: this.coloursScheme,
+                                    pointRadius: 4,
+                                    pointHoverRadius: 12,
+                                    pointHoverBorderWidth: 3,
+                                    pointHoverBackgroundColor: "rgba(204, 230, 211, 0.5)",
+                                    pointHitRadius: 12,
+                                    pointBackgroundColor: "#FFFFFF",
+                                    borderWidth: 3,
+                                    type: "line",
+                                    fill: false,
+                                    data: this.getMarketAverage('Day').datasets,
+                                    hidden: false,
+                                },
+                            ],
+                        },
+                        // Configuration options go here
+                        options: {
+                            showScale: true,
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            elements: {
+                                line: {
+                                    cubicInterpolationMode: "monotone",
+                                    tension: 0,
+                                },
+                            },
+                            legend: {
+                                display: false,
+                            },
+                            layout: {
+                                padding: {
+                                    left: 0,
+                                    right: 0,
+                                    top: 10,
+                                    bottom: 10,
+                                },
+                            },
+                            scales: {
+                                yAxes: [
+                                    {
+                                        type: "linear",
+                                        position: "left",
+                                        stacked: true,
+                                        gridLines: {
+                                            color: themeColours.gridLines,
+                                            display: true,
+                                            drawBorder: false,
+                                        },
+                                        ticks: {
+                                            padding: 15,
+                                            ...fontConfig,
+                                            callback: (value, index, values) => {
+                                                // TODO: Proper implementation
+                                                if (index % 2 === 0) {
+                                                    return;
+                                                }
+
+                                                const formatConfig = {
+                                                    currency: this.currency,
+                                                };
+
+                                                const price = value / scaleCorrection;
+
+                                                if (price < 1e-4) {
+                                                    formatConfig.maximumFractionDigits = 8;
+                                                } else if (price < 1e-2) {
+                                                    formatConfig.maximumFractionDigits = 5;
+                                                } else {
+                                                    formatConfig.maximumFractionDigits = 3;
+                                                }
+
+                                                return `${value} {{ Network::currencySymbol() }}`;
+                                            },
+                                        },
+                                    },
+                                ],
+                                xAxes: [
+                                    {
+                                        gridLines: {
+                                            color: themeColours.gridLines,
+                                            drawBorder: false,
+                                            display: true,
+                                        },
+                                        ticks: {
+                                            padding: 10,
+                                            ...fontConfig,
+                                            callback: (value, index, values) => {
+                                                if (
+                                                    this.period !== "Day" &&
+                                                    index === values.length - 1
+                                                ) {
+                                                    return "Today";
+                                                } else if (this.period === "Week") {
+                                                    const width = this.$el.clientWidth;
+
+                                                    if (width > 1200) {
+                                                        // TODO: DW returns a day of the week, where value would be "Friday" for example
+                                                        return value;
+                                                    } else {
+                                                        // TODO: DW returns the abbreviation of a day of the week, where value would be "FRI" for example
+                                                        return value;
+                                                    }
+                                                } else if (this.period === "Month") {
+                                                    return value;
+                                                }
+
+                                                return value;
+                                            },
+                                        },
+                                    },
+                                ],
+                            },
+                            tooltips: {
+                                displayColors: false,
+                                mode: "interpolate",
+                                intersect: false,
+                                mode: "index",
+                                axis: "x",
+                                callbacks: {
+                                    label: (item) => {
+                                        // TODO: Rounded circle on the left of the label
+                                        return `${item.yLabel.toFixed(2)} ${this.currency}`;
+                                    },
+                                    title: (items, data) => {},
+                                },
+                            },
+                        },
+                    });
+
+                    return this.chart;
+                },
+
+                updateLabels() {
+                    return this.getMarketAverage(this.period).labels;
+                },
+
+                updateTicks() {
+                    return this.getMarketAverage(this.period).datasets;
+                },
+
+                setPeriod(period) {
+                    this.period = period.charAt(0).toUpperCase() + period.slice(1);
+
+                    updatedTicks = this.updateTicks();
+
+                    this.chart.data.labels = this.updateLabels();
+                    this.chart.data.datasets[0].data = updatedTicks;
+
+                    // Render the chart synchronously and without an animation.
+                    this.chart.update(0);
+                },
+
+                isActivePeriod(period) {
+                    return period === this.period;
+                },
+            };
+        };
+    </script>
 @endpush
 
 <div

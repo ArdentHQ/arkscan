@@ -31,7 +31,7 @@ cp .env.example .env
 php artisan key:generate
 php artisan migrate:fresh
 ## You can run these commands to create a core database with fake data (change EXPLORER_DB_DATABASE to your actual database name))
-# php artisan migrate --path=tests/migrations --database=EXPLORER_DB_DATABASE
+# php artisan migrate --path=tests/migrations --database=explorer
 # composer play
 php artisan storage:link
 yarn run watch

@@ -18,8 +18,8 @@ final class TransactionFactory extends Factory
         return [
             'id'                => $this->faker->uuid,
             'block_id'          => fn () => Block::factory(),
-            'type'              => $this->faker->word,
-            'type_group'        => $this->faker->word,
+            'type'              => $this->faker->numberBetween(1, 100),
+            'type_group'        => $this->faker->numberBetween(1, 100),
             'sender_public_key' => fn () => Wallet::factory()->create()->public_key,
             'recipient_id'      => fn () => Wallet::factory()->create()->address,
             'timestamp'         => 112982056,
