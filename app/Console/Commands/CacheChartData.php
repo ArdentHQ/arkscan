@@ -9,6 +9,7 @@ use App\Services\CryptoCompare;
 use App\Services\Transactions\Aggregates\FeeByRangeAggregate;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 final class CacheChartData extends Command
@@ -57,35 +58,57 @@ final class CacheChartData extends Command
      */
     public function handle()
     {
-        $ttl   = Carbon::now()->addHour();
-        $today = Carbon::now()->endOfDay();
+        if (Network::canBeExchanged()) {
+            $this->cachePrices();
+        }
 
-        $this->cachePrices($ttl);
-
-        $this->cacheFees($ttl, $today);
+        $this->cacheFees();
     }
 
-    private function cachePrices(Carbon $ttl): void
+    private function cachePrices(): void
     {
         foreach ($this->currencies as $currency) {
             $prices = (new CryptoCompare())->historical(Network::currency(), $currency);
 
-            Cache::remember('chart.prices.day', $ttl, fn () => $prices->take(1));
-            Cache::remember('chart.prices.week', $ttl, fn () => $prices->take(7));
-            Cache::remember('chart.prices.month', $ttl, fn () => $prices->take(30));
-            Cache::remember('chart.prices.quarter', $ttl, fn () => $prices->take(120));
-            Cache::remember('chart.prices.year', $ttl, fn () => $prices->take(365));
+            $this->cacheKeyValue('chart.prices.day', fn () => $prices->take(1), 'H:s');
+            $this->cacheKeyValue('chart.prices.week', fn () => $prices->take(7), 'd.m');
+            $this->cacheKeyValue('chart.prices.month', fn () => $prices->take(30), 'd.m');
+            $this->cacheKeyValue('chart.prices.quarter', fn () => $prices->take(120), 'd.m');
+            $this->cacheKeyValue('chart.prices.year', fn () => $prices->take(365), 'd.m');
         }
     }
 
-    private function cacheFees(Carbon $ttl, Carbon $today): void
+    private function cacheFees(): void
     {
-        $fees = new FeeByRangeAggregate();
+        $fees  = new FeeByRangeAggregate();
+        $today = Carbon::now()->endOfDay();
 
-        Cache::remember('chart.fees.day', $ttl, fn () => $fees->aggregate(Carbon::now()->startOfDay(), $today));
-        Cache::remember('chart.fees.week', $ttl, fn () => $fees->aggregate(Carbon::now()->subDays(7), $today));
-        Cache::remember('chart.fees.month', $ttl, fn () => $fees->aggregate(Carbon::now()->subDays(30), $today));
-        Cache::remember('chart.fees.quarter', $ttl, fn () => $fees->aggregate(Carbon::now()->subDays(120), $today));
-        Cache::remember('chart.fees.year', $ttl, fn () => $fees->aggregate(Carbon::now()->subDays(365), $today));
+        $this->cacheKeyValue('chart.fees.day', fn () => $fees->aggregate(Carbon::now()->startOfDay(), $today), 'H:s');
+        $this->cacheKeyValue('chart.fees.week', fn () => $fees->aggregate(Carbon::now()->subDays(7), $today), 'd.m');
+        $this->cacheKeyValue('chart.fees.month', fn () => $fees->aggregate(Carbon::now()->subDays(30), $today), 'd.m');
+        $this->cacheKeyValue('chart.fees.quarter', fn () => $fees->aggregate(Carbon::now()->subDays(120), $today), 'd.m');
+        $this->cacheKeyValue('chart.fees.year', fn () => $fees->aggregate(Carbon::now()->subDays(365), $today), 'd.m');
+    }
+
+    private function groupByDate(Collection $datasets, string $dateFormat): array
+    {
+        $datasets = $datasets
+            ->groupBy(fn ($_, $key) => Carbon::parse($key)->format($dateFormat))
+            ->reverse()
+            ->mapWithKeys(fn ($values, $key) => [$key => $values->first()]);
+
+        return [
+            'labels'   => $datasets->keys(),
+            'datasets' => $datasets->values(),
+        ];
+    }
+
+    private function cacheKeyValue(string $key, \Closure $callback, string $dateFormat): void
+    {
+        Cache::remember(
+            $key,
+            Carbon::now()->addHour(),
+            fn () => $this->groupByDate($callback(), $dateFormat)
+        );
     }
 }
