@@ -60,13 +60,28 @@ final class BlockViewModel extends ViewModel
         return NumberFormatter::currency($this->model->total_amount / 1e8, Network::currency());
     }
 
+    public function amountFiat(): ?string
+    {
+        return null;
+    }
+
     public function fee(): string
     {
         return NumberFormatter::currency($this->model->total_fee / 1e8, Network::currency());
     }
 
+    public function feeFiat(): ?string
+    {
+        return null;
+    }
+
     public function reward(): string
     {
         return NumberFormatter::currency($this->model->reward / 1e8, Network::currency());
+    }
+
+    public function rewardFiat(): ?string
+    {
+        return null;
     }
 }

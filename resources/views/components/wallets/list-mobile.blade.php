@@ -32,7 +32,9 @@
                 @endif
                 <tr>
                     <td>@lang('general.wallet.balance')</td>
-                    <td>{{ $wallet->balance() }}</td>
+                    <td>
+                        <x-general.amount-fiat-tooltip :amount="$wallet->balance()" :fiat="$wallet->balanceFiat()" />
+                    </td>
                 </tr>
                 <tr>
                     <td>@lang('general.wallet.supply')</td>

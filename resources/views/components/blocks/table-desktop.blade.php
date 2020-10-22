@@ -30,8 +30,12 @@
                     <td><x-general.address :address="$block->delegate()" /></td>
                     <td>{{ $block->height() }}</td>
                     <td>{{ $block->transactionCount() }}</td>
-                    <td class="text-right">{{ $block->amount() }}</td>
-                    <td class="hidden text-right xl:table-cell">{{ $block->fee() }}</td>
+                    <td class="text-right">
+                        <x-general.amount-fiat-tooltip :amount="$block->amount()" :fiat="$block->amountFiat()" />
+                    </td>
+                    <td class="hidden text-right xl:table-cell">
+                        <x-general.amount-fiat-tooltip :amount="$block->fee()" :fiat="$block->feeFiat()" />
+                    </td>
                 </tr>
             @endforeach
         </tbody>

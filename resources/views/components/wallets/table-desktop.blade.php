@@ -40,7 +40,9 @@
                             </div>
                         </td>
                     @endif
-                    <td class="text-right">{{ $wallet->balance() }}</td>
+                    <td class="text-right">
+                        <x-general.amount-fiat-tooltip :amount="$wallet->balance()" :fiat="$wallet->balanceFiat()" />
+                    </td>
                     <td class="hidden text-right lg:table-cell">{{ number_format($wallet->balancePercentage(), 2) }} %</td>
                 </tr>
             @endforeach

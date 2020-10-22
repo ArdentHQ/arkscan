@@ -82,9 +82,19 @@ final class TransactionViewModel extends ViewModel
         return NumberFormatter::currency($this->model->fee / 1e8, Network::currency());
     }
 
+    public function feeFiat(): ?string
+    {
+        return null;
+    }
+
     public function amount(): string
     {
         return NumberFormatter::currency($this->model->amount / 1e8, Network::currency());
+    }
+
+    public function amountFiat(): ?string
+    {
+        return null;
     }
 
     public function confirmations(): string

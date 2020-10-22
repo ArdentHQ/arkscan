@@ -29,8 +29,12 @@
                     </td>
                     <td><x-general.address :address="$transaction->sender()" /></td>
                     <td><x-general.address :address="$transaction->recipient() ?? $transaction->sender()" /></td>
-                    <td class="text-right">{{ $transaction->amount() }}</td>
-                    <td class="hidden text-right xl:table-cell">{{ $transaction->fee() }}</td>
+                    <td class="text-right">
+                        <x-general.amount-fiat-tooltip :amount="$transaction->amount()" :fiat="$transaction->amountFiat()" />
+                    </td>
+                    <td class="hidden text-right xl:table-cell">
+                        <x-general.amount-fiat-tooltip :amount="$transaction->fee()" :fiat="$transaction->feeFiat()" />
+                    </td>
                 </tr>
             @endforeach
         </tbody>

@@ -5,10 +5,6 @@
         <meta property="og:description" content="@lang('metatags.top_wallets.description')">
     @endpush
 
-    @push('scripts')
-        <script src="{{ mix('js/tippy.js')}}" defer></script>
-    @endpush
-
     @section('content')
         <x-general.search.header />
 

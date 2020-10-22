@@ -28,11 +28,15 @@
                 </tr>
                 <tr>
                     <td>@lang('general.block.amount')</td>
-                    <td>{{ $block->amount() }}</td>
+                    <td>
+                        <x-general.amount-fiat-tooltip :amount="$block->amount()" :fiat="$block->amountFiat()" />
+                    </td>
                 </tr>
                 <tr>
                     <td>@lang('general.block.fee')</td>
-                    <td>{{ $block->fee() }}</td>
+                    <td>
+                        <x-general.amount-fiat-tooltip :amount="$block->fee()" :fiat="$block->feeFiat()" />
+                    </td>
                 </tr>
             </table>
         </div>

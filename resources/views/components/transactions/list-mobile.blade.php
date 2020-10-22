@@ -24,11 +24,15 @@
                 </tr>
                 <tr>
                     <td>@lang('general.transaction.amount')</td>
-                    <td>{{ $transaction->amount() }}</td>
+                    <td>
+                        <x-general.amount-fiat-tooltip :amount="$transaction->amount()" :fiat="$transaction->amountFiat()" />
+                    </td>
                 </tr>
                 <tr>
                     <td>@lang('general.transaction.fee')</td>
-                    <td>{{ $transaction->fee() }}</td>
+                    <td>
+                        <x-general.amount-fiat-tooltip :amount="$transaction->fee()" :fiat="$transaction->feeFiat()" />
+                    </td>
                 </tr>
             </table>
         </div>
