@@ -10,7 +10,7 @@ trait ManagesSearch
 {
     public array $state = [
         // Generic
-        'term'        => '2510ed26-691f-3c51-ba2f-66263ced6c93',
+        'term'        => null,
         'type'        => 'block',
         'dateFrom'    => null,
         'dateTo'      => null,
