@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire;
+namespace App\Services\Search;
 
+use App\Contracts\Search;
 use App\Models\Scopes\BusinessEntityRegistrationScope;
 use App\Models\Scopes\BusinessEntityResignationScope;
 use App\Models\Scopes\BusinessEntityUpdateScope;
@@ -40,26 +41,14 @@ use App\Models\Scopes\TimelockScope;
 use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\VoteScope;
 use App\Models\Transaction;
-use App\Services\Search\TransactionSearch;
-use App\ViewModels\ViewModelFactory;
-use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasPagination;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\View\View;
-use Livewire\Component;
+use App\Services\Search\Concerns\FiltersDateRange;
+use App\Services\Search\Concerns\FiltersValueRange;
+use Illuminate\Database\Eloquent\Builder;
 
-final class TransactionTable extends Component
+final class TransactionSearch implements Search
 {
-    use HasPagination;
-
-    public bool $viewMore = false;
-
-    protected ?LengthAwarePaginator $transactions = null;
-
-    public array $state = [
-        'type' => 'all',
-    ];
-
-    protected $listeners = ['searchTransactions'];
+    use FiltersDateRange;
+    use FiltersValueRange;
 
     private array $scopes = [
         'businessEntityRegistration'    => BusinessEntityRegistrationScope::class,
@@ -99,31 +88,31 @@ final class TransactionTable extends Component
         'vote'                          => VoteScope::class,
     ];
 
-    public function mount(bool $viewMore = false): void
+    public function search(array $parameters): Builder
     {
-        $this->viewMore = $viewMore;
-    }
+        if ($parameters['transactionType'] !== 'all') {
+            $scopeClass = $this->scopes[$parameters['transactionType']];
 
-    public function searchTransactions(array $data): void
-    {
-        $this->transactions = (new TransactionSearch())->search($data)->paginate();
-    }
-
-    public function render(): View
-    {
-        if (is_null($this->transactions)) {
-            $this->transactions = Transaction::latestByTimestamp()->paginate();
-        } else {
-            if ($this->state['type'] !== 'all') {
-                $scopeClass = $this->scopes[$this->state['type']];
-
-                /* @var \Illuminate\Database\Eloquent\Model */
-                Transaction::addGlobalScope(new $scopeClass());
-            }
+            /* @var \Illuminate\Database\Eloquent\Model */
+            Transaction::addGlobalScope(new $scopeClass());
         }
 
-        return view('livewire.transaction-table', [
-            'transactions' => ViewModelFactory::paginate($this->transactions),
-        ]);
+        $query = Transaction::query();
+
+        if ($parameters['term']) {
+            $query->where('id', $parameters['term']);
+        }
+
+        $this->queryValueRange($query, $parameters['amountFrom'], $parameters['amountTo']);
+
+        $this->queryValueRange($query, $parameters['feeFrom'], $parameters['feeTo']);
+
+        $this->queryDateRange($query, $parameters['dateFrom'], $parameters['dateTo']);
+
+        if ($parameters['smartBridge']) {
+            $query->where('vendor_field_hex', $parameters['smartBridge']);
+        }
+
+        return $query;
     }
 }

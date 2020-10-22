@@ -1,7 +1,7 @@
 {{-- TODO: Tidy up fields - review compared to design to see if they can be improved --}}
 <div
     x-data="{
-        showAdvanced: false,
+        showAdvanced: {{ $advanced }},
         isMobileOpen: false,
         isFocused: false,
     }"
@@ -89,9 +89,51 @@
         >
             <div class="search-advanced-options">
                 <x-general.search.advanced-option :title="trans('forms.search.type')">
+                    <select wire:model="state.type" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">
+                        <option value="block">Block</option>
+                        <option value="transaction">Transaction</option>
+                        <option value="wallet">Wallet</option>
+                    </select>
+                </x-general.search.advanced-option>
+
+                <x-general.search.advanced-option :title="trans('forms.search.transaction_type')">
                     {{-- TODO: Enum of types and their values? --}}
-                    <select class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">
-                        <option value="">Multisignature Registration</option>
+                    <select wire:model="state.transactionType" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">
+                        <option value="businessEntityRegistration">@lang('forms.search.transaction_types.businessEntityRegistration')</option>
+                        <option value="businessEntityResignation">@lang('forms.search.transaction_types.businessEntityResignation')</option>
+                        <option value="businessEntityUpdate">@lang('forms.search.transaction_types.businessEntityUpdate')</option>
+                        <option value="delegateEntityRegistration">@lang('forms.search.transaction_types.delegateEntityRegistration')</option>
+                        <option value="delegateEntityResignation">@lang('forms.search.transaction_types.delegateEntityResignation')</option>
+                        <option value="delegateEntityUpdate">@lang('forms.search.transaction_types.delegateEntityUpdate')</option>
+                        <option value="delegateRegistration">@lang('forms.search.transaction_types.delegateRegistration')</option>
+                        <option value="delegateResignation">@lang('forms.search.transaction_types.delegateResignation')</option>
+                        <option value="entityRegistration">@lang('forms.search.transaction_types.entityRegistration')</option>
+                        <option value="entityResignation">@lang('forms.search.transaction_types.entityResignation')</option>
+                        <option value="entityUpdate">@lang('forms.search.transaction_types.entityUpdate')</option>
+                        <option value="ipfs">@lang('forms.search.transaction_types.ipfs')</option>
+                        <option value="legacyBridgechainRegistration">@lang('forms.search.transaction_types.legacyBridgechainRegistration')</option>
+                        <option value="legacyBridgechainResignation">@lang('forms.search.transaction_types.legacyBridgechainResignation')</option>
+                        <option value="legacyBridgechainUpdate">@lang('forms.search.transaction_types.legacyBridgechainUpdate')</option>
+                        <option value="legacyBusinessRegistration">@lang('forms.search.transaction_types.legacyBusinessRegistration')</option>
+                        <option value="legacyBusinessResignation">@lang('forms.search.transaction_types.legacyBusinessResignation')</option>
+                        <option value="legacyBusinessUpdate">@lang('forms.search.transaction_types.legacyBusinessUpdate')</option>
+                        <option value="moduleEntityRegistration">@lang('forms.search.transaction_types.moduleEntityRegistration')</option>
+                        <option value="moduleEntityResignation">@lang('forms.search.transaction_types.moduleEntityResignation')</option>
+                        <option value="moduleEntityUpdate">@lang('forms.search.transaction_types.moduleEntityUpdate')</option>
+                        <option value="multiPayment">@lang('forms.search.transaction_types.multiPayment')</option>
+                        <option value="multiSignature">@lang('forms.search.transaction_types.multiSignature')</option>
+                        <option value="pluginEntityRegistration">@lang('forms.search.transaction_types.pluginEntityRegistration')</option>
+                        <option value="pluginEntityResignation">@lang('forms.search.transaction_types.pluginEntityResignation')</option>
+                        <option value="pluginEntityUpdate">@lang('forms.search.transaction_types.pluginEntityUpdate')</option>
+                        <option value="productEntityRegistration">@lang('forms.search.transaction_types.productEntityRegistration')</option>
+                        <option value="productEntityResignation">@lang('forms.search.transaction_types.productEntityResignation')</option>
+                        <option value="productEntityUpdate">@lang('forms.search.transaction_types.productEntityUpdate')</option>
+                        <option value="secondSignature">@lang('forms.search.transaction_types.secondSignature')</option>
+                        <option value="timelockClaim">@lang('forms.search.transaction_types.timelockClaim')</option>
+                        <option value="timelockRefund">@lang('forms.search.transaction_types.timelockRefund')</option>
+                        <option value="timelock">@lang('forms.search.transaction_types.timelock')</option>
+                        <option value="transfer">@lang('forms.search.transaction_types.transfer')</option>
+                        <option value="vote">@lang('forms.search.transaction_types.vote')</option>
                     </select>
                 </x-general.search.advanced-option>
 
@@ -158,12 +200,8 @@
                         />
                     </div>
                 </x-general.search.advanced-option>
-            </div>
 
-            <div class="flex items-center p-8 space-x-8 border-t border-theme-secondary-300 dark:border-theme-secondary-800">
-                <div class="flex flex-col flex-1 space-y-2">
-                    <div class="text-sm font-semibold">@lang('forms.search.smartbridge')</div>
-
+                <x-general.search.advanced-option :title="trans('forms.search.smartbridge')">
                     <input
                         type="text"
                         placeholder="@lang('forms.search.smartbridge_placeholder')"
@@ -171,7 +209,7 @@
                         wire:model="state.smartBridge"
                         wire:keydown.enter="performSearch"
                     />
-                </div>
+                </x-general.search.advanced-option>
             </div>
         </div>
 

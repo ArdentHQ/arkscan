@@ -8,7 +8,7 @@
     @section('content')
         <x-general.search.header />
 
-        <x-search.results type="transaction" />
+        <livewire:search-results />
     @endsection
 
 @endcomponent
