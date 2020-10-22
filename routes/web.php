@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'app.home')->name('home');
 // TODO: Remove once /blocks is implemented
 Route::view('/block', 'app.block')->name('block');
+Route::view('/search', 'app.search-results')->name('search');
 
 Route::view('/wallets', 'app.wallets')->name('wallets');
 Route::get('/wallets/{wallet}', ShowWalletController::class)->name('wallet');
