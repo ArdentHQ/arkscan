@@ -55,7 +55,7 @@
                 @click="showAdvanced = !showAdvanced; isFocused = true; $dispatch('search-slim-expand')"
             >
                 <span x-show="!showAdvanced">@lang('actions.advanced_search')</span>
-                <span x-show="showAdvanced">@lang('actions.hide_search')</span>
+                <span x-show="showAdvanced" x-cloak>@lang('actions.hide_search')</span>
             </button>
 
             @unless($isSlim ?? false)
@@ -86,13 +86,14 @@
                 x-transition:leave-start="opacity-100 transform"
                 x-transition:leave-end="opacity-0 transform"
             @endunless
+            x-cloak
         >
             <div class="search-advanced-options">
                 <x-general.search.advanced-option :title="trans('forms.search.type')">
                     <select wire:model="state.type" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">
-                        <option value="block">Block</option>
-                        <option value="transaction">Transaction</option>
-                        <option value="wallet">Wallet</option>
+                        <option value="block">@lang('forms.search.block')</option>
+                        <option value="transaction">@lang('forms.search.transaction')</option>
+                        <option value="wallet">@lang('forms.search.wallet')</option>
                     </select>
                 </x-general.search.advanced-option>
 

@@ -15,7 +15,7 @@
     >
         <div class="flex flex-col divide-y divide-dotted divide-theme-secondary-300">
             @if(Network::canBeExchanged())
-                <x-navbar.setting-option title="Currency" subtitle="Select display currency">
+                <x-navbar.setting-option :title="trans('forms.settings.currency.title')" :subtitle="trans('forms.settings.currency.description')">
                     <select wire:model="state.currency" class="font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">
                         <option value="AUD">AUD</option>
                         <option value="BRL">BRL</option>
@@ -36,7 +36,7 @@
                 </x-navbar.setting-option>
             @endif
 
-            <x-navbar.setting-option title="Statistics Chart" subtitle="Enable/Disable statistics chart">
+            <x-navbar.setting-option :title="trans('forms.settings.chart.title')" :subtitle="trans('forms.settings.chart.description')">
                 <x-ark-toggle
                     name="state.statisticsChart"
                     :default="$this->state['statisticsChart'] ? 'true' : 'false'"
@@ -44,7 +44,7 @@
                 />
             </x-navbar.setting-option>
 
-            <x-navbar.setting-option title="Dark Theme" subtitle="Enable/Disable dark theme" no-border>
+            <x-navbar.setting-option :title="trans('forms.settings.theme.title')" :subtitle="trans('forms.settings.theme.description')" no-border>
                 <x-ark-toggle
                     name="state.darkTheme"
                     hide-label

@@ -6,6 +6,10 @@ return [
 
     'search' => [
 
+        'block'       => 'Block',
+        'transaction' => 'Transaction',
+        'Wallet'      => 'Wallet',
+
         'amount_range'            => 'Amount Range',
         'date_range'              => 'Date Range',
         'fee_range'               => 'Fee Range',
@@ -53,6 +57,21 @@ return [
             'vote'                          => 'Vote',
         ],
 
+    ],
+
+    'settings' => [
+        'currency' => [
+            'title'       => 'Currency',
+            'description' => 'Select display currency',
+        ],
+        'chart' => [
+            'title'       => 'Statistics Chart',
+            'description' => 'Enable/Disable statistics chart',
+        ],
+        'theme' => [
+            'title'       => 'Dark Theme',
+            'description' => 'Enable/Disable dark theme',
+        ],
     ],
 
 ];
