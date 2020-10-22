@@ -39,33 +39,4 @@ trait ManagesSearch
             'state.balanceTo'   => ['nullable', 'integer', 'min:0', 'max:100'],
         ])['state'];
     }
-
-    private function restoreState(array $state): void
-    {
-        $this->state = array_merge([
-            // Generic
-            'term'        => null,
-            'type'        => 'block',
-            'dateFrom'    => null,
-            'dateTo'      => null,
-            // Blocks
-            'totalAmountFrom'    => null,
-            'totalAmountTo'      => null,
-            'totalFeeFrom'       => null,
-            'totalFeeTo'         => null,
-            'generatorPublicKey' => null,
-            // Transactions
-            'transactionType' => 'transfer',
-            'amountFrom'      => null,
-            'amountTo'        => null,
-            'feeFrom'         => null,
-            'feeTo'           => null,
-            'smartBridge'     => null,
-            // Wallets
-            'username'    => null,
-            'vote'        => null,
-            'balanceFrom' => null,
-            'balanceTo'   => null,
-        ], $state);
-    }
 }

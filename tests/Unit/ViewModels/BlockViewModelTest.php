@@ -55,6 +55,18 @@ it('should get the reward', function () {
     assertMatchesSnapshot($this->subject->reward());
 });
 
+it('should get the amount as fiat', function () {
+    expect($this->subject->amountFiat())->toBeNull();
+});
+
+it('should get the fee as fiat', function () {
+    expect($this->subject->feeFiat())->toBeNull();
+});
+
+it('should get the reward as fiat', function () {
+    expect($this->subject->rewardFiat())->toBeNull();
+});
+
 it('should get the delegate', function () {
     expect($this->subject->delegate())->toBeString();
     expect($this->subject->delegate())->not()->toBe('n/a');

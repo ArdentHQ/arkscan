@@ -6,9 +6,7 @@
     @endpush
 
     @section('content')
-        <x-general.search.header :is-advanced="true" />
-
-        <livewire:search-results />
+        <livewire:search-page />
     @endsection
 
 @endcomponent

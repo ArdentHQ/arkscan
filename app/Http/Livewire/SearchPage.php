@@ -1,0 +1,90 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Livewire;
+
+use App\Http\Livewire\Concerns\ManagesSearch;
+use App\Services\Search\BlockSearch;
+use App\Services\Search\TransactionSearch;
+use App\Services\Search\WalletSearch;
+use App\ViewModels\ViewModelFactory;
+use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasPagination;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\View\View;
+use Livewire\Component;
+
+final class SearchPage extends Component
+{
+    use HasPagination;
+    use ManagesSearch;
+
+    /** @phpstan-ignore-next-line */
+    protected $queryString = ['state'];
+
+    private ?LengthAwarePaginator $results = null;
+
+    public function mount(): void
+    {
+        $this->restoreState(request('state', []));
+    }
+
+    public function render(): View
+    {
+        $this->performSearch();
+
+        return view('livewire.search-page', [
+            'results' => $this->results,
+        ]);
+    }
+
+    public function performSearch(): void
+    {
+        $data = $this->validateSearchQuery();
+
+        if ($data['type'] === 'block') {
+            $this->results = (new BlockSearch())->search($data)->paginate();
+        }
+
+        if ($data['type'] === 'transaction') {
+            $this->results = (new TransactionSearch())->search($data)->paginate();
+        }
+
+        if ($data['type'] === 'wallet') {
+            $this->results = (new WalletSearch())->search($data)->paginate();
+        }
+
+        if (! is_null($this->results)) {
+            $this->results = ViewModelFactory::paginate($this->results);
+        }
+    }
+
+    private function restoreState(array $state): void
+    {
+        $this->state = array_merge([
+            // Generic
+            'term'        => null,
+            'type'        => 'block',
+            'dateFrom'    => null,
+            'dateTo'      => null,
+            // Blocks
+            'totalAmountFrom'    => null,
+            'totalAmountTo'      => null,
+            'totalFeeFrom'       => null,
+            'totalFeeTo'         => null,
+            'generatorPublicKey' => null,
+            // Transactions
+            'transactionType' => 'transfer',
+            'amountFrom'      => null,
+            'amountTo'        => null,
+            'feeFrom'         => null,
+            'feeTo'           => null,
+            'smartBridge'     => null,
+            // Wallets
+            'username'    => null,
+            'vote'        => null,
+            'balanceFrom' => null,
+            'balanceTo'   => null,
+        ], $state);
+    }
+}

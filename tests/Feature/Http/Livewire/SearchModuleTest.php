@@ -47,8 +47,7 @@ it('should redirect to the advanced search page if there are no results', functi
         ->set('state.type', 'block')
         ->call('performSearch')
         ->assertRedirect(route('search', [
-            'state[term]'            => 'unknown',
-            'state[transactionType]' => 'transfer',
-            'state[type]'            => 'block',
+            'state[term]' => 'unknown',
+            'state[type]' => 'block',
         ]));
 });

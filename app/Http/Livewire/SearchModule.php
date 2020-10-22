@@ -11,6 +11,7 @@ use App\Models\Wallet;
 use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
+use Illuminate\View\View;
 use Livewire\Component;
 
 final class SearchModule extends Component
@@ -19,43 +20,44 @@ final class SearchModule extends Component
 
     public bool $isSlim = false;
 
-    public bool $isAdvanced = false;
+    /** @phpstan-ignore-next-line */
+    protected $queryString = ['state'];
 
-    public function mount(bool $isSlim = false, bool $isAdvanced = false): void
+    public function mount(bool $isSlim = false): void
     {
-        $this->isSlim     = $isSlim;
-        $this->isAdvanced = $isAdvanced;
+        $this->isSlim = $isSlim;
+    }
 
-        $this->restoreState(request('state', []));
+    public function render(): View
+    {
+        return view('components.search', ['isAdvanced' => false]);
     }
 
     public function performSearch(): void
     {
         $data = $this->validateSearchQuery();
 
-        if ($this->isAdvanced) {
-            $this->emit('searchTriggered', $data);
-        } else {
-            if ($this->searchWallet()) {
+        if (array_key_exists('term', $data)) {
+            if ($this->searchWallet($data)) {
                 return;
             }
 
-            if ($this->searchTransaction()) {
+            if ($this->searchTransaction($data)) {
                 return;
             }
 
-            if ($this->searchBlock()) {
+            if ($this->searchBlock($data)) {
                 return;
             }
-
-            $this->redirectRoute('search', ['state' => $data]);
         }
+
+        $this->redirectRoute('search', ['state' => $data]);
     }
 
-    private function searchWallet(): bool
+    private function searchWallet(array $data): bool
     {
         /** @var Wallet|null */
-        $wallet = (new WalletSearch())->search(['term' => $this->state['term']])->first();
+        $wallet = (new WalletSearch())->search(['term' => $data['term']])->first();
 
         if (is_null($wallet)) {
             return false;
@@ -66,10 +68,10 @@ final class SearchModule extends Component
         return true;
     }
 
-    private function searchTransaction(): bool
+    private function searchTransaction(array $data): bool
     {
         /** @var Transaction|null */
-        $transaction = (new TransactionSearch())->search(['term' => $this->state['term']])->first();
+        $transaction = (new TransactionSearch())->search(['term' => $data['term']])->first();
 
         if (is_null($transaction)) {
             return false;
@@ -80,10 +82,10 @@ final class SearchModule extends Component
         return true;
     }
 
-    private function searchBlock(): bool
+    private function searchBlock(array $data): bool
     {
         /** @var Block|null */
-        $block = (new BlockSearch())->search(['term' => $this->state['term']])->first();
+        $block = (new BlockSearch())->search(['term' => $data['term']])->first();
 
         if (is_null($block)) {
             return false;
