@@ -86,10 +86,6 @@ body {
     @apply px-5 py-4;
 }
 
-.search-advanced .search-container {
-    @apply mb-24;
-}
-
 .search-mobile {
     @apply block;
 }
