@@ -8,7 +8,7 @@ return [
 
         'block'       => 'Block',
         'transaction' => 'Transaction',
-        'Wallet'      => 'Wallet',
+        'wallet'      => 'Wallet',
 
         'amount_range'            => 'Amount Range',
         'date_range'              => 'Date Range',
