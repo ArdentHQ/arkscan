@@ -1,7 +1,7 @@
 <div x-data="{ dropdownOpen: false, selected: 'transactions' }" x-cloak class="w-full">
     <div class="hidden tabs md:flex">
         <div
-            class="tab-item"
+            class="tab-item transition-default"
             :class="{ 'tab-item-current': selected === 'transactions' }"
             @click="selected = 'transactions'"
         >
@@ -9,7 +9,7 @@
         </div>
 
         <div
-            class="tab-item"
+            class="tab-item transition-default"
             :class="{ 'tab-item-current': selected === 'blocks' }"
             @click="selected = 'blocks'"
         >
