@@ -11,8 +11,6 @@ final class SearchModule extends Component
 {
     use ManagesSearch;
 
-    public string $lw = '';
-
     public bool $isSlim = false;
 
     public bool $isAdvanced = false;
@@ -22,10 +20,7 @@ final class SearchModule extends Component
         $this->isSlim     = $isSlim;
         $this->isAdvanced = $isAdvanced;
 
-        if ($isAdvanced) {
-            // This prevents a weird bug where Livewire updates the client URL to the internal component URL.
-            $this->queryString = ['lw'];
-        }
+        $this->restoreState(request('state', []));
     }
 
     public function performSearch(): void
@@ -34,9 +29,8 @@ final class SearchModule extends Component
 
         if ($this->isAdvanced) {
             $this->emit('searchTriggered', $data);
+        } else {
+            $this->redirectRoute('search', ['state' => $data]);
         }
-
-        // 1. We found a single match > Redirect to result page
-        // 2. We have an advanced search on any other page > Redirect to advanced page
     }
 }
