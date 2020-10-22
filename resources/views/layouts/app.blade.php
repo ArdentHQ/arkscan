@@ -32,7 +32,10 @@
         @stack('scripts')
     </head>
     <body
-        x-data="{ 'theme': 'light' }"
+        @if(Settings::darkTheme())
+            class="theme-dark"
+        @endif
+        x-data="{ 'theme': '{{ Settings::theme() }}' }"
         :class="{ 'theme-dark': theme === 'dark' }"
         @toggle-dark-mode.window="theme === 'dark' ? theme = 'light' : theme = 'dark'"
     >

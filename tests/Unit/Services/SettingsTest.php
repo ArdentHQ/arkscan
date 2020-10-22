@@ -44,3 +44,17 @@ it('should have a statistics chart setting', function () {
 it('should have a dark theme setting', function () {
     expect(Settings::darkTheme())->toBeTrue();
 });
+
+it('should determine the name of the theme', function () {
+    Session::put('settings', json_encode(['darkTheme' => true]));
+
+    expect(Settings::theme())->toBe('dark');
+
+    Session::put('settings', json_encode(['darkTheme' => false]));
+
+    expect(Settings::theme())->toBe('light');
+
+    Session::put('settings', json_encode(['darkTheme' => true]));
+
+    expect(Settings::theme())->toBe('dark');
+});

@@ -37,13 +37,18 @@
             @endif
 
             <x-navbar.setting-option title="Statistics Chart" subtitle="Enable/Disable statistics chart">
-                <x-ark-toggle name="state.statisticsChart" hide-label />
+                <x-ark-toggle
+                    name="state.statisticsChart"
+                    :default="$this->state['statisticsChart'] ? 'true' : 'false'"
+                    hide-label
+                />
             </x-navbar.setting-option>
 
             <x-navbar.setting-option title="Dark Theme" subtitle="Enable/Disable dark theme" no-border>
                 <x-ark-toggle
                     name="state.darkTheme"
                     hide-label
+                    :default="$this->state['darkTheme'] ? 'true' : 'false'"
                     alpine-click="$dispatch('toggle-dark-mode')"
                 />
             </x-navbar.setting-option>

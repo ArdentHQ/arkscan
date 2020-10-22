@@ -36,4 +36,13 @@ final class Settings
     {
         return Arr::get(static::all(), 'darkTheme', true);
     }
+
+    public static function theme(): string
+    {
+        if (static::darkTheme()) {
+            return 'dark';
+        }
+
+        return 'light';
+    }
 }

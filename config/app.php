@@ -227,7 +227,7 @@ return [
         'View'         => Illuminate\Support\Facades\View::class,
         'Network'      => App\Facades\Network::class,
         'Explorer'     => App\Explorer::class,
-
+        'Settings'     => App\Services\Settings::class,
     ],
 
 ];
