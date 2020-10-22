@@ -10,7 +10,7 @@
             </div>
 
             <div class="px-8 md:px-0">
-                <livewire:search-module :is-advanced="true" />
+                <livewire:search-module :is-advanced="$isAdvanced ?? false" />
             </div>
         </div>
     </div>
