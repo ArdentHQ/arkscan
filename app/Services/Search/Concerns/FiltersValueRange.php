@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait FiltersValueRange
 {
-	/** @phpstan-ignore-next-line */
+    /** @phpstan-ignore-next-line */
     private function queryValueRange(Builder $query, ?string $from, ?string $to): Builder
     {
         if (! is_null($from) && ! is_null($to)) {

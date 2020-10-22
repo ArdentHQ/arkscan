@@ -114,22 +114,21 @@ it('should determine the transaction type', function (string $method, int $type,
         CoreTransactionTypeEnum::VOTE,
         TransactionTypeGroupEnum::CORE,
         [
-            '+publicKey',
+            'votes' => ['+publicKey'],
         ],
     ], [
         'isUnvote',
         CoreTransactionTypeEnum::VOTE,
         TransactionTypeGroupEnum::CORE,
         [
-            '-publicKey',
+            'votes' => ['-publicKey'],
         ],
     ], [
         'isVoteCombination',
         CoreTransactionTypeEnum::VOTE,
         TransactionTypeGroupEnum::CORE,
         [
-            '-publicKey',
-            '+publicKey',
+            'votes' => ['+publicKey', '-publicKey'],
         ],
     ], [
         'isMultiSignature',

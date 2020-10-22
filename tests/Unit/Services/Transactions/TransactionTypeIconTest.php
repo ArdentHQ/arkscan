@@ -46,7 +46,7 @@ it('should determine the icon that matches the type', function (string $method, 
         CoreTransactionTypeEnum::VOTE,
         TransactionTypeGroupEnum::CORE,
         [
-            '+publicKey',
+            'votes' => ['+publicKey'],
         ],
         'vote',
     ], [
@@ -54,7 +54,7 @@ it('should determine the icon that matches the type', function (string $method, 
         CoreTransactionTypeEnum::VOTE,
         TransactionTypeGroupEnum::CORE,
         [
-            '-publicKey',
+            'votes' => ['-publicKey'],
         ],
         'unvote',
     ], [
@@ -62,8 +62,7 @@ it('should determine the icon that matches the type', function (string $method, 
         CoreTransactionTypeEnum::VOTE,
         TransactionTypeGroupEnum::CORE,
         [
-            '-publicKey',
-            '+publicKey',
+            'votes' => ['+publicKey', '-publicKey'],
         ],
         'vote-combination',
     ], [
