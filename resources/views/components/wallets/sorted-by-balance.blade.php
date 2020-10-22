@@ -3,7 +3,7 @@
         <h1 class="header-2">@lang('pages.wallets.title')</h1>
 
         <div class="mt-4">
-            <livewire:wallets-by-balance-table />
+            <livewire:wallet-table />
         </div>
     </div>
 </div>
