@@ -66,8 +66,6 @@
                 </div>
             </main>
         </div>
-        {{-- TODO: Find a better way of preventing purges without this - webpack mix doesn't pick it up --}}
-        {{-- <div class="theme-dark"></div> --}}
 
         <x-footer />
 
