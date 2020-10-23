@@ -7,7 +7,7 @@ use Livewire\Livewire;
 
 it('should update the currency', function () {
     Livewire::test(NavbarSettings::class)
-        ->assertSet('state.currency', 'usd')
-        ->set('state.currency', 'chf')
-        ->assertSet('state.currency', 'chf');
+        ->assertSet('state.currency', 'USD')
+        ->set('state.currency', 'CHF')
+        ->assertSet('state.currency', 'CHF');
 });

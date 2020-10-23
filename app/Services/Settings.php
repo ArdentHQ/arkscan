@@ -16,10 +16,10 @@ final class Settings
         }
 
         return [
-            'currency'   => 'usd',
+            'currency'   => 'USD',
             'priceChart' => true,
             'feeChart'   => true,
-            'darkTheme'  => true,
+            'darkTheme'  => false,
         ];
     }
 

@@ -7,19 +7,19 @@ use Illuminate\Support\Facades\Session;
 
 it('should have all settings with defaults', function () {
     expect(Settings::all())->toBe([
-        'currency'   => 'usd',
+        'currency'   => 'USD',
         'priceChart' => true,
         'feeChart'   => true,
-        'darkTheme'  => true,
+        'darkTheme'  => false,
     ]);
 });
 
 it('should have all settings with values from a session', function () {
     $settings = [
-        'currency'   => 'chf',
+        'currency'   => 'CHF',
         'priceChart' => true,
         'feeChart'   => true,
-        'darkTheme'  => true,
+        'darkTheme'  => false,
     ];
 
     Session::shouldReceive('has')
@@ -36,7 +36,7 @@ it('should have all settings with values from a session', function () {
 });
 
 it('should have a currency setting', function () {
-    expect(Settings::currency())->toBe('usd');
+    expect(Settings::currency())->toBe('USD');
 });
 
 it('should have a price chart setting', function () {
@@ -48,7 +48,7 @@ it('should have a fee chart setting', function () {
 });
 
 it('should have a dark theme setting', function () {
-    expect(Settings::darkTheme())->toBeTrue();
+    expect(Settings::darkTheme())->toBeFalse();
 });
 
 it('should determine the name of the theme', function () {

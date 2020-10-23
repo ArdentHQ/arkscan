@@ -32,7 +32,7 @@
         @stack('scripts')
     </head>
     <body
-        @if(Settings::darkTheme())
+        @if(Settings::usesDarkTheme())
             class="theme-dark"
         @endif
         x-data="{ 'theme': '{{ Settings::theme() }}' }"
