@@ -100,6 +100,7 @@
                 <x-general.search.advanced-option :title="trans('forms.search.transaction_type')">
                     {{-- TODO: Enum of types and their values? --}}
                     <select wire:model="state.transactionType" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">
+                        <option value="all">@lang('forms.search.transaction_types.all')</option>
                         <option value="businessEntityRegistration">@lang('forms.search.transaction_types.businessEntityRegistration')</option>
                         <option value="businessEntityResignation">@lang('forms.search.transaction_types.businessEntityResignation')</option>
                         <option value="businessEntityUpdate">@lang('forms.search.transaction_types.businessEntityUpdate')</option>

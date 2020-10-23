@@ -28,8 +28,9 @@ return [
                 'year'      => 'Year',
             ],
         ],
-        'latest_transactions' => 'Latest Transactions',
-        'latest_blocks'       => 'Latest Blocks',
+        'transactions_and_blocks' => 'Transaction & Blocks',
+        'latest_transactions'     => 'Latest Transactions',
+        'latest_blocks'           => 'Latest Blocks',
     ],
 
     'search_results' => [

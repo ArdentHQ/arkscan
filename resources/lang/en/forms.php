@@ -20,6 +20,7 @@ return [
         'type'                    => 'Search Type',
         'transaction_type'        => 'Transaction Type',
         'transaction_types'       => [
+            'all'                           => 'All',
             'businessEntityRegistration'    => 'Business Entity Registration',
             'businessEntityResignation'     => 'Business Entity Resignation',
             'businessEntityUpdate'          => 'Business Entity Update',

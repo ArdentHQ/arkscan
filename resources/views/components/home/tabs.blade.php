@@ -1,4 +1,6 @@
-<div x-data="{ dropdownOpen: false, selected: 'transactions' }" x-cloak class="w-full">
+<div x-data="{ dropdownOpen: false, selected: 'transactions', 'transactionsFilter': 'all' }" x-cloak class="w-full">
+    <x-transaction-table-filter />
+
     <div class="hidden tabs md:flex">
         <div
             class="tab-item transition-default"
