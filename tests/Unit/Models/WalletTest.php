@@ -12,8 +12,12 @@ beforeEach(function () {
     configureExplorerDatabase();
 
     $this->subject = Wallet::factory()->create([
-        'balance'      => 1000 * 1e8,
-        'vote_balance' => 2000 * 1e8,
+        'balance'    => 1000 * 1e8,
+        'attributes' => [
+            'delegate' => [
+                'voteBalance' => 2000 * 1e8,
+            ],
+        ],
     ]);
 });
 

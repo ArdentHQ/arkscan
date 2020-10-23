@@ -9,12 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property int $balance
- * @property int $nonce
- * @property int $vote_balance
  * @property string $address
  * @property string $public_key
- * @property string $username
+ * @property int $balance
+ * @property int $nonce
+ * @property array $attributes
  */
 final class Wallet extends Model
 {
@@ -33,9 +32,9 @@ final class Wallet extends Model
      * @var array
      */
     protected $casts = [
-        'balance'      => 'int',
-        'nonce'        => 'int',
-        'vote_balance' => 'int',
+        'balance'    => 'int',
+        'nonce'      => 'int',
+        'attributes' => 'array',
     ];
 
     /**

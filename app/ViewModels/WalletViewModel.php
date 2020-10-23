@@ -56,12 +56,12 @@ final class WalletViewModel extends ViewModel
 
     public function votes(): string
     {
-        return NumberFormatter::currency($this->model->vote_balance / 1e8, Network::currency());
+        return NumberFormatter::currency($this->model->attributes['delegate']['voteBalance'] / 1e8, Network::currency());
     }
 
     public function votesPercentage(): float
     {
-        return Percentage::calculate($this->model->vote_balance / 1e8, NetworkStatus::supply());
+        return Percentage::calculate($this->model->attributes['delegate']['voteBalance'] / 1e8, NetworkStatus::supply());
     }
 
     public function qrCode(): string

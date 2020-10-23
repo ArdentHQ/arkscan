@@ -28,11 +28,11 @@ final class WalletSearch implements Search
         }
 
         if (! is_null(Arr::get($parameters, 'username'))) {
-            $query->where('username', $parameters['username']);
+            $query->where('attributes->delegate->username', $parameters['username']);
         }
 
         if (! is_null(Arr::get($parameters, 'vote'))) {
-            $query->where('vote', $parameters['vote']);
+            $query->where('attributes->vote', $parameters['vote']);
         }
 
         return $query;

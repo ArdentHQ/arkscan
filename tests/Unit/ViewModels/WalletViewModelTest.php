@@ -18,7 +18,11 @@ beforeEach(function () {
     $wallet = Wallet::factory()->create([
         'balance'      => 1000 * 1e8,
         'nonce'        => 1000,
-        'vote_balance' => 1000 * 1e8,
+        'attributes'   => [
+            'delegate' => [
+                'voteBalance' => 1000 * 1e8,
+            ],
+        ],
     ]);
 
     $this->subject = new WalletViewModel($wallet);

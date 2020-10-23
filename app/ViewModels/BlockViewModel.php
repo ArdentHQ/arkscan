@@ -43,7 +43,7 @@ final class BlockViewModel extends ViewModel
             return 'n/a';
         }
 
-        return $delegate->username;
+        return $delegate->attributes['delegate']['username'];
     }
 
     public function height(): string

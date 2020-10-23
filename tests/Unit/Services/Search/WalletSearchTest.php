@@ -33,7 +33,7 @@ it('should search for a wallet by username', function () {
     $wallet = Wallet::factory(10)->create()[0];
 
     $result = (new WalletSearch())->search([
-        'username' => $wallet->username,
+        'username' => $wallet->attributes['delegate']['username'],
     ]);
 
     expect($result->get())->toHaveCount(1);
@@ -43,7 +43,7 @@ it('should search for a wallet by vote', function () {
     $wallet = Wallet::factory(10)->create()[0];
 
     $result = (new WalletSearch())->search([
-        'vote' => $wallet->vote,
+        'vote' => $wallet->attributes['vote'],
     ]);
 
     expect($result->get())->toHaveCount(1);

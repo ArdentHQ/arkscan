@@ -17,14 +17,18 @@ final class WalletFactory extends Factory
             'id'                => $this->faker->uuid,
             'address'           => $this->faker->uuid,
             'public_key'        => $this->faker->uuid,
-            'second_public_key' => $this->faker->uuid,
-            'vote'              => $this->faker->uuid,
-            'username'          => $this->faker->uuid,
             'balance'           => $this->faker->numberBetween(1, 1000) * 1e8,
             'nonce'             => $this->faker->numberBetween(1, 1000),
-            'vote_balance'      => $this->faker->numberBetween(1, 1000) * 1e8,
-            'produced_blocks'   => $this->faker->numberBetween(1, 1000),
-            'missed_blocks'     => $this->faker->numberBetween(1, 1000),
+            'attributes'        => [
+                'secondPublicKey' => $this->faker->uuid,
+                'delegate'        => [
+                    'username'       => $this->faker->uuid,
+                    'voteBalance'    => $this->faker->numberBetween(1, 1000) * 1e8,
+                    'producedBlocks' => $this->faker->numberBetween(1, 1000),
+                    'missedBlocks'   => $this->faker->numberBetween(1, 1000),
+                ],
+                'vote' => $this->faker->uuid,
+            ],
         ];
     }
 }
