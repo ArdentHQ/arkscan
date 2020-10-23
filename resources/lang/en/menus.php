@@ -6,6 +6,6 @@ return [
     'delegate'   => 'Delegate',
     'home'       => 'Home',
     'registered' => 'Registered',
-    'accounts'   => 'Accounts',
+    'wallets'    => 'Wallets',
     'block'      => 'Block',
 ];

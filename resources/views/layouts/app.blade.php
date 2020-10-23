@@ -43,7 +43,7 @@
             <x-navbar.navbar
                 :navigation="[
                     ['route' => 'home', 'label' => trans('menus.delegate')],
-                    ['route' => 'wallets', 'label' => trans('menus.accounts')],
+                    ['route' => 'wallets', 'label' => trans('menus.wallets')],
                     ['route' => 'home', 'label' => trans('menus.registered')],
                 ]"
                 {{-- :registered-menu="App\Models\Documentation::productMenu()" --}}

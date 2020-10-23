@@ -39,7 +39,7 @@ return [
     ],
 
     'wallets' => [
-        'title' => 'Accounts',
+        'title' => 'Wallets',
     ],
 
 ];
