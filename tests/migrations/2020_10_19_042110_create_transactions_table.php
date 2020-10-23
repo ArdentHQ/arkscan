@@ -21,7 +21,7 @@ final class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger('amount');
             $table->unsignedBigInteger('fee');
             $table->binary('vendor_field_hex')->nullable();
-            $table->text('asset')->nullable();
+            $table->json('asset')->nullable();
             $table->timestamps();
         });
     }

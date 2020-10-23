@@ -24,7 +24,7 @@ final class TransactionTable extends Component
 
     protected $listeners = ['filterTransactionsByType'];
 
-    public function applyFilter(string $value): void
+    public function filterTransactionsByType(string $value): void
     {
         $this->state['type'] = $value;
     }
