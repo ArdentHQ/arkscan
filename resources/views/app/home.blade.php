@@ -9,14 +9,16 @@
         <x-general.search.header />
 
         @if(Settings::usesCharts())
-            <div class="justify-center py-16 content-container">
-                @if(Settings::usesPriceChart())
-                    <x-charts.price :data="$prices" identifier="price" colours-scheme="#339A51" />
-                @endif
+            <div class="content-container">
+                <div class="flex-col hidden w-full py-16 space-x-0 sm:flex lg:flex-row lg:space-x-10">
+                    @if(Settings::usesPriceChart())
+                        <x-charts.price :data="$prices" identifier="price" colours-scheme="#339A51" />
+                    @endif
 
-                @if(Settings::usesFeeChart())
-                    <x-charts.price :data="$fees" identifier="fees" colours-scheme="#FFAE10" />
-                @endif
+                    @if(Settings::usesFeeChart())
+                        <x-charts.price :data="$fees" identifier="fees" colours-scheme="#FFAE10" />
+                    @endif
+                </div>
             </div>
         @endif
 
