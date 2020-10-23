@@ -293,5 +293,11 @@ it('should determine the icon that matches the type', function (string $method, 
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
         'bridgechain',
+    ], [
+        'isUnknown',
+        0,
+        0,
+        [],
+        'unknown',
     ],
 ]);

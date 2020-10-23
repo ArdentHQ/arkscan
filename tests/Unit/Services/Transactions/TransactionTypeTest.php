@@ -259,5 +259,10 @@ it('should determine the icon that matches the type', function (string $method, 
         MagistrateTransactionTypeEnum::BRIDGECHAIN_UPDATE,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
+    ], [
+        'isUnknown',
+        0,
+        0,
+        [],
     ],
 ]);

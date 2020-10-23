@@ -209,6 +209,159 @@ final class TransactionType
         return $this->isMagistrateType(MagistrateTransactionTypeEnum::BRIDGECHAIN_UPDATE);
     }
 
+    public function isUnknown(): bool
+    {
+        if ($this->isTransfer()) {
+            return false;
+        }
+
+        if ($this->isSecondSignature()) {
+            return false;
+        }
+
+        if ($this->isDelegateRegistration()) {
+            return false;
+        }
+
+        if ($this->isVote()) {
+            return false;
+        }
+
+        if ($this->isUnvote()) {
+            return false;
+        }
+
+        if ($this->isVoteCombination()) {
+            return false;
+        }
+
+        if ($this->isMultiSignature()) {
+            return false;
+        }
+
+        if ($this->isIpfs()) {
+            return false;
+        }
+
+        if ($this->isDelegateResignation()) {
+            return false;
+        }
+
+        if ($this->isMultiPayment()) {
+            return false;
+        }
+
+        if ($this->isTimelock()) {
+            return false;
+        }
+
+        if ($this->isTimelockClaim()) {
+            return false;
+        }
+
+        if ($this->isTimelockRefund()) {
+            return false;
+        }
+
+        if ($this->isEntityRegistration()) {
+            return false;
+        }
+
+        if ($this->isEntityResignation()) {
+            return false;
+        }
+
+        if ($this->isEntityUpdate()) {
+            return false;
+        }
+
+        if ($this->isBusinessEntityRegistration()) {
+            return false;
+        }
+
+        if ($this->isBusinessEntityResignation()) {
+            return false;
+        }
+
+        if ($this->isBusinessEntityUpdate()) {
+            return false;
+        }
+
+        if ($this->isProductEntityRegistration()) {
+            return false;
+        }
+
+        if ($this->isProductEntityResignation()) {
+            return false;
+        }
+
+        if ($this->isProductEntityUpdate()) {
+            return false;
+        }
+
+        if ($this->isPluginEntityRegistration()) {
+            return false;
+        }
+
+        if ($this->isPluginEntityResignation()) {
+            return false;
+        }
+
+        if ($this->isPluginEntityUpdate()) {
+            return false;
+        }
+
+        if ($this->isModuleEntityRegistration()) {
+            return false;
+        }
+
+        if ($this->isModuleEntityResignation()) {
+            return false;
+        }
+
+        if ($this->isModuleEntityUpdate()) {
+            return false;
+        }
+
+        if ($this->isDelegateEntityRegistration()) {
+            return false;
+        }
+
+        if ($this->isDelegateEntityResignation()) {
+            return false;
+        }
+
+        if ($this->isDelegateEntityUpdate()) {
+            return false;
+        }
+
+        if ($this->isLegacyBusinessRegistration()) {
+            return false;
+        }
+
+        if ($this->isLegacyBusinessResignation()) {
+            return false;
+        }
+
+        if ($this->isLegacyBusinessUpdate()) {
+            return false;
+        }
+
+        if ($this->isLegacyBridgechainRegistration()) {
+            return false;
+        }
+
+        if ($this->isLegacyBridgechainResignation()) {
+            return false;
+        }
+
+        if ($this->isLegacyBridgechainUpdate()) {
+            return false;
+        }
+
+        return true;
+    }
+
     private function isCoreType(int $type): bool
     {
         $matchesType      = $this->transaction->type === $type;
