@@ -150,3 +150,46 @@ it('should search for blocks by total_fee range', function () {
 
     expect($result->get())->toHaveCount(10);
 });
+
+it('should search for blocks by height minimum', function () {
+    $heightStart = 1000;
+    $heightEnd = 2000;
+
+    Block::factory(10)->create(['height' => $heightStart]);
+    Block::factory(10)->create(['height' => $heightEnd]);
+
+    $result = (new BlockSearch())->search([
+        'heightFrom' => $heightEnd,
+    ]);
+
+    expect($result->get())->toHaveCount(10);
+});
+
+it('should search for blocks by height maximum', function () {
+    $heightStart = 1000;
+    $heightEnd = 2000;
+
+    Block::factory(10)->create(['height' => $heightStart]);
+    Block::factory(10)->create(['height' => $heightEnd]);
+
+    $result = (new BlockSearch())->search([
+        'heightTo' => $heightStart,
+    ]);
+
+    expect($result->get())->toHaveCount(10);
+});
+
+it('should search for blocks by height range', function () {
+    $heightStart = 1000;
+    $heightEnd = 2000;
+
+    Block::factory(10)->create(['height' => $heightStart]);
+    Block::factory(10)->create(['height' => $heightEnd]);
+
+    $result = (new BlockSearch())->search([
+        'heightFrom' => $heightEnd,
+        'heightTo'   => $heightEnd,
+    ]);
+
+    expect($result->get())->toHaveCount(10);
+});

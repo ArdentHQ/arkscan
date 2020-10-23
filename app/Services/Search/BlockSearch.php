@@ -24,6 +24,8 @@ final class BlockSearch implements Search
             $query = $query->where('id', $parameters['term']);
         }
 
+        $this->queryValueRange($query, 'height', Arr::get($parameters, 'heightFrom'), Arr::get($parameters, 'heightTo'));
+
         $this->queryValueRange($query, 'total_amount', Arr::get($parameters, 'totalAmountFrom'), Arr::get($parameters, 'totalAmountTo'));
 
         $this->queryValueRange($query, 'total_fee', Arr::get($parameters, 'totalFeeFrom'), Arr::get($parameters, 'totalFeeTo'));

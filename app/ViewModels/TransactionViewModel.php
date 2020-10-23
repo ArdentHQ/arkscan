@@ -17,6 +17,7 @@ use App\Services\Transactions\TransactionState;
 use App\Services\Transactions\TransactionStateIcon;
 use App\Services\Transactions\TransactionType;
 use App\Services\Transactions\TransactionTypeIcon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Spatie\ViewModels\ViewModel;
 
@@ -117,11 +118,7 @@ final class TransactionViewModel extends ViewModel
             return null;
         }
 
-        if (is_null($this->model->asset)) {
-            return null;
-        }
-
-        $publicKey = collect($this->model->asset['votes'])
+        $publicKey = collect(Arr::get($this->model->asset ?? [], 'votes'))
             ->filter(fn ($vote) => Str::startsWith($vote, '+'))
             ->first();
 
@@ -134,11 +131,7 @@ final class TransactionViewModel extends ViewModel
             return null;
         }
 
-        if (is_null($this->model->asset)) {
-            return null;
-        }
-
-        $publicKey = collect($this->model->asset['votes'])
+        $publicKey = collect(Arr::get($this->model->asset ?? [], 'votes'))
             ->filter(fn ($vote) => Str::startsWith($vote, '-'))
             ->first();
 

@@ -287,6 +287,10 @@ final class TransactionType
             return [$containsVote, $containsUnvote];
         }
 
+        if (! Arr::has($this->transaction->asset, 'votes')) {
+            return [$containsVote, $containsUnvote];
+        }
+
         foreach ($this->transaction->asset['votes'] as $vote) {
             if (Str::startsWith($vote, '+')) {
                 $containsVote = true;

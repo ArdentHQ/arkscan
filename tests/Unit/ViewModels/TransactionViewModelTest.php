@@ -406,6 +406,26 @@ it('should get the voted delegate', function () {
     expect($subject->voted()->is($wallet))->toBeTrue();
 });
 
+it('should fail to get the voted delegate if the transaction is not an unvote', function () {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::VOTE,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'asset'      => ['votes' => ['-publicKey']],
+    ]));
+
+    expect($subject->voted())->toBeNull();
+});
+
+it('should fail to get the voted delegate if the transaction asset is empty', function ($asset) {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::VOTE,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'asset'      => $asset,
+    ]));
+
+    expect($subject->voted())->toBeNull();
+})->with([[[]], null]);
+
 it('should get the unvoted delegate', function () {
     $wallet = Wallet::factory()->create(['public_key' => 'publicKey']);
 
@@ -418,3 +438,23 @@ it('should get the unvoted delegate', function () {
     expect($subject->unvoted())->toBeInstanceOf(Wallet::class);
     expect($subject->unvoted()->is($wallet))->toBeTrue();
 });
+
+it('should fail to get the unvoted delegate if the transaction is not an unvote', function () {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::VOTE,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'asset'      => ['votes' => ['+publicKey']],
+    ]));
+
+    expect($subject->unvoted())->toBeNull();
+});
+
+it('should fail to get the unvoted delegate if the transaction asset is empty', function ($asset) {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::VOTE,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'asset'      => $asset,
+    ]));
+
+    expect($subject->unvoted())->toBeNull();
+})->with([[[]], null]);
