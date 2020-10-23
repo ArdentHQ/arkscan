@@ -24,7 +24,7 @@ beforeEach(function () {
         ],
     ]);
 
-    $wallet = Wallet::factory()->create(['balance' => 100000000]);
+    $wallet = Wallet::factory()->create(['balance' => 100000000 * 1e8]);
     $block = Block::factory()->create(['generator_public_key' => $wallet->public_key]);
 
     Transaction::factory()->create([

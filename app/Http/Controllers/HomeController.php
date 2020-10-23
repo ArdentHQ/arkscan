@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\CacheKeyEnum;
+use App\Facades\Network;
+use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
@@ -27,6 +30,13 @@ final class HomeController
                 'month'   => $this->getChart('chart.fees.month'),
                 'quarter' => $this->getChart('chart.fees.quarter'),
                 'year'    => $this->getChart('chart.fees.year'),
+            ],
+            'aggregates' => [
+                'price'             => ExchangeRate::now(),
+                'volume'            => NumberFormatter::currency(Cache::get(CacheKeyEnum::VOLUME), Network::currency()),
+                'transactionsCount' => Cache::get(CacheKeyEnum::TRANSACTIONS_COUNT),
+                'votesCount'        => Cache::get(CacheKeyEnum::VOTES_COUNT),
+                'votesPercentage'   => NumberFormatter::percentage(Cache::get(CacheKeyEnum::VOTES_PERCENTAGE)),
             ],
         ]);
     }

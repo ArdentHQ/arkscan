@@ -223,7 +223,7 @@ final class TransactionType
             return false;
         }
 
-        if ($this->isVote()) {
+        if ($this->isVoteCombination()) {
             return false;
         }
 
@@ -231,7 +231,7 @@ final class TransactionType
             return false;
         }
 
-        if ($this->isVoteCombination()) {
+        if ($this->isVote()) {
             return false;
         }
 
@@ -260,18 +260,6 @@ final class TransactionType
         }
 
         if ($this->isTimelockRefund()) {
-            return false;
-        }
-
-        if ($this->isEntityRegistration()) {
-            return false;
-        }
-
-        if ($this->isEntityResignation()) {
-            return false;
-        }
-
-        if ($this->isEntityUpdate()) {
             return false;
         }
 

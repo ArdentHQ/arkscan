@@ -28,6 +28,14 @@ return [
                 'year'      => 'Year',
             ],
         ],
+
+        'network-details' => [
+            'price'                        => 'Price',
+            'lifetime_transactions_volume' => 'Lifetime Transaction Volume',
+            'lifetime_transactions'        => 'Lifetime Transactions',
+            'total_votes'                  => 'Total Votes',
+        ],
+
         'transactions_and_blocks' => 'Transaction & Blocks',
         'latest_transactions'     => 'Latest Transactions',
         'latest_blocks'           => 'Latest Blocks',

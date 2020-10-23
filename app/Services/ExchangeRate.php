@@ -18,6 +18,11 @@ final class ExchangeRate
         return NumberFormatter::currency($amount * $exchangeRate, Settings::currency());
     }
 
+    public static function now(): float
+    {
+        return (float) Arr::get(Cache::get('prices.'.Settings::currency()), Carbon::now()->format('Y-m-d'), 0);
+    }
+
     private static function timestamp(int $timestamp): Carbon
     {
         return Timestamp::fromGenesis($timestamp);

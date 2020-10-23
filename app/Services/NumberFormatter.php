@@ -19,6 +19,14 @@ final class NumberFormatter
     /**
      * @param string|int|float $value
      */
+    public static function percentage($value): string
+    {
+        return $value.'%';
+    }
+
+    /**
+     * @param string|int|float $value
+     */
     public static function satoshi($value): string
     {
         $formatter = new \NumberFormatter('en_US', \NumberFormatter::DECIMAL);

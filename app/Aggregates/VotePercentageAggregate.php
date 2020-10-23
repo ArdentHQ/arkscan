@@ -14,7 +14,7 @@ final class VotePercentageAggregate implements Aggregate
 {
     public function aggregate(): string
     {
-        $result = Percentage::calculate((float) Wallet::sum('balance'), NetworkStatus::supply());
+        $result = Percentage::calculate(intval(Wallet::sum('balance') / 1e8), NetworkStatus::supply());
 
         return NumberFormatter::number($result);
     }

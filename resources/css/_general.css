@@ -242,3 +242,13 @@ body {
 .theme-dark .transaction-icon {
     @apply text-theme-secondary-600 border-theme-secondary-600;
 }
+
+@screen xl {
+    .detail-box {
+        @apply border-r items-center pr-6 border-theme-secondary-300;
+    }
+}
+
+.detail-box:last-of-type {
+    @apply border-none;
+}

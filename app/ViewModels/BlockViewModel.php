@@ -9,6 +9,7 @@ use App\Models\Block;
 use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
 use App\Services\Timestamp;
+use Illuminate\Support\Arr;
 use Spatie\ViewModels\ViewModel;
 
 final class BlockViewModel extends ViewModel
@@ -43,11 +44,7 @@ final class BlockViewModel extends ViewModel
             return 'n/a';
         }
 
-        try {
-            return $delegate->attributes['delegate']['username'];
-        } catch (\Throwable $th) {
-            return 'Genesis';
-        }
+        return Arr::get($delegate->attributes, 'delegate.username', 'Genesis');
     }
 
     public function height(): string
