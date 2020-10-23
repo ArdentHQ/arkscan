@@ -1,8 +1,8 @@
 <div x-data="{
     dropdownOpen: false,
     selected: 'transactions',
-    'transactionTypeFilter': 'all',
-    'transactionTypeFilterLabel': 'All',
+    transactionTypeFilter: 'all',
+    transactionTypeFilterLabel: 'All',
 }" x-cloak class="w-full">
     <x-transaction-table-filter />
 
