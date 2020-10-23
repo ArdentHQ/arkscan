@@ -16,9 +16,10 @@ final class Settings
         }
 
         return [
-            'currency'        => 'usd',
-            'statisticsChart' => true,
-            'darkTheme'       => true,
+            'currency'   => 'usd',
+            'priceChart' => true,
+            'feeChart'   => true,
+            'darkTheme'  => true,
         ];
     }
 
@@ -27,9 +28,14 @@ final class Settings
         return Arr::get(static::all(), 'currency', 'USD');
     }
 
-    public static function statisticsChart(): bool
+    public static function priceChart(): bool
     {
-        return Arr::get(static::all(), 'statisticsChart', true);
+        return Arr::get(static::all(), 'priceChart', true);
+    }
+
+    public static function feeChart(): bool
+    {
+        return Arr::get(static::all(), 'feeChart', true);
     }
 
     public static function darkTheme(): bool
@@ -44,5 +50,20 @@ final class Settings
         }
 
         return 'light';
+    }
+
+    public static function usesPriceChart(): bool
+    {
+        return static::priceChart() === true;
+    }
+
+    public static function usesFeeChart(): bool
+    {
+        return static::feeChart() === true;
+    }
+
+    public static function usesDarkTheme(): bool
+    {
+        return static::darkTheme() === true;
     }
 }

@@ -65,9 +65,13 @@ return [
             'title'       => 'Currency',
             'description' => 'Select display currency',
         ],
-        'chart' => [
-            'title'       => 'Statistics Chart',
-            'description' => 'Enable/Disable statistics chart',
+        'price_chart' => [
+            'title'       => 'Price Chart',
+            'description' => 'Enable/Disable price chart',
+        ],
+        'fee_chart' => [
+            'title'       => 'Fee Chart',
+            'description' => 'Enable/Disable fee chart',
         ],
         'theme' => [
             'title'       => 'Dark Theme',

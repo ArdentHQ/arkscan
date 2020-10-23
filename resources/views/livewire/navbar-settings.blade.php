@@ -36,10 +36,18 @@
                 </x-navbar.setting-option>
             @endif
 
-            <x-navbar.setting-option :title="trans('forms.settings.chart.title')" :subtitle="trans('forms.settings.chart.description')">
+            <x-navbar.setting-option :title="trans('forms.settings.price_chart.title')" :subtitle="trans('forms.settings.price_chart.description')">
                 <x-ark-toggle
-                    name="state.statisticsChart"
-                    :default="$this->state['statisticsChart'] ? 'true' : 'false'"
+                    name="state.priceChart"
+                    :default="$this->state['priceChart'] ? 'true' : 'false'"
+                    hide-label
+                />
+            </x-navbar.setting-option>
+
+            <x-navbar.setting-option :title="trans('forms.settings.fee_chart.title')" :subtitle="trans('forms.settings.fee_chart.description')">
+                <x-ark-toggle
+                    name="state.feeChart"
+                    :default="$this->state['feeChart'] ? 'true' : 'false'"
                     hide-label
                 />
             </x-navbar.setting-option>
