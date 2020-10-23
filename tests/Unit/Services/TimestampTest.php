@@ -9,7 +9,7 @@ it('should create a UNIX timestamp', function () {
 });
 
 it('should create a UNIX timestamp and format it', function () {
-    expect(Timestamp::fromGenesisHuman(113160952))->toBe('21 Oct 2020 (06:35:52)');
+    expect(Timestamp::fromGenesisHuman(113160952))->toBe('21 Oct 2020 06:35:52');
 });
 
 it('should create a GENESIS timestamp', function () {
@@ -17,5 +17,5 @@ it('should create a GENESIS timestamp', function () {
 });
 
 it('should create a GENESIS timestamp and format it', function () {
-    expect(Timestamp::fromUnixHuman(1603262152))->toBe('21 Oct 2020 (06:35:52)');
+    expect(Timestamp::fromUnixHuman(1603262152))->toBe('21 Oct 2020 06:35:52');
 });

@@ -28,7 +28,7 @@
             </a>
         @endif
 
-        <div class="hidden px-2 rounded bg-theme-primary-100 md:flex flex-inline">
+        <div class="hidden px-2 rounded bg-theme-primary-100 dark:bg-theme-secondary-800 md:flex flex-inline">
             @foreach ($elements as $element)
                 {{-- "Three Dots" Separator --}}
                 @if (is_string($element))

@@ -216,7 +216,7 @@
         </div>
 
         <div
-            class="py-4 font-semibold text-center bg-theme-primary-100 text-theme-primary-600 md:hidden"
+            class="py-4 font-semibold text-center bg-theme-primary-100 text-theme-primary-600 dark:bg-theme-secondary-800 dark:text-theme-secondary-200 md:hidden"
             @click="showAdvanced = !showAdvanced"
         >
             <span x-show="!showAdvanced">@lang('actions.advanced_search')</span>

@@ -17,7 +17,7 @@
             <div class="flex items-center">@svg('chevron-left', 'h-3 w-3')<span class="hidden lg:flex lg:ml-2">Previous</span></div>
         </button>
 
-        <div class="hidden px-2 rounded bg-theme-primary-100 md:flex flex-inline">
+        <div class="hidden px-2 rounded bg-theme-primary-100 dark:bg-theme-secondary-800 md:flex flex-inline">
             @foreach ($elements as $element)
                 {{-- "Three Dots" Separator --}}
                 @if (is_string($element))

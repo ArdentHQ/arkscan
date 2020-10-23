@@ -29,7 +29,7 @@ it('should get the url', function () {
 
 it('should get the timestamp', function () {
     expect($this->subject->timestamp())->toBeString();
-    expect($this->subject->timestamp())->toBe('19 Oct 2020 (04:54:16)');
+    expect($this->subject->timestamp())->toBe('19 Oct 2020 04:54:16');
 });
 
 it('should get the height', function () {
