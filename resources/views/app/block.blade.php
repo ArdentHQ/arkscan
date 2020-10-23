@@ -6,7 +6,7 @@
     @endpush
 
     @section('breadcrumbs')
-        <x-breadcrumbs :crumbs="[
+        <x-general.breadcrumbs :crumbs="[
             ['route' => 'home', 'label' => trans('menus.home')],
             ['label' => trans('menus.block')],
         ]" />
