@@ -17,6 +17,7 @@ use App\Services\Transactions\TransactionState;
 use App\Services\Transactions\TransactionStateIcon;
 use App\Services\Transactions\TransactionType;
 use App\Services\Transactions\TransactionTypeIcon;
+use Illuminate\Support\Str;
 use Spatie\ViewModels\ViewModel;
 
 final class TransactionViewModel extends ViewModel
@@ -120,9 +121,11 @@ final class TransactionViewModel extends ViewModel
             return null;
         }
 
-        $publicKey = substr($this->model->asset['votes'][0], 1);
+        $publicKey = collect($this->model->asset['votes'])
+            ->filter(fn ($vote) => Str::startsWith($vote, '+'))
+            ->first();
 
-        return Wallet::where('public_key', $publicKey)->firstOrFail();
+        return Wallet::where('public_key', substr($publicKey, 1))->firstOrFail();
     }
 
     public function unvoted(): ?Wallet
@@ -135,9 +138,11 @@ final class TransactionViewModel extends ViewModel
             return null;
         }
 
-        $publicKey = substr($this->model->asset['votes'][1], 1);
+        $publicKey = collect($this->model->asset['votes'])
+            ->filter(fn ($vote) => Str::startsWith($vote, '-'))
+            ->first();
 
-        return Wallet::where('public_key', $publicKey)->firstOrFail();
+        return Wallet::where('public_key', substr($publicKey, 1))->firstOrFail();
     }
 
     public function iconState(): string
