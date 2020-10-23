@@ -54,6 +54,13 @@ final class Transaction extends Model
     ];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['sender', 'recipient'];
+
+    /**
      * A transaction belongs to a block.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

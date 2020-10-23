@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * @property string $id
@@ -45,6 +46,13 @@ final class Block extends Model
     ];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['delegate'];
+
+    /**
      * A block has many transactions.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -63,6 +71,16 @@ final class Block extends Model
     {
         return $this->belongsTo(Wallet::class, 'generator_public_key', 'public_key');
     }
+
+    // /**
+    //  * A block belongs to a delegate.
+    //  *
+    //  * @return Wallet
+    //  */
+    // public function getDelegateAttribute(): Wallet
+    // {
+    //     return Cache::tags(['delegates'])->get($this->generator_public_key);
+    // }
 
     /**
      * A block has one previous block.
