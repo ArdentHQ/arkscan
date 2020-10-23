@@ -6,6 +6,7 @@ namespace App\ViewModels;
 
 use App\Facades\Network;
 use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\NumberFormatter;
 use App\Services\Timestamp;
@@ -106,6 +107,28 @@ final class TransactionViewModel extends ViewModel
         }
 
         return NumberFormatter::number(NetworkStatus::height() - $block->height);
+    }
+
+    public function voted(): ?Wallet
+    {
+        if (! $this->isVote()) {
+            return null;
+        }
+
+        $publicKey = substr($this->model->asset['votes'][0], 1);
+
+        return Wallet::where('public_key', $publicKey)->firstOrFail();
+    }
+
+    public function unvoted(): ?Wallet
+    {
+        if (! $this->isUnvote()) {
+            return null;
+        }
+
+        $publicKey = substr($this->model->asset['votes'][1], 1);
+
+        return Wallet::where('public_key', $publicKey)->firstOrFail();
     }
 
     public function iconState(): string

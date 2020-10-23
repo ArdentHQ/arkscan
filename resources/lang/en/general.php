@@ -30,6 +30,23 @@ return [
         'recipient' => 'Recipient',
         'amount'    => 'Amount',
         'fee'       => 'Fee',
+
+        'bridgechain'           => 'Bridgechain',
+        'business'              => 'Business',
+        'delegate-registration' => 'Delegate Registration',
+        'delegate-resignation'  => 'Delegate Resignation',
+        'ipfs'                  => 'IPFS',
+        'module'                => 'Module',
+        'multi-payment'         => 'Multipayment',
+        'multi-signature'       => 'Multisignature',
+        'plugin'                => 'Plugin',
+        'product'               => 'Product',
+        'second-signature'      => 'Second Signature',
+        'timelock'              => 'Timelock',
+        'transfer'              => 'Transfer',
+        'unvote'                => 'Unvote',
+        'vote'                  => 'Vote',
+        'vote-combination'      => 'Vote/Unvote',
     ],
 
     'wallet' => [
