@@ -31,7 +31,9 @@
         <div class="flex items-center space-x-3">
             <x-transactions.icon :icon-type="$iconType" />
 
-            <div class="font-semibold">@lang('general.transaction.vote-combination')</div>
+            <div class="font-semibold">
+                @lang('general.transaction.'.$iconType)
+            </div>
         </div>
     @endif
 </div>
