@@ -32,10 +32,10 @@ Route::view('/block', 'app.block')->name('block');
 Route::view('/search', 'app.search-results')->name('search');
 
 Route::view('/wallets', 'app.wallets')->name('wallets');
-Route::get('/wallets/{wallet}', ShowWalletController::class)->name('wallet');
-Route::get('/wallets/{wallet}/voters', ListVotersByWalletController::class)->name('wallet.voters');
-Route::get('/wallets/{wallet}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
-Route::get('/wallets/{wallet}/transactions', ListTransactionsByWalletController::class)->name('wallet.transactions');
+Route::get('/wallets/{wallet:address}', ShowWalletController::class)->name('wallet');
+Route::get('/wallets/{wallet:address}/voters', ListVotersByWalletController::class)->name('wallet.voters');
+Route::get('/wallets/{wallet:address}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
+Route::get('/wallets/{wallet:address}/transactions', ListTransactionsByWalletController::class)->name('wallet.transactions');
 
 Route::get('/blocks', ListBlocksController::class)->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');

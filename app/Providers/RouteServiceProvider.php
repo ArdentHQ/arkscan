@@ -21,15 +21,6 @@ final class RouteServiceProvider extends ServiceProvider
     public const HOME = '/dashboard';
 
     /**
-     * The controller namespace for the application.
-     *
-     * When present, controller route declarations will automatically be prefixed with this namespace.
-     *
-     * @var string|null
-     */
-    // protected $namespace = 'App\\Http\\Controllers';
-
-    /**
      * Define your route model bindings, pattern filters, etc.
      *
      * @return void
@@ -55,8 +46,6 @@ final class RouteServiceProvider extends ServiceProvider
      */
     private function configureRateLimiting()
     {
-        RateLimiter::for('api', function (): Limit {
-            return Limit::perMinute(60);
-        });
+        RateLimiter::for('api', fn (): Limit => Limit::perMinute(60));
     }
 }
