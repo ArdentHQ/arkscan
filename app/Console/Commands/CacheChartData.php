@@ -70,6 +70,12 @@ final class CacheChartData extends Command
         foreach ($this->currencies as $currency) {
             $prices = (new CryptoCompare())->historical(Network::currency(), $currency);
 
+            Cache::remember(
+                'prices.'.$currency,
+                Carbon::now()->addHour(),
+                fn () => $prices
+            );
+
             $this->cacheKeyValue(
                 'chart.prices.day',
                 fn () => $prices->take(1),

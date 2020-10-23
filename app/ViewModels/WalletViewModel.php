@@ -7,8 +7,11 @@ namespace App\ViewModels;
 use App\Facades\Network;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkStatus;
+use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
 use App\Services\QRCode;
+use App\Services\Timestamp;
+use Carbon\Carbon;
 use Mattiasgeniar\Percentage\Percentage;
 use Spatie\ViewModels\ViewModel;
 
@@ -36,9 +39,9 @@ final class WalletViewModel extends ViewModel
         return NumberFormatter::currency($this->model->balance / 1e8, Network::currency());
     }
 
-    public function balanceFiat(): ?string
+    public function balanceFiat(): string
     {
-        return null;
+        return ExchangeRate::convert($this->model->balance / 1e8, Timestamp::fromUnix(Carbon::now()->unix())->unix());
     }
 
     public function balancePercentage(): float

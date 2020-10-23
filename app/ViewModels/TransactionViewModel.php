@@ -8,6 +8,7 @@ use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkStatus;
+use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
 use App\Services\Timestamp;
 use App\Services\Transactions\TransactionDirection;
@@ -83,9 +84,9 @@ final class TransactionViewModel extends ViewModel
         return NumberFormatter::currency($this->model->fee / 1e8, Network::currency());
     }
 
-    public function feeFiat(): ?string
+    public function feeFiat(): string
     {
-        return null;
+        return ExchangeRate::convert($this->model->fee / 1e8, $this->model->timestamp);
     }
 
     public function amount(): string
@@ -93,9 +94,9 @@ final class TransactionViewModel extends ViewModel
         return NumberFormatter::currency($this->model->amount / 1e8, Network::currency());
     }
 
-    public function amountFiat(): ?string
+    public function amountFiat(): string
     {
-        return null;
+        return ExchangeRate::convert($this->model->amount / 1e8, $this->model->timestamp);
     }
 
     public function confirmations(): string
@@ -115,6 +116,10 @@ final class TransactionViewModel extends ViewModel
             return null;
         }
 
+        if (is_null($this->model->asset)) {
+            return null;
+        }
+
         $publicKey = substr($this->model->asset['votes'][0], 1);
 
         return Wallet::where('public_key', $publicKey)->firstOrFail();
@@ -123,6 +128,10 @@ final class TransactionViewModel extends ViewModel
     public function unvoted(): ?Wallet
     {
         if (! $this->isUnvote()) {
+            return null;
+        }
+
+        if (is_null($this->model->asset)) {
             return null;
         }
 

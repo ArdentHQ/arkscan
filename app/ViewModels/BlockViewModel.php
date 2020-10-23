@@ -6,6 +6,7 @@ namespace App\ViewModels;
 
 use App\Facades\Network;
 use App\Models\Block;
+use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
 use App\Services\Timestamp;
 use Spatie\ViewModels\ViewModel;
@@ -60,9 +61,9 @@ final class BlockViewModel extends ViewModel
         return NumberFormatter::currency($this->model->total_amount / 1e8, Network::currency());
     }
 
-    public function amountFiat(): ?string
+    public function amountFiat(): string
     {
-        return null;
+        return ExchangeRate::convert($this->model->total_amount / 1e8, $this->model->timestamp);
     }
 
     public function fee(): string
@@ -70,9 +71,9 @@ final class BlockViewModel extends ViewModel
         return NumberFormatter::currency($this->model->total_fee / 1e8, Network::currency());
     }
 
-    public function feeFiat(): ?string
+    public function feeFiat(): string
     {
-        return null;
+        return ExchangeRate::convert($this->model->total_fee / 1e8, $this->model->timestamp);
     }
 
     public function reward(): string
@@ -80,8 +81,8 @@ final class BlockViewModel extends ViewModel
         return NumberFormatter::currency($this->model->reward / 1e8, Network::currency());
     }
 
-    public function rewardFiat(): ?string
+    public function rewardFiat(): string
     {
-        return null;
+        return ExchangeRate::convert($this->model->reward / 1e8, $this->model->timestamp);
     }
 }

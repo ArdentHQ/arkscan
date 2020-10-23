@@ -56,15 +56,15 @@ it('should get the reward', function () {
 });
 
 it('should get the amount as fiat', function () {
-    expect($this->subject->amountFiat())->toBeNull();
+    expect($this->subject->amountFiat())->toBeString();
 });
 
 it('should get the fee as fiat', function () {
-    expect($this->subject->feeFiat())->toBeNull();
+    expect($this->subject->feeFiat())->toBeString();
 });
 
 it('should get the reward as fiat', function () {
-    expect($this->subject->rewardFiat())->toBeNull();
+    expect($this->subject->rewardFiat())->toBeString();
 });
 
 it('should get the delegate', function () {

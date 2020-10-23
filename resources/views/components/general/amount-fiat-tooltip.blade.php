@@ -1,3 +1,3 @@
-<div class="inline" @if ($amount ?? false) data-tippy-content="{{ $amount }}" @endif>
+<div class="inline" @if ($amount ?? false) data-tippy-content="{{ $fiat }}" @endif>
     {{ $amount }}
 </div>
