@@ -65,6 +65,29 @@ it('should determine the name of the theme', function () {
     expect(Settings::theme())->toBe('dark');
 });
 
+it('should determine if visitor uses any chart', function () {
+    Session::put('settings', json_encode([
+        'priceChart' => true,
+        'feeChart'   => true,
+    ]));
+
+    expect(Settings::usesCharts())->toBeTrue();
+
+    Session::put('settings', json_encode([
+        'priceChart' => false,
+        'feeChart'   => false,
+    ]));
+
+    expect(Settings::usesCharts())->toBeFalse();
+
+    Session::put('settings', json_encode([
+        'priceChart' => true,
+        'feeChart'   => true,
+    ]));
+
+    expect(Settings::usesCharts())->toBeTrue();
+});
+
 it('should determine if visitor uses price chart', function () {
     Session::put('settings', json_encode(['priceChart' => true]));
 

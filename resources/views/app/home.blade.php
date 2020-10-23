@@ -8,10 +8,17 @@
     @section('content')
         <x-general.search.header />
 
-        <div class="justify-center py-16 content-container">
-            <x-charts.price :data="$prices" identifier="price" colours-scheme="#339A51" />
-            <x-charts.price :data="$fees" identifier="fees" colours-scheme="#FFAE10" />
-        </div>
+        @if(Settings::usesCharts())
+            <div class="justify-center py-16 content-container">
+                @if(Settings::usesPriceChart())
+                    <x-charts.price :data="$prices" identifier="price" colours-scheme="#339A51" />
+                @endif
+
+                @if(Settings::usesFeeChart())
+                    <x-charts.price :data="$fees" identifier="fees" colours-scheme="#FFAE10" />
+                @endif
+            </div>
+        @endif
 
         <x-home.content />
     @endsection

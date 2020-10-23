@@ -52,6 +52,11 @@ final class Settings
         return 'light';
     }
 
+    public static function usesCharts(): bool
+    {
+        return static::usesPriceChart() || static::usesFeeChart();
+    }
+
     public static function usesPriceChart(): bool
     {
         return static::priceChart() === true;
