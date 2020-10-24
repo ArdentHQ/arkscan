@@ -11,7 +11,7 @@ use function Tests\configureExplorerDatabase;
 beforeEach(function () {
     configureExplorerDatabase();
 
-    $this->subject = new RoundViewModel(Round::factory()->create(['balance' => 5000 * 1e8]));
+    $this->subject = new RoundViewModel(Round::factory()->create(['balance' => '500000000000']));
 });
 
 it('should get the balance', function () {

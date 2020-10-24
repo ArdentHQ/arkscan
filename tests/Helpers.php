@@ -11,21 +11,21 @@ use Illuminate\Support\Facades\Http;
 
 function configureExplorerDatabase(): void
 {
-    $database = database_path('explorer.sqlite');
+    // $database = database_path('explorer.sqlite');
 
-    File::delete($database);
+    // File::delete($database);
 
-    touch($database);
+    // touch($database);
 
-    Config::set('database.connections.explorer', [
-        'driver'                  => 'sqlite',
-        'url'                     => '',
-        'database'                => $database,
-        'prefix'                  => '',
-        'foreign_key_constraints' => true,
-    ]);
+    // Config::set('database.connections.explorer', [
+    //     'driver'                  => 'sqlite',
+    //     'url'                     => '',
+    //     'database'                => $database,
+    //     'prefix'                  => '',
+    //     'foreign_key_constraints' => true,
+    // ]);
 
-    Artisan::call('migrate', [
+    Artisan::call('migrate:fresh', [
         '--database' => 'explorer',
         '--path'     => 'tests/migrations',
     ]);
@@ -141,5 +141,13 @@ function fakeKnownWallets(): void
                 'address' => 'AReY3W6nTv3utiG2em5nefKEsGQeqEVPN4',
             ],
         ],
+    ]);
+}
+
+function fakeCryptoCompare(): void
+{
+    Http::fake([
+        'https://min-api.cryptocompare.com/data/price'    => Http::response(['USD' => 0.2907]),
+        'https://min-api.cryptocompare.com/data/histoday' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/historical.json')), true)),
     ]);
 }

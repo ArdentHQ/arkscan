@@ -24,8 +24,8 @@ beforeEach(function () {
 
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'block_id'          => $this->block->id,
-        'fee'               => 1 * 1e8,
-        'amount'            => 2 * 1e8,
+        'fee'               => '100000000',
+        'amount'            => '200000000',
         'sender_public_key' => Wallet::factory()->create(['address' => 'sender'])->public_key,
         'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]));

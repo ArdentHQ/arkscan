@@ -10,7 +10,7 @@ use function Tests\configureExplorerDatabase;
 beforeEach(function () {
     configureExplorerDatabase();
 
-    $this->subject = Round::factory()->create(['balance' => 5000 * 1e8]);
+    $this->subject = Round::factory()->create(['balance' => '500000000000']);
 });
 
 it('should have a delegate that forged the block', function () {

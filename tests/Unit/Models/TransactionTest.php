@@ -13,8 +13,8 @@ beforeEach(function () {
     configureExplorerDatabase();
 
     $this->subject = Transaction::factory()->create([
-        'fee'    => 1 * 1e8,
-        'amount' => 2 * 1e8,
+        'fee'    => '100000000',
+        'amount' => '200000000',
     ]);
 });
 

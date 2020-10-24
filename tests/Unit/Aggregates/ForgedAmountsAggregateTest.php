@@ -12,9 +12,9 @@ beforeEach(function () {
     configureExplorerDatabase();
 
     Block::factory(10)->create([
-        'total_amount' => 10 * 1e8,
-        'total_fee'    => 8 * 1e8,
-        'reward'       => 2 * 1e8,
+        'total_amount' => '1000000000',
+        'total_fee'    => '800000000',
+        'reward'       => '200000000',
     ]);
 
     $this->subject = new ForgedAmountsAggregate();

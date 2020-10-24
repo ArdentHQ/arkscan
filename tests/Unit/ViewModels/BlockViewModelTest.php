@@ -17,9 +17,9 @@ beforeEach(function () {
     $this->subject = new BlockViewModel(Block::factory()->create([
         'previous_block' => $previousBlock->id,
         'height'         => 10000,
-        'total_amount'   => 50 * 1e8,
-        'total_fee'      => 48 * 1e8,
-        'reward'         => 2 * 1e8,
+        'total_amount'   => '5000000000',
+        'total_fee'      => '4800000000',
+        'reward'         => '200000000',
     ]));
 });
 

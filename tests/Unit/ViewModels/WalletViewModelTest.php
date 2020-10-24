@@ -16,11 +16,11 @@ beforeEach(function () {
     configureExplorerDatabase();
 
     $wallet = Wallet::factory()->create([
-        'balance'      => 1000 * 1e8,
+        'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
             'delegate' => [
-                'voteBalance' => 1000 * 1e8,
+                'voteBalance' => '100000000000',
             ],
         ],
     ]);
@@ -28,9 +28,9 @@ beforeEach(function () {
     $this->subject = new WalletViewModel($wallet);
 
     Block::factory()->create([
-        'total_amount'         => 10 * 1e8,
-        'total_fee'            => 8 * 1e8,
-        'reward'               => 2 * 1e8,
+        'total_amount'         => '1000000000',
+        'total_fee'            => '800000000',
+        'reward'               => '200000000',
         'generator_public_key' => $wallet->public_key,
     ]);
 });
@@ -54,7 +54,7 @@ it('should get the nonce', function () {
 it('should get the balance as percentage from supply', function () {
     Http::fakeSequence()->push([
         'data' => [
-            'supply' => 10000 * 1e8,
+            'supply' => '1000000000000',
         ],
     ]);
 
@@ -71,7 +71,7 @@ it('should get the votes', function () {
 it('should get the votes as percentage from supply', function () {
     Http::fakeSequence()->push([
         'data' => [
-            'supply' => 10000 * 1e8,
+            'supply' => '1000000000000',
         ],
     ]);
 

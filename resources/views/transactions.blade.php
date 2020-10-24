@@ -12,7 +12,6 @@
             <div class="py-16 content-container md:px-8">
                 <div x-data="{
                     dropdownOpen: false,
-                    selected: 'transactions', // TODO: get rid of this, only here because of the filter
                     transactionTypeFilter: 'all',
                     transactionTypeFilterLabel: 'All',
                 }" x-cloak class="w-full">

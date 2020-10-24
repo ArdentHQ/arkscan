@@ -51,6 +51,11 @@
         <server name="MODEL_CACHE_ENABLED" value="false"/>
         <!-- App -->
         <server name="EXPLORER_NETWORK" value="ark.production"/>
+        <server name="EXPLORER_DB_HOST" value="127.0.0.1"/>
+        <server name="EXPLORER_DB_PORT" value="5432"/>
+        <server name="EXPLORER_DB_DATABASE" value="explorer"/>
+        <server name="EXPLORER_DB_USERNAME" value="explorer"/>
+        <server name="EXPLORER_DB_PASSWORD" value="password"/>
     </php>
     <listeners>
         <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />

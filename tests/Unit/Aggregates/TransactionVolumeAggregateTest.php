@@ -10,7 +10,7 @@ beforeEach(function () {
     configureExplorerDatabase();
 
     Transaction::factory(10)->create([
-        'amount' => 5 * 1e8,
+        'amount' => '500000000',
     ]);
 
     $this->subject = new TransactionVolumeAggregate();
