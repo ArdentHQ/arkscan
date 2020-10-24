@@ -21,20 +21,46 @@
                 <tr>
                     <td>
                         <div class="flex items-center">
-                            <a href="{{ $block->url() }}" class="mx-auto link">
+                            <div wire:loading.class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
+                            <a href="{{ $block->url() }}" class="mx-auto link" wire:loading.class="hidden">
                                 @svg('link', 'h-4 w-4')
                             </a>
                         </div>
                     </td>
-                    <td class="hidden lg:table-cell">{{ $block->timestamp() }}</td>
-                    <td><x-general.address :address="$block->delegate()" /></td>
-                    <td>{{ $block->height() }}</td>
-                    <td>{{ $block->transactionCount() }}</td>
+                    <td class="hidden lg:table-cell">
+                        <div wire:loading.class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
+                        {{--TODO: Everything dissapear once we apply the wire:loading.class here, to investigate, might just be me locally --}}
+                        <span wire:loading.class="hidden">{{ $block->timestamp() }}</span>
+                    </td>
+                    <td>
+                        <div class="flex flex-row items-center space-x-3">
+                            <div wire:loading.class="w-6 h-6 rounded-full md:w-11 md:h-11 bg-theme-secondary-300 animate-pulse"></div>
+                            <div wire:loading.class="w-full h-5 rounded-full bg-theme-secondary-300 animate-pulse"></div>
+                        </div>
+
+                        <x-general.address :address="$block->delegate()" />
+                    </td>
+                    <td>
+                        <div wire:loading.class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
+                        <span wire:loading.class="hidden">{{ $block->height() }}<span>
+                    </td>
+                    <td>
+                        <div wire:loading.class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
+                        <span wire:loading.class="hidden">{{ $block->transactionCount() }}</span>
+                    </td>
                     <td class="text-right">
-                        <x-general.amount-fiat-tooltip :amount="$block->amount()" :fiat="$block->amountFiat()" />
+                        <div wire:loading.class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
+
+                        <div wire:loading.class="hidden">
+                            <x-general.amount-fiat-tooltip :amount="$block->amount()" :fiat="$block->amountFiat()" />
+                        </div>
                     </td>
                     <td class="hidden text-right xl:table-cell">
-                        <x-general.amount-fiat-tooltip :amount="$block->fee()" :fiat="$block->feeFiat()" />
+                        <div wire:loading.class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
+
+                        <div wire:loading.class="hidden">
+                            <x-general.amount-fiat-tooltip :amount="$block->fee()" :fiat="$block->feeFiat()" />
+                        </div>
                     </td>
                 </tr>
             @endforeach

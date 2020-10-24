@@ -1,4 +1,4 @@
-<div class="flex items-center space-x-3">
+<div class="flex items-center space-x-3" {{ $loadingAttribute ?? ''}} wire:loading.class="hidden">
     @unless ($icon ?? false)
         <x-general.avatar :identifier="$address" />
     @else
