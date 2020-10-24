@@ -10,7 +10,6 @@
             <div class="py-16 content-container md:px-8">
                 <div x-data="{
                     dropdownOpen: false,
-                    selected: 'all',
                     direction: 'all',
                     transactionTypeFilter: 'all',
                     transactionTypeFilterLabel: 'All',

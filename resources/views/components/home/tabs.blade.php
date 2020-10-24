@@ -8,7 +8,9 @@
         <div class="relative flex items-end justify-between">
             <h2 class="text-3xl sm:text-4xl">@lang('pages.home.transactions_and_blocks')</h2>
 
-            <x-transaction-table-filter />
+            <div x-show="selected === 'transactions'">
+                <x-transaction-table-filter />
+            </div>
         </div>
     </div>
 

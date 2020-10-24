@@ -1,4 +1,4 @@
-<div x-show="selected === 'transactions'" x-cloak>
+<div x-cloak>
     <x-ark-dropdown dropdown-classes="left-0 w-64 mt-3 overflow-y-scroll h-128" button-class="items-end w-64 h-10 pb-0 pr-0 dropdown-button" :init-alpine="false">
         @slot('button')
             <div class="flex items-center justify-end w-full space-x-2 font-semibold flex-inline text-theme-secondary-700">
