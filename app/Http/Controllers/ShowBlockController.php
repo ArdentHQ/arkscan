@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Block;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
+use App\ViewModels\ViewModelFactory;
+use Illuminate\View\View;
 
 final class ShowBlockController
 {
-    public function __invoke(Request $request, Block $block): \Illuminate\Http\Response
+    public function __invoke(Block $block): View
     {
-        return Response::noContent();
+        return view('app.block', [
+            'block' => ViewModelFactory::make($block),
+        ]);
     }
 }

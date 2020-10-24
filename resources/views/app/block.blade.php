@@ -17,7 +17,7 @@
     @endsection
 
     @section('content')
-        <x-block.header />
+        <x-block.header :block="$block" />
     @endsection
 
 @endcomponent

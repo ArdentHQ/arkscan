@@ -4,7 +4,7 @@
 
         <x-general.entity-header
             :title="trans('pages.transaction.transaction_id')"
-            value="58dc75dfd97709acd4a268e318ee7f53651fdc54294325c4a7a4bca08777558a"
+            :value="$transaction->id()"
         >
             <x-slot name="logo"><span class="text-lg font-medium">ID</span></x-slot>
 
@@ -13,22 +13,22 @@
                     <x-general.entity-header-item
                         :title="trans('pages.transaction.transaction_type')"
                         icon="app-transactions.transfer"
-                        text="Transfer"
+                        :text="$transaction->typeLabel()"
                     />
                     <x-general.entity-header-item
                         :title="trans('pages.transaction.fee')"
                         icon="app-fee"
-                        text="0.09447035 ARK"
+                        :text="$transaction->fee()"
                     />
                     <x-general.entity-header-item
                         :title="trans('pages.transaction.amount')"
                         icon="app-votes"
-                        text="23,097.37265146 ARK"
+                        :text="$transaction->amount()"
                     />
                     <x-general.entity-header-item
                         :title="trans('pages.transaction.confirmations')"
                         icon="app-confirmations"
-                        text="512,189"
+                        :text="$transaction->confirmations()"
                     />
                 </div>
             </x-slot>

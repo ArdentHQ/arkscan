@@ -4,7 +4,7 @@
 
         <x-general.entity-header
             :title="trans('pages.block.block_id')"
-            value="5e665af8f9805b0a8171b5badf6289ddff96e110e512725132c6f4e3dffea94e"
+            :value="$block->id()"
         >
             <x-slot name="logo">@svg('app-block-id', 'w-5 h-5')</x-slot>
 
@@ -24,24 +24,24 @@
                 <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
                     <x-general.entity-header-item
                         :title="trans('pages.block.generated_by')"
-                        avatar="delegate_name"
-                        text="cams_yellow_jacket"
-                        url="asd"
+                        :avatar="$block->delegateUsername()"
+                        :text="$block->delegateUsername()"
+                        :url="route('wallet', $block->delegate()->address)"
                     />
                     <x-general.entity-header-item
                         :title="trans('pages.block.transaction_volumn')"
                         icon="app-votes"
-                        text="475.133 ARK"
+                        :text="$block->amount()"
                     />
                     <x-general.entity-header-item
                         :title="trans('pages.block.transactions')"
                         icon="exchange"
-                        text="3"
+                        :text="$block->transactionCount()"
                     />
                     <x-general.entity-header-item
                         :title="trans('pages.block.total_rewards')"
                         icon="app-reward"
-                        text="2.073541 ARK"
+                        :text="$block->reward()"
                     />
                 </div>
             </x-slot>

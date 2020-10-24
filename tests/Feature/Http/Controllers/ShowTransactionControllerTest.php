@@ -11,5 +11,5 @@ it('should render the page without any errors', function () {
 
     $this
         ->get(route('transaction', Transaction::factory()->create()))
-        ->assertNoContent();
+        ->assertOk();
 });

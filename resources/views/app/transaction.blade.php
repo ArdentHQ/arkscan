@@ -17,7 +17,7 @@
     @endsection
 
     @section('content')
-        <x-transaction.header />
+        <x-transaction.header :transaction="$transaction" />
     @endsection
 
 @endcomponent

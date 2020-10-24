@@ -3,8 +3,9 @@
 declare(strict_types=1);
 
 use App\Models\Block;
-use App\ViewModels\BlockViewModel;
+use App\Models\Wallet;
 
+use App\ViewModels\BlockViewModel;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
 
@@ -68,15 +69,21 @@ it('should get the reward as fiat', function () {
 });
 
 it('should get the delegate', function () {
-    expect($this->subject->delegate())->toBeString();
-    expect($this->subject->delegate())->not()->toBe('n/a');
+    expect($this->subject->delegate())->toBeInstanceOf(Wallet::class);
 });
 
-it('should fail to get the delegate', function () {
+it('should get the delegate username', function () {
+    expect($this->subject->delegateUsername())->toBeString();
+    expect($this->subject->delegateUsername())->not()->toBe('Genesis');
+});
+
+it('should fail to get the delegate username', function () {
     $this->subject = new BlockViewModel(Block::factory()->create([
-        'generator_public_key' => 'unknown',
+        'generator_public_key' => Wallet::factory()->create([
+            'attributes' => [],
+        ])->public_key,
     ]));
 
-    expect($this->subject->delegate())->toBeString();
-    expect($this->subject->delegate())->toBe('n/a');
+    expect($this->subject->delegateUsername())->toBeString();
+    expect($this->subject->delegateUsername())->toBe('Genesis');
 });

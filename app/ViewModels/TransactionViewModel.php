@@ -357,4 +357,9 @@ final class TransactionViewModel extends ViewModel
     {
         return $this->type->isUnknown();
     }
+
+    public function typeLabel(): string
+    {
+        return trans('general.transaction.'.$this->iconType());
+    }
 }

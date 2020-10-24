@@ -6,6 +6,7 @@ namespace App\ViewModels;
 
 use App\Facades\Network;
 use App\Models\Block;
+use App\Models\Wallet;
 use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
 use App\Services\Timestamp;
@@ -36,15 +37,15 @@ final class BlockViewModel extends ViewModel
         return Timestamp::fromGenesisHuman($this->model->timestamp);
     }
 
-    public function delegate(): string
+    public function delegate(): Wallet
     {
-        $delegate = $this->model->delegate;
+        /* @phpstan-ignore-next-line */
+        return $this->model->delegate;
+    }
 
-        if (is_null($delegate)) {
-            return 'n/a';
-        }
-
-        return Arr::get($delegate->attributes, 'delegate.username', 'Genesis');
+    public function delegateUsername(): string
+    {
+        return Arr::get($this->delegate(), 'attributes.delegate.username', 'Genesis');
     }
 
     public function height(): string
