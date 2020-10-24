@@ -8,6 +8,9 @@
                 <th><span class="pl-14">@lang('general.transaction.recipient')</span></th>
                 <th class="text-right">@lang('general.transaction.amount')</th>
                 <th class="hidden text-right xl:table-cell">@lang('general.transaction.fee')</th>
+                @isset($useConfirmations)
+                    <th class="hidden text-right xl:table-cell">@lang('general.transaction.confirmations')</th>
+                @endisset
             </tr>
         </thead>
         <tbody>
@@ -53,6 +56,17 @@
                             <x-general.amount-fiat-tooltip :amount="$transaction->fee()" :fiat="$transaction->feeFiat()" />
                         </div>
                     </td>
+                    @isset($useConfirmations)
+                        <td class="hidden text-right xl:table-cell">
+                            <div wire:loading.class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
+
+                            @if($transaction->isConfirmed())
+                                <span wire:loading.class="hidden">Confirmed</span>
+                            @else
+                                <span wire:loading.class="hidden">{{ $transaction->confirmations() }}/{{ Network::confirmations() }}</span>
+                            @endif
+                        </td>
+                    @endisset
                 </tr>
             @endforeach
         </tbody>

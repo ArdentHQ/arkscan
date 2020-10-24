@@ -4,7 +4,13 @@
     transactionTypeFilter: 'all',
     transactionTypeFilterLabel: 'All',
 }" x-cloak class="w-full">
-    <x-transaction-table-filter />
+    <div class="w-full mb-8">
+        <div class="relative flex items-end justify-between">
+            <h2 class="text-3xl sm:text-4xl">@lang('pages.home.transactions_and_blocks')</h2>
+
+            <x-transaction-table-filter />
+        </div>
+    </div>
 
     <div class="hidden tabs md:flex">
         <div

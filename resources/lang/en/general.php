@@ -23,13 +23,14 @@ return [
     ],
 
     'transaction' => [
-        'id'        => 'ID',
-        'timestamp' => 'Timestamp',
-        'type'      => 'Type',
-        'sender'    => 'Sender',
-        'recipient' => 'Recipient',
-        'amount'    => 'Amount',
-        'fee'       => 'Fee',
+        'id'            => 'ID',
+        'timestamp'     => 'Timestamp',
+        'type'          => 'Type',
+        'sender'        => 'Sender',
+        'recipient'     => 'Recipient',
+        'amount'        => 'Amount',
+        'fee'           => 'Fee',
+        'confirmations' => 'Confirmations',
 
         'bridgechain'           => 'Bridgechain',
         'business'              => 'Business',
