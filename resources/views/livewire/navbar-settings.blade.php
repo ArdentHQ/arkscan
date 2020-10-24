@@ -13,7 +13,7 @@
         class="navbar-settings-dropdown"
         x-cloak
     >
-        <div class="flex flex-col divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-700">
+        <div class="flex flex-col divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
             @if(Network::canBeExchanged())
                 <x-navbar.setting-option :title="trans('forms.settings.currency.title')" :subtitle="trans('forms.settings.currency.description')">
                     <select wire:model="state.currency" class="font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">

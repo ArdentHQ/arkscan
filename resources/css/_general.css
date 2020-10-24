@@ -252,6 +252,10 @@ body {
     .detail-box {
         @apply border-r items-center pr-6 border-theme-secondary-300;
     }
+
+    .theme-dark .detail-box {
+        @apply border-theme-secondary-800;
+    }
 }
 
 .detail-box:last-of-type {

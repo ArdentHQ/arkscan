@@ -1,8 +1,8 @@
-<div x-cloak class="w-full">
-    <div class="relative flex items-center justify-between">
+<div class="w-full mb-8">
+    <div class="relative flex items-end justify-between">
         <h2 class="text-3xl sm:text-4xl">@lang('pages.home.transactions_and_blocks')</h2>
-        <div x-show="selected === 'transactions'">
-            <x-ark-dropdown dropdown-classes="left-0 w-64 mt-3 overflow-y-scroll h-128" button-class="w-64 h-10 dropdown-button" :init-alpine="false">
+        <div x-show="selected === 'transactions'" x-cloak>
+            <x-ark-dropdown dropdown-classes="left-0 w-64 mt-3 overflow-y-scroll h-128" button-class="items-end w-64 h-10 pb-0 pr-0 dropdown-button" :init-alpine="false">
                 @slot('button')
                     <div class="flex items-center justify-end w-full space-x-2 font-semibold flex-inline text-theme-secondary-700">
                         <div>

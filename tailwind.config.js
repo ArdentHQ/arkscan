@@ -47,5 +47,9 @@ module.exports = {
                 });
             });
         }),
-    ]
+    ],
+    future: {
+        ...defaultConfig.future,
+        defaultLineHeights: true,
+    },
 }
