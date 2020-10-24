@@ -53,10 +53,10 @@
     </div>
 
     <div x-show="selected === 'transactions'">
-        <livewire:transaction-table view-more />
+        <livewire:latest-transactions-table />
     </div>
 
     <div x-show="selected === 'blocks'">
-        <livewire:block-table view-more />
+        <livewire:latest-blocks-table />
     </div>
 </div>

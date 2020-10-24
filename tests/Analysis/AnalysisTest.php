@@ -25,10 +25,11 @@ final class AnalysisTest extends TestCase
     public function getIgnored(): array
     {
         return [
+            'InvalidModel',
             'Laravel\Scout\Builder',
+            'Spatie\Snapshots\assertMatchesSnapshot',
             'Tests\configureExplorerDatabase',
             'Tests\fakeKnownWallets',
-            'Spatie\Snapshots\assertMatchesSnapshot',
         ];
     }
 }
