@@ -1,5 +1,6 @@
-<div id="block-list" class="w-full">
+<div id="block-list" class="w-full" wire:poll.8s>
     <x-blocks.table-desktop :blocks="$blocks" />
+
     <x-blocks.list-mobile :blocks="$blocks" />
 
     <div class="pt-4 mt-8 border-t border-theme-secondary-300 dark:border-theme-secondary-800 md:mt-0 md:border-dashed">

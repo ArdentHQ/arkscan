@@ -10,7 +10,9 @@ use App\Models\Wallet;
 use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
 use App\Services\Timestamp;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Spatie\ViewModels\ViewModel;
 
 final class BlockViewModel extends ViewModel
@@ -24,7 +26,7 @@ final class BlockViewModel extends ViewModel
 
     public function url(): string
     {
-        return route('block', $this->block->id);
+        return route('block', $this->block);
     }
 
     public function id(): string
@@ -39,8 +41,11 @@ final class BlockViewModel extends ViewModel
 
     public function delegate(): Wallet
     {
-        /* @phpstan-ignore-next-line */
-        return $this->block->delegate;
+        return Cache::remember(
+            "block:delegate:{$this->block->id}",
+            Carbon::now()->addHour(),
+            fn (): ?Wallet => $this->block->delegate
+        );
     }
 
     public function delegateUsername(): string
@@ -100,7 +105,11 @@ final class BlockViewModel extends ViewModel
 
     private function findBlockWithHeight(int $height): ?string
     {
-        $block = Block::where('height', $height)->first();
+        $block = Cache::remember(
+            "block:neighbour:$height",
+            Carbon::now()->addHour(),
+            fn () => Block::where('height', $height)->first()
+        );
 
         if (is_null($block)) {
             return null;

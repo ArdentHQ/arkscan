@@ -17,13 +17,15 @@ use App\Services\Transactions\TransactionState;
 use App\Services\Transactions\TransactionStateIcon;
 use App\Services\Transactions\TransactionType;
 use App\Services\Transactions\TransactionTypeIcon;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Spatie\ViewModels\ViewModel;
 
 final class TransactionViewModel extends ViewModel
 {
-    private Transaction $model;
+    private Transaction $transaction;
 
     private TransactionType $type;
 
@@ -33,35 +35,39 @@ final class TransactionViewModel extends ViewModel
 
     public function __construct(Transaction $transaction)
     {
-        $this->model     = $transaction;
-        $this->type      = new TransactionType($transaction);
-        $this->state     = new TransactionState($transaction);
-        $this->direction = new TransactionDirection($transaction);
+        $this->transaction = $transaction;
+        $this->type        = new TransactionType($transaction);
+        $this->state       = new TransactionState($transaction);
+        $this->direction   = new TransactionDirection($transaction);
     }
 
     public function url(): string
     {
-        return route('transaction', $this->model->id);
+        return route('transaction', $this->transaction);
     }
 
     public function id(): string
     {
-        return $this->model->id;
+        return $this->transaction->id;
     }
 
     public function blockId(): string
     {
-        return $this->model->block_id;
+        return $this->transaction->block_id;
     }
 
     public function timestamp(): string
     {
-        return Timestamp::fromGenesisHuman($this->model->timestamp);
+        return Timestamp::fromGenesisHuman($this->transaction->timestamp);
     }
 
     public function sender(): string
     {
-        $wallet = $this->model->sender;
+        $wallet = Cache::remember(
+            "transaction:wallet:{$this->transaction->sender_public_key}",
+            Carbon::now()->addHour(),
+            fn () => $this->transaction->sender
+        );
 
         if (is_null($wallet)) {
             return 'n/a';
@@ -72,7 +78,11 @@ final class TransactionViewModel extends ViewModel
 
     public function recipient(): string
     {
-        $wallet = $this->model->recipient;
+        $wallet = Cache::remember(
+            "transaction:wallet:{$this->transaction->recipient_id}",
+            Carbon::now()->addHour(),
+            fn () => $this->transaction->recipient
+        );
 
         if (is_null($wallet)) {
             return 'n/a';
@@ -83,27 +93,31 @@ final class TransactionViewModel extends ViewModel
 
     public function fee(): string
     {
-        return NumberFormatter::currency($this->model->fee / 1e8, Network::currency());
+        return NumberFormatter::currency($this->transaction->fee / 1e8, Network::currency());
     }
 
     public function feeFiat(): string
     {
-        return ExchangeRate::convert($this->model->fee / 1e8, $this->model->timestamp);
+        return ExchangeRate::convert($this->transaction->fee / 1e8, $this->transaction->timestamp);
     }
 
     public function amount(): string
     {
-        return NumberFormatter::currency($this->model->amount / 1e8, Network::currency());
+        return NumberFormatter::currency($this->transaction->amount / 1e8, Network::currency());
     }
 
     public function amountFiat(): string
     {
-        return ExchangeRate::convert($this->model->amount / 1e8, $this->model->timestamp);
+        return ExchangeRate::convert($this->transaction->amount / 1e8, $this->transaction->timestamp);
     }
 
     public function confirmations(): string
     {
-        $block = $this->model->block;
+        $block = Cache::remember(
+            "transaction:confirmations:{$this->transaction->block_id}",
+            Carbon::now()->addHour(),
+            fn () => $this->transaction->block
+        );
 
         if (is_null($block)) {
             return NumberFormatter::number(0);
@@ -118,11 +132,15 @@ final class TransactionViewModel extends ViewModel
             return null;
         }
 
-        $publicKey = collect(Arr::get($this->model->asset ?? [], 'votes'))
+        $publicKey = collect(Arr::get($this->transaction->asset ?? [], 'votes'))
             ->filter(fn ($vote) => Str::startsWith($vote, '+'))
             ->first();
 
-        return Wallet::where('public_key', substr($publicKey, 1))->firstOrFail();
+        return Cache::remember(
+            "transaction:wallet:{$publicKey}",
+            Carbon::now()->addHour(),
+            fn () => Wallet::where('public_key', substr($publicKey, 1))->firstOrFail()
+        );
     }
 
     public function unvoted(): ?Wallet
@@ -131,26 +149,30 @@ final class TransactionViewModel extends ViewModel
             return null;
         }
 
-        $publicKey = collect(Arr::get($this->model->asset ?? [], 'votes'))
+        $publicKey = collect(Arr::get($this->transaction->asset ?? [], 'votes'))
             ->filter(fn ($vote) => Str::startsWith($vote, '-'))
             ->first();
 
-        return Wallet::where('public_key', substr($publicKey, 1))->firstOrFail();
+        return Cache::remember(
+            "transaction:wallet:{$publicKey}",
+            Carbon::now()->addHour(),
+            fn () => Wallet::where('public_key', substr($publicKey, 1))->firstOrFail()
+        );
     }
 
     public function iconState(): string
     {
-        return (new TransactionStateIcon($this->model))->name();
+        return (new TransactionStateIcon($this->transaction))->name();
     }
 
     public function iconType(): string
     {
-        return (new TransactionTypeIcon($this->model))->name();
+        return (new TransactionTypeIcon($this->transaction))->name();
     }
 
     public function iconDirection(string $address): string
     {
-        return (new TransactionDirectionIcon($this->model))->name($address);
+        return (new TransactionDirectionIcon($this->transaction))->name($address);
     }
 
     public function isConfirmed(): bool

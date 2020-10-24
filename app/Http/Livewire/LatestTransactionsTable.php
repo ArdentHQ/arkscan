@@ -7,6 +7,7 @@ namespace App\Http\Livewire;
 use App\Http\Livewire\Concerns\ManagesTransactionTypeScopes;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -35,8 +36,14 @@ final class LatestTransactionsTable extends Component
             Transaction::addGlobalScope(new $scopeClass());
         }
 
+        $transactions = Cache::remember(
+            'latestTransactionsTable:'.$this->state['type'],
+            8,
+            fn () => Transaction::latestByTimestamp()->take(15)->get()
+        );
+
         return view('livewire.latest-transactions-table', [
-            'transactions' => ViewModelFactory::collection(Transaction::latestByTimestamp()->take(15)->get()),
+            'transactions' => ViewModelFactory::collection($transactions),
         ]);
     }
 }

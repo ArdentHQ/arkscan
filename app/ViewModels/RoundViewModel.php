@@ -11,15 +11,15 @@ use Spatie\ViewModels\ViewModel;
 
 final class RoundViewModel extends ViewModel
 {
-    private Round $model;
+    private Round $round;
 
     public function __construct(Round $round)
     {
-        $this->model = $round;
+        $this->round = $round;
     }
 
     public function balance(): string
     {
-        return NumberFormatter::currency($this->model->balance / 1e8, Network::currency());
+        return NumberFormatter::currency($this->round->balance / 1e8, Network::currency());
     }
 }

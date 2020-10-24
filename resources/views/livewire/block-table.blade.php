@@ -1,4 +1,4 @@
-<div id="block-list" class="w-full">
+<div id="block-list" class="w-full" wire:poll.8s>
     <x-blocks.table-desktop :blocks="$blocks" />
 
     <x-blocks.list-mobile :blocks="$blocks" />
