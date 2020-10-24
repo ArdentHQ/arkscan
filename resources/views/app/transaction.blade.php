@@ -1,8 +1,8 @@
 @component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
 
     @push('metatags')
-        <meta property="og:title" content="@lang('metatags.block.title')" />
-        <meta property="og:description" content="@lang('metatags.block.description')">
+        <meta property="og:title" content="@lang('metatags.transaction.title')" />
+        <meta property="og:description" content="@lang('metatags.transaction.description')">
     @endpush
 
     @push('scripts')
@@ -12,12 +12,12 @@
     @section('breadcrumbs')
         <x-general.breadcrumbs :crumbs="[
             ['route' => 'home', 'label' => trans('menus.home')],
-            ['label' => trans('menus.block')],
+            ['label' => trans('menus.transaction')],
         ]" />
     @endsection
 
     @section('content')
-        <x-block.header />
+        <x-transaction.header />
     @endsection
 
 @endcomponent

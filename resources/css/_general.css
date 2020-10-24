@@ -235,9 +235,14 @@ body {
     @apply border-theme-secondary-800;
 }
 
+/* Circled Icon */
+.circled-icon {
+    @apply flex items-center justify-center w-11 h-11 border-2 rounded-full;
+}
+
 /* Transaction Icon */
 .transaction-icon {
-    @apply flex items-center justify-center w-11 h-11 border-2 rounded-full text-theme-secondary-900 border-theme-secondary-900;
+    @apply circled-icon text-theme-secondary-900 border-theme-secondary-900;
 }
 .theme-dark .transaction-icon {
     @apply text-theme-secondary-600 border-theme-secondary-600;
@@ -251,4 +256,27 @@ body {
 
 .detail-box:last-of-type {
     @apply border-none;
+}
+
+/* Entity Header Item */
+.entity-header-item {
+    @apply flex;
+}
+.entity-header-item:last-child {
+    @apply border-r-0;
+}
+.theme-dark .entity-header-item {
+    @apply border-theme-secondary-800;
+}
+
+@screen md {
+    .entity-header-item:nth-child(odd) {
+        @apply border-r border-theme-secondary-300;
+    }
+}
+
+@screen xl {
+    .entity-header-item {
+        @apply border-r border-theme-secondary-300;
+    }
 }
