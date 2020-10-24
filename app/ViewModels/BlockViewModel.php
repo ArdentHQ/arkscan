@@ -15,32 +15,32 @@ use Spatie\ViewModels\ViewModel;
 
 final class BlockViewModel extends ViewModel
 {
-    private Block $model;
+    private Block $block;
 
     public function __construct(Block $block)
     {
-        $this->model = $block;
+        $this->block = $block;
     }
 
     public function url(): string
     {
-        return route('block', $this->model->id);
+        return route('block', $this->block->id);
     }
 
     public function id(): string
     {
-        return $this->model->id;
+        return $this->block->id;
     }
 
     public function timestamp(): string
     {
-        return Timestamp::fromGenesisHuman($this->model->timestamp);
+        return Timestamp::fromGenesisHuman($this->block->timestamp);
     }
 
     public function delegate(): Wallet
     {
         /* @phpstan-ignore-next-line */
-        return $this->model->delegate;
+        return $this->block->delegate;
     }
 
     public function delegateUsername(): string
@@ -50,41 +50,62 @@ final class BlockViewModel extends ViewModel
 
     public function height(): string
     {
-        return NumberFormatter::number($this->model->height);
+        return NumberFormatter::number($this->block->height);
     }
 
     public function transactionCount(): int
     {
-        return $this->model->number_of_transactions;
+        return $this->block->number_of_transactions;
     }
 
     public function amount(): string
     {
-        return NumberFormatter::currency($this->model->total_amount / 1e8, Network::currency());
+        return NumberFormatter::currency($this->block->total_amount / 1e8, Network::currency());
     }
 
     public function amountFiat(): string
     {
-        return ExchangeRate::convert($this->model->total_amount / 1e8, $this->model->timestamp);
+        return ExchangeRate::convert($this->block->total_amount / 1e8, $this->block->timestamp);
     }
 
     public function fee(): string
     {
-        return NumberFormatter::currency($this->model->total_fee / 1e8, Network::currency());
+        return NumberFormatter::currency($this->block->total_fee / 1e8, Network::currency());
     }
 
     public function feeFiat(): string
     {
-        return ExchangeRate::convert($this->model->total_fee / 1e8, $this->model->timestamp);
+        return ExchangeRate::convert($this->block->total_fee / 1e8, $this->block->timestamp);
     }
 
     public function reward(): string
     {
-        return NumberFormatter::currency($this->model->reward / 1e8, Network::currency());
+        return NumberFormatter::currency($this->block->reward / 1e8, Network::currency());
     }
 
     public function rewardFiat(): string
     {
-        return ExchangeRate::convert($this->model->reward / 1e8, $this->model->timestamp);
+        return ExchangeRate::convert($this->block->reward / 1e8, $this->block->timestamp);
+    }
+
+    public function previousBlockUrl(): ?string
+    {
+        return $this->findBlockWithHeight($this->block->height - 1);
+    }
+
+    public function nextBlockUrl(): ?string
+    {
+        return $this->findBlockWithHeight($this->block->height + 1);
+    }
+
+    private function findBlockWithHeight(int $height): ?string
+    {
+        $block = Block::where('height', $height)->first();
+
+        if (is_null($block)) {
+            return null;
+        }
+
+        return route('block', $block);
     }
 }

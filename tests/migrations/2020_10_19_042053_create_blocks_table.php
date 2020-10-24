@@ -14,7 +14,7 @@ final class CreateBlocksTable extends Migration
             $table->string('id');
             $table->unsignedBigInteger('version');
             $table->unsignedBigInteger('timestamp');
-            $table->string('previous_block');
+            $table->string('previous_block')->nullable();
             $table->unsignedBigInteger('height');
             $table->unsignedBigInteger('number_of_transactions');
             $table->unsignedBigInteger('total_amount');
