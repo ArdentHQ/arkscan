@@ -38,7 +38,7 @@
                             <div wire:loading.class="w-full h-5 rounded-full bg-theme-secondary-300 animate-pulse"></div>
                         </div>
 
-                        <x-general.address :address="$block->delegate()" />
+                        <x-general.address :address="$block->delegateUsername()" />
                     </td>
                     <td>
                         <div wire:loading.class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
