@@ -12,6 +12,9 @@ module.exports = {
                 3: '3px',
                 20: '20px',
             },
+            height: {
+                '128': '32rem',
+            }
         },
     },
 
