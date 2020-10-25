@@ -179,3 +179,27 @@ it('should determine if the wallet has registrations', function () {
 it('should get the registrations', function () {
     expect($this->subject->registrations())->toBeInstanceOf(Collection::class);
 });
+
+it('should determine if the wallet is voting', function () {
+    expect($this->subject->isVoting())->toBeFalse();
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes' => [
+            'vote' => Wallet::factory()->create()->public_key,
+        ],
+    ]));
+
+    expect($this->subject->isVoting())->toBeTrue();
+});
+
+it('should get the wallet of the vote', function () {
+    expect($this->subject->vote())->toBeNull();
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes' => [
+            'vote' => $vote = Wallet::factory()->create()->public_key,
+        ],
+    ]));
+
+    expect($this->subject->vote())->toBeInstanceOf(WalletViewModel::class);
+});

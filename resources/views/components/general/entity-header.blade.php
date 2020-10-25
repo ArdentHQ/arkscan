@@ -23,7 +23,9 @@
         </div>
     </div>
 
-    <div class="p-8 border-t bg-theme-secondary-100 border-theme-secondary-300 dark:border-theme-secondary-800 dark:bg-theme-secondary-900">
-        {{ $bottom }}
-    </div>
+    @isset($bottom)
+        <div class="p-8 border-t bg-theme-secondary-100 border-theme-secondary-300 dark:border-theme-secondary-800 dark:bg-theme-secondary-900">
+            {{ $bottom }}
+        </div>
+    @endisset
 </div>

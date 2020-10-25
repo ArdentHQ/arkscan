@@ -41,19 +41,21 @@
             </x-details.generic>
         </x-details.grid>
 
-        <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
-            <div class="py-16 content-container md:px-8">
-                <div id="transaction-list" class="w-full">
-                    <div class="relative flex items-end justify-between mb-8">
-                        <h2 class="text-3xl sm:text-4xl">@lang('pages.block.transactions')</h2>
+        @if($transactions->isNotEmpty())
+            <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
+                <div class="py-16 content-container md:px-8">
+                    <div id="transaction-list" class="w-full">
+                        <div class="relative flex items-end justify-between mb-8">
+                            <h2 class="text-3xl sm:text-4xl">@lang('pages.block.transactions')</h2>
+                        </div>
+
+                        <x-transactions.table-desktop :transactions="$transactions" />
+
+                        <x-transactions.list-mobile :transactions="$transactions" />
                     </div>
-
-                    <x-transactions.table-desktop :transactions="$transactions" />
-
-                    <x-transactions.list-mobile :transactions="$transactions" />
                 </div>
             </div>
-        </div>
+        @endif
     @endsection
 
 @endcomponent

@@ -6,6 +6,8 @@
     @endpush
 
     @section('content')
+        <x-wallet.header :wallet="$wallet" />
+
         @if($wallet->isDelegate())
             <x-wallet.delegate :wallet="$wallet" />
         @endif

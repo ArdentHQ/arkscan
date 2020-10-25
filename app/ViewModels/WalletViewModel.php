@@ -130,7 +130,7 @@ final class WalletViewModel extends ViewModel
      */
     public function commission(): string
     {
-        return NumberFormatter::number(0);
+        return NumberFormatter::percentage(0);
     }
 
     /**
@@ -182,6 +182,22 @@ final class WalletViewModel extends ViewModel
         return ViewModelFactory::collection(
             $this->wallet->sentTransactions()->withScope(EntityRegistrationScope::class)->get()
         );
+    }
+
+    public function isVoting(): bool
+    {
+        return Arr::has($this->wallet, 'attributes.vote');
+    }
+
+    public function vote(): ?self
+    {
+        $wallet = Wallet::where('public_key', Arr::get($this->wallet, 'attributes.vote'))->first();
+
+        if (is_null($wallet)) {
+            return null;
+        }
+
+        return new static($wallet);
     }
 
     private function findWalletByKnown(): ?array
