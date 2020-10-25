@@ -23,11 +23,22 @@
 
                     <div class="grid w-full grid-flow-row grid-cols-2 gap-6 pt-8 mt-5 mb-16 {{ Network::canbeExchanged() ?  'xl:grid-cols-4' : 'xl:grid-cols-3'}} gap-y-12 xl:gap-y-4">
                         @if(Network::canBeExchanged())
-                            <x-details-box :title="trans('pages.home.network-details.price')" :value="$aggregates['price']" icon="app-price" />
+                            <x-details-box :title="trans('pages.home.network-details.price')" icon="app-price">
+                                {{ $aggregates['price'] }}
+                            </x-details-box>
                         @endif
-                        <x-details-box :title="trans('pages.home.network-details.lifetime_transactions_volume')" :value="$aggregates['volume']" icon="app-volume" />
-                        <x-details-box :title="trans('pages.home.network-details.lifetime_transactions')" :value="$aggregates['transactionsCount']" icon="app-transactions-amount" />
-                        <x-details-box :title="trans('pages.home.network-details.total_votes')" :value="$aggregates['votesCount']" :extra-value="$aggregates['votesPercentage']" icon="app-votes" />
+
+                        <x-details-box :title="trans('pages.home.network-details.lifetime_transactions_volume')" icon="app-volume">
+                            {{ $aggregates['volume'] }}
+                        </x-details-box>
+
+                        <x-details-box :title="trans('pages.home.network-details.lifetime_transactions')" icon="app-transactions-amount">
+                            {{ $aggregates['transactionsCount'] }}
+                        </x-details-box>
+
+                        <x-details-box :title="trans('pages.home.network-details.total_votes')" :extra-value="$aggregates['votesPercentage']" icon="app-votes">
+                            {{ $aggregates['votesCount'] }}
+                        </x-details-box>
                     </div>
                 </div>
             </div>

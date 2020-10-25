@@ -12,76 +12,92 @@ use App\Services\NumberFormatter;
 use App\Services\QRCode;
 use App\Services\Timestamp;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Mattiasgeniar\Percentage\Percentage;
 use Spatie\ViewModels\ViewModel;
 
 final class WalletViewModel extends ViewModel
 {
-    private Wallet $model;
+    private Wallet $wallet;
 
     public function __construct(Wallet $wallet)
     {
-        $this->model = $wallet;
+        $this->wallet = $wallet;
     }
 
     public function url(): string
     {
-        return route('wallet', $this->model->address);
+        return route('wallet', $this->wallet->address);
     }
 
     public function address(): string
     {
-        return $this->model->address;
+        return $this->wallet->address;
+    }
+
+    public function publicKey(): string
+    {
+        return $this->wallet->public_key;
+    }
+
+    public function username(): string
+    {
+        return Arr::get($this->wallet, 'attributes.delegate.username');
+    }
+
+    public function rank(): int
+    {
+        return Arr::get($this->wallet, 'attributes.delegate.rank');
     }
 
     public function balance(): string
     {
-        return NumberFormatter::currency($this->model->balance / 1e8, Network::currency());
+        return NumberFormatter::currency($this->wallet->balance / 1e8, Network::currency());
     }
 
     public function balanceFiat(): string
     {
-        return ExchangeRate::convert($this->model->balance / 1e8, Timestamp::fromUnix(Carbon::now()->unix())->unix());
+        return ExchangeRate::convert($this->wallet->balance / 1e8, Timestamp::fromUnix(Carbon::now()->unix())->unix());
     }
 
-    public function balancePercentage(): float
+    public function balancePercentage(): string
     {
-        return Percentage::calculate($this->model->balance / 1e8, NetworkStatus::supply());
+        return NumberFormatter::percentage(Percentage::calculate($this->wallet->balance / 1e8, NetworkStatus::supply()));
     }
 
     public function nonce(): string
     {
-        return NumberFormatter::number($this->model->nonce);
+        return NumberFormatter::number($this->wallet->nonce);
     }
 
     public function votes(): string
     {
-        return NumberFormatter::currency($this->model->attributes['delegate']['voteBalance'] / 1e8, Network::currency());
+        return NumberFormatter::currency($this->wallet->attributes['delegate']['voteBalance'] / 1e8, Network::currency());
     }
 
-    public function votesPercentage(): float
+    public function votesPercentage(): string
     {
-        return Percentage::calculate($this->model->attributes['delegate']['voteBalance'] / 1e8, NetworkStatus::supply());
+        return NumberFormatter::percentage(Percentage::calculate($this->wallet->attributes['delegate']['voteBalance'] / 1e8, NetworkStatus::supply()));
     }
 
     public function qrCode(): string
     {
-        return QRCode::generate('ark:'.$this->model->address);
+        return QRCode::generate('ark:'.$this->wallet->address);
     }
 
     public function amountForged(): string
     {
-        return NumberFormatter::currency($this->model->blocks()->sum('total_amount') / 1e8, Network::currency());
+        return NumberFormatter::currency($this->wallet->blocks()->sum('total_amount') / 1e8, Network::currency());
     }
 
     public function feesForged(): string
     {
-        return NumberFormatter::currency($this->model->blocks()->sum('total_fee') / 1e8, Network::currency());
+        return NumberFormatter::currency($this->wallet->blocks()->sum('total_fee') / 1e8, Network::currency());
     }
 
     public function rewardsForged(): string
     {
-        return NumberFormatter::currency($this->model->blocks()->sum('reward') / 1e8, Network::currency());
+        return NumberFormatter::currency($this->wallet->blocks()->sum('reward') / 1e8, Network::currency());
     }
 
     public function isKnown(): bool
@@ -107,8 +123,55 @@ final class WalletViewModel extends ViewModel
         return optional($this->findWalletByKnown())['type'] === 'exchange';
     }
 
+    /**
+     * @TODO: needs marketsquare
+     */
+    public function commission(): string
+    {
+        return NumberFormatter::number(0);
+    }
+
+    /**
+     * @TODO: needs marketsquare
+     */
+    public function payoutFrequency(): string
+    {
+        return NumberFormatter::number(0);
+    }
+
+    /**
+     * @TODO: needs marketsquare
+     */
+    public function payoutMinimum(): string
+    {
+        return NumberFormatter::number(0);
+    }
+
+    public function forgedTotal(): string
+    {
+        return NumberFormatter::currency(floor($this->wallet->blocks()->sum('total_amount') / 1e8), Network::currency());
+    }
+
+    public function forgedBlocks(): string
+    {
+        return NumberFormatter::number(Arr::get($this->wallet, 'attributes.delegate.producedBlocks', 0));
+    }
+
+    /**
+     * @TODO: needs monitor to be implemented
+     */
+    public function productivity(): string
+    {
+        return NumberFormatter::number(0);
+    }
+
+    public function isDelegate(): bool
+    {
+        return Arr::has($this->wallet, 'attributes.delegate');
+    }
+
     private function findWalletByKnown(): ?array
     {
-        return collect(Network::knownWallets())->firstWhere('address', $this->model->address);
+        return collect(Network::knownWallets())->firstWhere('address', $this->wallet->address);
     }
 }
