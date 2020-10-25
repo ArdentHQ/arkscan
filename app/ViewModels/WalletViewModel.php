@@ -48,7 +48,7 @@ final class WalletViewModel extends ViewModel
         return Arr::get($this->wallet, 'attributes.delegate.username');
     }
 
-    public function rank(): int
+    public function rank(): ?int
     {
         return Arr::get($this->wallet, 'attributes.delegate.rank');
     }

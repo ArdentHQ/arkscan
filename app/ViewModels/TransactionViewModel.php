@@ -586,7 +586,7 @@ final class TransactionViewModel extends ViewModel
         return false;
     }
 
-    public function entityName(): string
+    public function entityName(): ?string
     {
         return Arr::get($this->transaction, 'asset.data.name');
     }

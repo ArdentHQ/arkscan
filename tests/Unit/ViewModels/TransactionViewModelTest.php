@@ -596,13 +596,13 @@ it('should fail to get the sender', function () {
     expect($this->subject->sender())->toBe('n/a');
 });
 
-it('should fail to get the recipient', function () {
+it('should fallback to the sender if no recipient exists', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'recipient_id' => 'unknown',
     ]));
 
     expect($this->subject->recipient())->toBeString();
-    expect($this->subject->recipient())->toBe('n/a');
+    expect($this->subject->recipient())->toBe($this->subject->sender());
 });
 
 it('should get the voted delegate', function () {

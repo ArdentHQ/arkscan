@@ -2,12 +2,17 @@
 
 declare(strict_types=1);
 
+use App\Enums\MagistrateTransactionEntityActionEnum;
+
+use App\Enums\MagistrateTransactionTypeEnum;
+use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
 
+use App\Models\Transaction;
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
-
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
 use function Tests\fakeKnownWallets;
@@ -58,8 +63,8 @@ it('should get the balance as percentage from supply', function () {
         ],
     ]);
 
-    expect($this->subject->balancePercentage())->toBeFloat();
-    expect($this->subject->balancePercentage())->toBe(10.0);
+    expect($this->subject->balancePercentage())->toBeString();
+    expect($this->subject->balancePercentage())->toBe('10%');
 });
 
 it('should get the votes', function () {
@@ -75,8 +80,8 @@ it('should get the votes as percentage from supply', function () {
         ],
     ]);
 
-    expect($this->subject->votesPercentage())->toBeFloat();
-    expect($this->subject->votesPercentage())->toBe(10.0);
+    expect($this->subject->votesPercentage())->toBeString();
+    expect($this->subject->votesPercentage())->toBe('10%');
 });
 
 it('should generate a QR Code', function () {
@@ -136,4 +141,41 @@ it('should determine if the wallet is owned by an exchange', function () {
     $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'unknown']));
 
     expect($subject->isOwnedByExchange())->toBeFalse();
+});
+
+it('should determine if the wallet is a delegate', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes' => [],
+    ]));
+
+    expect($this->subject->isDelegate())->toBeFalse();
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'John',
+            ],
+        ],
+    ]));
+
+    expect($this->subject->isDelegate())->toBeTrue();
+});
+
+it('should determine if the wallet has registrations', function () {
+    expect($this->subject->hasRegistrations())->toBeFalse();
+
+    Transaction::factory()->create([
+        'sender_public_key' => $this->subject->publicKey(),
+        'type'              => MagistrateTransactionTypeEnum::ENTITY,
+        'type_group'        => TransactionTypeGroupEnum::MAGISTRATE,
+        'asset'             => [
+            'action' => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ]);
+
+    expect($this->subject->hasRegistrations())->toBeTrue();
+});
+
+it('should get the registrations', function () {
+    expect($this->subject->registrations())->toBeInstanceOf(Collection::class);
 });
