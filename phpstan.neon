@@ -19,4 +19,5 @@ parameters:
         - '#but return statement is missing#'
         - '#expects Illuminate\\Pagination\\LengthAwarePaginator, Illuminate\\Contracts\\Pagination\\LengthAwarePaginator given#'
         - '#InvalidArgumentException constructor expects string#'
+        - '#withScope#'
     checkMissingIterableValueType: false

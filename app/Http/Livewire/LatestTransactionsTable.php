@@ -29,18 +29,18 @@ final class LatestTransactionsTable extends Component
 
     public function render(): View
     {
-        if ($this->state['type'] !== 'all') {
-            $scopeClass = $this->scopes[$this->state['type']];
+        $transactions = Cache::remember('latestTransactionsTable:'.$this->state['type'], 8, function () {
+            $query = Transaction::latestByTimestamp();
 
-            /* @var \Illuminate\Database\Eloquent\Model */
-            Transaction::addGlobalScope(new $scopeClass());
-        }
+            if ($this->state['type'] !== 'all') {
+                $scopeClass = $this->scopes[$this->state['type']];
 
-        $transactions = Cache::remember(
-            'latestTransactionsTable:'.$this->state['type'],
-            8,
-            fn () => Transaction::latestByTimestamp()->take(15)->get()
-        );
+                /* @var \Illuminate\Database\Eloquent\Model */
+                $query = $query->withScope($scopeClass);
+            }
+
+            return $query->take(15)->get();
+        });
 
         return view('livewire.latest-transactions-table', [
             'transactions' => ViewModelFactory::collection($transactions),

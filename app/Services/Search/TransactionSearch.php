@@ -91,16 +91,16 @@ final class TransactionSearch implements Search
 
     public function search(array $parameters): Builder
     {
+        $query = Transaction::query();
+
         if (Arr::has($parameters, 'transactionType')) {
             if (Arr::get($parameters, 'transactionType') !== 'all') {
                 $scopeClass = $this->scopes[$parameters['transactionType']];
 
                 /* @var \Illuminate\Database\Eloquent\Model */
-                Transaction::addGlobalScope(new $scopeClass());
+                $query = $query->withScope($scopeClass);
             }
         }
-
-        $query = Transaction::query();
 
         if (! is_null(Arr::get($parameters, 'term'))) {
             $query->where('id', $parameters['term']);

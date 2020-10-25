@@ -30,15 +30,17 @@ final class TransactionTable extends Component
 
     public function render(): View
     {
+        $query = Transaction::latestByTimestamp();
+
         if ($this->state['type'] !== 'all') {
             $scopeClass = $this->scopes[$this->state['type']];
 
             /* @var \Illuminate\Database\Eloquent\Model */
-            Transaction::addGlobalScope(new $scopeClass());
+            $query = $query->withScope($scopeClass);
         }
 
         return view('livewire.transaction-table', [
-            'transactions' => ViewModelFactory::paginate(Transaction::latestByTimestamp()->paginate()),
+            'transactions' => ViewModelFactory::paginate($query->paginate()),
         ]);
     }
 }
