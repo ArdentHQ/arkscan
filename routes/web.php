@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ListBlocksByWalletController;
-use App\Http\Controllers\ListTransactionsByBlockController;
-use App\Http\Controllers\ListTransactionsByWalletController;
 use App\Http\Controllers\ListVotersByWalletController;
 use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowDelegateMonitorController;
@@ -30,7 +28,6 @@ Route::get('/monitor', ShowDelegateMonitorController::class)->name('monitor');
 
 Route::view('/blocks', 'blocks')->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
-Route::get('/blocks/{block}/transactions', ListTransactionsByBlockController::class)->name('block.transactions');
 
 Route::view('/transactions', 'transactions')->name('transactions');
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
@@ -39,4 +36,3 @@ Route::view('/wallets', 'app.wallets')->name('wallets');
 Route::get('/wallets/{wallet:address}', ShowWalletController::class)->name('wallet');
 Route::get('/wallets/{wallet:address}/voters', ListVotersByWalletController::class)->name('wallet.voters');
 Route::get('/wallets/{wallet:address}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
-Route::get('/wallets/{wallet:address}/transactions', ListTransactionsByWalletController::class)->name('wallet.transactions');

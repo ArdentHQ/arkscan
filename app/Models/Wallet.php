@@ -95,6 +95,16 @@ final class Wallet extends Model
     }
 
     /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'address';
+    }
+
+    /**
      * Get the current connection name for the model.
      *
      * @return string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Facades\Network;
 use App\Models\Wallet;
 use ArkEcosystem\Crypto\Identities\Address;
 use ARKEcosystem\UserInterface\UI;
@@ -42,7 +43,7 @@ final class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('wallet', function (string $value): Wallet {
-            if (! Address::validate($value)) {
+            if (! Address::validate($value, Network::config())) {
                 UI::useErrorMessage(404, trans('general.wallet_not_found', [$value]));
 
                 abort(404);

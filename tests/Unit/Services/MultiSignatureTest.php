@@ -14,5 +14,5 @@ it('should generate the correct address', function () {
     ]);
 
     expect($result)->toBeString();
-    expect($result)->toBe('AXzxJ8Ts3dQ2bvBR1tPE7GUee9iSEJb8HX');
+    expect($result)->toBe('DMNBBtYt1teAKxA2BpiTW9PA3gX3Ad5dyk');
 });

@@ -64,4 +64,9 @@ final class Production implements Network
     {
         return Carbon::parse(Mainnet::new()->epoch());
     }
+
+    public function config(): \BitWasp\Bitcoin\Network\Network
+    {
+        return Mainnet::new();
+    }
 }

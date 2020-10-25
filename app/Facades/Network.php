@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static string host()
  * @method static bool usesMarketsquare()
  * @method static \Carbon\Carbon epoch()
+ * @method static \BitWasp\Bitcoin\Network\Network config()
  */
 final class Network extends Facade
 {

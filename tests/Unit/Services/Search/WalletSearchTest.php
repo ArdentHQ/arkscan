@@ -16,7 +16,7 @@ it('should search for a wallet by address', function () {
         'term' => $wallet->address,
     ]);
 
-    expect($result->get())->toHaveCount(1);
+    expect($result->first()->is($wallet))->toBeTrue();
 });
 
 it('should search for a wallet by public_key', function () {

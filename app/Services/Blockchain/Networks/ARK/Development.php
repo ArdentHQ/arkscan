@@ -64,4 +64,9 @@ final class Development implements Network
     {
         return Carbon::parse(Devnet::new()->epoch());
     }
+
+    public function config(): \BitWasp\Bitcoin\Network\Network
+    {
+        return Devnet::new();
+    }
 }

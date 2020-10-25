@@ -3,8 +3,9 @@
 declare(strict_types=1);
 
 use App\Services\Blockchain\NetworkFactory;
+use BitWasp\Bitcoin\Network\Network;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Http;
+use function Tests\fakeKnownWallets;
 
 beforeEach(fn () => $this->subject = NetworkFactory::make('ark.development'));
 
@@ -29,12 +30,9 @@ it('should have a required number of confirmations', function () {
 });
 
 it('should fetch known wallets', function () {
-    Http::fake([
-        'github.com' => [],
-    ]);
+    fakeKnownWallets();
 
     expect($this->subject->knownWallets())->toBeArray();
-    expect($this->subject->knownWallets())->toHaveCount(0);
 });
 
 it('should determine if the network currency can be exchanged', function () {
@@ -51,4 +49,8 @@ it('should determine if the network is on marketsquare', function () {
 
 it('should have an epoch', function () {
     expect($this->subject->epoch())->toBeInstanceOf(Carbon::class);
+});
+
+it('should have a config', function () {
+    expect($this->subject->config())->toBeInstanceOf(Network::class);
 });

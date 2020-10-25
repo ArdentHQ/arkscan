@@ -34,7 +34,7 @@ function configureExplorerDatabase(): void
 function fakeKnownWallets(): void
 {
     Http::fake([
-        'github.com' => [
+        'githubusercontent.com/*' => [
             [
                 'type'    => 'team',
                 'name'    => 'ACF Hot Wallet',

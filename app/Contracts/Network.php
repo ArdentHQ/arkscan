@@ -27,4 +27,6 @@ interface Network
     public function usesMarketsquare(): bool;
 
     public function epoch(): Carbon;
+
+    public function config(): \BitWasp\Bitcoin\Network\Network;
 }
