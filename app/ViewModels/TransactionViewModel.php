@@ -71,10 +71,6 @@ final class TransactionViewModel extends ViewModel
             fn () => $this->transaction->sender
         );
 
-        if (is_null($wallet)) {
-            return 'n/a';
-        }
-
         return NumberFormatter::number($wallet->nonce);
     }
 
@@ -190,6 +186,9 @@ final class TransactionViewModel extends ViewModel
         return ExchangeRate::convert($this->transaction->amount / 1e8, $this->transaction->timestamp);
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function vendorField(): ?string
     {
         /* @phpstan-ignore-next-line */
@@ -506,6 +505,42 @@ final class TransactionViewModel extends ViewModel
         }
 
         if ($this->isSecondSignature()) {
+            return true;
+        }
+
+        if ($this->isEntityRegistration()) {
+            return true;
+        }
+
+        if ($this->isEntityResignation()) {
+            return true;
+        }
+
+        if ($this->isEntityUpdate()) {
+            return true;
+        }
+
+        if ($this->isLegacyBusinessRegistration()) {
+            return true;
+        }
+
+        if ($this->isLegacyBusinessResignation()) {
+            return true;
+        }
+
+        if ($this->isLegacyBusinessUpdate()) {
+            return true;
+        }
+
+        if ($this->isLegacyBridgechainRegistration()) {
+            return true;
+        }
+
+        if ($this->isLegacyBridgechainResignation()) {
+            return true;
+        }
+
+        if ($this->isLegacyBridgechainUpdate()) {
             return true;
         }
 
