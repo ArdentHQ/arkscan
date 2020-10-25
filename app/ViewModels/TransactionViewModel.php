@@ -99,7 +99,7 @@ final class TransactionViewModel extends ViewModel
         );
 
         if (is_null($wallet)) {
-            return 'n/a';
+            return $this->sender();
         }
 
         return $wallet->address;
@@ -584,5 +584,10 @@ final class TransactionViewModel extends ViewModel
         }
 
         return false;
+    }
+
+    public function entityName(): string
+    {
+        return Arr::get($this->transaction, 'asset.data.name');
     }
 }

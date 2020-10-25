@@ -77,6 +77,7 @@ return [
         'all_transactions'      => 'All History',
         'received_transactions' => 'Incoming',
         'sent_transactions'     => 'Outgoing',
+        'registrations'         => 'Registrations',
         'delegate'              => [
             'title'            => 'Delegate :0',
             'rank'             => 'Rank',

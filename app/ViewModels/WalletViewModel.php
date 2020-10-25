@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\ViewModels;
 
 use App\Facades\Network;
+use App\Models\Scopes\EntityRegistrationScope;
+use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\ExchangeRate;
@@ -13,6 +15,7 @@ use App\Services\QRCode;
 use App\Services\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Mattiasgeniar\Percentage\Percentage;
 use Spatie\ViewModels\ViewModel;
 
@@ -168,6 +171,20 @@ final class WalletViewModel extends ViewModel
     public function isDelegate(): bool
     {
         return Arr::has($this->wallet, 'attributes.delegate');
+    }
+
+    public function hasRegistrations(): bool
+    {
+        Transaction::addGlobalScope(new EntityRegistrationScope());
+
+        return $this->wallet->sentTransactions()->count() > 0;
+    }
+
+    public function registrations(): Collection
+    {
+        Transaction::addGlobalScope(new EntityRegistrationScope());
+
+        return ViewModelFactory::collection($this->wallet->sentTransactions()->get());
     }
 
     private function findWalletByKnown(): ?array
