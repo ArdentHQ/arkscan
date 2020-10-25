@@ -16,7 +16,6 @@
                     <td>@lang('general.block.timestamp')</td>
                     <td>
                         <div wire:loading.class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
-                        {{--TODO: Everything disappear once we apply the wire:loading.class here, need to check, might just be me locally --}}
                         <span wire:loading.class="hidden">{{ $block->timestamp() }}</span>
                     </td>
                 </tr>

@@ -22,6 +22,7 @@ use ArkEcosystem\Crypto\Identities\Address;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Spatie\ViewModels\ViewModel;
 
@@ -550,5 +551,38 @@ final class TransactionViewModel extends ViewModel
     public function typeLabel(): string
     {
         return trans('general.transaction.'.$this->iconType());
+    }
+
+    public function typeComponent(): string
+    {
+        $view = 'transaction.details.'.Str::slug($this->iconType());
+
+        if (View::exists("components.$view")) {
+            return $view;
+        }
+
+        return 'transaction.details.fallback';
+    }
+
+    public function extraComponent(): string
+    {
+        return 'transaction.extra.'.trim(Str::slug($this->iconType()));
+    }
+
+    public function hasExtraData(): bool
+    {
+        if ($this->isMultiSignature()) {
+            return true;
+        }
+
+        if ($this->isVoteCombination()) {
+            return true;
+        }
+
+        if ($this->isMultiPayment()) {
+            return true;
+        }
+
+        return false;
     }
 }

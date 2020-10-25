@@ -794,3 +794,292 @@ it('should get the participants', function () {
 
     expect($this->subject->participants())->toHaveCount(5);
 });
+
+it('should get the type component', function () {
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::TRANSFER,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+    ]));
+
+    expect($this->subject->typeComponent())->toBe('transaction.details.transfer');
+
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::TIMELOCK,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+    ]));
+
+    expect($this->subject->typeComponent())->toBe('transaction.details.fallback');
+});
+
+it('should get the extra component', function () {
+    expect($this->subject->extraComponent())->toBeString();
+});
+
+it('should determine if the transaction has extra data', function (bool $outcome, int $type, int $typeGroup, array $asset) {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => $type,
+        'type_group' => $typeGroup,
+        'asset'      => $asset,
+    ]));
+
+    expect($subject->hasExtraData())->toBe($outcome);
+})->with([
+    [
+        false,
+        CoreTransactionTypeEnum::TRANSFER,
+        TransactionTypeGroupEnum::CORE,
+        [],
+    ], [
+        false,
+        CoreTransactionTypeEnum::SECOND_SIGNATURE,
+        TransactionTypeGroupEnum::CORE,
+        [],
+    ], [
+        false,
+        CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
+        TransactionTypeGroupEnum::CORE,
+        [],
+    ], [
+        false,
+        CoreTransactionTypeEnum::VOTE,
+        TransactionTypeGroupEnum::CORE,
+        [
+            'votes' => ['+publicKey'],
+        ],
+    ], [
+        false,
+        CoreTransactionTypeEnum::VOTE,
+        TransactionTypeGroupEnum::CORE,
+        [
+            'votes' => ['-publicKey'],
+        ],
+    ], [
+        true,
+        CoreTransactionTypeEnum::VOTE,
+        TransactionTypeGroupEnum::CORE,
+        [
+            'votes' => ['+publicKey', '-publicKey'],
+        ],
+    ], [
+        true,
+        CoreTransactionTypeEnum::MULTI_SIGNATURE,
+        TransactionTypeGroupEnum::CORE,
+        [],
+    ], [
+        false,
+        CoreTransactionTypeEnum::IPFS,
+        TransactionTypeGroupEnum::CORE,
+        [],
+    ], [
+        false,
+        CoreTransactionTypeEnum::DELEGATE_RESIGNATION,
+        TransactionTypeGroupEnum::CORE,
+        [],
+    ], [
+        true,
+        CoreTransactionTypeEnum::MULTI_PAYMENT,
+        TransactionTypeGroupEnum::CORE,
+        [],
+    ], [
+        false,
+        CoreTransactionTypeEnum::TIMELOCK,
+        TransactionTypeGroupEnum::CORE,
+        [],
+    ], [
+        false,
+        CoreTransactionTypeEnum::TIMELOCK_CLAIM,
+        TransactionTypeGroupEnum::CORE,
+        [],
+    ], [
+        false,
+        CoreTransactionTypeEnum::TIMELOCK_REFUND,
+        TransactionTypeGroupEnum::CORE,
+        [],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'action' => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'action' => MagistrateTransactionEntityActionEnum::RESIGN,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'action' => MagistrateTransactionEntityActionEnum::UPDATE,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
+        ],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::BUSINESS_REGISTRATION,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::BUSINESS_RESIGNATION,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::BUSINESS_UPDATE,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::BRIDGECHAIN_REGISTRATION,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::BRIDGECHAIN_RESIGNATION,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [],
+    ], [
+        false,
+        MagistrateTransactionTypeEnum::BRIDGECHAIN_UPDATE,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [],
+    ],
+]);
