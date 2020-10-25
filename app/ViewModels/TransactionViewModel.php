@@ -72,7 +72,7 @@ final class TransactionViewModel extends ViewModel
             fn () => $this->transaction->sender
         );
 
-        return NumberFormatter::number($wallet->nonce);
+        return NumberFormatter::number($wallet->nonce->toNumber());
     }
 
     public function sender(): string
@@ -169,22 +169,22 @@ final class TransactionViewModel extends ViewModel
 
     public function fee(): string
     {
-        return NumberFormatter::currency($this->transaction->fee / 1e8, Network::currency());
+        return NumberFormatter::currency($this->transaction->fee->toFloat(), Network::currency());
     }
 
     public function feeFiat(): string
     {
-        return ExchangeRate::convert($this->transaction->fee / 1e8, $this->transaction->timestamp);
+        return ExchangeRate::convert($this->transaction->fee->toFloat(), $this->transaction->timestamp);
     }
 
     public function amount(): string
     {
-        return NumberFormatter::currency($this->transaction->amount / 1e8, Network::currency());
+        return NumberFormatter::currency($this->transaction->amount->toFloat(), Network::currency());
     }
 
     public function amountFiat(): string
     {
-        return ExchangeRate::convert($this->transaction->amount / 1e8, $this->transaction->timestamp);
+        return ExchangeRate::convert($this->transaction->amount->toFloat(), $this->transaction->timestamp);
     }
 
     /**
@@ -226,7 +226,7 @@ final class TransactionViewModel extends ViewModel
             return NumberFormatter::number(0);
         }
 
-        return NumberFormatter::number(NetworkStatus::height() - $block->height);
+        return NumberFormatter::number(NetworkStatus::height() - $block->height->toNumber());
     }
 
     public function voted(): ?Wallet

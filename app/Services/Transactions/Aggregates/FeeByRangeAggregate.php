@@ -25,7 +25,9 @@ final class FeeByRangeAggregate
                 ->orderByDesc('timestamp')
                 ->get()
                 ->groupBy(fn ($date) => Timestamp::fromGenesis($date->timestamp)->format($format))
-                ->mapWithKeys(fn ($transactions, $day) => [$day => NumberFormatter::satoshi($transactions->sum('fee'))]);
+                ->mapWithKeys(fn ($transactions, $day) => [
+                    $day => NumberFormatter::satoshi($transactions->sumBigNumber('fee')->valueOf()),
+                ]);
         });
     }
 }

@@ -7,6 +7,7 @@ namespace App\Services\Blockchain;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
@@ -21,7 +22,7 @@ final class NetworkStatus
                 return 0;
             }
 
-            return $block->height;
+            return $block->height->toNumber();
         });
     }
 
@@ -31,7 +32,7 @@ final class NetworkStatus
         return (int) Cache::remember('status.supply:'.Network::name(), 8000, function (): float {
             $supply = Http::baseUrl(Network::host())->get('blockchain')['data']['supply'];
 
-            return $supply / 1e8;
+            return BigNumber::new($supply)->toFloat();
         });
 
         // return Cache::remember('status.supply:'.Network::name(), 8000, fn () => Wallet::sum('balance'));

@@ -6,11 +6,12 @@ namespace App\Aggregates;
 
 use App\Contracts\Aggregate;
 use App\Models\Transaction;
+use App\Services\BigNumber;
 
 final class TransactionVolumeAggregate implements Aggregate
 {
     public function aggregate(): string
     {
-        return strval(intval(Transaction::sum('amount') / 1e8));
+        return strval(BigNumber::new(Transaction::sum('amount'))->toInt());
     }
 }

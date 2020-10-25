@@ -31,7 +31,7 @@ final class NumberFormatter
     {
         $formatter = new \NumberFormatter('en_US', \NumberFormatter::DECIMAL);
 
-        return $formatter->format($value / 1e8);
+        return $formatter->format(BigNumber::new($value)->toFloat());
     }
 
     /**

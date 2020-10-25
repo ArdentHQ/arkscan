@@ -14,18 +14,18 @@ beforeEach(fn () => configureExplorerDatabase());
 
 it('should determine if the transaction is sent', function () {
     $start = Transaction::factory(10)->create([
-        'fee'       => 1e8,
+        'fee'       => '100000000',
         'timestamp' => 112982056,
     ])->sortByDesc('timestamp');
 
     $end = Transaction::factory(10)->create([
-        'fee'       => 1e8,
+        'fee'       => '100000000',
         'timestamp' => 122982056,
     ])->sortByDesc('timestamp');
 
     $result = (new FeeByRangeAggregate())->aggregate(
-    Timestamp::fromGenesis($start->last()->timestamp)->startOfDay(),
-    Timestamp::fromGenesis($end->last()->timestamp)->endOfDay()
+        Timestamp::fromGenesis($start->last()->timestamp)->startOfDay(),
+        Timestamp::fromGenesis($end->last()->timestamp)->endOfDay()
     );
 
     expect($result)->toBeInstanceOf(Collection::class);

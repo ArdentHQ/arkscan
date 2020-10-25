@@ -20,6 +20,6 @@ final class RoundViewModel extends ViewModel
 
     public function balance(): string
     {
-        return NumberFormatter::currency($this->round->balance / 1e8, Network::currency());
+        return NumberFormatter::currency($this->round->balance->toFloat(), Network::currency());
     }
 }

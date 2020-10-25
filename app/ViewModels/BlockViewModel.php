@@ -56,7 +56,7 @@ final class BlockViewModel extends ViewModel
 
     public function height(): string
     {
-        return NumberFormatter::number($this->block->height);
+        return NumberFormatter::number($this->block->height->toNumber());
     }
 
     public function transactionCount(): int
@@ -66,47 +66,47 @@ final class BlockViewModel extends ViewModel
 
     public function amount(): string
     {
-        return NumberFormatter::currency($this->block->total_amount / 1e8, Network::currency());
+        return NumberFormatter::currency($this->block->total_amount->toFloat(), Network::currency());
     }
 
     public function amountFiat(): string
     {
-        return ExchangeRate::convert($this->block->total_amount / 1e8, $this->block->timestamp);
+        return ExchangeRate::convert($this->block->total_amount->toFloat(), $this->block->timestamp);
     }
 
     public function fee(): string
     {
-        return NumberFormatter::currency($this->block->total_fee / 1e8, Network::currency());
+        return NumberFormatter::currency($this->block->total_fee->toFloat(), Network::currency());
     }
 
     public function feeFiat(): string
     {
-        return ExchangeRate::convert($this->block->total_fee / 1e8, $this->block->timestamp);
+        return ExchangeRate::convert($this->block->total_fee->toFloat(), $this->block->timestamp);
     }
 
     public function reward(): string
     {
-        return NumberFormatter::currency($this->block->reward / 1e8, Network::currency());
+        return NumberFormatter::currency($this->block->reward->toFloat(), Network::currency());
     }
 
     public function rewardFiat(): string
     {
-        return ExchangeRate::convert($this->block->reward / 1e8, $this->block->timestamp);
+        return ExchangeRate::convert($this->block->reward->toFloat(), $this->block->timestamp);
     }
 
     public function confirmations(): string
     {
-        return NumberFormatter::number(abs(NetworkStatus::height() - $this->block->height));
+        return NumberFormatter::number(abs(NetworkStatus::height() - $this->block->height->toFloat()));
     }
 
     public function previousBlockUrl(): ?string
     {
-        return $this->findBlockWithHeight($this->block->height - 1);
+        return $this->findBlockWithHeight($this->block->height->minus(1)->toNumber());
     }
 
     public function nextBlockUrl(): ?string
     {
-        return $this->findBlockWithHeight($this->block->height + 1);
+        return $this->findBlockWithHeight($this->block->height->plus(1)->toNumber());
     }
 
     private function findBlockWithHeight(int $height): ?string

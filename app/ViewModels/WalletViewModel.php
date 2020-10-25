@@ -7,6 +7,7 @@ namespace App\ViewModels;
 use App\Facades\Network;
 use App\Models\Scopes\EntityRegistrationScope;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
@@ -56,47 +57,61 @@ final class WalletViewModel extends ViewModel
 
     public function balance(): string
     {
-        return NumberFormatter::currency($this->wallet->balance / 1e8, Network::currency());
+        return NumberFormatter::currency($this->wallet->balance->toFloat(), Network::currency());
     }
 
     public function balanceFiat(): string
     {
-        return ExchangeRate::convert($this->wallet->balance / 1e8, Timestamp::fromUnix(Carbon::now()->unix())->unix());
+        return ExchangeRate::convert($this->wallet->balance->toFloat(), Timestamp::fromUnix(Carbon::now()->unix())->unix());
     }
 
     public function balancePercentage(): string
     {
-        return NumberFormatter::percentage(Percentage::calculate($this->wallet->balance / 1e8, NetworkStatus::supply()));
+        return NumberFormatter::percentage(Percentage::calculate($this->wallet->balance->toFloat(), NetworkStatus::supply()));
     }
 
     public function nonce(): string
     {
-        return NumberFormatter::number($this->wallet->nonce);
+        return NumberFormatter::number($this->wallet->nonce->toNumber());
     }
 
     public function votes(): string
     {
-        return NumberFormatter::currency($this->wallet->attributes['delegate']['voteBalance'] / 1e8, Network::currency());
+        return NumberFormatter::currency(
+            BigNumber::new($this->wallet->attributes['delegate']['voteBalance'])->toFloat(),
+            Network::currency()
+        );
     }
 
     public function votesPercentage(): string
     {
-        return NumberFormatter::percentage(Percentage::calculate($this->wallet->attributes['delegate']['voteBalance'] / 1e8, NetworkStatus::supply()));
+        $voteBalance = (float) $this->wallet->attributes['delegate']['voteBalance'];
+
+        return NumberFormatter::percentage(BigNumber::new(Percentage::calculate($voteBalance, NetworkStatus::supply()))->toFloat());
     }
 
     public function amountForged(): string
     {
-        return NumberFormatter::currency($this->wallet->blocks()->sum('total_amount') / 1e8, Network::currency());
+        return NumberFormatter::currency(
+            BigNumber::new($this->wallet->blocks()->sum('total_amount'))->toFloat(),
+            Network::currency()
+        );
     }
 
     public function feesForged(): string
     {
-        return NumberFormatter::currency($this->wallet->blocks()->sum('total_fee') / 1e8, Network::currency());
+        return NumberFormatter::currency(
+            BigNumber::new($this->wallet->blocks()->sum('total_fee'))->toFloat(),
+            Network::currency()
+        );
     }
 
     public function rewardsForged(): string
     {
-        return NumberFormatter::currency($this->wallet->blocks()->sum('reward') / 1e8, Network::currency());
+        return NumberFormatter::currency(
+            BigNumber::new($this->wallet->blocks()->sum('reward'))->toFloat(),
+            Network::currency()
+        );
     }
 
     public function isKnown(): bool
@@ -154,7 +169,10 @@ final class WalletViewModel extends ViewModel
 
     public function forgedTotal(): string
     {
-        return NumberFormatter::currency(floor($this->wallet->blocks()->sum('total_amount') / 1e8), Network::currency());
+        return NumberFormatter::currency(
+            BigNumber::new(floor($this->wallet->blocks()->sum('total_amount')))->toFloat(),
+            Network::currency()
+        );
     }
 
     public function forgedBlocks(): string

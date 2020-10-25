@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Casts\BigInteger;
+use App\Services\BigNumber;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property int $balance
+ * @property BigNumber $balance
  */
 final class Round extends Model
 {
@@ -30,7 +32,7 @@ final class Round extends Model
      * @var array
      */
     protected $casts = [
-        'balance' => 'int',
+        'balance' => BigInteger::class,
     ];
 
     /**

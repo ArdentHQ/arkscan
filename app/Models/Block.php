@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Casts\BigInteger;
+use App\Services\BigNumber;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,12 +16,12 @@ use Illuminate\Support\Facades\Cache;
 
 /**
  * @property string $id
- * @property int $height
+ * @property BigNumber $height
  * @property int $number_of_transactions
- * @property int $reward
+ * @property BigNumber $reward
  * @property int $timestamp
- * @property int $total_amount
- * @property int $total_fee
+ * @property BigNumber $total_amount
+ * @property BigNumber $total_fee
  */
 final class Block extends Model
 {
@@ -39,12 +41,12 @@ final class Block extends Model
      * @var array
      */
     protected $casts = [
-        'height'                 => 'int',
+        'height'                 => BigInteger::class,
         'number_of_transactions' => 'int',
-        'reward'                 => 'int',
+        'reward'                 => BigInteger::class,
         'timestamp'              => 'int',
-        'total_amount'           => 'int',
-        'total_fee'              => 'int',
+        'total_amount'           => BigInteger::class,
+        'total_fee'              => BigInteger::class,
     ];
 
     /**

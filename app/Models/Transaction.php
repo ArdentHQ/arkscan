@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Casts\BigInteger;
+use App\Services\BigNumber;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,8 +14,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property string $id
  * @property array|null $asset
- * @property int $amount
- * @property int $fee
+ * @property BigNumber $amount
+ * @property BigNumber $fee
  * @property int $timestamp
  * @property int $type
  * @property int $type_group
@@ -46,9 +48,9 @@ final class Transaction extends Model
      * @var array
      */
     protected $casts = [
-        'amount'     => 'int',
+        'amount'     => BigInteger::class,
         'asset'      => 'array',
-        'fee'        => 'int',
+        'fee'        => BigInteger::class,
         'timestamp'  => 'int',
         'type_group' => 'int',
         'type'       => 'int',
