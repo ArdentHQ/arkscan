@@ -84,6 +84,14 @@ return [
         'rank'                  => 'Rank',
         'commission'            => 'Commission',
         'balance'               => 'Balance',
+        'hide_options'          => 'Hide Options',
+        'show_options'          => 'Show Options',
+        'amount'                => 'Amount',
+        'smartbridge'           => 'Smartbridge',
+        'qrcode'                => [
+            'title'       => 'QR Code',
+            'description' => 'Scan for address',
+        ],
         'delegate'              => [
             'title'            => 'Delegate :0',
             'rank'             => 'Rank',

@@ -14,7 +14,7 @@ final class QRCode
     public static function generate(string $value): string
     {
         $renderer = new ImageRenderer(
-            new RendererStyle(160),
+            new RendererStyle(286, 1),
             new SvgImageBackEnd()
         );
 

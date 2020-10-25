@@ -8,6 +8,8 @@
     @section('content')
         <x-wallet.header :wallet="$wallet" />
 
+        <x-wallet.qrcode :wallet="$wallet" />
+
         @if($wallet->isDelegate())
             <x-wallet.delegate :wallet="$wallet" />
         @endif
