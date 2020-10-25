@@ -61,6 +61,7 @@ return [
         'participants'     => 'Participants',
         'vote'             => 'Vote',
         'unvote'           => 'Unvote',
+        'recipient_list'   => 'Recipient List',
     ],
 
     'transactions' => [

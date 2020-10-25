@@ -114,20 +114,31 @@ final class TransactionViewModel extends ViewModel
             return null;
         }
 
-        $min        = $this->transaction->asset['multiSignature']['min'];
-        $publicKeys = $this->transaction->asset['multiSignature']['publicKeys'];
+        if (is_null($this->transaction->asset)) {
+            return null;
+        }
 
-        return MultiSignature::address($min, $publicKeys);
+        return MultiSignature::address(
+            Arr::get($this->transaction->asset, 'multiSignature.min', 0),
+            Arr::get($this->transaction->asset, 'multiSignature.publicKeys', [])
+        );
     }
 
-    public function recipients(): array
+    public function payments(): array
     {
         if (! $this->isMultiPayment()) {
             return [];
         }
 
-        return collect($this->transaction->asset['payments'])
-            ->map(fn ($payment) => Wallet::where('address', $payment['recipientId'])->firstOrFail())
+        if (is_null($this->transaction->asset)) {
+            return [];
+        }
+
+        return collect(Arr::get($this->transaction->asset, 'payments', []))
+            ->map(fn ($payment) => [
+                'amount'      => NumberFormatter::currency($payment['amount'], Network::currency()),
+                'recipientId' => $payment['recipientId'],
+            ])
             ->toArray();
     }
 
@@ -137,7 +148,11 @@ final class TransactionViewModel extends ViewModel
             return NumberFormatter::number(0);
         }
 
-        return NumberFormatter::number(count($this->transaction->asset['payments']));
+        if (is_null($this->transaction->asset)) {
+            return NumberFormatter::number(0);
+        }
+
+        return NumberFormatter::number(count(Arr::get($this->transaction->asset, 'payments')));
     }
 
     public function participants(): array
@@ -146,7 +161,11 @@ final class TransactionViewModel extends ViewModel
             return [];
         }
 
-        return collect($this->transaction->asset['multiSignature']['publicKeys'])
+        if (is_null($this->transaction->asset)) {
+            return [];
+        }
+
+        return collect(Arr::get($this->transaction->asset, 'multiSignature.publicKeys', []))
             ->map(fn ($publicKey) => Address::fromPublicKey($publicKey))
             ->toArray();
     }
@@ -173,6 +192,7 @@ final class TransactionViewModel extends ViewModel
 
     public function vendorField(): ?string
     {
+        /* @phpstan-ignore-next-line */
         $vendorFieldHex = $this->transaction->vendor_field_hex;
 
         if (is_null($vendorFieldHex)) {
