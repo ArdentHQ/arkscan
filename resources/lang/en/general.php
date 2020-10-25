@@ -39,6 +39,7 @@ return [
         'nonce'                   => 'Nonce',
         'multi_signature_address' => 'Multi Signature Address',
         'participant'             => 'Participant #:0',
+        'delegate'                => 'Delegate',
         'bridgechain'             => 'Bridgechain',
         'business'                => 'Business',
         'delegate-registration'   => 'Delegate Registration',

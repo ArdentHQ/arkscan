@@ -56,6 +56,7 @@ return [
             'timelock'                      => 'Timelock',
             'transfer'                      => 'Transfer',
             'vote'                          => 'Vote',
+            'voteCombination'               => 'Vote Combination',
         ],
 
     ],

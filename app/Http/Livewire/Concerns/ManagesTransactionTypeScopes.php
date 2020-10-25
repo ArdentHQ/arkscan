@@ -38,6 +38,7 @@ use App\Models\Scopes\TimelockClaimScope;
 use App\Models\Scopes\TimelockRefundScope;
 use App\Models\Scopes\TimelockScope;
 use App\Models\Scopes\TransferScope;
+use App\Models\Scopes\VoteCombinationScope;
 use App\Models\Scopes\VoteScope;
 
 trait ManagesTransactionTypeScopes
@@ -78,5 +79,6 @@ trait ManagesTransactionTypeScopes
         'timelock'                      => TimelockScope::class,
         'transfer'                      => TransferScope::class,
         'vote'                          => VoteScope::class,
+        'voteCombination'               => VoteCombinationScope::class,
     ];
 }

@@ -24,6 +24,7 @@
                     'secondSignature',
                     'delegateRegistration',
                     'vote',
+                    'voteCombination',
                     'multiSignature',
                     'ipfs',
                     'multiPayment',

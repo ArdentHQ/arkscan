@@ -59,6 +59,8 @@ return [
         'amount'           => 'Amount',
         'confirmations'    => 'Confirmations',
         'participants'     => 'Participants',
+        'vote'             => 'Vote',
+        'unvote'           => 'Unvote',
     ],
 
     'transactions' => [
