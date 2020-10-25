@@ -38,6 +38,7 @@ return [
         'smartbridge'             => 'SmartBridge',
         'nonce'                   => 'Nonce',
         'multi_signature_address' => 'Multi Signature Address',
+        'participant'             => 'Participant #:0',
         'bridgechain'             => 'Bridgechain',
         'business'                => 'Business',
         'delegate-registration'   => 'Delegate Registration',

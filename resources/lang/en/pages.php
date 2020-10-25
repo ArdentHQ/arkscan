@@ -58,6 +58,7 @@ return [
         'fee'              => 'Fee',
         'amount'           => 'Amount',
         'confirmations'    => 'Confirmations',
+        'participants'     => 'Participants',
     ],
 
     'transactions' => [

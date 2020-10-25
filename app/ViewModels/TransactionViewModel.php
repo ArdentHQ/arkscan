@@ -18,6 +18,7 @@ use App\Services\Transactions\TransactionState;
 use App\Services\Transactions\TransactionStateIcon;
 use App\Services\Transactions\TransactionType;
 use App\Services\Transactions\TransactionTypeIcon;
+use ArkEcosystem\Crypto\Identities\Address;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
@@ -137,6 +138,17 @@ final class TransactionViewModel extends ViewModel
         }
 
         return NumberFormatter::number(count($this->transaction->asset['payments']));
+    }
+
+    public function participants(): array
+    {
+        if (! $this->isMultiSignature()) {
+            return [];
+        }
+
+        return collect($this->transaction->asset['multiSignature']['publicKeys'])
+            ->map(fn ($publicKey) => Address::fromPublicKey($publicKey))
+            ->toArray();
     }
 
     public function fee(): string
