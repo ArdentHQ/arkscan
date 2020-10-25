@@ -10,7 +10,6 @@ use App\Models\Wallet;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
-use App\Services\QRCode;
 use App\Services\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -47,6 +46,9 @@ final class WalletViewModel extends ViewModel
         return Arr::get($this->wallet, 'attributes.delegate.username');
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function rank(): ?int
     {
         return Arr::get($this->wallet, 'attributes.delegate.rank');
@@ -80,11 +82,6 @@ final class WalletViewModel extends ViewModel
     public function votesPercentage(): string
     {
         return NumberFormatter::percentage(Percentage::calculate($this->wallet->attributes['delegate']['voteBalance'] / 1e8, NetworkStatus::supply()));
-    }
-
-    public function qrCode(): string
-    {
-        return QRCode::generate('ark:'.$this->wallet->address);
     }
 
     public function amountForged(): string
@@ -127,6 +124,8 @@ final class WalletViewModel extends ViewModel
 
     /**
      * @TODO: needs marketsquare
+     *
+     * @codeCoverageIgnore
      */
     public function commission(): string
     {
@@ -135,6 +134,8 @@ final class WalletViewModel extends ViewModel
 
     /**
      * @TODO: needs marketsquare
+     *
+     * @codeCoverageIgnore
      */
     public function payoutFrequency(): string
     {
@@ -143,6 +144,8 @@ final class WalletViewModel extends ViewModel
 
     /**
      * @TODO: needs marketsquare
+     *
+     * @codeCoverageIgnore
      */
     public function payoutMinimum(): string
     {

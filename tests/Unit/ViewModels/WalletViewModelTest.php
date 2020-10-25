@@ -84,11 +84,6 @@ it('should get the votes as percentage from supply', function () {
     expect($this->subject->votesPercentage())->toBe('10%');
 });
 
-it('should generate a QR Code', function () {
-    expect($this->subject->qrCode())->toBeString();
-    expect($this->subject->qrCode())->toContain('<svg');
-});
-
 it('should sum up the amount forged', function () {
     expect($this->subject->amountForged())->toBeString();
 

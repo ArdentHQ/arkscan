@@ -9,11 +9,10 @@
                 @lang('pages.wallet.qrcode.description')
 
                 <div class="mt-8 border border-theme-secondary-400">
-                    {!! $wallet->qrCode() !!}
+                    {!! $this->code !!}
                 </div>
 
                 <div x-show="options">
-                    {{-- @TODO: use x-model to show code ark:... --}}
                     <x-ark-input
                         :label="trans('pages.wallet.amount')"
                         class="mt-5"
