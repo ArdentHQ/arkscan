@@ -10,6 +10,8 @@ return [
     'search_explorer'  => 'Search Explorer',
     'verified_address' => 'Verified Address',
     'exchange'         => 'Exchange',
+    'reload'           => 'Reload',
+    'wallet_not_found' => '<span class="bg-theme-warning-100">:0</span> has no balance. <br/> <span class="text-base font-normal">Return to this page after the address has received a transaction.</span>',
 
     'block' => [
         'id'            => 'ID',
