@@ -13,7 +13,8 @@ final class ShowBlockController
     public function __invoke(Block $block): View
     {
         return view('app.block', [
-            'block' => ViewModelFactory::make($block),
+            'block'        => ViewModelFactory::make($block),
+            'transactions' => ViewModelFactory::collection($block->transactions),
         ]);
     }
 }

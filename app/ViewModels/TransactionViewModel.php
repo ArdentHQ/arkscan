@@ -20,7 +20,6 @@ use App\Services\Transactions\TransactionType;
 use App\Services\Transactions\TransactionTypeIcon;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Spatie\ViewModels\ViewModel;
@@ -108,22 +107,27 @@ final class TransactionViewModel extends ViewModel
         return $wallet->address;
     }
 
-    public function multiSignatureAddress(): string
+    public function multiSignatureAddress(): ?string
     {
+        if (! $this->isMultiSignature()) {
+            return null;
+        }
+
         $min        = $this->transaction->asset['multiSignature']['min'];
         $publicKeys = $this->transaction->asset['multiSignature']['publicKeys'];
 
         return MultiSignature::address($min, $publicKeys);
     }
 
-    public function recipients(): Collection
+    public function recipients(): array
     {
         if (! $this->isMultiPayment()) {
             return [];
         }
 
         return collect($this->transaction->asset['payments'])
-            ->map(fn ($payment) => Wallet::where('address', $payment['recipientId'])->firstOrFail());
+            ->map(fn ($payment) => Wallet::where('address', $payment['recipientId'])->firstOrFail())
+            ->toArray();
     }
 
     public function recipientsCount(): string
