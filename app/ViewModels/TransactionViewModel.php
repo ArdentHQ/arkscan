@@ -9,6 +9,7 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\ExchangeRate;
+use App\Services\MultiSignature;
 use App\Services\NumberFormatter;
 use App\Services\Timestamp;
 use App\Services\Transactions\TransactionDirection;
@@ -19,6 +20,7 @@ use App\Services\Transactions\TransactionType;
 use App\Services\Transactions\TransactionTypeIcon;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Spatie\ViewModels\ViewModel;
@@ -61,6 +63,21 @@ final class TransactionViewModel extends ViewModel
         return Timestamp::fromGenesisHuman($this->transaction->timestamp);
     }
 
+    public function nonce(): string
+    {
+        $wallet = Cache::remember(
+            "transaction:wallet:{$this->transaction->sender_public_key}",
+            Carbon::now()->addHour(),
+            fn () => $this->transaction->sender
+        );
+
+        if (is_null($wallet)) {
+            return 'n/a';
+        }
+
+        return NumberFormatter::number($wallet->nonce);
+    }
+
     public function sender(): string
     {
         $wallet = Cache::remember(
@@ -91,6 +108,33 @@ final class TransactionViewModel extends ViewModel
         return $wallet->address;
     }
 
+    public function multiSignatureAddress(): string
+    {
+        $min        = $this->transaction->asset['multiSignature']['min'];
+        $publicKeys = $this->transaction->asset['multiSignature']['publicKeys'];
+
+        return MultiSignature::address($min, $publicKeys);
+    }
+
+    public function recipients(): Collection
+    {
+        if (! $this->isMultiPayment()) {
+            return [];
+        }
+
+        return collect($this->transaction->asset['payments'])
+            ->map(fn ($payment) => Wallet::where('address', $payment['recipientId'])->firstOrFail());
+    }
+
+    public function recipientsCount(): string
+    {
+        if (! $this->isMultiPayment()) {
+            return NumberFormatter::number(0);
+        }
+
+        return NumberFormatter::number(count($this->transaction->asset['payments']));
+    }
+
     public function fee(): string
     {
         return NumberFormatter::currency($this->transaction->fee / 1e8, Network::currency());
@@ -109,6 +153,29 @@ final class TransactionViewModel extends ViewModel
     public function amountFiat(): string
     {
         return ExchangeRate::convert($this->transaction->amount / 1e8, $this->transaction->timestamp);
+    }
+
+    public function vendorField(): ?string
+    {
+        $vendorFieldHex = $this->transaction->vendor_field_hex;
+
+        if (is_null($vendorFieldHex)) {
+            return null;
+        }
+
+        $vendorFieldStream = stream_get_contents($vendorFieldHex);
+
+        if ($vendorFieldStream === false) {
+            return null;
+        }
+
+        $vendorField = hex2bin(bin2hex($vendorFieldStream));
+
+        if ($vendorField === false) {
+            return null;
+        }
+
+        return $vendorField;
     }
 
     public function confirmations(): string
@@ -378,6 +445,35 @@ final class TransactionViewModel extends ViewModel
     public function isUnknown(): bool
     {
         return $this->type->isUnknown();
+    }
+
+    public function isSelfReceiving(): bool
+    {
+        if ($this->isDelegateRegistration()) {
+            return true;
+        }
+
+        if ($this->isDelegateResignation()) {
+            return true;
+        }
+
+        if ($this->isVoteCombination()) {
+            return true;
+        }
+
+        if ($this->isVote()) {
+            return true;
+        }
+
+        if ($this->isUnvote()) {
+            return true;
+        }
+
+        if ($this->isSecondSignature()) {
+            return true;
+        }
+
+        return false;
     }
 
     public function typeLabel(): string

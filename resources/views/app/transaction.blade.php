@@ -18,6 +18,28 @@
 
     @section('content')
         <x-transaction.header :transaction="$transaction" />
+
+        <x-details.grid>
+            @if($transaction->isTransfer())
+                <x-transaction.details.transfer :transaction="$transaction" />
+            @endif
+
+            @if($transaction->isMultiPayment())
+                <x-transaction.details.multi-payment :transaction="$transaction" />
+            @endif
+
+            @if($transaction->isMultiSignature())
+                <x-transaction.details.multi-signature :transaction="$transaction" />
+            @endif
+
+            @if($transaction->isEntityRegistration())
+                <x-transaction.details.entity-registration :transaction="$transaction" />
+            @endif
+
+            @if($transaction->isSelfReceiving())
+                <x-transaction.details.self-receiving :transaction="$transaction" />
+            @endif
+        </x-details.grid>
     @endsection
 
 @endcomponent

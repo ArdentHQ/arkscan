@@ -8,7 +8,6 @@ use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Arr;
 
 /**
  * @property string $id
@@ -128,36 +127,6 @@ final class Transaction extends Model
     public function scopeReceivedBy($query, $address)
     {
         return $query->where('recipient_id', $address);
-    }
-
-    /**
-     * Get the human readable representation of the vendor field.
-     *
-     * @codeCoverageIgnore
-     *
-     * @return string
-     */
-    public function getVendorFieldAttribute(): ?string
-    {
-        $vendorFieldHex = Arr::get($this->attributes, 'vendor_field_hex');
-
-        if (is_null($vendorFieldHex)) {
-            return null;
-        }
-
-        $vendorFieldStream = stream_get_contents($vendorFieldHex);
-
-        if ($vendorFieldStream === false) {
-            return null;
-        }
-
-        $vendorField = hex2bin(bin2hex($vendorFieldStream));
-
-        if ($vendorField === false) {
-            return null;
-        }
-
-        return $vendorField;
     }
 
     /**

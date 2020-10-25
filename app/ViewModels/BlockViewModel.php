@@ -7,6 +7,7 @@ namespace App\ViewModels;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Wallet;
+use App\Services\Blockchain\NetworkStatus;
 use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
 use App\Services\Timestamp;
@@ -91,6 +92,11 @@ final class BlockViewModel extends ViewModel
     public function rewardFiat(): string
     {
         return ExchangeRate::convert($this->block->reward / 1e8, $this->block->timestamp);
+    }
+
+    public function confirmations(): string
+    {
+        return NumberFormatter::number(abs(NetworkStatus::height() - $this->block->height));
     }
 
     public function previousBlockUrl(): ?string
