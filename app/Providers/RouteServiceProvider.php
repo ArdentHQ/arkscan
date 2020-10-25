@@ -41,7 +41,7 @@ final class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
 
-        Route::bind('wallet', function (string $value) {
+        Route::bind('wallet', function (string $value): Wallet {
             if (! Address::validate($value)) {
                 UI::useErrorMessage(404, trans('general.wallet_not_found', [$value]));
 

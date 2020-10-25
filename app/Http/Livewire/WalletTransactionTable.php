@@ -67,19 +67,19 @@ final class WalletTransactionTable extends Component
     {
         $query = Transaction::query();
 
-        $query->where(function ($query) {
+        $query->where(function ($query): void {
             $query->where('sender_public_key', $this->state['publicKey']);
 
             $this->applyTypeScope($query);
         });
 
-        $query->orWhere(function ($query) {
+        $query->orWhere(function ($query): void {
             $query->where('recipient_id', $this->state['address']);
 
             $this->applyTypeScope($query);
         });
 
-        $query->orWhere(function ($query) {
+        $query->orWhere(function ($query): void {
             $query->whereJsonContains('asset->payments', [['recipientId' => $this->state['address']]]);
 
             $this->applyTypeScope($query);
@@ -92,13 +92,13 @@ final class WalletTransactionTable extends Component
     {
         $query = Transaction::query();
 
-        $query->where(function ($query) {
+        $query->where(function ($query): void {
             $query->where('recipient_id', $this->state['address']);
 
             $this->applyTypeScope($query);
         });
 
-        $query->orWhere(function ($query) {
+        $query->orWhere(function ($query): void {
             $query->whereJsonContains('asset->payments', [['recipientId' => $this->state['address']]]);
 
             $this->applyTypeScope($query);
