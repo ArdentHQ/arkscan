@@ -56,10 +56,6 @@ final class WalletTransactionTable extends Component
             $query = $this->getAllQuery();
         }
 
-        if ($this->state['type'] !== 'all') {
-            $query = $query->withScope($this->scopes[$this->state['type']]);
-        }
-
         return view('livewire.wallet-transaction-table', [
             'transactions'  => ViewModelFactory::paginate($query->latestByTimestamp()->paginate()),
             'countReceived' => $this->getReceivedQuery()->count(),
@@ -69,21 +65,59 @@ final class WalletTransactionTable extends Component
 
     private function getAllQuery(): Builder
     {
-        return Transaction::query()
-            ->where('sender_public_key', $this->state['publicKey'])
-            ->orWhere('recipient_id', $this->state['address'])
-            ->orWhereJsonContains('asset->payments', [['recipientId' => $this->state['address']]]);
+        $query = Transaction::query();
+
+        $query->where(function ($query) {
+            $query->where('sender_public_key', $this->state['publicKey']);
+
+            $this->applyTypeScope($query);
+        });
+
+        $query->orWhere(function ($query) {
+            $query->where('recipient_id', $this->state['address']);
+
+            $this->applyTypeScope($query);
+        });
+
+        $query->orWhere(function ($query) {
+            $query->whereJsonContains('asset->payments', [['recipientId' => $this->state['address']]]);
+
+            $this->applyTypeScope($query);
+        });
+
+        return $query;
     }
 
     private function getReceivedQuery(): Builder
     {
-        return Transaction::query()
-            ->where('recipient_id', $this->state['address'])
-            ->orWhereJsonContains('asset->payments', [['recipientId' => $this->state['address']]]);
+        $query = Transaction::query();
+
+        $query->where(function ($query) {
+            $query->where('recipient_id', $this->state['address']);
+
+            $this->applyTypeScope($query);
+        });
+
+        $query->orWhere(function ($query) {
+            $query->whereJsonContains('asset->payments', [['recipientId' => $this->state['address']]]);
+
+            $this->applyTypeScope($query);
+        });
+
+        return $query;
     }
 
     private function getSentQuery(): Builder
     {
-        return Transaction::where('sender_public_key', $this->state['publicKey']);
+        return $this->applyTypeScope(Transaction::where('sender_public_key', $this->state['publicKey']));
+    }
+
+    private function applyTypeScope(Builder $query): Builder
+    {
+        if ($this->state['type'] !== 'all') {
+            return $query->withScope($this->scopes[$this->state['type']]);
+        }
+
+        return $query;
     }
 }

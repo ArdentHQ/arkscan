@@ -186,7 +186,7 @@ final class WalletViewModel extends ViewModel
 
     public function isVoting(): bool
     {
-        return Arr::has($this->wallet, 'attributes.vote');
+        return ! is_null(Arr::get($this->wallet, 'attributes.vote'));
     }
 
     public function vote(): ?self

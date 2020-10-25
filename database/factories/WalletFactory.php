@@ -27,7 +27,6 @@ final class WalletFactory extends Factory
                     'producedBlocks' => $this->faker->numberBetween(1, 1000),
                     'missedBlocks'   => $this->faker->numberBetween(1, 1000),
                 ],
-                'vote' => $this->faker->uuid,
             ],
         ];
     }
