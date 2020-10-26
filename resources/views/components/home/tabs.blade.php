@@ -1,5 +1,5 @@
 <div x-data="{
-    dropdownOpen: false,
+    tabsOpen: false,
     selected: 'transactions',
     transactionTypeFilter: 'all',
     transactionTypeFilterLabel: 'All',
@@ -38,6 +38,7 @@
             button-class="w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
             dropdown-classes="left-0 w-full z-20"
             :init-alpine="false"
+            dropdown-property="tabsOpen"
         >
             <x-slot name="button">
                 <div class="flex items-center space-x-4">
