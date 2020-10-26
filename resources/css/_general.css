@@ -284,3 +284,12 @@ body {
         @apply border-r border-theme-secondary-300;
     }
 }
+
+/* Loading States */
+.loading-state {
+    @apply bg-theme-secondary-300 animate-pulse;
+}
+
+.theme-dark .loading-state {
+    @apply bg-theme-secondary-800;
+}
