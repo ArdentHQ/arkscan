@@ -106,11 +106,19 @@ return [
     ],
 
     'monitor' => [
-        'title'      => 'Monitor',
-        'active'     => 'Active',
-        'standby'    => 'Standby',
-        'resigned'   => 'Resigned',
-        'statistics' => [
+        'title'        => 'Monitor',
+        'active'       => 'Active',
+        'standby'      => 'Standby',
+        'resigned'     => 'Resigned',
+        'order'        => 'Order',
+        'name'         => 'Name',
+        'forging_at'   => 'Time to Forge',
+        'status'       => 'Status',
+        'block_id'     => 'Block Id',
+        'success'      => 'Block Generated',
+        'warning'      => 'Block Missed',
+        'danger'       => '(:0) Blocks Missed',
+        'statistics'   => [
             'delegate_registrations' => 'Delegate Registrations',
             'block_reward'           => 'Block Reward',
             'fees_collected'         => 'Fees Collected (24h)',

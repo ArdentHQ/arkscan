@@ -7,6 +7,9 @@ namespace App\Services\Monitor;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Round;
+use App\Models\Scopes\ActiveDelegateScope;
+use App\Models\Scopes\ResignedDelegateScope;
+use App\Models\Scopes\StandbyDelegateScope;
 use App\Models\Wallet;
 use Illuminate\Support\Collection;
 
@@ -14,31 +17,17 @@ final class Monitor
 {
     public function activeDelegates(): Collection
     {
-        return Wallet::query()
-            ->whereNotNull('delegate')
-            ->where('attributes->delegate->resigned', false)
-            ->orderBy('vote_balance', 'desc')
-            ->limit(Network::delegateCount())
-            ->get();
+        return Wallet::withScope(ActiveDelegateScope::class)->get();
     }
 
     public function standbyDelegates(): Collection
     {
-        return Wallet::query()
-            ->whereNotNull('delegate')
-            ->orderBy('vote_balance', 'desc')
-            ->skip(Network::delegateCount())
-            ->limit(Network::delegateCount())
-            ->get();
+        return Wallet::withScope(StandbyDelegateScope::class)->get();
     }
 
     public function resignedDelegates(): Collection
     {
-        return Wallet::query()
-            ->whereNotNull('delegate')
-            ->where('attributes->delegate->resigned', true)
-            ->orderBy('vote_balance', 'desc')
-            ->get();
+        return Wallet::withScope(ResignedDelegateScope::class)->get();
     }
 
     public function roundNumber(): int
@@ -56,7 +45,7 @@ final class Monitor
 
     public function heightRange(int $round): Collection
     {
-        return collect(range($round - 4, $round))->mapWithKeys(function ($round): array {
+        return collect(range($round - 6, $round - 2))->mapWithKeys(function ($round): array {
             $roundStart = (int) $round * Network::delegateCount();
 
             return [
@@ -66,6 +55,13 @@ final class Monitor
                 ],
             ];
         });
+    }
+
+    public function heightRangeByRound(int $round): array
+    {
+        $roundStart = (int) $round * Network::delegateCount();
+
+        return [$roundStart, $roundStart + 50];
     }
 
     public function status(string $publicKey): Collection
