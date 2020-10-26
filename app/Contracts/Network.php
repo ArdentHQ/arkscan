@@ -32,5 +32,7 @@ interface Network
 
     public function blockTime(): int;
 
+    public function blockReward(): int;
+
     public function config(): \BitWasp\Bitcoin\Network\Network;
 }

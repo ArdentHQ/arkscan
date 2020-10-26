@@ -53,6 +53,18 @@ it('should have an epoch', function () {
     expect($this->subject->epoch())->toBeInstanceOf(Carbon::class);
 });
 
+it('should have a delegate count', function () {
+    expect($this->subject->delegateCount())->toBeInt();
+});
+
+it('should have a block time', function () {
+    expect($this->subject->blockTime())->toBeInt();
+});
+
+it('should have a block reward', function () {
+    expect($this->subject->blockReward())->toBeInt();
+});
+
 it('should have a config', function () {
     expect($this->subject->config())->toBeInstanceOf(Network::class);
 });

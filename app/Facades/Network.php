@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Carbon\Carbon epoch()
  * @method static int delegateCount()
  * @method static int blockTime()
+ * @method static int blockReward()
  * @method static \BitWasp\Bitcoin\Network\Network config()
  */
 final class Network extends Facade

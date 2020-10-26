@@ -6,7 +6,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ListBlocksByWalletController;
 use App\Http\Controllers\ListVotersByWalletController;
 use App\Http\Controllers\ShowBlockController;
-use App\Http\Controllers\ShowDelegateMonitorController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\ShowWalletController;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 Route::view('/search', 'app.search-results')->name('search');
-Route::get('/monitor', ShowDelegateMonitorController::class)->name('monitor');
+Route::view('/monitor', 'app.monitor')->name('monitor');
 
 Route::view('/blocks', 'blocks')->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');

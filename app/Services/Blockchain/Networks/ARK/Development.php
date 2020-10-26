@@ -75,6 +75,11 @@ final class Development implements Network
         return 8;
     }
 
+    public function blockReward(): int
+    {
+        return 2;
+    }
+
     public function config(): \BitWasp\Bitcoin\Network\Network
     {
         return Devnet::new();

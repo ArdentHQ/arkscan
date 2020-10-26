@@ -14,7 +14,6 @@ parameters:
         - '#with default value#'
         # Same as the null return type because a null value sometimes makes more sense than a specific default or exception.
         - '#with null as default value#'
-        - '#with a nullable type declaration#'
         # Laravel
         - '#Variable method call#'
         - '#Dynamic call to static method#'

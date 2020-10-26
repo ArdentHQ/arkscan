@@ -29,4 +29,9 @@ final class Timestamp
     {
         return Carbon::createFromTimestamp($seconds)->format(DateFormat::TIME);
     }
+
+    public static function now(): Carbon
+    {
+        return static::fromUnix(Carbon::now()->unix());
+    }
 }

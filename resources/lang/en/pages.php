@@ -105,4 +105,14 @@ return [
         ],
     ],
 
+    'monitor' => [
+        'title'      => 'Delegate',
+        'statistics' => [
+            'delegate_registrations' => 'Delegate Registrations',
+            'block_reward'           => 'Block Reward',
+            'fees_collected'         => 'Fees Collected (24h)',
+            'votes'                  => 'Current Votes',
+        ],
+    ],
+
 ];
