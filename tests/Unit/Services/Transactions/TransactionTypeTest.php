@@ -267,7 +267,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
     ],
 ]);
 
-it('should play through every scenario of an unknwon type', function (string $method, int $type, int $typeGroup, array $asset) {
+it('should play through every scenario of an unknown type', function (string $method, int $type, int $typeGroup, array $asset) {
     $transaction = Transaction::factory()->create([
         'type'       => $type,
         'type_group' => $typeGroup,

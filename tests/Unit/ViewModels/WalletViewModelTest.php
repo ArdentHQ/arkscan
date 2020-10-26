@@ -12,6 +12,7 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
@@ -85,18 +86,30 @@ it('should get the votes as percentage from supply', function () {
 });
 
 it('should sum up the amount forged', function () {
+    Cache::put('delegates.totalAmounts', [
+        $this->subject->publicKey() => '1000000000',
+    ]);
+
     expect($this->subject->amountForged())->toBeString();
 
     assertMatchesSnapshot($this->subject->amountForged());
 });
 
 it('should sum up the fees forged', function () {
+    Cache::put('delegates.totalFees', [
+        $this->subject->publicKey() => '800000000',
+    ]);
+
     expect($this->subject->feesForged())->toBeString();
 
     assertMatchesSnapshot($this->subject->feesForged());
 });
 
 it('should sum up the rewards forged', function () {
+    Cache::put('delegates.totalRewards', [
+        $this->subject->publicKey() => '200000000',
+    ]);
+
     expect($this->subject->rewardsForged())->toBeString();
 
     assertMatchesSnapshot($this->subject->rewardsForged());
@@ -190,11 +203,15 @@ it('should determine if the wallet is voting', function () {
 it('should get the wallet of the vote', function () {
     expect($this->subject->vote())->toBeNull();
 
+    $vote = Wallet::factory()->create();
+
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [
-            'vote' => $vote = Wallet::factory()->create()->public_key,
+            'vote' => $vote->public_key,
         ],
     ]));
+
+    Cache::put('votes.'.$vote->public_key, $vote);
 
     expect($this->subject->vote())->toBeInstanceOf(WalletViewModel::class);
 });

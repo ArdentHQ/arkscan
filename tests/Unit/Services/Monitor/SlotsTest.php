@@ -7,7 +7,13 @@ use App\Models\Block;
 use App\Services\Monitor\Slots;
 use function Tests\configureExplorerDatabase;
 
-beforeEach(fn () => $this->subject = new Slots());
+beforeEach(function () {
+    configureExplorerDatabase();
+
+    Block::factory()->create();
+
+    $this->subject = new Slots();
+});
 
 it('return epoch time as number', function () {
     $result = $this->subject->getTime(1603703705);
