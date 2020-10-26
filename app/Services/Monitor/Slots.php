@@ -54,7 +54,7 @@ final class Slots
         return $this->getSlotNumber() + 1;
     }
 
-    public function isForgingAllowed(?int $timestamp, ?int $height): bool
+    public function isForgingAllowed(?int $timestamp = null, ?int $height = null): bool
     {
         if (is_null($timestamp)) {
             $timestamp = $this->getTime();
@@ -62,10 +62,10 @@ final class Slots
 
         $latestHeight = $this->getLatestHeight($height);
 
-        return $this->getSlotInfo($timestamp, $latestHeight)['forgingStatus'];
+        return (bool) $this->getSlotInfo($timestamp, $latestHeight)['forgingStatus'];
     }
 
-    public function getSlotInfo(?int $timestamp, ?int $height): array
+    public function getSlotInfo(?int $timestamp = null, ?int $height = null): array
     {
         if (is_null($timestamp)) {
             $timestamp = $this->getTime();
@@ -88,7 +88,7 @@ final class Slots
             'startTime'     => (int) $startTime,
             'endTime'       => (int) $endTime,
             'slotNumber'    => (int) $slotNumber,
-            'forgingStatus' => (int) $forgingStatus,
+            'forgingStatus' => (bool) $forgingStatus,
         ];
     }
 
@@ -105,7 +105,7 @@ final class Slots
     private function getLatestHeight(?int $height): int
     {
         if (is_null($height)) {
-            return Block::latestByHeight()->firstOrFail()->height;
+            return Block::current()->height->toNumber();
         }
 
         return $height;

@@ -15,6 +15,15 @@ use Illuminate\Support\Collection;
 
 final class Monitor
 {
+    public static function roundDelegates(int $round): Collection
+    {
+        return Round::query()
+           ->where('round', $round)
+           ->orderBy('balance', 'desc')
+           ->orderBy('public_key', 'asc')
+           ->get();
+    }
+
     public static function activeDelegates(): Collection
     {
         return Wallet::withScope(ActiveDelegateScope::class)->get();

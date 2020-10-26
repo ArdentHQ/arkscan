@@ -35,7 +35,6 @@
                 <directory suffix=".php">./app/Console/Commands</directory>
                 <directory suffix=".php">./app/Models/Scopes</directory>
                 <!-- FIXME -->
-                <directory suffix=".php">./app/Services/Monitor</directory>
                 <file>./app/Http/Livewire/SearchModule.php</file>
             </exclude>
         </whitelist>

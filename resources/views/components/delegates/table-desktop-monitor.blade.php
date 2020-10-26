@@ -68,9 +68,9 @@
                     {{-- @TODO: handle new delegates that didn't yet forge --}}
                     <td class="hidden text-right lg:table-cell">
                         <div wire:loading.class="h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
-                        <a href="{{ route('block', $delegate['last_block']->id) }}" class="font-semibold link" wire:loading.class="hidden">
+                        {{-- <a href="{{ route('block', $delegate['last_block']->id) }}" class="font-semibold link" wire:loading.class="hidden">
                             <x-truncate-middle :value="$delegate['last_block']->id" />
-                        </a>
+                        </a> --}}
                     </td>
                 </tr>
             @endforeach

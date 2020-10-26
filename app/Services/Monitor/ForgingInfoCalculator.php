@@ -5,20 +5,14 @@ declare(strict_types=1);
 namespace App\Services\Monitor;
 
 use App\Facades\Network;
-use App\Models\Block;
 
 final class ForgingInfoCalculator
 {
-    public function getBlockTimeLookup(int $height): int
-    {
-        return Block::where('height', $height)->firstOrFail()->timestamp;
-    }
-
-    public function calculateForgingInfo(int $timestamp, int $height): array
+    public static function calculateForgingInfo(int $timestamp, int $height): array
     {
         $slotInfo = (new Slots())->getSlotInfo($timestamp, $height);
 
-        [$currentForger, $nextForger] = $this->findIndex($slotInfo['slotNumber']);
+        [$currentForger, $nextForger] = static::findIndex($slotInfo['slotNumber']);
 
         return [
             'currentForger'  => $currentForger,
@@ -28,7 +22,7 @@ final class ForgingInfoCalculator
         ];
     }
 
-    private function findIndex(int $slotNumber): array
+    private static function findIndex(int $slotNumber): array
     {
         $lastSpanSlotNumber = 0;
         $activeDelegates    = Network::delegateCount();

@@ -12,7 +12,6 @@ use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\Monitor;
 use App\Services\NumberFormatter;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -21,12 +20,13 @@ final class MonitorNetwork extends Component
 {
     public function render(): View
     {
-        $tracking = DelegateTracker::execute(Monitor::activeDelegates());
+        // $tracking = DelegateTracker::execute(Monitor::roundDelegates(112168));
+        $tracking = DelegateTracker::execute(Monitor::roundDelegates(Monitor::roundNumber()));
 
         $delegates = [];
 
-        for ($i = 0; $i < count($tracking['delegates']); $i++) {
-            $delegate = array_values($tracking['delegates'])[$i];
+        for ($i = 0; $i < count($tracking); $i++) {
+            $delegate = array_values($tracking)[$i];
 
             $delegates[] = [
                 'order'         => $i + 1,
@@ -34,7 +34,7 @@ final class MonitorNetwork extends Component
                     return Wallet::where('public_key', $delegate['publicKey'])->firstOrFail()->attributes['delegate']['username'];
                 }),
                 'forging_at'    => Carbon::now()->addMilliseconds($delegate['time']),
-                'last_block'    => Cache::rememberForever('currentBlock', fn () => Block::current()),
+                'last_block'    => null,
                 // Status
                 'is_success'    => false, // $missedCount === 0,
                 'is_warning'    => false, // $missedCount === 1,
@@ -72,14 +72,5 @@ final class MonitorNetwork extends Component
         return view('livewire.monitor-network', [
             'delegates' => $delegates,
         ]);
-    }
-
-    public function activeQuery(): Builder
-    {
-        return Wallet::query()
-            ->whereNotNull('attributes->delegate->username')
-            ->whereRaw("(\"attributes\"->'delegate'->>'rank')::numeric <= ?", [Network::delegateCount()])
-            ->orderByRaw("(\"attributes\"->'delegate'->>'rank')::numeric ASC")
-            ->get();
     }
 }
