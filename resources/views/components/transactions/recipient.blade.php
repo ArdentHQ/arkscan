@@ -19,7 +19,7 @@
                 </x-slot>
 
                 <x-slot name="prefix">
-                    <span class="pr-2 mr-2 font-semibold border-r border-theme-secondary-300 dark:border-theme-secondary-800">
+                    <span class="pr-2 mr-2 font-semibold border-r text-theme-secondary-900 dark:text-theme-secondary-200 border-theme-secondary-300 dark:border-theme-secondary-800">
                         @lang('general.transaction.vote')
                     </span>
                 </x-slot>
@@ -32,7 +32,7 @@
                 </x-slot>
 
                 <x-slot name="prefix">
-                    <span class="pr-2 mr-2 font-semibold border-r border-theme-secondary-300 dark:border-theme-secondary-800">
+                    <span class="pr-2 mr-2 font-semibold border-r text-theme-secondary-900 dark:text-theme-secondary-200 border-theme-secondary-300 dark:border-theme-secondary-800">
                         @lang('general.transaction.unvote')
                     </span>
                 </x-slot>
@@ -41,7 +41,7 @@
             <div class="flex items-center space-x-3">
                 <x-transactions.icon :icon-type="$iconType" />
 
-                <div class="font-semibold">
+                <div class="font-semibold text-theme-secondary-900 dark:text-theme-secondary-200">
                     {{ $text }}
                 </div>
             </div>
