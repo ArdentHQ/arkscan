@@ -182,17 +182,17 @@ final class WalletViewModel extends ViewModel
         return Arr::has($this->wallet, 'attributes.delegate');
     }
 
-    // // @TODO: base view model calls this even if we don't use it
-    // public function hasRegistrations(): bool
-    // {
-    //     return $this->wallet->sentTransactions()->withScope(EntityRegistrationScope::class)->count() > 0;
-    // }
+    // @TODO: base view model calls this even if we don't use it
+    public function hasRegistrations(): bool
+    {
+        return $this->wallet->sentTransactions()->withScope(EntityRegistrationScope::class)->count() > 0;
+    }
 
-    // // @TODO: base view model calls this even if we don't use it
-    // public function registrations(): Collection
-    // {
-    //     return ViewModelFactory::collection($this->wallet->sentTransactions()->withScope(EntityRegistrationScope::class)->get());
-    // }
+    // @TODO: base view model calls this even if we don't use it
+    public function registrations(): Collection
+    {
+        return ViewModelFactory::collection($this->wallet->sentTransactions()->withScope(EntityRegistrationScope::class)->get());
+    }
 
     public function isVoting(): bool
     {

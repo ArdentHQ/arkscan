@@ -9,6 +9,8 @@ use App\Models\Block;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\Monitor\Monitor;
+use App\Services\Monitor\RoundCalculator;
+use App\Services\NumberFormatter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -17,6 +19,8 @@ final class MonitorNetwork extends Component
 {
     public function render(): View
     {
+        // dd(RoundCalculator::calculate(5717587));
+
         $monitor = new Monitor();
 
         $delegates = $monitor->activeDelegates();
@@ -43,7 +47,7 @@ final class MonitorNetwork extends Component
                 'is_success'    => $missedCount === 0,
                 'is_warning'    => $missedCount === 1,
                 'is_danger'     => $missedCount >= 2,
-                'missed_count'  => abs(NetworkStatus::height() - $lastBlock->height->toInt()),
+                'missed_count'  => NumberFormatter::number(abs(NetworkStatus::height() - $lastBlock->height->toNumber())),
             ];
         });
 
