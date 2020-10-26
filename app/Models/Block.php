@@ -121,6 +121,11 @@ final class Block extends Model
         return $query->where('generator_public_key', $publicKey);
     }
 
+    public static function current(): self
+    {
+        return static::orderBy('height', 'desc')->firstOrFail();
+    }
+
     /**
      * Get the current connection name for the model.
      *

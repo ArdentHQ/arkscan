@@ -84,12 +84,12 @@ final class Slots
         $forgingStatus                  = $timestamp < $startTime + floor($blockTime / 2);
 
         return [
-                'blockTime'     => $blockTime,
-                'startTime'     => $startTime,
-                'endTime'       => $endTime,
-                'slotNumber'    => $slotNumber,
-                'forgingStatus' => $forgingStatus,
-            ];
+            'blockTime'     => (int) $blockTime,
+            'startTime'     => (int) $startTime,
+            'endTime'       => (int) $endTime,
+            'slotNumber'    => (int) $slotNumber,
+            'forgingStatus' => (int) $forgingStatus,
+        ];
     }
 
     private function calculateSlotTime(int $slotNumber, int $height): int

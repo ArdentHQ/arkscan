@@ -10,23 +10,15 @@ use Illuminate\Support\Collection;
 
 final class DelegateTracker
 {
-    private Collection $delegates;
-
-    public function __construct()
+    public static function execute(Collection $delegates): array
     {
-        $this->delegates = (new Monitor())->activeDelegates();
-    }
-
-    public function execute(int $height): array
-    {
-        $lastBlock       = Block::latestByHeight()->firstOrFail();
+        $lastBlock       = Block::current();
         $maxDelegates    = Network::delegateCount();
         $blockTime       = Network::blockTime();
-        $round           = RoundCalculator::calculate($height);
-        $activeDelegates = $this->delegates->toBase()->map(fn ($delegate) => $delegate->public_key);
-
-        $blockTimeLookup = (new ForgingInfoCalculator())->getBlockTimeLookup($lastBlock->height);
-        $forgingInfo     = (new ForgingInfoCalculator())->calculateForgingInfo($lastBlock->timestamp, $lastBlock->height);
+        // $round           = RoundCalculator::calculate($height);
+        $activeDelegates = $delegates->toBase()->map(fn ($delegate) => $delegate->public_key);
+        // $blockTimeLookup = (new ForgingInfoCalculator())->getBlockTimeLookup($lastBlock->height->toNumber());
+        $forgingInfo     = (new ForgingInfoCalculator())->calculateForgingInfo($lastBlock->timestamp, $lastBlock->height->toNumber());
 
         // Determine Next Forgers...
         $nextForgers = [];
@@ -48,7 +40,7 @@ final class DelegateTracker
             'nextRoundTime' => ($maxDelegates - $forgingInfo['currentForger'] - 1) * $blockTime,
         ];
 
-        foreach ($this->delegates as $delegate) {
+        foreach ($delegates as $delegate) {
             $indexInNextForgers = 0;
 
             for ($i = 0; $i < count($nextForgers); $i++) {
