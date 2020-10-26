@@ -51,7 +51,7 @@
                 <x-slot name="logo">
                     <img src="/images/logo.svg" class="h-10 lg:h-12" />
 
-                    <span class="hidden ml-4 sm:flex text-theme-secondary-900 sm:text-2xl">
+                    <span class="hidden ml-4 sm:flex text-theme-secondary-900 dark:text-theme-secondary-200 sm:text-2xl">
                         <span class="font-bold">{{ config('app.name', 'ARK') }}</span>
                     </span>
                 </x-slot>
