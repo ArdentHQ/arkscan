@@ -65,6 +65,16 @@ final class Development implements Network
         return Carbon::parse(Devnet::new()->epoch());
     }
 
+    public function delegateCount(): int
+    {
+        return 51;
+    }
+
+    public function blockTime(): int
+    {
+        return 8;
+    }
+
     public function config(): \BitWasp\Bitcoin\Network\Network
     {
         return Devnet::new();

@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Models\Casts\BigInteger;
 use App\Services\BigNumber;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -79,7 +80,7 @@ final class Wallet extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeVote($query, $publicKey)
+    public function scopeVote($query, $publicKey): Builder
     {
         return $query->where('vote', $publicKey);
     }
@@ -91,7 +92,7 @@ final class Wallet extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWealthy($query)
+    public function scopeWealthy($query): Builder
     {
         return $query->orderBy('balance', 'desc');
     }

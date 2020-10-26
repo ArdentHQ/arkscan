@@ -28,5 +28,9 @@ interface Network
 
     public function epoch(): Carbon;
 
+    public function delegateCount(): int;
+
+    public function blockTime(): int;
+
     public function config(): \BitWasp\Bitcoin\Network\Network;
 }

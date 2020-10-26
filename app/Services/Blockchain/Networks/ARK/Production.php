@@ -57,12 +57,22 @@ final class Production implements Network
 
     public function usesMarketsquare(): bool
     {
-        return true;
+        return false;
     }
 
     public function epoch(): Carbon
     {
         return Carbon::parse(Mainnet::new()->epoch());
+    }
+
+    public function delegateCount(): int
+    {
+        return 51;
+    }
+
+    public function blockTime(): int
+    {
+        return 8;
     }
 
     public function config(): \BitWasp\Bitcoin\Network\Network

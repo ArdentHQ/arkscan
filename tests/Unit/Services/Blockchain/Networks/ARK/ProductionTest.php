@@ -46,7 +46,7 @@ it('should have a host', function () {
 });
 
 it('should determine if the network is on marketsquare', function () {
-    expect($this->subject->usesMarketsquare())->toBeTrue();
+    expect($this->subject->usesMarketsquare())->toBeFalse();
 });
 
 it('should have an epoch', function () {
