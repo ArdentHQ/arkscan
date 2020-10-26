@@ -185,7 +185,7 @@ final class WalletViewModel extends ViewModel
      */
     public function productivity(): string
     {
-        return NumberFormatter::number(0);
+        return NumberFormatter::percentage(0);
     }
 
     public function isDelegate(): bool
@@ -212,6 +212,10 @@ final class WalletViewModel extends ViewModel
 
     public function vote(): ?self
     {
+        if (! Arr::has($this->wallet, 'attributes.vote')) {
+            return null;
+        }
+
         $wallet = Wallet::where('public_key', Arr::get($this->wallet, 'attributes.vote'))->first();
 
         if (is_null($wallet)) {

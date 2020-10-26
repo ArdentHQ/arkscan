@@ -67,4 +67,14 @@ return [
         'balance' => 'Balance',
         'supply'  => 'Supply',
     ],
+
+    'delegates' => [
+        'rank'         => 'Rank',
+        'name'         => 'Delegate Name',
+        'status'       => 'Status',
+        'votes'        => 'Votes',
+        'profile'      => 'Profile',
+        'commission'   => 'Commission',
+        'productivity' => 'Productivity',
+    ],
 ];

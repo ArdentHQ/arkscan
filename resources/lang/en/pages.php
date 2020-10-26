@@ -107,6 +107,9 @@ return [
 
     'monitor' => [
         'title'      => 'Delegate',
+        'active'     => 'Active',
+        'standby'    => 'Standby',
+        'resigned'   => 'Resigned',
         'statistics' => [
             'delegate_registrations' => 'Delegate Registrations',
             'block_reward'           => 'Block Reward',
