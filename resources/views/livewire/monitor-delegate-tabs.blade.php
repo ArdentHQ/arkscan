@@ -58,6 +58,4 @@
             </a>
         </div>
     </x-ark-dropdown>
-
-    {{-- @TODO: toggle monitor button --}}
 </div>

@@ -32,6 +32,8 @@ final class Kernel extends ConsoleKernel
         $schedule->command(CacheChartData::class)->everyThirtyMinutes();
 
         $schedule->command(CacheDelegates::class)->everyTenMinutes();
+
+        $schedule->command(CacheDelegateAggregates::class)->everyFiveMinutes();
     }
 
     /**

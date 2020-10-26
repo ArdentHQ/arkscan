@@ -12,9 +12,9 @@ use App\Services\Blockchain\NetworkStatus;
 use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
 use App\Services\Timestamp;
-use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Mattiasgeniar\Percentage\Percentage;
 use Spatie\ViewModels\ViewModel;
 
@@ -62,7 +62,7 @@ final class WalletViewModel extends ViewModel
 
     public function balanceFiat(): string
     {
-        return ExchangeRate::convert($this->wallet->balance->toFloat(), Timestamp::fromUnix(Carbon::now()->unix())->unix());
+        return ExchangeRate::convert($this->wallet->balance->toFloat(), Timestamp::now()->unix());
     }
 
     public function balancePercentage(): string
@@ -92,26 +92,23 @@ final class WalletViewModel extends ViewModel
 
     public function amountForged(): string
     {
-        return NumberFormatter::currency(
-            BigNumber::new($this->wallet->blocks()->sum('total_amount'))->toFloat(),
-            Network::currency()
-        );
+        $result = Arr::get(Cache::get('delegates.totalAmounts', []), $this->wallet->public_key, 0);
+
+        return NumberFormatter::currency(BigNumber::new($result)->toFloat(), Network::currency());
     }
 
     public function feesForged(): string
     {
-        return NumberFormatter::currency(
-            BigNumber::new($this->wallet->blocks()->sum('total_fee'))->toFloat(),
-            Network::currency()
-        );
+        $result = Arr::get(Cache::get('delegates.totalFees', []), $this->wallet->public_key, 0);
+
+        return NumberFormatter::currency(BigNumber::new($result)->toFloat(), Network::currency());
     }
 
     public function rewardsForged(): string
     {
-        return NumberFormatter::currency(
-            BigNumber::new($this->wallet->blocks()->sum('reward'))->toFloat(),
-            Network::currency()
-        );
+        $result = Arr::get(Cache::get('delegates.totalRewards', []), $this->wallet->public_key, 0);
+
+        return NumberFormatter::currency(BigNumber::new($result)->toFloat(), Network::currency());
     }
 
     public function isKnown(): bool
@@ -167,14 +164,6 @@ final class WalletViewModel extends ViewModel
         return NumberFormatter::number(0);
     }
 
-    public function forgedTotal(): string
-    {
-        return NumberFormatter::currency(
-            BigNumber::new(floor($this->wallet->blocks()->sum('total_amount')))->toFloat(),
-            Network::currency()
-        );
-    }
-
     public function forgedBlocks(): string
     {
         return NumberFormatter::number(Arr::get($this->wallet, 'attributes.delegate.producedBlocks', 0));
@@ -200,9 +189,7 @@ final class WalletViewModel extends ViewModel
 
     public function registrations(): Collection
     {
-        return ViewModelFactory::collection(
-            $this->wallet->sentTransactions()->withScope(EntityRegistrationScope::class)->get()
-        );
+        return ViewModelFactory::collection($this->wallet->sentTransactions()->withScope(EntityRegistrationScope::class)->get());
     }
 
     public function isVoting(): bool
@@ -223,6 +210,16 @@ final class WalletViewModel extends ViewModel
         }
 
         return new static($wallet);
+    }
+
+    public function isMissing(): bool
+    {
+        return false;
+    }
+
+    public function hasMissedRecently(): bool
+    {
+        return false;
     }
 
     private function findWalletByKnown(): ?array

@@ -27,7 +27,7 @@
 
             <div class="grid w-full grid-flow-row grid-cols-1 gap-6 pt-8 md:grid-cols-2 lg:grid-cols-4 gap-y-12 md:gap-y-4">
                 <x-details-box :title="trans('pages.wallet.delegate.forged_total')" icon="app-volume">
-                    {{ $wallet->forgedTotal() }}
+                    {{ $wallet->amountForged() }}
                 </x-details-box>
 
                 <x-details-box :title="trans('pages.wallet.delegate.votes', [$wallet->votesPercentage()])" icon="app-volume">
