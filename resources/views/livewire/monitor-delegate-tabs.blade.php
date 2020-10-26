@@ -1,29 +1,42 @@
-<div class="hidden tabs md:flex">
-    <div
-        class="tab-item transition-default"
-        :class="{ 'tab-item-current': status === 'active' }"
-        wire:click="$emit('filterByDelegateStatus', 'active');"
-        @click="status = 'active'"
-    >
-        @lang('pages.monitor.active') {{ $countActive }}
+<div class="justify-between hidden md:flex">
+    <div class="flex w-10/12 tabs">
+        <div
+            class="tab-item transition-default"
+            :class="{ 'tab-item-current': status === 'active' }"
+            wire:click="$emit('filterByDelegateStatus', 'active');"
+            @click="status = 'active'"
+        >
+            @lang('pages.monitor.active') {{ $countActive }}
+        </div>
+
+        <div
+            class="tab-item transition-default"
+            :class="{ 'tab-item-current': status === 'standby' }"
+            wire:click="$emit('filterByDelegateStatus', 'standby');"
+            @click="status = 'standby'"
+        >
+            @lang('pages.monitor.standby') {{ $countStandby }}
+        </div>
+
+        <div
+            class="tab-item transition-default"
+            :class="{ 'tab-item-current': status === 'resigned' }"
+            wire:click="$emit('filterByDelegateStatus', 'resigned');"
+            @click="status = 'resigned'"
+        >
+            @lang('pages.monitor.resigned') {{ $countResigned }}
+        </div>
     </div>
 
-    <div
-        class="tab-item transition-default"
-        :class="{ 'tab-item-current': status === 'standby' }"
-        wire:click="$emit('filterByDelegateStatus', 'standby');"
-        @click="status = 'standby'"
-    >
-        @lang('pages.monitor.standby') {{ $countStandby }}
-    </div>
-
-    <div
-        class="tab-item transition-default"
-        :class="{ 'tab-item-current': status === 'resigned' }"
-        wire:click="$emit('filterByDelegateStatus', 'resigned');"
-        @click="status = 'resigned'"
-    >
-        @lang('pages.monitor.resigned') {{ $countResigned }}
+    <div class="w-2/12 text-center tabs md:ml-6">
+        {{-- @TODO: svg icon --}}
+        <div
+            class="tab-item transition-default"
+            :class="{ 'tab-item-current': component === 'monitor' }"
+            @click="component === 'monitor' ? component = 'list' : component = 'monitor'"
+        >
+            @lang('pages.monitor.title')
+        </div>
     </div>
 </div>
 

@@ -37,7 +37,7 @@ final class MonitorDelegateTable extends Component
 
     public function filterByDelegateStatus(string $value): void
     {
-        $this->state['type'] = $value;
+        $this->state['status'] = $value;
     }
 
     public function activeQuery(): Builder

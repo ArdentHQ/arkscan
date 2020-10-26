@@ -106,7 +106,7 @@ return [
     ],
 
     'monitor' => [
-        'title'      => 'Delegate',
+        'title'      => 'Monitor',
         'active'     => 'Active',
         'standby'    => 'Standby',
         'resigned'   => 'Resigned',
