@@ -12,13 +12,18 @@ final class DelegateTracker
 {
     public static function execute(Collection $delegates): array
     {
-        $lastBlock       = Block::current();
+        // Arrange
+        $lastBlock = Block::current();
+        $height    = $lastBlock->height->toNumber();
+        $timestamp = $lastBlock->timestamp;
+
+        // Act
         $maxDelegates    = Network::delegateCount();
         $blockTime       = Network::blockTime();
         // $round           = RoundCalculator::calculate($height);
         $activeDelegates = $delegates->toBase()->map(fn ($delegate) => $delegate->public_key);
         // $blockTimeLookup = (new ForgingInfoCalculator())->getBlockTimeLookup($lastBlock->height->toNumber());
-        $forgingInfo     = (new ForgingInfoCalculator())->calculateForgingInfo($lastBlock->timestamp, $lastBlock->height->toNumber());
+        $forgingInfo     = (new ForgingInfoCalculator())->calculateForgingInfo($timestamp, $height);
 
         // Determine Next Forgers...
         $nextForgers = [];
@@ -52,19 +57,22 @@ final class DelegateTracker
             }
 
             if ($indexInNextForgers === 0) {
-                $result['delegates'][$delegate->public_key] = [
-                    'status' => 'next',
-                    'time'   => 0,
+                $result['delegates'][$indexInNextForgers] = [
+                    'publicKey' => $delegate->public_key,
+                    'status'    => 'next',
+                    'time'      => 0,
                 ];
             } elseif ($indexInNextForgers <= $maxDelegates - $forgingInfo['nextForger']) {
-                $result['delegates'][$delegate->public_key] = [
-                    'status' => 'pending',
-                    'time'   => $indexInNextForgers * $blockTime * 1000,
+                $result['delegates'][$indexInNextForgers] = [
+                    'publicKey' => $delegate->public_key,
+                    'status'    => 'pending',
+                    'time'      => $indexInNextForgers * $blockTime * 1000,
                 ];
             } else {
-                $result['delegates'][$delegate->public_key] = [
-                    'status' => 'done',
-                    'time'   => 0,
+                $result['delegates'][$indexInNextForgers] = [
+                    'publicKey' => $delegate->public_key,
+                    'status'    => 'done',
+                    'time'      => 0,
                 ];
             }
         }

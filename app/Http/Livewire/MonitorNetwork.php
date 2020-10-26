@@ -26,13 +26,12 @@ final class MonitorNetwork extends Component
         $delegates = [];
 
         for ($i = 0; $i < count($tracking['delegates']); $i++) {
-            $publicKey = array_keys($tracking['delegates'])[$i];
-            $delegate  = array_values($tracking['delegates'])[$i];
+            $delegate = array_values($tracking['delegates'])[$i];
 
             $delegates[] = [
                 'order'         => $i + 1,
-                'username'      => Cache::rememberForever($publicKey, function () use ($publicKey) {
-                    return Wallet::where('public_key', $publicKey)->firstOrFail()->attributes['delegate']['username'];
+                'username'      => Cache::rememberForever($delegate['publicKey'], function () use ($delegate) {
+                    return Wallet::where('public_key', $delegate['publicKey'])->firstOrFail()->attributes['delegate']['username'];
                 }),
                 'forging_at'    => Carbon::now()->addMilliseconds($delegate['time']),
                 'last_block'    => Cache::rememberForever('currentBlock', fn () => Block::current()),
