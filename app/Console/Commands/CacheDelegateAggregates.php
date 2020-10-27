@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Models\Wallet;
 use App\Services\Monitor\Aggregates\TotalAmountsByPublicKeysAggregate;
+use App\Services\Monitor\Aggregates\TotalBlocksByPublicKeysAggregate;
 use App\Services\Monitor\Aggregates\TotalFeesByPublicKeysAggregate;
 use App\Services\Monitor\Aggregates\TotalRewardsByPublicKeysAggregate;
 use Illuminate\Console\Command;
@@ -41,5 +42,7 @@ final class CacheDelegateAggregates extends Command
         Cache::put('delegates.totalAmounts', (new TotalAmountsByPublicKeysAggregate())->aggregate($publicKeys));
 
         Cache::put('delegates.totalRewards', (new TotalRewardsByPublicKeysAggregate())->aggregate($publicKeys));
+
+        Cache::put('delegates.totalBlocks', (new TotalBlocksByPublicKeysAggregate())->aggregate($publicKeys));
     }
 }

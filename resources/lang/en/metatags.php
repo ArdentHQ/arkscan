@@ -28,4 +28,10 @@ return [
         'image'       => '',
     ],
 
+    'blocks_by_wallet' => [
+        'title'       => 'Block History',
+        'description' => '',
+        'image'       => '',
+    ],
+
 ];

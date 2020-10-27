@@ -132,4 +132,8 @@ return [
         ],
     ],
 
+    'blocks_by_wallet' => [
+        'title' => 'Forged Blocks',
+    ],
+
 ];

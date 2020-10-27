@@ -41,4 +41,14 @@ final class NumberFormatter
     {
         return static::number($value).' '.strtoupper($currency);
     }
+
+    /**
+     * @param string|int|float $value
+     */
+    public static function ordinal($value): string
+    {
+        $formatter = new \NumberFormatter('en_US', \NumberFormatter::ORDINAL);
+
+        return $formatter->format($value);
+    }
 }
