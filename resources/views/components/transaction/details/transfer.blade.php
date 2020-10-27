@@ -20,7 +20,7 @@
     {{ $transaction->timestamp() }}
 </x-details.generic>
 
-<x-details.generic :title="trans('general.transaction.smartbridge')" icon="app-volume">
+<x-details.generic :title="trans('general.transaction.smartbridge')" icon="app-smartbridge">
     {{ $transaction->vendorField() }}
 </x-details.generic>
 
