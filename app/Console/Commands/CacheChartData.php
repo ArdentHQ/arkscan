@@ -24,7 +24,7 @@ final class CacheChartData extends Command
      *
      * @var string
      */
-    protected $signature = 'chart:cache';
+    protected $signature = 'cache:charts';
 
     /**
      * The console command description.

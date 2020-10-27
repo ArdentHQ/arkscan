@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels;
 
+use App\Contracts\ViewModel;
 use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -24,9 +25,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
-use Spatie\ViewModels\ViewModel;
 
-final class TransactionViewModel extends ViewModel
+final class TransactionViewModel implements ViewModel
 {
     private Transaction $transaction;
 

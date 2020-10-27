@@ -28,7 +28,7 @@
                             <div wire:loading.class="w-full h-5 rounded-full bg-theme-secondary-300 animate-pulse"></div>
                         </div>
 
-                        <x-general.address :address="$delegate['username']" />
+                        <x-general.address :address="$delegate['wallet']->username()" />
                     </td>
                     <td>
                         <div wire:loading.class="h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
@@ -65,12 +65,15 @@
                             @endif
                         </div>
                     </td>
-                    {{-- @TODO: handle new delegates that didn't yet forge --}}
                     <td class="hidden text-right lg:table-cell">
                         <div wire:loading.class="h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
-                        {{-- <a href="{{ route('block', $delegate['last_block']->id) }}" class="font-semibold link" wire:loading.class="hidden">
-                            <x-truncate-middle :value="$delegate['last_block']->id" />
-                        </a> --}}
+                        @if($delegate['last_block'])
+                            <a href="{{ route('block', $delegate['last_block']['id']) }}" class="font-semibold link" wire:loading.class="hidden">
+                                <x-truncate-middle :value="$delegate['last_block']['id']" />
+                            </a>
+                        @else
+                            <div wire:loading.class="hidden">n/a</div>
+                        @endif
                     </td>
                 </tr>
             @endforeach

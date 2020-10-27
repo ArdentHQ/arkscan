@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use App\Facades\Network;
 use App\Models\Block;
-use App\Models\Wallet;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\Monitor;
 use App\Services\NumberFormatter;
+use App\ViewModels\ViewModelFactory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
@@ -21,7 +20,7 @@ final class MonitorNetwork extends Component
     public function render(): View
     {
         // $tracking = DelegateTracker::execute(Monitor::roundDelegates(112168));
-        $tracking = DelegateTracker::execute(Monitor::roundDelegates(Monitor::roundNumber()));
+        $tracking = DelegateTracker::execute(Monitor::activeDelegates(Monitor::roundNumber()));
 
         $delegates = [];
 
@@ -30,11 +29,9 @@ final class MonitorNetwork extends Component
 
             $delegates[] = [
                 'order'         => $i + 1,
-                'username'      => Cache::rememberForever($delegate['publicKey'], function () use ($delegate) {
-                    return Wallet::where('public_key', $delegate['publicKey'])->firstOrFail()->attributes['delegate']['username'];
-                }),
+                'wallet'        => ViewModelFactory::make(Cache::tags(['delegates'])->get($delegate['publicKey'])),
                 'forging_at'    => Carbon::now()->addMilliseconds($delegate['time']),
-                'last_block'    => null,
+                'last_block'    => Cache::get('lastBlock:'.$delegate['publicKey']),
                 // Status
                 'is_success'    => false, // $missedCount === 0,
                 'is_warning'    => false, // $missedCount === 1,
@@ -42,13 +39,6 @@ final class MonitorNetwork extends Component
                 'missed_count'  => 0,
             ];
         }
-
-        // // @TODO: cache this with a cronjob
-        // $lastBlocks = Block::query()
-        //     ->distinct('generator_public_key')
-        //     ->whereIn('generator_public_key', $delegates->pluck('public_key'))
-        //     ->limit(Network::delegateCount())
-        //     ->get();
 
         // $delegates = $delegates->transform(function ($delegate) use ($monitor, $lastBlocks) {
         //     $missedCount = $monitor

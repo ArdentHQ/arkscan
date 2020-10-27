@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels;
 
+use App\Contracts\ViewModel;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Transaction;
@@ -12,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
-use Spatie\ViewModels\ViewModel;
 
 final class ViewModelFactory
 {

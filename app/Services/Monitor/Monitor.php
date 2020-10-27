@@ -7,36 +7,17 @@ namespace App\Services\Monitor;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Round;
-use App\Models\Scopes\ActiveDelegateScope;
-use App\Models\Scopes\ResignedDelegateScope;
-use App\Models\Scopes\StandbyDelegateScope;
-use App\Models\Wallet;
 use Illuminate\Support\Collection;
 
 final class Monitor
 {
-    public static function roundDelegates(int $round): Collection
+    public static function activeDelegates(int $round): Collection
     {
         return Round::query()
            ->where('round', $round)
            ->orderBy('balance', 'desc')
            ->orderBy('public_key', 'asc')
            ->get();
-    }
-
-    public static function activeDelegates(): Collection
-    {
-        return Wallet::withScope(ActiveDelegateScope::class)->get();
-    }
-
-    public static function standbyDelegates(): Collection
-    {
-        return Wallet::withScope(StandbyDelegateScope::class)->get();
-    }
-
-    public static function resignedDelegates(): Collection
-    {
-        return Wallet::withScope(ResignedDelegateScope::class)->get();
     }
 
     public static function roundNumber(): int

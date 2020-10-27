@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels;
 
+use App\Contracts\ViewModel;
 use App\Facades\Network;
 use App\Models\Scopes\EntityRegistrationScope;
 use App\Models\Wallet;
@@ -16,9 +17,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Mattiasgeniar\Percentage\Percentage;
-use Spatie\ViewModels\ViewModel;
 
-final class WalletViewModel extends ViewModel
+final class WalletViewModel implements ViewModel
 {
     private Wallet $wallet;
 
@@ -182,13 +182,11 @@ final class WalletViewModel extends ViewModel
         return Arr::has($this->wallet, 'attributes.delegate');
     }
 
-    // @TODO: base view model calls this even if we don't use it
     public function hasRegistrations(): bool
     {
         return $this->wallet->sentTransactions()->withScope(EntityRegistrationScope::class)->count() > 0;
     }
 
-    // @TODO: base view model calls this even if we don't use it
     public function registrations(): Collection
     {
         return ViewModelFactory::collection($this->wallet->sentTransactions()->withScope(EntityRegistrationScope::class)->get());

@@ -39,6 +39,40 @@ yarn run watch
 valet link explorer-ark-io
 ```
 
+#### Caching
+
+The explorer relies on a lot of data to be readily available without having to hit the database for every visitor that opens the website. This is achieved by storing commonly used data like votes, last forged blocks and delegates within redis. During development you should run the following commands manually. These commands will run automatically via cronjobs in a production environment.
+
+##### Cache Pricing and Fee data
+
+```
+php artisan cache:charts
+```
+
+##### Cache total amounts, fees and rewards forged
+
+```
+php artisan cache:delegate-aggregates
+```
+
+##### Cache active delegates for the current round
+
+```
+php artisan cache:delegates
+```
+
+##### Cache the last blocks forged by the delegates of the current round
+
+```
+php artisan cache:last-blocks
+```
+
+##### Cache wallets that have received a vote
+
+```
+php artisan cache:votes
+```
+
 *Important:* You will need access to a Core Postgres database, or use the commented lines above to fill it with dummy data. The details can be specified in the `.env` file under `EXPLORER_DB_*`.
 
 Afterwards, you can navigate to `explorer-ark-io.test` in your browser to see it in action

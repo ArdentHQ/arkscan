@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels;
 
+use App\Contracts\ViewModel;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Wallet;
@@ -14,9 +15,8 @@ use App\Services\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
-use Spatie\ViewModels\ViewModel;
 
-final class BlockViewModel extends ViewModel
+final class BlockViewModel implements ViewModel
 {
     private Block $block;
 

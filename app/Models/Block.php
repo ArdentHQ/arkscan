@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Cache;
  * @property int $timestamp
  * @property BigNumber $total_amount
  * @property BigNumber $total_fee
+ * @property string $generator_public_key
  */
 final class Block extends Model
 {

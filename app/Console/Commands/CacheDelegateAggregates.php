@@ -18,7 +18,7 @@ final class CacheDelegateAggregates extends Command
      *
      * @var string
      */
-    protected $signature = 'delegates:aggregate';
+    protected $signature = 'cache:delegate-aggregates';
 
     /**
      * The console command description.

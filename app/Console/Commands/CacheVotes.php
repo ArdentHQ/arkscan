@@ -15,7 +15,7 @@ final class CacheVotes extends Command
      *
      * @var string
      */
-    protected $signature = 'votes:cache';
+    protected $signature = 'cache:votes';
 
     /**
      * The console command description.

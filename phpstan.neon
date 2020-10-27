@@ -23,4 +23,5 @@ parameters:
         - '#withScope#'
         # FIXME
         - '#AbstractNetwork#'
+        - '#PendingDispatch given#'
     checkMissingIterableValueType: false
