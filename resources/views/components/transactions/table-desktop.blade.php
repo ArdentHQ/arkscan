@@ -44,7 +44,15 @@
                         <x-general.loading-state.text :text="$transaction->amount()" />
 
                         <div wire:loading.class="hidden">
-                            <x-general.amount-fiat-tooltip :amount="$transaction->amount()" :fiat="$transaction->amountFiat()" />
+                            @isset($useDirection)
+                                @if($transaction->isSent($wallet->address()))
+                                    <x-general.amount-fiat-tooltip :amount="$transaction->amount()" :fiat="$transaction->amountFiat()" is-sent />
+                                @else
+                                    <x-general.amount-fiat-tooltip :amount="$transaction->amount()" :fiat="$transaction->amountFiat()" is-received />
+                                @endif
+                            @else
+                                <x-general.amount-fiat-tooltip :amount="$transaction->amount()" :fiat="$transaction->amountFiat()" />
+                            @endisset
                         </div>
                     </td>
                     <td class="hidden text-right xl:table-cell">
