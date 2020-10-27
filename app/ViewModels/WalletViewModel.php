@@ -92,6 +92,11 @@ final class WalletViewModel implements ViewModel
         return NumberFormatter::percentage(BigNumber::new(Percentage::calculate($voteBalance, NetworkStatus::supply()))->toFloat());
     }
 
+    public function voterCount(): string
+    {
+        return NumberFormatter::number(Wallet::where('attributes->vote', $this->publicKey())->count());
+    }
+
     public function amountForged(): string
     {
         $result = Arr::get(Cache::get('delegates.totalAmounts', []), $this->wallet->public_key, 0);

@@ -34,4 +34,10 @@ return [
         'image'       => '',
     ],
 
+    'voters_by_wallet' => [
+        'title'       => 'Voting for Delegate',
+        'description' => '',
+        'image'       => '',
+    ],
+
 ];
