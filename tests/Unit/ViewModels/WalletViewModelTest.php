@@ -230,12 +230,48 @@ it('should fail to get the wallet of the vote if it is not cached', function () 
     expect($this->subject->vote())->toBeNull();
 });
 
-it('should fail to get the wallet of the vote if the wallet has not voted', function () {
-    expect($this->subject->vote())->toBeNull();
-
+it('should get the performance if the wallet is a delegate', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'attributes' => [],
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [],
+        ],
     ]));
 
-    expect($this->subject->vote())->toBeNull();
+    expect($this->subject->performance())->toBeArray();
+});
+
+it('should fail to get the performance if the wallet is not a delegate', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [],
+    ]));
+
+    expect($this->subject->performance())->toBeEmpty();
+});
+
+it('should determine if the delegate just missed a block', function () {
+    Cache::put('performance:'.$this->subject->publicKey(), [true, false, true, true, true]);
+
+    expect($this->subject->justMissed())->toBeFalse();
+
+    Cache::put('performance:'.$this->subject->publicKey(), [true, false, true, false, true]);
+
+    expect($this->subject->justMissed())->toBeFalse();
+
+    Cache::put('performance:'.$this->subject->publicKey(), [true, true, true, true, false]);
+
+    expect($this->subject->justMissed())->toBeTrue();
+});
+
+it('should determine if the delegate keeps is missing blocks', function () {
+    Cache::put('performance:'.$this->subject->publicKey(), [true, false, true, true, true]);
+
+    expect($this->subject->isMissing())->toBeFalse();
+
+    Cache::put('performance:'.$this->subject->publicKey(), [true, false, true, false, true]);
+
+    expect($this->subject->isMissing())->toBeTrue();
 });

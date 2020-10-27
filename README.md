@@ -73,6 +73,12 @@ php artisan cache:last-blocks
 php artisan cache:votes
 ```
 
+##### Cache the past performance of delegates in the current round
+
+```
+php artisan cache:past-round-performance
+```
+
 *Important:* You will need access to a Core Postgres database, or use the commented lines above to fill it with dummy data. The details can be specified in the `.env` file under `EXPLORER_DB_*`.
 
 Afterwards, you can navigate to `explorer-ark-io.test` in your browser to see it in action

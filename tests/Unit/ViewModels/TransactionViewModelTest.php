@@ -720,11 +720,11 @@ it('should get the payments', function () {
         'type_group' => TransactionTypeGroupEnum::CORE,
         'asset'      => [
             'payments' => [
-                ['amount' => 10, 'recipientId' => 'A'],
-                ['amount' => 20, 'recipientId' => 'B'],
-                ['amount' => 30, 'recipientId' => 'C'],
-                ['amount' => 40, 'recipientId' => 'D'],
-                ['amount' => 50, 'recipientId' => 'E'],
+                ['amount' => '1000000000', 'recipientId' => 'A'],
+                ['amount' => '2000000000', 'recipientId' => 'B'],
+                ['amount' => '3000000000', 'recipientId' => 'C'],
+                ['amount' => '4000000000', 'recipientId' => 'D'],
+                ['amount' => '5000000000', 'recipientId' => 'E'],
             ],
         ],
     ]));

@@ -225,6 +225,30 @@ final class WalletViewModel implements ViewModel
         });
     }
 
+    public function performance(): array
+    {
+        if (! $this->isDelegate()) {
+            return [];
+        }
+
+        return Cache::get('performance:'.$this->publicKey(), []);
+    }
+
+    public function justMissed(): bool
+    {
+        $missedOne  = collect($this->performance())->filter(fn ($performance) => $performance === false)->count() === 1;
+        $missedLast = collect($this->performance())->last() === false;
+
+        return $missedOne && $missedLast;
+    }
+
+    public function isMissing(): bool
+    {
+        return collect($this->performance())
+            ->filter(fn ($performance) => $performance === false)
+            ->count() > 1;
+    }
+
     private function findWalletByKnown(): ?array
     {
         return collect(Network::knownWallets())->firstWhere('address', $this->wallet->address);

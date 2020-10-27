@@ -29,7 +29,15 @@
                         <x-general.address :address="$delegate->username()" />
                     </td>
                     <td>
-                        {{-- @TODO: Missed Blocks for Last 5 Rounds --}}
+                        @foreach($delegate->performance() as $performed)
+                            @if($performed)
+                                {{-- @TODO: svg icon --}}
+                                Forged
+                            @else
+                                {{-- @TODO: svg icon --}}
+                                Missed
+                            @endif
+                        @endforeach
                     </td>
                     <td>
                         <div wire:loading.class="h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
