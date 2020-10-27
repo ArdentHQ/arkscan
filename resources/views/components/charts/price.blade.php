@@ -23,7 +23,6 @@
                 dropdownOpen: false,
                 localizedPeriod: null,
                 isDarkTheme: "{{ Settings::darkTheme() }}",
-
                 getMarketAverage(period) {
                     const market = this.data[`marketHistorical${period}`]
 

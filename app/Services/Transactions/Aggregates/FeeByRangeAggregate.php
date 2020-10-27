@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Transactions\Aggregates;
 
-use App\Services\NumberFormatter;
 use App\Services\Timestamp;
 use App\Services\Transactions\Aggregates\Concerns\HasQueries;
 use Carbon\Carbon;
@@ -22,11 +21,11 @@ final class FeeByRangeAggregate
         return Cache::remember($cacheKey, 3600, function () use ($start, $end, $format) {
             return $this
                 ->dateRangeQuery($start, $end)
-                ->orderByDesc('timestamp')
+                ->orderBy('timestamp')
                 ->get()
                 ->groupBy(fn ($date) => Timestamp::fromGenesis($date->timestamp)->format($format))
                 ->mapWithKeys(fn ($transactions, $day) => [
-                    $day => NumberFormatter::satoshi($transactions->sumBigNumber('fee')->valueOf()),
+                    $day => $transactions->sumBigNumber('fee')->toNumber() / 1e8,
                 ]);
         });
     }

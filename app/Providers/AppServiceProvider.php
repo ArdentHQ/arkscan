@@ -36,5 +36,11 @@ final class AppServiceProvider extends ServiceProvider
                 return $result->plus($item[$key]->valueOf());
             }, BigNumber::new(0));
         });
+
+        Collection::macro('ksort', function () {
+            ksort($this->items);
+
+            return collect($this->items);
+        });
     }
 }
