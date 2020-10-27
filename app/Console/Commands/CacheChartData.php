@@ -79,11 +79,30 @@ final class CacheChartData extends Command
 
             Cache::put('prices.'.$currency, $prices);
 
-            $this->cacheKeyValue('chart.prices.day', $prices->take(1), 'H:s');
-            $this->cacheKeyValue('chart.prices.week', $prices->take(7), 'd.m');
-            $this->cacheKeyValue('chart.prices.month', $prices->take(30), 'd.m');
-            $this->cacheKeyValue('chart.prices.quarter', $prices->take(120), 'W');
-            $this->cacheKeyValue('chart.prices.year', $prices->take(365), 'M');
+            $this->cacheKeyValue(
+                'chart.prices.day',
+                $this->groupByDate($prices->take(1), 'H:s'),
+            );
+
+            $this->cacheKeyValue(
+                'chart.prices.week',
+                $this->groupByDate($prices->take(7), 'd.m'),
+            );
+
+            $this->cacheKeyValue(
+                'chart.prices.month',
+                $this->groupByDate($prices->take(30), 'd.m'),
+            );
+
+            $this->cacheKeyValue(
+                'chart.prices.quarter',
+                $this->groupByDate($prices->take(120), 'W'),
+            );
+
+            $this->cacheKeyValue(
+                'chart.prices.year',
+                $this->groupByDate($prices->take(365), 'M'),
+            );
         }
     }
 
@@ -116,5 +135,13 @@ final class CacheChartData extends Command
             'labels'   => $datasets->keys()->toArray(),
             'datasets' => $datasets->values()->toArray(),
         ]);
+    }
+
+    private function groupByDate(Collection $datasets, string $dateFormat): Collection
+    {
+        return $datasets
+            ->groupBy(fn ($_, $key) => Carbon::parse($key)->format($dateFormat))
+            ->reverse()
+            ->mapWithKeys(fn ($values, $key) => [$key => $values->first()]);
     }
 }
