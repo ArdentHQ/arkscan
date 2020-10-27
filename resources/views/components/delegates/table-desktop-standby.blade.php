@@ -4,7 +4,7 @@
             <tr>
                 <th width="60">@lang('general.delegates.rank')</th>
                 <th><span class="pl-14">@lang('general.delegates.name')</span></th>
-                <th width="200" class="hidden text-right lg:table-cell">@lang('general.delegates.votes')</th>
+                <th width="250" class="hidden text-right lg:table-cell">@lang('general.delegates.votes')</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +26,14 @@
                         <div wire:loading.class="h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
                         <div wire:loading.class="hidden">{{ $delegate->votes() }} <span>{{ $delegate->votesPercentage() }}</span></div>
                     </td>
+                    @if (Network::usesMarketSquare())
+                    <td>
+                        {{-- @TODO: MSQ Profile --}}
+                    </td>
+                    <td>
+                        {{-- @TODO: MSQ Commission --}}
+                    </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>

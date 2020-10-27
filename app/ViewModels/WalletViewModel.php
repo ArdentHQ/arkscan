@@ -6,7 +6,9 @@ namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
 use App\Facades\Network;
+use App\Models\Scopes\DelegateResignationScope;
 use App\Models\Scopes\EntityRegistrationScope;
+use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Blockchain\NetworkStatus;
@@ -210,6 +212,17 @@ final class WalletViewModel implements ViewModel
         }
 
         return new static($wallet);
+    }
+
+    public function resignationId(): ?string
+    {
+        if (! Arr::has($this->wallet, 'attributes.delegate.resigned')) {
+            return null;
+        }
+
+        return Cache::rememberForever('resignationId:'.$this->wallet->address, function () {
+            return Transaction::withScope(DelegateResignationScope::class)->firstOrFail()->id;
+        });
     }
 
     private function findWalletByKnown(): ?array

@@ -27,6 +27,20 @@
                         <div wire:loading.class="hidden">{{ $delegate->votes() }} <span>{{ $delegate->votesPercentage() }}</span></div>
                     </td>
                 </tr>
+                @if (Network::usesMarketSquare())
+                <tr>
+                    <td>@lang('general.delegates.profile')</td>
+                    <td>
+                        {{-- @TODO: MSQ Profile --}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>@lang('general.delegates.commission')</td>
+                    <td>
+                        {{-- @TODO: MSQ Commission --}}
+                    </td>
+                </tr>
+                @endif
             </table>
         </div>
     @endforeach
