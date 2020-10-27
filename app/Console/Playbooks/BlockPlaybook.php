@@ -12,6 +12,6 @@ final class BlockPlaybook extends Playbook
 {
     public function run(InputInterface $input, OutputInterface $output): void
     {
-        Block::factory(60)->create();
+        Block::factory(30)->create();
     }
 }

@@ -134,7 +134,7 @@ jobs:
               run: php artisan config:clear && php artisan route:clear
 
             - name: Run Tests
-              run: ./vendor/bin/pest --coverage --min=80 --coverage-html=.coverage --coverage-clover=coverage.xml
+              run: ./vendor/bin/pest --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml
               env:
                   DB_CONNECTION: pgsql
                   DB_HOST: 127.0.0.1

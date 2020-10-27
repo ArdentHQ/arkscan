@@ -21,7 +21,7 @@ final class MonitorStatistics extends Component
     {
         return view('livewire.monitor-statistics', [
             'delegateRegistrations' => $this->delegateRegistrations(),
-            'blockReward'           => Network::blockReward(),
+            'blockReward'           => NumberFormatter::currency(Network::blockReward(), Network::currency()),
             'feesCollected'         => $this->feesCollected(),
             'votes'                 => $this->votes(),
             'votesPercentage'       => $this->votesPercentage(),

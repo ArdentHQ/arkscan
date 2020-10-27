@@ -12,6 +12,6 @@ final class WalletPlaybook extends Playbook
 {
     public function run(InputInterface $input, OutputInterface $output): void
     {
-        Wallet::factory(60)->create();
+        Wallet::factory(30)->create();
     }
 }

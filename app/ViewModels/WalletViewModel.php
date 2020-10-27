@@ -212,16 +212,6 @@ final class WalletViewModel implements ViewModel
         return new static($wallet);
     }
 
-    public function isMissing(): bool
-    {
-        return false;
-    }
-
-    public function hasMissedRecently(): bool
-    {
-        return false;
-    }
-
     private function findWalletByKnown(): ?array
     {
         return collect(Network::knownWallets())->firstWhere('address', $this->wallet->address);

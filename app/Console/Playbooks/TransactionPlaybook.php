@@ -16,7 +16,7 @@ final class TransactionPlaybook extends Playbook
 {
     public function run(InputInterface $input, OutputInterface $output): void
     {
-        Transaction::factory(60)->create([
+        Transaction::factory(30)->create([
             'timestamp' => rand(110982056, 119982056),
         ]);
 

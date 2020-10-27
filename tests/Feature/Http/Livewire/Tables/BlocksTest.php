@@ -11,7 +11,7 @@ use function Tests\configureExplorerDatabase;
 beforeEach(fn () => configureExplorerDatabase());
 
 it('should list the first page of records', function () {
-    Block::factory(60)->create();
+    Block::factory(30)->create();
 
     $component = Livewire::test(Blocks::class, [
         'blocks' => Block::latestByHeight(),

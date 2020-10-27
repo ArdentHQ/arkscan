@@ -90,7 +90,7 @@
             "php artisan migrate:fresh --seed"
         ],
         "test": [
-            "./vendor/bin/pest --coverage --min=80 --coverage-html=.coverage --coverage-clover=coverage.xml"
+            "./vendor/bin/pest --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml"
         ],
         "play": [
             "@php artisan playbook:run DevelopmentPlaybook"

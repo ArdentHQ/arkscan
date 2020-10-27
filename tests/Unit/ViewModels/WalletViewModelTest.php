@@ -215,3 +215,27 @@ it('should get the wallet of the vote', function () {
 
     expect($this->subject->vote())->toBeInstanceOf(WalletViewModel::class);
 });
+
+it('should fail to get the wallet of the vote if it is not cached', function () {
+    expect($this->subject->vote())->toBeNull();
+
+    $vote = Wallet::factory()->create();
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes' => [
+            'vote' => $vote->public_key,
+        ],
+    ]));
+
+    expect($this->subject->vote())->toBeNull();
+});
+
+it('should fail to get the wallet of the vote if the wallet has not voted', function () {
+    expect($this->subject->vote())->toBeNull();
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes' => [],
+    ]));
+
+    expect($this->subject->vote())->toBeNull();
+});

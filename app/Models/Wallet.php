@@ -101,6 +101,8 @@ final class Wallet extends Model
      * Get the route key for the model.
      *
      * @return string
+     *
+     * @codeCoverageIgnore
      */
     public function getRouteKeyName()
     {

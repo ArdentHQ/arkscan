@@ -18,9 +18,11 @@ final class NetworkStatusBlock extends Component
     {
         $marketCap = 0;
 
+        // @codeCoverageIgnoreStart
         if (Network::canBeExchanged()) {
             $marketCap = NetworkStatus::supply() * CryptoCompare::price(Network::currency(), Settings::currency());
         }
+        // @codeCoverageIgnoreEnd
 
         return view('livewire.network-status-block', [
             'height'    => NumberFormatter::number(NetworkStatus::height()),
