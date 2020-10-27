@@ -20,8 +20,6 @@
             <directory suffix=".php">./app</directory>
             <exclude>
                 <!-- Framework Code -->
-                <directory suffix=".php">./app/Actions/Fortify</directory>
-                <directory suffix=".php">./app/Actions/Jetstream</directory>
                 <directory suffix=".php">./app/Console/Playbooks</directory>
                 <directory suffix=".php">./app/Exceptions</directory>
                 <directory suffix=".php">./app/Http/Middleware</directory>
