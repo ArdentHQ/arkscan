@@ -9,7 +9,7 @@
         <x-general.search.header />
 
         @if(Settings::usesCharts())
-            <x-home.charts />
+            <x-home.charts :prices="$prices" :fees="$fees" :aggregates="$aggregates" />
         @endif
 
         <x-home.content />
