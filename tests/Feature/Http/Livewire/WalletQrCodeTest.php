@@ -9,3 +9,12 @@ it('should render the QR Code', function () {
     $component = Livewire::test(WalletQrCode::class, ['address' => 'DRgF3PvzeGWndQjET7dZsSmnrc6uAy23ES']);
     $component->assertSee('svg');
 });
+
+it('should toggle the QR Code', function () {
+    $component = Livewire::test(WalletQrCode::class, ['address' => 'DRgF3PvzeGWndQjET7dZsSmnrc6uAy23ES']);
+    $component->assertSet('isOpen', false);
+    $component->emit('toggleQrCode');
+    $component->assertSet('isOpen', true);
+    $component->emit('toggleQrCode');
+    $component->assertSet('isOpen', false);
+});
