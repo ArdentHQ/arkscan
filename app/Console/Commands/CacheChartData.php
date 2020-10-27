@@ -126,9 +126,6 @@ final class CacheChartData extends Command
         Cache::put(CacheKeyEnum::VOTES_PERCENTAGE, (new VotePercentageAggregate())->aggregate());
     }
 
-    /**
-     * @param mixed $value
-     */
     private function cacheKeyValue(string $key, Collection $datasets): void
     {
         Cache::put($key, [
