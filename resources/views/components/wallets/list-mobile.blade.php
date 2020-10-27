@@ -1,72 +1,69 @@
-<div class="space-y-8 divide-y table-list-mobile">
+<div class="space-y-8 divide-y md:hidden">
     @foreach ($wallets as $wallet)
-        <div class="table-list-mobile-row">
-            <table>
-                <tr>
-                    <td width="100">@lang('general.wallet.address')</td>
-                    <td>
-                        <x-general.address :address="$wallet->address()" with-loading />
-                    </td>
-                </tr>
-                @if ($wallet->isKnown() || $wallet->isOwnedByExchange())
-                    <tr>
-                        <td>@lang('general.wallet.info')</td>
-                        <td>
-                            <div class="flex flex-col space-y-4">
-                                @if ($wallet->isKnown())
-                                    <div>
-                                        <div class="flex items-center space-x-4 ">
-                                            <x-general.loading-state.icon icon="app-verified" />
-                                            <x-general.loading-state.text :text="trans('general.verified_address')" />
-                                        </div>
+        <div class="flex flex-col space-y-3 w-full pt-8 {{ $loop->first ? '' : 'border-t'}} border-theme-secondary-300">
+            <div class="flex justify-between w-full">
+                @lang('general.wallet.address')
 
-                                        <div class="flex items-center space-x-4" wire:loading.class="hidden">
-                                            @svg('app-verified', 'w-5 h-5 text-theme-secondary-500')
+                <x-general.address :address="$wallet->address()" with-loading />
+            </div>
 
-                                            <span>@lang('general.verified_address')</span>
-                                        </div>
-                                    </div>
-                                @endif
+            @if ($wallet->isKnown() || $wallet->isOwnedByExchange())
+            <div class="flex justify-between w-full">
+                @lang('general.wallet.info')
 
-                                @if ($wallet->isOwnedByExchange())
-                                    <div>
-                                        <div class="flex items-center space-x-4 ">
-                                            <x-general.loading-state.icon icon="app-exchange" />
-                                            <x-general.loading-state.text :text="trans('general.exchange')" />
-                                        </div>
-
-                                        <div class="flex items-center space-x-4" wire:loading.class="hidden">
-                                            @svg('app-exchange', 'w-5 h-5 text-theme-secondary-500')
-
-                                            <span>@lang('general.exchange')</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </td>
-                    </tr>
-                @endif
-                <tr>
-                    <td>@lang('general.wallet.balance')</td>
-                    <td>
-                        <x-general.loading-state.text :text="$wallet->balance()" />
-
-                        <div wire:loading.class="hidden">
-                            <x-general.amount-fiat-tooltip :amount="$wallet->balance()" :fiat="$wallet->balanceFiat()" />
+                <div class="flex flex-col space-y-4">
+                    @if ($wallet->isKnown())
+                    <div>
+                        <div class="flex items-center space-x-4 ">
+                            <x-general.loading-state.icon icon="app-verified" />
+                            <x-general.loading-state.text :text="trans('general.verified_address')" />
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>@lang('general.wallet.supply')</td>
-                    <td>
-                        <x-general.loading-state.text :text="$wallet->balancePercentage()" />
 
-                        <div wire:loading.class="hidden">
-                            {{ $wallet->balancePercentage() }}
+                        <div class="flex items-center space-x-4" wire:loading.class="hidden">
+                            @svg('app-verified', 'w-5 h-5 text-theme-secondary-500')
+
+                            <span>@lang('general.verified_address')</span>
                         </div>
-                    </td>
-                </tr>
-            </table>
+                    </div>
+                    @endif
+
+                    @if ($wallet->isOwnedByExchange())
+                    <div>
+                        <div class="flex items-center space-x-4 ">
+                            <x-general.loading-state.icon icon="app-exchange" />
+                            <x-general.loading-state.text :text="trans('general.exchange')" />
+                        </div>
+
+                        <div class="flex items-center space-x-4" wire:loading.class="hidden">
+                            @svg('app-exchange', 'w-5 h-5 text-theme-secondary-500')
+
+                            <span>@lang('general.exchange')</span>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+            </div>
+            @endif
+
+            <div class="flex justify-between w-full">
+                @lang('general.wallet.balance')
+
+                <x-general.loading-state.text :text="$wallet->balance()" />
+
+                <div wire:loading.class="hidden">
+                    <x-general.amount-fiat-tooltip :amount="$wallet->balance()" :fiat="$wallet->balanceFiat()" />
+                </div>
+            </div>
+
+            <div class="flex justify-between w-full">
+                @lang('general.wallet.supply')
+
+                <x-general.loading-state.text :text="$wallet->balancePercentage()" />
+
+                <div wire:loading.class="hidden">
+                    {{ $wallet->balancePercentage() }}
+                </div>
+            </div>
         </div>
     @endforeach
 </div>

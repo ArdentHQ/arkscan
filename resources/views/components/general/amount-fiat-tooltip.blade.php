@@ -16,4 +16,4 @@
             {{ $amount }}
         </div>
     @endif
-</div>
+</span>
