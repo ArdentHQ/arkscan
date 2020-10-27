@@ -8,7 +8,11 @@
         class="hidden mr-4 text-transparent rounded-full loading-state md:mr-0"
     >
         @if ($address ?? false)
-            <x-truncate-middle :value="$address" />
+            <div class="sm:hidden md:flex">
+                <x-truncate-middle :value="$address" />
+            </div>
+
+            <span class="hidden sm:flex md:hidden">{{ $address }}</span>
         @else
             {{ $text }}
         @endif
