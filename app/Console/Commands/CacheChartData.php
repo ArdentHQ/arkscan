@@ -92,11 +92,11 @@ final class CacheChartData extends Command
         $fees  = new FeeByRangeAggregate();
         $today = Carbon::now()->endOfDay();
 
-        $this->cacheKeyValue('chart.fees.day', $fees->aggregate(Carbon::now()->subDay(), $today), 'H:s');
-        $this->cacheKeyValue('chart.fees.week', $fees->aggregate(Carbon::now()->subDays(7), $today), 'd.m');
-        $this->cacheKeyValue('chart.fees.month', $fees->aggregate(Carbon::now()->subDays(30), $today), 'd.m');
-        $this->cacheKeyValue('chart.fees.quarter', $fees->aggregate(Carbon::now()->subDays(120), $today), 'W');
-        $this->cacheKeyValue('chart.fees.year', $fees->aggregate(Carbon::now()->subDays(365), $today), 'M');
+        $this->cacheKeyValue('chart.fees.day', $fees->aggregate(Carbon::now()->subDay(), $today, 'H:s'));
+        $this->cacheKeyValue('chart.fees.week', $fees->aggregate(Carbon::now()->subDays(7), $today, 'd.m'));
+        $this->cacheKeyValue('chart.fees.month', $fees->aggregate(Carbon::now()->subDays(30), $today, 'd.m'));
+        $this->cacheKeyValue('chart.fees.quarter', $fees->aggregate(Carbon::now()->subDays(120), $today, 'W'));
+        $this->cacheKeyValue('chart.fees.year', $fees->aggregate(Carbon::now()->subDays(365), $today, 'M'));
     }
 
     private function cacheStatistics(): void
@@ -107,24 +107,14 @@ final class CacheChartData extends Command
         Cache::put(CacheKeyEnum::VOTES_PERCENTAGE, (new VotePercentageAggregate())->aggregate());
     }
 
-    private function groupByDate(Collection $datasets, string $dateFormat): array
-    {
-        $datasets = $datasets
-            ->groupBy(fn ($_, $key) => Carbon::parse($key)->format($dateFormat))
-            ->reverse()
-            ->mapWithKeys(fn ($values, $key) => [$key => $values->first()]);
-
-        return [
-            'labels'   => $datasets->keys()->toArray(),
-            'datasets' => $datasets->values()->toArray(),
-        ];
-    }
-
     /**
      * @param mixed $value
      */
-    private function cacheKeyValue(string $key, $value, string $dateFormat): void
+    private function cacheKeyValue(string $key, Collection $datasets): void
     {
-        Cache::put($key, $this->groupByDate($value, $dateFormat));
+        Cache::put($key, [
+            'labels'   => $datasets->keys()->toArray(),
+            'datasets' => $datasets->values()->toArray(),
+        ]);
     }
 }
