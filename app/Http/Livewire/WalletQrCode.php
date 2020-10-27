@@ -9,11 +9,21 @@ use Livewire\Component;
 
 final class WalletQrCode extends Component
 {
+    public bool $isOpen = false;
+
     public string $address;
 
     public int $amount = 10;
 
     public string $smartbridge = 'Hello';
+
+    /** @phpstan-ignore-next-line */
+    protected $listeners = ['toggleQrCode'];
+
+    public function toggleQrCode(): void
+    {
+        $this->isOpen = ! $this->isOpen;
+    }
 
     public function getCodeProperty(): string
     {

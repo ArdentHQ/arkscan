@@ -23,16 +23,15 @@
                     </div>
                 </div>
 
-                <div class="flex items-center mt-6 space-x-2 text-theme-secondary-400 md:mt-0">
+                <div class="flex items-center mt-6 space-x-2 text-theme-secondary-200 md:mt-0">
                     {{-- @TODO: public key button --}}
-                    <a href="#" class="flex items-center justify-center flex-1 h-full px-3 rounded cursor-pointer bg-theme-secondary-800 hover:bg-theme-secondary-700 transition-default md:flex-none">
-                        @svg('chevron-left', 'w-6 h-6')
+                    <a href="#" class="flex items-center justify-center flex-1 h-full px-3 rounded cursor-pointer bg-theme-secondary-800 hover:bg-theme-primary-600 transition-default md:flex-none">
+                        @svg('app-key', 'w-6 h-6')
                     </a>
 
-                    {{-- @TODO: QR Code button --}}
-                    <a href="#" class="flex items-center justify-center flex-1 h-full px-3 rounded cursor-pointer bg-theme-secondary-800 hover:bg-theme-secondary-700 transition-default md:flex-none">
-                        @svg('chevron-right', 'w-6 h-6')
-                    </a>
+                    <button @click="livewire.emit('toggleQrCode')" type="button" class="flex items-center justify-center flex-1 h-full px-3 rounded cursor-pointer bg-theme-secondary-800 hover:bg-theme-primary-600 transition-default md:flex-none">
+                        @svg('app-qr-code', 'w-6 h-6')
+                    </button>
                 </div>
             </x-slot>
 

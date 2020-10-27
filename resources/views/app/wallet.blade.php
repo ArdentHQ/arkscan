@@ -5,6 +5,10 @@
         <meta property="og:description" content="@lang('metatags.wallet.description')">
     @endpush
 
+    @push('scripts')
+        <script src="{{ mix('js/clipboard.js')}}"></script>
+    @endpush
+
     @section('content')
         <x-wallet.header :wallet="$wallet" />
 
