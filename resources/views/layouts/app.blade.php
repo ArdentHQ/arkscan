@@ -45,6 +45,7 @@
                     ['route' => 'home', 'label' => trans('menus.delegate')],
                     ['route' => 'wallets', 'label' => trans('menus.wallets')],
                     ['route' => 'home', 'label' => trans('menus.registered')],
+                    ['route' => 'monitor', 'label' => trans('menus.monitor')],
                 ]"
                 {{-- :registered-menu="App\Models\Documentation::productMenu()" --}}
             >

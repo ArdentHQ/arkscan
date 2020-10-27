@@ -21,7 +21,7 @@ final class NumberFormatter
      */
     public static function percentage($value): string
     {
-        return $value.'%';
+        return sprintf('%0.2f', $value).'%';
     }
 
     /**

@@ -133,7 +133,7 @@ final class TransactionViewModel implements ViewModel
 
         return collect(Arr::get($this->transaction->asset, 'payments', []))
             ->map(fn ($payment) => [
-                'amount'      => NumberFormatter::currency($payment['amount'], Network::currency()),
+                'amount'      => NumberFormatter::currency($payment['amount'] / 1e8, Network::currency()),
                 'recipientId' => $payment['recipientId'],
             ])
             ->toArray();

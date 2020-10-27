@@ -20,7 +20,7 @@
             <div class="py-16 content-container md:px-8">
                 <div x-data="{
                     dropdownOpen: false,
-                    component: 'monitor',
+                    component: 'list',
                     status: 'active',
                 }" x-cloak class="w-full">
                     <livewire:monitor-delegate-tabs />
