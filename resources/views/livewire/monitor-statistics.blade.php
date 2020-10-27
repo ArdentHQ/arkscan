@@ -3,7 +3,7 @@
         <div class="grid w-full grid-flow-row grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4 gap-y-12 xl:gap-y-4">
         <x-monitor.statistic>
             <x-slot name="logo">
-                @svg('app-block-id', 'w-5 h-5')
+                @svg('app-fee', 'w-5 h-5')
             </x-slot>
 
             <x-slot name="title">
@@ -15,7 +15,7 @@
 
         <x-monitor.statistic>
             <x-slot name="logo">
-                @svg('app-block-id', 'w-5 h-5')
+                @svg('app-reward', 'w-5 h-5')
             </x-slot>
 
             <x-slot name="title">
@@ -27,7 +27,7 @@
 
         <x-monitor.statistic>
             <x-slot name="logo">
-                @svg('app-block-id', 'w-5 h-5')
+                @svg('app-fee', 'w-5 h-5')
             </x-slot>
 
             <x-slot name="title">
@@ -39,7 +39,7 @@
 
         <x-monitor.statistic>
             <x-slot name="logo">
-                @svg('app-block-id', 'w-5 h-5')
+                @svg('app-votes', 'w-5 h-5')
             </x-slot>
 
             <x-slot name="title">
