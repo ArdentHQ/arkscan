@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Services;
 
 use Brick\Math\BigDecimal;
+use Stringable;
 
-final class BigNumber
+final class BigNumber implements Stringable
 {
     private BigDecimal $value;
 
@@ -64,5 +65,13 @@ final class BigNumber
     public function valueOf(): BigDecimal
     {
         return $this->value;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->value;
     }
 }
