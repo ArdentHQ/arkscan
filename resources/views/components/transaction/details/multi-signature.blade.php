@@ -10,16 +10,16 @@
     :address="$transaction->multiSignatureAddress()"
     icon="app-volume" />
 
-<x-details.generic :title="trans('general.transaction.block_id')" icon="app-volume">
+<x-details.generic :title="trans('general.transaction.block_id')" icon="app-block-id">
     <a href="{{ route('block', $transaction->blockId()) }}" class="font-semibold link">
         <x-truncate-middle :value="$transaction->blockId()" />
     </a>
 </x-details.generic>
 
-<x-details.generic :title="trans('general.transaction.timestamp')" icon="app-volume">
+<x-details.generic :title="trans('general.transaction.timestamp')" icon="app-timestamp">
     {{ $transaction->timestamp() }}
 </x-details.generic>
 
-<x-details.generic :title="trans('general.transaction.nonce')" icon="app-volume">
+<x-details.generic :title="trans('general.transaction.nonce')" icon="app-nonce">
     {{ $transaction->nonce() }}
 </x-details.generic>
