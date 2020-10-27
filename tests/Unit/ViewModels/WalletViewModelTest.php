@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\CoreTransactionTypeEnum;
 use App\Enums\MagistrateTransactionEntityActionEnum;
 
 use App\Enums\MagistrateTransactionTypeEnum;
@@ -274,4 +275,36 @@ it('should determine if the delegate keeps is missing blocks', function () {
     Cache::put('performance:'.$this->subject->publicKey(), [true, false, true, false, true]);
 
     expect($this->subject->isMissing())->toBeTrue();
+});
+
+it('should get the resignation id', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'resigned' => true,
+            ],
+        ],
+    ]));
+
+    Transaction::factory()->create([
+        'type'              => CoreTransactionTypeEnum::DELEGATE_RESIGNATION,
+        'type_group'        => TransactionTypeGroupEnum::CORE,
+        'sender_public_key' => $this->subject->publicKey(),
+    ]);
+
+    expect($this->subject->resignationId())->toBeString();
+});
+
+it('should fail to get the resignation id if the delegate is not resigned', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [],
+        ],
+    ]));
+
+    expect($this->subject->resignationId())->toBeNull();
 });

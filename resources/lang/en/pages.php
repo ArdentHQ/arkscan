@@ -124,6 +124,11 @@ return [
             'block_reward'           => 'Block Reward',
             'fees_collected'         => 'Fees Collected (24h)',
             'votes'                  => 'Current Votes',
+            'block_count'            => 'Current Round',
+            'transactions'           => 'Round Transactions',
+            'current_delegate'       => 'Current',
+            'next_delegate'          => 'Next',
+            'blocks_generated'       => '(:0/:1) Blocks Generated',
         ],
     ],
 
