@@ -183,6 +183,7 @@ final class CacheChartData extends Command
             $times[] = gmdate('H:i', $timestamp);
         }
 
+        /* @phpstan-ignore-next-line */
         return array_combine($times, $times);
     }
 }
