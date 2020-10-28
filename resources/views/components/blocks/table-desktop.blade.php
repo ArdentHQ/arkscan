@@ -2,7 +2,7 @@
     <table>
         <thead>
             <tr>
-                <th class="text-center">@lang('general.block.id')</th>
+                <th class="text-center"></th>
                 <th class="hidden lg:table-cell">@lang('general.block.timestamp')</th>
                 <th><span class="pl-14">@lang('general.block.generated_by')</span></th>
                 <th>@lang('general.block.height')</th>
@@ -24,7 +24,7 @@
                             <x-general.loading-state.icon icon="link" class="mx-auto" />
 
                             <a href="{{ $block->url() }}" class="mx-auto link" wire:loading.class="hidden">
-                                @svg('link', 'h-4 w-4')
+                                @svg('app-details', 'h-4 w-4')
                             </a>
                         </div>
                     </td>

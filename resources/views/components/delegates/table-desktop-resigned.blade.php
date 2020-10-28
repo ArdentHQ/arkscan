@@ -2,7 +2,7 @@
     <table>
         <thead>
             <tr>
-                <th width="50">@lang('general.transaction.id')</th>
+                <th width="50"></th>
                 <th><span class="pl-14">@lang('general.delegates.name')</span></th>
                 <th width="200" class="hidden text-right lg:table-cell">@lang('general.delegates.votes')</th>
             </tr>
@@ -15,7 +15,7 @@
                             <x-general.loading-state.icon icon="link" class="mx-auto" />
 
                             <a href="{{ route('transaction', $delegate->resignationId()) }}" class="mx-auto link" wire:loading.class="hidden">
-                                @svg('link', 'h-4 w-4')
+                                @svg('app-details', 'h-4 w-4')
                             </a>
                         </div>
                     </td>
