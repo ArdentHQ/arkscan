@@ -20,45 +20,25 @@
             @foreach($blocks as $block)
                 <tr>
                     <td>
-                        <div class="flex items-center">
-                            <x-general.loading-state.icon icon="link" class="mx-auto" />
-
-                            <a href="{{ $block->url() }}" class="mx-auto link" wire:loading.class="hidden">
-                                @svg('app-details', 'h-4 w-4')
-                            </a>
-                        </div>
+                        <x-tables.rows.desktop.block-id :model="$block" />
                     </td>
                     <td class="hidden lg:table-cell">
-                        <x-general.loading-state.text :text="$block->timestamp()" />
-
-                        <span wire:loading.class="hidden">{{ $block->timestamp() }}</span>
+                        <x-tables.rows.desktop.timestamp :model="$block" />
                     </td>
                     <td>
-                        <x-general.address :address="$block->delegateUsername()" with-loading />
+                        <x-tables.rows.desktop.block-forger :model="$block" />
                     </td>
                     <td>
-                        <x-general.loading-state.text :text="$block->height()" />
-
-                        <span wire:loading.class="hidden">{{ $block->height() }}<span>
+                        <x-tables.rows.desktop.block-height :model="$block" />
                     </td>
                     <td>
-                        <x-general.loading-state.text :text="$block->transactionCount()" />
-
-                        <span wire:loading.class="hidden">{{ $block->transactionCount() }}</span>
+                        <x-tables.rows.desktop.transaction-count :model="$block" />
                     </td>
                     <td class="text-right">
-                        <x-general.loading-state.text :text="$block->amount()" />
-
-                        <div wire:loading.class="hidden">
-                            <x-general.amount-fiat-tooltip :amount="$block->amount()" :fiat="$block->amountFiat()" />
-                        </div>
+                        <x-tables.rows.desktop.amount :model="$block" />
                     </td>
                     <td class="hidden text-right xl:table-cell">
-                        <x-general.loading-state.text :text="$block->fee()" />
-
-                        <div wire:loading.class="hidden">
-                            <x-general.amount-fiat-tooltip :amount="$block->fee()" :fiat="$block->feeFiat()" />
-                        </div>
+                        <x-tables.rows.desktop.fee :model="$block" />
                     </td>
                 </tr>
             @endforeach

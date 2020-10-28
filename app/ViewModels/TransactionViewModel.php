@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
+use App\DTO\Payment;
 use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -132,10 +133,10 @@ final class TransactionViewModel implements ViewModel
         }
 
         return collect(Arr::get($this->transaction->asset, 'payments', []))
-            ->map(fn ($payment) => [
-                'amount'      => NumberFormatter::currency($payment['amount'] / 1e8, Network::currency()),
-                'recipientId' => $payment['recipientId'],
-            ])
+            ->map(fn ($payment) => new Payment(
+                NumberFormatter::currency($payment['amount'] / 1e8, Network::currency()),
+                $payment['recipientId'],
+            ))
             ->toArray();
     }
 

@@ -17,50 +17,27 @@
             @foreach($delegates as $delegate)
                 <tr>
                     <td>
-                        <div wire:loading.class="h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
-                        <div wire:loading.class="hidden">{{ $delegate->rank() }}</div>
+                        <x-tables.rows.desktop.rank :model="$delegate" />
                     </td>
                     <td>
-                        <div class="flex flex-row items-center space-x-3">
-                            <div wire:loading.class="w-6 h-6 rounded-full md:w-11 md:h-11 bg-theme-secondary-300 animate-pulse"></div>
-                            <div wire:loading.class="w-full h-5 rounded-full bg-theme-secondary-300 animate-pulse"></div>
-                        </div>
-
-                        <x-general.address :address="$delegate->username()" />
+                        <x-tables.rows.desktop.username :model="$delegate" />
                     </td>
                     <td>
-                        <div wire:loading.class="h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
-                        <div wire:loading.class="hidden">
-                            <div class="flex flex-row items-center space-x-3 pl-14">
-                                @foreach($delegate->performance() as $performed)
-                                    @if($performed)
-                                        <span class="text-theme-success-500">
-                                            @svg('app-status-done', 'w-8 h-8')
-                                        </span>
-                                    @else
-                                        <span class="text-theme-danger-500">
-                                            @svg('app-status-undone', 'w-8 h-8')
-                                        </span>
-                                    @endif
-                                @endforeach
-                            </div>
-                        </div>
+                        <x-tables.rows.desktop.round-status-history :model="$delegate" />
                     </td>
                     <td>
-                        <div wire:loading.class="h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
-                        <div wire:loading.class="hidden">{{ $delegate->votes() }} <span>{{ $delegate->votesPercentage() }}</span></div>
+                        <x-tables.rows.desktop.votes :model="$delegate" />
                     </td>
                     @if (Network::usesMarketSquare())
                     <td>
-                        {{-- @TODO: MSQ Profile --}}
+                        <x-tables.rows.desktop.marketsquare-profile :model="$delegate" />
                     </td>
                     <td>
-                        {{-- @TODO: MSQ Commission --}}
+                        <x-tables.rows.desktop.marketsquare-commission :model="$delegate" />
                     </td>
                     @endif
                     <td class="hidden text-right lg:table-cell">
-                        <div wire:loading.class="h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
-                        <div wire:loading.class="hidden">{{ $delegate->productivity() }}</div>
+                        <x-tables.rows.desktop.productivity :model="$delegate" />
                     </td>
                 </tr>
             @endforeach

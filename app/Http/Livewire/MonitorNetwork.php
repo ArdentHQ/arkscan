@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\DTO\Slot;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Services\Monitor\DelegateTracker;
@@ -28,19 +29,18 @@ final class MonitorNetwork extends Component
         for ($i = 0; $i < count($tracking); $i++) {
             $delegate = array_values($tracking)[$i];
 
-            $delegates[] = [
+            $delegates[] = new Slot([
                 'order'         => $i + 1,
                 'wallet'        => ViewModelFactory::make(Cache::tags(['delegates'])->get($delegate['publicKey'])),
                 'forging_at'    => Carbon::now()->addMilliseconds($delegate['time']),
                 'last_block'    => Cache::get('lastBlock:'.$delegate['publicKey']),
-                // Status
                 'is_success'    => false, // $missedCount === 0,
                 'is_warning'    => false, // $missedCount === 1,
                 'is_danger'     => false, // $missedCount >= 2,
                 'missed_count'  => 0,
                 'status'        => $delegate['status'],
                 'time'          => $delegate['time'],
-            ];
+            ]);
         }
 
         return view('livewire.monitor-network', [
@@ -58,7 +58,7 @@ final class MonitorNetwork extends Component
     {
         return Cache::remember('MonitorNetwork:blockCount', Network::blockTime(), function () use ($delegates): string {
             return trans('pages.monitor.statistics.blocks_generated', [
-                $done = collect($delegates)->where('status', 'done')->count(),
+                collect($delegates)->filter(fn ($slot) => $slot->status() === 'done')->count(),
                 Network::delegateCount(),
             ]);
         });
@@ -74,14 +74,21 @@ final class MonitorNetwork extends Component
     private function currentDelegate(array $delegates): WalletViewModel
     {
         return Cache::remember('MonitorNetwork:currentDelegate', Network::blockTime(), function () use ($delegates): WalletViewModel {
-            return collect($delegates)->firstWhere('status', 'next')['wallet'];
+            return $this->getSlotsByStatus($delegates, 'next')->wallet();
         });
     }
 
     private function nextDelegate(array $delegates): WalletViewModel
     {
         return Cache::remember('MonitorNetwork:nextDelegate', Network::blockTime(), function () use ($delegates): WalletViewModel {
-            return collect($delegates)->firstWhere('status', 'pending')['wallet'];
+            return $this->getSlotsByStatus($delegates, 'pending')->wallet();
         });
+    }
+
+    private function getSlotsByStatus(array $slots, string $status): Slot
+    {
+        return collect($slots)
+            ->filter(fn ($slot) => $slot->status() === $status)
+            ->first();
     }
 }

@@ -11,25 +11,13 @@
             @foreach($delegates as $delegate)
                 <tr>
                     <td>
-                        <div class="flex items-center">
-                            <x-general.loading-state.icon icon="link" class="mx-auto" />
-
-                            <a href="{{ route('transaction', $delegate->resignationId()) }}" class="mx-auto link" wire:loading.class="hidden">
-                                @svg('app-details', 'h-4 w-4')
-                            </a>
-                        </div>
+                        <x-tables.rows.desktop.resignation-id :model="$delegate" />
                     </td>
                     <td>
-                        <div class="flex flex-row items-center space-x-3">
-                            <div wire:loading.class="h-6 rounded-full w-11 bg-theme-secondary-300 animate-pulse"></div>
-                            <div wire:loading.class="w-full h-5 rounded-full bg-theme-secondary-300 animate-pulse"></div>
-                        </div>
-
-                        <x-general.address :address="$delegate->username()" />
+                        <x-tables.rows.desktop.username :model="$delegate" />
                     </td>
                     <td class="hidden text-right lg:table-cell">
-                        <div wire:loading.class="h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
-                        <div wire:loading.class="hidden">{{ $delegate->votes() }} <span>{{ $delegate->votesPercentage() }}</span></div>
+                        <x-tables.rows.desktop.votes :model="$delegate" />
                     </td>
                 </tr>
             @endforeach

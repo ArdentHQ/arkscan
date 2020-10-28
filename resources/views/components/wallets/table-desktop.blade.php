@@ -23,42 +23,19 @@
             @foreach($wallets as $wallet)
                 <tr>
                     <td>
-                        <x-general.address :address="$wallet->address()" with-loading />
+                        <x-tables.rows.desktop.address :model="$wallet" />
                     </td>
+                    {{-- @TODO: this is a code smell. We should have separate views instead of littering everything with if/else to hide UI elements. --}}
                     @if ($hasInfo)
                         <td class="text-center">
-                            <div class="flex items-center justify-center space-x-2 text-theme-secondary-500">
-                                @if ($wallet->isKnown())
-                                    <x-general.loading-state.icon icon="app-verified" />
-
-                                    <div data-tippy-content="@lang('general.verified_address')"  wire:loading.class="hidden">
-                                        @svg('app-verified', 'w-5 h-5')
-                                    </div>
-                                @endif
-
-                                @if ($wallet->isOwnedByExchange())
-                                    <x-general.loading-state.icon icon="app-exchange" />
-
-                                    <div data-tippy-content="@lang('general.exchange')"  wire:loading.class="hidden">
-                                        @svg('app-exchange', 'w-5 h-5')
-                                    </div>
-                                @endif
-                            </div>
+                            <x-tables.rows.desktop.wallet-type :model="$wallet" />
                         </td>
                     @endif
                     <td class="text-right">
-                        <x-general.loading-state.text :text="$wallet->balance()" />
-
-                        <div wire:loading.class="hidden">
-                            <x-general.amount-fiat-tooltip :amount="$wallet->balance()" :fiat="$wallet->balanceFiat()" />
-                        </div>
+                        <x-tables.rows.desktop.balance :model="$wallet" />
                     </td>
                     <td class="hidden text-right lg:table-cell">
-                        <x-general.loading-state.text :text="$wallet->balancePercentage()" />
-
-                        <div wire:loading.class="hidden">
-                            {{ $wallet->balancePercentage() }}
-                        </div>
+                        <x-tables.rows.desktop.balance-percentage :model="$wallet" />
                     </td>
                 </tr>
             @endforeach

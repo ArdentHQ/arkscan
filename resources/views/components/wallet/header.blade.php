@@ -1,5 +1,5 @@
 <div class="dark:bg-theme-secondary-900">
-    <div class="flex-col pt-16 space-y-6 content-container">
+    <div class="flex-col pt-16 mb-16 space-y-6 content-container">
         <x-general.search.header-slim :title="trans('pages.wallet.title')" />
 
         <x-general.entity-header

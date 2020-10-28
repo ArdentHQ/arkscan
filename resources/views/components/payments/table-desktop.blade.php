@@ -10,19 +10,10 @@
             @foreach($payments as $payment)
                 <tr>
                     <td>
-                        <div class="flex flex-row items-center space-x-3">
-                            <div wire:loading.class="w-6 h-6 rounded-full md:w-11 md:h-11 bg-theme-secondary-300 animate-pulse"></div>
-                            <div wire:loading.class="w-full h-5 rounded-full bg-theme-secondary-300 animate-pulse"></div>
-                        </div>
-
-                        <x-general.address :address="$payment['recipientId']" />
+                        <x-tables.rows.desktop.recipient :model="$payment" />
                     </td>
                     <td class="hidden text-right lg:table-cell">
-                        <div wire:loading.class="h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
-
-                        <div wire:loading.class="hidden">
-                            {{ $payment['amount'] }}
-                        </div>
+                        <x-tables.rows.desktop.amount :model="$payment" />
                     </td>
                 </tr>
             @endforeach

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\DTO\Payment;
 use App\Enums\CoreTransactionTypeEnum;
 use App\Enums\MagistrateTransactionEntityActionEnum;
 use App\Enums\MagistrateTransactionEntitySubTypeEnum;
@@ -11,8 +12,8 @@ use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
-use App\ViewModels\TransactionViewModel;
 
+use App\ViewModels\TransactionViewModel;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
 
@@ -729,7 +730,11 @@ it('should get the payments', function () {
         ],
     ]));
 
-    assertMatchesSnapshot($this->subject->payments());
+    expect($this->subject->payments()[0])->toEqual(new Payment('10 DARK', 'A'));
+    expect($this->subject->payments()[1])->toEqual(new Payment('20 DARK', 'B'));
+    expect($this->subject->payments()[2])->toEqual(new Payment('30 DARK', 'C'));
+    expect($this->subject->payments()[3])->toEqual(new Payment('40 DARK', 'D'));
+    expect($this->subject->payments()[4])->toEqual(new Payment('50 DARK', 'E'));
 });
 
 it('should fail to get the payments if the transaction is not a multi payment', function () {
@@ -1126,4 +1131,13 @@ it('should get the entity name', function () {
     ]));
 
     expect($subject->entityName())->toBe('john');
+});
+
+it('should determine if the transaction type is unknown', function () {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => 123,
+        'type_group' => 456,
+    ]));
+
+    expect($subject->isUnknown())->toBeTrue();
 });
