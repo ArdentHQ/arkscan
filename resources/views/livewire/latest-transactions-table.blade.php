@@ -1,4 +1,4 @@
-<div id="transaction-list" class="w-full" wire:poll.8s>
+<div id="transaction-list" class="w-full" wire:poll.{{ Network::blockTime() }}s>
     <x-transactions.table-desktop :transactions="$transactions" />
 
     <x-transactions.list-mobile :transactions="$transactions" />

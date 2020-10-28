@@ -1,5 +1,5 @@
 <div class="flex flex-col overflow-hidden border rounded-lg border-theme-secondary-300 dark:border-theme-secondary-800">
-    <div class="p-8 bg-black dark:bg-theme-secondary-900" wire:poll.8s>
+    <div class="p-8 bg-black dark:bg-theme-secondary-900" wire:poll.{{ Network::blockTime() }}s>
         <div class="grid w-full grid-flow-row grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4 gap-y-12 xl:gap-y-4">
         <x-monitor.statistic>
             <x-slot name="logo">

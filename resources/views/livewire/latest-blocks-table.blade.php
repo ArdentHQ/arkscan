@@ -1,4 +1,4 @@
-<div id="block-list" class="w-full" wire:poll.8s>
+<div id="block-list" class="w-full" wire:poll.{{ Network::blockTime() }}s>
     <x-blocks.table-desktop :blocks="$blocks" />
 
     <x-blocks.list-mobile :blocks="$blocks" />

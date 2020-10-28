@@ -1,4 +1,4 @@
-<div id="network-list" class="w-full" wire:poll.8s>
+<div id="network-list" class="w-full" wire:poll.{{ Network::blockTime() }}s>
     <div class="flex flex-col my-8 overflow-hidden border rounded-lg border-theme-secondary-300 dark:border-theme-secondary-800">
         <div class="p-8 bg-theme-secondary-100 border-theme-secondary-300 dark:border-theme-secondary-800 dark:bg-theme-secondary-900">
             <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">

@@ -1,3 +1,3 @@
-<div wire:poll.300s>
+<div wire:poll.60s>
     {{ $from }}/{{ $to }}: {{ $price }}
 </div>
