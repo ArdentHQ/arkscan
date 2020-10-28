@@ -9,7 +9,7 @@
             <x-details.vote
                 :title="trans('general.transaction.delegate')"
                 :transaction="$transaction"
-                :address="$transaction->voted()->address">
+                :address="$transaction->voted()->address()">
                 <x-slot name="icon">
                     <div class="circled-icon text-theme-success-500 border-theme-success-100 dark:text-theme-success-600 dark:border-theme-success-600">
                         @svg('app-transactions.vote', 'h-5 w-5 text-theme-success-500')
@@ -27,7 +27,7 @@
             <x-details.vote
                 :title="trans('general.transaction.delegate')"
                 :transaction="$transaction"
-                :address="$transaction->unvoted()->address">
+                :address="$transaction->unvoted()->address()">
                 <x-slot name="icon">
                     <div class="circled-icon text-theme-danger-500 border-theme-danger-100 dark:text-theme-danger-600 dark:border-theme-danger-600">
                         @svg('app-transactions.unvote', 'h-5 w-5 text-theme-danger-500')

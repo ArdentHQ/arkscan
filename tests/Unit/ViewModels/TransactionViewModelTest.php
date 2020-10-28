@@ -14,6 +14,8 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 
 use App\ViewModels\TransactionViewModel;
+use App\ViewModels\WalletViewModel;
+
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
 
@@ -615,8 +617,7 @@ it('should get the voted delegate', function () {
         'asset'      => ['votes' => ['+publicKey']],
     ]));
 
-    expect($subject->voted())->toBeInstanceOf(Wallet::class);
-    expect($subject->voted()->is($wallet))->toBeTrue();
+    expect($subject->voted())->toBeInstanceOf(WalletViewModel::class);
 });
 
 it('should fail to get the voted delegate if the transaction is not an unvote', function () {
@@ -648,8 +649,7 @@ it('should get the unvoted delegate', function () {
         'asset'      => ['votes' => ['-publicKey']],
     ]));
 
-    expect($subject->unvoted())->toBeInstanceOf(Wallet::class);
-    expect($subject->unvoted()->is($wallet))->toBeTrue();
+    expect($subject->unvoted())->toBeInstanceOf(WalletViewModel::class);
 });
 
 it('should fail to get the unvoted delegate if the transaction is not an unvote', function () {

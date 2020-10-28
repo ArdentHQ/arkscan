@@ -12,7 +12,7 @@
             @php($address = $transaction->recipient() ?? $transaction->sender())
             <x-general.address :address="$address" />
         @elseif ($transaction->isVote())
-            @php($address = $transaction->voted()->address)
+            @php($address = $transaction->voted()->username())
             <x-general.address :address="$address">
                 <x-slot name="icon">
                     <x-transactions.icon :icon-type="$iconType" />
@@ -25,7 +25,7 @@
                 </x-slot>
             </x-general.address>
         @elseif ($transaction->isUnvote())
-            @php($address = $transaction->unvoted()->address)
+            @php($address = $transaction->unvoted()->username())
             <x-general.address :address="$address">
                 <x-slot name="icon">
                     <x-transactions.icon :icon-type="$iconType" />
