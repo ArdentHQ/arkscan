@@ -30,7 +30,7 @@ it('should determine if the transaction is sent', function () {
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result->toArray())->toBe([
-        '2021-02-11' => '10',
-        '2020-10-19' => '10',
+        '2020-10-19' => 10.0,
+        '2021-02-11' => 10.0,
     ]);
 });
