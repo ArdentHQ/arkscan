@@ -1,5 +1,5 @@
 @if ($model->isKnown() || $model->isOwnedByExchange())
-    <div class="flex justify-between w-full">
+    <div>
         @lang('labels.wallet_type')
 
         <div class="flex flex-col space-y-4">

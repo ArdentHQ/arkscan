@@ -1,4 +1,4 @@
-<div class="flex justify-between w-full">
+<div>
     @lang('labels.marketsquare_profile')
 
     {{-- @TODO: MSQ Profile --}}

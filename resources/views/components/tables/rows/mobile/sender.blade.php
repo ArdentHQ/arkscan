@@ -1,4 +1,4 @@
-<div class="flex justify-between w-full">
+<div>
     @lang('labels.sender')
 
     <x-general.address :address="$model->sender()" with-loading />

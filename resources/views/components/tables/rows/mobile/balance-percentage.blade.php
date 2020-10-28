@@ -1,4 +1,4 @@
-<div class="flex justify-between w-full">
+<div>
     @lang('labels.balance_percentage')
 
     <x-general.loading-state.text :text="$model->balancePercentage()" />

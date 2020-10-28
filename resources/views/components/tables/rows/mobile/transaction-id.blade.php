@@ -1,4 +1,4 @@
-<div class="flex justify-between w-full">
+<div>
     @lang('labels.transaction_id')
 
     <x-general.loading-state.text class="font-semibold">

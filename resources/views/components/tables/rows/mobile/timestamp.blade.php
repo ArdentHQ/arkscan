@@ -1,4 +1,4 @@
-<div class="flex justify-between w-full">
+<div>
     @lang('labels.timestamp')
 
     <x-general.loading-state.text :text="$model->timestamp()" />

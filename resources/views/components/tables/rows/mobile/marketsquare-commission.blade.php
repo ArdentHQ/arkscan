@@ -1,4 +1,4 @@
-<div class="flex justify-between w-full">
+<div>
     @lang('labels.marketsquare_commission')
 
     {{-- @TODO: MSQ Commission --}}

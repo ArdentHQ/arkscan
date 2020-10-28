@@ -2,7 +2,7 @@
     <table>
         <thead>
             <tr>
-                <th width="50"></th>
+                <th width="50">&nbsp;</th>
                 <th><span class="pl-14">@lang('general.delegates.name')</span></th>
                 <th width="200" class="hidden text-right lg:table-cell">@lang('general.delegates.votes')</th>
             </tr>

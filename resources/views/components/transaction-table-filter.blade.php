@@ -13,7 +13,7 @@
         @slot('button')
             <div class="space-x-2 transaction-filter-button-container">
                 <div>
-                    <span class="text-theme-secondary-500">@lang('general.transaction.type'):</span>
+                    <span class="text-theme-secondary-500 dark:text-theme-secondary-600">@lang('general.transaction.type'):</span>
 
                     <span
                         x-text="transactionTypeFilterLabel"
@@ -87,6 +87,9 @@
                 @foreach ($types as $type)
                     <div
                         class="cursor-pointer dropdown-entry text-theme-secondary-900 dark:text-theme-secondary-200"
+                        :class="{
+                            'dropdown-entry-selected': transactionTypeFilter === '{{ $type }}'
+                        }"
                         @click="window.livewire.emit('filterTransactionsByType', '{{ $type }}'); transactionTypeFilter = '{{ $type }}'; transactionTypeFilterLabel = '@lang('forms.search.transaction_types.'.$type)'"
                     >
                         @lang('forms.search.transaction_types.'.$type)

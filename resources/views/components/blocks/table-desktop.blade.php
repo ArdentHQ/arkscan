@@ -2,7 +2,7 @@
     <table>
         <thead>
             <tr>
-                <th class="text-center"></th>
+                <th class="text-center">&nbsp;</th>
                 <th class="hidden lg:table-cell">@lang('general.block.timestamp')</th>
                 <th><span class="pl-14">@lang('general.block.generated_by')</span></th>
                 <th>@lang('general.block.height')</th>

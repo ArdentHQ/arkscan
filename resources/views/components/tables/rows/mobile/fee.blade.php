@@ -1,4 +1,4 @@
-<div class="flex justify-between w-full">
+<div>
     @lang('labels.fee')
 
     <x-general.loading-state.text :text="$model->fee()" />

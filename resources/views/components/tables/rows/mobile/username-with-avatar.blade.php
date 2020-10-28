@@ -1,4 +1,4 @@
-<div class="flex justify-between w-full">
+<div>
     @lang('labels.username')
 
     <div class="flex flex-row items-center space-x-3">

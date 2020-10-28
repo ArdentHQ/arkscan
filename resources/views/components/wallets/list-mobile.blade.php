@@ -1,6 +1,6 @@
-<div class="space-y-8 divide-y md:hidden">
+<div class="space-y-8 divide-y table-list-mobile">
     @foreach ($wallets as $wallet)
-        <div class="flex flex-col space-y-3 w-full pt-8 {{ $loop->first ? '' : 'border-t'}} border-theme-secondary-300">
+        <div class="space-y-3 table-list-mobile-row">
             <x-tables.rows.mobile.address :model="$wallet" />
 
             <x-tables.rows.mobile.wallet-type :model="$wallet" />
