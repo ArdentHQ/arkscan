@@ -2,234 +2,243 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.9.1/dayjs.min.js"></script>
 <script>
     window.makeChart = (identifier, coloursScheme) => {
-            return {
-                period: "Day",
-                identifier,
-                coloursScheme,
-                chart: null,
-                data: {
-                    marketHistoricalDay: @json($data['day']),
-                    marketHistoricalWeek: @json($data['week']),
-                    marketHistoricalMonth: @json($data['month']),
-                    marketHistoricalQuarter: @json($data['quarter']),
-                    marketHistoricalYear: @json($data['year']),
-                },
-                currency: "{{ Network::currency() }}",
-                dateAt: "",
-                priceAt: null,
-                priceMin: null,
-                priceMax: null,
-                priceAvg: null,
-                dropdownOpen: false,
-                localizedPeriod: null,
-                isDarkTheme: "{{ Settings::darkTheme() }}",
-                getMarketAverage(period) {
-                    const market = this.data[`marketHistorical${period}`]
+        return {
+            period: "Day",
+            identifier,
+            coloursScheme,
+            chart: null,
+            data: {
+                marketHistoricalDay: @json($data['day']),
+                marketHistoricalWeek: @json($data['week']),
+                marketHistoricalMonth: @json($data['month']),
+                marketHistoricalQuarter: @json($data['quarter']),
+                marketHistoricalYear: @json($data['year']),
+            },
+            currency: "{{ Network::currency() }}",
+            dateAt: "",
+            priceAt: null,
+            priceMin: null,
+            priceMax: null,
+            priceAvg: null,
+            dropdownOpen: false,
+            localizedPeriod: null,
+            isDarkTheme: "{{ Settings::darkTheme() }}",
+            getMarketAverage(period) {
+                const market = this.data[`marketHistorical${period}`]
 
-                    this.priceMin = market.min;
-                    this.priceAvg = market.avg;
-                    this.priceMax = market.max;
+                this.priceMin = market.min;
+                this.priceAvg = market.avg;
+                this.priceMax = market.max;
 
-                    return market;
-                },
-                renderChart() {
-                    let themeColours = {
-                        light: {
-                            gridLines: "#DBDEE5",
-                            ticks: "#B0B0B8",
+                return market;
+            },
+            updateChart() {
+                this.isDarkTheme = ! this.isDarkTheme;
+
+                this.chart.destroy();
+
+                this.renderChart();
+            },
+            renderChart() {
+                let themeColours = {
+                    light: {
+                        gridLines: "#DBDEE5",
+                        ticks: "#B0B0B8",
+                    },
+                    dark: {
+                        gridLines: "#3C4249",
+                        ticks: "#7E8A9C",
+                    }
+                };
+
+                themeColours = this.isDarkTheme ? themeColours.dark : themeColours.light;
+
+                const fontConfig = {
+                    fontColor: themeColours.ticks,
+                    fontSize: 14,
+                    fontStyle: 600,
+                };
+
+                const scaleCorrection = 1000;
+
+                let ctx = document.getElementById(this.identifier).getContext("2d");
+
+                this.chart = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: this.getMarketAverage('Day').labels,
+                        datasets: [
+                            {
+                                borderColor: this.coloursScheme,
+                                pointRadius: 4,
+                                pointHoverRadius: 12,
+                                pointHoverBorderWidth: 3,
+                                pointHoverBackgroundColor: "rgba(204, 230, 211, 0.5)",
+                                pointHitRadius: 12,
+                                pointBackgroundColor: "#FFFFFF",
+                                borderWidth: 3,
+                                type: "line",
+                                fill: false,
+                                data: this.getMarketAverage('Day').datasets,
+                                hidden: false,
+                            },
+                        ],
+                    },
+                    // Configuration options go here
+                    options: {
+                        showScale: true,
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        elements: {
+                            line: {
+                                cubicInterpolationMode: "monotone",
+                            },
                         },
-                        dark: {
-                            gridLines: "#3C4249",
-                            ticks: "#7E8A9C",
-                        }
-                    };
-
-                    themeColours = this.isDarkTheme ? themeColours.dark : themeColours.light;
-
-                    const fontConfig = {
-                        fontColor: themeColours.ticks,
-                        fontSize: 14,
-                        fontStyle: 600,
-                    };
-
-                    const scaleCorrection = 1000;
-
-                    let ctx = document.getElementById(this.identifier).getContext("2d");
-
-                    this.chart = new Chart(ctx, {
-                        type: "line",
-                        data: {
-                            labels: this.getMarketAverage('Day').labels,
-                            datasets: [
+                        legend: {
+                            display: false,
+                        },
+                        layout: {
+                            padding: {
+                                left: 0,
+                                right: 0,
+                                top: 10,
+                                bottom: 10,
+                            },
+                        },
+                        scales: {
+                            yAxes: [
                                 {
-                                    borderColor: this.coloursScheme,
-                                    pointRadius: 4,
-                                    pointHoverRadius: 12,
-                                    pointHoverBorderWidth: 3,
-                                    pointHoverBackgroundColor: "rgba(204, 230, 211, 0.5)",
-                                    pointHitRadius: 12,
-                                    pointBackgroundColor: "#FFFFFF",
-                                    borderWidth: 3,
-                                    type: "line",
-                                    fill: false,
-                                    data: this.getMarketAverage('Day').datasets,
-                                    hidden: false,
+                                    type: "linear",
+                                    position: "left",
+                                    stacked: true,
+                                    gridLines: {
+                                        color: themeColours.gridLines,
+                                        display: true,
+                                        drawBorder: false,
+                                    },
+                                    ticks: {
+                                        padding: 15,
+                                        ...fontConfig,
+                                        callback: (value, index, values) => {
+                                            // TODO: Proper implementation
+                                            if (index % 2 === 0) {
+                                                return;
+                                            }
+
+                                            const formatConfig = {
+                                                currency: this.currency,
+                                            };
+
+                                            const price = value / scaleCorrection;
+
+                                            if (price < 1e-4) {
+                                                formatConfig.maximumFractionDigits = 8;
+                                            } else if (price < 1e-2) {
+                                                formatConfig.maximumFractionDigits = 5;
+                                            } else {
+                                                formatConfig.maximumFractionDigits = 3;
+                                            }
+
+                                            return `{{ Network::currencySymbol() }}${value}`;
+                                        },
+                                    },
+                                },
+                            ],
+                            xAxes: [
+                                {
+                                    gridLines: {
+                                        color: themeColours.gridLines,
+                                        drawBorder: false,
+                                        display: true,
+                                    },
+                                    ticks: {
+                                        padding: 10,
+                                        ...fontConfig,
+                                        callback: (value, index, values) => {
+                                            if (
+                                                this.period !== "Day" &&
+                                                index === values.length - 1
+                                            ) {
+                                                return "Today";
+                                            } else if (this.period === "Week") {
+                                                const width = this.$el.clientWidth;
+
+                                                if (width > 1200) {
+                                                    // TODO: DW returns a day of the week, where value would be "Friday" for example
+                                                    return value;
+                                                } else {
+                                                    // TODO: DW returns the abbreviation of a day of the week, where value would be "FRI" for example
+                                                    return value;
+                                                }
+                                            } else if (this.period === "Month") {
+                                                return value;
+                                            }
+
+                                            return value;
+                                        },
+                                    },
                                 },
                             ],
                         },
-                        // Configuration options go here
-                        options: {
-                            showScale: true,
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            elements: {
-                                line: {
-                                    cubicInterpolationMode: "monotone",
+                        tooltips: {
+                            displayColors: false,
+                            mode: "interpolate",
+                            intersect: false,
+                            mode: "index",
+                            axis: "x",
+                            titleFontColor: themeColours.ticks,
+                            callbacks: {
+                                label: (item) => {
+                                    // TODO: Rounded circle on the left of the label
+                                    return `${item.yLabel.toFixed(2)} ${this.currency}`;
                                 },
-                            },
-                            legend: {
-                                display: false,
-                            },
-                            layout: {
-                                padding: {
-                                    left: 0,
-                                    right: 0,
-                                    top: 10,
-                                    bottom: 10,
-                                },
-                            },
-                            scales: {
-                                yAxes: [
-                                    {
-                                        type: "linear",
-                                        position: "left",
-                                        stacked: true,
-                                        gridLines: {
-                                            color: themeColours.gridLines,
-                                            display: true,
-                                            drawBorder: false,
-                                        },
-                                        ticks: {
-                                            padding: 15,
-                                            ...fontConfig,
-                                            callback: (value, index, values) => {
-                                                // TODO: Proper implementation
-                                                if (index % 2 === 0) {
-                                                    return;
-                                                }
-
-                                                const formatConfig = {
-                                                    currency: this.currency,
-                                                };
-
-                                                const price = value / scaleCorrection;
-
-                                                if (price < 1e-4) {
-                                                    formatConfig.maximumFractionDigits = 8;
-                                                } else if (price < 1e-2) {
-                                                    formatConfig.maximumFractionDigits = 5;
-                                                } else {
-                                                    formatConfig.maximumFractionDigits = 3;
-                                                }
-
-                                                return `{{ Network::currencySymbol() }}${value}`;
-                                            },
-                                        },
-                                    },
-                                ],
-                                xAxes: [
-                                    {
-                                        gridLines: {
-                                            color: themeColours.gridLines,
-                                            drawBorder: false,
-                                            display: true,
-                                        },
-                                        ticks: {
-                                            padding: 10,
-                                            ...fontConfig,
-                                            callback: (value, index, values) => {
-                                                if (
-                                                    this.period !== "Day" &&
-                                                    index === values.length - 1
-                                                ) {
-                                                    return "Today";
-                                                } else if (this.period === "Week") {
-                                                    const width = this.$el.clientWidth;
-
-                                                    if (width > 1200) {
-                                                        // TODO: DW returns a day of the week, where value would be "Friday" for example
-                                                        return value;
-                                                    } else {
-                                                        // TODO: DW returns the abbreviation of a day of the week, where value would be "FRI" for example
-                                                        return value;
-                                                    }
-                                                } else if (this.period === "Month") {
-                                                    return value;
-                                                }
-
-                                                return value;
-                                            },
-                                        },
-                                    },
-                                ],
-                            },
-                            tooltips: {
-                                displayColors: false,
-                                mode: "interpolate",
-                                intersect: false,
-                                mode: "index",
-                                axis: "x",
-                                titleFontColor: themeColours.ticks,
-                                callbacks: {
-                                    label: (item) => {
-                                        // TODO: Rounded circle on the left of the label
-                                        return `${item.yLabel.toFixed(2)} ${this.currency}`;
-                                    },
-                                    title: (items, data) => {},
-                                },
+                                title: (items, data) => {},
                             },
                         },
-                    });
+                    },
+                });
 
-                    return this.chart;
-                },
+                return this.chart;
+            },
 
-                updateLabels() {
-                    return this.getMarketAverage(this.period).labels;
-                },
+            updateLabels() {
+                return this.getMarketAverage(this.period).labels;
+            },
 
-                updateTicks() {
-                    return this.getMarketAverage(this.period).datasets;
-                },
+            updateTicks() {
+                return this.getMarketAverage(this.period).datasets;
+            },
 
-                setPeriod(period) {
-                    this.period = period.charAt(0).toUpperCase() + period.slice(1);
+            setPeriod(period) {
+                this.period = period.charAt(0).toUpperCase() + period.slice(1);
 
-                    updatedTicks = this.updateTicks();
+                updatedTicks = this.updateTicks();
 
-                    this.chart.data.labels = this.updateLabels();
-                    this.chart.data.datasets[0].data = updatedTicks;
+                this.chart.data.labels = this.updateLabels();
+                this.chart.data.datasets[0].data = updatedTicks;
 
-                    // Render the chart synchronously and without an animation.
-                    this.chart.update(0);
-                },
+                // Render the chart synchronously and without an animation.
+                this.chart.update(0);
+            },
 
-                isActivePeriod(period) {
-                    return period === this.period;
-                },
-            };
+            isActivePeriod(period) {
+                return period === this.period;
+            },
         };
+    };
 </script>
 @endpush
 
-<div x-data="makeChart('{{ $identifier }}', '{{ $coloursScheme }}')" x-init="renderChart()"
+<div
+    x-data="makeChart('{{ $identifier }}', '{{ $coloursScheme }}')"
+    x-init="renderChart()"
+    x-on:toggle-dark-mode.window="updateChart()"
     class="flex flex-col w-full bg-white border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
     <div class="flex flex-col w-full">
         <div class="relative flex items-center justify-between w-full">
             <h2 class="text-2xl">@lang("pages.home.charts.{$identifier}")</h2>
 
-            <x-ark-dropdown dropdown-classes="left-0 w-32 mt-3" button-class="w-32 h-10 dropdown-button"
-                :init-alpine="false">
+            <x-ark-dropdown dropdown-classes="left-0 w-32 mt-3" button-class="w-32 h-10 dropdown-button" :init-alpine="false">
                 @slot('button')
                 <div
                     class="flex items-center justify-end w-full space-x-2 font-semibold flex-inline text-theme-secondary-700">
