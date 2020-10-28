@@ -14,6 +14,7 @@ use App\Services\CryptoCompare;
 use App\Services\Transactions\Aggregates\FeeByRangeAggregate;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -108,33 +109,46 @@ final class CacheChartData extends Command
 
     private function cacheFees(): void
     {
-        $fees  = new FeeByRangeAggregate();
-        $today = Carbon::now()->endOfDay();
+        $aggregate = new FeeByRangeAggregate();
+        $today     = Carbon::now()->endOfDay();
 
         $this->cacheKeyValue(
             'chart.fees.day',
-            $this->groupByDate($fees->aggregate(Carbon::now()->subDay(), $today, 'H:s'), 'H:s')
+            $this->getHourlyFees($aggregate, $today)
         );
 
         $this->cacheKeyValue(
             'chart.fees.week',
-            $fees->aggregate(Carbon::now()->subDays(7), $today, 'd.m')
+            $aggregate->aggregate(Carbon::now()->subDays(7), $today, 'd.m')
         );
 
         $this->cacheKeyValue(
             'chart.fees.month',
-            $fees->aggregate(Carbon::now()->subDays(30), $today, 'd.m')
+            $aggregate->aggregate(Carbon::now()->subDays(30), $today, 'd.m')
         );
 
         $this->cacheKeyValue(
             'chart.fees.quarter',
-            $fees->aggregate(Carbon::now()->subDays(120), $today, 'M')
+            $aggregate->aggregate(Carbon::now()->subDays(120), $today, 'M')
         );
 
         $this->cacheKeyValue(
             'chart.fees.year',
-            $fees->aggregate(Carbon::now()->subDays(365), $today, 'M')
+            $aggregate->aggregate(Carbon::now()->subDays(365), $today, 'M')
         );
+    }
+
+    private function getHourlyFees(FeeByRangeAggregate $aggregate, Carbon $date): Collection
+    {
+        $hours      = $this->getHoursRange();
+        $aggregate  = $aggregate->aggregate(Carbon::now()->subDay(), $date, 'H:i');
+
+        $result = [];
+        foreach ($hours as $key) {
+            $result[$key] = Arr::get($aggregate, $key, 0);
+        }
+
+        return collect($result);
     }
 
     private function cacheStatistics(): void
@@ -159,5 +173,16 @@ final class CacheChartData extends Command
             ->groupBy(fn ($_, $key) => Carbon::parse($key)->format($dateFormat))
             ->mapWithKeys(fn ($values, $key) => [$key => $values->first()])
             ->ksort();
+    }
+
+    private function getHoursRange(): array
+    {
+        $times = [];
+
+        foreach (range(0, 86400, 3600) as $timestamp) {
+            $times[] = gmdate('H:i', $timestamp);
+        }
+
+        return array_combine($times, $times);
     }
 }
