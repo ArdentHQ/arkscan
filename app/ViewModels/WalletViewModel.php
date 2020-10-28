@@ -6,22 +6,23 @@ namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
 use App\Facades\Network;
-use App\Models\Scopes\DelegateResignationScope;
-use App\Models\Scopes\EntityRegistrationScope;
-use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Services\BigNumber;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
 use App\Services\Timestamp;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 use Mattiasgeniar\Percentage\Percentage;
 
 final class WalletViewModel implements ViewModel
 {
+    use Concerns\Wallet\CanBeEntity;
+    use Concerns\Wallet\CanBeDelegate;
+    use Concerns\Wallet\CanForge;
+    use Concerns\Wallet\CanVote;
+    use Concerns\Wallet\HasType;
+    use Concerns\Wallet\HasVoters;
+    use Concerns\Wallet\InteractsWithMarketSquare;
+
     private Wallet $wallet;
 
     public function __construct(Wallet $wallet)
@@ -44,19 +45,6 @@ final class WalletViewModel implements ViewModel
         return $this->wallet->public_key;
     }
 
-    public function username(): string
-    {
-        return Arr::get($this->wallet, 'attributes.delegate.username');
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function rank(): ?string
-    {
-        return NumberFormatter::ordinal(Arr::get($this->wallet, 'attributes.delegate.rank', 0));
-    }
-
     public function balance(): string
     {
         return NumberFormatter::currency($this->wallet->balance->toFloat(), Network::currency());
@@ -75,194 +63,5 @@ final class WalletViewModel implements ViewModel
     public function nonce(): string
     {
         return NumberFormatter::number($this->wallet->nonce->toNumber());
-    }
-
-    public function votes(): string
-    {
-        return NumberFormatter::currency(
-            BigNumber::new($this->wallet->attributes['delegate']['voteBalance'])->toFloat(),
-            Network::currency()
-        );
-    }
-
-    public function votesPercentage(): string
-    {
-        $voteBalance = (float) $this->wallet->attributes['delegate']['voteBalance'];
-
-        return NumberFormatter::percentage(BigNumber::new(Percentage::calculate($voteBalance, NetworkStatus::supply()))->toFloat());
-    }
-
-    public function voterCount(): string
-    {
-        return NumberFormatter::number(Wallet::where('attributes->vote', $this->publicKey())->count());
-    }
-
-    public function amountForged(): string
-    {
-        $result = Arr::get(Cache::get('delegates.totalAmounts', []), $this->wallet->public_key, 0);
-
-        return NumberFormatter::currency(BigNumber::new($result)->toFloat(), Network::currency());
-    }
-
-    public function feesForged(): string
-    {
-        $result = Arr::get(Cache::get('delegates.totalFees', []), $this->wallet->public_key, 0);
-
-        return NumberFormatter::currency(BigNumber::new($result)->toFloat(), Network::currency());
-    }
-
-    public function rewardsForged(): string
-    {
-        $result = Arr::get(Cache::get('delegates.totalRewards', []), $this->wallet->public_key, 0);
-
-        return NumberFormatter::currency(BigNumber::new($result)->toFloat(), Network::currency());
-    }
-
-    public function blocksForged(): string
-    {
-        $result = Arr::get(Cache::get('delegates.totalBlocks', []), $this->wallet->public_key, 0);
-
-        return NumberFormatter::number($result);
-    }
-
-    public function isKnown(): bool
-    {
-        return ! is_null($this->findWalletByKnown());
-    }
-
-    public function isOwnedByTeam(): bool
-    {
-        if (! $this->isKnown()) {
-            return false;
-        }
-
-        return optional($this->findWalletByKnown())['type'] === 'team';
-    }
-
-    public function isOwnedByExchange(): bool
-    {
-        if (! $this->isKnown()) {
-            return false;
-        }
-
-        return optional($this->findWalletByKnown())['type'] === 'exchange';
-    }
-
-    /**
-     * @TODO: needs marketsquare
-     *
-     * @codeCoverageIgnore
-     */
-    public function commission(): string
-    {
-        return NumberFormatter::percentage(0);
-    }
-
-    /**
-     * @TODO: needs marketsquare
-     *
-     * @codeCoverageIgnore
-     */
-    public function payoutFrequency(): string
-    {
-        return NumberFormatter::number(0);
-    }
-
-    /**
-     * @TODO: needs marketsquare
-     *
-     * @codeCoverageIgnore
-     */
-    public function payoutMinimum(): string
-    {
-        return NumberFormatter::number(0);
-    }
-
-    public function forgedBlocks(): string
-    {
-        return NumberFormatter::number(Arr::get($this->wallet, 'attributes.delegate.producedBlocks', 0));
-    }
-
-    /**
-     * @TODO: needs monitor to be implemented
-     */
-    public function productivity(): string
-    {
-        return NumberFormatter::percentage(0);
-    }
-
-    public function isDelegate(): bool
-    {
-        return Arr::has($this->wallet, 'attributes.delegate');
-    }
-
-    public function hasRegistrations(): bool
-    {
-        return $this->wallet->sentTransactions()->withScope(EntityRegistrationScope::class)->count() > 0;
-    }
-
-    public function registrations(): Collection
-    {
-        return ViewModelFactory::collection($this->wallet->sentTransactions()->withScope(EntityRegistrationScope::class)->get());
-    }
-
-    public function isVoting(): bool
-    {
-        return ! is_null(Arr::get($this->wallet, 'attributes.vote'));
-    }
-
-    public function vote(): ?self
-    {
-        if (! Arr::has($this->wallet, 'attributes.vote')) {
-            return null;
-        }
-
-        $wallet = Cache::get('votes.'.Arr::get($this->wallet, 'attributes.vote'));
-
-        if (is_null($wallet)) {
-            return null;
-        }
-
-        return new static($wallet);
-    }
-
-    public function resignationId(): ?string
-    {
-        if (! Arr::has($this->wallet, 'attributes.delegate.resigned')) {
-            return null;
-        }
-
-        return Cache::rememberForever('resignationId:'.$this->wallet->address, function () {
-            return Transaction::withScope(DelegateResignationScope::class)->firstOrFail()->id;
-        });
-    }
-
-    public function performance(): array
-    {
-        if (! $this->isDelegate()) {
-            return [];
-        }
-
-        return Cache::get('performance:'.$this->publicKey(), []);
-    }
-
-    public function justMissed(): bool
-    {
-        $missedOne  = collect($this->performance())->filter(fn ($performance) => $performance === false)->count() === 1;
-        $missedLast = collect($this->performance())->last() === false;
-
-        return $missedOne && $missedLast;
-    }
-
-    public function isMissing(): bool
-    {
-        return collect($this->performance())
-            ->filter(fn ($performance) => $performance === false)
-            ->count() > 1;
-    }
-
-    private function findWalletByKnown(): ?array
-    {
-        return collect(Network::knownWallets())->firstWhere('address', $this->wallet->address);
     }
 }
