@@ -14,6 +14,10 @@ module.exports = {
             },
             height: {
                 '128': '32rem',
+            },
+            width: {
+                ...defaultConfig.theme.extend.width,
+                '84': '21rem',
             }
         },
     },

@@ -4,9 +4,9 @@
     transactionTypeFilter: 'all',
     transactionTypeFilterLabel: 'All',
 }" x-cloak class="w-full">
-    <div class="w-full mb-8">
-        <div class="relative flex items-end justify-between">
-            <h2 class="text-3xl sm:text-4xl">@lang('pages.home.transactions_and_blocks')</h2>
+    <div class="w-full md:mb-8">
+        <div class="relative flex flex-col justify-between md:items-end md:flex-row md:justify-start">
+            <h2 class="text-3xl mb-8 md:mb-0 sm:text-4xl">@lang('pages.home.transactions_and_blocks')</h2>
 
             <div x-show="selected === 'transactions'">
                 <x-transaction-table-filter />
@@ -34,7 +34,7 @@
 
     <div class="md:hidden">
         <x-ark-dropdown
-            wrapper-class="relative w-full p-2 mb-8 border rounded-lg border-theme-secondary-300 dark:border-theme-secondary-800"
+            wrapper-class="relative w-full p-2 border rounded-lg border-theme-secondary-300 dark:border-theme-secondary-800"
             button-class="w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
             dropdown-classes="left-0 w-full z-20"
             :init-alpine="false"

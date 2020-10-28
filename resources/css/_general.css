@@ -312,3 +312,58 @@ body {
 .theme-dark .loading-state {
     @apply bg-theme-secondary-800;
 }
+
+/* Transaction Dropdown Filter */
+.transaction-filter-wrapper {
+    @apply relative w-full p-2 mb-2 border rounded-lg border-theme-secondary-300;
+}
+.theme-dark .transaction-filter-wrapper {
+    @apply border-theme-secondary-800;
+}
+
+.transaction-filter-dropdown {
+    @apply right-0 w-full mt-3 h-128;
+}
+.theme-dark .transaction-filter-dropdown {
+    @apply bg-theme-secondary-900;
+}
+
+.transaction-filter-button {
+    @apply w-full font-semibold text-left text-theme-secondary-900;
+}
+.theme-dark .transaction-filter-button {
+    @apply text-theme-secondary-200;
+}
+
+.transaction-filter-button-container {
+    @apply flex items-center w-full font-semibold justify-between text-theme-secondary-500;
+}
+
+.transaction-filter-button-icon {
+    @apply flex items-center justify-center transition duration-150 ease-in-out rounded-full text-theme-secondary-400 w-6 h-6;
+}
+.theme-dark .transaction-filter-button-icon {
+    @apply bg-theme-secondary-800 text-theme-secondary-200;
+}
+
+@screen md {
+    .transaction-filter-wrapper {
+        @apply absolute w-auto p-0 my-0 border-0 inline-block top-0 right-0 text-left;
+    }
+
+    .transaction-filter-dropdown {
+        @apply w-84;
+    }
+
+    .transaction-filter-button {
+        @apply items-end w-84 h-10 pb-0 pr-0;
+    }
+
+    .transaction-filter-button-container {
+        @apply text-theme-secondary-700 justify-end;
+    }
+
+    .transaction-filter-button-icon {
+        @apply w-4 h-4 bg-theme-primary-100 text-theme-primary-600;
+    }
+}

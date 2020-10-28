@@ -4,23 +4,28 @@
     transactionTypeFilterLabel: 'All',
 }" x-cloak>
     <x-ark-dropdown
-        dropdown-classes="left-0 w-64 mt-3 dark:bg-theme-secondary-900 w-full"
-        button-class="items-end w-64 h-10 pb-0 pr-0 dropdown-button"
+        wrapper-class="transaction-filter-wrapper"
+        dropdown-classes="transaction-filter-dropdown"
+        button-class="transaction-filter-button"
         dropdown-property="filterOpen"
         :init-alpine="false"
     >
         @slot('button')
-            <div class="flex items-center justify-end w-full space-x-2 font-semibold flex-inline">
+            <div class="space-x-2 transaction-filter-button-container">
                 <div>
-                    <span class="text-theme-secondary-500">@lang('general.transaction.type'): </span>
-                    <span class="text-theme-secondary-700"x-text="transactionTypeFilterLabel"></span>
+                    <span class="text-theme-secondary-500">@lang('general.transaction.type'):</span>
+
+                    <span
+                        x-text="transactionTypeFilterLabel"
+                        class="whitespace-no-wrap text-theme-secondary-900 md:text-theme-secondary-700 dark:text-theme-secondary-200"
+                    ></span>
                 </div>
 
                 <span
-                    :class="{ 'rotate-180 bg-theme-primary-600 text-theme-secondary-100': filterOpen }"
-                    class="flex items-center justify-center w-4 h-4 transition duration-150 ease-in-out rounded-full bg-theme-primary-100 dark:bg-theme-secondary-800 text-theme-primary-600 dark:text-theme-secondary-200"
+                    :class="{ 'rotate-180 md:bg-theme-primary-600 md:text-theme-secondary-100': filterOpen }"
+                    class="transaction-filter-button-icon"
                 >
-                    @svg('chevron-down', 'h-3 w-2')
+                    @svg('chevron-down', 'w-6 h-6 md:h-3 md:w-2')
                 </span>
             </div>
         @endslot
