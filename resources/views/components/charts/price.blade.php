@@ -85,7 +85,6 @@
                             elements: {
                                 line: {
                                     cubicInterpolationMode: "monotone",
-                                    tension: 0,
                                 },
                             },
                             legend: {
