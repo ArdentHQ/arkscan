@@ -39,7 +39,7 @@ return [
         'block_id'                => 'Block ID',
         'smartbridge'             => 'SmartBridge',
         'nonce'                   => 'Nonce',
-        'multi_signature_address' => 'Multi Signature Address',
+        'multi_signature_address' => 'MultiSignature Address',
         'participant'             => 'Participant #:0',
         'delegate'                => 'Delegate',
         'bridgechain'             => 'Bridgechain',
