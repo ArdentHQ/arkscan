@@ -37,12 +37,12 @@
             @endslot
 
             @slot('buttons')
-                <div class="flex justify-end mt-5 space-x-3">
-                    <button x-show="options" class="button-secondary" @click="options = false">
+                <div class="flex w-full">
+                    <button x-show="options" class="w-full button-secondary" @click="options = false">
                         @lang('pages.wallet.hide_options')
                     </button>
 
-                    <button x-show="! options" class="button-secondary" @click="options = true">
+                    <button x-show="! options" class="w-full button-secondary" @click="options = true">
                         @lang('pages.wallet.show_options')
                     </button>
                 </div>
