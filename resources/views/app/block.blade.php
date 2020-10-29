@@ -20,23 +20,23 @@
         <x-block.header :block="$block" />
 
         <x-details.grid>
-            <x-details.generic :title="trans('general.block.height')" icon="app-volume">
+            <x-details.generic :title="trans('general.block.height')" icon="app-height">
                 {{ $block->height() }}
             </x-details.generic>
 
-            <x-details.generic :title="trans('general.block.timestamp')" icon="app-volume">
+            <x-details.generic :title="trans('general.block.timestamp')" icon="app-timestamp">
                 {{ $block->timestamp() }}
             </x-details.generic>
 
-            <x-details.generic :title="trans('general.block.reward')" icon="app-volume">
+            <x-details.generic :title="trans('general.block.reward')" icon="app-reward">
                 {{ $block->reward() }}
             </x-details.generic>
 
-            <x-details.generic :title="trans('general.block.fee')" icon="app-volume">
+            <x-details.generic :title="trans('general.block.fee')" icon="app-fee">
                 {{ $block->fee() }}
             </x-details.generic>
 
-            <x-details.generic :title="trans('general.block.confirmations')" icon="app-volume">
+            <x-details.generic :title="trans('general.block.confirmations')" icon="app-confirmations">
                 {{ $block->confirmations() }}
             </x-details.generic>
         </x-details.grid>
