@@ -67,7 +67,7 @@
                                         href="{{ route($navItem['route'], $navItem['params'] ?? []) }}"
                                         class="inline-flex items-center px-1 pt-1 font-semibold leading-5 border-b-2
                                             focus:outline-none transition duration-150 ease-in-out h-full
-                                            @if(Route::current()->getName() === $navItem['route'])
+                                            @if(optional(Route::current())->getName() === $navItem['route'])
                                                 border-theme-primary-600 text-theme-secondary-900 dark:text-theme-secondary-400
                                             @else
                                                 border-transparent text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400

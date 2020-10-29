@@ -43,13 +43,15 @@ final class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('wallet', function (string $value): Wallet {
-            if (! Address::validate($value, Network::config())) {
+            abort_unless(Address::validate($value, Network::config()), 404);
+
+            try {
+                return Wallet::where('address', $value)->firstOrFail();
+            } catch (\Throwable $th) {
                 UI::useErrorMessage(404, trans('general.wallet_not_found', [$value]));
 
                 abort(404);
             }
-
-            return Wallet::where('address', $value)->firstOrFail();
         });
     }
 
