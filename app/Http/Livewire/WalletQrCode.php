@@ -20,7 +20,7 @@ final class WalletQrCode extends Component
     /** @phpstan-ignore-next-line */
     protected $listeners = ['toggleQrCode'];
 
-    // @codeCoverageIgnore
+    // @codeCoverageIgnoreStart
     public function updated(string $propertyName): void
     {
         $this->validateOnly($propertyName, [
@@ -28,6 +28,8 @@ final class WalletQrCode extends Component
             'smartbridge' => ['required', 'string', 'max:255'],
         ]);
     }
+
+    // @codeCoverageIgnoreEnd
 
     public function toggleQrCode(): void
     {
