@@ -20,10 +20,10 @@
     {{ $transaction->timestamp() }}
 </x-details.generic>
 
-<x-details.generic :title="trans('general.transaction.smartbridge')" icon="app-smartbridge">
+<x-details.generic :title="trans('general.transaction.smartbridge')" icon="app-smartbridge" without-border>
     {{ $transaction->vendorField() }}
 </x-details.generic>
 
-<x-details.generic :title="trans('general.transaction.nonce')" icon="app-nonce">
+<x-details.generic :title="trans('general.transaction.nonce')" icon="app-nonce" without-border>
     {{ $transaction->nonce() }}
 </x-details.generic>

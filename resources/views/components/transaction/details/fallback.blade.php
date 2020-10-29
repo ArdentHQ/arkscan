@@ -8,12 +8,12 @@
     {{ $transaction->timestamp() }}
 </x-details.generic>
 
-<x-details.generic :title="trans('general.transaction.block_id')" icon="app-block-id">
+<x-details.generic :title="trans('general.transaction.block_id')" icon="app-block-id" without-border>
     <a href="{{ route('block', $transaction->blockId()) }}" class="font-semibold link">
         <x-truncate-middle :value="$transaction->blockId()" :length="32" />
     </a>
 </x-details.generic>
 
-<x-details.generic :title="trans('general.transaction.nonce')" icon="app-nonce">
+<x-details.generic :title="trans('general.transaction.nonce')" icon="app-nonce" without-border>
     {{ $transaction->nonce() }}
 </x-details.generic>

@@ -18,10 +18,10 @@
     {{ $transaction->timestamp() }}
 </x-details.generic>
 
-<x-details.generic :title="trans('general.transaction.nonce')" icon="app-nonce">
+<x-details.generic :title="trans('general.transaction.nonce')" icon="app-nonce" without-border>
     {{ $transaction->nonce() }}
 </x-details.generic>
 
-<x-details.generic :title="trans('general.transaction.confirmations')" icon="app-confirmations">
+<x-details.generic :title="trans('general.transaction.confirmations')" icon="app-confirmations" without-border>
     {{ $transaction->confirmations() }}
 </x-details.generic>

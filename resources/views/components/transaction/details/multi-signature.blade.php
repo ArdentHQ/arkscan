@@ -16,10 +16,10 @@
     </a>
 </x-details.generic>
 
-<x-details.generic :title="trans('general.transaction.timestamp')" icon="app-timestamp">
+<x-details.generic :title="trans('general.transaction.timestamp')" icon="app-timestamp" without-border>
     {{ $transaction->timestamp() }}
 </x-details.generic>
 
-<x-details.generic :title="trans('general.transaction.nonce')" icon="app-nonce">
+<x-details.generic :title="trans('general.transaction.nonce')" icon="app-nonce" without-border>
     {{ $transaction->nonce() }}
 </x-details.generic>
