@@ -24,8 +24,8 @@ it('should list the first page of records', function () {
     foreach (ViewModelFactory::collection(Transaction::latestByTimestamp()->take(15)->get()) as $transaction) {
         $component->assertSee($transaction->id());
         $component->assertSee($transaction->timestamp());
-        $component->assertSee($transaction->sender());
-        $component->assertSee($transaction->recipient());
+        $component->assertSee($transaction->sender()->address());
+        $component->assertSee($transaction->recipient()->address());
         $component->assertSee($transaction->fee());
         $component->assertSee($transaction->amount());
     }
@@ -55,8 +55,8 @@ it('should apply filters', function () {
     foreach (ViewModelFactory::collection($notExpected) as $transaction) {
         $component->assertDontSee($transaction->id());
         $component->assertDontSee($transaction->timestamp());
-        $component->assertDontSee($transaction->sender());
-        $component->assertDontSee($transaction->recipient());
+        $component->assertDontSee($transaction->sender()->address());
+        $component->assertDontSee($transaction->recipient()->address());
         $component->assertDontSee($transaction->fee());
         $component->assertDontSee($transaction->amount());
     }
@@ -71,8 +71,8 @@ it('should apply filters', function () {
     foreach (ViewModelFactory::collection($expected) as $transaction) {
         $component->assertSee($transaction->id());
         $component->assertSee($transaction->timestamp());
-        $component->assertSee($transaction->sender());
-        $component->assertSee($transaction->recipient());
+        $component->assertSee($transaction->sender()->address());
+        $component->assertSee($transaction->recipient()->address());
         $component->assertSee($transaction->fee());
         $component->assertSee($transaction->amount());
     }
@@ -102,8 +102,8 @@ it('should apply filters through an event', function () {
     foreach (ViewModelFactory::collection($notExpected) as $transaction) {
         $component->assertDontSee($transaction->id());
         $component->assertDontSee($transaction->timestamp());
-        $component->assertDontSee($transaction->sender());
-        $component->assertDontSee($transaction->recipient());
+        $component->assertDontSee($transaction->sender()->address());
+        $component->assertDontSee($transaction->recipient()->address());
         $component->assertDontSee($transaction->fee());
         $component->assertDontSee($transaction->amount());
     }
@@ -118,8 +118,8 @@ it('should apply filters through an event', function () {
     foreach (ViewModelFactory::collection($expected) as $transaction) {
         $component->assertSee($transaction->id());
         $component->assertSee($transaction->timestamp());
-        $component->assertSee($transaction->sender());
-        $component->assertSee($transaction->recipient());
+        $component->assertSee($transaction->sender()->address());
+        $component->assertSee($transaction->recipient()->address());
         $component->assertSee($transaction->fee());
         $component->assertSee($transaction->amount());
     }

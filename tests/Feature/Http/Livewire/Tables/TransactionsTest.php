@@ -21,8 +21,8 @@ it('should list the first page of records', function () {
     foreach (ViewModelFactory::paginate(Transaction::latestByTimestamp()->paginate())->items() as $transaction) {
         $component->assertSee($transaction->id());
         $component->assertSee($transaction->timestamp());
-        $component->assertSee($transaction->sender());
-        $component->assertSee($transaction->recipient());
+        $component->assertSee($transaction->sender()->address());
+        $component->assertSee($transaction->recipient()->address());
         $component->assertSee($transaction->fee());
         $component->assertSee($transaction->amount());
     }
