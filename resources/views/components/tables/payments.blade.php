@@ -1,13 +1,13 @@
 <div id="payments-list" class="w-full">
-    <div class="w-full" wire:loading>
+    <x-loading.visible>
         <x-payments.table-desktop-skeleton />
 
         <x-payments.table-mobile-skeleton />
-    </div>
+    </x-loading.visible>
 
-    <div class="w-full" wire:loading.remove>
+    <x-loading.hidden>
         <x-payments.table-desktop :payments="$payments" />
 
         <x-payments.table-mobile :payments="$payments" />
-    </div>
+    </x-loading.hidden>
 </div>

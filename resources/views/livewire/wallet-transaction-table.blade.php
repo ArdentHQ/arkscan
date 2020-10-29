@@ -62,13 +62,7 @@
     </div>
 
     <div id="transaction-list" class="w-full">
-        <div class="w-full" wire:loading>
-            <x-transactions.table-desktop-skeleton use-confirmations use-direction />
-
-            <x-transactions.table-mobile-skeleton />
-        </div>
-
-        <div class="w-full" wire:loading.remove>
+        <x-skeletons.transactions>
             <x-transactions.table-desktop :transactions="$transactions" :wallet="$wallet" use-confirmations use-direction />
 
             <x-transactions.table-mobile :transactions="$transactions" />
@@ -78,6 +72,6 @@
             <script>
                 window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#transaction-list')));
             </script>
-        </div>
+        </x-skeletons.transactions>
     </div>
 </div>
