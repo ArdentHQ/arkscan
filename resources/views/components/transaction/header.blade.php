@@ -16,14 +16,14 @@
                         :text="$transaction->typeLabel()"
                     />
                     <x-general.entity-header-item
+                        :title="trans('pages.transaction.amount')"
+                        icon="app-transactions-amount"
+                        :text="$transaction->amount()"
+                    />
+                    <x-general.entity-header-item
                         :title="trans('pages.transaction.fee')"
                         icon="app-fee"
                         :text="$transaction->fee()"
-                    />
-                    <x-general.entity-header-item
-                        :title="trans('pages.transaction.amount')"
-                        icon="app-votes"
-                        :text="$transaction->amount()"
                     />
                     <x-general.entity-header-item
                         :title="trans('pages.transaction.confirmations')"
