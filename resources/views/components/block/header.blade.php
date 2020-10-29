@@ -33,14 +33,14 @@
                         :url="route('wallet', $block->delegate()->address)"
                     />
                     <x-general.entity-header-item
-                        :title="trans('pages.block.transaction_volume')"
-                        icon="app-votes"
-                        :text="$block->amount()"
-                    />
-                    <x-general.entity-header-item
                         :title="trans('pages.block.transactions')"
                         icon="exchange"
                         :text="$block->transactionCount()"
+                    />
+                    <x-general.entity-header-item
+                        :title="trans('pages.block.transaction_volume')"
+                        icon="app-votes"
+                        :text="$block->amount()"
                     />
                     <x-general.entity-header-item
                         icon="app-reward"
