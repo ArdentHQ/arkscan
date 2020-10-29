@@ -70,10 +70,6 @@ final class Avatar
 
     private static function hash(string $value): int
     {
-        if (strlen($value) === 0) {
-            return 0;
-        }
-
         $h = 0;
 
         for ($i = 0; $i < strlen($value); $i++) {
