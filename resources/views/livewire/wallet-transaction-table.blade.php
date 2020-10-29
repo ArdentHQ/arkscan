@@ -62,13 +62,13 @@
     </div>
 
     <div id="transaction-list" class="w-full">
-        <div wire:loading>
+        <div class="w-full" wire:loading>
             <x-transactions.table-desktop-skeleton use-confirmations use-direction />
 
             <x-transactions.table-mobile-skeleton />
         </div>
 
-        <div wire:loading.remove>
+        <div class="w-full" wire:loading.remove>
             <x-transactions.table-desktop :transactions="$transactions" :wallet="$wallet" use-confirmations use-direction />
 
             <x-transactions.table-mobile :transactions="$transactions" />

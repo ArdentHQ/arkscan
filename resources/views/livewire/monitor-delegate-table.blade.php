@@ -1,35 +1,35 @@
 <div id="delegate-list" class="w-full">
     @if($this->state['status'] === 'resigned')
-        <div wire:loading>
+        <div class="w-full" wire:loading>
             <x-delegates.table-desktop-resigned-skeleton />
             <x-delegates.table-mobile-resigned-skeleton />
         </div>
 
-        <div wire:loading.remove>
+        <div class="w-full" wire:loading.remove>
             <x-delegates.table-desktop-resigned :delegates="$delegates" />
             <x-delegates.table-mobile-resigned :delegates="$delegates" />
         </div>
     @endif
 
     @if($this->state['status'] === 'standby')
-        <div wire:loading>
+        <div class="w-full" wire:loading>
             <x-delegates.table-desktop-standby-skeleton />
             <x-delegates.table-mobile-standby-skeleton />
         </div>
 
-        <div wire:loading.remove>
+        <div class="w-full" wire:loading.remove>
             <x-delegates.table-desktop-standby :delegates="$delegates" />
             <x-delegates.table-mobile-standby :delegates="$delegates" />
         </div>
     @endif
 
     @if($this->state['status'] === 'active')
-        <div wire:loading>
+        <div class="w-full" wire:loading>
             <x-delegates.table-desktop-active-skeleton />
             <x-delegates.table-mobile-active-skeleton />
         </div>
 
-        <div wire:loading.remove>
+        <div class="w-full" wire:loading.remove>
             <x-delegates.table-desktop-active :delegates="$delegates" />
             <x-delegates.table-mobile-active :delegates="$delegates" />
         </div>

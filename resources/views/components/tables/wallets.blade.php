@@ -1,11 +1,11 @@
 <div id="wallet-list" class="w-full">
-    <div wire:loading>
+    <div class="w-full" wire:loading>
         <x-wallets.table-desktop-skeleton />
 
         <x-wallets.table-mobile-skeleton />
     </div>
 
-    <div wire:loading.remove>
+    <div class="w-full" wire:loading.remove>
         <x-wallets.table-desktop :wallets="$wallets" />
 
         <x-wallets.table-mobile :wallets="$wallets" />

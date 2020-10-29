@@ -28,13 +28,13 @@
         </div>
     </div>
 
-    <div wire:loading>
+    <div class="w-full" wire:loading>
         <x-delegates.table-desktop-monitor-skeleton />
 
         <x-delegates.table-mobile-monitor-skeleton />
     </div>
 
-    <div wire:loading.remove>
+    <div class="w-full" wire:loading.remove>
         <x-delegates.table-desktop-monitor :delegates="$delegates" />
 
         {{-- <x-delegates.table-mobile-monitor-skeleton :delegates="$delegates" /> --}}
