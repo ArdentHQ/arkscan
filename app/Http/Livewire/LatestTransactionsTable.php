@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Facades\Network;
 use App\Http\Livewire\Concerns\ManagesTransactionTypeScopes;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -19,8 +21,15 @@ final class LatestTransactionsTable extends Component
         'type' => 'all',
     ];
 
+    private Collection $transactions;
+
     /** @phpstan-ignore-next-line */
     protected $listeners = ['filterTransactionsByType'];
+
+    public function mount(): void
+    {
+        $this->transactions = new Collection();
+    }
 
     public function filterTransactionsByType(string $value): void
     {
@@ -29,7 +38,14 @@ final class LatestTransactionsTable extends Component
 
     public function render(): View
     {
-        $transactions = Cache::remember('latestTransactionsTable:'.$this->state['type'], 8, function () {
+        return view('livewire.latest-transactions-table', [
+            'transactions' => ViewModelFactory::collection($this->transactions),
+        ]);
+    }
+
+    public function pollTransactions(): void
+    {
+        $this->transactions = Cache::remember('latestTransactionsTable:'.$this->state['type'], Network::blockTime(), function () {
             $query = Transaction::latestByTimestamp();
 
             if ($this->state['type'] !== 'all') {
@@ -41,9 +57,5 @@ final class LatestTransactionsTable extends Component
 
             return $query->take(15)->get();
         });
-
-        return view('livewire.latest-transactions-table', [
-            'transactions' => ViewModelFactory::collection($transactions),
-        ]);
     }
 }

@@ -24,16 +24,15 @@
                     </td>
                     <td>
                         @isset($useDirection)
-                            <x-tables.rows.desktop.sender-with-direction :model="$transaction" :wallet="$wallet" />
+                            {{-- <x-tables.rows.desktop.sender-with-direction :model="$transaction" :wallet="$wallet" /> --}}
                         @else
-                            <x-tables.rows.desktop.sender :model="$transaction" />
+                            {{-- <x-tables.rows.desktop.sender :model="$transaction" /> --}}
                         @endif
                     </td>
                     <td>
-                        <x-tables.rows.desktop.recipient :model="$transaction" />
+                        {{-- <x-tables.rows.desktop.recipient :model="$transaction" /> --}}
                     </td>
                     <td class="text-right">
-                        {{-- @TODO: this could potentially be abstracted into an amount component that handles this --}}
                         @isset($useDirection)
                             @if($transaction->isSent($wallet->address()))
                                 <x-tables.rows.desktop.amount-sent :model="$transaction" />

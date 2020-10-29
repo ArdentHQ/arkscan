@@ -2,7 +2,7 @@
     <table>
         <thead>
             <tr>
-                <th class="text-center">&nbsp;</th>
+                <th class="text-center"></th>
                 <th class="hidden lg:table-cell">@lang('general.block.timestamp')</th>
                 <th><span class="pl-14">@lang('general.block.generated_by')</span></th>
                 <th>@lang('general.block.height')</th>
@@ -17,31 +17,36 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($blocks as $block)
+            @for ($i = 0; $i < 15; $i++)
                 <tr>
                     <td>
-                        <x-tables.rows.desktop.block-id :model="$block" />
+                        <div class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
                     </td>
                     <td class="hidden lg:table-cell">
-                        <x-tables.rows.desktop.timestamp :model="$block" />
+                        <div class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
                     </td>
                     <td>
-                        {{-- <x-tables.rows.desktop.block-forger :model="$block" /> --}}
+                        <div class="flex flex-row-reverse items-center justify-between md:flex-row md:space-x-3 md:justify-start">
+                            <div>
+                                <div wire:loading.class="w-6 h-6 rounded-full md:w-11 md:h-11 loading-state"></div>
+                            </div>
+                            <div class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
+                        </div>
                     </td>
                     <td>
-                        <x-tables.rows.desktop.block-height :model="$block" />
+                        <div class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
                     </td>
                     <td>
-                        <x-tables.rows.desktop.transaction-count :model="$block" />
+                        <div class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
                     </td>
                     <td class="text-right">
-                        <x-tables.rows.desktop.amount :model="$block" />
+                        <div class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
                     </td>
                     <td class="hidden text-right xl:table-cell">
-                        <x-tables.rows.desktop.fee :model="$block" />
+                        <div class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
                     </td>
                 </tr>
-            @endforeach
+            @endfor
         </tbody>
     </table>
 </div>
