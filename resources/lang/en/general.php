@@ -12,6 +12,7 @@ return [
     'exchange'         => 'Exchange',
     'reload'           => 'Reload',
     'confirmed'        => 'Confirmed',
+    'see_all'          => 'See all',
     'wallet_not_found' => '<span class="bg-theme-warning-100">:0</span> has no balance. <br/> <span class="text-base font-normal">Return to this page after the address has received a transaction.</span>',
 
     'block' => [

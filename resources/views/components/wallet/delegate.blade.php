@@ -31,11 +31,11 @@
                 </x-details-box>
 
                 <x-details-box :title="trans('pages.wallet.delegate.votes', [$wallet->votesPercentage()])" icon="app-volume">
-                    {{ $wallet->votes() }}
+                    {{ $wallet->votes() }} <a href="{{ route('wallet.voters', $wallet->address()) }}" class="link">@lang('general.see_all')</a>
                 </x-details-box>
 
                 <x-details-box :title="trans('pages.wallet.delegate.forged_blocks')" icon="app-volume">
-                    {{ $wallet->forgedBlocks() }} <a href="{{ route('wallet.blocks', $wallet->address()) }}" class="link">See all</a>
+                    {{ $wallet->forgedBlocks() }} <a href="{{ route('wallet.blocks', $wallet->address()) }}" class="link">@lang('general.see_all')</a>
                 </x-details-box>
 
                 <x-details-box :title="trans('pages.wallet.delegate.productivity')" icon="app-volume">
