@@ -8,7 +8,11 @@
             @if ($model->username())
                 {{ $model->username() }}
             @else
-                <x-truncate-middle :value="$model->address()" />
+                @isset($withoutTruncate)
+                    {{ $model->address() }}
+                @else
+                    <x-truncate-middle :value="$model->address()" />
+                @endisset
             @endif
         </a>
     </div>
