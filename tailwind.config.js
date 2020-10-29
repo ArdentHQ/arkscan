@@ -13,6 +13,7 @@ module.exports = {
                 20: '20px',
             },
             height: {
+                '30': '7.5rem',
                 '128': '32rem',
             },
             width: {
