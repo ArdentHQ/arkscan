@@ -12,12 +12,12 @@ trait InteractsWithNeighbours
 {
     public function previousBlockUrl(): ?string
     {
-        return $this->findBlockWithHeight($this->block->height->minus(1)->toNumber());
+        return $this->findBlockWithHeight($this->block->height->toNumber() - 1);
     }
 
     public function nextBlockUrl(): ?string
     {
-        return $this->findBlockWithHeight($this->block->height->plus(1)->toNumber());
+        return $this->findBlockWithHeight($this->block->height->toNumber() + 1);
     }
 
     private function findBlockWithHeight(int $height): ?string
