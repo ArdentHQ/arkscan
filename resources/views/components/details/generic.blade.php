@@ -1,14 +1,14 @@
 @isset($withoutBorder)
 <div class="flex items-center justify-between pb-4">
 @else
-<div class="flex items-center justify-between pb-4 border-b border-theme-secondary-300">
+<div class="flex items-center justify-between pb-4 border-b border-theme-secondary-300 dark:border-theme-secondary-800">
 @endif
     <div class="flex flex-col space-y-2">
-        <span class="text-sm font-semibold text-theme-secondary-500">{{ $title }}</span>
+        <span class="text-sm font-semibold text-theme-secondary-500 dark:text-theme-secondary-700">{{ $title }}</span>
         @if((string) $slot === "")
-            <span class="font-semibold text-theme-secondary-500">@lang('generic.not_specified')</span>
+            <span class="font-semibold text-theme-secondary-500 dark:text-theme-secondary-200"">@lang('generic.not_specified')</span>
         @else
-            <span class="text-lg font-semibold text-theme-secondary-700">{{ $slot }}</span>
+            <span class="text-lg font-semibold text-theme-secondary-700 dark:text-theme-secondary-200"">{{ $slot }}</span>
         @endif
     </div>
 
