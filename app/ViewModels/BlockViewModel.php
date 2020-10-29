@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\ViewModels;
 
-use App\Models\Block;
-use App\Facades\Network;
-use App\Services\Avatar;
-use App\Services\Timestamp;
 use App\Contracts\ViewModel;
+use App\Facades\Network;
+use App\Models\Block;
+use App\Services\Blockchain\NetworkStatus;
 use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
-use App\Services\Blockchain\NetworkStatus;
+use App\Services\Timestamp;
 
 final class BlockViewModel implements ViewModel
 {
