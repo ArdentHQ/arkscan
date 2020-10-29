@@ -46,7 +46,7 @@
                 <div class="py-16 content-container md:px-8">
                     <div id="transaction-list" class="w-full">
                         <div class="relative flex items-end justify-between mb-8">
-                            <h2 class="text-3xl sm:text-4xl">@lang('pages.block.transactions')</h2>
+                            <h2 class="text-xl sm:text-2xl">@lang('pages.block.transactions')</h2>
                         </div>
 
                         <x-skeletons.transactions>

@@ -7,7 +7,7 @@
 <x-details.address
     :title="trans('general.transaction.multi_signature_address')"
     :transaction="$transaction"
-    :address="$transaction->multiSignatureAddress()"
+    :model="$transaction->multiSignatureWallet()"
     icon="app-volume" />
 
 <x-details.generic :title="trans('general.transaction.block_id')" icon="app-block-id">

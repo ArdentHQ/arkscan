@@ -3,7 +3,7 @@
         {{-- Vote --}}
         <div class="w-1/2">
             <div class="relative flex items-end justify-between mb-8">
-                <h2 class="text-3xl sm:text-4xl">@lang('pages.transaction.vote')</h2>
+                <h2 class="text-xl sm:text-2xl">@lang('pages.transaction.vote')</h2>
             </div>
 
             <x-details.vote
@@ -21,7 +21,7 @@
         {{-- Unvote --}}
         <div class="w-1/2">
             <div class="relative flex items-end justify-between mb-8">
-                <h2 class="text-3xl sm:text-4xl">@lang('pages.transaction.unvote')</h2>
+                <h2 class="text-xl sm:text-2xl">@lang('pages.transaction.unvote')</h2>
             </div>
 
             <x-details.vote

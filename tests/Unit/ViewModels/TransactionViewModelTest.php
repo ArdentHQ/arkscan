@@ -832,6 +832,12 @@ it('should get the participants', function () {
         ],
     ]));
 
+    Wallet::factory()->create(['public_key' => '02fb3def2593a00c5b84620addf28ff21bac452bd71a37d4d8e24f301683a81b56']);
+    Wallet::factory()->create(['public_key' => '02bc9f661fcc8abca65fe9aff4614036867b7fdcc5730085ccc5cb854664d0194b']);
+    Wallet::factory()->create(['public_key' => '03c44c6b6cc9893ae21ca606712fd0f6f03c41ce81c4f6ce5a640f4b0b82ec1ce0']);
+    Wallet::factory()->create(['public_key' => '020300039e973baf5e46b945777cfae330d6392cdb039b1cebc5c3382d421166c3']);
+    Wallet::factory()->create(['public_key' => '03b050073621b9b5caec9461d44d6bcf21a858c47dd88230ce723e25c1bc75c219']);
+
     expect($this->subject->participants())->toHaveCount(5);
 });
 
@@ -842,6 +848,49 @@ it('should fail to get the participants if the transaction is not a multi signat
     ]));
 
     expect($this->subject->participants())->toBeEmpty();
+});
+
+it('should get the multi signature wallet', function () {
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'asset'      => null,
+    ]));
+
+    expect($this->subject->participants())->toHaveCount(0);
+
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'asset'      => [
+            'multiSignature' => [
+                'min'        => 3,
+                'publicKeys' => [
+                    '02fb3def2593a00c5b84620addf28ff21bac452bd71a37d4d8e24f301683a81b56',
+                    '02bc9f661fcc8abca65fe9aff4614036867b7fdcc5730085ccc5cb854664d0194b',
+                    '03c44c6b6cc9893ae21ca606712fd0f6f03c41ce81c4f6ce5a640f4b0b82ec1ce0',
+                    '020300039e973baf5e46b945777cfae330d6392cdb039b1cebc5c3382d421166c3',
+                    '03b050073621b9b5caec9461d44d6bcf21a858c47dd88230ce723e25c1bc75c219',
+                ],
+            ],
+        ],
+    ]));
+
+    Wallet::factory()->create(['address' => 'DMNBBtYt1teAKxA2BpiTW9PA3gX3Ad5dyk']);
+
+    $result = $this->subject->multiSignatureWallet();
+
+    expect($result)->toBeInstanceOf(WalletViewModel::class);
+    expect($result->address())->toBe('DMNBBtYt1teAKxA2BpiTW9PA3gX3Ad5dyk');
+});
+
+it('should fail to get the multi signature wallet if the transaction is not a multi signature registrations', function () {
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::TRANSFER,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+    ]));
+
+    expect($this->subject->multiSignatureWallet())->toBeEmpty();
 });
 
 it('should get the type component', function () {
