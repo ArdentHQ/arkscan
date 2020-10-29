@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70af7a6ca94e3323628085b0c15f3534",
+    "content-hash": "821b716ee7fd1f5e310ba199a708c185",
     "packages": [
         {
             "name": "arkecosystem/crypto",
@@ -3166,6 +3166,57 @@
             "time": "2020-10-18T11:50:25+00:00"
         },
         {
+            "name": "leigh/mt-rand",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lt/PHP-MT19937.git",
+                "reference": "d8c1037e1647f069f0b07b4e8c499d4e2cecbfbc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lt/PHP-MT19937/zipball/d8c1037e1647f069f0b07b4e8c499d4e2cecbfbc",
+                "reference": "d8c1037e1647f069f0b07b4e8c499d4e2cecbfbc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MersenneTwister\\": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Leigh T",
+                    "homepage": "https://github.com/lt"
+                }
+            ],
+            "description": "PHP implementation of the MT19937 algorithm",
+            "homepage": "https://github.com/lt/PHP-MT19937",
+            "keywords": [
+                "PRNG",
+                "RNG",
+                "mersenne",
+                "random",
+                "twister"
+            ],
+            "support": {
+                "issues": "https://github.com/lt/PHP-MT19937/issues",
+                "source": "https://github.com/lt/PHP-MT19937/tree/0.1.0"
+            },
+            "time": "2016-02-25T13:26:38+00:00"
+        },
+        {
             "name": "livewire/livewire",
             "version": "v2.3.1",
             "source": {
@@ -4996,6 +5047,101 @@
                 "source": "https://github.com/reactphp/event-loop/tree/v1.1.1"
             },
             "time": "2020-01-01T18:39:52+00:00"
+        },
+        {
+            "name": "ruafozy/mersenne-twister",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ruafozy/php-mersenne-twister.git",
+                "reference": "83ca113aa1e5f924d3b5f03679b1480063cc7d94"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ruafozy/php-mersenne-twister/zipball/83ca113aa1e5f924d3b5f03679b1480063cc7d94",
+                "reference": "83ca113aa1e5f924d3b5f03679b1480063cc7d94",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.1.4"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/mersenne_twister.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Pure-PHP Mersenne Twister",
+            "homepage": "https://github.com/ruafozy/php-mersenne-twister",
+            "keywords": [
+                "PRNG",
+                "mersenne",
+                "random"
+            ],
+            "support": {
+                "issues": "https://github.com/ruafozy/php-mersenne-twister/issues",
+                "source": "https://github.com/ruafozy/php-mersenne-twister/tree/master"
+            },
+            "time": "2015-02-21T10:26:45+00:00"
+        },
+        {
+            "name": "savvot/random",
+            "version": "v0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/savvot/random.git",
+                "reference": "8f075d520d75fa90dea8421f6d91176168d150e6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/savvot/random/zipball/8f075d520d75fa90dea8421f6d91176168d150e6",
+                "reference": "8f075d520d75fa90dea8421f6d91176168d150e6",
+                "shasum": ""
+            },
+            "require": {
+                "php-64bit": ">=5.5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Savvot\\Random\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "SavvoT",
+                    "email": "savvot@ya.ru"
+                }
+            ],
+            "description": "Deterministic pseudo-random generators library with dozens of useful functions and several sources of randomness",
+            "keywords": [
+                "PRNG",
+                "RNG",
+                "php",
+                "pseudo-random",
+                "random",
+                "random number generator",
+                "rnd"
+            ],
+            "support": {
+                "issues": "https://github.com/savvot/random/issues",
+                "source": "https://github.com/savvot/random/tree/gaussian-ziggurat"
+            },
+            "time": "2015-09-26T15:48:13+00:00"
         },
         {
             "name": "spatie/image",

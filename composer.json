@@ -24,9 +24,12 @@
         "laravel/horizon": "^5.3",
         "laravel/telescope": "^4.0",
         "laravel/tinker": "^3.0",
+        "leigh/mt-rand": "^0.1.0",
         "livewire/livewire": "^2.0",
         "mattiasgeniar/php-percentages": "^1.1",
         "nyholm/psr7": "^1.3",
+        "ruafozy/mersenne-twister": "^1.3",
+        "savvot/random": "^0.3.0",
         "spatie/laravel-responsecache": "^6.6",
         "spatie/laravel-short-schedule": "^1.2",
         "symfony/psr-http-message-bridge": "^2.0"

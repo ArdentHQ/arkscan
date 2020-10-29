@@ -230,6 +230,7 @@ return [
         'Network'      => App\Facades\Network::class,
         'Explorer'     => App\Explorer::class,
         'Settings'     => App\Services\Settings::class,
+        'Avatar'       => App\Services\Avatar::class,
     ],
 
 ];

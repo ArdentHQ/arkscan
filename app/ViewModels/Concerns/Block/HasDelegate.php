@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 
 trait HasDelegate
 {
-    public function delegate(): Wallet
+    public function delegate(): ?Wallet
     {
         return Cache::remember(
             "block:delegate:{$this->block->id}",
