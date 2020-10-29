@@ -1,5 +1,5 @@
 <div>
     @lang('labels.sender')
 
-    <x-general.address :address="$model->sender()" with-loading />
+    <x-general.address :model="$model->sender()" with-loading />
 </div>

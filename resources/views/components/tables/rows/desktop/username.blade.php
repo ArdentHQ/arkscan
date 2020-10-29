@@ -1,1 +1,1 @@
-<x-general.address :address="$model->username()" />
+<x-general.address :model="$model" />

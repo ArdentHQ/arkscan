@@ -1,1 +1,1 @@
-<x-general.address :address="$model->address()" with-loading />
+<x-general.address :model="$model" with-loading />

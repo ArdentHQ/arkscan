@@ -28,7 +28,7 @@ trait CanBeDelegate
         });
     }
 
-    public function username(): string
+    public function username(): ?string
     {
         return Arr::get($this->wallet, 'attributes.delegate.username');
     }

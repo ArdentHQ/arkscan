@@ -2,18 +2,14 @@
 
 <div wire:key="{{ $transaction->id() }}">
     @php($address = null)
+    @php($username = null)
     @php($text = trans('general.transaction.'.$iconType))
 
     <div @if ($withLoading ?? false) wire:loading.class="hidden" @endif>
-        @if ($transaction->isUnknown())
-            @php($address = $transaction->recipient() ?? $transaction->sender())
-            <x-general.address :address="$address" />
-        @elseif ($transaction->isTransfer())
-            @php($address = $transaction->recipient() ?? $transaction->sender())
-            <x-general.address :address="$address" />
+        @if ($transaction->isTransfer() || $transaction->isUnknown())
+            <x-general.address :model="$transaction->recipient()" />
         @elseif ($transaction->isVote())
-            @php($address = $transaction->voted()->username())
-            <x-general.address :address="$address">
+            <x-general.address :model="$transaction->voted()">
                 <x-slot name="icon">
                     <x-transactions.icon :icon-type="$iconType" />
                 </x-slot>
@@ -25,8 +21,7 @@
                 </x-slot>
             </x-general.address>
         @elseif ($transaction->isUnvote())
-            @php($address = $transaction->unvoted()->username())
-            <x-general.address :address="$address">
+            <x-general.address :model="$transaction->unvoted()">
                 <x-slot name="icon">
                     <x-transactions.icon :icon-type="$iconType" />
                 </x-slot>
@@ -49,6 +44,6 @@
     </div>
 
     @if ($withLoading ?? false)
-        <x-general.loading-state.recipient-address :address="$address" :text="$text" />
+        <x-general.loading-state.recipient-address :address="$address" :username="$username" :text="$text" />
     @endif
 </div>

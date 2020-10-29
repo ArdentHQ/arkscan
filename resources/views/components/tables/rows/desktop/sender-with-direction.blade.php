@@ -10,12 +10,12 @@
             </div>
         </div>
 
-        <x-general.avatar :identifier="$model->sender()" />
+        <x-general.avatar :identifier="$model->sender()->address()" />
     </div>
 
     <div class="flex flex-col space-y-2">
         <span class="text-lg font-semibold text-theme-secondary-700">
-            <x-general.address-iconless :address="$model->sender()" />
+            <x-general.address-iconless :model="$model->sender()" />
         </span>
     </div>
 </div>

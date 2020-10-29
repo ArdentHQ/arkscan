@@ -9,7 +9,7 @@
                 @foreach($wallet->registrations() as $registration)
                     {{-- @TODO: translation --}}
                     <x-details.generic :title="ucfirst($registration->iconType())" icon="app-volume">
-                        <a href="{{ route('wallet', $registration->recipient()) }}" class="link">
+                        <a href="{{ route('wallet', $registration->recipient()->address()) }}" class="link">
                             {{ $registration->entityName() }}
                         </a>
                     </x-details.generic>

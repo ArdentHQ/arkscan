@@ -1,13 +1,13 @@
 <x-details.address
     :title="trans('general.transaction.sender')"
     :transaction="$transaction"
-    :address="$transaction->sender()"
+    :model="$transaction->sender()"
     icon="app-volume" />
 
 <x-details.address
     :title="trans('general.transaction.recipient')"
     :transaction="$transaction"
-    :address="$transaction->recipient()"
+    :model="$transaction->recipient()"
     icon="app-volume" />
 
 <x-details.generic :title="trans('general.transaction.block_id')" icon="app-block-id">

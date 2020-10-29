@@ -5,7 +5,11 @@
         @endif
 
         <a href="{{ route('wallet', $address) }}" class="font-semibold link">
-            <x-truncate-middle :value="$address" />
+            @if ($username ?? false)
+                {{ $username }}
+            @else
+                <x-truncate-middle :value="$address" />
+            @endif
         </a>
     </div>
 </div>
