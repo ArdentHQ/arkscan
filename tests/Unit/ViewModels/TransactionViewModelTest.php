@@ -714,25 +714,44 @@ it('should get the payments', function () {
 
     expect($this->subject->payments())->toBeEmpty();
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+    $A = Wallet::factory()->create();
+    $B = Wallet::factory()->create();
+    $C = Wallet::factory()->create();
+    $D = Wallet::factory()->create();
+    $E = Wallet::factory()->create();
+
+    $model = Transaction::factory()->create([
         'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
         'type_group' => TransactionTypeGroupEnum::CORE,
         'asset'      => [
             'payments' => [
-                ['amount' => '1000000000', 'recipientId' => 'A'],
-                ['amount' => '2000000000', 'recipientId' => 'B'],
-                ['amount' => '3000000000', 'recipientId' => 'C'],
-                ['amount' => '4000000000', 'recipientId' => 'D'],
-                ['amount' => '5000000000', 'recipientId' => 'E'],
+                [
+                    'amount'      => '1000000000',
+                    'recipientId' => $A->address,
+                ], [
+                    'amount'      => '2000000000',
+                    'recipientId' => $B->address,
+                ], [
+                    'amount'      => '3000000000',
+                    'recipientId' => $C->address,
+                ], [
+                    'amount'      => '4000000000',
+                    'recipientId' => $D->address,
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => $E->address,
+                ],
             ],
         ],
-    ]));
+    ]);
 
-    expect($this->subject->payments()[0])->toEqual(new Payment('10 DARK', 'A'));
-    expect($this->subject->payments()[1])->toEqual(new Payment('20 DARK', 'B'));
-    expect($this->subject->payments()[2])->toEqual(new Payment('30 DARK', 'C'));
-    expect($this->subject->payments()[3])->toEqual(new Payment('40 DARK', 'D'));
-    expect($this->subject->payments()[4])->toEqual(new Payment('50 DARK', 'E'));
+    $this->subject = new TransactionViewModel($model);
+
+    expect($this->subject->payments()[0])->toEqual(new Payment((int) $model->timestamp, '10 DARK', $A->address, $A->attributes['delegate']['username']));
+    expect($this->subject->payments()[1])->toEqual(new Payment((int) $model->timestamp, '20 DARK', $B->address, $B->attributes['delegate']['username']));
+    expect($this->subject->payments()[2])->toEqual(new Payment((int) $model->timestamp, '30 DARK', $C->address, $C->attributes['delegate']['username']));
+    expect($this->subject->payments()[3])->toEqual(new Payment((int) $model->timestamp, '40 DARK', $D->address, $D->attributes['delegate']['username']));
+    expect($this->subject->payments()[4])->toEqual(new Payment((int) $model->timestamp, '50 DARK', $E->address, $E->attributes['delegate']['username']));
 });
 
 it('should fail to get the payments if the transaction is not a multi payment', function () {

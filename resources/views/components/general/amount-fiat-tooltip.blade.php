@@ -9,11 +9,11 @@
 @endif
     @if(Network::canBeExchanged())
         <div class="inline" @if ($amount ?? false) data-tippy-content="{{ $fiat }}" @endif>
-            {{ $amount }}
+            <x-currency>{{ $amount }}</x-currency>
         </div>
     @else
         <div class="inline">
-            {{ $amount }}
+            <x-currency>{{ $amount }}</x-currency>
         </div>
     @endif
 </span>
