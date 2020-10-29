@@ -19,7 +19,7 @@
     </span>
 </x-details.generic>
 
-<x-details.generic :title="trans('general.transaction.timestamp')" icon="app-timestamp" without-border>
+<x-details.generic :title="trans('general.transaction.timestamp')" icon="app-timestamp">
     {{ $transaction->timestamp() }}
 </x-details.generic>
 
