@@ -24,13 +24,13 @@
                     </td>
                     <td>
                         @isset($useDirection)
-                            {{-- <x-tables.rows.desktop.sender-with-direction :model="$transaction" :wallet="$wallet" /> --}}
+                            <x-tables.rows.desktop.sender-with-direction :model="$transaction" :wallet="$wallet" />
                         @else
-                            {{-- <x-tables.rows.desktop.sender :model="$transaction" /> --}}
+                            <x-tables.rows.desktop.sender :model="$transaction" />
                         @endif
                     </td>
                     <td>
-                        {{-- <x-tables.rows.desktop.recipient :model="$transaction" /> --}}
+                        <x-tables.rows.desktop.recipient :model="$transaction" />
                     </td>
                     <td class="text-right">
                         @isset($useDirection)

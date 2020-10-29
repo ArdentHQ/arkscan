@@ -1,5 +1,5 @@
 <div>
     @lang('labels.block_forger')
 
-    <x-general.address :address="$model->delegateUsername()" with-loading />
+    <x-general.address :model="$model" with-loading />
 </div>

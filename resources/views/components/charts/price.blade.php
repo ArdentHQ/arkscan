@@ -23,6 +23,7 @@
             dropdownOpen: false,
             localizedPeriod: null,
             isDarkTheme: "{{ Settings::darkTheme() }}",
+            isVisible: "{{ $isVisible }}",
             getMarketAverage(period) {
                 const market = this.data[`marketHistorical${period}`]
 
@@ -31,6 +32,9 @@
                 this.priceMax = market.max;
 
                 return market;
+            },
+            toggleChart() {
+                this.isVisible = ! this.isVisible;
             },
             updateChart() {
                 this.isDarkTheme = ! this.isDarkTheme;
@@ -233,6 +237,8 @@
     x-data="makeChart('{{ $identifier }}', '{{ $coloursScheme }}')"
     x-init="renderChart()"
     x-on:toggle-dark-mode.window="updateChart()"
+    x-on:{{ $alpineShow }}.window="toggleChart()"
+    x-show="isVisible"
     class="flex flex-col w-full bg-white border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
     <div class="flex flex-col w-full">
         <div class="relative flex items-center justify-between w-full">

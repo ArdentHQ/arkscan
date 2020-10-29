@@ -1,1 +1,1 @@
-<x-general.address :address="$model->delegateUsername()" />
+<x-general.address :model="$model" />

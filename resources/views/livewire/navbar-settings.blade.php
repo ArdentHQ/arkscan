@@ -38,8 +38,9 @@
                 <x-navbar.setting-option :title="trans('forms.settings.price_chart.title')" :subtitle="trans('forms.settings.price_chart.description')">
                     <x-ark-toggle
                         name="state.priceChart"
-                        :default="$this->state['priceChart'] ? 'true' : 'false'"
                         hide-label
+                        :default="$this->state['priceChart'] ? 'true' : 'false'"
+                        alpine-click="$dispatch('toggle-price-chart')"
                     />
                 </x-navbar.setting-option>
             @endif
@@ -47,8 +48,9 @@
             <x-navbar.setting-option :title="trans('forms.settings.fee_chart.title')" :subtitle="trans('forms.settings.fee_chart.description')">
                 <x-ark-toggle
                     name="state.feeChart"
-                    :default="$this->state['feeChart'] ? 'true' : 'false'"
                     hide-label
+                    :default="$this->state['feeChart'] ? 'true' : 'false'"
+                    alpine-click="$dispatch('toggle-fee-chart')"
                 />
             </x-navbar.setting-option>
 

@@ -26,7 +26,7 @@
                         <x-tables.rows.desktop.timestamp :model="$block" />
                     </td>
                     <td>
-                        {{-- <x-tables.rows.desktop.block-forger :model="$block" /> --}}
+                        <x-tables.rows.desktop.block-forger :model="$block" />
                     </td>
                     <td>
                         <x-tables.rows.desktop.block-height :model="$block" />
