@@ -44,7 +44,7 @@
                     />
                     <x-general.entity-header-item
                         icon="app-reward"
-                        :text="$block->reward()"
+                        :text="$block->totalReward()"
                     >
                         <x-slot name="title">
                             <span data-tippy-content="@lang('pages.block.total_rewards_tooltip', [$block->reward()])">
