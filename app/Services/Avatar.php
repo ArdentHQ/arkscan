@@ -4,41 +4,36 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use mersenne_twister\twister;
-
 // See https://github.com/vechain/picasso/blob/master/src/index.ts
 
 final class Avatar
 {
     public static function make(string $seed): string
     {
-        // Seed
-        $twister = new twister(static::hash($seed));
-
-        // We might just do it based on the colors of the bridgechain
         $defaultColors = [
-            ['rgb(244, 67, 54)'],
-            ['rgb(233, 30, 99)'],
-            ['rgb(156, 39, 176)'],
-            ['rgb(103, 58, 183)'],
-            ['rgb(63, 81, 181)'],
-            ['rgb(33, 150, 243)'],
-            ['rgb(3, 169, 244)'],
-            ['rgb(0, 188, 212)'],
-            ['rgb(0, 150, 136)'],
-            ['rgb(76, 175, 80)'],
-            ['rgb(139, 195, 74)'],
-            ['rgb(205, 220, 57)'],
-            ['rgb(255, 193, 7)'],
-            ['rgb(255, 152, 0)'],
-            ['rgb(255, 87, 34)'],
+            'rgb(244, 67, 54)',
+            'rgb(233, 30, 99)',
+            'rgb(156, 39, 176)',
+            'rgb(103, 58, 183)',
+            'rgb(63, 81, 181)',
+            'rgb(33, 150, 243)',
+            'rgb(3, 169, 244)',
+            'rgb(0, 188, 212)',
+            'rgb(0, 150, 136)',
+            'rgb(76, 175, 80)',
+            'rgb(139, 195, 74)',
+            'rgb(205, 220, 57)',
+            'rgb(255, 193, 7)',
+            'rgb(255, 152, 0)',
+            'rgb(255, 87, 34)',
         ];
 
-        $genColor = function () use ($defaultColors, $twister): string {
-            $index = floor(count($defaultColors) * $twister->real_closed());
+        $twister = new Mersenne(static::hash($seed));
 
-            // Still missing the array_splice() equivalent there
-            return $defaultColors[$index][0];
+        $genColor = function () use (&$defaultColors, $twister): string {
+            $index = (int) floor(count($defaultColors) * $twister->random());
+
+            return array_splice($defaultColors, $index, 1)[0];
         };
 
         $backgroundString = '<rect fill="'.$genColor().'" width="100" height="100"/>';
@@ -50,11 +45,9 @@ final class Avatar
         $cys              = [30, 40, 50, 60, 70];
 
         for ($i = 0; $i < $layers; $i++) {
-            $value = floor(count($defaultColors) * $twister->real_closed());
-
-            $r    = $rs[floor(count($rs) * $twister->real_closed())];
-            $cx   = $cxs[floor(count($cxs) * $twister->real_closed())];
-            $cy   = $cys[floor(count($cys) * $twister->real_closed())];
+            $r    = array_splice($rs, (int) floor(count($rs) * $twister->random()), 1)[0];
+            $cx   = array_splice($cxs, (int) floor(count($cxs) * $twister->random()), 1)[0];
+            $cy   = array_splice($cys, (int) floor(count($cys) * $twister->random()), 1)[0];
             $fill = $genColor();
 
             $shapeString .= '<circle r="'.$r.'" cx="'.$cx.'" cy="'.$cy.'" fill="'.$fill.'"/>';

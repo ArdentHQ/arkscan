@@ -75,7 +75,6 @@
         @stack('extraStyle')
 
         <!-- Scripts -->
-        <script src="{{ mix('js/picasso.js') }}" defer></script>
         <script src="{{ mix('js/app.js') }}" defer></script>
     </body>
 </html>

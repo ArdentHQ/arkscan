@@ -13,7 +13,6 @@ const mix = require('laravel-mix');
 
 mix
     .js('resources/js/app.js', 'public/js')
-    .ts('resources/js/vendor/ark/picasso.ts', 'public/js')
     .copy('resources/js/chart.js', 'public/js/chart.js')
     .copy('resources/js/vendor/ark/clipboard.js', 'public/js/clipboard.js')
     .postCss('resources/css/app.css', 'public/css', [
