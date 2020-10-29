@@ -57,6 +57,6 @@ final class BlockViewModel implements ViewModel
 
     public function confirmations(): string
     {
-        return NumberFormatter::number(abs(NetworkStatus::height() - $this->block->height->toFloat()));
+        return NumberFormatter::number(abs(NetworkStatus::height() - $this->block->height->toNumber()));
     }
 }
