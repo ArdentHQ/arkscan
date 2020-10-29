@@ -10,7 +10,7 @@
             @foreach($payments as $payment)
                 <tr>
                     <td>
-                        <x-general.identity :model="$payment" />
+                        <x-general.identity :model="$payment" without-truncate />
                     </td>
                     <td class="hidden text-right lg:table-cell">
                         <x-tables.rows.desktop.amount :model="$payment" />
