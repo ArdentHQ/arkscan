@@ -71,6 +71,37 @@ it('should get the amount', function () {
     assertMatchesSnapshot($this->subject->amount());
 });
 
+it('should get the amount for multi payments', function () {
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'asset'      => [
+            'payments' => [
+                [
+                    'amount'      => '1000000000',
+                    'recipientId' => 'A',
+                ], [
+                    'amount'      => '2000000000',
+                    'recipientId' => 'B',
+                ], [
+                    'amount'      => '3000000000',
+                    'recipientId' => 'C',
+                ], [
+                    'amount'      => '4000000000',
+                    'recipientId' => 'D',
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => 'E',
+                ],
+            ],
+        ],
+    ]));
+
+    expect($this->subject->amount())->toBeString();
+
+    assertMatchesSnapshot($this->subject->amount());
+});
+
 it('should get the confirmations', function () {
     expect($this->subject->confirmations())->toBeString();
     expect($this->subject->confirmations())->toBe('4,999,999');

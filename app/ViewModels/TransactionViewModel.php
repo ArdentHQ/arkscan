@@ -15,6 +15,7 @@ use App\Services\Transactions\TransactionDirection;
 use App\Services\Transactions\TransactionState;
 use App\Services\Transactions\TransactionType;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
 final class TransactionViewModel implements ViewModel
@@ -90,7 +91,13 @@ final class TransactionViewModel implements ViewModel
 
     public function amount(): string
     {
-        return NumberFormatter::currency($this->transaction->amount->toFloat(), Network::currency());
+        if ($this->isMultiPayment()) {
+            $amount = collect(Arr::get($this->transaction->asset ?? [], 'payments', []))->sum('amount') / 1e8;
+        } else {
+            $amount = $this->transaction->amount->toFloat();
+        }
+
+        return NumberFormatter::currency($amount, Network::currency());
     }
 
     public function amountFiat(): string
