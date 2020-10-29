@@ -3,7 +3,11 @@
         <span class="text-sm font-semibold text-theme-secondary-500">{{ $title }}</span>
         <span class="text-lg font-semibold text-theme-secondary-700">
             <div wire:key="{{ $transaction->id() }}">
-                <x-general.identity-iconless :model="$model" />
+                @if($model->isDelegate())
+                    <x-general.identity-delegate :model="$model" />
+                @else
+                    <x-general.identity-iconless :model="$model" />
+                @endif
             </div>
         </span>
     </div>
