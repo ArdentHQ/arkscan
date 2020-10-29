@@ -34,6 +34,8 @@ final class LatestTransactionsTable extends Component
     public function filterTransactionsByType(string $value): void
     {
         $this->state['type'] = $value;
+
+        $this->pollTransactions();
     }
 
     public function render(): View
