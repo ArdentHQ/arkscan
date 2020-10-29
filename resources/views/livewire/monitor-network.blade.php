@@ -9,9 +9,14 @@
                 />
                 <x-general.entity-header-item
                     :title="trans('pages.monitor.statistics.transactions')"
-                    :text="$statistics['transactions']"
                     icon="app-transaction"
-                />
+                >
+                    <x-slot name="text">
+                        <x-number>
+                            {{ $statistics['transactions'] }}
+                        </x-number>
+                    </x-slot>
+                </x-general.entity-header-item>
                 <x-general.entity-header-item
                     :title="trans('pages.monitor.statistics.current_delegate')"
                     :text="$statistics['currentDelegate']->username()"

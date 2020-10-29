@@ -9,7 +9,6 @@ use App\Facades\Network;
 use App\Models\Block;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\Monitor;
-use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
@@ -64,10 +63,10 @@ final class MonitorNetwork extends Component
         });
     }
 
-    private function transactions(): string
+    private function transactions(): int
     {
-        return Cache::remember('MonitorNetwork:transactions', Network::blockTime(), function (): string {
-            return NumberFormatter::number(Block::whereBetween('height', Monitor::heightRangeByRound(Monitor::roundNumber()))->sum('number_of_transactions'));
+        return Cache::remember('MonitorNetwork:transactions', Network::blockTime(), function (): int {
+            return Block::whereBetween('height', Monitor::heightRangeByRound(Monitor::roundNumber()))->sum('number_of_transactions');
         });
     }
 

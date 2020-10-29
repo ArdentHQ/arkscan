@@ -30,9 +30,9 @@ it('should render with a height, name, supply and market cap', function () {
         ->push($blockchainStatus);
 
     Livewire::test(NetworkStatusBlock::class)
-        ->assertSee('Height: 5,651,290')
-        ->assertSee('Network: ARK Development Network')
-        ->assertSee('Supply: 136,280,982 DARK');
+        ->assertSee('5,651,290')
+        ->assertSee('ARK Development Network')
+        ->assertSee('136,280,982 DARK');
 
     // @TODO: add test for production which shows this
     // ->assertSee('Market Cap: 39,616,881.467 USD');

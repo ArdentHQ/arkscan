@@ -37,7 +37,7 @@
             @endif
 
             <x-details-box :title="trans('pages.home.network-details.lifetime_transactions_volume')" icon="app-volume">
-                {{ $aggregates['volume'] }}
+                <x-currency>{{ $aggregates['volume'] }}</x-currency>
             </x-details-box>
 
             <x-details-box :title="trans('pages.home.network-details.lifetime_transactions')" icon="app-transactions-amount">
@@ -45,7 +45,7 @@
             </x-details-box>
 
             <x-details-box :title="trans('pages.home.network-details.total_votes')" :extra-value="$aggregates['votesPercentage']" icon="app-votes">
-                {{ $aggregates['votesCount'] }}
+                <x-percentage>{{ $aggregates['votesCount'] }}</x-percentage>
             </x-details-box>
         </div>
     </div>

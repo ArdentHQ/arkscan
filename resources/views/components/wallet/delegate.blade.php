@@ -30,7 +30,11 @@
                     {{ $wallet->amountForged() }}
                 </x-details-box>
 
-                <x-details-box :title="trans('pages.wallet.delegate.votes', [$wallet->votesPercentage()])" icon="app-volume">
+                <x-details-box icon="app-volume">
+                    <x-slot name="title">
+                        @lang('pages.wallet.delegate.votes', [App\Services\NumberFormatter::percentage($wallet->votesPercentage())])
+                    </x-slot>
+
                     {{ $wallet->votes() }} <a href="{{ route('wallet.voters', $wallet->address()) }}" class="link">@lang('general.see_all')</a>
                 </x-details-box>
 

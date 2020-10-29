@@ -39,5 +39,5 @@ beforeEach(function () {
 });
 
 it('should aggregate and format', function () {
-    expect($this->subject->aggregate())->toBe('73.378');
+    expect($this->subject->aggregate())->toBe('73.377809972047');
 });

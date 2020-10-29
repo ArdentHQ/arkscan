@@ -10,7 +10,7 @@
                 @lang("pages.monitor.statistics.delegate_registrations")
             </x-slot>
 
-            {{ $delegateRegistrations }}
+            <x-number>{{ $delegateRegistrations }}</x-number>
         </x-monitor.statistic>
 
         <x-monitor.statistic>
@@ -22,7 +22,7 @@
                 @lang("pages.monitor.statistics.block_reward")
             </x-slot>
 
-            {{ $blockReward }}
+            <x-currency>{{ $blockReward }}</x-currency>
         </x-monitor.statistic>
 
         <x-monitor.statistic>
@@ -34,7 +34,7 @@
                 @lang("pages.monitor.statistics.fees_collected")
             </x-slot>
 
-            {{ $feesCollected }}
+            <x-currency>{{ $feesCollected }}</x-currency>
         </x-monitor.statistic>
 
         <x-monitor.statistic>
@@ -46,7 +46,11 @@
                 @lang("pages.monitor.statistics.votes")
             </x-slot>
 
-            {{ $votes }} <span class="text-theme-secondary-600 dark:text-theme-secondary-700">{{ $votesPercentage }}</span>
+            {{ $votes }}
+
+            <span class="text-theme-secondary-600 dark:text-theme-secondary-700">
+                <x-percentage>{{ $votesPercentage }}</x-percentage>
+            </span>
         </x-monitor.statistic>
     </div>
 </div>

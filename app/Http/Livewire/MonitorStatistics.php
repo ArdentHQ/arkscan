@@ -10,7 +10,6 @@ use App\Aggregates\VotePercentageAggregate;
 use App\Facades\Network;
 use App\Models\Scopes\DelegateRegistrationScope;
 use App\Models\Transaction;
-use App\Services\NumberFormatter;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -21,38 +20,38 @@ final class MonitorStatistics extends Component
     {
         return view('livewire.monitor-statistics', [
             'delegateRegistrations' => $this->delegateRegistrations(),
-            'blockReward'           => NumberFormatter::currency(Network::blockReward(), Network::currency()),
+            'blockReward'           => Network::blockReward(),
             'feesCollected'         => $this->feesCollected(),
             'votes'                 => $this->votes(),
             'votesPercentage'       => $this->votesPercentage(),
         ]);
     }
 
-    private function delegateRegistrations(): string
+    private function delegateRegistrations(): int
     {
-        return Cache::remember('delegateRegistrations', Network::blockTime(), function (): string {
-            return NumberFormatter::number(Transaction::withScope(DelegateRegistrationScope::class)->count());
+        return Cache::remember('delegateRegistrations', Network::blockTime(), function (): int {
+            return Transaction::withScope(DelegateRegistrationScope::class)->count();
         });
     }
 
     private function feesCollected(): string
     {
         return Cache::remember('feesCollected', Network::blockTime(), function (): string {
-            return NumberFormatter::currency((new DailyFeeAggregate())->aggregate(), Network::currency());
+            return (new DailyFeeAggregate())->aggregate();
         });
     }
 
     private function votes(): string
     {
         return Cache::remember('votes', Network::blockTime(), function (): string {
-            return NumberFormatter::currency((new VoteCountAggregate())->aggregate(), Network::currency());
+            return (new VoteCountAggregate())->aggregate();
         });
     }
 
     private function votesPercentage(): string
     {
         return Cache::remember('votesPercentage', Network::blockTime(), function (): string {
-            return NumberFormatter::percentage((new VotePercentageAggregate())->aggregate());
+            return (new VotePercentageAggregate())->aggregate();
         });
     }
 }
