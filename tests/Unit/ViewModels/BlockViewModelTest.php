@@ -73,8 +73,8 @@ it('should get the delegate', function () {
 });
 
 it('should get the delegate username', function () {
-    expect($this->subject->delegateUsername())->toBeString();
-    expect($this->subject->delegateUsername())->not()->toBe('Genesis');
+    expect($this->subject->username())->toBeString();
+    expect($this->subject->username())->not()->toBe('Genesis');
 });
 
 it('should fail to get the delegate username', function () {
@@ -84,8 +84,8 @@ it('should fail to get the delegate username', function () {
         ])->public_key,
     ]));
 
-    expect($this->subject->delegateUsername())->toBeString();
-    expect($this->subject->delegateUsername())->toBe('Genesis');
+    expect($this->subject->username())->toBeString();
+    expect($this->subject->username())->toBe('Genesis');
 });
 
 it('should get the previous block url', function () {

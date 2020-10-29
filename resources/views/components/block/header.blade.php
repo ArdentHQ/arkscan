@@ -28,8 +28,8 @@
                 <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
                     <x-general.entity-header-item
                         :title="trans('pages.block.generated_by')"
-                        :avatar="$block->delegateUsername()"
-                        :text="$block->delegateUsername()"
+                        :avatar="$block->username()"
+                        :text="$block->username()"
                         :url="route('wallet', $block->delegate()->address)"
                     />
                     <x-general.entity-header-item

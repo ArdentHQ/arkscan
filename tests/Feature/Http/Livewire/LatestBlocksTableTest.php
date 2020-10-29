@@ -18,7 +18,7 @@ it('should list the first page of records', function () {
     foreach (ViewModelFactory::collection(Block::latestByHeight()->take(15)->get()) as $block) {
         $component->assertSee($block->id());
         $component->assertSee($block->timestamp());
-        $component->assertSee($block->delegateUsername());
+        $component->assertSee($block->username());
         $component->assertSee($block->height());
         $component->assertSee($block->transactionCount());
         $component->assertSee($block->amount());
