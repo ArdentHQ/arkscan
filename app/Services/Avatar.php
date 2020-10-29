@@ -34,7 +34,7 @@ final class Avatar
             ['rgb(255, 87, 34)'],
         ];
 
-        $genColor = function () use ($defaultColors, $twister) {
+        $genColor = function () use ($defaultColors, $twister): string {
             $index = floor(count($defaultColors) * $twister->real_closed());
 
             // Still missing the array_splice() equivalent there

@@ -22,11 +22,11 @@ trait HasDelegate
 
     public function address(): string
     {
-        return Arr::get($this->delegate(), 'attributes.delegate.address', 'Genesis');
+        return Arr::get($this->delegate() ?? [], 'attributes.delegate.address', 'Genesis');
     }
 
     public function username(): string
     {
-        return Arr::get($this->delegate(), 'attributes.delegate.username', 'Genesis');
+        return Arr::get($this->delegate() ?? [], 'attributes.delegate.username', 'Genesis');
     }
 }
