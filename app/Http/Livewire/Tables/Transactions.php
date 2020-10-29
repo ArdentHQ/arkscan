@@ -15,8 +15,6 @@ final class Transactions extends Component
 {
     use HasPagination;
 
-    public bool $viewMore = false;
-
     protected LengthAwarePaginator $transactions;
 
     public function mount(Builder $transactions): void

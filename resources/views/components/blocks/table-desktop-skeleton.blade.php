@@ -2,7 +2,7 @@
     <table>
         <thead>
             <tr>
-                <th class="text-center"></th>
+                <th class="text-center">&nbsp;</th>
                 <th class="hidden lg:table-cell">@lang('general.block.timestamp')</th>
                 <th><span class="pl-14">@lang('general.block.generated_by')</span></th>
                 <th>@lang('general.block.height')</th>
@@ -17,36 +17,31 @@
             </tr>
         </thead>
         <tbody>
-            @for ($i = 0; $i < 15; $i++)
+            <x-skeleton>
                 <tr>
                     <td>
-                        <div class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
+                        <x-tables.rows.desktop.skeleton.block-id />
                     </td>
                     <td class="hidden lg:table-cell">
-                        <div class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
+                        <x-tables.rows.desktop.skeleton.timestamp />
                     </td>
                     <td>
-                        <div class="flex flex-row-reverse items-center justify-between md:flex-row md:space-x-3 md:justify-start">
-                            <div>
-                                <div wire:loading.class="w-6 h-6 rounded-full md:w-11 md:h-11 loading-state"></div>
-                            </div>
-                            <div class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
-                        </div>
+                        <x-tables.rows.desktop.skeleton.block-forger />
                     </td>
                     <td>
-                        <div class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
+                        <x-tables.rows.desktop.skeleton.block-height />
                     </td>
                     <td>
-                        <div class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
+                        <x-tables.rows.desktop.skeleton.transaction-count />
                     </td>
                     <td class="text-right">
-                        <div class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
+                        <x-tables.rows.desktop.skeleton.amount />
                     </td>
                     <td class="hidden text-right xl:table-cell">
-                        <div class="w-full h-4 rounded-md bg-theme-secondary-300 animate-pulse"></div>
+                        <x-tables.rows.desktop.skeleton.fee />
                     </td>
                 </tr>
-            @endfor
+            </x-skeleton>
         </tbody>
     </table>
 </div>

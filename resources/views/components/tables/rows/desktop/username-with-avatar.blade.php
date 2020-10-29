@@ -1,1 +1,1 @@
-<x-general.address :model="$model" />
+<x-general.identity :model="$model" />

@@ -1,11 +1,5 @@
 <div>
-    <div
-        class="flex flex-row-reverse items-center md:flex-row md:space-x-3 md:justify-start"
-        @if ($withLoading ?? false)
-            wire:loading.class="hidden"
-            {{ $loadingAttribute ?? ''}}
-        @endif
-    >
+    <div class="flex flex-row-reverse items-center md:flex-row md:space-x-3 md:justify-start">
         @unless ($icon ?? false)
             <x-general.avatar :identifier="$model->address()" />
         @else
@@ -34,8 +28,4 @@
             </a>
         </div>
     </div>
-
-    @if ($withLoading ?? false)
-        <x-general.loading-state.recipient-address :address="$model->address()" />
-    @endif
 </div>

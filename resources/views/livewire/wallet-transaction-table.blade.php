@@ -15,7 +15,7 @@
             wire:click="$set('state.direction', 'received');"
             @click="direction = 'received'"
         >
-            @lang('pages.wallet.received_transactions') {{ $countReceived }}
+            @lang('pages.wallet.received_transactions', [$countReceived])
         </div>
 
         <div
@@ -24,7 +24,7 @@
             wire:click="$set('state.direction', 'sent');"
             @click="direction = 'sent'"
         >
-            @lang('pages.wallet.sent_transactions') {{ $countSent }}
+            @lang('pages.wallet.sent_transactions', [$countSent])
         </div>
     </div>
 
@@ -51,25 +51,33 @@
                 </a>
 
                 <a wire:click="$set('state.direction', 'received');" @click="direction = 'received'" class="dropdown-entry">
-                    @lang('pages.wallet.received_transactions') {{ $countReceived }}
+                    @lang('pages.wallet.received_transactions', [$countReceived])
                 </a>
 
                 <a wire:click="$set('state.direction', 'sent');" @click="direction = 'sent'" class="dropdown-entry">
-                    @lang('pages.wallet.sent_transactions') {{ $countSent }}
+                    @lang('pages.wallet.sent_transactions', [$countSent])
                 </a>
             </div>
         </x-ark-dropdown>
     </div>
 
     <div id="transaction-list" class="w-full">
-        <x-transactions.table-desktop :transactions="$transactions" :wallet="$wallet" use-confirmations use-direction />
+        <div wire:loading>
+            <x-transactions.table-desktop-skeleton use-confirmations use-direction />
 
-        <x-transactions.list-mobile :transactions="$transactions" />
+            <x-transactions.table-mobile-skeleton />
+        </div>
 
-        <x-general.pagination :results="$transactions" class="mt-8" />
+        <div wire:loading.remove>
+            <x-transactions.table-desktop :transactions="$transactions" :wallet="$wallet" use-confirmations use-direction />
 
-        <script>
-            window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#transaction-list')));
-        </script>
+            <x-transactions.table-mobile :transactions="$transactions" />
+
+            <x-general.pagination :results="$transactions" class="mt-8" />
+
+            <script>
+                window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#transaction-list')));
+            </script>
+        </div>
     </div>
 </div>

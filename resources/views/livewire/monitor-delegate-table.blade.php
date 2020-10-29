@@ -1,17 +1,38 @@
 <div id="delegate-list" class="w-full">
     @if($this->state['status'] === 'resigned')
-        <x-delegates.table-desktop-resigned :delegates="$delegates" />
-        <x-delegates.list-mobile-resigned :delegates="$delegates" />
+        <div wire:loading>
+            <x-delegates.table-desktop-resigned-skeleton />
+            <x-delegates.table-mobile-resigned-skeleton />
+        </div>
+
+        <div wire:loading.remove>
+            <x-delegates.table-desktop-resigned :delegates="$delegates" />
+            <x-delegates.table-mobile-resigned :delegates="$delegates" />
+        </div>
     @endif
 
     @if($this->state['status'] === 'standby')
-        <x-delegates.table-desktop-standby :delegates="$delegates" />
-        <x-delegates.list-mobile-standby :delegates="$delegates" />
+        <div wire:loading>
+            <x-delegates.table-desktop-standby-skeleton />
+            <x-delegates.table-mobile-standby-skeleton />
+        </div>
+
+        <div wire:loading.remove>
+            <x-delegates.table-desktop-standby :delegates="$delegates" />
+            <x-delegates.table-mobile-standby :delegates="$delegates" />
+        </div>
     @endif
 
     @if($this->state['status'] === 'active')
-        <x-delegates.table-desktop-active :delegates="$delegates" />
-        <x-delegates.list-mobile-active :delegates="$delegates" />
+        <div wire:loading>
+            <x-delegates.table-desktop-active-skeleton />
+            <x-delegates.table-mobile-active-skeleton />
+        </div>
+
+        <div wire:loading.remove>
+            <x-delegates.table-desktop-active :delegates="$delegates" />
+            <x-delegates.table-mobile-active :delegates="$delegates" />
+        </div>
     @endif
 
     <script>

@@ -49,6 +49,8 @@
         <server name="SESSION_DRIVER" value="array"/>
         <!-- Third-Party -->
         <server name="MODEL_CACHE_ENABLED" value="false"/>
+        <server name="TELESCOPE_ENABLED" value="false"/>
+        <server name="RESPONSE_CACHE_ENABLED" value="false"/>
         <!-- App -->
         <server name="EXPLORER_NETWORK" value="ark.development"/>
         <server name="EXPLORER_DB_HOST" value="127.0.0.1"/>

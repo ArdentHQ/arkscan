@@ -1,5 +1,5 @@
 <div>
     @lang('labels.username')
 
-    <x-general.address :model="$model" />
+    <x-general.identity :model="$model" />
 </div>

@@ -28,7 +28,15 @@
         </div>
     </div>
 
-    <x-delegates.table-desktop-monitor :delegates="$delegates" />
+    <div wire:loading>
+        <x-delegates.table-desktop-monitor-skeleton />
 
-    {{-- <x-delegates.list-mobile-monitor :delegates="$delegates" /> --}}
+        <x-delegates.table-mobile-monitor-skeleton />
+    </div>
+
+    <div wire:loading.remove>
+        <x-delegates.table-desktop-monitor :delegates="$delegates" />
+
+        {{-- <x-delegates.table-mobile-monitor-skeleton :delegates="$delegates" /> --}}
+    </div>
 </div>

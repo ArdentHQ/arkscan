@@ -47,7 +47,9 @@
                         <x-tables.rows.desktop.fee :model="$transaction" />
                     </td>
                     @isset($useConfirmations)
+                    <td class="hidden text-right xl:table-cell">
                         <x-tables.rows.desktop.confirmations :model="$transaction" />
+                    </td>
                     @endisset
                 </tr>
             @endforeach

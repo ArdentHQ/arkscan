@@ -1,5 +1,5 @@
 <div>
     @lang('labels.block_forger')
 
-    <x-general.address :model="$model" />
+    <x-general.identity :model="$model" />
 </div>

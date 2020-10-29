@@ -595,8 +595,7 @@ it('should fail to get the sender', function () {
         'sender_public_key' => 'unknown',
     ]));
 
-    expect($this->subject->sender())->toBeString();
-    expect($this->subject->sender())->toBe('n/a');
+    expect($this->subject->sender())->toBeNull();
 });
 
 it('should fallback to the sender if no recipient exists', function () {
@@ -604,8 +603,7 @@ it('should fallback to the sender if no recipient exists', function () {
         'recipient_id' => 'unknown',
     ]));
 
-    expect($this->subject->recipient())->toBeString();
-    expect($this->subject->recipient())->toBe($this->subject->sender());
+    expect($this->subject->recipient())->toEqual($this->subject->sender());
 });
 
 it('should get the voted delegate', function () {

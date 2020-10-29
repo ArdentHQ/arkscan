@@ -15,9 +15,7 @@
 
     <div class="flex flex-col space-y-2">
         <span class="text-lg font-semibold text-theme-secondary-700">
-            <div wire:loading.class="hidden">
-                <x-general.address-iconless :model="$transaction->sender()" />
-            </div>
+            <x-general.identity-iconless :model="$transaction->sender()" />
         </span>
     </div>
 </div>

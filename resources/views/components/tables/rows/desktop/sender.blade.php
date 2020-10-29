@@ -1,1 +1,1 @@
-<x-general.address :model="$model->sender()" />
+<x-general.identity :model="$model->sender()" />

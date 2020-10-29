@@ -1,11 +1,19 @@
 <div id="block-list" class="w-full">
-    <x-blocks.table-desktop :blocks="$blocks" />
+    <div wire:loading>
+        <x-blocks.table-desktop-skeleton />
 
-    <x-blocks.list-mobile :blocks="$blocks" />
+        <x-blocks.table-mobile-skeleton />
+    </div>
 
-    <x-general.pagination :results="$blocks" class="mt-8" />
+    <div wire:loading.remove>
+        <x-blocks.table-desktop :blocks="$blocks" />
 
-    <script>
-        window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#block-list')));
-    </script>
+        <x-blocks.table-mobile :blocks="$blocks" />
+
+        <x-general.pagination :results="$blocks" class="mt-8" />
+
+        <script>
+            window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#block-list')));
+        </script>
+    </div>
 </div>

@@ -1,5 +1,5 @@
 <div>
     @lang('labels.recipient')
 
-    <x-general.address :model="$model->recipient()" />
+    <x-general.identity :model="$model->recipient()" />
 </div>

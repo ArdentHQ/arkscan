@@ -15,8 +15,6 @@ final class Blocks extends Component
 {
     use HasPagination;
 
-    public bool $viewMore = false;
-
     protected LengthAwarePaginator $blocks;
 
     public function mount(Builder $blocks): void

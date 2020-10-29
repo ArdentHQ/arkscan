@@ -49,9 +49,17 @@
                             <h2 class="text-3xl sm:text-4xl">@lang('pages.block.transactions')</h2>
                         </div>
 
-                        <x-transactions.table-desktop :transactions="$transactions" />
+                        <div wire:loading>
+                            <x-transactions.table-desktop-skeleton />
 
-                        <x-transactions.list-mobile :transactions="$transactions" />
+                            <x-transactions.table-mobile-skeleton />
+                        </div>
+
+                        <div wire:loading.remove>
+                            <x-transactions.table-desktop :transactions="$transactions" />
+
+                            <x-transactions.table-mobile :transactions="$transactions" />
+                        </div>
                     </div>
                 </div>
             </div>

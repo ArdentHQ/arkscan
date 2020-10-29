@@ -1,11 +1,19 @@
 <div id="wallet-list" class="w-full">
-    <x-wallets.table-desktop :wallets="$wallets" />
+    <div wire:loading>
+        <x-wallets.table-desktop-skeleton />
 
-    <x-wallets.list-mobile :wallets="$wallets" />
+        <x-wallets.table-mobile-skeleton />
+    </div>
 
-    <x-general.pagination :results="$wallets" class="mt-8" />
+    <div wire:loading.remove>
+        <x-wallets.table-desktop :wallets="$wallets" />
 
-    <script>
-        window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#block-list')));
-    </script>
+        <x-wallets.table-mobile :wallets="$wallets" />
+
+        <x-general.pagination :results="$wallets" class="mt-8" />
+
+        <script>
+            window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#block-list')));
+        </script>
+    </div>
 </div>
