@@ -24,6 +24,4 @@ parameters:
         # FIXME
         - '#AbstractNetwork#'
         - '#PendingDispatch given#'
-        # WONTFIX
-        - '#mersenne_twister#'
     checkMissingIterableValueType: false
