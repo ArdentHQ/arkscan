@@ -43,10 +43,15 @@
                         :text="$block->transactionCount()"
                     />
                     <x-general.entity-header-item
-                        :title="trans('pages.block.total_rewards')"
                         icon="app-reward"
                         :text="$block->reward()"
-                    />
+                    >
+                        <x-slot name="title">
+                            <span data-tippy-content="@lang('pages.block.total_rewards_tooltip', [$block->reward()])">
+                                @lang('pages.block.total_rewards')
+                            </span>
+                        </x-slot>
+                    </x-general.entity-header-item>
                 </div>
             </x-slot>
         </x-general.entity-header>
