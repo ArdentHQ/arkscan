@@ -14,20 +14,23 @@ beforeEach(fn () => configureExplorerDatabase());
 
 // @TODO: make assertions about data visibility
 it('should render without errors', function () {
-    Wallet::factory(51)->create()->each(function ($wallet) {
+    $block = Block::factory()->create([
+        'height'    => 5720529,
+        'timestamp' => 113620904,
+    ]);
+
+    Wallet::factory(51)->create()->each(function ($wallet) use ($block) {
         Round::factory()->create([
             'round'      => '112168',
             'public_key' => $wallet->public_key,
         ]);
 
         Cache::tags(['delegates'])->put($wallet->public_key, $wallet);
-        Cache::put('lastBlock:'.$wallet->public_key, []);
+        Cache::put('lastBlock:'.$wallet->public_key, [
+            'id'     => $block->id,
+            'height' => $block->height->toNumber(),
+        ]);
     });
-
-    Block::factory()->create([
-        'height'    => 5720529,
-        'timestamp' => 113620904,
-    ]);
 
     $component = Livewire::test(MonitorNetwork::class);
 });

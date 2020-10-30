@@ -29,11 +29,13 @@ final class CacheLastBlockByPublicKey implements ShouldQueue
         $block = Block::query()
             ->without(['delegate'])
             ->where('generator_public_key', $this->publicKey)
+            ->latestByHeight()
             ->limit(1)
             ->firstOrFail();
 
         Cache::put('lastBlock:'.$block->generator_public_key, [
             'id'                   => $block->id,
+            'height'               => $block->height->toNumber(),
             'timestamp'            => Timestamp::fromGenesis($block->timestamp)->unix(),
             'generator_public_key' => $block->generator_public_key,
         ]);

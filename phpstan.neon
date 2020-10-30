@@ -24,4 +24,5 @@ parameters:
         # FIXME
         - '#AbstractNetwork#'
         - '#PendingDispatch given#'
+        - '#shortSchedule#'
     checkMissingIterableValueType: false

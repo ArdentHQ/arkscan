@@ -6,6 +6,7 @@ namespace App\Http\Livewire;
 
 use App\DTO\Slot;
 use App\Facades\Network;
+use App\Jobs\CacheLastBlockByPublicKey;
 use App\Models\Block;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\Monitor;
@@ -21,25 +22,28 @@ final class MonitorNetwork extends Component
     public function render(): View
     {
         // $tracking = DelegateTracker::execute(Monitor::roundDelegates(112168));
-        $tracking = DelegateTracker::execute(Monitor::activeDelegates(Monitor::roundNumber()));
+
+        $roundNumber = Monitor::roundNumber();
+        $heightRange = Monitor::heightRangeByRound($roundNumber);
+        $tracking    = DelegateTracker::execute(Monitor::activeDelegates(Monitor::roundNumber()));
 
         $delegates = [];
 
         for ($i = 0; $i < count($tracking); $i++) {
             $delegate = array_values($tracking)[$i];
 
+            // if (Cache::missing('lastBlock:'.$delegate['publicKey'])) {
+            //     CacheLastBlockByPublicKey::dispatchSync($delegate['publicKey']);
+            // }
+
             $delegates[] = new Slot([
-                'order'         => $i + 1,
-                'wallet'        => ViewModelFactory::make(Cache::tags(['delegates'])->get($delegate['publicKey'])),
-                'forging_at'    => Carbon::now()->addMilliseconds($delegate['time']),
-                'last_block'    => Cache::get('lastBlock:'.$delegate['publicKey']),
-                'is_success'    => false, // $missedCount === 0,
-                'is_warning'    => false, // $missedCount === 1,
-                'is_danger'     => false, // $missedCount >= 2,
-                'missed_count'  => 0,
-                'status'        => $delegate['status'],
-                'time'          => $delegate['time'],
-            ]);
+                'publicKey'  => $delegate['publicKey'],
+                'order'      => $i + 1,
+                'wallet'     => ViewModelFactory::make(Cache::tags(['delegates'])->get($delegate['publicKey'])),
+                'forging_at' => Carbon::now()->addMilliseconds($delegate['time']),
+                'last_block' => Cache::get('lastBlock:'.$delegate['publicKey']),
+                'status'     => $delegate['status'],
+            ], $heightRange);
         }
 
         return view('livewire.monitor-network', [
@@ -65,7 +69,7 @@ final class MonitorNetwork extends Component
 
     private function transactions(): int
     {
-        return Cache::remember('MonitorNetwork:transactions', Network::blockTime(), function (): int {
+        return (int) Cache::remember('MonitorNetwork:transactions', Network::blockTime(), function (): int {
             return Block::whereBetween('height', Monitor::heightRangeByRound(Monitor::roundNumber()))->sum('number_of_transactions');
         });
     }

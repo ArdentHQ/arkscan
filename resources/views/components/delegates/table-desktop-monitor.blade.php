@@ -11,10 +11,10 @@
         </thead>
         <tbody>
             @foreach($delegates as $delegate)
-            @if ($delegate->isWarning())
-                <tr class="bg-theme-warning-100">
-            @elseif ($delegate->isDanger())
+            @if ($delegate->keepsMissing())
                 <tr class="bg-theme-danger-100">
+            @elseif ($delegate->justMissed())
+                <tr class="bg-theme-warning-100">
             @else
                 <tr>
             @endif

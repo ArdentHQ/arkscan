@@ -123,6 +123,8 @@ return [
         'warning'    => 'Block Missed',
         'danger'     => '(:0) Blocks Missed',
         'completed'  => 'Completed',
+        'next'       => 'Next',
+        'now'        => 'Now',
         'statistics' => [
             'delegate_registrations' => 'Delegate Registrations',
             'block_reward'           => 'Block Reward',
