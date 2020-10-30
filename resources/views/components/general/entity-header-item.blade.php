@@ -4,7 +4,7 @@
             @if ($icon ?? false)
                 @svg($icon, 'w-5 h-5')
             @elseif ($avatar ?? false)
-                <x-general.avatar :identifier="$avatar" size="w-8 h-8" />
+                <x-general.avatar-small :identifier="$avatar" />
             @endif
         </div>
     </div>
