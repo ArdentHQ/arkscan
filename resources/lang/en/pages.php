@@ -100,7 +100,7 @@ return [
             'commission'       => 'Commission',
             'payout_frequency' => 'Payout Frequency',
             'payout_minimum'   => 'Payout Minimum',
-            'forged_total'     => 'Forged Total',
+            'forged_total'     => 'Total Forged',
             'votes'            => 'Votes :0',
             'forged_blocks'    => 'Forged Blocks',
             'productivity'     => 'Productivity (30 Days)',
