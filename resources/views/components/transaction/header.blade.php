@@ -35,8 +35,11 @@
                     <x-general.entity-header-item
                         :title="trans('pages.transaction.confirmations')"
                         icon="app-confirmations"
-                        :text="$transaction->confirmations()"
-                    />
+                    >
+                        <x-slot name="text">
+                            <x-number>{{ $transaction->confirmations() }}</x-number>
+                        </x-slot>
+                    </x-general.amount-fiat-tooltip>
                 </div>
             </x-slot>
         </x-general.entity-header>

@@ -20,25 +20,15 @@
         <x-block.header :block="$block" />
 
         <x-details.grid>
-            <x-details.generic :title="trans('general.block.height')" icon="app-height">
-                <x-number>{{ $block->height() }}</x-number>
-            </x-details.generic>
+            <x-grid.height :model="$block" />
 
-            <x-details.generic :title="trans('general.block.timestamp')" icon="app-timestamp">
-                {{ $block->timestamp() }}
-            </x-details.generic>
+            <x-grid.timestamp :model="$block" />
 
-            <x-details.generic :title="trans('general.block.reward')" icon="app-reward">
-                <x-currency>{{ $block->reward() }}</x-currency>
-            </x-details.generic>
+            <x-grid.reward :model="$block" />
 
-            <x-details.generic :title="trans('general.block.fee')" icon="app-fee">
-                <x-currency>{{ $block->fee() }}</x-currency>
-            </x-details.generic>
+            <x-grid.fee :model="$block" />
 
-            <x-details.generic :title="trans('general.block.confirmations')" icon="app-confirmations">
-                <x-number>{{ $block->confirmations() }}</x-number>
-            </x-details.generic>
+            <x-grid.confirmations :model="$block" without-border />
         </x-details.grid>
 
         @if($transactions->isNotEmpty())

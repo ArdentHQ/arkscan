@@ -7,12 +7,7 @@
         <div class="flex flex-col w-full divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
             <div class="grid w-full grid-flow-row grid-cols-1 gap-6 md:grid-cols-2 gap-y-12 xl:gap-y-4">
                 @foreach($wallet->registrations() as $registration)
-                    {{-- @TODO: translation --}}
-                    <x-details.generic :title="ucfirst($registration->iconType())" icon="app-volume">
-                        <a href="{{ route('wallet', $registration->recipient()->address()) }}" class="link">
-                            {{ $registration->entityName() }}
-                        </a>
-                    </x-details.generic>
+                    <x-grid.entity :model="$registration" />
                 @endforeach
             </div>
         </div>
