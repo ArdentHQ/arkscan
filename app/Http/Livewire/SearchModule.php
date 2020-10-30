@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use App\Models\Block;
-use App\Models\Wallet;
-use Livewire\Component;
-use Illuminate\View\View;
-use App\Models\Transaction;
-use Illuminate\Support\Arr;
-use App\Services\Search\BlockSearch;
-use App\Services\Search\WalletSearch;
-use App\Services\Search\TransactionSearch;
 use App\Http\Livewire\Concerns\ManagesSearch;
+use App\Models\Block;
+use App\Models\Transaction;
+use App\Models\Wallet;
+use App\Services\Search\BlockSearch;
+use App\Services\Search\TransactionSearch;
+use App\Services\Search\WalletSearch;
+use Illuminate\Support\Arr;
+use Illuminate\View\View;
+use Livewire\Component;
 
 final class SearchModule extends Component
 {
