@@ -11,7 +11,7 @@
         @if((string) $slot === "")
             <span class="font-semibold text-theme-secondary-700 dark:text-theme-secondary-200">@lang('generic.not_specified')</span>
         @else
-            <span class="text-lg font-semibold text-theme-secondary-700 dark:text-theme-secondary-200">
+            <span class="font-semibold text-theme-secondary-700 dark:text-theme-secondary-200">
                 {{ $slot }}
                 @isset($extraValue)
                     <span class="text-theme-secondary-500 dark:text-theme-secondary-700">{{ $extraValue }}</span>
