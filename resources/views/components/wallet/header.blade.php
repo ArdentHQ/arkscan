@@ -49,8 +49,11 @@
                         <x-general.entity-header-item
                             :title="trans('pages.wallet.rank')"
                             icon="app-votes"
-                            :text="$vote->rank()"
-                        />
+                        >
+                            <x-slot name="text">
+                                @lang('pages.wallet.vote_rank', [$vote->rank()])
+                            </x-slot>
+                        </x-general.entity-header-item>
                         @if (Network::usesMarketSquare())
                             <x-general.entity-header-item
                                 :title="trans('pages.wallet.commission')"

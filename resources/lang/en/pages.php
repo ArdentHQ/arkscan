@@ -89,6 +89,7 @@ return [
         'show_options'          => 'Show Options',
         'amount'                => 'Amount',
         'smartbridge'           => 'Smartbridge',
+        'vote_rank'             => '#:0',
         'qrcode'                => [
             'title'       => 'QR Code',
             'description' => 'Scan for address',
