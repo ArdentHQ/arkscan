@@ -1,13 +1,13 @@
 <div class="flex flex-col overflow-hidden border rounded-lg border-theme-secondary-300 dark:border-theme-secondary-800">
     <div class="p-8 bg-black dark:bg-theme-secondary-900">
-        <div class="flex flex-col md:flex-row">
+        <div class="flex flex-col md:flex-row md:space-x-4">
             <div class="items-center hidden md:flex">
                 <div class="circled-icon text-theme-secondary-400 border-theme-danger-400">
                     {{ $logo }}
                 </div>
             </div>
 
-            <div class="flex flex-col justify-between flex-1 font-semibold md:ml-4">
+            <div class="flex flex-col justify-between flex-1 font-semibold truncate">
                 <div class="text-sm leading-tight text-theme-secondary-600 dark:text-theme-secondary-700">{{ $title }}</div>
 
                 <div class="flex items-center space-x-2 leading-tight">
