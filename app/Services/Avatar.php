@@ -37,7 +37,7 @@ final class Avatar
         };
 
         $backgroundString = '<rect fill="'.$genColor().'" width="100" height="100"/>';
-        $styleString      = '<style>circle{mix-blend-mode:soft-light;}</style>';
+        $styleString      = '<style>.picasso circle{mix-blend-mode:soft-light;}</style>';
         $shapeString      = '';
         $layers           = 3;
         $rs               = [35, 40, 45, 50, 55, 60];
@@ -54,7 +54,7 @@ final class Avatar
         }
 
         return sprintf(
-            "<svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>%s%s%s</svg>",
+            "<svg version='1.1' xmlns='http://www.w3.org/2000/svg' class='picasso' viewBox='0 0 100 100'>%s%s%s</svg>",
             $styleString,
             $backgroundString,
             $shapeString
