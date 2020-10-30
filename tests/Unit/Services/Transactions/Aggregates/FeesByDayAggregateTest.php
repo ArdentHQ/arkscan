@@ -5,14 +5,17 @@ declare(strict_types=1);
 use App\Models\Transaction;
 use App\Services\Timestamp;
 use App\Services\Transactions\Aggregates\FeesByDayAggregate;
-use Illuminate\Support\Collection;
+use Carbon\Carbon;
 
+use Illuminate\Support\Collection;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
 
 beforeEach(fn () => configureExplorerDatabase());
 
 it('should aggregate the fees for today', function () {
+    Carbon::setTestNow(Carbon::now());
+
     $start = Transaction::factory(10)->create([
         'fee'       => '100000000',
         'timestamp' => Timestamp::now()->subDay()->startOfDay()->unix(),

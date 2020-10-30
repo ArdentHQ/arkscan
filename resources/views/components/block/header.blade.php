@@ -49,7 +49,7 @@
                         <x-slot name="text">
                             <x-currency>{{ $block->amount() }}</x-currency>
                         </x-slot>
-                    </x-general.amount-fiat-tooltip>
+                    </x-general.entity-header-item>
 
                     <x-general.entity-header-item icon="app-reward">
                         <x-slot name="title">
