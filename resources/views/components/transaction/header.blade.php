@@ -6,7 +6,11 @@
             :title="trans('pages.transaction.transaction_id')"
             :value="$transaction->id()"
         >
-            <x-slot name="logo"><span class="text-lg font-medium">ID</span></x-slot>
+            <x-slot name="logo">
+                <x-headings.circle>
+                    <span class="text-lg font-medium">ID</span>
+                </x-headings.circle>
+            </x-slot>
 
             <x-slot name="bottom">
                 <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
@@ -15,14 +19,28 @@
                         icon="app-transactions.transfer"
                         :text="$transaction->typeLabel()"
                     />
-                    <x-general.entity-header-item
-                        :title="trans('pages.transaction.amount')"
-                        icon="app-transactions-amount"
-                    >
-                        <x-slot name="text">
-                            <x-currency>{{ $transaction->amount() }}</x-currency>
-                        </x-slot>
-                    </x-general.amount-fiat-tooltip>
+                    @if($transaction->isMultiSignature())
+                        <x-general.entity-header-item
+                            :title="trans('pages.transaction.musig_participants')"
+                            icon="app-transactions-amount"
+                        >
+                            <x-slot name="text">
+                                @lang('pages.transaction.musig_participants_text', [
+                                    $transaction->multiSignatureMinimum(),
+                                    $transaction->multiSignatureParticipantCount()
+                                ])
+                            </x-slot>
+                        </x-general.amount-fiat-tooltip>
+                    @else
+                        <x-general.entity-header-item
+                            :title="trans('pages.transaction.amount')"
+                            icon="app-transactions-amount"
+                        >
+                            <x-slot name="text">
+                                <x-currency>{{ $transaction->amount() }}</x-currency>
+                            </x-slot>
+                        </x-general.amount-fiat-tooltip>
+                    @endif
                     <x-general.entity-header-item
                         :title="trans('pages.transaction.fee')"
                         icon="app-fee"

@@ -53,16 +53,18 @@ return [
     ],
 
     'transaction' => [
-        'title'            => 'Transaction Details',
-        'transaction_id'   => 'Transaction ID',
-        'transaction_type' => 'Transaction Type',
-        'fee'              => 'Fee',
-        'amount'           => 'Amount',
-        'confirmations'    => 'Confirmations',
-        'participants'     => 'Participants',
-        'vote'             => 'Vote',
-        'unvote'           => 'Unvote',
-        'recipient_list'   => 'Recipient List',
+        'title'                   => 'Transaction Details',
+        'transaction_id'          => 'Transaction ID',
+        'transaction_type'        => 'Transaction Type',
+        'fee'                     => 'Fee',
+        'amount'                  => 'Amount',
+        'confirmations'           => 'Confirmations',
+        'participants'            => 'Participants',
+        'vote'                    => 'Vote',
+        'unvote'                  => 'Unvote',
+        'recipient_list'          => 'Recipient List',
+        'musig_participants'      => 'M-of-N Multisig',
+        'musig_participants_text' => ':0 of :1',
     ],
 
     'transactions' => [

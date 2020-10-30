@@ -53,4 +53,30 @@ trait InteractsWithMultiSignature
             ->map(fn ($wallet)  => new WalletViewModel($wallet))
             ->toArray();
     }
+
+    public function multiSignatureMinimum(): ?int
+    {
+        if (! $this->isMultiSignature()) {
+            return null;
+        }
+
+        if (is_null($this->transaction->asset)) {
+            return null;
+        }
+
+        return Arr::get($this->transaction->asset, 'multiSignature.min', 0);
+    }
+
+    public function multiSignatureParticipantCount(): ?int
+    {
+        if (! $this->isMultiSignature()) {
+            return null;
+        }
+
+        if (is_null($this->transaction->asset)) {
+            return null;
+        }
+
+        return count(Arr::get($this->transaction->asset, 'multiSignature.publicKeys', []));
+    }
 }

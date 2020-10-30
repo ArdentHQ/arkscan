@@ -7,7 +7,9 @@
             :value="$block->id()"
         >
             <x-slot name="logo">
-                @svg('app-block-id', 'w-5 h-5')
+                <x-headings.circle>
+                    @svg('app-block-id', 'w-5 h-5')
+                </x-headings.circle>
             </x-slot>
 
             <x-slot name="extra">
