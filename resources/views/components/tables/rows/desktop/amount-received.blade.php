@@ -1,1 +1,9 @@
-<x-general.amount-fiat-tooltip :amount="$model->amount()" :fiat="$model->amountFiat()" is-received />
+<x-general.amount-fiat-tooltip is-received>
+    <x-slot name="amount">
+        <x-currency>{{ $model->amount() }}</x-currency>
+    </x-slot>
+
+    <x-slot name="fiat">
+        {{ $model->amountFiat() }}
+    </x-slot>
+</x-general.amount-fiat-tooltip>

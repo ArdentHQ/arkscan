@@ -18,7 +18,7 @@
 
                     <div class="flex items-center space-x-2 leading-tight">
                         <span class="truncate text-theme-secondary-400 dark:text-theme-secondary-200">
-                            {{ $wallet->balance() }}
+                            <x-currency>{{ $wallet->balance() }}</x-currency>
                         </span>
                     </div>
                 </div>

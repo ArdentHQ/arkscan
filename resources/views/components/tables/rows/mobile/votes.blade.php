@@ -2,5 +2,5 @@
     @lang('labels.votes')
 
     {{ $model->votes() }}
-    <span>{{ $model->votesPercentage() }}</span>
+    <span><x-percentage>{{ $model->votesPercentage() }}</x-percentage></span>
 </div>

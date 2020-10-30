@@ -4,32 +4,27 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Wallet;
 
-use App\Facades\Network;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Blockchain\NetworkStatus;
-use App\Services\NumberFormatter;
 use Mattiasgeniar\Percentage\Percentage;
 
 trait HasVoters
 {
-    public function votes(): string
+    public function votes(): float
     {
-        return NumberFormatter::currency(
-            BigNumber::new($this->wallet->attributes['delegate']['voteBalance'])->toFloat(),
-            Network::currency()
-        );
+        return BigNumber::new($this->wallet->attributes['delegate']['voteBalance'])->toFloat();
     }
 
-    public function votesPercentage(): string
+    public function votesPercentage(): float
     {
         $voteBalance = (float) $this->wallet->attributes['delegate']['voteBalance'];
 
-        return NumberFormatter::percentage(BigNumber::new(Percentage::calculate($voteBalance, NetworkStatus::supply()))->toFloat());
+        return BigNumber::new(Percentage::calculate($voteBalance, NetworkStatus::supply()))->toFloat();
     }
 
-    public function voterCount(): string
+    public function voterCount(): int
     {
-        return NumberFormatter::number(Wallet::where('attributes->vote', $this->publicKey())->count());
+        return Wallet::where('attributes->vote', $this->publicKey())->count();
     }
 }

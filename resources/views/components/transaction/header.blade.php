@@ -18,13 +18,20 @@
                     <x-general.entity-header-item
                         :title="trans('pages.transaction.amount')"
                         icon="app-transactions-amount"
-                        :text="$transaction->amount()"
-                    />
+                    >
+                        <x-slot name="text">
+                            <x-currency>{{ $transaction->amount() }}</x-currency>
+                        </x-slot>
+                    </x-general.amount-fiat-tooltip>
                     <x-general.entity-header-item
                         :title="trans('pages.transaction.fee')"
                         icon="app-fee"
-                        :text="$transaction->fee()"
-                    />
+                    >
+                        <x-slot name="text">
+                            <x-currency>{{ $transaction->fee() }}</x-currency>
+                        </x-slot>
+                    </x-general.amount-fiat-tooltip>
+
                     <x-general.entity-header-item
                         :title="trans('pages.transaction.confirmations')"
                         icon="app-confirmations"

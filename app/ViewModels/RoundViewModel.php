@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
-use App\Facades\Network;
 use App\Models\Round;
-use App\Services\NumberFormatter;
 
 final class RoundViewModel implements ViewModel
 {
@@ -18,8 +16,8 @@ final class RoundViewModel implements ViewModel
         $this->round = $round;
     }
 
-    public function balance(): string
+    public function balance(): float
     {
-        return NumberFormatter::currency($this->round->balance->toFloat(), Network::currency());
+        return $this->round->balance->toFloat();
     }
 }

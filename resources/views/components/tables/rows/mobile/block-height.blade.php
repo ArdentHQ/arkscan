@@ -1,5 +1,5 @@
 <div>
     @lang('labels.block_height')
 
-    {{ $model->height() }}
+    <x-number>{{ $model->height() }}</x-number>
 </div>

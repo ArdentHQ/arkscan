@@ -1,5 +1,5 @@
 <div>
     @lang('labels.rank')
 
-    {{ $model->rank() }}
+    <x-ordinal>{{ $model->rank() }}</x-ordinal>
 </div>

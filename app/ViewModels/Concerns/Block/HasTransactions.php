@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Block;
 
-use App\Facades\Network;
 use App\Services\ExchangeRate;
-use App\Services\NumberFormatter;
 
 trait HasTransactions
 {
@@ -15,9 +13,9 @@ trait HasTransactions
         return $this->block->number_of_transactions;
     }
 
-    public function amount(): string
+    public function amount(): float
     {
-        return NumberFormatter::currency($this->block->total_amount->toFloat(), Network::currency());
+        return $this->block->total_amount->toFloat();
     }
 
     public function amountFiat(): string
@@ -25,9 +23,9 @@ trait HasTransactions
         return ExchangeRate::convert($this->block->total_amount->toFloat(), $this->block->timestamp);
     }
 
-    public function fee(): string
+    public function fee(): float
     {
-        return NumberFormatter::currency($this->block->total_fee->toFloat(), Network::currency());
+        return $this->block->total_fee->toFloat();
     }
 
     public function feeFiat(): string
@@ -35,12 +33,9 @@ trait HasTransactions
         return ExchangeRate::convert($this->block->total_fee->toFloat(), $this->block->timestamp);
     }
 
-    public function totalReward(): string
+    public function totalReward(): float
     {
-        return NumberFormatter::currency(
-            $this->block->reward->plus($this->block->total_fee->valueOf())->toFloat(),
-            Network::currency()
-        );
+        return  $this->block->reward->plus($this->block->total_fee->valueOf())->toFloat();
     }
 
     public function totalRewardFiat(): string

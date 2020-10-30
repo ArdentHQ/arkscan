@@ -40,16 +40,21 @@
                     <x-general.entity-header-item
                         :title="trans('pages.block.transaction_volume')"
                         icon="app-votes"
-                        :text="$block->amount()"
-                    />
-                    <x-general.entity-header-item
-                        icon="app-reward"
-                        :text="$block->totalReward()"
                     >
+                        <x-slot name="text">
+                            <x-currency>{{ $block->amount() }}</x-currency>
+                        </x-slot>
+                    </x-general.amount-fiat-tooltip>
+
+                    <x-general.entity-header-item icon="app-reward">
                         <x-slot name="title">
                             <span data-tippy-content="@lang('pages.block.total_rewards_tooltip', [$block->reward()])">
                                 @lang('pages.block.total_rewards')
                             </span>
+                        </x-slot>
+
+                        <x-slot name="text">
+                            <x-currency>{{ $block->totalReward() }}</x-currency>
                         </x-slot>
                     </x-general.entity-header-item>
                 </div>

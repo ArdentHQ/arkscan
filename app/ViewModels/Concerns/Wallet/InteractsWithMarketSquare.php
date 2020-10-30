@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Wallet;
 
-use App\Services\NumberFormatter;
-
 trait InteractsWithMarketSquare
 {
     /**
@@ -13,9 +11,9 @@ trait InteractsWithMarketSquare
      *
      * @codeCoverageIgnore
      */
-    public function commission(): string
+    public function commission(): int
     {
-        return NumberFormatter::percentage(0);
+        return 0;
     }
 
     /**
@@ -23,9 +21,9 @@ trait InteractsWithMarketSquare
      *
      * @codeCoverageIgnore
      */
-    public function payoutFrequency(): string
+    public function payoutFrequency(): int
     {
-        return NumberFormatter::number(0);
+        return 0;
     }
 
     /**
@@ -33,8 +31,8 @@ trait InteractsWithMarketSquare
      *
      * @codeCoverageIgnore
      */
-    public function payoutMinimum(): string
+    public function payoutMinimum(): int
     {
-        return NumberFormatter::number(0);
+        return 0;
     }
 }

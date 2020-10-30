@@ -1,1 +1,1 @@
-{{ $model->balancePercentage() }}
+<x-percentage>{{ $model->balancePercentage() }}</x-percentage>

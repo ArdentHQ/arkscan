@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
+use App\Models\Wallet;
 use App\Services\ExchangeRate;
+use Illuminate\Support\Arr;
 
 final class Payment
 {
@@ -16,13 +18,12 @@ final class Payment
 
     private ?string $username = null;
 
-    /* @phpstan-ignore-next-line */
-    public function __construct(int $timestamp, string $amount, string $address, ?string $username = null)
+    public function __construct(int $timestamp, array $payment)
     {
         $this->timestamp   = $timestamp;
-        $this->amount      = (float) $amount;
-        $this->address     = $address;
-        $this->username    = $username;
+        $this->amount      = $payment['amount'] / 1e8;
+        $this->address     = $payment['recipientId'];
+        $this->username    = Arr::get(Wallet::where('address', $payment['recipientId'])->firstOrFail(), 'attributes.delegate.username');
     }
 
     public function amount(): float

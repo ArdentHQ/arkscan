@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace App\ViewModels\Concerns\Transaction;
 
 use App\DTO\Payment;
-use App\Facades\Network;
-use App\Models\Wallet;
-use App\Services\NumberFormatter;
 use Illuminate\Support\Arr;
 
 trait InteractsWithMultiPayment
@@ -23,25 +20,20 @@ trait InteractsWithMultiPayment
         }
 
         return collect(Arr::get($this->transaction->asset, 'payments', []))
-            ->map(fn ($payment) => new Payment(
-                $this->transaction->timestamp,
-                NumberFormatter::currency($payment['amount'] / 1e8, Network::currency()),
-                $payment['recipientId'],
-                Arr::get(Wallet::where('address', $payment['recipientId'])->firstOrFail(), 'attributes.delegate.username')
-            ))
+            ->map(fn ($payment) => new Payment($this->transaction->timestamp, $payment))
             ->toArray();
     }
 
-    public function recipientsCount(): string
+    public function recipientsCount(): int
     {
         if (! $this->isMultiPayment()) {
-            return NumberFormatter::number(0);
+            return 0;
         }
 
         if (is_null($this->transaction->asset)) {
-            return NumberFormatter::number(0);
+            return 0;
         }
 
-        return NumberFormatter::number(count(Arr::get($this->transaction->asset, 'payments')));
+        return count(Arr::get($this->transaction->asset, 'payments'));
     }
 }

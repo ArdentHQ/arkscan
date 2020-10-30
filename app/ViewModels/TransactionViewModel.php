@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
-use App\Facades\Network;
 use App\Models\Transaction;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\ExchangeRate;
-use App\Services\NumberFormatter;
 use App\Services\Timestamp;
 use App\Services\Transactions\TransactionDirection;
 use App\Services\Transactions\TransactionState;
@@ -68,7 +66,7 @@ final class TransactionViewModel implements ViewModel
         return Timestamp::fromGenesisHuman($this->transaction->timestamp);
     }
 
-    public function nonce(): string
+    public function nonce(): int
     {
         $wallet = Cache::remember(
             "transaction:wallet:{$this->transaction->sender_public_key}",
@@ -76,12 +74,12 @@ final class TransactionViewModel implements ViewModel
             fn () => $this->transaction->sender
         );
 
-        return NumberFormatter::number($wallet->nonce->toNumber());
+        return $wallet->nonce->toNumber();
     }
 
-    public function fee(): string
+    public function fee(): float
     {
-        return NumberFormatter::currency($this->transaction->fee->toFloat(), Network::currency());
+        return $this->transaction->fee->toFloat();
     }
 
     public function feeFiat(): string
@@ -89,15 +87,13 @@ final class TransactionViewModel implements ViewModel
         return ExchangeRate::convert($this->transaction->fee->toFloat(), $this->transaction->timestamp);
     }
 
-    public function amount(): string
+    public function amount(): float
     {
         if ($this->isMultiPayment()) {
-            $amount = collect(Arr::get($this->transaction->asset ?? [], 'payments', []))->sum('amount') / 1e8;
-        } else {
-            $amount = $this->transaction->amount->toFloat();
+            return collect(Arr::get($this->transaction->asset ?? [], 'payments', []))->sum('amount') / 1e8;
         }
 
-        return NumberFormatter::currency($amount, Network::currency());
+        return $this->transaction->amount->toFloat();
     }
 
     public function amountFiat(): string
@@ -105,7 +101,7 @@ final class TransactionViewModel implements ViewModel
         return ExchangeRate::convert($this->transaction->amount->toFloat(), $this->transaction->timestamp);
     }
 
-    public function confirmations(): string
+    public function confirmations(): int
     {
         $block = Cache::remember(
             "transaction:confirmations:{$this->transaction->block_id}",
@@ -114,9 +110,9 @@ final class TransactionViewModel implements ViewModel
         );
 
         if (is_null($block)) {
-            return NumberFormatter::number(0);
+            return 0;
         }
 
-        return NumberFormatter::number(NetworkStatus::height() - $block->height->toNumber());
+        return (int) abs(NetworkStatus::height() - $block->height->toNumber());
     }
 }

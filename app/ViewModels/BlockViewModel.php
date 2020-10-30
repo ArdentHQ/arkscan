@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
-use App\Facades\Network;
 use App\Models\Block;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\ExchangeRate;
-use App\Services\NumberFormatter;
 use App\Services\Timestamp;
 
 final class BlockViewModel implements ViewModel
@@ -40,14 +38,14 @@ final class BlockViewModel implements ViewModel
         return Timestamp::fromGenesisHuman($this->block->timestamp);
     }
 
-    public function height(): string
+    public function height(): int
     {
-        return NumberFormatter::number($this->block->height->toNumber());
+        return $this->block->height->toNumber();
     }
 
-    public function reward(): string
+    public function reward(): float
     {
-        return NumberFormatter::currency($this->block->reward->toFloat(), Network::currency());
+        return $this->block->reward->toFloat();
     }
 
     public function rewardFiat(): string
@@ -55,8 +53,8 @@ final class BlockViewModel implements ViewModel
         return ExchangeRate::convert($this->block->reward->toFloat(), $this->block->timestamp);
     }
 
-    public function confirmations(): string
+    public function confirmations(): int
     {
-        return NumberFormatter::number(abs(NetworkStatus::height() - $this->block->height->toNumber()));
+        return abs(NetworkStatus::height() - $this->block->height->toNumber());
     }
 }

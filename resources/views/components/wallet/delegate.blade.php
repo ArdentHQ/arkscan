@@ -12,7 +12,7 @@
                     </x-details-box>
 
                     <x-details-box :title="trans('pages.wallet.delegate.commission')" icon="app-volume" icon-wrapper-class="bg-theme-danger-200" icon-class="text-theme-danger-400">
-                        {{ $wallet->commission() }}
+                        <x-percentage>{{ $wallet->commission() }}</x-percentage>
                     </x-details-box>
 
                     <x-details-box :title="trans('pages.wallet.delegate.payout_frequency')" icon="app-volume" icon-wrapper-class="bg-theme-danger-200" icon-class="text-theme-danger-400">
@@ -20,14 +20,14 @@
                     </x-details-box>
 
                     <x-details-box :title="trans('pages.wallet.delegate.payout_minimum')" icon="app-volume" icon-wrapper-class="bg-theme-danger-200" icon-class="text-theme-danger-400">
-                        {{ $wallet->payoutMinimum() }}
+                        <x-currency>{{ $wallet->payoutMinimum() }}</x-currency>
                     </x-details-box>
                 </div>
             @endif
 
             <div class="grid w-full grid-flow-row grid-cols-1 gap-6 pt-8 md:grid-cols-2 lg:grid-cols-4 gap-y-12 md:gap-y-4">
                 <x-details-box :title="trans('pages.wallet.delegate.forged_total')" icon="app-volume">
-                    {{ $wallet->amountForged() }}
+                    <x-currency>{{ $wallet->amountForged() }}</x-currency>
                 </x-details-box>
 
                 <x-details-box icon="app-volume">
@@ -35,15 +35,15 @@
                         @lang('pages.wallet.delegate.votes', [App\Services\NumberFormatter::percentage($wallet->votesPercentage())])
                     </x-slot>
 
-                    {{ $wallet->votes() }} <a href="{{ route('wallet.voters', $wallet->address()) }}" class="link">@lang('general.see_all')</a>
+                    <x-number>{{ $wallet->votes() }}</x-number> <a href="{{ route('wallet.voters', $wallet->address()) }}" class="link">@lang('general.see_all')</a>
                 </x-details-box>
 
                 <x-details-box :title="trans('pages.wallet.delegate.forged_blocks')" icon="app-volume">
-                    {{ $wallet->forgedBlocks() }} <a href="{{ route('wallet.blocks', $wallet->address()) }}" class="link">@lang('general.see_all')</a>
+                    <x-number>{{ $wallet->forgedBlocks() }}</x-number> <a href="{{ route('wallet.blocks', $wallet->address()) }}" class="link">@lang('general.see_all')</a>
                 </x-details-box>
 
                 <x-details-box :title="trans('pages.wallet.delegate.productivity')" icon="app-volume">
-                    {{ $wallet->productivity() }}
+                    <x-percentage>{{ $wallet->productivity() }}</x-percentage>
                 </x-details-box>
             </div>
         </div>

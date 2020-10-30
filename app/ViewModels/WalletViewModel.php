@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
-use App\Facades\Network;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkStatus;
 use App\Services\ExchangeRate;
-use App\Services\NumberFormatter;
 use App\Services\Timestamp;
 use Mattiasgeniar\Percentage\Percentage;
 
@@ -45,9 +43,9 @@ final class WalletViewModel implements ViewModel
         return $this->wallet->public_key;
     }
 
-    public function balance(): string
+    public function balance(): float
     {
-        return NumberFormatter::currency($this->wallet->balance->toFloat(), Network::currency());
+        return $this->wallet->balance->toFloat();
     }
 
     public function balanceFiat(): string
@@ -55,13 +53,13 @@ final class WalletViewModel implements ViewModel
         return ExchangeRate::convert($this->wallet->balance->toFloat(), Timestamp::now()->unix());
     }
 
-    public function balancePercentage(): string
+    public function balancePercentage(): float
     {
-        return NumberFormatter::percentage(Percentage::calculate($this->wallet->balance->toFloat(), NetworkStatus::supply()));
+        return Percentage::calculate($this->wallet->balance->toFloat(), NetworkStatus::supply());
     }
 
-    public function nonce(): string
+    public function nonce(): int
     {
-        return NumberFormatter::number($this->wallet->nonce->toNumber());
+        return $this->wallet->nonce->toNumber();
     }
 }

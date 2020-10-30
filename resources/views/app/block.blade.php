@@ -21,7 +21,7 @@
 
         <x-details.grid>
             <x-details.generic :title="trans('general.block.height')" icon="app-height">
-                {{ $block->height() }}
+                <x-number>{{ $block->height() }}</x-number>
             </x-details.generic>
 
             <x-details.generic :title="trans('general.block.timestamp')" icon="app-timestamp">
@@ -29,15 +29,15 @@
             </x-details.generic>
 
             <x-details.generic :title="trans('general.block.reward')" icon="app-reward">
-                {{ $block->reward() }}
+                <x-currency>{{ $block->reward() }}</x-currency>
             </x-details.generic>
 
             <x-details.generic :title="trans('general.block.fee')" icon="app-fee">
-                {{ $block->fee() }}
+                <x-currency>{{ $block->fee() }}</x-currency>
             </x-details.generic>
 
             <x-details.generic :title="trans('general.block.confirmations')" icon="app-confirmations">
-                {{ $block->confirmations() }}
+                <x-number>{{ $block->confirmations() }}</x-number>
             </x-details.generic>
         </x-details.grid>
 

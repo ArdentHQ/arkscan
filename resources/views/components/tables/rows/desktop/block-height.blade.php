@@ -1,1 +1,1 @@
-{{ $model->height() }}
+<x-number>{{ $model->height() }}</x-number>

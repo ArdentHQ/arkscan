@@ -6,7 +6,6 @@ namespace App\ViewModels\Concerns\Wallet;
 
 use App\Models\Scopes\DelegateResignationScope;
 use App\Models\Transaction;
-use App\Services\NumberFormatter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
@@ -36,8 +35,8 @@ trait CanBeDelegate
     /**
      * @codeCoverageIgnore
      */
-    public function rank(): ?string
+    public function rank(): ?int
     {
-        return NumberFormatter::ordinal(Arr::get($this->wallet, 'attributes.delegate.rank', 0));
+        return Arr::get($this->wallet, 'attributes.delegate.rank', 0);
     }
 }

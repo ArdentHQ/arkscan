@@ -1,5 +1,5 @@
 <div>
     @lang('labels.balance_percentage')
 
-    {{ $model->balancePercentage() }}
+    <x-percentage>{{ $model->balancePercentage() }}</x-percentage>
 </div>

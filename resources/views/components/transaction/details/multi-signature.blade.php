@@ -24,5 +24,5 @@
 </x-details.generic>
 
 <x-details.generic :title="trans('general.transaction.nonce')" icon="app-nonce" without-border>
-    {{ $transaction->nonce() }}
+    <x-number>{{ $transaction->nonce() }}</x-number>
 </x-details.generic>
