@@ -35,7 +35,7 @@
                         <x-tables.rows.desktop.balance :model="$wallet" />
                     </td>
                     <td class="hidden text-right lg:table-cell">
-                        <x-tables.rows.desktop.balance-percentage :model="$wallet" />
+                        <x-tables.rows.desktop.vote-percentage :model="$wallet" />
                     </td>
                 </tr>
             @endforeach

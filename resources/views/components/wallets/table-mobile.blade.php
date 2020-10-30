@@ -7,7 +7,7 @@
 
             <x-tables.rows.mobile.balance :model="$wallet" />
 
-            <x-tables.rows.mobile.balance-percentage :model="$wallet" />
+            <x-tables.rows.mobile.vote-percentage :model="$wallet" />
         </div>
     @endforeach
 </div>

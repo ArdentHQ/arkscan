@@ -308,3 +308,25 @@ it('should fail to get the resignation id if the delegate is not resigned', func
 
     expect($this->subject->resignationId())->toBeNull();
 });
+
+it('should get the vote weight as percentage', function () {
+    expect($this->subject->votePercentage())->toBeNull();
+
+    $vote = Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => ['voteBalance' => 10e8],
+        ],
+    ]);
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'balance'    => 1e8,
+        'attributes' => ['vote' => $vote->public_key],
+    ]));
+
+    expect($this->subject->votePercentage())->toBeNull();
+
+    Cache::put('votes.'.$vote->public_key, $vote);
+
+    expect($this->subject->votePercentage())->toBeFloat();
+    expect($this->subject->votePercentage())->toBe(10.0);
+});
