@@ -76,6 +76,7 @@ return [
     'wallet' => [
         'title'                 => 'Address Details',
         'address'               => 'Address',
+        'address_delegate'      => ':0 Address',
         'transaction_history'   => 'Transaction History',
         'all_transactions'      => 'All History',
         'received_transactions' => 'Incoming',

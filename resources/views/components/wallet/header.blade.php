@@ -2,10 +2,15 @@
     <div class="flex-col pt-16 mb-16 space-y-6 content-container">
         <x-general.search.header-slim :title="trans('pages.wallet.title')" />
 
-        <x-general.entity-header
-            :title="trans('pages.wallet.address')"
-            :value="$wallet->address()"
-        >
+        <x-general.entity-header :value="$wallet->address()">
+            <x-slot name="title">
+                @if($wallet->isDelegate())
+                    @lang('pages.wallet.address_delegate', [$wallet->username()])
+                @else
+                    @lang('pages.wallet.address')
+                @endif
+            </x-slot>
+
             <x-slot name="logo">
                 <x-general.avatar :identifier="$wallet->address()" size="w-8 h-8" />
             </x-slot>
