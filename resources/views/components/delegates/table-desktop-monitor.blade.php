@@ -11,13 +11,14 @@
         </thead>
         <tbody>
             @foreach($delegates as $delegate)
-            @if ($delegate->keepsMissing())
-                <tr class="bg-theme-danger-100">
-            @elseif ($delegate->justMissed())
-                <tr class="bg-theme-warning-100">
-            @else
-                <tr>
-            @endif
+                <tr
+                    wire:key="$delegate->username()"
+                    @if ($delegate->keepsMissing())
+                        class="bg-theme-danger-50"
+                    @elseif ($delegate->justMissed())
+                        class="bg-theme-warning-50"
+                    @endif
+                >
                     <td>
                         <x-tables.rows.desktop.slot-id :model="$delegate" />
                     </td>

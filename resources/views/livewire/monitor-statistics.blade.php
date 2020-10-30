@@ -46,7 +46,7 @@
                 @lang("pages.monitor.statistics.votes")
             </x-slot>
 
-            {{ $votes }}
+            <x-number>{{ $votes }}</x-number>
 
             <span class="text-theme-secondary-600 dark:text-theme-secondary-700">
                 <x-percentage>{{ $votesPercentage }}</x-percentage>
