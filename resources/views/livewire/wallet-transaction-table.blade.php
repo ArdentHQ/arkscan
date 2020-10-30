@@ -17,7 +17,7 @@
         >
             <span>@lang('pages.wallet.received_transactions')</span>
 
-            <span class="px-1 ml-1 text-sm rounded bg-theme-primary-100">{{ $countReceived }}</span>
+            <span class="tab-badge">{{ $countReceived }}</span>
         </div>
 
         <div
@@ -28,7 +28,7 @@
         >
             <span>@lang('pages.wallet.sent_transactions', [$countSent])</span>
 
-            <span class="px-1 ml-1 text-sm rounded bg-theme-primary-100">{{ $countSent }}</span>
+            <span class="tab-badge">{{ $countSent }}</span>
         </div>
     </div>
 

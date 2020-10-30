@@ -8,7 +8,9 @@
         >
             <span>@lang('pages.monitor.active')</span>
 
-            <span class="px-1 ml-1 text-sm rounded bg-theme-primary-100">{{ $countActive }}</span>
+            @if ($countActive)
+                <span class="tab-badge">{{ $countActive }}</span>
+            @endif
         </div>
 
         <div
@@ -19,7 +21,7 @@
         >
             <span>@lang('pages.monitor.standby')</span>
 
-            <span class="px-1 ml-1 text-sm rounded bg-theme-primary-100">{{ $countStandby }}</span>
+            <span class="tab-badge">{{ $countStandby }}</span>
         </div>
 
         <div
@@ -30,7 +32,7 @@
         >
             <span>@lang('pages.monitor.resigned')</span>
 
-            <span class="px-1 ml-1 text-sm rounded bg-theme-primary-100">{{ $countResigned }}</span>
+            <span class="tab-badge">{{ $countResigned }}</span>
         </div>
     </div>
 
