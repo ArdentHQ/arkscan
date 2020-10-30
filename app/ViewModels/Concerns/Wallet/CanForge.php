@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Cache;
 
 trait CanForge
 {
+    public function totalForged(): float
+    {
+        $fees    = (int) Arr::get(Cache::get('delegates.totalFees', []), $this->wallet->public_key, 0);
+        $rewards = (int) Arr::get(Cache::get('delegates.totalRewards', []), $this->wallet->public_key, 0);
+
+        return ($fees + $rewards) / 1e8;
+    }
+
     public function amountForged(): int
     {
         return (int) Arr::get(Cache::get('delegates.totalAmounts', []), $this->wallet->public_key, 0);

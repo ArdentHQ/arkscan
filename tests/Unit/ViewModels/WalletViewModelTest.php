@@ -86,6 +86,20 @@ it('should get the votes as percentage from supply', function () {
     expect($this->subject->votesPercentage())->toBe(10.0);
 });
 
+it('should sum up the total forged', function () {
+    Cache::put('delegates.totalFees', [
+        $this->subject->publicKey() => '1000000000',
+    ]);
+
+    Cache::put('delegates.totalRewards', [
+        $this->subject->publicKey() => '1000000000',
+    ]);
+
+    expect($this->subject->totalForged())->toBeFloat();
+
+    assertMatchesSnapshot($this->subject->totalForged());
+});
+
 it('should sum up the amount forged', function () {
     Cache::put('delegates.totalAmounts', [
         $this->subject->publicKey() => '1000000000',
