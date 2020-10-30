@@ -62,6 +62,7 @@ return [
         'unvote'                  => 'Unvote',
         'vote'                    => 'Vote',
         'vote-combination'        => 'Vote/Unvote',
+        'well-confirmed'          => 'Well Confirmed',
     ],
 
     'wallet' => [

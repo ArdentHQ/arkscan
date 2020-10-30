@@ -1,5 +1,5 @@
 @if($model->isConfirmed())
-    <span>@lang('general.confirmed')</span>
+    <span class="flex justify-center"><x-general.circled-icon icon="app-confirmations" /></span>
 @else
     <span>{{ $model->confirmations() }}/{{ Network::confirmations() }}</span>
 @endif

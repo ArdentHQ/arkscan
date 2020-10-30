@@ -11,6 +11,7 @@ return [
     'block_forger'            => 'Forger',
     'block_height'            => 'Height',
     'block_id'                => 'ID',
+    'confirmations'           => 'Confirmations',
     'exchange'                => 'Exchange',
     'fee'                     => 'Fee',
     'last_block'              => 'Last Block',
