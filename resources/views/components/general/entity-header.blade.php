@@ -2,9 +2,7 @@
     <div class="p-8 bg-black dark:bg-theme-secondary-900">
         <div class="flex flex-col md:flex-row md:space-x-4">
             <div class="items-center hidden md:flex">
-                <div class="circled-icon text-theme-secondary-400 border-theme-danger-400">
-                    {{ $logo }}
-                </div>
+                {!! $logo !!}
             </div>
 
             <div class="flex flex-col justify-between flex-1 font-semibold truncate">

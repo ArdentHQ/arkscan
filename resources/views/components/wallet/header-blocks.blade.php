@@ -7,7 +7,7 @@
             :value="$wallet->address()"
         >
             <x-slot name="logo">
-                <x-general.avatar :identifier="$wallet->address()" size="w-8 h-8" />
+                <x-headings.avatar-with-icon :model="$wallet" icon="app-delegate" />
             </x-slot>
 
             <x-slot name="extra">

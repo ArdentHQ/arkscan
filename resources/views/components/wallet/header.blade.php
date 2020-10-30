@@ -12,7 +12,11 @@
             </x-slot>
 
             <x-slot name="logo">
-                <x-general.avatar :identifier="$wallet->address()" size="w-8 h-8" />
+                @if($wallet->isDelegate())
+                    <x-headings.avatar-with-icon :model="$wallet" icon="app-delegate" />
+                @else
+                    <x-headings.avatar :model="$wallet" />
+                @endif
             </x-slot>
 
             <x-slot name="extra">

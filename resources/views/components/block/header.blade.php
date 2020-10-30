@@ -6,7 +6,9 @@
             :title="trans('pages.block.block_id')"
             :value="$block->id()"
         >
-            <x-slot name="logo">@svg('app-block-id', 'w-5 h-5')</x-slot>
+            <x-slot name="logo">
+                @svg('app-block-id', 'w-5 h-5')
+            </x-slot>
 
             <x-slot name="extra">
                 <div class="flex items-center mt-6 space-x-2 text-theme-secondary-400 md:mt-0">
