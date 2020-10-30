@@ -1,1 +1,1 @@
-{{ $model->rank() }}
+<x-number>{{ $model->rank() }}</x-number>

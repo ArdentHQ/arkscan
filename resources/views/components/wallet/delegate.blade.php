@@ -8,9 +8,9 @@
             <div class="grid w-full grid-flow-row grid-cols-1 gap-6 pt-8 pb-8 mb-8 border-b border-dashed border-theme-secondary-300 dark:border-theme-secondary-800 md:grid-cols-2 lg:grid-cols-4 gap-y-12 md:gap-y-4">
                 <x-details-box :title="trans('pages.wallet.delegate.rank')" icon="app-rank" icon-wrapper-class="bg-theme-danger-100" icon-class="text-theme-danger-400">
                     @if ($wallet->rank() > Network::delegateCount())
-                        {{ $wallet->rank() }}
+                        <x-number>{{ $wallet->rank() }}</x-number>
                     @else
-                        {{ $wallet->rank() }} <span class="text-theme-secondary-500 dark:text-theme-secondary-700">/{{ Network::delegateCount() }}</span>
+                        <x-number>{{ $wallet->rank() }}</x-number> <span class="text-theme-secondary-500 dark:text-theme-secondary-700">/{{ Network::delegateCount() }}</span>
                     @endif
                 </x-details-box>
 
