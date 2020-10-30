@@ -1,6 +1,6 @@
 <div class="flex flex-col overflow-hidden border rounded-lg border-theme-secondary-300 dark:border-theme-secondary-800">
     <div class="p-8 bg-black dark:bg-theme-secondary-900">
-        <div class="flex flex-col space-y-8 lg:flex-row lg:space-y-0">
+        <div class="flex flex-col {{ $isBlockPage ?? false ? 'md:flex-row' : 'space-y-8 lg:flex-row' }} lg:space-y-0 justify-between">
             <div class="flex md:space-x-4">
                 <div class="items-center hidden md:flex">
                     {!! $logo !!}
@@ -11,11 +11,11 @@
 
                     <div class="flex items-center space-x-2 leading-tight">
                         <span class="flex text-theme-secondary-400 dark:text-theme-secondary-200">
-                            <span class="hidden md:inline-block">
+                            <span class="hidden lg:inline-block">
                                 {{ $value }}
                             </span>
 
-                            <span class="md:hidden">
+                            <span class="lg:hidden">
                                 <x-truncate-middle :value="$value" :length="16" />
                             </span>
 

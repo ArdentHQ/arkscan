@@ -5,6 +5,7 @@
         <x-general.entity-header
             :title="trans('pages.block.block_id')"
             :value="$block->id()"
+            is-block-page
         >
             <x-slot name="logo">
                 <x-headings.circle>
@@ -15,13 +16,13 @@
             <x-slot name="extra">
                 <div class="flex items-center mt-6 space-x-2 text-theme-secondary-400 md:mt-0">
                     @if ($block->previousBlockUrl())
-                        <a href="{{ $block->previousBlockUrl() }}" class="flex items-center justify-center flex-1 h-full px-3 rounded cursor-pointer bg-theme-secondary-800 hover:bg-theme-secondary-700 transition-default md:flex-none">
+                        <a href="{{ $block->previousBlockUrl() }}" class="flex items-center justify-center flex-1 px-3 rounded cursor-pointer h-11 bg-theme-secondary-800 hover:bg-theme-secondary-700 transition-default md:flex-none">
                             @svg('chevron-left', 'w-6 h-6')
                         </a>
                     @endif
 
                     @if ($block->nextBlockUrl())
-                        <a href="{{ $block->nextBlockUrl() }}" class="flex items-center justify-center flex-1 h-full px-3 rounded cursor-pointer bg-theme-secondary-800 hover:bg-theme-secondary-700 transition-default md:flex-none">
+                        <a href="{{ $block->nextBlockUrl() }}" class="flex items-center justify-center flex-1 px-3 rounded cursor-pointer h-11 bg-theme-secondary-800 hover:bg-theme-secondary-700 transition-default md:flex-none">
                             @svg('chevron-right', 'w-6 h-6')
                         </a>
                     @endif
