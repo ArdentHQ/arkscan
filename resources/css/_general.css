@@ -370,3 +370,11 @@ body {
 .theme-dark .tab-badge {
     @apply bg-theme-secondary-900 text-theme-secondary-700;
 }
+
+/* Vote Percentage */
+.vote-percentage {
+    @apply inline-block text-theme-secondary-500 w-16;
+}
+.theme-dark .vote-percentage {
+    @apply text-theme-secondary-600;
+}
