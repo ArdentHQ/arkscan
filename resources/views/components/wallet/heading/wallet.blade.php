@@ -1,7 +1,7 @@
-<x-wallet.header-frame title="pages.wallet.title" :wallet="$wallet">
-    <x-wallet.header-frame-item icon="wallet" title="pages.wallet.balance">
+<x-wallet.heading.frame title="pages.wallet.title" :wallet="$wallet">
+    <x-wallet.heading.frame-item icon="wallet" title="pages.wallet.balance">
         <x-currency>{{ $wallet->balance() }}</x-currency>
-    </x-wallet.header-frame-item>
+    </x-wallet.heading.frame-item>
 
     <x-slot name="extra">
         @if($wallet->isVoting())
@@ -34,4 +34,4 @@
             </x-slot>
         @endif
     </x-slot>
-</x-wallet.header-frame>
+</x-wallet.heading.frame>
