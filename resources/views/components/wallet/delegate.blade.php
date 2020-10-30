@@ -25,7 +25,7 @@
                 </div>
             @endif
 
-            <div class="grid w-full grid-flow-row grid-cols-1 gap-6 pt-8 md:grid-cols-2 lg:grid-cols-4 gap-y-12 md:gap-y-4">
+            <div class="grid w-full grid-flow-row grid-cols-1 gap-6 pt-8 pb-8 border-b border-dotted md:grid-cols-2 lg:grid-cols-4 gap-y-12 md:gap-y-4 border-theme-secondary-300 dark:border-theme-secondary-800">
                 <x-details-box :title="trans('pages.wallet.delegate.forged_total')" icon="app-volume">
                     <x-currency>{{ $wallet->amountForged() }}</x-currency>
                 </x-details-box>
