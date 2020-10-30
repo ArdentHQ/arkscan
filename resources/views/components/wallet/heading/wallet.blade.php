@@ -3,8 +3,8 @@
         <x-currency>{{ $wallet->balance() }}</x-currency>
     </x-wallet.heading.frame-item>
 
-    <x-slot name="extension">
-        @if($wallet->isVoting())
+    @if($wallet->isVoting())
+        <x-slot name="extension">
             @php($vote = $wallet->vote())
 
             <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
@@ -30,6 +30,6 @@
                     />
                 @endif
             </div>
-        @endif
-    </x-slot>
+        </x-slot>
+    @endif
 </x-wallet.heading.frame>

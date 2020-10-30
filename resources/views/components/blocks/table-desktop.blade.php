@@ -4,7 +4,9 @@
             <tr>
                 <th class="text-center">&nbsp;</th>
                 <th class="hidden lg:table-cell">@lang('general.block.timestamp')</th>
-                <th><span class="pl-14">@lang('general.block.generated_by')</span></th>
+                @if(!isset($withoutGenerator))
+                    <th><span class="pl-14">@lang('general.block.generated_by')</span></th>
+                @endif
                 <th>@lang('general.block.height')</th>
                 <th>
                     <div class="inline-block">
@@ -25,9 +27,11 @@
                     <td class="hidden lg:table-cell">
                         <x-tables.rows.desktop.timestamp :model="$block" />
                     </td>
-                    <td>
-                        <x-tables.rows.desktop.block-forger :model="$block" />
-                    </td>
+                    @if(!isset($withoutGenerator))
+                        <td>
+                            <x-tables.rows.desktop.block-forger :model="$block" />
+                        </td>
+                    @endif
                     <td>
                         <x-tables.rows.desktop.block-height :model="$block" />
                     </td>

@@ -4,10 +4,14 @@
 
         <x-general.entity-header :value="$wallet->address()">
             <x-slot name="title">
-                @if($wallet->isDelegate())
-                    @lang('pages.wallet.address_delegate', [$wallet->username()])
+                @isset($useGenerator)
+                    @lang('pages.wallet.address_generator', [$wallet->username()])
                 @else
-                    @lang('pages.wallet.address')
+                    @if($wallet->isDelegate())
+                        @lang('pages.wallet.address_delegate', [$wallet->username()])
+                    @else
+                        @lang('pages.wallet.address')
+                    @endif
                 @endif
             </x-slot>
 
