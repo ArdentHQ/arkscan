@@ -141,7 +141,8 @@ return [
     ],
 
     'voters_by_wallet' => [
-        'title' => 'Voting for Delegate',
+        'title'    => 'Voting for Delegate',
+        'subtitle' => 'Voters',
     ],
 
 ];
