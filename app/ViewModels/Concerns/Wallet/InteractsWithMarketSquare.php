@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Wallet;
 
+use App\Facades\Network;
+
 trait InteractsWithMarketSquare
 {
     /**
@@ -11,8 +13,12 @@ trait InteractsWithMarketSquare
      *
      * @codeCoverageIgnore
      */
-    public function commission(): int
+    public function commission(): ?int
     {
+        if (! Network::usesMarketsquare()) {
+            return null;
+        }
+
         return 0;
     }
 
@@ -21,8 +27,12 @@ trait InteractsWithMarketSquare
      *
      * @codeCoverageIgnore
      */
-    public function payoutFrequency(): int
+    public function payoutFrequency(): ?int
     {
+        if (! Network::usesMarketsquare()) {
+            return null;
+        }
+
         return 0;
     }
 
@@ -31,8 +41,12 @@ trait InteractsWithMarketSquare
      *
      * @codeCoverageIgnore
      */
-    public function payoutMinimum(): int
+    public function payoutMinimum(): ?int
     {
+        if (! Network::usesMarketsquare()) {
+            return null;
+        }
+
         return 0;
     }
 }
