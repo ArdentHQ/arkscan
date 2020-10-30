@@ -26,23 +26,25 @@
             @endif
 
             <div class="grid w-full grid-flow-row grid-cols-1 gap-6 pt-8 pb-8 border-b border-dotted md:grid-cols-2 lg:grid-cols-4 gap-y-12 md:gap-y-4 border-theme-secondary-300 dark:border-theme-secondary-800">
-                <x-details-box :title="trans('pages.wallet.delegate.forged_total')" icon="app-volume">
+                <x-details-box :title="trans('pages.wallet.delegate.forged_total')" icon="app-forged" shallow>
                     <x-currency>{{ $wallet->amountForged() }}</x-currency>
                 </x-details-box>
 
-                <x-details-box icon="app-volume">
+                <x-details-box icon="app-transactions.unvote" shallow>
                     <x-slot name="title">
                         @lang('pages.wallet.delegate.votes', [App\Services\NumberFormatter::percentage($wallet->votesPercentage())])
                     </x-slot>
 
-                    <x-currency>{{ $wallet->votes() }}</x-currency> <a href="{{ route('wallet.voters', $wallet->address()) }}" class="link">@lang('general.see_all')</a>
+                    <x-currency>{{ $wallet->votes() }}</x-currency>
+                    <a href="{{ route('wallet.voters', $wallet->address()) }}" class="link">@lang('general.see_all')</a>
                 </x-details-box>
 
-                <x-details-box :title="trans('pages.wallet.delegate.forged_blocks')" icon="app-volume">
-                    <x-number>{{ $wallet->forgedBlocks() }}</x-number> <a href="{{ route('wallet.blocks', $wallet->address()) }}" class="link">@lang('general.see_all')</a>
+                <x-details-box :title="trans('pages.wallet.delegate.forged_blocks')" icon="app-block-id" shallow>
+                    <x-number>{{ $wallet->forgedBlocks() }}</x-number>
+                    <a href="{{ route('wallet.blocks', $wallet->address()) }}" class="link">@lang('general.see_all')</a>
                 </x-details-box>
 
-                <x-details-box :title="trans('pages.wallet.delegate.productivity')" icon="app-volume">
+                <x-details-box :title="trans('pages.wallet.delegate.productivity')" icon="app-percent" shallow>
                     <x-percentage>{{ $wallet->productivity() }}</x-percentage>
                 </x-details-box>
             </div>
