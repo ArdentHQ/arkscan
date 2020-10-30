@@ -7,6 +7,7 @@ namespace App\ViewModels\Concerns\Transaction;
 use App\Models\Wallet;
 use App\Services\MultiSignature;
 use App\ViewModels\WalletViewModel;
+use ArkEcosystem\Crypto\Identities\Address;
 use Illuminate\Support\Arr;
 
 trait InteractsWithMultiSignature
@@ -49,8 +50,9 @@ trait InteractsWithMultiSignature
         }
 
         return collect(Arr::get($this->transaction->asset, 'multiSignature.publicKeys', []))
-            ->map(fn ($address) => Wallet::where('public_key', $address)->firstOrFail())
-            ->map(fn ($wallet)  => new WalletViewModel($wallet))
+            ->map(fn ($publicKey) => Address::fromPublicKey($publicKey))
+            ->map(fn ($address)   => Wallet::where('address', $address)->firstOrFail())
+            ->map(fn ($wallet)    => new WalletViewModel($wallet))
             ->toArray();
     }
 

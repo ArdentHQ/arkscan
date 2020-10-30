@@ -12,10 +12,9 @@ use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
-
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
-
+use ArkEcosystem\Crypto\Identities\Address;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
 
@@ -946,11 +945,30 @@ it('should get the participants', function () {
         ],
     ]));
 
-    Wallet::factory()->create(['public_key' => '02fb3def2593a00c5b84620addf28ff21bac452bd71a37d4d8e24f301683a81b56']);
-    Wallet::factory()->create(['public_key' => '02bc9f661fcc8abca65fe9aff4614036867b7fdcc5730085ccc5cb854664d0194b']);
-    Wallet::factory()->create(['public_key' => '03c44c6b6cc9893ae21ca606712fd0f6f03c41ce81c4f6ce5a640f4b0b82ec1ce0']);
-    Wallet::factory()->create(['public_key' => '020300039e973baf5e46b945777cfae330d6392cdb039b1cebc5c3382d421166c3']);
-    Wallet::factory()->create(['public_key' => '03b050073621b9b5caec9461d44d6bcf21a858c47dd88230ce723e25c1bc75c219']);
+    Wallet::factory()->create([
+        'address'    => Address::fromPublicKey('02fb3def2593a00c5b84620addf28ff21bac452bd71a37d4d8e24f301683a81b56'),
+        'public_key' => '02fb3def2593a00c5b84620addf28ff21bac452bd71a37d4d8e24f301683a81b56',
+    ]);
+
+    Wallet::factory()->create([
+        'address'    => Address::fromPublicKey('02bc9f661fcc8abca65fe9aff4614036867b7fdcc5730085ccc5cb854664d0194b'),
+        'public_key' => '02bc9f661fcc8abca65fe9aff4614036867b7fdcc5730085ccc5cb854664d0194b',
+    ]);
+
+    Wallet::factory()->create([
+        'address'    => Address::fromPublicKey('03c44c6b6cc9893ae21ca606712fd0f6f03c41ce81c4f6ce5a640f4b0b82ec1ce0'),
+        'public_key' => '03c44c6b6cc9893ae21ca606712fd0f6f03c41ce81c4f6ce5a640f4b0b82ec1ce0',
+    ]);
+
+    Wallet::factory()->create([
+        'address'    => Address::fromPublicKey('020300039e973baf5e46b945777cfae330d6392cdb039b1cebc5c3382d421166c3'),
+        'public_key' => '020300039e973baf5e46b945777cfae330d6392cdb039b1cebc5c3382d421166c3',
+    ]);
+
+    Wallet::factory()->create([
+        'address'    => Address::fromPublicKey('03b050073621b9b5caec9461d44d6bcf21a858c47dd88230ce723e25c1bc75c219'),
+        'public_key' => '03b050073621b9b5caec9461d44d6bcf21a858c47dd88230ce723e25c1bc75c219',
+    ]);
 
     expect($this->subject->participants())->toHaveCount(5);
 });
