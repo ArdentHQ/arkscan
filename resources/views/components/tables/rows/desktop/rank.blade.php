@@ -1,1 +1,1 @@
-<x-ordinal>{{ $model->rank() }}</x-ordinal>
+{{ $model->rank() }}

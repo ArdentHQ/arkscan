@@ -21,9 +21,3 @@ it('should format a number without a currency symbol from a satoshi value', func
 it('should format a number with a currency symbol', function () {
     assertMatchesSnapshot(NumberFormatter::currency(123, 'ARK'));
 });
-
-it('should format a number with an ordinal', function () {
-    expect(NumberFormatter::ordinal(1))->toBe('1st');
-    expect(NumberFormatter::ordinal(2))->toBe('2nd');
-    expect(NumberFormatter::ordinal(3))->toBe('3rd');
-});
