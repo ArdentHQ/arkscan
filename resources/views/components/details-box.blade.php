@@ -10,6 +10,7 @@
             </div>
         @endisset
     @endisset
+
     <div class="flex flex-col space-y-2">
         <span class="text-sm font-semibold text-theme-secondary-500 dark:text-theme-secondary-700">{{ $title }}</span>
         @if((string) $slot === "")
@@ -17,9 +18,6 @@
         @else
             <span class="font-semibold text-theme-secondary-700 dark:text-theme-secondary-200">
                 {{ $slot }}
-                @isset($extraValue)
-                    <span class="text-theme-secondary-500 dark:text-theme-secondary-700">{{ $extraValue }}</span>
-                @endif
             </span>
         @endif
     </div>
