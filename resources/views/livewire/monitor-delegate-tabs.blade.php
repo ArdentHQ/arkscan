@@ -6,7 +6,9 @@
             wire:click="$emit('filterByDelegateStatus', 'active');"
             @click="status = 'active'"
         >
-            @lang('pages.monitor.active') {{ $countActive }}
+            <span>@lang('pages.monitor.active')</span>
+
+            <span class="px-1 ml-1 text-sm rounded bg-theme-primary-100">{{ $countActive }}</span>
         </div>
 
         <div
@@ -15,7 +17,9 @@
             wire:click="$emit('filterByDelegateStatus', 'standby');"
             @click="status = 'standby'"
         >
-            @lang('pages.monitor.standby') {{ $countStandby }}
+            <span>@lang('pages.monitor.standby')</span>
+
+            <span class="px-1 ml-1 text-sm rounded bg-theme-primary-100">{{ $countStandby }}</span>
         </div>
 
         <div
@@ -24,7 +28,9 @@
             wire:click="$emit('filterByDelegateStatus', 'resigned');"
             @click="status = 'resigned'"
         >
-            @lang('pages.monitor.resigned') {{ $countResigned }}
+            <span>@lang('pages.monitor.resigned')</span>
+
+            <span class="px-1 ml-1 text-sm rounded bg-theme-primary-100">{{ $countResigned }}</span>
         </div>
     </div>
 
@@ -59,15 +65,21 @@
 
         <div class="p-4">
             <a wire:click="$emit('filterByDelegateStatus', 'active');" @click="status = 'active'" class="dropdown-entry">
-                @lang('pages.wallet.received_transactions') {{ $countActive }}
+                <span>@lang('pages.monitor.active')</span>
+
+                <span class="px-1 ml-2 text-sm rounded bg-theme-primary-100">{{ $countActive }}</span>
             </a>
 
             <a wire:click="$emit('filterByDelegateStatus', 'standby');" @click="status = 'standby'" class="dropdown-entry">
-                @lang('pages.wallet.received_transactions') {{ $countStandby }}
+                <span>@lang('pages.monitor.standby')</span>
+
+                <span class="px-1 ml-2 text-sm rounded bg-theme-primary-100">{{ $countStandby }}</span>
             </a>
 
             <a wire:click="$emit('filterByDelegateStatus', 'resigned');" @click="status = 'resigned'" class="dropdown-entry">
-                @lang('pages.wallet.received_transactions') {{ $countResigned }}
+                <span>@lang('pages.monitor.resigned')</span>
+
+                <span class="px-1 ml-2 text-sm rounded bg-theme-primary-100">{{ $countResigned }}</span>
             </a>
         </div>
     </x-ark-dropdown>
