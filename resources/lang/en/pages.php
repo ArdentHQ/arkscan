@@ -103,7 +103,7 @@ return [
             'forged_total'     => 'Forged Total',
             'votes'            => 'Votes :0',
             'forged_blocks'    => 'Forged Blocks',
-            'productivity'     => 'Productivity',
+            'productivity'     => 'Productivity (30 Days)',
             'voters'           => 'Voters',
         ],
     ],
