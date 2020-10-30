@@ -23,7 +23,7 @@
             @foreach($wallets as $wallet)
                 <tr>
                     <td>
-                        <x-tables.rows.desktop.address :model="$wallet" />
+                        <x-tables.rows.desktop.address :model="$wallet" :without-truncate="$withoutTruncate ?? false" />
                     </td>
                     {{-- @TODO: this is a code smell. We should have separate views instead of littering everything with if/else to hide UI elements. --}}
                     @if ($hasInfo)
