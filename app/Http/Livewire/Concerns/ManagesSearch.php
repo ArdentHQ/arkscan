@@ -20,10 +20,12 @@ trait ManagesSearch
             'state.dateFrom'    => ['nullable', 'date'],
             'state.dateTo'      => ['nullable', 'date'],
             // Blocks
-            'state.totalAmountFrom'    => ['nullable', 'integer', 'min:0', 'max:100'],
-            'state.totalAmountTo'      => ['nullable', 'integer', 'min:0', 'max:100'],
-            'state.totalFeeFrom'       => ['nullable', 'integer', 'min:0', 'max:100'],
-            'state.totalFeeTo'         => ['nullable', 'integer', 'min:0', 'max:100'],
+            'state.heightFrom'         => ['nullable', 'integer', 'min:1'],
+            'state.heightTo'           => ['nullable', 'integer', 'min:1'],
+            'state.totalAmountFrom'    => ['nullable', 'integer', 'min:0'],
+            'state.totalAmountTo'      => ['nullable', 'integer', 'min:0'],
+            'state.totalFeeFrom'       => ['nullable', 'integer', 'min:0'],
+            'state.totalFeeTo'         => ['nullable', 'integer', 'min:0'],
             'state.generatorPublicKey' => ['nullable', 'string', 'max:255'],
             // Transactions
             'state.transactionType' => ['nullable', 'string'], // @TODO: validate based on an enum

@@ -20,7 +20,7 @@ final class WalletSearch implements Search
     {
         $query = Wallet::query();
 
-        $this->queryValueRange($query, 'balance', (int) Arr::get($parameters, 'balanceFrom', 0), (int) Arr::get($parameters, 'balanceTo', 0));
+        $this->queryValueRange($query, 'balance', Arr::get($parameters, 'balanceFrom', 0), Arr::get($parameters, 'balanceTo', 0));
 
         if (! is_null(Arr::get($parameters, 'term'))) {
             $query->where('address', $parameters['term']);

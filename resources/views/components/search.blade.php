@@ -97,121 +97,277 @@
                     </select>
                 </x-general.search.advanced-option>
 
-                <x-general.search.advanced-option :title="trans('forms.search.transaction_type')">
-                    {{-- TODO: Enum of types and their values? --}}
-                    <select wire:model="state.transactionType" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">
-                        <option value="all">@lang('forms.search.transaction_types.all')</option>
-                        <option value="businessEntityRegistration">@lang('forms.search.transaction_types.businessEntityRegistration')</option>
-                        <option value="businessEntityResignation">@lang('forms.search.transaction_types.businessEntityResignation')</option>
-                        <option value="businessEntityUpdate">@lang('forms.search.transaction_types.businessEntityUpdate')</option>
-                        <option value="delegateEntityRegistration">@lang('forms.search.transaction_types.delegateEntityRegistration')</option>
-                        <option value="delegateEntityResignation">@lang('forms.search.transaction_types.delegateEntityResignation')</option>
-                        <option value="delegateEntityUpdate">@lang('forms.search.transaction_types.delegateEntityUpdate')</option>
-                        <option value="delegateRegistration">@lang('forms.search.transaction_types.delegateRegistration')</option>
-                        <option value="delegateResignation">@lang('forms.search.transaction_types.delegateResignation')</option>
-                        <option value="entityRegistration">@lang('forms.search.transaction_types.entityRegistration')</option>
-                        <option value="entityResignation">@lang('forms.search.transaction_types.entityResignation')</option>
-                        <option value="entityUpdate">@lang('forms.search.transaction_types.entityUpdate')</option>
-                        <option value="ipfs">@lang('forms.search.transaction_types.ipfs')</option>
-                        <option value="legacyBridgechainRegistration">@lang('forms.search.transaction_types.legacyBridgechainRegistration')</option>
-                        <option value="legacyBridgechainResignation">@lang('forms.search.transaction_types.legacyBridgechainResignation')</option>
-                        <option value="legacyBridgechainUpdate">@lang('forms.search.transaction_types.legacyBridgechainUpdate')</option>
-                        <option value="legacyBusinessRegistration">@lang('forms.search.transaction_types.legacyBusinessRegistration')</option>
-                        <option value="legacyBusinessResignation">@lang('forms.search.transaction_types.legacyBusinessResignation')</option>
-                        <option value="legacyBusinessUpdate">@lang('forms.search.transaction_types.legacyBusinessUpdate')</option>
-                        <option value="moduleEntityRegistration">@lang('forms.search.transaction_types.moduleEntityRegistration')</option>
-                        <option value="moduleEntityResignation">@lang('forms.search.transaction_types.moduleEntityResignation')</option>
-                        <option value="moduleEntityUpdate">@lang('forms.search.transaction_types.moduleEntityUpdate')</option>
-                        <option value="multiPayment">@lang('forms.search.transaction_types.multiPayment')</option>
-                        <option value="multiSignature">@lang('forms.search.transaction_types.multiSignature')</option>
-                        <option value="pluginEntityRegistration">@lang('forms.search.transaction_types.pluginEntityRegistration')</option>
-                        <option value="pluginEntityResignation">@lang('forms.search.transaction_types.pluginEntityResignation')</option>
-                        <option value="pluginEntityUpdate">@lang('forms.search.transaction_types.pluginEntityUpdate')</option>
-                        <option value="productEntityRegistration">@lang('forms.search.transaction_types.productEntityRegistration')</option>
-                        <option value="productEntityResignation">@lang('forms.search.transaction_types.productEntityResignation')</option>
-                        <option value="productEntityUpdate">@lang('forms.search.transaction_types.productEntityUpdate')</option>
-                        <option value="secondSignature">@lang('forms.search.transaction_types.secondSignature')</option>
-                        <option value="timelockClaim">@lang('forms.search.transaction_types.timelockClaim')</option>
-                        <option value="timelockRefund">@lang('forms.search.transaction_types.timelockRefund')</option>
-                        <option value="timelock">@lang('forms.search.transaction_types.timelock')</option>
-                        <option value="transfer">@lang('forms.search.transaction_types.transfer')</option>
-                        <option value="vote">@lang('forms.search.transaction_types.vote')</option>
-                    </select>
-                </x-general.search.advanced-option>
+                @if($type === 'block')
+                    <x-general.search.advanced-option :title="trans('forms.search.height_range')">
+                        <div class="flex items-center space-x-2">
+                            <input
+                                type="number"
+                                placeholder="0.00"
+                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                wire:model="state.heightFrom"
+                                wire:keydown.enter="performSearch"
+                            />
 
-                <x-general.search.advanced-option :title="trans('forms.search.amount_range')">
-                    <div class="flex items-center space-x-2">
+                            <span>-</span>
+
+                            <input
+                                type="number"
+                                placeholder="0.00"
+                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                wire:model="state.heightTo"
+                                wire:keydown.enter="performSearch"
+                            />
+                        </div>
+                    </x-general.search.advanced-option>
+
+                    <x-general.search.advanced-option :title="trans('forms.search.total_amount_range')">
+                        <div class="flex items-center space-x-2">
+                            <input
+                                type="number"
+                                placeholder="0.00"
+                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                wire:model="state.totalAmountFrom"
+                                wire:keydown.enter="performSearch"
+                            />
+
+                            <span>-</span>
+
+                            <input
+                                type="number"
+                                placeholder="0.00"
+                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                wire:model="state.totalAmountTo"
+                                wire:keydown.enter="performSearch"
+                            />
+                        </div>
+                    </x-general.search.advanced-option>
+
+                    <x-general.search.advanced-option :title="trans('forms.search.total_fee_range')">
+                        <div class="flex items-center space-x-2">
+                            <input
+                                type="number"
+                                placeholder="0.00"
+                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                wire:model="state.totalFeeFrom"
+                                wire:keydown.enter="performSearch"
+                            />
+
+                            <span>-</span>
+
+                            <input
+                                type="number"
+                                placeholder="0.00"
+                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                wire:model="state.totalFeeTo"
+                                wire:keydown.enter="performSearch"
+                            />
+                        </div>
+                    </x-general.search.advanced-option>
+
+                    <x-general.search.advanced-option :title="trans('forms.search.reward_range')">
+                        <div class="flex items-center space-x-2">
+                            <input
+                                type="number"
+                                placeholder="0.00"
+                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                wire:model="state.rewardFrom"
+                                wire:keydown.enter="performSearch"
+                            />
+
+                            <span>-</span>
+
+                            <input
+                                type="number"
+                                placeholder="0.00"
+                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                wire:model="state.rewardTo"
+                                wire:keydown.enter="performSearch"
+                            />
+                        </div>
+                    </x-general.search.advanced-option>
+
+                    <x-general.search.advanced-option :title="trans('forms.search.date_range')">
+                        <div>
+                            <input
+                                type="date"
+                                class="bg-transparent -ml-7"
+                                wire:model="state.dateFrom"
+                                style="width: 49px;"
+                            />
+
+                            <span>-</span>
+
+                            <input
+                                type="date"
+                                class="-ml-6 bg-transparent"
+                                wire:model="state.dateTo"
+                                style="width: 49px;"
+                            />
+                        </div>
+                    </x-general.search.advanced-option>
+                @endif
+
+                @if($type === 'transaction')
+                    <x-general.search.advanced-option :title="trans('forms.search.transaction_type')">
+                        {{-- TODO: Enum of types and their values? --}}
+                        <select wire:model="state.transactionType" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">
+                            <option value="all">@lang('forms.search.transaction_types.all')</option>
+                            <option value="businessEntityRegistration">@lang('forms.search.transaction_types.businessEntityRegistration')</option>
+                            <option value="businessEntityResignation">@lang('forms.search.transaction_types.businessEntityResignation')</option>
+                            <option value="businessEntityUpdate">@lang('forms.search.transaction_types.businessEntityUpdate')</option>
+                            <option value="delegateEntityRegistration">@lang('forms.search.transaction_types.delegateEntityRegistration')</option>
+                            <option value="delegateEntityResignation">@lang('forms.search.transaction_types.delegateEntityResignation')</option>
+                            <option value="delegateEntityUpdate">@lang('forms.search.transaction_types.delegateEntityUpdate')</option>
+                            <option value="delegateRegistration">@lang('forms.search.transaction_types.delegateRegistration')</option>
+                            <option value="delegateResignation">@lang('forms.search.transaction_types.delegateResignation')</option>
+                            <option value="entityRegistration">@lang('forms.search.transaction_types.entityRegistration')</option>
+                            <option value="entityResignation">@lang('forms.search.transaction_types.entityResignation')</option>
+                            <option value="entityUpdate">@lang('forms.search.transaction_types.entityUpdate')</option>
+                            <option value="ipfs">@lang('forms.search.transaction_types.ipfs')</option>
+                            <option value="legacyBridgechainRegistration">@lang('forms.search.transaction_types.legacyBridgechainRegistration')</option>
+                            <option value="legacyBridgechainResignation">@lang('forms.search.transaction_types.legacyBridgechainResignation')</option>
+                            <option value="legacyBridgechainUpdate">@lang('forms.search.transaction_types.legacyBridgechainUpdate')</option>
+                            <option value="legacyBusinessRegistration">@lang('forms.search.transaction_types.legacyBusinessRegistration')</option>
+                            <option value="legacyBusinessResignation">@lang('forms.search.transaction_types.legacyBusinessResignation')</option>
+                            <option value="legacyBusinessUpdate">@lang('forms.search.transaction_types.legacyBusinessUpdate')</option>
+                            <option value="moduleEntityRegistration">@lang('forms.search.transaction_types.moduleEntityRegistration')</option>
+                            <option value="moduleEntityResignation">@lang('forms.search.transaction_types.moduleEntityResignation')</option>
+                            <option value="moduleEntityUpdate">@lang('forms.search.transaction_types.moduleEntityUpdate')</option>
+                            <option value="multiPayment">@lang('forms.search.transaction_types.multiPayment')</option>
+                            <option value="multiSignature">@lang('forms.search.transaction_types.multiSignature')</option>
+                            <option value="pluginEntityRegistration">@lang('forms.search.transaction_types.pluginEntityRegistration')</option>
+                            <option value="pluginEntityResignation">@lang('forms.search.transaction_types.pluginEntityResignation')</option>
+                            <option value="pluginEntityUpdate">@lang('forms.search.transaction_types.pluginEntityUpdate')</option>
+                            <option value="productEntityRegistration">@lang('forms.search.transaction_types.productEntityRegistration')</option>
+                            <option value="productEntityResignation">@lang('forms.search.transaction_types.productEntityResignation')</option>
+                            <option value="productEntityUpdate">@lang('forms.search.transaction_types.productEntityUpdate')</option>
+                            <option value="secondSignature">@lang('forms.search.transaction_types.secondSignature')</option>
+                            <option value="timelockClaim">@lang('forms.search.transaction_types.timelockClaim')</option>
+                            <option value="timelockRefund">@lang('forms.search.transaction_types.timelockRefund')</option>
+                            <option value="timelock">@lang('forms.search.transaction_types.timelock')</option>
+                            <option value="transfer">@lang('forms.search.transaction_types.transfer')</option>
+                            <option value="vote">@lang('forms.search.transaction_types.vote')</option>
+                        </select>
+                    </x-general.search.advanced-option>
+
+                    <x-general.search.advanced-option :title="trans('forms.search.amount_range')">
+                        <div class="flex items-center space-x-2">
+                            <input
+                                type="number"
+                                placeholder="0.00"
+                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                wire:model="state.amountFrom"
+                                wire:keydown.enter="performSearch"
+                            />
+
+                            <span>-</span>
+
+                            <input
+                                type="number"
+                                placeholder="0.00"
+                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                wire:model="state.amountTo"
+                                wire:keydown.enter="performSearch"
+                            />
+                        </div>
+                    </x-general.search.advanced-option>
+
+                    <x-general.search.advanced-option :title="trans('forms.search.fee_range')">
+                        <div class="flex items-center space-x-2">
+                            <input
+                                type="number"
+                                placeholder="0.00"
+                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                wire:model="state.feeFrom"
+                                wire:keydown.enter="performSearch"
+                            />
+
+                            <span>-</span>
+
+                            <input
+                                type="number"
+                                placeholder="0.00"
+                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                wire:model="state.feeTo"
+                                wire:keydown.enter="performSearch"
+                            />
+                        </div>
+                    </x-general.search.advanced-option>
+
+                    <x-general.search.advanced-option :title="trans('forms.search.smartbridge')">
                         <input
-                            type="number"
-                            placeholder="0.00"
+                            type="text"
+                            placeholder="@lang('forms.search.smartbridge_placeholder')"
                             class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
-                            wire:model="state.amountFrom"
+                            wire:model="state.smartBridge"
                             wire:keydown.enter="performSearch"
                         />
+                    </x-general.search.advanced-option>
 
-                        <span>-</span>
+                    <x-general.search.advanced-option :title="trans('forms.search.date_range')">
+                        <div>
+                            <input
+                                type="date"
+                                class="bg-transparent -ml-7"
+                                wire:model="state.dateFrom"
+                                style="width: 49px;"
+                            />
 
+                            <span>-</span>
+
+                            <input
+                                type="date"
+                                class="-ml-6 bg-transparent"
+                                wire:model="state.dateTo"
+                                style="width: 49px;"
+                            />
+                        </div>
+                    </x-general.search.advanced-option>
+                @endif
+
+                @if($type === 'wallet')
+                    <x-general.search.advanced-option :title="trans('forms.search.balance_range')">
+                        <div class="flex items-center space-x-2">
+                            <input
+                                type="number"
+                                placeholder="0.00"
+                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                wire:model="state.balanceFrom"
+                                wire:keydown.enter="performSearch"
+                            />
+
+                            <span>-</span>
+
+                            <input
+                                type="number"
+                                placeholder="0.00"
+                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                wire:model="state.balanceTo"
+                                wire:keydown.enter="performSearch"
+                            />
+                        </div>
+                    </x-general.search.advanced-option>
+
+                    <x-general.search.advanced-option :title="trans('forms.search.username')">
                         <input
-                            type="number"
-                            placeholder="0.00"
+                            type="text"
+                            placeholder="@lang('forms.search.username')"
                             class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
-                            wire:model="state.amountTo"
+                            wire:model="state.username"
                             wire:keydown.enter="performSearch"
                         />
-                    </div>
-                </x-general.search.advanced-option>
+                    </x-general.search.advanced-option>
 
-                <x-general.search.advanced-option :title="trans('forms.search.fee_range')">
-                    <div class="flex items-center space-x-2">
+                    <x-general.search.advanced-option :title="trans('forms.search.vote')">
                         <input
-                            type="number"
-                            placeholder="0.00"
+                            type="text"
+                            placeholder="@lang('forms.search.vote')"
                             class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
-                            wire:model="state.feeFrom"
+                            wire:model="state.vote"
                             wire:keydown.enter="performSearch"
                         />
-
-                        <span>-</span>
-
-                        <input
-                            type="number"
-                            placeholder="0.00"
-                            class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
-                            wire:model="state.feeTo"
-                            wire:keydown.enter="performSearch"
-                        />
-                    </div>
-                </x-general.search.advanced-option>
-
-                <x-general.search.advanced-option :title="trans('forms.search.date_range')">
-                    <div>
-                        <input
-                            type="date"
-                            class="bg-transparent -ml-7"
-                            wire:model="state.dateFrom"
-                            style="width: 49px;"
-                        />
-
-                        <span>-</span>
-
-                        <input
-                            type="date"
-                            class="-ml-6 bg-transparent"
-                            wire:model="state.dateTo"
-                            style="width: 49px;"
-                        />
-                    </div>
-                </x-general.search.advanced-option>
-
-                <x-general.search.advanced-option :title="trans('forms.search.smartbridge')">
-                    <input
-                        type="text"
-                        placeholder="@lang('forms.search.smartbridge_placeholder')"
-                        class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
-                        wire:model="state.smartBridge"
-                        wire:keydown.enter="performSearch"
-                    />
-                </x-general.search.advanced-option>
+                    </x-general.search.advanced-option>
+                @endif
             </div>
         </div>
 
