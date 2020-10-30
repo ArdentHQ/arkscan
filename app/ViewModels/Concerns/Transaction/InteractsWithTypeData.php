@@ -33,6 +33,12 @@ trait InteractsWithTypeData
             return $view;
         }
 
+        $view = 'transaction.details.'.Str::slug($this->typeSlug());
+
+        if (View::exists("components.$view")) {
+            return $view;
+        }
+
         return 'transaction.details.fallback';
     }
 

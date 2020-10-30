@@ -3,6 +3,7 @@
     icon="app-transactions.transfer"
     :text="$transaction->typeLabel()"
 />
+
 <x-general.entity-header-item
     :title="trans('pages.transaction.fee')"
     icon="app-fee"
