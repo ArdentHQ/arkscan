@@ -14,7 +14,7 @@
     </div>
 
     <div class="flex flex-col space-y-2">
-        <span class="text-lg font-semibold text-theme-secondary-700">
+        <span class="font-semibold text-theme-secondary-700">
             <x-general.identity-iconless :model="$model->sender()" />
         </span>
     </div>
