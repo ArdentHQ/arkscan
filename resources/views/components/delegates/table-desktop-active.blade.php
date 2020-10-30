@@ -5,7 +5,7 @@
                 <th>@lang('general.delegates.rank')</th>
                 <th><span class="pl-14">@lang('general.delegates.name')</span></th>
                 <th><span class="pl-14">@lang('general.delegates.status')</span></th>
-                <th>@lang('general.delegates.votes')</th>
+                <th class="text-right">@lang('general.delegates.votes')</th>
                 @if (Network::usesMarketSquare())
                 <th>@lang('general.delegates.profile')</th>
                 <th>@lang('general.delegates.commission')</th>
@@ -25,7 +25,7 @@
                     <td>
                         <x-tables.rows.desktop.round-status-history :model="$delegate" />
                     </td>
-                    <td>
+                    <td class="text-right">
                         <x-tables.rows.desktop.votes :model="$delegate" />
                     </td>
                     @if (Network::usesMarketSquare())
