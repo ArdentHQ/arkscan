@@ -124,6 +124,9 @@ return [
             'title'       => 'QR Code',
             'description' => 'Scan for address',
         ],
+        'public_key' => [
+            'title'       => 'Public Key',
+        ],
         'delegate'              => [
             'title'            => 'Delegate :0',
             'rank'             => 'Rank',
