@@ -19,10 +19,16 @@
         <meta name="theme-color" content="#ffffff">
 
         <!-- Meta --->
-        @stack('metatags')
-        <meta property="og:image" content="{{ url('/') }}/images/meta-image.png" />
+        <meta property="og:image" content="{{ url('/') }}/images/explorer-preview.png" />
         <meta property="og:url" content="{{ url()->full() }}" />
         <meta property="og:type" content="website" />
+
+        @hasSection('metatags')
+            @yield('metatags')
+        @else
+            <meta property="og:title" content="@lang('metatags.home.title')" />
+            <meta property="og:description" content="@lang('metatags.home.description')">
+        @endif
 
         <!-- Styles -->
         <link href="{{ mix('css/app.css') }}" rel="stylesheet">

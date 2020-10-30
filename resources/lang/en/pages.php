@@ -179,4 +179,8 @@ return [
         'subtitle' => 'Voters',
     ],
 
+    'blocks' => [
+        'title' => 'Blocks',
+    ],
+
 ];

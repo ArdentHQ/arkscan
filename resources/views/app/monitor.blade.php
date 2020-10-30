@@ -1,9 +1,9 @@
 @component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
 
-    @push('metatags')
+    @section('metatags')
         <meta property="og:title" content="@lang('metatags.monitor.title')" />
         <meta property="og:description" content="@lang('metatags.monitor.description')">
-    @endpush
+    @endsection
 
     @section('content')
         <div class="dark:bg-theme-secondary-900">

@@ -5,39 +5,17 @@ declare(strict_types=1);
 return [
 
     'home' => [
-        'title'       => 'Explorer',
-        'description' => '',
-        'image'       => '',
+        'title'       => 'ARK Explorer | Cryptocurrency Block Explorer',
+        'description' => 'View cryptocurrency transactions and track cryptocurrency balances. A simple block explorer to monitor Blockchain activity on the ARK Public Network.',
     ],
 
-    'blocks' => [
-        'title'       => 'Blocks',
-        'description' => '',
-        'image'       => '',
-    ],
-
-    'transactions' => [
-        'title'       => 'Transactions',
-        'description' => '',
-        'image'       => '',
+    'monitor' => [
+        'title'       => 'Delegate Monitor | ARK Explorer | Cryptocurrency Block Explorer',
+        'description' => 'Monitor Delegate activity for the ARK Public Network. See Delegate rankings and track Voting Power in the ARK Blockchain.',
     ],
 
     'wallets' => [
-        'title'       => 'Wallets',
-        'description' => '',
-        'image'       => '',
+        'title'       => 'Wallet Addresses | ARK Explorer | Cryptocurrency Block Explorer',
+        'description' => 'See wallet addresses on the ARK Explorer. Track balances and see transaction activity for wallet addresses on the ARK Public Nework',
     ],
-
-    'blocks_by_wallet' => [
-        'title'       => 'Block History',
-        'description' => '',
-        'image'       => '',
-    ],
-
-    'voters_by_wallet' => [
-        'title'       => 'Voting for Delegate',
-        'description' => '',
-        'image'       => '',
-    ],
-
 ];

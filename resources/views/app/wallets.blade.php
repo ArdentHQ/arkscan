@@ -1,9 +1,9 @@
 @component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
 
-    @push('metatags')
-        <meta property="og:title" content="@lang('metatags.top_wallets.title')" />
-        <meta property="og:description" content="@lang('metatags.top_wallets.description')">
-    @endpush
+    @section('metatags')
+        <meta property="og:title" content="@lang('metatags.wallets.title')" />
+        <meta property="og:description" content="@lang('metatags.wallets.description')">
+    @endsection
 
     @section('content')
         <x-general.search.header />

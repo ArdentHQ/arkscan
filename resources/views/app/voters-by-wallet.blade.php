@@ -1,10 +1,5 @@
 @component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
 
-    @push('metatags')
-        <meta property="og:title" content="@lang('metatags.voters_by_wallet.title')" />
-        <meta property="og:description" content="@lang('metatags.voters_by_wallet.description')">
-    @endpush
-
     @push('scripts')
         <script src="{{ mix('js/clipboard.js')}}"></script>
     @endpush
