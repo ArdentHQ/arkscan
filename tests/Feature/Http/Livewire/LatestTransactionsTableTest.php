@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 use App\Enums\CoreTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
+use App\Facades\Network;
 use App\Http\Livewire\LatestTransactionsTable;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
+
 use Livewire\Livewire;
 use Ramsey\Uuid\Uuid;
-
 use function Tests\configureExplorerDatabase;
 
 beforeEach(fn () => configureExplorerDatabase());
@@ -26,8 +28,8 @@ it('should list the first page of records', function () {
         $component->assertSee($transaction->timestamp());
         $component->assertSee($transaction->sender()->address());
         $component->assertSee($transaction->recipient()->address());
-        $component->assertSee($transaction->fee());
-        $component->assertSee($transaction->amount());
+        $component->assertSee(NumberFormatter::currency($transaction->amount(), Network::currency()));
+        $component->assertSee(NumberFormatter::currency($transaction->fee(), Network::currency()));
     }
 })->skip('Figure out how circumvent wire:loading in tests');
 

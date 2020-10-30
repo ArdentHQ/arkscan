@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Wallet;
-use ArkEcosystem\Crypto\Identities\Address;
-use FurqanSiddiqui\BIP39\BIP39;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class WalletFactory extends Factory
@@ -17,7 +15,7 @@ final class WalletFactory extends Factory
     {
         return [
             'id'                => $this->faker->uuid,
-            'address'           => Address::fromPassphrase(implode(' ', BIP39::Generate(12)->words)),
+            'address'           => $this->faker->randomElement(json_decode(file_get_contents(base_path('tests/fixtures/addresses.json')), true)),
             'public_key'        => $this->faker->uuid,
             'balance'           => $this->faker->numberBetween(1, 1000) * 1e8,
             'nonce'             => $this->faker->numberBetween(1, 1000),

@@ -5,14 +5,16 @@ declare(strict_types=1);
 use App\Enums\CoreTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 
+use App\Facades\Network;
 use App\Http\Livewire\TransactionTable;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
+
 use Livewire\Livewire;
 use Ramsey\Uuid\Uuid;
-
 use function Tests\configureExplorerDatabase;
 
 beforeEach(fn () => configureExplorerDatabase());
@@ -27,8 +29,8 @@ it('should list the first page of records', function () {
         $component->assertSee($transaction->timestamp());
         $component->assertSee($transaction->sender()->address());
         $component->assertSee($transaction->recipient()->address());
-        $component->assertSee($transaction->fee());
-        $component->assertSee($transaction->amount());
+        $component->assertSee(NumberFormatter::currency($transaction->amount(), Network::currency()));
+        $component->assertSee(NumberFormatter::currency($transaction->fee(), Network::currency()));
     }
 });
 
@@ -58,8 +60,8 @@ it('should apply filters', function () {
         $component->assertDontSee($transaction->timestamp());
         $component->assertDontSee($transaction->sender()->address());
         $component->assertDontSee($transaction->recipient()->address());
-        $component->assertDontSee($transaction->fee());
-        $component->assertDontSee($transaction->amount());
+        $component->assertDontSee(NumberFormatter::currency($transaction->fee(), Network::currency()));
+        $component->assertDontSee(NumberFormatter::currency($transaction->amount(), Network::currency()));
     }
 
     $expected = Transaction::factory(10)->create([
@@ -74,8 +76,8 @@ it('should apply filters', function () {
         $component->assertSee($transaction->timestamp());
         $component->assertSee($transaction->sender()->address());
         $component->assertSee($transaction->recipient()->address());
-        $component->assertSee($transaction->fee());
-        $component->assertSee($transaction->amount());
+        $component->assertSee(NumberFormatter::currency($transaction->fee(), Network::currency()));
+        $component->assertSee(NumberFormatter::currency($transaction->amount(), Network::currency()));
     }
 });
 
@@ -105,8 +107,8 @@ it('should apply filters through an event', function () {
         $component->assertDontSee($transaction->timestamp());
         $component->assertDontSee($transaction->sender()->address());
         $component->assertDontSee($transaction->recipient()->address());
-        $component->assertDontSee($transaction->fee());
-        $component->assertDontSee($transaction->amount());
+        $component->assertDontSee(NumberFormatter::currency($transaction->fee(), Network::currency()));
+        $component->assertDontSee(NumberFormatter::currency($transaction->amount(), Network::currency()));
     }
 
     $expected = Transaction::factory(10)->create([
@@ -121,7 +123,7 @@ it('should apply filters through an event', function () {
         $component->assertSee($transaction->timestamp());
         $component->assertSee($transaction->sender()->address());
         $component->assertSee($transaction->recipient()->address());
-        $component->assertSee($transaction->fee());
-        $component->assertSee($transaction->amount());
+        $component->assertSee(NumberFormatter::currency($transaction->fee(), Network::currency()));
+        $component->assertSee(NumberFormatter::currency($transaction->amount(), Network::currency()));
     }
 });

@@ -60,13 +60,13 @@ it('should get the block ID', function () {
 });
 
 it('should get the fee', function () {
-    expect($this->subject->fee())->toBeString();
+    expect($this->subject->fee())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->fee());
 });
 
 it('should get the amount', function () {
-    expect($this->subject->amount())->toBeString();
+    expect($this->subject->amount())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->amount());
 });
@@ -97,14 +97,14 @@ it('should get the amount for multi payments', function () {
         ],
     ]));
 
-    expect($this->subject->amount())->toBeString();
+    expect($this->subject->amount())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->amount());
 });
 
 it('should get the confirmations', function () {
-    expect($this->subject->confirmations())->toBeString();
-    expect($this->subject->confirmations())->toBe('4,999,999');
+    expect($this->subject->confirmations())->toBeInt();
+    expect($this->subject->confirmations())->toBe(4999999);
 });
 
 it('should determine if the transaction is confirmed', function () {
@@ -617,8 +617,8 @@ it('should fail to get the confirmations', function () {
         'block_id' => 'unknown',
     ]));
 
-    expect($this->subject->confirmations())->toBeString();
-    expect($this->subject->confirmations())->toBe('0');
+    expect($this->subject->confirmations())->toBeInt();
+    expect($this->subject->confirmations())->toBe(0);
 });
 
 it('should fail to get the sender', function () {
@@ -702,7 +702,7 @@ it('should fail to get the unvoted delegate if the transaction asset is empty', 
 })->with([[[]], null]);
 
 it('should get the nonce', function () {
-    expect($this->subject->nonce())->toBeString();
+    expect($this->subject->nonce())->toBeInt();
 });
 
 it('should get the multi signature address', function () {
@@ -778,11 +778,30 @@ it('should get the payments', function () {
 
     $this->subject = new TransactionViewModel($model);
 
-    expect($this->subject->payments()[0])->toEqual(new Payment((int) $model->timestamp, '10 DARK', $A->address, $A->attributes['delegate']['username']));
-    expect($this->subject->payments()[1])->toEqual(new Payment((int) $model->timestamp, '20 DARK', $B->address, $B->attributes['delegate']['username']));
-    expect($this->subject->payments()[2])->toEqual(new Payment((int) $model->timestamp, '30 DARK', $C->address, $C->attributes['delegate']['username']));
-    expect($this->subject->payments()[3])->toEqual(new Payment((int) $model->timestamp, '40 DARK', $D->address, $D->attributes['delegate']['username']));
-    expect($this->subject->payments()[4])->toEqual(new Payment((int) $model->timestamp, '50 DARK', $E->address, $E->attributes['delegate']['username']));
+    expect($this->subject->payments()[0])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '1000000000',
+        'recipientId' => $A->address,
+    ]));
+
+    expect($this->subject->payments()[1])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '2000000000',
+        'recipientId' => $B->address,
+    ]));
+
+    expect($this->subject->payments()[2])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '3000000000',
+        'recipientId' => $C->address,
+    ]));
+
+    expect($this->subject->payments()[3])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '4000000000',
+        'recipientId' => $D->address,
+    ]));
+
+    expect($this->subject->payments()[4])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '5000000000',
+        'recipientId' => $E->address,
+    ]));
 });
 
 it('should fail to get the payments if the transaction is not a multi payment', function () {
@@ -801,7 +820,7 @@ it('should get the recipients count', function () {
         'asset'      => null,
     ]));
 
-    expect($this->subject->recipientsCount())->toBe('0');
+    expect($this->subject->recipientsCount())->toBe(0);
 
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
@@ -809,7 +828,7 @@ it('should get the recipients count', function () {
         'asset'      => ['payments' => []],
     ]));
 
-    expect($this->subject->recipientsCount())->toBe('0');
+    expect($this->subject->recipientsCount())->toBe(0);
 
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
@@ -825,7 +844,7 @@ it('should get the recipients count', function () {
         ],
     ]));
 
-    expect($this->subject->recipientsCount())->toBe('5');
+    expect($this->subject->recipientsCount())->toBe(5);
 });
 
 it('should fail to get the recipients count if the transaction is not a multi payment', function () {
@@ -834,7 +853,7 @@ it('should fail to get the recipients count if the transaction is not a multi pa
         'type_group' => TransactionTypeGroupEnum::CORE,
     ]));
 
-    expect($this->subject->recipientsCount())->toBe('0');
+    expect($this->subject->recipientsCount())->toBe(0);
 });
 
 it('should get the participants', function () {

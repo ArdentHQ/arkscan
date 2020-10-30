@@ -15,7 +15,7 @@ beforeEach(function () {
 });
 
 it('should get the balance', function () {
-    expect($this->subject->balance())->toBeString();
+    expect($this->subject->balance())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->balance());
 });

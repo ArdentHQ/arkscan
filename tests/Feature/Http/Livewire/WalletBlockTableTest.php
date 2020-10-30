@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
 use App\Http\Livewire\WalletBlockTable;
 use App\Models\Block;
 use App\Models\Wallet;
+use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
 use function Tests\configureExplorerDatabase;
@@ -28,9 +30,9 @@ it('should list all blocks for the given public key', function () {
     foreach (ViewModelFactory::collection($blocks) as $block) {
         $component->assertSee($block->id());
         $component->assertSee($block->timestamp());
-        $component->assertSee($block->height());
-        $component->assertSee($block->transactionCount());
-        $component->assertSee($block->fee());
-        $component->assertSee($block->amount());
+        $component->assertSee(NumberFormatter::number($block->height()));
+        $component->assertSee(NumberFormatter::number($block->transactionCount()));
+        $component->assertSee(NumberFormatter::currency($block->amount(), Network::currency()));
+        $component->assertSee(NumberFormatter::currency($block->fee(), Network::currency()));
     }
 });

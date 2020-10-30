@@ -34,30 +34,30 @@ it('should get the timestamp', function () {
 });
 
 it('should get the height', function () {
-    expect($this->subject->height())->toBeString();
-    expect($this->subject->height())->toBe('10,000');
+    expect($this->subject->height())->toBeInt();
+    expect($this->subject->height())->toBe(10000);
 });
 
 it('should get the amount', function () {
-    expect($this->subject->amount())->toBeString();
+    expect($this->subject->amount())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->amount());
 });
 
 it('should get the fee', function () {
-    expect($this->subject->fee())->toBeString();
+    expect($this->subject->fee())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->fee());
 });
 
 it('should get the reward', function () {
-    expect($this->subject->reward())->toBeString();
+    expect($this->subject->reward())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->reward());
 });
 
 it('should get the total reward', function () {
-    expect($this->subject->totalReward())->toBeString();
+    expect($this->subject->totalReward())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->totalReward());
 });

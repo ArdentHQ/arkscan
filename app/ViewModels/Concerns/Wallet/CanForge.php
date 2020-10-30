@@ -11,27 +11,27 @@ trait CanForge
 {
     public function amountForged(): int
     {
-        return Arr::get(Cache::get('delegates.totalAmounts', []), $this->wallet->public_key, 0);
+        return (int) Arr::get(Cache::get('delegates.totalAmounts', []), $this->wallet->public_key, 0);
     }
 
     public function feesForged(): int
     {
-        return Arr::get(Cache::get('delegates.totalFees', []), $this->wallet->public_key, 0);
+        return (int) Arr::get(Cache::get('delegates.totalFees', []), $this->wallet->public_key, 0);
     }
 
     public function rewardsForged(): int
     {
-        return Arr::get(Cache::get('delegates.totalRewards', []), $this->wallet->public_key, 0);
+        return (int) Arr::get(Cache::get('delegates.totalRewards', []), $this->wallet->public_key, 0);
     }
 
     public function blocksForged(): int
     {
-        return Arr::get(Cache::get('delegates.totalBlocks', []), $this->wallet->public_key, 0);
+        return (int) Arr::get(Cache::get('delegates.totalBlocks', []), $this->wallet->public_key, 0);
     }
 
     public function forgedBlocks(): int
     {
-        return Arr::get($this->wallet, 'attributes.delegate.producedBlocks', 0);
+        return (int) Arr::get($this->wallet, 'attributes.delegate.producedBlocks', 0);
     }
 
     /**

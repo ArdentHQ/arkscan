@@ -48,14 +48,14 @@ it('should get the url', function () {
 });
 
 it('should get the balance', function () {
-    expect($this->subject->balance())->toBeString();
+    expect($this->subject->balance())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->balance());
 });
 
 it('should get the nonce', function () {
-    expect($this->subject->nonce())->toBeString();
-    expect($this->subject->nonce())->toBe('1,000');
+    expect($this->subject->nonce())->toBeInt();
+    expect($this->subject->nonce())->toBe(1000);
 });
 
 it('should get the balance as percentage from supply', function () {
@@ -65,12 +65,12 @@ it('should get the balance as percentage from supply', function () {
         ],
     ]);
 
-    expect($this->subject->balancePercentage())->toBeString();
-    expect($this->subject->balancePercentage())->toBe('10.00%');
+    expect($this->subject->balancePercentage())->toBeFloat();
+    expect($this->subject->balancePercentage())->toBe(10.0);
 });
 
 it('should get the votes', function () {
-    expect($this->subject->votes())->toBeString();
+    expect($this->subject->votes())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->votes());
 });
@@ -82,8 +82,8 @@ it('should get the votes as percentage from supply', function () {
         ],
     ]);
 
-    expect($this->subject->votesPercentage())->toBeString();
-    expect($this->subject->votesPercentage())->toBe('10.00%');
+    expect($this->subject->votesPercentage())->toBeFloat();
+    expect($this->subject->votesPercentage())->toBe(10.0);
 });
 
 it('should sum up the amount forged', function () {
@@ -91,7 +91,7 @@ it('should sum up the amount forged', function () {
         $this->subject->publicKey() => '1000000000',
     ]);
 
-    expect($this->subject->amountForged())->toBeString();
+    expect($this->subject->amountForged())->toBeInt();
 
     assertMatchesSnapshot($this->subject->amountForged());
 });
@@ -101,7 +101,7 @@ it('should sum up the fees forged', function () {
         $this->subject->publicKey() => '800000000',
     ]);
 
-    expect($this->subject->feesForged())->toBeString();
+    expect($this->subject->feesForged())->toBeInt();
 
     assertMatchesSnapshot($this->subject->feesForged());
 });
@@ -111,7 +111,7 @@ it('should sum up the rewards forged', function () {
         $this->subject->publicKey() => '200000000',
     ]);
 
-    expect($this->subject->rewardsForged())->toBeString();
+    expect($this->subject->rewardsForged())->toBeInt();
 
     assertMatchesSnapshot($this->subject->rewardsForged());
 });
