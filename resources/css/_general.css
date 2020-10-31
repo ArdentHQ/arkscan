@@ -316,7 +316,7 @@ body {
 }
 
 .transaction-filter-dropdown {
-    @apply right-0 w-full mt-3 h-128;
+    @apply right-0 w-full mt-3 h-64;
 }
 .theme-dark .transaction-filter-dropdown {
     @apply bg-theme-secondary-900;
@@ -346,7 +346,7 @@ body {
     }
 
     .transaction-filter-dropdown {
-        @apply w-84;
+        @apply w-84 h-128;
     }
 
     .transaction-filter-button {
