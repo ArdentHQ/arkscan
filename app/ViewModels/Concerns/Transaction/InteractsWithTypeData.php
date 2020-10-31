@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Str;
+use App\Services\Transactions\TransactionTypeComponent;
 
 trait InteractsWithTypeData
 {
@@ -16,35 +15,17 @@ trait InteractsWithTypeData
 
     public function headerComponent(): string
     {
-        $view = 'transaction.header.'.$this->componentSlug();
-
-        if (View::exists("components.$view")) {
-            return $view;
-        }
-
-        return 'transaction.header.fallback';
+        return (new TransactionTypeComponent($this->transaction))->header();
     }
 
     public function typeComponent(): string
     {
-        $view = 'transaction.details.'.Str::slug($this->iconType());
-
-        if (View::exists("components.$view")) {
-            return $view;
-        }
-
-        $view = 'transaction.details.'.Str::slug($this->typeSlug());
-
-        if (View::exists("components.$view")) {
-            return $view;
-        }
-
-        return 'transaction.details.fallback';
+        return (new TransactionTypeComponent($this->transaction))->details();
     }
 
     public function extraComponent(): string
     {
-        return 'transaction.extra.'.trim(Str::slug($this->iconType()));
+        return (new TransactionTypeComponent($this->transaction))->extension();
     }
 
     public function hasExtraData(): bool

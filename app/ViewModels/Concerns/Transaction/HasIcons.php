@@ -7,7 +7,6 @@ namespace App\ViewModels\Concerns\Transaction;
 use App\Services\Transactions\TransactionDirectionIcon;
 use App\Services\Transactions\TransactionStateIcon;
 use App\Services\Transactions\TransactionTypeIcon;
-use App\Services\Transactions\TransactionTypeSlug;
 
 trait HasIcons
 {
@@ -24,15 +23,5 @@ trait HasIcons
     public function iconDirection(string $address): string
     {
         return (new TransactionDirectionIcon($this->transaction))->name($address);
-    }
-
-    public function typeSlug(): string
-    {
-        return (new TransactionTypeSlug($this->transaction))->generic();
-    }
-
-    public function componentSlug(): string
-    {
-        return (new TransactionTypeSlug($this->transaction))->generic();
     }
 }
