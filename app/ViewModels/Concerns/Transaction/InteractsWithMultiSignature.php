@@ -9,6 +9,7 @@ use App\Services\MultiSignature;
 use App\ViewModels\WalletViewModel;
 use ArkEcosystem\Crypto\Identities\Address;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 
 trait InteractsWithMultiSignature
 {
@@ -20,7 +21,9 @@ trait InteractsWithMultiSignature
             return null;
         }
 
-        return new WalletViewModel(Wallet::where('address', $address)->firstOrFail());
+        return new WalletViewModel(
+            Cache::remember("multiSignatureWallet:$address", 60, fn () => Wallet::where('address', $address)->firstOrFail())
+        );
     }
 
     public function multiSignatureAddress(): ?string
@@ -51,7 +54,7 @@ trait InteractsWithMultiSignature
 
         return collect(Arr::get($this->transaction->asset, 'multiSignature.publicKeys', []))
             ->map(fn ($publicKey) => Address::fromPublicKey($publicKey))
-            ->map(fn ($address)   => Wallet::where('address', $address)->firstOrFail())
+            ->map(fn ($address)   => Cache::remember("participant:$address", 60, fn () => Wallet::where('address', $address)->firstOrFail()))
             ->map(fn ($wallet)    => new WalletViewModel($wallet))
             ->toArray();
     }
