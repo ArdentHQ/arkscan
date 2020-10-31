@@ -1,3 +1,3 @@
 <a href="{{ $model->url() }}" class="mx-auto link">
-    @svg('app-details', 'h-4 w-4')
+    <x-icon name="app-details" size="sm" />
 </a>

@@ -42,7 +42,7 @@
         >
             <x-slot name="button">
                 <div class="flex items-center space-x-4">
-                    @svg('menu-open', 'h-4 w-4')
+                    <x-icon name="menu-open" size="sm" />
 
                     <div x-show="selected === 'transactions'">@lang('pages.home.latest_transactions')</div>
                     <div x-show="selected === 'blocks'">@lang('pages.home.latest_blocks')</div>

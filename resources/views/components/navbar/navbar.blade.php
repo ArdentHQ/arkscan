@@ -21,7 +21,8 @@
                         @if($logo ?? false)
                             {{ $logo }}
                         @else
-                            @svg('ark-logo-red-square', 'h-12 w-12')
+                            <x-icon name="ark-logo-red-square" size="xxl" />
+
                             <div class="hidden ml-6 text-lg lg:block"><span class="font-black text-theme-secondary-900">ARK</span> {{ $title }}</div>
                         @endif
                     </a>
@@ -40,7 +41,7 @@
                                         @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
                                     >
                                         <span :class="{ 'text-theme-primary-600': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
-                                        <span class="ml-2 transition duration-150 ease-in-out text-theme-primary-600" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }">@svg('chevron-down', 'h-3 w-3')</span>
+                                        <span class="ml-2 transition duration-150 ease-in-out text-theme-primary-600" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }"><x-icon name="chevron-down" size="xs" /></span>
                                     </a>
                                     <div x-show="openDropdown === '{{ $navItem['label'] }}'" class="absolute top-0 right-0 z-30 pb-8 mt-24 bg-white rounded-b-lg" x-cloak>
                                         <div class="pb-8 mx-8 border-t border-theme-secondary-200"></div>
@@ -86,8 +87,8 @@
                         {{-- Mobile Hamburger icon --}}
                         <div class="flex items-center lg:hidden">
                             <button @click="open = !open" class="inline-flex items-center justify-center p-2 transition duration-150 ease-in-out rounded-md text-theme-secondary-900">
-                                <span :class="{'hidden': open, 'inline-flex': !open }">@svg('menu-open', 'h-4 w-4')</span>
-                                <span :class="{'hidden': !open, 'inline-flex': open }" x-cloak>@svg('menu-close', 'h-4 w-4')</span>
+                                <span :class="{'hidden': open, 'inline-flex': !open }"><x-icon name="menu-open" size="sm" /></span>
+                                <span :class="{'hidden': !open, 'inline-flex': open }" x-cloak><x-icon name="menu-close" size="sm" /></span>
                             </button>
                         </div>
                     </div>
@@ -98,7 +99,7 @@
                                 @click="$dispatch('mobile-search')"
                                 class="inline-flex items-center justify-center py-2 transition duration-150 ease-in-out rounded-md text-theme-primary-300"
                             >
-                                <span class="inline-flex">@svg('search', 'h-4 w-4')</span>
+                                <span class="inline-flex"><x-icon name="search" size="sm" /></span>
                             </button>
                         </div>
                     </div>
@@ -129,7 +130,7 @@
                                 @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
                             >
                                 <span :class="{ 'text-theme-primary-600': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
-                                <span class="ml-2 transition duration-150 ease-in-out text-theme-primary-600" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }">@svg('chevron-down', 'h-3 w-3')</span>
+                                <span class="ml-2 transition duration-150 ease-in-out text-theme-primary-600" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }"><x-icon name="chevron-down" size="xs" /></span>
                             </a>
                         </div>
                         <div x-show="openDropdown === '{{ $navItem['label'] }}'" class="pl-8" x-cloak>

@@ -4,7 +4,9 @@
             @click="openDropdown = openDropdown === 'settings' ? null : 'settings'"
             class="inline-flex items-center justify-center py-2 transition duration-150 ease-in-out rounded-md text-theme-primary-300"
         >
-            <span class="inline-flex">@svg('filter', 'h-5 w-5')</span>
+            <span class="inline-flex">
+                <x-icon name="filter" />
+            </span>
         </button>
     </div>
 

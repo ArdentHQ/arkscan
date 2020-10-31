@@ -26,7 +26,7 @@
                     class="mr-4 cursor-pointer text-theme-primary-600 hover:text-theme-primary-700"
                     @click="showAdvanced = false; isFocused = false; $dispatch('search-slim-close')"
                 >
-                    @svg('close', 'w-6 h-6')
+                    <x-icon name="close" size="md" />
                 </div>
             @endif
 
@@ -71,7 +71,7 @@
                     class="cursor-pointer text-theme-primary-300 hover:text-theme-primary-400 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400 @unless($isSlim ?? false) md:hidden @endif"
                     wire:click="performSearch"
                 >
-                    @svg('search', 'h-5 w-5')
+                    <x-icon name="search" />
                 </div>
             @endunless
         </div>

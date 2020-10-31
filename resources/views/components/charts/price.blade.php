@@ -250,7 +250,7 @@
                     class="flex items-center justify-end w-full space-x-2 font-semibold flex-inline text-theme-secondary-700">
                     <span x-text="period"></span>
                     <span :class="{ 'rotate-180': open }" class="transition duration-150 ease-in-out">
-                        @svg('chevron-up', 'h-3 w-3')
+                        <x-icon name="chevron-up" size="xs" />
                     </span>
                 </div>
                 @endslot

@@ -12,7 +12,7 @@
                 :model="$transaction->voted()">
                 <x-slot name="icon">
                     <div class="circled-icon text-theme-success-500 border-theme-success-100 dark:text-theme-success-600 dark:border-theme-success-600">
-                        @svg('app-transactions.vote', 'h-5 w-5 text-theme-success-500')
+                        <x-icon name="app-transactions.vote" style="success" />
                     </div>
                 </x-slot>
             </x-details.vote>
@@ -30,7 +30,7 @@
                 :model="$transaction->unvoted()">
                 <x-slot name="icon">
                     <div class="circled-icon text-theme-danger-500 border-theme-danger-100 dark:text-theme-danger-600 dark:border-theme-danger-600">
-                        @svg('app-transactions.unvote', 'h-5 w-5 text-theme-danger-500')
+                        <x-icon name="app-transactions.unvote" style="danger" />
                     </div>
                 </x-slot>
             </x-details.vote>

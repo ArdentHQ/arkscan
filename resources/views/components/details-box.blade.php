@@ -2,7 +2,7 @@
     @isset($icon)
         @isset($shallow)
             <div class="circled-icon text-theme-secondary-900 border-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-600">
-                @svg($icon, 'w-5 h-5')
+                <x-icon :name="$icon" />
             </div>
         @else
             <div class="flex items-center justify-center p-2 rounded-full h-12 w-12 mr-3 bg-theme-secondary-200 {{ $iconWrapperClass ?? '' }} dark:bg-theme-secondary-800">

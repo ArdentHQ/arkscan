@@ -6,7 +6,7 @@
             @if ($model->isKnown())
                 <div>
                     <div class="flex items-center space-x-4">
-                        @svg('app-verified', 'w-5 h-5 text-theme-secondary-500')
+                        <x-icon name="app-verified" style="secondary" />
 
                         <span>@lang('general.verified_address')</span>
                     </div>
@@ -16,7 +16,7 @@
             @if ($model->isOwnedByExchange())
                 <div>
                     <div class="flex items-center space-x-4">
-                        @svg('app-exchange', 'w-5 h-5 text-theme-secondary-500')
+                        <x-icon name="app-exchange" style="secondary" />
 
                         <span>@lang('general.exchange')</span>
                     </div>

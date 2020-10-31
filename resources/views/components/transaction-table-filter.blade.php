@@ -25,7 +25,7 @@
                     :class="{ 'rotate-180 md:bg-theme-primary-600 md:text-theme-secondary-100': filterOpen }"
                     class="transaction-filter-button-icon"
                 >
-                    @svg('chevron-down', 'w-6 h-6 md:h-3 md:w-2')
+                    <x-icon name="chevron-down" size="md" class="md:h-3 md:w-2" />
                 </span>
             </div>
         @endslot

@@ -9,7 +9,7 @@
         >
             <x-slot name="logo">
                 <x-headings.circle>
-                    @svg('app-block-id', 'w-5 h-5')
+                    <x-icon name='app-block-id' />
                 </x-headings.circle>
             </x-slot>
 
@@ -17,13 +17,13 @@
                 <div class="flex items-center mt-6 space-x-2 text-theme-secondary-400 md:mt-0">
                     @if ($block->previousBlockUrl())
                         <a href="{{ $block->previousBlockUrl() }}" class="flex items-center justify-center flex-1 px-3 rounded cursor-pointer h-11 bg-theme-secondary-800 hover:bg-theme-secondary-700 transition-default md:flex-none">
-                            @svg('chevron-left', 'w-6 h-6')
+                            <x-icon name="chevron-left" size="md" />
                         </a>
                     @endif
 
                     @if ($block->nextBlockUrl())
                         <a href="{{ $block->nextBlockUrl() }}" class="flex items-center justify-center flex-1 px-3 rounded cursor-pointer h-11 bg-theme-secondary-800 hover:bg-theme-secondary-700 transition-default md:flex-none">
-                            @svg('chevron-right', 'w-6 h-6')
+                            <x-icon name="chevron-right" size="md" />
                         </a>
                     @endif
                 </div>
