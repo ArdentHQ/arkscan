@@ -11,6 +11,7 @@ use App\Console\Commands\CacheLastBlocks;
 use App\Console\Commands\CachePastRoundPerformance;
 use App\Console\Commands\CacheVotes;
 use App\Facades\Network;
+use App\Jobs\CacheProductivityByPublicKey;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Spatie\ShortSchedule\ShortSchedule;
@@ -46,6 +47,8 @@ final class Kernel extends ConsoleKernel
         $schedule->command(CacheVotes::class)->everyMinute();
 
         $schedule->command(CachePastRoundPerformance::class)->everyMinute();
+
+        $schedule->command(CacheProductivityByPublicKey::class)->everyMinute();
     }
 
     /**
