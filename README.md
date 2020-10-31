@@ -73,10 +73,16 @@ php artisan cache:last-blocks
 php artisan cache:votes
 ```
 
-##### Cache the past performance of delegates in the current round
+##### Cache the past performance of all delegates in the current round
 
 ```
 php artisan cache:past-round-performance
+```
+
+##### Cache the productivity of all delegates in the current round
+
+```
+php artisan cache:productivity
 ```
 
 *Important:* You will need access to a Core Postgres database, or use the commented lines above to fill it with dummy data. The details can be specified in the `.env` file under `EXPLORER_DB_*`.
