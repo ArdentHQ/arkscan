@@ -1,0 +1,42 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Console\Commands;
+
+use App\Jobs\CacheProductivityByPublicKey;
+use App\Models\Round;
+use App\Services\Monitor\Monitor;
+use Illuminate\Console\Command;
+
+final class CacheProductivity extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'cache:productivity';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Calculate and cache the productivity for each active delegate.';
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
+    {
+        Round::query()
+            ->where('round', Monitor::roundNumber())
+            ->orderBy('balance', 'desc')
+            ->orderBy('public_key', 'asc')
+            ->get(['public_key'])
+            ->each(fn ($round) => CacheProductivityByPublicKey::dispatch($round->public_key));
+    }
+}

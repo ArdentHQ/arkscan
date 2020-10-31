@@ -42,12 +42,13 @@ trait CanForge
         return (int) Arr::get($this->wallet, 'attributes.delegate.producedBlocks', 0);
     }
 
-    /**
-     * @TODO: needs monitor to be implemented
-     */
-    public function productivity(): int
+    public function productivity(): float
     {
-        return 0;
+        if (! $this->isDelegate()) {
+            return 0;
+        }
+
+        return (float) Cache::get('productivity:'.$this->publicKey, 0);
     }
 
     public function performance(): array

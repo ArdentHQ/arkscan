@@ -1,5 +1,7 @@
 <div>
     @lang('labels.productivity')
 
-    {{ $model->productivity() }}
+    <span>
+        <x-percentage>{{ $model->productivity() }}</x-percentage>
+    </span>
 </div>

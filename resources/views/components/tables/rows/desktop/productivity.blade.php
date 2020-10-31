@@ -1,1 +1,1 @@
-{{ $model->productivity() }}
+<x-percentage>{{ $model->productivity() }}</x-percentage>
