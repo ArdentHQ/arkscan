@@ -12,7 +12,7 @@
     @endsection
 
     @section('content')
-        <x-block.header :block="$block" />
+        <x-page-headers.block :block="$block" />
 
         <x-details.grid>
             <x-grid.height :model="$block" />

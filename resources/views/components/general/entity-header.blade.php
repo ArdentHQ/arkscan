@@ -25,8 +25,8 @@
                 </div>
             </div>
 
-            @if ($extra ?? false)
-                {{ $extra }}
+            @if ($extension ?? false)
+                {{ $extension }}
             @endif
         </div>
     </div>

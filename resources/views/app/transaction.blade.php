@@ -12,7 +12,7 @@
     @endsection
 
     @section('content')
-        <x-transaction.header :transaction="$transaction" />
+        <x-page-headers.transaction :transaction="$transaction" />
 
         @if (Network::usesMarketSquare())
             <x-marketsquare.banner :transaction="$transaction" />
@@ -23,7 +23,7 @@
         </x-details.grid>
 
         @if($transaction->hasExtraData())
-            <x-dynamic-component :component="$transaction->extraComponent()" :transaction="$transaction" />
+            <x-dynamic-component :component="$transaction->extensionComponent()" :transaction="$transaction" />
         @endif
     @endsection
 

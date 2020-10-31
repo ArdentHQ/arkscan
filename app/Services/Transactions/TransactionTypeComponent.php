@@ -18,25 +18,24 @@ final class TransactionTypeComponent
 
     public function header(): string
     {
-        return $this->getView('header');
+        return $this->getView('page-headers', 'transaction');
     }
 
     public function details(): string
     {
-        return $this->getView('details');
+        return $this->getView('transaction', 'details');
     }
 
     public function extension(): string
     {
-        // @TODO: rename folder to extension
-        return $this->getView('extra');
+        return $this->getView('transaction', 'extension');
     }
 
-    private function getView(string $group): string
+    private function getView(string $group, string $type): string
     {
         $views = [
-            sprintf("transaction.$group.".$this->slug->exact()),
-            sprintf("transaction.$group.".$this->slug->generic()),
+            sprintf("$group.$type.".$this->slug->exact()),
+            sprintf("$group.$type.".$this->slug->generic()),
         ];
 
         foreach ($views as $view) {
@@ -45,6 +44,6 @@ final class TransactionTypeComponent
             }
         }
 
-        return "transaction.$group.fallback";
+        return "$group.$type.fallback";
     }
 }

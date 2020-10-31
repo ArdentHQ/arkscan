@@ -1042,7 +1042,7 @@ it('should get the type component', function () {
 });
 
 it('should get the extra component', function () {
-    expect($this->subject->extraComponent())->toBeString();
+    expect($this->subject->extensionComponent())->toBeString();
 });
 
 it('should determine if the transaction has extra data', function (bool $outcome, int $type, int $typeGroup, array $asset) {

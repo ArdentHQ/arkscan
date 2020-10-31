@@ -7,9 +7,9 @@
             :value="$transaction->id()"
         >
             <x-slot name="logo">
-                <x-headings.circle>
+                <x-page-headers.circle>
                     <span class="text-lg font-medium">ID</span>
-                </x-headings.circle>
+                </x-page-headers.circle>
             </x-slot>
 
             <x-slot name="bottom">

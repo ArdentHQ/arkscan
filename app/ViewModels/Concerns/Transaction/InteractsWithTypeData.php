@@ -23,7 +23,7 @@ trait InteractsWithTypeData
         return (new TransactionTypeComponent($this->transaction))->details();
     }
 
-    public function extraComponent(): string
+    public function extensionComponent(): string
     {
         return (new TransactionTypeComponent($this->transaction))->extension();
     }

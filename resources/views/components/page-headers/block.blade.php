@@ -8,12 +8,12 @@
             is-block-page
         >
             <x-slot name="logo">
-                <x-headings.circle>
+                <x-page-headers.circle>
                     <x-icon name='app-block-id' />
-                </x-headings.circle>
+                </x-page-headers.circle>
             </x-slot>
 
-            <x-slot name="extra">
+            <x-slot name="extension">
                 <div class="flex items-center mt-6 space-x-2 text-theme-secondary-400 md:mt-0">
                     @if ($block->previousBlockUrl())
                         <a href="{{ $block->previousBlockUrl() }}" class="flex items-center justify-center flex-1 px-3 rounded cursor-pointer h-11 bg-theme-secondary-800 hover:bg-theme-secondary-700 transition-default md:flex-none">
