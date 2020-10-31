@@ -1,6 +1,6 @@
 <div x-data="{ publicKeyModalVisible: false }" class="flex-1 lg:relative">
     <button type="button" @click="publicKeyModalVisible = !publicKeyModalVisible"
-        class="flex items-center justify-center w-full px-3 rounded cursor-pointer lg:w-16 bg-theme-secondary-800 hover:bg-theme-primary-600 transition-default lg:flex-none h-11">
+        class="flex items-center justify-center w-full px-3 rounded cursor-pointer lg:w-16 bg-theme-secondary-800 hover:bg-theme-primary-600 transition-default lg:flex-none h-11 dark:text-theme-secondary-600 dark:hover:text-theme-secondary-200">
         @svg('key', 'w-5 h-5')
     </button>
 

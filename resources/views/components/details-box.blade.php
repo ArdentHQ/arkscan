@@ -6,7 +6,7 @@
             </div>
         @else
             <div class="flex items-center justify-center p-2 rounded-full h-12 w-12 mr-3 bg-theme-secondary-200 {{ $iconWrapperClass ?? '' }} dark:bg-theme-secondary-800">
-                @svg($icon, 'h-5 w-5 text-theme-secondary-900 dark:text-theme-secondary-600 '.($iconClass ?? ''))
+                @svg($icon, "h-5 w-5 " . ($iconTextClass ?? " ") . ($iconClass ?? ""))
             </div>
         @endisset
     @endisset
