@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Facades\Rounds;
 use App\Jobs\CacheLastBlockByPublicKey;
 use App\Models\Round;
 use App\Services\Monitor\Monitor;
@@ -40,11 +41,7 @@ final class CacheLastBlocks extends Command
          * look for an exact record which can make use of indices to greatly speed up the process.
          */
 
-        Round::query()
-            ->where('round', Monitor::roundNumber())
-            ->orderBy('balance', 'desc')
-            ->orderBy('public_key', 'asc')
-            ->get(['public_key'])
+        Rounds::allByRound(Monitor::roundNumber())
             ->each(fn ($round) => CacheLastBlockByPublicKey::dispatch($round->public_key));
     }
 }

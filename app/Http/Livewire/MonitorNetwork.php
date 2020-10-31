@@ -6,6 +6,7 @@ namespace App\Http\Livewire;
 
 use App\DTO\Slot;
 use App\Facades\Network;
+use App\Facades\Rounds;
 use App\Jobs\CacheLastBlockByPublicKey;
 use App\Models\Block;
 use App\Services\Monitor\DelegateTracker;
@@ -23,9 +24,9 @@ final class MonitorNetwork extends Component
     {
         // $tracking = DelegateTracker::execute(Monitor::roundDelegates(112168));
 
-        $roundNumber = Monitor::roundNumber();
+        $roundNumber = Rounds::currentRound()->round;
         $heightRange = Monitor::heightRangeByRound($roundNumber);
-        $tracking    = DelegateTracker::execute(Monitor::activeDelegates(Monitor::roundNumber()));
+        $tracking    = DelegateTracker::execute(Rounds::allByRound($roundNumber));
 
         $delegates = [];
 

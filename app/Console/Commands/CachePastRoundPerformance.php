@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Facades\Rounds;
 use App\Jobs\CachePastRoundPerformanceByPublicKey;
-use App\Models\Round;
 use App\Services\Monitor\Monitor;
 use Illuminate\Console\Command;
 
@@ -32,11 +32,7 @@ final class CachePastRoundPerformance extends Command
      */
     public function handle()
     {
-        Round::query()
-            ->where('round', Monitor::roundNumber())
-            ->orderBy('balance', 'desc')
-            ->orderBy('public_key', 'asc')
-            ->get(['round', 'public_key'])
+        Rounds::allByRound(Monitor::roundNumber())
             ->each(fn ($round) => CachePastRoundPerformanceByPublicKey::dispatch($round->round, $round->public_key));
     }
 }

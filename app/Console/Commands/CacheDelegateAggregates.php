@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Models\Wallet;
+use App\Facades\Wallets;
 use App\Services\Monitor\Aggregates\TotalAmountsByPublicKeysAggregate;
 use App\Services\Monitor\Aggregates\TotalBlocksByPublicKeysAggregate;
 use App\Services\Monitor\Aggregates\TotalFeesByPublicKeysAggregate;
@@ -35,7 +35,7 @@ final class CacheDelegateAggregates extends Command
      */
     public function handle()
     {
-        $publicKeys = Wallet::whereNotNull('attributes->delegate->username')->pluck('public_key')->toArray();
+        $publicKeys = Wallets::allWithUsername()->pluck('public_key')->toArray();
 
         Cache::put('delegates.totalFees', (new TotalFeesByPublicKeysAggregate())->aggregate($publicKeys));
 

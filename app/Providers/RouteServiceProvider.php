@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Facades\Network;
+use App\Facades\Wallets;
 use App\Models\Wallet;
 use ArkEcosystem\Crypto\Identities\Address;
 use ARKEcosystem\UserInterface\UI;
@@ -46,7 +47,7 @@ final class RouteServiceProvider extends ServiceProvider
             abort_unless(Address::validate($value, Network::config()), 404);
 
             try {
-                return Wallet::where('address', $value)->firstOrFail();
+                return Wallets::findByAddress($value);
             } catch (\Throwable $th) {
                 UI::useErrorMessage(404, trans('general.wallet_not_found', [$value]));
 

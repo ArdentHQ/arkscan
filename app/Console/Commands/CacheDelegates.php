@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Models\Wallet;
+use App\Facades\Wallets;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 
@@ -31,7 +31,7 @@ final class CacheDelegates extends Command
      */
     public function handle()
     {
-        Wallet::whereNotNull('attributes->delegate->username')->orderBy('balance')->chunk(200, function ($wallets): void {
+        Wallets::allWithUsername()->chunk(200, function ($wallets): void {
             foreach ($wallets as $wallet) {
                 Cache::tags(['delegates'])->put($wallet->public_key, $wallet);
             }

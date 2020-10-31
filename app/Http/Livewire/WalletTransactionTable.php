@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Facades\Wallets;
 use App\Http\Livewire\Concerns\ManagesTransactionTypeScopes;
 use App\Models\Transaction;
-use App\Models\Wallet;
 use App\ViewModels\ViewModelFactory;
 use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasPagination;
 use Illuminate\Database\Eloquent\Builder;
@@ -58,7 +58,7 @@ final class WalletTransactionTable extends Component
         }
 
         return view('livewire.wallet-transaction-table', [
-            'wallet'        => ViewModelFactory::make(Wallet::where('address', $this->state['address'])->firstOrFail()),
+            'wallet'        => ViewModelFactory::make(Wallets::findByAddress($this->state['address'])),
             'transactions'  => ViewModelFactory::paginate($query->latestByTimestamp()->paginate()),
             'countReceived' => $this->getReceivedQuery()->count(),
             'countSent'     => $this->getSentQuery()->count(),

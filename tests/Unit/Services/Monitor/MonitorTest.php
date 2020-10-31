@@ -19,7 +19,7 @@ it('should get the active delegates for the given round', function () {
     });
 
     expect(Monitor::activeDelegates(112168))->toHaveCount(51);
-});
+})->skip();
 
 it('should calculate the forging information', function () {
     expect(Monitor::roundNumber())->toBeInt();
