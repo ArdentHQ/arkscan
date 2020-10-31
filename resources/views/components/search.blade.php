@@ -90,7 +90,7 @@
         >
             <div class="search-advanced-options">
                 <x-general.search.advanced-option :title="trans('forms.search.type')">
-                    <select wire:model="state.type" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">
+                    <select wire:model="state.type" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200">
                         <option value="block">@lang('forms.search.block')</option>
                         <option value="transaction">@lang('forms.search.transaction')</option>
                         <option value="wallet">@lang('forms.search.wallet')</option>
@@ -103,7 +103,7 @@
                             <input
                                 type="number"
                                 placeholder="0.00"
-                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                                 wire:model="state.heightFrom"
                                 wire:keydown.enter="performSearch"
                             />
@@ -113,7 +113,7 @@
                             <input
                                 type="number"
                                 placeholder="0.00"
-                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                                 wire:model="state.heightTo"
                                 wire:keydown.enter="performSearch"
                             />
@@ -125,7 +125,7 @@
                             <input
                                 type="number"
                                 placeholder="0.00"
-                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                                 wire:model="state.totalAmountFrom"
                                 wire:keydown.enter="performSearch"
                             />
@@ -135,7 +135,7 @@
                             <input
                                 type="number"
                                 placeholder="0.00"
-                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                                 wire:model="state.totalAmountTo"
                                 wire:keydown.enter="performSearch"
                             />
@@ -147,7 +147,7 @@
                             <input
                                 type="number"
                                 placeholder="0.00"
-                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                                 wire:model="state.totalFeeFrom"
                                 wire:keydown.enter="performSearch"
                             />
@@ -157,7 +157,7 @@
                             <input
                                 type="number"
                                 placeholder="0.00"
-                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                                 wire:model="state.totalFeeTo"
                                 wire:keydown.enter="performSearch"
                             />
@@ -169,7 +169,7 @@
                             <input
                                 type="number"
                                 placeholder="0.00"
-                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                                 wire:model="state.rewardFrom"
                                 wire:keydown.enter="performSearch"
                             />
@@ -179,7 +179,7 @@
                             <input
                                 type="number"
                                 placeholder="0.00"
-                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                                 wire:model="state.rewardTo"
                                 wire:keydown.enter="performSearch"
                             />
@@ -210,7 +210,7 @@
                 @if($type === 'transaction')
                     <x-general.search.advanced-option :title="trans('forms.search.transaction_type')">
                         {{-- TODO: Enum of types and their values? --}}
-                        <select wire:model="state.transactionType" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">
+                        <select wire:model="state.transactionType" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200">
                             <option value="all">@lang('forms.search.transaction_types.all')</option>
                             <option value="businessEntityRegistration">@lang('forms.search.transaction_types.businessEntityRegistration')</option>
                             <option value="businessEntityResignation">@lang('forms.search.transaction_types.businessEntityResignation')</option>
@@ -255,7 +255,7 @@
                             <input
                                 type="number"
                                 placeholder="0.00"
-                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                                 wire:model="state.amountFrom"
                                 wire:keydown.enter="performSearch"
                             />
@@ -265,7 +265,7 @@
                             <input
                                 type="number"
                                 placeholder="0.00"
-                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                                 wire:model="state.amountTo"
                                 wire:keydown.enter="performSearch"
                             />
@@ -277,7 +277,7 @@
                             <input
                                 type="number"
                                 placeholder="0.00"
-                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                                 wire:model="state.feeFrom"
                                 wire:keydown.enter="performSearch"
                             />
@@ -287,7 +287,7 @@
                             <input
                                 type="number"
                                 placeholder="0.00"
-                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                                 wire:model="state.feeTo"
                                 wire:keydown.enter="performSearch"
                             />
@@ -298,7 +298,7 @@
                         <input
                             type="text"
                             placeholder="@lang('forms.search.smartbridge_placeholder')"
-                            class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                            class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                             wire:model="state.smartBridge"
                             wire:keydown.enter="performSearch"
                         />
@@ -331,7 +331,7 @@
                             <input
                                 type="number"
                                 placeholder="0.00"
-                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                                 wire:model="state.balanceFrom"
                                 wire:keydown.enter="performSearch"
                             />
@@ -341,7 +341,7 @@
                             <input
                                 type="number"
                                 placeholder="0.00"
-                                class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                                class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                                 wire:model="state.balanceTo"
                                 wire:keydown.enter="performSearch"
                             />
@@ -352,7 +352,7 @@
                         <input
                             type="text"
                             placeholder="@lang('forms.search.username')"
-                            class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                            class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                             wire:model="state.username"
                             wire:keydown.enter="performSearch"
                         />
@@ -362,7 +362,7 @@
                         <input
                             type="text"
                             placeholder="@lang('forms.search.vote')"
-                            class="w-full dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+                            class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
                             wire:model="state.vote"
                             wire:keydown.enter="performSearch"
                         />
