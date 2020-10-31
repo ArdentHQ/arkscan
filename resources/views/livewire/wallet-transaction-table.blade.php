@@ -17,7 +17,7 @@
         >
             <span>@lang('pages.wallet.received_transactions')</span>
 
-            <span class="tab-badge">{{ $countReceived }}</span>
+            <span class="info-badge">{{ $countReceived }}</span>
         </div>
 
         <div
@@ -28,7 +28,7 @@
         >
             <span>@lang('pages.wallet.sent_transactions', [$countSent])</span>
 
-            <span class="tab-badge">{{ $countSent }}</span>
+            <span class="info-badge">{{ $countSent }}</span>
         </div>
     </div>
 
@@ -57,13 +57,13 @@
                 <a wire:click="$set('state.direction', 'received');" @click="direction = 'received'" class="dropdown-entry">
                     <span>@lang('pages.wallet.received_transactions')</span>
 
-                    <span class="px-1 ml-2 text-sm rounded bg-theme-primary-100">{{ $countReceived }}</span>
+                    <span class="info-badge">{{ $countReceived }}</span>
                 </a>
 
                 <a wire:click="$set('state.direction', 'sent');" @click="direction = 'sent'" class="dropdown-entry">
                     <span>@lang('pages.wallet.sent_transactions')</span>
 
-                    <span class="px-1 ml-2 text-sm rounded bg-theme-primary-100">{{ $countSent }}</span>
+                    <span class="info-badge">{{ $countSent }}</span>
                 </a>
             </div>
         </x-ark-dropdown>

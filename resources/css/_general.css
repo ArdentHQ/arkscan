@@ -363,11 +363,11 @@ body {
 }
 
 /* Tab Badge */
-.tab-badge {
+.info-badge {
     @apply ml-1 text-sm rounded bg-theme-primary-100;
     padding: 2px 6px;
 }
-.theme-dark .tab-badge {
+.theme-dark .info-badge {
     @apply bg-theme-secondary-900 text-theme-secondary-700;
 }
 
