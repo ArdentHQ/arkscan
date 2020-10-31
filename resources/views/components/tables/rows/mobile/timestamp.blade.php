@@ -1,5 +1,5 @@
 <div>
     @lang('labels.timestamp')
 
-    {{ $model->timestamp() }}
+    <div>{{ $model->timestamp() }}</div>
 </div>
