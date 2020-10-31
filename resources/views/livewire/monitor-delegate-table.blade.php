@@ -1,37 +1,39 @@
 <div id="delegate-list" class="w-full">
-    @if($this->state['status'] === 'resigned')
-        <x-loading.visible>
-            <x-delegates.table-desktop-resigned-skeleton />
-            <x-delegates.table-mobile-resigned-skeleton />
-        </x-loading.visible>
+    <x-loading.visible>
+        @if($this->state['status'] === 'resigned')
+            <x-tables.desktop.skeleton.monitor.resigned />
+            <x-tables.mobile.skeleton.monitor.resigned />
+        @endif
 
+        @if($this->state['status'] === 'standby')
+            <x-tables.desktop.skeleton.monitor.standby />
+            <x-tables.mobile.skeleton.monitor.standby />
+        @endif
+
+        @if($this->state['status'] === 'active')
+            <x-tables.desktop.skeleton.monitor.active />
+            <x-tables.mobile.skeleton.monitor.active />
+        @endif
+    </x-loading.visible>
+
+    @if($this->state['status'] === 'resigned')
         <x-loading.hidden>
-            <x-delegates.table-desktop-resigned :delegates="$delegates" />
-            <x-delegates.table-mobile-resigned :delegates="$delegates" />
+            <x-tables.desktop.monitor.resigned :delegates="$delegates" />
+            <x-tables.mobile.monitor.resigned :delegates="$delegates" />
         </x-loading.hidden>
     @endif
 
     @if($this->state['status'] === 'standby')
-        <x-loading.visible>
-            <x-delegates.table-desktop-standby-skeleton />
-            <x-delegates.table-mobile-standby-skeleton />
-        </x-loading.visible>
-
         <x-loading.hidden>
-            <x-delegates.table-desktop-standby :delegates="$delegates" />
-            <x-delegates.table-mobile-standby :delegates="$delegates" />
+            <x-tables.desktop.monitor.standby :delegates="$delegates" />
+            <x-tables.mobile.monitor.standby :delegates="$delegates" />
         </x-loading.hidden>
     @endif
 
     @if($this->state['status'] === 'active')
-        <x-loading.visible>
-            <x-delegates.table-desktop-active-skeleton />
-            <x-delegates.table-mobile-active-skeleton />
-        </x-loading.visible>
-
         <x-loading.hidden>
-            <x-delegates.table-desktop-active :delegates="$delegates" />
-            <x-delegates.table-mobile-active :delegates="$delegates" />
+            <x-tables.desktop.monitor.active :delegates="$delegates" />
+            <x-tables.mobile.monitor.active :delegates="$delegates" />
         </x-loading.hidden>
     @endif
 

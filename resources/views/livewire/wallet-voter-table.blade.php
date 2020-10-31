@@ -1,8 +1,8 @@
 <div id="block-list" class="w-full">
     <x-skeletons.wallets>
-        <x-wallets.table-desktop :wallets="$wallets" without-truncate />
+        <x-tables.desktop.wallets :wallets="$wallets" without-truncate />
 
-        <x-wallets.table-mobile :wallets="$wallets" />
+        <x-tables.mobile.wallets :wallets="$wallets" />
 
         <x-general.pagination :results="$wallets" class="mt-8" />
 

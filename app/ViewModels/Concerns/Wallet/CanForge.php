@@ -48,7 +48,7 @@ trait CanForge
             return 0;
         }
 
-        return (float) Cache::get('productivity:'.$this->publicKey, 0);
+        return (float) Cache::get('productivity:'.$this->publicKey(), 0);
     }
 
     public function performance(): array

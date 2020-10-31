@@ -1,7 +1,7 @@
 <x-loading.visible>
-    <x-blocks.table-desktop-skeleton />
+    <x-tables.desktop.skeleton.blocks />
 
-    <x-blocks.table-mobile-skeleton />
+    <x-tables.mobile.skeleton.blocks />
 </x-loading.visible>
 
 <x-loading.hidden>

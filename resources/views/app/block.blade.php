@@ -35,9 +35,9 @@
                         </div>
 
                         <x-skeletons.transactions>
-                            <x-transactions.table-desktop :transactions="$transactions" />
+                            <x-tables.desktop.transactions :transactions="$transactions" />
 
-                            <x-transactions.table-mobile :transactions="$transactions" />
+                            <x-tables.mobile.transactions :transactions="$transactions" />
                         </x-skeletons.transactions>
                     </div>
                 </div>

@@ -71,9 +71,9 @@
 
     <div id="transaction-list" class="w-full">
         <x-skeletons.transactions>
-            <x-transactions.table-desktop :transactions="$transactions" :wallet="$wallet" use-confirmations use-direction />
+            <x-tables.desktop.transactions :transactions="$transactions" :wallet="$wallet" use-confirmations use-direction />
 
-            <x-transactions.table-mobile :transactions="$transactions" />
+            <x-tables.mobile.transactions :transactions="$transactions" />
 
             <x-general.pagination :results="$transactions" class="mt-8" />
 

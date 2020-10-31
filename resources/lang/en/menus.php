@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 return [
 
-    'delegate'    => 'Delegate',
+    'delegates'   => 'Delegates',
     'home'        => 'Home',
-    'registered'  => 'Registered',
     'wallets'     => 'Wallets',
     'block'       => 'Block',
     'transaction' => 'Transaction',

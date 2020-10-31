@@ -1,7 +1,7 @@
 <x-loading.visible>
-    <x-transactions.table-desktop-skeleton />
+    <x-tables.desktop.skeleton.transactions />
 
-    <x-transactions.table-mobile-skeleton />
+    <x-tables.mobile.skeleton.transactions />
 </x-loading.visible>
 
 <x-loading.hidden>

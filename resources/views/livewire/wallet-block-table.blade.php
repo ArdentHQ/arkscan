@@ -1,8 +1,8 @@
 <div id="block-list" class="w-full">
     <x-skeletons.blocks>
-        <x-blocks.table-desktop :blocks="$blocks" without-generator />
+        <x-tables.desktop.blocks :blocks="$blocks" without-generator />
 
-        <x-blocks.table-mobile :blocks="$blocks" />
+        <x-tables.mobile.blocks :blocks="$blocks" />
 
         <x-general.pagination :results="$blocks" class="mt-8" />
 

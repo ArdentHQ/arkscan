@@ -34,14 +34,14 @@
     </div>
 
     <x-loading.visible>
-        <x-delegates.table-desktop-monitor-skeleton />
+        <x-tables.desktop.skeleton.monitor.round />
 
-        <x-delegates.table-mobile-monitor-skeleton />
+        <x-tables.mobile.skeleton.monitor.round />
     </x-loading.visible>
 
     <x-loading.hidden>
-        <x-delegates.table-desktop-monitor :delegates="$delegates" />
+        <x-tables.desktop.monitor.round :delegates="$delegates" />
 
-        {{-- <x-delegates.table-mobile-monitor-skeleton :delegates="$delegates" /> --}}
+        {{-- <x-tables.mobile.monitor.round :delegates="$delegates" /> --}}
     </x-loading.hidden>
 </div>

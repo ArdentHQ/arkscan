@@ -48,12 +48,9 @@
         <div id="app" class="flex flex-col antialiased bg-white dark:bg-theme-secondary-900">
             <x-navbar.navbar
                 :navigation="[
-                    ['route' => 'home', 'label' => trans('menus.delegate')],
+                    ['route' => 'monitor', 'label' => trans('menus.delegates')],
                     ['route' => 'wallets', 'label' => trans('menus.wallets')],
-                    ['route' => 'home', 'label' => trans('menus.registered')],
-                    ['route' => 'monitor', 'label' => trans('menus.monitor')],
                 ]"
-                {{-- :registered-menu="App\Models\Documentation::productMenu()" --}}
             >
                 <x-slot name="logo">
                     <img src="/images/logo.svg" class="h-10 lg:h-12" />
