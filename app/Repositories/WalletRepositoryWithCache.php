@@ -22,17 +22,17 @@ final class WalletRepositoryWithCache implements WalletRepository
 
     public function allWithUsername(): Builder
     {
-        return $this->remember(fn () => $this->wallets->allWithUsername());
+        return $this->wallets->allWithUsername();
     }
 
     public function allWithVote(): Builder
     {
-        return $this->remember(fn () => $this->wallets->allWithVote());
+        return $this->wallets->allWithVote();
     }
 
     public function allWithPublicKey(): Builder
     {
-        return $this->remember(fn () => $this->wallets->allWithPublicKey());
+        return $this->wallets->allWithPublicKey();
     }
 
     public function findByAddress(string $address): Wallet
