@@ -7,6 +7,6 @@ Jun: 0
 Jul: 0
 Aug: 0
 Sep: 0
-Oct: !!float 20
-Nov: 0
+Oct: !!float 10
+Nov: !!float 10
 Dec: 0
