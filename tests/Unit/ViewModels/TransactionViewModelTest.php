@@ -1314,23 +1314,6 @@ it('should determine if the transaction has extra data', function (bool $outcome
     ],
 ]);
 
-it('should get the entity name', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => MagistrateTransactionTypeEnum::ENTITY,
-        'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
-        'asset'      => [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-            'data'    => [
-                'name' => 'john',
-            ],
-        ],
-    ]));
-
-    expect($subject->entityName())->toBe('john');
-});
-
 it('should determine if the transaction type is unknown', function () {
     $subject = new TransactionViewModel(Transaction::factory()->create([
         'type'       => 123,
@@ -1338,4 +1321,64 @@ it('should determine if the transaction type is unknown', function () {
     ]));
 
     expect($subject->isUnknown())->toBeTrue();
+});
+
+it('should get the entity type', function () {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => MagistrateTransactionTypeEnum::ENTITY,
+        'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
+        'asset'      => [
+            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+            'data'    => ['name' => 'John', 'ipfsData' => 'ipfs'],
+        ],
+    ]));
+
+    expect($subject->entityType())->toBe('product-entity-registration');
+});
+
+it('should get the entity name', function () {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => MagistrateTransactionTypeEnum::ENTITY,
+        'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
+        'asset'      => [
+            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+            'data'    => ['name' => 'John', 'ipfsData' => 'ipfs'],
+        ],
+    ]));
+
+    expect($subject->entityName())->toBe('John');
+});
+
+it('should get the entity category', function () {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => MagistrateTransactionTypeEnum::ENTITY,
+        'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
+        'asset'      => [
+            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+            'data'    => ['name' => 'John', 'ipfsData' => 'ipfs'],
+        ],
+    ]));
+
+    expect($subject->entityCategory())->toBeNull();
+});
+
+it('should get the entity hash', function () {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => MagistrateTransactionTypeEnum::ENTITY,
+        'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
+        'asset'      => [
+            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+            'data'    => ['name' => 'John', 'ipfsData' => 'ipfs'],
+        ],
+    ]));
+
+    expect($subject->entityHash())->toBe('ipfs');
 });

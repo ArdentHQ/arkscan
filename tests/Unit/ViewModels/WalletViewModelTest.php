@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 use App\Enums\CoreTransactionTypeEnum;
 use App\Enums\MagistrateTransactionEntityActionEnum;
-
 use App\Enums\MagistrateTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
-
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
@@ -343,4 +341,30 @@ it('should get the vote weight as percentage', function () {
 
     expect($this->subject->votePercentage())->toBeFloat();
     expect($this->subject->votePercentage())->toBe(10.0);
+});
+
+it('should fail to get the productivity if the wallet is a delegate', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'balance'    => 1e8,
+        'attributes' => [
+            'delegate' => [],
+        ],
+    ]));
+
+    expect($this->subject->productivity())->toBeFloat();
+    expect($this->subject->productivity())->toBe(0.0);
+
+    Cache::put('productivity:'.$this->subject->publicKey(), 10);
+
+    expect($this->subject->productivity())->toBeFloat();
+    expect($this->subject->productivity())->toBe(10.0);
+});
+
+it('should fail to get the productivity if the wallet is not a delegate', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes' => [],
+    ]));
+
+    expect($this->subject->productivity())->toBeFloat();
+    expect($this->subject->productivity())->toBe(0.0);
 });
