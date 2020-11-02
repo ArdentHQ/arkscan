@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use ArkEcosystem\Crypto\Identities\PublicKey;
+use FurqanSiddiqui\BIP39\BIP39;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
@@ -150,4 +152,9 @@ function fakeCryptoCompare(): void
         'https://min-api.cryptocompare.com/data/price'    => Http::response(['USD' => 0.2907]),
         'https://min-api.cryptocompare.com/data/histoday' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/historical.json')), true)),
     ]);
+}
+
+function bip39(): string
+{
+    return PublicKey::fromPassphrase((implode(' ', BIP39::Generate()->words)))->getHex();
 }

@@ -25,4 +25,5 @@ parameters:
         - '#AbstractNetwork#'
         - '#PendingDispatch given#'
         - '#shortSchedule#'
+        - '#with a nullable type declaration#'
     checkMissingIterableValueType: false

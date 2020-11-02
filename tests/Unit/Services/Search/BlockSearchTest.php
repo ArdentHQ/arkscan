@@ -22,7 +22,9 @@ it('should search for a block by id', function () {
 });
 
 it('should search for a block by generator public key', function () {
-    $block = Block::factory(10)->create()[0];
+    Block::factory(10)->create();
+
+    $block = Block::factory()->create(['generator_public_key' => 'generator']);
 
     $result = (new BlockSearch())->search([
         'generatorPublicKey' => $block->generator_public_key,

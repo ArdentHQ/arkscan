@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -16,21 +15,21 @@ final class CacheUsername implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public Wallet $wallet;
+    public array $wallet;
 
-    public function __construct(Wallet $wallet)
+    public function __construct(array $wallet)
     {
         $this->wallet = $wallet;
     }
 
     public function handle(WalletCache $cache): void
     {
-        $username = $this->wallet->attributes['delegate']['username'];
+        $username = $this->wallet['attributes']['delegate']['username'];
 
-        $cache->setUsernameByAddress($this->wallet->address, $username);
+        $cache->setUsernameByAddress($this->wallet['address'], $username);
 
-        if (! is_null($this->wallet->public_key)) {
-            $cache->setUsernameByPublicKey($this->wallet->public_key, $username);
+        if (! is_null($this->wallet['public_key'])) {
+            $cache->setUsernameByPublicKey($this->wallet['public_key'], $username);
         }
     }
 }

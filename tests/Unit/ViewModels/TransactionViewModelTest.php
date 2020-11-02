@@ -31,7 +31,7 @@ beforeEach(function () {
         'block_id'          => $this->block->id,
         'fee'               => '100000000',
         'amount'            => '200000000',
-        'sender_public_key' => Wallet::factory()->create(['address' => 'sender'])->public_key,
+        'sender_public_key' => Wallet::factory()->create(['address' => 'D6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax'])->public_key,
         'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]));
 });
@@ -43,11 +43,11 @@ it('should get the url', function () {
 
 it('should determine if the transaction is incoming', function () {
     expect($this->subject->isReceived('recipient'))->toBeTrue();
-    expect($this->subject->isReceived('sender'))->toBeFalse();
+    expect($this->subject->isReceived('D6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax'))->toBeFalse();
 });
 
 it('should determine if the transaction is outgoing', function () {
-    expect($this->subject->isSent('sender'))->toBeTrue();
+    expect($this->subject->isSent('D6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax'))->toBeTrue();
     expect($this->subject->isSent('recipient'))->toBeFalse();
 });
 
@@ -623,24 +623,16 @@ it('should fail to get the confirmations', function () {
     expect($this->subject->confirmations())->toBe(0);
 });
 
-it('should fail to get the sender', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'sender_public_key' => 'unknown',
-    ]));
-
-    expect($this->subject->sender())->toBeNull();
-});
-
 it('should fallback to the sender if no recipient exists', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'recipient_id' => 'unknown',
+        'recipient_id' => null,
     ]));
 
     expect($this->subject->recipient())->toEqual($this->subject->sender());
 });
 
 it('should get the voted delegate', function () {
-    $wallet = Wallet::factory()->create(['public_key' => 'publicKey']);
+    Wallet::factory()->create(['public_key' => 'publicKey']);
 
     $subject = new TransactionViewModel(Transaction::factory()->create([
         'type'       => CoreTransactionTypeEnum::VOTE,

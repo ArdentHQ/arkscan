@@ -25,7 +25,7 @@ final class CryptoCompareCache implements Contract
 
     public function getPrices(string $currency): Collection
     {
-        return $this->get(sprintf('prices/%s', $currency));
+        return $this->get(sprintf('prices/%s', $currency), collect([]));
     }
 
     public function setPrices(string $currency, Collection $prices): Collection

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\DTO\MemoryWallet;
 use App\Models\Block;
 use App\Models\Wallet;
 
@@ -79,12 +80,12 @@ it('should get the total reward as fiat', function () {
 });
 
 it('should get the delegate', function () {
-    expect($this->subject->delegate())->toBeInstanceOf(Wallet::class);
+    expect($this->subject->delegate())->toBeInstanceOf(MemoryWallet::class);
 });
 
 it('should get the delegate username', function () {
     expect($this->subject->username())->toBeString();
-    expect($this->subject->username())->not()->toBe('Genesis');
+    expect($this->subject->username())->toBe('Genesis');
 });
 
 it('should fail to get the delegate username', function () {

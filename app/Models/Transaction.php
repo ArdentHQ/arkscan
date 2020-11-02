@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $type
  * @property int $type_group
  * @property string $block_id
- * @property string $recipient_id
+ * @property string|null $recipient_id
  * @property string $sender_public_key
  */
 final class Transaction extends Model
@@ -56,12 +56,12 @@ final class Transaction extends Model
         'type'       => 'int',
     ];
 
-    /**
-     * The relations to eager load on every query.
-     *
-     * @var array
-     */
-    protected $with = ['sender', 'recipient'];
+    // /**
+    //  * The relations to eager load on every query.
+    //  *
+    //  * @var array
+    //  */
+    // protected $with = ['sender', 'recipient'];
 
     /**
      * A transaction belongs to a block.

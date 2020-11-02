@@ -4,30 +4,21 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use App\Facades\Wallets;
-use App\ViewModels\WalletViewModel;
+use App\DTO\MemoryWallet;
 
 trait InteractsWithWallets
 {
-    public function sender(): ?WalletViewModel
+    public function sender(): ?MemoryWallet
     {
-        $wallet = $this->transaction->sender;
-
-        if (is_null($wallet)) {
-            return null;
-        }
-
-        return new WalletViewModel(Wallets::findByAddress($wallet->address));
+        return MemoryWallet::fromPublicKey($this->transaction->sender_public_key);
     }
 
-    public function recipient(): ?WalletViewModel
+    public function recipient(): ?MemoryWallet
     {
-        $wallet = $this->transaction->recipient;
-
-        if (is_null($wallet)) {
+        if (is_null($this->transaction->recipient_id)) {
             return $this->sender();
         }
 
-        return new WalletViewModel(Wallets::findByAddress($wallet->address));
+        return MemoryWallet::fromAddress($this->transaction->recipient_id);
     }
 }

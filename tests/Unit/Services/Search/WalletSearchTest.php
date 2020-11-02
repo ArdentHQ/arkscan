@@ -19,8 +19,10 @@ it('should search for a wallet by address', function () {
     expect($result->first()->is($wallet))->toBeTrue();
 });
 
-it('should search for a wallet by public_key', function () {
-    $wallet = Wallet::factory(10)->create()[0];
+it('should search for a wallet by public key', function () {
+    Wallet::factory(10)->create(['public_key' => '123']);
+
+    $wallet = Wallet::factory()->create();
 
     $result = (new WalletSearch())->search([
         'term' => $wallet->public_key,

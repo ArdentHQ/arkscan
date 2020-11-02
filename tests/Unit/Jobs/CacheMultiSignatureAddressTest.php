@@ -30,7 +30,7 @@ it('should compute and cache the multi signature address', function () {
 
     expect(Cache::tags('wallet')->has(md5("multi_signature/$min/".serialize($publicKeys))))->toBeFalse();
 
-    (new CacheMultiSignatureAddress($wallet))->handle();
+    (new CacheMultiSignatureAddress($wallet->toArray()))->handle();
 
     expect(Cache::tags('wallet')->has(md5("multi_signature/$min/".serialize($publicKeys))))->toBeTrue();
 });

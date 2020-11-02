@@ -33,6 +33,6 @@ final class CacheMultiSignatureAddresses extends Command
     {
         Wallets::allWithMultiSignature()
             ->cursor()
-            ->each(fn ($wallet) => CacheMultiSignatureAddress::dispatch($wallet));
+            ->each(fn ($wallet) => CacheMultiSignatureAddress::dispatch($wallet->toArray()));
     }
 }

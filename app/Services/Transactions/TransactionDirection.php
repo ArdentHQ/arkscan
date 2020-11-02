@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Transactions;
 
 use App\Models\Transaction;
+use App\Services\Identity;
 
 final class TransactionDirection
 {
@@ -17,23 +18,11 @@ final class TransactionDirection
 
     public function isSent(string $address): bool
     {
-        $wallet = $this->transaction->sender;
-
-        if (is_null($wallet)) {
-            return false;
-        }
-
-        return $wallet->address === $address;
+        return Identity::address($this->transaction->sender_public_key) === $address;
     }
 
     public function isReceived(string $address): bool
     {
-        $wallet = $this->transaction->recipient;
-
-        if (is_null($wallet)) {
-            return false;
-        }
-
-        return $wallet->address === $address;
+        return $this->transaction->recipient_id === $address;
     }
 }

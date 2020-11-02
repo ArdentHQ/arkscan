@@ -17,7 +17,7 @@ it('should cache the username for the public key', function () {
     expect(Cache::tags('wallet')->has(md5("username_by_address/$wallet->address")))->toBeFalse();
     expect(Cache::tags('wallet')->has(md5("username_by_public_key/$wallet->public_key")))->toBeFalse();
 
-    (new CacheUsername($wallet))->handle(new WalletCache());
+    (new CacheUsername($wallet->toArray()))->handle(new WalletCache());
 
     expect(Cache::tags('wallet')->has(md5("username_by_address/$wallet->address")))->toBeTrue();
     expect(Cache::tags('wallet')->has(md5("username_by_public_key/$wallet->public_key")))->toBeTrue();

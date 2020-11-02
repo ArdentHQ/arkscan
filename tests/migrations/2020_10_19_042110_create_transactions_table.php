@@ -16,7 +16,7 @@ final class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger('type');
             $table->unsignedBigInteger('type_group');
             $table->string('sender_public_key');
-            $table->string('recipient_id');
+            $table->string('recipient_id')->nullable();
             $table->unsignedBigInteger('timestamp');
             $table->unsignedBigInteger('amount');
             $table->unsignedBigInteger('fee');

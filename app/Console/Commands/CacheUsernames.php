@@ -33,6 +33,6 @@ final class CacheUsernames extends Command
     {
         Wallets::allWithUsername()
             ->cursor()
-            ->each(fn ($wallet) => CacheUsername::dispatch($wallet));
+            ->each(fn ($wallet) => CacheUsername::dispatch($wallet->toArray()));
     }
 }

@@ -37,7 +37,6 @@ it('should list the first page of records', function () {
 it('should apply filters', function () {
     $block = Block::factory()->create();
     $wallet = Wallet::factory()->create([
-        'public_key' => 'public_key',
         'address'    => 'address',
     ]);
 
@@ -84,7 +83,6 @@ it('should apply filters', function () {
 it('should apply filters through an event', function () {
     $block = Block::factory()->create();
     $wallet = Wallet::factory()->create([
-        'public_key' => 'public_key',
         'address'    => 'address',
     ]);
 

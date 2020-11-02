@@ -16,7 +16,7 @@ final class PriceChartCache implements Contract
 
     public function getDay(string $currency): array
     {
-        return $this->get("day/$currency");
+        return $this->get("day/$currency", []);
     }
 
     public function setDay(string $currency, Collection $data): array
@@ -26,7 +26,7 @@ final class PriceChartCache implements Contract
 
     public function getWeek(string $currency): array
     {
-        return $this->get("week/$currency");
+        return $this->get("week/$currency", []);
     }
 
     public function setWeek(string $currency, Collection $data): array
@@ -36,7 +36,7 @@ final class PriceChartCache implements Contract
 
     public function getMonth(string $currency): array
     {
-        return $this->get("month/$currency");
+        return $this->get("month/$currency", []);
     }
 
     public function setMonth(string $currency, Collection $data): array
@@ -46,7 +46,7 @@ final class PriceChartCache implements Contract
 
     public function getQuarter(string $currency): array
     {
-        return $this->get("quarter/$currency");
+        return $this->get("quarter/$currency", []);
     }
 
     public function setQuarter(string $currency, Collection $data): array
@@ -56,7 +56,7 @@ final class PriceChartCache implements Contract
 
     public function getYear(string $currency): array
     {
-        return $this->get("year/$currency");
+        return $this->get("year/$currency", []);
     }
 
     public function setYear(string $currency, Collection $data): array
