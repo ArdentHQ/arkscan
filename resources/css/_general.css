@@ -388,3 +388,23 @@ body {
 .theme-dark .vote-percentage {
     @apply text-theme-secondary-600;
 }
+
+/* Transaction & Block details */
+.details-grid > * {
+    @apply border-b border-theme-secondary-300;
+}
+
+.details-grid > *:last-child {
+    @apply border-b-0;
+}
+
+.theme-dark .details-grid > * {
+    @apply border-theme-secondary-800;
+}
+
+@screen md {
+    .details-grid > *:nth-child(2n + 1):nth-last-child(-n + 2),
+    .details-grid > *:nth-child(2n + 1):nth-last-child(-n + 2) ~ * {
+        @apply border-b-0;
+    }
+}

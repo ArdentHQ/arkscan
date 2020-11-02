@@ -6,4 +6,4 @@
 
 <x-grid.timestamp :model="$transaction" />
 
-<x-grid.nonce :model="$transaction" without-border />
+<x-grid.nonce :model="$transaction" />

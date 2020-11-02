@@ -23,7 +23,7 @@
 
             <x-grid.fee :model="$block" />
 
-            <x-grid.confirmations :model="$block" without-border />
+            <x-grid.confirmations :model="$block" />
         </x-details.grid>
 
         @if($transactions->isNotEmpty())

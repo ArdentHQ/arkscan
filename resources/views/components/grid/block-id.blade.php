@@ -1,4 +1,4 @@
-<x-grid.generic :title="trans('general.transaction.block_id')" icon="app-block-id" :without-border="$withoutBorder ?? false">
+<x-grid.generic :title="trans('general.transaction.block_id')" icon="app-block-id">
     <span class="flex items-center">
 
         <a href="{{ route('block', $model->blockId()) }}" class="font-semibold sm:hidden md:inline lg:hidden link">
