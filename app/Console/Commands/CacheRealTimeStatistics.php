@@ -50,6 +50,6 @@ final class CacheRealTimeStatistics extends Command
 
     private function getSupply(): string
     {
-        return (string) Wallet::sum('balance');
+        return (string) Wallet::where('balance', '>', 0)->sum('balance');
     }
 }

@@ -8,10 +8,15 @@ use App\Http\Livewire\SearchPage;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\Cache\NetworkCache;
 use Livewire\Livewire;
 use function Tests\configureExplorerDatabase;
 
-beforeEach(fn () => configureExplorerDatabase());
+beforeEach(function () {
+    configureExplorerDatabase();
+
+    (new NetworkCache())->setSupply(strval(10e8));
+});
 
 it('should search for blocks', function () {
     $block = Block::factory()->create();
