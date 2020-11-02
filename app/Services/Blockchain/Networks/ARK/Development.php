@@ -82,6 +82,6 @@ final class Development implements Network
 
     public function config(): \BitWasp\Bitcoin\Network\Network
     {
-        return Devnet::new();
+        return new Devnet();
     }
 }

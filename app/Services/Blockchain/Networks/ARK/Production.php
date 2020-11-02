@@ -82,6 +82,6 @@ final class Production implements Network
 
     public function config(): \BitWasp\Bitcoin\Network\Network
     {
-        return Mainnet::new();
+        return new Mainnet();
     }
 }
