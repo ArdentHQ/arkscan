@@ -19,7 +19,7 @@
                                 <x-truncate-middle :value="$value" :length="16" />
                             </span>
 
-                            <x-ark-clipboard :value="$value" class="flex items-center w-auto h-auto ml-2 text-theme-secondary-600" no-styling />
+                            <x-clipboard :value="$value" />
                         </span>
                     </div>
                 </div>

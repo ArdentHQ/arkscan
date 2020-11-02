@@ -9,6 +9,6 @@
             <x-truncate-middle :value="$model->blockId()" :length="32" />
         </a>
 
-        <x-ark-clipboard :value="$model->blockId()" class="flex items-center w-auto h-auto ml-2 text-theme-secondary-600" no-styling />
+        <x-clipboard :value="$model->blockId()" />
     </span>
 </x-grid.generic>

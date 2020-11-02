@@ -12,7 +12,7 @@
                     {{ $publicKey }}
                 </span>
 
-                <x-ark-clipboard :value="$publicKey" class="flex items-center w-auto h-auto ml-2 text-theme-primary-300 dark:text-theme-secondary-600" no-styling />
+                <x-clipboard :value="$publicKey" colors="text-theme-primary-300 dark:text-theme-secondary-600"/>
             </span>
         </div>
     </div>
