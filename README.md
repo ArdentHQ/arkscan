@@ -22,9 +22,9 @@
 
 You can read more about production instructions at our [Development Documentation](./docs/development.md).
 
-## Production
+## Deployment
 
-You can read more about production instructions at our [Production Documentation](./docs/production.md).
+You can read more about deployment instructions at our [Deployment Documentation](./docs/deployment.md).
 
 ## Security
 
