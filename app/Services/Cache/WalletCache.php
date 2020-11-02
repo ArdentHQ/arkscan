@@ -45,12 +45,12 @@ final class WalletCache implements Contract
 
     public function getProductivity(string $publicKey): float
     {
-        return $this->get(sprintf('productivity/%s', $publicKey), 0);
+        return (float) $this->get(sprintf('productivity/%s', $publicKey), 0);
     }
 
     public function setProductivity(string $publicKey, \Closure $callback): float
     {
-        return $this->remember(sprintf('productivity/%s', $publicKey), now()->addMinute(), $callback);
+        return (float) $this->remember(sprintf('productivity/%s', $publicKey), now()->addMinute(), $callback);
     }
 
     public function getResignationId(string $address): ?string

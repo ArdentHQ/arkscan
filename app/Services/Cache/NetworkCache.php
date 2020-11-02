@@ -37,42 +37,42 @@ final class NetworkCache implements Contract
 
     public function getVolume(): float
     {
-        return $this->get('volume');
+        return (int) $this->get('volume');
     }
 
     public function setVolume(\Closure $callback): float
     {
-        return $this->remember('volume', now()->addMinute(), $callback);
+        return (int) $this->remember('volume', now()->addMinute(), $callback);
     }
 
     public function getTransactionsCount(): int
     {
-        return $this->get('transactions_count');
+        return (int) $this->get('transactions_count');
     }
 
     public function setTransactionsCount(\Closure $callback): int
     {
-        return $this->remember('transactions_count', now()->addMinute(), $callback);
+        return (int) $this->remember('transactions_count', now()->addMinute(), $callback);
     }
 
     public function getVotesCount(): int
     {
-        return $this->get('votes_count');
+        return (int) $this->get('votes_count');
     }
 
     public function setVotesCount(\Closure $callback): int
     {
-        return $this->remember('votes_count', now()->addMinute(), $callback);
+        return (int) $this->remember('votes_count', now()->addMinute(), $callback);
     }
 
     public function getVotesPercentage(): float
     {
-        return $this->get('votes_percentage');
+        return (float) $this->get('votes_percentage');
     }
 
     public function setVotesPercentage(\Closure $callback): float
     {
-        return $this->remember('votes_percentage', now()->addMinute(), $callback);
+        return (float) $this->remember('votes_percentage', now()->addMinute(), $callback);
     }
 
     public function getDelegateRegistrationCount(): int
@@ -87,12 +87,12 @@ final class NetworkCache implements Contract
 
     public function getFeesCollected(): float
     {
-        return $this->get('fees_collected');
+        return (float) $this->get('fees_collected');
     }
 
     public function setFeesCollected(\Closure $callback): float
     {
-        return $this->remember('fees_collected', Network::blockTime(), $callback);
+        return (float) $this->remember('fees_collected', Network::blockTime(), $callback);
     }
 
     public function setFeesByRange(Carbon $start, Carbon $end, \Closure $closure): Collection

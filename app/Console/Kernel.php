@@ -50,8 +50,6 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(CacheUsernames::class)->everyMinute();
 
-        $schedule->command(CacheNetworkStatistics::class)->everyMinute();
-
         $schedule->command(CacheMultiSignatureAddresses::class)->everyMinute();
 
         $schedule->command(CacheLastBlocks::class)->everyMinute();
@@ -73,6 +71,8 @@ final class Kernel extends ConsoleKernel
     protected function shortSchedule(ShortSchedule $shortSchedule)
     {
         $shortSchedule->command(CacheLastBlocks::class)->everySeconds(Network::blockTime());
+
+        $shortSchedule->command(CacheNetworkStatistics::class)->everySeconds(Network::blockTime());
     }
 
     /**
