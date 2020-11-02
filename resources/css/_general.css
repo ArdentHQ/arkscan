@@ -336,8 +336,11 @@ body {
 .transaction-filter-button-icon {
     @apply flex items-center justify-center transition duration-150 ease-in-out rounded-full text-theme-secondary-400 w-6 h-6;
 }
-.theme-dark .transaction-filter-button-icon {
-    @apply bg-theme-secondary-800 text-theme-secondary-200;
+
+@screen md {
+    .theme-dark .transaction-filter-button-icon {
+        @apply bg-theme-secondary-800 text-theme-secondary-200;
+    }
 }
 
 @screen md {
