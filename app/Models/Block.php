@@ -29,6 +29,13 @@ final class Block extends Model
     use HasFactory;
 
     /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    public $keyType = 'string';
+
+    /**
      * Indicates if the IDs are auto-incrementing.
      *
      * @var bool

@@ -226,7 +226,8 @@ it('should apply directions through an event', function () {
     ]);
 
     $received = Transaction::factory()->create([
-        'recipient_id' => $this->subject->address,
+        'sender_public_key' => '03bbfb43ecb5a54a1e227bb37b5812b5321213838d376e2b455b6af78442621dec',
+        'recipient_id'      => $this->subject->address,
     ]);
 
     $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, $this->subject->public_key]);
