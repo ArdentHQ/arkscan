@@ -1,5 +1,7 @@
 <div>
     @lang('labels.transaction_count')
 
-    {{ $model->transactionCount() }}
+    <span>
+        {{ $model->transactionCount() }}
+    </span>
 </div>

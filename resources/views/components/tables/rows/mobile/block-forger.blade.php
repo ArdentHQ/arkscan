@@ -1,5 +1,5 @@
 <div>
-    @lang('labels.block_forger')
+    @lang('labels.generated_by')
 
     <x-general.identity :model="$model" />
 </div>
