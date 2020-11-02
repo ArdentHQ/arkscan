@@ -50,18 +50,24 @@ final class WalletTransactionTable extends Component
     public function render(): View
     {
         if ($this->state['direction'] === 'received') {
-            $query = $this->getReceivedQuery();
+            $items         = $this->getReceivedQuery()->latestByTimestamp()->paginate();
+            $receivedCount = $items->total();
+            $sentCount     = $this->getSentQuery()->count();
         } elseif ($this->state['direction'] === 'sent') {
-            $query = $this->getSentQuery();
+            $items         = $this->getSentQuery()->latestByTimestamp()->paginate();
+            $receivedCount = $this->getReceivedQuery()->count();
+            $sentCount     = $items->total();
         } else {
-            $query = $this->getAllQuery();
+            $items         = $this->getAllQuery()->latestByTimestamp()->paginate();
+            $receivedCount = $this->getReceivedQuery()->count();
+            $sentCount     = $this->getSentQuery()->count();
         }
 
         return view('livewire.wallet-transaction-table', [
             'wallet'        => ViewModelFactory::make(Wallets::findByAddress($this->state['address'])),
-            'transactions'  => ViewModelFactory::paginate($query->latestByTimestamp()->paginate()),
-            'countReceived' => $this->getReceivedQuery()->count(),
-            'countSent'     => $this->getSentQuery()->count(),
+            'transactions'  => ViewModelFactory::paginate($items),
+            'countReceived' => $receivedCount,
+            'countSent'     => $sentCount,
         ]);
     }
 
