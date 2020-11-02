@@ -24,6 +24,6 @@ valet link explorer-ark-io
 
 ## Caching
 
-Before access the Explorer you'll need to cache data that is accessed a lot. You can read more about caching at our [Cache Documentation](./docs/cache.md).
+Before access the Explorer you'll need to cache data that is accessed a lot. You can read more about caching at our [Cache Documentation](./cache.md).
 
 Afterwards, you can navigate to `explorer-ark-io.test` in your browser to see it in action.
