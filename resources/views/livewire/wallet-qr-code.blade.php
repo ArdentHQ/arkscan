@@ -8,7 +8,7 @@
             @slot('description')
                 <div class="mt-4 text-theme-secondary-700">@lang('pages.wallet.qrcode.description')</div>
 
-                <div class="mt-8 border border-theme-secondary-400">
+                <div class="flex items-center justify-center mt-8 border border-theme-secondary-400">
                     {!! $this->code !!}
                 </div>
 
