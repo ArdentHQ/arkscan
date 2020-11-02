@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th><span class="pl-14">@lang('general.transaction.recipient')</span></th>
-                <th width="180" class="hidden text-right lg:table-cell">@lang('general.transaction.amount')</th>
+                <th width="180" class="hidden text-right md:table-cell">@lang('general.transaction.amount')</th>
             </tr>
         </thead>
         <tbody>
@@ -12,7 +12,7 @@
                     <td>
                         <x-general.identity :model="$payment" without-truncate />
                     </td>
-                    <td class="hidden text-right lg:table-cell">
+                    <td class="hidden text-right md:table-cell">
                         <x-tables.rows.desktop.amount :model="$payment" />
                     </td>
                 </tr>
