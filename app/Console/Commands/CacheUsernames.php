@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Facades\Wallets;
-use App\Jobs\CacheMultiSignatureAddress;
+use App\Jobs\CacheUsername;
 use Illuminate\Console\Command;
 
-final class CacheMultiSignatureAddresses extends Command
+final class CacheUsernames extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cache:musig';
+    protected $signature = 'cache:usernames';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Cache all multi-signature addresses.';
+    protected $description = 'Cache all usernames by their address and public key.';
 
     /**
      * Execute the console command.
@@ -31,8 +31,8 @@ final class CacheMultiSignatureAddresses extends Command
      */
     public function handle()
     {
-        Wallets::allWithMultiSignature()
+        Wallets::allWithUsername()
             ->cursor()
-            ->each(fn ($wallet) => CacheMultiSignatureAddress::dispatch($wallet));
+            ->each(fn ($wallet) => CacheUsername::dispatch($wallet));
     }
 }
