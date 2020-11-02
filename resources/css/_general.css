@@ -236,10 +236,17 @@ body {
 
 /* Transaction Icon */
 .transaction-icon {
-    @apply circled-icon text-theme-secondary-900 border-theme-secondary-900;
+    @apply text-theme-secondary-900 border-theme-secondary-900;
 }
+
 .theme-dark .transaction-icon {
     @apply text-theme-secondary-600 border-theme-secondary-600;
+}
+
+@screen md {
+    .transaction-icon {
+        @apply circled-icon;
+    }
 }
 
 @screen xl {
