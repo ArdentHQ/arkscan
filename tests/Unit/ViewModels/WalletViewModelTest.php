@@ -303,11 +303,13 @@ it('should get the resignation id', function () {
         ],
     ]));
 
-    Transaction::factory()->create([
+    $transaction = Transaction::factory()->create([
         'type'              => CoreTransactionTypeEnum::DELEGATE_RESIGNATION,
         'type_group'        => TransactionTypeGroupEnum::CORE,
         'sender_public_key' => $this->subject->publicKey(),
     ]);
+
+    (new WalletCache())->setResignationId($this->subject->publicKey(), $transaction->id);
 
     expect($this->subject->resignationId())->toBeString();
 });
@@ -319,6 +321,14 @@ it('should fail to get the resignation id if the delegate is not resigned', func
         'attributes'   => [
             'delegate' => [],
         ],
+    ]));
+
+    expect($this->subject->resignationId())->toBeNull();
+});
+
+it('should fail to get the resignation id if the wallet has no public key', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'public_key' => null,
     ]));
 
     expect($this->subject->resignationId())->toBeNull();

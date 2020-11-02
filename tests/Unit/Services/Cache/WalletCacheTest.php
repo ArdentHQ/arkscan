@@ -43,7 +43,7 @@ it('should get and set the productivity', function () {
 it('should get and set the resignation id', function () {
     expect($this->subject->getResignationId('address'))->toBeNull();
 
-    $this->subject->setResignationId('address', fn () => 'id');
+    $this->subject->setResignationId('address', 'id');
 
     expect($this->subject->getResignationId('address'))->toBeString();
 });

@@ -73,3 +73,9 @@ php artisan cache:votes
 ```
 php artisan cache:real-time-statistics
 ```
+
+## Cache transaction IDs for all resigned delegates
+
+```
+php artisan cache:resignation-ids
+```

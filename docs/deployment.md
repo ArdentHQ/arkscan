@@ -76,6 +76,7 @@ php artisan cache:chart-fee
 php artisan cache:past-round-performance
 php artisan cache:productivity
 php artisan cache:votes
+php artisan cache:resignation-ids
 ```
 
 ## Updates
