@@ -6,7 +6,6 @@ namespace App\Aggregates;
 
 use App\Contracts\Aggregate;
 use App\Models\Wallet;
-use App\Services\BigNumber;
 use App\Services\Cache\NetworkCache;
 use Mattiasgeniar\Percentage\Percentage;
 
@@ -14,9 +13,6 @@ final class VotePercentageAggregate implements Aggregate
 {
     public function aggregate(): string
     {
-        return (string) Percentage::calculate(
-            BigNumber::new(Wallet::sum('balance'))->toFloat(),
-            (new NetworkCache())->getSupply()
-        );
+        return (string) Percentage::calculate((float) Wallet::sum('balance'), (new NetworkCache())->getSupply());
     }
 }

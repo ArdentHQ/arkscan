@@ -1,6 +1,6 @@
 <div id="block-list" class="w-full">
     <x-skeletons.wallets>
-        <x-tables.desktop.wallets :wallets="$wallets" without-truncate />
+        <x-tables.desktop.wallets :wallets="$wallets" without-truncate use-vote-weight />
 
         <x-tables.mobile.wallets :wallets="$wallets" />
 
