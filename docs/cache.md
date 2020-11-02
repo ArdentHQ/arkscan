@@ -67,3 +67,9 @@ php artisan cache:musig
 ```
 php artisan cache:votes
 ```
+
+## Cache real-time statistics like height and supply
+
+```
+php artisan cache:real-time-statistics
+```

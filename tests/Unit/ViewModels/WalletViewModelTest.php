@@ -59,7 +59,7 @@ it('should get the nonce', function () {
 });
 
 it('should get the balance as percentage from supply', function () {
-    (new NetworkCache())->setSupply(fn () => '1000000000000');
+    (new NetworkCache())->setSupply('1000000000000');
 
     expect($this->subject->balancePercentage())->toBeFloat();
     expect($this->subject->balancePercentage())->toBe(10.0);
@@ -72,7 +72,7 @@ it('should get the votes', function () {
 });
 
 it('should get the votes as percentage from supply', function () {
-    (new NetworkCache())->setSupply(fn () => '1000000000000');
+    (new NetworkCache())->setSupply('1000000000000');
 
     expect($this->subject->votesPercentage())->toBeFloat();
     expect($this->subject->votesPercentage())->toBe(10.0);

@@ -12,6 +12,7 @@ use App\Console\Commands\CacheLastBlocks;
 use App\Console\Commands\CacheMultiSignatureAddresses;
 use App\Console\Commands\CacheNetworkStatistics;
 use App\Console\Commands\CachePastRoundPerformance;
+use App\Console\Commands\CacheRealTimeStatistics;
 use App\Console\Commands\CacheUsernames;
 use App\Console\Commands\CacheVotes;
 use App\Facades\Network;
@@ -46,6 +47,8 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(CacheDelegateAggregates::class)->everyFiveMinutes();
 
+        $schedule->command(CacheNetworkStatistics::class)->everyMinute();
+
         $schedule->command(CacheFeeChart::class)->everyMinute();
 
         $schedule->command(CacheUsernames::class)->everyMinute();
@@ -72,7 +75,7 @@ final class Kernel extends ConsoleKernel
     {
         $shortSchedule->command(CacheLastBlocks::class)->everySeconds(Network::blockTime());
 
-        $shortSchedule->command(CacheNetworkStatistics::class)->everySeconds(Network::blockTime());
+        $shortSchedule->command(CacheRealTimeStatistics::class)->everySeconds(Network::blockTime());
     }
 
     /**

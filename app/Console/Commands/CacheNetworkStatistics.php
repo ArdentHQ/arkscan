@@ -9,10 +9,8 @@ use App\Aggregates\TransactionCountAggregate;
 use App\Aggregates\TransactionVolumeAggregate;
 use App\Aggregates\VoteCountAggregate;
 use App\Aggregates\VotePercentageAggregate;
-use App\Models\Block;
 use App\Models\Scopes\DelegateRegistrationScope;
 use App\Models\Transaction;
-use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use Illuminate\Console\Command;
 
@@ -39,28 +37,16 @@ final class CacheNetworkStatistics extends Command
      */
     public function handle(NetworkCache $cache)
     {
-        $cache->setHeight(function (): int {
-            $block = Block::latestByHeight()->first();
+        $cache->setVolume((new TransactionVolumeAggregate())->aggregate());
 
-            if (is_null($block)) {
-                return 0;
-            }
+        $cache->setTransactionsCount((new TransactionCountAggregate())->aggregate());
 
-            return $block->height->toNumber();
-        });
+        $cache->setVotesCount((new VoteCountAggregate())->aggregate());
 
-        $cache->setSupply(fn () => Wallet::sum('balance'));
+        $cache->setVotesPercentage((new VotePercentageAggregate())->aggregate());
 
-        $cache->setVolume(fn () => (new TransactionVolumeAggregate())->aggregate());
+        $cache->setDelegateRegistrationCount(Transaction::withScope(DelegateRegistrationScope::class)->count());
 
-        $cache->setTransactionsCount(fn () => (new TransactionCountAggregate())->aggregate());
-
-        $cache->setVotesCount(fn () => (new VoteCountAggregate())->aggregate());
-
-        $cache->setVotesPercentage(fn () => (new VotePercentageAggregate())->aggregate());
-
-        $cache->setDelegateRegistrationCount(fn () => Transaction::withScope(DelegateRegistrationScope::class)->count());
-
-        $cache->setFeesCollected(fn (): string => (new DailyFeeAggregate())->aggregate());
+        $cache->setFeesCollected((new DailyFeeAggregate())->aggregate());
     }
 }

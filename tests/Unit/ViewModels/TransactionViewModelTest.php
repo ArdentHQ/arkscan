@@ -25,7 +25,7 @@ beforeEach(function () {
     $this->block = Block::factory()->create(['height' => 1]);
     Block::factory()->create(['height' => 5000000]);
 
-    (new NetworkCache())->setHeight(fn () => 5000000);
+    (new NetworkCache())->setHeight(5000000);
 
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'block_id'          => $this->block->id,

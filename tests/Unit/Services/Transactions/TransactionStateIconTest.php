@@ -14,7 +14,7 @@ beforeEach(fn () => configureExplorerDatabase());
 it('should determine if the transaction is confirmed', function (int $transactionHeight, int $blockHeight, string $icon) {
     Block::factory()->create(['height' => $blockHeight]);
 
-    (new NetworkCache())->setHeight(fn () => $blockHeight);
+    (new NetworkCache())->setHeight($blockHeight);
 
     $transaction = Transaction::factory()->create([
         'block_id'          => Block::factory()->create(['height' => $transactionHeight])->id,

@@ -15,8 +15,8 @@ it('should render with a height, name, supply and market cap', function () {
 
     Block::factory()->create(['height' => 5651290]);
 
-    (new NetworkCache())->setHeight(fn () => 5651290);
-    (new NetworkCache())->setSupply(fn () => '13628098200000000');
+    (new NetworkCache())->setHeight(5651290);
+    (new NetworkCache())->setSupply('13628098200000000');
     (new CryptoCompareCache())->setPrice('USD', 'USD', fn () => 0.2907);
 
     Livewire::test(NetworkStatusBlock::class)

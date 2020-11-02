@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Cache;
 
 use App\Contracts\Cache as Contract;
-use App\Facades\Network;
-use Carbon\Carbon;
 use Illuminate\Cache\TaggedCache;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 final class NetworkCache implements Contract
@@ -20,9 +17,9 @@ final class NetworkCache implements Contract
         return (int) $this->get('height');
     }
 
-    public function setHeight(\Closure $callback): int
+    public function setHeight(int $value): void
     {
-        return (int) $this->remember('height', Network::blockTime(), $callback);
+        $this->put('height', $value);
     }
 
     public function getSupply(): float
@@ -30,9 +27,9 @@ final class NetworkCache implements Contract
         return (float) $this->get('supply');
     }
 
-    public function setSupply(\Closure $callback): float
+    public function setSupply(string $value): void
     {
-        return (float) $this->remember('supply', Network::blockTime(), $callback);
+        $this->put('supply', $value);
     }
 
     public function getVolume(): float
@@ -40,9 +37,9 @@ final class NetworkCache implements Contract
         return (int) $this->get('volume');
     }
 
-    public function setVolume(\Closure $callback): float
+    public function setVolume(string $value): void
     {
-        return (int) $this->remember('volume', now()->addMinute(), $callback);
+        $this->put('volume', $value);
     }
 
     public function getTransactionsCount(): int
@@ -50,9 +47,9 @@ final class NetworkCache implements Contract
         return (int) $this->get('transactions_count');
     }
 
-    public function setTransactionsCount(\Closure $callback): int
+    public function setTransactionsCount(string $value): void
     {
-        return (int) $this->remember('transactions_count', now()->addMinute(), $callback);
+        $this->put('transactions_count', $value);
     }
 
     public function getVotesCount(): int
@@ -60,9 +57,9 @@ final class NetworkCache implements Contract
         return (int) $this->get('votes_count');
     }
 
-    public function setVotesCount(\Closure $callback): int
+    public function setVotesCount(string $value): void
     {
-        return (int) $this->remember('votes_count', now()->addMinute(), $callback);
+        $this->put('votes_count', $value);
     }
 
     public function getVotesPercentage(): float
@@ -70,9 +67,9 @@ final class NetworkCache implements Contract
         return (float) $this->get('votes_percentage');
     }
 
-    public function setVotesPercentage(\Closure $callback): float
+    public function setVotesPercentage(string $value): void
     {
-        return (float) $this->remember('votes_percentage', now()->addMinute(), $callback);
+        $this->put('votes_percentage', $value);
     }
 
     public function getDelegateRegistrationCount(): int
@@ -80,9 +77,9 @@ final class NetworkCache implements Contract
         return (int) $this->get('delegate_registration_count');
     }
 
-    public function setDelegateRegistrationCount(\Closure $callback): int
+    public function setDelegateRegistrationCount(int $value): void
     {
-        return (int) $this->remember('delegate_registration_count', Network::blockTime(), $callback);
+        $this->put('delegate_registration_count', $value);
     }
 
     public function getFeesCollected(): float
@@ -90,14 +87,9 @@ final class NetworkCache implements Contract
         return (float) $this->get('fees_collected');
     }
 
-    public function setFeesCollected(\Closure $callback): float
+    public function setFeesCollected(string $value): void
     {
-        return (float) $this->remember('fees_collected', Network::blockTime(), $callback);
-    }
-
-    public function setFeesByRange(Carbon $start, Carbon $end, \Closure $closure): Collection
-    {
-        return $this->remember(sprintf('fees_by_range/%s/%s', $start->unix(), $end->unix()), now()->addHour(), $closure);
+        $this->put('fees_collected', $value);
     }
 
     public function getCache(): TaggedCache

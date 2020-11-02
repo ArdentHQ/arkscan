@@ -27,10 +27,10 @@ it('should render the page without any errors', function () {
 
     (new CryptoCompareCache())->setPrices('USD', collect([]));
 
-    (new NetworkCache())->setVolume(fn () => 1e8);
-    (new NetworkCache())->setTransactionsCount(fn () => 1000);
-    (new NetworkCache())->setVotesCount(fn () => 100);
-    (new NetworkCache())->setVotesPercentage(fn () => 10);
+    (new NetworkCache())->setVolume(strval(1e8));
+    (new NetworkCache())->setTransactionsCount('1000');
+    (new NetworkCache())->setVotesCount('100');
+    (new NetworkCache())->setVotesPercentage('10');
 
     $this
         ->get(route('home'))

@@ -12,10 +12,10 @@ use function Tests\configureExplorerDatabase;
 it('should render the component', function () {
     configureExplorerDatabase();
 
-    (new NetworkCache())->setDelegateRegistrationCount(fn () => 1000);
-    (new NetworkCache())->setFeesCollected(fn () => 1000);
-    (new NetworkCache())->setVotesCount(fn () => 1000);
-    (new NetworkCache())->setVotesPercentage(fn () => 1000);
+    (new NetworkCache())->setDelegateRegistrationCount(1000);
+    (new NetworkCache())->setFeesCollected('1000');
+    (new NetworkCache())->setVotesCount('1000');
+    (new NetworkCache())->setVotesPercentage('1000');
 
     Livewire::test(MonitorStatistics::class)
         ->assertSee(trans('pages.monitor.statistics.delegate_registrations'))
