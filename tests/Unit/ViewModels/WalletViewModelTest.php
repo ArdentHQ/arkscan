@@ -207,7 +207,7 @@ it('should get the wallet of the vote', function () {
         ],
     ]));
 
-    (new WalletCache())->setVote($vote->public_key, fn () => $vote);
+    (new WalletCache())->setVote($vote->public_key, $vote);
 
     expect($this->subject->vote())->toBeInstanceOf(WalletViewModel::class);
 });
@@ -265,19 +265,19 @@ it('should fail to get the performance if the wallet has no public key', functio
 });
 
 it('should determine if the delegate just missed a block', function () {
-    (new WalletCache())->setPerformance($this->subject->publicKey(), fn () => [true, false, true, true, true]);
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false, true, true, true]);
 
     expect($this->subject->justMissed())->toBeFalse();
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), fn () => [true, false, true, false, true]);
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false, true, false, true]);
 
     expect($this->subject->justMissed())->toBeFalse();
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), fn () => [true, true, true, true, false]);
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, true, true, true, false]);
 
     expect($this->subject->justMissed())->toBeTrue();
 });
@@ -340,7 +340,7 @@ it('should get the vote weight as percentage', function () {
 
     expect($this->subject->votePercentage())->toBeNull();
 
-    (new WalletCache())->setVote($vote->public_key, fn () => $vote);
+    (new WalletCache())->setVote($vote->public_key, $vote);
 
     expect($this->subject->votePercentage())->toBeFloat();
     expect($this->subject->votePercentage())->toBe(10.0);
@@ -365,7 +365,7 @@ it('should fail to get the productivity if the wallet is a delegate', function (
     expect($this->subject->productivity())->toBeFloat();
     expect($this->subject->productivity())->toBe(0.0);
 
-    (new WalletCache())->setProductivity($this->subject->publicKey(), fn () => 10);
+    (new WalletCache())->setProductivity($this->subject->publicKey(), 10);
 
     expect($this->subject->productivity())->toBeFloat();
     expect($this->subject->productivity())->toBe(10.0);

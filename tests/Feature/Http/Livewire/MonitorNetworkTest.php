@@ -7,7 +7,6 @@ use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
 use function Tests\bip39;
 use function Tests\configureExplorerDatabase;
@@ -29,9 +28,9 @@ it('should render without errors', function () {
             'public_key' => $wallet->public_key,
         ]);
 
-        Cache::tags(['delegates'])->put($wallet->public_key, $wallet);
+        (new WalletCache())->setDelegate($wallet->public_key, $wallet);
 
-        (new WalletCache())->setLastBlock($wallet->public_key, fn () => [
+        (new WalletCache())->setLastBlock($wallet->public_key, [
             'id'     => $block->id,
             'height' => $block->height->toNumber(),
         ]);

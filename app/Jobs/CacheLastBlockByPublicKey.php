@@ -26,20 +26,18 @@ final class CacheLastBlockByPublicKey implements ShouldQueue
 
     public function handle(): void
     {
-        (new WalletCache())->setLastBlock($this->publicKey, function (): array {
-            $block = Block::query()
-                ->without(['delegate'])
-                ->where('generator_public_key', $this->publicKey)
-                ->latestByHeight()
-                ->limit(1)
-                ->firstOrFail();
+        $block = Block::query()
+            ->without(['delegate'])
+            ->where('generator_public_key', $this->publicKey)
+            ->latestByHeight()
+            ->limit(1)
+            ->firstOrFail();
 
-            return [
-                'id'                   => $block->id,
-                'height'               => $block->height->toNumber(),
-                'timestamp'            => Timestamp::fromGenesis($block->timestamp)->unix(),
-                'generator_public_key' => $block->generator_public_key,
-            ];
-        });
+        (new WalletCache())->setLastBlock($this->publicKey, [
+            'id'                   => $block->id,
+            'height'               => $block->height->toNumber(),
+            'timestamp'            => Timestamp::fromGenesis($block->timestamp)->unix(),
+            'generator_public_key' => $block->generator_public_key,
+        ]);
     }
 }

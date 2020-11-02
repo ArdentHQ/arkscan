@@ -40,7 +40,7 @@ final class CacheVotes extends Command
 
         Wallet::whereIn('public_key', $publicKeys)->get()->each(function ($wallet) use ($cache): void {
             if (! is_null($wallet->public_key)) {
-                $cache->setVote($wallet->public_key, fn () => $wallet);
+                $cache->setVote($wallet->public_key, $wallet);
             }
         });
     }

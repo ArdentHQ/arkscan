@@ -28,9 +28,9 @@ final class WalletCache implements Contract
         return $this->get(sprintf('last_block/%s', $publicKey), []);
     }
 
-    public function setLastBlock(string $publicKey, \Closure $callback): array
+    public function setLastBlock(string $publicKey, array $blocks): void
     {
-        return $this->remember(sprintf('last_block/%s', $publicKey), now()->addMinute(), $callback);
+        $this->put(sprintf('last_block/%s', $publicKey), $blocks);
     }
 
     public function getPerformance(string $publicKey): array
@@ -38,9 +38,9 @@ final class WalletCache implements Contract
         return $this->get(sprintf('performance/%s', $publicKey), []);
     }
 
-    public function setPerformance(string $publicKey, \Closure $callback): array
+    public function setPerformance(string $publicKey, array $value): void
     {
-        return $this->remember(sprintf('performance/%s', $publicKey), now()->addHour(), $callback);
+        $this->put(sprintf('performance/%s', $publicKey), $value);
     }
 
     public function getProductivity(string $publicKey): float
@@ -48,9 +48,9 @@ final class WalletCache implements Contract
         return (float) $this->get(sprintf('productivity/%s', $publicKey), 0);
     }
 
-    public function setProductivity(string $publicKey, \Closure $callback): float
+    public function setProductivity(string $publicKey, float $value): void
     {
-        return (float) $this->remember(sprintf('productivity/%s', $publicKey), now()->addMinute(), $callback);
+        $this->put(sprintf('productivity/%s', $publicKey), $value);
     }
 
     public function getResignationId(string $address): ?string
@@ -60,7 +60,7 @@ final class WalletCache implements Contract
 
     public function setResignationId(string $address, \Closure $callback): string
     {
-        return $this->remember(sprintf('resignation_id/%s', $address), now()->addMinute(), $callback);
+        return $this->remember(sprintf('resignation_id/%s', $address), now()->addDay(), $callback);
     }
 
     public function getVote(string $publicKey): ?Wallet
@@ -68,9 +68,9 @@ final class WalletCache implements Contract
         return $this->get(sprintf('vote/%s', $publicKey));
     }
 
-    public function setVote(string $publicKey, \Closure $callback): ?Wallet
+    public function setVote(string $publicKey, Wallet $value): void
     {
-        return $this->remember(sprintf('vote/%s', $publicKey), now()->addMinute(), $callback);
+        $this->put(sprintf('vote/%s', $publicKey), $value);
     }
 
     public function getMultiSignatureAddress(int $min, array $publicKeys): ?string
@@ -78,9 +78,9 @@ final class WalletCache implements Contract
         return $this->get(sprintf('multi_signature/%s/%s', $min, serialize($publicKeys)));
     }
 
-    public function setMultiSignatureAddress(int $min, array $publicKeys, \Closure $callback): string
+    public function setMultiSignatureAddress(int $min, array $publicKeys, \Closure $callback): void
     {
-        return $this->remember(sprintf('multi_signature/%s/%s', $min, serialize($publicKeys)), now()->addHour(), $callback);
+        $this->remember(sprintf('multi_signature/%s/%s', $min, serialize($publicKeys)), now()->addHour(), $callback);
     }
 
     public function getUsernameByAddress(string $address): ?string
@@ -88,9 +88,9 @@ final class WalletCache implements Contract
         return $this->get(sprintf('username_by_address/%s', $address));
     }
 
-    public function setUsernameByAddress(string $address, string $username): string
+    public function setUsernameByAddress(string $address, string $username): void
     {
-        return $this->remember(sprintf('username_by_address/%s', $address), now()->addHour(), fn () => $username);
+        $this->put(sprintf('username_by_address/%s', $address), $username);
     }
 
     public function getUsernameByPublicKey(string $publicKey): ?string
@@ -98,9 +98,19 @@ final class WalletCache implements Contract
         return $this->get(sprintf('username_by_public_key/%s', $publicKey));
     }
 
-    public function setUsernameByPublicKey(string $publicKey, string $username): string
+    public function setUsernameByPublicKey(string $publicKey, string $username): void
     {
-        return $this->remember(sprintf('username_by_public_key/%s', $publicKey), now()->addHour(), fn () => $username);
+        $this->put(sprintf('username_by_public_key/%s', $publicKey), $username);
+    }
+
+    public function getDelegate(string $publicKey): Wallet
+    {
+        return $this->get(sprintf('delegate/%s', $publicKey));
+    }
+
+    public function setDelegate(string $publicKey, Wallet $wallet): void
+    {
+        $this->put(sprintf('delegate/%s', $publicKey), $wallet);
     }
 
     public function getCache(): TaggedCache

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Facades\Wallets;
+use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 
 final class CacheDelegates extends Command
 {
@@ -29,11 +29,11 @@ final class CacheDelegates extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(WalletCache $cache)
     {
-        Wallets::allWithUsername()->chunk(200, function ($wallets): void {
+        Wallets::allWithUsername()->chunk(200, function ($wallets) use ($cache): void {
             foreach ($wallets as $wallet) {
-                Cache::tags(['delegates'])->put($wallet->public_key, $wallet);
+                $cache->setDelegate($wallet->public_key, $wallet);
             }
         });
     }

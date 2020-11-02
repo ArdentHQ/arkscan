@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\DTO;
 
 use App\Facades\Network;
-use App\Models\Block;
 use App\Services\Cache\NetworkCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 final class Slot
@@ -23,11 +23,9 @@ final class Slot
 
     private string $status;
 
-    private int $time;
-
     private int $currentRoundBlocks;
 
-    public function __construct(array $data, array $heightRange)
+    public function __construct(array $data, Collection $roundBlocks)
     {
         foreach ($data as $key => $value) {
             /* @phpstan-ignore-next-line */
@@ -37,10 +35,8 @@ final class Slot
             $this->$key = $value;
         }
 
-        // @TODO: performance
-        $this->currentRoundBlocks = Block::query()
+        $this->currentRoundBlocks = $roundBlocks
             ->where('generator_public_key', $data['publicKey'])
-            ->whereBetween('height', $heightRange)
             ->count();
     }
 

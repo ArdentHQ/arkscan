@@ -26,7 +26,7 @@ it('should make an instance that has all properties', function (string $status) 
         ],
         'status' => $status,
         'time'   => 0,
-    ], [1, 5]);
+    ], Block::whereBetween('height', [1, 5])->get());
 
     expect($subject->order())->toBeInt();
     expect($subject->wallet())->toBeInstanceOf(WalletViewModel::class);
