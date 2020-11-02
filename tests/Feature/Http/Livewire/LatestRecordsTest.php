@@ -5,23 +5,38 @@ declare(strict_types=1);
 use App\Enums\CoreTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Facades\Network;
-use App\Http\Livewire\LatestTransactionsTable;
+use App\Http\Livewire\LatestRecords;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
-
 use Livewire\Livewire;
 use Ramsey\Uuid\Uuid;
 use function Tests\configureExplorerDatabase;
 
 beforeEach(fn () => configureExplorerDatabase());
 
-it('should list the first page of records', function () {
+it('should list the first page of blocks', function () {
+    Block::factory(30)->create();
+
+    $component = Livewire::test(LatestRecords::class);
+
+    foreach (ViewModelFactory::collection(Block::latestByHeight()->take(15)->get()) as $block) {
+        $component->assertSee($block->id());
+        $component->assertSee($block->timestamp());
+        $component->assertSee($block->username());
+        $component->assertSee(NumberFormatter::number($block->height()));
+        $component->assertSee(NumberFormatter::number($block->transactionCount()));
+        $component->assertSee(NumberFormatter::currency($block->amount(), Network::currency()));
+        $component->assertSee(NumberFormatter::currency($block->fee(), Network::currency()));
+    }
+})->skip('Figure out how circumvent wire:loading in tests');
+
+it('should list the first page of transactions', function () {
     Transaction::factory(30)->create();
 
-    $component = Livewire::test(LatestTransactionsTable::class);
+    $component = Livewire::test(LatestRecords::class);
 
     foreach (ViewModelFactory::collection(Transaction::latestByTimestamp()->take(15)->get()) as $transaction) {
         $component->assertSee($transaction->id());
@@ -33,14 +48,14 @@ it('should list the first page of records', function () {
     }
 })->skip('Figure out how circumvent wire:loading in tests');
 
-it('should apply filters', function () {
+it('should apply filters for transactions', function () {
     $block = Block::factory()->create();
     $wallet = Wallet::factory()->create([
         'public_key' => 'public_key',
         'address'    => 'address',
     ]);
 
-    $component = Livewire::test(LatestTransactionsTable::class);
+    $component = Livewire::test(LatestRecords::class);
 
     $notExpected = Transaction::factory(10)->create([
         'id'                => (string) Uuid::uuid4(),
@@ -80,14 +95,14 @@ it('should apply filters', function () {
     }
 })->skip('Figure out how circumvent wire:loading in tests');
 
-it('should apply filters through an event', function () {
+it('should apply filters through an event for transactions', function () {
     $block = Block::factory()->create();
     $wallet = Wallet::factory()->create([
         'public_key' => 'public_key',
         'address'    => 'address',
     ]);
 
-    $component = Livewire::test(LatestTransactionsTable::class);
+    $component = Livewire::test(LatestRecords::class);
 
     $notExpected = Transaction::factory(10)->create([
         'id'                => (string) Uuid::uuid4(),

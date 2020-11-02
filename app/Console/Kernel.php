@@ -13,6 +13,7 @@ use App\Console\Commands\CacheMultiSignatureAddresses;
 use App\Console\Commands\CacheNetworkStatistics;
 use App\Console\Commands\CachePastRoundPerformance;
 use App\Console\Commands\CacheRealTimeStatistics;
+use App\Console\Commands\CacheResignationIds;
 use App\Console\Commands\CacheUsernames;
 use App\Console\Commands\CacheVotes;
 use App\Facades\Network;
@@ -62,6 +63,8 @@ final class Kernel extends ConsoleKernel
         $schedule->command(CachePastRoundPerformance::class)->everyMinute();
 
         $schedule->command(CacheProductivityByPublicKey::class)->everyMinute();
+
+        $schedule->command(CacheResignationIds::class)->everyMinute();
     }
 
     /**

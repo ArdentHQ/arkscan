@@ -18,6 +18,7 @@
         <div
             class="tab-item transition-default"
             :class="{ 'tab-item-current': selected === 'transactions' }"
+            wire:click="$set('state.selected', 'transactions')"
             @click="selected = 'transactions'"
         >
             @lang('pages.home.latest_transactions')
@@ -26,6 +27,7 @@
         <div
             class="tab-item transition-default"
             :class="{ 'tab-item-current': selected === 'blocks' }"
+            wire:click="$set('state.selected', 'blocks')"
             @click="selected = 'blocks'"
         >
             @lang('pages.home.latest_blocks')
@@ -50,22 +52,56 @@
             </x-slot>
 
             <div class="p-4">
-                <a @click="selected = 'transactions'" class="dropdown-entry">
+                <a wire:click="$set('state.selected', 'transactions')" @click="selected = 'transactions'" class="dropdown-entry">
                     @lang('pages.home.latest_transactions')
                 </a>
 
-                <a @click="selected = 'blocks'" class="dropdown-entry">
+                <a wire:click="$set('state.selected', 'blocks')" @click="selected = 'blocks'" class="dropdown-entry">
                     @lang('pages.home.latest_blocks')
                 </a>
             </div>
         </x-ark-dropdown>
     </div>
 
-    <div x-show="selected === 'transactions'">
-        <livewire:latest-transactions-table />
-    </div>
+    @if($state['selected'] === 'blocks')
+        <div id="block-list" class="w-full">
+            @if($blocks->isEmpty())
+                <div wire:poll="pollBlocks">
+                    <x-tables.desktop.skeleton.blocks />
 
-    <div x-show="selected === 'blocks'">
-        <livewire:latest-blocks-table />
-    </div>
+                    <x-tables.mobile.skeleton.blocks />
+                </div>
+            @else
+                <div wire:poll.{{ Network::blockTime() }}s="pollBlocks">
+                    <x-tables.desktop.blocks :blocks="$blocks" />
+
+                    <x-tables.mobile.blocks :blocks="$blocks" />
+
+                    <div class="pt-4 mt-8 border-t border-theme-secondary-300 dark:border-theme-secondary-800 md:mt-0 md:border-dashed">
+                        <a href="{{ route('blocks') }}" class="w-full button-secondary">@lang('actions.view_all')</a>
+                    </div>
+                </div>
+            @endif
+        </div>
+    @else
+        <div id="transaction-list" class="w-full">
+            @if($transactions->isEmpty())
+                <div wire:poll="pollTransactions">
+                    <x-tables.desktop.skeleton.transactions />
+
+                    <x-tables.mobile.skeleton.transactions />
+                </div>
+            @else
+                <div wire:poll.{{ Network::blockTime() }}s="pollTransactions">
+                    <x-tables.desktop.transactions :transactions="$transactions" />
+
+                    <x-tables.mobile.transactions :transactions="$transactions" />
+
+                    <div class="pt-4 mt-8 border-t border-theme-secondary-300 dark:border-theme-secondary-800 md:mt-0 md:border-dashed">
+                        <a href="{{ route('transactions') }}" class="w-full button-secondary">@lang('actions.view_all')</a>
+                    </div>
+                </div>
+            @endif
+        </div>
+    @endif
 </div>
