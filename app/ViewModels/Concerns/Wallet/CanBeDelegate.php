@@ -6,8 +6,8 @@ namespace App\ViewModels\Concerns\Wallet;
 
 use App\Models\Scopes\DelegateResignationScope;
 use App\Models\Transaction;
+use App\Services\Cache\WalletCache;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
 
 trait CanBeDelegate
 {
@@ -22,7 +22,7 @@ trait CanBeDelegate
             return null;
         }
 
-        return Cache::rememberForever('resignationId:'.$this->wallet->address, function () {
+        return (new WalletCache())->setResignationId($this->wallet->address, function () {
             return Transaction::withScope(DelegateResignationScope::class)->firstOrFail()->id;
         });
     }

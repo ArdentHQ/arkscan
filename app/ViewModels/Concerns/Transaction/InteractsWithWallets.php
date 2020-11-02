@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use App\ViewModels\ViewModelFactory;
+use App\Facades\Wallets;
 use App\ViewModels\WalletViewModel;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
 
 trait InteractsWithWallets
 {
@@ -19,11 +17,7 @@ trait InteractsWithWallets
             return null;
         }
 
-        return Cache::remember(
-            "transaction:wallet:{$wallet->address}",
-            Carbon::now()->addHour(),
-            fn () => ViewModelFactory::make($wallet)
-        );
+        return new WalletViewModel(Wallets::findByAddress($wallet->address));
     }
 
     public function recipient(): ?WalletViewModel
@@ -34,10 +28,6 @@ trait InteractsWithWallets
             return $this->sender();
         }
 
-        return Cache::remember(
-            "transaction:wallet:{$wallet->address}",
-            Carbon::now()->addHour(),
-            fn () => ViewModelFactory::make($wallet)
-        );
+        return new WalletViewModel(Wallets::findByAddress($wallet->address));
     }
 }

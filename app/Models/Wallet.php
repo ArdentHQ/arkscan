@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $address
- * @property string $public_key
+ * @property string|null $public_key
  * @property BigNumber $balance
  * @property BigNumber $nonce
  * @property array $attributes

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Contracts\TransactionRepository;
+use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 final class TransactionRepositoryWithCache implements TransactionRepository
 {
@@ -31,5 +33,10 @@ final class TransactionRepositoryWithCache implements TransactionRepository
     public function allByRecipient(string $address): Collection
     {
         return $this->remember(fn () => $this->transactions->allByRecipient($address));
+    }
+
+    private function getCache(): TaggedCache
+    {
+        return Cache::tags('transactions');
     }
 }

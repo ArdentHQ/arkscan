@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
+use App\Facades\Blocks;
+use App\Facades\Wallets;
 use App\Models\Transaction;
-use App\Services\Blockchain\NetworkStatus;
+use App\Services\Cache\NetworkCache;
 use App\Services\ExchangeRate;
 use App\Services\Timestamp;
 use App\Services\Transactions\TransactionDirection;
 use App\Services\Transactions\TransactionState;
 use App\Services\Transactions\TransactionType;
-use Carbon\Carbon;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
 
 final class TransactionViewModel implements ViewModel
 {
@@ -68,11 +68,7 @@ final class TransactionViewModel implements ViewModel
 
     public function nonce(): int
     {
-        $wallet = Cache::remember(
-            "transaction:wallet:{$this->transaction->sender_public_key}",
-            Carbon::now()->addHour(),
-            fn () => $this->transaction->sender
-        );
+        $wallet = Wallets::findByPublicKey($this->transaction->sender_public_key);
 
         return $wallet->nonce->toNumber();
     }
@@ -103,16 +99,12 @@ final class TransactionViewModel implements ViewModel
 
     public function confirmations(): int
     {
-        $block = Cache::remember(
-            "transaction:confirmations:{$this->transaction->block_id}",
-            Carbon::now()->addHour(),
-            fn () => $this->transaction->block
-        );
+        try {
+            $block = Blocks::findById($this->transaction->block_id);
 
-        if (is_null($block)) {
+            return abs(( new NetworkCache())->getHeight() - $block->height->toNumber());
+        } catch (\Throwable $th) {
             return 0;
         }
-
-        return (int) abs(NetworkStatus::height() - $block->height->toNumber());
     }
 }

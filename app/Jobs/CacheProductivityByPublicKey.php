@@ -7,13 +7,13 @@ namespace App\Jobs;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Wallet;
+use App\Services\Cache\WalletCache;
 use App\Services\Timestamp;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Cache;
 use Mattiasgeniar\Percentage\Percentage;
 
 final class CacheProductivityByPublicKey implements ShouldQueue
@@ -29,17 +29,17 @@ final class CacheProductivityByPublicKey implements ShouldQueue
 
     public function handle(): void
     {
-        $delegate  = Wallet::where('public_key', $this->publicKey)->firstOrFail();
+        (new WalletCache())->setProductivity($this->publicKey, function (): float {
+            $delegate = Wallet::where('public_key', $this->publicKey)->firstOrFail();
 
-        $blocksTotal            = (86400 * 30) / Network::blockTime();
-        $blocksDelegateExpected = (int) ceil($blocksTotal / Network::delegateCount());
-        $blocksDelegateActual   = Block::query()
-            ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix())
-            ->where('generator_public_key', $this->publicKey)
-            ->count();
+            $blocksTotal            = (86400 * 30) / Network::blockTime();
+            $blocksDelegateExpected = (int) ceil($blocksTotal / Network::delegateCount());
+            $blocksDelegateActual   = Block::query()
+                ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix())
+                ->where('generator_public_key', $this->publicKey)
+                ->count();
 
-        $productivity = Percentage::calculate($blocksDelegateActual, $blocksDelegateExpected);
-
-        Cache::put('productivity:'.$this->publicKey, $productivity);
+            return Percentage::calculate($blocksDelegateActual, $blocksDelegateExpected);
+        });
     }
 }

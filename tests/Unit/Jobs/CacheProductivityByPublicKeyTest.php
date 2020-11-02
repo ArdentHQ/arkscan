@@ -14,10 +14,10 @@ it('should cache the productivity for the public key', function () {
 
     $block = Block::factory()->create();
 
-    expect(Cache::has('productivity:'.$block->generator_public_key))->toBeFalse();
+    expect(Cache::tags('wallet')->has(md5("productivity/$block->generator_public_key")))->toBeFalse();
 
     (new CacheProductivityByPublicKey($block->generator_public_key))->handle();
 
-    expect(Cache::has('productivity:'.$block->generator_public_key))->toBeTrue();
-    expect(Cache::get('productivity:'.$block->generator_public_key))->toBeFloat();
+    expect(Cache::tags('wallet')->has(md5("productivity/$block->generator_public_key")))->toBeTrue();
+    expect(Cache::tags('wallet')->get(md5("productivity/$block->generator_public_key")))->toBeFloat();
 });

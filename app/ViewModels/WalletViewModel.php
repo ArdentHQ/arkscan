@@ -6,13 +6,14 @@ namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
 use App\Models\Wallet;
-use App\Services\Blockchain\NetworkStatus;
+use App\Services\Cache\NetworkCache;
 use App\Services\ExchangeRate;
 use App\Services\Timestamp;
 use Mattiasgeniar\Percentage\Percentage;
 
 final class WalletViewModel implements ViewModel
 {
+    use Concerns\Wallet\CanBeCold;
     use Concerns\Wallet\CanBeEntity;
     use Concerns\Wallet\CanBeDelegate;
     use Concerns\Wallet\CanForge;
@@ -55,7 +56,7 @@ final class WalletViewModel implements ViewModel
 
     public function balancePercentage(): float
     {
-        return Percentage::calculate($this->wallet->balance->toFloat(), NetworkStatus::supply());
+        return Percentage::calculate($this->wallet->balance->toNumber(), (new NetworkCache())->getSupply());
     }
 
     public function nonce(): int

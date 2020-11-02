@@ -8,21 +8,13 @@ use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
-use Illuminate\Support\Facades\Http;
+use App\Services\Cache\NetworkCache;
 use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
     configureExplorerDatabase();
 
-    Http::fakeSequence()->push([
-        'data' => [
-            'block' => [
-                'height' => 5651290,
-                'id'     => '7454506361e241a5c2c5d930fb059d28e3686a7aedc8058d9aac02f70aefe101',
-            ],
-            'supply' => '13628098200000000',
-        ],
-    ]);
+    (new NetworkCache())->setSupply(fn () => '13628098200000000');
 
     $wallet = Wallet::factory()->create(['balance' => '10000000000000000']);
     $block = Block::factory()->create(['generator_public_key' => $wallet->public_key]);

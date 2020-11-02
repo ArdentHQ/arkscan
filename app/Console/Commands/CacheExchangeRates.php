@@ -1,0 +1,84 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Console\Commands;
+
+use App\Facades\Network;
+use App\Services\Cache\CryptoCompareCache;
+use App\Services\Cache\PriceChartCache;
+use App\Services\CryptoCompare;
+use Carbon\Carbon;
+use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
+
+final class CacheExchangeRates extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'cache:exchange-rates';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command description';
+
+    /**
+     * The currencies that can be looked up.
+     *
+     * @var string[]
+     */
+    protected $currencies = [
+        'AUD',
+        'BRL',
+        'BTC',
+        'CAD',
+        'CHF',
+        'CNY',
+        'ETH',
+        'EUR',
+        'GBP',
+        'JPY',
+        'KRW',
+        'LTC',
+        'NZD',
+        'RUB',
+        'USD',
+    ];
+
+    public function handle(CryptoCompareCache $crypto, PriceChartCache $chart): void
+    {
+        if (! Network::canBeExchanged()) {
+            return;
+        }
+
+        foreach ($this->currencies as $currency) {
+            $prices = (new CryptoCompare())->historical(Network::currency(), $currency);
+
+            $crypto->setPrices($currency, $prices);
+
+            $chart->setDay($currency, $this->groupByDate($prices->take(1), 'H:s'));
+
+            $chart->setWeek($currency, $this->groupByDate($prices->take(7), 'd.m'));
+
+            $chart->setMonth($currency, $this->groupByDate($prices->take(30), 'd.m'));
+
+            $chart->setQuarter($currency, $this->groupByDate($prices->take(120), 'W'));
+
+            $chart->setYear($currency, $this->groupByDate($prices->take(365), 'M'));
+        }
+    }
+
+    private function groupByDate(Collection $datasets, string $dateFormat): Collection
+    {
+        return $datasets
+            ->groupBy(fn ($_, $key) => Carbon::parse($key)->format($dateFormat))
+            ->mapWithKeys(fn ($values, $key) => [$key => $values->first()])
+            ->ksort();
+    }
+}

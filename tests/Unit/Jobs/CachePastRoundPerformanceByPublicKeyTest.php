@@ -15,9 +15,9 @@ it('should cache the past performance for the given public key', function () {
         'generator_public_key' => 'generator',
     ])[0];
 
-    expect(Cache::has('performance:'.$block->generator_public_key))->toBeFalse();
+    expect(Cache::tags('wallet')->has(md5("performance/$block->generator_public_key")))->toBeFalse();
 
     (new CachePastRoundPerformanceByPublicKey(10, $block->generator_public_key))->handle();
 
-    expect(Cache::has('performance:'.$block->generator_public_key))->toBeTrue();
+    expect(Cache::tags('wallet')->has(md5("performance/$block->generator_public_key")))->toBeTrue();
 });

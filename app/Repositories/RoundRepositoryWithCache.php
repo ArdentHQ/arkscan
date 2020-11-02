@@ -6,7 +6,9 @@ namespace App\Repositories;
 
 use App\Contracts\RoundRepository;
 use App\Models\Round;
+use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 final class RoundRepositoryWithCache implements RoundRepository
 {
@@ -27,5 +29,10 @@ final class RoundRepositoryWithCache implements RoundRepository
     public function currentRound(): Round
     {
         return $this->remember(fn () => $this->rounds->currentRound());
+    }
+
+    private function getCache(): TaggedCache
+    {
+        return Cache::tags('rounds');
     }
 }

@@ -12,6 +12,7 @@ use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\Cache\NetworkCache;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
 use ArkEcosystem\Crypto\Identities\Address;
@@ -23,6 +24,8 @@ beforeEach(function () {
 
     $this->block = Block::factory()->create(['height' => 1]);
     Block::factory()->create(['height' => 5000000]);
+
+    (new NetworkCache())->setHeight(fn () => 5000000);
 
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'block_id'          => $this->block->id,

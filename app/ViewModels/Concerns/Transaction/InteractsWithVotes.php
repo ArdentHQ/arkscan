@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use App\Models\Wallet;
+use App\Facades\Wallets;
 use App\ViewModels\WalletViewModel;
-use Carbon\Carbon;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 trait InteractsWithVotes
@@ -23,11 +21,7 @@ trait InteractsWithVotes
             ->filter(fn ($vote) => Str::startsWith($vote, '+'))
             ->first();
 
-        return Cache::remember(
-            "transaction:wallet:{$publicKey}",
-            Carbon::now()->addHour(),
-            fn () => new WalletViewModel(Wallet::where('public_key', substr($publicKey, 1))->firstOrFail())
-        );
+        return new WalletViewModel(Wallets::findByPublicKey(substr($publicKey, 1)));
     }
 
     public function unvoted(): ?WalletViewModel
@@ -40,10 +34,6 @@ trait InteractsWithVotes
             ->filter(fn ($vote) => Str::startsWith($vote, '-'))
             ->first();
 
-        return Cache::remember(
-            "transaction:wallet:{$publicKey}",
-            Carbon::now()->addHour(),
-            fn () => new WalletViewModel(Wallet::where('public_key', substr($publicKey, 1))->firstOrFail())
-        );
+        return new WalletViewModel(Wallets::findByPublicKey(substr($publicKey, 1)));
     }
 }

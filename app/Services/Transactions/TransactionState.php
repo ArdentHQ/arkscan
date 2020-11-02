@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services\Transactions;
 
+use App\Facades\Blocks;
 use App\Facades\Network;
 use App\Models\Transaction;
-use App\Services\Blockchain\NetworkStatus;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
+use App\Services\Cache\NetworkCache;
 
 final class TransactionState
 {
@@ -21,18 +20,14 @@ final class TransactionState
 
     public function isConfirmed(): bool
     {
-        $block = Cache::remember(
-            "block:{$this->transaction->block_id}",
-            Carbon::now()->addMinutes(10),
-            fn () => $this->transaction->block
-        );
+        try {
+            $block = Blocks::findById($this->transaction->block_id);
 
-        if (is_null($block)) {
+            $confirmations = (new NetworkCache())->getHeight() - $block->height->toNumber();
+
+            return $confirmations >= Network::confirmations();
+        } catch (\Throwable $th) {
             return false;
         }
-
-        $confirmations = NetworkStatus::height() - $block->height->toNumber();
-
-        return $confirmations >= Network::confirmations();
     }
 }

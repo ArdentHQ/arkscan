@@ -8,5 +8,13 @@ use App\Models\Block;
 
 interface BlockRepository
 {
-    public function findByHeight(int $height): Block;
+    /**
+     * @param int|string $id
+     */
+    public function findById($id): Block;
+
+    /**
+     * @param int|string $height
+     */
+    public function findByHeight($height): Block;
 }

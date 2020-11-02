@@ -7,6 +7,12 @@ use App\Repositories\BlockRepository;
 
 beforeEach(fn () => $this->subject = new BlockRepository());
 
+it('should find a block by its id', function () {
+    $block = Block::factory()->create();
+
+    expect($this->subject->findById($block->id))->toBeInstanceOf(Block::class);
+});
+
 it('should find a block by its height', function () {
     $block = Block::factory()->create();
 

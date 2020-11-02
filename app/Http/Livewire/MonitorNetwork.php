@@ -9,6 +9,8 @@ use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Jobs\CacheLastBlockByPublicKey;
 use App\Models\Block;
+use App\Services\Cache\MonitorCache;
+use App\Services\Cache\WalletCache;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\Monitor;
 use App\ViewModels\ViewModelFactory;
@@ -42,7 +44,7 @@ final class MonitorNetwork extends Component
                 'order'      => $i + 1,
                 'wallet'     => ViewModelFactory::make(Cache::tags(['delegates'])->get($delegate['publicKey'])),
                 'forging_at' => Carbon::now()->addMilliseconds($delegate['time']),
-                'last_block' => Cache::get('lastBlock:'.$delegate['publicKey']),
+                'last_block' => (new WalletCache())->getLastBlock($delegate['publicKey']),
                 'status'     => $delegate['status'],
             ], $heightRange);
         }
@@ -50,17 +52,17 @@ final class MonitorNetwork extends Component
         return view('livewire.monitor-network', [
             'delegates'  => $delegates,
             'statistics' => [
-                'blockCount'      => $this->blockCount($delegates),
-                'transactions'    => $this->transactions(),
-                'currentDelegate' => $this->currentDelegate($delegates),
-                'nextDelegate'    => $this->nextDelegate($delegates),
+                'blockCount'      => $this->getBlockCount($delegates),
+                'transactions'    => $this->getTransactions(),
+                'currentDelegate' => $this->getCurrentDelegate($delegates),
+                'nextDelegate'    => $this->getNextDelegate($delegates),
             ],
         ]);
     }
 
-    private function blockCount(array $delegates): string
+    public function getBlockCount(array $delegates): string
     {
-        return Cache::remember('MonitorNetwork:blockCount', Network::blockTime(), function () use ($delegates): string {
+        return (new MonitorCache())->setBlockCount(function () use ($delegates): string {
             return trans('pages.monitor.statistics.blocks_generated', [
                 collect($delegates)->filter(fn ($slot) => $slot->status() === 'done')->count(),
                 Network::delegateCount(),
@@ -68,23 +70,23 @@ final class MonitorNetwork extends Component
         });
     }
 
-    private function transactions(): int
+    public function getTransactions(): int
     {
-        return (int) Cache::remember('MonitorNetwork:transactions', Network::blockTime(), function (): int {
+        return (new MonitorCache())->setTransactions(function (): int {
             return (int) Block::whereBetween('height', Monitor::heightRangeByRound(Monitor::roundNumber()))->sum('number_of_transactions');
         });
     }
 
-    private function currentDelegate(array $delegates): WalletViewModel
+    public function getCurrentDelegate(array $delegates): WalletViewModel
     {
-        return Cache::remember('MonitorNetwork:currentDelegate', Network::blockTime(), function () use ($delegates): WalletViewModel {
+        return (new MonitorCache())->setCurrentDelegate(function () use ($delegates): WalletViewModel {
             return $this->getSlotsByStatus($delegates, 'next')->wallet();
         });
     }
 
-    private function nextDelegate(array $delegates): WalletViewModel
+    public function getNextDelegate(array $delegates): WalletViewModel
     {
-        return Cache::remember('MonitorNetwork:nextDelegate', Network::blockTime(), function () use ($delegates): WalletViewModel {
+        return (new MonitorCache())->setNextDelegate(function () use ($delegates): WalletViewModel {
             return $this->getSlotsByStatus($delegates, 'pending')->wallet();
         });
     }

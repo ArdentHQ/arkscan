@@ -9,10 +9,12 @@ use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\Cache\DelegateCache;
+use App\Services\Cache\NetworkCache;
+use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
 use function Tests\fakeKnownWallets;
@@ -57,11 +59,7 @@ it('should get the nonce', function () {
 });
 
 it('should get the balance as percentage from supply', function () {
-    Http::fakeSequence()->push([
-        'data' => [
-            'supply' => '1000000000000',
-        ],
-    ]);
+    (new NetworkCache())->setSupply(fn () => '1000000000000');
 
     expect($this->subject->balancePercentage())->toBeFloat();
     expect($this->subject->balancePercentage())->toBe(10.0);
@@ -74,24 +72,15 @@ it('should get the votes', function () {
 });
 
 it('should get the votes as percentage from supply', function () {
-    Http::fakeSequence()->push([
-        'data' => [
-            'supply' => '1000000000000',
-        ],
-    ]);
+    (new NetworkCache())->setSupply(fn () => '1000000000000');
 
     expect($this->subject->votesPercentage())->toBeFloat();
     expect($this->subject->votesPercentage())->toBe(10.0);
 });
 
 it('should sum up the total forged', function () {
-    Cache::put('delegates.totalFees', [
-        $this->subject->publicKey() => '1000000000',
-    ]);
-
-    Cache::put('delegates.totalRewards', [
-        $this->subject->publicKey() => '1000000000',
-    ]);
+    (new DelegateCache())->setTotalFees(fn () => [$this->subject->publicKey() => '1000000000']);
+    (new DelegateCache())->setTotalRewards(fn () => [$this->subject->publicKey() => '1000000000']);
 
     expect($this->subject->totalForged())->toBeFloat();
 
@@ -99,9 +88,7 @@ it('should sum up the total forged', function () {
 });
 
 it('should sum up the amount forged', function () {
-    Cache::put('delegates.totalAmounts', [
-        $this->subject->publicKey() => '1000000000',
-    ]);
+    (new DelegateCache())->setTotalAmounts(fn () => [$this->subject->publicKey() => '1000000000']);
 
     expect($this->subject->amountForged())->toBeInt();
 
@@ -109,9 +96,7 @@ it('should sum up the amount forged', function () {
 });
 
 it('should sum up the fees forged', function () {
-    Cache::put('delegates.totalFees', [
-        $this->subject->publicKey() => '800000000',
-    ]);
+    (new DelegateCache())->setTotalFees(fn () => [$this->subject->publicKey() => '800000000']);
 
     expect($this->subject->feesForged())->toBeInt();
 
@@ -119,9 +104,7 @@ it('should sum up the fees forged', function () {
 });
 
 it('should sum up the rewards forged', function () {
-    Cache::put('delegates.totalRewards', [
-        $this->subject->publicKey() => '200000000',
-    ]);
+    (new DelegateCache())->setTotalRewards(fn () => [$this->subject->publicKey() => '200000000']);
 
     expect($this->subject->rewardsForged())->toBeInt();
 
@@ -224,9 +207,17 @@ it('should get the wallet of the vote', function () {
         ],
     ]));
 
-    Cache::put('votes.'.$vote->public_key, $vote);
+    (new WalletCache())->setVote($vote->public_key, fn () => $vote);
 
     expect($this->subject->vote())->toBeInstanceOf(WalletViewModel::class);
+});
+
+it('should fail to get the wallet of the vote if the wallet has no public key', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'public_key' => null,
+    ]));
+
+    expect($this->subject->vote())->toBeNull();
 });
 
 it('should fail to get the wallet of the vote if it is not cached', function () {
@@ -265,26 +256,38 @@ it('should fail to get the performance if the wallet is not a delegate', functio
     expect($this->subject->performance())->toBeEmpty();
 });
 
+it('should fail to get the performance if the wallet has no public key', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'public_key' => null,
+    ]));
+
+    expect($this->subject->performance())->toBeEmpty();
+});
+
 it('should determine if the delegate just missed a block', function () {
-    Cache::put('performance:'.$this->subject->publicKey(), [true, false, true, true, true]);
+    (new WalletCache())->setPerformance($this->subject->publicKey(), fn () => [true, false, true, true, true]);
 
     expect($this->subject->justMissed())->toBeFalse();
 
-    Cache::put('performance:'.$this->subject->publicKey(), [true, false, true, false, true]);
+    Cache::flush();
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), fn () => [true, false, true, false, true]);
 
     expect($this->subject->justMissed())->toBeFalse();
 
-    Cache::put('performance:'.$this->subject->publicKey(), [true, true, true, true, false]);
+    Cache::flush();
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), fn () => [true, true, true, true, false]);
 
     expect($this->subject->justMissed())->toBeTrue();
 });
 
 it('should determine if the delegate keeps is missing blocks', function () {
-    Cache::put('performance:'.$this->subject->publicKey(), [true, false, true, true, true]);
+    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [true, false, true, true, true]);
 
     expect($this->subject->isMissing())->toBeFalse();
 
-    Cache::put('performance:'.$this->subject->publicKey(), [true, false, true, false, true]);
+    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [true, false, true, false, true]);
 
     expect($this->subject->isMissing())->toBeTrue();
 });
@@ -337,10 +340,18 @@ it('should get the vote weight as percentage', function () {
 
     expect($this->subject->votePercentage())->toBeNull();
 
-    Cache::put('votes.'.$vote->public_key, $vote);
+    (new WalletCache())->setVote($vote->public_key, fn () => $vote);
 
     expect($this->subject->votePercentage())->toBeFloat();
     expect($this->subject->votePercentage())->toBe(10.0);
+});
+
+it('should fail to get the vote weight as percentage if the wallet has no public key', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'public_key' => null,
+    ]));
+
+    expect($this->subject->votePercentage())->toBeNull();
 });
 
 it('should fail to get the productivity if the wallet is a delegate', function () {
@@ -354,7 +365,7 @@ it('should fail to get the productivity if the wallet is a delegate', function (
     expect($this->subject->productivity())->toBeFloat();
     expect($this->subject->productivity())->toBe(0.0);
 
-    Cache::put('productivity:'.$this->subject->publicKey(), 10);
+    (new WalletCache())->setProductivity($this->subject->publicKey(), fn () => 10);
 
     expect($this->subject->productivity())->toBeFloat();
     expect($this->subject->productivity())->toBe(10.0);
@@ -367,4 +378,23 @@ it('should fail to get the productivity if the wallet is not a delegate', functi
 
     expect($this->subject->productivity())->toBeFloat();
     expect($this->subject->productivity())->toBe(0.0);
+});
+
+it('should fail to get the productivity if the wallet has no public key', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'public_key' => null,
+    ]));
+
+    expect($this->subject->productivity())->toBeFloat();
+    expect($this->subject->productivity())->toBe(0.0);
+});
+
+it('should determine if the wallet is cold', function () {
+    expect($this->subject->isCold())->toBeFalse();
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'public_key' => null,
+    ]));
+
+    expect($this->subject->isCold())->toBeTrue();
 });

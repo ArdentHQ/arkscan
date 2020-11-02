@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repositories\Concerns;
 
 use Closure;
-use Illuminate\Support\Facades\Cache;
 
 trait ManagesCache
 {
@@ -14,7 +13,7 @@ trait ManagesCache
      */
     private function remember(Closure $callback, int $seconds = 60)
     {
-        return Cache::remember($this->cacheKey(), $seconds, $callback);
+        return $this->getCache()->remember($this->cacheKey(), $seconds, $callback);
     }
 
     private function cacheKey(): string

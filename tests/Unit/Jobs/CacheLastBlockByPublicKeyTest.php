@@ -13,9 +13,9 @@ it('should cache the last block forged by the public key', function () {
 
     $block = Block::factory()->create();
 
-    expect(Cache::has('lastBlock:'.$block->generator_public_key))->toBeFalse();
+    expect(Cache::tags('wallet')->has(md5("last_block/$block->generator_public_key")))->toBeFalse();
 
     (new CacheLastBlockByPublicKey($block->generator_public_key))->handle();
 
-    expect(Cache::has('lastBlock:'.$block->generator_public_key))->toBeTrue();
+    expect(Cache::tags('wallet')->has(md5("last_block/$block->generator_public_key")))->toBeTrue();
 });

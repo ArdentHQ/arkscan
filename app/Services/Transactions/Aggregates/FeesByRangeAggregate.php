@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services\Transactions\Aggregates;
 
+use App\Services\Cache\NetworkCache;
 use App\Services\Timestamp;
 use App\Services\Transactions\Aggregates\Concerns\HasQueries;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 
 final class FeesByRangeAggregate
 {
@@ -16,9 +16,7 @@ final class FeesByRangeAggregate
 
     public function aggregate(Carbon $start, Carbon $end, string $format): Collection
     {
-        $cacheKey = sprintf('fees-by-range:%s:%s', $start->unix(), $end->unix());
-
-        return Cache::remember($cacheKey, 3600, function () use ($start, $end, $format) {
+        return (new NetworkCache())->setFeesByRange($start, $end, function () use ($start, $end, $format) {
             return $this
                 ->dateRangeQuery($start, $end)
                 ->orderBy('timestamp')

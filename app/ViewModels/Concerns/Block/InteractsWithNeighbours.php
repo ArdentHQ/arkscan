@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Block;
 
-use App\Models\Block;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
+use App\Facades\Blocks;
 
 trait InteractsWithNeighbours
 {
@@ -22,16 +20,10 @@ trait InteractsWithNeighbours
 
     private function findBlockWithHeight(int $height): ?string
     {
-        $block = Cache::remember(
-            "block:neighbour:$height",
-            Carbon::now()->addHour(),
-            fn () => Block::where('height', $height)->first()
-        );
-
-        if (is_null($block)) {
+        try {
+            return route('block', Blocks::findByHeight($height));
+        } catch (\Throwable $th) {
             return null;
         }
-
-        return route('block', $block);
     }
 }
