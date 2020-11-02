@@ -1,34 +1,21 @@
-<div class="hidden w-full table-container md:block">
-    <table>
-        <thead>
-            <tr>
-                <th width="60">@lang('general.delegates.rank')</th>
-                <th><span class="pl-14">@lang('general.delegates.name')</span></th>
-                <th width="250" class="hidden text-right lg:table-cell">@lang('general.delegates.votes')</th>
-            </tr>
-        </thead>
-        <tbody>
-            <x-skeleton>
-                <tr>
-                    <td>
-                        <x-tables.rows.desktop.skeleton.rank />
-                    </td>
-                    <td>
-                        <x-tables.rows.desktop.skeleton.username />
-                    </td>
-                    <td class="hidden text-right lg:table-cell">
-                        <x-tables.rows.desktop.skeleton.votes />
-                    </td>
-                    @if (Network::usesMarketSquare())
-                    <td>
-                        <x-tables.rows.desktop.skeleton.marketsquare-profile />
-                    </td>
-                    <td>
-                        <x-tables.rows.desktop.skeleton.marketsquare-commission />
-                    </td>
-                    @endif
-                </tr>
-            </x-skeleton>
-        </tbody>
-    </table>
-</div>
+@if (Network::usesMarketSquare())
+    <x-table-skeleton
+        device="desktop"
+        :items="[
+            'general.delegates.rank'       => 'text',
+            'general.delegates.name'       => 'adress',
+            'general.delegates.votes'      => 'number',
+            'general.delegates.profile'    => 'text',
+            'general.delegates.commission' => 'text'
+        ]"
+    />
+@else
+    <x-table-skeleton
+        device="desktop"
+        :items="[
+            'general.delegates.rank'  => 'text',
+            'general.delegates.name'  => 'address',
+            'general.delegates.votes' => 'number'
+        ]"
+    />
+@endif

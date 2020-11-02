@@ -1,5 +1,7 @@
-<div>
-    @lang('labels.marketsquare_profile')
+@if (Network::usesMarketSquare())
+    <div>
+        @lang('labels.marketsquare_profile')
 
-    {{-- @TODO: MSQ Profile --}}
-</div>
+        {{-- @TODO: MSQ Profile --}}
+    </div>
+@endif

@@ -1,1 +1,3 @@
-{{-- @TODO --}}
+@if (Network::usesMarketSquare())
+    {{-- @TODO --}}
+@endif
