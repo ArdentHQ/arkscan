@@ -4,7 +4,7 @@
             class="tab-item transition-default"
             :class="{ 'tab-item-current': status === 'active' }"
             wire:click="$emit('filterByDelegateStatus', 'active');"
-            @click="status = 'active'"
+            @click="component = 'list'; status = 'active'"
         >
             <span>@lang('pages.monitor.active')</span>
 
@@ -17,7 +17,7 @@
             class="tab-item transition-default"
             :class="{ 'tab-item-current': status === 'standby' }"
             wire:click="$emit('filterByDelegateStatus', 'standby');"
-            @click="status = 'standby'"
+            @click="component = 'list'; status = 'standby'"
         >
             <span>@lang('pages.monitor.standby')</span>
 
@@ -28,7 +28,7 @@
             class="tab-item transition-default"
             :class="{ 'tab-item-current': status === 'resigned' }"
             wire:click="$emit('filterByDelegateStatus', 'resigned');"
-            @click="status = 'resigned'"
+            @click="component = 'list'; status = 'resigned'"
         >
             <span>@lang('pages.monitor.resigned')</span>
 
@@ -41,6 +41,7 @@
         <div
             class="tab-item transition-default"
             :class="{ 'tab-item-current': component === 'monitor' }"
+            wire:click="$emit('togglePolling')"
             @click="component === 'monitor' ? component = 'list' : component = 'monitor'"
         >
             @lang('pages.monitor.title')
@@ -66,7 +67,7 @@
         </x-slot>
 
         <div class="p-4">
-            <a wire:click="$emit('filterByDelegateStatus', 'active');" @click="status = 'active'" class="dropdown-entry">
+            <a wire:click="$emit('filterByDelegateStatus', 'active');" @click="component = 'list'; status = 'active'" class="dropdown-entry">
                 <span>@lang('pages.monitor.active')</span>
 
                 @if ($countActive)
@@ -74,13 +75,13 @@
                 @endif
             </a>
 
-            <a wire:click="$emit('filterByDelegateStatus', 'standby');" @click="status = 'standby'" class="dropdown-entry">
+            <a wire:click="$emit('filterByDelegateStatus', 'standby');" @click="component = 'list'; status = 'standby'" class="dropdown-entry">
                 <span>@lang('pages.monitor.standby')</span>
 
                 <span class="info-badge">{{ $countStandby }}</span>
             </a>
 
-            <a wire:click="$emit('filterByDelegateStatus', 'resigned');" @click="status = 'resigned'" class="dropdown-entry">
+            <a wire:click="$emit('filterByDelegateStatus', 'resigned');" @click="component = 'list'; status = 'resigned'" class="dropdown-entry">
                 <span>@lang('pages.monitor.resigned')</span>
 
                 <span class="info-badge">{{ $countResigned }}</span>

@@ -22,8 +22,30 @@ use Livewire\Component;
 
 final class MonitorNetwork extends Component
 {
+    public array $state = ['canPoll' => false];
+
+    /** @phpstan-ignore-next-line */
+    protected $listeners = [
+        'togglePolling',
+        'filterByDelegateStatus' => 'disablePolling',
+    ];
+
+    public function togglePolling(): void
+    {
+        $this->state['canPoll'] = ! $this->state['canPoll'];
+    }
+
+    public function disablePolling(): void
+    {
+        $this->state['canPoll'] = false;
+    }
+
     public function render(): View
     {
+        if ($this->state['canPoll'] === false) {
+            return view('livewire.monitor-network');
+        }
+
         // $tracking = DelegateTracker::execute(Monitor::roundDelegates(112168));
 
         $roundNumber = Rounds::currentRound()->round;
