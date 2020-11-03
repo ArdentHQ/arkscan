@@ -21,6 +21,7 @@ final class TransactionViewModel implements ViewModel
     use Concerns\Transaction\HasIcons;
     use Concerns\Transaction\HasState;
     use Concerns\Transaction\HasType;
+    use Concerns\Transaction\InteractsWithDelegateRegistration;
     use Concerns\Transaction\InteractsWithEntities;
     use Concerns\Transaction\InteractsWithMultiPayment;
     use Concerns\Transaction\InteractsWithMultiSignature;

@@ -69,6 +69,7 @@ return [
         'name'                    => 'Name',
         'category'                => 'Category',
         'ipfs_hash'               => 'IPFS Hash',
+        'delegate_username'       => 'Delegate Name',
         // Type Labels (Different than in other places :facepalm:)
         'business-entity-registration'    => 'Registration (Business)',
         'business-entity-resignation'     => 'Resignation (Business)',

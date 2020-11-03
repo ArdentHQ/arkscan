@@ -1369,3 +1369,22 @@ it('should get the entity hash', function () {
 
     expect($subject->entityHash())->toBe('ipfs');
 });
+
+it('should get the username if the transaction is not a delegate registration', function () {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'asset'      => ['delegate' => ['username' => 'john']],
+    ]));
+
+    expect($subject->delegateUsername())->toBe('john');
+});
+
+it('should fail to get the username if the transaction is not a delegate registration', function () {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::TRANSFER,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+    ]));
+
+    expect($subject->delegateUsername())->toBeNull();
+});
