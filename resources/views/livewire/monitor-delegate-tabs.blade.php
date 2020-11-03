@@ -41,7 +41,6 @@
         <div
             class="tab-item transition-default"
             :class="{ 'tab-item-current': component === 'monitor' }"
-            wire:click="$emit('togglePolling')"
             @click="component === 'monitor' ? component = 'list' : component = 'monitor'"
         >
             @lang('pages.monitor.title')

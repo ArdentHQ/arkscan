@@ -22,30 +22,20 @@ use Livewire\Component;
 
 final class MonitorNetwork extends Component
 {
-    public array $state = ['canPoll' => false];
+    private array $delegates = [];
 
-    /** @phpstan-ignore-next-line */
-    protected $listeners = [
-        'togglePolling',
-        'filterByDelegateStatus' => 'disablePolling',
-    ];
-
-    public function togglePolling(): void
-    {
-        $this->state['canPoll'] = ! $this->state['canPoll'];
-    }
-
-    public function disablePolling(): void
-    {
-        $this->state['canPoll'] = false;
-    }
+    private array $statistics = [];
 
     public function render(): View
     {
-        if ($this->state['canPoll'] === false) {
-            return view('livewire.monitor-network');
-        }
+        return view('livewire.monitor-network', [
+            'delegates'  => $this->delegates,
+            'statistics' => $this->statistics,
+        ]);
+    }
 
+    public function pollDelegates(): void
+    {
         // $tracking = DelegateTracker::execute(Monitor::roundDelegates(112168));
 
         $roundNumber = Rounds::currentRound()->round;
@@ -68,22 +58,21 @@ final class MonitorNetwork extends Component
             ], $roundBlocks);
         }
 
-        return view('livewire.monitor-network', [
-            'delegates'  => $delegates,
-            'statistics' => [
-                'blockCount'      => $this->getBlockCount($delegates),
-                'transactions'    => $this->getTransactions(),
-                'currentDelegate' => $this->getCurrentDelegate($delegates),
-                'nextDelegate'    => $this->getNextDelegate($delegates),
-            ],
-        ]);
+        $this->delegates = $delegates;
+
+        $this->statistics = [
+            'blockCount'      => $this->getBlockCount(),
+            'transactions'    => $this->getTransactions(),
+            'currentDelegate' => $this->getCurrentDelegate(),
+            'nextDelegate'    => $this->getNextDelegate(),
+        ];
     }
 
-    private function getBlockCount(array $delegates): string
+    private function getBlockCount(): string
     {
-        return (new MonitorCache())->setBlockCount(function () use ($delegates): string {
+        return (new MonitorCache())->setBlockCount(function (): string {
             return trans('pages.monitor.statistics.blocks_generated', [
-                collect($delegates)->filter(fn ($slot) => $slot->status() === 'done')->count(),
+                collect($this->delegates)->filter(fn ($slot) => $slot->status() === 'done')->count(),
                 Network::delegateCount(),
             ]);
         });
@@ -96,17 +85,17 @@ final class MonitorNetwork extends Component
         });
     }
 
-    private function getCurrentDelegate(array $delegates): WalletViewModel
+    private function getCurrentDelegate(): WalletViewModel
     {
-        return (new MonitorCache())->setCurrentDelegate(function () use ($delegates): WalletViewModel {
-            return $this->getSlotsByStatus($delegates, 'next')->wallet();
+        return (new MonitorCache())->setCurrentDelegate(function (): WalletViewModel {
+            return $this->getSlotsByStatus($this->delegates, 'next')->wallet();
         });
     }
 
-    private function getNextDelegate(array $delegates): WalletViewModel
+    private function getNextDelegate(): WalletViewModel
     {
-        return (new MonitorCache())->setNextDelegate(function () use ($delegates): WalletViewModel {
-            return $this->getSlotsByStatus($delegates, 'pending')->wallet();
+        return (new MonitorCache())->setNextDelegate(function (): WalletViewModel {
+            return $this->getSlotsByStatus($this->delegates, 'pending')->wallet();
         });
     }
 

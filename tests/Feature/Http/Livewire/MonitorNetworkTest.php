@@ -42,27 +42,5 @@ it('should render without errors', function () {
     createRoundWithDelegates();
 
     $component = Livewire::test(MonitorNetwork::class);
-    $component->set('state.canPoll', true);
-});
-
-it('should toggle the polling state', function () {
-    createRoundWithDelegates();
-
-    $component = Livewire::test(MonitorNetwork::class);
-    $component->assertSet('state.canPoll', false);
-    $component->emit('togglePolling');
-    $component->assertSet('state.canPoll', true);
-    $component->emit('togglePolling');
-    $component->assertSet('state.canPoll', false);
-});
-
-it('should disable the polling state', function () {
-    createRoundWithDelegates();
-
-    $component = Livewire::test(MonitorNetwork::class);
-    $component->assertSet('state.canPoll', false);
-    $component->emit('togglePolling');
-    $component->assertSet('state.canPoll', true);
-    $component->emit('filterByDelegateStatus');
-    $component->assertSet('state.canPoll', false);
+    $component->call('pollDelegates');
 });
