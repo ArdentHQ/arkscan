@@ -139,3 +139,4 @@ jobs:
                   DB_DATABASE: explorer
                   DB_USERNAME: explorer
                   DB_PASSWORD: password
+                  PDO_ATTR_PERSISTENT: false

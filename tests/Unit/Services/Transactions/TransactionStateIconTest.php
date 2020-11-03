@@ -17,7 +17,7 @@ it('should determine if the transaction is confirmed', function (int $transactio
     (new NetworkCache())->setHeight($blockHeight);
 
     $transaction = Transaction::factory()->create([
-        'block_id'          => Block::factory()->create(['height' => $transactionHeight])->id,
+        'block_height'      => $blockHeight,
         'sender_public_key' => Wallet::factory()->create(['address' => 'sender'])->public_key,
         'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]);

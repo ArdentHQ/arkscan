@@ -113,6 +113,16 @@ final class WalletCache implements Contract
         $this->put(sprintf('delegate/%s', $publicKey), $wallet);
     }
 
+    public function getVoterCount(string $publicKey): int
+    {
+        return (int) $this->get(sprintf('voter_count/%s', $publicKey), 0);
+    }
+
+    public function setVoterCount(string $publicKey, int $count): void
+    {
+        $this->put(sprintf('voter_count/%s', $publicKey), $count);
+    }
+
     public function getCache(): TaggedCache
     {
         return Cache::tags('wallet');

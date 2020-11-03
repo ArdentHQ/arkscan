@@ -15,6 +15,7 @@ use App\Console\Commands\CachePastRoundPerformance;
 use App\Console\Commands\CacheRealTimeStatistics;
 use App\Console\Commands\CacheResignationIds;
 use App\Console\Commands\CacheUsernames;
+use App\Console\Commands\CacheVoterCount;
 use App\Console\Commands\CacheVotes;
 use App\Facades\Network;
 use App\Jobs\CacheProductivityByPublicKey;
@@ -45,6 +46,8 @@ final class Kernel extends ConsoleKernel
         $schedule->command(CacheExchangeRates::class)->everyThirtyMinutes();
 
         $schedule->command(CacheDelegates::class)->everyTenMinutes();
+
+        $schedule->command(CacheVoterCount::class)->everyTenMinutes();
 
         $schedule->command(CacheDelegateAggregates::class)->everyFiveMinutes();
 
