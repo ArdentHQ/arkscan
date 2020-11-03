@@ -27,12 +27,12 @@ final class SearchPage extends Component
     public function mount(): void
     {
         $this->restoreState(request('state', []));
+
+        $this->performSearch();
     }
 
     public function render(): View
     {
-        $this->performSearch();
-
         return view('livewire.search-page', [
             'results' => $this->results,
         ]);
