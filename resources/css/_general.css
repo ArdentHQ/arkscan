@@ -249,18 +249,24 @@ body {
     }
 }
 
-@screen xl {
-    .detail-box {
-        @apply border-r items-center pr-6 border-theme-secondary-300;
-    }
-
-    .theme-dark .detail-box {
-        @apply border-theme-secondary-800;
+@screen md {
+    .delegate-details > .detail-box:nth-child(2n + 1) {
+        @apply border-r pr-6 border-theme-secondary-300;
     }
 }
 
-.detail-box:last-of-type {
-    @apply border-none;
+@screen lg {
+    .delegate-details > .detail-box:not(:last-child) {
+        @apply border-r pr-6 border-theme-secondary-300;
+    }
+}
+
+.theme-dark .delegate-details > .detail-box {
+    @apply border-theme-secondary-800;
+}
+
+.detail-box {
+    @apply items-center;
 }
 
 /* Entity Header Item */

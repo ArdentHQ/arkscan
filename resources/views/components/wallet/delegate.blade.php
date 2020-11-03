@@ -1,11 +1,10 @@
 <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
-    <div class="flex-wrap py-16 space-x-4 content-container md:px-8">
+    <div class="flex-wrap py-16 content-container md:px-8">
         <div class="w-full mb-8">
             <h2 class="text-xl sm:text-2xl">@lang('pages.wallet.delegate.title', [$wallet->username()])</h2>
         </div>
-
-        <div class="flex flex-wrap w-full divide-theme-secondary-300 dark:divide-theme-secondary-800">
-            <div class="grid w-full grid-flow-row grid-cols-1 gap-6 pt-8 pb-8 mb-8 border-b border-dashed border-theme-secondary-300 dark:border-theme-secondary-800 md:grid-cols-2 lg:grid-cols-4 gap-y-12 md:gap-y-4">
+        <div class="flex flex-wrap w-full sm:flex-no-wrap sm:flex-row md:flex-wrap sm:justify-between sm:divide-x md:divide-x-0 divide-theme-secondary-300 dark:divide-theme-secondary-800">
+            <div class="grid w-full grid-flow-row grid-cols-1 gap-6 pb-8 mb-8 border-b border-dashed sm:pt-8 sm:pt-0 md:pt-8 sm:pb-0 md:pb-8 sm:mb-0 md:mb-8 sm:border-b-0 md:border-b border-theme-secondary-300 dark:border-theme-secondary-800 md:grid-cols-2 lg:grid-cols-4 gap-y-10 delegate-details">
                 <x-details-box :title="trans('pages.wallet.delegate.rank')" icon="app-rank" icon-wrapper-class="bg-theme-danger-100 dark:bg-theme-danger-400" icon-text-class="text-theme-danger-400 dark:text-theme-secondary-200">
                     @if ($wallet->rank() > Network::delegateCount())
                         <x-number>{{ $wallet->rank() }}</x-number>
@@ -39,7 +38,7 @@
                 </x-details-box>
             </div>
 
-            <div class="grid w-full grid-flow-row grid-cols-1 gap-6 pb-8 border-b border-dashed md:grid-cols-2 lg:grid-cols-4 gap-y-12 md:gap-y-4 border-theme-secondary-300 dark:border-theme-secondary-800">
+            <div class="grid w-full grid-flow-row grid-cols-1 gap-6 pb-8 border-b border-dashed gap-y-10 sm:pb-0 md:pb-8 sm:border-b-0 md:border-b md:grid-cols-2 lg:grid-cols-4  border-theme-secondary-300 dark:border-theme-secondary-800 delegate-details sm:pl-8 md:pl-0">
                 <x-details-box :title="trans('pages.wallet.delegate.forged_total')" icon="app-forged" shallow>
                     <x-currency>{{ $wallet->totalForged() }}</x-currency>
                 </x-details-box>
