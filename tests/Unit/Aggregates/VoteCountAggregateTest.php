@@ -3,17 +3,15 @@
 declare(strict_types=1);
 
 use App\Aggregates\VoteCountAggregate;
-use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\TransactionTypeGroupEnum;
-use App\Models\Transaction;
+use App\Models\Wallet;
 use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
     configureExplorerDatabase();
 
-    Transaction::factory(10)->create([
-        'type'       => CoreTransactionTypeEnum::VOTE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
+    Wallet::factory(10)->create([
+        'balance'    => 1e8,
+        'attributes' => ['vote' => 'pubkey'],
     ]);
 
     $this->subject = new VoteCountAggregate();

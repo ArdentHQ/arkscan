@@ -45,7 +45,7 @@
             </x-details-box>
 
             <x-details-box :title="trans('pages.home.network-details.total_votes')" icon="app-votes">
-                <x-number>{{ $aggregates['votesCount'] }}</x-number>
+                <x-currency>{{ $aggregates['votesCount'] }}</x-currency>
                 <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
                     <x-percentage>{{ $aggregates['votesPercentage'] }}</x-percentage>
                 </span>
