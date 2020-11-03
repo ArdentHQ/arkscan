@@ -13,6 +13,12 @@ final class VotePercentageAggregate implements Aggregate
 {
     public function aggregate(): string
     {
-        return (string) Percentage::calculate((float) Wallet::where('balance', '>', 0)->sum('balance'), (new NetworkCache())->getSupply());
+        return (string) Percentage::calculate(
+            (float) Wallet::query()
+                ->where('balance', '>', 0)
+                ->whereNotNull('attributes->vote')
+                ->sum('balance'),
+            (new NetworkCache())->getSupply()
+        );
     }
 }
