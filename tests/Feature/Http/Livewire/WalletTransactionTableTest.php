@@ -34,7 +34,7 @@ it('should list all transactions', function () {
         'recipient_id' => $this->subject->address,
     ]);
 
-    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, $this->subject->public_key]);
+    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, false, $this->subject->public_key]);
     $component->set('state.direction', 'all');
 
     foreach (ViewModelFactory::collection(collect([$sent, $received])) as $transaction) {
@@ -47,6 +47,23 @@ it('should list all transactions', function () {
     }
 });
 
+it('should list all transactions for cold wallet', function () {
+    $received = Transaction::factory()->create([
+        'recipient_id' => $this->subject->address,
+    ]);
+
+    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, true, null]);
+    $component->set('state.direction', 'all');
+
+    $transaction = ViewModelFactory::make($received);
+    $component->assertSee($transaction->id());
+    $component->assertSee($transaction->timestamp());
+    $component->assertSee($transaction->sender()->address());
+    $component->assertSee($transaction->recipient()->address());
+    $component->assertSee(NumberFormatter::currency($transaction->fee(), Network::currency()));
+    $component->assertSee(NumberFormatter::currency($transaction->amount(), Network::currency()));
+});
+
 it('should list received transactions (non-multi)', function () {
     $sent = Transaction::factory()->create([
         'sender_public_key' => $this->subject->public_key,
@@ -56,7 +73,7 @@ it('should list received transactions (non-multi)', function () {
         'recipient_id' => $this->subject->address,
     ]);
 
-    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, $this->subject->public_key]);
+    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, false, $this->subject->public_key]);
     $component->set('state.direction', 'received');
 
     foreach (ViewModelFactory::collection(collect([$received])) as $transaction) {
@@ -89,7 +106,7 @@ it('should list received transactions (multi)', function () {
         ],
     ]);
 
-    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, $this->subject->public_key]);
+    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, false, $this->subject->public_key]);
     $component->set('state.direction', 'received');
 
     foreach (ViewModelFactory::collection(collect([$received])) as $transaction) {
@@ -115,7 +132,7 @@ it('should list sent transactions', function () {
         'recipient_id' => $this->subject->address,
     ]);
 
-    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, $this->subject->public_key]);
+    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, false, $this->subject->public_key]);
     $component->set('state.direction', 'sent');
 
     foreach (ViewModelFactory::collection(collect([$sent])) as $transaction) {
@@ -135,7 +152,7 @@ it('should list sent transactions', function () {
 it('should apply filters', function () {
     $block = Block::factory()->create();
 
-    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, $this->subject->public_key]);
+    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, false, $this->subject->public_key]);
 
     $notExpected = Transaction::factory(10)->create([
         'id'                => (string) Uuid::uuid4(),
@@ -179,7 +196,7 @@ it('should apply filters', function () {
 it('should apply filters through an event', function () {
     $block = Block::factory()->create();
 
-    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, $this->subject->public_key]);
+    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, false, $this->subject->public_key]);
 
     $notExpected = Transaction::factory(10)->create([
         'id'                => (string) Uuid::uuid4(),
@@ -230,7 +247,7 @@ it('should apply directions through an event', function () {
         'recipient_id'      => $this->subject->address,
     ]);
 
-    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, $this->subject->public_key]);
+    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, false, $this->subject->public_key]);
 
     $component->emit('filterTransactionsByDirection', 'all');
 

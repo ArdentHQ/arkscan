@@ -14,7 +14,11 @@
                 </div>
             </div>
 
-            <livewire:wallet-transaction-table :address="$wallet->address()" :public-key="$wallet->publicKey()" />
+            <livewire:wallet-transaction-table
+                :address="$wallet->address()"
+                :public-key="$wallet->publicKey()"
+                :is-cold="$wallet->isCold()"
+            />
         </div>
     </div>
 </div>

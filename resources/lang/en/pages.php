@@ -121,6 +121,7 @@ return [
         'amount'                => 'Amount',
         'smartbridge'           => 'Smartbridge',
         'vote_rank'             => '#:0',
+        'no_results'            => 'We could not find anything matching!',
         'qrcode'                => [
             'title'       => 'QR Code',
             'description' => 'Scan for address',

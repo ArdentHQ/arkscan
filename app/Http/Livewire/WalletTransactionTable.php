@@ -21,6 +21,7 @@ final class WalletTransactionTable extends Component
     public array $state = [
         'address'   => null,
         'publicKey' => null,
+        'isCold'    => null,
         'type'      => 'all',
         'direction' => 'all',
     ];
@@ -31,10 +32,11 @@ final class WalletTransactionTable extends Component
         'filterTransactionsByType',
     ];
 
-    public function mount(string $address, string $publicKey): void
+    public function mount(string $address, bool $isCold, ?string $publicKey): void
     {
         $this->state['address']   = $address;
         $this->state['publicKey'] = $publicKey;
+        $this->state['isCold']    = $isCold;
     }
 
     public function filterTransactionsByDirection(string $value): void

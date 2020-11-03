@@ -20,16 +20,18 @@
             <span class="info-badge">{{ $countReceived }}</span>
         </div>
 
-        <div
-            class="tab-item transition-default"
-            :class="{ 'tab-item-current': direction === 'sent' }"
-            wire:click="$set('state.direction', 'sent');"
-            @click="direction = 'sent'"
-        >
-            <span>@lang('pages.wallet.sent_transactions', [$countSent])</span>
+        @unless($state['isCold'])
+            <div
+                class="tab-item transition-default"
+                :class="{ 'tab-item-current': direction === 'sent' }"
+                wire:click="$set('state.direction', 'sent');"
+                @click="direction = 'sent'"
+            >
+                <span>@lang('pages.wallet.sent_transactions', [$countSent])</span>
 
-            <span class="info-badge">{{ $countSent }}</span>
-        </div>
+                <span class="info-badge">{{ $countSent }}</span>
+            </div>
+        @endunless
     </div>
 
     <div class="md:hidden">
@@ -45,7 +47,9 @@
 
                     <div x-show="direction === 'all'">@lang('pages.wallet.all_transactions')</div>
                     <div x-show="direction === 'received'">@lang('pages.wallet.received_transactions')</div>
-                    <div x-show="direction === 'sent'">@lang('pages.wallet.sent_transactions')</div>
+                    @unless($state['isCold'])
+                        <div x-show="direction === 'sent'">@lang('pages.wallet.sent_transactions')</div>
+                    @endunless
                 </div>
             </x-slot>
 
@@ -60,11 +64,13 @@
                     <span class="info-badge">{{ $countReceived }}</span>
                 </a>
 
-                <a wire:click="$set('state.direction', 'sent');" @click="direction = 'sent'" class="dropdown-entry">
-                    <span>@lang('pages.wallet.sent_transactions')</span>
+                @unless($state['isCold'])
+                    <a wire:click="$set('state.direction', 'sent');" @click="direction = 'sent'" class="dropdown-entry">
+                        <span>@lang('pages.wallet.sent_transactions')</span>
 
-                    <span class="info-badge">{{ $countSent }}</span>
-                </a>
+                        <span class="info-badge">{{ $countSent }}</span>
+                    </a>
+                @endunless
             </div>
         </x-ark-dropdown>
     </div>
