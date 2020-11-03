@@ -1,8 +1,8 @@
 @if(isset($isSent))
-    <span class="p-2 font-bold border rounded text-theme-danger-400 border-theme-danger-100 dark:text-theme-danger-600 dark:border-theme-danger-600">
+    <span class="px-2 py-1 font-bold border rounded text-theme-danger-400 border-theme-danger-100 dark:text-theme-danger-600 dark:border-theme-danger-600">
         -
 @elseif(isset($isReceived))
-    <span class="p-2 font-bold border rounded text-theme-success-400 border-theme-success-100 dark:text-theme-success-600 dark:border-theme-success-600">
+    <span class="px-2 py-1 font-bold border rounded text-theme-success-400 border-theme-success-100 dark:text-theme-success-600 dark:border-theme-success-600">
         +
 @else
     <span>

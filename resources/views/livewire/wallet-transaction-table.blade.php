@@ -73,7 +73,7 @@
         <x-skeletons.transactions>
             <x-tables.desktop.transactions :transactions="$transactions" :wallet="$wallet" use-confirmations use-direction />
 
-            <x-tables.mobile.transactions :transactions="$transactions" />
+            <x-tables.mobile.transactions :transactions="$transactions" :wallet="$wallet" use-direction />
 
             <x-general.pagination :results="$transactions" class="mt-8" />
 
