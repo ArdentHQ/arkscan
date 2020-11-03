@@ -22,7 +22,9 @@ final class SearchModule extends Component
     public bool $isSlim = false;
 
     /** @phpstan-ignore-next-line */
-    protected $queryString = ['state'];
+    protected $queryString = [
+        'state' => ['except' => []],
+    ];
 
     public function mount(bool $isSlim = false): void
     {
