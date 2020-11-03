@@ -28,7 +28,7 @@
                     <td>
                         <x-tables.rows.desktop.slot-time :model="$delegate" />
                     </td>
-                    <td wire:key="{{ $delegate->publicKey() }}-round-status">
+                    <td wire:key="{{ $delegate->publicKey() }}-round-status-{{ $delegate->status() }}">
                         <x-tables.rows.desktop.round-status :model="$delegate" />
                     </td>
                     <td class="hidden text-right lg:table-cell">
