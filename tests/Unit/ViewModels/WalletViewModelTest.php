@@ -424,3 +424,25 @@ it('should fail to get the voter count if the wallet has no public key', functio
 
     expect($this->subject->voterCount())->toBe(0);
 });
+
+it('should get the username if the wallet is known', function () {
+    fakeKnownWallets();
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67']));
+
+    expect($this->subject->username())->toBe('ACF Hot Wallet');
+});
+
+it('should get the username if the wallet is a delegate', function () {
+    fakeKnownWallets();
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'John',
+            ],
+        ],
+    ]));
+
+    expect($this->subject->username())->toBe('John');
+});

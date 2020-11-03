@@ -29,6 +29,12 @@ trait CanBeDelegate
 
     public function username(): ?string
     {
+        $knownWallet = $this->findWalletByKnown();
+
+        if (! is_null($knownWallet)) {
+            return $knownWallet['name'];
+        }
+
         return Arr::get($this->wallet, 'attributes.delegate.username');
     }
 
