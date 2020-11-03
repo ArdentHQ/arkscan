@@ -13,6 +13,7 @@ final class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->string('id');
             $table->string('block_id');
+            $table->string('block_height');
             $table->unsignedBigInteger('type');
             $table->unsignedBigInteger('type_group');
             $table->string('sender_public_key');

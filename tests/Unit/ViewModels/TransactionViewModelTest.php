@@ -29,6 +29,7 @@ beforeEach(function () {
 
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'block_id'          => $this->block->id,
+        'block_height'      => 1,
         'fee'               => '100000000',
         'amount'            => '200000000',
         'sender_public_key' => Wallet::factory()->create(['address' => 'D6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax'])->public_key,
@@ -612,15 +613,6 @@ it('should determine the type icon', function () {
 
 it('should determine the direction icon', function () {
     expect($this->subject->iconDirection('sender'))->toBeString();
-});
-
-it('should fail to get the confirmations', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'block_id' => 'unknown',
-    ]));
-
-    expect($this->subject->confirmations())->toBeInt();
-    expect($this->subject->confirmations())->toBe(0);
 });
 
 it('should fallback to the sender if no recipient exists', function () {

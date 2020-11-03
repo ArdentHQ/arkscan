@@ -6,7 +6,6 @@ namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
 use App\Facades\Wallets;
-use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Cache\NetworkCache;
 use App\Services\ExchangeRate;
@@ -99,13 +98,6 @@ final class TransactionViewModel implements ViewModel
 
     public function confirmations(): int
     {
-        try {
-            /** @var Block $block */
-            $block = $this->transaction->block;
-
-            return abs(( new NetworkCache())->getHeight() - $block->height->toNumber());
-        } catch (\Throwable $th) {
-            return 0;
-        }
+        return abs((new NetworkCache())->getHeight() - $this->transaction->block_height);
     }
 }

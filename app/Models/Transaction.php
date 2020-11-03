@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $block_id
  * @property string|null $recipient_id
  * @property string $sender_public_key
+ * @property int $block_height
  */
 final class Transaction extends Model
 {
@@ -48,12 +49,13 @@ final class Transaction extends Model
      * @var array
      */
     protected $casts = [
-        'amount'     => BigInteger::class,
-        'asset'      => 'array',
-        'fee'        => BigInteger::class,
-        'timestamp'  => 'int',
-        'type_group' => 'int',
-        'type'       => 'int',
+        'amount'       => BigInteger::class,
+        'asset'        => 'array',
+        'fee'          => BigInteger::class,
+        'timestamp'    => 'int',
+        'type_group'   => 'int',
+        'type'         => 'int',
+        'block_height' => 'int',
     ];
 
     /**

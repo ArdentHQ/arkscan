@@ -21,7 +21,7 @@ trait ManagesLatestTransactions
     public function pollTransactions(): void
     {
         $this->transactions = (new TableCache())->setLatestTransactions($this->state['type'], function () {
-            $query = Transaction::with('block')->latestByTimestamp();
+            $query = Transaction::latestByTimestamp();
 
             if ($this->state['type'] !== 'all') {
                 $scopeClass = $this->scopes[$this->state['type']];
