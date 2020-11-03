@@ -79,9 +79,9 @@ final class Kernel extends ConsoleKernel
      */
     protected function shortSchedule(ShortSchedule $shortSchedule)
     {
-        $shortSchedule->command(CacheLastBlocks::class)->everySeconds(Network::blockTime());
+        $shortSchedule->command('cache:last-blocks')->everySeconds(Network::blockTime());
 
-        $shortSchedule->command(CacheRealTimeStatistics::class)->everySeconds(Network::blockTime());
+        $shortSchedule->command('cache:real-time-statistics')->everySeconds(Network::blockTime());
     }
 
     /**
