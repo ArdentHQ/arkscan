@@ -66,13 +66,13 @@
     @if($state['selected'] === 'blocks')
         <div id="block-list" class="w-full">
             @if($blocks->isEmpty())
-                <div wire:poll="pollBlocks">
+                <div wire:poll="pollBlocks" wire:key="poll_blocks_skeleton">
                     <x-tables.desktop.skeleton.blocks />
 
                     <x-tables.mobile.skeleton.blocks />
                 </div>
             @else
-                <div wire:poll.{{ Network::blockTime() }}s="pollBlocks">
+                <div wire:poll.{{ Network::blockTime() }}s="pollBlocks" wire:key="poll_blocks_real">
                     <x-tables.desktop.blocks :blocks="$blocks" />
 
                     <x-tables.mobile.blocks :blocks="$blocks" />
@@ -86,13 +86,13 @@
     @else
         <div id="transaction-list" class="w-full">
             @if($transactions->isEmpty())
-                <div wire:poll="pollTransactions">
+                <div wire:poll="pollTransactions" wire:key="poll_transactions_skeleton">
                     <x-tables.desktop.skeleton.transactions />
 
                     <x-tables.mobile.skeleton.transactions />
                 </div>
             @else
-                <div wire:poll.{{ Network::blockTime() }}s="pollTransactions">
+                <div wire:poll.{{ Network::blockTime() }}s="pollTransactions" wire:key="poll_transactions_real">
                     <x-tables.desktop.transactions :transactions="$transactions" />
 
                     <x-tables.mobile.transactions :transactions="$transactions" />
