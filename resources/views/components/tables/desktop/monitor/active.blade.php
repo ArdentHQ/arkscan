@@ -19,10 +19,10 @@
                     <td>
                         <x-tables.rows.desktop.rank :model="$delegate" />
                     </td>
-                    <td>
+                    <td wire:key="{{ $delegate->username() }}-username">
                         <x-tables.rows.desktop.username :model="$delegate" />
                     </td>
-                    <td>
+                    <td wire:key="{{ $delegate->username() }}-round-status-history">
                         <x-tables.rows.desktop.round-status-history :model="$delegate" />
                     </td>
                     <td class="text-right">

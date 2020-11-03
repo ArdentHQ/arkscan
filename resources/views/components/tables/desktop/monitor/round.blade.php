@@ -12,7 +12,7 @@
         <tbody>
             @foreach($delegates as $delegate)
                 <tr
-                    wire:key="$delegate->username()"
+                    wire:key="$delegate->publicKey()"
                     @if ($delegate->keepsMissing())
                         class="bg-theme-danger-50"
                     @elseif ($delegate->justMissed())
@@ -22,13 +22,13 @@
                     <td>
                         <x-tables.rows.desktop.slot-id :model="$delegate" />
                     </td>
-                    <td>
+                    <td wire:key="{{ $delegate->publicKey() }}-username">
                         <x-tables.rows.desktop.username-with-avatar :model="$delegate->wallet()" />
                     </td>
                     <td>
                         <x-tables.rows.desktop.slot-time :model="$delegate" />
                     </td>
-                    <td>
+                    <td wire:key="{{ $delegate->publicKey() }}-round-status">
                         <x-tables.rows.desktop.round-status :model="$delegate" />
                     </td>
                     <td class="hidden text-right lg:table-cell">

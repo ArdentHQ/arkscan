@@ -40,6 +40,11 @@ final class Slot
             ->count();
     }
 
+    public function publicKey(): string
+    {
+        return $this->publicKey;
+    }
+
     public function order(): int
     {
         return $this->order;
