@@ -172,12 +172,14 @@ return [
     ],
 
     'blocks_by_wallet' => [
-        'title' => 'Block History',
+        'title'      => 'Block History',
+        'no_results' => 'Delegate <span class="font-bold">:0</span> has not yet forged. Once he becomes active his blocks will appear here.',
     ],
 
     'voters_by_wallet' => [
-        'title'    => 'Voting for Delegate',
-        'subtitle' => 'Voters',
+        'title'      => 'Voting for Delegate',
+        'subtitle'   => 'Voters',
+        'no_results' => 'Delegate <span class="font-bold">:0</span> has no voters yet. You can be the first!',
     ],
 
     'blocks' => [

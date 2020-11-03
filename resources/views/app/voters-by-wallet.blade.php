@@ -10,11 +10,7 @@
         <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
             <div class="py-16 content-container md:px-8">
                 <div x-cloak class="w-full">
-                    <div class="relative flex items-center justify-between">
-                        <h2 class="text-xl sm:text-2xl">@lang('pages.voters_by_wallet.subtitle')</h2>
-                    </div>
-
-                    <livewire:wallet-voter-table :public-key="$wallet->publicKey()" />
+                    <livewire:wallet-voter-table :public-key="$wallet->publicKey()" :username="$wallet->username()" />
                 </div>
             </div>
         </div>

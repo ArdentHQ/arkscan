@@ -29,7 +29,7 @@ it('should list all blocks for the given public key', function () {
 
     (new NetworkCache())->setSupply('1000000000');
 
-    $component = Livewire::test(WalletVoterTable::class, [$this->subject->public_key]);
+    $component = Livewire::test(WalletVoterTable::class, [$this->subject->public_key, 'username']);
 
     foreach (ViewModelFactory::collection($voters) as $voter) {
         $component->assertSee($voter->address());

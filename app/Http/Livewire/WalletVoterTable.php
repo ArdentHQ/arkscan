@@ -16,9 +16,12 @@ final class WalletVoterTable extends Component
 
     public string $publicKey;
 
-    public function mount(string $publicKey): void
+    public string $username;
+
+    public function mount(string $publicKey, string $username): void
     {
         $this->publicKey = $publicKey;
+        $this->username  = $username;
     }
 
     public function render(): View

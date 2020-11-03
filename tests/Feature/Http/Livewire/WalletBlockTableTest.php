@@ -25,7 +25,7 @@ it('should list all blocks for the given public key', function () {
         'generator_public_key' => $this->subject->public_key,
     ]);
 
-    $component = Livewire::test(WalletBlockTable::class, [$this->subject->public_key]);
+    $component = Livewire::test(WalletBlockTable::class, [$this->subject->public_key, 'username']);
 
     foreach (ViewModelFactory::collection($blocks) as $block) {
         $component->assertSee($block->id());

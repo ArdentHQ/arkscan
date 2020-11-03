@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
 
 final class Slot
 {
+    private string $publicKey;
+
     private int $order;
 
     private WalletViewModel $wallet;

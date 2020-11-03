@@ -1,13 +1,25 @@
 <div id="block-list" class="w-full">
-    <x-skeletons.wallets>
-        <x-tables.desktop.wallets :wallets="$wallets" without-truncate use-vote-weight />
+    @if($wallets->isNotEmpty())
+        <div class="relative flex items-center justify-between">
+            <h2 class="text-xl sm:text-2xl">@lang('pages.voters_by_wallet.subtitle')</h2>
+        </div>
 
-        <x-tables.mobile.wallets :wallets="$wallets" />
+        <x-skeletons.wallets>
+            <x-tables.desktop.wallets :wallets="$wallets" without-truncate use-vote-weight />
 
-        <x-general.pagination :results="$wallets" class="mt-8" />
+            <x-tables.mobile.wallets :wallets="$wallets" />
 
-        <script>
-            window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#block-list')));
-        </script>
-    </x-skeletons.wallets>
+            <x-general.pagination :results="$wallets" class="mt-8" />
+
+            <script>
+                window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#block-list')));
+            </script>
+        </x-skeletons.wallets>
+    @else
+        <div class="flex flex-col justify-center pt-8 space-y-8">
+            <img src="/images/search/empty.svg" class="h-32" />
+
+            <span class="text-center">@lang('pages.voters_by_wallet.no_results', [$username])</span>
+        </div>
+    @endif
 </div>
