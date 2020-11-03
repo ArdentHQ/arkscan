@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <x-general.avatar :identifier="$transaction->sender()->address()" />
+        <x-general.avatar :identifier="$transaction->sender()->address()" avatar-size="w-11 h-11" />
     </div>
 
     <div class="flex flex-col space-y-2">
