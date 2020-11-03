@@ -21,7 +21,7 @@
         <tbody>
             @foreach($blocks as $block)
                 <tr>
-                    <td>
+                    <td wire:key="{{ $block->id() }}-id">
                         <x-tables.rows.desktop.block-id :model="$block" />
                     </td>
                     <td class="hidden lg:table-cell">

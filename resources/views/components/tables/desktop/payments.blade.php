@@ -9,7 +9,7 @@
         <tbody>
             @foreach($payments as $payment)
                 <tr>
-                    <td>
+                    <td wire:key="{{ $payment->address() }}-address">
                         <x-general.identity :model="$payment" without-truncate />
                     </td>
                     <td class="hidden text-right md:table-cell">

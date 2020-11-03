@@ -14,7 +14,7 @@
                     <td wire:key="{{ $wallet->address() }}-address">
                         <x-tables.rows.desktop.address :model="$wallet" :without-truncate="$withoutTruncate ?? false" />
                     </td>
-                    <td class="text-center">
+                    <td class="text-center" wire:key="{{ $wallet->address() }}-type">
                         <x-tables.rows.desktop.wallet-type :model="$wallet" />
                     </td>
                     <td class="text-right">
