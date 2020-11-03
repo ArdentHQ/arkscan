@@ -1,6 +1,6 @@
 <div x-data="{ visible: {{ $isOpen ? 'true' : 'false' }}, options: false }" x-cloak>
     <div x-show="visible">
-        <x-ark-modal class="w-full mx-6" width-class="max-w-sm" wire-close="$emit('toggleQrCode')" alpine-close="visible = false" title-class="header-2">
+        <x-ark-modal class="w-full" width-class="max-w-sm" wire-close="$emit('toggleQrCode')" alpine-close="visible = false" title-class="header-2">
             @slot('title')
                 @lang('pages.wallet.qrcode.title')
             @endslot
