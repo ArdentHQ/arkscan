@@ -3,19 +3,18 @@
         <thead>
             <tr>
                 <th class="text-center">&nbsp;</th>
-                <th class="hidden lg:table-cell">@lang('general.block.timestamp')</th>
+                <th class="hidden md:table-cell">@lang('general.block.timestamp')</th>
                 @if(!isset($withoutGenerator))
                     <th><span class="pl-14">@lang('general.block.generated_by')</span></th>
                 @endif
                 <th>@lang('general.block.height')</th>
                 <th>
                     <div class="inline-block">
-                        <span class="hidden lg:block">@lang('general.block.transactions')</span>
-                        <span class="lg:hidden">@lang('general.block.tx')</span>
+                        <span>@lang('general.block.transactions')</span>
                     </div>
                 </th>
                 <th class="text-right">@lang('general.block.amount')</th>
-                <th class="hidden text-right xl:table-cell">@lang('general.block.fee')</th>
+                <th class="hidden text-right lg:table-cell">@lang('general.block.fee')</th>
             </tr>
         </thead>
         <tbody>
@@ -24,7 +23,7 @@
                     <td wire:key="{{ $block->id() }}-id">
                         <x-tables.rows.desktop.block-id :model="$block" />
                     </td>
-                    <td class="hidden lg:table-cell">
+                    <td class="hidden md:table-cell">
                         <x-tables.rows.desktop.timestamp :model="$block" />
                     </td>
                     @if(!isset($withoutGenerator))
@@ -41,7 +40,7 @@
                     <td class="text-right">
                         <x-tables.rows.desktop.amount :model="$block" />
                     </td>
-                    <td class="hidden text-right xl:table-cell">
+                    <td class="hidden text-right lg:table-cell">
                         <x-tables.rows.desktop.fee :model="$block" />
                     </td>
                 </tr>
