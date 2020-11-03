@@ -61,7 +61,7 @@ return [
         'transfer'                => 'Transfer',
         'unvote'                  => 'Unvote',
         'vote'                    => 'Vote',
-        'vote-combination'        => 'Vote/Unvote',
+        'vote-combination'        => 'Multivote',
         'well-confirmed'          => 'Well Confirmed',
     ],
 
