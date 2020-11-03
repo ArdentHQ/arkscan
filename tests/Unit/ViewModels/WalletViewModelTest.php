@@ -408,3 +408,19 @@ it('should determine if the wallet is cold', function () {
 
     expect($this->subject->isCold())->toBeTrue();
 });
+
+it('should get the voter count', function () {
+    $wallet = Wallet::factory()->create();
+
+    (new WalletCache())->setVoterCount($wallet->public_key, 5);
+
+    $this->subject = new WalletViewModel($wallet);
+
+    expect($this->subject->voterCount())->toBe(5);
+});
+
+it('should fail to get the voter count if the wallet has no public key', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create(['public_key' => null]));
+
+    expect($this->subject->voterCount())->toBe(0);
+});

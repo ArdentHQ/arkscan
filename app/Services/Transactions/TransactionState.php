@@ -19,12 +19,8 @@ final class TransactionState
 
     public function isConfirmed(): bool
     {
-        try {
-            $confirmations = (new NetworkCache())->getHeight() - $this->transaction->block_height;
+        $confirmations = (new NetworkCache())->getHeight() - $this->transaction->block_height;
 
-            return $confirmations >= Network::confirmations();
-        } catch (\Throwable $th) {
-            return false;
-        }
+        return $confirmations >= Network::confirmations();
     }
 }
