@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
+    <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900" id="results-list">
         <div class="flex-col py-16 content-container md:px-8">
             <h1 class="mb-4 header-2">@lang('pages.search_results.title')</h1>
 
@@ -44,4 +44,8 @@
             @endif
         </div>
     </div>
+
+    <script>
+        window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#results-list')));
+    </script>
 </div>

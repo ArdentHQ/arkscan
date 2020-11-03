@@ -9,15 +9,18 @@ use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
 use App\ViewModels\ViewModelFactory;
-use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasPagination;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 final class SearchPage extends Component
 {
-    use HasPagination;
     use ManagesSearch;
+    use WithPagination;
+
+    /** @phpstan-ignore-next-line */
+    protected $listeners = ['pageChanged' => 'performSearch'];
 
     /** @phpstan-ignore-next-line */
     protected $queryString = ['state'];
@@ -58,6 +61,16 @@ final class SearchPage extends Component
             $this->results = ViewModelFactory::paginate($this->results);
         }
     }
+
+    // @codeCoverageIgnoreStart
+    public function gotoPage(int $page): void
+    {
+        $this->emit('pageChanged');
+        $this->page = $page;
+        $this->performSearch();
+    }
+
+    // @codeCoverageIgnoreEnd
 
     private function restoreState(array $state): void
     {
