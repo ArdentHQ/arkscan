@@ -173,8 +173,9 @@ return [
     ],
 
     'blocks_by_wallet' => [
-        'title'      => 'Block History',
-        'no_results' => 'Delegate <span class="font-bold">:0</span> has not yet forged. Once he becomes active his blocks will appear here.',
+        'title'       => 'Forged Blocks',
+        'table_title' => 'Block History',
+        'no_results'  => 'Delegate <span class="font-bold">:0</span> has not yet forged. Once he becomes active his blocks will appear here.',
     ],
 
     'voters_by_wallet' => [
