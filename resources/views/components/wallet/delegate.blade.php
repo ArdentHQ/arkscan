@@ -54,7 +54,7 @@
                 </x-details-box>
 
                 <x-details-box :title="trans('pages.wallet.delegate.forged_blocks')" icon="app-block-id" shallow>
-                    <x-number>{{ $wallet->forgedBlocks() }}</x-number>
+                    <x-number>{{ $wallet->blocksForged() }}</x-number>
                     <a href="{{ route('wallet.blocks', $wallet->address()) }}" class="link">@lang('general.see_all')</a>
                 </x-details-box>
 

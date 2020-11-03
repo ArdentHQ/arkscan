@@ -37,12 +37,12 @@ final class CacheDelegateAggregates extends Command
     {
         $publicKeys = Wallets::allWithUsername()->pluck('public_key')->toArray();
 
-        $cache->setTotalAmounts(fn () => (new TotalFeesByPublicKeysAggregate())->aggregate($publicKeys));
+        $cache->setTotalAmounts(fn () => (new TotalAmountsByPublicKeysAggregate())->aggregate($publicKeys));
 
-        $cache->setTotalBlocks(fn () => (new TotalAmountsByPublicKeysAggregate())->aggregate($publicKeys));
+        $cache->setTotalFees(fn () => (new TotalFeesByPublicKeysAggregate())->aggregate($publicKeys));
 
-        $cache->setTotalFees(fn () => (new TotalRewardsByPublicKeysAggregate())->aggregate($publicKeys));
+        $cache->setTotalRewards(fn () => (new TotalRewardsByPublicKeysAggregate())->aggregate($publicKeys));
 
-        $cache->setTotalRewards(fn () => (new TotalBlocksByPublicKeysAggregate())->aggregate($publicKeys));
+        $cache->setTotalBlocks(fn () => (new TotalBlocksByPublicKeysAggregate())->aggregate($publicKeys));
     }
 }

@@ -35,11 +35,6 @@ trait CanForge
         return (int) Arr::get((new DelegateCache())->getTotalBlocks(), $this->wallet->public_key, 0);
     }
 
-    public function forgedBlocks(): int
-    {
-        return (int) Arr::get($this->wallet, 'attributes.delegate.producedBlocks', 0);
-    }
-
     public function productivity(): float
     {
         if (! $this->isDelegate()) {

@@ -11,7 +11,7 @@
         <tbody>
             @foreach($wallets as $wallet)
                 <tr>
-                    <td wire:key="{{ $wallet->id() }}-address">
+                    <td wire:key="{{ $wallet->address() }}-address">
                         <x-tables.rows.desktop.address :model="$wallet" :without-truncate="$withoutTruncate ?? false" />
                     </td>
                     <td class="text-center">
