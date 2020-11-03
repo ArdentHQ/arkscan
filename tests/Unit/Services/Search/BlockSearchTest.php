@@ -86,8 +86,8 @@ it('should search for blocks by timestamp range', function () {
 });
 
 it('should search for blocks by total_amount minimum', function () {
-    Block::factory(10)->create(['total_amount' => 1000]);
-    Block::factory(10)->create(['total_amount' => 2000]);
+    Block::factory(10)->create(['total_amount' => 1000 * 1e8]);
+    Block::factory(10)->create(['total_amount' => 2000 * 1e8]);
 
     $result = (new BlockSearch())->search([
         'totalAmountFrom' => 2000,
@@ -97,8 +97,8 @@ it('should search for blocks by total_amount minimum', function () {
 });
 
 it('should search for blocks by total_amount maximum', function () {
-    Block::factory(10)->create(['total_amount' => 1000]);
-    Block::factory(10)->create(['total_amount' => 2000]);
+    Block::factory(10)->create(['total_amount' => 1000 * 1e8]);
+    Block::factory(10)->create(['total_amount' => 2000 * 1e8]);
 
     $result = (new BlockSearch())->search([
         'totalAmountTo' => 1000,
@@ -108,8 +108,8 @@ it('should search for blocks by total_amount maximum', function () {
 });
 
 it('should search for blocks by total_amount range', function () {
-    Block::factory(10)->create(['total_amount' => 1000]);
-    Block::factory(10)->create(['total_amount' => 2000]);
+    Block::factory(10)->create(['total_amount' => 1000 * 1e8]);
+    Block::factory(10)->create(['total_amount' => 2000 * 1e8]);
 
     $result = (new BlockSearch())->search([
         'totalAmountFrom' => 500,
@@ -120,8 +120,8 @@ it('should search for blocks by total_amount range', function () {
 });
 
 it('should search for blocks by total_fee minimum', function () {
-    Block::factory(10)->create(['total_fee' => 1000]);
-    Block::factory(10)->create(['total_fee' => 2000]);
+    Block::factory(10)->create(['total_fee' => 1000 * 1e8]);
+    Block::factory(10)->create(['total_fee' => 2000 * 1e8]);
 
     $result = (new BlockSearch())->search([
         'totalFeeFrom' => 2000,
@@ -131,8 +131,8 @@ it('should search for blocks by total_fee minimum', function () {
 });
 
 it('should search for blocks by total_fee maximum', function () {
-    Block::factory(10)->create(['total_fee' => 1000]);
-    Block::factory(10)->create(['total_fee' => 2000]);
+    Block::factory(10)->create(['total_fee' => 1000 * 1e8]);
+    Block::factory(10)->create(['total_fee' => 2000 * 1e8]);
 
     $result = (new BlockSearch())->search([
         'totalFeeTo' => 1000,
@@ -142,8 +142,8 @@ it('should search for blocks by total_fee maximum', function () {
 });
 
 it('should search for blocks by total_fee range', function () {
-    Block::factory(10)->create(['total_fee' => 1000]);
-    Block::factory(10)->create(['total_fee' => 2000]);
+    Block::factory(10)->create(['total_fee' => 1000 * 1e8]);
+    Block::factory(10)->create(['total_fee' => 2000 * 1e8]);
 
     $result = (new BlockSearch())->search([
         'totalFeeFrom' => 500,

@@ -20,25 +20,25 @@ trait ManagesSearch
             'state.dateFrom'    => ['nullable', 'date'],
             'state.dateTo'      => ['nullable', 'date'],
             // Blocks
-            'state.heightFrom'         => ['nullable', 'integer', 'min:1'],
-            'state.heightTo'           => ['nullable', 'integer', 'min:1'],
-            'state.totalAmountFrom'    => ['nullable', 'integer', 'min:0'],
-            'state.totalAmountTo'      => ['nullable', 'integer', 'min:0'],
-            'state.totalFeeFrom'       => ['nullable', 'integer', 'min:0'],
-            'state.totalFeeTo'         => ['nullable', 'integer', 'min:0'],
+            'state.heightFrom'         => ['nullable', 'numeric', 'min:1'],
+            'state.heightTo'           => ['nullable', 'numeric', 'min:1'],
+            'state.totalAmountFrom'    => ['nullable', 'numeric', 'min:0'],
+            'state.totalAmountTo'      => ['nullable', 'numeric', 'min:0'],
+            'state.totalFeeFrom'       => ['nullable', 'numeric', 'min:0'],
+            'state.totalFeeTo'         => ['nullable', 'numeric', 'min:0'],
             'state.generatorPublicKey' => ['nullable', 'string', 'max:255'],
             // Transactions
             'state.transactionType' => ['nullable', 'string'], // @TODO: validate based on an enum
-            'state.amountFrom'      => ['nullable', 'integer', 'min:0', 'max:100'],
-            'state.amountTo'        => ['nullable', 'integer', 'min:0', 'max:100'],
-            'state.feeFrom'         => ['nullable', 'integer', 'min:0', 'max:100'],
-            'state.feeTo'           => ['nullable', 'integer', 'min:0', 'max:100'],
+            'state.amountFrom'      => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'state.amountTo'        => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'state.feeFrom'         => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'state.feeTo'           => ['nullable', 'numeric', 'min:0', 'max:100'],
             'state.smartBridge'     => ['nullable', 'string', 'max:255'],
             // Wallets
             'state.username'    => ['nullable', 'string', 'max:255'],
             'state.vote'        => ['nullable', 'string', 'max:255'],
-            'state.balanceFrom' => ['nullable', 'integer', 'min:0', 'max:100'],
-            'state.balanceTo'   => ['nullable', 'integer', 'min:0', 'max:100'],
+            'state.balanceFrom' => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'state.balanceTo'   => ['nullable', 'numeric', 'min:0', 'max:100'],
         ])['state'];
     }
 }

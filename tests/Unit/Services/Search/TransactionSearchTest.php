@@ -85,8 +85,8 @@ it('should search for transactions by timestamp range', function () {
 });
 
 it('should search for blocks by amount minimum', function () {
-    Transaction::factory(10)->create(['amount' => 1000]);
-    Transaction::factory(10)->create(['amount' => 2000]);
+    Transaction::factory(10)->create(['amount' => 1000 * 1e8]);
+    Transaction::factory(10)->create(['amount' => 2000 * 1e8]);
 
     $result = (new TransactionSearch())->search([
         'amountFrom' => 2000,
@@ -96,8 +96,8 @@ it('should search for blocks by amount minimum', function () {
 });
 
 it('should search for blocks by amount maximum', function () {
-    Transaction::factory(10)->create(['amount' => 1000]);
-    Transaction::factory(10)->create(['amount' => 2000]);
+    Transaction::factory(10)->create(['amount' => 1000 * 1e8]);
+    Transaction::factory(10)->create(['amount' => 2000 * 1e8]);
 
     $result = (new TransactionSearch())->search([
         'amountTo' => 1000,
@@ -107,8 +107,8 @@ it('should search for blocks by amount maximum', function () {
 });
 
 it('should search for blocks by amount range', function () {
-    Transaction::factory(10)->create(['amount' => 1000]);
-    Transaction::factory(10)->create(['amount' => 2000]);
+    Transaction::factory(10)->create(['amount' => 1000 * 1e8]);
+    Transaction::factory(10)->create(['amount' => 2000 * 1e8]);
 
     $result = (new TransactionSearch())->search([
         'amountFrom' => 500,
@@ -119,8 +119,8 @@ it('should search for blocks by amount range', function () {
 });
 
 it('should search for blocks by fee minimum', function () {
-    Transaction::factory(10)->create(['fee' => 1000]);
-    Transaction::factory(10)->create(['fee' => 2000]);
+    Transaction::factory(10)->create(['fee' => 1000 * 1e8]);
+    Transaction::factory(10)->create(['fee' => 2000 * 1e8]);
 
     $result = (new TransactionSearch())->search([
         'feeFrom' => 2000,
@@ -130,8 +130,8 @@ it('should search for blocks by fee minimum', function () {
 });
 
 it('should search for blocks by fee maximum', function () {
-    Transaction::factory(10)->create(['fee' => 1000]);
-    Transaction::factory(10)->create(['fee' => 2000]);
+    Transaction::factory(10)->create(['fee' => 1000 * 1e8]);
+    Transaction::factory(10)->create(['fee' => 2000 * 1e8]);
 
     $result = (new TransactionSearch())->search([
         'feeTo' => 1000,
@@ -141,8 +141,8 @@ it('should search for blocks by fee maximum', function () {
 });
 
 it('should search for blocks by fee range', function () {
-    Transaction::factory(10)->create(['fee' => 1000]);
-    Transaction::factory(10)->create(['fee' => 2000]);
+    Transaction::factory(10)->create(['fee' => 1000 * 1e8]);
+    Transaction::factory(10)->create(['fee' => 2000 * 1e8]);
 
     $result = (new TransactionSearch())->search([
         'feeFrom' => 500,
