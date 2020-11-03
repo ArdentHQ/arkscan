@@ -12,7 +12,7 @@ trait InteractsWithVendorField
     public function vendorField(): ?string
     {
         /* @phpstan-ignore-next-line */
-        $vendorFieldHex = $this->transaction->vendor_field_hex;
+        $vendorFieldHex = $this->transaction->vendor_field;
 
         if (is_null($vendorFieldHex)) {
             return null;

@@ -13,10 +13,10 @@ beforeEach(fn () => configureExplorerDatabase());
 
 it('should search for a transaction by id', function () {
     $transaction = Transaction::factory(10)->create()[0];
-    $transaction->update(['vendor_field_hex' => 'Hello World']);
+    $transaction->update(['vendor_field' => 'Hello World']);
 
     $result = (new TransactionSearch())->search([
-        'smartBridge' => $transaction->vendor_field_hex,
+        'smartBridge' => $transaction->vendor_field,
     ]);
 
     expect($result->get())->toHaveCount(1);

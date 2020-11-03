@@ -53,7 +53,7 @@ it('should get the vendor field', function () {
     expect($this->subject->vendor_field)->toBeNull();
 
     $this->subject->update([
-        'vendor_field_hex' => hex2bin('Hello World'),
+        'vendor_field' => hex2bin('Hello World'),
     ]);
 
     expect($this->subject->vendor_field)->toBeString();

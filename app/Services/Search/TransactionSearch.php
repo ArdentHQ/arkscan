@@ -113,7 +113,7 @@ final class TransactionSearch implements Search
         $this->queryDateRange($query, Arr::get($parameters, 'dateFrom'), Arr::get($parameters, 'dateTo'));
 
         if (! is_null(Arr::get($parameters, 'smartBridge'))) {
-            $query->where('vendor_field_hex', $parameters['smartBridge']);
+            $query->where('vendor_field', $parameters['smartBridge']);
         }
 
         return $query;
