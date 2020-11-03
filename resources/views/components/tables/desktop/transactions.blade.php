@@ -22,14 +22,14 @@
                     <td class="hidden lg:table-cell">
                         <x-tables.rows.desktop.timestamp :model="$transaction" />
                     </td>
-                    <td>
+                    <td wire:key="{{ $transaction->id() }}-sender">
                         @isset($useDirection)
                             <x-tables.rows.desktop.sender-with-direction :model="$transaction" :wallet="$wallet" />
                         @else
                             <x-tables.rows.desktop.sender :model="$transaction" />
                         @endif
                     </td>
-                    <td>
+                    <td wire:key="{{ $transaction->id() }}-recipient">
                         <x-tables.rows.desktop.recipient :model="$transaction" />
                     </td>
                     <td class="text-right">

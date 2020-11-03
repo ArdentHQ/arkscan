@@ -28,7 +28,7 @@
                         <x-tables.rows.desktop.timestamp :model="$block" />
                     </td>
                     @if(!isset($withoutGenerator))
-                        <td>
+                        <td wire:key="{{ $block->id() }}-forger">
                             <x-tables.rows.desktop.block-forger :model="$block" />
                         </td>
                     @endif
