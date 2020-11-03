@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\Transactions;
 
 use App\Facades\Network;
-use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Cache\NetworkCache;
 
@@ -21,10 +20,7 @@ final class TransactionState
     public function isConfirmed(): bool
     {
         try {
-            /** @var Block $block */
-            $block = $this->transaction->block;
-
-            $confirmations = (new NetworkCache())->getHeight() - $block->height->toNumber();
+            $confirmations = (new NetworkCache())->getHeight() - $this->transaction->block_height;
 
             return $confirmations >= Network::confirmations();
         } catch (\Throwable $th) {
