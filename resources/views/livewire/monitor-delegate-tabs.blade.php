@@ -43,7 +43,10 @@
             :class="{ 'tab-item-current': component === 'monitor' }"
             @click="component === 'monitor' ? component = 'list' : component = 'monitor'"
         >
-            @lang('pages.monitor.title')
+            <div class="flex justify-center space-x-2">
+                <span>@svg('app-monitor', 'w-5 h-5 text-theme-secondary-700')</span>
+                <span>@lang('pages.monitor.title')</span>
+            </div>
         </div>
     </div>
 </div>
