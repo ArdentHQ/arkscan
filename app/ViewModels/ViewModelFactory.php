@@ -9,8 +9,8 @@ use App\Models\Block;
 use App\Models\Round;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 

@@ -35,7 +35,7 @@
                     type="text"
                     placeholder="@lang('forms.search.term_placeholder')"
                     class="hidden w-full dark:text-theme-secondary-700 dark:bg-theme-secondary-900 {{ ($isSlim ?? false) ? 'xl:block' : 'sm:block' }}"
-                    wire:model="state.term"
+                    wire:model.defer="state.term"
                     wire:keydown.enter="performSearch"
                     @if ($isSlim ?? false) x-on:focus="isFocused = true; $dispatch('search-slim-expand')" @endif
                 />
@@ -44,7 +44,7 @@
                     type="text"
                     placeholder="@lang('forms.search.term_placeholder_mobile')"
                     class="w-full dark:text-theme-secondary-700 dark:bg-theme-secondary-900 {{ ($isSlim ?? false) ? 'xl:hidden' : 'sm:hidden' }}"
-                    wire:model="state.term"
+                    wire:model.defer="state.term"
                     wire:keydown.enter="performSearch"
                 />
             </div>
@@ -104,7 +104,7 @@
                                 type="number"
                                 placeholder="0.00"
                                 class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                                wire:model="state.heightFrom"
+                                wire:model.defer="state.heightFrom"
                                 wire:keydown.enter="performSearch"
                             />
 
@@ -114,7 +114,7 @@
                                 type="number"
                                 placeholder="0.00"
                                 class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                                wire:model="state.heightTo"
+                                wire:model.defer="state.heightTo"
                                 wire:keydown.enter="performSearch"
                             />
                         </div>
@@ -126,7 +126,7 @@
                                 type="number"
                                 placeholder="0.00"
                                 class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                                wire:model="state.totalAmountFrom"
+                                wire:model.defer="state.totalAmountFrom"
                                 wire:keydown.enter="performSearch"
                             />
 
@@ -136,7 +136,7 @@
                                 type="number"
                                 placeholder="0.00"
                                 class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                                wire:model="state.totalAmountTo"
+                                wire:model.defer="state.totalAmountTo"
                                 wire:keydown.enter="performSearch"
                             />
                         </div>
@@ -148,7 +148,7 @@
                                 type="number"
                                 placeholder="0.00"
                                 class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                                wire:model="state.totalFeeFrom"
+                                wire:model.defer="state.totalFeeFrom"
                                 wire:keydown.enter="performSearch"
                             />
 
@@ -158,7 +158,7 @@
                                 type="number"
                                 placeholder="0.00"
                                 class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                                wire:model="state.totalFeeTo"
+                                wire:model.defer="state.totalFeeTo"
                                 wire:keydown.enter="performSearch"
                             />
                         </div>
@@ -170,7 +170,7 @@
                                 type="number"
                                 placeholder="0.00"
                                 class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                                wire:model="state.rewardFrom"
+                                wire:model.defer="state.rewardFrom"
                                 wire:keydown.enter="performSearch"
                             />
 
@@ -180,7 +180,7 @@
                                 type="number"
                                 placeholder="0.00"
                                 class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                                wire:model="state.rewardTo"
+                                wire:model.defer="state.rewardTo"
                                 wire:keydown.enter="performSearch"
                             />
                         </div>
@@ -191,7 +191,7 @@
                             <input
                                 type="date"
                                 class="bg-transparent -ml-7"
-                                wire:model="state.dateFrom"
+                                wire:model.defer="state.dateFrom"
                                 style="width: 49px;"
                             />
 
@@ -200,7 +200,7 @@
                             <input
                                 type="date"
                                 class="-ml-6 bg-transparent"
-                                wire:model="state.dateTo"
+                                wire:model.defer="state.dateTo"
                                 style="width: 49px;"
                             />
                         </div>
@@ -210,7 +210,7 @@
                 @if($type === 'transaction')
                     <x-general.search.advanced-option :title="trans('forms.search.transaction_type')">
                         {{-- TODO: Enum of types and their values? --}}
-                        <select wire:model="state.transactionType" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200">
+                        <select wire:model.defer="state.transactionType" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200">
                             <option value="all">@lang('forms.search.transaction_types.all')</option>
                             <option value="businessEntityRegistration">@lang('forms.search.transaction_types.businessEntityRegistration')</option>
                             <option value="businessEntityResignation">@lang('forms.search.transaction_types.businessEntityResignation')</option>
@@ -256,7 +256,7 @@
                                 type="number"
                                 placeholder="0.00"
                                 class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                                wire:model="state.amountFrom"
+                                wire:model.defer="state.amountFrom"
                                 wire:keydown.enter="performSearch"
                             />
 
@@ -266,7 +266,7 @@
                                 type="number"
                                 placeholder="0.00"
                                 class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                                wire:model="state.amountTo"
+                                wire:model.defer="state.amountTo"
                                 wire:keydown.enter="performSearch"
                             />
                         </div>
@@ -278,7 +278,7 @@
                                 type="number"
                                 placeholder="0.00"
                                 class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                                wire:model="state.feeFrom"
+                                wire:model.defer="state.feeFrom"
                                 wire:keydown.enter="performSearch"
                             />
 
@@ -288,7 +288,7 @@
                                 type="number"
                                 placeholder="0.00"
                                 class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                                wire:model="state.feeTo"
+                                wire:model.defer="state.feeTo"
                                 wire:keydown.enter="performSearch"
                             />
                         </div>
@@ -299,7 +299,7 @@
                             type="text"
                             placeholder="@lang('forms.search.smartbridge_placeholder')"
                             class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                            wire:model="state.smartBridge"
+                            wire:model.defer="state.smartBridge"
                             wire:keydown.enter="performSearch"
                         />
                     </x-general.search.advanced-option>
@@ -309,7 +309,7 @@
                             <input
                                 type="date"
                                 class="bg-transparent -ml-7"
-                                wire:model="state.dateFrom"
+                                wire:model.defer="state.dateFrom"
                                 style="width: 49px;"
                             />
 
@@ -318,7 +318,7 @@
                             <input
                                 type="date"
                                 class="-ml-6 bg-transparent"
-                                wire:model="state.dateTo"
+                                wire:model.defer="state.dateTo"
                                 style="width: 49px;"
                             />
                         </div>
@@ -332,7 +332,7 @@
                                 type="number"
                                 placeholder="0.00"
                                 class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                                wire:model="state.balanceFrom"
+                                wire:model.defer="state.balanceFrom"
                                 wire:keydown.enter="performSearch"
                             />
 
@@ -342,7 +342,7 @@
                                 type="number"
                                 placeholder="0.00"
                                 class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                                wire:model="state.balanceTo"
+                                wire:model.defer="state.balanceTo"
                                 wire:keydown.enter="performSearch"
                             />
                         </div>
@@ -353,7 +353,7 @@
                             type="text"
                             placeholder="@lang('forms.search.username')"
                             class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                            wire:model="state.username"
+                            wire:model.defer="state.username"
                             wire:keydown.enter="performSearch"
                         />
                     </x-general.search.advanced-option>
@@ -363,7 +363,7 @@
                             type="text"
                             placeholder="@lang('forms.search.vote')"
                             class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-                            wire:model="state.vote"
+                            wire:model.defer="state.vote"
                             wire:keydown.enter="performSearch"
                         />
                     </x-general.search.advanced-option>

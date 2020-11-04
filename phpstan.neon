@@ -18,7 +18,6 @@ parameters:
         - '#Variable method call#'
         - '#Dynamic call to static method#'
         - '#but return statement is missing#'
-        - '#expects Illuminate\\Pagination\\LengthAwarePaginator, Illuminate\\Contracts\\Pagination\\LengthAwarePaginator given#'
         - '#InvalidArgumentException constructor expects string#'
         - '#withScope#'
         # FIXME
