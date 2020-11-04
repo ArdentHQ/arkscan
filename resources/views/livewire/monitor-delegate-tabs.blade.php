@@ -2,7 +2,7 @@
     <div class="flex w-10/12 tabs">
         <div
             class="tab-item transition-default"
-            :class="{ 'tab-item-current': status === 'active' }"
+            :class="{ 'tab-item-current': status === 'active' && component !== 'monitor' }"
             wire:click="$emit('filterByDelegateStatus', 'active');"
             @click="component = 'list'; status = 'active'"
         >
@@ -15,7 +15,7 @@
 
         <div
             class="tab-item transition-default"
-            :class="{ 'tab-item-current': status === 'standby' }"
+            :class="{ 'tab-item-current': status === 'standby' && component !== 'monitor' }"
             wire:click="$emit('filterByDelegateStatus', 'standby');"
             @click="component = 'list'; status = 'standby'"
         >
@@ -26,7 +26,7 @@
 
         <div
             class="tab-item transition-default"
-            :class="{ 'tab-item-current': status === 'resigned' }"
+            :class="{ 'tab-item-current': status === 'resigned' && component !== 'monitor' }"
             wire:click="$emit('filterByDelegateStatus', 'resigned');"
             @click="component = 'list'; status = 'resigned'"
         >
