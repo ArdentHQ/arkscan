@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Services\Cache\FeeChartCache;
+use App\Services\Cache\FeeCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\PriceChartCache;
 use App\Services\ExchangeRate;
@@ -15,22 +15,22 @@ use Illuminate\View\View;
 
 final class HomeController
 {
-    public function __invoke(NetworkCache $network, PriceChartCache $prices, FeeChartCache $fees): View
+    public function __invoke(NetworkCache $network, PriceChartCache $prices, FeeCache $fees): View
     {
         return view('app.home', [
             'prices' => [
-                'day'     => $this->getChart($prices->getDay(Settings::currency())),
-                'week'    => $this->getChart($prices->getWeek(Settings::currency())),
-                'month'   => $this->getChart($prices->getMonth(Settings::currency())),
-                'quarter' => $this->getChart($prices->getQuarter(Settings::currency())),
-                'year'    => $this->getChart($prices->getYear(Settings::currency())),
+                'day'     => $this->formatPriceChart($prices->getDay(Settings::currency())),
+                'week'    => $this->formatPriceChart($prices->getWeek(Settings::currency())),
+                'month'   => $this->formatPriceChart($prices->getMonth(Settings::currency())),
+                'quarter' => $this->formatPriceChart($prices->getQuarter(Settings::currency())),
+                'year'    => $this->formatPriceChart($prices->getYear(Settings::currency())),
             ],
             'fees' => [
-                'day'     => $this->getChart($fees->getDay()),
-                'week'    => $this->getChart($fees->getWeek()),
-                'month'   => $this->getChart($fees->getMonth()),
-                'quarter' => $this->getChart($fees->getQuarter()),
-                'year'    => $this->getChart($fees->getYear()),
+                'day'     => $this->formatFeeChart($fees->all('day')),
+                'week'    => $this->formatFeeChart($fees->all('week')),
+                'month'   => $this->formatFeeChart($fees->all('month')),
+                'quarter' => $this->formatFeeChart($fees->all('quarter')),
+                'year'    => $this->formatFeeChart($fees->all('year')),
             ],
             'aggregates' => [
                 'price'             => ExchangeRate::now(),
@@ -42,7 +42,7 @@ final class HomeController
         ]);
     }
 
-    private function getChart(array $data): array
+    private function formatPriceChart(array $data): array
     {
         $labels   = Arr::get($data, 'labels', []);
         $datasets = Arr::get($data, 'datasets', []);
@@ -54,6 +54,21 @@ final class HomeController
             'min'      => NumberFormatter::number($numbers->min()),
             'avg'      => NumberFormatter::number($numbers->avg()),
             'max'      => NumberFormatter::number($numbers->max()),
+        ];
+    }
+
+    private function formatFeeChart(array $data): array
+    {
+        $labels   = Arr::get($data, 'historical.labels', []);
+        $datasets = Arr::get($data, 'historical.datasets', []);
+        $numbers  = collect($datasets)->map(fn ($dataset) => (float) $dataset);
+
+        return [
+            'labels'   => $labels,
+            'datasets' => $datasets,
+            'min'      => NumberFormatter::number($data['min']),
+            'avg'      => NumberFormatter::number($data['avg']),
+            'max'      => NumberFormatter::number($data['max']),
         ];
     }
 }

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Services\Cache\CryptoCompareCache;
-use App\Services\Cache\FeeChartCache;
+use App\Services\Cache\FeeCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\PriceChartCache;
 use function Tests\configureExplorerDatabase;
@@ -19,11 +19,12 @@ it('should render the page without any errors', function () {
     (new PriceChartCache())->setQuarter('USD', collect([]));
     (new PriceChartCache())->setYear('USD', collect([]));
 
-    (new FeeChartCache())->setDay(collect([]));
-    (new FeeChartCache())->setWeek(collect([]));
-    (new FeeChartCache())->setMonth(collect([]));
-    (new FeeChartCache())->setQuarter(collect([]));
-    (new FeeChartCache())->setYear(collect([]));
+    foreach (['day', 'week', 'month', 'quarter', 'year'] as $period) {
+        (new FeeCache())->setHistorical($period, collect([]));
+        (new FeeCache())->setMinimum($period, 0);
+        (new FeeCache())->setAverage($period, 0);
+        (new FeeCache())->setMaximum($period, 0);
+    }
 
     (new CryptoCompareCache())->setPrices('USD', collect([]));
 

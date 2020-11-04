@@ -269,8 +269,7 @@
             <div
                 class="flex items-center pr-5 mr-5 border-r border-theme-secondary-200 dark:border-theme-secondary-800">
                 <div class="flex flex-col">
-                    <span
-                        class="text-sm font-semibold text-theme-secondary-500 dark:text-theme-secondary-700">@lang("pages.home.charts.min_{$identifier}")</span>
+                    <span class="text-sm font-semibold text-theme-secondary-500 dark:text-theme-secondary-700">@lang("pages.home.charts.min_{$identifier}")</span>
                     <span class="font-semibold dark:text-theme-secondary-200" x-text="priceMin + ` ${currency}`"></span>
                 </div>
             </div>
@@ -278,19 +277,15 @@
             <div
                 class="flex items-center pr-5 mr-5 border-r border-theme-secondary-200 dark:border-theme-secondary-800">
                 <div class="flex flex-col">
-                    <span
-                        class="text-sm font-semibold text-theme-secondary-500 dark:text-theme-secondary-700">@lang("pages.home.charts.max_{$identifier}")</span>
-                    <span class="font-semibold dark:text-theme-secondary-200"
-                        x-text="priceMax + ` ${currency}`">0.02477504 BTC</span>
+                    <span class="text-sm font-semibold text-theme-secondary-500 dark:text-theme-secondary-700">@lang("pages.home.charts.max_{$identifier}")</span>
+                    <span class="font-semibold dark:text-theme-secondary-200" x-text="priceMax + ` ${currency}`"></span>
                 </div>
             </div>
 
             <div class="flex items-center pr-5 mr-5">
                 <div class="flex flex-col">
-                    <span
-                        class="text-sm font-semibold text-theme-secondary-500 dark:text-theme-secondary-700">@lang("pages.home.charts.avg_{$identifier}")</span>
-                    <span class="font-semibold dark:text-theme-secondary-200"
-                        x-text="priceAvg + ` ${currency}`">0.01570092 BTC</span>
+                    <span class="text-sm font-semibold text-theme-secondary-500 dark:text-theme-secondary-700">@lang("pages.home.charts.avg_{$identifier}")</span>
+                    <span class="font-semibold dark:text-theme-secondary-200" x-text="priceAvg + ` ${currency}`"></span>
                 </div>
             </div>
         </div>

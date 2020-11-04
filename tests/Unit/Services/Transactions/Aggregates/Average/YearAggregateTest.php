@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\CacheFeeChart;
 use App\Models\Transaction;
-
-use App\Services\Cache\FeeCache;
 use App\Services\Timestamp;
+use App\Services\Transactions\Aggregates\Fees\Average\YearAggregate;
 use Carbon\Carbon;
 use function Tests\configureExplorerDatabase;
 
-it('should execute the command', function () {
-    configureExplorerDatabase();
+beforeEach(fn () => configureExplorerDatabase());
+
+it('should determine the average fee for the given date range', function () {
     Carbon::setTestNow(Carbon::now());
 
     $start = Transaction::factory(10)->create([
@@ -24,12 +23,11 @@ it('should execute the command', function () {
         'timestamp' => Timestamp::now()->endOfDay()->unix(),
     ])->sortByDesc('timestamp');
 
-    (new CacheFeeChart())->handle($cache = new FeeCache());
+    $result = (new YearAggregate())->aggregate(
+        Timestamp::fromGenesis($start->last()->timestamp)->startOfDay(),
+        Timestamp::fromGenesis($end->last()->timestamp)->endOfDay()
+    );
 
-    foreach (['day', 'week', 'month', 'quarter', 'year'] as $period) {
-        expect($cache->getHistorical($period))->toBeArray();
-        expect($cache->getMinimum($period))->toBeFloat();
-        expect($cache->getAverage($period))->toBeFloat();
-        expect($cache->getMaximum($period))->toBeFloat();
-    }
+    expect($result)->toBeFloat();
+    expect($result)->toBe(1.5);
 });

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Services\Cache\FeeChartCache;
-use App\Services\Transactions\Aggregates\FeesByDayAggregate;
-use App\Services\Transactions\Aggregates\FeesByMonthAggregate;
-use App\Services\Transactions\Aggregates\FeesByQuarterAggregate;
-use App\Services\Transactions\Aggregates\FeesByWeekAggregate;
-use App\Services\Transactions\Aggregates\FeesByYearAggregate;
+use App\Services\Cache\FeeCache;
+use App\Services\Transactions\Aggregates\Fees\AverageAggregateFactory;
+use App\Services\Transactions\Aggregates\Fees\HistoricalAggregateFactory;
+use App\Services\Transactions\Aggregates\Fees\MaximumAggregateFactory;
+use App\Services\Transactions\Aggregates\Fees\MinimumAggregateFactory;
 use Illuminate\Console\Command;
 
 final class CacheFeeChart extends Command
@@ -33,16 +32,13 @@ final class CacheFeeChart extends Command
      *
      * @return int
      */
-    public function handle(FeeChartCache $cache)
+    public function handle(FeeCache $cache)
     {
-        $cache->setDay((new FeesByDayAggregate())->aggregate());
-
-        $cache->setWeek((new FeesByWeekAggregate())->aggregate());
-
-        $cache->setMonth((new FeesByMonthAggregate())->aggregate());
-
-        $cache->setQuarter((new FeesByQuarterAggregate())->aggregate());
-
-        $cache->setYear((new FeesByYearAggregate())->aggregate());
+        foreach (['day', 'week', 'month', 'quarter', 'year'] as $period) {
+            $cache->setHistorical($period, HistoricalAggregateFactory::make($period)->aggregate());
+            $cache->setMinimum($period, MinimumAggregateFactory::make($period)->aggregate());
+            $cache->setAverage($period, AverageAggregateFactory::make($period)->aggregate());
+            $cache->setMaximum($period, MaximumAggregateFactory::make($period)->aggregate());
+        }
     }
 }
