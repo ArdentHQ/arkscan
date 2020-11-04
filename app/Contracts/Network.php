@@ -22,8 +22,6 @@ interface Network
 
     public function canBeExchanged(): bool;
 
-    public function host(): string;
-
     public function usesMarketsquare(): bool;
 
     public function epoch(): Carbon;

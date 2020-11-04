@@ -22,7 +22,6 @@ it('should have all required properties', function (array $config) {
     expect($subject->knownWallets())->toBeArray();
     expect($subject->knownWallets())->toHaveCount(26);
     expect($subject->canBeExchanged())->toBe($config['canBeExchanged']);
-    expect($subject->host())->toBe($config['host']);
     expect($subject->usesMarketsquare())->toBe($config['usesMarketsquare']);
     expect($subject->epoch())->toBeInstanceOf(Carbon::class);
     expect($subject->delegateCount())->toBe($config['delegateCount']);
@@ -38,7 +37,6 @@ it('should have all required properties', function (array $config) {
         'confirmations'    => 51,
         'knownWallets'     => 'https://raw.githubusercontent.com/ArkEcosystem/common/master/mainnet/known-wallets-extended.json',
         'canBeExchanged'   => true,
-        'host'             => 'https://wallets.ark.io/api',
         'usesMarketsquare' => false,
         'epoch'            => Mainnet::new()->epoch(),
         'delegateCount'    => 51,
@@ -54,7 +52,6 @@ it('should have all required properties', function (array $config) {
         'confirmations'    => 51,
         'knownWallets'     => 'https://raw.githubusercontent.com/ArkEcosystem/common/master/devnet/known-wallets-extended.json',
         'canBeExchanged'   => false,
-        'host'             => 'https://dwallets.ark.io/api',
         'usesMarketsquare' => false,
         'epoch'            => Devnet::new()->epoch(),
         'delegateCount'    => 51,

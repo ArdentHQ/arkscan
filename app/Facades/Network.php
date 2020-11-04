@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Facade;
  * @method static int confirmations()
  * @method static array knownWallets()
  * @method static bool canBeExchanged()
- * @method static string host()
  * @method static bool usesMarketsquare()
  * @method static \Carbon\Carbon epoch()
  * @method static int delegateCount()

@@ -53,11 +53,6 @@ final class Network implements Contract
         return $this->config['canBeExchanged'];
     }
 
-    public function host(): string
-    {
-        return $this->config['host'];
-    }
-
     public function usesMarketsquare(): bool
     {
         return $this->config['usesMarketsquare'];
