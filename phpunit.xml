@@ -30,7 +30,7 @@
                 <file>./app/Console/Kernel.php</file>
                 <file>./app/Http/Kernel.php</file>
                 <!-- Application Code -->
-                <directory suffix=".php">./app/Console/Commands</directory>
+                <directory suffix=".php">./app/Console/Commands/CacheDevelopmentData.php</directory>
                 <directory suffix=".php">./app/Facades</directory>
                 <directory suffix=".php">./app/Models/Scopes</directory>
                 <!-- FIXME -->

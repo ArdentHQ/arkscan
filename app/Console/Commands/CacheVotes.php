@@ -31,14 +31,7 @@ final class CacheVotes extends Command
      */
     public function handle(WalletCache $cache)
     {
-        $publicKeys = Wallet::query()
-            ->distinct('attributes->vote')
-            ->whereNotNull('attributes->delegate->username')
-            ->pluck('attributes')
-            ->pluck('vote')
-            ->toArray();
-
-        Wallet::whereIn('public_key', $publicKeys)->get()->each(function ($wallet) use ($cache): void {
+        Wallet::where('attributes->delegate->voteBalance', '>=', 0)->cursor()->each(function ($wallet) use ($cache): void {
             if (! is_null($wallet->public_key)) {
                 $cache->setVote($wallet->public_key, $wallet);
             }

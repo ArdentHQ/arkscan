@@ -45,7 +45,7 @@ Finally you'll need to open the `.env` file and edit the following variables. *Y
 APP_NAME=Laravel
 APP_URL=http://localhost
 
-EXPLORER_NETWORK=ark.production
+EXPLORER_NETWORK=production
 EXPLORER_DB_HOST=127.0.0.1
 EXPLORER_DB_PORT=5432
 EXPLORER_DB_DATABASE=homestead
