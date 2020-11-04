@@ -159,6 +159,7 @@ return [
         'completed'  => 'Completed',
         'next'       => 'Next',
         'now'        => 'Now',
+        'monitor'    => 'Monitor',
         'statistics' => [
             'delegate_registrations' => 'Delegate Registrations',
             'block_reward'           => 'Block Reward',
