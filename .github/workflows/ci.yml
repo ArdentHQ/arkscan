@@ -140,3 +140,4 @@ jobs:
                   DB_USERNAME: explorer
                   DB_PASSWORD: password
                   PDO_ATTR_PERSISTENT: false
+                  EXPLORER_NODEJS: /usr/local/bin/node
