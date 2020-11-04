@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
+use App\Services\Blockchain\Network;
 use App\Services\Blockchain\NetworkFactory;
-use App\Services\Blockchain\Networks\ARK\Development;
-use App\Services\Blockchain\Networks\ARK\Production;
 
 it('should handle ARK Production', function () {
-    expect(NetworkFactory::make('ark.production'))->toBeInstanceOf(Production::class);
+    expect(NetworkFactory::make('production'))->toBeInstanceOf(Network::class);
 });
 
 it('should handle ARK Development', function () {
-    expect(NetworkFactory::make('ark.development'))->toBeInstanceOf(Development::class);
+    expect(NetworkFactory::make('development'))->toBeInstanceOf(Network::class);
 });
 
 it('should throw if an unknown network is used', function () {
