@@ -8,6 +8,7 @@ use App\Facades\Rounds;
 use App\Jobs\CacheLastBlockByPublicKey;
 use App\Models\Block;
 use App\Models\Round;
+use App\Models\Scopes\OrderByHeightScope;
 use App\Services\Cache\NetworkCache;
 use App\Services\Monitor\Monitor;
 use Illuminate\Console\Command;
@@ -35,7 +36,7 @@ final class CacheLastBlocks extends Command
      */
     public function handle()
     {
-        resolve(NetworkCache::class)->setHeight(Block::latestByHeight()->firstOrFail()->height->toNumber());
+        resolve(NetworkCache::class)->setHeight(Block::withScope(OrderByHeightScope::class)->firstOrFail()->height->toNumber());
 
         /*
          * We are iterating over each round participant and dispatch a job to cache the last block.

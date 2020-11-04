@@ -6,8 +6,6 @@ namespace App\Models;
 
 use App\Models\Casts\BigInteger;
 use App\Services\BigNumber;
-use GeneaLabs\LaravelModelCaching\Traits\Cachable;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,7 +19,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 final class Wallet extends Model
 {
-    // use Cachable;
     use HasFactory;
 
     /**
@@ -70,31 +67,6 @@ final class Wallet extends Model
     public function blocks(): HasMany
     {
         return $this->hasMany(Block::class, 'generator_public_key', 'public_key');
-    }
-
-    /**
-     * Scope a query to only include transactions by the recipient.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string                                $publicKey
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeVote($query, $publicKey): Builder
-    {
-        return $query->where('vote', $publicKey);
-    }
-
-    /**
-     * Scope a query to sort wallets by balance.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeWealthy($query): Builder
-    {
-        return $query->orderBy('balance', 'desc');
     }
 
     /**

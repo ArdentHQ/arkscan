@@ -7,6 +7,8 @@ use App\Enums\TransactionTypeGroupEnum;
 use App\Facades\Network;
 use App\Http\Livewire\LatestRecords;
 use App\Models\Block;
+use App\Models\Scopes\OrderByHeightScope;
+use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\NumberFormatter;
@@ -22,7 +24,7 @@ it('should list the first page of blocks', function () {
 
     $component = Livewire::test(LatestRecords::class);
 
-    foreach (ViewModelFactory::collection(Block::latestByHeight()->take(15)->get()) as $block) {
+    foreach (ViewModelFactory::collection(Block::withScope(OrderByHeightScope::class)->take(15)->get()) as $block) {
         $component->assertSee($block->id());
         $component->assertSee($block->timestamp());
         $component->assertSee($block->username());
@@ -38,7 +40,7 @@ it('should list the first page of transactions', function () {
 
     $component = Livewire::test(LatestRecords::class);
 
-    foreach (ViewModelFactory::collection(Transaction::latestByTimestamp()->take(15)->get()) as $transaction) {
+    foreach (ViewModelFactory::collection(Transaction::withScope(OrderByTimestampScope::class)->take(15)->get()) as $transaction) {
         $component->assertSee($transaction->id());
         $component->assertSee($transaction->timestamp());
         $component->assertSee($transaction->sender()->address());

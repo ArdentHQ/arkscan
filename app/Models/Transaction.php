@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Models\Casts\BigInteger;
 use App\Services\BigNumber;
-use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,7 +25,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 final class Transaction extends Model
 {
-    // use Cachable;
     use HasFactory;
 
     /**
@@ -86,44 +84,6 @@ final class Transaction extends Model
     public function recipient(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'recipient_id', 'address');
-    }
-
-    /**
-     * Scope a query to sort transactions by their forging time, new to old.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeLatestByTimestamp($query)
-    {
-        return $query->orderBy('timestamp', 'desc');
-    }
-
-    /**
-     * Scope a query to only include transactions by the sender.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string                                $publicKey
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeSendBy($query, $publicKey)
-    {
-        return $query->where('sender_public_key', $publicKey);
-    }
-
-    /**
-     * Scope a query to only include transactions by the recipient.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string                                $address
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeReceivedBy($query, $address)
-    {
-        return $query->where('recipient_id', $address);
     }
 
     /**

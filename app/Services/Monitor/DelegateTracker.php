@@ -6,6 +6,7 @@ namespace App\Services\Monitor;
 
 use App\Facades\Network;
 use App\Models\Block;
+use App\Models\Scopes\OrderByHeightScope;
 use Illuminate\Support\Collection;
 
 final class DelegateTracker
@@ -351,7 +352,7 @@ final class DelegateTracker
     public static function execute(Collection $delegates): array
     {
         // Arrange Block
-        $lastBlock = Block::current();
+        $lastBlock = Block::withScope(OrderByHeightScope::class)->firstOrFail();
         $height    = $lastBlock->height->toNumber(); // 5720529;
         $timestamp = $lastBlock->timestamp; // 113620904;
 

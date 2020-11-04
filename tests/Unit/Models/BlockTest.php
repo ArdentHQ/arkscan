@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Block;
 use App\Models\Wallet;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -41,12 +40,4 @@ it('should have a delegate that forged the block', function () {
 it('should have a previous block', function () {
     expect($this->subject->previous())->toBeInstanceOf(HasOne::class);
     expect($this->subject->previous)->toBeInstanceOf(Block::class);
-});
-
-it('should order blocks by their height from new to old', function () {
-    expect($this->subject->latestByHeight())->toBeInstanceOf(Builder::class);
-});
-
-it('should only query blocks that were forged by the given public key', function () {
-    expect($this->subject->generator('some-public-key'))->toBeInstanceOf(Builder::class);
 });

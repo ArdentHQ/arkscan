@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Facades\Network;
 use App\Http\Livewire\WalletTable;
+use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\NumberFormatter;
@@ -20,7 +21,7 @@ it('should list the first page of records', function () {
 
     $component = Livewire::test(WalletTable::class);
 
-    foreach (ViewModelFactory::paginate(Wallet::wealthy()->paginate())->items() as $wallet) {
+    foreach (ViewModelFactory::paginate(Wallet::withScope(OrderByBalanceScope::class)->paginate())->items() as $wallet) {
         $component->assertSee($wallet->address());
         $component->assertSee(NumberFormatter::currency($wallet->balance(), Network::currency()));
     }

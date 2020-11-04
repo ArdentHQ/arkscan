@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\Wallet;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use function Tests\configureExplorerDatabase;
@@ -34,12 +33,4 @@ it('should have many received transactions', function () {
 it('should have many blocks', function () {
     expect($this->subject->blocks())->toBeInstanceOf(HasMany::class);
     expect($this->subject->blocks)->toBeInstanceOf(Collection::class);
-});
-
-it('should order wallets by their balance from high to low', function () {
-    expect($this->subject->wealthy())->toBeInstanceOf(Builder::class);
-});
-
-it('should only query wallets that vote for the given public key', function () {
-    expect($this->subject->vote('some-public-key'))->toBeInstanceOf(Builder::class);
 });

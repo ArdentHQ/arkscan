@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\Block;
+use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use Illuminate\Console\Command;
@@ -39,7 +40,7 @@ final class CacheRealTimeStatistics extends Command
 
     private function getHeight(): int
     {
-        $block = Block::latestByHeight()->first();
+        $block = Block::withScope(OrderByHeightScope::class)->first();
 
         if (is_null($block)) {
             return 0;

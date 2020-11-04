@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
 use App\ViewModels\ViewModelFactory;
 use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasPagination;
@@ -17,7 +18,7 @@ final class WalletTable extends Component
     public function render(): View
     {
         return view('livewire.wallet-table', [
-            'wallets' => ViewModelFactory::paginate(Wallet::wealthy()->paginate()),
+            'wallets' => ViewModelFactory::paginate(Wallet::withScope(OrderByBalanceScope::class)->paginate()),
         ]);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Models\Block;
+use App\Models\Scopes\OrderByHeightScope;
 use App\ViewModels\ViewModelFactory;
 use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasPagination;
 use Illuminate\View\View;
@@ -27,7 +28,7 @@ final class WalletBlockTable extends Component
     public function render(): View
     {
         return view('livewire.wallet-block-table', [
-            'blocks' => ViewModelFactory::paginate(Block::where('generator_public_key', $this->publicKey)->latestByHeight()->paginate()),
+            'blocks' => ViewModelFactory::paginate(Block::where('generator_public_key', $this->publicKey)->withScope(OrderByHeightScope::class)->paginate()),
         ]);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Concerns;
 
+use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Services\Cache\TableCache;
 
@@ -21,7 +22,7 @@ trait ManagesLatestTransactions
     public function pollTransactions(): void
     {
         $this->transactions = (new TableCache())->setLatestTransactions($this->state['type'], function () {
-            $query = Transaction::latestByTimestamp();
+            $query = Transaction::withScope(OrderByTimestampScope::class);
 
             if ($this->state['type'] !== 'all') {
                 $scopeClass = $this->scopes[$this->state['type']];

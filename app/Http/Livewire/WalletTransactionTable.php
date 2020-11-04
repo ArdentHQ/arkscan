@@ -6,6 +6,7 @@ namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
 use App\Http\Livewire\Concerns\ManagesTransactionTypeScopes;
+use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
 use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasPagination;
@@ -52,15 +53,15 @@ final class WalletTransactionTable extends Component
     public function render(): View
     {
         if ($this->state['direction'] === 'received') {
-            $items         = $this->getReceivedQuery()->latestByTimestamp()->paginate();
+            $items         = $this->getReceivedQuery()->withScope(OrderByTimestampScope::class)->paginate();
             $receivedCount = $items->total();
             $sentCount     = $this->getSentQuery()->count();
         } elseif ($this->state['direction'] === 'sent') {
-            $items         = $this->getSentQuery()->latestByTimestamp()->paginate();
+            $items         = $this->getSentQuery()->withScope(OrderByTimestampScope::class)->paginate();
             $receivedCount = $this->getReceivedQuery()->count();
             $sentCount     = $items->total();
         } else {
-            $items         = $this->getAllQuery()->latestByTimestamp()->paginate();
+            $items         = $this->getAllQuery()->withScope(OrderByTimestampScope::class)->paginate();
             $receivedCount = $this->getReceivedQuery()->count();
             $sentCount     = $this->getSentQuery()->count();
         }

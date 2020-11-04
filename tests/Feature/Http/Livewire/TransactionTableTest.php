@@ -8,11 +8,12 @@ use App\Enums\TransactionTypeGroupEnum;
 use App\Facades\Network;
 use App\Http\Livewire\TransactionTable;
 use App\Models\Block;
+use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\NumberFormatter;
-use App\ViewModels\ViewModelFactory;
 
+use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
 use Ramsey\Uuid\Uuid;
 use function Tests\configureExplorerDatabase;
@@ -24,7 +25,7 @@ it('should list the first page of records', function () {
 
     $component = Livewire::test(TransactionTable::class);
 
-    foreach (ViewModelFactory::paginate(Transaction::latestByTimestamp()->paginate())->items() as $transaction) {
+    foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {
         $component->assertSee($transaction->id());
         $component->assertSee($transaction->timestamp());
         $component->assertSee($transaction->sender()->address());

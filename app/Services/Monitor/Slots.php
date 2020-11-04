@@ -6,6 +6,7 @@ namespace App\Services\Monitor;
 
 use App\Facades\Network;
 use App\Models\Block;
+use App\Models\Scopes\OrderByHeightScope;
 use Carbon\Carbon;
 
 final class Slots
@@ -105,7 +106,7 @@ final class Slots
     private function getLatestHeight(?int $height): int
     {
         if (is_null($height)) {
-            return Block::current()->height->toNumber();
+            return Block::withScope(OrderByHeightScope::class)->firstOrFail()->height->toNumber();
         }
 
         return $height;

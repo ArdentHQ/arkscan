@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Http\Livewire\Concerns\ManagesTransactionTypeScopes;
+use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
 use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasPagination;
@@ -30,7 +31,7 @@ final class TransactionTable extends Component
 
     public function render(): View
     {
-        $query = Transaction::latestByTimestamp();
+        $query = Transaction::withScope(OrderByTimestampScope::class);
 
         if ($this->state['type'] !== 'all') {
             $scopeClass = $this->scopes[$this->state['type']];
