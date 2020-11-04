@@ -2,7 +2,7 @@
     <x-table-skeleton
         device="desktop"
         :items="[
-            'general.block.id'           => 'filler',
+            'general.block.id'           => 'text',
             'general.block.timestamp'    => 'text',
             'general.block.height'       => 'number',
             'general.block.transactions' => 'number',
@@ -14,7 +14,7 @@
     <x-table-skeleton
         device="desktop"
         :items="[
-            'general.block.id'           => 'filler',
+            'general.block.id'           => 'text',
             'general.block.timestamp'    => 'text',
             'general.block.generated_by' => 'address',
             'general.block.height'       => 'number',

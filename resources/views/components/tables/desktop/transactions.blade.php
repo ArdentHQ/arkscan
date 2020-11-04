@@ -2,7 +2,7 @@
     <table>
         <thead>
             <tr>
-                <x-tables.headers.desktop.filler />
+                <x-tables.headers.desktop.text name="general.transaction.id" />
                 <x-tables.headers.desktop.text name="general.transaction.timestamp" />
                 <x-tables.headers.desktop.address name="general.transaction.sender" />
                 <x-tables.headers.desktop.address name="general.transaction.recipient" />
