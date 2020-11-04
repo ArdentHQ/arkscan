@@ -42,6 +42,6 @@ return [
         ],
     ],
 
-    'nodejs'  => env('EXPLORER_NODEJS', '/usr/bin/node'),
+    'nodejs' => env('EXPLORER_NODEJS', '/usr/bin/node'),
 
 ];

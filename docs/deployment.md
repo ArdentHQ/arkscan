@@ -41,16 +41,17 @@ php artisan storage:link
 
 Finally you'll need to open the `.env` file and edit the following variables. *You should leave all other variables at their defaults.*
 
-```bash
-APP_NAME=Laravel
-APP_URL=http://localhost
+```ini
+APP_NAME="Your Explorer Title"
+APP_URL=http://your-domain.com
 
 EXPLORER_NETWORK=production
-EXPLORER_DB_HOST=127.0.0.1
-EXPLORER_DB_PORT=5432
-EXPLORER_DB_DATABASE=homestead
-EXPLORER_DB_USERNAME=homestead
-EXPLORER_DB_PASSWORD=password
+EXPLORER_DB_DATABASE=YOUR_CORE_DATABASE
+EXPLORER_DB_USERNAME=YOUR_CORE_DATABASE_USERNAME
+EXPLORER_DB_PASSWORD=YOUR_CORE_DATABASE_PASSWORD
+
+; You can find out the path by running "which node" and then use the output.
+EXPLORER_NODEJS=/path/to/your/nodejs/installation
 ```
 
 > We do recommend to set `PDO_ATTR_PERSISTENT` to `true` (which is the default) to make use of persistent PostgreSQL connections. This greatly increases the execution time of database queries on pages that execute a lot of queries because the server won't have to establish a new connection for every query. Keep in mind that this requires more resources to keep up the connections but ultimately yields a smoother experienced.
@@ -94,6 +95,7 @@ php artisan cache:chart-fee
 php artisan cache:past-round-performance
 php artisan cache:productivity
 php artisan cache:votes
+php artisan cache:voter-count
 php artisan cache:resignation-ids
 ```
 
