@@ -2,8 +2,8 @@
     <table>
         <thead>
             <tr>
-                <th><span class="pl-14">@lang('general.transaction.recipient')</span></th>
-                <th width="180" class="hidden text-right md:table-cell">@lang('general.transaction.amount')</th>
+                <x-tables.headers.desktop.address name="general.transaction.recipient" />
+                <x-tables.headers.desktop.number name="general.transaction.amount" />
             </tr>
         </thead>
         <tbody>

@@ -2,19 +2,15 @@
     <table>
         <thead>
             <tr>
-                <th class="text-center">&nbsp;</th>
-                <th class="hidden md:table-cell">@lang('general.block.timestamp')</th>
+                <x-tables.headers.desktop.filler />
+                <x-tables.headers.desktop.text name="general.block.timestamp" responsive />
                 @if(!isset($withoutGenerator))
-                    <th><span class="pl-14">@lang('general.block.generated_by')</span></th>
+                    <x-tables.headers.desktop.address name="general.block.generated_by" />
                 @endif
-                <th>@lang('general.block.height')</th>
-                <th>
-                    <div class="inline-block">
-                        <span>@lang('general.block.transactions')</span>
-                    </div>
-                </th>
-                <th class="text-right">@lang('general.block.amount')</th>
-                <th class="hidden text-right lg:table-cell">@lang('general.block.fee')</th>
+                <x-tables.headers.desktop.number name="general.block.height" />
+                <x-tables.headers.desktop.number name="general.block.transactions" />
+                <x-tables.headers.desktop.number name="general.block.amount" />
+                <x-tables.headers.desktop.number name="general.block.fee" responsive />
             </tr>
         </thead>
         <tbody>

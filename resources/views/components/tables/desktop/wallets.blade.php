@@ -2,10 +2,10 @@
     <table>
         <thead>
             <tr>
-                <th><span class="pl-14">@lang('general.wallet.address')</span></th>
-                <th class="text-center">@lang('general.wallet.info')</th>
-                <th class="text-right">@lang('general.wallet.balance')</th>
-                <th width="120" class="hidden text-right lg:table-cell">@lang('general.wallet.supply')</th>
+                <x-tables.headers.desktop.address name="general.wallet.address" />
+                <x-tables.headers.desktop.text name="general.wallet.info" />
+                <x-tables.headers.desktop.number name="general.wallet.balance" />
+                <x-tables.headers.desktop.number name="general.wallet.supply" responsive />
             </tr>
         </thead>
         <tbody>
