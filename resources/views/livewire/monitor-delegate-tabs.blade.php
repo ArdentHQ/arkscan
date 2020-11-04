@@ -37,7 +37,6 @@
     </div>
 
     <div class="w-2/12 text-center tabs md:ml-6">
-        {{-- @TODO: svg icon --}}
         <div
             class="tab-item transition-default"
             :class="{ 'tab-item-current': component === 'monitor' }"
