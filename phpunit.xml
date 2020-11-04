@@ -34,10 +34,11 @@
                 <directory suffix=".php">./app/Facades</directory>
                 <directory suffix=".php">./app/Models/Scopes</directory>
                 <!-- FIXME -->
-                <file>./app/Http/Livewire/LatestRecords.php</file>
                 <file>./app/Http/Livewire/Concerns/ManagesLatestBlocks.php</file>
                 <file>./app/Http/Livewire/Concerns/ManagesLatestTransactions.php</file>
+                <file>./app/Http/Livewire/LatestRecords.php</file>
                 <file>./app/Http/Livewire/SearchModule.php</file>
+                <file>./app/Services/Blockchain/CustomNetwork.php</file>
             </exclude>
         </whitelist>
     </filter>

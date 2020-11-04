@@ -7,6 +7,7 @@ namespace App\Services\Blockchain;
 use App\Contracts\Network as Contract;
 use App\Services\Cache\WalletCache;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 
 final class Network implements Contract
@@ -45,6 +46,10 @@ final class Network implements Contract
 
     public function knownWallets(): array
     {
+        if (is_null(Arr::get($this->config, 'knownWallets'))) {
+            return [];
+        }
+
         return (new WalletCache())->setKnown(fn () => Http::get($this->config['knownWallets'])->json());
     }
 
@@ -80,6 +85,6 @@ final class Network implements Contract
 
     public function config(): \BitWasp\Bitcoin\Network\Network
     {
-        return resolve($this->config['config']);
+        return new CustomNetwork($this->config);
     }
 }
