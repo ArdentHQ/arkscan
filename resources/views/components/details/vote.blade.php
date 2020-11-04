@@ -13,6 +13,6 @@
             {!! $icon !!}
         </div>
 
-        <x-general.avatar :identifier="$model->address()" avatar-size="w-11 h-11"/>
+        <x-general.avatar :identifier="$model->address()" no-shrink/>
     </div>
 </div>
