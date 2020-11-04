@@ -7,8 +7,8 @@ namespace App\Http\Livewire;
 use App\Http\Livewire\Concerns\ManagesLatestBlocks;
 use App\Http\Livewire\Concerns\ManagesLatestTransactions;
 use App\ViewModels\ViewModelFactory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use Illuminate\View\View;
 use Livewire\Component;
 
 final class LatestRecords extends Component
