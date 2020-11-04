@@ -30,5 +30,5 @@ it('should aggregate the fees for the given range', function () {
     );
 
     expect($result)->toBeInstanceOf(Collection::class);
-    // assertMatchesSnapshot($result);
+    assertMatchesSnapshot($result);
 });

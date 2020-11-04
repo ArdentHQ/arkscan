@@ -12,7 +12,7 @@ use function Tests\configureExplorerDatabase;
 
 it('should execute the command', function () {
     configureExplorerDatabase();
-    Carbon::setTestNow(Carbon::now());
+    Carbon::setTestNow('2021-01-01 00:00:00');
 
     $start = Transaction::factory(10)->create([
         'fee'       => '100000000',

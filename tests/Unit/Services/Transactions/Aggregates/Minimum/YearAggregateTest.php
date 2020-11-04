@@ -12,7 +12,7 @@ use function Tests\configureExplorerDatabase;
 beforeEach(fn () => configureExplorerDatabase());
 
 it('should determine the average fee for the given date range', function () {
-    Carbon::setTestNow(Carbon::now());
+    Carbon::setTestNow('2021-01-01 00:00:00');
 
     $start = Transaction::factory(10)->create([
         'fee'       => '100000000',

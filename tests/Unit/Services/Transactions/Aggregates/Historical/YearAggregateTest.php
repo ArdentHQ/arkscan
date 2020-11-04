@@ -14,23 +14,20 @@ use function Tests\configureExplorerDatabase;
 beforeEach(fn () => configureExplorerDatabase());
 
 it('should aggregate the fees for 12 months', function () {
-    Carbon::setTestNow(Carbon::now());
+    Carbon::setTestNow('2021-01-01 00:00:00');
 
-    $start = Transaction::factory(10)->create([
+    Transaction::factory(10)->create([
         'fee'       => '100000000',
         'timestamp' => 112982056,
     ])->sortByDesc('timestamp');
 
-    $end = Transaction::factory(10)->create([
+    Transaction::factory(10)->create([
         'fee'       => '100000000',
         'timestamp' => Timestamp::now()->endOfDay()->unix(),
-    ])->sortByDesc('timestamp');
+    ]);
 
-    $result = (new YearAggregate())->aggregate(
-        Timestamp::fromGenesis($start->last()->timestamp)->startOfDay(),
-        Timestamp::fromGenesis($end->last()->timestamp)->endOfDay()
-    );
+    $result = (new YearAggregate())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
-    // assertMatchesSnapshot($result);
+    assertMatchesSnapshot($result);
 });

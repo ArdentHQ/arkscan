@@ -12,22 +12,19 @@ use function Tests\configureExplorerDatabase;
 beforeEach(fn () => configureExplorerDatabase());
 
 it('should determine the average fee for the given date range', function () {
-    Carbon::setTestNow(Carbon::now());
+    Carbon::setTestNow('2021-01-01 00:00:00');
 
-    $start = Transaction::factory(10)->create([
+    Transaction::factory(10)->create([
         'fee'       => '100000000',
         'timestamp' => Timestamp::now()->subDays(30)->unix(),
-    ])->sortByDesc('timestamp');
+    ]);
 
-    $end = Transaction::factory(10)->create([
+    Transaction::factory(10)->create([
         'fee'       => '200000000',
         'timestamp' => Timestamp::now()->endOfDay()->unix(),
-    ])->sortByDesc('timestamp');
+    ]);
 
-    $result = (new MonthAggregate())->aggregate(
-        Timestamp::fromGenesis($start->last()->timestamp)->startOfDay(),
-        Timestamp::fromGenesis($end->last()->timestamp)->endOfDay()
-    );
+    $result = (new MonthAggregate())->aggregate();
 
     expect($result)->toBeFloat();
     expect($result)->toBe(2.0);
