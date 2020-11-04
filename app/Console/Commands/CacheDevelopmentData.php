@@ -32,6 +32,7 @@ final class CacheDevelopmentData extends Command
     public function handle(DelegateCache $cache)
     {
         $commands = [
+            'real-time-statistics',
             'delegate-aggregates',
             'delegates',
             'exchange-rates',
@@ -41,7 +42,6 @@ final class CacheDevelopmentData extends Command
             'statistics',
             'past-round-performance',
             'productivity',
-            'real-time-statistics',
             'resignation-ids',
             'usernames',
             'voter-count',
