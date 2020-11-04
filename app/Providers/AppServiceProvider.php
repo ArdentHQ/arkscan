@@ -8,6 +8,7 @@ use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
+use Konceiver\DataBags\DataBag;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,13 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerCollectionMacros();
+
+        $this->registerDataBags();
+    }
+
+    private function registerCollectionMacros(): void
+    {
         Collection::macro('sumBigNumber', function (string $key) {
             /** @var Collection $collection */
             $collection = $this;
@@ -44,5 +52,23 @@ final class AppServiceProvider extends ServiceProvider
             /* @phpstan-ignore-next-line */
             return collect($this->items);
         });
+    }
+
+    private function registerDataBags(): void
+    {
+        DataBag::register('metatags', [
+            'monitor' => [
+                'title'       => 'Delegate Monitor | ARK Explorer | Cryptocurrency Block Explorer',
+                'description' => 'Monitor Delegate activity for the ARK Public Network. See Delegate rankings and track Voting Power in the ARK Blockchain.',
+            ],
+            'wallets' => [
+                'title'       => 'Wallet Addresses | ARK Explorer | Cryptocurrency Block Explorer',
+                'description' => 'See wallet addresses on the ARK Explorer. Track balances and see transaction activity for wallet addresses on the ARK Public Nework',
+            ],
+            '*' => [
+                'title'       => 'ARK Explorer | Cryptocurrency Block Explorer',
+                'description' => 'View cryptocurrency transactions and track cryptocurrency balances. A simple block explorer to monitor Blockchain activity on the ARK Public Network.',
+            ],
+        ]);
     }
 }

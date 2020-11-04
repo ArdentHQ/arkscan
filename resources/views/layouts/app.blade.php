@@ -26,8 +26,7 @@
         @hasSection('metatags')
             @yield('metatags')
         @else
-            <meta property="og:title" content="@lang('metatags.home.title')" />
-            <meta property="og:description" content="@lang('metatags.home.description')">
+            <x-data-bag key="metatags" resolver="path" view="components.metatags" />
         @endif
 
         <!-- Styles -->
