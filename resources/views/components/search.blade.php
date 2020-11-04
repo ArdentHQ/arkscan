@@ -7,7 +7,7 @@
         searchType: '{{ $type ?? 'block' }}',
     }"
     @mobile-search.window="isMobileOpen = true"
-    class="searchbar @if ($isSlim ?? false) searchbar-slim @endif"
+    class="searchbar @if ($isSlim ?? false) searchbar-slim @else shadow-lg rounded-b-lg @endif"
     x-bind:class="{
         'search-mobile': isMobileOpen,
         'search-advanced': showAdvanced,
@@ -19,7 +19,7 @@
         @click="isMobileOpen = false"
     ></div>
 
-    <div class="search-container">
+    <div class="search-container ">
         <div class="search-simple">
             @if ($isSlim ?? false)
                 <div
