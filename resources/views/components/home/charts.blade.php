@@ -29,7 +29,7 @@
             />
         </div>
 
-        <div class="grid w-full grid-flow-row grid-cols-2 gap-6 pt-8 mt-5 mb-16 {{ Network::canbeExchanged() ?  'xl:grid-cols-4' : 'xl:grid-cols-3'}} gap-y-12 xl:gap-y-4">
+        <div class="grid w-full grid-flow-row grid-cols-2 gap-6 pt-8 mt-5 mb-16 {{ Network::canbeExchanged() ?  'xl:grid-cols-4' : 'xl:grid-cols-3'}} gap-y-12 xl:gap-y-4 chart-details">
             @if(Network::canBeExchanged())
                 <x-details-box :title="trans('pages.home.network-details.price')" icon="app-price">
                     {{ $aggregates['price'] }}

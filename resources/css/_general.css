@@ -249,6 +249,12 @@ body {
     }
 }
 
+@screen sm {
+    .chart-details > .detail-box:nth-child(2n + 1) {
+        @apply border-r pr-6 border-theme-secondary-300;
+    }
+}
+
 @screen md {
     .delegate-details > .detail-box:nth-child(2n + 1) {
         @apply border-r pr-6 border-theme-secondary-300;
@@ -261,7 +267,18 @@ body {
     }
 }
 
-.theme-dark .delegate-details > .detail-box {
+@screen xl {
+    .chart-details > .detail-box:not(:last-child) {
+        @apply border-r pr-6 border-theme-secondary-300;
+    }
+
+    .chart-details > .detail-box:last-child {
+        @apply border-r-0; /* Needed because of the sm chart-details rule matching the 3rd entry if there's only 3 */
+    }
+}
+
+.theme-dark .delegate-details > .detail-box,
+.theme-dark .chart-details > .detail-box {
     @apply border-theme-secondary-800;
 }
 
