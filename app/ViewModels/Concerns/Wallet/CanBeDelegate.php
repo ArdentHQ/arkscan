@@ -14,6 +14,11 @@ trait CanBeDelegate
         return Arr::has($this->wallet, 'attributes.delegate');
     }
 
+    public function isResigned(): bool
+    {
+        return Arr::has($this->wallet, 'attributes.delegate.resigned');
+    }
+
     public function resignationId(): ?string
     {
         if (is_null($this->wallet->public_key)) {

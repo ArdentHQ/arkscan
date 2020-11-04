@@ -19,7 +19,11 @@
                     icon="app-votes"
                 >
                     <x-slot name="text">
-                        @lang('pages.wallet.vote_rank', [$vote->rank()])
+                        @if ($wallet->isResigned())
+                            <x-details.resigned />
+                        @else
+                            @lang('pages.wallet.vote_rank', [$vote->rank()])
+                        @endif
                     </x-slot>
                 </x-general.entity-header-item>
                 @if (Network::usesMarketSquare())

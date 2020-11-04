@@ -140,6 +140,7 @@ return [
             'forged_blocks'    => 'Forged Blocks',
             'productivity'     => 'Productivity (30 Days)',
             'voters'           => 'Voters',
+            'resigned'         => 'Resigned',
         ],
     ],
 
