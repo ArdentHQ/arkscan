@@ -75,7 +75,7 @@ final class SearchModule extends Component
     {
         $term = Arr::get($data, 'term');
 
-        if (is_null($term)) {
+        if (is_null($term) || $term === '') {
             return false;
         }
 

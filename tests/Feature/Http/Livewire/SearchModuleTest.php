@@ -51,3 +51,25 @@ it('should redirect to the advanced search page if there are no results', functi
             'state[type]' => 'block',
         ]));
 });
+
+it('should redirect to the advanced search page if the term is null', function () {
+    Livewire::test(SearchModule::class)
+        ->set('state.term', null)
+        ->set('state.type', 'block')
+        ->call('performSearch')
+        ->assertRedirect(route('search', [
+            'state[term]' => null,
+            'state[type]' => 'block',
+        ]));
+});
+
+it('should redirect to the advanced search page if the term is empty', function () {
+    Livewire::test(SearchModule::class)
+        ->set('state.term', '')
+        ->set('state.type', 'block')
+        ->call('performSearch')
+        ->assertRedirect(route('search', [
+            'state[term]' => '',
+            'state[type]' => 'block',
+        ]));
+});
