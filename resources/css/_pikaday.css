@@ -1,0 +1,11 @@
+.pika-table td.is-disabled .pika-button {
+    @apply bg-theme-secondary-50 !important;
+}
+
+.pika-button .is-selected {
+    @apply bg-theme-primary-700 !important;
+}
+
+.pika-button:hover {
+    @apply bg-theme-info-600 !important;
+}

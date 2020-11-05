@@ -5,6 +5,7 @@
 
 /** Custom Styles */
 @import "_general.css";
+@import "_pikaday.css";
 
 /** 3rd party **/
 @import "../../node_modules/pikaday/css/pikaday.css";

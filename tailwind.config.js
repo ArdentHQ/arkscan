@@ -56,6 +56,15 @@ module.exports = {
             });
         }),
     ],
+    purge: {
+        ...defaultConfig.purge,
+        options: {
+            whitelistPatterns: [
+                ...defaultConfig.purge.options.whitelistPatterns,
+                /^pika-/,
+            ],
+        },
+    },
     future: {
         ...defaultConfig.future,
         defaultLineHeights: true,
