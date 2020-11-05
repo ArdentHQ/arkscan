@@ -30,12 +30,14 @@
                             :text="$statistics['currentDelegate']->username()"
                             :url="route('wallet', $statistics['currentDelegate']->address())"
                             icon="app-current-delegate"
+                            icon-size="md"
                         />
                         <x-general.entity-header-item
                             :title="trans('pages.monitor.statistics.next_delegate')"
                             :text="$statistics['nextDelegate']->username()"
                             :url="route('wallet', $statistics['nextDelegate']->address())"
                             icon="app-next-delegate"
+                            icon-size="md"
                         />
                     </div>
                 </div>
