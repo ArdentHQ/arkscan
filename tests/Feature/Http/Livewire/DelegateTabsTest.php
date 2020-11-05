@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Livewire\MonitorDelegateTabs;
+use App\Http\Livewire\DelegateTabs;
 use Livewire\Livewire;
 
 use function Tests\configureExplorerDatabase;
@@ -11,5 +11,5 @@ beforeEach(fn () => configureExplorerDatabase());
 
 // @TODO: make assertions about data visibility
 it('should render without errors', function () {
-    $component = Livewire::test(MonitorDelegateTabs::class);
+    $component = Livewire::test(DelegateTabs::class);
 });

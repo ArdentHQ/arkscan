@@ -47,7 +47,7 @@
         <div id="app" class="flex flex-col antialiased bg-white dark:bg-theme-secondary-900">
             <x-navbar.navbar
                 :navigation="[
-                    ['route' => 'monitor', 'label' => trans('menus.delegates')],
+                    ['route' => 'delegates', 'label' => trans('menus.delegates')],
                     ['route' => 'wallets', 'label' => trans('menus.wallets')],
                 ]"
             >

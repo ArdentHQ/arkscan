@@ -2,11 +2,11 @@
     <table>
         <thead>
             <tr>
-                <th>@lang('pages.monitor.order')</th>
-                <th><span class="pl-14">@lang('pages.monitor.name')</span></th>
-                <th><span class="pl-14">@lang('pages.monitor.forging_at')</span></th>
-                <th>@lang('pages.monitor.status')</th>
-                <th width="120" class="hidden text-right lg:table-cell">@lang('pages.monitor.block_id')</th>
+                <th>@lang('pages.delegates.order')</th>
+                <th><span class="pl-14">@lang('pages.delegates.name')</span></th>
+                <th><span class="pl-14">@lang('pages.delegates.forging_at')</span></th>
+                <th>@lang('pages.delegates.status')</th>
+                <th width="120" class="hidden text-right lg:table-cell">@lang('pages.delegates.block_id')</th>
             </tr>
         </thead>
         <tbody>

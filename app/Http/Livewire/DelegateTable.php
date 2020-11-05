@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\View;
 use Livewire\Component;
 
-final class MonitorDelegateTable extends Component
+final class DelegateTable extends Component
 {
     public array $state = [
         'status' => 'active',
@@ -30,7 +30,7 @@ final class MonitorDelegateTable extends Component
             $delegates = $this->activeQuery()->get();
         }
 
-        return view('livewire.monitor-delegate-table', [
+        return view('livewire.delegate-table', [
             'delegates' => ViewModelFactory::collection($delegates),
         ]);
     }

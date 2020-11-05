@@ -9,7 +9,6 @@ return [
     'wallets'     => 'Wallets',
     'block'       => 'Block',
     'transaction' => 'Transaction',
-    'monitor'     => 'Monitor',
 
     'error' => [
         '401' => '401 Unauthorized',

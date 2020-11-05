@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 Route::view('/search', 'app.search-results')->name('search');
-Route::view('/monitor', 'app.monitor')->name('monitor');
+Route::view('/delegates', 'app.delegates')->name('delegates');
 
 Route::view('/blocks', 'blocks')->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');

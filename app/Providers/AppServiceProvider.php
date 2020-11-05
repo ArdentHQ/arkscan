@@ -57,7 +57,7 @@ final class AppServiceProvider extends ServiceProvider
     private function registerDataBags(): void
     {
         DataBag::register('metatags', [
-            'monitor' => [
+            'delegates' => [
                 'title'       => 'Delegate Monitor | ARK Explorer | Cryptocurrency Block Explorer',
                 'description' => 'Monitor Delegate activity for the ARK Public Network. See Delegate rankings and track Voting Power in the ARK Blockchain.',
             ],

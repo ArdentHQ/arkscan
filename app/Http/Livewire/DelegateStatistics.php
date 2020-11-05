@@ -9,11 +9,11 @@ use App\Services\Cache\NetworkCache;
 use Illuminate\View\View;
 use Livewire\Component;
 
-final class MonitorStatistics extends Component
+final class DelegateStatistics extends Component
 {
     public function render(): View
     {
-        return view('livewire.monitor-statistics', [
+        return view('livewire.delegate-statistics', [
             'delegateRegistrations' => (new NetworkCache())->getDelegateRegistrationCount(),
             'blockReward'           => Network::blockReward(),
             'feesCollected'         => (new NetworkCache())->getFeesCollected(),

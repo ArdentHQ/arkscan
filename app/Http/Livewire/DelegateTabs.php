@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Livewire\Component;
 
-final class MonitorDelegateTabs extends Component
+final class DelegateTabs extends Component
 {
     public function render(): View
     {
-        return view('livewire.monitor-delegate-tabs', [
+        return view('livewire.delegate-tabs', [
             'countActive'   => $this->activeQuery()->count(),
             'countStandby'  => $this->standbyQuery()->count(),
             'countResigned' => $this->resignedQuery()->count(),

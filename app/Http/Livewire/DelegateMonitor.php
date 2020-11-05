@@ -20,7 +20,7 @@ use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
 
-final class MonitorNetwork extends Component
+final class DelegateMonitor extends Component
 {
     private array $delegates = [];
 
@@ -28,7 +28,7 @@ final class MonitorNetwork extends Component
 
     public function render(): View
     {
-        return view('livewire.monitor-network', [
+        return view('livewire.delegate-monitor', [
             'delegates'  => $this->delegates,
             'statistics' => $this->statistics,
         ]);
@@ -71,7 +71,7 @@ final class MonitorNetwork extends Component
     private function getBlockCount(): string
     {
         return (new MonitorCache())->setBlockCount(function (): string {
-            return trans('pages.monitor.statistics.blocks_generated', [
+            return trans('pages.delegates.statistics.blocks_generated', [
                 collect($this->delegates)->filter(fn ($slot) => $slot->status() === 'done')->count(),
                 Network::delegateCount(),
             ]);

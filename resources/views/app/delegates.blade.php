@@ -3,9 +3,9 @@
     @section('content')
         <div class="dark:bg-theme-secondary-900">
             <div class="flex-col pt-16 mb-16 space-y-6 content-container">
-                <x-general.search.header-slim :title="trans('pages.monitor.title')" />
+                <x-general.search.header-slim :title="trans('pages.delegates.title')" />
 
-                <livewire:monitor-statistics />
+                <livewire:delegate-statistics />
             </div>
         </div>
 
@@ -15,17 +15,17 @@
             <div class="py-16 content-container md:px-8">
                 <div x-data="{
                     dropdownOpen: false,
-                    component: 'list',
+                    component: 'table',
                     status: 'active',
                 }" x-cloak class="w-full">
-                    <livewire:monitor-delegate-tabs />
+                    <livewire:delegate-tabs />
 
                     <div x-show="component === 'monitor'">
-                        <livewire:monitor-network />
+                        <livewire:delegate-monitor />
                     </div>
 
-                    <div x-show="component === 'list'">
-                        <livewire:monitor-delegate-table />
+                    <div x-show="component === 'table'">
+                        <livewire:delegate-table />
                     </div>
                 </div>
             </div>

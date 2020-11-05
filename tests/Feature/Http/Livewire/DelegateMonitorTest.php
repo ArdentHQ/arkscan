@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Livewire\MonitorNetwork;
+use App\Http\Livewire\DelegateMonitor;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
@@ -41,6 +41,6 @@ beforeEach(fn () => configureExplorerDatabase());
 it('should render without errors', function () {
     createRoundWithDelegates();
 
-    $component = Livewire::test(MonitorNetwork::class);
+    $component = Livewire::test(DelegateMonitor::class);
     $component->call('pollDelegates');
 });
