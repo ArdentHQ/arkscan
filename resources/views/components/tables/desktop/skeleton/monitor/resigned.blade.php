@@ -1,7 +1,7 @@
 <x-table-skeleton
     device="desktop"
     :items="[
-        'general.delegates.id'    => 'text',
+        'general.filler'          => 'text',
         'general.delegates.name'  => 'address',
         'general.delegates.votes' => 'number',
     ]"
