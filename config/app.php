@@ -229,7 +229,6 @@ return [
         'Validator'       => Illuminate\Support\Facades\Validator::class,
         'View'            => Illuminate\Support\Facades\View::class,
         'Avatar'          => App\Services\Avatar::class,
-        'Explorer'        => App\Explorer::class,
         'Network'         => App\Facades\Network::class,
         'NumberFormatter' => App\Services\NumberFormatter::class,
         'Settings'        => App\Services\Settings::class,
