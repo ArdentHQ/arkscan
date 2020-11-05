@@ -1,11 +1,4 @@
-<x-general.entity-header-item
-    :title="trans('pages.transaction.transaction_type')"
-    icon="app-transactions.{{ $transaction->iconType() }}"
->
-    <x-slot name="text">
-        @lang('pages.transaction.'.$transaction->entityType())
-    </x-slot>
-</x-general.entity-header-item>
+<x-page-headers.transaction.icon-type :model="$transaction" as-entity />
 
 <x-general.entity-header-item
     :title="trans('pages.transaction.name')"

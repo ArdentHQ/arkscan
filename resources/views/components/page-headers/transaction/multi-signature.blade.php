@@ -1,8 +1,4 @@
-<x-general.entity-header-item
-    :title="trans('pages.transaction.transaction_type')"
-    icon="app-transactions.transfer"
-    :text="$transaction->typeLabel()"
-/>
+<x-page-headers.transaction.icon-type :model="$transaction" />
 
 <x-general.entity-header-item
     :title="trans('pages.transaction.musig_participants')"
