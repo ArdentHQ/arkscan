@@ -2,9 +2,13 @@
     <table>
         <thead>
             <tr>
-                <th width="60">@lang('general.delegates.rank')</th>
-                <th><span class="pl-14">@lang('general.delegates.name')</span></th>
-                <th width="250" class="hidden text-right lg:table-cell">@lang('general.delegates.votes')</th>
+                <x-tables.headers.desktop.number name="general.delegates.rank" alignment="text-left" />
+                <x-tables.headers.desktop.address name="general.delegates.name" />
+                <x-tables.headers.desktop.number name="general.delegates.votes" responsive breakpoint="lg" />
+                @if (Network::usesMarketSquare())
+                    <x-tables.headers.desktop.text name="general.delegates.profile" />
+                    <x-tables.headers.desktop.number name="general.delegates.commission" responsive />
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -20,12 +24,12 @@
                         <x-tables.rows.desktop.votes :model="$delegate" />
                     </td>
                     @if (Network::usesMarketSquare())
-                    <td>
-                        <x-tables.rows.desktop.marketsquare-profile :model="$delegate" />
-                    </td>
-                    <td>
-                        <x-tables.rows.desktop.marketsquare-commission :model="$delegate" />
-                    </td>
+                        <td>
+                            <x-tables.rows.desktop.marketsquare-profile :model="$delegate" />
+                        </td>
+                        <td class="hidden xl:table-cell">
+                            <x-tables.rows.desktop.marketsquare-commission :model="$delegate" />
+                        </td>
                     @endif
                 </tr>
             @endforeach

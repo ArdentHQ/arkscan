@@ -2,9 +2,9 @@
     <table>
         <thead>
             <tr>
-                <th width="50">&nbsp;</th>
-                <th><span class="pl-14">@lang('general.delegates.name')</span></th>
-                <th width="200" class="hidden text-right lg:table-cell">@lang('general.delegates.votes')</th>
+                <x-tables.headers.desktop.text name="general.delegates.id" />
+                <x-tables.headers.desktop.address name="general.delegates.name" />
+                <x-tables.headers.desktop.number name="general.delegates.votes" responsive/>
             </tr>
         </thead>
         <tbody>

@@ -487,6 +487,21 @@ body {
     }
 }
 
+/* Delegate Monitor */
+.round-status-history > span {
+    @apply hidden;
+}
+
+.round-status-history > span:first-child {
+    @apply block;
+}
+
+@screen sm {
+    .round-status-history > span {
+        @apply block;
+    }
+}
+
 /* Delegate Stats Grid */
 @screen md {
     .delegate-statistics-grid > *:nth-child(2n + 1) {
@@ -497,5 +512,16 @@ body {
 @screen xl {
     .delegate-statistics-grid > *:not(:last-child) {
         @apply border-r border-theme-secondary-800;
+    }
+}
+
+/* Delegate name truncation */
+.delegate-name-truncate {
+    @apply w-24 truncate;
+}
+
+@media (min-width: 400px) {
+    .delegate-name-truncate {
+        @apply w-full;
     }
 }
