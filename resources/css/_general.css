@@ -348,11 +348,19 @@ body {
     .entity-header-item:nth-child(odd) {
         @apply border-r border-theme-secondary-300;
     }
+
+    .theme-dark .entity-header-item:nth-child(odd) {
+        @apply border-theme-secondary-800;
+    }
 }
 
 @screen xl {
     .entity-header-item {
         @apply border-r border-theme-secondary-300;
+    }
+
+    .theme-dark .entity-header-item {
+        @apply border-theme-secondary-800;
     }
 }
 

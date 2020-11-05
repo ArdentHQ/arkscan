@@ -1,6 +1,6 @@
 <div class="flex justify-between flex-1 font-semibold border-theme-secondary-800 lg:border-l lg:ml-8 lg:pl-4">
     <div class="items-center hidden md:flex">
-        <div class="circled-icon text-theme-secondary-700 border-theme-secondary-800">
+        <div class="circled-icon text-theme-secondary-700 border-theme-secondary-800 dark:text-theme-secondary-600 dark:border-theme-secondary-600">
             <x-icon :name="$icon" />
         </div>
     </div>
