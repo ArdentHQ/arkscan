@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Contracts\Search;
 use App\Http\Livewire\Concerns\ManagesSearch;
-use App\Models\Block;
-use App\Models\Transaction;
-use App\Models\Wallet;
 use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
@@ -43,18 +41,16 @@ final class SearchModule extends Component
     {
         $data = $this->validateSearchQuery();
 
-        if (array_key_exists('term', $data)) {
-            if ($this->searchWallet($data)) {
-                return;
-            }
+        if ($this->searchWallet($data)) {
+            return;
+        }
 
-            if ($this->searchTransaction($data)) {
-                return;
-            }
+        if ($this->searchTransaction($data)) {
+            return;
+        }
 
-            if ($this->searchBlock($data)) {
-                return;
-            }
+        if ($this->searchBlock($data)) {
+            return;
         }
 
         $this->redirectRoute('search', ['state' => $data]);
@@ -62,42 +58,34 @@ final class SearchModule extends Component
 
     private function searchWallet(array $data): bool
     {
-        /** @var Wallet|null */
-        $wallet = (new WalletSearch())->search(['term' => $data['term']])->first();
-
-        if (is_null($wallet)) {
-            return false;
-        }
-
-        $this->redirectRoute('wallet', $wallet->address);
-
-        return true;
+        return $this->searchWithService(new WalletSearch(), $data, fn ($model) => $this->redirectRoute('wallet', $model->address));
     }
 
     private function searchTransaction(array $data): bool
     {
-        /** @var Transaction|null */
-        $transaction = (new TransactionSearch())->search(['term' => $data['term']])->first();
-
-        if (is_null($transaction)) {
-            return false;
-        }
-
-        $this->redirectRoute('transaction', $transaction->id);
-
-        return true;
+        return $this->searchWithService(new TransactionSearch(), $data, fn ($model) => $this->redirectRoute('transaction', $model->id));
     }
 
     private function searchBlock(array $data): bool
     {
-        /** @var Block|null */
-        $block = (new BlockSearch())->search(['term' => $data['term']])->first();
+        return $this->searchWithService(new BlockSearch(), $data, fn ($model) => $this->redirectRoute('block', $model->id));
+    }
 
-        if (is_null($block)) {
+    private function searchWithService(Search $service, array $data, \Closure $callback): bool
+    {
+        $term = Arr::get($data, 'term');
+
+        if (is_null($term)) {
             return false;
         }
 
-        $this->redirectRoute('block', $block->id);
+        $model = $service->search(['term' => $term])->first();
+
+        if (is_null($model)) {
+            return false;
+        }
+
+        $callback($model);
 
         return true;
     }
