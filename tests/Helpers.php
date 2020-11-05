@@ -7,8 +7,6 @@ namespace Tests;
 use ArkEcosystem\Crypto\Identities\PublicKey;
 use FurqanSiddiqui\BIP39\BIP39;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 
 function configureExplorerDatabase(): void
@@ -149,8 +147,8 @@ function fakeKnownWallets(): void
 function fakeCryptoCompare(): void
 {
     Http::fake([
-        'https://min-api.cryptocompare.com/data/price'    => Http::response(['USD' => 0.2907]),
-        'https://min-api.cryptocompare.com/data/histoday' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/historical.json')), true)),
+        'min-api.cryptocompare.com/data/price*'    => Http::response(['USD' => 0.2907]),
+        'min-api.cryptocompare.com/data/histoday*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/historical.json')), true)),
     ]);
 }
 
