@@ -3,11 +3,11 @@
         <thead>
             <tr>
                 <x-tables.headers.desktop.text name="general.transaction.id" />
-                <x-tables.headers.desktop.text name="general.transaction.timestamp" />
+                <x-tables.headers.desktop.text name="general.transaction.timestamp" responsive />
                 <x-tables.headers.desktop.address name="general.transaction.sender" />
                 <x-tables.headers.desktop.address name="general.transaction.recipient" />
                 <x-tables.headers.desktop.number name="general.transaction.amount" />
-                <x-tables.headers.desktop.number name="general.transaction.fee" />
+                <x-tables.headers.desktop.number name="general.transaction.fee" responsive />
                 @isset($useConfirmations)
                     <x-tables.headers.desktop.number name="general.transaction.confirmations" />
                 @endisset
