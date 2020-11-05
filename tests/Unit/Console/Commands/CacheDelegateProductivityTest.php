@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\CacheProductivity;
+use App\Console\Commands\CacheDelegateProductivity;
 use App\Jobs\CacheProductivityByPublicKey;
 use App\Models\Round;
 use App\Models\Wallet;
@@ -18,7 +18,7 @@ it('should execute the command', function () {
         Round::factory()->create(['round' => '112168']);
     });
 
-    (new CacheProductivity())->handle();
+    (new CacheDelegateProductivity())->handle();
 
     Queue::assertPushed(CacheProductivityByPublicKey::class, 51);
 });

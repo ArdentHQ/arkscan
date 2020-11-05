@@ -8,14 +8,14 @@ use App\Facades\Wallets;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
 
-final class CacheDelegates extends Command
+final class CacheDelegateWallets extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cache:delegates';
+    protected $signature = 'explorer:cache-delegate-wallets';
 
     /**
      * The console command description.

@@ -12,21 +12,21 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
-final class CacheExchangeRates extends Command
+final class CachePrices extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cache:exchange-rates';
+    protected $signature = 'explorer:cache-prices';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Cache prices and exchange rates.';
 
     /**
      * The currencies that can be looked up.

@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\CacheFeeChart;
+use App\Console\Commands\CacheFees;
 use App\Models\Transaction;
-
 use App\Services\Cache\FeeCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
@@ -24,7 +23,7 @@ it('should execute the command', function () {
         'timestamp' => Timestamp::now()->endOfDay()->unix(),
     ])->sortByDesc('timestamp');
 
-    (new CacheFeeChart())->handle($cache = new FeeCache());
+    (new CacheFees())->handle($cache = new FeeCache());
 
     foreach (['day', 'week', 'month', 'quarter', 'year'] as $period) {
         expect($cache->getHistorical($period))->toBeArray();

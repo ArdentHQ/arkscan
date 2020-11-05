@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\CacheExchangeRates;
+use App\Console\Commands\CachePrices;
 use App\Contracts\Network;
 use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\CryptoCompareCache;
 use App\Services\Cache\PriceChartCache;
-
 use Illuminate\Support\Collection;
 use function Tests\configureExplorerDatabase;
 use function Tests\fakeCryptoCompare;
@@ -22,7 +21,7 @@ it('should execute the command', function (string $network) {
     $crypto = new CryptoCompareCache();
     $prices = new PriceChartCache();
 
-    (new CacheExchangeRates())->handle($crypto, $prices);
+    (new CachePrices())->handle($crypto, $prices);
 
     expect($crypto->getPrices('USD'))->toBeInstanceOf(Collection::class);
     expect($prices->getDay('USD'))->toBeArray();

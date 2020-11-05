@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\CacheNetworkStatistics;
+use App\Console\Commands\CacheNetworkAggregates;
 use App\Services\Cache\NetworkCache;
 use function Tests\configureExplorerDatabase;
 
@@ -12,7 +12,7 @@ it('should execute the command', function () {
     $cache = new NetworkCache();
     $cache->setSupply(strval(100e8));
 
-    (new CacheNetworkStatistics())->handle($cache);
+    (new CacheNetworkAggregates())->handle($cache);
 
     expect($cache->getVolume())->toBeFloat();
     expect($cache->getTransactionsCount())->toBeInt();

@@ -8,14 +8,14 @@ use App\Facades\Wallets;
 use App\Jobs\CacheUsername;
 use Illuminate\Console\Command;
 
-final class CacheUsernames extends Command
+final class CacheDelegateUsernames extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cache:usernames';
+    protected $signature = 'explorer:cache-delegate-usernames';
 
     /**
      * The console command description.

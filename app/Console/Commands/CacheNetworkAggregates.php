@@ -14,21 +14,21 @@ use App\Models\Transaction;
 use App\Services\Cache\NetworkCache;
 use Illuminate\Console\Command;
 
-final class CacheNetworkStatistics extends Command
+final class CacheNetworkAggregates extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cache:statistics';
+    protected $signature = 'explorer:cache-network-aggregates';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Cache expensive network aggregates.';
 
     /**
      * Execute the console command.

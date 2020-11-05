@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4101d71d38e833acd6ab2d898475ffc3",
+    "content-hash": "df87bbc614e162cda06f9c61a52b9a33",
     "packages": [
         {
             "name": "arkecosystem/crypto",
@@ -1987,24 +1987,23 @@
         },
         {
             "name": "jaybizzle/crawler-detect",
-            "version": "v1.2.101",
+            "version": "v1.2.102",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JayBizzle/Crawler-Detect.git",
-                "reference": "bffc10d3090bc99231c17f9960506ab51e9d25f5"
+                "reference": "346cfd72d11bb41f15e82654e532dc55360612ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JayBizzle/Crawler-Detect/zipball/bffc10d3090bc99231c17f9960506ab51e9d25f5",
-                "reference": "bffc10d3090bc99231c17f9960506ab51e9d25f5",
+                "url": "https://api.github.com/repos/JayBizzle/Crawler-Detect/zipball/346cfd72d11bb41f15e82654e532dc55360612ac",
+                "reference": "346cfd72d11bb41f15e82654e532dc55360612ac",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8|^5.5|^6.5",
-                "satooshi/php-coveralls": "1.*"
+                "phpunit/phpunit": "^4.8|^5.5|^6.5"
             },
             "type": "library",
             "autoload": {
@@ -2034,9 +2033,9 @@
             ],
             "support": {
                 "issues": "https://github.com/JayBizzle/Crawler-Detect/issues",
-                "source": "https://github.com/JayBizzle/Crawler-Detect/tree/v1.2.101"
+                "source": "https://github.com/JayBizzle/Crawler-Detect/tree/v1.2.102"
             },
-            "time": "2020-10-24T09:23:11+00:00"
+            "time": "2020-11-04T19:23:01+00:00"
         },
         {
             "name": "jenssegers/agent",
@@ -5523,26 +5522,24 @@
         },
         {
             "name": "spatie/laravel-schemaless-attributes",
-            "version": "1.8.2",
+            "version": "1.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-schemaless-attributes.git",
-                "reference": "4699ca007ad040ba4fcae08e5a29e41454a71442"
+                "reference": "e3037a509683fe7fc0a2681b6f404b90aeffdaf0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-schemaless-attributes/zipball/4699ca007ad040ba4fcae08e5a29e41454a71442",
-                "reference": "4699ca007ad040ba4fcae08e5a29e41454a71442",
+                "url": "https://api.github.com/repos/spatie/laravel-schemaless-attributes/zipball/e3037a509683fe7fc0a2681b6f404b90aeffdaf0",
+                "reference": "e3037a509683fe7fc0a2681b6f404b90aeffdaf0",
                 "shasum": ""
             },
             "require": {
                 "illuminate/database": "^5.6|^6.0|^7.0|^8.0",
                 "illuminate/support": "^5.6|^6.0|^7.0|^8.0",
-                "php": "^7.3"
+                "php": "^7.3|^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.16",
-                "larapack/dd": "^1.0",
                 "orchestra/testbench": "^3.6|^4.0|^5.0|^6.0",
                 "phpunit/phpunit": "^7.0|^8.0|^9.0"
             },
@@ -5579,7 +5576,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-schemaless-attributes/issues",
-                "source": "https://github.com/spatie/laravel-schemaless-attributes/tree/1.8.2"
+                "source": "https://github.com/spatie/laravel-schemaless-attributes/tree/1.8.3"
             },
             "funding": [
                 {
@@ -5587,7 +5584,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-09-16T20:54:04+00:00"
+            "time": "2020-11-04T13:21:43+00:00"
         },
         {
             "name": "spatie/laravel-short-schedule",
@@ -8387,20 +8384,19 @@
         },
         {
             "name": "arkecosystem/stan",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-stan.git",
-                "reference": "6bbfeb7e2ce253d05159d5a605b4d72dfe13c442"
+                "reference": "98379abae4472e01caff8112af8c15ee1a261282"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-stan/zipball/6bbfeb7e2ce253d05159d5a605b4d72dfe13c442",
-                "reference": "6bbfeb7e2ce253d05159d5a605b4d72dfe13c442",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-stan/zipball/98379abae4472e01caff8112af8c15ee1a261282",
+                "reference": "98379abae4472e01caff8112af8c15ee1a261282",
                 "shasum": ""
             },
             "require": {
-                "ergebnis/composer-normalize": "^2.8",
                 "ergebnis/phpstan-rules": "^0.15",
                 "friendsofphp/php-cs-fixer": "^2.16",
                 "fzaninotto/faker": "^1.9",
@@ -8450,9 +8446,9 @@
             "description": "Static Analysis & Testing for Laravel. Powered by PHPStan, Psalm and Pest.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-stan/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-stan/tree/1.4.0"
+                "source": "https://github.com/ArkEcosystem/laravel-stan/tree/1.5.0"
             },
-            "time": "2020-10-21T10:33:26+00:00"
+            "time": "2020-11-05T02:21:03+00:00"
         },
         {
             "name": "barryvdh/laravel-debugbar",
@@ -9208,228 +9204,6 @@
                 }
             ],
             "time": "2020-05-29T17:27:14+00:00"
-        },
-        {
-            "name": "ergebnis/composer-normalize",
-            "version": "2.10.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ergebnis/composer-normalize.git",
-                "reference": "dc26e71300ec2b734bb1b001c0f89ded199dd10d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/dc26e71300ec2b734bb1b001c0f89ded199dd10d",
-                "reference": "dc26e71300ec2b734bb1b001c0f89ded199dd10d",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^2.0.0",
-                "ergebnis/json-normalizer": "~0.14.0",
-                "ergebnis/json-printer": "^3.1.1",
-                "justinrainbow/json-schema": "^5.2.10",
-                "localheinz/diff": "^1.1.1",
-                "php": "^7.2 || ^8.0"
-            },
-            "require-dev": {
-                "composer/composer": "^2.0.0",
-                "composer/package-versions-deprecated": "^1.11.99",
-                "ergebnis/license": "^1.1.0",
-                "ergebnis/php-cs-fixer-config": "^2.5.1",
-                "ergebnis/phpstan-rules": "~0.15.2",
-                "ergebnis/test-util": "^1.3.0",
-                "jangregor/phpstan-prophecy": "~0.8.1",
-                "phpstan/extension-installer": "^1.0.5",
-                "phpstan/phpstan": "~0.12.52",
-                "phpstan/phpstan-deprecation-rules": "~0.12.5",
-                "phpstan/phpstan-phpunit": "~0.12.16",
-                "phpstan/phpstan-strict-rules": "~0.12.5",
-                "phpunit/phpunit": "^8.5.8",
-                "psalm/plugin-phpunit": "~0.12.2",
-                "symfony/filesystem": "^5.1.8",
-                "vimeo/psalm": "^3.18.2"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "Ergebnis\\Composer\\Normalize\\NormalizePlugin",
-                "composer-normalize": {
-                    "indent-size": 2,
-                    "indent-style": "space"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Ergebnis\\Composer\\Normalize\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Andreas Möller",
-                    "email": "am@localheinz.com"
-                }
-            ],
-            "description": "Provides a composer plugin for normalizing composer.json.",
-            "homepage": "https://github.com/ergebnis/composer-normalize",
-            "keywords": [
-                "composer",
-                "normalize",
-                "normalizer",
-                "plugin"
-            ],
-            "support": {
-                "issues": "https://github.com/ergebnis/composer-normalize/issues",
-                "source": "https://github.com/ergebnis/composer-normalize"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/localheinz",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-11-01T11:38:57+00:00"
-        },
-        {
-            "name": "ergebnis/json-normalizer",
-            "version": "0.14.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ergebnis/json-normalizer.git",
-                "reference": "4aad3594810d7477b5ea67a16544ad94ae374fc7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/json-normalizer/zipball/4aad3594810d7477b5ea67a16544ad94ae374fc7",
-                "reference": "4aad3594810d7477b5ea67a16544ad94ae374fc7",
-                "shasum": ""
-            },
-            "require": {
-                "ergebnis/json-printer": "^3.1.1",
-                "ext-json": "*",
-                "justinrainbow/json-schema": "^5.2.10",
-                "php": "^7.2 || ^8.0"
-            },
-            "require-dev": {
-                "ergebnis/license": "^1.1.0",
-                "ergebnis/php-cs-fixer-config": "^2.5.1",
-                "ergebnis/phpstan-rules": "~0.15.2",
-                "ergebnis/test-util": "^1.3.0",
-                "infection/infection": "~0.15.3",
-                "jangregor/phpstan-prophecy": "~0.8.1",
-                "phpstan/extension-installer": "^1.0.5",
-                "phpstan/phpstan": "~0.12.52",
-                "phpstan/phpstan-deprecation-rules": "~0.12.5",
-                "phpstan/phpstan-phpunit": "~0.12.16",
-                "phpstan/phpstan-strict-rules": "~0.12.5",
-                "phpunit/phpunit": "^8.5.8",
-                "psalm/plugin-phpunit": "~0.12.2",
-                "vimeo/psalm": "^3.18"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Ergebnis\\Json\\Normalizer\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Andreas Möller",
-                    "email": "am@localheinz.com"
-                }
-            ],
-            "description": "Provides generic and vendor-specific normalizers for normalizing JSON documents.",
-            "homepage": "https://github.com/ergebnis/json-normalizer",
-            "keywords": [
-                "json",
-                "normalizer"
-            ],
-            "support": {
-                "issues": "https://github.com/ergebnis/json-normalizer/issues",
-                "source": "https://github.com/ergebnis/json-normalizer"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/localheinz",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-10-31T15:46:10+00:00"
-        },
-        {
-            "name": "ergebnis/json-printer",
-            "version": "3.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ergebnis/json-printer.git",
-                "reference": "e4190dadd9937a77d8afcaf2b6c42a528ab367d6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/json-printer/zipball/e4190dadd9937a77d8afcaf2b6c42a528ab367d6",
-                "reference": "e4190dadd9937a77d8afcaf2b6c42a528ab367d6",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "php": "^7.2 || ^8.0"
-            },
-            "require-dev": {
-                "ergebnis/license": "^1.0.0",
-                "ergebnis/php-cs-fixer-config": "^2.2.1",
-                "ergebnis/phpstan-rules": "~0.15.2",
-                "ergebnis/test-util": "^1.1.0",
-                "infection/infection": "~0.15.3",
-                "phpstan/extension-installer": "^1.0.4",
-                "phpstan/phpstan": "~0.12.40",
-                "phpstan/phpstan-deprecation-rules": "~0.12.5",
-                "phpstan/phpstan-phpunit": "~0.12.16",
-                "phpstan/phpstan-strict-rules": "~0.12.4",
-                "phpunit/phpunit": "^8.5.8",
-                "psalm/plugin-phpunit": "~0.11.0",
-                "vimeo/psalm": "^3.14.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Ergebnis\\Json\\Printer\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Andreas Möller",
-                    "email": "am@localheinz.com"
-                }
-            ],
-            "description": "Provides a JSON printer, allowing for flexible indentation.",
-            "homepage": "https://github.com/ergebnis/json-printer",
-            "keywords": [
-                "formatter",
-                "json",
-                "printer"
-            ],
-            "support": {
-                "issues": "https://github.com/ergebnis/json-printer/issues",
-                "source": "https://github.com/ergebnis/json-printer"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/localheinz",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-08-30T12:17:03+00:00"
         },
         {
             "name": "ergebnis/phpstan-rules",
@@ -10476,66 +10250,6 @@
                 "source": "https://github.com/laravel/dusk/tree/v6.8.0"
             },
             "time": "2020-10-06T15:32:20+00:00"
-        },
-        {
-            "name": "localheinz/diff",
-            "version": "1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/localheinz/diff.git",
-                "reference": "851bb20ea8358c86f677f5f111c4ab031b1c764c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/localheinz/diff/zipball/851bb20ea8358c86f677f5f111c4ab031b1c764c",
-                "reference": "851bb20ea8358c86f677f5f111c4ab031b1c764c",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1 || ^8.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7.5 || ^8.0",
-                "symfony/process": "^4.2 || ^5"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                },
-                {
-                    "name": "Kore Nordmann",
-                    "email": "mail@kore-nordmann.de"
-                }
-            ],
-            "description": "Fork of sebastian/diff for use with ergebnis/composer-normalize",
-            "homepage": "https://github.com/localheinz/diff",
-            "keywords": [
-                "diff",
-                "udiff",
-                "unidiff",
-                "unified diff"
-            ],
-            "support": {
-                "source": "https://github.com/localheinz/diff/tree/main"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/sebastianbergmann",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-07-06T04:49:32+00:00"
         },
         {
             "name": "maximebf/debugbar",

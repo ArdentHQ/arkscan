@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Services\Cache\DelegateCache;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
@@ -15,41 +14,36 @@ final class CacheDevelopmentData extends Command
      *
      * @var string
      */
-    protected $signature = 'dev:cache';
+    protected $signature = 'explorer:cache-development-data';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Executes all caching commands. Do not use this in production.';
+    protected $description = 'Executes all caching commands. DO NOT USE THIS IN PRODUCTION!';
 
     /**
      * Execute the console command.
      *
      * @return int
      */
-    public function handle(DelegateCache $cache)
+    public function handle()
     {
-        $commands = [
-            'real-time-statistics',
-            'delegate-aggregates',
-            'delegates',
-            'exchange-rates',
-            'chart-fee',
-            'last-blocks',
-            'musig',
-            'statistics',
-            'past-round-performance',
-            'productivity',
-            'resignation-ids',
-            'usernames',
-            'voter-count',
-            'votes',
-        ];
-
-        foreach ($commands as $command) {
-            Artisan::call('cache:'.$command);
-        }
+        collect([
+            'explorer:cache-network-status',
+            'explorer:cache-network-aggregates',
+            'explorer:cache-last-blocks',
+            'explorer:cache-fees',
+            'explorer:cache-prices',
+            'explorer:cache-delegate-aggregates',
+            'explorer:cache-delegate-performance',
+            'explorer:cache-delegate-productivity',
+            'explorer:cache-delegate-resignation-ids',
+            'explorer:cache-delegate-usernames',
+            'explorer:cache-delegate-wallets',
+            'explorer:cache-delegates-with-voters',
+            'explorer:cache-multi-signature-addresses',
+        ])->map(fn (string $command) => Artisan::call($command));
     }
 }

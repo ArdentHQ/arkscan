@@ -24,6 +24,6 @@ valet link explorer-ark-io
 
 ## Caching
 
-Before access the Explorer you'll need to cache data that is accessed a lot. Run `php artisan horizon` and then `php artisan dev:cache` and wait until it has finished.
+Before access the Explorer you'll need to cache data that is accessed a lot. Run `php artisan horizon` and then `php artisan explorer:cache-development-data` and wait until it has finished.
 
 Afterwards, you can navigate to `explorer-ark-io.test` in your browser to see it in action.

@@ -8,14 +8,14 @@ use App\Facades\Wallets;
 use App\Jobs\CacheVoterCountByPublicKey;
 use Illuminate\Console\Command;
 
-final class CacheVoterCount extends Command
+final class CacheDelegateVoterCounts extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cache:voter-count';
+    protected $signature = 'cache:delegate-voter-counts';
 
     /**
      * The console command description.

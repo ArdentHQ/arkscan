@@ -9,14 +9,14 @@ use App\Jobs\CacheProductivityByPublicKey;
 use App\Services\Monitor\Monitor;
 use Illuminate\Console\Command;
 
-final class CacheProductivity extends Command
+final class CacheDelegateProductivity extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cache:productivity';
+    protected $signature = 'explorer:cache-delegate-productivity';
 
     /**
      * The console command description.

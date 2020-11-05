@@ -9,14 +9,14 @@ use App\Jobs\CachePastRoundPerformanceByPublicKey;
 use App\Services\Monitor\Monitor;
 use Illuminate\Console\Command;
 
-final class CachePastRoundPerformance extends Command
+final class CacheDelegatePerformance extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cache:past-round-performance';
+    protected $signature = 'explorer:cache-delegate-performance';
 
     /**
      * The console command description.

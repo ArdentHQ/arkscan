@@ -15,7 +15,7 @@ final class CacheMultiSignatureAddresses extends Command
      *
      * @var string
      */
-    protected $signature = 'cache:musig';
+    protected $signature = 'explorer:cache-multi-signature-addresses';
 
     /**
      * The console command description.

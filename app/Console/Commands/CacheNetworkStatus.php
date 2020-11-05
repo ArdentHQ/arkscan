@@ -10,21 +10,21 @@ use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use Illuminate\Console\Command;
 
-final class CacheRealTimeStatistics extends Command
+final class CacheNetworkStatus extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cache:real-time-statistics';
+    protected $signature = 'explorer:cache-network-status';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Cache the height and supply of the network.';
 
     /**
      * Execute the console command.

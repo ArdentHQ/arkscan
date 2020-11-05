@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\CacheResignationIds;
+use App\Console\Commands\CacheDelegateResignationIds;
 use App\Enums\CoreTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Jobs\CacheResignationId;
@@ -20,7 +20,7 @@ it('should execute the command', function () {
         'type_group' => TransactionTypeGroupEnum::CORE,
     ]);
 
-    (new CacheResignationIds())->handle();
+    (new CacheDelegateResignationIds())->handle();
 
     Queue::assertPushed(CacheResignationId::class, 10);
 });
