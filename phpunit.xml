@@ -33,8 +33,6 @@
                 <directory suffix=".php">./app/Console/Commands/CacheDevelopmentData.php</directory>
                 <directory suffix=".php">./app/Facades</directory>
                 <directory suffix=".php">./app/Models/Scopes</directory>
-                <!-- FIXME -->
-                <file>./app/Services/Blockchain/CustomNetwork.php</file>
             </exclude>
         </whitelist>
     </filter>
