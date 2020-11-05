@@ -144,7 +144,10 @@ body {
     .theme-dark .search-advanced-option-wrapper {
         @apply border-theme-secondary-800;
     }
+}
 
+/* We need this to only be applied between md and xl */
+@media (min-width: 768px) and (max-width: 1027px) {
     .search-advanced-options
         .search-advanced-option-wrapper:nth-of-type(2n + 1):nth-last-of-type(-n
             + 2),
