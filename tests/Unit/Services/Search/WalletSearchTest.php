@@ -31,6 +31,16 @@ it('should search for a wallet by public key', function () {
     expect($result->get())->toHaveCount(1);
 });
 
+it('should search for a wallet by delegate username in terms', function () {
+    $wallet = Wallet::factory(10)->create()[0];
+
+    $result = (new WalletSearch())->search([
+        'term' => $wallet->attributes['delegate']['username'],
+    ]);
+
+    expect($result->get())->toHaveCount(1);
+});
+
 it('should search for a wallet by username', function () {
     $wallet = Wallet::factory(10)->create()[0];
 

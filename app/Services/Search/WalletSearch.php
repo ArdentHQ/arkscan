@@ -25,6 +25,7 @@ final class WalletSearch implements Search
         if (! is_null(Arr::get($parameters, 'term'))) {
             $query->where('address', $parameters['term']);
             $query->orWhere('public_key', $parameters['term']);
+            $query->orWhere('attributes->delegate->username', $parameters['term']);
         }
 
         if (! is_null(Arr::get($parameters, 'username'))) {
