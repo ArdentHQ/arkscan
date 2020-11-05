@@ -85,19 +85,19 @@ Take a look at the official [Deploying Short Schedule](https://github.com/spatie
 Now that the task scheduler and Horizon are running you'll need to run the below commands in order to cache all of the data that is required for the Explorer to function.
 
 ```bash
-explorer:cache-network-status
-explorer:cache-network-aggregates
-explorer:cache-last-blocks
-explorer:cache-fees
-explorer:cache-prices
-explorer:cache-delegate-aggregates
-explorer:cache-delegate-performance
-explorer:cache-delegate-productivity
-explorer:cache-delegate-resignation-ids
-explorer:cache-delegate-usernames
-explorer:cache-delegate-wallets
-explorer:cache-delegates-with-voters
-explorer:cache-multi-signature-addresses
+php artisan explorer:cache-network-status
+php artisan explorer:cache-network-aggregates
+php artisan explorer:cache-last-blocks
+php artisan explorer:cache-fees
+php artisan explorer:cache-prices
+php artisan explorer:cache-delegate-aggregates
+php artisan explorer:cache-delegate-performance
+php artisan explorer:cache-delegate-productivity
+php artisan explorer:cache-delegate-resignation-ids
+php artisan explorer:cache-delegate-usernames
+php artisan explorer:cache-delegate-wallets
+php artisan explorer:cache-delegates-with-voters
+php artisan explorer:cache-multi-signature-addresses
 ```
 
 ## Updates

@@ -7,6 +7,7 @@
 @import "_general.css";
 
 /** 3rd party **/
+@import "../../node_modules/pikaday/css/pikaday.css";
 
 /** UI Repo Styles **/
 @import "../../vendor/arkecosystem/ui/resources/assets/css/_alerts.css";
