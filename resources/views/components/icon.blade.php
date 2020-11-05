@@ -18,4 +18,4 @@
     }
 @endphp
 
-@svg($name, $size . ($style ?? '') . ($class ?? ''))
+@svg($name, $size . ($style ?? '') . ($class ?? ''), ['wire:key' => Str::random(8)])
