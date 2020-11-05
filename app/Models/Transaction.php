@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $recipient_id
  * @property string $sender_public_key
  * @property int $block_height
+ * @property resource|null $vendor_field
  */
 final class Transaction extends Model
 {

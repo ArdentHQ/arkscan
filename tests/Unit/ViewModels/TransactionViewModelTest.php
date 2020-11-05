@@ -16,6 +16,7 @@ use App\Services\Cache\NetworkCache;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
 use ArkEcosystem\Crypto\Identities\Address;
+use Illuminate\Support\Facades\DB;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
 
@@ -1387,4 +1388,38 @@ it('should fail to get the username if the transaction is not a delegate registr
     ]));
 
     expect($subject->delegateUsername())->toBeNull();
+});
+
+it('should get the vendor field', function () {
+    configureExplorerDatabase();
+
+    $transaction = Transaction::factory()->create([]);
+
+    DB::connection('explorer')->update('UPDATE transactions SET vendor_field = ? WHERE id = ?', ['Hello World', $transaction->id]);
+
+    $this->subject = new TransactionViewModel($transaction->fresh());
+
+    expect($this->subject->vendorField())->toBe('Hello World');
+});
+
+it('should fail to get the vendor field if it is empty', function () {
+    configureExplorerDatabase();
+
+    $transaction = Transaction::factory()->create(['vendor_field' => null]);
+
+    $this->subject = new TransactionViewModel($transaction->fresh());
+
+    expect($this->subject->vendorField())->toBeNull();
+});
+
+it('should fail to get the vendor field if it is empty after reading it', function () {
+    configureExplorerDatabase();
+
+    $transaction = Transaction::factory()->create([]);
+
+    DB::connection('explorer')->update('UPDATE transactions SET vendor_field = ? WHERE id = ?', ['', $transaction->id]);
+
+    $this->subject = new TransactionViewModel($transaction->fresh());
+
+    expect($this->subject->vendorField())->toBeNull();
 });

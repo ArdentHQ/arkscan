@@ -11,22 +11,15 @@ trait InteractsWithVendorField
      */
     public function vendorField(): ?string
     {
-        /* @phpstan-ignore-next-line */
-        $vendorFieldHex = $this->transaction->vendor_field;
+        $vendorField = $this->transaction->vendor_field;
 
-        if (is_null($vendorFieldHex)) {
+        if (is_null($vendorField)) {
             return null;
         }
 
-        $vendorFieldStream = stream_get_contents($vendorFieldHex);
+        $vendorField = stream_get_contents($vendorField);
 
-        if ($vendorFieldStream === false) {
-            return null;
-        }
-
-        $vendorField = hex2bin(bin2hex($vendorFieldStream));
-
-        if ($vendorField === false) {
+        if ($vendorField === '' || $vendorField === false) {
             return null;
         }
 

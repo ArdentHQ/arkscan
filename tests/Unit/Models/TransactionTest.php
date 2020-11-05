@@ -35,14 +35,3 @@ it('should belong to a recipient', function () {
     expect($this->subject->recipient())->toBeInstanceOf(BelongsTo::class);
     expect($this->subject->recipient)->toBeInstanceOf(Wallet::class);
 });
-
-it('should get the vendor field', function () {
-    expect($this->subject->vendor_field)->toBeNull();
-
-    $this->subject->update([
-        'vendor_field' => hex2bin('Hello World'),
-    ]);
-
-    expect($this->subject->vendor_field)->toBeString();
-    expect($this->subject->vendor_field)->toBe('Hello World');
-})->skip();
