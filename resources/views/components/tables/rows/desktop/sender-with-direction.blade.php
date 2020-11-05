@@ -1,16 +1,20 @@
 <div class="flex items-center" wire:key="sender:{{ $model->id() }}">
     <div class="flex items-center justify-center p-2">
-        <div class="flex items-center justify-center w-12 h-12 -mr-2">
-            <div class="circled-icon text-theme-secondary-900 border-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-600">
+        <div class="flex">
+            <div class="-mr-2 circled-icon text-theme-secondary-900 border-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-600">
                 @if($model->isSent($wallet->address()))
                     <x-icon name="app-arrow-up" />
                 @else
                     <x-icon name="app-arrow-down" />
                 @endif
             </div>
-        </div>
 
-        <x-general.avatar :identifier="$model->sender()->address()" />
+            <div class="-mt-1 border-4 border-white rounded-full">
+                <div class="bg-white border-white circled-icon dark:text-theme-secondary-600 dark:border-theme-secondary-600">
+                    <x-general.avatar :identifier="$model->sender()->address()" />
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="flex flex-col space-y-2">
