@@ -1,5 +1,5 @@
 <div>
-    <div class="hidden tabs md:flex">
+    <div wire:ignore class="hidden tabs md:flex">
         <div
             class="tab-item transition-default"
             :class="{ 'tab-item-current': direction === 'all' }"
