@@ -11,7 +11,7 @@
                 @isset($withoutTruncate)
                     {{ $model->address() }}
                 @else
-                    <x-truncate-middle :value="$model->address()" length="{{ $length ?? '16' }}"/>
+                    <x-truncate-middle :value="$model->address()" length="{{ $length ?? 8 }}"/>
                 @endisset
             @endif
         </a>

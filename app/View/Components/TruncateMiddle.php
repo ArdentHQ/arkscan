@@ -12,7 +12,7 @@ final class TruncateMiddle extends Component
 
     private int $length;
 
-    public function __construct(string $value, int $length = 7)
+    public function __construct(string $value, int $length = 8)
     {
         $this->value  = $value;
         $this->length = $length;

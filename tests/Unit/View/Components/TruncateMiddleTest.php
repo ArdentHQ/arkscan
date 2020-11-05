@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\View\Components\TruncateMiddle;
 
 it('should truncate long strings', function () {
-    expect((new TruncateMiddle('I am a very long string'))->render())->toBe('I am ...tring');
+    expect((new TruncateMiddle('I am a very long string'))->render())->toBe('I am a...tring');
     expect((new TruncateMiddle('I am a very long string', 10))->render())->toBe('I am a ...string');
     expect((new TruncateMiddle('I am a very long string', 1))->render())->toBe('I ...ng');
 });

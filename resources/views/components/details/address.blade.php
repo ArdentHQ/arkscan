@@ -7,10 +7,10 @@
                     <x-general.identity-delegate :model="$model" />
                 @else
                     <span class="inline lg:hidden">
-                        <x-general.identity-iconless :model="$model" :length="16" />
+                        <x-general.identity-iconless :model="$model" length="16" />
                     </span>
                     <span class="hidden lg:inline">
-                        <x-general.identity-iconless :model="$model" :length="32" />
+                        <x-general.identity-iconless :model="$model" length="32" />
                     </span>
                 @endif
             </div>
