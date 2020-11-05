@@ -2,6 +2,6 @@
     <div>
         @lang('labels.marketsquare_commission')
 
-        {{-- @TODO: MSQ Commission --}}
+        <x-percentage>{{ $model->commission() }}</x-percentage>
     </div>
 @endif

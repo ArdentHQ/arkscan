@@ -218,44 +218,10 @@
 
                 <template x-if="searchType === 'transaction'">
                     <x-general.search.advanced-option :title="trans('forms.search.transaction_type')">
-                        {{-- TODO: Enum of types and their values? --}}
                         <select wire:model.defer="state.transactionType" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200">
-                            <option value="all">@lang('forms.search.transaction_types.all')</option>
-                            <option value="businessEntityRegistration">@lang('forms.search.transaction_types.businessEntityRegistration')</option>
-                            <option value="businessEntityResignation">@lang('forms.search.transaction_types.businessEntityResignation')</option>
-                            <option value="businessEntityUpdate">@lang('forms.search.transaction_types.businessEntityUpdate')</option>
-                            <option value="delegateEntityRegistration">@lang('forms.search.transaction_types.delegateEntityRegistration')</option>
-                            <option value="delegateEntityResignation">@lang('forms.search.transaction_types.delegateEntityResignation')</option>
-                            <option value="delegateEntityUpdate">@lang('forms.search.transaction_types.delegateEntityUpdate')</option>
-                            <option value="delegateRegistration">@lang('forms.search.transaction_types.delegateRegistration')</option>
-                            <option value="delegateResignation">@lang('forms.search.transaction_types.delegateResignation')</option>
-                            <option value="entityRegistration">@lang('forms.search.transaction_types.entityRegistration')</option>
-                            <option value="entityResignation">@lang('forms.search.transaction_types.entityResignation')</option>
-                            <option value="entityUpdate">@lang('forms.search.transaction_types.entityUpdate')</option>
-                            <option value="ipfs">@lang('forms.search.transaction_types.ipfs')</option>
-                            <option value="legacyBridgechainRegistration">@lang('forms.search.transaction_types.legacyBridgechainRegistration')</option>
-                            <option value="legacyBridgechainResignation">@lang('forms.search.transaction_types.legacyBridgechainResignation')</option>
-                            <option value="legacyBridgechainUpdate">@lang('forms.search.transaction_types.legacyBridgechainUpdate')</option>
-                            <option value="legacyBusinessRegistration">@lang('forms.search.transaction_types.legacyBusinessRegistration')</option>
-                            <option value="legacyBusinessResignation">@lang('forms.search.transaction_types.legacyBusinessResignation')</option>
-                            <option value="legacyBusinessUpdate">@lang('forms.search.transaction_types.legacyBusinessUpdate')</option>
-                            <option value="moduleEntityRegistration">@lang('forms.search.transaction_types.moduleEntityRegistration')</option>
-                            <option value="moduleEntityResignation">@lang('forms.search.transaction_types.moduleEntityResignation')</option>
-                            <option value="moduleEntityUpdate">@lang('forms.search.transaction_types.moduleEntityUpdate')</option>
-                            <option value="multiPayment">@lang('forms.search.transaction_types.multiPayment')</option>
-                            <option value="multiSignature">@lang('forms.search.transaction_types.multiSignature')</option>
-                            <option value="pluginEntityRegistration">@lang('forms.search.transaction_types.pluginEntityRegistration')</option>
-                            <option value="pluginEntityResignation">@lang('forms.search.transaction_types.pluginEntityResignation')</option>
-                            <option value="pluginEntityUpdate">@lang('forms.search.transaction_types.pluginEntityUpdate')</option>
-                            <option value="productEntityRegistration">@lang('forms.search.transaction_types.productEntityRegistration')</option>
-                            <option value="productEntityResignation">@lang('forms.search.transaction_types.productEntityResignation')</option>
-                            <option value="productEntityUpdate">@lang('forms.search.transaction_types.productEntityUpdate')</option>
-                            <option value="secondSignature">@lang('forms.search.transaction_types.secondSignature')</option>
-                            <option value="timelockClaim">@lang('forms.search.transaction_types.timelockClaim')</option>
-                            <option value="timelockRefund">@lang('forms.search.transaction_types.timelockRefund')</option>
-                            <option value="timelock">@lang('forms.search.transaction_types.timelock')</option>
-                            <option value="transfer">@lang('forms.search.transaction_types.transfer')</option>
-                            <option value="vote">@lang('forms.search.transaction_types.vote')</option>
+                            @foreach(trans('forms.search.transaction_types') as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
                         </select>
                     </x-general.search.advanced-option>
                 </template>

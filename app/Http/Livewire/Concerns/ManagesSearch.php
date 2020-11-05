@@ -28,7 +28,7 @@ trait ManagesSearch
             'state.totalFeeTo'         => ['nullable', 'numeric', 'min:0'],
             'state.generatorPublicKey' => ['nullable', 'string', 'max:255'],
             // Transactions
-            'state.transactionType' => ['nullable', 'string'], // @TODO: validate based on an enum
+            'state.transactionType' => ['nullable', Rule::in(array_keys(trans('forms.search.transaction_types')))],
             'state.amountFrom'      => ['nullable', 'numeric', 'min:0', 'max:100'],
             'state.amountTo'        => ['nullable', 'numeric', 'min:0', 'max:100'],
             'state.feeFrom'         => ['nullable', 'numeric', 'min:0', 'max:100'],

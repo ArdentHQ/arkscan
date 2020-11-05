@@ -1,3 +1,3 @@
 @if (Network::usesMarketSquare())
-    {{-- @TODO --}}
+    <x-percentage>{{ $model->commission() }}</x-percentage>
 @endif

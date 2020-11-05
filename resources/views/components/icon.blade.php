@@ -1,5 +1,3 @@
-{{-- @TODO: consider class component --}}
-
 @php
     $size = [
         'xs'   => 'w-3 h-3 ',
