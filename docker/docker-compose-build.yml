@@ -1,0 +1,25 @@
+version: '2'
+services:
+  explorer:
+    build: 
+      context: ../
+      dockerfile: docker/Dockerfile
+    image: explorer
+    container_name: ark-explorer 
+    restart: always
+    ports:
+      - '8898:8898'
+    working_dir: /var/www/explorer
+    networks:
+      - explorer 
+    volumes:
+      - explorer:/var/www/explorer
+    tty: true
+networks:
+  explorer:
+volumes:
+  explorer:
+    driver_opts:
+      type: none
+      device: $PWD/../
+      o: bind 
