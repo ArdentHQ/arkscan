@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Enums\CoreTransactionTypeEnum;
+use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Transaction;
 
 use App\Models\Wallet;
@@ -117,6 +119,52 @@ it('should search for transactions by amount range', function () {
     ]);
 
     expect($result->get())->toHaveCount(10);
+});
+
+it('should search for multipayment transactions by amount range', function () {
+    Transaction::factory()->create([
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
+        'amount'     => 0,
+        'asset'      => [
+            'payments' => [
+                ['amount' => 750 * 1e8, 'recipientId' => 'D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib'],
+                ['amount' => 251 * 1e8, 'recipientId' => 'DFJ5Z51F1euNNdRUQJKQVdG4h495LZkc6T'],
+            ],
+        ],
+    ]);
+    Transaction::factory()->create(['amount' => 2000 * 1e8]);
+
+    $result = (new TransactionSearch())->search([
+        'transactionType' => 'multiPayment',
+        'amountFrom'      => 900,
+        'amountTo'        => 1100,
+    ]);
+
+    expect($result->get())->toHaveCount(1);
+});
+
+it('should search for multipayment transactions by amount range with decimals', function () {
+    Transaction::factory()->create([
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
+        'amount'     => 0,
+        'asset'      => [
+            'payments' => [
+                ['amount' => 0.45 * 1e8, 'recipientId' => 'D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib'],
+                ['amount' => 0.50 * 1e8, 'recipientId' => 'DFJ5Z51F1euNNdRUQJKQVdG4h495LZkc6T'],
+            ],
+        ],
+    ]);
+    Transaction::factory()->create(['amount' => 2000 * 1e8]);
+
+    $result = (new TransactionSearch())->search([
+        'transactionType' => 'multiPayment',
+        'amountFrom'      => 0.900,
+        'amountTo'        => 1.100,
+    ]);
+
+    expect($result->get())->toHaveCount(1);
 });
 
 it('should search for transactions by fee minimum', function () {

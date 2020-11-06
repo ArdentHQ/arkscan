@@ -6,6 +6,7 @@ namespace App\Services\Search;
 
 use App\Contracts\Search;
 use App\Facades\Wallets;
+use App\Models\Composers\MultiPaymentAmountValueRangeComposer;
 use App\Models\Composers\TimestampRangeComposer;
 use App\Models\Composers\ValueRangeComposer;
 use App\Models\Scopes\BusinessEntityRegistrationScope;
@@ -147,7 +148,12 @@ final class TransactionSearch implements Search
             }
         }
 
-        ValueRangeComposer::compose($query, $parameters, 'amount');
+        $query->where(function ($query) use ($parameters): void {
+            ValueRangeComposer::compose($query, $parameters, 'amount');
+            $query->orWhere(function ($query) use ($parameters): void {
+                MultiPaymentAmountValueRangeComposer::compose($query, $parameters);
+            });
+        });
 
         ValueRangeComposer::compose($query, $parameters, 'fee');
 
