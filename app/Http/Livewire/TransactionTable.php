@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use App\Http\Livewire\Concerns\ManagesTransactionTypeScopes;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
@@ -15,7 +14,6 @@ use Livewire\Component;
 final class TransactionTable extends Component
 {
     use HasPagination;
-    use ManagesTransactionTypeScopes;
 
     public array $state = [
         'type' => 'all',
@@ -36,7 +34,7 @@ final class TransactionTable extends Component
         $query = Transaction::withScope(OrderByTimestampScope::class);
 
         if ($this->state['type'] !== 'all') {
-            $scopeClass = $this->scopes[$this->state['type']];
+            $scopeClass = Transaction::TYPE_SCOPES[$this->state['type']];
 
             /* @var \Illuminate\Database\Eloquent\Model */
             $query = $query->withScope($scopeClass);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
-use App\Http\Livewire\Concerns\ManagesTransactionTypeScopes;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
@@ -17,7 +16,6 @@ use Livewire\Component;
 final class WalletTransactionTable extends Component
 {
     use HasPagination;
-    use ManagesTransactionTypeScopes;
 
     public array $state = [
         'address'   => null,
@@ -128,7 +126,7 @@ final class WalletTransactionTable extends Component
     private function applyTypeScope(Builder $query): Builder
     {
         if ($this->state['type'] !== 'all') {
-            return $query->withScope($this->scopes[$this->state['type']]);
+            return $query->withScope(Transaction::TYPE_SCOPES[$this->state['type']]);
         }
 
         return $query;

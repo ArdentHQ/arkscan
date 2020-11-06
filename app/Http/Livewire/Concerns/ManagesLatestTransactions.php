@@ -10,8 +10,6 @@ use App\Services\Cache\TableCache;
 
 trait ManagesLatestTransactions
 {
-    use ManagesTransactionTypeScopes;
-
     public function filterTransactionsByType(string $value): void
     {
         $this->state['type'] = $value;
@@ -25,7 +23,7 @@ trait ManagesLatestTransactions
             $query = Transaction::withScope(OrderByTimestampScope::class);
 
             if ($this->state['type'] !== 'all') {
-                $scopeClass = $this->scopes[$this->state['type']];
+                $scopeClass = Transaction::TYPE_SCOPES[$this->state['type']];
 
                 /* @var \Illuminate\Database\Eloquent\Model */
                 $query = $query->withScope($scopeClass);
