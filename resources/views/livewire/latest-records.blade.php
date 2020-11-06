@@ -1,15 +1,15 @@
 <div x-data="{
     tabsOpen: false,
     selected: 'transactions',
-    transactionTypeFilter: 'all',
-    transactionTypeFilterLabel: 'All',
+    transactionTypeFilter: '{{ $state["type"] }}',
+    transactionTypeFilterLabel: '@lang('forms.search.transaction_types.' . $state['type'])',
 }" x-cloak class="w-full">
     <div class="w-full md:mb-8">
         <div class="relative flex flex-col justify-between md:items-end md:flex-row md:justify-start">
             <h2 class="mb-8 text-3xl md:mb-0 sm:text-4xl">@lang('pages.home.transactions_and_blocks')</h2>
 
             <div x-show="selected === 'transactions'">
-                <x-transaction-table-filter />
+                <x-transaction-table-filter :type="$state['type']"/>
             </div>
         </div>
     </div>
@@ -98,7 +98,7 @@
                     <x-tables.mobile.transactions :transactions="$transactions" />
 
                     <div class="pt-4 mt-8 border-t border-theme-secondary-300 dark:border-theme-secondary-800 md:mt-0 md:border-dashed">
-                        <a href="{{ route('transactions', ['page' => 2]) }}" class="w-full button-secondary">@lang('actions.view_all')</a>
+                        <a href="{{ route('transactions', ['page' => 2, 'state[type]' => $state['type']]) }}" class="w-full button-secondary">@lang('actions.view_all')</a>
                     </div>
                 </div>
             @endif

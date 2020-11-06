@@ -1,7 +1,7 @@
 <div x-data="{
     filterOpen: false,
-    transactionTypeFilter: 'all',
-    transactionTypeFilterLabel: 'All',
+    transactionTypeFilter: '{{ $type }}',
+    transactionTypeFilterLabel: '@lang('forms.search.transaction_types.' . $type)',
 }" x-cloak>
     <x-ark-dropdown
         wrapper-class="transaction-filter-wrapper"

@@ -8,6 +8,7 @@ use App\Http\Controllers\ListVotersByWalletController;
 use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\ShowWalletController;
+use App\Http\Controllers\TransactionsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +29,7 @@ Route::view('/delegates', 'app.delegates')->name('delegates');
 Route::view('/blocks', 'blocks')->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
 
-Route::view('/transactions', 'transactions')->name('transactions');
+Route::get('/transactions', TransactionsController::class)->name('transactions');
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
 
 Route::view('/wallets', 'app.wallets')->name('wallets');
