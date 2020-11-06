@@ -31,6 +31,7 @@ final class DelegateMonitor extends Component
         return view('livewire.delegate-monitor', [
             'delegates'  => $this->delegates,
             'statistics' => $this->statistics,
+            'round'      => Rounds::currentRound()->round,
         ]);
     }
 
@@ -58,14 +59,16 @@ final class DelegateMonitor extends Component
             ], $roundBlocks);
         }
 
-        $this->delegates = $delegates;
+        if (count($delegates) > 0) {
+            $this->delegates = $delegates;
 
-        $this->statistics = [
-            'blockCount'      => $this->getBlockCount(),
-            'transactions'    => $this->getTransactions(),
-            'currentDelegate' => $this->getCurrentDelegate(),
-            'nextDelegate'    => $this->getNextDelegate(),
-        ];
+            $this->statistics = [
+                'blockCount'      => $this->getBlockCount(),
+                'transactions'    => $this->getTransactions(),
+                'currentDelegate' => $this->getCurrentDelegate(),
+                'nextDelegate'    => $this->getNextDelegate(),
+            ];
+        }
     }
 
     private function getBlockCount(): string

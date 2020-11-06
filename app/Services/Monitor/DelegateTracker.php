@@ -395,22 +395,28 @@ final class DelegateTracker
         // }
 
         // Map Next Forgers...
+        $forgingIndex = 2; // We start at 2 to skip 0 which results in 0 as time and 1 which would be the next forger.
+
         return collect($activeDelegates)
-            ->map(function ($publicKey, $index) use ($forgingInfo) {
+            ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo) {
                 if ($index === $forgingInfo['nextForger']) {
                     return [
                         'publicKey' => $publicKey,
                         'status'    => 'next',
-                        'time'      => 0,
+                        'time'      => Network::blockTime() * 1000,
                         'order'     => $index,
                     ];
                 }
 
                 if ($index > $forgingInfo['nextForger']) {
+                    $nextTime = (($forgingIndex) * Network::blockTime() * 1000);
+
+                    $forgingIndex++;
+
                     return [
                         'publicKey' => $publicKey,
                         'status'    => 'pending',
-                        'time'      => $index * Network::blockTime() * 1000,
+                        'time'      => $nextTime,
                         'order'     => $index,
                     ];
                 }

@@ -43,7 +43,7 @@
                 </div>
             </div>
 
-            <x-tables.desktop.delegates.monitor :delegates="$delegates" />
+            <x-tables.desktop.delegates.monitor :delegates="$delegates" :round="$round" />
 
             <x-tables.mobile.delegates.monitor :delegates="$delegates" />
         </div>

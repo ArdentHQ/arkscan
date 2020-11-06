@@ -12,7 +12,7 @@
         <tbody>
             @foreach($delegates as $delegate)
                 <tr
-                    wire:key="$delegate->publicKey()"
+                    wire:key="{{ $delegate->publicKey() }}-{{ $round }}"
                     @if ($delegate->keepsMissing())
                         class="bg-theme-danger-50"
                     @elseif ($delegate->justMissed())
