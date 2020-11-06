@@ -69,7 +69,7 @@ final class Slot
 
     public function hasForged(): bool
     {
-        if ($this->isPending()) {
+        if ($this->isWaiting()) {
             return false;
         }
 
@@ -78,27 +78,20 @@ final class Slot
 
     public function justMissed(): bool
     {
-        if ($this->isNext()) {
+        if ($this->isWaiting()) {
             return false;
         }
 
-        if ($this->isPending()) {
-            return false;
-        }
-
-        return $this->missedCount() > (Network::delegateCount() * 2);
+        return $this->currentRoundBlocks < 1;
     }
 
     public function keepsMissing(): bool
     {
-        if ($this->isNext()) {
+        if ($this->isWaiting()) {
             return false;
         }
 
-        if ($this->isPending()) {
-            return false;
-        }
-
+        // @TODO: check if the delegate forged any blocks in the last 2 rounds
         return $this->missedCount() > (Network::delegateCount() * 3);
     }
 
@@ -125,5 +118,18 @@ final class Slot
     public function status(): string
     {
         return $this->status;
+    }
+
+    private function isWaiting(): bool
+    {
+        if ($this->isNext()) {
+            return true;
+        }
+
+        if ($this->isPending()) {
+            return true;
+        }
+
+        return false;
     }
 }
