@@ -18,6 +18,8 @@ final class BlockSearch implements Search
     {
         $query = Block::query();
 
+        $this->applyScopes($query, $parameters);
+
         if (! is_null(Arr::get($parameters, 'term'))) {
             $query = $query->where('id', $parameters['term']);
 
@@ -27,12 +29,19 @@ final class BlockSearch implements Search
                     $wallet = Wallets::findByIdentifier($parameters['term']);
 
                     $query->where('generator_public_key', $wallet->public_key);
+
+                    $this->applyScopes($query, $parameters);
                 });
             } catch (\Throwable $th) {
                 // If this throws then the term was not a valid address, public key or username.
             }
         }
 
+        return $query;
+    }
+
+    private function applyScopes(Builder $query, array $parameters): void
+    {
         ValueRangeComposer::compose($query, $parameters, 'height', false);
 
         ValueRangeComposer::compose($query, $parameters, 'total_amount');
@@ -44,7 +53,5 @@ final class BlockSearch implements Search
         if (! is_null(Arr::get($parameters, 'generatorPublicKey'))) {
             $query->where('generator_public_key', $parameters['generatorPublicKey']);
         }
-
-        return $query;
     }
 }
