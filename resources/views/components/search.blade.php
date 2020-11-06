@@ -50,6 +50,10 @@
                 />
             </div>
 
+            <span class="md:hidden text-theme-primary-300 dark:text-theme-secondary-600">
+               <x-icon name="search" />
+            </span>
+
             <button
                 type="button"
                 class="hidden text-theme-secondary-900 mr-8 rounded text-center transition-default font-normal hover:bg-theme-primary-100 dark:hover:bg-theme-secondary-800 dark:text-theme-secondary-600 md:block {{ ($isSlim ?? false) ? 'px-2 py-1 -my-2' : 'px-4 py-2' }}"

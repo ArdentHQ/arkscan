@@ -62,34 +62,32 @@
     </div>
 </x-general.search.advanced-option>
 
-<x-general.search.advanced-option :title="trans('forms.search.smartbridge')">
-    <input
-        type="text"
-        placeholder="@lang('forms.search.smartbridge_placeholder')"
-        class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
-        wire:model.defer="state.smartBridge"
-        wire:keydown.enter="performSearch"
-    />
-</x-general.search.advanced-option>
-
 <x-general.search.advanced-option :title="trans('forms.search.date_range')">
-    <div>
-        <input
-            type="date"
-            class="bg-transparent -ml-7"
+    <div class="flex items-center space-x-2">
+        <x-date-picker
+            placeholder="DD/MM/YYYY"
+            class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
             wire:model.defer="state.dateFrom"
             wire:key="state_date_from"
-            style="width: 49px;"
         />
 
         <span>-</span>
 
-        <input
-            type="date"
-            class="-ml-6 bg-transparent"
+        <x-date-picker
+            placeholder="DD/MM/YYYY"
+            class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
             wire:model.defer="state.dateTo"
             wire:key="state_date_to"
-            style="width: 49px;"
         />
     </div>
+</x-general.search.advanced-option>
+
+<x-general.search.advanced-option :title="trans('forms.search.smartbridge')">
+    <input
+        type="text"
+        placeholder="@lang('forms.search.smartbridge_placeholder')"
+        class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900 smartbridge-placeholder"
+        wire:model.defer="state.smartBridge"
+        wire:keydown.enter="performSearch"
+    />
 </x-general.search.advanced-option>

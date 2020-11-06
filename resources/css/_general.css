@@ -525,3 +525,8 @@ body {
         @apply w-full;
     }
 }
+
+/* Smartbridge Placeholder truncation */
+.smartbridge-placeholder::placeholder {
+    text-overflow: ellipsis;
+}
