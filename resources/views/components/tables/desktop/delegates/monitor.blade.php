@@ -2,11 +2,11 @@
     <table>
         <thead>
             <tr>
-                <th>@lang('pages.delegates.order')</th>
-                <th><span class="pl-14">@lang('pages.delegates.name')</span></th>
-                <th><span class="pl-14">@lang('pages.delegates.forging_at')</span></th>
-                <th>@lang('pages.delegates.status')</th>
-                <th width="120" class="hidden text-right lg:table-cell">@lang('pages.delegates.block_id')</th>
+                <x-tables.headers.desktop.number name="pages.delegates.order" alignment="text-left" />
+                <x-tables.headers.desktop.address name="pages.delegates.name" />
+                <x-tables.headers.desktop.text name="pages.delegates.forging_at" alignment="text-left" />
+                <x-tables.headers.desktop.status name="pages.delegates.status" />
+                <x-tables.headers.desktop.text name="pages.delegates.block_id" />
             </tr>
         </thead>
         <tbody>
@@ -22,16 +22,16 @@
                     <td>
                         <x-tables.rows.desktop.slot-id :model="$delegate" />
                     </td>
-                    <td wire:key="{{ $delegate->publicKey() }}-username">
+                    <td wire:key="{{ $delegate->publicKey() }}-username-desktop">
                         <x-tables.rows.desktop.username-with-avatar :model="$delegate->wallet()" />
                     </td>
                     <td>
                         <x-tables.rows.desktop.slot-time :model="$delegate" />
                     </td>
-                    <td wire:key="{{ $delegate->publicKey() }}-round-status-{{ $delegate->status() }}">
+                    <td wire:key="{{ $delegate->publicKey() }}-round-status-{{ $delegate->status() }}-desktop">
                         <x-tables.rows.desktop.round-status :model="$delegate" />
                     </td>
-                    <td class="hidden text-right lg:table-cell">
+                    <td class="text-right">
                         <x-tables.rows.desktop.wallet-last-block :model="$delegate" />
                     </td>
                 </tr>

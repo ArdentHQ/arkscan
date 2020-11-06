@@ -150,7 +150,7 @@ return [
         'standby'    => 'Standby',
         'resigned'   => 'Resigned',
         'order'      => 'Order',
-        'name'       => 'Name',
+        'name'       => 'Delegate Name',
         'forging_at' => 'Time to Forge',
         'status'     => 'Status',
         'block_id'   => 'Block Id',
