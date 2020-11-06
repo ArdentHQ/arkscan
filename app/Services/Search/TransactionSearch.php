@@ -91,7 +91,7 @@ final class TransactionSearch implements Search
     {
         $query = Transaction::query();
 
-        $this->applyTypeScope($query, $parameters);
+        $this->applyScopes($query, $parameters);
 
         if (! is_null(Arr::get($parameters, 'term'))) {
             $query->where('id', $parameters['term']);
@@ -104,19 +104,19 @@ final class TransactionSearch implements Search
                     $query->where(function ($query) use ($parameters, $wallet): void {
                         $query->where('sender_public_key', $wallet->public_key);
 
-                        $this->applyTypeScope($query, $parameters);
+                        $this->applyScopes($query, $parameters);
                     });
 
                     $query->orWhere(function ($query) use ($parameters, $wallet): void {
                         $query->where('recipient_id', $wallet->address);
 
-                        $this->applyTypeScope($query, $parameters);
+                        $this->applyScopes($query, $parameters);
                     });
 
                     $query->orWhere(function ($query) use ($parameters, $wallet): void {
                         $query->whereJsonContains('asset->payments', [['recipientId' => $wallet->address]]);
 
-                        $this->applyTypeScope($query, $parameters);
+                        $this->applyScopes($query, $parameters);
                     });
                 });
             } catch (\Throwable $th) {
@@ -133,20 +133,10 @@ final class TransactionSearch implements Search
             });
         }
 
-        ValueRangeComposer::compose($query, $parameters, 'amount');
-
-        ValueRangeComposer::compose($query, $parameters, 'fee');
-
-        TimestampRangeComposer::compose($query, $parameters);
-
-        if (! is_null(Arr::get($parameters, 'smartBridge'))) {
-            $query->where('vendor_field', $parameters['smartBridge']);
-        }
-
         return $query;
     }
 
-    private function applyTypeScope(Builder $query, array $parameters): void
+    private function applyScopes(Builder $query, array $parameters): void
     {
         if (Arr::has($parameters, 'transactionType')) {
             if (Arr::get($parameters, 'transactionType') !== 'all') {
@@ -155,6 +145,16 @@ final class TransactionSearch implements Search
                 /* @var \Illuminate\Database\Eloquent\Model */
                 $query = $query->withScope($scopeClass);
             }
+        }
+
+        ValueRangeComposer::compose($query, $parameters, 'amount');
+
+        ValueRangeComposer::compose($query, $parameters, 'fee');
+
+        TimestampRangeComposer::compose($query, $parameters);
+
+        if (! is_null(Arr::get($parameters, 'smartBridge'))) {
+            $query->where('vendor_field', $parameters['smartBridge']);
         }
     }
 }
