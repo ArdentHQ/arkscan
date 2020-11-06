@@ -2,17 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Search\Concerns;
+namespace App\Models\Composers;
 
 use App\Services\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 
-trait FiltersDateRange
+final class TimestampRangeComposer
 {
-    /** @phpstan-ignore-next-line */
-    private function queryDateRange(Builder $query, ?string $from, ?string $to): Builder
+    public static function compose(Builder $query, array $parameters): Builder
     {
+        $from = Arr::get($parameters, 'dateFrom');
+        $to   = Arr::get($parameters, 'dateTo');
+
         if (is_null($from) && is_null($to)) {
             return $query;
         }

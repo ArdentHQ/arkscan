@@ -5,32 +5,41 @@ declare(strict_types=1);
 namespace App\Services\Search;
 
 use App\Contracts\Search;
+use App\Facades\Wallets;
 use App\Models\Block;
-use App\Services\Search\Concerns\FiltersDateRange;
-use App\Services\Search\Concerns\FiltersValueRange;
+use App\Models\Composers\TimestampRangeComposer;
+use App\Models\Composers\ValueRangeComposer;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 
 final class BlockSearch implements Search
 {
-    use FiltersDateRange;
-    use FiltersValueRange;
-
     public function search(array $parameters): Builder
     {
         $query = Block::query();
 
         if (! is_null(Arr::get($parameters, 'term'))) {
             $query = $query->where('id', $parameters['term']);
+
+            try {
+                // If there is a term we also want to check if the term is a valid wallet.
+                $query->orWhere(function ($query) use ($parameters): void {
+                    $wallet = Wallets::findByIdentifier($parameters['term']);
+
+                    $query->where('generator_public_key', $wallet->public_key);
+                });
+            } catch (\Throwable $th) {
+                // If this throws then the term was not a valid address, public key or username.
+            }
         }
 
-        $this->queryValueRange($query, 'height', Arr::get($parameters, 'heightFrom'), Arr::get($parameters, 'heightTo'), false);
+        ValueRangeComposer::compose($query, $parameters, 'height', false);
 
-        $this->queryValueRange($query, 'total_amount', Arr::get($parameters, 'totalAmountFrom'), Arr::get($parameters, 'totalAmountTo'));
+        ValueRangeComposer::compose($query, $parameters, 'total_amount');
 
-        $this->queryValueRange($query, 'total_fee', Arr::get($parameters, 'totalFeeFrom'), Arr::get($parameters, 'totalFeeTo'));
+        ValueRangeComposer::compose($query, $parameters, 'total_fee');
 
-        $this->queryDateRange($query, Arr::get($parameters, 'dateFrom'), Arr::get($parameters, 'dateTo'));
+        TimestampRangeComposer::compose($query, $parameters);
 
         if (! is_null(Arr::get($parameters, 'generatorPublicKey'))) {
             $query->where('generator_public_key', $parameters['generatorPublicKey']);

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Services\Search;
 
 use App\Contracts\Search;
+use App\Facades\Wallets;
+use App\Models\Composers\TimestampRangeComposer;
+use App\Models\Composers\ValueRangeComposer;
 use App\Models\Scopes\BusinessEntityRegistrationScope;
 use App\Models\Scopes\BusinessEntityResignationScope;
 use App\Models\Scopes\BusinessEntityUpdateScope;
@@ -41,16 +44,11 @@ use App\Models\Scopes\TimelockScope;
 use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\VoteScope;
 use App\Models\Transaction;
-use App\Services\Search\Concerns\FiltersDateRange;
-use App\Services\Search\Concerns\FiltersValueRange;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 
 final class TransactionSearch implements Search
 {
-    use FiltersDateRange;
-    use FiltersValueRange;
-
     private array $scopes = [
         'businessEntityRegistration'    => BusinessEntityRegistrationScope::class,
         'businessEntityResignation'     => BusinessEntityResignationScope::class,
@@ -104,13 +102,32 @@ final class TransactionSearch implements Search
 
         if (! is_null(Arr::get($parameters, 'term'))) {
             $query->where('id', $parameters['term']);
+
+            // Consider the term to be a wallet
+            try {
+                $query->orWhere(function ($query) use ($parameters): void {
+                    $wallet = Wallets::findByIdentifier($parameters['term']);
+
+                    $query->where(fn ($query): Builder   => $query->where('sender_public_key', $wallet->public_key));
+                    $query->orWhere(fn ($query): Builder => $query->where('recipient_id', $wallet->address));
+                    $query->orWhere(fn ($query): Builder => $query->whereJsonContains('asset->payments', [['recipientId' => $wallet->address]]));
+                });
+            } catch (\Throwable $th) {
+                // If this throws then the term was not a valid address, public key or username.
+            }
+
+            // Consider the term to be a block
+            $query->orWhere(function ($query) use ($parameters): void {
+                $query->where(fn ($query): Builder   => $query->where('block_id', $parameters['term']));
+                $query->orWhere(fn ($query): Builder => $query->where('block_height', $parameters['term']));
+            });
         }
 
-        $this->queryValueRange($query, 'amount', Arr::get($parameters, 'amountFrom'), Arr::get($parameters, 'amountTo'));
+        ValueRangeComposer::compose($query, $parameters, 'amount');
 
-        $this->queryValueRange($query, 'fee', Arr::get($parameters, 'feeFrom'), Arr::get($parameters, 'feeTo'));
+        ValueRangeComposer::compose($query, $parameters, 'fee');
 
-        $this->queryDateRange($query, Arr::get($parameters, 'dateFrom'), Arr::get($parameters, 'dateTo'));
+        TimestampRangeComposer::compose($query, $parameters);
 
         if (! is_null(Arr::get($parameters, 'smartBridge'))) {
             $query->where('vendor_field', $parameters['smartBridge']);

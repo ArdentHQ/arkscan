@@ -44,8 +44,8 @@ final class LatestRecords extends Component
         }
 
         return view('livewire.latest-records', [
-                'blocks' => ViewModelFactory::collection($this->blocks),
-            ]);
+            'blocks' => ViewModelFactory::collection($this->blocks),
+        ]);
     }
 
     private function renderTransactions(): View

@@ -75,7 +75,13 @@ final class SearchModule extends Component
     {
         $term = Arr::get($data, 'term');
 
+        // Skip and search for everything if the term is empty
         if (is_null($term) || $term === '') {
+            return false;
+        }
+
+        // We have an advanced search so we skip looking for a specific model
+        if (count($data) > 2) {
             return false;
         }
 

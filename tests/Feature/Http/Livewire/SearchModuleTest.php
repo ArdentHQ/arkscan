@@ -73,3 +73,16 @@ it('should redirect to the advanced search page if the term is empty', function 
             'state[type]' => 'block',
         ]));
 });
+
+it('should redirect to the advanced search page if there are more than 2 criteria', function () {
+    Livewire::test(SearchModule::class)
+        ->set('state.term', 'address')
+        ->set('state.type', 'transaction')
+        ->set('state.amountFrom', 1)
+        ->call('performSearch')
+        ->assertRedirect(route('search', [
+            'state[term]'       => 'address',
+            'state[type]'       => 'transaction',
+            'state[amountFrom]' => 1,
+        ]));
+});

@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static Block findById($id)
- * @method static Block findByHeight(int $height)
+ * @method static Block findByHeight($height)
+ * @method static Block findByIdentifier($identifier)
  */
 final class Blocks extends Facade
 {

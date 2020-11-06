@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Search\Concerns;
+namespace App\Models\Composers;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
-trait FiltersValueRange
+final class ValueRangeComposer
 {
-    /**
-     * @param string|int|null $from
-     * @param string|int|null $to
-     */
-    private function queryValueRange(Builder $query, string $column, $from, $to, bool $useSatoshi = true): Builder
+    public static function compose(Builder $query, array $parameters, string $column, bool $useSatoshi = true): Builder
     {
+        $from = Arr::get($parameters, Str::camel($column).'From');
+        $to   = Arr::get($parameters, Str::camel($column).'To');
+
         if (is_null($from) && is_null($to)) {
             return $query;
         }

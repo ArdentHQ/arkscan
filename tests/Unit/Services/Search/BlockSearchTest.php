@@ -3,8 +3,9 @@
 declare(strict_types=1);
 
 use App\Models\Block;
-use App\Services\Search\BlockSearch;
+use App\Models\Wallet;
 
+use App\Services\Search\BlockSearch;
 use App\Services\Timestamp;
 use Carbon\Carbon;
 use function Tests\configureExplorerDatabase;
@@ -194,4 +195,58 @@ it('should search for blocks by height range', function () {
     ]);
 
     expect($result->get())->toHaveCount(10);
+});
+
+it('should search for blocks by generator with an address', function () {
+    Block::factory(10)->create();
+
+    $block = Block::factory()->create([
+        'generator_public_key' => Wallet::factory()->create([
+            'address'    => 'someaddress',
+            'public_key' => 'somepubkey',
+        ])->public_key,
+    ]);
+
+    $result = (new BlockSearch())->search([
+        'term' => $block->delegate->address,
+    ]);
+
+    expect($result->get())->toHaveCount(1);
+});
+
+it('should search for blocks by generator with a public key', function () {
+    Block::factory(10)->create();
+
+    $block = Block::factory()->create([
+        'generator_public_key' => Wallet::factory()->create([
+            'public_key' => 'somepublickey',
+        ])->public_key,
+    ]);
+
+    $result = (new BlockSearch())->search([
+        'term' => $block->delegate->public_key,
+    ]);
+
+    expect($result->get())->toHaveCount(1);
+});
+
+it('should search for blocks by generator with a username', function () {
+    Block::factory(10)->create();
+
+    $block = Block::factory()->create([
+        'generator_public_key' => Wallet::factory()->create([
+            'public_key' => 'somepubkey',
+            'attributes' => [
+                'delegate' => [
+                    'username' => 'johndoe',
+                ],
+            ],
+        ])->public_key,
+    ]);
+
+    $result = (new BlockSearch())->search([
+        'term' => $block->delegate->attributes['delegate']['username'],
+    ]);
+
+    expect($result->get())->toHaveCount(1);
 });

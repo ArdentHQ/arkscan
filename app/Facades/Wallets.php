@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static Wallet findByPublicKey(string $publicKey)
  * @method static Collection findByPublicKeys(array $publicKey)
  * @method static Wallet findByUsername(string $username)
+ * @method static Wallet findByIdentifier(string $identifier)
  */
 final class Wallets extends Facade
 {

@@ -5,22 +5,18 @@ declare(strict_types=1);
 namespace App\Services\Search;
 
 use App\Contracts\Search;
+use App\Models\Composers\ValueRangeComposer;
 use App\Models\Wallet;
-use App\Services\Search\Concerns\FiltersDateRange;
-use App\Services\Search\Concerns\FiltersValueRange;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 
 final class WalletSearch implements Search
 {
-    use FiltersDateRange;
-    use FiltersValueRange;
-
     public function search(array $parameters): Builder
     {
         $query = Wallet::query();
 
-        $this->queryValueRange($query, 'balance', Arr::get($parameters, 'balanceFrom', 0), Arr::get($parameters, 'balanceTo', 0));
+        ValueRangeComposer::compose($query, $parameters, 'balance');
 
         if (! is_null(Arr::get($parameters, 'term'))) {
             $query->where('address', $parameters['term']);
