@@ -21,4 +21,11 @@ final class Monitor
 
         return [$roundStart, $roundStart + ($delegateCount - 1)];
     }
+
+    public static function roundNumberFromHeight(int $height): int
+    {
+        $delegateCount = Network::delegateCount();
+
+        return (int) ceil($height / $delegateCount);
+    }
 }

@@ -56,7 +56,7 @@ final class DelegateMonitor extends Component
                 'forging_at' => Timestamp::fromGenesis($roundBlocks->last()->timestamp)->addMilliseconds($delegate['time']),
                 'last_block' => (new WalletCache())->getLastBlock($delegate['publicKey']),
                 'status'     => $delegate['status'],
-            ], $roundBlocks);
+            ], $roundBlocks, $roundNumber);
         }
 
         if (count($delegates) > 0) {
