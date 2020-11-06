@@ -16,8 +16,9 @@ final class Monitor
 
     public static function heightRangeByRound(int $round): array
     {
-        $roundStart = (int) ($round - 1) * Network::delegateCount();
+        $delegateCount = Network::delegateCount();
+        $roundStart    = (int) ($round - 1) * $delegateCount;
 
-        return [$roundStart, $roundStart + 50];
+        return [$roundStart, $roundStart + ($delegateCount - 1)];
     }
 }
