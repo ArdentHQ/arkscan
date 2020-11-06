@@ -12,9 +12,9 @@ use App\Services\Cache\MonitorCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\Monitor;
+use App\Services\Timestamp;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
-use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
@@ -52,7 +52,7 @@ final class DelegateMonitor extends Component
                 'publicKey'  => $delegate['publicKey'],
                 'order'      => $i + 1,
                 'wallet'     => ViewModelFactory::make((new WalletCache())->getDelegate($delegate['publicKey'])),
-                'forging_at' => Carbon::now()->addMilliseconds($delegate['time']),
+                'forging_at' => Timestamp::fromGenesis($roundBlocks->last()->timestamp)->addMilliseconds($delegate['time']),
                 'last_block' => (new WalletCache())->getLastBlock($delegate['publicKey']),
                 'status'     => $delegate['status'],
             ], $roundBlocks);
@@ -104,6 +104,7 @@ final class DelegateMonitor extends Component
         return Block::query()
             ->whereIn('generator_public_key', $publicKeys)
             ->whereBetween('height', $heightRange)
+            ->orderBy('height', 'asc')
             ->get();
     }
 

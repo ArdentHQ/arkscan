@@ -13,13 +13,14 @@ use function Tests\configureExplorerDatabase;
 
 function createRoundWithDelegates(): void
 {
-    $block = Block::factory()->create([
-        'height'    => 5720529,
-        'timestamp' => 113620904,
-    ]);
-
-    Wallet::factory(51)->create()->each(function ($wallet) use ($block) {
+    Wallet::factory(51)->create()->each(function ($wallet) {
         $wallet->update(['public_key' => bip39()]);
+
+        $block = Block::factory()->create([
+            'height'               => 5720529,
+            'timestamp'            => 113620904,
+            'generator_public_key' => $wallet->public_key,
+        ]);
 
         Round::factory()->create([
             'round'      => '112168',
