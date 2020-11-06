@@ -450,3 +450,11 @@ it('should get the username if the wallet is a delegate', function () {
 
     expect($this->subject->username())->toBe('John');
 });
+
+it('should determine if the wallet has a second signature', function () {
+    expect($this->subject->hasSecondSignature())->toBeBool();
+});
+
+it('should determine if the wallet has a multi signature', function () {
+    expect($this->subject->hasMultiSignature())->toBeBool();
+});
