@@ -27,6 +27,8 @@ final class TransactionTable extends Component
     public function filterTransactionsByType(string $value): void
     {
         $this->state['type'] = $value;
+
+        $this->gotoPage(1);
     }
 
     public function render(): View
