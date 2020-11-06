@@ -7,7 +7,7 @@
                 </div>
 
                 <div class="flex flex-col justify-between flex-1 space-y-4 font-semibold lg:ml-4 md:space-y-0">
-                    <div class="text-sm leading-tight text-theme-secondary-600 dark:text-theme-secondary-700">{{ $title }}</div>
+                    <div class="flex text-sm leading-tight text-theme-secondary-600 dark:text-theme-secondary-700">{{ $title }}</div>
 
                     <div class="flex items-center space-x-2 leading-tight">
                         <span class="flex text-theme-secondary-400 dark:text-theme-secondary-200">

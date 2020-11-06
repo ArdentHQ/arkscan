@@ -530,3 +530,12 @@ body {
 .smartbridge-placeholder::placeholder {
     text-overflow: ellipsis;
 }
+
+/* Wallet status icons */
+.wallet-icons-row {
+    @apply flex items-center;
+}
+
+.wallet-icons-row > *:not(:first-child) {
+    @apply pl-2 ml-2;
+}

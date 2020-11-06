@@ -13,6 +13,32 @@
                         @lang('pages.wallet.address')
                     @endif
                 @endif
+
+                <div class="ml-2 divide-x divide-gray-400 wallet-icons-row">
+                    @if ($wallet->isKnown())
+                        <div data-tippy-content="@lang('labels.verified_address')">
+                            <x-icon name="app-verified" size="sm" />
+                        </div>
+                    @endif
+
+                    @if ($wallet->hasMultiSignature())
+                        <div data-tippy-content="@lang('labels.multi_signature')">
+                            <x-icon name="app.transactions-multi-signature" size="sm" />
+                        </div>
+                    @endif
+
+                    @if ($wallet->isOwnedByExchange())
+                        <div data-tippy-content="@lang('labels.exchange')">
+                            <x-icon name="app-exchange" size="sm" />
+                        </div>
+                    @endif
+
+                    @if ($wallet->hasSecondSignature())
+                        <div data-tippy-content="@lang('labels.second_signature')">
+                            <x-icon name="app.transactions-second-signature" size="sm" />
+                        </div>
+                    @endif
+                </div>
             </x-slot>
 
             <x-slot name="logo">
