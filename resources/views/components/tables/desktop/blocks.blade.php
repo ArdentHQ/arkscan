@@ -19,7 +19,7 @@
                     <td wire:key="{{ $block->id() }}-id">
                         <x-tables.rows.desktop.block-id :model="$block" />
                     </td>
-                    <td class="hidden md:table-cell">
+                    <td class="hidden lg:table-cell">
                         <x-tables.rows.desktop.timestamp :model="$block" />
                     </td>
                     @if(!isset($withoutGenerator))
@@ -27,10 +27,10 @@
                             <x-tables.rows.desktop.block-forger :model="$block" />
                         </td>
                     @endif
-                    <td>
+                    <td class="text-right">
                         <x-tables.rows.desktop.block-height :model="$block" />
                     </td>
-                    <td>
+                    <td class="text-right">
                         <x-tables.rows.desktop.transaction-count :model="$block" />
                     </td>
                     <td class="text-right">

@@ -22,6 +22,9 @@ module.exports = {
                 ...defaultConfig.theme.extend.width,
                 '7': '1.75rem',
                 '84': '21rem',
+            },
+            padding: {
+                '26': '6.5rem',
             }
         },
     },

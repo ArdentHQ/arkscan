@@ -1,5 +1,5 @@
 @isset($responsive)
-    <td class="hidden text-right xl:table-cell">
+    <td class="hidden text-right lg:table-cell">
         <x-loading.text />
     </td>
 @else
