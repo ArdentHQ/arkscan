@@ -21,7 +21,8 @@
                 @lang('pages.delegates.warning')
             </span>
         </span>
-    @elseif ($model->hasForged())
+    @else
+        {{-- @TODO: do we want an explicit check for forged here or just assume that they forged if both of the missed checks are false? --}}
         <span class="flex items-center font-bold text-theme-success-400">
             <x-icon name="app-status-done" size="lg" />
             <span class="ml-2">
