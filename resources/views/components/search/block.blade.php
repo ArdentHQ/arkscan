@@ -10,6 +10,7 @@
     <div class="flex items-center space-x-2">
         <input
             type="number"
+            min="0"
             placeholder="0.00"
             class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
             wire:model.defer="state.heightFrom"
@@ -21,6 +22,7 @@
 
         <input
             type="number"
+            min="0"
             placeholder="0.00"
             class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
             wire:model.defer="state.heightTo"
@@ -34,6 +36,7 @@
     <div class="flex items-center space-x-2">
         <input
             type="number"
+            min="0"
             placeholder="0.00"
             class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
             wire:model.defer="state.totalAmountFrom"
@@ -45,6 +48,7 @@
 
         <input
             type="number"
+            min="0"
             placeholder="0.00"
             class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
             wire:model.defer="state.totalAmountTo"
@@ -58,6 +62,7 @@
     <div class="flex items-center space-x-2">
         <input
             type="number"
+            min="0"
             placeholder="0.00"
             class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
             wire:model.defer="state.totalFeeFrom"
@@ -69,6 +74,7 @@
 
         <input
             type="number"
+            min="0"
             placeholder="0.00"
             class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
             wire:model.defer="state.totalFeeTo"
@@ -82,6 +88,7 @@
     <div class="flex items-center space-x-2">
         <input
             type="number"
+            min="0"
             placeholder="0.00"
             class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
             wire:model.defer="state.rewardFrom"
@@ -93,6 +100,7 @@
 
         <input
             type="number"
+            min="0"
             placeholder="0.00"
             class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
             wire:model.defer="state.rewardTo"
