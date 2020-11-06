@@ -91,14 +91,7 @@ final class TransactionSearch implements Search
     {
         $query = Transaction::query();
 
-        if (Arr::has($parameters, 'transactionType')) {
-            if (Arr::get($parameters, 'transactionType') !== 'all') {
-                $scopeClass = $this->scopes[$parameters['transactionType']];
-
-                /* @var \Illuminate\Database\Eloquent\Model */
-                $query = $query->withScope($scopeClass);
-            }
-        }
+        $this->applyTypeScope($query, $parameters);
 
         if (! is_null(Arr::get($parameters, 'term'))) {
             $query->where('id', $parameters['term']);
@@ -108,9 +101,23 @@ final class TransactionSearch implements Search
                 $query->orWhere(function ($query) use ($parameters): void {
                     $wallet = Wallets::findByIdentifier($parameters['term']);
 
-                    $query->where(fn ($query): Builder   => $query->where('sender_public_key', $wallet->public_key));
-                    $query->orWhere(fn ($query): Builder => $query->where('recipient_id', $wallet->address));
-                    $query->orWhere(fn ($query): Builder => $query->whereJsonContains('asset->payments', [['recipientId' => $wallet->address]]));
+                    $query->where(function ($query) use ($parameters, $wallet): void {
+                        $query->where('sender_public_key', $wallet->public_key);
+
+                        $this->applyTypeScope($query, $parameters);
+                    });
+
+                    $query->orWhere(function ($query) use ($parameters, $wallet): void {
+                        $query->where('recipient_id', $wallet->address);
+
+                        $this->applyTypeScope($query, $parameters);
+                    });
+
+                    $query->orWhere(function ($query) use ($parameters, $wallet): void {
+                        $query->whereJsonContains('asset->payments', [['recipientId' => $wallet->address]]);
+
+                        $this->applyTypeScope($query, $parameters);
+                    });
                 });
             } catch (\Throwable $th) {
                 // If this throws then the term was not a valid address, public key or username.
@@ -137,5 +144,17 @@ final class TransactionSearch implements Search
         }
 
         return $query;
+    }
+
+    private function applyTypeScope(Builder $query, array $parameters): void
+    {
+        if (Arr::has($parameters, 'transactionType')) {
+            if (Arr::get($parameters, 'transactionType') !== 'all') {
+                $scopeClass = $this->scopes[$parameters['transactionType']];
+
+                /* @var \Illuminate\Database\Eloquent\Model */
+                $query = $query->withScope($scopeClass);
+            }
+        }
     }
 }
