@@ -492,7 +492,7 @@ body {
     @apply hidden;
 }
 
-.round-status-history > span:first-child {
+.round-status-history > span:last-child {
     @apply block;
 }
 
