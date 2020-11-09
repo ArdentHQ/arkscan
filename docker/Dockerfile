@@ -29,7 +29,7 @@ RUN adduser -S -h /var/www/explorer -s /bin/bash -G www-data -u 1000 explorer ex
     && curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && curl -fsSLO --compressed "https://unofficial-builds.nodejs.org/download/release/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64-musl.tar.xz" \
     && tar -xJf "node-v$NODE_VERSION-linux-x64-musl.tar.xz" -C /usr/local --strip-components=1 --no-same-owner \
-    && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
+    && ln -s /usr/bin/node /usr/bin/nodejs \
     && curl -fsSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz" \
     && mkdir -p /opt \
     && tar -xzf yarn-v$YARN_VERSION.tar.gz -C /opt/ \
