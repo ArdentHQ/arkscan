@@ -14,6 +14,6 @@ final class RangeAggregate
 
     public function aggregate(Carbon $start, Carbon $end): float
     {
-        return BigNumber::new($this->dateRangeQuery($start, $end)->avg('fee'))->toFloat();
+        return BigNumber::new($this->dateRangeQuery($start, $end)->avg('fee') ?? 0)->toFloat();
     }
 }
