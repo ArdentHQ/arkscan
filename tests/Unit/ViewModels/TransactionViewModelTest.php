@@ -115,6 +115,11 @@ it('should determine if the transaction is confirmed', function () {
     expect($this->subject->isConfirmed())->toBeTrue();
 });
 
+it('should get the ipfs hash', function () {
+    expect($this->subject->ipfsHash())->toBeString();
+    expect($this->subject->ipfsHash())->toBe('QmXrvSZaDr8vjLUB9b7xz26S3kpk3S3bSc8SUyZmNPvmVo');
+});
+
 it('should determine the transaction type', function (string $method, int $type, int $typeGroup, array $asset) {
     $subject = new TransactionViewModel(Transaction::factory()->create([
         'type'       => $type,

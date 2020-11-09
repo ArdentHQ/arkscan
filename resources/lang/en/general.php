@@ -52,6 +52,7 @@ return [
         'delegate-registration'   => 'Delegate Registration',
         'delegate-resignation'    => 'Delegate Resignation',
         'ipfs'                    => 'IPFS',
+        'ipfs-hash'               => 'IPFS Hash',
         'module'                  => 'Module',
         'multi-payment'           => 'Multipayment',
         'multi-signature'         => 'Multisignature',
