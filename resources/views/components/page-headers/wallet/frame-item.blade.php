@@ -5,7 +5,7 @@
         </div>
     </div>
 
-    <div class="flex flex-col justify-between flex-1 md:pl-4">
+    <div class="flex flex-col justify-between flex-1 space-y-2 md:pl-4">
         <div class="text-sm leading-tight text-theme-secondary-600 dark:text-theme-secondary-700">
             @lang($title)
         </div>

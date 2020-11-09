@@ -53,6 +53,14 @@
                 @endif
             </x-slot>
 
+            @if($wallet->isDelegate())
+                <x-slot name="extraLogo">
+                    <div class="lg:hidden circled-icon text-theme-secondary-400 border-theme-danger-400">
+                        <x-icon name="app-delegate" />
+                    </div>
+                </x-slot>
+            @endif
+
             <x-slot name="extension">
                 {{ $slot }}
 
