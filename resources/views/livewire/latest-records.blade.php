@@ -44,7 +44,7 @@
         >
             <x-slot name="button">
                 <div class="flex items-center space-x-4">
-                    <x-icon name="menu-open" size="sm" />
+                    <x-ark-icon name="menu-open" size="sm" />
 
                     <div x-show="selected === 'transactions'">@lang('pages.home.latest_transactions')</div>
                     <div x-show="selected === 'blocks'">@lang('pages.home.latest_blocks')</div>

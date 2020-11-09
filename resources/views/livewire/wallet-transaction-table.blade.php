@@ -43,7 +43,7 @@
         >
             <x-slot name="button">
                 <div class="flex items-center space-x-4">
-                    <x-icon name="menu-open" size="md" />
+                    <x-ark-icon name="menu-open" size="md" />
 
                     <div x-show="direction === 'all'">@lang('pages.wallet.all_transactions')</div>
                     <div x-show="direction === 'received'">@lang('pages.wallet.received_transactions')</div>

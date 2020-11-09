@@ -6,7 +6,7 @@
             @if ($model->isKnown())
                 <div>
                     <div class="flex items-center space-x-4">
-                        <x-icon name="app-verified" style="secondary" />
+                        <x-ark-icon name="app-verified" style="secondary" />
 
                         <span>@lang('general.verified_address')</span>
                     </div>
@@ -16,7 +16,7 @@
             @if ($model->hasMultiSignature())
                 <div>
                     <div class="flex items-center space-x-4">
-                        <x-icon name="app.transactions-multi-signature" style="secondary" />
+                        <x-ark-icon name="app.transactions-multi-signature" style="secondary" />
 
                         <span>@lang('general.multi-signature')</span>
                     </div>
@@ -26,7 +26,7 @@
             @if ($model->isOwnedByExchange())
                 <div>
                     <div class="flex items-center space-x-4">
-                        <x-icon name="app-exchange" style="secondary" />
+                        <x-ark-icon name="app-exchange" style="secondary" />
 
                         <span>@lang('general.exchange')</span>
                     </div>
@@ -36,7 +36,7 @@
             @if ($model->hasSecondSignature())
                 <div>
                     <div class="flex items-center space-x-4">
-                        <x-icon name="app.transactions-second-signature" style="secondary" />
+                        <x-ark-icon name="app.transactions-second-signature" style="secondary" />
 
                         <span>@lang('general.second-signature')</span>
                     </div>

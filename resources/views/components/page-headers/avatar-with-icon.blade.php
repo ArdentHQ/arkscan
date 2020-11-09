@@ -1,6 +1,6 @@
 <div class="hidden lg:flex">
     <div class="-mr-2 circled-icon text-theme-secondary-400 border-theme-danger-400">
-        <x-icon :name="$icon" />
+        <x-ark-icon :name="$icon" />
     </div>
 </div>
 

@@ -3,7 +3,7 @@
         <div class="flex flex-row items-center justify-between space-x-4">
             <div class="flex items-center">
                 <div class="w-12 h-12 border-white circled-icon text-theme-secondary-400">
-                    <x-icon name="app-marketsquare" size="sm" style="white" />
+                    <x-ark-icon name="app-marketsquare" size="sm" style="white" />
                 </div>
             </div>
 
@@ -15,7 +15,7 @@
                 <div class="flex items-center space-x-2 leading-tight">
                     <span class="text-white dark:text-theme-secondary-200">@lang('general.learn_more') <span class="hidden sm:contents">@lang('generic.at') MarketSquare</span></span>
                     <a href="#" class="mx-auto link">
-                        <x-icon name="link" size="sm" style="white" />
+                        <x-ark-icon name="link" size="sm" style="white" />
                     </a>
                 </div>
             </div>

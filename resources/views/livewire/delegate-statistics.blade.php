@@ -3,7 +3,7 @@
         <div class="grid w-full grid-flow-row grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4 gap-y-8 delegate-statistics-grid">
         <x-delegates.statistic>
             <x-slot name="logo">
-                <x-icon name="app-fee" />
+                <x-ark-icon name="app-fee" />
             </x-slot>
 
             <x-slot name="title">
@@ -15,7 +15,7 @@
 
         <x-delegates.statistic>
             <x-slot name="logo">
-                <x-icon name="app-reward" />
+                <x-ark-icon name="app-reward" />
             </x-slot>
 
             <x-slot name="title">
@@ -27,7 +27,7 @@
 
         <x-delegates.statistic>
             <x-slot name="logo">
-                <x-icon name="app-fee" />
+                <x-ark-icon name="app-fee" />
             </x-slot>
 
             <x-slot name="title">
@@ -39,7 +39,7 @@
 
         <x-delegates.statistic>
             <x-slot name="logo">
-                <x-icon name="app-votes" />
+                <x-ark-icon name="app-votes" />
             </x-slot>
 
             <x-slot name="title">

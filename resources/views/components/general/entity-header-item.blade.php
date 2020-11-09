@@ -3,9 +3,9 @@
         <div class="circled-icon text-theme-secondary-900 border-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-600">
             @if ($icon ?? false)
                 @if ($iconSize ?? false)
-                    <x-icon :name="$icon" :size="$iconSize" />
+                    <x-ark-icon :name="$icon" :size="$iconSize" />
                 @else
-                    <x-icon :name="$icon" />
+                    <x-ark-icon :name="$icon" />
                 @endif
             @elseif ($avatar ?? false)
                 <x-general.avatar-small :identifier="$avatar" />

@@ -27,7 +27,7 @@
                     class="mr-4 cursor-pointer text-theme-primary-600 hover:text-theme-primary-700"
                     @click="showAdvanced = false; isFocused = false; $dispatch('search-slim-close')"
                 >
-                    <x-icon name="close" size="md" />
+                    <x-ark-icon name="close" size="md" />
                 </div>
             @endif
 
@@ -51,7 +51,7 @@
             </div>
 
             <span class="md:hidden text-theme-primary-300 dark:text-theme-secondary-600">
-               <x-icon name="search" />
+               <x-ark-icon name="search" />
             </span>
 
             <button
@@ -76,7 +76,7 @@
                     class="cursor-pointer text-theme-primary-300 hover:text-theme-primary-400 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400 @unless($isSlim ?? false) md:hidden @endif"
                     wire:click="performSearch"
                 >
-                    <x-icon name="search" />
+                    <x-ark-icon name="search" />
                 </div>
             @endunless
         </div>

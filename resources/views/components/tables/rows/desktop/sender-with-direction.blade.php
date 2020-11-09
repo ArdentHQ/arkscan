@@ -3,9 +3,9 @@
         <div class="flex">
             <div class="-mr-2 circled-icon text-theme-secondary-900 border-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-600">
                 @if($model->isSent($wallet->address()))
-                    <x-icon name="app-arrow-up" />
+                    <x-ark-icon name="app-arrow-up" />
                 @else
-                    <x-icon name="app-arrow-down" />
+                    <x-ark-icon name="app-arrow-down" />
                 @endif
             </div>
 

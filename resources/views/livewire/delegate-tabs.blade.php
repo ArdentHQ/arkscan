@@ -59,7 +59,7 @@
     >
         <x-slot name="button">
             <div class="flex items-center space-x-4">
-                <x-icon name="menu-open" size="sm" />
+                <x-ark-icon name="menu-open" size="sm" />
 
                 <div x-show="status === 'active' && component !== 'monitor'">
                     @lang('pages.delegates.active')

@@ -3,9 +3,9 @@
         <div class="flex items-center justify-center w-12 h-12 -mr-2">
             <div class="circled-icon text-theme-secondary-900 border-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-600">
                 @if($transaction->isSent($wallet->address()))
-                    <x-icon name="app-arrow-up" />
+                    <x-ark-icon name="app-arrow-up" />
                 @else
-                    <x-icon name="app-arrow-down" />
+                    <x-ark-icon name="app-arrow-down" />
                 @endif
             </div>
         </div>

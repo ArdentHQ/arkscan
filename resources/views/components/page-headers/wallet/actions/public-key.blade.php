@@ -1,7 +1,7 @@
 <div x-data="{ publicKeyModalVisible: false }" class="flex-1 lg:relative">
     <button type="button" @click="publicKeyModalVisible = !publicKeyModalVisible"
         class="flex items-center justify-center w-full px-3 rounded cursor-pointer lg:w-16 bg-theme-secondary-800 hover:bg-theme-primary-600 transition-default lg:flex-none h-11 dark:text-theme-secondary-600 dark:hover:text-theme-secondary-200">
-        <x-icon name="key" />
+        <x-ark-icon name="key" />
     </button>
 
     <div @click.away="publicKeyModalVisible = false" x-show="publicKeyModalVisible" class="absolute left-0 right-0 z-10 w-auto mx-8 mt-4 bg-white rounded-lg shadow-lg lg:left-auto lg:mx-0 dark:bg-theme-secondary-900" x-cloak>
