@@ -23,8 +23,10 @@
     icon="app-transactions.ipfs"
 >
     <x-slot name="text">
-        <a href="https://cloudflare-ipfs.com/ipfs/{{ $transaction->entityHash() }}" class="font-semibold link">
-            <x-truncate-middle :value="$transaction->entityHash()" />
-        </a>
+        <x-ark-external-link url="https://cloudflare-ipfs.com/ipfs/{{ $transaction->entityHash() }}">
+            <x-slot name="text">
+                <x-truncate-middle :value="$transaction->entityHash()" />
+            </x-slot>
+        </x-ark-external-link>
     </x-slot>
 </x-general.entity-header-item>
