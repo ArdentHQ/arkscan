@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
+use App\DTO\MemoryWallet;
 use App\Facades\Wallets;
 use App\Services\MultiSignature;
 use App\ViewModels\WalletViewModel;
@@ -51,8 +52,7 @@ trait InteractsWithMultiSignature
 
         return collect(Arr::get($this->transaction->asset, 'multiSignature.publicKeys', []))
             ->map(fn ($publicKey) => Address::fromPublicKey($publicKey))
-            ->map(fn ($address)   => Wallets::findByAddress($address))
-            ->map(fn ($wallet)    => new WalletViewModel($wallet))
+            ->map(fn ($address)   => MemoryWallet::fromAddress($address))
             ->toArray();
     }
 
