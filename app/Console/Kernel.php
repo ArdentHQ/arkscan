@@ -18,6 +18,7 @@ use App\Console\Commands\CacheMultiSignatureAddresses;
 use App\Console\Commands\CacheNetworkStatus;
 use App\Console\Commands\CachePrices;
 use App\Facades\Network;
+use App\Jobs\CacheMarketSquareProfileByAddress;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Spatie\ShortSchedule\ShortSchedule;
@@ -67,6 +68,8 @@ final class Kernel extends ConsoleKernel
         $schedule->command(CacheDelegateProductivity::class)->everyMinute();
 
         $schedule->command(CacheDelegateResignationIds::class)->everyMinute();
+
+        $schedule->command(CacheMarketSquareProfileByAddress::class)->everyMinute();
     }
 
     /**

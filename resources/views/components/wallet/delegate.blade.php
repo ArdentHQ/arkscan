@@ -45,7 +45,7 @@
                 </div>
             @endif
 
-            <div class="grid w-full grid-flow-row grid-cols-1 gap-6 pb-8 border-b border-dashed gap-y-10 sm:pb-0 md:pb-8 sm:border-b-0 md:border-b md:grid-cols-2 lg:grid-cols-4  border-theme-secondary-300 dark:border-theme-secondary-800 delegate-details sm:pl-8 md:pl-0">
+            <div class="grid w-full grid-flow-row grid-cols-1 gap-6 pb-8 border-b border-dashed gap-y-10 sm:pb-0 md:pb-8 sm:border-b-0 md:border-b md:grid-cols-2 lg:grid-cols-4 border-theme-secondary-300 dark:border-theme-secondary-800 delegate-details sm:pl-8 md:pl-0">
                 <x-details-box :title="trans('pages.wallet.delegate.forged_total')" icon="app-forged" shallow>
                     <x-currency>{{ $wallet->totalForged() }}</x-currency>
                 </x-details-box>

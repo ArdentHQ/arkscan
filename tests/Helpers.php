@@ -152,6 +152,13 @@ function fakeCryptoCompare(): void
     ]);
 }
 
+function fakeMarketSquare(): void
+{
+    Http::fake([
+        'marketsquare.io/*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/marketsquare/profile.json')), true)),
+    ]);
+}
+
 function bip39(): string
 {
     return PublicKey::fromPassphrase((implode(' ', BIP39::Generate()->words)))->getHex();

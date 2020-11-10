@@ -15,7 +15,7 @@ return [
             'confirmations'    => intval(env('EXPLORER_NETWORK_CONFIRMATIONS', 51)),
             'knownWallets'     => env('EXPLORER_NETWORK_KNOWN_WALLETS', 'https://raw.githubusercontent.com/ArkEcosystem/common/master/mainnet/known-wallets-extended.json'),
             'canBeExchanged'   => env('EXPLORER_NETWORK_CAN_BE_EXCHANGED', true),
-            'usesMarketsquare' => env('EXPLORER_NETWORK_USES_MARKETSQUARE', false),
+            'usesMarketsquare' => env('EXPLORER_NETWORK_USES_MARKETSQUARE', true),
             'epoch'            => env('EXPLORER_NETWORK_EPOCH', '2017-03-21T13:00:00.000Z'),
             'delegateCount'    => intval(env('EXPLORER_NETWORK_DELEGATE_COUNT', 51)),
             'blockTime'        => intval(env('EXPLORER_NETWORK_BLOCK_TIME', 8)),
@@ -39,5 +39,7 @@ return [
     ],
 
     'nodejs' => env('EXPLORER_NODEJS', '/usr/bin/node'),
+
+    'marketsquare_host' => env('EXPLORER_MARKETSQUARE_HOST', 'https://marketsquare.io/'),
 
 ];
