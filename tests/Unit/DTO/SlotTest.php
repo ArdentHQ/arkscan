@@ -41,3 +41,18 @@ it('should make an instance that has all properties', function (string $status) 
     expect($subject->isPending())->toBeBool();
     expect($subject->status())->toBeString();
 })->with(['done', 'next', 'pending']);
+
+it('should not be marked as missing if it never had a block', function () {
+    configureExplorerDatabase();
+
+    $wallet = Wallet::factory()->create();
+
+    $subject = new Slot([
+        'publicKey'    => $wallet->public_key,
+        'last_block'   => [],
+        'status'       => 'done',
+    ], Block::whereBetween('height', [1, 5])->get(), 1);
+
+    expect($subject->keepsMissing())->toBeFalse();
+    expect($subject->missedCount())->toBe(0);
+});
