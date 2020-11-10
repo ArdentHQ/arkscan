@@ -16,10 +16,9 @@ beforeEach(fn () => configureExplorerDatabase());
 
 it('should search for a transaction by id', function () {
     $transaction = Transaction::factory(10)->create()[0];
-    $transaction->update(['vendor_field' => 'Hello World']);
 
     $result = (new TransactionSearch())->search([
-        'smartBridge' => $transaction->vendor_field,
+        'term' => $transaction->id,
     ]);
 
     expect($result->get())->toHaveCount(1);
@@ -27,9 +26,10 @@ it('should search for a transaction by id', function () {
 
 it('should search for a transaction by vendor field', function () {
     $transaction = Transaction::factory(10)->create()[0];
+    $transaction->update(['vendor_field' => 'Hello World']);
 
     $result = (new TransactionSearch())->search([
-        'term' => $transaction->id,
+        'smartBridge' => $transaction->vendor_field,
     ]);
 
     expect($result->get())->toHaveCount(1);

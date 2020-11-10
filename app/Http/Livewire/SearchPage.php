@@ -10,7 +10,7 @@ use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\View\View;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -85,6 +85,8 @@ final class SearchPage extends Component
             'totalAmountTo'      => null,
             'totalFeeFrom'       => null,
             'totalFeeTo'         => null,
+            'rewardFrom'         => null,
+            'rewardTo'           => null,
             'generatorPublicKey' => null,
             // Transactions
             'transactionType' => 'transfer',

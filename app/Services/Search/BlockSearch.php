@@ -48,6 +48,8 @@ final class BlockSearch implements Search
 
         ValueRangeComposer::compose($query, $parameters, 'total_fee');
 
+        ValueRangeComposer::compose($query, $parameters, 'reward');
+
         TimestampRangeComposer::compose($query, $parameters);
 
         if (! is_null(Arr::get($parameters, 'generatorPublicKey'))) {
