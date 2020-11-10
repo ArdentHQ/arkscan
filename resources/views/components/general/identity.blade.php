@@ -1,5 +1,5 @@
 <div>
-    <div class="flex {{ $withoutReverse ?? 'flex-row-reverse' }} items-center md:flex-row space-x-3 md:justify-start">
+    <div class="flex {{ $withoutReverse ?? 'flex-row-reverse' }} items-center md:flex-row md:space-x-3 md:justify-start">
         @unless ($icon ?? false)
             <x-general.avatar :identifier="$model->address()" />
         @else
@@ -13,7 +13,9 @@
 
             <a href="{{ route('wallet', $model->address()) }}" class="font-semibold link sm:hidden md:flex">
                 @if ($model->username())
-                    <div class="delegate-name-truncate">{{ $model->username() }}</div>
+                    <div class="{{ ($prefix ?? false) ? 'delegate-name-truncate-prefix' : 'delegate-name-truncate' }}">
+                        {{ $model->username() }}
+                    </div>
                 @else
                     @isset($withoutTruncate)
                         {{ $model->address() }}

@@ -517,13 +517,11 @@ body {
 
 /* Delegate name truncation */
 .delegate-name-truncate {
-    @apply w-24 truncate;
+    @apply w-full truncate;
 }
-
-@media (min-width: 400px) {
-    .delegate-name-truncate {
-        @apply w-full;
-    }
+.delegate-name-truncate-prefix {
+    @apply delegate-name-truncate;
+    max-width: 6rem;
 }
 
 /* Smartbridge Placeholder truncation */
