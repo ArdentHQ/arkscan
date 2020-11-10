@@ -31,9 +31,7 @@ final class CacheDevelopmentData extends Command
     public function handle()
     {
         collect([
-            'explorer:cache-network-status',
             'explorer:cache-network-aggregates',
-            'explorer:cache-last-blocks',
             'explorer:cache-fees',
             'explorer:cache-prices',
             'explorer:cache-delegate-aggregates',

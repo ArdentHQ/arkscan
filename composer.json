@@ -32,7 +32,6 @@
         "ruafozy/mersenne-twister": "^1.3",
         "savvot/random": "^0.3.0",
         "spatie/laravel-responsecache": "^6.6",
-        "spatie/laravel-short-schedule": "^1.2",
         "symfony/psr-http-message-bridge": "^2.0"
     },
     "require-dev": {
