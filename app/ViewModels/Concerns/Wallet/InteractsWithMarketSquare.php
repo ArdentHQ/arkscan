@@ -18,7 +18,7 @@ trait InteractsWithMarketSquare
      */
     public function profileUrl(): ?string
     {
-        if (! Network::usesMarketsquare()) {
+        if (! Network::usesMarketSquare()) {
             return null;
         }
 
@@ -33,7 +33,7 @@ trait InteractsWithMarketSquare
 
     public function commission(): ?int
     {
-        if (! Network::usesMarketsquare()) {
+        if (! Network::usesMarketSquare()) {
             return null;
         }
 
@@ -45,7 +45,7 @@ trait InteractsWithMarketSquare
 
     public function payoutFrequency(): ?string
     {
-        if (! Network::usesMarketsquare()) {
+        if (! Network::usesMarketSquare()) {
             return null;
         }
 
@@ -58,7 +58,7 @@ trait InteractsWithMarketSquare
 
     public function payoutMinimum(): ?int
     {
-        if (! Network::usesMarketsquare()) {
+        if (! Network::usesMarketSquare()) {
             return null;
         }
 

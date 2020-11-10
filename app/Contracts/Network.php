@@ -22,7 +22,7 @@ interface Network
 
     public function canBeExchanged(): bool;
 
-    public function usesMarketsquare(): bool;
+    public function usesMarketSquare(): bool;
 
     public function epoch(): Carbon;
 

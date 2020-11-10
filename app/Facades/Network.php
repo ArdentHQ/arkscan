@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Facades;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -14,8 +15,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static int confirmations()
  * @method static array knownWallets()
  * @method static bool canBeExchanged()
- * @method static bool usesMarketsquare()
- * @method static \Carbon\Carbon epoch()
+ * @method static bool usesMarketSquare()
+ * @method static Carbon epoch()
  * @method static int delegateCount()
  * @method static int blockTime()
  * @method static int blockReward()

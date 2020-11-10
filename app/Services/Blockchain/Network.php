@@ -58,9 +58,9 @@ final class Network implements Contract
         return $this->config['canBeExchanged'];
     }
 
-    public function usesMarketsquare(): bool
+    public function usesMarketSquare(): bool
     {
-        return $this->config['usesMarketsquare'];
+        return $this->config['usesMarketSquare'];
     }
 
     public function epoch(): Carbon
