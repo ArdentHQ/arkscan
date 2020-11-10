@@ -21,8 +21,8 @@ final class RoundRepository implements Contract
             ->get();
     }
 
-    public function currentRound(): Round
+    public function current(): int
     {
-        return Round::orderBy('round', 'desc')->firstOrFail();
+        return Round::max('round');
     }
 }

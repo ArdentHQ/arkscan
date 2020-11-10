@@ -31,7 +31,7 @@ final class DelegateMonitor extends Component
         return view('livewire.delegate-monitor', [
             'delegates'  => $this->delegates,
             'statistics' => $this->statistics,
-            'round'      => Rounds::currentRound()->round,
+            'round'      => Rounds::current(),
         ]);
     }
 
@@ -40,7 +40,7 @@ final class DelegateMonitor extends Component
         // $tracking = DelegateTracker::execute(Monitor::roundDelegates(112168));
 
         try {
-            $roundNumber = Rounds::currentRound()->round;
+            $roundNumber = Rounds::current();
             $heightRange = Monitor::heightRangeByRound($roundNumber);
             $tracking    = DelegateTracker::execute(Rounds::allByRound($roundNumber));
             $roundBlocks = $this->getBlocksByRange(Arr::pluck($tracking, 'publicKey'), $heightRange);

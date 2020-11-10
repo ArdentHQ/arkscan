@@ -23,7 +23,5 @@ it('should get all delegates for the given round', function () {
 });
 
 it('should get the current round', function () {
-    Round::factory()->create();
-
-    expect($this->subject->currentRound())->toBeInstanceOf(Round::class);
+    expect($this->subject->current())->toBe(Round::max('round'));
 });

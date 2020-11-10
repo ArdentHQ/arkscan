@@ -11,7 +11,7 @@ final class Monitor
 {
     public static function roundNumber(): int
     {
-        return Rounds::currentRound()->round;
+        return Rounds::current();
     }
 
     public static function heightRangeByRound(int $round): array
