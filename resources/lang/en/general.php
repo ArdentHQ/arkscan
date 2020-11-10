@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 return [
+    'address'          => 'Address',
+    'optional'         => 'Optional',
+    'or'               => 'or',
     'filler'           => '',
     'height'           => 'Height',
     'network'          => 'Network',

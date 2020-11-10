@@ -11,10 +11,10 @@ use BaconQrCode\Writer;
 
 final class QRCode
 {
-    public static function generate(string $value): string
+    public static function generate(string $value, int $size = 250): string
     {
         $renderer = new ImageRenderer(
-            new RendererStyle(286, 1),
+            new RendererStyle($size, 1),
             new SvgImageBackEnd()
         );
 

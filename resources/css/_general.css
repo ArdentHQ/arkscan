@@ -537,3 +537,12 @@ body {
 .wallet-icons-row > *:not(:first-child) {
     @apply pl-2 ml-2;
 }
+
+/* Modal QR Code */
+.modal-qr-code {
+    @apply flex mx-auto border border-theme-secondary-300;
+    width: 250px;
+}
+.theme-dark .modal-qr-code {
+    @apply border-0;
+}
