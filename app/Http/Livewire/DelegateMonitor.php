@@ -17,6 +17,7 @@ use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -37,12 +38,16 @@ final class DelegateMonitor extends Component
 
     public function pollDelegates(): void
     {
-        // $tracking = DelegateTracker::execute(Monitor::roundDelegates(112168));
+        // $tracking = DelegateTracker::execute(Rounds::allByRound(112168));
 
         try {
             $roundNumber = Rounds::current();
             $heightRange = Monitor::heightRangeByRound($roundNumber);
-            $tracking    = DelegateTracker::execute(Rounds::allByRound($roundNumber));
+            $delegates   = Rounds::allByRound($roundNumber);
+
+            $this->cacheLastBlocks($delegates->pluck('public_key')->toArray());
+
+            $tracking    = DelegateTracker::execute($delegates);
             $roundBlocks = $this->getBlocksByRange(Arr::pluck($tracking, 'publicKey'), $heightRange);
 
             $delegates = [];
@@ -121,5 +126,42 @@ final class DelegateMonitor extends Component
         return collect($slots)
             ->filter(fn ($slot) => $slot->status() === $status)
             ->first();
+    }
+
+    private function cacheLastBlocks(array $delegates): void
+    {
+        $ttl = (int) ceil(Network::blockTime() / 2);
+
+        Cache::remember('monitor:last-blocks', $ttl, function () use ($delegates): void {
+            $blocks = Block::query()
+                ->orderBy('height', 'desc')
+                ->limit(Network::delegateCount() * 2)
+                ->get();
+
+            foreach ($delegates as $delegate) {
+                $block = $blocks->firstWhere('generator_public_key', $delegate);
+
+                // The delegate hasn't forged in some rounds.
+                if (is_null($block)) {
+                    $block = Block::query()
+                        ->where('generator_public_key', $delegate)
+                        ->orderBy('height', 'desc')
+                        ->limit(1)
+                        ->first();
+                }
+
+                // The delegate has never forged.
+                if (is_null($block)) {
+                    continue;
+                }
+
+                (new WalletCache())->setLastBlock($delegate, [
+                    'id'                   => $block->id,
+                    'height'               => $block->height->toNumber(),
+                    'timestamp'            => Timestamp::fromGenesis($block->timestamp)->unix(),
+                    'generator_public_key' => $block->generator_public_key,
+                ]);
+            }
+        });
     }
 }

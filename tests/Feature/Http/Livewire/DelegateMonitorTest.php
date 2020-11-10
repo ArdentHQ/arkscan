@@ -42,3 +42,32 @@ it('should render without errors', function () {
     $component = Livewire::test(DelegateMonitor::class);
     $component->call('pollDelegates');
 });
+
+it('should get the last blocks from the last 2 rounds and beyond', function () {
+    $wallets = Wallet::factory(51)->create()->each(function ($wallet) {
+        Round::factory()->create([
+            'round'      => '1',
+            'public_key' => $wallet->public_key,
+        ]);
+
+        for ($i = 0; $i < 3; $i++) {
+            Block::factory()->create([
+                'height'               => $i,
+                'generator_public_key' => $wallet->public_key,
+            ]);
+        }
+
+        (new WalletCache())->setDelegate($wallet->public_key, $wallet);
+    });
+
+    $wallets->first()->blocks()->delete();
+
+    $component = Livewire::test(DelegateMonitor::class);
+    $component->call('pollDelegates');
+
+    expect((new WalletCache())->getLastBlock($wallets->first()->public_key))->toBe([]);
+
+    foreach ($wallets->skip(1) as $wallet) {
+        expect((new WalletCache())->getLastBlock($wallet->public_key))->not()->toBe([]);
+    }
+});
