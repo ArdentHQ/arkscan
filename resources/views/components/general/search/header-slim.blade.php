@@ -13,10 +13,10 @@
         </h1>
 
         <div
-            class="hidden md:block"
+            class="md:block"
             :class="{
-                'w-full': searchFocused,
-                'w-1/2 lg:w-5/12 xl:w-7/12': ! searchFocused,
+                'md:w-full': searchFocused,
+                'md:w-1/2 lg:w-5/12 xl:w-7/12': ! searchFocused,
             }"
             x-cloak
         >

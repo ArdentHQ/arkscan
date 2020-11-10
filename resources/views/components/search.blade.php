@@ -51,10 +51,6 @@
                 />
             </div>
 
-            <span class="md:hidden text-theme-primary-300 dark:text-theme-secondary-600">
-               <x-ark-icon name="search" />
-            </span>
-
             <button
                 type="button"
                 class="hidden text-theme-secondary-900 mr-8 rounded text-center transition-default font-normal hover:bg-theme-primary-100 dark:hover:bg-theme-secondary-800 dark:text-theme-secondary-600 md:block {{ ($isSlim ?? false) ? 'px-2 py-1 -my-2' : 'px-4 py-2' }}"
@@ -72,14 +68,14 @@
                 >
                     @lang('actions.find_it')
                 </button>
-            @else
-                <div
-                    class="cursor-pointer text-theme-primary-300 hover:text-theme-primary-400 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400 @unless($isSlim ?? false) md:hidden @endif"
-                    wire:click="performSearch"
-                >
-                    <x-ark-icon name="search" />
-                </div>
             @endunless
+
+            <div
+                class="cursor-pointer text-theme-primary-300 hover:text-theme-primary-400 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400 @unless($isSlim ?? false) md:hidden @endif"
+                wire:click="performSearch"
+            >
+                <x-ark-icon name="search" />
+            </div>
         </div>
 
         <div

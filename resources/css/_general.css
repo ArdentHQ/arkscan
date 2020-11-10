@@ -72,12 +72,6 @@ body {
 .theme-dark .search-container {
     @apply bg-theme-secondary-900;
 }
-.searchbar-slim .search-container {
-    @apply border border-theme-secondary-400;
-}
-.searchbar-slim.search-focused .search-container {
-    @apply border-theme-primary-600;
-}
 
 .search-simple {
     @apply flex items-center px-8 py-6;
@@ -140,9 +134,15 @@ body {
     .search-advanced-option-wrapper {
         @apply border-b border-theme-secondary-300;
     }
-
     .theme-dark .search-advanced-option-wrapper {
         @apply border-theme-secondary-800;
+    }
+
+    .searchbar-slim .search-container {
+        @apply border border-theme-secondary-400;
+    }
+    .searchbar-slim.search-focused .search-container {
+        @apply border-theme-primary-600;
     }
 }
 
