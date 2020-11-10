@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="px-8 md:px-0">
-                    <x-search :is-advanced="true" :type="$state['type']" />
+                    <livewire:search-module :is-advanced="true" :type="$state['type']" />
                 </div>
             </div>
         </div>

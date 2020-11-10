@@ -237,33 +237,25 @@
     x-data="makeChart('{{ $identifier }}', '{{ $coloursScheme }}')"
     x-init="renderChart()"
     x-on:toggle-dark-mode.window="updateChart()"
+    x-on:chart-period-selected.window="setPeriod($event.detail)"
     x-on:{{ $alpineShow }}.window="toggleChart()"
     x-show="isVisible"
-    class="flex flex-col w-full bg-white border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
+    class="flex flex-col w-full bg-white border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900"
+>
     <div class="flex flex-col w-full">
         <div class="relative flex items-center justify-between w-full">
             <h2 class="text-2xl">@lang("pages.home.charts.{$identifier}")</h2>
 
-            <x-ark-dropdown dropdown-classes="left-0 w-32 mt-3" button-class="w-32 h-10 dropdown-button" :init-alpine="false">
-                @slot('button')
-                <div
-                    class="flex items-center justify-end w-full space-x-2 font-semibold flex-inline text-theme-secondary-700">
-                    <span x-text="period"></span>
-                    <span :class="{ 'rotate-180': open }" class="transition duration-150 ease-in-out">
-                        <x-ark-icon name="chevron-up" size="xs" />
-                    </span>
-                </div>
-                @endslot
-                <div class="py-3">
-                    @foreach (array_keys(trans('pages.home.charts.periods')) as $period)
-                    <div class="cursor-pointer dropdown-entry"
-                        :class="{ 'dropdown-entry-selected': isActivePeriod('{{ ucfirst($period) }}') === true}"
-                        @click="setPeriod('{{ $period }}')">
-                        @lang("pages.home.charts.periods." . $period)
-                    </div>
-                    @endforeach
-                </div>
-            </x-ark-dropdown>
+            <x-ark-rich-select
+                wrapper-class="left-0 mt-3"
+                dropdown-class="right-0 mt-1 origin-top-right"
+                initial-value="day"
+                button-class="block font-medium text-left bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200"
+                :options="collect(trans('pages.home.charts.periods'))->keys()->mapWithKeys(function ($period) {
+                    return [$period => __('pages.home.charts.periods.' . $period)];
+                })->toArray()"
+                dispatch-event="chart-period-selected"
+            />
         </div>
         <div class="flex justify-between w-full mt-5 mb-5">
             <div

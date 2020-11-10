@@ -63,11 +63,11 @@ body {
 
 /* Searchbar */
 .searchbar {
-    @apply fixed inset-0 z-40 hidden overflow-y-auto;
+    @apply fixed inset-0 z-40 hidden;
 }
 
 .search-container {
-    @apply absolute z-50 flex flex-col overflow-hidden bg-white rounded-lg top-24 left-8 right-8;
+    @apply absolute z-50 flex flex-col bg-white rounded-lg top-24 left-8 right-8;
 }
 .theme-dark .search-container {
     @apply bg-theme-secondary-900;
@@ -247,7 +247,7 @@ body {
 }
 
 .tab-item {
-    @apply relative pt-8 ml-16 border-transparent cursor-pointer pb-7 border-b-4;
+    @apply relative pt-8 ml-16 border-b-4 border-transparent cursor-pointer pb-7;
 }
 .tab-item:first-child {
     @apply ml-0;
@@ -278,7 +278,7 @@ body {
 
 /* Circled Icon */
 .circled-icon {
-    @apply flex items-center justify-center w-11 h-11 border-2 rounded-full;
+    @apply flex items-center justify-center border-2 rounded-full w-11 h-11;
 }
 
 /* Transaction Icon */
@@ -298,25 +298,25 @@ body {
 
 @screen sm {
     .chart-details > .detail-box:nth-child(2n + 1) {
-        @apply border-r pr-6 border-theme-secondary-300;
+        @apply pr-6 border-r border-theme-secondary-300;
     }
 }
 
 @screen md {
     .delegate-details > .detail-box:nth-child(2n + 1) {
-        @apply border-r pr-6 border-theme-secondary-300;
+        @apply pr-6 border-r border-theme-secondary-300;
     }
 }
 
 @screen lg {
     .delegate-details > .detail-box:not(:last-child) {
-        @apply border-r pr-6 border-theme-secondary-300;
+        @apply pr-6 border-r border-theme-secondary-300;
     }
 }
 
 @screen xl {
     .chart-details > .detail-box:not(:last-child) {
-        @apply border-r pr-6 border-theme-secondary-300;
+        @apply pr-6 border-r border-theme-secondary-300;
     }
 
     .chart-details > .detail-box:last-child {
@@ -401,7 +401,7 @@ body {
 }
 
 .transaction-filter-dropdown {
-    @apply right-0 w-full mt-3 h-64;
+    @apply right-0 w-full h-64 mt-3;
 }
 .theme-dark .transaction-filter-dropdown {
     @apply bg-theme-secondary-900;
@@ -415,11 +415,11 @@ body {
 }
 
 .transaction-filter-button-container {
-    @apply flex items-center w-full font-semibold justify-between text-theme-secondary-500;
+    @apply flex items-center justify-between w-full font-semibold text-theme-secondary-500;
 }
 
 .transaction-filter-button-icon {
-    @apply flex items-center justify-center transition duration-150 ease-in-out rounded-full text-theme-secondary-400 w-6 h-6;
+    @apply flex items-center justify-center w-6 h-6 transition duration-150 ease-in-out rounded-full text-theme-secondary-400;
 }
 
 @screen md {
@@ -430,7 +430,7 @@ body {
 
 @screen md {
     .transaction-filter-wrapper {
-        @apply absolute w-auto p-0 my-0 border-0 inline-block top-0 right-0 text-left;
+        @apply absolute top-0 right-0 inline-block w-auto p-0 my-0 text-left border-0;
     }
 
     .transaction-filter-dropdown {
@@ -438,11 +438,11 @@ body {
     }
 
     .transaction-filter-button {
-        @apply items-end w-84 h-10 pb-0 pr-0;
+        @apply items-end h-10 pb-0 pr-0 w-84;
     }
 
     .transaction-filter-button-container {
-        @apply text-theme-secondary-700 justify-end;
+        @apply justify-end text-theme-secondary-700;
     }
 
     .transaction-filter-button-icon {
@@ -461,7 +461,7 @@ body {
 
 /* Vote Percentage */
 .vote-percentage {
-    @apply inline-block text-theme-secondary-500 w-16;
+    @apply inline-block w-16 text-theme-secondary-500;
 }
 .theme-dark .vote-percentage {
     @apply text-theme-secondary-600;

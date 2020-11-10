@@ -19,21 +19,72 @@ final class SearchModule extends Component
 
     public bool $isSlim = false;
 
+    public bool $isAdvanced = false;
+
+    public string $type = 'block';
+
     /** @phpstan-ignore-next-line */
     protected $queryString = [
         'state' => ['except' => []],
     ];
 
-    public function mount(bool $isSlim = false): void
+    protected array $transactionOptionsValues = [
+        '' => [
+            'all',
+        ],
+        'core' => [
+            'transfer',
+            'secondSignature',
+            'delegateRegistration',
+            'vote',
+            'voteCombination',
+            'multiSignature',
+            'ipfs',
+            'multiPayment',
+            'timelock',
+            'timelockClaim',
+            'timelockRefund',
+        ],
+        'magistrate' => [
+            'businessEntityRegistration',
+            'businessEntityResignation',
+            'businessEntityUpdate',
+            'delegateEntityRegistration',
+            'delegateEntityResignation',
+            'delegateEntityUpdate',
+            'delegateResignation',
+            'entityRegistration',
+            'entityResignation',
+            'entityUpdate',
+            'legacyBridgechainRegistration',
+            'legacyBridgechainResignation',
+            'legacyBridgechainUpdate',
+            'legacyBusinessRegistration',
+            'legacyBusinessResignation',
+            'legacyBusinessUpdate',
+            'moduleEntityRegistration',
+            'moduleEntityResignation',
+            'moduleEntityUpdate',
+            'pluginEntityRegistration',
+            'pluginEntityResignation',
+            'pluginEntityUpdate',
+            'productEntityRegistration',
+            'productEntityResignation',
+            'productEntityUpdate',
+        ],
+    ];
+
+    public function mount(bool $isSlim = false, bool $isAdvanced = false, string $type = 'block'): void
     {
-        $this->isSlim = $isSlim;
+        $this->isAdvanced = $isAdvanced;
+        $this->isSlim     = $isSlim;
+        $this->type       = $type;
     }
 
     public function render(): View
     {
         return view('components.search', [
-            'isAdvanced' => false,
-            'type'       => Arr::get($this->state, 'type', 'block'),
+            'transactionOptions' => $this->getTransactionOptions(),
         ]);
     }
 
@@ -94,5 +145,24 @@ final class SearchModule extends Component
         $callback($model);
 
         return true;
+    }
+
+    /**
+     * Map the transaction options as the rich select component expects.
+     */
+    private function getTransactionOptions(): array
+    {
+        return collect($this->transactionOptionsValues)
+            ->mapWithKeys(function ($options, $group): array {
+                $key = strtoupper($group);
+                $value = collect($options)
+                    ->mapWithKeys(function ($option): array {
+                        return [$option => __('forms.search.transaction_types.'.$option)];
+                    })->toArray();
+
+                return [
+                    $key => $value,
+                ];
+            })->toArray();
     }
 }

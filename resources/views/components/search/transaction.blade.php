@@ -1,17 +1,29 @@
+@props(['transactionOptions', 'transactionType' => 'all'])
+
 <x-general.search.advanced-option :title="trans('forms.search.type')">
-    <select x-model="searchType" wire:model.defer="state.type" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200">
-        <option value="block">@lang('forms.search.block')</option>
-        <option value="transaction">@lang('forms.search.transaction')</option>
-        <option value="wallet">@lang('forms.search.wallet')</option>
-    </select>
+    <x-ark-rich-select
+        button-class="block w-full font-medium text-left bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200"
+        initial-value="transaction"
+        dispatch-event="search-type-changed"
+        set-value-from-event="search-type-changed"
+        wire:model.defer="state.type"
+        :options="[
+            'block' => __('forms.search.block'),
+            'transaction' => __('forms.search.transaction'),
+            'wallet' => __('forms.search.wallet'),
+        ]"
+    />
 </x-general.search.advanced-option>
 
 <x-general.search.advanced-option :title="trans('forms.search.transaction_type')">
-    <select wire:model.defer="state.transactionType" class="w-full font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200">
-        @foreach(trans('forms.search.transaction_types') as $key => $value)
-            <option value="{{ $key }}">{{ $value }}</option>
-        @endforeach
-    </select>
+
+    <x-ark-rich-select
+        button-class="block w-full font-medium text-left bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200"
+        :initial-value="$transactionType"
+        wire:model.defer="state.transactionType"
+        :options="$transactionOptions"
+        :grouped="true"
+    />
 </x-general.search.advanced-option>
 
 <x-general.search.advanced-option :title="trans('forms.search.amount_range')">

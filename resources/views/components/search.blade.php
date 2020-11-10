@@ -13,6 +13,7 @@
         'search-advanced': showAdvanced,
         'search-focused': isFocused,
     }"
+    @search-type-changed.window="searchType = $event.detail"
 >
     <div
         class="fixed inset-0 z-30 overflow-y-auto opacity-75 bg-theme-secondary-900 md:hidden"
@@ -93,12 +94,13 @@
             @endunless
             x-cloak
         >
+
             <div class="search-advanced-options" x-show="searchType === 'block'">
                 <x-search.block />
             </div>
 
             <div class="search-advanced-options" x-show="searchType === 'transaction'">
-                <x-search.transaction />
+                <x-search.transaction :transaction-options="$transactionOptions" :transaction-type="Arr::get($state, 'transactionType', 'all')" />
             </div>
 
             <div class="search-advanced-options" x-show="searchType === 'wallet'">
