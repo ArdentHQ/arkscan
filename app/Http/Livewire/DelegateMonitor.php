@@ -39,27 +39,27 @@ final class DelegateMonitor extends Component
     {
         // $tracking = DelegateTracker::execute(Monitor::roundDelegates(112168));
 
-        $roundNumber = Rounds::currentRound()->round;
-        $heightRange = Monitor::heightRangeByRound($roundNumber);
-        $tracking    = DelegateTracker::execute(Rounds::allByRound($roundNumber));
-        $roundBlocks = $this->getBlocksByRange(Arr::pluck($tracking, 'publicKey'), $heightRange);
+        try {
+            $roundNumber = Rounds::currentRound()->round;
+            $heightRange = Monitor::heightRangeByRound($roundNumber);
+            $tracking    = DelegateTracker::execute(Rounds::allByRound($roundNumber));
+            $roundBlocks = $this->getBlocksByRange(Arr::pluck($tracking, 'publicKey'), $heightRange);
 
-        $delegates = [];
+            $delegates = [];
 
-        for ($i = 0; $i < count($tracking); $i++) {
-            $delegate = array_values($tracking)[$i];
+            for ($i = 0; $i < count($tracking); $i++) {
+                $delegate = array_values($tracking)[$i];
 
-            $delegates[] = new Slot([
-                'publicKey'  => $delegate['publicKey'],
-                'order'      => $i + 1,
-                'wallet'     => ViewModelFactory::make((new WalletCache())->getDelegate($delegate['publicKey'])),
-                'forging_at' => Timestamp::fromGenesis($roundBlocks->last()->timestamp)->addMilliseconds($delegate['time']),
-                'last_block' => (new WalletCache())->getLastBlock($delegate['publicKey']),
-                'status'     => $delegate['status'],
-            ], $roundBlocks, $roundNumber);
-        }
+                $delegates[] = new Slot([
+                    'publicKey'  => $delegate['publicKey'],
+                    'order'      => $i + 1,
+                    'wallet'     => ViewModelFactory::make((new WalletCache())->getDelegate($delegate['publicKey'])),
+                    'forging_at' => Timestamp::fromGenesis($roundBlocks->last()->timestamp)->addMilliseconds($delegate['time']),
+                    'last_block' => (new WalletCache())->getLastBlock($delegate['publicKey']),
+                    'status'     => $delegate['status'],
+                ], $roundBlocks, $roundNumber);
+            }
 
-        if (count($delegates) > 0) {
             $this->delegates = $delegates;
 
             $this->statistics = [
@@ -68,7 +68,12 @@ final class DelegateMonitor extends Component
                 'currentDelegate' => $this->getCurrentDelegate(),
                 'nextDelegate'    => $this->getNextDelegate(),
             ];
+            // @codeCoverageIgnoreStart
+        } catch (\Throwable $th) {
+            // @README: If any errors occur we want to keep polling until we have a list of delegates
+            $this->pollDelegates();
         }
+        // @codeCoverageIgnoreEnd
     }
 
     private function getBlockCount(): string
