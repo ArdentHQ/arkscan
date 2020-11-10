@@ -20,15 +20,15 @@
 
 ## Development
 
-You can read more about production instructions at our [Development Documentation](./docs/development.md).
+You can read more about production instructions at our [Development Documentation](https://ark.dev/docs/explorer/running-your-own-explorer-for-development).
 
 ## Deployment
 
-You can read more about deployment instructions at our [Deployment Documentation](./docs/deployment.md).
+You can read more about deployment instructions at our [Deployment Documentation](https://ark.dev/docs/explorer/running-your-own-explorer).
 
 ## Docker Deployment
 
-You can read more about Docker deployment instructions at our [Docker Deployment Documentation](./docker/README.md).
+You can read more about Docker deployment instructions at our [Docker Deployment Documentation](https://ark.dev/docs/explorer/running-your-own-explorer-with-docker).
 
 ## Security
 
