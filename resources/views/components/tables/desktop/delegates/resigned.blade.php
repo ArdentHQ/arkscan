@@ -2,7 +2,7 @@
     <table>
         <thead>
             <tr>
-                <x-tables.headers.desktop.text name="general.delegates.id" />
+                <x-tables.headers.desktop.id name="general.delegates.id" />
                 <x-tables.headers.desktop.address name="general.delegates.name" />
                 <x-tables.headers.desktop.number name="general.delegates.votes" responsive/>
             </tr>

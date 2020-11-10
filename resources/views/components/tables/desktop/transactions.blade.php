@@ -2,7 +2,7 @@
     <table>
         <thead>
             <tr>
-                <x-tables.headers.desktop.text name="general.transaction.id" />
+                <x-tables.headers.desktop.id name="general.transaction.id" />
                 <x-tables.headers.desktop.text name="general.transaction.timestamp" responsive />
                 @isset($useDirection)
                     <x-tables.headers.desktop.address name="general.transaction.sender" icon use-direction />

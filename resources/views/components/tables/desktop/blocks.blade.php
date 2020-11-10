@@ -2,7 +2,7 @@
     <table>
         <thead>
             <tr>
-                <x-tables.headers.desktop.text name="general.block.id" />
+                <x-tables.headers.desktop.id name="general.block.id" />
                 <x-tables.headers.desktop.text name="general.block.timestamp" responsive />
                 @if(!isset($withoutGenerator))
                     <x-tables.headers.desktop.address name="general.block.generated_by" />
