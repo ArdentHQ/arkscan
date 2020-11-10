@@ -2,7 +2,7 @@
     <div class="py-16 content-container md:px-8">
         <div class="w-full">
             <div class="relative flex items-end justify-between">
-                <h2 class="text-xl sm:text-2xl">@lang('pages.transaction.participants')</h2>
+                <h4>@lang('pages.transaction.participants')</h4>
             </div>
 
             <div class="flex flex-col w-full divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">

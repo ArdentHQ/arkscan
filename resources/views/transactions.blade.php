@@ -12,7 +12,7 @@
                 }" x-cloak class="w-full">
                     <div class="w-full mb-8">
                         <div class="relative flex flex-col justify-between md:items-end md:flex-row md:justify-start">
-                            <h2 class="mb-8 text-3xl md:mb-0 sm:text-4xl">@lang('pages.transactions.title')</h2>
+                            <h2 class="mb-8 md:mb-0">@lang('pages.transactions.title')</h2>
 
                             <div>
                                 <x-transaction-table-filter :type="$transactionTypeFilter"/>

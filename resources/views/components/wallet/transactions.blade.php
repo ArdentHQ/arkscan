@@ -8,7 +8,7 @@
         }" x-cloak class="w-full">
             <div class="w-full md:mb-8">
                 <div class="relative flex flex-col justify-between md:items-end md:flex-row md:justify-start">
-                    <h2 class="mb-8 text-2xl md:mb-0">@lang('pages.wallet.transaction_history')</h2>
+                    <h4 class="mb-8 md:mb-0">@lang('pages.wallet.transaction_history')</h4>
 
                     <x-transaction-table-filter :type="'all'" />
                 </div>

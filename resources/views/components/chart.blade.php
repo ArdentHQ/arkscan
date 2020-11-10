@@ -244,7 +244,7 @@
 >
     <div class="flex flex-col w-full">
         <div class="relative flex items-center justify-between w-full">
-            <h2 class="text-2xl">@lang("pages.home.charts.{$identifier}")</h2>
+            <h3>@lang("pages.home.charts.{$identifier}")</h3>
 
             <x-ark-rich-select
                 wrapper-class="left-0 mt-3"

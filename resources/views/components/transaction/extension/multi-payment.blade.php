@@ -2,7 +2,7 @@
     <div class="py-16 content-container md:px-8">
         <div class="w-full">
             <div class="relative flex items-end justify-between mb-5">
-                <h2 class="text-xl sm:text-2xl">@lang('pages.transaction.recipient_list')</h2>
+                <h4>@lang('pages.transaction.recipient_list')</h4>
             </div>
 
             <x-tables.payments :payments="$transaction->payments()" />

@@ -6,7 +6,7 @@
         class="relative flex items-center justify-between"
     >
         <h1
-            class="font-bold whitespace-no-wrap header-2 text-theme-secondary-900 dark:text-theme-secondary-200"
+            class="header-2"
             :class="{ hidden: searchFocused }"
         >
             {{ $title }}

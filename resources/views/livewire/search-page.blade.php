@@ -19,7 +19,7 @@
 
     <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900" id="results-list">
         <div class="flex-col py-16 content-container md:px-8">
-            <h1 class="mb-4 header-2">@lang('pages.search_results.title')</h1>
+            <h1 class="header-2">@lang('pages.search_results.title')</h1>
 
             @if($results && $results->count())
                 <div>
