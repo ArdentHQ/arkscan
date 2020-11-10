@@ -6,7 +6,7 @@
                 <x-tables.headers.desktop.address name="general.delegates.name" />
                 <x-tables.headers.desktop.number name="general.delegates.votes" responsive breakpoint="lg" />
                 @if (Network::usesMarketSquare())
-                    <x-tables.headers.desktop.text name="general.delegates.profile" />
+                    <x-tables.headers.desktop.icon name="general.delegates.profile" />
                     <x-tables.headers.desktop.number name="general.delegates.commission" responsive />
                 @endif
             </tr>

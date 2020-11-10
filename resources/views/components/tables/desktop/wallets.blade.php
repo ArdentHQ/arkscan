@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <x-tables.headers.desktop.address name="general.wallet.address" />
-                <x-tables.headers.desktop.text name="general.wallet.info" />
+                <x-tables.headers.desktop.icon name="general.wallet.info" />
                 <x-tables.headers.desktop.number name="general.wallet.balance" />
                 <x-tables.headers.desktop.number name="general.wallet.supply" responsive />
             </tr>
