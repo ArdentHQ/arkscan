@@ -11,11 +11,15 @@
 
                     <div class="flex items-center space-x-2 leading-tight">
                         <span class="flex text-theme-secondary-400 dark:text-theme-secondary-200">
-                            <span class="hidden sm:inline-block">
+                            <span class="hidden xl:inline-block">
                                 {{ $value }}
                             </span>
 
-                            <span class="inline-block sm:hidden">
+                            <span class="hidden lg:inline-block xl:hidden">
+                                <x-truncate-middle :value="$value" :length="20" />
+                            </span>
+
+                            <span class="inline-block lg:hidden">
                                 <x-truncate-middle :value="$value" :length="8" />
                             </span>
 
