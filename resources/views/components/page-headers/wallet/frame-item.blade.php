@@ -7,7 +7,7 @@
 
     <div class="flex flex-col justify-between flex-1 space-y-2 md:pl-4">
         <div class="text-sm leading-tight text-theme-secondary-600 dark:text-theme-secondary-700">
-            @lang($title)
+            {{ $title }}
         </div>
 
         <div class="flex items-center space-x-2 leading-tight">
