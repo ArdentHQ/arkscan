@@ -13,7 +13,6 @@ use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
 use Ramsey\Uuid\Uuid;
-use function Tests\bip39;
 use function Tests\configureExplorerDatabase;
 use function Tests\fakeCryptoCompare;
 
@@ -22,7 +21,7 @@ beforeEach(function () {
 
     configureExplorerDatabase();
 
-    $this->subject = Wallet::factory()->create(['public_key' => bip39()]);
+    $this->subject = Wallet::factory()->create();
 });
 
 it('should list all transactions', function () {
@@ -243,7 +242,7 @@ it('should apply directions through an event', function () {
     ]);
 
     $received = Transaction::factory()->create([
-        'sender_public_key' => '03bbfb43ecb5a54a1e227bb37b5812b5321213838d376e2b455b6af78442621dec',
+        'sender_public_key' => Wallet::factory()->create()->public_key,
         'recipient_id'      => $this->subject->address,
     ]);
 

@@ -8,14 +8,11 @@ use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Livewire\Livewire;
-use function Tests\bip39;
 use function Tests\configureExplorerDatabase;
 
 function createRoundWithDelegates(): void
 {
     Wallet::factory(51)->create()->each(function ($wallet) {
-        $wallet->update(['public_key' => bip39()]);
-
         $block = Block::factory()->create([
             'height'               => 5720529,
             'timestamp'            => 113620904,

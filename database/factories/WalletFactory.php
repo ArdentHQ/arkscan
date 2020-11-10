@@ -13,10 +13,12 @@ final class WalletFactory extends Factory
 
     public function definition()
     {
+        $wallet = $this->faker->wallet;
+
         return [
             'id'                => $this->faker->uuid,
-            'address'           => $this->faker->randomElement(json_decode(file_get_contents(base_path('tests/fixtures/addresses.json')), true)),
-            'public_key'        => '03d3fdad9c5b25bf8880e6b519eb3611a5c0b31adebc8455f0e096175b28321aff', // @TODO: unique public keys
+            'address'           => $wallet['address'],
+            'public_key'        => $wallet['publicKey'],
             'balance'           => $this->faker->numberBetween(1, 1000) * 1e8,
             'nonce'             => $this->faker->numberBetween(1, 1000),
             'attributes'        => [

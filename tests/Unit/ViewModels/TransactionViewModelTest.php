@@ -28,12 +28,13 @@ beforeEach(function () {
 
     (new NetworkCache())->setHeight(5000000);
 
+    $this->sender = Wallet::factory()->create();
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'block_id'          => $this->block->id,
         'block_height'      => 1,
         'fee'               => '100000000',
         'amount'            => '200000000',
-        'sender_public_key' => Wallet::factory()->create(['address' => 'D6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax'])->public_key,
+        'sender_public_key' => $this->sender->public_key,
         'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]));
 });
@@ -49,7 +50,7 @@ it('should determine if the transaction is incoming', function () {
 });
 
 it('should determine if the transaction is outgoing', function () {
-    expect($this->subject->isSent('D6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax'))->toBeTrue();
+    expect($this->subject->isSent($this->sender->address))->toBeTrue();
     expect($this->subject->isSent('recipient'))->toBeFalse();
 });
 
@@ -662,7 +663,7 @@ it('should fail to get the voted delegate if the transaction asset is empty', fu
 })->with([[[]], null]);
 
 it('should get the unvoted delegate', function () {
-    $wallet = Wallet::factory()->create(['public_key' => 'publicKey']);
+    Wallet::factory()->create(['public_key' => 'publicKey']);
 
     $subject = new TransactionViewModel(Transaction::factory()->create([
         'type'       => CoreTransactionTypeEnum::VOTE,

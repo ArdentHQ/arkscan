@@ -11,12 +11,13 @@ use function Tests\configureExplorerDatabase;
 beforeEach(fn () => configureExplorerDatabase());
 
 it('should determine if the transaction is sent', function () {
+    $sender = Wallet::factory()->create();
     $transaction = Transaction::factory()->create([
-        'sender_public_key' => Wallet::factory()->create()->public_key,
+        'sender_public_key' => $sender->public_key,
         'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]);
 
-    expect((new TransactionDirection($transaction))->isSent('D6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax'))->toBeTrue();
+    expect((new TransactionDirection($transaction))->isSent($sender->address))->toBeTrue();
     expect((new TransactionDirection($transaction))->isSent('recipient'))->toBeFalse();
     expect((new TransactionDirection($transaction))->isSent('unknown'))->toBeFalse();
 });

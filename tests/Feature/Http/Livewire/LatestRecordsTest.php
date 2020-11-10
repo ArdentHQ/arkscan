@@ -55,9 +55,7 @@ it('should list the first page of transactions', function () {
 
 it('should apply filters for transactions', function () {
     $block = Block::factory()->create();
-    $wallet = Wallet::factory()->create([
-        'address'    => 'address',
-    ]);
+    $wallet = Wallet::factory()->create();
 
     $component = Livewire::test(LatestRecords::class)
         ->call('pollBlocks');
@@ -102,9 +100,7 @@ it('should apply filters for transactions', function () {
 
 it('should apply filters through an event for transactions', function () {
     $block = Block::factory()->create();
-    $wallet = Wallet::factory()->create([
-        'address'    => 'address',
-    ]);
+    $wallet = Wallet::factory()->create();
 
     $component = Livewire::test(LatestRecords::class)
         ->call('pollTransactions');

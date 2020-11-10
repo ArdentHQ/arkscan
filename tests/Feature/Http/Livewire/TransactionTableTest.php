@@ -37,9 +37,7 @@ it('should list the first page of records', function () {
 
 it('should apply filters', function () {
     $block = Block::factory()->create();
-    $wallet = Wallet::factory()->create([
-        'address'    => 'address',
-    ]);
+    $wallet = Wallet::factory()->create();
 
     $component = Livewire::test(TransactionTable::class);
 
@@ -83,9 +81,7 @@ it('should apply filters', function () {
 
 it('should apply filters through an event', function () {
     $block = Block::factory()->create();
-    $wallet = Wallet::factory()->create([
-        'address'    => 'address',
-    ]);
+    $wallet = Wallet::factory()->create();
 
     $component = Livewire::test(TransactionTable::class);
 

@@ -17,11 +17,11 @@ it('should execute the command', function () {
         'attributes' => ['delegate' => ['voteBalance' => 100]],
     ]);
 
-    $wallet = Wallet::factory(10)->create([
+    Wallet::factory(10)->create([
         'attributes' => ['vote' => $delegate->public_key],
-    ])[0];
+    ]);
 
     (new CacheDelegatesWithVoters())->handle($cache = new WalletCache());
 
-    expect($cache->getVote($wallet->public_key)->is($delegate))->toBeTrue();
+    expect($cache->getVote($delegate->public_key)->is($delegate))->toBeTrue();
 });
