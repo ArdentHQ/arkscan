@@ -67,7 +67,7 @@ body {
 }
 
 .search-container {
-    @apply absolute z-50 flex flex-col bg-white rounded-lg top-24 left-8 right-8;
+    @apply absolute z-50 flex flex-col mb-20 overflow-hidden bg-white rounded-lg top-24 left-8 right-8;
 }
 .theme-dark .search-container {
     @apply bg-theme-secondary-900;
@@ -391,7 +391,6 @@ body {
 .theme-dark .loading-state {
     @apply bg-theme-secondary-800;
 }
-
 /* Transaction Dropdown Filter */
 .transaction-filter-wrapper {
     @apply relative w-full p-2 mb-2 border rounded-lg border-theme-secondary-300;
