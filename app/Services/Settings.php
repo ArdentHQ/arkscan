@@ -59,6 +59,10 @@ final class Settings
 
     public static function usesPriceChart(): bool
     {
+        if (config('explorer.network') !== 'production') {
+            return false;
+        }
+
         return static::priceChart() === true;
     }
 

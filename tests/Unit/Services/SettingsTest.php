@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Services\Settings;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 
 it('should have all settings with defaults', function () {
@@ -89,6 +90,12 @@ it('should determine if visitor uses any chart', function () {
 });
 
 it('should determine if visitor uses price chart', function () {
+    Config::set('explorer.network', 'development');
+
+    expect(Settings::usesPriceChart())->toBeFalse();
+
+    Config::set('explorer.network', 'production');
+
     Session::put('settings', json_encode(['priceChart' => true]));
 
     expect(Settings::usesPriceChart())->toBeTrue();
