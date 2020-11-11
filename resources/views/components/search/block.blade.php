@@ -120,7 +120,7 @@
 <x-general.search.advanced-option :title="trans('forms.search.date_range')">
     <div class="flex items-center space-x-2">
         <x-date-picker
-            placeholder="DD/MM/YYYY"
+            placeholder="DD.MM.YYYY"
             class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
             wire:model.defer="state.dateFrom"
             wire:key="state_date_from"
@@ -129,7 +129,7 @@
         <span>-</span>
 
         <x-date-picker
-            placeholder="DD/MM/YYYY"
+            placeholder="DD.MM.YYYY"
             class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
             wire:model.defer="state.dateTo"
             wire:key="state_date_to"

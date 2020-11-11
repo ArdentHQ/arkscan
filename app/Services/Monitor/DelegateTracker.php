@@ -438,9 +438,9 @@ final class DelegateTracker
         $currentSeed = hex2bin(hash('sha256', $seedSource));
         $delCount    = count($delegates);
 
-        $seeds = [];
+        // $seeds = [];
         for ($i = 0; $i < $delCount; $i++) {
-            $elements = [];
+            // $elements = [];
 
             for ($x = 0; $x < 4 && $i < $delCount; $i++, $x++) {
                 $newIndex             = intval(unpack('C*', $currentSeed)[$x + 1]) % $delCount;
@@ -448,14 +448,14 @@ final class DelegateTracker
                 $delegates[$newIndex] = $delegates[$i];
                 $delegates[$i]        = $b;
 
-                $elements[] = [
-                    'i'        => $i,
-                    'x'        => $x,
-                    'newIndex' => $newIndex,
-                ];
+                // $elements[] = [
+                //     'i'        => $i,
+                //     'x'        => $x,
+                //     'newIndex' => $newIndex,
+                // ];
             }
 
-            $seeds[bin2hex($currentSeed)] = $elements;
+            // $seeds[bin2hex($currentSeed)] = $elements;
 
             $currentSeed = hex2bin(hash('sha256', $currentSeed));
         }
