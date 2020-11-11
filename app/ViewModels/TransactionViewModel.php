@@ -23,6 +23,7 @@ final class TransactionViewModel implements ViewModel
     use Concerns\Transaction\HasType;
     use Concerns\Transaction\InteractsWithDelegateRegistration;
     use Concerns\Transaction\InteractsWithEntities;
+    use Concerns\Transaction\InteractsWithMarketSquare;
     use Concerns\Transaction\InteractsWithMultiPayment;
     use Concerns\Transaction\InteractsWithMultiSignature;
     use Concerns\Transaction\InteractsWithTypeData;

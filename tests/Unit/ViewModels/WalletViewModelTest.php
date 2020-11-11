@@ -522,3 +522,23 @@ it('should determine the payout minimum', function () {
 
     expect($this->subject->payoutMinimum())->toBe(500);
 });
+
+it('should build the MarketSquare profile URL', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'John',
+            ],
+        ],
+    ]));
+
+    expect($this->subject->profileUrl())->toBe('https://marketsquare.io/delegates/john');
+});
+
+it('should fail to build the MarketSquare profile URL if there is no username', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes' => [],
+    ]));
+
+    expect($this->subject->profileUrl())->toBeNull();
+});

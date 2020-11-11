@@ -15,7 +15,9 @@
         <x-page-headers.transaction :transaction="$transaction" />
 
         @if (Network::usesMarketSquare())
-            <x-marketsquare.banner :transaction="$transaction" />
+            @if ($transaction->isRegistration())
+                <x-marketsquare.banner :transaction="$transaction" />
+            @endif
         @endif
 
         <x-details.grid>

@@ -44,4 +44,17 @@ trait InteractsWithTypeData
 
         return false;
     }
+
+    public function isRegistration(): bool
+    {
+        if ($this->isDelegateRegistration()) {
+            return true;
+        }
+
+        if ($this->isEntityRegistration()) {
+            return true;
+        }
+
+        return false;
+    }
 }

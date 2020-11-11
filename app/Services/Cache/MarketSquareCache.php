@@ -14,7 +14,7 @@ final class MarketSquareCache implements Contract
 
     public function getProfile(string $address): array
     {
-        return $this->get(sprintf('profile/%s', $address));
+        return $this->get(sprintf('profile/%s', $address), []);
     }
 
     public function setProfile(string $address, array $value): void

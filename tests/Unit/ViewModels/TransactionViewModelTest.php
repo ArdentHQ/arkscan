@@ -1429,3 +1429,193 @@ it('should fail to get the vendor field if it is empty after reading it', functi
 
     expect($this->subject->vendorField())->toBeNull();
 });
+
+it('should compose the marketsquare link if a name is found', function (int $type, int $typeGroup, array $asset, $link) {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => $type,
+        'type_group' => $typeGroup,
+        'asset'      => $asset,
+    ]));
+
+    expect($subject->marketSquareLink())->toBe($link);
+})->with([
+    [
+        CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
+        TransactionTypeGroupEnum::CORE,
+        [
+            'delegate' => ['username' => 'johndoe'],
+        ],
+        'https://marketsquare.io/delegates/johndoe',
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+            'data'    => ['name' => 'johndoe'],
+        ],
+        'https://marketsquare.io/businesses/johndoe',
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+            'data'    => ['name' => 'johndoe'],
+        ],
+        'https://marketsquare.io/products/johndoe',
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+            'data'    => ['name' => 'johndoe'],
+        ],
+        'https://marketsquare.io/plugins/johndoe',
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+            'data'    => ['name' => 'johndoe'],
+        ],
+        'https://marketsquare.io/modules/johndoe',
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+            'data'    => ['name' => 'johndoe'],
+        ],
+        'https://marketsquare.io/delegates/johndoe',
+    ],
+]);
+
+it('should fail to compose the marketsquare link if no name is found', function (int $type, int $typeGroup, array $asset) {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => 666,
+        'type_group' => 666,
+        'asset'      => $asset,
+    ]));
+
+    $subject->marketSquareLink();
+})->with([
+    [
+        CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
+        TransactionTypeGroupEnum::CORE,
+        [],
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ],
+])->throws(RuntimeException::class);
+
+it('should determine if the transaction is any kind of registration', function (int $type, int $typeGroup, array $asset) {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => $type,
+        'type_group' => $typeGroup,
+        'asset'      => $asset,
+    ]));
+
+    expect($subject->isRegistration())->toBeTrue();
+})->with([
+    [
+        CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
+        TransactionTypeGroupEnum::CORE,
+        [],
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ], [
+        MagistrateTransactionTypeEnum::ENTITY,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        [
+            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+        ],
+    ],
+]);
+
+it('should determine that the transaction is not any kind of registration', function () {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => 0,
+        'type_group' => 0,
+    ]));
+
+    expect($subject->isRegistration())->toBeFalse();
+});

@@ -14,7 +14,7 @@
 
                 <div class="flex items-center space-x-2 leading-tight">
                     <span class="text-white dark:text-theme-secondary-200">@lang('general.learn_more') <span class="hidden sm:contents">@lang('generic.at') MarketSquare</span></span>
-                    <a href="#" class="mx-auto link">
+                    <a href="{{ $transaction->marketSquareLink() }}" class="mx-auto link">
                         <x-ark-icon name="link" size="sm" />
                     </a>
                 </div>
