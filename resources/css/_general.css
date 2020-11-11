@@ -109,11 +109,12 @@ body {
 
 @screen md {
     .searchbar {
-        position: unset;
         @apply block;
+        position: unset;
     }
 
     .search-container {
+        @apply mb-0;
         position: unset;
     }
 
