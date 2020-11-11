@@ -202,7 +202,10 @@ it('should search for transactions by fee range', function () {
 });
 
 it('should search for transactions by wallet with an address', function () {
-    Transaction::factory(10)->create();
+    Transaction::factory(10)->create([
+        'sender_public_key' => 'somethingsomething',
+        'recipient_id'      => 'somethingsomething',
+    ]);
 
     $wallet = Wallet::factory()->create();
 
