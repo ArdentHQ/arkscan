@@ -24,17 +24,12 @@ it('should determine if the transaction is confirmed', function () {
 });
 
 it('should determine if the transaction is not confirmed', function () {
+    (new NetworkCache())->setHeight(fn () => 1000);
+
     $transaction = Transaction::factory()->create([
+        'block_height'      => 999,
         'sender_public_key' => Wallet::factory()->create(['address' => 'sender'])->public_key,
         'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
-    ]);
-
-    expect((new TransactionState($transaction))->isConfirmed())->toBeFalse();
-});
-
-it('should determine if the transaction is not confirmed if the block is missing', function () {
-    $transaction = Transaction::factory()->create([
-        'block_id' => 'unknown',
     ]);
 
     expect((new TransactionState($transaction))->isConfirmed())->toBeFalse();

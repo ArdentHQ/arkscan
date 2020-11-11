@@ -21,6 +21,6 @@ final class TransactionState
     {
         $confirmations = CacheNetworkHeight::execute() - $this->transaction->block_height;
 
-        return $confirmations >= Network::confirmations();
+        return abs($confirmations) >= Network::confirmations();
     }
 }

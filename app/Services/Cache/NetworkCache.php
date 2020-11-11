@@ -20,7 +20,7 @@ final class NetworkCache implements Contract
 
     public function setHeight(\Closure $callback): int
     {
-        return (int) $this->remember('height', Network::blockTime(), $callback);
+        return (int) $this->remember('height', $this->blockTimeTTL(), $callback);
     }
 
     public function getSupply(): float
@@ -30,7 +30,7 @@ final class NetworkCache implements Contract
 
     public function setSupply(\Closure $callback): float
     {
-        return (float) $this->remember('supply', Network::blockTime(), $callback);
+        return (float) $this->remember('supply', $this->blockTimeTTL(), $callback);
     }
 
     public function getVolume(): float
@@ -96,5 +96,10 @@ final class NetworkCache implements Contract
     public function getCache(): TaggedCache
     {
         return Cache::tags('network');
+    }
+
+    private function blockTimeTTL(): int
+    {
+        return (int) ceil(Network::blockTime() / 2);
     }
 }
