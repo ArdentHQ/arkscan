@@ -24,7 +24,7 @@ final class Wallet extends Base
         $this->availableWallets = collect(self::$wallets)->shuffle();
     }
 
-    public function wallet()
+    public function wallet(): array
     {
         return $this->availableWallets->shift();
     }

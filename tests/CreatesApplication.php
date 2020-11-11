@@ -21,12 +21,10 @@ trait CreatesApplication
 
         $app->make(Kernel::class)->bootstrap();
 
-        $app->bind(Generator::class, function ($app) {
-            $faker = Factory::create();
-            $faker->addProvider(new Wallet($faker));
+        $faker = Factory::create();
+        $faker->addProvider(new Wallet($faker));
 
-            return $faker;
-        });
+        $app->instance(Generator::class, $faker);
 
         return $app;
     }
