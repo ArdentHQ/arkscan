@@ -1,11 +1,11 @@
-<div class="flex space-x-2 detail-box">
+<div class="flex space-x-5 detail-box">
     @isset($icon)
         @isset($shallow)
             <div class="flex-shrink-0 circled-icon text-theme-secondary-900 border-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-600">
                 <x-ark-icon :name="$icon" />
             </div>
         @else
-            <div class="flex items-center justify-center p-2 rounded-full h-12 w-12 mr-3 flex-shrink-0 bg-theme-secondary-200 {{ $iconWrapperClass ?? '' }} dark:bg-theme-secondary-800">
+            <div class="flex items-center justify-center p-2 rounded-full h-12 w-12 flex-shrink-0 bg-theme-secondary-200 {{ $iconWrapperClass ?? '' }} dark:bg-theme-secondary-800">
                 <x-ark-icon :name="$icon" :class="($iconTextClass ?? ' ') . ' ' . ($iconClass ?? '')" />
             </div>
         @endisset
