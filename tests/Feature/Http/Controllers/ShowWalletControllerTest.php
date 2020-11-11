@@ -15,7 +15,7 @@ it('should render the page without any errors', function () {
 
     $wallet = Wallet::factory()->create();
 
-    (new NetworkCache())->setSupply('10000000000');
+    (new NetworkCache())->setSupply(fn () => '10000000000');
 
     ((new DelegateCache())->setTotalAmounts(fn () => [$wallet->public_key => '1000000000']));
     ((new DelegateCache())->setTotalFees(fn () => [$wallet->public_key => '1000000000']));

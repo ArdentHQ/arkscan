@@ -27,7 +27,7 @@ it('should list all blocks for the given public key', function () {
         ],
     ]);
 
-    (new NetworkCache())->setSupply('1000000000');
+    (new NetworkCache())->setSupply(fn () => '1000000000');
 
     $component = Livewire::test(WalletVoterTable::class, [$this->subject->public_key, 'username']);
 

@@ -14,7 +14,7 @@ use function Tests\configureExplorerDatabase;
 beforeEach(function () {
     configureExplorerDatabase();
 
-    (new NetworkCache())->setSupply('13628098200000000');
+    (new NetworkCache())->setSupply(fn () => '13628098200000000');
 
     $wallet = Wallet::factory()->create(['balance' => '10000000000000000']);
     $block = Block::factory()->create(['generator_public_key' => $wallet->public_key]);

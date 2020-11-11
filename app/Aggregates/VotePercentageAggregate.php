@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Aggregates;
 
+use App\Actions\CacheNetworkSupply;
 use App\Contracts\Aggregate;
 use App\Models\Wallet;
-use App\Services\Cache\NetworkCache;
 use Mattiasgeniar\Percentage\Percentage;
 
 final class VotePercentageAggregate implements Aggregate
@@ -18,7 +18,7 @@ final class VotePercentageAggregate implements Aggregate
                 ->where('balance', '>', 0)
                 ->whereNotNull('attributes->vote')
                 ->sum('balance'),
-            (new NetworkCache())->getSupply()
+            CacheNetworkSupply::execute()
         );
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\ViewModels;
 
+use App\Actions\CacheNetworkHeight;
 use App\Contracts\ViewModel;
 use App\Models\Block;
-use App\Services\Cache\NetworkCache;
 use App\Services\ExchangeRate;
 use App\Services\Timestamp;
 
@@ -55,6 +55,6 @@ final class BlockViewModel implements ViewModel
 
     public function confirmations(): int
     {
-        return abs((new NetworkCache())->getHeight() - $this->block->height->toNumber());
+        return abs(CacheNetworkHeight::execute() - $this->block->height->toNumber());
     }
 }

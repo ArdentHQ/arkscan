@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Cache;
 
 use App\Contracts\Cache as Contract;
+use App\Facades\Network;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Facades\Cache;
 
@@ -17,9 +18,9 @@ final class NetworkCache implements Contract
         return (int) $this->get('height');
     }
 
-    public function setHeight(int $value): void
+    public function setHeight(\Closure $callback): int
     {
-        $this->put('height', $value);
+        return (int) $this->remember('height', Network::blockTime(), $callback);
     }
 
     public function getSupply(): float
@@ -27,9 +28,9 @@ final class NetworkCache implements Contract
         return (float) $this->get('supply');
     }
 
-    public function setSupply(string $value): void
+    public function setSupply(\Closure $callback): float
     {
-        $this->put('supply', $value);
+        return (float) $this->remember('supply', Network::blockTime(), $callback);
     }
 
     public function getVolume(): float

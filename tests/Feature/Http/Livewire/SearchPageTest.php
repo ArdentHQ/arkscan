@@ -17,7 +17,7 @@ use function Tests\configureExplorerDatabase;
 beforeEach(function () {
     configureExplorerDatabase();
 
-    (new NetworkCache())->setSupply(strval(10e8));
+    (new NetworkCache())->setSupply(fn () => strval(10e8));
 });
 
 it('should search for blocks', function () {

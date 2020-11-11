@@ -11,7 +11,7 @@ use function Tests\configureExplorerDatabase;
 beforeEach(fn () => configureExplorerDatabase());
 
 it('should determine if the transaction is confirmed', function (int $transactionHeight, int $blockHeight, string $icon) {
-    (new NetworkCache())->setHeight($blockHeight);
+    (new NetworkCache())->setHeight(fn () => $blockHeight);
 
     $transaction = Transaction::factory()->create([
         'block_height'      => $transactionHeight,

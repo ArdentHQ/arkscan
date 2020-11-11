@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
-use App\Services\Cache\NetworkCache;
+use App\Actions\CacheNetworkHeight;
 use App\Services\Monitor\Monitor;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
@@ -110,7 +110,7 @@ final class Slot
             return 0;
         }
 
-        return abs((new NetworkCache())->getHeight() - $this->getLastHeight());
+        return abs(CacheNetworkHeight::execute() - $this->getLastHeight());
     }
 
     public function isDone(): bool

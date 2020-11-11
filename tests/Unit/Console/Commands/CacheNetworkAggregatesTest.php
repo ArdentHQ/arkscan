@@ -10,7 +10,7 @@ it('should execute the command', function () {
     configureExplorerDatabase();
 
     $cache = new NetworkCache();
-    $cache->setSupply(strval(100e8));
+    $cache->setSupply(fn () => strval(100e8));
 
     (new CacheNetworkAggregates())->handle($cache);
 

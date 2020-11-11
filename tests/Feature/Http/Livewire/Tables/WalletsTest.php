@@ -16,7 +16,7 @@ use function Tests\configureExplorerDatabase;
 beforeEach(fn () => configureExplorerDatabase());
 
 it('should list the first page of records', function () {
-    (new NetworkCache())->setSupply(strval(10e8));
+    (new NetworkCache())->setSupply(fn () => strval(10e8));
 
     Wallet::factory(30)->create();
 

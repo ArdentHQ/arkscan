@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Wallet;
 
+use App\Actions\CacheNetworkSupply;
 use App\Services\BigNumber;
-use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use Mattiasgeniar\Percentage\Percentage;
 
@@ -20,7 +20,7 @@ trait HasVoters
     {
         $voteBalance = (float) $this->wallet->attributes['delegate']['voteBalance'];
 
-        return Percentage::calculate($voteBalance, ( new NetworkCache())->getSupply());
+        return Percentage::calculate($voteBalance, CacheNetworkSupply::execute());
     }
 
     public function voterCount(): int

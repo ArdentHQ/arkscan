@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\ViewModels;
 
+use App\Actions\CacheNetworkSupply;
 use App\Contracts\ViewModel;
 use App\Models\Wallet;
-use App\Services\Cache\NetworkCache;
 use App\Services\ExchangeRate;
 use App\Services\Timestamp;
 use Mattiasgeniar\Percentage\Percentage;
@@ -56,7 +56,7 @@ final class WalletViewModel implements ViewModel
 
     public function balancePercentage(): float
     {
-        return Percentage::calculate($this->wallet->balance->toNumber(), (new NetworkCache())->getSupply());
+        return Percentage::calculate($this->wallet->balance->toNumber(), CacheNetworkSupply::execute());
     }
 
     public function nonce(): int

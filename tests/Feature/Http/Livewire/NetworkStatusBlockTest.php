@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use App\Http\Livewire\NetworkStatusBlock;
 use App\Models\Block;
+use App\Models\Wallet;
 use App\Services\Cache\CryptoCompareCache;
-use App\Services\Cache\NetworkCache;
 
 use Livewire\Livewire;
 use function Tests\configureExplorerDatabase;
@@ -13,10 +13,13 @@ use function Tests\configureExplorerDatabase;
 it('should render with a height, name, supply and market cap', function () {
     configureExplorerDatabase();
 
-    Block::factory()->create(['height' => 5651290]);
+    Block::factory()->create([
+        'height'               => 5651290,
+        'generator_public_key' => Wallet::factory()->create([
+            'balance' => '13628098200000000',
+        ])->public_key,
+    ]);
 
-    (new NetworkCache())->setHeight(5651290);
-    (new NetworkCache())->setSupply('13628098200000000');
     (new CryptoCompareCache())->setPrice('USD', 'USD', fn () => 0.2907);
 
     Livewire::test(NetworkStatusBlock::class)
