@@ -62,9 +62,9 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction->block_id;
     }
 
-    public function timestamp(): string
+    public function timestamp(bool $short = false): string
     {
-        return Timestamp::fromGenesisHuman($this->transaction->timestamp);
+        return Timestamp::fromGenesisHuman($this->transaction->timestamp, $short);
     }
 
     public function nonce(): int

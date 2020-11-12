@@ -24,7 +24,7 @@
                         <x-tables.rows.desktop.transaction-id :model="$transaction" />
                     </td>
                     <td class="hidden lg:table-cell">
-                        <x-tables.rows.desktop.timestamp :model="$transaction" />
+                        <x-tables.rows.desktop.timestamp :model="$transaction" shortened />
                     </td>
                     <td wire:key="{{ $transaction->id() }}-sender">
                         @isset($useDirection)

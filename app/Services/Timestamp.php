@@ -15,9 +15,11 @@ final class Timestamp
         return Network::epoch()->addSeconds($seconds);
     }
 
-    public static function fromGenesisHuman(int $seconds): string
+    public static function fromGenesisHuman(int $seconds, bool $short = false): string
     {
-        return static::fromGenesis($seconds)->format(DateFormat::TIME);
+        return static::fromGenesis($seconds)->format(
+            $short ? DateFormat::TIME_SHORT : DateFormat::TIME
+        );
     }
 
     public static function fromUnix(int $seconds): Carbon
