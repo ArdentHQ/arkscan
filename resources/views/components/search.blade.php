@@ -63,7 +63,7 @@
 
                 <button
                     type="button"
-                    class="hidden text-theme-secondary-900 mr-8 rounded text-center transition-default font-normal hover:bg-theme-primary-100 dark:hover:bg-theme-secondary-800 dark:text-theme-secondary-600 md:block {{ ($isSlim ?? false) ? 'px-2 py-1 -my-2' : 'px-4 py-2' }}"
+                    class="hidden text-theme-secondary-900 mr-8 rounded  text-center transition-default font-normal hover:bg-theme-primary-100 dark:hover:bg-theme-secondary-800 dark:text-theme-secondary-600 md:block {{ ($isSlim ?? false) ? 'px-2 py-1 -my-2' : 'px-4 py-2' }}"
                     @click="showAdvanced = !showAdvanced; isFocused = true; $dispatch('search-slim-expand')"
                 >
                     <span x-show="!showAdvanced">@lang('actions.advanced_search')</span>
@@ -115,7 +115,7 @@
             </div>
 
             <div
-                class="py-4 font-semibold text-center bg-theme-primary-100 text-theme-primary-600 dark:bg-theme-secondary-800 dark:text-theme-secondary-200 md:hidden"
+                 class="py-4 font-semibold text-center rounded-b-lg bg-theme-primary-100 text-theme-primary-600 dark:bg-theme-secondary-800 dark:text-theme-secondary-200 md:hidden"
                 @click="showAdvanced = !showAdvanced"
             >
                 <span x-show="!showAdvanced">@lang('actions.advanced_search')</span>
