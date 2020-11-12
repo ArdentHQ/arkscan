@@ -53,4 +53,19 @@ final class NumberFormatter
 
         return static::number($value).' '.strtoupper($currency);
     }
+
+    /**
+     * @param string|int|float $value
+     */
+    public static function currencyShort($value, string $currency): string
+    {
+        $i     = 0;
+        $units = ['', 'K', 'M', 'B', 'T'];
+
+        for ($i = 0; $value >= 1000; $i++) {
+            $value /= 1000;
+        }
+
+        return round((float) $value, 1).$units[$i].' '.strtoupper($currency);
+    }
 }

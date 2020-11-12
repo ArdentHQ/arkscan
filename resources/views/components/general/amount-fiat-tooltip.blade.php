@@ -8,12 +8,12 @@
     <span>
 @endif
     @if(Network::canBeExchanged())
-        <div class="inline" @if ($amount ?? false) data-tippy-content="{{ $fiat }}" @endif>
+        <span @if ($amount ?? false) data-tippy-content="{{ $fiat }}" @endif>
             <x-currency>{{ $amount }}</x-currency>
-        </div>
+        </span>
     @else
-        <div class="inline">
+        <span>
             <x-currency>{{ $amount }}</x-currency>
-        </div>
+        </span>
     @endif
 </span>

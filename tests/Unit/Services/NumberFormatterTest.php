@@ -31,3 +31,18 @@ it('should format a number with a currency symbol if it has a [.]', function () 
 it('should format a number with a currency symbol if it has a [,]', function () {
     assertMatchesSnapshot(NumberFormatter::currency('123,456', 'ARK'));
 });
+
+it('should format a number with a currency short notation if it is too large', function () {
+    assertMatchesSnapshot(NumberFormatter::currencyShort(1000, 'ARK'));
+    assertMatchesSnapshot(NumberFormatter::currencyShort(10000, 'ARK'));
+    assertMatchesSnapshot(NumberFormatter::currencyShort(100000, 'ARK'));
+    assertMatchesSnapshot(NumberFormatter::currencyShort(1000000, 'ARK'));
+    assertMatchesSnapshot(NumberFormatter::currencyShort(10000000, 'ARK'));
+    assertMatchesSnapshot(NumberFormatter::currencyShort(100000000, 'ARK'));
+    assertMatchesSnapshot(NumberFormatter::currencyShort(1000000000, 'ARK'));
+    assertMatchesSnapshot(NumberFormatter::currencyShort(10000000000, 'ARK'));
+    assertMatchesSnapshot(NumberFormatter::currencyShort(100000000000, 'ARK'));
+    assertMatchesSnapshot(NumberFormatter::currencyShort(1000000000000, 'ARK'));
+    assertMatchesSnapshot(NumberFormatter::currencyShort(10000000000000, 'ARK'));
+    assertMatchesSnapshot(NumberFormatter::currencyShort(100000000000000, 'ARK'));
+});
