@@ -5,7 +5,7 @@
 
         <x-home.charts :prices="$prices" :fees="$fees" :aggregates="$aggregates" />
 
-        <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
+        <div class="bg-white dark:bg-theme-secondary-900">
             <div class="py-16 content-container md:px-8">
                 <livewire:latest-records />
             </div>

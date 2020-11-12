@@ -1,6 +1,6 @@
 <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
     <div class="flex-wrap py-16 content-container md:px-8">
-        <div class="flex items-center w-full mb-8 space-x-4">
+        <div class="flex items-center w-full space-x-4">
             <h4>
                 @lang('pages.wallet.delegate.title', [$wallet->username()])
             </h4>

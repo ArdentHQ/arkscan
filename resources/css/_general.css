@@ -260,7 +260,7 @@ body {
 
 /* Tabs */
 .tabs {
-    @apply px-8 mb-4 font-semibold rounded-lg select-none bg-theme-secondary-100;
+    @apply px-8 mb-8 font-semibold rounded-lg select-none bg-theme-secondary-100;
 }
 .theme-dark .tabs {
     @apply bg-black;
