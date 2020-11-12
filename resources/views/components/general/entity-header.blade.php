@@ -23,7 +23,7 @@
                                 <x-truncate-middle :value="$value" :length="8" />
                             </span>
 
-                            <x-clipboard :value="$value" />
+                            <x-clipboard :value="$value" colors="text-theme-secondary-600 hover:text-theme-secondary-400" />
                         </span>
                     </div>
                 </div>
