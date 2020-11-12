@@ -47,7 +47,7 @@
                 </x-navbar.setting-option>
             @endif
 
-            <x-navbar.setting-option :title="trans('forms.settings.fee_chart.title')" :subtitle="trans('forms.settings.fee_chart.description')">
+            <x-navbar.setting-option :title="trans('forms.settings.fee_chart.title')" :subtitle="trans('forms.settings.fee_chart.description')" breakpoint="sm">
                 <x-ark-toggle
                     name="state.feeChart"
                     hide-label
