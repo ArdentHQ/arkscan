@@ -218,6 +218,11 @@ body {
     }
 }
 
+/* Tables */
+.table-container table thead th {
+    @apply text-center;
+}
+
 /* Table List */
 .table-list-mobile-row {
     @apply flex flex-col w-full pt-8 border-t border-theme-secondary-300;
