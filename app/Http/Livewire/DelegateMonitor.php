@@ -47,7 +47,7 @@ final class DelegateMonitor extends Component
 
             $this->cacheLastBlocks($delegates->pluck('public_key')->toArray());
 
-            $tracking    = DelegateTracker::execute($delegates);
+            $tracking    = DelegateTracker::execute($delegates, $heightRange[0]);
             $roundBlocks = $this->getBlocksByRange(Arr::pluck($tracking, 'publicKey'), $heightRange);
 
             $delegates = [];
@@ -85,7 +85,7 @@ final class DelegateMonitor extends Component
     {
         return (new MonitorCache())->setBlockCount(function (): string {
             return trans('pages.delegates.statistics.blocks_generated', [
-                collect($this->delegates)->filter(fn ($slot) => $slot->status() === 'done')->count(),
+                Network::delegateCount() - (Monitor::heightRangeByRound(Monitor::roundNumber())[1] - Block::max('height')),
                 Network::delegateCount(),
             ]);
         });

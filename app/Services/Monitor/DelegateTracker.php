@@ -360,7 +360,7 @@ final class DelegateTracker
     //     ],
     // ];
 
-    public static function execute(Collection $delegates): array
+    public static function execute(Collection $delegates, int $startHeight): array
     {
         // Arrange Block
         $lastBlock = Block::withScope(OrderByHeightScope::class)->firstOrFail();
@@ -375,7 +375,7 @@ final class DelegateTracker
         //     'INPUT_DIFFS' => array_diff($activeDelegates->toArray(), static::EXPECTED['input']),
         // ]);
 
-        $activeDelegates = ShuffleDelegates::execute($activeDelegates->toArray(), $height);
+        $activeDelegates = ShuffleDelegates::execute($activeDelegates->toArray(), $startHeight);
 
         // dd([
         //     'OUTPUT_EQUAL' => $activeDelegates === static::EXPECTED['output'],
@@ -429,7 +429,6 @@ final class DelegateTracker
                     'order'     => $index,
                 ];
             })
-            ->sortBy('order')
             ->toArray();
     }
 }
