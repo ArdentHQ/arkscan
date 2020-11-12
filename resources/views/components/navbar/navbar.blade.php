@@ -2,16 +2,16 @@
 <div x-data="{ open: false, openDropdown: null, selectedChild: null }" id="navbar" class="fixed z-20 w-full">
     <div
         x-show="openDropdown !== null || open"
-        class="fixed inset-0 z-30 overflow-y-auto bg-theme-secondary-900"
+        class="fixed inset-0 z-30 overflow-y-auto bg-theme-secondary-900 dark:bg-theme-secondary-800"
         :class="{
-            'opacity-75': openDropdown !== 'settings',
+            'opacity-75 dark:opacity-50': openDropdown !== 'settings',
             'opacity-0': openDropdown === 'settings',
         }"
         x-cloak
         @click="openDropdown = null; open = false;"
     ></div>
 
-    <nav class="relative z-30 bg-white shadow-header-smooth dark:shadow-none dark:bg-theme-secondary-900">
+    <nav class="relative z-30 bg-white shadow-header-smooth dark:shadow-header-smooth-dark dark:bg-theme-secondary-900">
         <div class="px-4 sm:px-6 lg:px-8">
             <div class="relative flex justify-between h-20 lg:h-24">
 
@@ -86,7 +86,7 @@
                     <div class="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-4 sm:pr-0">
                         {{-- Mobile Hamburger icon --}}
                         <div class="flex items-center lg:hidden">
-                            <button @click="open = !open" class="inline-flex items-center justify-center p-2 transition duration-150 ease-in-out rounded-md text-theme-secondary-900">
+                            <button @click="open = !open" class="inline-flex items-center justify-center p-2 transition duration-150 ease-in-out rounded-md text-theme-secondary-900 dark:text-theme-secondary-600">
                                 <span :class="{'hidden': open, 'inline-flex': !open }"><x-ark-icon name="menu-open" size="sm" /></span>
                                 <span :class="{'hidden': !open, 'inline-flex': open }" x-cloak><x-ark-icon name="menu-close" size="sm" /></span>
                             </button>
@@ -97,7 +97,7 @@
                         <div class="pl-8 border-l border-theme-primary-100 text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-800">
                             <button
                                 @click="$dispatch('mobile-search')"
-                                class="inline-flex items-center justify-center py-2 transition duration-150 ease-in-out rounded-md text-theme-primary-300"
+                                class="inline-flex items-center justify-center py-2 transition duration-150 ease-in-out rounded-md text-theme-primary-300 dark:text-theme-secondary-600"
                             >
                                 <span class="inline-flex"><x-ark-icon name="search" size="sm" /></span>
                             </button>
@@ -118,7 +118,7 @@
         </div>
 
         {{-- Mobile dropdown --}}
-        <div :class="{'block': open, 'hidden': !open}" class="border-t-2 lg:hidden border-theme-secondary-200">
+        <div :class="{'block': open, 'hidden': !open}" class="border-t-2 lg:hidden border-theme-secondary-200 dark:border-theme-secondary-800">
             <div class="pt-2 pb-4 rounded-b-lg">
                 @foreach ($navigation as $navItem)
                     @if(isset($navItem['children']))
@@ -141,7 +141,7 @@
                             @endforeach
                         </div>
                     @else
-                        <x-ark-sidebar-link :route="$navItem['route']" :name="$navItem['label']" :params="$navItem['params'] ?? []" />
+                        <x-ark-navbar-link-mobile :route="$navItem['route']" :name="$navItem['label']" :params="$navItem['params'] ?? []" />
                     @endif
                 @endforeach
             </div>

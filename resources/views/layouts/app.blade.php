@@ -52,11 +52,17 @@
                 ]"
             >
                 <x-slot name="logo">
-                    <img src="/images/logo.svg" class="h-10 lg:h-12" />
+                    <div class="relative flex items-center">
+                        <img src="/images/logo.svg" class="h-10 lg:h-12" />
 
-                    <span class="hidden ml-4 sm:flex text-theme-secondary-900 dark:text-theme-secondary-200 sm:text-2xl">
-                        <span class="font-bold">{{ config('app.name', 'ARK') }}</span>
-                    </span>
+                        <span class="hidden ml-4 sm:flex text-theme-secondary-900 dark:text-theme-secondary-200 sm:items-center sm:text-2xl">
+                            <span class="font-bold">{{ config('app.name', 'ARK') }}</span>
+                        </span>
+
+                        <div class="navbar-beta-badge">
+                            @lang('general.beta_uppercase')
+                        </div>
+                    </div>
                 </x-slot>
             </x-navbar>
 

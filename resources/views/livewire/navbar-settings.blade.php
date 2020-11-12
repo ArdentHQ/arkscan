@@ -2,7 +2,7 @@
     <div class="navbar-settings-button">
         <button
             @click="openDropdown = openDropdown === 'settings' ? null : 'settings'"
-            class="inline-flex items-center justify-center py-2 transition duration-150 ease-in-out rounded-md text-theme-primary-300"
+            class="inline-flex items-center justify-center py-2 transition duration-150 ease-in-out rounded-md text-theme-primary-300 hover:text-theme-primary-400 dark:text-theme-secondary-600 dark:hover:text-theme-secondary-500"
         >
             <span class="inline-flex">
                 <x-ark-icon name="filter" />

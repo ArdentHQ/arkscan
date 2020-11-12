@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 return [
     'address'          => 'Address',
+    'beta_uppercase'   => 'BETA',
     'optional'         => 'Optional',
     'or'               => 'or',
     'filler'           => '',

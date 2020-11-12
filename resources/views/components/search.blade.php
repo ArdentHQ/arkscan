@@ -25,12 +25,12 @@
 >
     <div
         :class="{
-            'fixed inset-0 z-30 overflow-y-auto bg-black bg-opacity-75 md:hidden pb-20': isMobileOpen
+            'fixed inset-0 z-30 bg-black opacity-75 dark:opacity-50 dark:bg-theme-secondary-800 md:hidden': isMobileOpen
         }"
-        @click="isMobileOpen = false"
-    >
+    ></div>
 
-        <div @click.prevent.stop class="search-container ">
+    <div :class="{ 'fixed inset-0 z-30 overflow-y-auto md:hidden pb-20': isMobileOpen }">
+        <div class="search-container" @click.away="isMobileOpen = false">
             <div class="search-simple">
                 @if ($isSlim ?? false)
                     <div
