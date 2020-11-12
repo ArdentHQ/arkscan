@@ -15,7 +15,10 @@
                     @if ($wallet->rank() > Network::delegateCount())
                         <x-number>{{ $wallet->rank() }}</x-number>
                     @else
-                        <x-number>{{ $wallet->rank() }}</x-number> <span class="text-theme-secondary-500 dark:text-theme-secondary-200">/{{ Network::delegateCount() }}</span>
+                        <div class="flex">
+                            <span><x-number>{{ $wallet->rank() }}</x-number></span>
+                            <span class="text-theme-secondary-500 dark:text-theme-secondary-200">/{{ Network::delegateCount() }}</span>
+                        </div>
                     @endif
                 </x-details-box>
 
