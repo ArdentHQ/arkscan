@@ -84,6 +84,17 @@ body {
     @apply block;
 }
 
+.searchbar-input {
+    @apply w-full;
+}
+.theme-dark .searchbar-input {
+    @apply text-theme-secondary-700 bg-theme-secondary-900;
+}
+
+.theme-dark .searchbar-input::placeholder {
+    @apply text-theme-secondary-700;
+}
+
 .search-advanced-options {
     @apply grid grid-cols-1 border-t border-theme-secondary-300;
 }
@@ -221,6 +232,9 @@ body {
 /* Tables */
 .table-container table thead th {
     @apply text-center;
+}
+.theme-dark .table-container table thead th {
+    @apply text-theme-secondary-700;
 }
 
 /* Table List */
