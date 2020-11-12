@@ -54,10 +54,6 @@
 
                 <x-details-box icon="app-transactions.unvote" shallow>
                     <x-slot name="title">
-                        <x-slot name="tooltip">
-                            <x-currency>{{ $wallet->votes() }}</x-currency>
-                        </x-slot>
-
                         @lang('pages.wallet.delegate.votes', [App\Services\NumberFormatter::percentage($wallet->votesPercentage())])
                     </x-slot>
 
