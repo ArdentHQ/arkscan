@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 return [
 
-    'delegates'   => 'Delegates',
-    'home'        => 'Home',
-    'wallets'     => 'Wallets',
-    'block'       => 'Block',
-    'transaction' => 'Transaction',
+    'address_details'  => 'Address Details',
+    'block'            => 'Block',
+    'delegates'        => 'Delegates',
+    'delegate_monitor' => 'Delegate Monitor',
+    'forged_blocks'    => 'Forged Blocks',
+    'home'             => 'Home',
+    'search_results'   => 'Search Results',
+    'transaction'      => 'Transaction',
+    'voters'           => 'Voters',
+    'wallets'          => 'Wallets',
 
     'error' => [
         '401' => '401 Unauthorized',

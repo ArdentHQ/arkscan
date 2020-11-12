@@ -1,5 +1,12 @@
 @component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
 
+    @section('breadcrumbs')
+        <x-general.breadcrumbs :crumbs="[
+            ['route' => 'home', 'label' => trans('menus.home')],
+            ['label' => trans('menus.delegate_monitor')],
+        ]" />
+    @endsection
+
     @section('content')
         <div class="dark:bg-theme-secondary-900">
             <div class="flex-col pt-16 mb-16 space-y-6 content-container">

@@ -1,5 +1,12 @@
 @component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
 
+    @section('breadcrumbs')
+        <x-general.breadcrumbs :crumbs="[
+            ['route' => 'home', 'label' => trans('menus.home')],
+            ['label' => trans('menus.wallets')],
+        ]" />
+    @endsection
+
     @section('content')
         <x-general.search.header />
 
