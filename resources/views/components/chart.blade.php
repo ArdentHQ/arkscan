@@ -48,10 +48,12 @@
                     light: {
                         gridLines: "#DBDEE5",
                         ticks: "#B0B0B8",
+                        pointBackgroundColor: "#FFFFFF",
                     },
                     dark: {
                         gridLines: "#3C4249",
                         ticks: "#7E8A9C",
+                        pointBackgroundColor: "#212225",
                     }
                 };
 
@@ -79,7 +81,7 @@
                                 pointHoverBorderWidth: 3,
                                 pointHoverBackgroundColor: "rgba(204, 230, 211, 0.5)",
                                 pointHitRadius: 12,
-                                pointBackgroundColor: "#FFFFFF",
+                                pointBackgroundColor: themeColours.pointBackgroundColor,
                                 borderWidth: 3,
                                 type: "line",
                                 fill: false,
