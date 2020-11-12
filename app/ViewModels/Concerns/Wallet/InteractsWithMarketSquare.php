@@ -35,6 +35,10 @@ trait InteractsWithMarketSquare
         $type    = Arr::get($profile, 'ipfs.data.meta.delegate.frequency.type');
         $value   = Arr::get($profile, 'ipfs.data.meta.delegate.frequency.value');
 
+        if (is_null($type) || is_null($value)) {
+            return null;
+        }
+
         return trans_choice('generic.'.$type, $value);
     }
 
