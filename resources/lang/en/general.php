@@ -21,6 +21,7 @@ return [
     'wallet_not_found' => '<span class="bg-theme-warning-100">:0</span> has no balance. <br/> <span class="text-base font-normal">Return to this page after the address has received a transaction.</span>',
     'more_details'     => 'For more :transactionType details',
     'learn_more'       => 'Learn more',
+    'confirmations'    => ':count confirmation|:count confirmations',
 
     'block' => [
         'id'            => 'ID',
