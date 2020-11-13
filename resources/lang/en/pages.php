@@ -171,7 +171,7 @@ return [
             'transactions'           => 'Round Transactions',
             'current_delegate'       => 'Current',
             'next_delegate'          => 'Next',
-            'blocks_generated'       => '(:0/:1) Blocks Generated',
+            'blocks_generated'       => ':0/:1 Blocks',
         ],
     ],
 
