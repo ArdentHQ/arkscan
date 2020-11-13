@@ -43,7 +43,15 @@
         >
             <x-slot name="button">
                 <div class="flex items-center space-x-4">
-                    <x-ark-icon name="menu-open" size="md" />
+                    <div>
+                        <div x-show="dropdownOpen !== true">
+                            <x-ark-icon name="menu" size="sm" />
+                        </div>
+
+                        <div x-show="dropdownOpen === true">
+                            <x-ark-icon name="menu-show" size="sm" />
+                        </div>
+                    </div>
 
                     <div x-show="direction === 'all'">@lang('pages.wallet.all_transactions')</div>
                     <div x-show="direction === 'received'">@lang('pages.wallet.received_transactions')</div>

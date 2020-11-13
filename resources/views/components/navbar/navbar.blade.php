@@ -86,9 +86,14 @@
                     <div class="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-4 sm:pr-0">
                         {{-- Mobile Hamburger icon --}}
                         <div class="flex items-center lg:hidden">
-                            <button @click="open = !open" class="inline-flex items-center justify-center p-2 transition duration-150 ease-in-out rounded-md text-theme-secondary-900 dark:text-theme-secondary-600">
-                                <span :class="{'hidden': open, 'inline-flex': !open }"><x-ark-icon name="menu-open" size="sm" /></span>
-                                <span :class="{'hidden': !open, 'inline-flex': open }" x-cloak><x-ark-icon name="menu-close" size="sm" /></span>
+                            <button @click="open = !open" class="inline-flex items-center justify-center transition duration-150 ease-in-out rounded-md text-theme-secondary-900 dark:text-theme-secondary-600">
+                                <span :class="{'hidden': open, 'inline-flex': !open }">
+                                    <x-ark-icon name="menu" size="sm" />
+                                </span>
+
+                                <span :class="{'hidden': !open, 'inline-flex': open }" x-cloak>
+                                    <x-ark-icon name="menu-show" size="sm" />
+                                </span>
                             </button>
                         </div>
                     </div>

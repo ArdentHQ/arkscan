@@ -44,7 +44,15 @@
         >
             <x-slot name="button">
                 <div class="flex items-center space-x-4">
-                    <x-ark-icon name="menu-open" size="sm" />
+                    <div>
+                        <div x-show="tabsOpen !== true">
+                            <x-ark-icon name="menu" size="sm" />
+                        </div>
+
+                        <div x-show="tabsOpen === true">
+                            <x-ark-icon name="menu-show" size="sm" />
+                        </div>
+                    </div>
 
                     <div x-show="selected === 'transactions'">@lang('pages.home.latest_transactions')</div>
                     <div x-show="selected === 'blocks'">@lang('pages.home.latest_blocks')</div>
