@@ -19,6 +19,13 @@ function createRoundWithDelegates(): void
             'generator_public_key' => $wallet->public_key,
         ]);
 
+        // Start height for round 112168
+        Block::factory()->create([
+            'height'               => 5720518,
+            'timestamp'            => 113620904,
+            'generator_public_key' => $wallet->public_key,
+        ]);
+
         Round::factory()->create([
             'round'      => '112168',
             'public_key' => $wallet->public_key,

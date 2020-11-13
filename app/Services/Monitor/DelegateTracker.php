@@ -375,6 +375,7 @@ final class DelegateTracker
         //     'INPUT_DIFFS' => array_diff($activeDelegates->toArray(), static::EXPECTED['input']),
         // ]);
 
+        // TODO: calculate this once for a given round, then cache it as it won't change until next round
         $activeDelegates = ShuffleDelegates::execute($activeDelegates->toArray(), $startHeight);
 
         // dd([
@@ -398,9 +399,24 @@ final class DelegateTracker
         // Map Next Forgers...
         $forgingIndex = 2; // We start at 2 to skip 0 which results in 0 as time and 1 which would be the next forger.
 
-        return collect($activeDelegates)
-            ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo) {
-                if ($index === $forgingInfo['nextForger']) {
+        // Get the original forging info to determine the actual first
+        $originalOrder = ForgingInfoCalculator::calculate(Block::where('height', $startHeight)->firstOrFail()->timestamp, $startHeight);
+
+        // Note: static order will be found by shifting the index based on the forging data from above
+        $delCount         = Network::delegateCount();
+        $delegatesOrdered = [];
+        for ($i = $originalOrder['nextForger']; $i < $delCount + $originalOrder['nextForger']; $i++) {
+            $delegatesOrdered[] = $activeDelegates[$i % $delCount];
+        }
+
+        return collect($delegatesOrdered)
+            ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $originalOrder, $delCount) {
+
+                // Determine forging order based on the original offset
+                $difference = $forgingInfo['nextForger'] - $originalOrder['nextForger'];
+                $normalizedOrder = $difference >= 0 ? $difference : $delCount + $difference;
+
+                if ($index === $normalizedOrder) {
                     return [
                         'publicKey' => $publicKey,
                         'status'    => 'next',
@@ -409,7 +425,7 @@ final class DelegateTracker
                     ];
                 }
 
-                if ($index > $forgingInfo['nextForger']) {
+                if ($index > $normalizedOrder) {
                     $nextTime = (($forgingIndex) * Network::blockTime() * 1000);
 
                     $forgingIndex++;
@@ -422,6 +438,7 @@ final class DelegateTracker
                     ];
                 }
 
+                // TODO: we need to handle missed blocks by moving "done" states back to pending when needed
                 return [
                     'publicKey' => $publicKey,
                     'status'    => 'done',

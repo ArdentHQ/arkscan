@@ -21,6 +21,12 @@ it('should calculate the forging order', function () {
         Cache::put('lastBlock:'.$wallet->public_key, []);
     });
 
+    // Start height for round 112168
+    Block::factory()->create([
+        'height'    => 5720517,
+        'timestamp' => 113620816,
+    ]);
+
     Block::factory()->create([
         'height'    => 5720529,
         'timestamp' => 113620904,
@@ -80,5 +86,5 @@ it('should calculate the forging order', function () {
         (object) ['public_key' => '03f6af8c750b9d29d9da3d4ddf5818a1fcdd4558ba0dde731f9c4b17bcbdcd83f2'],
     ]);
 
-    assertMatchesSnapshot(DelegateTracker::execute($activeDelegates, 5720529));
+    assertMatchesSnapshot(DelegateTracker::execute($activeDelegates, 5720517));
 });
