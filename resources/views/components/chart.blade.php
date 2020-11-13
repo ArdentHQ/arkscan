@@ -36,14 +36,7 @@
             toggleChart() {
                 this.isVisible = ! this.isVisible;
             },
-            updateChart() {
-                this.isDarkTheme = ! this.isDarkTheme;
-
-                this.chart.destroy();
-
-                this.renderChart();
-            },
-            renderChart() {
+            getThemeColors() {
                 let themeColours = {
                     light: {
                         gridLines: "#DBDEE5",
@@ -57,7 +50,34 @@
                     }
                 };
 
-                themeColours = this.isDarkTheme ? themeColours.dark : themeColours.light;
+                return this.isDarkTheme ? themeColours.dark : themeColours.light;
+            },
+            toggleDarkMode() {
+                this.isDarkTheme = ! this.isDarkTheme;
+                this.updateChartColors();
+            },
+            updateChartColors() {
+                const themeColours = this.getThemeColors();
+
+                this.chart.data.datasets.forEach((dataset) => {
+                    dataset.pointBackgroundColor = themeColours.pointBackgroundColor;
+                });
+
+                this.chart.options.scales.yAxes.forEach((yAxe) => {
+                    yAxe.gridLines.color = themeColours.gridLines;
+                    yAxe.ticks.fontColor = themeColours.ticks
+                })
+                this.chart.options.scales.xAxes.forEach((xAxe) => {
+                    xAxe.gridLines.color = themeColours.gridLines;
+                    xAxe.ticks.fontColor = themeColours.ticks
+                })
+
+                this.chart.options.tooltips.titleFontColor = themeColours.ticks;
+
+                this.chart.update();
+            },
+            renderChart() {
+                const themeColours = this.getThemeColors();
 
                 const fontConfig = {
                     fontColor: themeColours.ticks,
@@ -238,7 +258,7 @@
 <div
     x-data="makeChart('{{ $identifier }}', '{{ $coloursScheme }}')"
     x-init="renderChart()"
-    x-on:toggle-dark-mode.window="updateChart()"
+    x-on:toggle-dark-mode.window="toggleDarkMode()"
     x-on:chart-period-selected.window="setPeriod($event.detail)"
     x-on:{{ $alpineShow }}.window="toggleChart()"
     x-show="isVisible"
