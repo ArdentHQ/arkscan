@@ -176,6 +176,7 @@ return [
         App\Providers\HorizonServiceProvider::class,
         App\Providers\ExplorerServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\DevelopmentServiceProvider::class,
 
     ],
 
