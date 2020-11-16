@@ -405,7 +405,7 @@ final class DelegateTracker
         // Note: static order will be found by shifting the index based on the forging data from above
         $delCount         = Network::delegateCount();
         $delegatesOrdered = [];
-        for ($i = $originalOrder['nextForger']; $i < $delCount + $originalOrder['nextForger']; $i++) {
+        for ($i = $originalOrder['currentForger']; $i < $delCount + $originalOrder['currentForger']; $i++) {
             $delegatesOrdered[] = $activeDelegates[$i % $delCount];
         }
 
@@ -413,7 +413,7 @@ final class DelegateTracker
             ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $originalOrder, $delCount) {
 
                 // Determine forging order based on the original offset
-                $difference = $forgingInfo['nextForger'] - $originalOrder['nextForger'];
+                $difference = $forgingInfo['currentForger'] - $originalOrder['currentForger'];
                 $normalizedOrder = $difference >= 0 ? $difference : $delCount + $difference;
 
                 if ($index === $normalizedOrder) {
