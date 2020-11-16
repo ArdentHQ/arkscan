@@ -37,7 +37,7 @@
                 </div>
             @else
                 <div class="flex flex-col justify-center pt-8 space-y-8">
-                    <img src="/images/search/empty.svg" class="h-32" />
+                    <x-general.empty-search-image />
 
                     <span class="text-center">@lang('pages.search_results.no_results')</span>
                 </div>

@@ -43,6 +43,7 @@ module.exports = {
         boxShadow: ['dark', 'dark-hover', 'responsive', 'hover', 'focus'],
         divideColor: ['dark', 'dark-hover', 'responsive', 'hover', 'focus'],
         opacity: ['dark', 'responsive', 'hover', 'focus'],
+        display: ['dark', 'responsive'],
     },
     plugins: [
         ...defaultConfig.plugins,
