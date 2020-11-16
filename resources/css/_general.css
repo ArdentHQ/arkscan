@@ -207,7 +207,6 @@ body {
 .navbar-settings-button {
     @apply pl-8 pr-2 border-l border-theme-primary-100 text-theme-secondary-900;
 }
-
 .theme-dark .navbar-settings-button {
     @apply text-theme-secondary-600 border-theme-secondary-800;
 }
@@ -215,9 +214,18 @@ body {
 .navbar-settings-dropdown {
     @apply absolute top-0 left-0 right-0 z-30 px-4 mt-20 -mx-4 bg-white border-t-2 shadow-xl border-theme-secondary-100;
 }
-
 .theme-dark .navbar-settings-dropdown {
     @apply border-theme-secondary-800 bg-theme-secondary-900;
+}
+
+.navbar-settings-option {
+    @apply items-center justify-between py-8 border-b border-dashed border-theme-secondary-300;
+}
+.navbar-settings-option:last-child {
+    @apply border-0;
+}
+.theme-dark .navbar-settings-option {
+    @apply border-theme-secondary-800;
 }
 
 @screen md {
