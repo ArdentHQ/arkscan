@@ -28,3 +28,9 @@ it('should find all transactions by recipient', function () {
 
     expect($this->subject->allByRecipient($wallet->address))->toBeInstanceOf(Collection::class);
 });
+
+it('should find a transaction by id', function () {
+    $transactionId = Transaction::factory()->create()->id;
+
+    expect($this->subject->findById($transactionId))->toBeInstanceOf(Transaction::class);
+});

@@ -1347,6 +1347,32 @@ it('should get the entity name', function () {
     expect($subject->entityName())->toBe('John');
 });
 
+it('should get the entity name for entity update types', function () {
+    $registrationId = Transaction::factory()->create([
+        'type'       => MagistrateTransactionTypeEnum::ENTITY,
+        'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
+        'asset'      => [
+            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
+            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
+            'data'    => ['name' => 'John', 'ipfsData' => 'ipfs'],
+        ],
+    ])->id;
+
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => MagistrateTransactionTypeEnum::ENTITY,
+        'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
+        'asset'      => [
+            'type'           => MagistrateTransactionEntityTypeEnum::PRODUCT,
+            'subType'        => MagistrateTransactionEntitySubTypeEnum::NONE,
+            'action'         => MagistrateTransactionEntityActionEnum::UPDATE,
+            'registrationId' => $registrationId,
+        ],
+    ]));
+
+    expect($subject->entityName())->toBe('John');
+});
+
 it('should get the entity category', function () {
     $subject = new TransactionViewModel(Transaction::factory()->create([
         'type'       => MagistrateTransactionTypeEnum::ENTITY,

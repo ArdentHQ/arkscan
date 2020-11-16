@@ -32,4 +32,9 @@ final class TransactionRepository implements Contract
             ->orWhere(fn ($query): Builder => $query->whereJsonContains('asset->payments', [['recipientId' => $address]]))
             ->get();
     }
+
+    public function findById(string $id): Transaction
+    {
+        return Transaction::findOrFail($id);
+    }
 }
