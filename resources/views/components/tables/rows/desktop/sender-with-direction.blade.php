@@ -9,7 +9,7 @@
                 @endif
             </div>
 
-            <div class="-mt-1 border-4 border-white rounded-full dark:border-theme-secondary-900">
+            <div class="table-avatar">
                 <div class="bg-white border-white circled-icon dark:text-theme-secondary-600 dark:border-theme-secondary-600">
                     <x-general.avatar :identifier="$model->sender()->address()" />
                 </div>
