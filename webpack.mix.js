@@ -12,6 +12,11 @@ const mix = require('laravel-mix');
  */
 
 mix
+    // Options
+    .options({
+        processCssUrls: false,
+    })
+    // App
     .js('resources/js/app.js', 'public/js')
     .copy('resources/js/chart.js', 'public/js/chart.js')
     .copy('resources/js/vendor/ark/clipboard.js', 'public/js/clipboard.js')
@@ -22,7 +27,10 @@ mix
     // .copy('resources/js/vendor/ark/clipboard.js', 'public/js/clipboard.js')
     // .copy('node_modules/swiper/swiper-bundle.min.js', 'public/js/swiper.js')
     .copyDirectory('resources/images', 'public/images')
-    .copyDirectory('resources/fonts', 'public/fonts');
+    // Fonts
+    .copyDirectory('resources/fonts', 'public/fonts')
+    // Extract node_modules
+    .extract(['alpinejs', 'chart.js']);
 
 if (mix.inProduction()) {
     mix.version();

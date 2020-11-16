@@ -25,6 +25,8 @@
         <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
         <!-- Scripts -->
+        <script src="{{ mix('js/manifest.js') }}" defer></script>
+        <script src="{{ mix('js/vendor.js') }}" defer></script>
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body class="antialiased">
