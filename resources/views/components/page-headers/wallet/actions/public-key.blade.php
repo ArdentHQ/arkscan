@@ -4,7 +4,7 @@
         <x-ark-icon name="key" />
     </button>
 
-    <div @click.away="publicKeyModalVisible = false" x-show="publicKeyModalVisible" class="absolute left-0 right-0 z-10 w-auto mx-8 mt-4 bg-white rounded-lg shadow-lg lg:left-auto lg:mx-0 dark:bg-theme-secondary-900" x-cloak>
+    <div @click.away="publicKeyModalVisible = false" x-show="publicKeyModalVisible" class="absolute left-0 right-0 z-10 w-auto mx-8 mt-4 bg-white rounded-lg shadow-lg lg:left-auto lg:mx-0 dark:shadow-lg-dark dark:bg-theme-secondary-900" x-cloak>
         <div class="flex flex-col p-10 space-y-2 leading-tight">
             <span class="text-sm font-semibold text-theme-secondary-400 dark:text-theme-secondary-700">@lang('pages.wallet.public_key.title')</span>
             <span class="flex font-semibold link">
