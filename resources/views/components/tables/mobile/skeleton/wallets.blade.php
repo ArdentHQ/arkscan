@@ -1,4 +1,4 @@
 <x-table-skeleton
     device="mobile"
-    :items="['address', 'text', 'number', 'number']"
+    :items="['address', 'number', 'number']"
 />
