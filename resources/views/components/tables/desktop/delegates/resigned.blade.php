@@ -9,17 +9,17 @@
         </thead>
         <tbody>
             @foreach($delegates as $delegate)
-                <tr>
-                    <td>
+                <x-ark-tables.row>
+                    <x-ark-tables.cell>
                         <x-tables.rows.desktop.resignation-id :model="$delegate" />
-                    </td>
-                    <td>
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell last-on="lg">
                         <x-tables.rows.desktop.username :model="$delegate" />
-                    </td>
-                    <td class="hidden text-right lg:table-cell">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell class="text-right" responsive>
                         <x-tables.rows.desktop.votes :model="$delegate" />
-                    </td>
-                </tr>
+                    </x-ark-tables.cell>
+                </x-ark-tables.row>
             @endforeach
         </tbody>
     </table>

@@ -15,31 +15,34 @@
         </thead>
         <tbody>
             @foreach($blocks as $block)
-                <tr>
-                    <td wire:key="{{ $block->id() }}-id">
+                <x-ark-tables.row>
+                    <x-ark-tables.cell wire:key="{{ $block->id() }}-id">
                         <x-tables.rows.desktop.block-id :model="$block" />
-                    </td>
-                    <td class="hidden lg:table-cell">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell responsive>
                         <x-tables.rows.desktop.timestamp :model="$block" />
-                    </td>
+                    </x-ark-tables.cell>
                     @if(!isset($withoutGenerator))
-                        <td wire:key="{{ $block->id() }}-forger">
+                        <x-ark-tables.cell wire:key="{{ $block->id() }}-forger">
                             <x-tables.rows.desktop.block-forger :model="$block" />
-                        </td>
+                        </x-ark-tables.cell>
                     @endif
-                    <td class="text-right">
+                    <x-ark-tables.cell class="text-right">
                         <x-tables.rows.desktop.block-height :model="$block" />
-                    </td>
-                    <td class="text-right">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell class="text-right">
                         <x-tables.rows.desktop.transaction-count :model="$block" />
-                    </td>
-                    <td class="text-right">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell
+                        class="text-right"
+                        last-on="lg"
+                    >
                         <x-tables.rows.desktop.amount :model="$block" />
-                    </td>
-                    <td class="hidden text-right lg:table-cell">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell class="text-right" responsive>
                         <x-tables.rows.desktop.fee :model="$block" />
-                    </td>
-                </tr>
+                    </x-ark-tables.cell>
+                </x-ark-tables.row>
             @endforeach
         </tbody>
     </table>

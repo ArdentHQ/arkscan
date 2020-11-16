@@ -8,14 +8,14 @@
         </thead>
         <tbody>
             @foreach ($delegates as $delegate)
-            <tr>
-                <td>
+            <x-ark-tables.row>
+                <x-ark-tables.cell>
                     <x-tables.rows.mobile.username-with-avatar :model="$delegate" />
-                </td>
-                <td>
+                </x-ark-tables.cell>
+                <x-ark-tables.cell>
                     <x-tables.rows.mobile.votes :model="$delegate" />
-                </td>
-            </tr>
+                </x-ark-tables.cell>
+            </x-ark-tables.row>
             @endforeach
         </tbody>
     </table>

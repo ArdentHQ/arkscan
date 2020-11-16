@@ -11,30 +11,27 @@
         </thead>
         <tbody>
             @foreach($delegates as $delegate)
-                <tr
+                <x-ark-tables.row
                     wire:key="{{ $delegate->publicKey() }}-{{ $round }}"
-                    @if ($delegate->keepsMissing())
-                        class="bg-theme-danger-50"
-                    @elseif ($delegate->justMissed())
-                        class="bg-theme-warning-50"
-                    @endif
+                    :danger="$delegate->keepsMissing()"
+                    :warning="$delegate->justMissed()"
                 >
-                    <td>
+                    <x-ark-tables.cell>
                         <x-tables.rows.desktop.slot-id :model="$delegate" />
-                    </td>
-                    <td wire:key="{{ $delegate->publicKey() }}-username-desktop">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell wire:key="{{ $delegate->publicKey() }}-username-desktop">
                         <x-tables.rows.desktop.username-with-avatar :model="$delegate->wallet()" />
-                    </td>
-                    <td>
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell>
                         <x-tables.rows.desktop.slot-time :model="$delegate" />
-                    </td>
-                    <td wire:key="{{ $delegate->publicKey() }}-round-status-{{ $delegate->status() }}-desktop">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell wire:key="{{ $delegate->publicKey() }}-round-status-{{ $delegate->status() }}-desktop">
                         <x-tables.rows.desktop.round-status :model="$delegate" />
-                    </td>
-                    <td class="text-right">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell class="text-right">
                         <x-tables.rows.desktop.wallet-last-block :model="$delegate" />
-                    </td>
-                </tr>
+                    </x-ark-tables.cell>
+                </x-ark-tables.row>
             @endforeach
         </tbody>
     </table>

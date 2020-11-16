@@ -15,31 +15,31 @@
         </thead>
         <tbody>
             @foreach($delegates as $delegate)
-                <tr>
-                    <td>
+                <x-ark-tables.row>
+                    <x-ark-tables.cell>
                         <x-tables.rows.desktop.rank :model="$delegate" />
-                    </td>
-                    <td wire:key="{{ $delegate->username() }}-username">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell wire:key="{{ $delegate->username() }}-username">
                         <x-tables.rows.desktop.username :model="$delegate" />
-                    </td>
-                    <td wire:key="{{ $delegate->username() }}-round-status-history">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell wire:key="{{ $delegate->username() }}-round-status-history">
                         <x-tables.rows.desktop.round-status-history :model="$delegate" />
-                    </td>
-                    <td class="hidden text-right lg:table-cell">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell class="text-right" responsive>
                         <x-tables.rows.desktop.votes :model="$delegate" />
-                    </td>
+                    </x-ark-tables.cell>
                     @if (Network::usesMarketSquare())
-                        <td>
+                        <x-ark-tables.cell>
                             <x-tables.rows.desktop.marketsquare-profile :model="$delegate" />
-                        </td>
-                        <td class="hidden xl:table-cell">
+                        </x-ark-tables.cell>
+                        <x-ark-tables.cell responsive breakpoint="xl">
                             <x-tables.rows.desktop.marketsquare-commission :model="$delegate" />
-                        </td>
+                        </x-ark-tables.cell>
                     @endif
-                    <td class="text-right">
+                    <x-ark-tables.cell class="text-right">
                         <x-tables.rows.desktop.productivity :model="$delegate" />
-                    </td>
-                </tr>
+                    </x-ark-tables.cell>
+                </x-ark-tables.row>
             @endforeach
         </tbody>
     </table>

@@ -8,14 +8,21 @@
         </thead>
         <tbody>
             @foreach($payments as $payment)
-                <tr>
-                    <td wire:key="{{ $payment->address() }}-address">
+                <x-ark-tables.row>
+                    <x-ark-tables.cell
+                        wire:key="{{ $payment->address() }}-address"
+                        last-on="md"
+                    >
                         <x-general.identity :model="$payment" without-truncate />
-                    </td>
-                    <td class="hidden text-right md:table-cell">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell
+                        responsive
+                        breakpoint="md"
+                        class="text-right"
+                    >
                         <x-tables.rows.desktop.amount :model="$payment" />
-                    </td>
-                </tr>
+                    </x-ark-tables.cell>
+                </x-ark-tables.row>
             @endforeach
         </tbody>
     </table>

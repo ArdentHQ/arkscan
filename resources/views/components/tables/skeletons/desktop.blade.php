@@ -9,11 +9,11 @@
         </thead>
         <tbody>
             <x-skeleton>
-                <tr>
+                <x-ark-tables.row>
                     @foreach($rows as $row)
                         <x-dynamic-component :component="$row" />
                     @endforeach
-                </tr>
+                </x-ark-tables.row>
             </x-skeleton>
         </tbody>
     </table>

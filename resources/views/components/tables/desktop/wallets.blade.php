@@ -10,24 +10,24 @@
         </thead>
         <tbody>
             @foreach($wallets as $wallet)
-                <tr>
-                    <td wire:key="{{ $wallet->address() }}-address">
+                <x-ark-tables.row>
+                    <x-ark-tables.cell wire:key="{{ $wallet->address() }}-address">
                         <x-tables.rows.desktop.address :model="$wallet" :without-truncate="$withoutTruncate ?? false" />
-                    </td>
-                    <td class="text-center" wire:key="{{ $wallet->address() }}-type">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell class="text-center" wire:key="{{ $wallet->address() }}-type">
                         <x-tables.rows.desktop.wallet-type :model="$wallet" />
-                    </td>
-                    <td class="text-right">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell class="text-right" last-on="lg">
                         <x-tables.rows.desktop.balance :model="$wallet" />
-                    </td>
-                    <td class="hidden text-right lg:table-cell">
+                    </x-ark-tables.cell>
+                    <x-ark-tables.cell responsive class="text-right">
                         @isset($useVoteWeight)
                             <x-tables.rows.desktop.vote-percentage :model="$wallet" />
                         @else
                             <x-tables.rows.desktop.balance-percentage :model="$wallet" />
                         @endif
-                    </td>
-                </tr>
+                    </x-ark-tables.cell>
+                </x-ark-tables.row>
             @endforeach
         </tbody>
     </table>

@@ -6,24 +6,34 @@
     <div class="flex space-x-3">
         @if($paginator->onFirstPage())
             <div class="flex items-center button-generic button-disabled">
-                <span class="flex items-center">@svg('pagination-first', 'h-3 w-3')</span>
+                <span class="flex items-center">
+                    <x-ark-icon name="pagination-first" size="xs" />
+                </span>
             </div>
         @else
             <a class="flex" href="{{ $paginator->url(1) }}">
                 <div class="flex items-center h-full button-secondary pagination-button-mobile">
-                    <span class="flex items-center">@svg('pagination-first', 'h-3 w-3')</span>
+                    <span class="flex items-center">
+                        <x-ark-icon name="pagination-first" size="xs" />
+                    </span>
                 </div>
             </a>
         @endif
 
         @if($paginator->onFirstPage())
             <div class="flex items-center button-generic button-disabled">
-                <div class="flex items-center">@svg('chevron-left', 'h-3 w-3')<span class="hidden lg:flex lg:ml-2">Previous</span></div>
+                <div class="flex items-center">
+                    <x-ark-icon name="chevron-left" size="xs" />
+                    <span class="hidden lg:flex lg:ml-2">Previous</span>
+                </div>
             </div>
         @else
             <a class="flex" href="{{ $paginator->previousPageUrl() }}">
                 <div class="flex items-center h-full button-secondary pagination-button-mobile">
-                    <div class="flex items-center">@svg('chevron-left', 'h-3 w-3')<span class="hidden lg:flex lg:ml-2">Previous</span></div>
+                    <div class="flex items-center">
+                        <x-ark-icon name="chevron-left" size="xs" />
+                        <span class="hidden lg:flex lg:ml-2">Previous</span>
+                    </div>
                 </div>
             </a>
         @endif
@@ -56,24 +66,34 @@
         @if($paginator->hasMorePages())
             <a class="flex" href="{{ $paginator->nextPageUrl() }}">
                 <div class="flex items-center h-full button-secondary pagination-button-mobile">
-                    <div class="flex items-center"><span class="hidden lg:flex lg:mr-2">Next</span>@svg('chevron-right', 'h-3 w-3')</div>
+                    <div class="flex items-center">
+                        <span class="hidden lg:flex lg:mr-2">Next</span>
+                        <x-ark-icon name="chevron-right" size="xs" />
+                    </div>
                 </div>
             </a>
         @else
             <div class="flex items-center button-generic button-disabled">
-                <div class="flex items-center"><span class="hidden lg:flex lg:mr-2">Next</span>@svg('chevron-right', 'h-3 w-3')</div>
+                <div class="flex items-center">
+                    <span class="hidden lg:flex lg:mr-2">Next</span>
+                    <x-ark-icon name="chevron-right" size="xs" />
+                </div>
             </div>
         @endif
 
         @if($paginator->hasMorePages())
             <a class="flex" href="{{ $paginator->url($paginator->lastPage()) }}">
                 <div class="flex items-center h-full button-secondary pagination-button-mobile">
-                    <span class="flex items-center">@svg('pagination-last', 'h-3 w-3')</span>
+                    <span class="flex items-center">
+                        <x-ark-icon name="pagination-last" size="xs" />
+                    </span>
                 </div>
             </a>
         @else
             <div class="flex items-center button-generic button-disabled">
-                <span class="flex items-center">@svg('pagination-last', 'h-3 w-3')</span>
+                <span class="flex items-center">
+                    <x-ark-icon name="pagination-last" size="xs" />
+                </span>
             </div>
         @endif
     </div>
