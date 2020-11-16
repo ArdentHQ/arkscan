@@ -1,1 +1,1 @@
-<x-general.identity :model="$model" without-reverse />
+<x-general.identity :model="$model" without-reverse is-listing />

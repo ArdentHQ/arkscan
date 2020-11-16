@@ -13,7 +13,13 @@
 
             <a href="{{ route('wallet', $model->address()) }}" class="font-semibold link sm:hidden md:flex">
                 @if ($model->username())
-                    <div class="{{ ($prefix ?? false) ? 'delegate-name-truncate-prefix' : 'delegate-name-truncate' }}">
+                    @if ($prefix ?? false)
+                        <div class="delegate-name-truncate-prefix">
+                    @elseif ($isListing ?? false)
+                        <div class="delegate-name-truncate-listing">
+                    @else
+                        <div class="delegate-name-truncate">
+                    @endif
                         {{ $model->username() }}
                     </div>
                 @else
