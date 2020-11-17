@@ -12,7 +12,7 @@
     ></div>
 
     <nav class="relative z-30 bg-white shadow-header-smooth dark:shadow-header-smooth-dark dark:bg-theme-secondary-900">
-        <div class="px-4 sm:px-6 lg:px-8">
+        <div class="px-8">
             <div class="relative flex justify-between h-20 lg:h-24">
 
                 {{-- LOGO --}}

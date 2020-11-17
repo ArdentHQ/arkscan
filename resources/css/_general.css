@@ -205,7 +205,7 @@ body {
 
 /* Navbar Settings */
 .navbar-settings-button {
-    @apply pl-8 pr-2 border-l border-theme-primary-100 text-theme-secondary-900;
+    @apply pl-8 border-l border-theme-primary-100 text-theme-secondary-900;
 }
 .theme-dark .navbar-settings-button {
     @apply text-theme-secondary-600 border-theme-secondary-800;
