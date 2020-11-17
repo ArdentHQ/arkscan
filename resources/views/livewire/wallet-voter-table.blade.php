@@ -16,10 +16,6 @@
             </script>
         </x-skeletons.wallets>
     @else
-        <div class="flex flex-col justify-center pt-8 space-y-8">
-            <x-general.empty-search-image />
-
-            <span class="text-center">@lang('pages.voters_by_wallet.no_results', [$username])</span>
-        </div>
+        <x-general.no-results :text="trans('pages.voters_by_wallet.no_results', [$username])" />
     @endif
 </div>

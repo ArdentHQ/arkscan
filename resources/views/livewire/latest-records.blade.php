@@ -94,11 +94,17 @@
     @else
         <div id="transaction-list" class="w-full">
             @if($transactions->isEmpty())
-                <div wire:poll="pollTransactions" wire:key="poll_transactions_skeleton">
-                    <x-tables.desktop.skeleton.transactions />
+                @if($state['type'] !== 'all')
+                    <div wire:poll.{{ Network::blockTime() }}s="pollTransactions" wire:key="poll_transactions_empty">
+                        <x-general.no-results :text="trans('pages.home.no_transaction_results', [trans('forms.search.transaction_types.'.$state['type'])])" />
+                    </div>
+                @else
+                    <div wire:poll="pollTransactions" wire:key="poll_transactions_skeleton">
+                        <x-tables.desktop.skeleton.transactions />
 
-                    <x-tables.mobile.skeleton.transactions />
-                </div>
+                        <x-tables.mobile.skeleton.transactions />
+                    </div>
+                @endif
             @else
                 <div wire:poll.{{ Network::blockTime() }}s="pollTransactions" wire:key="poll_transactions_real">
                     <x-tables.desktop.transactions :transactions="$transactions" />

@@ -42,6 +42,7 @@ return [
             'total_votes'                  => 'Total Votes',
         ],
 
+        'no_transaction_results'  => 'No :0 transactions could be found.',
         'transactions_and_blocks' => 'Transaction & Blocks',
         'latest_transactions'     => 'Latest Transactions',
         'latest_blocks'           => 'Latest Blocks',

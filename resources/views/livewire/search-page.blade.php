@@ -36,11 +36,7 @@
                     @endif
                 </div>
             @else
-                <div class="flex flex-col justify-center pt-8 space-y-8">
-                    <x-general.empty-search-image />
-
-                    <span class="text-center">@lang('pages.search_results.no_results')</span>
-                </div>
+                <x-general.no-results :text="trans('pages.search_results.no_results')" />
             @endif
         </div>
     </div>
