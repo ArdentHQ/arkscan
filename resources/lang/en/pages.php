@@ -120,7 +120,7 @@ return [
         'amount'                => 'Amount',
         'smartbridge'           => 'Smartbridge',
         'vote_rank'             => '#:0',
-        'no_results'            => 'We could not find anything matching!',
+        'no_results'            => 'No :0 transactions could be found.',
         'qrcode'                => [
             'title'            => 'Send Funds',
             'description'      => 'Enter the amount you wish to transfer to this address and confirm.',

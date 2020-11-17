@@ -85,11 +85,15 @@
 
     <div id="transaction-list" class="w-full">
         <x-skeletons.transactions>
-            <x-tables.desktop.transactions :transactions="$transactions" :wallet="$wallet" use-confirmations use-direction />
+            @if ($transactions->isEmpty() && $state['type'] !== 'all')
+                <x-general.no-results :text="trans('pages.home.no_transaction_results', [trans('forms.search.transaction_types.'.$state['type'])])" />
+            @else
+                <x-tables.desktop.transactions :transactions="$transactions" :wallet="$wallet" use-confirmations use-direction />
 
-            <x-tables.mobile.transactions :transactions="$transactions" :wallet="$wallet" use-direction />
+                <x-tables.mobile.transactions :transactions="$transactions" :wallet="$wallet" use-direction />
 
-            <x-general.pagination :results="$transactions" class="mt-8" />
+                <x-general.pagination :results="$transactions" class="mt-8" />
+            @endif
 
             <script>
                 window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#transaction-list')));
