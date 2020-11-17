@@ -23,6 +23,7 @@
                             type="number"
                             id="amount"
                             name="amount"
+                            max="17"
                             :errors="$errors"
                             required
                             autofocus
@@ -33,6 +34,7 @@
                             type="text"
                             id="smartbridge"
                             name="smartbridge"
+                            max="255"
                             :errors="$errors"
                         >
                             <x-slot name="label">
