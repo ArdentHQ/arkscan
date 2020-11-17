@@ -65,18 +65,20 @@ trait CanForge
         return (new WalletCache())->getPerformance($publicKey);
     }
 
-    public function justMissed(): bool
+    public function hasForged(): bool
     {
-        $missedOne  = collect($this->performance())->filter(fn ($performance) => $performance === false)->count() === 1;
-        $missedLast = collect($this->performance())->last() === false;
-
-        return $missedOne && $missedLast;
+        return collect($this->performance())->last();
     }
 
-    public function isMissing(): bool
+    public function justMissed(): bool
     {
-        return collect($this->performance())
-            ->filter(fn ($performance) => $performance === false)
-            ->count() > 1;
+        // @TODO: check if we are past our slot
+
+        return ! $this->hasForged();
+    }
+
+    public function keepsMissing(): bool
+    {
+        return array_slice(array_reverse($this->performance()), 0, 2) === [false, false];
     }
 }

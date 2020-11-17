@@ -290,13 +290,13 @@ it('should determine if the delegate just missed a block', function () {
 });
 
 it('should determine if the delegate keeps is missing blocks', function () {
-    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [true, false, true, true, true]);
-
-    expect($this->subject->isMissing())->toBeFalse();
-
     Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [true, false, true, false, true]);
 
-    expect($this->subject->isMissing())->toBeTrue();
+    expect($this->subject->keepsMissing())->toBeFalse();
+
+    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [true, false, true, false, false]);
+
+    expect($this->subject->keepsMissing())->toBeTrue();
 });
 
 it('should get the resignation id', function () {
