@@ -173,6 +173,10 @@ return [
             'next_delegate'          => 'Next',
             'blocks_generated'       => ':0/:1 Blocks',
         ],
+        'info' => [
+            'status'       => 'View the status of the last 5 blocks for a delegate. Latest blocks are displayed from right to left.',
+            'productivity' => 'The productivity statistic is calculated over the previous 30 day period.',
+        ],
     ],
 
     'blocks_by_wallet' => [
