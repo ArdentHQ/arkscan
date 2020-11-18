@@ -146,16 +146,16 @@
         },
         {
             "name": "arkecosystem/ui",
-            "version": "1.0.63",
+            "version": "1.0.67",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-ui.git",
-                "reference": "f541f1ec6a723f7aea0788c577e8d6fbf6b73acc"
+                "reference": "b2f1c323054eae430a8198e959d2c3c548f82a8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-ui/zipball/f541f1ec6a723f7aea0788c577e8d6fbf6b73acc",
-                "reference": "f541f1ec6a723f7aea0788c577e8d6fbf6b73acc",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-ui/zipball/b2f1c323054eae430a8198e959d2c3c548f82a8f",
+                "reference": "b2f1c323054eae430a8198e959d2c3c548f82a8f",
                 "shasum": ""
             },
             "require": {
@@ -175,7 +175,7 @@
                 "graham-campbell/analyzer": "^3.0",
                 "mockery/mockery": "^1.3.1",
                 "nunomaduro/larastan": "^0.6.4",
-                "nunomaduro/laravel-mojito": "^0.2.4",
+                "nunomaduro/laravel-mojito": "^0.2.6",
                 "pestphp/pest": "^0.3.0",
                 "pestphp/pest-plugin-faker": "^0.3.0",
                 "pestphp/pest-plugin-laravel": "^0.3.0",
@@ -214,9 +214,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by TailwindCSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-ui/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-ui/tree/1.0.63"
+                "source": "https://github.com/ArkEcosystem/laravel-ui/tree/1.0.67"
             },
-            "time": "2020-11-17T11:55:12+00:00"
+            "time": "2020-11-18T09:48:07+00:00"
         },
         {
             "name": "asm89/stack-cors",

@@ -5,7 +5,7 @@
     @endpush
 
     @section('breadcrumbs')
-        <x-general.breadcrumbs :crumbs="[
+        <x-ark-breadcrumbs :crumbs="[
             ['route' => 'wallet', 'params' => $wallet->address(), 'label' => trans('menus.address_details')],
             ['label' => trans('menus.forged_blocks')],
         ]" />

@@ -5,7 +5,7 @@
     @endpush
 
     @section('breadcrumbs')
-        <x-general.breadcrumbs :crumbs="[
+        <x-ark-breadcrumbs :crumbs="[
             ['route' => 'home', 'label' => trans('menus.home')],
             ['label' => trans('menus.address_details')],
         ]" />
