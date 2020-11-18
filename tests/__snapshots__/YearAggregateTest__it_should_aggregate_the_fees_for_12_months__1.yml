@@ -1,4 +1,3 @@
-Jan: !!float 10
 Feb: 0
 Mar: 0
 Apr: 0
@@ -9,4 +8,5 @@ Aug: 0
 Sep: 0
 Oct: !!float 10
 Nov: 0
-Dec: 0
+Dec: !!float 10
+Jan: 0

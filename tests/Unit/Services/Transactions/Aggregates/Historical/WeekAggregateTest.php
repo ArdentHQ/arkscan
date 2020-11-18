@@ -23,7 +23,7 @@ it('should aggregate the fees for 7 days', function () {
 
     Transaction::factory(10)->create([
         'fee'       => '100000000',
-        'timestamp' => Timestamp::now()->endOfDay()->unix(),
+        'timestamp' => Timestamp::now()->subMinutes(10)->unix(),
     ])->sortByDesc('timestamp');
 
     $result = (new WeekAggregate())->aggregate();

@@ -10,6 +10,6 @@ final class MonthAggregate
 {
     public function aggregate(): float
     {
-        return (new RangeAggregate())->aggregate(Carbon::now()->subDays(30)->startOfDay(), Carbon::now()->endOfDay());
+        return (new RangeAggregate())->aggregate(Carbon::now()->subDays(29), Carbon::now()->addDay());
     }
 }

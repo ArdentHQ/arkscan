@@ -23,7 +23,7 @@ it('should aggregate the fees for today', function () {
 
     Transaction::factory(10)->create([
         'fee'       => '100000000',
-        'timestamp' => Timestamp::now()->endOfDay()->unix(),
+        'timestamp' => Timestamp::now()->subMinutes(10)->unix(),
     ]);
 
     $result = (new DayAggregate())->aggregate();

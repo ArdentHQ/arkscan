@@ -10,6 +10,6 @@ final class DayAggregate
 {
     public function aggregate(): float
     {
-        return (new RangeAggregate())->aggregate(Carbon::now()->subDay()->startOfDay(), Carbon::now()->endOfDay());
+        return (new RangeAggregate())->aggregate(Carbon::now()->subDay()->addHour(), Carbon::now());
     }
 }

@@ -10,6 +10,6 @@ final class QuarterAggregate
 {
     public function aggregate(): float
     {
-        return (new RangeAggregate())->aggregate(Carbon::now()->subDays(90)->startOfDay(), Carbon::now()->endOfDay());
+        return (new RangeAggregate())->aggregate(Carbon::now()->subDays(89), Carbon::now()->addDay());
     }
 }

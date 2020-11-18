@@ -16,12 +16,12 @@ it('should determine the average fee for the given date range', function () {
 
     $start = Transaction::factory(10)->create([
         'fee'       => '100000000',
-        'timestamp' => Timestamp::now()->subDays(30)->unix(),
+        'timestamp' => Timestamp::now()->subDays(29)->unix(),
     ])->sortByDesc('timestamp');
 
     $end = Transaction::factory(10)->create([
         'fee'       => '200000000',
-        'timestamp' => Timestamp::now()->endOfDay()->unix(),
+        'timestamp' => Timestamp::now()->subMinutes(10)->unix(),
     ])->sortByDesc('timestamp');
 
     $result = (new MonthAggregate())->aggregate(

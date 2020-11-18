@@ -10,6 +10,6 @@ final class WeekAggregate
 {
     public function aggregate(): float
     {
-        return (new RangeAggregate())->aggregate(Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->endOfDay());
+        return (new RangeAggregate())->aggregate(Carbon::now()->subDays(6), Carbon::now()->addDay());
     }
 }
