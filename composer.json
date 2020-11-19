@@ -10,7 +10,7 @@
     "require": {
         "php": "^7.4",
         "ext-gmp": "*",
-        "arkecosystem/crypto": "^1.3",
+        "arkecosystem/crypto": "^1.4",
         "arkecosystem/fortify": "^1.0",
         "arkecosystem/ui": "^1.0",
         "bacon/bacon-qr-code": "^2.0",

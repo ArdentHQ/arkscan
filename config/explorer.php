@@ -38,8 +38,6 @@ return [
         ],
     ],
 
-    'nodejs' => env('EXPLORER_NODEJS', '/usr/bin/node'),
-
     'marketsquare_host' => env('EXPLORER_MARKETSQUARE_HOST', 'https://marketsquare.io/'),
 
 ];

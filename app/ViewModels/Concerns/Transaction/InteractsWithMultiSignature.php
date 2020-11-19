@@ -6,7 +6,6 @@ namespace App\ViewModels\Concerns\Transaction;
 
 use App\DTO\MemoryWallet;
 use App\Facades\Wallets;
-use App\Services\MultiSignature;
 use App\ViewModels\WalletViewModel;
 use ArkEcosystem\Crypto\Identities\Address;
 use Illuminate\Support\Arr;
@@ -34,7 +33,7 @@ trait InteractsWithMultiSignature
             return null;
         }
 
-        return MultiSignature::address(
+        return Address::fromMultiSignatureAsset(
             Arr::get($this->transaction->asset, 'multiSignature.min', 0),
             Arr::get($this->transaction->asset, 'multiSignature.publicKeys', [])
         );
