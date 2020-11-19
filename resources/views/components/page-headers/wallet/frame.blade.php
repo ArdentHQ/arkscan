@@ -8,7 +8,7 @@
                     @lang('pages.wallet.address_generator', [$wallet->username()])
                 @else
                     @if($wallet->isDelegate())
-                        @lang('pages.wallet.address_delegate', [$wallet->username()])
+                        {{ $wallet->username() }}
                     @else
                         @lang('pages.wallet.address')
                     @endif
