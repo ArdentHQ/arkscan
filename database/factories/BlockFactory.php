@@ -15,7 +15,7 @@ final class BlockFactory extends Factory
     public function definition()
     {
         return [
-            'id'                     => $this->faker->uuid,
+            'id'                     => $this->faker->blockId,
             'version'                => 2,
             'timestamp'              => 112982056,
             'previous_block'         => 1,
@@ -25,9 +25,9 @@ final class BlockFactory extends Factory
             'total_fee'              => $this->faker->numberBetween(1, 100) * 1e8,
             'reward'                 => $this->faker->numberBetween(1, 100) * 1e8,
             'payload_length'         => $this->faker->numberBetween(1, 100),
-            'payload_hash'           => $this->faker->word,
+            'payload_hash'           => $this->faker->payloadHash,
             'generator_public_key'   => fn () => Wallet::factory()->create()->public_key,
-            'block_signature'        => $this->faker->word,
+            'block_signature'        => $this->faker->blockSignature,
         ];
     }
 }
