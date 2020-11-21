@@ -70,6 +70,7 @@ return [
         'vote'                    => 'Vote',
         'vote-combination'        => 'Multivote',
         'well-confirmed'          => 'Well Confirmed',
+        'unknown'                 => 'Unknown',
     ],
 
     'wallet' => [
