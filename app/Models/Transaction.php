@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Casts\BigInteger;
+use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 final class Transaction extends Model
 {
     use HasFactory;
+    use SearchesCaseInsensitive;
 
     /**
      * A list of transaction scopes used for filtering based on type.

@@ -9,49 +9,49 @@ use function Tests\configureExplorerDatabase;
 
 beforeEach(fn () => configureExplorerDatabase());
 
-it('should search for a wallet by address', function () {
+it('should search for a wallet by address', function (?string $modifier) {
     $wallet = Wallet::factory(10)->create()[0];
 
     $result = (new WalletSearch())->search([
-        'term' => $wallet->address,
+        'term' => $modifier ? $modifier($wallet->address) : $wallet->address,
     ]);
 
     expect($result->first()->is($wallet))->toBeTrue();
-});
+})->with([null, 'strtolower', 'strtoupper']);
 
-it('should search for a wallet by public key', function () {
+it('should search for a wallet by public key', function (?string $modifier) {
     Wallet::factory(10)->create(['public_key' => '123']);
 
     $wallet = Wallet::factory()->create();
 
     $result = (new WalletSearch())->search([
-        'term' => $wallet->public_key,
+        'term' => $modifier ? $modifier($wallet->public_key) : $wallet->public_key,
     ]);
 
     expect($result->get())->toHaveCount(1);
-});
+})->with([null, 'strtolower', 'strtoupper']);
 
-it('should search for a wallet by delegate username in terms', function () {
+it('should search for a wallet by delegate username in terms', function (?string $modifier) {
     $wallet = Wallet::factory(10)->create()[0];
 
     $result = (new WalletSearch())->search([
-        'term' => $wallet->attributes['delegate']['username'],
+        'term' => $modifier ? $modifier($wallet->attributes['delegate']['username']) : $wallet->attributes['delegate']['username'],
     ]);
 
     expect($result->get())->toHaveCount(1);
-});
+})->with([null, 'strtolower', 'strtoupper']);
 
-it('should search for a wallet by username', function () {
+it('should search for a wallet by username', function (?string $modifier) {
     $wallet = Wallet::factory(10)->create()[0];
 
     $result = (new WalletSearch())->search([
-        'username' => $wallet->attributes['delegate']['username'],
+        'username' => $modifier ? $modifier($wallet->attributes['delegate']['username']) : $wallet->attributes['delegate']['username'],
     ]);
 
     expect($result->get())->toHaveCount(1);
-});
+})->with([null, 'strtolower', 'strtoupper']);
 
-it('should search for a wallet by vote', function () {
+it('should search for a wallet by vote', function (?string $modifier) {
     Wallet::factory(10)->create();
 
     $wallet = Wallet::factory()->create([
@@ -61,11 +61,11 @@ it('should search for a wallet by vote', function () {
     ]);
 
     $result = (new WalletSearch())->search([
-        'vote' => $wallet->attributes['vote'],
+        'vote' => $modifier ? $modifier($wallet->attributes['vote']) : $wallet->attributes['vote'],
     ]);
 
     expect($result->get())->toHaveCount(1);
-});
+})->with([null, 'strtolower', 'strtoupper']);
 
 it('should search for a wallet by balance minimum', function () {
     $wallet = Wallet::factory(10)->create(['balance' => 100 * 1e8])[0];

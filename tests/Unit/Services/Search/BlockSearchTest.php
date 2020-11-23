@@ -12,27 +12,27 @@ use function Tests\configureExplorerDatabase;
 
 beforeEach(fn () => configureExplorerDatabase());
 
-it('should search for a block by id', function () {
+it('should search for a block by id', function (?string $modifier) {
     $block = Block::factory(10)->create()[0];
 
     $result = (new BlockSearch())->search([
-        'term' => $block->id,
+        'term' => $modifier ? $modifier($block->id) : $block->id,
     ]);
 
     expect($result->get())->toHaveCount(1);
-});
+})->with([null, 'strtolower', 'strtoupper']);
 
-it('should search for a block by generator public key', function () {
+it('should search for a block by generator public key', function (?string $modifier) {
     Block::factory(10)->create();
 
     $block = Block::factory()->create(['generator_public_key' => 'generator']);
 
     $result = (new BlockSearch())->search([
-        'generatorPublicKey' => $block->generator_public_key,
+        'generatorPublicKey' => $modifier ? $modifier($block->generator_public_key) : $block->generator_public_key,
     ]);
 
     expect($result->get())->toHaveCount(1);
-});
+})->with([null, 'strtolower', 'strtoupper']);
 
 it('should search for blocks by timestamp minimum', function () {
     $today = Carbon::now();
@@ -197,7 +197,7 @@ it('should search for blocks by height range', function () {
     expect($result->get())->toHaveCount(10);
 });
 
-it('should search for blocks by generator with an address', function () {
+it('should search for blocks by generator with an address', function (?string $modifier) {
     Block::factory(10)->create();
 
     $block = Block::factory()->create([
@@ -208,13 +208,13 @@ it('should search for blocks by generator with an address', function () {
     ]);
 
     $result = (new BlockSearch())->search([
-        'term' => $block->delegate->address,
+        'term' => $modifier ? $modifier($block->delegate->address) : $block->delegate->address,
     ]);
 
     expect($result->get())->toHaveCount(1);
-});
+})->with([null, 'strtolower', 'strtoupper']);
 
-it('should search for blocks by generator with a public key', function () {
+it('should search for blocks by generator with a public key', function (?string $modifier) {
     Block::factory(10)->create();
 
     $block = Block::factory()->create([
@@ -224,13 +224,13 @@ it('should search for blocks by generator with a public key', function () {
     ]);
 
     $result = (new BlockSearch())->search([
-        'term' => $block->delegate->public_key,
+        'term' => $modifier ? $modifier($block->delegate->public_key) : $block->delegate->public_key,
     ]);
 
     expect($result->get())->toHaveCount(1);
-});
+})->with([null, 'strtolower', 'strtoupper']);
 
-it('should search for blocks by generator with a username', function () {
+it('should search for blocks by generator with a username', function (?string $modifier) {
     Block::factory(10)->create();
 
     $block = Block::factory()->create([
@@ -245,8 +245,8 @@ it('should search for blocks by generator with a username', function () {
     ]);
 
     $result = (new BlockSearch())->search([
-        'term' => $block->delegate->attributes['delegate']['username'],
+        'term' => $modifier ? $modifier($block->delegate->attributes['delegate']['username']) : $block->delegate->attributes['delegate']['username'],
     ]);
 
     expect($result->get())->toHaveCount(1);
-});
+})->with([null, 'strtolower', 'strtoupper']);

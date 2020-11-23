@@ -21,14 +21,14 @@ final class BlockSearch implements Search
         $this->applyScopes($query, $parameters);
 
         if (! is_null(Arr::get($parameters, 'term'))) {
-            $query = $query->where('id', $parameters['term']);
+            $query = $query->whereLower('id', $parameters['term']);
 
             try {
                 // If there is a term we also want to check if the term is a valid wallet.
                 $query->orWhere(function ($query) use ($parameters): void {
                     $wallet = Wallets::findByIdentifier($parameters['term']);
 
-                    $query->where('generator_public_key', $wallet->public_key);
+                    $query->whereLower('generator_public_key', $wallet->public_key);
 
                     $this->applyScopes($query, $parameters);
                 });
@@ -53,7 +53,7 @@ final class BlockSearch implements Search
         TimestampRangeComposer::compose($query, $parameters);
 
         if (! is_null(Arr::get($parameters, 'generatorPublicKey'))) {
-            $query->where('generator_public_key', $parameters['generatorPublicKey']);
+            $query->whereLower('generator_public_key', $parameters['generatorPublicKey']);
         }
     }
 }

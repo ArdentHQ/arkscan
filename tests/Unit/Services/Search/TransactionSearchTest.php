@@ -14,15 +14,15 @@ use function Tests\configureExplorerDatabase;
 
 beforeEach(fn () => configureExplorerDatabase());
 
-it('should search for a transaction by id', function () {
+it('should search for a transaction by id', function (?string $modifier) {
     $transaction = Transaction::factory(10)->create()[0];
 
     $result = (new TransactionSearch())->search([
-        'term' => $transaction->id,
+        'term' => $modifier ? $modifier($transaction->id) : $transaction->id,
     ]);
 
     expect($result->get())->toHaveCount(1);
-});
+})->with([null, 'strtolower', 'strtoupper']);
 
 it('should search for a transaction by vendor field', function () {
     $transaction = Transaction::factory(10)->create()[0];
@@ -201,7 +201,7 @@ it('should search for transactions by fee range', function () {
     expect($result->get())->toHaveCount(10);
 });
 
-it('should search for transactions by wallet with an address', function () {
+it('should search for transactions by wallet with an address', function (?string $modifier) {
     Transaction::factory(10)->create([
         'sender_public_key' => 'somethingsomething',
         'recipient_id'      => 'somethingsomething',
@@ -226,13 +226,13 @@ it('should search for transactions by wallet with an address', function () {
     ]);
 
     $result = (new TransactionSearch())->search([
-        'term' => $wallet->address,
+        'term' => $modifier ? $modifier($wallet->address) : $wallet->address,
     ]);
 
     expect($result->get())->toHaveCount(3);
-});
+})->with([null, 'strtolower', 'strtoupper']);
 
-it('should search for transactions by wallet with a public key', function () {
+it('should search for transactions by wallet with a public key', function (?string $modifier) {
     Transaction::factory(10)->create();
 
     $wallet = Wallet::factory()->create();
@@ -254,13 +254,13 @@ it('should search for transactions by wallet with a public key', function () {
     ]);
 
     $result = (new TransactionSearch())->search([
-        'term' => $wallet->public_key,
+        'term' => $modifier ? $modifier($wallet->public_key) : $wallet->public_key,
     ]);
 
     expect($result->get())->toHaveCount(3);
-});
+})->with([null, 'strtolower', 'strtoupper']);
 
-it('should search for transactions by wallet with a username', function () {
+it('should search for transactions by wallet with a username', function (?string $modifier) {
     Transaction::factory(10)->create();
 
     $wallet = Wallet::factory()->create([
@@ -288,13 +288,13 @@ it('should search for transactions by wallet with a username', function () {
     ]);
 
     $result = (new TransactionSearch())->search([
-        'term' => 'johndoe',
+        'term' => $modifier ? $modifier('johndoe') : 'johndoe',
     ]);
 
     expect($result->get())->toHaveCount(3);
-});
+})->with([null, 'strtolower', 'strtoupper']);
 
-it('should search for transactions by block with an ID', function () {
+it('should search for transactions by block with an ID', function (?string $modifier) {
     Transaction::factory(10)->create();
 
     Transaction::factory()->create([
@@ -302,11 +302,11 @@ it('should search for transactions by block with an ID', function () {
     ]);
 
     $result = (new TransactionSearch())->search([
-        'term' => 'blockid',
+        'term' => $modifier ? $modifier('blockid') : 'blockid',
     ]);
 
     expect($result->get())->toHaveCount(1);
-});
+})->with([null, 'strtolower', 'strtoupper']);
 
 it('should search for transactions by block with a height', function () {
     Transaction::factory(10)->create();

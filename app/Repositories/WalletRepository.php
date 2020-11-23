@@ -8,6 +8,7 @@ use App\Contracts\WalletRepository as Contract;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 final class WalletRepository implements Contract
 {
@@ -53,10 +54,12 @@ final class WalletRepository implements Contract
 
     public function findByIdentifier(string $identifier): Wallet
     {
+        $username = substr(DB::getPdo()->quote($identifier), 1, -1);
+
         return Wallet::query()
-            ->where('address', $identifier)
-            ->orWhere('public_key', $identifier)
-            ->orWhere('attributes->delegate->username', $identifier)
+            ->whereLower('address', $identifier)
+            ->orWhereLower('public_key', $identifier)
+            ->orWhereRaw('lower(attributes::text)::jsonb @> lower(\'{"delegate":{"username":"'.$username.'"}}\')::jsonb')
             ->firstOrFail();
     }
 }

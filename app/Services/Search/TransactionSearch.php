@@ -22,7 +22,7 @@ final class TransactionSearch implements Search
         $this->applyScopes($query, $parameters);
 
         if (! is_null(Arr::get($parameters, 'term'))) {
-            $query->where('id', $parameters['term']);
+            $query->whereLower('id', $parameters['term']);
 
             // Consider the term to be a wallet
             try {
@@ -30,13 +30,13 @@ final class TransactionSearch implements Search
                     $wallet = Wallets::findByIdentifier($parameters['term']);
 
                     $query->where(function ($query) use ($parameters, $wallet): void {
-                        $query->where('sender_public_key', $wallet->public_key);
+                        $query->whereLower('sender_public_key', $wallet->public_key);
 
                         $this->applyScopes($query, $parameters);
                     });
 
                     $query->orWhere(function ($query) use ($parameters, $wallet): void {
-                        $query->where('recipient_id', $wallet->address);
+                        $query->whereLower('recipient_id', $wallet->address);
 
                         $this->applyScopes($query, $parameters);
                     });
@@ -53,10 +53,10 @@ final class TransactionSearch implements Search
 
             // Consider the term to be a block
             $query->orWhere(function ($query) use ($parameters): void {
-                $query->where(fn ($query): Builder => $query->where('block_id', $parameters['term']));
+                $query->where(fn ($query): Builder => $query->whereLower('block_id', $parameters['term']));
 
                 if (is_numeric($parameters['term'])) {
-                    $query->orWhere(fn ($query): Builder => $query->where('block_height', $parameters['term']));
+                    $query->orWhere(fn ($query): Builder => $query->whereLower('block_height', $parameters['term']));
                 }
             });
         }
