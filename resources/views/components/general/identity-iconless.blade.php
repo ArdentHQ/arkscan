@@ -14,7 +14,9 @@
                     @isset($dynamicTruncate)
                         <x-truncate-dynamic>{{ $model->address() }}</x-truncate-dynamic>
                     @else
-                        <x-truncate-middle :value="$model->address()" length="{{ $length ?? 8 }}"/>
+                      <x-truncate-middle length="{{ $length ?? 8 }}">
+                          {{ $model->address() }}
+                      </x-truncate-middle>
                     @endif
                 @endisset
             @endif

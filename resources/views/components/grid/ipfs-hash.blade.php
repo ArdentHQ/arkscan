@@ -3,11 +3,15 @@
         <x-ark-external-link url="https://cloudflare-ipfs.com/ipfs/{{ $model->ipfsHash() }}">
             <x-slot name="text">
                 <span class="sm:hidden md:inline lg:hidden">
-                    <x-truncate-middle :value="$model->ipfsHash()" :length="10" />
+                    <x-truncate-middle :length="10">
+                        {{ $model->ipfsHash() }}
+                    </x-truncate-middle>
                 </span>
 
                 <span class="hidden sm:inline md:hidden lg:inline">
-                    <x-truncate-middle :value="$model->ipfsHash()" :length="30" />
+                    <x-truncate-middle :length="30">
+                        {{ $model->ipfsHash() }}
+                    </x-truncate-middle>
                 </span>
             </x-slot>
         </x-ark-external-link>

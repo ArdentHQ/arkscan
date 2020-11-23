@@ -4,7 +4,7 @@
             @lang('pages.wallet.balance')@if(Network::canBeExchanged()): {{ $wallet->balanceFiat() }}@endif
         </x-slot>
 
-        <x-currency>{{ $wallet->balance() }}</x-currency>
+        <x-currency :currency="Network::currency()">{{ $wallet->balance() }}</x-currency>
     </x-page-headers.wallet.frame-item>
 
     @if($wallet->isVoting())

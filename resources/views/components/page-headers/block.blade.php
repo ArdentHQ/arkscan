@@ -47,7 +47,7 @@
                         icon="app-votes"
                     >
                         <x-slot name="text">
-                            <x-currency>{{ $block->amount() }}</x-currency>
+                            <x-currency :currency="Network::currency()">{{ $block->amount() }}</x-currency>
                         </x-slot>
                     </x-general.entity-header-item>
 
@@ -59,7 +59,7 @@
                         </x-slot>
 
                         <x-slot name="text">
-                            <x-currency>{{ $block->totalReward() }}</x-currency>
+                            <x-currency :currency="Network::currency()">{{ $block->totalReward() }}</x-currency>
                         </x-slot>
                     </x-general.entity-header-item>
                 </div>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3fb5e87c57d72ce0caaf20de0d8c5c71",
+    "content-hash": "d78d7d0772bbfc2acbba85b41457fcc6",
     "packages": [
         {
             "name": "arkecosystem/crypto",
@@ -75,16 +75,16 @@
         },
         {
             "name": "arkecosystem/fortify",
-            "version": "1.3.0",
+            "version": "1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-fortify.git",
-                "reference": "c48ff4691fcf5efda820b82d3bd9e8022cd159b7"
+                "reference": "40a021743ebc3fc71000cb25c8410408df34e574"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-fortify/zipball/c48ff4691fcf5efda820b82d3bd9e8022cd159b7",
-                "reference": "c48ff4691fcf5efda820b82d3bd9e8022cd159b7",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-fortify/zipball/40a021743ebc3fc71000cb25c8410408df34e574",
+                "reference": "40a021743ebc3fc71000cb25c8410408df34e574",
                 "shasum": ""
             },
             "require": {
@@ -141,22 +141,22 @@
             "description": "Authentication Scaffolding for Laravel. Powered by Laravel Fortify.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-fortify/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-fortify/tree/1.3.0"
+                "source": "https://github.com/ArkEcosystem/laravel-fortify/tree/1.3.2"
             },
-            "time": "2020-11-11T14:00:58+00:00"
+            "time": "2020-11-19T16:20:33+00:00"
         },
         {
             "name": "arkecosystem/ui",
-            "version": "1.0.67",
+            "version": "1.0.80",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-ui.git",
-                "reference": "b2f1c323054eae430a8198e959d2c3c548f82a8f"
+                "reference": "1d073af8fd17105d84181f713ef8227a8cb00d04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-ui/zipball/b2f1c323054eae430a8198e959d2c3c548f82a8f",
-                "reference": "b2f1c323054eae430a8198e959d2c3c548f82a8f",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-ui/zipball/1d073af8fd17105d84181f713ef8227a8cb00d04",
+                "reference": "1d073af8fd17105d84181f713ef8227a8cb00d04",
                 "shasum": ""
             },
             "require": {
@@ -215,9 +215,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by TailwindCSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-ui/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-ui/tree/1.0.67"
+                "source": "https://github.com/ArkEcosystem/laravel-ui/tree/1.0.80"
             },
-            "time": "2020-11-18T09:48:07+00:00"
+            "time": "2020-11-20T16:16:30+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -2241,6 +2241,138 @@
                 }
             ],
             "time": "2020-08-27T08:40:00+00:00"
+        },
+        {
+            "name": "konceiver/better-number-formatter",
+            "version": "1.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/konceiver/better-number-formatter.git",
+                "reference": "81b1623935a269e462004bc27a17389c0bdc4f7d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/konceiver/better-number-formatter/zipball/81b1623935a269e462004bc27a17389c0bdc4f7d",
+                "reference": "81b1623935a269e462004bc27a17389c0bdc4f7d",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^8.0",
+                "php": "^7.4.1"
+            },
+            "require-dev": {
+                "konceiver/stan": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Konceiver\\BetterNumberFormatter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brian Faust",
+                    "email": "brian@konceiver.dev",
+                    "homepage": "https://konceiver.dev",
+                    "role": "Developer"
+                }
+            ],
+            "description": ":package_description",
+            "homepage": "https://github.com/konceiver/better-number-formatter",
+            "keywords": [
+                "better-number-formatter",
+                "konceiver"
+            ],
+            "support": {
+                "issues": "https://github.com/konceiver/better-number-formatter/issues",
+                "source": "https://github.com/konceiver/better-number-formatter/tree/1.1.6"
+            },
+            "funding": [
+                {
+                    "url": "https://konceiver.dev/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/faustbrian",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-11-22T05:15:52+00:00"
+        },
+        {
+            "name": "konceiver/laravel-blade-components",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/konceiver/laravel-blade-components.git",
+                "reference": "791966ac0f1063e3e9366e1b0ea48b0878e0b331"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/konceiver/laravel-blade-components/zipball/791966ac0f1063e3e9366e1b0ea48b0878e0b331",
+                "reference": "791966ac0f1063e3e9366e1b0ea48b0878e0b331",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^7.0|^8.0",
+                "illuminate/support": "^7.0|^8.0",
+                "konceiver/better-number-formatter": "^1.1",
+                "php": "^7.4"
+            },
+            "require-dev": {
+                "konceiver/laravel-stan": "^1.1",
+                "nunomaduro/laravel-mojito": "^0.2.6"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Konceiver\\BladeComponents\\Providers\\BladeComponentServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Konceiver\\BladeComponents\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brian Faust",
+                    "email": "brian@konceiver.dev",
+                    "homepage": "https://konceiver.dev",
+                    "role": "Developer"
+                }
+            ],
+            "description": ":package_description",
+            "homepage": "https://github.com/konceiver/laravel-blade-components",
+            "keywords": [
+                "konceiver",
+                "laravel-blade-components"
+            ],
+            "support": {
+                "issues": "https://github.com/konceiver/laravel-blade-components/issues",
+                "source": "https://github.com/konceiver/laravel-blade-components/tree/1.0.3"
+            },
+            "funding": [
+                {
+                    "url": "https://konceiver.dev/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/faustbrian",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-11-22T05:30:34+00:00"
         },
         {
             "name": "konceiver/laravel-data-bags",
@@ -5281,16 +5413,16 @@
         },
         {
             "name": "spatie/image-optimizer",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/image-optimizer.git",
-                "reference": "f87f8328ca5bfabb3811241f5d35f17e146f7f83"
+                "reference": "b622d0cf29f57d7735d49f2b62471e6b788cb291"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/image-optimizer/zipball/f87f8328ca5bfabb3811241f5d35f17e146f7f83",
-                "reference": "f87f8328ca5bfabb3811241f5d35f17e146f7f83",
+                "url": "https://api.github.com/repos/spatie/image-optimizer/zipball/b622d0cf29f57d7735d49f2b62471e6b788cb291",
+                "reference": "b622d0cf29f57d7735d49f2b62471e6b788cb291",
                 "shasum": ""
             },
             "require": {
@@ -5329,9 +5461,9 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/image-optimizer/issues",
-                "source": "https://github.com/spatie/image-optimizer/tree/1.3.0"
+                "source": "https://github.com/spatie/image-optimizer/tree/1.3.1"
             },
-            "time": "2020-11-10T13:45:49+00:00"
+            "time": "2020-11-20T11:36:11+00:00"
         },
         {
             "name": "spatie/laravel-flash",
@@ -10296,16 +10428,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v6.8.1",
+            "version": "v6.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "7c8f8b8b720cb455abc0ee1f018c996344ecb87e"
+                "reference": "2944d018ed88c719918e3cf901dfa21f913c014b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/7c8f8b8b720cb455abc0ee1f018c996344ecb87e",
-                "reference": "7c8f8b8b720cb455abc0ee1f018c996344ecb87e",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/2944d018ed88c719918e3cf901dfa21f913c014b",
+                "reference": "2944d018ed88c719918e3cf901dfa21f913c014b",
                 "shasum": ""
             },
             "require": {
@@ -10314,8 +10446,8 @@
                 "illuminate/console": "^6.0|^7.0|^8.0",
                 "illuminate/support": "^6.0|^7.0|^8.0",
                 "nesbot/carbon": "^2.0",
-                "php": "^7.2",
-                "php-webdriver/webdriver": "^1.8.1",
+                "php": "^7.2|^8.0",
+                "php-webdriver/webdriver": "^1.9.0",
                 "symfony/console": "^4.3|^5.0",
                 "symfony/finder": "^4.3|^5.0",
                 "symfony/process": "^4.3|^5.0",
@@ -10362,9 +10494,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/dusk/issues",
-                "source": "https://github.com/laravel/dusk/tree/v6.8.1"
+                "source": "https://github.com/laravel/dusk/tree/v6.9.0"
             },
-            "time": "2020-11-17T16:06:04+00:00"
+            "time": "2020-11-19T16:41:31+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -12132,23 +12264,23 @@
         },
         {
             "name": "php-webdriver/webdriver",
-            "version": "1.8.3",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-webdriver/php-webdriver.git",
-                "reference": "fb0fc4cb01c70a7790a5fcc91d461b88c83174a2"
+                "reference": "e3633154554605274cc9d59837f55a7427d72003"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-webdriver/php-webdriver/zipball/fb0fc4cb01c70a7790a5fcc91d461b88c83174a2",
-                "reference": "fb0fc4cb01c70a7790a5fcc91d461b88c83174a2",
+                "url": "https://api.github.com/repos/php-webdriver/php-webdriver/zipball/e3633154554605274cc9d59837f55a7427d72003",
+                "reference": "e3633154554605274cc9d59837f55a7427d72003",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
                 "ext-zip": "*",
-                "php": "^5.6 || ~7.0",
+                "php": "^5.6 || ~7.0 || ^8.0",
                 "symfony/polyfill-mbstring": "^1.12",
                 "symfony/process": "^2.8 || ^3.1 || ^4.0 || ^5.0"
             },
@@ -12158,12 +12290,10 @@
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.0",
                 "ondram/ci-detector": "^2.1 || ^3.5",
-                "php-coveralls/php-coveralls": "^2.0",
-                "php-mock/php-mock-phpunit": "^1.1",
+                "php-coveralls/php-coveralls": "^2.4",
+                "php-mock/php-mock-phpunit": "^1.1 || ^2.0",
                 "php-parallel-lint/php-parallel-lint": "^1.2",
-                "phpunit/phpunit": "^5.7",
-                "sebastian/environment": "^1.3.4 || ^2.0 || ^3.0",
-                "sminnee/phpunit-mock-objects": "^3.4",
+                "phpunit/phpunit": "^5.7 || ^7 || ^8 || ^9",
                 "squizlabs/php_codesniffer": "^3.5",
                 "symfony/var-dumper": "^3.3 || ^4.0 || ^5.0"
             },
@@ -12199,9 +12329,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-webdriver/php-webdriver/issues",
-                "source": "https://github.com/php-webdriver/php-webdriver/tree/1.8.3"
+                "source": "https://github.com/php-webdriver/php-webdriver/tree/1.9.0"
             },
-            "time": "2020-10-06T19:10:04+00:00"
+            "time": "2020-11-19T15:21:05+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -12532,16 +12662,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.56",
+            "version": "0.12.57",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "007fd5d700c41e1bb27795fae15a2383f8fa4ba1"
+                "reference": "f9909d1d0c44b4cbaf72babcf80e8f14d6fdd55b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/007fd5d700c41e1bb27795fae15a2383f8fa4ba1",
-                "reference": "007fd5d700c41e1bb27795fae15a2383f8fa4ba1",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f9909d1d0c44b4cbaf72babcf80e8f14d6fdd55b",
+                "reference": "f9909d1d0c44b4cbaf72babcf80e8f14d6fdd55b",
                 "shasum": ""
             },
             "require": {
@@ -12572,7 +12702,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.56"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.57"
             },
             "funding": [
                 {
@@ -12588,7 +12718,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-16T22:59:18+00:00"
+            "time": "2020-11-21T12:53:28+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
@@ -16440,16 +16570,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "4.1.1",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "16bfbd9224698bd738c665f33039fade2a1a3977"
+                "reference": "ea9cb72143b77e7520c52fa37290bd8d8bc88fd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/16bfbd9224698bd738c665f33039fade2a1a3977",
-                "reference": "16bfbd9224698bd738c665f33039fade2a1a3977",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/ea9cb72143b77e7520c52fa37290bd8d8bc88fd9",
+                "reference": "ea9cb72143b77e7520c52fa37290bd8d8bc88fd9",
                 "shasum": ""
             },
             "require": {
@@ -16539,9 +16669,9 @@
             ],
             "support": {
                 "issues": "https://github.com/vimeo/psalm/issues",
-                "source": "https://github.com/vimeo/psalm/tree/4.1.1"
+                "source": "https://github.com/vimeo/psalm/tree/4.2.1"
             },
-            "time": "2020-11-02T05:54:12+00:00"
+            "time": "2020-11-20T14:56:53+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -16648,35 +16778,35 @@
         },
         {
             "name": "wnx/laravel-stats",
-            "version": "v2.4.1",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stefanzweifel/laravel-stats.git",
-                "reference": "d248bc1fb3f0e004f397c92c596a83bd511f32a0"
+                "reference": "d6237ba1e44def2abd89a1a96faa10f15e47358a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stefanzweifel/laravel-stats/zipball/d248bc1fb3f0e004f397c92c596a83bd511f32a0",
-                "reference": "d248bc1fb3f0e004f397c92c596a83bd511f32a0",
+                "url": "https://api.github.com/repos/stefanzweifel/laravel-stats/zipball/d6237ba1e44def2abd89a1a96faa10f15e47358a",
+                "reference": "d6237ba1e44def2abd89a1a96faa10f15e47358a",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "illuminate/console": "^6.0 || ^7.0 || ^8.0",
                 "illuminate/support": "^6.0 || ^7.0 || ^8.0",
-                "php": ">=7.3.0",
+                "php": "^7.3 || ^8.0",
                 "stefanzweifel/laravel-stats-phploc": "^6.1 || ^7.1",
                 "symfony/finder": "^4.3 || ^5.0",
                 "symfony/process": "^4.3 || ^5.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.15",
                 "laravel/browser-kit-testing": "~5.0 || ~6.0 || ~7.0",
                 "laravel/dusk": "~5.0 || ~6.0",
                 "mockery/mockery": "^1.1",
                 "orchestra/testbench": "^4.0 || ^5.0 || ^6.0",
                 "phpunit/phpunit": "8.* || 9.*",
-                "vimeo/psalm": "^3.12"
+                "psalm/plugin-laravel": "^1.4",
+                "vimeo/psalm": "^4.0"
             },
             "type": "library",
             "extra": {
@@ -16713,7 +16843,7 @@
             ],
             "support": {
                 "issues": "https://github.com/stefanzweifel/laravel-stats/issues",
-                "source": "https://github.com/stefanzweifel/laravel-stats/tree/v2.4.1"
+                "source": "https://github.com/stefanzweifel/laravel-stats/tree/v2.5.0"
             },
             "funding": [
                 {
@@ -16725,7 +16855,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-29T18:09:12+00:00"
+            "time": "2020-11-20T19:49:06+00:00"
         }
     ],
     "aliases": [],

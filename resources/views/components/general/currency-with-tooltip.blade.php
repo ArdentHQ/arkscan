@@ -1,3 +1,5 @@
-<span data-tippy-content="<x-currency>{{ $slot }}</x-currency>">
-    <x-currency-short>{{ $slot }}</x-currency-short>
+<span data-tippy-content="<x-currency :currency="Network::currency()">{{ $slot }}</x-currency>">
+    <x-short-currency :currency="Network::currency()">
+        {{ $slot }}
+    </x-short-currency>
 </span>

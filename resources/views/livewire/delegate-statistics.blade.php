@@ -22,7 +22,7 @@
                 @lang("pages.delegates.statistics.block_reward")
             </x-slot>
 
-            <x-currency>{{ $blockReward }}</x-currency>
+            <x-currency :currency="Network::currency()">{{ $blockReward }}</x-currency>
         </x-delegates.statistic>
 
         <x-delegates.statistic>
@@ -34,7 +34,7 @@
                 @lang("pages.delegates.statistics.fees_collected")
             </x-slot>
 
-            <x-currency>{{ $feesCollected }}</x-currency>
+            <x-currency :currency="Network::currency()">{{ $feesCollected }}</x-currency>
         </x-delegates.statistic>
 
         <x-delegates.statistic>
@@ -46,7 +46,7 @@
                 @lang("pages.delegates.statistics.votes")
             </x-slot>
 
-            <x-currency>{{ $votes }}</x-currency>
+            <x-currency :currency="Network::currency()">{{ $votes }}</x-currency>
 
             <span class="text-theme-secondary-600 dark:text-theme-secondary-700">
                 <x-percentage>{{ $votesPercentage }}</x-percentage>

@@ -5,7 +5,7 @@
     icon="app-transactions-amount"
 >
     <x-slot name="text">
-        <x-currency>{{ $transaction->amount() }}</x-currency>
+        <x-currency :currency="Network::currency()">{{ $transaction->amount() }}</x-currency>
     </x-slot>
 </x-general.entity-header-item>
 
@@ -14,7 +14,7 @@
     icon="app-fee"
 >
     <x-slot name="text">
-        <x-currency>{{ $transaction->fee() }}</x-currency>
+        <x-currency :currency="Network::currency()">{{ $transaction->fee() }}</x-currency>
     </x-slot>
 </x-general.entity-header-item>
 
