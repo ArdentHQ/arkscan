@@ -6,22 +6,12 @@
                     {!! $logo !!}
                 </div>
 
-                <div class="flex flex-col justify-between flex-1 space-y-4 font-semibold lg:ml-4 md:space-y-0">
+                <div class="flex flex-col justify-between flex-1 min-w-0 space-y-4 font-semibold lg:ml-4 md:space-y-0">
                     <div class="flex text-sm leading-tight text-theme-secondary-600 dark:text-theme-secondary-700">{{ $title }}</div>
 
                     <div class="flex items-center space-x-2 leading-tight">
-                        <span class="flex text-theme-secondary-400 dark:text-theme-secondary-200">
-                            <span class="hidden xl:inline-block">
-                                {{ $value }}
-                            </span>
-
-                            <span class="hidden lg:inline-block xl:hidden">
-                                <x-truncate-middle :value="$value" :length="20" />
-                            </span>
-
-                            <span class="inline-block lg:hidden">
-                                <x-truncate-middle :value="$value" :length="8" />
-                            </span>
+                        <span class="flex max-w-full text-theme-secondary-400 dark:text-theme-secondary-200">
+                            <x-truncate-dynamic>{{ $value}}</x-truncate-dynamic>
 
                             <x-clipboard :value="$value" colors="text-theme-secondary-600 hover:text-theme-secondary-400" />
                         </span>

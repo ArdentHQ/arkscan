@@ -1,5 +1,5 @@
-<div class="flex items-center justify-between pb-4">
-    <div class="flex flex-col space-y-2">
+<div class="flex items-center justify-between pb-4 space-x-4">
+    <div class="flex flex-col flex-1 min-w-0 min-h-0 space-y-2">
         <span class="text-sm font-semibold text-theme-secondary-500 dark:text-theme-secondary-700">{{ $title }}</span>
         @if((string) $slot === "")
             <span class="font-semibold text-theme-secondary-500 dark:text-theme-secondary-200">@lang('generic.not_specified')</span>
