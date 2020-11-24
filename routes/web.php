@@ -36,3 +36,11 @@ Route::view('/wallets', 'app.wallets')->name('wallets');
 Route::get('/wallets/{wallet}', ShowWalletController::class)->name('wallet');
 Route::get('/wallets/{wallet}/voters', ListVotersByWalletController::class)->name('wallet.voters');
 Route::get('/wallets/{wallet}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
+
+// Explorer 3.0 BC - Remove after some time!
+Route::redirect('/advanced-search', '/search');
+Route::redirect('/block/{block}', '/blocks/{block}');
+Route::redirect('/delegate-monitor', '/delegates');
+Route::redirect('/top-wallets', '/wallets');
+Route::redirect('/transaction/{transaction}', '/transactions/{transaction}');
+Route::redirect('/wallet/{wallet}', '/wallets/{wallet}');
