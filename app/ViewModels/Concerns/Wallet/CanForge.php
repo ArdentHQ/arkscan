@@ -67,7 +67,7 @@ trait CanForge
 
     public function hasForged(): bool
     {
-        return collect($this->performance())->last();
+        return collect($this->performance())->last() ?? false;
     }
 
     public function justMissed(): bool
