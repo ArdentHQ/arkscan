@@ -275,7 +275,7 @@ body {
 }
 
 .tab-item {
-    @apply relative pt-8 ml-16 border-b-4 border-transparent cursor-pointer pb-7 whitespace-no-wrap;
+    @apply relative pt-8 ml-16 whitespace-no-wrap border-b-4 border-transparent cursor-pointer pb-7;
 }
 .tab-item:first-child {
     @apply ml-0;
@@ -423,7 +423,7 @@ body {
 }
 
 .transaction-filter-dropdown {
-    @apply right-0 w-full h-64 mt-3;
+    @apply right-0 w-full mt-3;
 }
 .theme-dark .transaction-filter-dropdown {
     @apply bg-theme-secondary-900;
@@ -456,7 +456,7 @@ body {
     }
 
     .transaction-filter-dropdown {
-        @apply w-84 h-128;
+        @apply w-84;
     }
 
     .transaction-filter-button {
@@ -575,10 +575,10 @@ body {
 
 /* Navbar Beta badge */
 .navbar-beta-badge {
-    @apply font-bold leading-tight rounded-sm border border-black text-theme-secondary-200 bg-theme-secondary-900;
+    @apply font-bold leading-tight border border-black rounded-sm text-theme-secondary-200 bg-theme-secondary-900;
     padding: 2px 12px;
     font-size: 0.6rem;
-    @apply absolute top-0 left-full -ml-3 -mt-2;
+    @apply absolute top-0 -mt-2 -ml-3 left-full;
 }
 .theme-dark .navbar-beta-badge {
     @apply border-theme-secondary-800;
@@ -586,7 +586,7 @@ body {
 
 @screen sm {
     .navbar-beta-badge {
-        @apply text-xs top-auto left-auto ml-2 mt-0;
+        @apply top-auto left-auto mt-0 ml-2 text-xs;
         padding: 2px 6px;
         position: unset;
     }

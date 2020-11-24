@@ -30,7 +30,7 @@
             </div>
         @endslot
 
-        <div class="items-center justify-center block h-64 py-3 overflow-y-scroll dropdown-scrolling md:h-128">
+        <div class="items-center justify-center block h-64 py-3 overflow-y-scroll dropdown-scrolling md:h-72">
             <div
                 class="cursor-pointer dropdown-entry text-theme-secondary-900 dark:text-theme-secondary-200"
                 @click="window.livewire.emit('filterTransactionsByType', 'all'); transactionTypeFilter = 'all'; transactionTypeFilterLabel = '@lang('forms.search.transaction_types.all')'"
