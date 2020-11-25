@@ -26,7 +26,7 @@ final class FeeCache implements Contract
 
     public function getHistorical(string $period): array
     {
-        return $this->get(sprintf('historical/%s', $period));
+        return $this->get(sprintf('historical/%s', $period), []);
     }
 
     public function setHistorical(string $period, Collection $data): void
