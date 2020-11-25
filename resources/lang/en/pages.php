@@ -157,7 +157,7 @@ return [
         'block_id'   => 'Block Id',
         'success'    => 'Block Generated',
         'warning'    => 'Block Missed',
-        'danger'     => '(:0) Blocks Missed',
+        'danger'     => ':0 Blocks Missed',
         'completed'  => 'Completed',
         'next'       => 'Next',
         'now'        => 'Now',
