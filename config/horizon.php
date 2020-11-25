@@ -4,6 +4,59 @@ declare(strict_types=1);
 
 use Illuminate\Support\Str;
 
+$environments = [
+    'standard' => [
+        'connection'      => 'redis',
+        'queue'           => ['default'],
+        'balance'         => 'auto',
+        'minProcesses'    => 1,
+        'maxProcesses'    => 10,
+        'balanceMaxShift' => 5,
+        'balanceCooldown' => 1,
+        'tries'           => 1,
+    ],
+    'delegates' => [
+        'connection'      => 'redis',
+        'queue'           => ['resignations', 'voters', 'usernames'],
+        'balance'         => 'auto',
+        'minProcesses'    => 5,
+        'maxProcesses'    => 15,
+        'balanceMaxShift' => 5,
+        'balanceCooldown' => 1,
+        'tries'           => 1,
+    ],
+    'wallets' => [
+        'connection'      => 'redis',
+        'queue'           => ['musig'],
+        'balance'         => 'auto',
+        'minProcesses'    => 5,
+        'maxProcesses'    => 15,
+        'balanceMaxShift' => 5,
+        'balanceCooldown' => 1,
+        'tries'           => 1,
+    ],
+    'marketsquare' => [
+        'connection'      => 'redis',
+        'queue'           => ['marketsquare'],
+        'balance'         => 'auto',
+        'minProcesses'    => 3,
+        'maxProcesses'    => 5,
+        'balanceMaxShift' => 5,
+        'balanceCooldown' => 1,
+        'tries'           => 1,
+    ],
+    'performance' => [
+        'connection'      => 'redis',
+        'queue'           => ['performance', 'productivity'],
+        'balance'         => 'auto',
+        'minProcesses'    => 5,
+        'maxProcesses'    => 15,
+        'balanceMaxShift' => 5,
+        'balanceCooldown' => 1,
+        'tries'           => 1,
+    ],
+];
+
 return [
 
     /*
@@ -179,18 +232,8 @@ return [
     ],
 
     'environments' => [
-        'production' => [
-            'supervisor-1' => [
-                'maxProcesses'    => 50,
-                'balanceMaxShift' => 1,
-                'balanceCooldown' => 3,
-            ],
-        ],
+        'production' => $environments,
 
-        'local' => [
-            'supervisor-1' => [
-                'maxProcesses' => 3,
-            ],
-        ],
+        'local' => $environments,
     ],
 ];

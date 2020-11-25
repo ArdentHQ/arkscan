@@ -33,6 +33,6 @@ final class CacheMarketSquareProfiles extends Command
     {
         Wallets::allWithUsername()
             ->cursor()
-            ->each(fn ($wallet) => CacheMarketSquareProfileByAddress::dispatch($wallet->toArray()));
+            ->each(fn ($wallet) => CacheMarketSquareProfileByAddress::dispatch($wallet->toArray())->onQueue('marketsquare'));
     }
 }

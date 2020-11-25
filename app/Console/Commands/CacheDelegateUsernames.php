@@ -33,6 +33,6 @@ final class CacheDelegateUsernames extends Command
     {
         Wallets::allWithUsername()
             ->cursor()
-            ->each(fn ($wallet) => CacheUsername::dispatch($wallet->toArray()));
+            ->each(fn ($wallet) => CacheUsername::dispatch($wallet->toArray())->onQueue('usernames'));
     }
 }

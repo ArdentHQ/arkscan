@@ -35,6 +35,6 @@ final class CacheDelegateResignationIds extends Command
         Transaction::query()
             ->withScope(DelegateResignationScope::class)
             ->cursor()
-            ->each(fn ($transaction) => CacheResignationId::dispatch($transaction));
+            ->each(fn ($transaction) => CacheResignationId::dispatch($transaction)->onQueue('resignations'));
     }
 }

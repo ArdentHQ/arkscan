@@ -33,6 +33,6 @@ final class CacheDelegatePerformance extends Command
     public function handle()
     {
         Rounds::allByRound(Monitor::roundNumber())
-            ->each(fn ($round) => CachePastRoundPerformanceByPublicKey::dispatch($round->round, $round->public_key));
+            ->each(fn ($round) => CachePastRoundPerformanceByPublicKey::dispatch($round->round, $round->public_key)->onQueue('performance'));
     }
 }
