@@ -27,7 +27,7 @@
             <x-ark-external-link url="https://cloudflare-ipfs.com/ipfs/{{ $transaction->entityHash() }}">
                 <x-slot name="text">
                     <x-truncate-middle>
-                        {{ $model->entityHash() }}
+                        {{ $transaction->entityHash() }}
                     </x-truncate-middle>
                 </x-slot>
             </x-ark-external-link>
