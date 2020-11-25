@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Facades\Network;
 use App\Facades\Wallets;
 use App\Jobs\CacheMarketSquareProfileByAddress;
 use Illuminate\Console\Command;
@@ -31,6 +32,10 @@ final class CacheMarketSquareProfiles extends Command
      */
     public function handle()
     {
+        if (! Network::usesMarketSquare()) {
+            return;
+        }
+
         Wallets::allWithUsername()
             ->cursor()
             ->each(fn ($wallet) => CacheMarketSquareProfileByAddress::dispatch($wallet->toArray())->onQueue('marketsquare'));
