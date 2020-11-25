@@ -85,9 +85,11 @@
 
                     <x-tables.mobile.blocks :blocks="$blocks" />
 
-                    <div class="pt-4 mt-8 border-t border-theme-secondary-300 dark:border-theme-secondary-800 md:mt-0 md:border-dashed">
-                        <a href="{{ route('blocks', ['page' => 2]) }}" class="w-full button-secondary">@lang('actions.view_all')</a>
-                    </div>
+                    @if(count($blocks) === 15)
+                        <div class="pt-4 mt-8 border-t border-theme-secondary-300 dark:border-theme-secondary-800 md:mt-0 md:border-dashed">
+                            <a href="{{ route('blocks', ['page' => 2]) }}" class="w-full button-secondary">@lang('actions.view_all')</a>
+                        </div>
+                    @endif
                 </div>
             @endif
         </div>
@@ -111,9 +113,11 @@
 
                     <x-tables.mobile.transactions :transactions="$transactions" />
 
-                    <div class="pt-4 mt-8 border-t border-theme-secondary-300 dark:border-theme-secondary-800 md:mt-0 md:border-dashed">
-                        <a href="{{ route('transactions', ['page' => 2, 'state[type]' => $state['type']]) }}" class="w-full button-secondary">@lang('actions.view_all')</a>
-                    </div>
+                    @if(count($transactions) === 15)
+                        <div class="pt-4 mt-8 border-t border-theme-secondary-300 dark:border-theme-secondary-800 md:mt-0 md:border-dashed">
+                            <a href="{{ route('transactions', ['page' => 2, 'state[type]' => $state['type']]) }}" class="w-full button-secondary">@lang('actions.view_all')</a>
+                        </div>
+                    @endif
                 </div>
             @endif
         </div>
