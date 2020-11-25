@@ -271,6 +271,24 @@ it('should fail to get the performance if the wallet has no public key', functio
     expect($this->subject->performance())->toBeEmpty();
 });
 
+it('should determine if a new delegate has forged', function () {
+    (new WalletCache())->setPerformance($this->subject->publicKey(), []);
+
+    expect($this->subject->hasForged())->toBeFalse();
+
+    Cache::flush();
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [true]);
+
+    expect($this->subject->hasForged())->toBeTrue();
+
+    Cache::flush();
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false, false]);
+
+    expect($this->subject->hasForged())->toBeFalse();
+});
+
 it('should determine if the delegate just missed a block', function () {
     (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false, true, true, true]);
 
