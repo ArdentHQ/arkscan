@@ -56,7 +56,7 @@ final class TransactionSearch implements Search
                 $query->where(fn ($query): Builder => $query->whereLower('block_id', $parameters['term']));
 
                 if (is_numeric($parameters['term'])) {
-                    $query->orWhere(fn ($query): Builder => $query->whereLower('block_height', $parameters['term']));
+                    $query->orWhere(fn ($query): Builder => $query->where('block_height', $parameters['term']));
                 }
             });
         }
