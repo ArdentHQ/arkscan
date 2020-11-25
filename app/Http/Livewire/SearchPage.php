@@ -89,7 +89,7 @@ final class SearchPage extends Component
             'rewardTo'           => null,
             'generatorPublicKey' => null,
             // Transactions
-            'transactionType' => 'transfer',
+            'transactionType' => 'all',
             'amountFrom'      => null,
             'amountTo'        => null,
             'feeFrom'         => null,

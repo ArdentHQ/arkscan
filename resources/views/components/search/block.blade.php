@@ -3,7 +3,6 @@
         button-class="block w-full font-medium text-left bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200"
         initial-value="block"
         dispatch-event="search-type-changed"
-        set-value-from-event="search-type-changed"
         wire:model.defer="state.type"
         :options="[
             'block' => __('forms.search.block'),
