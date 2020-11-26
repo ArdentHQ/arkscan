@@ -168,6 +168,30 @@ it('should search for blocks by height minimum', function () {
     expect($result->get())->toHaveCount(10);
 });
 
+it('should search for blocks by height as term', function () {
+    $height = 1234567;
+
+    Block::factory()->create(['height' => $height]);
+
+    $result = (new BlockSearch())->search([
+        'term' => $height,
+    ]);
+
+    expect($result->get())->toHaveCount(1);
+});
+
+it('should search for blocks by formatted height as a term', function () {
+    $height = 1234567;
+
+    Block::factory()->create(['height' => $height]);
+
+    $result = (new BlockSearch())->search([
+        'term' => '1,234,567',
+    ]);
+
+    expect($result->get())->toHaveCount(1);
+});
+
 it('should search for blocks by height maximum', function () {
     $heightStart = 1000;
     $heightEnd = 2000;
