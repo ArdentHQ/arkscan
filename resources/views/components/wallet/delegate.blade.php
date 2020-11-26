@@ -74,7 +74,8 @@
                 </x-details-box>
 
                 <x-details-box :title="trans('pages.wallet.delegate.productivity')" icon="app-percent" shallow>
-                    <x-percentage>{{ $wallet->productivity() }}</x-percentage>
+                    N/A
+                    {{-- <x-percentage>{{ $wallet->productivity() }}</x-percentage> --}}
                 </x-details-box>
             </div>
         </div>
