@@ -22,7 +22,7 @@ mix
     .copy('resources/js/vendor/ark/clipboard.js', 'public/js/clipboard.js')
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
-        require('tailwindcss'),
+        require('tailwindcss')(),
     ])
     // .copy('resources/js/vendor/ark/clipboard.js', 'public/js/clipboard.js')
     // .copy('node_modules/swiper/swiper-bundle.min.js', 'public/js/swiper.js')
