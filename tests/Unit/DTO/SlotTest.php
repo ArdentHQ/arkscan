@@ -56,3 +56,20 @@ it('should not be marked as missing if it never had a block', function () {
     expect($subject->keepsMissing())->toBeFalse();
     expect($subject->missedCount())->toBe(0);
 });
+
+it('should show the correct missed blocks amount when spanning multiple rounds', function () {
+    configureExplorerDatabase();
+
+    $wallet = Wallet::factory()->create();
+
+    $subject = new Slot([
+        'publicKey'    => $wallet->public_key,
+        'last_block'   => [
+            'publicKey' => $wallet->public_key,
+            'height'    => 1,
+        ],
+        'status'       => 'done',
+    ], Block::whereBetween('height', [1, 5])->get(), 10);
+
+    expect($subject->missedCount())->toBe(9);
+});

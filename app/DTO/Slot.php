@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
-use App\Actions\CacheNetworkHeight;
 use App\Services\Monitor\Monitor;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
@@ -106,11 +105,12 @@ final class Slot
 
     public function missedCount(): int
     {
+        // TODO: this means it will incorrectly show 0 for delegates that missed every block since they got voted in
         if ($this->getLastHeight() === 0) {
             return 0;
         }
 
-        return abs(CacheNetworkHeight::execute() - $this->getLastHeight());
+        return $this->roundNumber - Monitor::roundNumberFromHeight($this->getLastHeight());
     }
 
     public function isDone(): bool
