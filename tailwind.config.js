@@ -39,6 +39,9 @@ module.exports = {
                 standard: [
                     ...defaultConfig.purge.options.safelist.standard,
                     /^pika-/,
+                    /is-selected/,
+                    /is-today/,
+                    /is-disabled/,
                 ],
             },
         },
