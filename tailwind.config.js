@@ -69,14 +69,12 @@ module.exports = {
     purge: {
         ...defaultConfig.purge,
         options: {
-            whitelistPatterns: [
-                ...defaultConfig.purge.options.whitelistPatterns,
-                /^pika-/,
-            ],
+            safelist: {
+                standard: [
+                    ...defaultConfig.purge.options.safelist.standard,
+                    /^pika-/,
+                ],
+            },
         },
-    },
-    future: {
-        ...defaultConfig.future,
-        defaultLineHeights: true,
-    },
+    }
 }
