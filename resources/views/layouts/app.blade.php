@@ -38,10 +38,10 @@
     </head>
     <body
         @if(Settings::usesDarkTheme())
-            class="theme-dark"
+            class="dark"
         @endif
         x-data="{ 'theme': '{{ Settings::theme() }}' }"
-        :class="{ 'theme-dark': theme === 'dark' }"
+        :class="{ 'dark': theme === 'dark' }"
         @toggle-dark-mode.window="theme === 'dark' ? theme = 'light' : theme = 'dark'"
     >
         <div id="app" class="flex flex-col antialiased bg-white dark:bg-theme-secondary-900">
