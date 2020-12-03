@@ -26,7 +26,8 @@
                     <x-ark-tables.cell responsive>
                         <x-tables.rows.desktop.timestamp :model="$transaction" shortened />
                     </x-ark-tables.cell>
-                    <x-ark-tables.cell wire:key="{{ $transaction->id() }}-sender">                        @isset($useDirection)
+                    <x-ark-tables.cell wire:key="{{ $transaction->id() }}-sender">
+                        @isset($useDirection)
                             <x-tables.rows.desktop.sender-with-direction :model="$transaction" :wallet="$wallet" />
                         @else
                             <x-tables.rows.desktop.sender :model="$transaction" />
@@ -57,14 +58,14 @@
                         <x-tables.rows.desktop.fee :model="$transaction" />
                     </x-ark-tables.cell>
                     @isset($useConfirmations)
-                    <x-ark-tables.cell
-                        class="text-right"
-                        responsive
-                        breakpoint="xl"
-                        wire:key="{{ $transaction->id() }}-confirmations"
-                    >
-                        <x-tables.rows.desktop.confirmations :model="$transaction" />
-                    </x-ark-tables.cell>
+                        <x-ark-tables.cell
+                            class="text-right"
+                            responsive
+                            breakpoint="xl"
+                            wire:key="{{ $transaction->id() }}-confirmations"
+                        >
+                            <x-tables.rows.desktop.confirmations :model="$transaction" />
+                        </x-ark-tables.cell>
                     @endisset
                 </x-ark-tables.row>
             @endforeach

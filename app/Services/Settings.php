@@ -11,16 +11,21 @@ final class Settings
 {
     public static function all(): array
     {
+        $defaultSettings = [
+            'currency'      => 'USD',
+            'priceChart'    => true,
+            'feeChart'      => true,
+            'darkTheme'     => false,
+            'compactTables' => false,
+        ];
+
         if (Session::has('settings')) {
-            return json_decode(Session::get('settings'), true);
+            $sessionSettings = json_decode(Session::get('settings'), true);
+
+            return $sessionSettings + $defaultSettings;
         }
 
-        return [
-            'currency'   => 'USD',
-            'priceChart' => true,
-            'feeChart'   => true,
-            'darkTheme'  => false,
-        ];
+        return $defaultSettings;
     }
 
     public static function currency(): string
@@ -52,6 +57,11 @@ final class Settings
         return 'light';
     }
 
+    public static function compactTables(): bool
+    {
+        return Arr::get(static::all(), 'compactTables', true);
+    }
+
     public static function usesCharts(): bool
     {
         return static::usesPriceChart() || static::usesFeeChart();
@@ -63,16 +73,21 @@ final class Settings
             return false;
         }
 
-        return static::priceChart() === true;
+        return static::priceChart();
     }
 
     public static function usesFeeChart(): bool
     {
-        return static::feeChart() === true;
+        return static::feeChart();
     }
 
     public static function usesDarkTheme(): bool
     {
-        return static::darkTheme() === true;
+        return static::darkTheme();
+    }
+
+    public static function usesCompactTables(): bool
+    {
+        return static::compactTables();
     }
 }
