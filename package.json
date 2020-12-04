@@ -35,5 +35,8 @@
         "ts-loader": "^8.0.6",
         "typescript": "^4.0.3",
         "vue-template-compiler": "^2.6.12"
+    },
+    "dependencies": {
+        "body-scroll-lock": "^3.1.5"
     }
 }

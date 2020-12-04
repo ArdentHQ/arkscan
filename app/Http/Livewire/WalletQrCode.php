@@ -23,9 +23,6 @@ final class WalletQrCode extends Component
 
     public ?string $smartbridge = null;
 
-    /** @phpstan-ignore-next-line */
-    protected $listeners = ['toggleQrCode'];
-
     public function render(): View
     {
         return view('livewire.wallet-qr-code', [

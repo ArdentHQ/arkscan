@@ -18,8 +18,8 @@ it('should toggle the QR Code', function () {
 
     $component = Livewire::test(WalletQrCode::class, ['address' => $wallet->address]);
     $component->assertSet('isOpen', false);
-    $component->emit('toggleQrCode');
+    $component->call('toggleQrCode');
     $component->assertSet('isOpen', true);
-    $component->emit('toggleQrCode');
+    $component->call('toggleQrCode');
     $component->assertSet('isOpen', false);
 });

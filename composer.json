@@ -12,7 +12,7 @@
         "ext-gmp": "*",
         "arkecosystem/crypto": "^1.4",
         "arkecosystem/fortify": "^1.0",
-        "arkecosystem/ui": "^1.0",
+        "arkecosystem/ui": "^1.2",
         "bacon/bacon-qr-code": "^2.0",
         "blade-ui-kit/blade-icons": "^0.4.2",
         "brick/math": "^0.9.1",
