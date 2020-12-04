@@ -14,7 +14,7 @@ use function Tests\configureExplorerDatabase;
 
 beforeEach(fn () => configureExplorerDatabase());
 
-it('should determine the the type', function (string $method, int $type, int $typeGroup, array $asset) {
+it('should determine the the type', function (string $method, int $type, int $typeGroup, array $asset, string $name) {
     $transaction = Transaction::factory()->create([
         'type'       => $type,
         'type_group' => $typeGroup,
@@ -22,22 +22,26 @@ it('should determine the the type', function (string $method, int $type, int $ty
     ]);
 
     expect((new TransactionType($transaction))->$method())->toBeTrue();
+    expect((new TransactionType($transaction))->name())->toBe($name);
 })->with([
     [
         'isTransfer',
         CoreTransactionTypeEnum::TRANSFER,
         TransactionTypeGroupEnum::CORE,
         [],
+        'transfer',
     ], [
         'isSecondSignature',
         CoreTransactionTypeEnum::SECOND_SIGNATURE,
         TransactionTypeGroupEnum::CORE,
         [],
+        'second-signature',
     ], [
         'isDelegateRegistration',
         CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
         TransactionTypeGroupEnum::CORE,
         [],
+        'delegate-registration',
     ], [
         'isVote',
         CoreTransactionTypeEnum::VOTE,
@@ -45,6 +49,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
         [
             'votes' => ['+publicKey'],
         ],
+        'vote',
     ], [
         'isUnvote',
         CoreTransactionTypeEnum::VOTE,
@@ -52,6 +57,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
         [
             'votes' => ['-publicKey'],
         ],
+        'unvote',
     ], [
         'isVoteCombination',
         CoreTransactionTypeEnum::VOTE,
@@ -59,41 +65,49 @@ it('should determine the the type', function (string $method, int $type, int $ty
         [
             'votes' => ['+publicKey', '-publicKey'],
         ],
+        'vote-combination',
     ], [
         'isMultiSignature',
         CoreTransactionTypeEnum::MULTI_SIGNATURE,
         TransactionTypeGroupEnum::CORE,
         [],
+        'multi-signature',
     ], [
         'isIpfs',
         CoreTransactionTypeEnum::IPFS,
         TransactionTypeGroupEnum::CORE,
         [],
+        'ipfs',
     ], [
         'isDelegateResignation',
         CoreTransactionTypeEnum::DELEGATE_RESIGNATION,
         TransactionTypeGroupEnum::CORE,
         [],
+        'delegate-resignation',
     ], [
         'isMultiPayment',
         CoreTransactionTypeEnum::MULTI_PAYMENT,
         TransactionTypeGroupEnum::CORE,
         [],
+        'multi-payment',
     ], [
         'isTimelock',
         CoreTransactionTypeEnum::TIMELOCK,
         TransactionTypeGroupEnum::CORE,
         [],
+        'timelock',
     ], [
         'isTimelockClaim',
         CoreTransactionTypeEnum::TIMELOCK_CLAIM,
         TransactionTypeGroupEnum::CORE,
         [],
+        'timelock-claim',
     ], [
         'isTimelockRefund',
         CoreTransactionTypeEnum::TIMELOCK_REFUND,
         TransactionTypeGroupEnum::CORE,
         [],
+        'timelock-refund',
     ], [
         'isBusinessEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -103,6 +117,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
         ],
+        'business-registration',
     ], [
         'isBusinessEntityResignation',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -112,6 +127,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
         ],
+        'business-resignation',
     ], [
         'isBusinessEntityUpdate',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -121,6 +137,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
         ],
+        'business-update',
     ], [
         'isProductEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -130,6 +147,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
         ],
+        'product-registration',
     ], [
         'isProductEntityResignation',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -139,6 +157,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
         ],
+        'product-resignation',
     ], [
         'isProductEntityUpdate',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -148,6 +167,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
         ],
+        'product-update',
     ], [
         'isPluginEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -157,6 +177,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
         ],
+        'plugin-registration',
     ], [
         'isPluginEntityResignation',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -166,6 +187,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
         ],
+        'plugin-resignation',
     ], [
         'isPluginEntityUpdate',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -175,6 +197,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
         ],
+        'plugin-update',
     ], [
         'isModuleEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -184,6 +207,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
         ],
+        'module-registration',
     ], [
         'isModuleEntityResignation',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -193,6 +217,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
         ],
+        'module-resignation',
     ], [
         'isModuleEntityUpdate',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -202,6 +227,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
         ],
+        'module-update',
     ], [
         'isDelegateEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -211,6 +237,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
         ],
+        'delegate-entity-registration',
     ], [
         'isDelegateEntityResignation',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -220,6 +247,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
         ],
+        'delegate-entity-resignation',
     ], [
         'isDelegateEntityUpdate',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -229,41 +257,49 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
         ],
+        'delegate-entity-update',
     ], [
         'isLegacyBusinessRegistration',
         MagistrateTransactionTypeEnum::BUSINESS_REGISTRATION,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
+        'legacy-business-registration',
     ], [
         'isLegacyBusinessResignation',
         MagistrateTransactionTypeEnum::BUSINESS_RESIGNATION,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
+        'legacy-business-resignation',
     ], [
         'isLegacyBusinessUpdate',
         MagistrateTransactionTypeEnum::BUSINESS_UPDATE,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
+        'legacy-business-update',
     ], [
         'isLegacyBridgechainRegistration',
         MagistrateTransactionTypeEnum::BRIDGECHAIN_REGISTRATION,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
+        'bridgechain-registration',
     ], [
         'isLegacyBridgechainResignation',
         MagistrateTransactionTypeEnum::BRIDGECHAIN_RESIGNATION,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
+        'bridgechain-resignation',
     ], [
         'isLegacyBridgechainUpdate',
         MagistrateTransactionTypeEnum::BRIDGECHAIN_UPDATE,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
+        'bridgechain-update',
     ], [
         'isUnknown',
         0,
         0,
         [],
+        'unknown',
     ],
 ]);
 

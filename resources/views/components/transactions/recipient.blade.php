@@ -12,7 +12,7 @@
 
                 <x-slot name="prefix">
                     <span class="pr-2 mr-2 font-semibold border-r text-theme-secondary-900 dark:text-theme-secondary-200 border-theme-secondary-300 dark:border-theme-secondary-800">
-                        @lang('general.transaction.vote-combination')
+                        @lang('general.transaction.types.vote-combination')
                     </span>
                 </x-slot>
             </x-general.identity>
@@ -24,7 +24,7 @@
 
                 <x-slot name="prefix">
                     <span class="pr-2 mr-2 font-semibold border-r text-theme-secondary-900 dark:text-theme-secondary-200 border-theme-secondary-300 dark:border-theme-secondary-800">
-                        @lang('general.transaction.vote')
+                        @lang('general.transaction.types.vote')
                     </span>
                 </x-slot>
             </x-general.identity>
@@ -36,7 +36,7 @@
 
                 <x-slot name="prefix">
                     <span class="pr-2 mr-2 font-semibold border-r text-theme-secondary-900 dark:text-theme-secondary-200 border-theme-secondary-300 dark:border-theme-secondary-800">
-                        @lang('general.transaction.unvote')
+                        @lang('general.transaction.types.unvote')
                     </span>
                 </x-slot>
             </x-general.identity>
@@ -45,7 +45,7 @@
                 <x-transactions.icon :icon-type="$iconType" />
 
                 <div class="mr-4 font-semibold text-theme-secondary-900 dark:text-theme-secondary-200 md:mr-0 md:ml-3">
-                    @lang('general.transaction.'.$iconType)
+                    @lang('general.transaction.types.'.$transaction->typeName())
                 </div>
             </div>
         @endif

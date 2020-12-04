@@ -17,9 +17,57 @@ final class TransactionType
 {
     private Transaction $transaction;
 
+    private array $types = [
+        'isTransfer'                      => 'transfer',
+        'isSecondSignature'               => 'second-signature',
+        'isDelegateRegistration'          => 'delegate-registration',
+        'isVoteCombination'               => 'vote-combination',
+        'isUnvote'                        => 'unvote',
+        'isVote'                          => 'vote',
+        'isMultiSignature'                => 'multi-signature',
+        'isIpfs'                          => 'ipfs',
+        'isDelegateResignation'           => 'delegate-resignation',
+        'isMultiPayment'                  => 'multi-payment',
+        'isTimelock'                      => 'timelock',
+        'isTimelockClaim'                 => 'timelock-claim',
+        'isTimelockRefund'                => 'timelock-refund',
+        'isBusinessEntityRegistration'    => 'business-registration',
+        'isBusinessEntityResignation'     => 'business-resignation',
+        'isBusinessEntityUpdate'          => 'business-update',
+        'isProductEntityRegistration'     => 'product-registration',
+        'isProductEntityResignation'      => 'product-resignation',
+        'isProductEntityUpdate'           => 'product-update',
+        'isPluginEntityRegistration'      => 'plugin-registration',
+        'isPluginEntityResignation'       => 'plugin-resignation',
+        'isPluginEntityUpdate'            => 'plugin-update',
+        'isModuleEntityRegistration'      => 'module-registration',
+        'isModuleEntityResignation'       => 'module-resignation',
+        'isModuleEntityUpdate'            => 'module-update',
+        'isDelegateEntityRegistration'    => 'delegate-entity-registration',
+        'isDelegateEntityResignation'     => 'delegate-entity-resignation',
+        'isDelegateEntityUpdate'          => 'delegate-entity-update',
+        'isLegacyBusinessRegistration'    => 'legacy-business-registration',
+        'isLegacyBusinessResignation'     => 'legacy-business-resignation',
+        'isLegacyBusinessUpdate'          => 'legacy-business-update',
+        'isLegacyBridgechainRegistration' => 'bridgechain-registration',
+        'isLegacyBridgechainResignation'  => 'bridgechain-resignation',
+        'isLegacyBridgechainUpdate'       => 'bridgechain-update',
+    ];
+
     public function __construct(Transaction $transaction)
     {
         $this->transaction = $transaction;
+    }
+
+    public function name(): string
+    {
+        foreach ($this->types as $method => $name) {
+            if ($this->$method()) {
+                return $name;
+            }
+        }
+
+        return 'unknown';
     }
 
     public function isTransfer(): bool

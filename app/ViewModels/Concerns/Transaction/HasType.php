@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
+use App\Services\Transactions\TransactionType;
+
 trait HasType
 {
+    public function typeName(): string
+    {
+        return (new TransactionType($this->transaction))->name();
+    }
+
     public function isTransfer(): bool
     {
         return $this->type->isTransfer();
