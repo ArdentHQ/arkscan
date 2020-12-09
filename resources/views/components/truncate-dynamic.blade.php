@@ -30,5 +30,5 @@
     }"
     x-init="truncate"
     x-on:resize.window="truncate"
-    class="inline-flex w-full max-w-full overflow-hidden whitespace-nowrap"
+    class="inline-flex overflow-hidden w-full max-w-full whitespace-nowrap"
 >{{ $slot }}</span>

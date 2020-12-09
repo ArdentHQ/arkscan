@@ -1,5 +1,5 @@
 <div class="border-t bg-theme-secondary-900 border-theme-secondary-800">
-    <div class="flex-col hidden px-8 mx-auto lg:flex max-w-7xl">
+    <div class="hidden flex-col px-8 mx-auto max-w-7xl lg:flex">
         <x-ark-footer-bar-desktop class="" />
     </div>
 

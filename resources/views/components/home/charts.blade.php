@@ -10,7 +10,7 @@
 >
     <div class="content-container">
         <div class="flex flex-col w-full divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
-            <div class="flex flex-col w-full pt-16 space-x-0 lg:flex-row lg:space-x-10">
+            <div class="flex flex-col pt-16 space-x-0 w-full lg:flex-row lg:space-x-10">
                 @if(Network::canBeExchanged())
                     <x-chart
                         :data="$prices"

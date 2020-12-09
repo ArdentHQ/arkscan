@@ -238,9 +238,6 @@ body {
 }
 
 /* Tables */
-.table-container table thead th {
-    @apply text-center;
-}
 .dark .table-container table thead th {
     @apply text-theme-secondary-700;
 }

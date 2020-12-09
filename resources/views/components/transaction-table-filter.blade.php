@@ -30,7 +30,7 @@
             </div>
         @endslot
 
-        <div class="items-center justify-center block h-64 py-3 overflow-y-scroll dropdown-scrolling md:h-72">
+        <div class="block overflow-y-scroll justify-center items-center py-3 h-64 dropdown-scrolling md:h-72">
             <div
                 class="cursor-pointer dropdown-entry text-theme-secondary-900 dark:text-theme-secondary-200"
                 @click="window.livewire.emit('filterTransactionsByType', 'all'); transactionTypeFilter = 'all'; transactionTypeFilterLabel = '@lang('forms.search.transaction_types.all')'"
@@ -82,7 +82,7 @@
                     'productEntityUpdate',
                 ],
             ] as $typeGroup => $types)
-                <span class="flex items-center w-full px-8 pt-8 text-sm font-bold leading-5 text-left text-theme-secondary-500">{{ strtoupper($typeGroup) }}</span>
+                <span class="flex items-center px-8 pt-8 w-full text-sm font-bold leading-5 text-left text-theme-secondary-500">{{ strtoupper($typeGroup) }}</span>
 
                 @foreach ($types as $type)
                     <div

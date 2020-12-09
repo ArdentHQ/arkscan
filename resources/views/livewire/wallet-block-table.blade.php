@@ -1,6 +1,6 @@
 <div id="block-list" class="w-full">
     @if($blocks->isNotEmpty())
-        <div class="relative flex items-center justify-between">
+        <div class="flex relative justify-between items-center">
             <h4>@lang('pages.blocks_by_wallet.table_title')</h4>
         </div>
 

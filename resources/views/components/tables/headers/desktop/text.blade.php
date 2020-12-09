@@ -1,5 +1,5 @@
 @isset($responsive)
-    <th class="hidden {{ $breakpoint ?? 'lg' }}:table-cell">@lang($name)</th>
+    <th class="hidden {{ $breakpoint ?? 'lg' }}:table-cell text-left">@lang($name)</th>
 @else
-    <th>@lang($name)</th>
+    <th class="text-left">@lang($name)</th>
 @endisset

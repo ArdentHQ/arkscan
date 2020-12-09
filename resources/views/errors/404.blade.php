@@ -11,7 +11,7 @@
     @endsection
 
     @section('content')
-        <div class="flex flex-col items-center justify-center space-y-8">
+        <div class="flex flex-col justify-center items-center space-y-8">
             <img src="/images/errors/404.svg" class="max-w-4xl"/>
             <div class="text-lg font-semibold text-center text-theme-secondary-900">
                 {!! ARKEcosystem\UserInterface\UI::getErrorMessage(404) !!}

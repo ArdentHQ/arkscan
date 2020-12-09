@@ -265,7 +265,7 @@
     class="flex flex-col w-full bg-white border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900"
 >
     <div class="flex flex-col w-full">
-        <div class="relative flex items-center justify-between w-full">
+        <div class="flex relative justify-between items-center w-full">
             <h3>@lang("pages.home.charts.{$identifier}")</h3>
 
             <x-ark-rich-select
@@ -279,7 +279,7 @@
                 dispatch-event="chart-period-selected"
             />
         </div>
-        <div class="flex justify-between w-full mt-5 mb-5">
+        <div class="flex justify-between mt-5 mb-5 w-full">
             <div
                 class="flex items-center pr-5 mr-5 border-r border-theme-secondary-200 dark:border-theme-secondary-800">
                 <div class="flex flex-col">

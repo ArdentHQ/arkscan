@@ -2,7 +2,7 @@
     <div class="flex-col py-16 space-y-6 sm:space-y-0 sm:space-x-6 content-container md:px-8 sm:flex-row">
         {{-- Vote --}}
         <div class="w-full sm:w-1/2">
-            <div class="relative flex items-end justify-between mb-6">
+            <div class="flex relative justify-between items-end mb-6">
                 <h4>@lang('pages.transaction.vote')</h4>
             </div>
 
@@ -20,7 +20,7 @@
 
         {{-- Unvote --}}
         <div class="w-full sm:w-1/2">
-            <div class="relative flex items-end justify-between mb-6">
+            <div class="flex relative justify-between items-end mb-6">
                 <h4>@lang('pages.transaction.unvote')</h4>
             </div>
 

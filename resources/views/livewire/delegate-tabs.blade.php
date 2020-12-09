@@ -1,4 +1,4 @@
-<div class="justify-between hidden md:flex">
+<div class="hidden justify-between md:flex">
     <div class="flex w-9/12 lg:w-10/12 tabs">
         <div
             class="tab-item transition-default"
@@ -52,7 +52,7 @@
 
 <div class="md:hidden">
     <x-ark-dropdown
-        wrapper-class="relative w-full p-2 mb-8 border rounded-lg border-theme-secondary-300 dark:border-theme-secondary-800"
+        wrapper-class="relative p-2 mb-8 w-full rounded-lg border border-theme-secondary-300 dark:border-theme-secondary-800"
         button-class="w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
         dropdown-classes="left-0 w-full z-20"
         :init-alpine="false"

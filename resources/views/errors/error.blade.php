@@ -31,9 +31,9 @@
     </head>
     <body class="antialiased">
         <div id="app" class="flex flex-col antialiased bg-white theme-light">
-            <main class="container flex items-center flex-1 w-full px-4 mx-auto sm:max-w-full sm:px-8 lg:max-w-7xl">
+            <main class="container flex flex-1 items-center px-4 mx-auto w-full sm:max-w-full sm:px-8 lg:max-w-7xl">
                 <div class="w-full bg-white rounded-lg">
-                    <div class="flex flex-col items-center justify-center space-y-8">
+                    <div class="flex flex-col justify-center items-center space-y-8">
                         <img src="/images/errors/{{ $errorType }}.svg" class="max-w-4xl"/>
                         <div class="text-lg font-semibold text-center text-theme-secondary-900">
                             {{ ARKEcosystem\UserInterface\UI::getErrorMessage($errorType) }}

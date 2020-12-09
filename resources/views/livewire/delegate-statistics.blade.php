@@ -1,6 +1,6 @@
-<div class="flex flex-col overflow-hidden border rounded-lg border-theme-secondary-300 dark:border-theme-secondary-800">
+<div class="flex overflow-hidden flex-col rounded-lg border border-theme-secondary-300 dark:border-theme-secondary-800">
     <div class="p-8 bg-black dark:bg-theme-secondary-900" wire:poll.{{ Network::blockTime() }}s>
-        <div class="grid w-full grid-flow-row grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4 gap-y-8 delegate-statistics-grid">
+        <div class="grid grid-cols-1 grid-flow-row gap-6 gap-y-8 w-full md:grid-cols-2 xl:grid-cols-4 delegate-statistics-grid">
         <x-delegates.statistic>
             <x-slot name="logo">
                 <x-ark-icon name="user-team" size="md" />

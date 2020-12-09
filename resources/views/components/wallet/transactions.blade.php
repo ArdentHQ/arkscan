@@ -7,7 +7,7 @@
             transactionTypeFilterLabel: 'All',
         }" x-cloak class="w-full">
             <div class="w-full md:mb-8">
-                <div class="relative flex flex-col justify-between md:items-end md:flex-row md:justify-start">
+                <div class="flex relative flex-col justify-between md:items-end md:flex-row md:justify-start">
                     <h4 class="mb-8 md:mb-0">@lang('pages.wallet.transaction_history')</h4>
 
                     <x-transaction-table-filter :type="'all'" />

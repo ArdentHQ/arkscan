@@ -1,1 +1,1 @@
-<th width="40">@lang($name)</th>
+<th width="40" class="text-left">@lang($name)</th>

@@ -1,9 +1,9 @@
-<div class="flex flex-col w-full space-y-5">
+<div class="flex flex-col space-y-5 w-full">
     <div
         x-data="{ searchFocused: false }"
         @search-slim-expand="searchFocused = true"
         @search-slim-close="searchFocused = false"
-        class="relative flex items-center justify-between"
+        class="flex relative justify-between items-center"
     >
         <h1
             class="header-2"

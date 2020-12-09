@@ -1,4 +1,4 @@
-<div class="flex flex-row items-center justify-end space-x-3 round-status-history">
+<div class="flex flex-row justify-end items-center space-x-3 round-status-history">
     @foreach($model->performance() as $performed)
         @if($performed)
             <span class="text-theme-success-500">

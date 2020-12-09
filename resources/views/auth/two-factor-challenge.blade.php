@@ -20,15 +20,15 @@
 
                 <div class="mt-4" x-show="! recovery">
                     <x-jet-label value="{{ __('Code') }}" />
-                    <x-jet-input class="block w-full mt-1" type="text" name="code" autofocus x-ref="code" autocomplete="one-time-code" />
+                    <x-jet-input class="block mt-1 w-full" type="text" name="code" autofocus x-ref="code" autocomplete="one-time-code" />
                 </div>
 
                 <div class="mt-4" x-show="recovery">
                     <x-jet-label value="{{ __('Recovery Code') }}" />
-                    <x-jet-input class="block w-full mt-1" type="text" name="recovery_code" x-ref="recovery_code" autocomplete="one-time-code" />
+                    <x-jet-input class="block mt-1 w-full" type="text" name="recovery_code" x-ref="recovery_code" autocomplete="one-time-code" />
                 </div>
 
-                <div class="flex items-center justify-end mt-4">
+                <div class="flex justify-end items-center mt-4">
                     <button type="button" class="text-sm text-gray-600 underline cursor-pointer hover:text-gray-900"
                                     x-show="! recovery"
                                     x-on:click="

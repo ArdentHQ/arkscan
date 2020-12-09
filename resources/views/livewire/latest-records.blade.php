@@ -5,7 +5,7 @@
     transactionTypeFilterLabel: '@lang('forms.search.transaction_types.' . $state['type'])',
 }" x-cloak class="w-full">
     <div class="w-full md:mb-8">
-        <div class="relative flex flex-col justify-between md:items-end md:flex-row md:justify-start">
+        <div class="flex relative flex-col justify-between md:items-end md:flex-row md:justify-start">
             <h2 class="mb-8 md:mb-0">@lang('pages.home.transactions_and_blocks')</h2>
 
             <div x-show="selected === 'transactions'">
@@ -36,7 +36,7 @@
 
     <div class="md:hidden">
         <x-ark-dropdown
-            wrapper-class="relative w-full p-2 mb-8 border rounded-lg border-theme-secondary-300 dark:border-theme-secondary-800"
+            wrapper-class="relative p-2 mb-8 w-full rounded-lg border border-theme-secondary-300 dark:border-theme-secondary-800"
             button-class="w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
             dropdown-classes="left-0 w-full z-20"
             :init-alpine="false"

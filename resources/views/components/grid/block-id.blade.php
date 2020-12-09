@@ -1,7 +1,7 @@
 <x-grid.generic :title="trans('general.transaction.block_id')" icon="app-block-id">
-    <span class="flex items-center flex-1 min-w-0">
+    <span class="flex flex-1 items-center min-w-0">
 
-        <a href="{{ route('block', $model->blockId()) }}" class="max-w-full min-w-0 font-semibold link">
+        <a href="{{ route('block', $model->blockId()) }}" class="min-w-0 max-w-full font-semibold link">
             <x-truncate-dynamic>{{ $model->blockId() }}</x-truncate-dynamic>
         </a>
 

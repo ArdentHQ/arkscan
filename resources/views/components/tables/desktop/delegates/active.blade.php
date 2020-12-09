@@ -2,7 +2,7 @@
     <table>
         <thead>
             <tr>
-                <x-tables.headers.desktop.number name="general.delegates.rank" alignment="text-left" />
+                <x-tables.headers.desktop.text name="general.delegates.rank" />
                 <x-tables.headers.desktop.address name="general.delegates.name" />
                 <x-tables.headers.desktop.status name="general.delegates.status">
                     <x-ark-info :tooltip="trans('pages.delegates.info.status')" />

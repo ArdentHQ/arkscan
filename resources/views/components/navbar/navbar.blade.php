@@ -2,7 +2,7 @@
 <div x-data="{ open: false, openDropdown: null, selectedChild: null }" id="navbar" class="fixed z-20 w-full">
     <div
         x-show="openDropdown !== null || open"
-        class="fixed inset-0 z-30 overflow-y-auto bg-theme-secondary-900 dark:bg-theme-secondary-800"
+        class="overflow-y-auto fixed inset-0 z-30 bg-theme-secondary-900 dark:bg-theme-secondary-800"
         :class="{
             'opacity-75 dark:opacity-50': openDropdown !== 'settings',
             'opacity-0': openDropdown === 'settings',
@@ -13,10 +13,10 @@
 
     <nav class="relative z-30 bg-white shadow-header-smooth dark:shadow-header-smooth-dark dark:bg-theme-secondary-900">
         <div class="px-8">
-            <div class="relative flex justify-between h-20 lg:h-24">
+            <div class="flex relative justify-between h-20 lg:h-24">
 
                 {{-- LOGO --}}
-                <div class="flex items-center flex-shrink-0">
+                <div class="flex flex-shrink-0 items-center">
                     <a class="flex items-center" href="{{ route('home') }}">
                         @if($logo ?? false)
                             {{ $logo }}
@@ -29,9 +29,9 @@
                 </div>
 
                 <div class="flex justify-end">
-                    <div class="flex items-center justify-end flex-1 sm:items-stretch sm:justify-between">
+                    <div class="flex flex-1 justify-end items-center sm:items-stretch sm:justify-between">
                         {{-- Desktop Navbar Items --}}
-                        <div class="items-center hidden lg:ml-6 lg:flex">
+                        <div class="hidden items-center lg:ml-6 lg:flex">
                             @foreach ($navigation as $navItem)
                                 @if(isset($navItem['children']))
                                     <a
@@ -53,7 +53,7 @@
                                                     </div>
                                                 @endforeach
                                             </div>
-                                            <div class="flex flex-col flex-shrink-0 pl-8 pr-8 w-128">
+                                            <div class="flex flex-col flex-shrink-0 pr-8 pl-8 w-128">
                                                 <img class="w-full" :src="selectedChild ? selectedChild.image : '{{ $navItem['image'] }}'" />
 
                                                 <template x-if="selectedChild">
@@ -83,10 +83,10 @@
                         </div>
                     </div>
 
-                    <div class="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-4 sm:pr-0">
+                    <div class="flex inset-y-0 right-0 items-center pr-2 sm:static sm:inset-auto sm:ml-4 sm:pr-0">
                         {{-- Mobile Hamburger icon --}}
                         <div class="flex items-center lg:hidden">
-                            <button @click="open = !open" class="inline-flex items-center justify-center transition duration-150 ease-in-out rounded-md text-theme-secondary-900 dark:text-theme-secondary-600">
+                            <button @click="open = !open" class="inline-flex justify-center items-center rounded-md transition duration-150 ease-in-out text-theme-secondary-900 dark:text-theme-secondary-600">
                                 <span :class="{'hidden': open, 'inline-flex': !open }">
                                     <x-ark-icon name="menu" size="sm" />
                                 </span>
@@ -102,7 +102,7 @@
                         <div class="pl-8 border-l border-theme-primary-100 text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-800">
                             <button
                                 @click="$dispatch('mobile-search')"
-                                class="inline-flex items-center justify-center py-2 transition duration-150 ease-in-out rounded-md text-theme-primary-300 dark:text-theme-secondary-600"
+                                class="inline-flex justify-center items-center py-2 rounded-md transition duration-150 ease-in-out text-theme-primary-300 dark:text-theme-secondary-600"
                             >
                                 <span class="inline-flex"><x-ark-icon name="search" size="sm" /></span>
                             </button>
@@ -110,7 +110,7 @@
                     </div>
 
                     @if(Network::canBeExchanged())
-                        <div class="items-center hidden ml-6 md:flex lg:ml-8">
+                        <div class="hidden items-center ml-6 md:flex lg:ml-8">
                             <div class="pl-8 font-semibold border-l border-theme-primary-100 text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-800">
                                 <livewire:price-ticker />
                             </div>
@@ -128,10 +128,10 @@
                 @foreach ($navigation as $navItem)
                     @if(isset($navItem['children']))
                         <div class="flex w-full">
-                            <div class="z-10 w-2 -mr-1"></div>
+                            <div class="z-10 -mr-1 w-2"></div>
                             <a
                                 href="#"
-                                class="flex items-center justify-between w-full px-8 py-3 font-semibold border-l-2 border-transparent"
+                                class="flex justify-between items-center py-3 px-8 w-full font-semibold border-l-2 border-transparent"
                                 @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
                             >
                                 <span :class="{ 'text-theme-primary-600': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>

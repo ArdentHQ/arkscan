@@ -74,7 +74,7 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
-            "@php artisan vendor:publish --provider=\"ARKEcosystem\\UserInterface\\UserInterfaceServiceProvider\" --tag=\"fonts\" --tag=\"pagination\" --tag=\"js\" --force",
+            "@php artisan vendor:publish --provider=\"ARKEcosystem\\UserInterface\\UserInterfaceServiceProvider\" --tag=\"fonts\" --tag=\"pagination\" --tag=\"js\"",
             "@php artisan horizon:publish --ansi"
         ],
         "post-root-package-install": [

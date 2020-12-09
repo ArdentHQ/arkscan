@@ -1,4 +1,4 @@
-<div class="flex items-center justify-between space-x-3">
+<div class="flex justify-between items-center space-x-3">
     <div class="flex items-center max-w-full">
         @if ($prefix ?? false)
             {{ $prefix }}
