@@ -10,7 +10,7 @@ trait InteractsWithTypeData
 {
     public function typeLabel(): string
     {
-        return trans('general.transaction.'.$this->iconType());
+        return trans('general.transaction.types.'.$this->iconType());
     }
 
     public function headerComponent(): string

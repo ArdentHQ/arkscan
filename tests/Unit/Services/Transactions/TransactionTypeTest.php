@@ -117,7 +117,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
         ],
-        'business-registration',
+        'business-entity-registration',
     ], [
         'isBusinessEntityResignation',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -127,7 +127,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
         ],
-        'business-resignation',
+        'business-entity-resignation',
     ], [
         'isBusinessEntityUpdate',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -137,7 +137,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
         ],
-        'business-update',
+        'business-entity-update',
     ], [
         'isProductEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -147,7 +147,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
         ],
-        'product-registration',
+        'product-entity-registration',
     ], [
         'isProductEntityResignation',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -157,7 +157,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
         ],
-        'product-resignation',
+        'product-entity-resignation',
     ], [
         'isProductEntityUpdate',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -167,7 +167,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
         ],
-        'product-update',
+        'product-entity-update',
     ], [
         'isPluginEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -177,7 +177,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
         ],
-        'plugin-registration',
+        'plugin-entity-registration',
     ], [
         'isPluginEntityResignation',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -187,7 +187,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
         ],
-        'plugin-resignation',
+        'plugin-entity-resignation',
     ], [
         'isPluginEntityUpdate',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -197,7 +197,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
         ],
-        'plugin-update',
+        'plugin-entity-update',
     ], [
         'isModuleEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -207,7 +207,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
         ],
-        'module-registration',
+        'module-entity-registration',
     ], [
         'isModuleEntityResignation',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -217,7 +217,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
         ],
-        'module-resignation',
+        'module-entity-resignation',
     ], [
         'isModuleEntityUpdate',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -227,7 +227,7 @@ it('should determine the the type', function (string $method, int $type, int $ty
             'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
             'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
         ],
-        'module-update',
+        'module-entity-update',
     ], [
         'isDelegateEntityRegistration',
         MagistrateTransactionTypeEnum::ENTITY,
@@ -281,19 +281,19 @@ it('should determine the the type', function (string $method, int $type, int $ty
         MagistrateTransactionTypeEnum::BRIDGECHAIN_REGISTRATION,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
-        'bridgechain-registration',
+        'bridgechain-entity-registration',
     ], [
         'isLegacyBridgechainResignation',
         MagistrateTransactionTypeEnum::BRIDGECHAIN_RESIGNATION,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
-        'bridgechain-resignation',
+        'bridgechain-entity-resignation',
     ], [
         'isLegacyBridgechainUpdate',
         MagistrateTransactionTypeEnum::BRIDGECHAIN_UPDATE,
         TransactionTypeGroupEnum::MAGISTRATE,
         [],
-        'bridgechain-update',
+        'bridgechain-entity-update',
     ], [
         'isUnknown',
         0,
