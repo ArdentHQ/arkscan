@@ -7,6 +7,7 @@ namespace App\Http\Livewire;
 use App\Facades\Wallets;
 use App\Services\QRCode;
 use App\ViewModels\ViewModelFactory;
+use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasModal;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
@@ -15,7 +16,7 @@ use Livewire\Component;
  */
 final class WalletQrCode extends Component
 {
-    public bool $isOpen = false;
+    use HasModal;
 
     public string $address;
 
@@ -43,9 +44,11 @@ final class WalletQrCode extends Component
 
     public function toggleQrCode(): void
     {
-        $this->isOpen = ! $this->isOpen;
+        if ($this->modalShown) {
+            $this->closeModal();
+        } else {
+            $this->openModal();
 
-        if ($this->isOpen) {
             $this->amount      = null;
             $this->smartbridge = null;
         }

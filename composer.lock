@@ -147,16 +147,16 @@
         },
         {
             "name": "arkecosystem/ui",
-            "version": "1.2.16",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-ui.git",
-                "reference": "d0df43acb7ac8a5aa5c77baa7d17ccf090f9e858"
+                "reference": "d61e4461175a2adf9cdc82d18a89d8296dda6446"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-ui/zipball/d0df43acb7ac8a5aa5c77baa7d17ccf090f9e858",
-                "reference": "d0df43acb7ac8a5aa5c77baa7d17ccf090f9e858",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-ui/zipball/d61e4461175a2adf9cdc82d18a89d8296dda6446",
+                "reference": "d61e4461175a2adf9cdc82d18a89d8296dda6446",
                 "shasum": ""
             },
             "require": {
@@ -214,11 +214,7 @@
                 }
             ],
             "description": "User-Interface Scaffolding for Laravel. Powered by TailwindCSS.",
-            "support": {
-                "issues": "https://github.com/ArkEcosystem/laravel-ui/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-ui/tree/1.2.16"
-            },
-            "time": "2020-12-10T11:16:20+00:00"
+            "time": "2020-12-10T16:10:05+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -3094,23 +3090,23 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v2.3.2",
+            "version": "v2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "8aa271bc3af74d8fea8480b372ecaa0d5ae3f6d2"
+                "reference": "781a1250dc8eab9121fd856ff0b6efca8c32756f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/8aa271bc3af74d8fea8480b372ecaa0d5ae3f6d2",
-                "reference": "8aa271bc3af74d8fea8480b372ecaa0d5ae3f6d2",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/781a1250dc8eab9121fd856ff0b6efca8c32756f",
+                "reference": "781a1250dc8eab9121fd856ff0b6efca8c32756f",
                 "shasum": ""
             },
             "require": {
                 "illuminate/database": "^7.0|^8.0",
                 "illuminate/support": "^7.0|^8.0",
                 "illuminate/validation": "^7.0|^8.0",
-                "php": "^7.2.5",
+                "php": "^7.2.5|^8.0",
                 "symfony/http-kernel": "^5.0"
             },
             "require-dev": {
@@ -3152,11 +3148,7 @@
                 }
             ],
             "description": "A front-end framework for Laravel.",
-            "support": {
-                "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v2.3.2"
-            },
-            "time": "2020-11-17T14:58:56+00:00"
+            "time": "2020-12-01T20:51:29+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -15332,6 +15324,5 @@
         "php": "^7.4",
         "ext-gmp": "*"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "platform-dev": []
 }

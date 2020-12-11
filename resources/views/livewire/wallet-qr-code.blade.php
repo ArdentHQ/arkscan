@@ -1,6 +1,6 @@
 <div class="flex-1">
-    @if($isOpen)
-    <x-ark-modal width-class="max-w-md" wire-close="toggleQrCode" title-class="header-2" x-data="{ options: false }">
+    @if($this->modalShown)
+    <x-ark-modal width-class="max-w-md" wire-close="closeModal" title-class="header-2" x-data="{ options: false }">
         @slot('title')
             @lang('pages.wallet.qrcode.title')
         @endslot
