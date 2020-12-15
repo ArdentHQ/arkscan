@@ -53,6 +53,7 @@ return [
         'participant'             => 'Participant #:0',
         'ipfs-hash'               => 'IPFS Hash',
         'well-confirmed'          => 'Well Confirmed',
+        'delegate'                => 'Delegate',
 
         'types' => [
             'delegate-registration'               => 'Delegate Registration',
