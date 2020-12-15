@@ -618,6 +618,70 @@ it('should determine the type icon', function () {
     expect($this->subject->iconType())->toBeString();
 });
 
+it('should determine the type label', function (int $type, int $typeGroup) {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => $type,
+        'type_group' => $typeGroup,
+        'asset'      => [],
+    ]));
+
+    expect($subject->typeLabel())->toBeString();
+})->with([
+    [
+        CoreTransactionTypeEnum::SECOND_SIGNATURE,
+        TransactionTypeGroupEnum::CORE,
+    ],
+    [
+        MagistrateTransactionTypeEnum::BUSINESS_REGISTRATION,
+        TransactionTypeGroupEnum::MAGISTRATE,
+    ],
+]);
+
+it('should determine legacy types', function (int $type, int $typeGroup, bool $expectation) {
+    $subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => $type,
+        'type_group' => $typeGroup,
+        'asset'      => [],
+    ]));
+
+    expect($subject->isLegacyType())->toBe($expectation);
+})->with([
+    [
+        CoreTransactionTypeEnum::SECOND_SIGNATURE,
+        TransactionTypeGroupEnum::CORE,
+        false,
+    ], [
+        CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
+        TransactionTypeGroupEnum::CORE,
+        false,
+    ],
+    [
+        MagistrateTransactionTypeEnum::BUSINESS_REGISTRATION,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        true,
+    ], [
+        MagistrateTransactionTypeEnum::BUSINESS_RESIGNATION,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        true,
+    ], [
+        MagistrateTransactionTypeEnum::BUSINESS_UPDATE,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        true,
+    ], [
+        MagistrateTransactionTypeEnum::BRIDGECHAIN_REGISTRATION,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        true,
+    ], [
+        MagistrateTransactionTypeEnum::BRIDGECHAIN_RESIGNATION,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        true,
+    ], [
+        MagistrateTransactionTypeEnum::BRIDGECHAIN_UPDATE,
+        TransactionTypeGroupEnum::MAGISTRATE,
+        true,
+    ],
+]);
+
 it('should determine the direction icon', function () {
     expect($this->subject->iconDirection('sender'))->toBeString();
 });
