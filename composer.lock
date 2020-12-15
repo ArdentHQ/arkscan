@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24c8b1f839fc94a4fd89f509ef2022ab",
+    "content-hash": "7834a7de84f6df0d5557d98d54e8639e",
     "packages": [
         {
             "name": "arkecosystem/crypto",
@@ -147,16 +147,16 @@
         },
         {
             "name": "arkecosystem/ui",
-            "version": "1.3.0",
+            "version": "1.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-ui.git",
-                "reference": "d61e4461175a2adf9cdc82d18a89d8296dda6446"
+                "reference": "53f5afb485e0983fa3e91ab4b43e1b97736d9c7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-ui/zipball/d61e4461175a2adf9cdc82d18a89d8296dda6446",
-                "reference": "d61e4461175a2adf9cdc82d18a89d8296dda6446",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-ui/zipball/53f5afb485e0983fa3e91ab4b43e1b97736d9c7c",
+                "reference": "53f5afb485e0983fa3e91ab4b43e1b97736d9c7c",
                 "shasum": ""
             },
             "require": {
@@ -214,7 +214,11 @@
                 }
             ],
             "description": "User-Interface Scaffolding for Laravel. Powered by TailwindCSS.",
-            "time": "2020-12-10T16:10:05+00:00"
+            "support": {
+                "issues": "https://github.com/ArkEcosystem/laravel-ui/issues",
+                "source": "https://github.com/ArkEcosystem/laravel-ui/tree/1.3.8"
+            },
+            "time": "2020-12-14T10:35:04+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -15324,5 +15328,6 @@
         "php": "^7.4",
         "ext-gmp": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }

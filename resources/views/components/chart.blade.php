@@ -266,18 +266,20 @@
 >
     <div class="flex flex-col w-full">
         <div class="flex relative justify-between items-center w-full">
-            <h3>@lang("pages.home.charts.{$identifier}")</h3>
+            <h3 class="w-full">@lang("pages.home.charts.{$identifier}")</h3>
 
-            <x-ark-rich-select
-                wrapper-class="left-0 mt-3"
-                dropdown-class="right-0 mt-1 origin-top-right"
-                initial-value="day"
-                button-class="block font-medium text-left bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200"
-                :options="collect(trans('pages.home.charts.periods'))->keys()->mapWithKeys(function ($period) {
-                    return [$period => __('pages.home.charts.periods.' . $period)];
-                })->toArray()"
-                dispatch-event="chart-period-selected"
-            />
+            <div>
+                <x-ark-rich-select
+                    wrapper-class="left-0 mt-3"
+                    dropdown-class="right-0 mt-1 origin-top-right"
+                    initial-value="day"
+                    button-class="block font-medium text-left bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200"
+                    :options="collect(trans('pages.home.charts.periods'))->keys()->mapWithKeys(function ($period) {
+                        return [$period => __('pages.home.charts.periods.' . $period)];
+                    })->toArray()"
+                    dispatch-event="chart-period-selected"
+                />
+            </div>
         </div>
         <div class="flex justify-between mt-5 mb-5 w-full">
             <div
