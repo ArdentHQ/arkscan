@@ -1,5 +1,5 @@
 @php
-['path' => $path, 'pageName' => $pageName] =    $paginator->getOptions();
+['path' => $path, 'pageName' => $pageName, 'urlParams' => $urlParams] = ARKEcosystem\UserInterface\UI::getPaginationData($paginator);
 @endphp
 <div
     x-data="Pagination('{{ $pageName }}', {{ $paginator->lastPage() }})"
@@ -18,6 +18,9 @@
                 class="py-2 px-3 w-full bg-transparent dark:text-theme-secondary-200"
                 x-on:blur="blurHandler"
             />
+            @foreach($urlParams as $key => $value)
+            <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
+            @endforeach
             <button type="submit" class="p-2 text-theme-secondary-500 hover:text-theme-primary-500 transition-default dark:text-theme-secondary-200" :disabled="!page">
                 <x-ark-icon name="search" size="sm" />
             </button>
@@ -34,21 +37,37 @@
     </div>
 
     <div class="flex space-x-3">
-        <button
-            wire:click="gotoPage(1)"
-            class="items-center button-secondary pagination-button-mobile" @if($paginator->onFirstPage()) disabled @endif
-        >
-            <x-ark-icon name="pagination-first" size="xs" />
-        </button>
-        <button
-            wire:click="gotoPage({{ $paginator->currentPage() - 1 }})"
-            class="items-center button-secondary pagination-button-mobile" @if($paginator->onFirstPage()) disabled @endif
-        >
-            <div class="flex items-center">
-                <x-ark-icon class="inline-block lg:hidden" name="chevron-left" size="xs" />
-                <span class="hidden lg:flex">Previous</span>
+        @if($paginator->onFirstPage())
+            <div class="flex items-center button-generic button-disabled">
+                <span class="flex items-center">
+                    <x-ark-icon name="pagination-first" size="xs" />
+                </span>
             </div>
-        </button>
+        @else
+            <a class="flex" href="{{ $paginator->url(1) }}">
+                <div class="flex items-center h-full button-secondary pagination-button-mobile">
+                    <span class="flex items-center">
+                        <x-ark-icon name="pagination-first" size="xs" />
+                    </span>
+                </div>
+            </a>
+        @endif
+
+        @if($paginator->onFirstPage())
+            <div class="flex items-center button-generic button-disabled">
+                <div class="flex items-center">
+                    <span class="hidden lg:flex lg:ml-2">Previous</span>
+                </div>
+            </div>
+        @else
+            <a class="flex" href="{{ $paginator->previousPageUrl() }}">
+                <div class="flex items-center h-full button-secondary pagination-button-mobile">
+                    <div class="flex items-center">
+                        <span class="hidden lg:flex lg:ml-2">Previous</span>
+                    </div>
+                </div>
+            </a>
+        @endif
 
         <div class="relative">
             <form x-show="search" name="searchForm" type="get" action="{{ $path }}" class="flex overflow-hidden absolute left-0 z-10 px-2 w-full h-full rounded bg-theme-primary-100 dark:bg-theme-secondary-800 pagination-form-desktop">
@@ -63,6 +82,9 @@
                     class="py-2 px-3 w-full bg-transparent dark:text-theme-secondary-200"
                     x-on:blur="blurHandler"
                 />
+                @foreach($urlParams as $key => $value)
+                <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
+                @endforeach
                 <button type="submit" class="p-2 text-theme-secondary-500 hover:text-theme-primary-500 transition-default dark:text-theme-secondary-200" :disabled="!page">
                     <x-ark-icon name="search" size="sm" />
                 </button>
@@ -89,12 +111,12 @@
                     {{-- Array Of Links --}}
                     @if (is_array($element))
                         @foreach ($element as $page => $url)
-                            <button
+                            <a
+                                href="{{ $url }}"
                                 class="@if ($paginator->currentPage() === $page) button-pagination-page-indicator--selected @else button-pagination-page-indicator  @endif"
-                                wire:click="gotoPage({{ $page }})"
                             >
                                 {{ $page }}
-                            </button>
+                            </a>
                         @endforeach
                     @endif
                 @endforeach
@@ -110,21 +132,36 @@
             </div>
         </div>
 
-        <button
-            wire:click="gotoPage({{ $paginator->currentPage() + 1 }})"
-            class="items-center button-secondary pagination-button-mobile" @if($paginator->currentPage() === $paginator->lastPage()) disabled @endif
-        >
-            <div class="flex items-center">
-                <span class="hidden lg:flex">Next</span>
-                <x-ark-icon class="inline-block lg:hidden" name="chevron-right" size="xs" />
+        @if($paginator->hasMorePages())
+            <a class="flex" href="{{ $paginator->nextPageUrl() }}">
+                <div class="flex items-center h-full button-secondary pagination-button-mobile">
+                    <div class="flex items-center">
+                        <span class="hidden lg:flex lg:mr-2">Next</span>
+                    </div>
+                </div>
+            </a>
+        @else
+            <div class="flex items-center button-generic button-disabled">
+                <div class="flex items-center">
+                    <span class="hidden lg:flex lg:mr-2">Next</span>
+                </div>
             </div>
-        </button>
-        <button
-            wire:click="gotoPage({{ $paginator->lastPage() }})"
-            class="items-center button-secondary pagination-button-mobile"
-            @if($paginator->currentPage() === $paginator->lastPage()) disabled @endif
-        >
-            <x-ark-icon name="pagination-last" size="xs" />
-        </button>
+        @endif
+
+        @if($paginator->hasMorePages())
+            <a class="flex" href="{{ $paginator->url($paginator->lastPage()) }}">
+                <div class="flex items-center h-full button-secondary pagination-button-mobile">
+                    <span class="flex items-center">
+                        <x-ark-icon name="pagination-last" size="xs" />
+                    </span>
+                </div>
+            </a>
+        @else
+            <div class="flex items-center button-generic button-disabled">
+                <span class="flex items-center">
+                    <x-ark-icon name="pagination-last" size="xs" />
+                </span>
+            </div>
+        @endif
     </div>
 </div>
