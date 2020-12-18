@@ -1,5 +1,5 @@
 @php
-['path' => $path, 'pageName' => $pageName, 'urlParams' => $urlParams] = ARKEcosystem\UserInterface\UI::getPaginationData($paginator);
+['pageName' => $pageName, 'urlParams' => $urlParams] = ARKEcosystem\UserInterface\UI::getPaginationData($paginator);
 @endphp
 <div
     x-data="Pagination('{{ $pageName }}', {{ $paginator->lastPage() }})"
@@ -7,7 +7,7 @@
     class="pagination-wrapper"
 >
     <div class="relative pagination-pages-mobile">
-        <form x-show="search" name="searchForm" type="get" action="{{ $path }}" class="flex overflow-hidden absolute left-0 z-10 px-2 w-full h-full rounded bg-theme-primary-100 dark:bg-theme-secondary-800">
+        <form x-show="search" name="searchForm" type="get" class="flex overflow-hidden absolute left-0 z-10 px-2 w-full h-full rounded bg-theme-primary-100 dark:bg-theme-secondary-800">
             <input
                 x-model.number="page"
                 type="number"
@@ -56,7 +56,7 @@
         </button>
 
         <div class="relative">
-            <form x-show="search" name="searchForm" type="get" action="{{ $path }}" class="flex overflow-hidden absolute left-0 z-10 px-2 w-full h-full rounded bg-theme-primary-100 dark:bg-theme-secondary-800 pagination-form-desktop">
+            <form x-show="search" name="searchForm" type="get" class="flex overflow-hidden absolute left-0 z-10 px-2 w-full h-full rounded bg-theme-primary-100 dark:bg-theme-secondary-800 pagination-form-desktop">
                 <input
                     x-ref="search"
                     x-model.number="page"
