@@ -137,14 +137,8 @@ body {
         @apply py-0 my-6 border-b-0;
     }
 
-    .search-advanced-options
-        .search-advanced-option-wrapper:nth-of-type(2n + 1)
-        .search-advanced-option {
-        @apply border-r;
-    }
-
     .search-advanced-option-wrapper {
-        @apply border-b border-theme-secondary-300;
+        @apply border-theme-secondary-300;
     }
     .dark .search-advanced-option-wrapper {
         @apply border-theme-secondary-800;
@@ -158,19 +152,6 @@ body {
     }
 }
 
-/* We need this to only be applied between md and xl */
-@media (min-width: 768px) and (max-width: 1027px) {
-    .search-advanced-options
-        .search-advanced-option-wrapper:nth-of-type(2n + 1):nth-last-of-type(-n
-            + 2),
-    .search-advanced-options
-        .search-advanced-option-wrapper:nth-of-type(2n + 1):nth-last-of-type(-n
-            + 2)
-        ~ .search-advanced-option-wrapper {
-        @apply border-b-0;
-    }
-}
-
 @screen xl {
     .search-advanced-options {
         @apply grid-cols-3;
@@ -178,28 +159,6 @@ body {
 
     .search-advanced-option {
         @apply flex-1;
-    }
-
-    .search-advanced-options
-        .search-advanced-option-wrapper
-        .search-advanced-option {
-        @apply border-r;
-    }
-
-    .search-advanced-options
-        .search-advanced-option-wrapper:nth-of-type(3n + 3)
-        .search-advanced-option {
-        @apply border-r-0;
-    }
-
-    .search-advanced-options
-        .search-advanced-option-wrapper:nth-of-type(3n + 1):nth-last-of-type(-n
-            + 3),
-    .search-advanced-options
-        .search-advanced-option-wrapper:nth-of-type(3n + 1):nth-last-of-type(-n
-            + 3)
-        ~ .search-advanced-option-wrapper {
-        @apply border-b-0;
     }
 }
 
@@ -272,7 +231,7 @@ body {
 }
 
 .tab-item {
-    @apply relative pt-8 ml-16 whitespace-nowrap border-b-4 border-transparent cursor-pointer pb-7;
+    @apply relative pt-8 ml-16 border-b-4 border-transparent cursor-pointer whitespace-nowrap pb-7;
 }
 .tab-item:first-child {
     @apply ml-0;
@@ -613,7 +572,7 @@ tr:hover td.hoverable-cell .table-avatar {
 }
 
 .table-compact .table-container table > tbody .transaction-icon {
-    @apply border-0 w-5 h-5;
+    @apply w-5 h-5 border-0;
 }
 
 .table-compact .table-container table > tbody .avatar-wrapper,
@@ -624,7 +583,7 @@ tr:hover td.hoverable-cell .table-avatar {
 
 @screen md {
     .table-compact .table-container table > tbody .transaction-icon {
-        @apply border-0 w-5 h-5;
+        @apply w-5 h-5 border-0;
     }
 
     .table-compact .table-container table > tbody .avatar-wrapper {

@@ -1,20 +1,6 @@
 @props(['transactionOptions', 'transactionType' => 'all'])
 
-<x-general.search.advanced-option :title="trans('forms.search.type')">
-    <x-ark-rich-select
-        button-class="block w-full font-medium text-left bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200"
-        initial-value="transaction"
-        dispatch-event="search-type-changed"
-        wire:model.defer="state.type"
-        :options="[
-            'block' => __('forms.search.block'),
-            'transaction' => __('forms.search.transaction'),
-            'wallet' => __('forms.search.wallet'),
-        ]"
-    />
-</x-general.search.advanced-option>
-
-<x-general.search.advanced-option :title="trans('forms.search.transaction_type')">
+<x-general.search.advanced-option :title="trans('forms.search.transaction_type')" class="md:border-b" option-class="xl:border-r" type="transaction">
     <x-ark-rich-select
         button-class="block w-full font-medium text-left bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200"
         :initial-value="$transactionType"
@@ -24,7 +10,7 @@
     />
 </x-general.search.advanced-option>
 
-<x-general.search.advanced-option :title="trans('forms.search.amount_range')">
+<x-general.search.advanced-option :title="trans('forms.search.amount_range')" class="md:border-b" option-class="md:border-r xl:border-r-0" type="transaction">
     <div class="flex items-center space-x-2">
         <input
             type="number"
@@ -50,7 +36,7 @@
     </div>
 </x-general.search.advanced-option>
 
-<x-general.search.advanced-option :title="trans('forms.search.fee_range')">
+<x-general.search.advanced-option :title="trans('forms.search.fee_range')" class="md:border-b xl:border-b-0" option-class="lg:border-r-0 xl:border-r" type="transaction">
     <div class="flex items-center space-x-2">
         <input
             type="number"
@@ -76,7 +62,7 @@
     </div>
 </x-general.search.advanced-option>
 
-<x-general.search.advanced-option :title="trans('forms.search.date_range')">
+<x-general.search.advanced-option :title="trans('forms.search.date_range')" option-class="md:border-r" type="transaction">
     <div class="flex items-center space-x-2">
         <x-date-picker
             placeholder="DD.MM.YYYY"
@@ -96,7 +82,7 @@
     </div>
 </x-general.search.advanced-option>
 
-<x-general.search.advanced-option :title="trans('forms.search.smartbridge')">
+<x-general.search.advanced-option :title="trans('forms.search.smartbridge')" type="transaction">
     <input
         type="text"
         placeholder="@lang('forms.search.smartbridge_placeholder')"

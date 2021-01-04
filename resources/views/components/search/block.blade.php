@@ -1,18 +1,4 @@
-<x-general.search.advanced-option :title="trans('forms.search.type')">
-    <x-ark-rich-select
-        button-class="block w-full font-medium text-left bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200"
-        initial-value="block"
-        dispatch-event="search-type-changed"
-        wire:model.defer="state.type"
-        :options="[
-            'block' => __('forms.search.block'),
-            'transaction' => __('forms.search.transaction'),
-            'wallet' => __('forms.search.wallet'),
-        ]"
-    />
-</x-general.search.advanced-option>
-
-<x-general.search.advanced-option :title="trans('forms.search.height_range')">
+<x-general.search.advanced-option :title="trans('forms.search.height_range')" class="md:border-b" option-class="xl:border-r" type="block">
     <div class="flex items-center space-x-2">
         <div class="flex-1">
             <input
@@ -42,7 +28,7 @@
     </div>
 </x-general.search.advanced-option>
 
-<x-general.search.advanced-option :title="trans('forms.search.total_amount_range')">
+<x-general.search.advanced-option :title="trans('forms.search.total_amount_range')" class="md:border-b" option-class="md:border-r xl:border-r-0" type="block">
     <div class="flex items-center space-x-2">
         <div class="flex-1">
             <input
@@ -72,7 +58,7 @@
     </div>
 </x-general.search.advanced-option>
 
-<x-general.search.advanced-option :title="trans('forms.search.total_fee_range')">
+<x-general.search.advanced-option :title="trans('forms.search.total_fee_range')" class="md:border-b xl:border-b-0" option-class="lg:border-r-0 xl:border-r" type="block">
     <div class="flex items-center space-x-2">
         <div class="flex-1">
             <input
@@ -102,7 +88,7 @@
     </div>
 </x-general.search.advanced-option>
 
-<x-general.search.advanced-option :title="trans('forms.search.reward_range')">
+<x-general.search.advanced-option :title="trans('forms.search.reward_range')" option-class="md:border-r" type="block">
     <div class="flex items-center space-x-2">
         <div class="flex-1">
             <input
@@ -132,7 +118,7 @@
     </div>
 </x-general.search.advanced-option>
 
-<x-general.search.advanced-option :title="trans('forms.search.date_range')">
+<x-general.search.advanced-option :title="trans('forms.search.date_range')" type="block">
     <div class="flex items-center space-x-2">
         <div class="flex-1">
             <x-date-picker

@@ -100,16 +100,23 @@
                 @endunless
                 x-cloak
             >
+                <div class="search-advanced-options">
+                    <x-general.search.advanced-option class="md:border-b" option-class="border-r" :title="trans('forms.search.type')">
+                        <x-ark-rich-select
+                            button-class="block w-full font-medium text-left bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200"
+                            initial-value="{{ $type ?? 'block' }}"
+                            dispatch-event="search-type-changed"
+                            wire:model.defer="state.type"
+                            :options="[
+                                'block' => __('forms.search.block'),
+                                'transaction' => __('forms.search.transaction'),
+                                'wallet' => __('forms.search.wallet'),
+                            ]"
+                        />
+                    </x-general.search.advanced-option>
 
-                <div class="search-advanced-options" x-show="searchType === 'block'">
                     <x-search.block />
-                </div>
-
-                <div class="search-advanced-options" x-show="searchType === 'transaction'">
                     <x-search.transaction :transaction-options="$transactionOptions" :transaction-type="Arr::get($state, 'transactionType', 'all')" />
-                </div>
-
-                <div class="search-advanced-options" x-show="searchType === 'wallet'">
                     <x-search.wallet />
                 </div>
             </div>
