@@ -16,11 +16,8 @@ final class CacheVoterCountByPublicKey implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public string $publicKey;
-
-    public function __construct(string $publicKey)
+    public function __construct(public string $publicKey)
     {
-        $this->publicKey = $publicKey;
     }
 
     public function handle(): void

@@ -10,13 +10,10 @@ use Illuminate\View\View;
 
 final class TableSkeleton extends Component
 {
-    private string $device;
-
     private Collection $items;
 
-    public function __construct(string $device, array $items)
+    public function __construct(private string $device, array $items)
     {
-        $this->device  = $device;
         $this->items   = collect($items);
     }
 

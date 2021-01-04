@@ -6,19 +6,21 @@ namespace App\Services\Cache;
 
 use App\Contracts\Cache as Contract;
 use App\Facades\Network;
+use App\Services\Cache\Concerns\ManagesCache;
+use Closure;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Facades\Cache;
 
 final class NetworkCache implements Contract
 {
-    use Concerns\ManagesCache;
+    use ManagesCache;
 
     public function getHeight(): int
     {
         return (int) $this->get('height');
     }
 
-    public function setHeight(\Closure $callback): int
+    public function setHeight(Closure $callback): int
     {
         return (int) $this->remember('height', $this->blockTimeTTL(), $callback);
     }
@@ -28,7 +30,7 @@ final class NetworkCache implements Contract
         return (float) $this->get('supply');
     }
 
-    public function setSupply(\Closure $callback): float
+    public function setSupply(Closure $callback): float
     {
         return (float) $this->remember('supply', $this->blockTimeTTL(), $callback);
     }

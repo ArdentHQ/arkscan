@@ -3,10 +3,10 @@ name: UI
 on:
     pull_request:
         paths:
-            - '**.css'
-            - '**.js'
-            - '**.php'
-            - '**.svg'
+            - "**.css"
+            - "**.js"
+            - "**.php"
+            - "**.svg"
 
 jobs:
     prettier:
@@ -26,7 +26,7 @@ jobs:
 
             - uses: stefanzweifel/git-auto-commit-action@v4
               with:
-                  commit_message: 'style: resolve style guide violations'
+                  commit_message: "style: resolve style guide violations"
                   branch: ${{ github.head_ref }}
 
     rustywind:
@@ -46,7 +46,7 @@ jobs:
 
             - uses: stefanzweifel/git-auto-commit-action@v4
               with:
-                  commit_message: 'style: resolve style guide violations'
+                  commit_message: "style: resolve style guide violations"
                   branch: ${{ github.head_ref }}
 
     svg:
@@ -74,7 +74,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "7.4"
+                  php-version: "8.0"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
                   coverage: pcov
 
@@ -85,7 +85,7 @@ jobs:
                   key: dependencies-composer-${{ hashFiles('composer.json') }}
 
             - name: Install Composer dependencies
-              run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader
+              run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
             - name: Install
               run: yarn install --frozen-lockfile
@@ -95,5 +95,5 @@ jobs:
 
             - uses: stefanzweifel/git-auto-commit-action@v4
               with:
-                  commit_message: 'chore: rebuild assets'
+                  commit_message: "chore: rebuild assets"
                   branch: ${{ github.head_ref }}

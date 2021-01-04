@@ -6,6 +6,42 @@ namespace App\Models;
 
 use App\Models\Casts\BigInteger;
 use App\Models\Concerns\SearchesCaseInsensitive;
+use App\Models\Scopes\BusinessEntityRegistrationScope;
+use App\Models\Scopes\BusinessEntityResignationScope;
+use App\Models\Scopes\BusinessEntityUpdateScope;
+use App\Models\Scopes\DelegateEntityRegistrationScope;
+use App\Models\Scopes\DelegateEntityResignationScope;
+use App\Models\Scopes\DelegateEntityUpdateScope;
+use App\Models\Scopes\DelegateRegistrationScope;
+use App\Models\Scopes\DelegateResignationScope;
+use App\Models\Scopes\EntityRegistrationScope;
+use App\Models\Scopes\EntityResignationScope;
+use App\Models\Scopes\EntityUpdateScope;
+use App\Models\Scopes\IpfsScope;
+use App\Models\Scopes\LegacyBridgechainRegistrationScope;
+use App\Models\Scopes\LegacyBridgechainResignationScope;
+use App\Models\Scopes\LegacyBridgechainUpdateScope;
+use App\Models\Scopes\LegacyBusinessRegistrationScope;
+use App\Models\Scopes\LegacyBusinessResignationScope;
+use App\Models\Scopes\LegacyBusinessUpdateScope;
+use App\Models\Scopes\ModuleEntityRegistrationScope;
+use App\Models\Scopes\ModuleEntityResignationScope;
+use App\Models\Scopes\ModuleEntityUpdateScope;
+use App\Models\Scopes\MultiPaymentScope;
+use App\Models\Scopes\MultiSignatureScope;
+use App\Models\Scopes\PluginEntityRegistrationScope;
+use App\Models\Scopes\PluginEntityResignationScope;
+use App\Models\Scopes\PluginEntityUpdateScope;
+use App\Models\Scopes\ProductEntityRegistrationScope;
+use App\Models\Scopes\ProductEntityResignationScope;
+use App\Models\Scopes\ProductEntityUpdateScope;
+use App\Models\Scopes\SecondSignatureScope;
+use App\Models\Scopes\TimelockClaimScope;
+use App\Models\Scopes\TimelockRefundScope;
+use App\Models\Scopes\TimelockScope;
+use App\Models\Scopes\TransferScope;
+use App\Models\Scopes\VoteCombinationScope;
+use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,42 +73,42 @@ final class Transaction extends Model
      * all places that need to filter transactions by their type.
      */
     const TYPE_SCOPES = [
-        'businessEntityRegistration'    => Scopes\BusinessEntityRegistrationScope::class,
-        'businessEntityResignation'     => Scopes\BusinessEntityResignationScope::class,
-        'businessEntityUpdate'          => Scopes\BusinessEntityUpdateScope::class,
-        'delegateEntityRegistration'    => Scopes\DelegateEntityRegistrationScope::class,
-        'delegateEntityResignation'     => Scopes\DelegateEntityResignationScope::class,
-        'delegateEntityUpdate'          => Scopes\DelegateEntityUpdateScope::class,
-        'delegateRegistration'          => Scopes\DelegateRegistrationScope::class,
-        'delegateResignation'           => Scopes\DelegateResignationScope::class,
-        'entityRegistration'            => Scopes\EntityRegistrationScope::class,
-        'entityResignation'             => Scopes\EntityResignationScope::class,
-        'entityUpdate'                  => Scopes\EntityUpdateScope::class,
-        'ipfs'                          => Scopes\IpfsScope::class,
-        'legacyBridgechainRegistration' => Scopes\LegacyBridgechainRegistrationScope::class,
-        'legacyBridgechainResignation'  => Scopes\LegacyBridgechainResignationScope::class,
-        'legacyBridgechainUpdate'       => Scopes\LegacyBridgechainUpdateScope::class,
-        'legacyBusinessRegistration'    => Scopes\LegacyBusinessRegistrationScope::class,
-        'legacyBusinessResignation'     => Scopes\LegacyBusinessResignationScope::class,
-        'legacyBusinessUpdate'          => Scopes\LegacyBusinessUpdateScope::class,
-        'moduleEntityRegistration'      => Scopes\ModuleEntityRegistrationScope::class,
-        'moduleEntityResignation'       => Scopes\ModuleEntityResignationScope::class,
-        'moduleEntityUpdate'            => Scopes\ModuleEntityUpdateScope::class,
-        'multiPayment'                  => Scopes\MultiPaymentScope::class,
-        'multiSignature'                => Scopes\MultiSignatureScope::class,
-        'pluginEntityRegistration'      => Scopes\PluginEntityRegistrationScope::class,
-        'pluginEntityResignation'       => Scopes\PluginEntityResignationScope::class,
-        'pluginEntityUpdate'            => Scopes\PluginEntityUpdateScope::class,
-        'productEntityRegistration'     => Scopes\ProductEntityRegistrationScope::class,
-        'productEntityResignation'      => Scopes\ProductEntityResignationScope::class,
-        'productEntityUpdate'           => Scopes\ProductEntityUpdateScope::class,
-        'secondSignature'               => Scopes\SecondSignatureScope::class,
-        'timelockClaim'                 => Scopes\TimelockClaimScope::class,
-        'timelockRefund'                => Scopes\TimelockRefundScope::class,
-        'timelock'                      => Scopes\TimelockScope::class,
-        'transfer'                      => Scopes\TransferScope::class,
-        'vote'                          => Scopes\VoteScope::class,
-        'voteCombination'               => Scopes\VoteCombinationScope::class,
+        'businessEntityRegistration'    => BusinessEntityRegistrationScope::class,
+        'businessEntityResignation'     => BusinessEntityResignationScope::class,
+        'businessEntityUpdate'          => BusinessEntityUpdateScope::class,
+        'delegateEntityRegistration'    => DelegateEntityRegistrationScope::class,
+        'delegateEntityResignation'     => DelegateEntityResignationScope::class,
+        'delegateEntityUpdate'          => DelegateEntityUpdateScope::class,
+        'delegateRegistration'          => DelegateRegistrationScope::class,
+        'delegateResignation'           => DelegateResignationScope::class,
+        'entityRegistration'            => EntityRegistrationScope::class,
+        'entityResignation'             => EntityResignationScope::class,
+        'entityUpdate'                  => EntityUpdateScope::class,
+        'ipfs'                          => IpfsScope::class,
+        'legacyBridgechainRegistration' => LegacyBridgechainRegistrationScope::class,
+        'legacyBridgechainResignation'  => LegacyBridgechainResignationScope::class,
+        'legacyBridgechainUpdate'       => LegacyBridgechainUpdateScope::class,
+        'legacyBusinessRegistration'    => LegacyBusinessRegistrationScope::class,
+        'legacyBusinessResignation'     => LegacyBusinessResignationScope::class,
+        'legacyBusinessUpdate'          => LegacyBusinessUpdateScope::class,
+        'moduleEntityRegistration'      => ModuleEntityRegistrationScope::class,
+        'moduleEntityResignation'       => ModuleEntityResignationScope::class,
+        'moduleEntityUpdate'            => ModuleEntityUpdateScope::class,
+        'multiPayment'                  => MultiPaymentScope::class,
+        'multiSignature'                => MultiSignatureScope::class,
+        'pluginEntityRegistration'      => PluginEntityRegistrationScope::class,
+        'pluginEntityResignation'       => PluginEntityResignationScope::class,
+        'pluginEntityUpdate'            => PluginEntityUpdateScope::class,
+        'productEntityRegistration'     => ProductEntityRegistrationScope::class,
+        'productEntityResignation'      => ProductEntityResignationScope::class,
+        'productEntityUpdate'           => ProductEntityUpdateScope::class,
+        'secondSignature'               => SecondSignatureScope::class,
+        'timelockClaim'                 => TimelockClaimScope::class,
+        'timelockRefund'                => TimelockRefundScope::class,
+        'timelock'                      => TimelockScope::class,
+        'transfer'                      => TransferScope::class,
+        'vote'                          => VoteScope::class,
+        'voteCombination'               => VoteCombinationScope::class,
     ];
 
     /**
@@ -107,7 +143,7 @@ final class Transaction extends Model
     /**
      * A transaction belongs to a block.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function block(): BelongsTo
     {
@@ -117,7 +153,7 @@ final class Transaction extends Model
     /**
      * A transaction belongs to a sender.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function sender(): BelongsTo
     {
@@ -127,7 +163,7 @@ final class Transaction extends Model
     /**
      * A transaction belongs to a recipient.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function recipient(): BelongsTo
     {

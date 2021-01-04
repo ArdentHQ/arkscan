@@ -13,25 +13,36 @@ use App\Services\Timestamp;
 use App\Services\Transactions\TransactionDirection;
 use App\Services\Transactions\TransactionState;
 use App\Services\Transactions\TransactionType;
+use App\ViewModels\Concerns\Transaction\HasDirection;
+use App\ViewModels\Concerns\Transaction\HasIcons;
+use App\ViewModels\Concerns\Transaction\HasState;
+use App\ViewModels\Concerns\Transaction\HasType;
+use App\ViewModels\Concerns\Transaction\InteractsWithDelegateRegistration;
+use App\ViewModels\Concerns\Transaction\InteractsWithEntities;
+use App\ViewModels\Concerns\Transaction\InteractsWithMarketSquare;
+use App\ViewModels\Concerns\Transaction\InteractsWithMultiPayment;
+use App\ViewModels\Concerns\Transaction\InteractsWithMultiSignature;
+use App\ViewModels\Concerns\Transaction\InteractsWithTypeData;
+use App\ViewModels\Concerns\Transaction\InteractsWithVendorField;
+use App\ViewModels\Concerns\Transaction\InteractsWithVotes;
+use App\ViewModels\Concerns\Transaction\InteractsWithWallets;
 use Illuminate\Support\Arr;
 
 final class TransactionViewModel implements ViewModel
 {
-    use Concerns\Transaction\HasDirection;
-    use Concerns\Transaction\HasIcons;
-    use Concerns\Transaction\HasState;
-    use Concerns\Transaction\HasType;
-    use Concerns\Transaction\InteractsWithDelegateRegistration;
-    use Concerns\Transaction\InteractsWithEntities;
-    use Concerns\Transaction\InteractsWithMarketSquare;
-    use Concerns\Transaction\InteractsWithMultiPayment;
-    use Concerns\Transaction\InteractsWithMultiSignature;
-    use Concerns\Transaction\InteractsWithTypeData;
-    use Concerns\Transaction\InteractsWithVendorField;
-    use Concerns\Transaction\InteractsWithVotes;
-    use Concerns\Transaction\InteractsWithWallets;
-
-    private Transaction $transaction;
+    use HasDirection;
+    use HasIcons;
+    use HasState;
+    use HasType;
+    use InteractsWithDelegateRegistration;
+    use InteractsWithEntities;
+    use InteractsWithMarketSquare;
+    use InteractsWithMultiPayment;
+    use InteractsWithMultiSignature;
+    use InteractsWithTypeData;
+    use InteractsWithVendorField;
+    use InteractsWithVotes;
+    use InteractsWithWallets;
 
     private TransactionType $type;
 
@@ -39,9 +50,8 @@ final class TransactionViewModel implements ViewModel
 
     private TransactionDirection $direction;
 
-    public function __construct(Transaction $transaction)
+    public function __construct(private Transaction $transaction)
     {
-        $this->transaction = $transaction;
         $this->type        = new TransactionType($transaction);
         $this->state       = new TransactionState($transaction);
         $this->direction   = new TransactionDirection($transaction);

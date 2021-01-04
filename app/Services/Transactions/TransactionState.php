@@ -10,11 +10,8 @@ use App\Models\Transaction;
 
 final class TransactionState
 {
-    private Transaction $transaction;
-
-    public function __construct(Transaction $transaction)
+    public function __construct(private Transaction $transaction)
     {
-        $this->transaction = $transaction;
     }
 
     public function isConfirmed(): bool

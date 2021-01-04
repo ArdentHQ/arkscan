@@ -13,6 +13,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Throwable;
 
 final class RouteServiceProvider extends ServiceProvider
 {
@@ -48,7 +49,7 @@ final class RouteServiceProvider extends ServiceProvider
 
             try {
                 return Wallets::findByAddress($value);
-            } catch (\Throwable $th) {
+            } catch (Throwable) {
                 UI::useErrorMessage(404, trans('general.wallet_not_found', [$value]));
 
                 abort(404);

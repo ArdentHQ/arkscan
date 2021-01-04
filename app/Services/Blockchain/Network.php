@@ -12,11 +12,8 @@ use Illuminate\Support\Facades\Http;
 
 final class Network implements Contract
 {
-    private array $config;
-
-    public function __construct(array $config)
+    public function __construct(private array $config)
     {
-        $this->config = $config;
     }
 
     public function name(): string

@@ -37,7 +37,7 @@ final class Round extends Model
     /**
      * A round slot belongs to a delegate.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function delegate(): BelongsTo
     {

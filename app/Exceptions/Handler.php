@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 final class Handler extends ExceptionHandler
@@ -31,9 +34,9 @@ final class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param \Throwable $exception
+     * @param Throwable $exception
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return void
      */
@@ -45,12 +48,12 @@ final class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Throwable               $exception
+     * @param Request   $request
+     * @param Throwable $exception
      *
-     * @throws \Throwable
+     * @throws Throwable
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function render($request, Throwable $exception)
     {

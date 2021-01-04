@@ -6,19 +6,17 @@ namespace App\Repositories;
 
 use App\Contracts\TransactionRepository;
 use App\Models\Transaction;
+use App\Repositories\Concerns\ManagesCache;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 final class TransactionRepositoryWithCache implements TransactionRepository
 {
-    use Concerns\ManagesCache;
+    use ManagesCache;
 
-    private TransactionRepository $transactions;
-
-    public function __construct(TransactionRepository $transactions)
+    public function __construct(private TransactionRepository $transactions)
     {
-        $this->transactions = $transactions;
     }
 
     public function allByWallet(string $address, string $publicKey): Collection

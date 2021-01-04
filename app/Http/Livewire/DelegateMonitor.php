@@ -20,6 +20,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Component;
+use Throwable;
 
 final class DelegateMonitor extends Component
 {
@@ -74,7 +75,7 @@ final class DelegateMonitor extends Component
                 'nextDelegate'    => $this->getNextDelegate(),
             ];
             // @codeCoverageIgnoreStart
-        } catch (\Throwable $th) {
+        } catch (Throwable) {
             // @README: If any errors occur we want to keep polling until we have a list of delegates
             $this->pollDelegates();
         }

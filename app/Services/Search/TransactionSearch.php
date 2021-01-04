@@ -12,6 +12,7 @@ use App\Models\Composers\ValueRangeComposer;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Throwable;
 
 final class TransactionSearch implements Search
 {
@@ -47,7 +48,7 @@ final class TransactionSearch implements Search
                         $this->applyScopes($query, $parameters);
                     });
                 });
-            } catch (\Throwable $th) {
+            } catch (Throwable) {
                 // If this throws then the term was not a valid address, public key or username.
             }
 

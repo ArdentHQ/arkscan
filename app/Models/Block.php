@@ -59,7 +59,7 @@ final class Block extends Model
     /**
      * A block has many transactions.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function transactions(): HasMany
     {
@@ -69,7 +69,7 @@ final class Block extends Model
     /**
      * A block belongs to a delegate.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function delegate(): BelongsTo
     {
@@ -79,7 +79,7 @@ final class Block extends Model
     /**
      * A block has one previous block.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      */
     public function previous(): HasOne
     {

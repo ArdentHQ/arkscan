@@ -10,17 +10,14 @@ use Illuminate\Support\Arr;
 
 final class Payment
 {
-    private int $timestamp;
-
     private float $amount;
 
     private string $address;
 
     private ?string $username = null;
 
-    public function __construct(int $timestamp, array $payment)
+    public function __construct(private int $timestamp, array $payment)
     {
-        $this->timestamp   = $timestamp;
         $this->amount      = $payment['amount'] / 1e8;
         $this->address     = $payment['recipientId'];
         $this->username    = Arr::get(Wallets::findByAddress($payment['recipientId']), 'attributes.delegate.username');

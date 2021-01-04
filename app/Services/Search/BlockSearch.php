@@ -11,6 +11,7 @@ use App\Models\Composers\TimestampRangeComposer;
 use App\Models\Composers\ValueRangeComposer;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Throwable;
 
 final class BlockSearch implements Search
 {
@@ -40,7 +41,7 @@ final class BlockSearch implements Search
 
                     $this->applyScopes($query, $parameters);
                 });
-            } catch (\Throwable $th) {
+            } catch (Throwable) {
                 // If this throws then the term was not a valid address, public key or username.
             }
         }

@@ -27,9 +27,7 @@ final class Slot
 
     private int $currentRoundBlocks;
 
-    private int $roundNumber;
-
-    public function __construct(array $data, Collection $roundBlocks, int $roundNumber)
+    public function __construct(array $data, Collection $roundBlocks, private int $roundNumber)
     {
         foreach ($data as $key => $value) {
             /* @phpstan-ignore-next-line */
@@ -42,8 +40,6 @@ final class Slot
         $this->currentRoundBlocks = $roundBlocks
             ->where('generator_public_key', $data['publicKey'])
             ->count();
-
-        $this->roundNumber = $roundNumber;
     }
 
     public function publicKey(): string

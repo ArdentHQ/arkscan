@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace App\Services\Cache;
 
 use App\Contracts\Cache as Contract;
+use App\Services\Cache\Concerns\ManagesCache;
+use App\Services\Cache\Concerns\ManagesChart;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 final class PriceChartCache implements Contract
 {
-    use Concerns\ManagesCache;
-    use Concerns\ManagesChart;
+    use ManagesCache;
+    use ManagesChart;
 
     public function getDay(string $currency): array
     {

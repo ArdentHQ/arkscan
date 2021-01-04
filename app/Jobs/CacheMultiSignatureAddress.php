@@ -17,11 +17,8 @@ final class CacheMultiSignatureAddress implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public array $wallet;
-
-    public function __construct(array $wallet)
+    public function __construct(public array $wallet)
     {
-        $this->wallet = $wallet;
     }
 
     public function handle(): void

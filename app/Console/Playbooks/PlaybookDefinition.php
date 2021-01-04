@@ -9,7 +9,7 @@ final class PlaybookDefinition
     /** @var string */
     public $id;
 
-    /** @var \App\Console\Playbooks\Playbook */
+    /** @var Playbook */
     public $playbook;
 
     /** @var int */

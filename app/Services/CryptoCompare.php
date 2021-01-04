@@ -9,6 +9,7 @@ use App\Services\Cache\CryptoCompareCache;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
+use Konceiver\BetterNumberFormatter\ResolveScientificNotation;
 
 final class CryptoCompare
 {

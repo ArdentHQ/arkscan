@@ -15,8 +15,6 @@ use Illuminate\Support\Str;
 
 final class TransactionType
 {
-    private Transaction $transaction;
-
     private array $types = [
         'isTransfer'                      => 'transfer',
         'isSecondSignature'               => 'second-signature',
@@ -54,9 +52,8 @@ final class TransactionType
         'isLegacyBridgechainUpdate'       => 'bridgechain-entity-update',
     ];
 
-    public function __construct(Transaction $transaction)
+    public function __construct(private Transaction $transaction)
     {
-        $this->transaction = $transaction;
     }
 
     public function name(): string

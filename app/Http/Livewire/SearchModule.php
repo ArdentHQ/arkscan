@@ -9,6 +9,7 @@ use App\Http\Livewire\Concerns\ManagesSearch;
 use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
+use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -126,7 +127,7 @@ final class SearchModule extends Component
         return $this->searchWithService(new BlockSearch(), $data, fn ($model) => $this->redirectRoute('block', $model->id));
     }
 
-    private function searchWithService(Search $service, array $data, \Closure $callback): bool
+    private function searchWithService(Search $service, array $data, Closure $callback): bool
     {
         $term = Arr::get($data, 'term');
 

@@ -9,11 +9,8 @@ use App\Services\Identity;
 
 final class TransactionDirection
 {
-    private Transaction $transaction;
-
-    public function __construct(Transaction $transaction)
+    public function __construct(private Transaction $transaction)
     {
-        $this->transaction = $transaction;
     }
 
     public function isSent(string $address): bool

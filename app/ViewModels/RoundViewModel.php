@@ -9,11 +9,8 @@ use App\Models\Round;
 
 final class RoundViewModel implements ViewModel
 {
-    private Round $round;
-
-    public function __construct(Round $round)
+    public function __construct(private Round $round)
     {
-        $this->round = $round;
     }
 
     public function balance(): float

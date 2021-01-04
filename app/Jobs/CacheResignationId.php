@@ -16,11 +16,8 @@ final class CacheResignationId implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public Transaction $transaction;
-
-    public function __construct(Transaction $transaction)
+    public function __construct(public Transaction $transaction)
     {
-        $this->transaction = $transaction;
     }
 
     public function handle(WalletCache $cache): void

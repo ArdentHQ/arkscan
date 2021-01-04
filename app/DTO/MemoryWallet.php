@@ -9,14 +9,8 @@ use App\Services\Identity;
 
 final class MemoryWallet
 {
-    public string $address;
-
-    public ?string $publicKey = null;
-
-    private function __construct(string $address, ?string $publicKey)
+    private function __construct(public string $address, public ?string $publicKey)
     {
-        $this->address   = $address;
-        $this->publicKey = $publicKey;
     }
 
     public static function fromAddress(string $address): self

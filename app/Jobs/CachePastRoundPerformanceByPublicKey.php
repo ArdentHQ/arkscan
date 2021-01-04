@@ -17,14 +17,8 @@ final class CachePastRoundPerformanceByPublicKey implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public int $round;
-
-    public string $publicKey;
-
-    public function __construct(int $round, string $publicKey)
+    public function __construct(public int $round, public string $publicKey)
     {
-        $this->round     = $round;
-        $this->publicKey = $publicKey;
     }
 
     public function handle(): void
