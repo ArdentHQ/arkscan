@@ -26,7 +26,7 @@
             <x-grid.confirmations :model="$block" />
         </x-details.grid>
 
-        @if($transactions->isNotEmpty())
+        @if($hasTransactions)
             <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
                 <div class="py-16 content-container md:px-8">
                     <div id="transaction-list" class="w-full">
@@ -34,11 +34,7 @@
                             <h4>@lang('pages.block.transactions')</h4>
                         </div>
 
-                        <x-skeletons.transactions>
-                            <x-tables.desktop.transactions :transactions="$transactions" />
-
-                            <x-tables.mobile.transactions :transactions="$transactions" />
-                        </x-skeletons.transactions>
+                        <livewire:block-transactions-table :block-id="$block->id()" />
                     </div>
                 </div>
             </div>
