@@ -80,11 +80,14 @@
             </form>
 
             <div class="hidden px-2 rounded bg-theme-primary-100 dark:bg-theme-secondary-800 md:flex flex-inline">
+                @php ($pageIndex = 1)
+
                 @foreach ($elements as $element)
                     {{-- "Three Dots" Separator --}}
                     @if (is_string($element))
                         <button
-                            x-on:click="toggleSearch"
+                            wire:key="ellipsis-{{ $pageIndex }}"
+                            x-on:click="toggleSearch()"
                             type="button"
                             class="button-pagination-page-indicator button-pagination-page-indicator--search"
                             :class="{ 'opacity-0': search }"
@@ -103,6 +106,8 @@
                             >
                                 {{ $page }}
                             </button>
+
+                            @php ($pageIndex++)
                         @endforeach
                     @endif
                 @endforeach
