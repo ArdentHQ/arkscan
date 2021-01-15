@@ -2135,16 +2135,16 @@
         },
         {
             "name": "konceiver/better-number-formatter",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/konceiver/better-number-formatter.git",
-                "reference": "c0080e95551a482af1044147d84934f698a48a64"
+                "reference": "ffb879d53510c7dd16951cdce2036f0aee3dc298"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/konceiver/better-number-formatter/zipball/c0080e95551a482af1044147d84934f698a48a64",
-                "reference": "c0080e95551a482af1044147d84934f698a48a64",
+                "url": "https://api.github.com/repos/konceiver/better-number-formatter/zipball/ffb879d53510c7dd16951cdce2036f0aee3dc298",
+                "reference": "ffb879d53510c7dd16951cdce2036f0aee3dc298",
                 "shasum": ""
             },
             "require": {
@@ -2180,7 +2180,7 @@
             ],
             "support": {
                 "issues": "https://github.com/konceiver/better-number-formatter/issues",
-                "source": "https://github.com/konceiver/better-number-formatter/tree/2.0.0"
+                "source": "https://github.com/konceiver/better-number-formatter/tree/2.0.1"
             },
             "funding": [
                 {
@@ -2192,7 +2192,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-11-27T13:12:48+00:00"
+            "time": "2021-01-14T16:32:38+00:00"
         },
         {
             "name": "konceiver/binary",
@@ -2320,16 +2320,16 @@
         },
         {
             "name": "konceiver/laravel-blade-components",
-            "version": "2.0.2",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/konceiver/laravel-blade-components.git",
-                "reference": "d648e7ae4c3933309da1537f7e836128009fdae0"
+                "reference": "e9ebc64e9b9f559474e479565e6380445b87ee0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/konceiver/laravel-blade-components/zipball/d648e7ae4c3933309da1537f7e836128009fdae0",
-                "reference": "d648e7ae4c3933309da1537f7e836128009fdae0",
+                "url": "https://api.github.com/repos/konceiver/laravel-blade-components/zipball/e9ebc64e9b9f559474e479565e6380445b87ee0c",
+                "reference": "e9ebc64e9b9f559474e479565e6380445b87ee0c",
                 "shasum": ""
             },
             "require": {
@@ -2375,7 +2375,7 @@
             ],
             "support": {
                 "issues": "https://github.com/konceiver/laravel-blade-components/issues",
-                "source": "https://github.com/konceiver/laravel-blade-components/tree/2.0.2"
+                "source": "https://github.com/konceiver/laravel-blade-components/tree/2.0.3"
             },
             "funding": [
                 {
@@ -2387,7 +2387,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-12-15T05:56:59+00:00"
+            "time": "2021-01-14T16:33:08+00:00"
         },
         {
             "name": "konceiver/laravel-data-bags",
