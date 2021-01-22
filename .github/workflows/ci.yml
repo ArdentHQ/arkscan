@@ -73,7 +73,7 @@ jobs:
               run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
             - name: Run php-cs-fixer
-              run: PHP_CS_FIXER_IGNORE_ENV=true composer format
+              run: composer format
 
             - uses: stefanzweifel/git-auto-commit-action@v4
               with:
