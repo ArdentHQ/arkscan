@@ -1,13 +1,13 @@
 FROM php:fpm-alpine
 
-ENV NODE_VERSION 14.14.0
+ENV NODE_VERSION 14.15.4
 ENV YARN_VERSION 1.22.5
 
 
 WORKDIR /var/www/explorer
 
 ADD docker/entrypoint.sh /entrypoint.sh
-ADD docker/nginx-default.conf /etc/nginx/conf.d/default.conf
+ADD docker/nginx-default.conf /etc/nginx/http.d/default.conf
 ADD docker/supervisord.conf /etc/supervisord.conf
 
 RUN adduser -S -h /var/www/explorer -s /bin/bash -G www-data -u 1000 explorer explorer \
