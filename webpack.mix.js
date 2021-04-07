@@ -11,7 +11,13 @@ const mix = require('laravel-mix');
  |
  */
 
-mix
+mix.webpackConfig({
+        resolve: {
+            alias: {
+                '@ui': path.resolve(__dirname, 'vendor/arkecosystem/ui/resources/assets/')
+            }
+        }
+    })
     // Options
     .options({
         processCssUrls: false,
@@ -19,13 +25,11 @@ mix
     // App
     .js('resources/js/app.js', 'public/js')
     .copy('resources/js/chart.js', 'public/js/chart.js')
-    .copy('resources/js/vendor/ark/clipboard.js', 'public/js/clipboard.js')
+    .copy('vendor/arkecosystem/ui/resources/assets/js/clipboard.js', 'public/js/clipboard.js')
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss')(),
     ])
-    // .copy('resources/js/vendor/ark/clipboard.js', 'public/js/clipboard.js')
-    // .copy('node_modules/swiper/swiper-bundle.min.js', 'public/js/swiper.js')
     .copyDirectory('resources/images', 'public/images')
     // Fonts
     .copyDirectory('resources/fonts', 'public/fonts')

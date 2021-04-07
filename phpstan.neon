@@ -1,7 +1,7 @@
 parameters:
     paths:
         - app
-    excludes_analyse:
+    excludePaths:
         - app/Console/Playbooks
         - app/Console/Commands/RunPlaybookCommand.php
         - app/Services/Monitor
@@ -20,7 +20,6 @@ parameters:
         - '#InvalidArgumentException constructor expects string#'
         - '#withScope#'
         # FIXME
-        - '#function substr expects string, string\|false given#'
         - '#AbstractNetwork#'
         - '#PendingDispatch given#'
         - '#with a nullable type declaration#'

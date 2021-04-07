@@ -13,6 +13,7 @@ module.exports = {
                 20: '20px',
             },
             height: {
+                ...defaultConfig.theme.extend.height,
                 '7': '1.75rem',
                 '11': '2.75rem',
                 '30': '7.5rem',
