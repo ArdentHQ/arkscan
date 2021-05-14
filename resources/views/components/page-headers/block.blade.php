@@ -1,5 +1,5 @@
 <div class="dark:bg-theme-secondary-900">
-    <div class="flex-col pt-16 space-y-6 content-container">
+    <x-ark-container container-class="flex flex-col space-y-6">
         <x-general.search.header-slim :title="trans('pages.block.title')" />
 
         <x-general.entity-header
@@ -65,5 +65,5 @@
                 </div>
             </x-slot>
         </x-general.entity-header>
-    </div>
+    </x-ark-container>
 </div>

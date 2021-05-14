@@ -187,7 +187,7 @@ body {
 
 /* Table List */
 .table-list-mobile-row {
-    @apply flex flex-col w-full pt-8 border-t border-theme-secondary-300;
+    @apply flex flex-col w-full border-t border-theme-secondary-300;
 }
 .table-list-mobile-row:first-child {
     @apply pt-0 border-t-0;

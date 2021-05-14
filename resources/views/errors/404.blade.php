@@ -3,13 +3,6 @@
         <meta property="og:title" content="404 - Error | ARK Documentation" />
     @endpush
 
-    @section('breadcrumbs')
-        <x-ark-breadcrumbs :crumbs="[
-            ['route' => 'home', 'label' => trans('menus.home')],
-            ['label' => trans('menus.error.404')],
-        ]" />
-    @endsection
-
     @section('content')
         <div class="flex flex-col justify-center items-center space-y-8">
             <img src="/images/errors/404.svg" class="max-w-4xl"/>

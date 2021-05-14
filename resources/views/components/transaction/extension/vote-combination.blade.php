@@ -1,5 +1,5 @@
 <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
-    <div class="flex-col py-16 space-y-6 sm:space-y-0 sm:space-x-6 content-container sm:flex-row">
+    <div class="flex-col py-8 space-y-6 sm:space-y-0 sm:space-x-6 content-container sm:flex-row">
         {{-- Vote --}}
         <div class="w-full sm:w-1/2">
             <div class="flex relative justify-between items-end mb-6">

@@ -1,5 +1,5 @@
 <div class="dark:bg-theme-secondary-900">
-    <div class="flex-col pt-16 mb-16 space-y-5 content-container">
+    <x-ark-container container-class="flex flex-col space-y-5">
         <x-general.search.header-slim :title="trans($title)" />
 
         <x-general.entity-header :value="$wallet->address()">
@@ -79,5 +79,5 @@
                 </x-slot>
             @endisset
         </x-general.entity-header>
-    </div>
+    </x-ark-container>
 </div>

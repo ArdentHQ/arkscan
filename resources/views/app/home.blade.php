@@ -4,9 +4,9 @@
         <x-general.search.header />
 
         <div class="bg-white dark:bg-theme-secondary-900">
-            <div class="py-16 content-container">
+            <x-ark-container>
                 <livewire:latest-records />
-            </div>
+            </x-ark-container>
         </div>
     @endsection
 

@@ -1,9 +1,9 @@
 <div class="bg-white dark:bg-theme-secondary-900">
-    <div class="flex-col py-16 content-container">
+    <x-ark-container>
         <h1 class="header-2">@lang('pages.wallets.title')</h1>
 
         <div class="mt-4">
             <livewire:wallet-table />
         </div>
-    </div>
+    </x-ark-container>
 </div>

@@ -1,4 +1,4 @@
-<div class="space-y-8 divide-y table-list-mobile">
+<div class="divide-y table-list-mobile">
     <x-skeleton>
         <div class="space-y-3 table-list-mobile-row">
             @foreach($rows as $row)
