@@ -61,8 +61,8 @@ return [
             'description' => 'Enable/Disable dark theme',
         ],
         'table' => [
-            'title'       => 'Compact Table',
-            'description' => 'Reduce the size of tables',
+            'title'       => 'Expanded Tables',
+            'description' => 'Increases spacing of table items (desktop only)',
         ],
     ],
 

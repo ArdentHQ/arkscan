@@ -40,10 +40,10 @@
         @if(Settings::usesDarkTheme())
             class="dark"
         @endif
-        x-data="{ 'theme': '{{ Settings::theme() }}', 'compact': '{{ Settings::usesCompactTables() }}' }"
-        :class="{ 'dark': theme === 'dark', 'table-compact': compact }"
+        x-data="{ 'theme': '{{ Settings::theme() }}', 'expanded': '{{ Settings::usesCompactTables() }}' }"
+        :class="{ 'dark': theme === 'dark', 'table-compact': ! expanded }"
         @toggle-dark-mode.window="theme === 'dark' ? theme = 'light' : theme = 'dark'"
-        @toggle-compact-table="compact = !compact"
+        @toggle-compact-table="expanded = ! expanded"
     >
         <div id="app" class="flex flex-col antialiased bg-white dark:bg-theme-secondary-900">
             <x-navbar.navbar
