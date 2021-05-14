@@ -47,15 +47,6 @@
                 </x-navbar.setting-option>
             @endif
 
-            <x-navbar.setting-option :title="trans('forms.settings.fee_chart.title')" :subtitle="trans('forms.settings.fee_chart.description')" breakpoint="sm">
-                <x-ark-toggle
-                    name="state.feeChart"
-                    hide-label
-                    :default="$this->state['feeChart'] ? 'true' : 'false'"
-                    alpine-click="$dispatch('toggle-fee-chart')"
-                />
-            </x-navbar.setting-option>
-
             <x-navbar.setting-option :title="trans('forms.settings.theme.title')" :subtitle="trans('forms.settings.theme.description')">
                 <x-ark-toggle
                     name="state.darkTheme"
