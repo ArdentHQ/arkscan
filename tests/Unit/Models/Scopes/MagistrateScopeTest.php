@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\Scopes\PluginEntityResignationScope;
+use App\Models\Scopes\MagistrateScope;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Scope;
 use function Tests\configureExplorerDatabase;
@@ -10,7 +10,7 @@ use function Tests\configureExplorerDatabase;
 beforeEach(function () {
     configureExplorerDatabase();
 
-    $this->subject = new PluginEntityResignationScope();
+    $this->subject = new MagistrateScope();
 });
 
 it('should be an instance of a scope', function () {

@@ -30,49 +30,19 @@ final class SearchModule extends Component
     ];
 
     protected array $transactionOptionsValues = [
-        '' => [
-            'all',
-        ],
-        'core' => [
-            'transfer',
-            'secondSignature',
-            'delegateRegistration',
-            'vote',
-            'voteCombination',
-            'multiSignature',
-            'ipfs',
-            'multiPayment',
-            'timelock',
-            'timelockClaim',
-            'timelockRefund',
-        ],
-        'magistrate' => [
-            'businessEntityRegistration',
-            'businessEntityResignation',
-            'businessEntityUpdate',
-            'delegateEntityRegistration',
-            'delegateEntityResignation',
-            'delegateEntityUpdate',
-            'delegateResignation',
-            'entityRegistration',
-            'entityResignation',
-            'entityUpdate',
-            'legacyBridgechainRegistration',
-            'legacyBridgechainResignation',
-            'legacyBridgechainUpdate',
-            'legacyBusinessRegistration',
-            'legacyBusinessResignation',
-            'legacyBusinessUpdate',
-            'moduleEntityRegistration',
-            'moduleEntityResignation',
-            'moduleEntityUpdate',
-            'pluginEntityRegistration',
-            'pluginEntityResignation',
-            'pluginEntityUpdate',
-            'productEntityRegistration',
-            'productEntityResignation',
-            'productEntityUpdate',
-        ],
+        'all',
+        'transfer',
+        'secondSignature',
+        'delegateRegistration',
+        'vote',
+        'voteCombination',
+        'multiSignature',
+        'ipfs',
+        'multiPayment',
+        'timelock',
+        'timelockClaim',
+        'timelockRefund',
+        'magistrate',
     ];
 
     public function mount(bool $isSlim = false, bool $isAdvanced = false, string $type = 'block'): void
@@ -158,16 +128,7 @@ final class SearchModule extends Component
     private function getTransactionOptions(): array
     {
         return collect($this->transactionOptionsValues)
-            ->mapWithKeys(function ($options, $group): array {
-                $key = strtoupper($group);
-                $value = collect($options)
-                    ->mapWithKeys(function ($option): array {
-                        return [$option => __('forms.search.transaction_types.'.$option)];
-                    })->toArray();
-
-                return [
-                    $key => $value,
-                ];
-            })->toArray();
+            ->mapWithKeys(fn ($option) => [$option =>__('forms.search.transaction_types.'.$option)])
+            ->toArray();
     }
 }

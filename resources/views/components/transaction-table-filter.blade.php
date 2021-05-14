@@ -31,74 +31,32 @@
         @endslot
 
         <div class="block overflow-y-scroll justify-center items-center py-3 h-64 dropdown-scrolling md:h-72">
-            <div
-                class="cursor-pointer dropdown-entry text-theme-secondary-900 dark:text-theme-secondary-200"
-                @click="window.livewire.emit('filterTransactionsByType', 'all'); transactionTypeFilter = 'all'; transactionTypeFilterLabel = '@lang('forms.search.transaction_types.all')'"
-            >
-                @lang('forms.search.transaction_types.all')
-            </div>
-
-            <hr class="mx-8 mt-4 border-b border-dashed border-theme-secondary-300">
-
             @foreach([
-                'core' => [
-                    'transfer',
-                    'secondSignature',
-                    'delegateRegistration',
-                    'vote',
-                    'voteCombination',
-                    'multiSignature',
-                    'ipfs',
-                    'multiPayment',
-                    'delegateResignation',
-                    'timelock',
-                    'timelockClaim',
-                    'timelockRefund',
-                ],
-                'magistrate' => [
-                    'businessEntityRegistration',
-                    'businessEntityResignation',
-                    'businessEntityUpdate',
-                    'delegateEntityRegistration',
-                    'delegateEntityResignation',
-                    'delegateEntityUpdate',
-                    'entityRegistration',
-                    'entityResignation',
-                    'entityUpdate',
-                    'legacyBridgechainRegistration',
-                    'legacyBridgechainResignation',
-                    'legacyBridgechainUpdate',
-                    'legacyBusinessRegistration',
-                    'legacyBusinessResignation',
-                    'legacyBusinessUpdate',
-                    'moduleEntityRegistration',
-                    'moduleEntityResignation',
-                    'moduleEntityUpdate',
-                    'pluginEntityRegistration',
-                    'pluginEntityResignation',
-                    'pluginEntityUpdate',
-                    'productEntityRegistration',
-                    'productEntityResignation',
-                    'productEntityUpdate',
-                ],
-            ] as $typeGroup => $types)
-                <span class="flex items-center px-8 pt-8 w-full text-sm font-bold leading-5 text-left text-theme-secondary-500">{{ strtoupper($typeGroup) }}</span>
+                'all',
+                'transfer',
+                'secondSignature',
+                'delegateRegistration',
+                'vote',
+                'voteCombination',
+                'multiSignature',
+                'ipfs',
+                'multiPayment',
+                'delegateResignation',
+                'timelock',
+                'timelockClaim',
+                'timelockRefund',
+                'magistrate',
+            ] as $type)
+                <div
+                    class="cursor-pointer dropdown-entry text-theme-secondary-900 dark:text-theme-secondary-200"
+                    :class="{
+                        'dropdown-entry-selected': transactionTypeFilter === '{{ $type }}'
+                    }"
+                    @click="window.livewire.emit('filterTransactionsByType', '{{ $type }}'); transactionTypeFilter = '{{ $type }}'; transactionTypeFilterLabel = '@lang('forms.search.transaction_types.'.$type)'"
+                >
+                    @lang('forms.search.transaction_types.'.$type)
+                </div>
 
-                @foreach ($types as $type)
-                    <div
-                        class="cursor-pointer dropdown-entry text-theme-secondary-900 dark:text-theme-secondary-200"
-                        :class="{
-                            'dropdown-entry-selected': transactionTypeFilter === '{{ $type }}'
-                        }"
-                        @click="window.livewire.emit('filterTransactionsByType', '{{ $type }}'); transactionTypeFilter = '{{ $type }}'; transactionTypeFilterLabel = '@lang('forms.search.transaction_types.'.$type)'"
-                    >
-                        @lang('forms.search.transaction_types.'.$type)
-                    </div>
-                @endforeach
-
-                @if (! $loop->last)
-                    <hr class="mx-8 mt-3 border-b border-dashed border-theme-secondary-300">
-                @endif
             @endforeach
         </div>
     </x-ark-dropdown>

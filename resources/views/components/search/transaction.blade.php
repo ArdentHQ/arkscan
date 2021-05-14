@@ -6,7 +6,6 @@
         :initial-value="$transactionType"
         wire:model.defer="state.transactionType"
         :options="$transactionOptions"
-        :grouped="true"
     />
 </x-general.search.advanced-option>
 
