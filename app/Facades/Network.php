@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static string name()
  * @method static string alias()
+ * @method static string explorerTitle()
  * @method static string currency()
  * @method static string currencySymbol()
  * @method static int confirmations()

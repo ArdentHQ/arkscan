@@ -7,6 +7,7 @@ return [
     'beta_uppercase'   => 'BETA',
     'optional'         => 'Optional',
     'or'               => 'or',
+    'explorer'         => 'Explorer',
     'filler'           => '',
     'height'           => 'Height',
     'network'          => 'Network',

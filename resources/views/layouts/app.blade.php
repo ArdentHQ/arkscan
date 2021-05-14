@@ -7,7 +7,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>@yield('title', config('app.name', 'ARK'))</title>
+        <title>@yield('title', Network::explorerTitle())</title>
 
         <!-- Favicon -->
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -53,17 +53,7 @@
                 ]"
             >
                 <x-slot name="logo">
-                    <div class="flex relative items-center">
-                        <img src="/images/logo.svg" class="h-10 lg:h-12" />
-
-                        <span class="hidden ml-4 sm:flex text-theme-secondary-900 dark:text-theme-secondary-200 sm:items-center sm:text-2xl">
-                            <span class="font-bold">{{ config('app.name', 'ARK') }}</span>
-                        </span>
-
-                        <div class="navbar-beta-badge">
-                            @lang('general.beta_uppercase')
-                        </div>
-                    </div>
+                    <x-navbar.logo />
                 </x-slot>
             </x-navbar>
 
