@@ -56,6 +56,7 @@ final class WalletRepository implements Contract
     {
         $username = substr(DB::getPdo()->quote($identifier), 1, -1);
 
+        /* @phpstan-ignore-next-line */
         return Wallet::query()
             ->whereLower('address', $identifier)
             ->orWhereLower('public_key', $identifier)

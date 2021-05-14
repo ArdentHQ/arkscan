@@ -1,5 +1,5 @@
 <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
-    <div class="flex-wrap py-16 content-container md:px-8">
+    <div class="flex-wrap py-16 content-container">
         <div class="mb-8 w-full">
             <h4>@lang('pages.wallet.registrations')</h4>
         </div>

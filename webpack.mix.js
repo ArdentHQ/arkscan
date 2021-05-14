@@ -31,8 +31,6 @@ mix.webpackConfig({
         require('tailwindcss')(),
     ])
     .copyDirectory('resources/images', 'public/images')
-    // Fonts
-    .copyDirectory('resources/fonts', 'public/fonts')
     // Extract node_modules
     .extract(['alpinejs', 'chart.js']);
 

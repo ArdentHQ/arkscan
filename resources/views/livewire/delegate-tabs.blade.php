@@ -53,7 +53,7 @@
 <div class="md:hidden">
     <x-ark-dropdown
         wrapper-class="relative p-2 mb-8 w-full rounded-lg border border-theme-secondary-300 dark:border-theme-secondary-800"
-        button-class="w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
+        button-class="p-3 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
         dropdown-classes="left-0 w-full z-20"
         :init-alpine="false"
     >

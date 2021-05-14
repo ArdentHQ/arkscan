@@ -1,6 +1,6 @@
 <div>
     <div class="bg-theme-secondary-100 dark:bg-black">
-        <div class="content-container-full-width md:py-16 md:px-8">
+        <div class="content-container-full-width md:py-16 md:px-10">
             <div class="flex flex-col space-y-5 w-full">
                 <div class="flex justify-between items-center">
                     <div class="hidden text-2xl font-bold whitespace-nowrap text-theme-secondary-900 lg:block dark:text-theme-secondary-200">
@@ -18,7 +18,7 @@
     </div>
 
     <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900" id="results-list">
-        <div class="flex-col py-16 content-container md:px-8">
+        <div class="flex-col py-16 content-container">
             <h1 class="header-2">@lang('pages.search_results.title')</h1>
 
             @if($results && $results->count())

@@ -15,7 +15,7 @@
         <x-page-headers.wallet.blocks :wallet="$wallet" />
 
         <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
-            <div class="py-16 content-container md:px-8">
+            <div class="py-16 content-container">
                 <div x-cloak class="w-full">
                     <livewire:wallet-block-table :public-key="$wallet->publicKey()" :username="$wallet->username()" />
                 </div>

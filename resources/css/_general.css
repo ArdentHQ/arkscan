@@ -12,28 +12,6 @@ body {
     /* 100vh - footer height */
 }
 
-/* Custom content container */
-.content-container {
-    @apply flex px-8 mx-auto;
-}
-
-.content-container-full-width {
-    @apply flex mx-auto;
-}
-
-@screen sm {
-    .content-container {
-        @apply px-8;
-    }
-}
-
-@screen lg {
-    .content-container-full-width,
-    .content-container {
-        @apply max-w-7xl;
-    }
-}
-
 /* Network Status Block */
 .network-status-block {
     @apply inline-block w-full text-center border border-transparent bg-theme-secondary-200;
@@ -386,7 +364,7 @@ body {
 }
 
 .transaction-filter-button {
-    @apply w-full font-semibold text-left text-theme-secondary-900;
+    @apply w-full font-semibold text-left p-3 text-theme-secondary-900;
 }
 .dark .transaction-filter-button {
     @apply text-theme-secondary-200;

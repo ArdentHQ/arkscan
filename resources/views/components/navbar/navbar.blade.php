@@ -1,4 +1,4 @@
-<div class="h-20 lg:h-24"></div>
+<div class="h-20"></div>
 <div x-data="{ open: false, openDropdown: null, selectedChild: null }" id="navbar" class="fixed z-20 w-full">
     <div
         x-show="openDropdown !== null || open"
@@ -12,8 +12,8 @@
     ></div>
 
     <nav class="relative z-30 bg-white shadow-header-smooth dark:shadow-header-smooth-dark dark:bg-theme-secondary-900">
-        <div class="px-8">
-            <div class="flex relative justify-between h-20 lg:h-24">
+        <div class="px-8 md:px-10 py-0.5">
+            <div class="flex relative justify-between h-20">
 
                 {{-- LOGO --}}
                 <div class="flex flex-shrink-0 items-center">
