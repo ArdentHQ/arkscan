@@ -149,17 +149,23 @@ body {
 }
 
 .navbar-settings-dropdown {
-    @apply absolute top-0 left-0 right-0 z-30 px-4 mt-20 -mx-4 bg-white border-t-2 shadow-xl border-theme-secondary-100;
+    @apply absolute top-0 left-0 right-0 z-30 p-8 mt-20 -mx-4 bg-white border-t-2 shadow-xl border-theme-secondary-100;
 }
 .dark .navbar-settings-dropdown {
     @apply border-theme-secondary-800 bg-theme-secondary-900;
 }
 
 .navbar-settings-option {
-    @apply items-center justify-between py-8 border-b border-dashed border-theme-secondary-300;
+    @apply items-center justify-between pt-6 border-theme-secondary-300;
+}
+.navbar-settings-option:first-child {
+    @apply pt-0;
 }
 .navbar-settings-option:last-child {
     @apply border-0;
+}
+.navbar-settings-option-with-border {
+    @apply navbar-settings-option border-b border-dashed pb-6;
 }
 .dark .navbar-settings-option {
     @apply border-theme-secondary-800;
@@ -170,7 +176,7 @@ body {
         @apply pr-4;
     }
     .navbar-settings-dropdown {
-        @apply left-auto px-8 mx-0 mt-24 border-t-0 rounded-lg w-120;
+        @apply left-auto p-10 mx-0 mt-24 border-t-0 rounded-lg w-120;
     }
 }
 
@@ -528,7 +534,7 @@ body {
 
 /* Table Avatar */
 td.hoverable-cell .table-avatar {
-    @apply -mt-1 border-4 border-white rounded-full;
+    @apply -my-1 border-4 border-white rounded-full;
 }
 
 tr:hover td.hoverable-cell .table-avatar {

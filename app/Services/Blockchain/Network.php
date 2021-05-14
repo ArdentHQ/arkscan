@@ -26,6 +26,11 @@ final class Network implements Contract
         return $this->config['alias'];
     }
 
+    public function explorerTitle(): string
+    {
+        return $this->currency().' '.trans('general.explorer');
+    }
+
     public function currency(): string
     {
         return $this->config['currency'];
@@ -53,11 +58,6 @@ final class Network implements Contract
     public function canBeExchanged(): bool
     {
         return $this->config['canBeExchanged'];
-    }
-
-    public function usesMarketSquare(): bool
-    {
-        return $this->config['usesMarketSquare'];
     }
 
     public function epoch(): Carbon

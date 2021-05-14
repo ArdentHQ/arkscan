@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0677927b17ef86a479f254e621d86069",
+    "content-hash": "f7938246bf2fae53bb79e5869c75e0a6",
     "packages": [
         {
             "name": "arkecosystem/crypto",
@@ -493,30 +493,29 @@
         },
         {
             "name": "blade-ui-kit/blade-icons",
-            "version": "0.4.5",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/blade-ui-kit/blade-icons.git",
-                "reference": "b93505c65a1fc095df517d5640bae295779411e6"
+                "reference": "716c3991efb77389046785ff87a9565aceda8657"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/blade-ui-kit/blade-icons/zipball/b93505c65a1fc095df517d5640bae295779411e6",
-                "reference": "b93505c65a1fc095df517d5640bae295779411e6",
+                "url": "https://api.github.com/repos/blade-ui-kit/blade-icons/zipball/716c3991efb77389046785ff87a9565aceda8657",
+                "reference": "716c3991efb77389046785ff87a9565aceda8657",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^7.14|^8.0",
-                "illuminate/filesystem": "^7.14|^8.0",
-                "illuminate/support": "^7.14|^8.0",
-                "illuminate/view": "^7.14|^8.0",
-                "php": "^7.2"
+                "illuminate/contracts": "^8.0",
+                "illuminate/filesystem": "^8.0",
+                "illuminate/support": "^8.0",
+                "illuminate/view": "^8.0",
+                "php": "^7.4|^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.16",
                 "mockery/mockery": "^1.3",
-                "orchestra/testbench": "^5.0|^6.0",
-                "phpunit/phpunit": "^8.0|^9.0"
+                "orchestra/testbench": "^6.0",
+                "phpunit/phpunit": "^9.0"
             },
             "type": "library",
             "extra": {
@@ -540,14 +539,8 @@
             ],
             "authors": [
                 {
-                    "name": "Adam Wathan",
-                    "email": "adam.wathan@gmail.com"
-                },
-                {
                     "name": "Dries Vints",
-                    "email": "dries@vints.io",
-                    "homepage": "https://driesvints.com",
-                    "role": "Developer"
+                    "homepage": "https://driesvints.com"
                 }
             ],
             "description": "A package to easily make use of icons in your Laravel Blade views.",
@@ -564,11 +557,15 @@
             },
             "funding": [
                 {
+                    "url": "https://github.com/caneco",
+                    "type": "github"
+                },
+                {
                     "url": "https://github.com/driesvints",
                     "type": "github"
                 }
             ],
-            "time": "2020-09-04T11:36:46+00:00"
+            "time": "2021-04-03T19:08:34+00:00"
         },
         {
             "name": "brick/math",

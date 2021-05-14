@@ -16,7 +16,6 @@ use App\ViewModels\Concerns\Wallet\CanForge;
 use App\ViewModels\Concerns\Wallet\CanVote;
 use App\ViewModels\Concerns\Wallet\HasType;
 use App\ViewModels\Concerns\Wallet\HasVoters;
-use App\ViewModels\Concerns\Wallet\InteractsWithMarketSquare;
 use Mattiasgeniar\Percentage\Percentage;
 
 final class WalletViewModel implements ViewModel
@@ -28,7 +27,6 @@ final class WalletViewModel implements ViewModel
     use CanVote;
     use HasType;
     use HasVoters;
-    use InteractsWithMarketSquare;
 
     public function __construct(private Wallet $wallet)
     {

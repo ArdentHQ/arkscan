@@ -12,6 +12,8 @@ interface Network
 
     public function alias(): string;
 
+    public function explorerTitle(): string;
+
     public function currency(): string;
 
     public function currencySymbol(): string;
@@ -21,8 +23,6 @@ interface Network
     public function knownWallets(): array;
 
     public function canBeExchanged(): bool;
-
-    public function usesMarketSquare(): bool;
 
     public function epoch(): Carbon;
 

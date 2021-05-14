@@ -35,16 +35,6 @@ $environments = [
         'balanceCooldown' => 1,
         'tries'           => 1,
     ],
-    'marketsquare' => [
-        'connection'      => 'redis',
-        'queue'           => ['marketsquare'],
-        'balance'         => 'auto',
-        'minProcesses'    => 3,
-        'maxProcesses'    => 5,
-        'balanceMaxShift' => 5,
-        'balanceCooldown' => 1,
-        'tries'           => 1,
-    ],
     'performance' => [
         'connection'      => 'redis',
         'queue'           => ['performance', 'productivity'],

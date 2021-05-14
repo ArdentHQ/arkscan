@@ -28,36 +28,13 @@ final class CachePrices extends Command
      */
     protected $description = 'Cache prices and exchange rates.';
 
-    /**
-     * The currencies that can be looked up.
-     *
-     * @var string[]
-     */
-    protected $currencies = [
-        'AUD',
-        'BRL',
-        'BTC',
-        'CAD',
-        'CHF',
-        'CNY',
-        'ETH',
-        'EUR',
-        'GBP',
-        'JPY',
-        'KRW',
-        'LTC',
-        'NZD',
-        'RUB',
-        'USD',
-    ];
-
     public function handle(CryptoCompareCache $crypto, PriceChartCache $chart): void
     {
         if (! Network::canBeExchanged()) {
             return;
         }
 
-        foreach ($this->currencies as $currency) {
+        foreach (array_values(config('currencies')) as $currency) {
             $prices = (new CryptoCompare())->historical(Network::currency(), $currency);
 
             $crypto->setPrices($currency, $prices);

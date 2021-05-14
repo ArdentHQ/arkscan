@@ -14,12 +14,6 @@
     @section('content')
         <x-page-headers.transaction :transaction="$transaction" />
 
-        @if (Network::usesMarketSquare())
-            @if ($transaction->isRegistration())
-                <x-marketsquare.banner :transaction="$transaction" />
-            @endif
-        @endif
-
         <x-details.grid>
             <x-dynamic-component :component="$transaction->typeComponent()" :transaction="$transaction" />
         </x-details.grid>

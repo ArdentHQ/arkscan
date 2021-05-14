@@ -30,13 +30,6 @@
                         @endif
                     </x-slot>
                 </x-general.entity-header-item>
-                @if (Network::usesMarketSquare())
-                    <x-general.entity-header-item
-                        :title="trans('pages.wallet.commission')"
-                        icon="exchange"
-                        :text="$vote->commission()"
-                    />
-                @endif
             </div>
         </x-slot>
     @endif
