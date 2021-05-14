@@ -18,31 +18,16 @@
         <div class="flex flex-col">
             @if(Network::canBeExchanged())
                 <x-navbar.setting-option :title="trans('forms.settings.currency.title')" :subtitle="trans('forms.settings.currency.description')">
-                    <select wire:model="state.currency" class="font-medium bg-transparent text-theme-secondary-900 dark:text-theme-secondary-700">
-                        <option value="AUD">AUD</option>
-                        <option value="BRL">BRL</option>
-                        <option value="BTC">BTC</option>
-                        <option value="CAD">CAD</option>
-                        <option value="CHF">CHF</option>
-                        <option value="CNY">CNY</option>
-                        <option value="ETH">ETH</option>
-                        <option value="EUR">EUR</option>
-                        <option value="GBP">GBP</option>
-                        <option value="JPY">JPY</option>
-                        <option value="KRW">KRW</option>
-                        <option value="LTC">LTC</option>
-                        <option value="NZD">NZD</option>
-                        <option value="RUB">RUB</option>
-                        <option value="USD">USD</option>
-                    </select>
-                </x-navbar.setting-option>
-
-                <x-navbar.setting-option :title="trans('forms.settings.price_chart.title')" :subtitle="trans('forms.settings.price_chart.description')">
-                    <x-ark-toggle
-                        name="state.priceChart"
-                        hide-label
-                        :default="$this->state['priceChart'] ? 'true' : 'false'"
-                        alpine-click="$dispatch('toggle-price-chart')"
+                    <x-ark-rich-select
+                        wire:model="state.currency"
+                        wrapper-class="left-0 mt-3"
+                        dropdown-class="right-0 mt-1 origin-top-right"
+                        initial-value="{{ $this->state['currency'] ?? 'USD' }}"
+                        placeholder="{{ $this->state['currency'] ?? 'USD' }}"
+                        button-class="block font-medium text-left bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200"
+                        :options="collect(config('currencies'))->keys()->mapWithKeys(function ($currency) {
+                            return [$currency => config('currencies.' . $currency)];
+                        })->toArray()"
                     />
                 </x-navbar.setting-option>
             @endif
