@@ -32,7 +32,6 @@ final class AnalysisTest extends TestCase
             'Tests\configureExplorerDatabase',
             'Tests\fakeCryptoCompare',
             'Tests\fakeKnownWallets',
-            'Tests\fakeMarketSquare',
         ];
     }
 }

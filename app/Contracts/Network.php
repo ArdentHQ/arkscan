@@ -24,8 +24,6 @@ interface Network
 
     public function canBeExchanged(): bool;
 
-    public function usesMarketSquare(): bool;
-
     public function epoch(): Carbon;
 
     public function delegateCount(): int;

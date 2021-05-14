@@ -21,7 +21,6 @@ it('should have all required properties', function (array $config) {
     expect($subject->confirmations())->toBe($config['confirmations']);
     expect($subject->knownWallets())->toBeArray();
     expect($subject->canBeExchanged())->toBe($config['canBeExchanged']);
-    expect($subject->usesMarketSquare())->toBe($config['usesMarketSquare']);
     expect($subject->epoch())->toBeInstanceOf(Carbon::class);
     expect($subject->delegateCount())->toBe($config['delegateCount']);
     expect($subject->blockTime())->toBe($config['blockTime']);
@@ -36,7 +35,6 @@ it('should have all required properties', function (array $config) {
         'confirmations'    => 51,
         'knownWallets'     => 'https://raw.githubusercontent.com/ArkEcosystem/common/master/mainnet/known-wallets-extended.json',
         'canBeExchanged'   => true,
-        'usesMarketSquare' => false,
         'epoch'            => Mainnet::new()->epoch(),
         'delegateCount'    => 51,
         'blockTime'        => 8,
@@ -50,7 +48,6 @@ it('should have all required properties', function (array $config) {
         'currencySymbol'   => 'DѦ',
         'confirmations'    => 51,
         'canBeExchanged'   => false,
-        'usesMarketSquare' => false,
         'epoch'            => Devnet::new()->epoch(),
         'delegateCount'    => 51,
         'blockTime'        => 8,

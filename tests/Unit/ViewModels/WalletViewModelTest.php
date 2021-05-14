@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Contracts\Network;
 use App\Contracts\Network as Contract;
 use App\Enums\CoreTransactionTypeEnum;
 use App\Enums\MagistrateTransactionEntityActionEnum;
@@ -11,10 +10,8 @@ use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Blockchain\NetworkFactory;
 use App\Services\Cache\DelegateCache;
-use App\Services\Cache\MarketSquareCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
@@ -478,85 +475,4 @@ it('should determine if the wallet has a second signature', function () {
 
 it('should determine if the wallet has a multi signature', function () {
     expect($this->subject->hasMultiSignature())->toBeBool();
-});
-
-it('should determine the commission', function () {
-    $this->app->singleton(Network::class, fn () => new Blockchain(config('explorer.networks.production')));
-
-    (new MarketSquareCache())->setProfile($this->subject->address(), [
-        'ipfs' => [
-            'data' => [
-                'meta' => [
-                    'delegate' => [
-                        'percentage' => [
-                            'min' => 50,
-                        ],
-                    ],
-                ],
-            ],
-        ],
-    ]);
-
-    expect($this->subject->commission())->toBe(50);
-});
-
-it('should determine the payout frequency', function () {
-    $this->app->singleton(Network::class, fn () => new Blockchain(config('explorer.networks.production')));
-
-    (new MarketSquareCache())->setProfile($this->subject->address(), [
-        'ipfs' => [
-            'data' => [
-                'meta' => [
-                    'delegate' => [
-                        'frequency' => [
-                            'type'  => 'day',
-                            'value' => 5,
-                        ],
-                    ],
-                ],
-            ],
-        ],
-    ]);
-
-    expect($this->subject->payoutFrequency())->toBe('Every 5 Days');
-});
-
-it('should determine the payout minimum', function () {
-    $this->app->singleton(Network::class, fn () => new Blockchain(config('explorer.networks.production')));
-
-    (new MarketSquareCache())->setProfile($this->subject->address(), [
-        'ipfs' => [
-            'data' => [
-                'meta' => [
-                    'delegate' => [
-                        'distribution' => [
-                            'min' => 500,
-                        ],
-                    ],
-                ],
-            ],
-        ],
-    ]);
-
-    expect($this->subject->payoutMinimum())->toBe(500);
-});
-
-it('should build the MarketSquare profile URL', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'attributes'   => [
-            'delegate' => [
-                'username' => 'John',
-            ],
-        ],
-    ]));
-
-    expect($this->subject->profileUrl())->toBe('https://marketsquare.io/delegates/john');
-});
-
-it('should fail to build the MarketSquare profile URL if there is no username', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'attributes' => [],
-    ]));
-
-    expect($this->subject->profileUrl())->toBeNull();
 });

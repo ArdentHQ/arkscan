@@ -19,7 +19,6 @@ use App\ViewModels\Concerns\Transaction\HasState;
 use App\ViewModels\Concerns\Transaction\HasType;
 use App\ViewModels\Concerns\Transaction\InteractsWithDelegateRegistration;
 use App\ViewModels\Concerns\Transaction\InteractsWithEntities;
-use App\ViewModels\Concerns\Transaction\InteractsWithMarketSquare;
 use App\ViewModels\Concerns\Transaction\InteractsWithMultiPayment;
 use App\ViewModels\Concerns\Transaction\InteractsWithMultiSignature;
 use App\ViewModels\Concerns\Transaction\InteractsWithTypeData;
@@ -36,7 +35,6 @@ final class TransactionViewModel implements ViewModel
     use HasType;
     use InteractsWithDelegateRegistration;
     use InteractsWithEntities;
-    use InteractsWithMarketSquare;
     use InteractsWithMultiPayment;
     use InteractsWithMultiSignature;
     use InteractsWithTypeData;

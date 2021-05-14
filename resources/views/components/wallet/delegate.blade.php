@@ -23,28 +23,19 @@
                     @endif
                 </x-details-box>
 
+                    {{--TODO: Remove --}}
                     <x-details-box :title="trans('pages.wallet.delegate.commission')" icon="app-percent" icon-wrapper-class="bg-theme-danger-100 dark:bg-theme-danger-400" icon-text-class="text-theme-danger-400 dark:text-theme-secondary-200">
-                        @if(Network::usesMarketSquare() && $wallet->commission())
-                            <x-percentage>{{ $wallet->commission() }}</x-percentage>
-                        @else
-                            @lang('generic.not_specified')
-                        @endif
+                        @lang('generic.not_specified')
                     </x-details-box>
 
+                    {{--TODO: Remove --}}
                     <x-details-box :title="trans('pages.wallet.delegate.payout_frequency')" icon="app-price" icon-wrapper-class="bg-theme-danger-100 dark:bg-theme-danger-400" icon-text-class="text-theme-danger-400 dark:text-theme-secondary-200">
-                        @if($wallet->payoutFrequency())
-                            {{ $wallet->payoutFrequency() }}
-                        @else
-                            @lang('generic.not_specified')
-                        @endif
+                        @lang('generic.not_specified')
                     </x-details-box>
 
+                    {{--TODO: Remove --}}
                     <x-details-box :title="trans('pages.wallet.delegate.payout_minimum')" icon="app-min" icon-wrapper-class="bg-theme-danger-100 dark:bg-theme-danger-400" icon-text-class="text-theme-danger-400 dark:text-theme-secondary-200">
-                        @if($wallet->payoutMinimum())
-                            <x-currency :currency="Network::currency()">{{ $wallet->payoutMinimum() }}</x-currency>
-                        @else
-                            @lang('generic.not_specified')
-                        @endif
+                        @lang('generic.not_specified')
                     </x-details-box>
                 </div>
             @endif
