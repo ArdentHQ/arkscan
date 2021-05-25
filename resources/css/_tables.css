@@ -1,0 +1,5 @@
+/* purgecss start ignore */
+.table-container table.sticky-headers th {
+    top: 84px;
+}
+/* purgecss end ignore */

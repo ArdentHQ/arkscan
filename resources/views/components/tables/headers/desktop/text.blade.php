@@ -1,5 +1,17 @@
-@isset($responsive)
-    <th class="hidden {{ $breakpoint ?? 'lg' }}:table-cell text-left">@lang($name)</th>
-@else
-    <th class="text-left">@lang($name)</th>
-@endisset
+@props([
+    'responsive' => false,
+    'breakpoint' => 'lg',
+    'firstOn' => null,
+    'lastOn' => null,
+    'class' => '',
+    'name' => '',
+])
+
+<x-ark-tables.header
+    :responsive="$responsive"
+    :breakpoint="$breakpoint"
+    :first-on="$firstOn"
+    :last-on="$lastOn"
+    :class="$class . ' text-left'"
+    :name="$name"
+/>

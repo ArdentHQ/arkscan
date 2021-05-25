@@ -1,5 +1,6 @@
 <div id="transaction-list" class="w-full">
     <x-skeletons.transactions>
+
         <x-tables.desktop.transactions :transactions="$transactions" />
 
         <x-tables.mobile.transactions :transactions="$transactions" />
@@ -11,3 +12,4 @@
         </script>
     </x-skeletons.transactions>
 </div>
+
