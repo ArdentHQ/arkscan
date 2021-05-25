@@ -126,7 +126,7 @@
         {{-- Mobile dropdown --}}
         <div :class="{'block': open, 'hidden': !open}" class="border-t-2 lg:hidden border-theme-secondary-200 dark:border-theme-secondary-800">
             <div class="pt-2 pb-4 rounded-b-lg">
-                @foreach ($navigation as $navItem)
+               @foreach ($navigation as $navItem)
                     @if(isset($navItem['children']))
                         <div class="flex w-full">
                             <div class="z-10 -mr-1 w-2"></div>
@@ -145,11 +145,19 @@
                                     <x-ark-sidebar-link :route="$childNavItem['route']" :name="$childNavItem['label']" :params="$childNavItem['params'] ?? []" />
                                 </div>
                             @endforeach
+
+
                         </div>
                     @else
                         <x-ark-navbar-link-mobile :route="$navItem['route']" :name="$navItem['label']" :params="$navItem['params'] ?? []" />
                     @endif
                 @endforeach
+
+                @if(Network::canBeExchanged())
+                    <div class="flex py-3 px-8 mt-2 -mb-4 font-semibold bg-theme-secondary-100 text-theme-secondary-900 dark:text-theme-secondary-300 dark:bg-theme-secondary-800">
+                        <livewire:price-ticker />
+                    </div>
+                @endif
             </div>
         </div>
     </nav>
