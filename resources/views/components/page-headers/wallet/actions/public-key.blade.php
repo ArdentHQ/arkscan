@@ -1,4 +1,4 @@
-<div x-data="{ publicKeyModalVisible: false }" class="flex-1 lg:relative">
+<div x-data="{ publicKeyModalVisible: false }" class="flex-1 w-full lg:relative sm:w-auto">
     <button type="button" @click="publicKeyModalVisible = !publicKeyModalVisible"
         class="flex justify-center items-center px-3 w-full h-11 rounded cursor-pointer lg:w-16 bg-theme-secondary-800 hover:bg-theme-primary-600 transition-default lg:flex-none dark:text-theme-secondary-600 dark:hover:text-theme-secondary-200">
         <x-ark-icon name="key" />
