@@ -5,8 +5,12 @@
 
     @section('content')
         <div class="flex flex-col justify-center items-center space-y-8">
-            <img src="/images/errors/404.svg" class="max-w-4xl"/>
-            <div class="text-lg font-semibold text-center text-theme-secondary-900">
+            <div class="flex justify-center w-full">
+                <img src="/images/errors/404.svg" class="block max-w-4xl dark:hidden"/>
+                <img src="/images/errors/404_dark.svg" class="hidden max-w-4xl dark:block"/>
+            </div>
+
+            <div class="text-lg font-semibold text-center text-theme-secondary-900 dark:text-theme-secondary-600">
                 {!! ARKEcosystem\UserInterface\UI::getErrorMessage(404) !!}
             </div>
             <div class="space-x-3">

@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Exceptions\BlockNotFoundException;
+use App\Exceptions\TransactionNotFoundException;
+use App\Exceptions\WalletNotFoundException;
 use App\Facades\Network;
 use App\Facades\Wallets;
+use App\Models\Block;
+use App\Models\Transaction;
 use App\Models\Wallet;
 use ArkEcosystem\Crypto\Identities\Address;
-use ARKEcosystem\UserInterface\UI;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\RateLimiter;
@@ -44,16 +48,34 @@ final class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
 
-        Route::bind('wallet', function (string $value): Wallet {
-            abort_unless(Address::validate($value, Network::config()), 404);
+        Route::bind('wallet', function (string $walletID): Wallet {
+            abort_unless(Address::validate($walletID, Network::config()), 404);
 
             try {
-                return Wallets::findByAddress($value);
+                return Wallets::findByAddress($walletID);
             } catch (Throwable) {
-                UI::useErrorMessage(404, trans('general.wallet_not_found', [$value]));
-
-                abort(404);
+                throw (new WalletNotFoundException())->setModel(Wallet::class, [$walletID]);
             }
+        });
+
+        Route::bind('transaction', function (string $transactionID): Transaction {
+            $transaction = Transaction::find($transactionID);
+
+            if ($transaction === null) {
+                throw (new TransactionNotFoundException())->setModel(Transaction::class, [$transactionID]);
+            }
+
+            return $transaction;
+        });
+
+        Route::bind('block', function (string $blockID): Block {
+            $block = Block::find($blockID);
+
+            if ($block === null) {
+                throw (new BlockNotFoundException())->setModel(Block::class, [$blockID]);
+            }
+
+            return $block;
         });
     }
 
