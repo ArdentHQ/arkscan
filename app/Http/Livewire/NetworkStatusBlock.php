@@ -10,7 +10,9 @@ use App\Facades\Network;
 use App\Services\CryptoCompare;
 use App\Services\Settings;
 use Illuminate\View\View;
+use Konceiver\BetterNumberFormatter\BetterNumberFormatter;
 use Livewire\Component;
+use NumberFormatter;
 
 final class NetworkStatusBlock extends Component
 {
@@ -20,20 +22,31 @@ final class NetworkStatusBlock extends Component
             'height'    => CacheNetworkHeight::execute(),
             'network'   => Network::name(),
             'supply'    => CacheNetworkSupply::execute() / 1e8,
-            'marketCap' => $this->getMarketCap(),
+            'price'     => $this->getPriceFormatted(),
+            'marketCap' => $this->getMarketCapFormatted(),
         ]);
+    }
+
+    private function getPriceFormatted(): string
+    {
+        $price = CryptoCompare::price(Network::currency(), Settings::currency());
+
+        return BetterNumberFormatter::new()->withStyle(NumberFormatter::CURRENCY)->formatWithCurrency($price);
+    }
+
+    private function getMarketCapFormatted(): string
+    {
+        $price = $this->getMarketCap();
+
+        return BetterNumberFormatter::new()->withStyle(NumberFormatter::CURRENCY)->formatWithCurrency($price);
     }
 
     private function getMarketCap(): float
     {
-        $marketCap = 0;
-
-        // @codeCoverageIgnoreStart
-        if (Network::canBeExchanged()) {
-            $marketCap = CacheNetworkSupply::execute() * CryptoCompare::price(Network::currency(), Settings::currency());
+        if (! Network::canBeExchanged()) {
+            return 0;
         }
-        // @codeCoverageIgnoreEnd
 
-        return $marketCap;
+        return CryptoCompare::marketCap(Network::currency(), Settings::currency());
     }
 }
