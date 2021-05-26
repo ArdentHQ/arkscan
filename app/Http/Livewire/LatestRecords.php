@@ -43,6 +43,8 @@ final class LatestRecords extends Component
             $this->blocks = new Collection();
         }
 
+        $this->state['type'] = 'all';
+
         return view('livewire.latest-records', [
             'blocks' => ViewModelFactory::collection($this->blocks),
         ]);

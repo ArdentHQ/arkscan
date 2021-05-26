@@ -1,17 +1,20 @@
-<div x-data="{
-    filterOpen: false,
-    transactionTypeFilter: '{{ $type }}',
-    transactionTypeFilterLabel: '@lang('forms.search.transaction_types.' . $type)',
-}" x-cloak>
+<div
+    x-data="{
+        filterOpen: false,
+        transactionTypeFilter: '{{ $type }}',
+        transactionTypeFilterLabel: '@lang('forms.search.transaction_types.' . $type)',
+    }"
+>
     <x-ark-dropdown
-        wrapper-class="transaction-filter-wrapper"
-        dropdown-classes="transaction-filter-dropdown"
-        button-class="transaction-filter-button"
+        wrapper-class="relative p-2 w-full rounded-lg border border-theme-secondary-300 dark:border-theme-secondary-800 md:w-auto md:p-0 md:border-0"
+        dropdown-classes="right-0 w-full mt-3 dark:bg-theme-secondary-900 md:w-84"
+        button-class="flex items-center p-3 w-full font-semibold text-left focus:outline-none md:px-8 md:py-0 text-theme-secondary-900 dark:text-theme-secondary-200 md:items-end md:inline"
         dropdown-property="filterOpen"
         :init-alpine="false"
     >
+
         @slot('button')
-            <div class="space-x-2 transaction-filter-button-container">
+            <div class="flex justify-between items-center space-x-2 w-full font-semibold text-theme-secondary-500 md:justify-end md:text-theme-secondary-700">
                 <div>
                     <span class="text-theme-secondary-500 dark:text-theme-secondary-600">@lang('general.transaction.type'):</span>
 
@@ -23,7 +26,7 @@
 
                 <span
                     :class="{ 'rotate-180 md:bg-theme-primary-600 md:text-theme-secondary-100': filterOpen }"
-                    class="transaction-filter-button-icon"
+                    class="flex justify-center items-center w-6 h-6 rounded-full transition duration-150 ease-in-out text-theme-secondary-400 dark:bg-theme-secondary-800 dark:text-theme-secondary-200 md:w-4 md:h-4 md:bg-theme-primary-100 md:text-theme-primary-600"
                 >
                     <x-ark-icon name="chevron-down" size="xs" class="md:h-3 md:w-2" />
                 </span>
