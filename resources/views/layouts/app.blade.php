@@ -48,14 +48,15 @@
         <div id="app" class="flex flex-col antialiased bg-white dark:bg-theme-secondary-900">
             <x-navbar.navbar
                 :navigation="[
-                    ['route' => 'delegates', 'label' => trans('menus.delegates')],
-                    ['route' => 'wallets', 'label' => trans('menus.wallets')],
+                    ['route' => 'delegates',  'label' => trans('menus.delegates')],
+                    ['route' => 'wallets',    'label' => trans('menus.wallets')],
+                    ['route' => 'statistics', 'label' => trans('menus.statistics')],
                 ]"
             >
                 <x-slot name="logo">
                     <x-navbar.logo />
                 </x-slot>
-            </x-navbar>
+            </x-navbar.navbar>
 
             <main class="container flex flex-1 w-full mx-auto @unless($isLanding ?? false) pb-14 mt-16 @endif sm:max-w-full @unless($fullWidth ?? false) px-4 sm:px-8 lg:max-w-7xl @endif">
                 <div class="{{ $containerChildClass ?? 'w-full bg-white dark:bg-theme-secondary-900' }}">

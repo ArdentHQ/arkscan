@@ -35,4 +35,12 @@ return [
             'base58Prefix'     => intval(env('EXPLORER_NETWORK_BASE58_PREFIX', 30)),
         ],
     ],
+
+    'statistics' => [
+
+        /*
+         * Number of seconds to wait before refreshing the page.
+         */
+        'refreshInterval' => env('EXPLORER_STATISTICS_REFRESH_INTERVAL', '60'),
+    ],
 ];
