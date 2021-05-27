@@ -23,7 +23,6 @@
         </x-slot>
     </x-tabs.wrapper>
 
-
     <div class="mb-4 md:hidden">
         <x-ark-dropdown
             wrapper-class="relative p-2 w-full rounded-lg border border-theme-secondary-300 dark:border-theme-secondary-800"
