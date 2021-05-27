@@ -123,6 +123,9 @@ return [
         'amount'                => 'Amount',
         'smartbridge'           => 'Smartbridge',
         'vote_rank'             => '#:0',
+        'status'                => 'Status',
+        'productivity'          => 'Productivity',
+        'productivity_tooltip'  => 'Success rate of validating blocks over the last 30 days.',
         'no_results'            => 'No :0 transactions could be found.',
         'qrcode'                => [
             'title'            => 'Send Funds',
@@ -137,11 +140,12 @@ return [
         'delegate'              => [
             'title'            => 'Delegate :0',
             'rank'             => 'Rank',
+            'status'           => 'Status',
             'commission'       => 'Commission',
             'payout_frequency' => 'Payout Frequency',
             'payout_minimum'   => 'Payout Minimum',
             'forged_total'     => 'Total Forged',
-            'votes'            => 'Votes :0',
+            'votes'            => 'Votes (:0)',
             'forged_blocks'    => 'Forged Blocks',
             'productivity'     => 'Productivity (30 Days)',
             'voters'           => 'Voters',

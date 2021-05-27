@@ -1,5 +1,5 @@
-<div class="flex flex-col rounded-lg border border-theme-secondary-300 dark:border-theme-secondary-800">
-    <div class="p-8 bg-black dark:bg-theme-secondary-900 @if (isset($bottom)) rounded-t-lg @else rounded-lg @endif">
+<div class="flex flex-col rounded-xl border border-theme-secondary-300 dark:border-theme-secondary-800">
+    <div class="px-8 py-6 bg-black dark:bg-theme-secondary-900 @if (isset($bottom)) rounded-t-xl @else rounded-xl @endif">
         <div class="flex flex-col {{ $isBlockPage ?? false ? 'md:flex-row' : 'space-y-8 lg:flex-row' }} lg:space-y-0 justify-between overflow-auto  ">
             <div class="flex overflow-auto md:space-x-4">
                 <div class="hidden items-center md:flex">
@@ -32,7 +32,7 @@
     </div>
 
     @isset($bottom)
-        <div class="p-8 rounded-b-lg border-t bg-theme-secondary-100 border-theme-secondary-300 dark:border-theme-secondary-800 dark:bg-theme-secondary-900">
+        <div class="py-4 px-8 rounded-b-xl border-t bg-theme-secondary-100 border-theme-secondary-300 dark:border-theme-secondary-800 dark:bg-theme-secondary-900">
             {{ $bottom }}
         </div>
     @endisset

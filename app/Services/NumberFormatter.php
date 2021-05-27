@@ -47,4 +47,20 @@ final class NumberFormatter
     {
         return BetterNumberFormatter::new()->formatWithCurrencyShort($value, $currency);
     }
+
+    /**
+     * @param string|int|float $value
+     */
+    public static function currencyShortNotation($value): string
+    {
+        if ($value < 1000) {
+            return sprintf('%d', $value);
+        }
+
+        if ($value < 1000000) {
+            return sprintf('%d%s', number_format($value / 1000, 3), 'K');
+        }
+
+        return sprintf('%0.2f%s', number_format($value / 1000000, 6), 'M');
+    }
 }

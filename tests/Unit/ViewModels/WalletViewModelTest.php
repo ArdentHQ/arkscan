@@ -480,3 +480,44 @@ it('should determine if the wallet has a second signature', function () {
 it('should determine if the wallet has a multi signature', function () {
     expect($this->subject->hasMultiSignature())->toBeBool();
 });
+
+it('can determine the colors for icons based on the status of a delegate', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'resigned' => true,
+            ],
+        ],
+    ]));
+
+    // Resigned colors
+    expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800');
+    expect($this->subject->delegateStatusStyling())->toBe('text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800');
+
+    // Standby colors
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'John',
+                'rank'     => 52,
+            ],
+        ],
+    ]));
+
+    expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-900 border-theme-secondary-900');
+    expect($this->subject->delegateStatusStyling())->toBe('text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800');
+
+    // Active colors
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'John',
+            ],
+        ],
+    ]));
+
+    expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-900 border-theme-secondary-900');
+    expect($this->subject->delegateStatusStyling())->toBe('text-theme-success-600 border-theme-success-600');
+});
