@@ -1,4 +1,4 @@
-<div>
+<div class="space-y-3 md:space-y-0">
     <div wire:ignore class="hidden tabs md:flex">
         <div
             class="tab-item transition-default"
@@ -61,19 +61,31 @@
                 </div>
             </x-slot>
 
-            <div class="p-4">
-                <a wire:click="$set('state.direction', 'all');" @click="direction = 'all'" class="dropdown-entry">
+            <div class="block overflow-y-scroll justify-center items-center py-3">
+                <a
+                    wire:click="$set('state.direction', 'all');"
+                    @click="direction = 'all'"
+                    class="cursor-pointer dropdown-entry text-theme-secondary-900 dark:text-theme-secondary-200 @if($state['direction'] === 'all') dropdown-entry-selected @endif"
+                >
                     @lang('pages.wallet.all_transactions')
                 </a>
 
-                <a wire:click="$set('state.direction', 'received');" @click="direction = 'received'" class="dropdown-entry">
+                <a
+                    wire:click="$set('state.direction', 'received');"
+                    @click="direction = 'received'"
+                    class="cursor-pointer dropdown-entry text-theme-secondary-900 dark:text-theme-secondary-200 @if($state['direction'] === 'received') dropdown-entry-selected @endif"
+                >
                     <span>@lang('pages.wallet.received_transactions')</span>
 
                     <span class="info-badge">{{ $countReceived }}</span>
                 </a>
 
                 @unless($state['isCold'])
-                    <a wire:click="$set('state.direction', 'sent');" @click="direction = 'sent'" class="dropdown-entry">
+                    <a
+                        wire:click="$set('state.direction', 'sent');"
+                        @click="direction = 'sent'"
+                        class="cursor-pointer dropdown-entry text-theme-secondary-900 dark:text-theme-secondary-200 @if($state['direction'] === 'sent') dropdown-entry-selected @endif"
+                    >
                         <span>@lang('pages.wallet.sent_transactions')</span>
 
                         <span class="info-badge">{{ $countSent }}</span>
