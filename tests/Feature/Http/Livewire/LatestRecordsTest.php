@@ -38,7 +38,7 @@ it('should list the first page of blocks', function () {
 });
 
 it('should list the first page of transactions', function () {
-    Transaction::factory(30)->create();
+    Transaction::factory(30)->transfer()->create();
 
     $component = Livewire::test(LatestRecords::class)
         ->call('pollTransactions');
