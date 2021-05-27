@@ -1,6 +1,8 @@
 <div class="dark:bg-theme-secondary-900">
     <x-ark-container container-class="flex flex-col space-y-6">
-        <x-general.search.header-slim :title="trans('pages.block.title')" />
+        <h1 class="header-2">
+            @lang('pages.block.title')
+        </h1>
 
         <x-general.entity-header
             :title="trans('pages.block.block_id')"

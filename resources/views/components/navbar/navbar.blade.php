@@ -28,6 +28,24 @@
                     </a>
                 </div>
 
+                <div class="hidden items-center mr-auto md:flex">
+                    <span class="ml-9 h-5 border-r border-theme-secondary-300 dark:border-theme-secondary-800" aria-hidden="true"></span>
+
+                    {{-- search modal trigger (tablet/desktop) --}}
+                    <button
+                        type="button"
+                        class="hidden items-center p-3 mx-4 rounded sm:flex text-theme-secondary-600 hover:text-theme-primary-500 focus:outline-none transition-default"
+                        @click="Livewire.emit('openSearchModal')"
+                        dusk="navigation-search-modal-trigger"
+                    >
+                        <x-ark-icon name="search" />
+
+                        <span class="sr-only">
+                            @lang('actions.search')
+                        </span>
+                    </button>
+                </div>
+
                 <div class="flex justify-end">
                     <div class="flex flex-1 justify-end items-center sm:items-stretch sm:justify-between">
                         {{-- Desktop Navbar Items --}}
@@ -102,7 +120,8 @@
                     <div class="flex items-center ml-6 md:hidden">
                         <div class="pl-8 border-l border-theme-primary-100 text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-800">
                             <button
-                                @click="$dispatch('mobile-search')"
+                                type="button"
+                                @click="Livewire.emit('openSearchModal')"
                                 class="inline-flex justify-center items-center py-2 rounded-md transition duration-150 ease-in-out text-theme-primary-300 dark:text-theme-secondary-600"
                             >
                                 <span class="inline-flex"><x-ark-icon name="search" size="sm" /></span>

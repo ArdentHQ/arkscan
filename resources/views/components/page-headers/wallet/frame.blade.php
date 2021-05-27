@@ -1,6 +1,8 @@
 <div class="dark:bg-theme-secondary-900">
     <x-ark-container container-class="flex flex-col space-y-5">
-        <x-general.search.header-slim :title="trans($title)" />
+        <h1 class="header-2">
+            @lang($title)
+        </h1>
 
         <x-general.entity-header :value="$wallet->address()">
             <x-slot name="title">

@@ -48,6 +48,10 @@ return [
         'latest_blocks'           => 'Latest Blocks',
     ],
 
+    'search' => [
+        'title'      => 'What are you looking for?',
+    ],
+
     'search_results' => [
         'title'      => 'Results',
         'no_results' => 'We could not find anything matching your search criteria, please try again!',

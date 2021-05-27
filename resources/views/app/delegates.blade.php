@@ -3,7 +3,9 @@
     @section('content')
         <div class="dark:bg-theme-secondary-900">
             <x-ark-container container-class="flex flex-col space-y-5">
-                <x-general.search.header-slim :title="trans('pages.delegates.title')" />
+                <h1 class="header-2">
+                    @lang('pages.delegates.title')
+                </h1>
 
                 <livewire:delegate-statistics />
             </x-ark-container>

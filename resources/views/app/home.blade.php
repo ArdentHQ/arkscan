@@ -1,5 +1,4 @@
 @component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
-
     @section('content')
         <livewire:network-status-block />
 
@@ -9,5 +8,4 @@
             </x-ark-container>
         </div>
     @endsection
-
 @endcomponent

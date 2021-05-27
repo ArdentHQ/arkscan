@@ -66,6 +66,8 @@
 
         <x-footer />
 
+        <livewire:search-module is-modal />
+
         @livewireScripts()
 
         @stack('extraStyle')

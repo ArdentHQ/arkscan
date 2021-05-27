@@ -1,12 +1,7 @@
 <div>
     <div class="bg-theme-secondary-100 dark:bg-black">
-        <div class="content-container-full-width md:py-8 md:px-10">
-            <div class="flex flex-col space-y-5 w-full">
-
-                <div class="px-8 md:px-0">
-                    <livewire:search-module :is-advanced="true" :type="$state['type']" />
-                </div>
-            </div>
+        <div class="p-8 w-full content-container-full-width">
+            <livewire:search-module :type="$state['type']" />
         </div>
     </div>
 

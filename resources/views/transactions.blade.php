@@ -1,8 +1,6 @@
 @component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
 
     @section('content')
-        <x-general.search.header />
-
         <x-ark-container>
             <div x-data="{
                 dropdownOpen: false,
