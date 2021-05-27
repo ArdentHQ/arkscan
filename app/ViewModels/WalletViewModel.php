@@ -37,6 +37,11 @@ final class WalletViewModel implements ViewModel
         return route('wallet', $this->wallet->address);
     }
 
+    public function model(): Wallet
+    {
+        return $this->wallet;
+    }
+
     public function address(): string
     {
         return $this->wallet->address;
@@ -54,7 +59,7 @@ final class WalletViewModel implements ViewModel
 
     public function balanceFiat(): string
     {
-        return ExchangeRate::convert($this->wallet->balance->toFloat(), Timestamp::now()->unix());
+        return ExchangeRate::convert($this->balance(), Timestamp::now()->unix());
     }
 
     public function balancePercentage(): float

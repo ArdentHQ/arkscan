@@ -1,7 +1,7 @@
 <div class="flex flex-col rounded-lg border border-theme-secondary-300 dark:border-theme-secondary-800">
     <div class="p-8 bg-black dark:bg-theme-secondary-900 @if (isset($bottom)) rounded-t-lg @else rounded-lg @endif">
-        <div class="flex flex-col {{ $isBlockPage ?? false ? 'md:flex-row' : 'space-y-8 lg:flex-row' }} lg:space-y-0 justify-between">
-            <div class="flex md:space-x-4">
+        <div class="flex flex-col {{ $isBlockPage ?? false ? 'md:flex-row' : 'space-y-8 lg:flex-row' }} lg:space-y-0 justify-between overflow-auto  ">
+            <div class="flex overflow-auto md:space-x-4">
                 <div class="hidden items-center md:flex">
                     {!! $logo !!}
                 </div>

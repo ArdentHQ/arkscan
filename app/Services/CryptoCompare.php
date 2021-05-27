@@ -50,7 +50,7 @@ final class CryptoCompare
 
             return collect($result)
                 ->groupBy(fn ($day) => Carbon::createFromTimestamp($day['time'])->format($format))
-                ->mapWithKeys(fn ($transactions, $day) => [$day => NumberFormatter::number($transactions->sum('close'))]);
+                ->mapWithKeys(fn ($transactions, $day) => [$day => $transactions->sum('close')]);
         });
     }
 

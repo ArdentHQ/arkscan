@@ -26,7 +26,7 @@ beforeEach(function () {
 
     $this->app->singleton(Contract::class, fn () => NetworkFactory::make('production'));
 
-    $wallet = Wallet::factory()->create([
+    $this->wallet = Wallet::factory()->create([
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
@@ -36,13 +36,13 @@ beforeEach(function () {
         ],
     ]);
 
-    $this->subject = new WalletViewModel($wallet);
+    $this->subject = new WalletViewModel($this->wallet);
 
     Block::factory()->create([
         'total_amount'         => '1000000000',
         'total_fee'            => '800000000',
         'reward'               => '200000000',
-        'generator_public_key' => $wallet->public_key,
+        'generator_public_key' => $this->wallet->public_key,
     ]);
 });
 
@@ -214,6 +214,10 @@ it('should get the wallet of the vote', function () {
     (new WalletCache())->setVote($vote->public_key, $vote);
 
     expect($this->subject->vote())->toBeInstanceOf(WalletViewModel::class);
+});
+
+it('should get the wallet model', function () {
+    expect($this->subject->model())->toBe($this->wallet);
 });
 
 it('should fail to get the wallet of the vote if the wallet has no public key', function () {

@@ -6,6 +6,7 @@ namespace App\Services;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 final class Settings
 {
@@ -30,7 +31,7 @@ final class Settings
 
     public static function currency(): string
     {
-        return Arr::get(static::all(), 'currency', 'USD');
+        return Str::upper(Arr::get(static::all(), 'currency', 'USD'));
     }
 
     public static function priceChart(): bool
