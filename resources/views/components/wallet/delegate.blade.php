@@ -1,9 +1,10 @@
 <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
     <x-ark-container container-class="flex flex-wrap">
         <div class="flex items-center space-x-4 w-full">
-            <h4>
+            <h4 class="mb-0 leading-normal">
                 @lang('pages.wallet.delegate.title', [$wallet->username()])
             </h4>
+
             @if ($wallet->isResigned())
                 <x-details.resigned />
             @endif
