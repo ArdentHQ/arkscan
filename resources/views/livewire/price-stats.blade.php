@@ -37,7 +37,6 @@
         <div
             wire:key="{{ Settings::currency() }}"
             class="ml-6"
-            style="width: 120px; height: 40px;"
             x-data="PriceChart(
                 {{ $historical->values()->toJson() }},
                 {{ $historical->keys()->toJson() }},
@@ -49,8 +48,8 @@
             x-init="init"
             @toggle-dark-mode.window="toggleDarkMode"
         >
-            <div class="block" wire:ignore style="width: 120px; height: 40px;">
-                <canvas x-ref="chart" class="w-full h-full" ></canvas>
+            <div class="block" wire:ignore>
+                <canvas x-ref="chart" class="w-full h-full" width="120" height="40" ></canvas>
             </div>
         </div>
     </div>
