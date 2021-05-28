@@ -5,6 +5,7 @@
             x-data="Modal.livewire({
                 searchType: '{{ $type ?? 'block' }}',
                 showAdvanced: false,
+                searching: false,
                 initSearch() {
                     this.$nextTick(() => {
                         this.focusSearchInput();

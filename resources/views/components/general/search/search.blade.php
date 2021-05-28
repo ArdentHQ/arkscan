@@ -1,6 +1,7 @@
 <div
     x-data="{
         showAdvanced: true,
+        searching: false,
         showAdvancedMobile: false,
         searchType: '{{ $type ?? 'block' }}',
     }"
