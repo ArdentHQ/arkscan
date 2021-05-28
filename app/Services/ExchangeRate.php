@@ -12,6 +12,10 @@ use ReflectionClass;
 
 final class ExchangeRate
 {
+    const CRYPTO_DECIMALS = 8;
+
+    const FIAT_DECIMALS = 2;
+
     public static function convert(float $amount, int $timestamp): string
     {
         $prices       = (new CryptoCompareCache())->getPrices(Settings::currency());
@@ -32,10 +36,10 @@ final class ExchangeRate
     public static function decimalsFor(string $currency): int
     {
         if (static::isFiat($currency)) {
-            return 2;
+            return self::FIAT_DECIMALS;
         }
 
-        return 8;
+        return self::CRYPTO_DECIMALS;
     }
 
     public static function isFiat(string $currency): bool

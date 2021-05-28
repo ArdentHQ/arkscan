@@ -34,6 +34,11 @@ final class Settings
         return Str::upper(Arr::get(static::all(), 'currency', 'USD'));
     }
 
+    public static function locale(): string
+    {
+        return Arr::get(config('currencies'), strtolower(static::currency()).'.locale', 'en_US');
+    }
+
     public static function priceChart(): bool
     {
         return Arr::get(static::all(), 'priceChart', true);

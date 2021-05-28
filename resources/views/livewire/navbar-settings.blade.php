@@ -30,7 +30,7 @@
                         placeholder="{{ $this->state['currency'] ?? 'USD' }}"
                         button-class="block font-medium text-left bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200"
                         :options="collect(config('currencies'))->keys()->mapWithKeys(function ($currency) {
-                            return [$currency => config('currencies.' . $currency)];
+                            return [$currency => config('currencies.' . $currency)['currency']];
                         })->toArray()"
                     />
                 </x-navbar.setting-option>

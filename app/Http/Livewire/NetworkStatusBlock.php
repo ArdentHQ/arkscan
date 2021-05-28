@@ -8,14 +8,17 @@ use App\Actions\CacheNetworkHeight;
 use App\Actions\CacheNetworkSupply;
 use App\Facades\Network;
 use App\Services\CryptoCompare;
+use App\Services\ExchangeRate;
 use App\Services\Settings;
 use Illuminate\View\View;
 use Konceiver\BetterNumberFormatter\BetterNumberFormatter;
 use Livewire\Component;
-use NumberFormatter;
 
 final class NetworkStatusBlock extends Component
 {
+    /** @phpstan-ignore-next-line */
+    protected $listeners = ['refreshNetworkStatusBlock' => '$refresh'];
+
     public function render(): View
     {
         return view('livewire.network-status-block', [
@@ -29,16 +32,40 @@ final class NetworkStatusBlock extends Component
 
     private function getPriceFormatted(): string
     {
-        $price = CryptoCompare::price(Network::currency(), Settings::currency());
+        $currency = Settings::currency();
+        $price    = CryptoCompare::price(Network::currency(), $currency);
 
-        return BetterNumberFormatter::new()->withStyle(NumberFormatter::CURRENCY)->formatWithCurrency($price);
+        if (ExchangeRate::isFiat($currency)) {
+            return BetterNumberFormatter::new()
+                ->withLocale(Settings::locale())
+                ->formatWithCurrencyAccounting($price);
+        }
+
+        return BetterNumberFormatter::new()
+            ->formatWithCurrencyCustom(
+                $price,
+                $currency,
+                ExchangeRate::CRYPTO_DECIMALS
+            );
     }
 
     private function getMarketCapFormatted(): string
     {
-        $price = $this->getMarketCap();
+        $currency = Settings::currency();
+        $price    = $this->getMarketCap();
 
-        return BetterNumberFormatter::new()->withStyle(NumberFormatter::CURRENCY)->formatWithCurrency($price);
+        if (ExchangeRate::isFiat($currency)) {
+            return BetterNumberFormatter::new()
+                ->withLocale(Settings::locale())
+                ->formatWithCurrencyAccounting($price);
+        }
+
+        return BetterNumberFormatter::new()
+            ->formatWithCurrencyCustom(
+                $price,
+                $currency,
+                ExchangeRate::CRYPTO_DECIMALS
+            );
     }
 
     private function getMarketCap(): float

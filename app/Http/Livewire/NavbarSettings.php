@@ -27,6 +27,7 @@ final class NavbarSettings extends Component
 
         if ($originalCurrency !== $newCurrency) {
             $this->emit('currencyChanged', $newCurrency);
+            $this->emit('refreshNetworkStatusBlock');
         }
     }
 }
