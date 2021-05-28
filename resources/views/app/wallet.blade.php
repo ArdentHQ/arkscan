@@ -11,10 +11,6 @@
             <x-wallet.vote-for :vote="$wallet->vote()" :wallet="$wallet" />
         @endif
 
-        @if($wallet->hasRegistrations())
-            <x-wallet.registrations :wallet="$wallet" />
-        @endif
-
         <x-wallet.transactions :wallet="$wallet" />
     @endsection
 

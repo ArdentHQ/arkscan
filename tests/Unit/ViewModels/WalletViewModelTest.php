@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use App\Contracts\Network as Contract;
 use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\MagistrateTransactionEntityActionEnum;
-use App\Enums\MagistrateTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
 use App\Models\Transaction;
@@ -15,7 +13,6 @@ use App\Services\Cache\DelegateCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
@@ -167,25 +164,6 @@ it('should determine if the wallet is a delegate', function () {
     ]));
 
     expect($this->subject->isDelegate())->toBeTrue();
-});
-
-it('should determine if the wallet has registrations', function () {
-    expect($this->subject->hasRegistrations())->toBeFalse();
-
-    Transaction::factory()->create([
-        'sender_public_key' => $this->subject->publicKey(),
-        'type'              => MagistrateTransactionTypeEnum::ENTITY,
-        'type_group'        => TransactionTypeGroupEnum::MAGISTRATE,
-        'asset'             => [
-            'action' => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ]);
-
-    expect($this->subject->hasRegistrations())->toBeTrue();
-});
-
-it('should get the registrations', function () {
-    expect($this->subject->registrations())->toBeInstanceOf(Collection::class);
 });
 
 it('should determine if the wallet is voting', function () {

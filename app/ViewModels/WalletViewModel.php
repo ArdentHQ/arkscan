@@ -11,7 +11,6 @@ use App\Services\ExchangeRate;
 use App\Services\Timestamp;
 use App\ViewModels\Concerns\Wallet\CanBeCold;
 use App\ViewModels\Concerns\Wallet\CanBeDelegate;
-use App\ViewModels\Concerns\Wallet\CanBeEntity;
 use App\ViewModels\Concerns\Wallet\CanForge;
 use App\ViewModels\Concerns\Wallet\CanVote;
 use App\ViewModels\Concerns\Wallet\HasType;
@@ -21,7 +20,6 @@ use Mattiasgeniar\Percentage\Percentage;
 final class WalletViewModel implements ViewModel
 {
     use CanBeCold;
-    use CanBeEntity;
     use CanBeDelegate;
     use CanForge;
     use CanVote;
