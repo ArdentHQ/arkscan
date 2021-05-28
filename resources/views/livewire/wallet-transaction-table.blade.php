@@ -56,11 +56,11 @@
                 </div>
             </x-slot>
 
-            <div class="block overflow-y-scroll justify-center items-center py-3">
+            <div class="block justify-center items-center py-3 mt-1">
                 <a
                     wire:click="$set('state.direction', 'all');"
                     @click="direction = 'all'"
-                    class="cursor-pointer dropdown-entry text-theme-secondary-900 dark:text-theme-secondary-200 @if($state['direction'] === 'all') dropdown-entry-selected @endif"
+                    class="dropdown-entry @if($state['direction'] === 'all') dropdown-entry-selected @endif"
                 >
                     @lang('pages.wallet.all_transactions')
                 </a>
@@ -68,7 +68,7 @@
                 <a
                     wire:click="$set('state.direction', 'received');"
                     @click="direction = 'received'"
-                    class="cursor-pointer dropdown-entry text-theme-secondary-900 dark:text-theme-secondary-200 @if($state['direction'] === 'received') dropdown-entry-selected @endif"
+                    class="dropdown-entry @if($state['direction'] === 'received') dropdown-entry-selected @endif"
                 >
                     <span>@lang('pages.wallet.received_transactions')</span>
 
@@ -79,7 +79,7 @@
                     <a
                         wire:click="$set('state.direction', 'sent');"
                         @click="direction = 'sent'"
-                        class="cursor-pointer dropdown-entry text-theme-secondary-900 dark:text-theme-secondary-200 @if($state['direction'] === 'sent') dropdown-entry-selected @endif"
+                        class="dropdown-entry @if($state['direction'] === 'sent') dropdown-entry-selected @endif"
                     >
                         <span>@lang('pages.wallet.sent_transactions')</span>
 

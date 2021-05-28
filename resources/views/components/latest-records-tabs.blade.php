@@ -47,18 +47,13 @@
                 </div>
             </x-slot>
 
-            <div class="p-4">
-                @if($selected !== 'transactions')
-                    <button wire:key="transactions" type="button" x-on:click="$wire.set('state.selected', 'transactions')" class="dropdown-entry dark:text-theme-secondary-200">
-                        @lang('pages.home.latest_transactions')
-                    </button>
-                @endif
-
-                @if($selected !== 'blocks')
-                    <button wire:key="blocks" type="button" x-on:click="$wire.set('state.selected', 'blocks')" class="dropdown-entry dark:text-theme-secondary-200">
-                        @lang('pages.home.latest_blocks')
-                    </button>
-                @endif
+            <div class="block justify-center items-center py-3 mt-1">
+                <button wire:key="transactions" type="button" x-on:click="$wire.set('state.selected', 'transactions')" class="dropdown-entry @if($selected === 'transactions') dropdown-entry-selected @endif">
+                    @lang('pages.home.latest_transactions')
+                </button>
+                <button wire:key="blocks" type="button" x-on:click="$wire.set('state.selected', 'blocks')" class="dropdown-entry @if($selected === 'blocks') dropdown-entry-selected @endif">
+                    @lang('pages.home.latest_blocks')
+                </button>
             </div>
         </x-ark-dropdown>
 
