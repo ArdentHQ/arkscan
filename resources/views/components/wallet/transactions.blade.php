@@ -14,6 +14,10 @@
                 </div>
             </div>
 
+            <div class="md:hidden">
+                <x-transaction-table-filter :type="'all'" />
+            </div>
+
             <livewire:wallet-transaction-table
                 :address="$wallet->address()"
                 :public-key="$wallet->publicKey()"
