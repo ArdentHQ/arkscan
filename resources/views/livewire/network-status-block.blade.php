@@ -1,5 +1,5 @@
 <div class="overflow-auto bg-theme-secondary-100 dark:bg-black ">
-    <div class="py-10 content-container-full-width">
+    <div class="py-8 content-container-full-width">
         <div class="px-8 md:w-full">
             <div
                 class="flex grid-cols-2 gap-3 w-full md:grid xl:space-x-3 xl:gap-0 xl:flex"
