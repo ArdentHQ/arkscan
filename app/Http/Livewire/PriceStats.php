@@ -15,6 +15,9 @@ final class PriceStats extends Component
 {
     public bool $placeholder = false;
 
+    /** @phpstan-ignore-next-line */
+    protected $listeners = ['refreshNetworkStatusBlock' => '$refresh'];
+
     public function mount(bool $placeholder = false) : void
     {
         $this->placeholder = $placeholder;

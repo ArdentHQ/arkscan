@@ -35,6 +35,7 @@
 
     <div class="hidden flex-grow justify-end lg:flex" >
         <div
+            wire:key="{{ Settings::currency() }}"
             class="ml-6"
             style="width: 120px; height: 40px;"
             x-data="PriceChart(
