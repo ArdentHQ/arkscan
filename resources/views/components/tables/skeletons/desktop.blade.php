@@ -1,4 +1,4 @@
-<x-ark-tables.table sticky class="hidden w-full md:block">
+<x-ark-tables.table sticky class="hidden w-full pointer-events-none md:block">
     <thead>
         <tr>
             @foreach($headers as $name => $header)
