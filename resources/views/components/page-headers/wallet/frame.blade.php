@@ -68,7 +68,7 @@
                 {{ $slot }}
 
 
-                <div class="flex flex-col items-center mt-6 space-y-2 sm:space-x-2 sm:space-y-0 sm:flex-row text-theme-secondary-200 lg:mt-0 lg:ml-4">
+                <div class="flex flex-col-reverse items-center mt-6 space-y-2 sm:space-x-2 sm:space-y-0 sm:flex-row text-theme-secondary-200 lg:mt-0 lg:ml-4">
                     @unless($wallet->isCold())
                         <x-page-headers.wallet.actions.public-key :public-key="$wallet->publicKey()" />
                     @endunless
