@@ -12,7 +12,7 @@ it('should have all settings with defaults', function () {
         'priceChart'    => true,
         'feeChart'      => true,
         'darkTheme'     => false,
-        'compactTables' => false,
+        'compactTables' => true,
     ]);
 });
 
@@ -55,7 +55,7 @@ it('should have a dark theme setting', function () {
 });
 
 it('should have a compact mode setting', function () {
-    expect(Settings::compactTables())->toBeFalse();
+    expect(Settings::compactTables())->toBeTrue();
 });
 
 it('should determine the name of the theme', function () {

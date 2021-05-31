@@ -37,13 +37,11 @@
         @stack('scripts')
     </head>
     <body
-        @if(Settings::usesDarkTheme())
-            class="dark"
-        @endif
-        x-data="{ 'theme': '{{ Settings::theme() }}', 'expanded': '{{ Settings::usesCompactTables() }}' }"
-        :class="{ 'dark': theme === 'dark', 'table-compact': ! expanded }"
+        class="@if(Settings::usesDarkTheme()) dark @endif @if(Settings::usesCompactTables()) table-compact @endif"
+        x-data="{ 'theme': '{{ Settings::theme() }}', 'compact': {{ Settings::usesCompactTables() ? 'true' : 'false' }} }"
+        :class="{ 'dark': theme === 'dark', 'table-compact': compact }"
         @toggle-dark-mode.window="theme === 'dark' ? theme = 'light' : theme = 'dark'"
-        @toggle-compact-table="expanded = ! expanded"
+        @toggle-compact-table="compact = ! compact"
     >
         <div id="app" class="flex flex-col antialiased bg-white dark:bg-theme-secondary-900">
             <x-navbar.navbar

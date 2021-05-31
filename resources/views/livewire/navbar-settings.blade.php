@@ -55,7 +55,7 @@
                 <x-ark-toggle
                     name="state.compactTables"
                     hide-label
-                    :default="$this->state['compactTables'] ? 'true' : 'false'"
+                    :default="$this->state['compactTables'] ? 'false' : 'true'"
                     alpine-click="$dispatch('toggle-compact-table')"
                 />
             </x-navbar.setting-option>

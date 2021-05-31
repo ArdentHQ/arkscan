@@ -17,7 +17,7 @@ final class Settings
             'priceChart'    => true,
             'feeChart'      => true,
             'darkTheme'     => false,
-            'compactTables' => false,
+            'compactTables' => true,
         ];
 
         if (Session::has('settings')) {
