@@ -6,7 +6,7 @@
     }"
 >
     <x-ark-dropdown
-        wrapper-class="relative p-2 w-full rounded-lg border border-theme-secondary-300 dark:border-theme-secondary-800 md:w-auto md:p-0 md:border-0"
+        wrapper-class="relative p-2 w-full rounded-xl border border-theme-primary-100 dark:border-theme-secondary-800 md:w-auto md:p-0 md:border-0"
         dropdown-classes="right-0 w-full mt-3 dark:bg-theme-secondary-900 md:w-84"
         button-class="flex items-center p-3 w-full font-semibold text-left focus:outline-none md:px-8 md:py-0 text-theme-secondary-900 dark:text-theme-secondary-200 md:items-end md:inline"
         dropdown-property="filterOpen"
