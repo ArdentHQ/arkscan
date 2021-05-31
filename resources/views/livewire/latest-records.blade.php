@@ -22,9 +22,7 @@
                     <x-tables.mobile.blocks :blocks="$blocks" />
 
                     @if(count($blocks) === 15)
-                        <div class="pt-4 mt-8 border-t border-theme-secondary-300 dark:border-theme-secondary-800 md:mt-0 md:border-dashed">
-                            <a href="{{ route('blocks', ['page' => 2]) }}" class="w-full button-secondary">@lang('actions.view_all')</a>
-                        </div>
+                        <a href="{{ route('blocks', ['page' => 2]) }}" class="mt-4 w-full button-secondary">@lang('actions.view_all')</a>
                     @endif
                 </div>
             @endif
@@ -50,9 +48,7 @@
                     <x-tables.mobile.transactions :transactions="$transactions" />
 
                     @if(count($transactions) === 15)
-                        <div class="pt-4 mt-8 border-t border-theme-secondary-300 dark:border-theme-secondary-800 md:mt-0 md:border-dashed">
-                            <a href="{{ route('transactions', ['page' => 2, 'state[type]' => $state['type']]) }}" class="w-full button-secondary">@lang('actions.view_all')</a>
-                        </div>
+                        <a href="{{ route('transactions', ['page' => 2, 'state[type]' => $state['type']]) }}" class="mt-4 w-full button-secondary">@lang('actions.view_all')</a>
                     @endif
                 </div>
             @endif
