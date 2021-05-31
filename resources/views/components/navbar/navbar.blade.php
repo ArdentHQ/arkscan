@@ -1,16 +1,5 @@
 <div class="h-20"></div>
-<div x-data="{ open: false, openDropdown: null, selectedChild: null }" id="navbar" class="fixed z-20 w-full">
-    <div
-        x-show="openDropdown !== null || open"
-        class="overflow-y-auto fixed inset-0 z-30 bg-theme-secondary-900 dark:bg-theme-secondary-800"
-        :class="{
-            'opacity-75 dark:opacity-50': openDropdown !== 'settings',
-            'opacity-0': openDropdown === 'settings',
-        }"
-        x-cloak
-        @click="openDropdown = null; open = false;"
-    ></div>
-
+<div x-data="{ open: false, showSettings: false }" id="navbar" class="fixed z-20 w-full">
     <nav class="relative z-30 bg-white shadow-header-smooth dark:shadow-header-smooth-dark dark:bg-theme-secondary-900">
         <div class="px-8 md:px-10 py-0.5">
             <div class="flex relative justify-between h-20">
@@ -51,53 +40,20 @@
                         {{-- Desktop Navbar Items --}}
                         <div class="hidden items-center lg:ml-6 lg:flex">
                             @foreach ($navigation as $navItem)
-                                @if(isset($navItem['children']))
-                                    <a
-                                        href="#"
-                                        class="relative inline-flex justify-center items-center px-1 pt-1 font-semibold leading-5 border-b-2 border-transparent text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300 focus:outline-none transition duration-150 ease-in-out h-full dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400
-                                            @if(!$loop->first) ml-8 @endif"
-                                        @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
-                                    >
-                                        <span :class="{ 'text-theme-primary-600': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
-                                        <span class="ml-2 transition duration-150 ease-in-out text-theme-primary-600" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }"><x-ark-icon name="chevron-down" size="xs" /></span>
-                                    </a>
-                                    <div x-show="openDropdown === '{{ $navItem['label'] }}'" class="absolute top-0 right-0 z-30 pb-8 mt-24 bg-white rounded-b-lg" x-cloak>
-                                        <div class="pb-8 mx-8 border-t border-theme-secondary-200"></div>
-                                        <div class="flex">
-                                            <div class="flex-shrink-0 w-56 border-r border-theme-secondary-300">
-                                                @foreach ($navItem['children'] as $childNavItem)
-                                                    <div @mouseenter="selectedChild = {{ json_encode($childNavItem) }}">
-                                                        <x-ark-sidebar-link :route="$childNavItem['route']" :name="$childNavItem['label']" :params="$childNavItem['params'] ?? []"/>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                            <div class="flex flex-col flex-shrink-0 pr-8 pl-8 w-128">
-                                                <img class="w-full" :src="selectedChild ? selectedChild.image : '{{ $navItem['image'] }}'" />
-
-                                                <template x-if="selectedChild">
-                                                    <span x-text="selectedChild.label" class="mb-2 text-xl font-semibold text-theme-secondary-900"></span>
-                                                    <span x-text="selectedChild.description"></span>
-                                                </template>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @else
-                                    <a
-                                        href="{{ route($navItem['route'], $navItem['params'] ?? []) }}"
-                                        class="inline-flex items-center px-1 pt-1 font-semibold leading-5 border-b-2
-                                            focus:outline-none transition duration-150 ease-in-out h-full
-                                            -mb-1
-                                            @if(optional(Route::current())->getName() === $navItem['route'])
-                                                border-theme-primary-600 text-theme-secondary-900 dark:text-theme-secondary-400
-                                            @else
-                                                border-transparent text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400
-                                            @endif
-                                            @if(!$loop->first) ml-8 @endif"
-                                        @click="openDropdown = null;"
-                                    >
-                                        {{ $navItem['label'] }}
-                                    </a>
-                                @endif
+                                <a
+                                    href="{{ route($navItem['route'], $navItem['params'] ?? []) }}"
+                                    class="inline-flex items-center px-1 pt-1 font-semibold leading-5 border-b-2
+                                        focus:outline-none transition duration-150 ease-in-out h-full
+                                        -mb-1
+                                        @if(optional(Route::current())->getName() === $navItem['route'])
+                                            border-theme-primary-600 text-theme-secondary-900 dark:text-theme-secondary-400
+                                        @else
+                                            border-transparent text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400
+                                        @endif
+                                        @if(!$loop->first) ml-8 @endif"
+                                >
+                                    {{ $navItem['label'] }}
+                                </a>
                             @endforeach
                         </div>
                     </div>
@@ -142,42 +98,20 @@
             </div>
         </div>
 
-        {{-- Mobile dropdown --}}
-        <div :class="{'block': open, 'hidden': !open}" class="border-t-2 lg:hidden border-theme-secondary-200 dark:border-theme-secondary-800">
-            <div class="pt-2 pb-4 rounded-b-lg">
-               @foreach ($navigation as $navItem)
-                    @if(isset($navItem['children']))
-                        <div class="flex w-full">
-                            <div class="z-10 -mr-1 w-2"></div>
-                            <a
-                                href="#"
-                                class="flex justify-between items-center py-3 px-8 w-full font-semibold border-l-2 border-transparent"
-                                @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
-                            >
-                                <span :class="{ 'text-theme-primary-600': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
-                                <span class="ml-2 transition duration-150 ease-in-out text-theme-primary-600" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }"><x-ark-icon name="chevron-down" size="xs" /></span>
-                            </a>
-                        </div>
-                        <div x-show="openDropdown === '{{ $navItem['label'] }}'" class="pl-8" x-cloak>
-                            @foreach ($navItem['children'] as $childNavItem)
-                                <div @mouseenter="selectedChild = {{ json_encode($childNavItem) }}">
-                                    <x-ark-sidebar-link :route="$childNavItem['route']" :name="$childNavItem['label']" :params="$childNavItem['params'] ?? []" />
-                                </div>
-                            @endforeach
-
-
-                        </div>
-                    @else
+        <template x-if="open">
+            <div class="border-t-2 shadow-xl lg:hidden border-theme-secondary-200 dark:border-theme-secondary-800" @click.away="open = false">
+                <div class="pt-2 pb-4 rounded-b-lg">
+                    @foreach ($navigation as $navItem)
                         <x-ark-navbar-link-mobile :route="$navItem['route']" :name="$navItem['label']" :params="$navItem['params'] ?? []" />
-                    @endif
-                @endforeach
+                    @endforeach
 
-                @if(Network::canBeExchanged())
-                    <div class="flex py-3 px-8 mt-2 -mb-4 font-semibold bg-theme-secondary-100 text-theme-secondary-900 dark:text-theme-secondary-300 dark:bg-theme-secondary-800">
-                        <livewire:price-ticker />
-                    </div>
-                @endif
+                    @if(Network::canBeExchanged())
+                        <div class="flex py-3 px-8 mt-2 -mb-4 font-semibold bg-theme-secondary-100 text-theme-secondary-900 dark:text-theme-secondary-300 dark:bg-theme-secondary-800">
+                            <livewire:price-ticker />
+                        </div>
+                    @endif
+                </div>
             </div>
-        </div>
+        </template>
     </nav>
 </div>

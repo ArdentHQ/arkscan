@@ -1,7 +1,7 @@
 <div class="flex items-center ml-8" wire:ignore>
     <div class="navbar-settings-button">
         <button
-            @click="openDropdown = openDropdown === 'settings' ? null : 'settings'"
+            @click="showSettings = !showSettings"
             class="inline-flex justify-center items-center py-2 rounded-md transition duration-150 ease-in-out text-theme-primary-300 hover:text-theme-primary-400 dark:text-theme-secondary-600 dark:hover:text-theme-secondary-500"
         >
             <span class="inline-flex">
@@ -11,8 +11,9 @@
     </div>
 
     <div
-        x-show.transition.origin.top="openDropdown === 'settings'"
+        x-show.transition.origin.top="showSettings"
         class="navbar-settings-dropdown"
+        @click.away="showSettings = false"
         x-cloak
     >
         <div class="flex flex-col">
