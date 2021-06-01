@@ -15,7 +15,7 @@ final class CacheDelegateVoterCounts extends Command
      *
      * @var string
      */
-    protected $signature = 'cache:delegate-voter-counts';
+    protected $signature = 'explorer:cache-delegate-voter-counts';
 
     /**
      * The console command description.
