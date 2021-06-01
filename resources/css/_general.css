@@ -39,21 +39,6 @@ body {
     }
 }
 
-/* Navbar Settings */
-.navbar-settings-button {
-    @apply pl-8 border-l border-theme-primary-100 text-theme-secondary-900;
-}
-.dark .navbar-settings-button {
-    @apply text-theme-secondary-600 border-theme-secondary-800;
-}
-
-.navbar-settings-dropdown {
-    @apply absolute top-0 left-0 right-0 z-30 p-8 mt-20 -mx-4 bg-white border-t-2 shadow-xl border-theme-secondary-100;
-}
-.dark .navbar-settings-dropdown {
-    @apply border-theme-secondary-800 bg-theme-secondary-900;
-}
-
 .navbar-settings-option {
     @apply items-center justify-between pt-6 border-theme-secondary-300;
 }
@@ -68,15 +53,6 @@ body {
 }
 .dark .navbar-settings-option {
     @apply border-theme-secondary-800;
-}
-
-@screen md {
-    .navbar-settings-button {
-        @apply pr-4;
-    }
-    .navbar-settings-dropdown {
-        @apply left-auto p-10 mx-0 mt-24 border-t-0 rounded-lg w-120;
-    }
 }
 
 /* Tables */
@@ -330,25 +306,6 @@ body {
 }
 .dark .modal-qr-code {
     @apply border-0;
-}
-
-/* Navbar Beta badge */
-.navbar-beta-badge {
-    @apply font-bold leading-tight border border-black rounded-sm text-theme-secondary-200 bg-theme-secondary-900;
-    padding: 2px 12px;
-    font-size: 0.6rem;
-    @apply absolute top-0 -mt-2 -ml-3 left-full;
-}
-.dark .navbar-beta-badge {
-    @apply border-theme-secondary-800;
-}
-
-@screen sm {
-    .navbar-beta-badge {
-        @apply top-auto left-auto mt-0 ml-2 text-xs;
-        padding: 2px 6px;
-        position: unset;
-    }
 }
 
 /* Table Avatar */

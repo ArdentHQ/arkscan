@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\CryptoCurrencies;
 use Konceiver\BetterNumberFormatter\BetterNumberFormatter;
+use ReflectionClass;
 
 final class NumberFormatter
 {
+    const CRYPTO_DECIMALS = 8;
+
+    const FIAT_DECIMALS = 2;
+
     /**
      * @param string|int|float $value
      */
@@ -35,9 +41,17 @@ final class NumberFormatter
     /**
      * @param string|int|float $value
      */
-    public static function currency($value, string $currency, ?int $decimals = null): string
+    public static function currency($value, string $currency): string
     {
-        return BetterNumberFormatter::new()->formatWithCurrencyCustom($value, $currency, $decimals);
+        return BetterNumberFormatter::new()->formatWithCurrencyCustom($value, $currency, static::decimalsFor($currency));
+    }
+
+    /**
+     * @param string|int|float $value
+     */
+    public static function currencyWithoutSuffix($value, string $currency): string
+    {
+        return trim(BetterNumberFormatter::new()->formatWithCurrencyCustom($value, '', static::decimalsFor($currency)));
     }
 
     /**
@@ -62,5 +76,21 @@ final class NumberFormatter
         }
 
         return sprintf('%0.2f%s', number_format($value / 1000000, 6), 'M');
+    }
+
+    public static function isFiat(string $currency): bool
+    {
+        $cryptoCurrencies = (new ReflectionClass(CryptoCurrencies::class))->getConstants();
+
+        return ! in_array($currency, $cryptoCurrencies, true);
+    }
+
+    public static function decimalsFor(string $currency): int
+    {
+        if (static::isFiat($currency)) {
+            return self::FIAT_DECIMALS;
+        }
+
+        return self::CRYPTO_DECIMALS;
     }
 }

@@ -13,47 +13,21 @@ use Livewire\Component;
 
 final class PriceStats extends Component
 {
-    public bool $placeholder = false;
-
     /** @phpstan-ignore-next-line */
-    protected $listeners = ['refreshNetworkStatusBlock' => '$refresh'];
-
-    public function mount(bool $placeholder = false) : void
-    {
-        $this->placeholder = $placeholder;
-    }
+    protected $listeners = ['currencyChanged' => '$refresh'];
 
     public function render(): View
     {
         return view('livewire.price-stats', [
             'from'        => Network::currency(),
             'to'          => Settings::currency(),
-            'priceChange' => $this->getPriceChange(),
             'historical'  => $this->getHistorical(),
         ]);
     }
 
-    private function getPriceChange(): ?float
-    {
-        if ($this->placeholder) {
-            return null;
-        }
-
-        $priceFullRange = CryptoCompare::historicalHourly(Network::currency(), Settings::currency(), 24);
-
-        $initialPrice = (float) $priceFullRange->first();
-        $finalPrice   = (float) $priceFullRange->last();
-
-        if ($initialPrice === 0.0 || $finalPrice === 0.0) {
-            return  0;
-        }
-
-        return ($finalPrice / $initialPrice) - 1;
-    }
-
     private function getHistorical(): Collection
     {
-        if ($this->placeholder) {
+        if (! Network::canBeExchanged()) {
             return collect([4, 5, 2, 2, 2, 3, 5, 1, 4, 5, 6, 5, 3, 3, 4, 5, 6, 4, 4, 4, 5, 8, 8, 10]);
         }
 

@@ -8,7 +8,7 @@ use App\Actions\CacheNetworkHeight;
 use App\Actions\CacheNetworkSupply;
 use App\Facades\Network;
 use App\Services\CryptoCompare;
-use App\Services\ExchangeRate;
+use App\Services\NumberFormatter;
 use App\Services\Settings;
 use Illuminate\View\View;
 use Konceiver\BetterNumberFormatter\BetterNumberFormatter;
@@ -22,11 +22,12 @@ final class NetworkStatusBlock extends Component
     public function render(): View
     {
         return view('livewire.network-status-block', [
-            'height'    => CacheNetworkHeight::execute(),
-            'network'   => Network::name(),
-            'supply'    => CacheNetworkSupply::execute() / 1e8,
-            'price'     => $this->getPriceFormatted(),
-            'marketCap' => $this->getMarketCapFormatted(),
+            'price'       => $this->getPriceFormatted(),
+            'priceChange' => $this->getPriceChange(),
+            'height'      => CacheNetworkHeight::execute(),
+            'network'     => Network::name(),
+            'supply'      => CacheNetworkSupply::execute() / 1e8,
+            'marketCap'   => $this->getMarketCapFormatted(),
         ]);
     }
 
@@ -35,7 +36,7 @@ final class NetworkStatusBlock extends Component
         $currency = Settings::currency();
         $price    = CryptoCompare::price(Network::currency(), $currency);
 
-        if (ExchangeRate::isFiat($currency)) {
+        if (NumberFormatter::isFiat($currency)) {
             return BetterNumberFormatter::new()
                 ->withLocale(Settings::locale())
                 ->formatWithCurrencyAccounting($price);
@@ -45,8 +46,26 @@ final class NetworkStatusBlock extends Component
             ->formatWithCurrencyCustom(
                 $price,
                 $currency,
-                ExchangeRate::CRYPTO_DECIMALS
+                NumberFormatter::CRYPTO_DECIMALS
             );
+    }
+
+    private function getPriceChange(): ?float
+    {
+        if (! Network::canBeExchanged()) {
+            return null;
+        }
+
+        $priceFullRange = CryptoCompare::historicalHourly(Network::currency(), Settings::currency(), 24);
+
+        $initialPrice = (float) $priceFullRange->first();
+        $finalPrice   = (float) $priceFullRange->last();
+
+        if ($initialPrice === 0.0 || $finalPrice === 0.0) {
+            return  0;
+        }
+
+        return ($finalPrice / $initialPrice) - 1;
     }
 
     private function getMarketCapFormatted(): string
@@ -54,7 +73,7 @@ final class NetworkStatusBlock extends Component
         $currency = Settings::currency();
         $price    = $this->getMarketCap();
 
-        if (ExchangeRate::isFiat($currency)) {
+        if (NumberFormatter::isFiat($currency)) {
             return BetterNumberFormatter::new()
                 ->withLocale(Settings::locale())
                 ->formatWithCurrencyAccounting($price);
@@ -64,7 +83,7 @@ final class NetworkStatusBlock extends Component
             ->formatWithCurrencyCustom(
                 $price,
                 $currency,
-                ExchangeRate::CRYPTO_DECIMALS
+                NumberFormatter::CRYPTO_DECIMALS
             );
     }
 

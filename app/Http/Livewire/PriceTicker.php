@@ -6,6 +6,7 @@ namespace App\Http\Livewire;
 
 use App\Facades\Network;
 use App\Services\CryptoCompare;
+use App\Services\NumberFormatter;
 use App\Services\Settings;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -28,9 +29,16 @@ final class PriceTicker extends Component
 
     public function setValues(): void
     {
-        $this->price = number_format(CryptoCompare::price(Network::currency(), Settings::currency()), 2);
+        $this->price = $this->getPriceFormatted();
         $this->from  = Network::currency();
         $this->to    = Settings::currency();
+    }
+
+    private function getPriceFormatted(): string
+    {
+        $price = CryptoCompare::price(Network::currency(), Settings::currency());
+
+        return NumberFormatter::currencyWithoutSuffix($price, Settings::currency());
     }
 
     public function render(): View

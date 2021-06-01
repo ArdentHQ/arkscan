@@ -11,4 +11,6 @@ final class CryptoCurrencies
     const ETH = 'ETH';
 
     const LTC = 'LTC';
+
+    const ARK = 'ARK';
 }

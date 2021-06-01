@@ -1,15 +1,11 @@
-const PriceChart = (
-    values,
-    labels,
-    priceChange,
-    isPlaceholder,
-    darkMode,
-    time
-) => {
+const PriceChart = (values, labels, isPlaceholder, darkMode, time) => {
     // The margin is used to not cut the line at the top/bottom
     const margin = Math.max.apply(Math, values) * 0.01;
     const maxValue = Math.max.apply(Math, values) + margin;
     const minValue = Math.min.apply(Math, values) - margin;
+    const isPositive = isPlaceholder
+        ? null
+        : parseFloat(values[values.length - 1]) >= parseFloat(values[0]);
 
     return {
         time: time,
@@ -52,7 +48,7 @@ const PriceChart = (
                         ? "rgba(126, 138, 156, 0)"
                         : "rgba(196, 200, 207, 0)"
                 );
-            } else if (priceChange >= 0) {
+            } else if (isPositive) {
                 border = "rgba(40, 149, 72, 1)";
                 gradient.addColorStop(0, "rgba(40, 149, 72, 0.5)");
                 gradient.addColorStop(1, "rgba(40, 149, 72, 0)");

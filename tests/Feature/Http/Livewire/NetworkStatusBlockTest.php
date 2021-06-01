@@ -98,3 +98,27 @@ it('should render with a height, supply and market cap for BTC', function () {
         ->assertSee('4,934.2677444') // Market cap
         ->assertSee('0.00003132'); // Price
 });
+
+it('should render the price change', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
+    Http::fake([
+        'cryptocompare.com/data/histohour*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histohour.json')), true)),
+    ]);
+
+    Livewire::test(NetworkStatusBlock::class)->assertSee('13.70%');
+});
+
+it('handle price change when price is zero', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
+    $response = json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histohour.json')), true);
+    // Force 0 price
+    $response['Data'] = collect($response['Data'])->map(fn ($item) => array_merge($item, ['close' => 0]))->toArray();
+
+    Http::fake([
+        'cryptocompare.com/data/histohour*' => Http::response($response),
+    ]);
+
+    Livewire::test(NetworkStatusBlock::class)->assertSee('0.00%');
+});

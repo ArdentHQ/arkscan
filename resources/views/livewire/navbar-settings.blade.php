@@ -1,18 +1,20 @@
-<div class="flex items-center ml-8" wire:ignore>
-    <div class="navbar-settings-button">
-        <button
-            @click="showSettings = !showSettings"
-            class="inline-flex justify-center items-center py-2 rounded-md transition duration-150 ease-in-out text-theme-primary-300 hover:text-theme-primary-400 dark:text-theme-secondary-600 dark:hover:text-theme-secondary-500"
-        >
-            <span class="inline-flex">
-                <x-ark-icon name="filter" size="sm" />
-            </span>
-        </button>
-    </div>
+<div class="flex items-center" wire:ignore>
+    <x-navbar.separator />
+
+    <x-navbar.button
+        margin-class="ml-1 -mr-2 md:-mr-4 md:ml-4"
+        @click="showSettings = !showSettings"
+        dusk="navigation-search-modal-trigger"
+    >
+        <span class="inline-flex">
+            <x-ark-icon name="filter"/>
+        </span>
+    </x-navbar.button>
+
 
     <div
         x-show.transition.origin.top="showSettings"
-        class="navbar-settings-dropdown"
+        class="absolute top-0 right-0 left-0 z-30 p-8 -mx-4 mt-20 bg-white border-t-2 shadow-xl border-theme-secondary-100 dark:border-theme-secondary-800 dark:bg-theme-secondary-900 md:left-auto md:p-10 md:mx-0 md:mt-24 md:border-t-0 md:rounded-lg w-120"
         @click.away="showSettings = false"
         x-cloak
     >
