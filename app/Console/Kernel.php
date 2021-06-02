@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console;
 
+use App\Console\Commands\BuildForgingStats;
 use App\Console\Commands\CacheDelegateAggregates;
 use App\Console\Commands\CacheDelegatePerformance;
 use App\Console\Commands\CacheDelegateProductivity;
@@ -55,13 +56,15 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(CacheDelegatesWithVoters::class)->everyMinute();
 
-        $schedule->command(CacheDelegatePerformance::class)->everyMinute();
-
-        $schedule->command(CacheDelegateProductivity::class)->everyMinute();
-
         $schedule->command(CacheDelegateResignationIds::class)->everyMinute();
 
         $schedule->command(CacheNetworkAggregates::class)->everyMinute();
+
+        $schedule->command(BuildForgingStats::class)->everyMinute();
+
+        $schedule->command(CacheDelegatePerformance::class)->everyMinute();
+
+        $schedule->command(CacheDelegateProductivity::class)->everyMinute();
     }
 
     /**

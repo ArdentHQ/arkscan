@@ -2,7 +2,12 @@
     @lang('labels.productivity')
 
     <span>
-        N/A
-        {{-- <x-percentage>{{ $model->productivity() }}</x-percentage> --}}
+        @if($model->productivity() >= 0)
+            <x-percentage>
+                {{ $model->productivity() }}
+            </x-percentage>
+        @else
+            @lang('generic.not-available')
+        @endif
     </span>
 </div>

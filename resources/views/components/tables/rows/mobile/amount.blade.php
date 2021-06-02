@@ -1,4 +1,4 @@
-<div>
+<div class="items-center">
     @lang('labels.amount')
 
     <x-general.amount-fiat-tooltip>

@@ -1,7 +1,7 @@
 <x-ark-tables.table sticky class="hidden w-full md:block">
     <thead>
         <tr>
-            <x-tables.headers.desktop.number name="pages.delegates.order" alignment="text-left" />
+            <x-tables.headers.desktop.text name="pages.delegates.order" alignment="text-left" />
             <x-tables.headers.desktop.address name="pages.delegates.name" />
             <x-tables.headers.desktop.text name="pages.delegates.forging_at" alignment="text-left" />
             <x-tables.headers.desktop.status name="pages.delegates.status" />

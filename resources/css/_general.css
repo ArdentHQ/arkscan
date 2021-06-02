@@ -364,6 +364,11 @@ tr:hover td.hoverable-cell .table-avatar {
     @apply p-0 border-0;
 }
 
+body:not(.table-compact) .fiat-tooltip-sent,
+body:not(.table-compact) .fiat-tooltip-received {
+    @apply -my-1;
+}
+
 body:not(.table-compact) .table-avatar > div {
     @apply bg-white border-white circled-icon;
 }

@@ -21,15 +21,20 @@ final class RoundCalculator
         $activeDelegates    = Network::delegateCount();
         $milestoneHeight    = 1;
         $heightFromLastSpan = $height - $milestoneHeight;
-        $currentRound       = (int) floor($heightFromLastSpan / $activeDelegates);
+        $currentRound       = (int) floor($heightFromLastSpan / $activeDelegates) + 1;
         $nextRound          = $currentRound + 1;
 
-        $result['round'] += $currentRound;
-        $result['roundHeight'] += $currentRound * $activeDelegates;
+        $result['round']           = $currentRound;
+        $result['roundHeight']     = static::getRoundHeight($currentRound, $activeDelegates);
         $result['nextRound']       = $nextRound;
-        $result['nextRoundHeight'] = $nextRound * $activeDelegates;
+        $result['nextRoundHeight'] = static::getRoundHeight($nextRound, $activeDelegates);
         $result['maxDelegates']    = $activeDelegates;
 
         return $result;
+    }
+
+    private static function getRoundHeight(int $round, int $activeDelegates): int
+    {
+        return 1 + ($round - 1) * $activeDelegates;
     }
 }

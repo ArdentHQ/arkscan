@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 use App\DTO\Slot;
 use App\Models\Block;
+use App\Models\ForgingStats;
 use App\Models\Wallet;
-
+use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use function Tests\configureExplorerDatabase;
@@ -54,6 +55,9 @@ it('should not be marked as missing if it never had a block', function () {
     ], Block::whereBetween('height', [1, 5])->get(), 1);
 
     expect($subject->keepsMissing())->toBeFalse();
+    $this->assertDatabaseMissing('forging_stats', [
+        'public_key' => $wallet->public_key,
+    ]);
     expect($subject->missedCount())->toBe(0);
 });
 
@@ -71,5 +75,37 @@ it('should show the correct missed blocks amount when spanning multiple rounds',
         'status'       => 'done',
     ], Block::whereBetween('height', [1, 5])->get(), 10);
 
-    expect($subject->missedCount())->toBe(9);
+    $this->assertDatabaseMissing('forging_stats', [
+        'public_key' => $wallet->public_key,
+    ]);
+
+    ForgingStats::create([
+        'timestamp'  => 1,
+        'public_key' => $wallet->public_key,
+        'forged'     => true,
+    ]);
+
+    ForgingStats::create([
+        'timestamp'  => 2,
+        'public_key' => $wallet->public_key,
+        'forged'     => false,
+    ]);
+    ForgingStats::create([
+        'timestamp'  => 3,
+        'public_key' => $wallet->public_key,
+        'forged'     => false,
+    ]);
+
+    $this->assertDatabaseHas('forging_stats', [
+        'public_key' => $wallet->public_key,
+    ]);
+
+    $missed = ForgingStats::where('forged', false)->where('public_key', $wallet->public_key)->count();
+
+    (new WalletCache())->setMissedBlocks(
+        $wallet->public_key,
+        $missed
+    );
+
+    expect($subject->missedCount())->toBe(2);
 });
