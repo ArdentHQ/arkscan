@@ -1,3 +1,4 @@
+import "focus-visible";
 import "@ui/js/tippy.js";
 import "@ui/js/page-scroll";
 import Pagination from "@ui/js/pagination";
@@ -6,7 +7,9 @@ import ReadMore from "@ui/js/read-more.js";
 import RichSelect from "@ui/js/rich-select.js";
 import Pikaday from "pikaday";
 import PriceChart from "./price-chart";
+import Tabs from "./tabs";
 
+window.Tabs = Tabs;
 window.Pikaday = Pikaday;
 window.Pagination = Pagination;
 window.Modal = Modal;

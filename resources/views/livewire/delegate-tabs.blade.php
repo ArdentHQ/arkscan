@@ -1,52 +1,57 @@
-<div class="hidden justify-between md:flex">
-    <div class="flex w-9/12 lg:w-10/12 tabs">
-        <div
-            class="tab-item transition-default"
-            :class="{ 'tab-item-current': status === 'active' && component !== 'monitor' }"
-            wire:click="$emit('filterByDelegateStatus', 'active');"
-            @click="component = 'table'; status = 'active'"
-        >
+<div class="hidden justify-between mb-4 space-x-6 md:flex">
+    <x-tabs.wrapper
+        class="w-9/12 lg:w-10/12"
+        no-data
+    >
+        <x-tabs.tab name="active" x-bind:tabindex="selected === 'active' || selected === 'monitor' ? 0 : -1">
             <span>@lang('pages.delegates.active')</span>
 
             @if ($countActive)
                 <span class="info-badge">{{ $countActive }}</span>
             @endif
-        </div>
+        </x-tabs.tab>
 
-        <div
-            class="tab-item transition-default"
-            :class="{ 'tab-item-current': status === 'standby' && component !== 'monitor' }"
-            wire:click="$emit('filterByDelegateStatus', 'standby');"
-            @click="component = 'table'; status = 'standby'"
-        >
+        <x-tabs.tab name="standby">
             <span>@lang('pages.delegates.standby')</span>
 
             <span class="info-badge">{{ $countStandby }}</span>
-        </div>
+        </x-tabs.tab>
 
-        <div
-            class="tab-item transition-default"
-            :class="{ 'tab-item-current': status === 'resigned' && component !== 'monitor' }"
-            wire:click="$emit('filterByDelegateStatus', 'resigned');"
-            @click="component = 'table'; status = 'resigned'"
-        >
+        <x-tabs.tab name="resigned">
             <span>@lang('pages.delegates.resigned')</span>
 
             <span class="info-badge">{{ $countResigned }}</span>
-        </div>
-    </div>
+        </x-tabs.tab>
+    </x-tabs.wrapper>
 
-    <div class="w-3/12 text-center lg:w-2/12 tabs md:ml-6">
-        <div
-            class="tab-item transition-default"
-            :class="{ 'tab-item-current': component === 'monitor' }"
-            @click="component === 'monitor' ? component = 'table' : component = 'monitor'"
+    <div class="relative z-10 w-3/12 text-center bg-theme-secondary-100 rounded-xl dark:bg-black lg:w-2/12">
+        <button
+            type="button"
+            class="flex relative justify-center items-center px-2 w-full cursor-pointer transition-default hover:text-theme-secondary-900 dark:hover:text-theme-secondary-200"
+            @click="select('monitor')"
+            @keydown.enter="select('monitor')"
+            @keydown.space.prevent="select('monitor')"
+            role="tab"
+            id="tab-monitor"
+            aria-controls="panel-monitor"
+            wire:key="tab-monitor"
+            :aria-selected="selected === 'monitor'"
         >
-            <div class="flex justify-center space-x-2">
-                <x-ark-icon name="app-monitor" class="text-theme-secondary-700"/>
-                <span>@lang('pages.delegates.monitor')</span>
-            </div>
-        </div>
+            <span class="flex justify-center items-center space-x-2">
+                <span>
+                    <x-ark-icon name="app-monitor" class="text-theme-secondary-700"/>
+                </span>
+                <span
+                    class="block pt-4 pb-3 w-full h-full whitespace-nowrap border-b-4"
+                    :class="{
+                        'border-transparent dark:text-theme-secondary-500 ': selected !== 'monitor',
+                        'text-theme-secondary-900 border-theme-primary-600 dark:text-theme-secondary-200 font-semibold': selected === 'monitor',
+                    }"
+                >
+                    @lang('pages.delegates.monitor')
+                </span>
+            </span>
+        </button>
     </div>
 </div>
 
@@ -69,17 +74,17 @@
                     </div>
                 </div>
 
-                <div x-show="status === 'active' && component !== 'monitor'">
+                <div x-show="selected === 'active' && component !== 'monitor'">
                     @lang('pages.delegates.active')
                     @if($countActive)<span class="info-badge">{{ $countActive }}</span>@endif
                 </div>
 
-                <div x-show="status === 'standby' && component !== 'monitor'">
+                <div x-show="selected === 'standby' && component !== 'monitor'">
                     @lang('pages.delegates.standby')
                     <span class="info-badge">{{ $countStandby }}</span>
                 </div>
 
-                <div x-show="status === 'resigned' && component !== 'monitor'">
+                <div x-show="selected === 'resigned' && component !== 'monitor'">
                     @lang('pages.delegates.resigned')
                     <span class="info-badge">{{ $countResigned }}</span>
                 </div>
@@ -90,31 +95,31 @@
             </div>
         </x-slot>
 
-        <div class="p-4">
-            <a wire:click="$emit('filterByDelegateStatus', 'active');" @click="component = 'table'; status = 'active'" class="dropdown-entry">
+        <div class="py-4">
+            <button type="button" @click="select('active')" class="dropdown-entry" :class="{'dropdown-entry-selected' : selected === 'active'}">
                 <span>@lang('pages.delegates.active')</span>
 
                 @if ($countActive)
                     <span class="info-badge">{{ $countActive }}</span>
                 @endif
-            </a>
+            </button>
 
-            <a wire:click="$emit('filterByDelegateStatus', 'standby');" @click="component = 'table'; status = 'standby'" class="dropdown-entry">
+            <button type="button" @click="select('standby')" class="dropdown-entry" :class="{'dropdown-entry-selected' : selected === 'standby'}">
                 <span>@lang('pages.delegates.standby')</span>
 
                 <span class="info-badge">{{ $countStandby }}</span>
-            </a>
+            </button>
 
-            <a wire:click="$emit('filterByDelegateStatus', 'resigned');" @click="component = 'table'; status = 'resigned'" class="dropdown-entry">
+            <button type="button" @click="select('resigned')" class="dropdown-entry" :class="{'dropdown-entry-selected' : selected === 'resigned'}">
                 <span>@lang('pages.delegates.resigned')</span>
 
                 <span class="info-badge">{{ $countResigned }}</span>
-            </a>
+            </button>
 
-            <a @click="component === 'monitor' ? component = 'list' : component = 'monitor'"
-                class="dropdown-entry">
+            <button type="button" @click="component !== 'monitor' ? select('monitor') : select('active')" class="dropdown-entry" :class="{'dropdown-entry-selected' : selected === 'monitor'}">
                 <span>@lang('pages.delegates.monitor')</span>
-            </a>
+            </button>
         </div>
     </x-ark-dropdown>
 </div>
+

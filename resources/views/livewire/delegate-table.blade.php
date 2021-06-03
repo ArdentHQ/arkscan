@@ -1,17 +1,17 @@
 <div id="delegate-list" class="w-full">
-    <span x-show="status !== 'active'">
+    <span x-show="selected !== 'active'">
         <x-loading.visible>
-            <span x-show="status === 'active'">
+            <span x-show="selected === 'active'">
                 <x-tables.desktop.skeleton.delegates.active />
                 <x-tables.mobile.skeleton.delegates.active />
             </span>
 
-            <span x-show="status === 'standby'">
+            <span x-show="selected === 'standby'">
                 <x-tables.desktop.skeleton.delegates.standby />
                 <x-tables.mobile.skeleton.delegates.standby />
             </span>
 
-            <span x-show="status === 'resigned'">
+            <span x-show="selected === 'resigned'">
                 <x-tables.desktop.skeleton.delegates.resigned />
                 <x-tables.mobile.skeleton.delegates.resigned />
             </span>
@@ -31,7 +31,7 @@
             @endif
         </div>
     @elseif (! count($delegates) || $state['status'] !== 'active')
-        <span x-show="status === 'active'">
+        <span x-show="selected === 'active'">
             <x-tables.desktop.skeleton.delegates.active />
             <x-tables.mobile.skeleton.delegates.active />
         </span>

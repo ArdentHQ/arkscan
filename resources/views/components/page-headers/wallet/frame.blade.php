@@ -4,7 +4,7 @@
             @lang($title)
         </h1>
 
-        <x-general.entity-header :value="$wallet->address()">
+        <x-general.entity-header :value="$wallet->address()" padding="lg:pl-8 lg:pr-7 px-7 lg:py-5 py-6">
             <x-slot name="title">
                 @isset($useGenerator)
                     <span class="hidden xl:inline">@lang('pages.wallet.generated_by')&nbsp;</span>
@@ -67,8 +67,7 @@
             <x-slot name="extension">
                 {{ $slot }}
 
-
-                <div class="flex flex-col-reverse items-center mt-6 space-y-2 sm:space-x-2 sm:space-y-0 sm:flex-row text-theme-secondary-200 lg:mt-0 lg:ml-4">
+                <div class="flex flex-col-reverse items-center p-1 mt-6 space-y-2 sm:space-x-2 sm:space-y-0 sm:flex-row text-theme-secondary-200 lg:mt-0 lg:ml-4">
                     @unless($wallet->isCold())
                         <x-page-headers.wallet.actions.public-key :public-key="$wallet->publicKey()" />
                     @endunless

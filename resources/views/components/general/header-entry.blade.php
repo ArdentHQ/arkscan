@@ -7,12 +7,12 @@
     'text',
 ])
 
-<div class="flex @if (! $withoutBorder) sm:border-r sm:border-theme-secondary-300 dark:border-theme-secondary-800 sm:mr-7 lg:mr-0 lg:pr-7 @endif">
+<div class="flex -m-1 @if (! $withoutBorder) sm:border-r sm:border-theme-secondary-300 dark:border-theme-secondary-800 sm:mr-7 lg:mr-0 lg:pr-7 @endif">
     @if ($icon)
         {{ $icon }}
     @endif
 
-    <div class="flex flex-col justify-center space-y-1 font-semibold truncate">
+    <div class="flex flex-col justify-center p-1 space-y-1 font-semibold truncate">
         <div class="flex items-center">
             <div class="text-sm text-theme-secondary-500 dark:text-theme-secondary-700">{{ $title }}</div>
 

@@ -21,9 +21,6 @@ final class LatestRecords extends Component
         'type'     => 'all',
     ];
 
-    /** @phpstan-ignore-next-line */
-    protected $listeners = ['filterTransactionsByType'];
-
     private ?Collection $blocks = null;
 
     private ?Collection $transactions = null;

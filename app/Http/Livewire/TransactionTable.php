@@ -19,13 +19,8 @@ final class TransactionTable extends Component
         'type' => 'all',
     ];
 
-    /** @phpstan-ignore-next-line */
-    protected $listeners = ['filterTransactionsByType'];
-
-    public function filterTransactionsByType(string $value): void
+    public function updatedStateType(): void
     {
-        $this->state['type'] = $value;
-
         $this->gotoPage(1);
     }
 
@@ -47,6 +42,7 @@ final class TransactionTable extends Component
         }
 
         return view('livewire.transaction-table', [
+            'showTitle'    => true,
             'transactions' => ViewModelFactory::paginate($query->paginate()),
         ]);
     }

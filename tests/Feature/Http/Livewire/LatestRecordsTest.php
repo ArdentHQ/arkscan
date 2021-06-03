@@ -86,7 +86,7 @@ it('should apply filters for transactions', function () {
         'type'       => CoreTransactionTypeEnum::VOTE,
     ]);
 
-    $component->emit('filterTransactionsByType', 'vote');
+    $component->set('state.type', 'vote');
 
     foreach (ViewModelFactory::collection($expected) as $transaction) {
         $component->assertSee($transaction->id());
@@ -131,7 +131,7 @@ it('should apply filters through an event for transactions', function () {
         'type'       => CoreTransactionTypeEnum::VOTE,
     ]);
 
-    $component->emit('filterTransactionsByType', 'vote');
+    $component->set('state.type', 'vote');
 
     foreach (ViewModelFactory::collection($expected) as $transaction) {
         $component->assertSee($transaction->id());

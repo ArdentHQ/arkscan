@@ -25,13 +25,13 @@
         @endunless
 
         <x-slot name="right">
-            <x-transaction-table-filter type="all" />
+            <x-transaction-table-filter />
         </x-slot>
     </x-tabs.wrapper>
 
-    <div class="md:hidden">
+    <div class="mb-4 md:hidden ">
         <x-ark-dropdown
-            wrapper-class="relative p-2 mb-8 w-full rounded-xl border border-theme-primary-100 dark:border-theme-secondary-800"
+            wrapper-class="relative p-2 w-full rounded-xl border border-theme-primary-100 dark:border-theme-secondary-800"
             button-class="p-3 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
             dropdown-classes="left-0 w-full z-20"
             :init-alpine="false"
@@ -88,6 +88,10 @@
                 @endunless
             </div>
         </x-ark-dropdown>
+
+        <div class="mt-3">
+            <x-transaction-table-filter />
+        </div>
     </div>
 
     <div id="transaction-list" class="w-full">

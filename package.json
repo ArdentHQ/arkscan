@@ -21,6 +21,7 @@
         "mersenne-twister": "^1.1.0",
         "pikaday": "^1.8.2",
         "postcss": "^8.1.10",
+        "postcss-focus-visible": "^5.0.0",
         "postcss-import": "^12.0.1",
         "postcss-loader": "^3.0.0",
         "postcss-url": "^8.0.0",
@@ -37,6 +38,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "body-scroll-lock": "^3.1.5"
+        "body-scroll-lock": "^3.1.5",
+        "focus-visible": "^5.2.0"
     }
 }

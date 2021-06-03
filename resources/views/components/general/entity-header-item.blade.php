@@ -15,7 +15,7 @@
         </div>
     @endunless
 
-    <div class="flex flex-col flex-1 justify-between font-semibold truncate space-y-2 {{ $contentClass ?? 'md:ml-4' }}">
+    <div class="flex flex-col flex-1 justify-between font-semibold truncate space-y-2 p-1 -m-1 {{ $contentClass ?? 'ml-4 md:pr-4' }}">
         <div class="text-sm leading-tight text-theme-secondary-500 dark:text-theme-secondary-700">{{ $title }}</div>
 
         @if ($url ?? false)

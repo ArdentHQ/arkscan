@@ -34,24 +34,25 @@
                     </x-navbar.button>
                 </div>
 
-                <div class="flex justify-end">
+                <div class="flex justify-end ">
                     <div class="flex flex-1 justify-end items-center sm:items-stretch sm:justify-between">
                         {{-- Desktop Navbar Items --}}
-                        <div class="hidden items-center lg:flex">
+                        <div class="hidden items-center -mx-4 lg:flex">
                             @foreach ($navigation as $navItem)
                                 <a
                                     href="{{ route($navItem['route'], $navItem['params'] ?? []) }}"
-                                    class="inline-flex items-center font-semibold leading-5 border-b-2
-                                        focus:outline-none transition duration-150 ease-in-out h-full
-                                        -mb-1 pb-1
+                                    class="inline-flex font-semibold leading-5 group
+                                        focus:outline-none transition duration-150 ease-in-out h-full px-2 mx-2 relative border-t-2 border-transparent rounded
                                         @if(optional(Route::current())->getName() === $navItem['route'])
-                                            border-theme-primary-600 text-theme-secondary-900 dark:text-theme-secondary-400
+                                            text-theme-secondary-900 dark:text-theme-secondary-400
                                         @else
-                                            border-transparent text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400
+                                            text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400
                                         @endif
-                                        @if(!$loop->first) ml-8 @endif"
+                                    "
                                 >
-                                    {{ $navItem['label'] }}
+                                    <span class="flex items-center w-full h-full mt-0.5 border-b-2  @if(optional(Route::current())->getName() === $navItem['route']) border-theme-primary-600 @else border-transparent group-hover:border-theme-secondary-300 @endif">
+                                        <span class="-mt-0.5">{{ $navItem['label'] }}</span>
+                                    </span>
                                 </a>
                             @endforeach
                         </div>

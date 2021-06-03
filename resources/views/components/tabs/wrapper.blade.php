@@ -1,25 +1,23 @@
 @props([
+    'xData' => '{}',
     'onSelected' => null,
-    'defaultSelected' => ''
+    'defaultSelected' => '',
+    'noData' => false,
 ])
 
 <div
     {{ $attributes->merge(['class' => 'items-center justify-between w-full flex bg-theme-secondary-100 rounded-xl dark:bg-black relative z-10' ])}}
-    x-data="{
-        selected: '{{ $defaultSelected }}',
-        select(name) {
-            this.selected = name;
-
-            this.onSelected(name);
-        },
-        @if($onSelected)
-            onSelected: {{ $onSelected }},
-        @else
-            onSelected: () => {},
-        @endif
-    }"
+    @unless($noData)
+        x-data="Tabs(
+            '{{ $defaultSelected }}',
+            {{ $xData }}
+            @if($onSelected)
+            , {{ $onSelected }}
+            @endif
+        )"
+    @endunless
 >
-    <div class="flex">
+    <div role="tablist" class="flex">
         {{ $slot }}
     </div>
 

@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const focusVisible = require('postcss-focus-visible');
 
 /*
  |--------------------------------------------------------------------------
@@ -29,6 +30,7 @@ mix.webpackConfig({
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss')(),
+        focusVisible()
     ])
     .copyDirectory('resources/images', 'public/images')
     // Extract node_modules

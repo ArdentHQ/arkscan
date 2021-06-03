@@ -33,4 +33,16 @@ module.exports = {
             }
         },
     },
+    variants: {
+        ...defaultConfig.variants,
+        extend: {
+            ...defaultConfig.variants.extend,
+            borderRadius: ['focus-visible'],
+            ringColor: ['focus-visible'],
+            ringWidth: ['focus-visible'],
+            textDecoration: ['focus-visible'],
+            transitionProperty: ['focus-visible'],
+            zIndex: ['focus-visible'],
+        },
+    },
 }

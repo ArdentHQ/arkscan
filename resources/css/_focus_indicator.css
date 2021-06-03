@@ -1,0 +1,8 @@
+@layer base {
+    a,
+    button,
+    [role="button"],
+    .focus-indicator {
+        @apply outline-none focus-visible:transition-none focus-visible:no-underline focus-visible:ring-2 focus-visible:ring-theme-primary-500 focus-visible:z-10 focus-visible:rounded;
+    }
+}

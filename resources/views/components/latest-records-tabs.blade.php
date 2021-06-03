@@ -18,7 +18,7 @@
 
         <x-slot name="right">
             <div x-show="selected === 'transactions'">
-                <x-transaction-table-filter :type="$transactionType"/>
+                <x-transaction-table-filter />
             </div>
         </x-slot>
     </x-tabs.wrapper>
@@ -59,7 +59,7 @@
 
         @if($selected === 'transactions')
             <div class="mt-3">
-                <x-transaction-table-filter :type="$transactionType"/>
+                <x-transaction-table-filter />
             </div>
         @endif
     </div>
