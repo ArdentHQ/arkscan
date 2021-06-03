@@ -7,7 +7,7 @@
     'text',
 ])
 
-<div class="flex @if (! $withoutBorder) sm:border-r sm:border-theme-secondary-300 dark:border-theme-secondary-800 sm:mr-5 lg:mr-0 lg:pr-5 @endif">
+<div class="flex @if (! $withoutBorder) sm:border-r sm:border-theme-secondary-300 dark:border-theme-secondary-800 sm:mr-7 lg:mr-0 lg:pr-7 @endif">
     @if ($icon)
         {{ $icon }}
     @endif

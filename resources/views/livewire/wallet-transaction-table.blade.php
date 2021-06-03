@@ -97,7 +97,7 @@
             @else
                 <x-tables.desktop.transactions :transactions="$transactions" :wallet="$wallet" use-confirmations use-direction />
 
-                <x-tables.mobile.transactions :transactions="$transactions" :wallet="$wallet" use-direction />
+                <x-tables.mobile.transactions :transactions="$transactions" :wallet="$wallet" use-confirmations use-direction />
 
                 <x-general.pagination :results="$transactions" class="mt-8" />
             @endif

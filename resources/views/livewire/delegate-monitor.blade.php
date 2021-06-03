@@ -9,7 +9,7 @@
         <div id="network-list" class="w-full" wire:poll.{{ Network::blockTime() }}s="pollDelegates" wire:key="poll_delegates_real">
             <div class="flex overflow-hidden flex-col mb-8 rounded-lg border border-theme-secondary-300 dark:border-theme-secondary-800">
                 <div class="p-8 bg-theme-secondary-100 border-theme-secondary-300 dark:border-theme-secondary-800 dark:bg-theme-secondary-900">
-                    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
+                    <div class="grid grid-cols-1 gap-y-8 sm:grid-cols-2 xl:grid-cols-4">
                         <x-general.entity-header-item
                             :title="trans('pages.delegates.statistics.block_count')"
                             :text="$statistics['blockCount']"
@@ -30,7 +30,6 @@
                             :text="$statistics['currentDelegate']->username()"
                             :url="route('wallet', $statistics['currentDelegate']->address())"
                             icon="app-current-delegate"
-                            icon-size="md"
                         />
                         <x-general.entity-header-item
                             :title="trans('pages.delegates.statistics.next_delegate')"

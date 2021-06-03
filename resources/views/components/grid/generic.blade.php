@@ -16,7 +16,7 @@
                 @lang('generic.not_specified')
             </span>
         @else
-            <span class="font-semibold break-words text-theme-secondary-700 dark:text-theme-secondary-200">
+            <span class="font-semibold break-words text-theme-secondary-900 dark:text-theme-secondary-200">
                 {{ $slot }}
             </span>
         @endif

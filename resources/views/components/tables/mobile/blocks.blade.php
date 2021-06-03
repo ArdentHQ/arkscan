@@ -1,6 +1,6 @@
 <div class="divide-y table-list-mobile">
     @foreach ($blocks as $block)
-        <div class="space-y-3 table-list-mobile-row">
+        <div class="table-list-mobile-row">
             <x-tables.rows.mobile.block-id :model="$block" />
 
             <x-tables.rows.mobile.timestamp :model="$block" />

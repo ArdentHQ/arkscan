@@ -1,6 +1,6 @@
 <div class="entity-header-item {{ $wrapperClass ?? false }}">
     @unless($withoutIcon ?? false)
-        <div class="flex items-center">
+        <div class="hidden items-center md:flex">
             <div class="circled-icon text-theme-secondary-900 border-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-600">
                 @if ($icon ?? false)
                     @if ($iconSize ?? false)
@@ -15,7 +15,7 @@
         </div>
     @endunless
 
-    <div class="flex flex-col flex-1 justify-between font-semibold truncate {{ $contentClass ?? 'ml-4 md:pr-4' }}">
+    <div class="flex flex-col flex-1 justify-between font-semibold truncate space-y-2 {{ $contentClass ?? 'md:ml-4' }}">
         <div class="text-sm leading-tight text-theme-secondary-500 dark:text-theme-secondary-700">{{ $title }}</div>
 
         @if ($url ?? false)

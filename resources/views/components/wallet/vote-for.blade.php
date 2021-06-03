@@ -29,7 +29,7 @@
                     <x-general.entity-header-item
                         :title="trans('pages.wallet.rank')"
                         without-icon
-                        content-class="pr-8 space-y-2 border-r sm:text-right sm:mr-2 border-theme-secondary-300 dark:border-theme-secondary-800 md:border-r-0"
+                        content-class="pr-7 space-y-2 border-r sm:text-right border-theme-secondary-300 dark:border-theme-secondary-800 sm:border-r-0 sm:pr-0"
                     >
                         <x-slot name="text">
                             @if ($vote->isResigned())
@@ -44,7 +44,7 @@
                 <x-general.entity-header-item
                     :title="trans('pages.wallet.status')"
                     without-icon
-                    content-class="space-y-2 sm:text-right"
+                    content-class="sm:-ml-4 sm:text-right "
                 >
                     <x-slot name="text">
                         @if($vote->isResigned())

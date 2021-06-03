@@ -44,6 +44,7 @@ return [
         'type'                    => 'Type',
         'sender'                  => 'Sender',
         'recipient'               => 'Recipient',
+        'address'                 => 'Address',
         'recipients'              => 'Recipients',
         'amount'                  => 'Amount',
         'fee'                     => 'Fee',

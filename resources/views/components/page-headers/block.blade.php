@@ -7,7 +7,6 @@
         <x-general.entity-header
             :title="trans('pages.block.block_id')"
             :value="$block->id()"
-            is-block-page
         >
             <x-slot name="logo">
                 <x-page-headers.circle>
@@ -15,45 +14,49 @@
                 </x-page-headers.circle>
             </x-slot>
 
-            <x-slot name="extension">
-                <div class="flex items-center mt-6 space-x-2 text-theme-secondary-400 md:mt-0">
-                    @if ($block->previousBlockUrl())
-                        <a href="{{ $block->previousBlockUrl() }}" class="flex flex-1 justify-center items-center px-4 h-11 rounded cursor-pointer bg-theme-secondary-800 hover:bg-theme-secondary-700 transition-default md:flex-none">
-                            <x-ark-icon name="chevron-left" size="sm" />
-                        </a>
-                    @endif
+            @if ($block->previousBlockUrl() || $block->nextBlockUrl())
+                <x-slot name="extension">
+                    <div class="flex items-center mt-6 space-x-2 text-theme-secondary-400 lg:mt-0 lg:ml-3">
+                        @if ($block->previousBlockUrl())
+                            <a href="{{ $block->previousBlockUrl() }}" class="flex flex-1 justify-center items-center px-4 h-11 rounded cursor-pointer bg-theme-secondary-800 hover:bg-theme-secondary-700 transition-default lg:flex-none">
+                                <x-ark-icon name="chevron-left" size="sm" />
+                            </a>
+                        @endif
 
-                    @if ($block->nextBlockUrl())
-                        <a href="{{ $block->nextBlockUrl() }}" class="flex flex-1 justify-center items-center px-4 h-11 rounded cursor-pointer bg-theme-secondary-800 hover:bg-theme-secondary-700 transition-default md:flex-none">
-                            <x-ark-icon name="chevron-right" size="sm" />
-                        </a>
-                    @endif
-                </div>
-            </x-slot>
+                        @if ($block->nextBlockUrl())
+                            <a href="{{ $block->nextBlockUrl() }}" class="flex flex-1 justify-center items-center px-4 h-11 rounded cursor-pointer bg-theme-secondary-800 hover:bg-theme-secondary-700 transition-default lg:flex-none">
+                                <x-ark-icon name="chevron-right" size="sm" />
+                            </a>
+                        @endif
+                    </div>
+                </x-slot>
+            @endif
 
             <x-slot name="bottom">
-                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
+                <div class="grid grid-cols-1 gap-y-8 sm:grid-cols-2 xl:grid-cols-4">
                     <x-general.entity-header-item
                         :title="trans('pages.block.generated_by')"
                         :avatar="$block->username()"
                         :text="$block->username()"
+                        icon-size="md"
                         :url="route('wallet', $block->delegate()->address)"
                     />
                     <x-general.entity-header-item
                         :title="trans('pages.block.transactions')"
-                        icon="exchange"
+                        icon="app-transactions"
+                        icon-size="md"
                         :text="$block->transactionCount()"
                     />
                     <x-general.entity-header-item
                         :title="trans('pages.block.transaction_volume')"
-                        icon="app-votes"
+                        icon="app-transactions-amount"
                     >
                         <x-slot name="text">
                             <x-currency :currency="Network::currency()">{{ $block->amount() }}</x-currency>
                         </x-slot>
                     </x-general.entity-header-item>
 
-                    <x-general.entity-header-item icon="app-reward">
+                    <x-general.entity-header-item icon="app-reward" icon-size="md">
                         <x-slot name="title">
                             <span data-tippy-content="@lang('pages.block.total_rewards_tooltip', [$block->reward()])">
                                 @lang('pages.block.total_rewards')

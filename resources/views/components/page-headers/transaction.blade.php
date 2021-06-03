@@ -15,7 +15,7 @@
             </x-slot>
 
             <x-slot name="bottom">
-                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
+                <div class="grid grid-cols-1 gap-y-8 sm:grid-cols-2 xl:grid-cols-4">
                     <x-dynamic-component :component="$transaction->headerComponent()" :transaction="$transaction" />
                 </div>
             </x-slot>

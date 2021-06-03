@@ -2,14 +2,9 @@
     <thead>
         <tr>
             <x-tables.headers.desktop.address
-                name="general.transaction.recipient"
-                last-on="md"
+                name="general.transaction.address"
             />
-            <x-tables.headers.desktop.number
-                name="general.transaction.amount"
-                responsive
-                breakpoint="md"
-            />
+            <x-tables.headers.desktop.number name="general.transaction.amount"/>
         </tr>
     </thead>
     <tbody>

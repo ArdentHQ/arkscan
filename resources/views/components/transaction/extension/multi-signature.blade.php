@@ -1,20 +1,41 @@
-<div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
+<div class="bg-white border-t border-theme-secondary-300 dark:border-theme-secondary-800 dark:bg-theme-secondary-900">
     <x-ark-container>
         <div class="w-full">
             <div class="flex relative justify-between items-end">
-                <h4>@lang('pages.transaction.participants')</h4>
+                <h2>@lang('pages.transaction.participants')</h2>
             </div>
 
-            <div class="flex flex-col w-full divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
-                <div class="grid grid-cols-1 grid-flow-row gap-6 gap-y-12 pt-8 mb-8 w-full md:grid-cols-2 xl:gap-y-4">
+            <x-ark-tables.table class="hidden md:block">
+                <thead>
+                    <tr>
+                        <x-tables.headers.desktop.id name="#" />
+                        <x-tables.headers.desktop.address name="general.wallet.address" />
+                    </tr>
+                </thead>
+                <tbody>
                     @foreach($transaction->participants() as $participant)
-                        <x-details.address
-                            :title="trans('general.transaction.participant', [$loop->index + 1])"
-                            :transaction="$transaction"
-                            :model="$participant"
-                            icon="app-volume" />
+                        <x-ark-tables.row>
+                            <x-ark-tables.cell>
+                                {{ $loop->index + 1}}
+                            </x-ark-tables.cell>
+                            <x-ark-tables.cell>
+                                <x-tables.rows.desktop.address :model="$participant"/>
+                            </x-ark-tables.cell>
+                        </x-ark-tables.row>
                     @endforeach
-                </div>
+                </tbody>
+            </x-ark-tables.table>
+
+            <div class="divide-y md:hidden table-list-mobile">
+                @foreach($transaction->participants() as $participant)
+                    <div class="table-list-mobile-row">
+                        <div>
+                            #<span>{{ $loop->index + 1}}</span>
+                        </div>
+
+                        <x-tables.rows.mobile.address :model="$participant" />
+                    </div>
+                @endforeach
             </div>
         </div>
     </x-ark-container>

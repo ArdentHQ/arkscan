@@ -11,7 +11,7 @@
             </x-ark-container>
         </div>
 
-        <div class="bg-white border-t-20 border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900">
+        <div class="bg-white border-t border-theme-secondary-300 dark:border-theme-secondary-800 dark:bg-theme-secondary-900">
             <x-ark-container>
                 <div x-data="{
                     dropdownOpen: false,
