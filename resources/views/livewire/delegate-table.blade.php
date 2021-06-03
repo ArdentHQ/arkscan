@@ -41,6 +41,8 @@
         <x-loading.hidden>
             <x-tables.desktop.delegates.standby :delegates="$delegates" />
             <x-tables.mobile.delegates.standby :delegates="$delegates" />
+
+            <x-general.pagination :results="$delegates" class="mt-8" />
         </x-loading.hidden>
     @endif
 
@@ -48,6 +50,8 @@
         <x-loading.hidden>
             <x-tables.desktop.delegates.resigned :delegates="$delegates" />
             <x-tables.mobile.delegates.resigned :delegates="$delegates" />
+
+            <x-general.pagination :results="$delegates" class="mt-8" />
         </x-loading.hidden>
     @endif
 
