@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Enums\CryptoCurrencies;
 use Konceiver\BetterNumberFormatter\BetterNumberFormatter;
+use Konceiver\BetterNumberFormatter\ResolveScientificNotation;
 use ReflectionClass;
 
 final class NumberFormatter
@@ -52,6 +53,14 @@ final class NumberFormatter
     public static function currencyWithoutSuffix($value, string $currency): string
     {
         return trim(BetterNumberFormatter::new()->formatWithCurrencyCustom($value, '', static::decimalsFor($currency)));
+    }
+
+    /**
+     * @param string|int|float $value
+     */
+    public static function currencyWithDecimalsWithoutSuffix($value, string $currency): string
+    {
+        return number_format((float) ResolveScientificNotation::execute((float) $value), static::decimalsFor($currency));
     }
 
     /**

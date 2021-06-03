@@ -33,6 +33,12 @@ it('should format a number without a suffix', function () {
     assertMatchesSnapshot(NumberFormatter::currencyWithoutSuffix(1e8, 'ARK'));
 });
 
+it('should format a number with decimals and without a suffix', function () {
+    assertMatchesSnapshot(NumberFormatter::currencyWithDecimalsWithoutSuffix(1.00, 'USD'));
+    assertMatchesSnapshot(NumberFormatter::currencyWithDecimalsWithoutSuffix(1.65, 'USD'));
+    assertMatchesSnapshot(NumberFormatter::currencyWithDecimalsWithoutSuffix(1.001, 'USD'));
+});
+
 it('should format a number with a currency symbol if it has a [,]', function () {
     assertMatchesSnapshot(NumberFormatter::currency('123,456', 'ARK'));
 });

@@ -38,7 +38,7 @@ final class PriceTicker extends Component
     {
         $price = CryptoCompare::price(Network::currency(), Settings::currency());
 
-        return NumberFormatter::currencyWithoutSuffix($price, Settings::currency());
+        return NumberFormatter::currencyWithDecimalsWithoutSuffix($price, Settings::currency());
     }
 
     public function render(): View
