@@ -23,7 +23,7 @@ final class NetworkStatusBlock extends Component
     {
         return view('livewire.network-status-block', [
             'price'       => $this->getPriceFormatted(),
-            'priceChange' => $this->getPriceChange(),
+            'priceChange' => CryptoCompare::getPriceChange(),
             'height'      => CacheNetworkHeight::execute(),
             'network'     => Network::name(),
             'supply'      => CacheNetworkSupply::execute() / 1e8,
@@ -48,24 +48,6 @@ final class NetworkStatusBlock extends Component
                 $currency,
                 NumberFormatter::CRYPTO_DECIMALS
             );
-    }
-
-    private function getPriceChange(): ?float
-    {
-        if (! Network::canBeExchanged()) {
-            return null;
-        }
-
-        $priceFullRange = CryptoCompare::historicalHourly(Network::currency(), Settings::currency(), 24);
-
-        $initialPrice = (float) $priceFullRange->first();
-        $finalPrice   = (float) $priceFullRange->last();
-
-        if ($initialPrice === 0.0 || $finalPrice === 0.0) {
-            return  0;
-        }
-
-        return ($finalPrice / $initialPrice) - 1;
     }
 
     private function getMarketCapFormatted(): string

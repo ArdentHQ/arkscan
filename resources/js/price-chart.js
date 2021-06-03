@@ -1,11 +1,15 @@
-const PriceChart = (values, labels, isPlaceholder, darkMode, time) => {
+const PriceChart = (
+    values,
+    labels,
+    isPlaceholder,
+    darkMode,
+    time,
+    isPositive
+) => {
     // The margin is used to not cut the line at the top/bottom
     const margin = Math.max.apply(Math, values) * 0.01;
     const maxValue = Math.max.apply(Math, values) + margin;
     const minValue = Math.min.apply(Math, values) - margin;
-    const isPositive = isPlaceholder
-        ? null
-        : parseFloat(values[values.length - 1]) >= parseFloat(values[0]);
 
     return {
         time: time,

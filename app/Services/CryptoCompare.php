@@ -71,4 +71,22 @@ final class CryptoCompare
                 ]);
         });
     }
+
+    public static function getPriceChange(): ?float
+    {
+        if (! Network::canBeExchanged()) {
+            return null;
+        }
+
+        $priceFullRange = self::historicalHourly(Network::currency(), Settings::currency(), 24);
+
+        $initialPrice = (float) $priceFullRange->first();
+        $finalPrice   = (float) $priceFullRange->last();
+
+        if ($initialPrice === 0.0 || $finalPrice === 0.0) {
+            return  0;
+        }
+
+        return ($finalPrice / $initialPrice) - 1;
+    }
 }
