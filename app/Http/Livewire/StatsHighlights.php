@@ -40,7 +40,7 @@ final class StatsHighlights extends Component
     {
         $supply = CacheNetworkSupply::execute() / 1e8;
 
-        return NumberFormatter::currency($supply, $this->currency);
+        return NumberFormatter::number($supply);
     }
 
     private function getVotingPercent(): string
@@ -54,7 +54,7 @@ final class StatsHighlights extends Component
     {
         $votesValue = (new NetworkCache())->getVotesCount();
 
-        return NumberFormatter::currency($votesValue, $this->currency);
+        return NumberFormatter::number($votesValue);
     }
 
     private function getDelegates(): string
