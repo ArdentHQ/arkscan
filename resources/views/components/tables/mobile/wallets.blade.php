@@ -7,7 +7,11 @@
 
             <x-tables.rows.mobile.balance :model="$wallet" />
 
-            <x-tables.rows.mobile.vote-percentage :model="$wallet" />
+            @isset($useVoteWeight)
+                <x-tables.rows.mobile.vote-percentage :model="$wallet" />
+            @else
+                <x-tables.rows.mobile.balance-percentage :model="$wallet" />
+            @endif
         </div>
     @endforeach
 </div>
