@@ -5,6 +5,7 @@
 ])
 
 <div
+    x-ref="advancedSearch"
     x-transition:enter="transition ease-out duration-100"
     x-transition:enter-start="opacity-0 transform"
     x-transition:enter-end="opacity-100 transform"
