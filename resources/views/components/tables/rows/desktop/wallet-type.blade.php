@@ -1,4 +1,4 @@
-<div class="flex justify-center items-center space-x-2 text-theme-secondary-500">
+<div class="flex justify-center items-center space-x-2 w-full text-theme-secondary-900 dark:text-theme-secondary-500">
     @if ($model->isKnown())
         <div data-tippy-content="@lang('labels.verified_address')">
             <x-ark-icon name="app-verified" />
