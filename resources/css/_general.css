@@ -366,3 +366,12 @@ body:not(.table-compact) .table-avatar > div {
 body:not(.table-compact) .arrow-direction {
     @apply -mr-2 circled-icon;
 }
+
+/* Progress circles */
+.forging-status > circle:first-child {
+    stroke: var(--theme-color-secondary-200);
+}
+
+.dark .forging-status > circle:first-child {
+    stroke: var(--theme-color-secondary-800);
+}

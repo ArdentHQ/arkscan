@@ -1,17 +1,12 @@
 @component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
-
     @section('content')
-        <div class="dark:bg-theme-secondary-900">
-            <x-ark-container container-class="flex flex-col space-y-5">
-                <h1 class="header-2">
-                    @lang('pages.delegates.title')
-                </h1>
+        <x-general.header class="overflow-auto">
+            <div class="px-10 md:w-full">
+                <livewire:delegate-data-boxes />
+            </div>
+        </x-general.header>
 
-                <livewire:delegate-statistics />
-            </x-ark-container>
-        </div>
-
-        <div class="bg-white border-t border-theme-secondary-300 dark:border-theme-secondary-800 dark:bg-theme-secondary-900">
+        <div class="bg-white dark:bg-theme-secondary-900">
             <x-ark-container>
                 <div
                     x-data="Tabs(
