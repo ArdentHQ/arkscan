@@ -6,7 +6,7 @@
                     {!! $logo !!}
                 </div>
 
-                <div class="flex overflow-auto flex-col flex-1 justify-between space-y-4 min-w-0 font-semibold lg:ml-4 md:space-y-0">
+                <div class="flex overflow-auto flex-col flex-1 justify-center space-y-2 min-w-0 font-semibold lg:ml-4">
                     <div class="flex text-sm leading-tight text-theme-secondary-600 dark:text-theme-secondary-700">{{ $title }}</div>
 
                     <div class="flex items-center space-x-2 leading-tight">
