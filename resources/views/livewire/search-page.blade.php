@@ -9,7 +9,7 @@
         <h1 class="header-2">@lang('pages.search_results.title')</h1>
 
         @if($results && $results->count())
-            <div>
+            <div class="mt-5">
                 @if ($state['type'] === 'block')
                     <x-tables.blocks :blocks="$results" />
                 @endif
