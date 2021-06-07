@@ -148,6 +148,78 @@ it('should determine if the wallet is owned by an exchange', function () {
     expect($subject->isOwnedByExchange())->toBeFalse();
 });
 
+it('should determine if the wallet has a special type when known', function () {
+    fakeKnownWallets();
+
+    $subject = new WalletViewModel(Wallet::factory()
+        ->activeDelegate()
+        ->create(['address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67']));
+
+    expect($subject->isKnown())->toBeTrue();
+    expect($subject->hasMultiSignature())->toBeFalse();
+    expect($subject->hasSecondSignature())->toBeFalse();
+    expect($subject->isOwnedByExchange())->toBeFalse();
+    expect($subject->hasSpecialType())->toBeTrue();
+
+    $subject = new WalletViewModel(Wallet::factory()
+        ->activeDelegate()
+        ->create(['address' => 'unknown']));
+
+    expect($subject->hasSpecialType())->toBeFalse();
+});
+
+it('should determine if the wallet has a special type if multisignature', function () {
+    fakeKnownWallets();
+
+    $subject = new WalletViewModel(Wallet::factory()
+        ->multiSignature()
+        ->create(['address' => 'AHLAT5XDfzZ1gkQVCrW8pKfYdfyMQ9t7ra']));
+
+    expect($subject->isKnown())->toBeFalse();
+    expect($subject->hasMultiSignature())->toBeTrue();
+    expect($subject->isOwnedByExchange())->toBeFalse();
+    expect($subject->hasSpecialType())->toBeTrue();
+
+    $subject = new WalletViewModel(Wallet::factory()
+        ->activeDelegate()
+        ->create(['address' => 'unknown']));
+
+    expect($subject->hasSpecialType())->toBeFalse();
+});
+
+it('should determine if the wallet has a special type if second signature', function () {
+    fakeKnownWallets();
+
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AHLAT5XDfzZ1gkQVCrW8pKfYdfyMQ9t7ra']));
+
+    expect($subject->isKnown())->toBeFalse();
+    expect($subject->hasSecondSignature())->toBeTrue();
+    expect($subject->isOwnedByExchange())->toBeFalse();
+    expect($subject->hasSpecialType())->toBeTrue();
+
+    $subject = new WalletViewModel(Wallet::factory()
+        ->activeDelegate()
+        ->create(['address' => 'unknown']));
+
+    expect($subject->hasSpecialType())->toBeFalse();
+});
+
+it('should determine if the wallet has a special type if exchange', function () {
+    fakeKnownWallets();
+
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AFrPtEmzu6wdVpa2CnRDEKGQQMWgq8nE9V']));
+
+    expect($subject->isKnown())->toBeTrue();
+    expect($subject->isOwnedByExchange())->toBeTrue();
+    expect($subject->hasSpecialType())->toBeTrue();
+
+    $subject = new WalletViewModel(Wallet::factory()
+        ->activeDelegate()
+        ->create(['address' => 'unknown']));
+
+    expect($subject->hasSpecialType())->toBeFalse();
+});
+
 it('should determine if the wallet is a delegate', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [],

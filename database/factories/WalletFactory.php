@@ -67,4 +67,21 @@ final class WalletFactory extends Factory
             ];
         });
     }
+
+    public function multiSignature()
+    {
+        return $this->state(function () {
+            return [
+                'attributes' => [
+                    'multiSignature' => [
+                        'min'        => 2,
+                        'publicKeys' => [
+                            '022a40ea35d53eedf0341ffa17574fca844d69665ce35f224e9a6b1385575044fd',
+                            '037fde73baaa48eb75c013fe9ff52a74a096d48b9978351bdcb5b72331ca37487c',
+                        ],
+                    ],
+                ],
+            ];
+        });
+    }
 }
