@@ -17,7 +17,7 @@
 
             @if ($block->previousBlockUrl() || $block->nextBlockUrl())
                 <x-slot name="extension">
-                    <div class="flex items-center p-1 mt-6 space-x-2 text-theme-secondary-400 lg:mt-0 lg:ml-3">
+                    <div class="flex items-center mt-6 space-x-2 text-theme-secondary-400 lg:mt-0 lg:ml-3">
                         @if ($block->previousBlockUrl())
                             <a href="{{ $block->previousBlockUrl() }}" class="flex flex-1 justify-center items-center px-4 h-11 rounded cursor-pointer bg-theme-secondary-800 hover:bg-theme-secondary-700 transition-default lg:flex-none">
                                 <x-ark-icon name="chevron-left" size="sm" />
