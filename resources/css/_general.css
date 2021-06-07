@@ -297,3 +297,12 @@ body {
 .dark .modal-qr-code {
     @apply border-0;
 }
+
+/* Progress circles delegates */
+.forging-status > circle:first-child {
+    stroke: var(--theme-color-secondary-200);
+}
+
+.dark .forging-status > circle:first-child {
+    stroke: var(--theme-color-secondary-800);
+}
