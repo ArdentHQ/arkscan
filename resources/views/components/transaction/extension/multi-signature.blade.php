@@ -5,7 +5,7 @@
                 <h2>@lang('pages.transaction.participants')</h2>
             </div>
 
-            <x-ark-tables.table class="hidden md:block">
+            <x-ark-tables.table class="hidden mt-5 md:block">
                 <thead>
                     <tr>
                         <x-tables.headers.desktop.id name="#" />
