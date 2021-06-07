@@ -27,7 +27,7 @@
     <div class="relative z-10 w-3/12 text-center bg-theme-secondary-100 rounded-xl dark:bg-black lg:w-2/12">
         <button
             type="button"
-            class="flex relative justify-center items-center px-2 w-full cursor-pointer transition-default hover:text-theme-secondary-900 dark:hover:text-theme-secondary-200"
+            class="flex relative justify-center items-center px-2 w-full font-semibold cursor-pointer transition-default hover:text-theme-secondary-900 dark:hover:text-theme-secondary-200"
             @click="select('monitor')"
             @keydown.enter="select('monitor')"
             @keydown.space.prevent="select('monitor')"
