@@ -3,3 +3,107 @@
     top: 84px;
 }
 /* purgecss end ignore */
+
+/* Table Avatar */
+td.hoverable-cell .table-avatar {
+    @apply -my-1 border-4 border-white rounded-full;
+}
+
+tr:hover td.hoverable-cell .table-avatar {
+    @apply border-theme-secondary-100;
+}
+
+.dark td.hoverable-cell .table-avatar {
+    @apply border-theme-secondary-900;
+}
+
+.dark tr:hover td.hoverable-cell .table-avatar {
+    @apply border-theme-secondary-800;
+}
+
+/** Compact Table Styling **/
+.table-compact .table-container table > tbody > tr > td.hoverable-cell > div,
+.table-compact .table-container table > tbody > tr > td:not(.hoverable-cell) {
+    @apply py-3;
+}
+
+.table-compact .table-container table > tbody .transaction-icon {
+    @apply w-5 h-5 border-0;
+}
+
+.table-compact .table-container table > tbody .avatar-wrapper,
+.table-compact .table-container table > tbody .arrow-direction svg,
+.table-compact .table-container table > tbody .round-status svg {
+    @apply w-5 h-5;
+}
+
+@screen md {
+    .table-compact .table-container table > tbody .transaction-icon {
+        @apply w-5 h-5 border-0;
+    }
+
+    .table-compact .table-container table > tbody .avatar-wrapper {
+        @apply w-5 h-5;
+    }
+}
+
+.table-compact .round-status-history {
+    @apply space-x-2;
+}
+
+.table-compact .sender-direction-wrapper {
+    @apply p-0 pr-2;
+}
+
+.table-compact .fiat-tooltip-sent,
+.table-compact .fiat-tooltip-received {
+    @apply p-0 border-0;
+}
+
+body:not(.table-compact) .fiat-tooltip-sent,
+body:not(.table-compact) .fiat-tooltip-received {
+    @apply -my-1;
+}
+
+body:not(.table-compact) .table-avatar > div {
+    @apply bg-white border-white circled-icon;
+}
+
+body:not(.table-compact) .arrow-direction {
+    @apply -mr-2 circled-icon;
+}
+
+@media (max-width: 767px) {
+    .table-container
+        table
+        > tbody
+        > tr
+        > td.hoverable-cell
+        > div.table-cell-content,
+    .table-container table > tbody > tr > td:not(.hoverable-cell) {
+        @apply py-3;
+    }
+
+    .table-container table > tbody .transaction-icon {
+        @apply w-5 h-5 border-0;
+    }
+
+    .table-container table > tbody .avatar-wrapper,
+    .table-container table > tbody .arrow-direction svg,
+    .table-container table > tbody .round-status svg {
+        @apply w-5 h-5;
+    }
+
+    .round-status-history {
+        @apply space-x-2;
+    }
+
+    .sender-direction-wrapper {
+        @apply p-0 pr-2;
+    }
+
+    .fiat-tooltip-sent,
+    .fiat-tooltip-received {
+        @apply p-0 border-0;
+    }
+}
