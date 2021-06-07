@@ -3,7 +3,7 @@
 sudo chown -R explorer:www-data /var/www/explorer
 touch database/database.sqlite
 #--- run installs
-composer install
+composer install --ignore-platform-reqs
 yarn install
 #--- fire up services
 sudo supervisord &
@@ -26,6 +26,7 @@ php artisan explorer:cache-delegate-resignation-ids
 php artisan explorer:cache-delegate-usernames
 php artisan explorer:cache-delegate-wallets
 php artisan explorer:cache-delegates-with-voters
+php artisan explorer:cache-delegate-voter-counts
 php artisan explorer:cache-multi-signature-addresses
 #--- run system scheduler
 sudo crond
