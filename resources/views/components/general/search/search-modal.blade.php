@@ -40,7 +40,7 @@
             <div class="flex overflow-auto relative flex-col w-full md:overflow-visible content-container-full-width md:px-8">
                 <h2 class="px-8 mx-auto mb-8 text-4xl font-bold text-center text-white">@lang('pages.search.title')</h2>
 
-                <div class="flex overflow-auto flex-col mb-14 bg-white rounded-lg md:overflow-visible dark:bg-theme-secondary-900">
+                <div class="flex overflow-auto flex-col mb-14 bg-white rounded-xl md:overflow-visible dark:bg-theme-secondary-900">
                     <x-general.search.search-input />
 
                     <x-general.search.advanced-search

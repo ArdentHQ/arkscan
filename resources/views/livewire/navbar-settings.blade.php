@@ -18,7 +18,7 @@
         x-cloak
         @click.away="showSettings = false"
     >
-        <div class="p-8 bg-white rounded-lg shadow-xl dark:bg-theme-secondary-900 md:p-10">
+        <div class="p-8 bg-white rounded-xl shadow-xl dark:bg-theme-secondary-900 md:p-10">
             <div class="flex flex-col">
                 @if(Network::canBeExchanged())
                     <x-navbar.setting-option

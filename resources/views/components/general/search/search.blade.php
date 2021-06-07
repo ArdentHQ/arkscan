@@ -8,7 +8,7 @@
     @search-type-changed.window="searchType = $event.detail"
     class="w-full"
 >
-    <div class="flex flex-col bg-white rounded-lg dark:bg-theme-secondary-900">
+    <div class="flex flex-col bg-white rounded-xl dark:bg-theme-secondary-900">
         <x-general.search.search-input />
 
         <x-general.search.advanced-search
@@ -30,7 +30,7 @@
         />
 
         <div
-            class="py-4 font-semibold text-center rounded-b-lg bg-theme-primary-100 text-theme-primary-600 dark:bg-theme-secondary-800 dark:text-theme-secondary-200 md:hidden"
+            class="py-4 font-semibold text-center rounded-b-xl bg-theme-primary-100 text-theme-primary-600 dark:bg-theme-secondary-800 dark:text-theme-secondary-200 md:hidden"
             @click="showAdvancedMobile = !showAdvancedMobile"
             x-cloak
         >
