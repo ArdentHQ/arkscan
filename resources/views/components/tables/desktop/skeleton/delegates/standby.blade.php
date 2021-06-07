@@ -1,14 +1,9 @@
 <x-table-skeleton
+    class="block"
     device="desktop"
     :items="[
-        'general.delegates.rank'  => 'text',
-        'general.delegates.name'  => [
-            'type' => 'address',
-            'lastOn' => 'lg',
-        ],
-        'general.delegates.votes'  => [
-            'type' => 'number',
-            'responsive' => true,
-        ],
+        'general.delegates.rank'         => 'text',
+        'general.delegates.name' => 'address',
+        'general.delegates.votes'  => 'number',
     ]"
 />
