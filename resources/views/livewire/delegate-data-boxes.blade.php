@@ -13,7 +13,7 @@
                         wrapper-class="pr-6 sm:mr-6 lg:mr-0"
                     >
                         <x-slot name="icon">
-                            <div class="flex items-center mr-2">
+                            <div class="flex items-center mr-4">
                                 <x-delegates.progress-circle
                                     circle-color="success-600"
                                     progress="{{ Percentage::calculate($statistics['performances']['forging'], Network::delegateCount()) }}"
@@ -30,7 +30,7 @@
                         wrapper-class="pr-6 ml-6 sm:mr-6 lg:mr-0 sm:ml-0 lg:ml-6"
                     >
                         <x-slot name="icon">
-                            <div class="flex items-center mr-2">
+                            <div class="flex items-center mr-4">
                                 <x-delegates.progress-circle
                                     circle-color="warning-500"
                                     progress="{{ Percentage::calculate($statistics['performances']['missed'], Network::delegateCount()) }}"
@@ -48,7 +48,7 @@
                         without-border
                     >
                         <x-slot name="icon">
-                            <div class="flex items-center mr-2">
+                            <div class="flex items-center mr-4">
                                 <x-delegates.progress-circle
                                     circle-color="danger-400"
                                     progress="{{ Percentage::calculate($statistics['performances']['missing'], Network::delegateCount()) }}"
@@ -69,7 +69,7 @@
                         without-border
                     >
                         <x-slot name="icon">
-                            <div class="flex items-center mr-2">
+                            <div class="flex items-center mr-4">
                                 <x-delegates.progress-circle circle-color="primary-600" progress="{{ Percentage::calculate((int) $statistics['blockCount'], Network::delegateCount()) }}">
                                     <x-ark-icon class="rotate-90 text-theme-primary-600 border-theme-primary-600" name="app-block-id" />
                                 </x-delegates.progress-circle>
@@ -86,14 +86,7 @@
                         without-border
                     >
                         <x-slot name="icon">
-                            <div class="flex items-center md:mr-2">
-                                <div class="hidden lg:flex">
-                                    <div
-                                        class="-mr-2 circled-icon text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-600">
-                                        <x-ark-icon name="app-forged" />
-                                    </div>
-                                </div>
-
+                            <div class="flex items-center md:mr-4">
                                 <div class="hidden rounded-full border-4 border-white md:flex text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-900">
                                     <div
                                         class="bg-white rounded-full circled-icon dark:bg-theme-secondary-900">
