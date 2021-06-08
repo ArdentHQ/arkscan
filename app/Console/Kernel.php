@@ -40,7 +40,7 @@ final class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(CachePrices::class)->everyThirtyMinutes();
+        $schedule->command(CachePrices::class)->everyMinute();
 
         $schedule->command(CacheDelegateWallets::class)->everyTenMinutes();
 
