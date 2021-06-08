@@ -2,7 +2,7 @@
     <x-ark-container>
         <div class="w-full">
             <div class="flex relative justify-between items-end">
-                <h2>@lang('general.transaction.types.vote-combination')</h2>
+                <h3>@lang('general.transaction.types.vote-combination')</h3>
             </div>
 
             <x-ark-tables.table class="hidden md:block">
