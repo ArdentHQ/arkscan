@@ -35,7 +35,7 @@
                                     circle-color="warning-500"
                                     progress="{{ Percentage::calculate($statistics['performances']['missed'], Network::delegateCount()) }}"
                                 >
-                                    <x-ark-icon class="rotate-90 text-theme-warning-500 border-theme-warning-500" name="pause" size="xs" />
+                                    <x-ark-icon class="rotate-90 text-theme-warning-500 border-theme-warning-500" name="pause" size="sm" />
                                 </x-delegates.progress-circle>
                             </div>
                         </x-slot>
@@ -53,7 +53,7 @@
                                     circle-color="danger-400"
                                     progress="{{ Percentage::calculate($statistics['performances']['missing'], Network::delegateCount()) }}"
                                 >
-                                    <x-ark-icon class="rotate-90 text-theme-danger-400 border-theme-danger-400" name="cross" size="xs" />
+                                    <x-ark-icon class="rotate-90 text-theme-danger-400 border-theme-danger-400" name="cross" size="sm" />
                                 </x-delegates.progress-circle>
                             </div>
                         </x-slot>

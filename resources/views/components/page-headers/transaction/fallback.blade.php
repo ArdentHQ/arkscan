@@ -2,7 +2,7 @@
 
 <x-general.entity-header-item
     :title="trans('pages.transaction.amount')"
-    icon="app-transactions-amount"
+    icon="app-supply"
 >
     <x-slot name="text">
         <x-currency :currency="Network::currency()">{{ $transaction->amount() }}</x-currency>
@@ -11,7 +11,7 @@
 
 <x-general.entity-header-item
     :title="trans('pages.transaction.fee')"
-    icon="app-fee"
+    icon="app-monitor"
 >
     <x-slot name="text">
         <x-currency :currency="Network::currency()">{{ $transaction->fee() }}</x-currency>

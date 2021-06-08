@@ -1,1 +1,18 @@
-<svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 21 23" xml:space="preserve"><style>.ipfs-st2{fill:none;stroke:currentColor;stroke-width:2}</style><g id="Сгруппировать_435" transform="translate(-393.516 -1108.624)"><g id="Многоугольник_1790"><path d="M935.5 753l-10.5-5.8v-11.5l10.5-5.8 10.5 5.8v11.5l-10.5 5.8z" fill="none" transform="translate(-531.5 378.617)"/><path d="M935.5 751.3l9-4.9v-9.7l-9-4.9-9 4.9v9.7l9 4.9m0 1.7l-10.5-5.8v-11.5l10.5-5.7 10.5 5.7v11.5l-10.5 5.8z" fill="currentColor" transform="translate(-531.5 378.617)"/></g><path id="Многоугольник_1790_копия" class="ipfs-st2" d="M401.8 1119.4l-7.3-4.2"/><g id="Эллипс_76" transform="translate(401 1117)"><circle cx="3" cy="3" r="3" fill="#fff"/><circle class="ipfs-st2" cx="3" cy="3" r="2.2"/></g><path id="Многоугольник_1790_копия-2" class="ipfs-st2" d="M406.5 1119.4l7.3-4.2"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.2.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round;}
+	.st1{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;}
+	.st2{fill:none;stroke:currentColor;stroke-width:2;}
+</style>
+<g id="IPFS" transform="translate(-4 -1007.63)">
+	<path id="Многоугольник_1790" class="st0" d="M14,1026.6l-8.3-4.5v-9l8.3-4.5l8.3,4.5v9L14,1026.6z"/>
+	<g id="Сгруппировать_771">
+		<path id="Многоугольник_1790_копия" class="st1" d="M10.8,1016.2l-5.1-2.9"/>
+		<circle id="Эллипс_76" class="st2" cx="13.8" cy="1017.3" r="2.8"/>
+		<path id="Многоугольник_1790_копия-2" class="st1" d="M16.6,1016.6l5.7-3.3"/>
+	</g>
+</g>
+</svg>

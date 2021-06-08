@@ -13,7 +13,7 @@
                     <x-currency :currency="Network::currency()">{{ $supply }}</x-currency>
                 </x-stats.stat>
 
-                <x-stats.stat :label="trans('general.market_cap')" icon="app-market_cap" :disabled="! Network::canBeExchanged()">
+                <x-stats.stat :label="trans('general.market_cap')" icon="app-monitor" :disabled="! Network::canBeExchanged()">
                     {{ $marketCap }}
                 </x-stats.stat>
 

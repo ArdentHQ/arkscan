@@ -2,7 +2,7 @@
 
 <x-general.entity-header-item
     :title="trans('pages.transaction.name')"
-    icon="app-transactions-amount"
+    icon="app-supply"
 >
     <x-slot name="text">
         {{ $transaction->entityName() }}

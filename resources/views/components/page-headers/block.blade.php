@@ -50,7 +50,7 @@
                     />
                     <x-general.entity-header-item
                         :title="trans('pages.block.transaction_volume')"
-                        icon="app-transactions-amount"
+                        icon="app-supply"
                     >
                         <x-slot name="text">
                             <x-currency :currency="Network::currency()">{{ $block->amount() }}</x-currency>

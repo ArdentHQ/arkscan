@@ -1,1 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.381 18.192"><g transform="translate(1.692 -1.75)" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="3.676" cy="3.676" r="3.676" transform="translate(2.977 2.75)"/><path d="M6.653 12.33a6.015 6.015 0 016.015 6.015"/><circle cx="3.008" cy="3.008" r="3.008" transform="translate(12.759 5.423)"/><path d="M14.061 13.727a4.924 4.924 0 016.627 4.618m-18.149.596v-6.033m2.815 2.816l-2.815-2.816-2.816 2.816"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.2.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+</style>
+<g id="Multipayment" transform="translate(299.777 174.25)">
+	<g id="Сгруппировать_770">
+		<path id="Контур_345" class="st0" d="M-292.7-163c2.8,0,5.2,2.3,5.2,5.2l0,0"/>
+		<path id="Контур_346" class="st0" d="M-286.4-161.8c2.2-0.8,4.6,0.3,5.4,2.5c0.2,0.5,0.2,1,0.2,1.5"/>
+		<g id="arrow-up" transform="translate(-1.777 13.399)">
+			<line id="Линия_23" class="st0" x1="-294.4" y1="-170.7" x2="-294.4" y2="-175.8"/>
+			<path id="Контур_341" class="st0" d="M-292.1-173.5l-2.4-2.4l-2.5,2.4"/>
+		</g>
+	</g>
+	<g id="Сгруппировать_769">
+		<circle id="Эллипс_9" class="st0" cx="-292.7" cy="-168" r="3.1"/>
+		<circle id="Эллипс_10" class="st0" cx="-284.9" cy="-166.4" r="2.6"/>
+	</g>
+</g>
+</svg>
