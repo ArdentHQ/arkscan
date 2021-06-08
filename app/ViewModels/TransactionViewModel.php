@@ -103,7 +103,7 @@ final class TransactionViewModel implements ViewModel
 
     public function amountFiat(): string
     {
-        return ExchangeRate::convert($this->transaction->amount->toFloat(), $this->transaction->timestamp);
+        return ExchangeRate::convert($this->amount(), $this->transaction->timestamp);
     }
 
     public function confirmations(): int

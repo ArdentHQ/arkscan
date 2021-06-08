@@ -13,11 +13,13 @@ use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkFactory;
+use App\Services\Cache\CryptoCompareCache;
 use App\Services\Cache\NetworkCache;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
 use ArkEcosystem\Crypto\Configuration\Network as NetworkConfiguration;
 use ArkEcosystem\Crypto\Identities\Address;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use function Spatie\Snapshots\assertMatchesSnapshot;
@@ -108,6 +110,43 @@ it('should get the amount for multi payments', function () {
     expect($this->subject->amount())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->amount());
+});
+
+it('should get the amount as fiat', function () {
+    $transaction = Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'asset'      => [
+            'payments' => [
+                [
+                    'amount'      => '1000000000',
+                    'recipientId' => 'A',
+                ], [
+                    'amount'      => '2000000000',
+                    'recipientId' => 'B',
+                ], [
+                    'amount'      => '3000000000',
+                    'recipientId' => 'C',
+                ], [
+                    'amount'      => '4000000000',
+                    'recipientId' => 'D',
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => 'E',
+                ],
+            ],
+        ],
+    ]);
+
+    $this->subject = new TransactionViewModel($transaction);
+
+    (new CryptoCompareCache())->setPrices('USD', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+    ]));
+
+    expect($this->subject->amountFiat())->toBe('43.61 USD');
+
+    assertMatchesSnapshot($this->subject->amountFiat());
 });
 
 it('should get the confirmations', function () {
