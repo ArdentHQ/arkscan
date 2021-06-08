@@ -32,6 +32,10 @@ module.exports = {
             boxShadow: {
                 ...defaultConfig.theme.extend.boxShadow,
                 "search-subtle": "0 10px 15px -3px rgba(0,0,0,.03), 0 4px 6px -2px rgba(0,0,0,.03)",
+            },
+            zIndex: {
+                ...defaultConfig.theme.extend.zIndex,
+                '15': 15,
             }
         },
     },
