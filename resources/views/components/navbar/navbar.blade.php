@@ -1,4 +1,4 @@
-<div class="h-20"></div>
+<div class="mb-1 h-20"></div>
 <div x-data="{ open: false, showSettings: false }" id="navbar" class="fixed z-20 w-full">
     <nav class="relative z-30 bg-white shadow-header-smooth dark:shadow-header-smooth-dark dark:bg-theme-secondary-900">
         <div class="px-8 md:px-10 py-0.5">
