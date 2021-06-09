@@ -79,23 +79,27 @@
                 </div>
 
                 <div class="flex flex-grow py-3 px-6 bg-white rounded-xl dark:bg-theme-secondary-900">
-                    <x-general.header-entry
-                        :title="trans('pages.delegates.statistics.next_slot')"
-                        :text="$statistics['nextDelegate']->username()"
-                        :url="route('wallet', $statistics['nextDelegate']->address())"
-                        without-border
-                    >
-                        <x-slot name="icon">
-                            <div class="flex items-center md:mr-4">
-                                <div class="hidden rounded-full border-4 border-white md:flex text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-900">
-                                    <div
-                                        class="bg-white rounded-full circled-icon dark:bg-theme-secondary-900">
-                                        <x-ark-icon name="app-transactions.delegate-registration" />
+                    @if($statistics['nextDelegate'])
+                        <x-general.header-entry
+                            :title="trans('pages.delegates.statistics.next_slot')"
+                            :text="$statistics['nextDelegate']->username()"
+                            :url="route('wallet', $statistics['nextDelegate']->address())"
+                            without-border
+                        >
+                            <x-slot name="icon">
+                                <div class="flex items-center md:mr-4">
+                                    <div class="hidden rounded-full border-4 border-white md:flex text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-900">
+                                        <div
+                                            class="bg-white rounded-full circled-icon dark:bg-theme-secondary-900">
+                                            <x-ark-icon name="app-transactions.delegate-registration" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </x-slot>
-                    </x-general.header-entry>
+                            </x-slot>
+                        </x-general.header-entry>
+                    @else
+                        <x-delegates.skeletons.data-boxes-next-delegate />
+                    @endif
                 </div>
             </div>
         </div>

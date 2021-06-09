@@ -12,9 +12,9 @@ use App\ViewModels\WalletViewModel;
 use Livewire\Livewire;
 use function Tests\configureExplorerDatabase;
 
-function createRoundWithDelegatesAndPerformances(array $performances = null): void
+function createRoundWithDelegatesAndPerformances(array $performances = null, bool $addBlockForNextRound = true): void
 {
-    Wallet::factory(51)->create()->each(function ($wallet) use ($performances) {
+    Wallet::factory(51)->create()->each(function ($wallet) use ($performances, $addBlockForNextRound) {
         $block = Block::factory()->create([
             'height'               => 5720529,
             'timestamp'            => 113620904,
@@ -22,11 +22,13 @@ function createRoundWithDelegatesAndPerformances(array $performances = null): vo
         ]);
 
         // Start height for round 112168
-        Block::factory()->create([
-            'height'               => 5720518,
-            'timestamp'            => 113620904,
-            'generator_public_key' => $wallet->public_key,
-        ]);
+        if ($addBlockForNextRound) {
+            Block::factory()->create([
+                'height'               => 5720518,
+                'timestamp'            => 113620904,
+                'generator_public_key' => $wallet->public_key,
+            ]);
+        }
 
         Round::factory()->create([
             'round'      => '112168',
@@ -60,6 +62,18 @@ it('should render without errors', function () {
     $component->call('pollStatistics');
 
     $component->assertHasNoErrors();
+    $component->assertViewIs('livewire.delegate-data-boxes');
+});
+
+it('should handle case no block yet', function () {
+    createRoundWithDelegatesAndPerformances(null, false);
+
+    $component = Livewire::test(DelegateDataBoxes::class);
+
+    $component->call('pollStatistics');
+
+    $component->assertHasNoErrors();
+
     $component->assertViewIs('livewire.delegate-data-boxes');
 });
 

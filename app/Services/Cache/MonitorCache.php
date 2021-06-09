@@ -21,7 +21,7 @@ final class MonitorCache implements Contract
         return $this->remember('block_count', Network::blockTime(), $callback);
     }
 
-    public function setNextDelegate(Closure $callback): WalletViewModel
+    public function setNextDelegate(Closure $callback): ? WalletViewModel
     {
         return $this->remember('next_delegate', Network::blockTime(), $callback);
     }

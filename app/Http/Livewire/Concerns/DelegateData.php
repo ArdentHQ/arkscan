@@ -73,6 +73,10 @@ trait DelegateData
 
         $this->cacheLastBlocks($delegates->pluck('public_key')->toArray());
 
+        if (! Block::where('height', $heightRange[0])->exists()) {
+            return [];
+        }
+
         $tracking    = DelegateTracker::execute($delegates, $heightRange[0]);
 
         $roundBlocks = $this->getBlocksByRange(Arr::pluck($tracking, 'publicKey'), $heightRange);
