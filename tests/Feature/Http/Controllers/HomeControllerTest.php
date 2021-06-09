@@ -26,7 +26,10 @@ it('should render the page without any errors', function () {
         (new FeeCache())->setMaximum($period, 0);
     }
 
-    (new CryptoCompareCache())->setPrices('USD', collect([]));
+    (new CryptoCompareCache())->setMarketCap('DARK', 'USD', fn () => 40898444.3361);
+    (new CryptoCompareCache())->setPrice('DARK', 'USD', fn () => 0.2907);
+    (new CryptoCompareCache())->setHistoricalHourly('DARK', 'USD', 'Y-m-d H:i:s', 23, fn () => collect([]));
+    (new CryptoCompareCache())->setHistoricalHourly('DARK', 'USD', 'Y-m-d H:i:s', 24, fn () => collect([]));
 
     (new NetworkCache())->setVolume(strval(1e8));
     (new NetworkCache())->setTransactionsCount('1000');

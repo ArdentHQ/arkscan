@@ -102,6 +102,9 @@ it('should render with a height, supply and market cap for BTC', function () {
 it('should render the price change', function () {
     Config::set('explorer.networks.development.canBeExchanged', true);
 
+    (new CryptoCompareCache())->setMarketCap('DARK', 'USD', fn () => 40898444.3361);
+    (new CryptoCompareCache())->setPrice('DARK', 'USD', fn () => 0.2907);
+
     Http::fake([
         'cryptocompare.com/data/histohour*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histohour.json')), true)),
     ]);
@@ -111,6 +114,9 @@ it('should render the price change', function () {
 
 it('handle price change when price is zero', function () {
     Config::set('explorer.networks.development.canBeExchanged', true);
+
+    (new CryptoCompareCache())->setMarketCap('DARK', 'USD', fn () => 40898444.3361);
+    (new CryptoCompareCache())->setPrice('DARK', 'USD', fn () => 0.2907);
 
     $response = json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histohour.json')), true);
     // Force 0 price
