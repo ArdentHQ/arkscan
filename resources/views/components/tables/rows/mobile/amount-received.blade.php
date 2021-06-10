@@ -1,5 +1,14 @@
+@props([
+    'model',
+    'wallet' => null,
+])
+
 <div class="items-center">
     @lang('labels.amount')
 
-    <x-general.amount-fiat-tooltip :amount="$model->amount()" :fiat="$model->amountFiat()" is-received />
+    <x-general.amount-fiat-tooltip
+        :amount="$model->amountReceived($wallet?->address())"
+        :fiat="$model->amountReceivedFiat($wallet?->address())"
+        is-received
+    />
 </div>

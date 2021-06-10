@@ -13,7 +13,10 @@
                 @if($transaction->isSent($wallet->address()))
                     <x-tables.rows.mobile.amount-sent :model="$transaction" />
                 @else
-                    <x-tables.rows.mobile.amount-received :model="$transaction" />
+                    <x-tables.rows.mobile.amount-received
+                        :model="$transaction"
+                        :wallet="$wallet"
+                    />
                 @endif
             @else
                 <x-tables.rows.mobile.amount :model="$transaction" />

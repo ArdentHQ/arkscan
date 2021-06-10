@@ -101,9 +101,25 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction->amount->toFloat();
     }
 
+    public function amountReceived(?string $wallet = null): float
+    {
+        if ($this->isMultiPayment() && $wallet !== null) {
+            return collect(Arr::get($this->transaction->asset ?? [], 'payments', []))
+                ->where('recipientId', $wallet)
+                ->sum('amount') / 1e8;
+        }
+
+        return $this->amount();
+    }
+
     public function amountFiat(): string
     {
         return ExchangeRate::convert($this->amount(), $this->transaction->timestamp);
+    }
+
+    public function amountReceivedFiat(?string $wallet = null): string
+    {
+        return ExchangeRate::convert($this->amountReceived($wallet), $this->transaction->timestamp);
     }
 
     public function confirmations(): int
