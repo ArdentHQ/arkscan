@@ -12,6 +12,6 @@
     :breakpoint="$breakpoint"
     :first-on="$firstOn"
     :last-on="$lastOn"
-    :class="$class . ' text-left'"
+    :class="$class"
     :name="$name"
 />

@@ -5,7 +5,7 @@
         'pages.delegates.order'      => 'text',
         'pages.delegates.name'       => 'address',
         'pages.delegates.forging_at' => [
-            'type' => 'number',
+            'type' => 'text',
             'responsive' => true,
             'breakpoint' => 'sm',
         ],
@@ -17,6 +17,7 @@
             'type' => 'text',
             'responsive' => true,
             'breakpoint' => 'md',
+            'class' => 'text-right',
         ]
     ]"
 />

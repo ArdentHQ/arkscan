@@ -161,7 +161,7 @@ return [
         'name'       => 'Delegate Name',
         'forging_at' => 'Time to Forge',
         'status'     => 'Status',
-        'block_id'   => 'Block Id',
+        'block_id'   => 'Block ID',
         'success'    => 'Block Generated',
         'warning'    => 'Block Missed',
         'danger'     => ':0 Blocks Missed',

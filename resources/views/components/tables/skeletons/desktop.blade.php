@@ -9,6 +9,7 @@
                     :breakpoint="Arr::get($header, 'breakpoint', 'lg')"
                     :first-on="Arr::get($header, 'firstOn', null)"
                     :last-on="Arr::get($header, 'lastOn', null)"
+                    :class="Arr::get($header, 'class', null)"
                 />
             @endforeach
         </tr>
