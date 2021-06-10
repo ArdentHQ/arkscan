@@ -10,13 +10,6 @@ use App\Services\Cache\TableCache;
 
 trait ManagesLatestTransactions
 {
-    public function filterTransactionsByType(string $value): void
-    {
-        $this->state['type'] = $value;
-
-        $this->pollTransactions();
-    }
-
     public function pollTransactions(): void
     {
         $this->transactions = (new TableCache())->setLatestTransactions($this->state['type'], function () {
@@ -31,5 +24,10 @@ trait ManagesLatestTransactions
 
             return $query->take(15)->get();
         });
+    }
+
+    public function updatedStateType(): void
+    {
+        $this->pollTransactions();
     }
 }

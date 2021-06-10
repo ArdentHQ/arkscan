@@ -11,7 +11,6 @@ use App\Services\ExchangeRate;
 use App\Services\Timestamp;
 use App\ViewModels\Concerns\Wallet\CanBeCold;
 use App\ViewModels\Concerns\Wallet\CanBeDelegate;
-use App\ViewModels\Concerns\Wallet\CanBeEntity;
 use App\ViewModels\Concerns\Wallet\CanForge;
 use App\ViewModels\Concerns\Wallet\CanVote;
 use App\ViewModels\Concerns\Wallet\HasType;
@@ -21,7 +20,6 @@ use Mattiasgeniar\Percentage\Percentage;
 final class WalletViewModel implements ViewModel
 {
     use CanBeCold;
-    use CanBeEntity;
     use CanBeDelegate;
     use CanForge;
     use CanVote;
@@ -35,6 +33,11 @@ final class WalletViewModel implements ViewModel
     public function url(): string
     {
         return route('wallet', $this->wallet->address);
+    }
+
+    public function model(): Wallet
+    {
+        return $this->wallet;
     }
 
     public function address(): string
@@ -54,7 +57,7 @@ final class WalletViewModel implements ViewModel
 
     public function balanceFiat(): string
     {
-        return ExchangeRate::convert($this->wallet->balance->toFloat(), Timestamp::now()->unix());
+        return ExchangeRate::convert($this->balance(), Timestamp::now()->unix());
     }
 
     public function balancePercentage(): float

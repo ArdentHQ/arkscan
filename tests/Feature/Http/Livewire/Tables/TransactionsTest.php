@@ -15,7 +15,7 @@ use function Tests\configureExplorerDatabase;
 beforeEach(fn () => configureExplorerDatabase());
 
 it('should list the first page of records', function () {
-    Transaction::factory(30)->create();
+    Transaction::factory(30)->transfer()->create();
 
     $component = Livewire::test(Transactions::class, [
         'transactions' => Transaction::withScope(OrderByTimestampScope::class),

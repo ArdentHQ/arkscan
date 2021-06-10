@@ -10,25 +10,34 @@ use App\Models\Composers\MultiPaymentAmountValueRangeComposer;
 use App\Models\Composers\TimestampRangeComposer;
 use App\Models\Composers\ValueRangeComposer;
 use App\Models\Transaction;
+use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Throwable;
 
 final class TransactionSearch implements Search
 {
+    use ValidatesTerm;
+
     public function search(array $parameters): Builder
     {
         $query = Transaction::query();
 
         $this->applyScopes($query, $parameters);
 
-        if (! is_null(Arr::get($parameters, 'term'))) {
-            $query->whereLower('id', $parameters['term']);
+        $term = Arr::get($parameters, 'term');
+
+        if (! is_null($term)) {
+            if ($this->couldBeTransactionID($term)) {
+                $query->whereLower('id', $term);
+            } else {
+                $query->empty();
+            }
 
             // Consider the term to be a wallet
             try {
-                $query->orWhere(function ($query) use ($parameters): void {
-                    $wallet = Wallets::findByIdentifier($parameters['term']);
+                $query->orWhere(function ($query) use ($parameters, $term): void {
+                    $wallet = Wallets::findByIdentifier($term);
 
                     $query->where(function ($query) use ($parameters, $wallet): void {
                         $query->whereLower('sender_public_key', $wallet->public_key);
@@ -52,14 +61,19 @@ final class TransactionSearch implements Search
                 // If this throws then the term was not a valid address, public key or username.
             }
 
-            // Consider the term to be a block
-            $query->orWhere(function ($query) use ($parameters): void {
-                $query->where(fn ($query): Builder => $query->whereLower('block_id', $parameters['term']));
+            if ($this->couldBeBlockID($term) || $this->couldBeHeightValue($term)) {
+                // Consider the term to be a block
+                $query->orWhere(function ($query) use ($term): void {
+                    if ($this->couldBeBlockID($term)) {
+                        $query->where(fn ($query): Builder => $query->whereLower('block_id', $term));
+                    }
 
-                if (is_numeric($parameters['term'])) {
-                    $query->orWhere(fn ($query): Builder => $query->where('block_height', $parameters['term']));
-                }
-            });
+                    if ($this->couldBeHeightValue($term)) {
+                        $numericTerm = strval(filter_var($term, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND));
+                        $query->orWhere(fn ($query): Builder => $query->where('block_height', $numericTerm));
+                    }
+                });
+            }
         }
 
         return $query;

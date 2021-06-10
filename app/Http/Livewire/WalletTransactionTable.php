@@ -28,7 +28,6 @@ final class WalletTransactionTable extends Component
     /** @phpstan-ignore-next-line */
     protected $listeners = [
         'filterTransactionsByDirection',
-        'filterTransactionsByType',
     ];
 
     public function mount(string $address, bool $isCold, ?string $publicKey): void
@@ -43,10 +42,8 @@ final class WalletTransactionTable extends Component
         $this->state['direction'] = $value;
     }
 
-    public function filterTransactionsByType(string $value): void
+    public function updatedStateType(): void
     {
-        $this->state['type'] = $value;
-
         $this->gotoPage(1);
     }
 

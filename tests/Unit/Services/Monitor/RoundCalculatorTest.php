@@ -9,7 +9,7 @@ it('should calculate the round information', function () {
 
     expect($result['round'])->toBe(112142);
     expect($result['roundHeight'])->toBe(5719192);
-    expect($result['nextRound'])->toBe(112142);
-    expect($result['nextRoundHeight'])->toBe(5719242);
+    expect($result['nextRound'])->toBe(112143);
+    expect($result['nextRoundHeight'])->toBe(5719243);
     expect($result['maxDelegates'])->toBe(51);
 });

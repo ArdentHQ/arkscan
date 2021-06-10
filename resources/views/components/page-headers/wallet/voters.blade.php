@@ -2,4 +2,7 @@
     <x-page-headers.wallet.frame-item icon="app-transactions.vote" :title="trans('pages.wallet.delegate.voters')">
         <x-number>{{ $wallet->voterCount() }}</x-number>
     </x-page-headers.wallet.frame-item>
+    <x-page-headers.wallet.frame-item icon="double-checkmark-box" :title="trans('pages.wallet.delegate.votes_percentage', [number_format($wallet->votesPercentage(), 2)])">
+        <x-currency :currency="Network::currency()">{{ $wallet->votes() }}</x-currency>
+    </x-page-headers.wallet.frame-item>
 </x-page-headers.wallet.frame>

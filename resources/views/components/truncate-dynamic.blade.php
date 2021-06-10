@@ -1,6 +1,13 @@
 <span
     x-data="{
         value: '{{ $slot }}',
+        init() {
+            new ResizeObserver(() => this.truncate()).observe(this.$el);
+
+            window.addEventListener('resize', () => this.truncate());
+
+            this.truncate();
+        },
         truncate() {
             const el = this.$el;
 
@@ -22,13 +29,11 @@
 
                 length--;
             } while(this.hasOverflow(el))
-
         },
         hasOverflow(el) {
             return el.offsetWidth < el.scrollWidth;
         },
     }"
-    x-init="truncate"
-    x-on:resize.window="truncate"
+    x-init="init"
     class="inline-flex overflow-hidden w-full max-w-full whitespace-nowrap"
 >{{ $slot }}</span>

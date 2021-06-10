@@ -12,10 +12,15 @@ use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\Blockchain\NetworkFactory;
+use App\Services\Cache\CryptoCompareCache;
 use App\Services\Cache\NetworkCache;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
+use ArkEcosystem\Crypto\Configuration\Network as NetworkConfiguration;
 use ArkEcosystem\Crypto\Identities\Address;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
@@ -76,6 +81,12 @@ it('should get the amount', function () {
     assertMatchesSnapshot($this->subject->amount());
 });
 
+it('should get the amount received for non-multipayment', function () {
+    expect($this->subject->amountReceived('recipient'))->toBeFloat();
+
+    assertMatchesSnapshot($this->subject->amountReceived('recipient'));
+});
+
 it('should get the amount for multi payments', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
@@ -105,6 +116,117 @@ it('should get the amount for multi payments', function () {
     expect($this->subject->amount())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->amount());
+});
+
+it('should get the specific multi payment amount for a wallet recipient', function () {
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'asset'      => [
+            'payments' => [
+                [
+                    'amount'      => '1000000000',
+                    'recipientId' => 'A',
+                ], [
+                    'amount'      => '2000000000',
+                    'recipientId' => 'B',
+                ], [
+                    'amount'      => '3000000000',
+                    'recipientId' => 'C',
+                ], [
+                    'amount'      => '4000000000',
+                    'recipientId' => 'D',
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => 'E',
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => 'B',
+                ],
+            ],
+        ],
+    ]));
+
+    expect($this->subject->amountReceived('B'))->toBeFloat();
+
+    assertMatchesSnapshot($this->subject->amountReceived('B'));
+});
+
+it('should get the amount as fiat', function () {
+    $transaction = Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'asset'      => [
+            'payments' => [
+                [
+                    'amount'      => '1000000000',
+                    'recipientId' => 'A',
+                ], [
+                    'amount'      => '2000000000',
+                    'recipientId' => 'B',
+                ], [
+                    'amount'      => '3000000000',
+                    'recipientId' => 'C',
+                ], [
+                    'amount'      => '4000000000',
+                    'recipientId' => 'D',
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => 'E',
+                ],
+            ],
+        ],
+    ]);
+
+    $this->subject = new TransactionViewModel($transaction);
+
+    (new CryptoCompareCache())->setPrices('USD', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+    ]));
+
+    expect($this->subject->amountFiat())->toBe('43.61 USD');
+
+    assertMatchesSnapshot($this->subject->amountFiat());
+});
+
+it('should get the specific multi payment fiat amount for a wallet recipient', function () {
+    $transaction = Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'asset'      => [
+            'payments' => [
+                [
+                    'amount'      => '1000000000',
+                    'recipientId' => 'A',
+                ], [
+                    'amount'      => '2000000000',
+                    'recipientId' => 'B',
+                ], [
+                    'amount'      => '3000000000',
+                    'recipientId' => 'C',
+                ], [
+                    'amount'      => '4000000000',
+                    'recipientId' => 'D',
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => 'E',
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => 'B',
+                ],
+            ],
+        ],
+    ]);
+
+    $this->subject = new TransactionViewModel($transaction);
+
+    (new CryptoCompareCache())->setPrices('USD', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+    ]));
+
+    expect($this->subject->amountReceivedFiat('B'))->toBe('20.35 USD');
+
+    assertMatchesSnapshot($this->subject->amountReceivedFiat('B'));
 });
 
 it('should get the confirmations', function () {
@@ -791,6 +913,46 @@ it('should get the multi signature address', function () {
     ]));
 
     expect($this->subject->multiSignatureAddress())->toBeString();
+});
+
+it('should derive the correct multisignature address', function () {
+    expect($this->subject->multiSignatureAddress())->toBeNull();
+
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'asset'      => null,
+    ]));
+
+    expect($this->subject->multiSignatureAddress())->toBeNull();
+
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
+        'type_group' => TransactionTypeGroupEnum::CORE,
+        'asset'      => [
+            'multiSignature' => [
+                'min'        => 3,
+                'publicKeys' => [
+                    '02fb3def2593a00c5b84620addf28ff21bac452bd71a37d4d8e24f301683a81b56',
+                    '02bc9f661fcc8abca65fe9aff4614036867b7fdcc5730085ccc5cb854664d0194b',
+                    '03c44c6b6cc9893ae21ca606712fd0f6f03c41ce81c4f6ce5a640f4b0b82ec1ce0',
+                    '020300039e973baf5e46b945777cfae330d6392cdb039b1cebc5c3382d421166c3',
+                    '03b050073621b9b5caec9461d44d6bcf21a858c47dd88230ce723e25c1bc75c219',
+                ],
+            ],
+        ],
+    ]));
+
+    expect($this->subject->multiSignatureAddress())->toBe('DMNBBtYt1teAKxA2BpiTW9PA3gX3Ad5dyk');
+
+    Config::set('explorer.network', 'production');
+
+    $network = NetworkFactory::make(config('explorer.network'));
+    NetworkConfiguration::set($network->config());
+
+    expect($this->subject->multiSignatureAddress())->toBe('AXzxJ8Ts3dQ2bvBR1tPE7GUee9iSEJb8HX');
+
+    Config::set('explorer.network', 'development');
 });
 
 it('should get the multi signature minimum', function () {

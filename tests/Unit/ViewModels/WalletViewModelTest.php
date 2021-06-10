@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use App\Contracts\Network as Contract;
 use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\MagistrateTransactionEntityActionEnum;
-use App\Enums\MagistrateTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
 use App\Models\Transaction;
@@ -15,7 +13,6 @@ use App\Services\Cache\DelegateCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\configureExplorerDatabase;
@@ -26,7 +23,7 @@ beforeEach(function () {
 
     $this->app->singleton(Contract::class, fn () => NetworkFactory::make('production'));
 
-    $wallet = Wallet::factory()->create([
+    $this->wallet = Wallet::factory()->create([
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
@@ -36,13 +33,13 @@ beforeEach(function () {
         ],
     ]);
 
-    $this->subject = new WalletViewModel($wallet);
+    $this->subject = new WalletViewModel($this->wallet);
 
     Block::factory()->create([
         'total_amount'         => '1000000000',
         'total_fee'            => '800000000',
         'reward'               => '200000000',
-        'generator_public_key' => $wallet->public_key,
+        'generator_public_key' => $this->wallet->public_key,
     ]);
 });
 
@@ -151,6 +148,78 @@ it('should determine if the wallet is owned by an exchange', function () {
     expect($subject->isOwnedByExchange())->toBeFalse();
 });
 
+it('should determine if the wallet has a special type when known', function () {
+    fakeKnownWallets();
+
+    $subject = new WalletViewModel(Wallet::factory()
+        ->activeDelegate()
+        ->create(['address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67']));
+
+    expect($subject->isKnown())->toBeTrue();
+    expect($subject->hasMultiSignature())->toBeFalse();
+    expect($subject->hasSecondSignature())->toBeFalse();
+    expect($subject->isOwnedByExchange())->toBeFalse();
+    expect($subject->hasSpecialType())->toBeTrue();
+
+    $subject = new WalletViewModel(Wallet::factory()
+        ->activeDelegate()
+        ->create(['address' => 'unknown']));
+
+    expect($subject->hasSpecialType())->toBeFalse();
+});
+
+it('should determine if the wallet has a special type if multisignature', function () {
+    fakeKnownWallets();
+
+    $subject = new WalletViewModel(Wallet::factory()
+        ->multiSignature()
+        ->create(['address' => 'AHLAT5XDfzZ1gkQVCrW8pKfYdfyMQ9t7ra']));
+
+    expect($subject->isKnown())->toBeFalse();
+    expect($subject->hasMultiSignature())->toBeTrue();
+    expect($subject->isOwnedByExchange())->toBeFalse();
+    expect($subject->hasSpecialType())->toBeTrue();
+
+    $subject = new WalletViewModel(Wallet::factory()
+        ->activeDelegate()
+        ->create(['address' => 'unknown']));
+
+    expect($subject->hasSpecialType())->toBeFalse();
+});
+
+it('should determine if the wallet has a special type if second signature', function () {
+    fakeKnownWallets();
+
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AHLAT5XDfzZ1gkQVCrW8pKfYdfyMQ9t7ra']));
+
+    expect($subject->isKnown())->toBeFalse();
+    expect($subject->hasSecondSignature())->toBeTrue();
+    expect($subject->isOwnedByExchange())->toBeFalse();
+    expect($subject->hasSpecialType())->toBeTrue();
+
+    $subject = new WalletViewModel(Wallet::factory()
+        ->activeDelegate()
+        ->create(['address' => 'unknown']));
+
+    expect($subject->hasSpecialType())->toBeFalse();
+});
+
+it('should determine if the wallet has a special type if exchange', function () {
+    fakeKnownWallets();
+
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AFrPtEmzu6wdVpa2CnRDEKGQQMWgq8nE9V']));
+
+    expect($subject->isKnown())->toBeTrue();
+    expect($subject->isOwnedByExchange())->toBeTrue();
+    expect($subject->hasSpecialType())->toBeTrue();
+
+    $subject = new WalletViewModel(Wallet::factory()
+        ->activeDelegate()
+        ->create(['address' => 'unknown']));
+
+    expect($subject->hasSpecialType())->toBeFalse();
+});
+
 it('should determine if the wallet is a delegate', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [],
@@ -167,25 +236,6 @@ it('should determine if the wallet is a delegate', function () {
     ]));
 
     expect($this->subject->isDelegate())->toBeTrue();
-});
-
-it('should determine if the wallet has registrations', function () {
-    expect($this->subject->hasRegistrations())->toBeFalse();
-
-    Transaction::factory()->create([
-        'sender_public_key' => $this->subject->publicKey(),
-        'type'              => MagistrateTransactionTypeEnum::ENTITY,
-        'type_group'        => TransactionTypeGroupEnum::MAGISTRATE,
-        'asset'             => [
-            'action' => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ]);
-
-    expect($this->subject->hasRegistrations())->toBeTrue();
-});
-
-it('should get the registrations', function () {
-    expect($this->subject->registrations())->toBeInstanceOf(Collection::class);
 });
 
 it('should determine if the wallet is voting', function () {
@@ -214,6 +264,10 @@ it('should get the wallet of the vote', function () {
     (new WalletCache())->setVote($vote->public_key, $vote);
 
     expect($this->subject->vote())->toBeInstanceOf(WalletViewModel::class);
+});
+
+it('should get the wallet model', function () {
+    expect($this->subject->model())->toBe($this->wallet);
 });
 
 it('should fail to get the wallet of the vote if the wallet has no public key', function () {
@@ -395,7 +449,7 @@ it('should fail to get the productivity if the wallet is a delegate', function (
     ]));
 
     expect($this->subject->productivity())->toBeFloat();
-    expect($this->subject->productivity())->toBe(0.0);
+    expect($this->subject->productivity())->toBe(-1.0);
 
     (new WalletCache())->setProductivity($this->subject->publicKey(), 10);
 
@@ -475,4 +529,45 @@ it('should determine if the wallet has a second signature', function () {
 
 it('should determine if the wallet has a multi signature', function () {
     expect($this->subject->hasMultiSignature())->toBeBool();
+});
+
+it('can determine the colors for icons based on the status of a delegate', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'resigned' => true,
+            ],
+        ],
+    ]));
+
+    // Resigned colors
+    expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800');
+    expect($this->subject->delegateStatusStyling())->toBe('text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800');
+
+    // Standby colors
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'John',
+                'rank'     => 52,
+            ],
+        ],
+    ]));
+
+    expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-900 border-theme-secondary-900');
+    expect($this->subject->delegateStatusStyling())->toBe('text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800');
+
+    // Active colors
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'John',
+            ],
+        ],
+    ]));
+
+    expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-900 border-theme-secondary-900');
+    expect($this->subject->delegateStatusStyling())->toBe('text-theme-success-600 border-theme-success-600');
 });

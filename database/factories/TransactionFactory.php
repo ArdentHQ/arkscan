@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\CoreTransactionTypeEnum;
+use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -30,5 +32,13 @@ final class TransactionFactory extends Factory
                 'ipfs' => 'QmXrvSZaDr8vjLUB9b7xz26S3kpk3S3bSc8SUyZmNPvmVo',
             ],
         ];
+    }
+
+    public function transfer(): Factory
+    {
+        return $this->state(fn () => [
+            'type'       => CoreTransactionTypeEnum::TRANSFER,
+            'type_group' => TransactionTypeGroupEnum::CORE,
+        ]);
     }
 }

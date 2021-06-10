@@ -1,7 +1,7 @@
 <div id="block-list" class="w-full">
     @if($wallets->isNotEmpty())
         <div class="flex relative justify-between items-center">
-            <h4>@lang('pages.voters_by_wallet.subtitle')</h4>
+            <h3>@lang('pages.voters_by_wallet.subtitle')</h3>
         </div>
 
         <x-skeletons.wallets>

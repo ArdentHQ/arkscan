@@ -3,7 +3,7 @@
         <a href="{{ route('wallet', $model->address()) }}" class="font-semibold link">
             {{ $model->username() }}
         </a>
-        <span class="hidden min-w-0 sm:inline md:hidden lg:inline text-theme-secondary-400">
+        <span class="hidden min-w-0 font-semibold sm:inline md:hidden lg:inline text-theme-secondary-500">
             <x-truncate-dynamic>{{ $model->address() }}</x-truncate-dynamic>
         </span>
     </div>

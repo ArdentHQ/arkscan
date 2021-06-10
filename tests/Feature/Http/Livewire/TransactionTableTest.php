@@ -21,7 +21,7 @@ use function Tests\configureExplorerDatabase;
 beforeEach(fn () => configureExplorerDatabase());
 
 it('should list the first page of records', function () {
-    Transaction::factory(30)->create();
+    Transaction::factory(30)->transfer()->create();
 
     $component = Livewire::test(TransactionTable::class);
 
@@ -111,7 +111,7 @@ it('should apply filters through an event', function () {
         'type'       => CoreTransactionTypeEnum::VOTE,
     ]);
 
-    $component->emit('filterTransactionsByType', 'vote');
+    $component->set('state.type', 'vote');
 
     foreach (ViewModelFactory::collection($expected) as $transaction) {
         $component->assertSee($transaction->id());

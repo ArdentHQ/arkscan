@@ -9,6 +9,7 @@ use App\Http\Livewire\Concerns\ManagesSearch;
 use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
+use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasModal;
 use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\View\View;
@@ -17,16 +18,20 @@ use Livewire\Component;
 final class SearchModule extends Component
 {
     use ManagesSearch;
+    use HasModal;
 
-    public bool $isSlim = false;
-
-    public bool $isAdvanced = false;
+    public bool $isModal = false;
 
     public string $type = 'block';
 
     /** @phpstan-ignore-next-line */
     protected $queryString = [
         'state' => ['except' => []],
+    ];
+
+    /* @phpstan-ignore-next-line */
+    protected $listeners = [
+        'openSearchModal' => 'openModal',
     ];
 
     protected array $transactionOptionsValues = [
@@ -45,16 +50,21 @@ final class SearchModule extends Component
         'magistrate',
     ];
 
-    public function mount(bool $isSlim = false, bool $isAdvanced = false, string $type = 'block'): void
+    public function mount(bool $isModal = false, string $type = 'block'): void
     {
-        $this->isAdvanced = $isAdvanced;
-        $this->isSlim     = $isSlim;
+        $this->isModal    = $isModal;
         $this->type       = $type;
     }
 
     public function render(): View
     {
-        return view('components.search', [
+        if ($this->isModal) {
+            return view('components.general.search.search-modal', [
+                'transactionOptions' => $this->getTransactionOptions(),
+            ]);
+        }
+
+        return view('components.general.search.search', [
             'transactionOptions' => $this->getTransactionOptions(),
         ]);
     }

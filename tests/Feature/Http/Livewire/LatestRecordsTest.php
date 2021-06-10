@@ -38,7 +38,7 @@ it('should list the first page of blocks', function () {
 });
 
 it('should list the first page of transactions', function () {
-    Transaction::factory(30)->create();
+    Transaction::factory(30)->transfer()->create();
 
     $component = Livewire::test(LatestRecords::class)
         ->call('pollTransactions');
@@ -86,7 +86,7 @@ it('should apply filters for transactions', function () {
         'type'       => CoreTransactionTypeEnum::VOTE,
     ]);
 
-    $component->emit('filterTransactionsByType', 'vote');
+    $component->set('state.type', 'vote');
 
     foreach (ViewModelFactory::collection($expected) as $transaction) {
         $component->assertSee($transaction->id());
@@ -131,7 +131,7 @@ it('should apply filters through an event for transactions', function () {
         'type'       => CoreTransactionTypeEnum::VOTE,
     ]);
 
-    $component->emit('filterTransactionsByType', 'vote');
+    $component->set('state.type', 'vote');
 
     foreach (ViewModelFactory::collection($expected) as $transaction) {
         $component->assertSee($transaction->id());

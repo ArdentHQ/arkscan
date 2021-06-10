@@ -6,8 +6,14 @@
             'general.block.timestamp'    => 'text',
             'general.block.height'       => 'number',
             'general.block.transactions' => 'number',
-            'general.block.amount'       => 'number',
-            'general.block.fee'          => 'number',
+            'general.block.amount' => [
+                'type' => 'number',
+                'lastOn' => 'lg',
+            ],
+            'general.block.fee'  => [
+                'type' => 'number',
+                'responsive' => true,
+            ],
         ]"
     />
 @else
@@ -19,8 +25,14 @@
             'general.block.generated_by' => 'address',
             'general.block.height'       => 'number',
             'general.block.transactions' => 'number',
-            'general.block.amount'       => 'number',
-            'general.block.fee'          => 'number',
+            'general.block.amount' => [
+                'type' => 'number',
+                'lastOn' => 'lg',
+            ],
+            'general.block.fee'  => [
+                'type' => 'number',
+                'responsive' => true,
+            ],
         ]"
     />
 @endif

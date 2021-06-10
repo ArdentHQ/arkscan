@@ -224,7 +224,7 @@ it('should apply filters through an event', function () {
         'type'              => CoreTransactionTypeEnum::VOTE,
     ]);
 
-    $component->emit('filterTransactionsByType', 'vote');
+    $component->set('state.type', 'vote');
 
     foreach (ViewModelFactory::collection($expected) as $transaction) {
         $component->assertSee($transaction->id());

@@ -8,7 +8,7 @@
 
 <x-general.entity-header-item
     :title="trans('pages.transaction.fee')"
-    icon="app-fee"
+    icon="app-monitor"
 >
     <x-slot name="text">
         <x-currency :currency="Network::currency()">{{ $transaction->fee() }}</x-currency>

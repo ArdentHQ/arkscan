@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Casts\BigInteger;
+use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,6 +28,7 @@ final class Block extends Model
 {
     use HasFactory;
     use SearchesCaseInsensitive;
+    use HasEmptyScope;
 
     /**
      * The "type" of the primary key ID.

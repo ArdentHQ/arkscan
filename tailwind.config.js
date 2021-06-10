@@ -22,6 +22,8 @@ module.exports = {
             width: {
                 ...defaultConfig.theme.extend.width,
                 '7': '1.75rem',
+                '25': '6.25rem',
+                '30': '7.5rem',
                 '84': '21rem',
             },
             padding: {
@@ -30,7 +32,23 @@ module.exports = {
             boxShadow: {
                 ...defaultConfig.theme.extend.boxShadow,
                 "search-subtle": "0 10px 15px -3px rgba(0,0,0,.03), 0 4px 6px -2px rgba(0,0,0,.03)",
+            },
+            zIndex: {
+                ...defaultConfig.theme.extend.zIndex,
+                '15': 15,
             }
+        },
+    },
+    variants: {
+        ...defaultConfig.variants,
+        extend: {
+            ...defaultConfig.variants.extend,
+            borderRadius: ['focus-visible'],
+            ringColor: ['focus-visible'],
+            ringWidth: ['focus-visible'],
+            textDecoration: ['focus-visible'],
+            transitionProperty: ['focus-visible'],
+            zIndex: ['focus-visible'],
         },
     },
 }

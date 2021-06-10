@@ -617,13 +617,13 @@ it('should search for transactions by block with an ID', function () {
     Transaction::factory(10)->create();
 
     $tx = Transaction::factory()->create([
-        'block_id' => 'blockid',
+        'block_id' => 'ffff273321907d20bda3278ade259e6364ec2091ecd5993398a2ef2402725a31',
     ]);
 
     Livewire::test(SearchPage::class)
         ->set('state.type', 'transaction')
         ->set('state.transactionType', 'all')
-        ->set('state.term', 'blockid')
+        ->set('state.term', 'ffff273321907d20bda3278ade259e6364ec2091ecd5993398a2ef2402725a31')
         ->call('performSearch')
         ->assertSee($tx->id);
 });

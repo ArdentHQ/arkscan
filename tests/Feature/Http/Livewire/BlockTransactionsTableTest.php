@@ -13,7 +13,7 @@ use Livewire\Livewire;
 
 it('should list the first transactions for the giving block id', function () {
     $block = Block::factory()->create();
-    Transaction::factory(25)->create(['block_id' => $block->id]);
+    Transaction::factory(25)->transfer()->create(['block_id' => $block->id]);
 
     $component = Livewire::test(BlockTransactionsTable::class, ['blockId' => $block->id]);
 

@@ -1,19 +1,8 @@
-<div class="h-20 lg:h-24"></div>
-<div x-data="{ open: false, openDropdown: null, selectedChild: null }" id="navbar" class="fixed z-20 w-full">
-    <div
-        x-show="openDropdown !== null || open"
-        class="overflow-y-auto fixed inset-0 z-30 bg-theme-secondary-900 dark:bg-theme-secondary-800"
-        :class="{
-            'opacity-75 dark:opacity-50': openDropdown !== 'settings',
-            'opacity-0': openDropdown === 'settings',
-        }"
-        x-cloak
-        @click="openDropdown = null; open = false;"
-    ></div>
-
+<div class="mb-1 h-20"></div>
+<div x-data="{ open: false, showSettings: false }" id="navbar" class="fixed z-20 w-full">
     <nav class="relative z-30 bg-white shadow-header-smooth dark:shadow-header-smooth-dark dark:bg-theme-secondary-900">
-        <div class="px-8">
-            <div class="flex relative justify-between h-20 lg:h-24">
+        <div class="px-8 md:px-10 py-0.5">
+            <div class="flex relative justify-between h-20">
 
                 {{-- LOGO --}}
                 <div class="flex flex-shrink-0 items-center">
@@ -28,128 +17,112 @@
                     </a>
                 </div>
 
+                <div class="hidden items-center mr-auto md:flex">
+                    <x-navbar.separator />
+
+                    {{-- search modal trigger (tablet/desktop) --}}
+                    <x-navbar.button
+                        class="hidden sm:flex"
+                        @click="Livewire.emit('openSearchModal')"
+                        dusk="navigation-search-modal-trigger"
+                    >
+                        <x-ark-icon name="search" />
+
+                        <span class="sr-only">
+                            @lang('actions.search')
+                        </span>
+                    </x-navbar.button>
+                </div>
+
                 <div class="flex justify-end">
                     <div class="flex flex-1 justify-end items-center sm:items-stretch sm:justify-between">
                         {{-- Desktop Navbar Items --}}
-                        <div class="hidden items-center lg:ml-6 lg:flex">
+                        <div class="hidden items-center -mx-4 lg:flex">
                             @foreach ($navigation as $navItem)
-                                @if(isset($navItem['children']))
-                                    <a
-                                        href="#"
-                                        class="relative inline-flex justify-center items-center px-1 pt-1 font-semibold leading-5 border-b-2 border-transparent text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300 focus:outline-none transition duration-150 ease-in-out h-full dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400
-                                            @if(!$loop->first) ml-8 @endif"
-                                        @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
-                                    >
-                                        <span :class="{ 'text-theme-primary-600': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
-                                        <span class="ml-2 transition duration-150 ease-in-out text-theme-primary-600" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }"><x-ark-icon name="chevron-down" size="xs" /></span>
-                                    </a>
-                                    <div x-show="openDropdown === '{{ $navItem['label'] }}'" class="absolute top-0 right-0 z-30 pb-8 mt-24 bg-white rounded-b-lg" x-cloak>
-                                        <div class="pb-8 mx-8 border-t border-theme-secondary-200"></div>
-                                        <div class="flex">
-                                            <div class="flex-shrink-0 w-56 border-r border-theme-secondary-300">
-                                                @foreach ($navItem['children'] as $childNavItem)
-                                                    <div @mouseenter="selectedChild = {{ json_encode($childNavItem) }}">
-                                                        <x-ark-sidebar-link :route="$childNavItem['route']" :name="$childNavItem['label']" :params="$childNavItem['params'] ?? []"/>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                            <div class="flex flex-col flex-shrink-0 pr-8 pl-8 w-128">
-                                                <img class="w-full" :src="selectedChild ? selectedChild.image : '{{ $navItem['image'] }}'" />
-
-                                                <template x-if="selectedChild">
-                                                    <span x-text="selectedChild.label" class="mb-2 text-xl font-semibold text-theme-secondary-900"></span>
-                                                    <span x-text="selectedChild.description"></span>
-                                                </template>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @else
-                                    <a
-                                        href="{{ route($navItem['route'], $navItem['params'] ?? []) }}"
-                                        class="inline-flex items-center px-1 pt-1 font-semibold leading-5 border-b-2
-                                            focus:outline-none transition duration-150 ease-in-out h-full
-                                            @if(optional(Route::current())->getName() === $navItem['route'])
-                                                border-theme-primary-600 text-theme-secondary-900 dark:text-theme-secondary-400
-                                            @else
-                                                border-transparent text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400
-                                            @endif
-                                            @if(!$loop->first) ml-8 @endif"
-                                        @click="openDropdown = null;"
-                                    >
-                                        {{ $navItem['label'] }}
-                                    </a>
-                                @endif
+                                <a
+                                    href="{{ route($navItem['route'], $navItem['params'] ?? []) }}"
+                                    class="inline-flex font-semibold leading-5 group
+                                        focus:outline-none transition duration-150 ease-in-out h-full px-2 mx-2 relative border-t-2 border-transparent rounded
+                                        @if(optional(Route::current())->getName() === $navItem['route'])
+                                            text-theme-secondary-900 dark:text-theme-secondary-400
+                                        @else
+                                            text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400
+                                        @endif
+                                    "
+                                >
+                                    <span class="flex items-center w-full h-full mt-0.5 border-b-2  @if(optional(Route::current())->getName() === $navItem['route']) border-theme-primary-600 @else border-transparent group-hover:border-theme-secondary-300 @endif">
+                                        <span class="-mt-0.5">{{ $navItem['label'] }}</span>
+                                    </span>
+                                </a>
                             @endforeach
                         </div>
                     </div>
 
-                    <div class="flex inset-y-0 right-0 items-center pr-2 sm:static sm:inset-auto sm:ml-4 sm:pr-0">
-                        {{-- Mobile Hamburger icon --}}
-                        <div class="flex items-center lg:hidden">
-                            <button @click="open = !open" class="inline-flex justify-center items-center rounded-md transition duration-150 ease-in-out text-theme-secondary-900 dark:text-theme-secondary-600">
-                                <span :class="{'hidden': open, 'inline-flex': !open }">
-                                    <x-ark-icon name="menu" size="sm" />
-                                </span>
-
-                                <span :class="{'hidden': !open, 'inline-flex': open }" x-cloak>
-                                    <x-ark-icon name="menu-show" size="sm" />
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center ml-6 md:hidden">
-                        <div class="pl-8 border-l border-theme-primary-100 text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-800">
-                            <button
-                                @click="$dispatch('mobile-search')"
-                                class="inline-flex justify-center items-center py-2 rounded-md transition duration-150 ease-in-out text-theme-primary-300 dark:text-theme-secondary-600"
-                            >
-                                <span class="inline-flex"><x-ark-icon name="search" size="sm" /></span>
-                            </button>
-                        </div>
-                    </div>
-
                     @if(Network::canBeExchanged())
-                        <div class="hidden items-center ml-6 md:flex lg:ml-8">
-                            <div class="pl-8 font-semibold border-l border-theme-primary-100 text-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-800">
+                        <div class="hidden items-center md:flex">
+                            <x-navbar.separator class="md:hidden lg:inline" />
+
+                            <div class="hidden font-semibold lg:pl-8 md:flex text-theme-secondary-900 dark:text-white">
                                 <livewire:price-ticker />
                             </div>
                         </div>
                     @endif
+
+
+                    <div class="flex items-center -mr-5 md:-mr-8 lg:hidden">
+                        @if(Network::canBeExchanged())
+                            <x-navbar.separator class="hidden md:inline" />
+                        @endif
+
+                        {{-- Mobile Hamburger icon --}}
+                        <x-navbar.button
+                            @click="open = !open"
+                            margin-class="ml-1 ml-4 -mr-3 md:mr-4"
+                        >
+                            <span :class="{'hidden': open, 'inline-flex': !open }">
+                                <x-ark-icon name="menu" />
+                            </span>
+
+                            <span :class="{'hidden': !open, 'inline-flex': open }" x-cloak>
+                                <x-ark-icon name="menu-show" />
+                            </span>
+                        </x-navbar.button>
+
+                        <x-navbar.separator class="md:hidden" />
+
+                        <x-navbar.button
+                            class="md:hidden"
+                            @click="Livewire.emit('openSearchModal')"
+                            dusk="navigation-search-modal-trigger"
+                        >
+                            <x-ark-icon name="search" />
+
+                            <span class="sr-only">
+                                @lang('actions.search')
+                            </span>
+                        </x-navbar.button>
+                    </div>
+
 
                     <livewire:navbar-settings />
                 </div>
             </div>
         </div>
 
-        {{-- Mobile dropdown --}}
-        <div :class="{'block': open, 'hidden': !open}" class="border-t-2 lg:hidden border-theme-secondary-200 dark:border-theme-secondary-800">
-            <div class="pt-2 pb-4 rounded-b-lg">
-                @foreach ($navigation as $navItem)
-                    @if(isset($navItem['children']))
-                        <div class="flex w-full">
-                            <div class="z-10 -mr-1 w-2"></div>
-                            <a
-                                href="#"
-                                class="flex justify-between items-center py-3 px-8 w-full font-semibold border-l-2 border-transparent"
-                                @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
-                            >
-                                <span :class="{ 'text-theme-primary-600': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
-                                <span class="ml-2 transition duration-150 ease-in-out text-theme-primary-600" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }"><x-ark-icon name="chevron-down" size="xs" /></span>
-                            </a>
-                        </div>
-                        <div x-show="openDropdown === '{{ $navItem['label'] }}'" class="pl-8" x-cloak>
-                            @foreach ($navItem['children'] as $childNavItem)
-                                <div @mouseenter="selectedChild = {{ json_encode($childNavItem) }}">
-                                    <x-ark-sidebar-link :route="$childNavItem['route']" :name="$childNavItem['label']" :params="$childNavItem['params'] ?? []" />
-                                </div>
-                            @endforeach
-                        </div>
-                    @else
+        <template x-if="open">
+            <div class="border-t-2 shadow-xl lg:hidden border-theme-secondary-200 dark:border-theme-secondary-800" @click.away="open = false">
+                <div class="pt-2 pb-4 rounded-b-lg">
+                    @foreach ($navigation as $navItem)
                         <x-ark-navbar-link-mobile :route="$navItem['route']" :name="$navItem['label']" :params="$navItem['params'] ?? []" />
+                    @endforeach
+
+                    @if(Network::canBeExchanged())
+                        <div class="flex py-3 px-8 mt-2 -mb-4 font-semibold bg-theme-secondary-100 text-theme-secondary-900 dark:text-white dark:bg-theme-secondary-800 md:hidden">
+                            <livewire:price-ticker />
+                        </div>
                     @endif
-                @endforeach
+                </div>
             </div>
-        </div>
+        </template>
     </nav>
 </div>

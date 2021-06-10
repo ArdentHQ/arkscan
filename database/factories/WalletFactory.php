@@ -32,4 +32,56 @@ final class WalletFactory extends Factory
             ],
         ];
     }
+
+    public function activeDelegate()
+    {
+        return $this->state(function () {
+            return [
+                'attributes'        => [
+                    'delegate'        => [
+                        'rank'           => $this->faker->numberBetween(1, 51),
+                        'username'       => $this->faker->userName,
+                        'voteBalance'    => $this->faker->numberBetween(1, 1000) * 1e8,
+                        'producedBlocks' => $this->faker->numberBetween(1, 1000),
+                        'missedBlocks'   => $this->faker->numberBetween(1, 1000),
+                    ],
+                ],
+            ];
+        });
+    }
+
+    public function standbyDelegate()
+    {
+        return $this->state(function () {
+            return [
+                'attributes'        => [
+                    'delegate'        => [
+                        'resigned'       => true,
+                        'rank'           => $this->faker->numberBetween(52, 102),
+                        'username'       => $this->faker->userName,
+                        'voteBalance'    => $this->faker->numberBetween(1, 100) * 1e8,
+                        'producedBlocks' => $this->faker->numberBetween(1, 1000),
+                        'missedBlocks'   => $this->faker->numberBetween(1, 1000),
+                    ],
+                ],
+            ];
+        });
+    }
+
+    public function multiSignature()
+    {
+        return $this->state(function () {
+            return [
+                'attributes' => [
+                    'multiSignature' => [
+                        'min'        => 2,
+                        'publicKeys' => [
+                            '022a40ea35d53eedf0341ffa17574fca844d69665ce35f224e9a6b1385575044fd',
+                            '037fde73baaa48eb75c013fe9ff52a74a096d48b9978351bdcb5b72331ca37487c',
+                        ],
+                    ],
+                ],
+            ];
+        });
+    }
 }

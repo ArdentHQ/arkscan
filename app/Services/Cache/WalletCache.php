@@ -47,7 +47,7 @@ final class WalletCache implements Contract
 
     public function getProductivity(string $publicKey): float
     {
-        return (float) $this->get(sprintf('productivity/%s', $publicKey), 0);
+        return (float) $this->get(sprintf('productivity/%s', $publicKey), -1);
     }
 
     public function setProductivity(string $publicKey, float $value): void
@@ -123,6 +123,16 @@ final class WalletCache implements Contract
     public function setVoterCount(string $publicKey, int $count): void
     {
         $this->put(sprintf('voter_count/%s', $publicKey), $count);
+    }
+
+    public function getMissedBlocks(string $publicKey): int
+    {
+        return (int) $this->get(sprintf('missed_blocks/%s', $publicKey), 0);
+    }
+
+    public function setMissedBlocks(string $publicKey, int $value): void
+    {
+        $this->put(sprintf('missed_blocks/%s', $publicKey), $value);
     }
 
     public function getCache(): TaggedCache

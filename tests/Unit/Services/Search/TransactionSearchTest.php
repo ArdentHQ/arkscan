@@ -298,11 +298,11 @@ it('should search for transactions by block with an ID', function (?string $modi
     Transaction::factory(10)->create();
 
     Transaction::factory()->create([
-        'block_id' => 'blockid',
+        'block_id' => 'ffff273321907d20bda3278ade259e6364ec2091ecd5993398a2ef2402725a31',
     ]);
 
     $result = (new TransactionSearch())->search([
-        'term' => $modifier ? $modifier('blockid') : 'blockid',
+        'term' => $modifier ? $modifier('ffff273321907d20bda3278ade259e6364ec2091ecd5993398a2ef2402725a31') : 'ffff273321907d20bda3278ade259e6364ec2091ecd5993398a2ef2402725a31',
     ]);
 
     expect($result->get())->toHaveCount(1);
@@ -316,7 +316,7 @@ it('should search for transactions by block with a height', function () {
     ]);
 
     $result = (new TransactionSearch())->search([
-        'term' => 123456789,
+        'term' => '123456789',
     ]);
 
     expect($result->get())->toHaveCount(1);

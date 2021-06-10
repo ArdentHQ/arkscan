@@ -1,13 +1,11 @@
 @component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
-
     @section('content')
-        <x-general.search.header />
+        <livewire:network-status-block />
 
         <div class="bg-white dark:bg-theme-secondary-900">
-            <div class="py-16 content-container md:px-8">
+            <x-ark-container>
                 <livewire:latest-records />
-            </div>
+            </x-ark-container>
         </div>
     @endsection
-
 @endcomponent
