@@ -9,12 +9,15 @@ use App\Facades\Wallets;
 use App\Models\Block;
 use App\Models\Composers\TimestampRangeComposer;
 use App\Models\Composers\ValueRangeComposer;
+use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Throwable;
 
 final class BlockSearch implements Search
 {
+    use ValidatesTerm;
+
     public function search(array $parameters): Builder
     {
         $query = Block::query();
@@ -24,11 +27,16 @@ final class BlockSearch implements Search
         $term = Arr::get($parameters, 'term');
 
         if (! is_null($term)) {
-            $query = $query->whereLower('id', $term);
+            if ($this->couldBeBlockID($term)) {
+                $query = $query->whereLower('id', $term);
+            } else {
+                // Forces empty results when it has a term but not possible
+                // block ID
+                $query->empty();
+            }
 
-            $numericTerm = filter_var($term, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND);
-
-            if (is_numeric($numericTerm)) {
+            if ($this->couldBeHeightValue($term)) {
+                $numericTerm = strval(filter_var($term, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND));
                 $query->orWhere('height', $numericTerm);
             }
 

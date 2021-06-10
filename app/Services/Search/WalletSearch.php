@@ -7,24 +7,35 @@ namespace App\Services\Search;
 use App\Contracts\Search;
 use App\Models\Composers\ValueRangeComposer;
 use App\Models\Wallet;
+use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 final class WalletSearch implements Search
 {
+    use ValidatesTerm;
+
     public function search(array $parameters): Builder
     {
         $query = Wallet::query();
 
         ValueRangeComposer::compose($query, $parameters, 'balance');
 
-        if (! is_null(Arr::get($parameters, 'term'))) {
-            $query->whereLower('address', $parameters['term']);
-            $query->orWhereLower('public_key', $parameters['term']);
+        $term = Arr::get($parameters, 'term');
 
-            $username = substr(DB::getPdo()->quote($parameters['term']), 1, -1);
-            $query->orWhereRaw('lower(attributes::text)::jsonb @> lower(\'{"delegate":{"username":"'.$username.'"}}\')::jsonb');
+        if (! is_null($term)) {
+            if ($this->couldBeAddress($term)) {
+                $query->whereLower('address', $term);
+            } elseif ($this->couldBePublicKey($term)) {
+                $query->whereLower('public_key', $term);
+            } elseif ($this->couldBeUsername($term)) {
+                $username = substr(DB::getPdo()->quote($term), 1, -1);
+                $query->whereRaw('lower(attributes::text)::jsonb @> lower(\'{"delegate":{"username":"'.$username.'"}}\')::jsonb');
+            } else {
+                // Empty results when it has a term but not possible results
+                $query->empty();
+            }
         }
 
         if (! is_null(Arr::get($parameters, 'username'))) {

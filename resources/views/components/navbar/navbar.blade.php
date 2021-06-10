@@ -34,7 +34,7 @@
                     </x-navbar.button>
                 </div>
 
-                <div class="flex justify-end ">
+                <div class="flex justify-end">
                     <div class="flex flex-1 justify-end items-center sm:items-stretch sm:justify-between">
                         {{-- Desktop Navbar Items --}}
                         <div class="hidden items-center -mx-4 lg:flex">

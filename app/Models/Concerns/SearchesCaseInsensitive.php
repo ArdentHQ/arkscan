@@ -12,12 +12,6 @@ trait SearchesCaseInsensitive
     public function scopeWhereLower(Builder $query, string $key, string $value): Builder
     {
         // @phpstan-ignore-next-line
-        return $query->where(DB::raw("lower($key)"), 'ilike', $value);
-    }
-
-    public function scopeOrWhereLower(Builder $query, string $key, string $value): Builder
-    {
-        // @phpstan-ignore-next-line
-        return $query->orWhere(DB::raw("lower($key)"), 'ilike', $value);
+        return $query->where(DB::raw("lower($key)"), '=', strtolower($value));
     }
 }

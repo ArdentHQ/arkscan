@@ -4,7 +4,7 @@
     @endpush
 
     @section('content')
-        <div class="flex flex-col justify-center items-center ">
+        <div class="flex flex-col justify-center items-center">
             <div class="flex justify-center w-full">
                 <img src="/images/errors/404_entity.svg" class="max-w-sm dark:hidden"/>
                 <img src="/images/errors/404_entity_dark.svg" class="hidden max-w-sm dark:block"/>

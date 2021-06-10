@@ -6,12 +6,15 @@ namespace App\Repositories;
 
 use App\Contracts\WalletRepository as Contract;
 use App\Models\Wallet;
+use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 final class WalletRepository implements Contract
 {
+    use ValidatesTerm;
+
     public function allWithUsername(): Builder
     {
         return Wallet::whereNotNull('attributes->delegate->username')->orderBy('balance');
@@ -54,13 +57,19 @@ final class WalletRepository implements Contract
 
     public function findByIdentifier(string $identifier): Wallet
     {
-        $username = substr(DB::getPdo()->quote($identifier), 1, -1);
+        $query =  Wallet::query();
 
-        /* @phpstan-ignore-next-line */
-        return Wallet::query()
-            ->whereLower('address', $identifier)
-            ->orWhereLower('public_key', $identifier)
-            ->orWhereRaw('lower(attributes::text)::jsonb @> lower(\'{"delegate":{"username":"'.$username.'"}}\')::jsonb')
-            ->firstOrFail();
+        if ($this->couldBeAddress($identifier)) {
+            $query->whereLower('address', $identifier);
+        } elseif ($this->couldBePublicKey($identifier)) {
+            $query->whereLower('public_key', $identifier);
+        } elseif ($this->couldBeUsername($identifier)) {
+            $username = substr(DB::getPdo()->quote($identifier), 1, -1);
+            $query->orWhereRaw('lower(attributes::text)::jsonb @> lower(\'{"delegate":{"username":"'.$username.'"}}\')::jsonb');
+        } else {
+            $query->empty();
+        }
+
+        return $query->firstOrFail();
     }
 }

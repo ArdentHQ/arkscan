@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Casts\BigInteger;
+use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Scopes\DelegateRegistrationScope;
 use App\Models\Scopes\DelegateResignationScope;
@@ -42,6 +43,7 @@ final class Transaction extends Model
 {
     use HasFactory;
     use SearchesCaseInsensitive;
+    use HasEmptyScope;
 
     /**
      * A list of transaction scopes used for filtering based on type.

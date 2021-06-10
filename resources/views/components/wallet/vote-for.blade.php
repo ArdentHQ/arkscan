@@ -44,7 +44,7 @@
                 <x-general.entity-header-item
                     :title="trans('pages.wallet.status')"
                     without-icon
-                    content-class="sm:-ml-4 sm:text-right "
+                    content-class="sm:-ml-4 sm:text-right"
                 >
                     <x-slot name="text">
                         @if($vote->isResigned())

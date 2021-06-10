@@ -1,4 +1,4 @@
-<div class="overflow-auto bg-theme-secondary-100 dark:bg-black ">
+<div class="overflow-auto bg-theme-secondary-100 dark:bg-black">
     <div class="py-8 content-container-full-width">
         <div class="px-10 md:w-full">
             <div wire:poll.{{ $refreshInterval }}s class="flex gap-3 w-full md:grid md:grid-cols-2 md:grid-rows-2 xl:grid-cols-4 xl:grid-rows-1">

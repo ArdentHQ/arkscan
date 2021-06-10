@@ -30,11 +30,11 @@
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body
-        class="min-h-screen bg-white dark "
+        class="min-h-screen bg-white dark"
         x-data="{ 'theme': '{{ Settings::theme() }}' }"
         :class="{ 'dark bg-theme-secondary-900': theme === 'dark', 'bg-white': theme !== 'dark' }"
     >
-        <div id="app" class="flex flex-col h-full antialiased ">
+        <div id="app" class="flex flex-col h-full antialiased">
             <main class="container flex flex-1 items-center px-4 mx-auto w-full sm:max-w-full sm:px-8 lg:max-w-7xl">
                 <div class="w-full rounded-lg">
                     <div class="flex flex-col justify-center items-center space-y-8">
