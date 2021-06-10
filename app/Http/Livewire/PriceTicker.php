@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Facades\Network;
-use App\Services\CryptoCompare;
+use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\NumberFormatter;
 use App\Services\Settings;
 use Illuminate\View\View;
@@ -22,6 +22,8 @@ final class PriceTicker extends Component
 
     public string $to;
 
+    public bool $isAvailable = false;
+
     public function mount(): void
     {
         $this->setValues();
@@ -29,14 +31,19 @@ final class PriceTicker extends Component
 
     public function setValues(): void
     {
-        $this->price = $this->getPriceFormatted();
-        $this->from  = Network::currency();
-        $this->to    = Settings::currency();
+        $this->isAvailable = (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency());
+        $this->price       = $this->getPriceFormatted();
+        $this->from        = Network::currency();
+        $this->to          = Settings::currency();
     }
 
     private function getPriceFormatted(): string
     {
-        $price = CryptoCompare::price(Network::currency(), Settings::currency());
+        $price = (new NetworkStatusBlockCache())->getPrice(Network::currency(), Settings::currency());
+
+        if ($price === null) {
+            return '';
+        }
 
         return NumberFormatter::currencyWithDecimalsWithoutSuffix($price, Settings::currency());
     }

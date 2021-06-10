@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Console;
 
 use App\Console\Commands\BuildForgingStats;
+use App\Console\Commands\CacheCurrenciesData;
+use App\Console\Commands\CacheCurrenciesHistory;
 use App\Console\Commands\CacheDelegateAggregates;
 use App\Console\Commands\CacheDelegatePerformance;
 use App\Console\Commands\CacheDelegateProductivity;
@@ -41,6 +43,10 @@ final class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command(CachePrices::class)->everyMinute();
+
+        $schedule->command(CacheCurrenciesData::class)->everyMinute()->withoutOverlapping();
+
+        $schedule->command(CacheCurrenciesHistory::class)->hourly();
 
         $schedule->command(CacheDelegateWallets::class)->everyTenMinutes();
 

@@ -36,7 +36,7 @@ final class CachePrices extends Command
 
         foreach (array_values(config('currencies')) as $currency) {
             $currency = $currency['currency'];
-            $prices   = (new CryptoCompare())->historical(Network::currency(), $currency);
+            $prices   = CryptoCompare::historical(Network::currency(), $currency);
 
             $crypto->setPrices($currency, $prices);
 

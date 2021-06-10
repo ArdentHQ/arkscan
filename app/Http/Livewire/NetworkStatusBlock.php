@@ -7,7 +7,7 @@ namespace App\Http\Livewire;
 use App\Actions\CacheNetworkHeight;
 use App\Actions\CacheNetworkSupply;
 use App\Facades\Network;
-use App\Services\CryptoCompare;
+use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\NumberFormatter;
 use App\Services\Settings;
 use Illuminate\View\View;
@@ -23,7 +23,7 @@ final class NetworkStatusBlock extends Component
     {
         return view('livewire.network-status-block', [
             'price'       => $this->getPriceFormatted(),
-            'priceChange' => CryptoCompare::getPriceChange(),
+            'priceChange' => $this->getPriceChange(),
             'height'      => CacheNetworkHeight::execute(),
             'network'     => Network::name(),
             'supply'      => CacheNetworkSupply::execute() / 1e8,
@@ -31,10 +31,19 @@ final class NetworkStatusBlock extends Component
         ]);
     }
 
-    private function getPriceFormatted(): string
+    private function getPriceChange(): ?float
+    {
+        return (new NetworkStatusBlockCache())->getPriceChange(Network::currency(), Settings::currency());
+    }
+
+    private function getPriceFormatted(): ? string
     {
         $currency = Settings::currency();
-        $price    = CryptoCompare::price(Network::currency(), $currency);
+        $price    = (new NetworkStatusBlockCache())->getPrice(Network::currency(), $currency);
+
+        if ($price === null) {
+            return null;
+        }
 
         if (NumberFormatter::isFiat($currency)) {
             return BetterNumberFormatter::new()
@@ -50,31 +59,26 @@ final class NetworkStatusBlock extends Component
             );
     }
 
-    private function getMarketCapFormatted(): string
+    private function getMarketCapFormatted(): ? string
     {
-        $currency = Settings::currency();
-        $price    = $this->getMarketCap();
+        $currency  = Settings::currency();
+        $marketcap = (new NetworkStatusBlockCache())->getMarketCap(Network::currency(), $currency);
+
+        if ($marketcap === null) {
+            return null;
+        }
 
         if (NumberFormatter::isFiat($currency)) {
             return BetterNumberFormatter::new()
                 ->withLocale(Settings::locale())
-                ->formatWithCurrencyAccounting($price);
+                ->formatWithCurrencyAccounting($marketcap);
         }
 
         return BetterNumberFormatter::new()
             ->formatWithCurrencyCustom(
-                $price,
+                $marketcap,
                 $currency,
                 NumberFormatter::CRYPTO_DECIMALS
             );
-    }
-
-    private function getMarketCap(): float
-    {
-        if (! Network::canBeExchanged()) {
-            return 0;
-        }
-
-        return CryptoCompare::marketCap(Network::currency(), Settings::currency());
     }
 }
