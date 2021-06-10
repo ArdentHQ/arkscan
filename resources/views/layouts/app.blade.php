@@ -48,7 +48,7 @@
                 :navigation="[
                     ['route' => 'delegates',  'label' => trans('menus.delegates')],
                     ['route' => 'wallets',    'label' => trans('menus.wallets')],
-                    ['route' => 'statistics', 'label' => trans('menus.statistics')],
+                    {{-- ['route' => 'statistics', 'label' => trans('menus.statistics')], --}}
                 ]"
             >
                 <x-slot name="logo">
