@@ -3,7 +3,7 @@
         class="hidden mb-4 md:flex"
         default-selected="all"
         on-selected="function (value) {
-            this.$wire.set('state.selected', value);
+            this.$wire.set('state.direction', value);
         }"
     >
         <x-tabs.tab name="all">
