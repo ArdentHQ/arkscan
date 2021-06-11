@@ -192,6 +192,22 @@ it('should apply filters', function () {
     }
 });
 
+it('should reset the pagination when state changes', function () {
+    $component = Livewire::test(WalletTransactionTable::class, [$this->subject->address, false, $this->subject->public_key]);
+
+    $component->set('page', 3);
+    $component->assertSet('page', 3);
+
+    $component->set('state.type', 'vote');
+    $component->assertSet('page', 1);
+
+    $component->set('page', 3);
+    $component->assertSet('page', 3);
+
+    $component->set('state.direction', 'sent');
+    $component->assertSet('page', 1);
+});
+
 it('should apply filters through an event', function () {
     $block = Block::factory()->create();
 

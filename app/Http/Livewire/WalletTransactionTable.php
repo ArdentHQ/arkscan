@@ -42,7 +42,7 @@ final class WalletTransactionTable extends Component
         $this->state['direction'] = $value;
     }
 
-    public function updatedStateType(): void
+    public function updatedState(): void
     {
         $this->gotoPage(1);
     }
