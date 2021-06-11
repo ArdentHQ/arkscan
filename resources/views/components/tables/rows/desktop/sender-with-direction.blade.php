@@ -1,4 +1,4 @@
-<div class="flex items-center" wire:key="sender:{{ $model->id() }}">
+<div class="flex items-center space-x-4" wire:key="sender:{{ $model->id() }}">
     <div class="flex justify-center items-center sender-direction-wrapper">
         <div class="flex">
             <div class="arrow-direction text-theme-secondary-900 border-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-600">

@@ -1,5 +1,5 @@
 <div>
-    <div class="flex {{ ($withoutReverse ?? false) ? 'space-x-3' : 'flex-row-reverse md:space-x-3' }} items-center md:flex-row md:justify-start">
+    <div class="flex {{ ($withoutReverse ?? false) ? 'space-x-3' : 'flex-row-reverse md:space-x-4' }} items-center md:flex-row md:justify-start">
         @unless ($icon ?? false)
             <x-general.avatar :identifier="$model->address()" />
         @else

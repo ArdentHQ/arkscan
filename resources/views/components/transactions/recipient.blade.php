@@ -44,7 +44,7 @@
             <div class="flex flex-row-reverse items-center md:flex-row">
                 <x-transactions.icon :icon-type="$iconType" />
 
-                <div class="mr-4 font-semibold text-theme-secondary-900 dark:text-theme-secondary-200 md:mr-0 md:ml-3">
+                <div class="mr-4 font-semibold text-theme-secondary-900 dark:text-theme-secondary-200 md:mr-0 md:ml-4">
                     @lang('general.transaction.types.'.$transaction->typeName())
                 </div>
             </div>
