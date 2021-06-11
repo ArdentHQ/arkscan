@@ -2,7 +2,7 @@
     class="block"
     device="desktop"
     :items="[
-        'pages.delegates.order'      => 'text',
+        'pages.delegates.order'      => 'rank',
         'pages.delegates.name'       => 'address',
         'pages.delegates.forging_at' => [
             'type' => 'text',
