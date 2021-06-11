@@ -2290,16 +2290,16 @@
         },
         {
             "name": "konceiver/better-number-formatter",
-            "version": "2.1.1",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/konceiver/better-number-formatter.git",
-                "reference": "757b49e0b9218b8a86312f9fc2743c5b0d4216bf"
+                "reference": "06cd95d99e3a002eae3d033951e6de72baf7df9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/konceiver/better-number-formatter/zipball/757b49e0b9218b8a86312f9fc2743c5b0d4216bf",
-                "reference": "757b49e0b9218b8a86312f9fc2743c5b0d4216bf",
+                "url": "https://api.github.com/repos/konceiver/better-number-formatter/zipball/06cd95d99e3a002eae3d033951e6de72baf7df9d",
+                "reference": "06cd95d99e3a002eae3d033951e6de72baf7df9d",
                 "shasum": ""
             },
             "require": {
@@ -2335,7 +2335,7 @@
             ],
             "support": {
                 "issues": "https://github.com/konceiver/better-number-formatter/issues",
-                "source": "https://github.com/konceiver/better-number-formatter/tree/2.1.1"
+                "source": "https://github.com/konceiver/better-number-formatter/tree/2.2.0"
             },
             "funding": [
                 {
@@ -2347,7 +2347,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-06-01T09:41:38+00:00"
+            "time": "2021-06-11T01:10:08+00:00"
         },
         {
             "name": "konceiver/binary",

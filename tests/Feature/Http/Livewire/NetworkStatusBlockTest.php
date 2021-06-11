@@ -48,7 +48,7 @@ it('should render with a height, supply and market cap', function () {
     Livewire::test(NetworkStatusBlock::class)
         ->assertSee('5,651,290') // Height
         ->assertSee('136,280,982 ARK') // Supply
-        ->assertSee('$218,867,257.09') // Market cap
+        ->assertSee('$218,867,257') // Market cap
         ->assertSee('1.61'); // Price
 });
 

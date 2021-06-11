@@ -17,7 +17,7 @@ it('should return the supply formatted', function () {
     (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 1.234);
     (new NetworkCache())->setSupply(fn () => 4.567 * 1e8);
 
-    expect(MarketCap::getFormatted('ARK', 'USD'))->toBe('$5.64');
+    expect(MarketCap::getFormatted('ARK', 'USD'))->toBe('$6');
 });
 
 it('should return the null if no price', function () {

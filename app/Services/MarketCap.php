@@ -32,6 +32,7 @@ final class MarketCap
         if (NumberFormatter::isFiat($target)) {
             return BetterNumberFormatter::new()
                 ->withLocale(Settings::locale())
+                ->withFractionDigits(0)
                 ->formatWithCurrencyAccounting($marketcap);
         }
 
