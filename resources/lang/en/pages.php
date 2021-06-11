@@ -130,7 +130,7 @@ return [
             'description'      => 'Enter the amount you wish to transfer to this address and confirm.',
             'automatic_notice' => 'The QR-code is updated automatically, you do not need to press anything.',
             'specify_amount'   => 'Specify Amount',
-            'send_from_wallet' => 'Send from wallet',
+            'send_from_wallet' => 'Send From Wallet',
         ],
         'public_key' => [
             'title'       => 'Public Key',

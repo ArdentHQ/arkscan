@@ -17,7 +17,7 @@
                     <x-wallet.qr-address :model="$wallet" />
                 </div>
 
-                <div x-show="options" class="space-y-8">
+                <div x-show="options" class="space-y-5">
                     <x-ark-input
                         :label="trans('pages.wallet.amount')"
                         type="number"
@@ -25,12 +25,10 @@
                         name="amount"
                         max="17"
                         :errors="$errors"
-                        required
                         autofocus
                     />
 
                     <x-ark-input
-                        class="mt-5"
                         type="text"
                         id="smartbridge"
                         name="smartbridge"
