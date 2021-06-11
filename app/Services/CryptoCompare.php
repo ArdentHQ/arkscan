@@ -59,7 +59,6 @@ final class CryptoCompare
             strtoupper($currency) => [
                     'priceChange' => Arr::get($result, 'RAW.'.$source.'.'.strtoupper($currency).'.CHANGEPCT24HOUR', 0) / 100,
                     'price'       => Arr::get($result, 'RAW.'.$source.'.'.strtoupper($currency).'.PRICE', 0),
-                    'marketCap'   => Arr::get($result, 'RAW.'.$source.'.'.strtoupper($currency).'.MKTCAP', 0),
                 ],
             ]);
     }

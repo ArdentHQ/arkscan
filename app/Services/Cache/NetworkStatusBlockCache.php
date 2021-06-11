@@ -14,20 +14,6 @@ final class NetworkStatusBlockCache implements Contract
 {
     use ManagesCache;
 
-    public function getMarketCap(string $source, string $target): ?float
-    {
-        $marketCap = $this->get(sprintf('marketcap/%s/%s', $source, $target));
-
-        return $marketCap === null ? null : (float) $marketCap;
-    }
-
-    public function setMarketCap(string $source, string $target, ?float $marketcap): ?float
-    {
-        $this->put(sprintf('marketcap/%s/%s', $source, $target), $marketcap);
-
-        return $marketcap;
-    }
-
     public function getHistoricalHourly(string $source, string $target): ?Collection
     {
         return $this->get(sprintf('historical-hourly/%s/%s', $source, $target));

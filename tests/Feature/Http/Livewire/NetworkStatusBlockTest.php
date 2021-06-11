@@ -43,13 +43,12 @@ it('should render with a height, supply and market cap', function () {
     ]);
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 1.606);
-    (new NetworkStatusBlockCache())->setMarketCap('ARK', 'USD', 254260570.60);
     (new NetworkStatusBlockCache())->setHistoricalHourly('ARK', 'USD', collect());
 
     Livewire::test(NetworkStatusBlock::class)
         ->assertSee('5,651,290') // Height
         ->assertSee('136,280,982 ARK') // Supply
-        ->assertSee('254,260,570.60') // Market cap
+        ->assertSee('$218,867,257.09') // Market cap
         ->assertSee('1.61'); // Price
 });
 
@@ -71,13 +70,12 @@ it('should render with a height, supply and market cap for BTC', function () {
     ]);
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'BTC', 0.00003132);
-    (new NetworkStatusBlockCache())->setMarketCap('ARK', 'BTC', 4934.2677444);
     (new NetworkStatusBlockCache())->setHistoricalHourly('ARK', 'BTC', collect());
 
     Livewire::test(NetworkStatusBlock::class)
         ->assertSee('5,651,290') // Height
         ->assertSee('136,280,982 ARK') // Supply
-        ->assertSee('4,934.2677444') // Market cap
+        ->assertSee('4,268.32035624 BTC') // Market cap
         ->assertSee('0.00003132'); // Price
 });
 

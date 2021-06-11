@@ -15,7 +15,6 @@ it('should fetch the price data for the given collection', function () {
         'USD' => [
             'priceChange' => 0.14989143413680925,
             'price'       => 1.2219981765,
-            'marketCap'   => 192865161.6011891,
         ],
     ]));
 });

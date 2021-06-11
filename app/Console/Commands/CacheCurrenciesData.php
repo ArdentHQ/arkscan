@@ -39,15 +39,13 @@ final class CacheCurrenciesData extends Command
             $currenciesData = CryptoCompare::getCurrenciesData($source, $currencies);
 
             $currenciesData->each(function ($data, $currency) use ($source, $cache) : void {
-                ['price' => $price, 'priceChange' => $priceChange, 'marketCap' => $marketCap] = $data;
+                ['price' => $price, 'priceChange' => $priceChange] = $data;
                 $cache->setPrice($source, $currency, $price);
                 $cache->setPriceChange($source, $currency, $priceChange);
-                $cache->setMarketCap($source, $currency, $marketCap);
             });
         } catch (ConnectionException $e) {
             $currencies->each(function ($currency) use ($source, $cache) : void {
                 $cache->setPrice($source, $currency, null);
-                $cache->setMarketCap($source, $currency, null);
                 $cache->setPriceChange($source, $currency, null);
             });
         }
