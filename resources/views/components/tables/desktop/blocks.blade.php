@@ -14,15 +14,15 @@
     </thead>
     <tbody>
         @foreach($blocks as $block)
-            <x-ark-tables.row>
-                <x-ark-tables.cell wire:key="{{ $block->id() }}-id">
+            <x-ark-tables.row wire:key="block-{{ $block->id() }}">
+                <x-ark-tables.cell>
                     <x-tables.rows.desktop.block-id :model="$block" />
                 </x-ark-tables.cell>
                 <x-ark-tables.cell responsive>
                     <x-tables.rows.desktop.timestamp :model="$block" />
                 </x-ark-tables.cell>
                 @if(!isset($withoutGenerator))
-                    <x-ark-tables.cell wire:key="{{ $block->id() }}-forger">
+                    <x-ark-tables.cell>
                         <x-tables.rows.desktop.block-forger :model="$block" />
                     </x-ark-tables.cell>
                 @endif

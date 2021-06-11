@@ -9,11 +9,8 @@
     </thead>
     <tbody>
         @foreach($payments as $payment)
-            <x-ark-tables.row>
-                <x-ark-tables.cell
-                    wire:key="{{ $payment->address() }}-address"
-                    last-on="md"
-                >
+            <x-ark-tables.row wire:key="payment-{{ $payment->address() }}">
+                <x-ark-tables.cell last-on="md">
                     <x-general.identity :model="$payment" without-truncate />
                 </x-ark-tables.cell>
                 <x-ark-tables.cell

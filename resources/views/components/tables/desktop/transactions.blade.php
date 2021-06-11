@@ -29,21 +29,21 @@
     </thead>
     <tbody>
         @foreach($transactions as $transaction)
-            <x-ark-tables.row>
-                <x-ark-tables.cell wire:key="{{ $transaction->id() }}-id">
+            <x-ark-tables.row wire:key="transaction-{{ $transaction->id() }}">
+                <x-ark-tables.cell>
                     <x-tables.rows.desktop.transaction-id :model="$transaction" />
                 </x-ark-tables.cell>
                 <x-ark-tables.cell responsive>
                     <x-tables.rows.desktop.timestamp :model="$transaction" shortened />
                 </x-ark-tables.cell>
-                <x-ark-tables.cell wire:key="{{ $transaction->id() }}-sender">
+                <x-ark-tables.cell>
                     @if($useDirection)
                         <x-tables.rows.desktop.sender-with-direction :model="$transaction" :wallet="$wallet" />
                     @else
                         <x-tables.rows.desktop.sender :model="$transaction" />
                     @endif
                 </x-ark-tables.cell>
-                <x-ark-tables.cell wire:key="{{ $transaction->id() }}-recipient">
+                <x-ark-tables.cell>
                     <x-tables.rows.desktop.recipient :model="$transaction" />
                 </x-ark-tables.cell>
                 <x-ark-tables.cell
@@ -72,7 +72,6 @@
                         class="text-right"
                         responsive
                         breakpoint="xl"
-                        wire:key="{{ $transaction->id() }}-confirmations"
                     >
                         <x-tables.rows.desktop.confirmations :model="$transaction" />
                     </x-ark-tables.cell>

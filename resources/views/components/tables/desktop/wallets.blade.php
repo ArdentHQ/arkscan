@@ -9,11 +9,11 @@
     </thead>
     <tbody>
         @foreach($wallets as $wallet)
-            <x-ark-tables.row>
-                <x-ark-tables.cell wire:key="{{ $wallet->address() }}-address">
+            <x-ark-tables.row  wire:key="wallet-{{ $wallet->address() }}">
+                <x-ark-tables.cell>
                     <x-tables.rows.desktop.address :model="$wallet" :without-truncate="$withoutTruncate ?? false"/>
                 </x-ark-tables.cell>
-                <x-ark-tables.cell class="text-center" wire:key="{{ $wallet->address() }}-type">
+                <x-ark-tables.cell class="text-center">
                     <x-tables.rows.desktop.wallet-type :model="$wallet" />
                 </x-ark-tables.cell>
                 <x-ark-tables.cell class="text-right">
