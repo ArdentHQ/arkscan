@@ -237,7 +237,7 @@ it('should apply filters through an event', function () {
 });
 
 it('should apply directions through an event', function () {
-    $sent = Transaction::factory()->create([
+    $sent = Transaction::factory()->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
