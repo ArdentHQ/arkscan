@@ -100,6 +100,7 @@
                         :title="trans('pages.wallet.delegate.votes', [App\Services\NumberFormatter::currencyShortNotation($wallet->votes())])"
                         :text="trans('general.see_all')"
                         :url="route('wallet.voters', $wallet->address())"
+                        wrapper-class="sm:mr-7 lg:mr-0"
                         without-border
                         text-alignment="lg:text-right"
                     />
