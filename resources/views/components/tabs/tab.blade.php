@@ -4,7 +4,7 @@
 
 <button
     type="button"
-    class="relative px-2 ml-14 cursor-pointer explorer-tab transition-default hover:text-theme-secondary-900 dark:hover:text-theme-secondary-200"
+    class="relative px-2 ml-8 cursor-pointer explorer-tab transition-default hover:text-theme-secondary-900 dark:hover:text-theme-secondary-200"
     @click="select('{{ $name }}')"
     @keydown.enter="select('{{ $name }}')"
     @keydown.space.prevent="select('{{ $name }}')"

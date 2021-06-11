@@ -57,11 +57,11 @@ body {
 
 /* Tabs */
 .explorer-tab:first-child {
-    @apply ml-8;
+    @apply ml-6;
 }
 .explorer-tab::before {
     content: "";
-    @apply absolute top-0 left-0 h-4 mt-5 -ml-8 border-l border-theme-secondary-300;
+    @apply absolute top-0 left-0 h-4 mt-5 -ml-4 border-l border-theme-secondary-300;
 }
 .explorer-tab:first-child::before {
     @apply border-l-0;
