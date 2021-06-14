@@ -1,7 +1,7 @@
 <div class="mb-1 h-20"></div>
 <div x-data="{ open: false, showSettings: false }" id="navbar" class="fixed z-20 w-full">
     <nav class="relative z-30 bg-white shadow-header-smooth dark:shadow-header-smooth-dark dark:bg-theme-secondary-900">
-        <div class="px-8 md:px-10 py-0.5">
+        <div class="py-0.5 px-8 md:px-10">
             <div class="flex relative justify-between h-20">
 
                 {{-- LOGO --}}
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="flex justify-end">
-                    <div class="flex flex-1 justify-end items-center sm:items-stretch sm:justify-between">
+                    <div class="flex flex-1 justify-end items-center sm:justify-between sm:items-stretch">
                         {{-- Desktop Navbar Items --}}
                         <div class="hidden items-center -mx-4 lg:flex">
                             @foreach ($navigation as $navItem)
@@ -62,7 +62,7 @@
                         <div class="hidden items-center md:flex">
                             <x-navbar.separator class="md:hidden lg:inline" />
 
-                            <div class="hidden font-semibold lg:pl-8 md:flex text-theme-secondary-900 dark:text-white">
+                            <div class="hidden font-semibold md:flex lg:pl-8 dark:text-white text-theme-secondary-900">
                                 <livewire:price-ticker />
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                     @endforeach
 
                     @if(Network::canBeExchanged())
-                        <div class="flex py-3 px-8 mt-2 -mb-4 font-semibold bg-theme-secondary-100 text-theme-secondary-900 dark:text-white dark:bg-theme-secondary-800 md:hidden">
+                        <div class="flex py-3 px-8 mt-2 -mb-4 font-semibold md:hidden dark:text-white bg-theme-secondary-100 text-theme-secondary-900 dark:bg-theme-secondary-800">
                             <livewire:price-ticker />
                         </div>
                     @endif

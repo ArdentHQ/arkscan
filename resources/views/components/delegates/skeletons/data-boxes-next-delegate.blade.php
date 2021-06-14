@@ -1,7 +1,7 @@
 <div class="flex space-x-4">
     <div class="flex items-center">
         <div class="flex rounded-full border-4 border-white animate-pulse dark:border-theme-secondary-900">
-            <div class="h-11 rounded-xl circled-icon border-theme-secondary-300 dark:border-theme-secondary-800 bg-theme-secondary-300 dark:bg-theme-secondary-800"></div>
+            <div class="h-11 rounded-xl circled-icon border-theme-secondary-300 bg-theme-secondary-300 dark:border-theme-secondary-800 dark:bg-theme-secondary-800"></div>
         </div>
     </div>
 

@@ -1,6 +1,6 @@
-<div class="flex space-x-4 w-full h-18 md:flex-col xl:flex-row md:space-x-0 xl:space-x-4 md:space-y-4 xl:space-y-0">
+<div class="flex space-x-4 w-full md:flex-col md:space-y-4 md:space-x-0 xl:flex-row xl:space-y-0 xl:space-x-4 h-18">
     <div class="flex flex-row py-3 px-6 bg-white rounded-xl dark:bg-theme-secondary-900">
-        <div class="flex w-full mr-2 lg:w-1/2 xl:w-full">
+        <div class="flex mr-2 w-full lg:w-1/2 xl:w-full">
             <div class="flex items-center pr-6 space-x-4 border-r border-theme-secondary-300 dark:border-theme-secondary-800">
                 <div class="h-11 rounded-xl border-none loading-state circled-icon"></div>
 

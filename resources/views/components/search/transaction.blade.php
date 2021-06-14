@@ -85,7 +85,7 @@
     <input
         type="text"
         placeholder="@lang('forms.search.smartbridge_placeholder')"
-        class="w-full dark:text-theme-secondary-200 dark:bg-theme-secondary-900 smartbridge-placeholder"
+        class="w-full smartbridge-placeholder dark:text-theme-secondary-200 dark:bg-theme-secondary-900"
         wire:model.defer="state.smartBridge"
         wire:keydown.enter="performSearch"
     />

@@ -262,7 +262,7 @@
     x-on:chart-period-selected.window="setPeriod($event.detail)"
     x-on:{{ $alpineShow }}.window="toggleChart()"
     x-show="isVisible"
-    class="flex flex-col w-full bg-white border-theme-secondary-100 dark:border-black dark:bg-theme-secondary-900"
+    class="flex flex-col w-full bg-white dark:border-black border-theme-secondary-100 dark:bg-theme-secondary-900"
 >
     <div class="flex flex-col w-full">
         <div class="flex relative justify-between items-center w-full">

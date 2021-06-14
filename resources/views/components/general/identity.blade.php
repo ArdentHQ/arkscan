@@ -11,7 +11,7 @@
                 {{ $prefix }}
             @endif
 
-            <a href="{{ route('wallet', $model->address()) }}" class="font-semibold link sm:hidden md:flex">
+            <a href="{{ route('wallet', $model->address()) }}" class="font-semibold sm:hidden md:flex link">
                 @if ($model->username())
                     @if ($prefix ?? false)
                         <div class="delegate-name-truncate-prefix">
@@ -41,7 +41,7 @@
                 @endif
             </a>
 
-            <a href="{{ route('wallet', $model->address()) }}" class="hidden font-semibold link sm:flex md:hidden">
+            <a href="{{ route('wallet', $model->address()) }}" class="hidden font-semibold sm:flex md:hidden link">
                 @if ($model->username())
                     {{ $model->username() }}
                 @else

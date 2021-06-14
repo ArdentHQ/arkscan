@@ -4,7 +4,7 @@
             x-ref="input"
             type="text"
             placeholder="@lang('forms.search.term_placeholder')"
-            class="hidden w-full text-theme-secondary-700 dark:text-theme-secondary-700 dark:bg-theme-secondary-900 dark:placeholder-text-theme-secondary-700 overflow-ellipsis sm:block"
+            class="hidden w-full sm:block text-theme-secondary-700 overflow-ellipsis dark:text-theme-secondary-700 dark:bg-theme-secondary-900 dark:placeholder-text-theme-secondary-700"
             wire:model.defer="state.term"
             wire:keydown.enter="performSearch"
             @keydown.enter="searching = true"
@@ -13,7 +13,7 @@
             x-ref="inputMobile"
             type="text"
             placeholder="@lang('forms.search.term_placeholder_mobile')"
-            class="w-full dark:text-theme-secondary-700 dark:bg-theme-secondary-900 dark:placeholder-text-theme-secondary-700 overflow-ellipsis sm:hidden"
+            class="w-full sm:hidden overflow-ellipsis dark:text-theme-secondary-700 dark:bg-theme-secondary-900 dark:placeholder-text-theme-secondary-700"
             wire:model.defer="state.term"
             wire:keydown.enter="performSearch"
             @keydown.enter="searching = true"
@@ -22,7 +22,7 @@
 
     <button
         type="button"
-        class="hidden py-2 px-4 mr-8 font-normal text-center rounded text-theme-primary-500 transition-default hover:bg-theme-primary-100 dark:hover:bg-theme-secondary-800 dark:text-theme-secondary-600 md:block"
+        class="hidden py-2 px-4 mr-8 font-normal text-center rounded md:block text-theme-primary-500 transition-default dark:hover:bg-theme-secondary-800 dark:text-theme-secondary-600 hover:bg-theme-primary-100"
         @click="showAdvanced = !showAdvanced;"
     >
         <span x-show="!showAdvanced">@lang('actions.advanced_search')</span>
@@ -31,7 +31,7 @@
 
     <button
         type="button"
-        class="hidden relative button-primary md:block"
+        class="hidden relative md:block button-primary"
         :class="{ 'pointer-events-none' : searching }"
         wire:click="performSearch"
         @click="searching = true"
@@ -44,7 +44,7 @@
 
     <button
         type="button"
-        class="cursor-pointer text-theme-secondary-700 hover:text-theme-primary-600 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400 md:hidden"
+        class="cursor-pointer md:hidden text-theme-secondary-700 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400 hover:text-theme-primary-600"
         wire:click="performSearch"
         @click="searching = true"
     >

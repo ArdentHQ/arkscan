@@ -47,7 +47,7 @@
                 </div>
             </x-slot>
 
-            <div class="block justify-center items-center py-3 mt-1">
+            <div class="block items-center py-3 mt-1">
                 <button wire:key="transactions" type="button" x-on:click="$wire.set('state.selected', 'transactions')" class="dropdown-entry @if($selected === 'transactions') dropdown-entry-selected @endif">
                     @lang('pages.home.latest_transactions')
                 </button>

@@ -19,7 +19,7 @@
             <div class="text-sm text-theme-secondary-500 dark:text-theme-secondary-700">{{ $title }}</div>
 
             @if($tooltip)
-                <x-ark-info :tooltip="$tooltip" class="ml-2 p-1.5" type="info" />
+                <x-ark-info :tooltip="$tooltip" class="p-1.5 ml-2" type="info" />
             @endif
         </div>
 

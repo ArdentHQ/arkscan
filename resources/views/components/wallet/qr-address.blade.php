@@ -9,13 +9,13 @@
 
             <div class="flex justify-between items-center sm:justify-start">
                 <div>
-                    <div class="hidden font-semibold text-theme-secondary-900 dark:text-theme-secondary-200 sm:flex">
+                    <div class="hidden font-semibold sm:flex text-theme-secondary-900 dark:text-theme-secondary-200">
                         <x-truncate-middle :length="19">
                             {{ $model->address() }}
                         </x-truncate-middle>
                     </div>
 
-                    <div class="font-semibold text-theme-secondary-900 dark:text-theme-secondary-200 sm:hidden">
+                    <div class="font-semibold sm:hidden text-theme-secondary-900 dark:text-theme-secondary-200">
                         <x-truncate-middle :length="15">
                             {{ $model->address() }}
                         </x-truncate-middle>

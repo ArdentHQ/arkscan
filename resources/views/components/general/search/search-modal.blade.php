@@ -37,7 +37,7 @@
         >
             <div wire:click.self="closeModal" class="fixed inset-0 opacity-70 dark:opacity-80 bg-theme-secondary-900 dark:bg-theme-secondary-800"></div>
 
-            <div class="flex overflow-auto relative flex-col w-full md:overflow-visible content-container-full-width md:px-8">
+            <div class="flex overflow-auto relative flex-col w-full md:overflow-visible md:px-8 content-container-full-width">
                 <h2 class="px-8 mx-auto mb-10 text-3xl font-bold text-center text-white md:text-4xl">
                     @lang('pages.search.title')
                 </h2>
@@ -55,7 +55,7 @@
                     />
 
                     <div
-                        class="py-4 font-semibold text-center rounded-b-lg bg-theme-primary-100 text-theme-primary-600 dark:bg-theme-secondary-800 dark:text-theme-secondary-200 md:hidden"
+                        class="py-4 font-semibold text-center rounded-b-lg md:hidden bg-theme-primary-100 text-theme-primary-600 dark:bg-theme-secondary-800 dark:text-theme-secondary-200"
                         @click="showAdvanced = !showAdvanced"
                     >
                         <span x-show="!showAdvanced">@lang('actions.advanced_search')</span>

@@ -1,4 +1,4 @@
-<div class="flex flex-1 font-semibold border-theme-secondary-800 lg:border-l lg:ml-8 lg:pl-8">
+<div class="flex flex-1 font-semibold lg:pl-8 lg:ml-8 lg:border-l border-theme-secondary-800">
     <div class="hidden items-center md:flex">
         <div class="circled-icon text-theme-secondary-700 border-theme-secondary-800 dark:text-theme-secondary-600 dark:border-theme-secondary-600">
             <x-ark-icon :name="$icon" />

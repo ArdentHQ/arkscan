@@ -22,7 +22,7 @@ it('should render an empty state if not price set', function () {
     Livewire::test(PriceTicker::class)
         ->assertSee(Network::currency())
         ->assertSee(Settings::currency())
-        ->assertSeeHtml('<span class="dark:text-theme-secondary-600 text-theme-secondary-500">-</span>');
+        ->assertSeeHtml('<span class="text-theme-secondary-500 dark:text-theme-secondary-600">-</span>');
 });
 
 it('should update the price if the currency changes', function () {

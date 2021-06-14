@@ -1,6 +1,6 @@
 {{-- @TODO: kept for possible use on statistics page - removed detail boxes as they are not part of the design --}}
 <div
-    class="hidden border-b-20 border-theme-secondary-100 dark:border-black sm:block"
+    class="hidden sm:block dark:border-black border-b-20 border-theme-secondary-100"
     x-data="{
         usesPriceChart: {{ Settings::usesPriceChart() ? 'true' : 'false' }},
         usesFeeChart: {{ Settings::usesFeeChart() ? 'true' : 'false' }},

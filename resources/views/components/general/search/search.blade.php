@@ -30,7 +30,7 @@
         />
 
         <div
-            class="py-4 font-semibold text-center rounded-b-xl bg-theme-primary-100 text-theme-primary-600 dark:bg-theme-secondary-800 dark:text-theme-secondary-200 md:hidden"
+            class="py-4 font-semibold text-center rounded-b-xl md:hidden bg-theme-primary-100 text-theme-primary-600 dark:bg-theme-secondary-800 dark:text-theme-secondary-200"
             @click="showAdvancedMobile = !showAdvancedMobile"
             x-cloak
         >
