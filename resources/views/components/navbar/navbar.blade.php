@@ -1,6 +1,11 @@
 <div class="mb-1 h-20"></div>
-<div x-data="{ open: false, showSettings: false }" id="navbar" class="fixed z-20 w-full">
-    <nav class="relative z-30 bg-white shadow-header-smooth dark:shadow-header-smooth-dark dark:bg-theme-secondary-900">
+<div
+    id="navbar"
+    class="fixed z-20 w-full"
+    x-data="Navbar.dropdown({ open: false, showSettings: false })"
+    x-init="init"
+>
+    <nav x-ref="nav" class="relative z-30 bg-white border-b border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800">
         <div class="py-0.5 px-8 md:px-10">
             <div class="flex relative justify-between h-20">
 
