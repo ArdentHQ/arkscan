@@ -27,6 +27,8 @@
                 <directory suffix=".php">./app/Providers</directory>
                 <directory suffix=".php">./app/View/Components</directory>
                 <file>./app/Console/Commands/RunPlaybookCommand.php</file>
+                <file>./app/Console/Commands/GenerateVoteReport.php</file>
+                <file>./app/Jobs/GenerateVoteReport.php</file>
                 <file>./app/Console/Kernel.php</file>
                 <file>./app/Http/Kernel.php</file>
                 <!-- Application Code -->
