@@ -16,6 +16,7 @@ it('should have all required properties', function (array $config) {
 
     expect($subject->name())->toBe($config['name']);
     expect($subject->alias())->toBe($config['alias']);
+    expect($subject->api())->toBe($config['api']);
     expect($subject->currency())->toBe($config['currency']);
     expect($subject->currencySymbol())->toBe($config['currencySymbol']);
     expect($subject->confirmations())->toBe($config['confirmations']);
@@ -31,6 +32,7 @@ it('should have all required properties', function (array $config) {
         'name'             => 'ARK Public Network',
         'alias'            => 'mainnet',
         'currency'         => 'ARK',
+        'api'              => 'https://wallets.ark.io/api',
         'currencySymbol'   => 'Ѧ',
         'confirmations'    => 51,
         'knownWallets'     => 'https://raw.githubusercontent.com/ArkEcosystem/common/master/mainnet/known-wallets-extended.json',
@@ -44,6 +46,7 @@ it('should have all required properties', function (array $config) {
     [[
         'name'             => 'ARK Development Network',
         'alias'            => 'devnet',
+        'api'              => 'https://dwallets.ark.io/api',
         'currency'         => 'DARK',
         'currencySymbol'   => 'DѦ',
         'confirmations'    => 51,

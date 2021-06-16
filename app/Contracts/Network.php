@@ -12,6 +12,8 @@ interface Network
 
     public function alias(): string;
 
+    public function api(): string;
+
     public function explorerTitle(): string;
 
     public function currency(): string;

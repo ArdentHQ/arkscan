@@ -2,13 +2,13 @@
 # Gr33nDrag0n / v1.2 / 2017-04-02
 # tharude / v.2.5.1 / 2019-07-12
 
-EXPLORER_NODE="https://wallets.ark.io/api"
+EXPLORER_NODE="$1"
+if [ -z "$EXPLORER_NODE" ]; then
+    EXPLORER_NODE="https://wallets.ark.io/api"
+fi
 
 SCRIPT_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 OutputFile="$SCRIPT_PATH/../../public/VoteReport.txt"
-
-# echo $OutputFile
-# exit
 
 ###############################################################################
 # FUNCTIONS
