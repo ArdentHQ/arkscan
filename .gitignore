@@ -17,3 +17,4 @@ coverage.xml
 .env.bak.vessel
 .DS_Store
 auth.json
+TxtVoteReport.txt
