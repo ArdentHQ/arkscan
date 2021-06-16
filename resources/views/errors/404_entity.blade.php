@@ -20,7 +20,7 @@
                 </div>
             @endif
 
-            <div class="flex flex-col mt-8 space-y-3 w-full sm:w-auto sm:space-x-3 sm:block sm:space-y-0">
+            <div class="flex flex-col mt-8 space-y-3 w-full sm:block sm:space-y-0 sm:space-x-3 sm:w-auto">
                 <a href="{{ route('home') }}" class="button-primary">@lang('menus.home')</a>
                 <a href="{{ url()->current() }}" class="button-secondary">@lang('general.reload')</a>
             </div>

@@ -10,6 +10,7 @@ return [
         'production' => [
             'name'             => env('EXPLORER_NETWORK_NAME', 'ARK Public Network'),
             'alias'            => env('EXPLORER_NETWORK_ALIAS', 'mainnet'),
+            'api'              => env('EXPLORER_NETWORK_API', 'https://wallets.ark.io/api'),
             'currency'         => env('EXPLORER_NETWORK_CURRENCY', 'ARK'),
             'currencySymbol'   => env('EXPLORER_NETWORK_CURRENCY_SYMBOL', 'Ѧ'),
             'confirmations'    => intval(env('EXPLORER_NETWORK_CONFIRMATIONS', 51)),
@@ -23,6 +24,7 @@ return [
         ],
         'development' => [
             'name'             => env('EXPLORER_NETWORK_NAME', 'ARK Development Network'),
+            'api'              => env('EXPLORER_NETWORK_API', 'https://dwallets.ark.io/api'),
             'alias'            => env('EXPLORER_NETWORK_ALIAS', 'devnet'),
             'currency'         => env('EXPLORER_NETWORK_CURRENCY', 'DARK'),
             'currencySymbol'   => env('EXPLORER_NETWORK_CURRENCY_SYMBOL', 'DѦ'),

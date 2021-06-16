@@ -26,6 +26,11 @@ final class Network implements Contract
         return $this->config['alias'];
     }
 
+    public function api(): string
+    {
+        return $this->config['api'];
+    }
+
     public function explorerTitle(): string
     {
         return $this->currency().' '.trans('general.explorer');

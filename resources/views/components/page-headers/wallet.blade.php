@@ -16,7 +16,7 @@
 
         <x-slot name="extension">
             <div class="flex flex-col space-y-4 w-full lg:flex-row lg:justify-between lg:space-y-0">
-                <div class="grid grid-cols-1 space-y-4 sm:grid-cols-3 lg:flex sm:space-y-0 lg:space-x-5">
+                <div class="grid grid-cols-1 space-y-4 sm:grid-cols-3 sm:space-y-0 lg:flex lg:space-x-5">
                     <x-general.header-entry
                         title="{{ trans('pages.wallet.delegate.rank') }} / {{ trans('pages.wallet.delegate.status') }}"
                     >
@@ -84,7 +84,7 @@
                     </x-general.header-entry>
                 </div>
 
-                <div class="grid grid-cols-1 space-y-4 sm:grid-cols-3 lg:flex sm:space-y-0 lg:space-x-5">
+                <div class="grid grid-cols-1 space-y-4 sm:grid-cols-3 sm:space-y-0 lg:flex lg:space-x-5">
                     <x-general.header-entry
                         :title="trans('pages.wallet.delegate.forged_blocks')"
                         :text="trans('general.see_all')"
@@ -92,7 +92,7 @@
                         text-alignment="lg:text-right"
                     >
                         <x-slot name="icon">
-                            <div class="md:w-11 md:mr-4 lg:w-0 lg:mr-0"></div>
+                            <div class="md:mr-4 md:w-11 lg:mr-0 lg:w-0"></div>
                         </x-slot>
                     </x-general.header-entry>
 

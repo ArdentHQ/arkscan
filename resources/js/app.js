@@ -8,6 +8,7 @@ import RichSelect from "@ui/js/rich-select.js";
 import Pikaday from "pikaday";
 import PriceChart from "./price-chart";
 import Tabs from "./tabs";
+import Navbar from "@ui/js/navbar";
 
 window.Tabs = Tabs;
 window.Pikaday = Pikaday;
@@ -16,3 +17,4 @@ window.Modal = Modal;
 window.ReadMore = ReadMore;
 window.RichSelect = RichSelect;
 window.PriceChart = PriceChart;
+window.Navbar = Navbar;

@@ -21,10 +21,10 @@
             @foreach($urlParams as $key => $value)
             <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
             @endforeach
-            <button type="submit" class="p-2 text-theme-secondary-500 hover:text-theme-primary-500 transition-default dark:text-theme-secondary-200" :disabled="!page">
+            <button type="submit" class="p-2 text-theme-secondary-500 transition-default dark:text-theme-secondary-200 hover:text-theme-primary-500" :disabled="!page">
                 <x-ark-icon name="search" size="sm" />
             </button>
-            <button type="button" class="p-2 text-theme-secondary-500 hover:text-theme-primary-500 transition-default dark:text-theme-secondary-200" x-on:click="hideSearch()">
+            <button type="button" class="p-2 text-theme-secondary-500 transition-default dark:text-theme-secondary-200 hover:text-theme-primary-500" x-on:click="hideSearch()">
                 <x-ark-icon name="close" size="sm" />
             </button>
         </form>
@@ -56,7 +56,7 @@
         </button>
 
         <div class="relative">
-            <form x-show="search" name="searchForm" type="get" class="flex overflow-hidden absolute left-0 z-10 px-2 w-full h-full rounded bg-theme-primary-100 dark:bg-theme-secondary-800 pagination-form-desktop">
+            <form x-show="search" name="searchForm" type="get" class="flex overflow-hidden absolute left-0 z-10 px-2 w-full h-full rounded bg-theme-primary-100 pagination-form-desktop dark:bg-theme-secondary-800">
                 <input
                     x-ref="search"
                     x-model.number="page"
@@ -71,15 +71,15 @@
                 @foreach($urlParams as $key => $value)
                 <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
                 @endforeach
-                <button type="submit" class="p-2 text-theme-secondary-500 hover:text-theme-primary-500 transition-default dark:text-theme-secondary-200" :disabled="!page">
+                <button type="submit" class="p-2 text-theme-secondary-500 transition-default dark:text-theme-secondary-200 hover:text-theme-primary-500" :disabled="!page">
                     <x-ark-icon name="search" size="sm" />
                 </button>
-                <button type="button" class="p-2 text-theme-secondary-500 hover:text-theme-primary-500 transition-default dark:text-theme-secondary-200" x-on:click="hideSearch">
+                <button type="button" class="p-2 text-theme-secondary-500 transition-default dark:text-theme-secondary-200 hover:text-theme-primary-500" x-on:click="hideSearch">
                     <x-ark-icon name="close" size="sm" />
                 </button>
             </form>
 
-            <div class="hidden px-2 rounded bg-theme-primary-100 dark:bg-theme-secondary-800 md:flex flex-inline">
+            <div class="hidden px-2 rounded md:flex bg-theme-primary-100 flex-inline dark:bg-theme-secondary-800">
                 @php ($pageIndex = 1)
 
                 @foreach ($elements as $element)
@@ -113,7 +113,7 @@
                 @endforeach
             </div>
 
-            <div class="pagination-pages md:hidden">
+            <div class="md:hidden pagination-pages">
                 <button
                     x-on:click="toggleSearch"
                     type="button"

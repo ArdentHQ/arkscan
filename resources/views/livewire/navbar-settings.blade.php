@@ -2,7 +2,7 @@
     <x-navbar.separator />
 
     <x-navbar.button
-        margin-class="ml-1 -mr-2 md:-mr-4 md:ml-4"
+        margin-class="ml-1 -mr-2 md:ml-4 md:-mr-4"
         @click="showSettings = !showSettings"
         dusk="navigation-search-modal-trigger"
     >
@@ -14,11 +14,11 @@
 
     <div
         x-show.transition.origin.top="showSettings"
-        class="fixed top-0 right-0 left-0 z-30 px-4 pt-3 mt-20 w-full md:absolute md:p-0 md:left-auto md:mt-24 md:w-120"
+        class="fixed top-0 right-0 left-0 z-30 px-4 pt-3 mt-20 w-full md:absolute md:left-auto md:p-0 md:mt-24 md:w-120"
         x-cloak
         @click.away="showSettings = false"
     >
-        <div class="p-8 bg-white rounded-xl shadow-xl dark:bg-theme-secondary-900 md:p-10">
+        <div class="p-8 bg-white rounded-xl shadow-xl md:p-10 dark:bg-theme-secondary-900">
             <div class="flex flex-col">
                 @if(Network::canBeExchanged())
                     <x-navbar.setting-option

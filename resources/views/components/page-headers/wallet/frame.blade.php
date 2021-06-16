@@ -1,6 +1,6 @@
 <div class="dark:bg-theme-secondary-900">
-    <x-ark-container container-class="flex flex-col space-y-5">
-        <h1 class="header-2">
+    <x-ark-container container-class="flex flex-col space-y-6">
+        <h1>
             @lang($title)
         </h1>
 
@@ -67,7 +67,7 @@
             <x-slot name="extension">
                 {{ $slot }}
 
-                <div class="flex flex-col-reverse items-center p-1 mt-6 space-y-2 sm:space-x-2 sm:space-y-0 sm:flex-row text-theme-secondary-200 lg:mt-0 lg:ml-4">
+                <div class="flex flex-col-reverse items-center p-1 mt-6 space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 lg:mt-0 lg:ml-4 text-theme-secondary-200">
                     @unless($wallet->isCold())
                         <x-page-headers.wallet.actions.public-key :public-key="$wallet->publicKey()" />
                     @endunless

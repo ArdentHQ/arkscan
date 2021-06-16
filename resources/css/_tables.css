@@ -6,7 +6,7 @@
 
 /* Table Avatar */
 td.hoverable-cell .table-avatar {
-    @apply -my-1 border-4 border-white rounded-full;
+    @apply -my-1 -mr-1 border-4 border-white rounded-full;
 }
 
 tr:hover td.hoverable-cell .table-avatar {
@@ -51,10 +51,6 @@ tr:hover td.hoverable-cell .table-avatar {
 
 .table-compact .round-status-history {
     @apply space-x-2;
-}
-
-.table-compact .sender-direction-wrapper {
-    @apply p-0 pr-2;
 }
 
 .table-compact .fiat-tooltip-sent,

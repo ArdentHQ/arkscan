@@ -9,6 +9,6 @@
     @if($isAvailable)
         {{ $price }}
     @else
-        <span class="dark:text-theme-secondary-600 text-theme-secondary-500">-</span>
+        <span class="text-theme-secondary-500 dark:text-theme-secondary-600">-</span>
     @endif
 </div>

@@ -11,7 +11,7 @@
                 </x-slot>
 
                 <x-slot name="prefix">
-                    <span class="pr-2 mr-2 font-semibold border-r text-theme-secondary-900 dark:text-theme-secondary-200 border-theme-secondary-300 dark:border-theme-secondary-800">
+                    <span class="pr-2 mr-2 font-semibold border-r text-theme-secondary-900 border-theme-secondary-300 dark:text-theme-secondary-200 dark:border-theme-secondary-800">
                         @lang('general.transaction.types.vote-combination')
                     </span>
                 </x-slot>
@@ -23,7 +23,7 @@
                 </x-slot>
 
                 <x-slot name="prefix">
-                    <span class="pr-2 mr-2 font-semibold border-r text-theme-secondary-900 dark:text-theme-secondary-200 border-theme-secondary-300 dark:border-theme-secondary-800">
+                    <span class="pr-2 mr-2 font-semibold border-r text-theme-secondary-900 border-theme-secondary-300 dark:text-theme-secondary-200 dark:border-theme-secondary-800">
                         @lang('general.transaction.types.vote')
                     </span>
                 </x-slot>
@@ -35,7 +35,7 @@
                 </x-slot>
 
                 <x-slot name="prefix">
-                    <span class="pr-2 mr-2 font-semibold border-r text-theme-secondary-900 dark:text-theme-secondary-200 border-theme-secondary-300 dark:border-theme-secondary-800">
+                    <span class="pr-2 mr-2 font-semibold border-r text-theme-secondary-900 border-theme-secondary-300 dark:text-theme-secondary-200 dark:border-theme-secondary-800">
                         @lang('general.transaction.types.unvote')
                     </span>
                 </x-slot>
@@ -44,7 +44,7 @@
             <div class="flex flex-row-reverse items-center md:flex-row">
                 <x-transactions.icon :icon-type="$iconType" />
 
-                <div class="mr-4 font-semibold text-theme-secondary-900 dark:text-theme-secondary-200 md:mr-0 md:ml-4">
+                <div class="mr-4 font-semibold md:mr-0 md:ml-4 text-theme-secondary-900 dark:text-theme-secondary-200">
                     @lang('general.transaction.types.'.$transaction->typeName())
                 </div>
             </div>
