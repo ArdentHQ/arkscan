@@ -1,8 +1,8 @@
 <div>
     @isset($showTitle)
-        <div class="mb-8 w-full">
+        <div class="mb-3 w-full">
             <div class="flex relative flex-col justify-between md:flex-row md:items-end">
-                <h2 class="mb-8 md:mb-0">@lang('pages.transactions.title')</h2>
+                <h1 class="mb-8 md:mb-0">@lang('pages.transactions.title')</h1>
 
                 <div class="-my-3 md:-mr-8">
                     <x-transaction-table-filter />
