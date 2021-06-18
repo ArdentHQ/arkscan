@@ -11,7 +11,10 @@
     icon="app-monitor"
 >
     <x-slot name="text">
-        <x-currency :currency="Network::currency()">{{ $transaction->fee() }}</x-currency>
+        <x-general.amount-fiat-tooltip
+            :amount="$transaction->fee()"
+            :fiat="$transaction->feeFiat()"
+        />
     </x-slot>
 </x-general.entity-header-item>
 
