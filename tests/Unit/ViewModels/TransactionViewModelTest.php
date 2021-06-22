@@ -488,6 +488,27 @@ it('should determine legacy types', function (string $type, bool $expectation) {
     ],
 ]);
 
+it('should determine transactions that doesnt have amount', function (string $type) {
+    $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());
+
+    expect($subject->hasAmount())->toBeFalse();
+})->with([
+    'delegateRegistration',
+    'entityRegistration',
+    'entityResignation',
+    'entityUpdate',
+    'multiSignature',
+    'voteCombination',
+    'unvote',
+    'vote',
+]);
+
+it('should determine that transactions have amount by default', function () {
+    $subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
+
+    expect($subject->hasAmount())->toBeTrue();
+});
+
 it('should determine the direction icon', function () {
     expect($this->subject->iconDirection('sender'))->toBeString();
 });
