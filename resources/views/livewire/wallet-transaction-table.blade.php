@@ -99,9 +99,27 @@
             @if ($transactions->isEmpty() && $state['type'] !== 'all')
                 <x-general.no-results :text="trans('pages.home.no_transaction_results', [trans('forms.search.transaction_types.'.$state['type'])])" />
             @else
-                <x-tables.desktop.transactions :transactions="$transactions" :wallet="$wallet" use-confirmations use-direction />
+                <x-tables.desktop.transactions
+                    :transactions="$transactions"
+                    :wallet="$wallet"
+                    use-confirmations
+                    use-direction
+                    :exclude-itself="$state['direction'] === 'all'"
+                    :is-sent="$state['direction'] === 'sent'"
+                    :is-received="$state['direction'] === 'received'"
+                    :state="$state"
+                />
 
-                <x-tables.mobile.transactions :transactions="$transactions" :wallet="$wallet" use-confirmations use-direction />
+                <x-tables.mobile.transactions
+                    :transactions="$transactions"
+                    :wallet="$wallet"
+                    use-confirmations
+                    use-direction
+                    :exclude-itself="$state['direction'] === 'all'"
+                    :is-sent="$state['direction'] === 'sent'"
+                    :is-received="$state['direction'] === 'received'"
+                    :state="$state"
+                />
 
                 <x-general.pagination :results="$transactions" class="mt-8" />
             @endif

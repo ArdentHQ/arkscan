@@ -11,7 +11,7 @@
         <span class="flex items-center font-bold text-theme-danger-400 round-status">
             <x-ark-icon name="app-status-undone" size="md" />
             <span class="hidden ml-2 lg:inline">
-                @lang('pages.delegates.danger', [App\Services\NumberFormatter::number($model->missedCount())])
+                @lang('pages.delegates.danger', [ExplorerNumberFormatter::number($model->missedCount())])
             </span>
         </span>
     @elseif ($model->justMissed())

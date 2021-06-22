@@ -21,6 +21,18 @@ tr:hover td.hoverable-cell .table-avatar {
     @apply border-theme-secondary-800;
 }
 
+.fiat-hint {
+    @apply -ml-1.5 -my-1 bg-theme-danger-100 hover:bg-theme-danger-200 flex items-center justify-center px-2 mr-2 transition-default;
+}
+
+.dark .fiat-hint {
+    @apply text-white bg-theme-danger-400 hover:bg-theme-danger-500;
+}
+
+.table-compact table .fiat-hint {
+    @apply w-5 h-5 px-0 my-0 ml-0 mr-1 rounded-full;
+}
+
 /** Compact Table Styling **/
 .table-compact .table-container table > tbody > tr > td.hoverable-cell > div,
 .table-compact .table-container table > tbody > tr > td:not(.hoverable-cell) {
@@ -53,13 +65,17 @@ tr:hover td.hoverable-cell .table-avatar {
     @apply space-x-2;
 }
 
-.table-compact .fiat-tooltip-sent,
-.table-compact .fiat-tooltip-received {
+.table-compact .sender-direction-wrapper {
+    @apply p-0 pr-2;
+}
+
+.table-compact table .fiat-tooltip-sent,
+.table-compact table .fiat-tooltip-received {
     @apply p-0 border-0;
 }
 
-body:not(.table-compact) .fiat-tooltip-sent,
-body:not(.table-compact) .fiat-tooltip-received {
+body:not(.table-compact) table .fiat-tooltip-sent,
+body:not(.table-compact) table .fiat-tooltip-received {
     @apply -my-1;
 }
 
@@ -101,8 +117,8 @@ body:not(.table-compact) .arrow-direction {
         @apply p-0 pr-2;
     }
 
-    .fiat-tooltip-sent,
-    .fiat-tooltip-received {
+    table .fiat-tooltip-sent,
+    table .fiat-tooltip-received {
         @apply p-0 border-0;
     }
 }
