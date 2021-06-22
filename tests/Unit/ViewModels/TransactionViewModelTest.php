@@ -113,10 +113,8 @@ it('should get the amount for multi payments', function () {
 it('should get the amount for multi payments excluding payment to the same address', function () {
     $sender = Wallet::factory()->create();
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
         'sender_public_key' => $sender->public_key,
-        'type'              => CoreTransactionTypeEnum::MULTI_PAYMENT,
-        'type_group'        => TransactionTypeGroupEnum::CORE,
         'asset'             => [
             'payments' => [
                 [
@@ -148,10 +146,8 @@ it('should get the amount for multi payments excluding payment to the same addre
 it('should get the amount in fiat for multi payments excluding payment to the same address', function () {
     $sender = Wallet::factory()->create();
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
         'sender_public_key' => $sender->public_key,
-        'type'              => CoreTransactionTypeEnum::MULTI_PAYMENT,
-        'type_group'        => TransactionTypeGroupEnum::CORE,
         'asset'             => [
             'payments' => [
                 [
@@ -187,10 +183,8 @@ it('should get the amount in fiat for multi payments excluding payment to the sa
 it('should get the amount for itself on multi payments', function () {
     $sender = Wallet::factory()->create();
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
         'sender_public_key' => $sender->public_key,
-        'type'              => CoreTransactionTypeEnum::MULTI_PAYMENT,
-        'type_group'        => TransactionTypeGroupEnum::CORE,
         'asset'             => [
             'payments' => [
                 [
