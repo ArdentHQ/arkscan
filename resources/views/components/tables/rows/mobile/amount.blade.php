@@ -3,7 +3,7 @@
 
     <x-general.amount-fiat-tooltip>
         <x-slot name="amount">
-            <x-currency :currency="Network::currency()">{{ $model->amount() }}</x-currency>
+            {{ $model->amount() }}
         </x-slot>
 
         <x-slot name="fiat">
