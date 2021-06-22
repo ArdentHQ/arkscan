@@ -130,3 +130,22 @@ it('should apply filters through an event for transactions', function () {
         $component->assertSee($transaction->amount());
     }
 });
+
+it('should poll transactions when currency changed', function () {
+    $transaction = Transaction::factory()->create();
+
+    Livewire::test(LatestRecords::class)
+        ->assertDontSee($transaction->id)
+        ->emit('currencyChanged')
+        ->assertSee($transaction->id);
+});
+
+it('should poll blocks when currency changed', function () {
+    $block = Block::factory()->create();
+
+    Livewire::test(LatestRecords::class)
+        ->set('state.selected', 'blocks')
+        ->assertDontSee($block->id)
+        ->emit('currencyChanged')
+        ->assertSee($block->id);
+});

@@ -15,6 +15,9 @@ final class TransactionTable extends Component
 {
     use HasPagination;
 
+    /** @phpstan-ignore-next-line */
+    protected $listeners = ['currencyChanged' => '$refresh'];
+
     public array $state = [
         'type' => 'all',
     ];

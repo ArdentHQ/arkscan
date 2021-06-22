@@ -14,7 +14,7 @@
         <tr>
             <x-tables.headers.desktop.id name="general.transaction.id" />
             <x-tables.headers.desktop.text name="general.transaction.timestamp" responsive />
-            <x-tables.headers.desktop.address name="general.transaction.sender" />
+            <x-tables.headers.desktop.address name="general.transaction.sender" icon />
             <x-tables.headers.desktop.address name="general.transaction.recipient" />
             <x-tables.headers.desktop.number name="general.transaction.amount" last-on="xl" />
             <x-tables.headers.desktop.number name="general.transaction.fee" responsive breakpoint="xl" />
