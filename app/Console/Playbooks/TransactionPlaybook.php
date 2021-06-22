@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Playbooks;
 
-use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Transaction;
 use App\Services\Timestamp;
 use Carbon\Carbon;
@@ -20,60 +18,27 @@ final class TransactionPlaybook extends Playbook
             'timestamp' => rand(110982056, 119982056),
         ]);
 
-        Transaction::factory(10)->create([
-            'type'       => CoreTransactionTypeEnum::TRANSFER,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-        ]);
+        Transaction::factory(10)->transfer()->create();
 
-        Transaction::factory(10)->create([
-            'type'       => CoreTransactionTypeEnum::SECOND_SIGNATURE,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-        ]);
+        Transaction::factory(10)->secondSignature()->create();
 
-        Transaction::factory(10)->create([
-            'type'       => CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-        ]);
+        Transaction::factory(10)->delegateRegistration()->create();
 
-        Transaction::factory(10)->create([
-            'type'       => CoreTransactionTypeEnum::VOTE,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-        ]);
+        Transaction::factory(10)->vote()->create();
 
-        Transaction::factory(10)->create([
-            'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-        ]);
+        Transaction::factory(10)->multiSignature()->create();
 
-        Transaction::factory(10)->create([
-            'type'       => CoreTransactionTypeEnum::IPFS,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-        ]);
+        Transaction::factory(10)->ipfs()->create();
 
-        Transaction::factory(10)->create([
-            'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-        ]);
+        Transaction::factory(10)->multiPayment()->create();
 
-        Transaction::factory(10)->create([
-            'type'       => CoreTransactionTypeEnum::DELEGATE_RESIGNATION,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-        ]);
+        Transaction::factory(10)->delegateResignation()->create();
 
-        Transaction::factory(10)->create([
-            'type'       => CoreTransactionTypeEnum::TIMELOCK,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-        ]);
+        Transaction::factory(10)->timelock()->create();
 
-        Transaction::factory(10)->create([
-            'type'       => CoreTransactionTypeEnum::TIMELOCK_CLAIM,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-        ]);
+        Transaction::factory(10)->timelockClaim()->create();
 
-        Transaction::factory(10)->create([
-            'type'       => CoreTransactionTypeEnum::TIMELOCK_REFUND,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-        ]);
+        Transaction::factory(10)->timelockRefund()->create();
 
         foreach (range(1, 365) as $day) {
             Transaction::factory(1)->create([

@@ -2,10 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Transaction;
-
 use App\Models\Wallet;
 use App\Services\Search\TransactionSearch;
 use App\Services\Timestamp;
@@ -122,11 +119,9 @@ it('should search for transactions by amount range', function () {
 });
 
 it('should search for multipayment transactions by amount range', function () {
-    Transaction::factory()->create([
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
-        'amount'     => 0,
-        'asset'      => [
+    Transaction::factory()->multiPayment()->create([
+        'amount' => 0,
+        'asset'  => [
             'payments' => [
                 ['amount' => 750 * 1e8, 'recipientId' => 'D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib'],
                 ['amount' => 251 * 1e8, 'recipientId' => 'DFJ5Z51F1euNNdRUQJKQVdG4h495LZkc6T'],
@@ -145,11 +140,9 @@ it('should search for multipayment transactions by amount range', function () {
 });
 
 it('should search for multipayment transactions by amount range with decimals', function () {
-    Transaction::factory()->create([
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
-        'amount'     => 0,
-        'asset'      => [
+    Transaction::factory()->multiPayment()->create([
+        'amount' => 0,
+        'asset'  => [
             'payments' => [
                 ['amount' => 0.45 * 1e8, 'recipientId' => 'D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib'],
                 ['amount' => 0.50 * 1e8, 'recipientId' => 'DFJ5Z51F1euNNdRUQJKQVdG4h495LZkc6T'],

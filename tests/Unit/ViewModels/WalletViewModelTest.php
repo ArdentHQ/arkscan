@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use App\Contracts\Network as Contract;
-use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -379,9 +377,7 @@ it('should get the resignation id', function () {
         ],
     ]));
 
-    $transaction = Transaction::factory()->create([
-        'type'              => CoreTransactionTypeEnum::DELEGATE_RESIGNATION,
-        'type_group'        => TransactionTypeGroupEnum::CORE,
+    $transaction = Transaction::factory()->delegateResignation()->create([
         'sender_public_key' => $this->subject->publicKey(),
     ]);
 

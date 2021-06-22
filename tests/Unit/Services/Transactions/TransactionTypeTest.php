@@ -2,551 +2,206 @@
 
 declare(strict_types=1);
 
-use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\MagistrateTransactionEntityActionEnum;
-use App\Enums\MagistrateTransactionEntitySubTypeEnum;
-use App\Enums\MagistrateTransactionEntityTypeEnum;
-use App\Enums\MagistrateTransactionTypeEnum;
-use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Transaction;
 use App\Services\Transactions\TransactionType;
 use function Tests\configureExplorerDatabase;
 
 beforeEach(fn () => configureExplorerDatabase());
 
-it('should determine the the type', function (string $method, int $type, int $typeGroup, array $asset, string $name) {
-    $transaction = Transaction::factory()->create([
-        'type'       => $type,
-        'type_group' => $typeGroup,
-        'asset'      => $asset,
-    ]);
+it('should determine the type', function (string $type, string $expected) {
+    $transaction     = Transaction::factory()->{$type}()->create();
+    $transactionType = new TransactionType($transaction);
 
-    expect((new TransactionType($transaction))->$method())->toBeTrue();
-    expect((new TransactionType($transaction))->name())->toBe($name);
+    expect($transactionType->{'is'.ucfirst($type)}())->toBeTrue();
+    expect($transactionType->name())->toBe($expected);
 })->with([
     [
-        'isTransfer',
-        CoreTransactionTypeEnum::TRANSFER,
-        TransactionTypeGroupEnum::CORE,
-        [],
         'transfer',
-    ], [
-        'isSecondSignature',
-        CoreTransactionTypeEnum::SECOND_SIGNATURE,
-        TransactionTypeGroupEnum::CORE,
-        [],
+        'transfer',
+    ],
+    [
+        'secondSignature',
         'second-signature',
-    ], [
-        'isDelegateRegistration',
-        CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
-        TransactionTypeGroupEnum::CORE,
-        [],
+    ],
+    [
+        'delegateRegistration',
         'delegate-registration',
-    ], [
-        'isVote',
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['+publicKey'],
-        ],
+    ],
+    [
         'vote',
-    ], [
-        'isUnvote',
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['-publicKey'],
-        ],
+        'vote',
+    ],
+    [
         'unvote',
-    ], [
-        'isVoteCombination',
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['+publicKey', '-publicKey'],
-        ],
+        'unvote',
+    ],
+    [
+        'voteCombination',
         'vote-combination',
-    ], [
-        'isMultiSignature',
-        CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        TransactionTypeGroupEnum::CORE,
-        [],
+    ],
+    [
+        'multiSignature',
         'multi-signature',
-    ], [
-        'isIpfs',
-        CoreTransactionTypeEnum::IPFS,
-        TransactionTypeGroupEnum::CORE,
-        [],
+    ],
+    [
         'ipfs',
-    ], [
-        'isDelegateResignation',
-        CoreTransactionTypeEnum::DELEGATE_RESIGNATION,
-        TransactionTypeGroupEnum::CORE,
-        [],
+        'ipfs',
+    ],
+    [
+        'delegateResignation',
         'delegate-resignation',
-    ], [
-        'isMultiPayment',
-        CoreTransactionTypeEnum::MULTI_PAYMENT,
-        TransactionTypeGroupEnum::CORE,
-        [],
+    ],
+    [
+        'multiPayment',
         'multi-payment',
-    ], [
-        'isTimelock',
-        CoreTransactionTypeEnum::TIMELOCK,
-        TransactionTypeGroupEnum::CORE,
-        [],
+    ],
+    [
         'timelock',
-    ], [
-        'isTimelockClaim',
-        CoreTransactionTypeEnum::TIMELOCK_CLAIM,
-        TransactionTypeGroupEnum::CORE,
-        [],
+        'timelock',
+    ],
+    [
+        'timelockClaim',
         'timelock-claim',
-    ], [
-        'isTimelockRefund',
-        CoreTransactionTypeEnum::TIMELOCK_REFUND,
-        TransactionTypeGroupEnum::CORE,
-        [],
+    ],
+    [
+        'timelockRefund',
         'timelock-refund',
-    ], [
-        'isBusinessEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
+    ],
+    [
+        'businessEntityRegistration',
         'business-entity-registration',
-    ], [
-        'isBusinessEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
+    ],
+    [
+        'businessEntityResignation',
         'business-entity-resignation',
-    ], [
-        'isBusinessEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
+    ],
+    [
+        'businessEntityUpdate',
         'business-entity-update',
-    ], [
-        'isProductEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
+    ],
+    [
+        'productEntityRegistration',
         'product-entity-registration',
-    ], [
-        'isProductEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
+    ],
+    [
+        'productEntityResignation',
         'product-entity-resignation',
-    ], [
-        'isProductEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
+    ],
+    [
+        'productEntityUpdate',
         'product-entity-update',
-    ], [
-        'isPluginEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
+    ],
+    [
+        'pluginEntityRegistration',
         'plugin-entity-registration',
-    ], [
-        'isPluginEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
+    ],
+    [
+        'pluginEntityResignation',
         'plugin-entity-resignation',
-    ], [
-        'isPluginEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
+    ],
+    [
+        'pluginEntityUpdate',
         'plugin-entity-update',
-    ], [
-        'isModuleEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
+    ],
+    [
+        'moduleEntityRegistration',
         'module-entity-registration',
-    ], [
-        'isModuleEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
+    ],
+    [
+        'moduleEntityResignation',
         'module-entity-resignation',
-    ], [
-        'isModuleEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
+    ],
+    [
+        'moduleEntityUpdate',
         'module-entity-update',
-    ], [
-        'isDelegateEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
+    ],
+    [
+        'delegateEntityRegistration',
         'delegate-entity-registration',
-    ], [
-        'isDelegateEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
+    ],
+    [
+        'delegateEntityResignation',
         'delegate-entity-resignation',
-    ], [
-        'isDelegateEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
+    ],
+    [
+        'delegateEntityUpdate',
         'delegate-entity-update',
-    ], [
-        'isLegacyBusinessRegistration',
-        MagistrateTransactionTypeEnum::BUSINESS_REGISTRATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
+    ],
+    [
+        'legacyBusinessRegistration',
         'legacy-business-registration',
-    ], [
-        'isLegacyBusinessResignation',
-        MagistrateTransactionTypeEnum::BUSINESS_RESIGNATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
+    ],
+    [
+        'legacyBusinessResignation',
         'legacy-business-resignation',
-    ], [
-        'isLegacyBusinessUpdate',
-        MagistrateTransactionTypeEnum::BUSINESS_UPDATE,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
+    ],
+    [
+        'legacyBusinessUpdate',
         'legacy-business-update',
-    ], [
-        'isLegacyBridgechainRegistration',
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_REGISTRATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
+    ],
+    [
+        'legacyBridgechainRegistration',
         'bridgechain-entity-registration',
-    ], [
-        'isLegacyBridgechainResignation',
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_RESIGNATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
+    ],
+    [
+        'legacyBridgechainResignation',
         'bridgechain-entity-resignation',
-    ], [
-        'isLegacyBridgechainUpdate',
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_UPDATE,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
+    ],
+    [
+        'legacyBridgechainUpdate',
         'bridgechain-entity-update',
-    ], [
-        'isUnknown',
-        0,
-        0,
-        [],
-        'unknown',
     ],
 ]);
 
-it('should play through every scenario of an unknown type', function (string $method, int $type, int $typeGroup, array $asset) {
+it('should determine is unknown type', function () {
     $transaction = Transaction::factory()->create([
-        'type'       => $type,
-        'type_group' => $typeGroup,
-        'asset'      => $asset,
+        'type'       => 0,
+        'type_group' => 0,
+        'asset'      => [],
     ]);
+    $transactionType = new TransactionType($transaction);
+
+    expect($transactionType->isUnknown())->toBeTrue();
+    expect($transactionType->name())->toBe('unknown');
+});
+
+it('should play through every scenario of an unknown type', function (string $type) {
+    $transaction = Transaction::factory()->{$type}()->create();
 
     expect((new TransactionType($transaction))->isUnknown())->toBeFalse();
 })->with([
-    [
-        'isTransfer',
-        CoreTransactionTypeEnum::TRANSFER,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isSecondSignature',
-        CoreTransactionTypeEnum::SECOND_SIGNATURE,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isDelegateRegistration',
-        CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isVote',
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['+publicKey'],
-        ],
-    ], [
-        'isUnvote',
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['-publicKey'],
-        ],
-    ], [
-        'isVoteCombination',
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['+publicKey', '-publicKey'],
-        ],
-    ], [
-        'isMultiSignature',
-        CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isIpfs',
-        CoreTransactionTypeEnum::IPFS,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isDelegateResignation',
-        CoreTransactionTypeEnum::DELEGATE_RESIGNATION,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isMultiPayment',
-        CoreTransactionTypeEnum::MULTI_PAYMENT,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isTimelock',
-        CoreTransactionTypeEnum::TIMELOCK,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isTimelockClaim',
-        CoreTransactionTypeEnum::TIMELOCK_CLAIM,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isTimelockRefund',
-        CoreTransactionTypeEnum::TIMELOCK_REFUND,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isBusinessEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        'isBusinessEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        'isBusinessEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        'isProductEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        'isProductEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        'isProductEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        'isPluginEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        'isPluginEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        'isPluginEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        'isModuleEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        'isModuleEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        'isModuleEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        'isDelegateEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        'isDelegateEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        'isDelegateEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        'isLegacyBusinessRegistration',
-        MagistrateTransactionTypeEnum::BUSINESS_REGISTRATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        'isLegacyBusinessResignation',
-        MagistrateTransactionTypeEnum::BUSINESS_RESIGNATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        'isLegacyBusinessUpdate',
-        MagistrateTransactionTypeEnum::BUSINESS_UPDATE,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        'isLegacyBridgechainRegistration',
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_REGISTRATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        'isLegacyBridgechainResignation',
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_RESIGNATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        'isLegacyBridgechainUpdate',
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_UPDATE,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ],
+    ['transfer'],
+    ['secondSignature'],
+    ['delegateRegistration'],
+    ['vote'],
+    ['unvote'],
+    ['voteCombination'],
+    ['multiSignature'],
+    ['ipfs'],
+    ['delegateResignation'],
+    ['multiPayment'],
+    ['timelock'],
+    ['timelockClaim'],
+    ['timelockRefund'],
+    ['businessEntityRegistration'],
+    ['businessEntityResignation'],
+    ['businessEntityUpdate'],
+    ['productEntityRegistration'],
+    ['productEntityResignation'],
+    ['productEntityUpdate'],
+    ['pluginEntityRegistration'],
+    ['pluginEntityResignation'],
+    ['pluginEntityUpdate'],
+    ['moduleEntityRegistration'],
+    ['moduleEntityResignation'],
+    ['moduleEntityUpdate'],
+    ['delegateEntityRegistration'],
+    ['delegateEntityResignation'],
+    ['delegateEntityUpdate'],
+    ['legacyBusinessRegistration'],
+    ['legacyBusinessResignation'],
+    ['legacyBusinessUpdate'],
+    ['legacyBridgechainRegistration'],
+    ['legacyBridgechainResignation'],
+    ['legacyBridgechainUpdate'],
 ]);

@@ -3,18 +3,13 @@
 declare(strict_types=1);
 
 use App\Aggregates\DelegateRegistrationCountAggregate;
-use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Transaction;
 use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
     configureExplorerDatabase();
 
-    Transaction::factory(10)->create([
-        'type'       => CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-    ]);
+    Transaction::factory(10)->delegateRegistration()->create();
 
     $this->subject = new DelegateRegistrationCountAggregate();
 });
