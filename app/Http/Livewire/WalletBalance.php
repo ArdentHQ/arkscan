@@ -12,6 +12,11 @@ use Livewire\Component;
 
 final class WalletBalance extends Component
 {
+    /** @phpstan-ignore-next-line */
+    protected $listeners = [
+        'currencyChanged' => '$refresh',
+    ];
+
     public string $walletAddress;
 
     public function mount(Wallet $wallet): void

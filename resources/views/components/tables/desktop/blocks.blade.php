@@ -14,7 +14,7 @@
     </thead>
     <tbody>
         @foreach($blocks as $block)
-            <x-ark-tables.row wire:key="block-{{ $block->id() }}">
+            <x-ark-tables.row wire:key="{{ Helpers::generateId($block->id(), Settings::currency()) }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.block-id :model="$block" />
                 </x-ark-tables.cell>

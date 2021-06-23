@@ -72,7 +72,7 @@ body {
 
 /* Transaction Icon */
 .transaction-icon {
-    @apply text-theme-secondary-900 border-theme-secondary-900;
+    @apply flex-shrink-0 text-theme-secondary-900 border-theme-secondary-900;
 }
 
 .dark .transaction-icon {

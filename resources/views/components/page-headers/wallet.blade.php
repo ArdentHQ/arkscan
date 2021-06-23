@@ -97,7 +97,7 @@
                     </x-general.header-entry>
 
                     <x-general.header-entry
-                        :title="trans('pages.wallet.delegate.votes', [App\Services\NumberFormatter::currencyShortNotation($wallet->votes())])"
+                        :title="trans('pages.wallet.delegate.votes', [ExplorerNumberFormatter::currencyShortNotation($wallet->votes())])"
                         :text="trans('general.see_all')"
                         :url="route('wallet.voters', $wallet->address())"
                         wrapper-class="sm:mr-7 lg:mr-0"

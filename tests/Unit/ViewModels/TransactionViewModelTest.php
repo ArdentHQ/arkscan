@@ -3,12 +3,6 @@
 declare(strict_types=1);
 
 use App\DTO\Payment;
-use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\MagistrateTransactionEntityActionEnum;
-use App\Enums\MagistrateTransactionEntitySubTypeEnum;
-use App\Enums\MagistrateTransactionEntityTypeEnum;
-use App\Enums\MagistrateTransactionTypeEnum;
-use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -88,10 +82,8 @@ it('should get the amount received for non-multipayment', function () {
 });
 
 it('should get the amount for multi payments', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => [
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
+        'asset' => [
             'payments' => [
                 [
                     'amount'      => '1000000000',
@@ -118,11 +110,112 @@ it('should get the amount for multi payments', function () {
     assertMatchesSnapshot($this->subject->amount());
 });
 
+it('should get the amount for multi payments excluding payment to the same address', function () {
+    $sender = Wallet::factory()->create();
+
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
+        'sender_public_key' => $sender->public_key,
+        'asset'             => [
+            'payments' => [
+                [
+                    'amount'      => '1000000000',
+                    'recipientId' => 'A',
+                ], [
+                    'amount'      => '2000000000',
+                    'recipientId' => 'B',
+                ], [
+                    'amount'      => '3000000000',
+                    'recipientId' => 'C',
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => $sender->address,
+                ], [
+                    'amount'      => '4000000000',
+                    'recipientId' => 'D',
+                ], [
+                    'amount'      => '6000000000',
+                    'recipientId' => 'E',
+                ],
+            ],
+        ],
+    ]));
+
+    expect($this->subject->amountExcludingItself())->toEqual(160);
+});
+
+it('should get the amount in fiat for multi payments excluding payment to the same address', function () {
+    $sender = Wallet::factory()->create();
+
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
+        'sender_public_key' => $sender->public_key,
+        'asset'             => [
+            'payments' => [
+                [
+                    'amount'      => '1000000000',
+                    'recipientId' => 'A',
+                ], [
+                    'amount'      => '2000000000',
+                    'recipientId' => 'B',
+                ], [
+                    'amount'      => '3000000000',
+                    'recipientId' => 'C',
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => $sender->address,
+                ], [
+                    'amount'      => '4000000000',
+                    'recipientId' => 'D',
+                ], [
+                    'amount'      => '6000000000',
+                    'recipientId' => 'E',
+                ],
+            ],
+        ],
+    ]));
+
+    (new CryptoCompareCache())->setPrices('USD', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+    ]));
+
+    expect($this->subject->amountFiatExcludingItself())->toEqual('46.51 USD');
+});
+
+it('should get the amount for itself on multi payments', function () {
+    $sender = Wallet::factory()->create();
+
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
+        'sender_public_key' => $sender->public_key,
+        'asset'             => [
+            'payments' => [
+                [
+                    'amount'      => '1000000000',
+                    'recipientId' => 'A',
+                ], [
+                    'amount'      => '2000000000',
+                    'recipientId' => 'B',
+                ], [
+                    'amount'      => '3000000000',
+                    'recipientId' => 'C',
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => $sender->address,
+                ], [
+                    'amount'      => '4000000000',
+                    'recipientId' => 'D',
+                ], [
+                    'amount'      => '6000000000',
+                    'recipientId' => 'E',
+                ],
+            ],
+        ],
+    ]));
+
+    expect($this->subject->amountForItself())->toEqual(50);
+});
+
 it('should get the specific multi payment amount for a wallet recipient', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => [
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
+        'asset' => [
             'payments' => [
                 [
                     'amount'      => '1000000000',
@@ -153,10 +246,8 @@ it('should get the specific multi payment amount for a wallet recipient', functi
 });
 
 it('should get the amount as fiat', function () {
-    $transaction = Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => [
+    $transaction = Transaction::factory()->multiPayment()->create([
+        'asset' => [
             'payments' => [
                 [
                     'amount'      => '1000000000',
@@ -190,10 +281,8 @@ it('should get the amount as fiat', function () {
 });
 
 it('should get the specific multi payment fiat amount for a wallet recipient', function () {
-    $transaction = Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => [
+    $transaction = Transaction::factory()->multiPayment()->create([
+        'asset' => [
             'payments' => [
                 [
                     'amount'      => '1000000000',
@@ -243,493 +332,103 @@ it('should get the ipfs hash', function () {
     expect($this->subject->ipfsHash())->toBe('QmXrvSZaDr8vjLUB9b7xz26S3kpk3S3bSc8SUyZmNPvmVo');
 });
 
-it('should determine the transaction type', function (string $method, int $type, int $typeGroup, array $asset) {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => $type,
-        'type_group' => $typeGroup,
-        'asset'      => $asset,
-    ]));
+it('should determine the transaction type', function (string $type) {
+    $transaction = Transaction::factory()->{$type}()->create();
+    $subject     = new TransactionViewModel($transaction);
 
-    expect($subject->$method())->toBeTrue();
+    expect($subject->{'is'.ucfirst($type)}())->toBeTrue();
 
     $subject = new TransactionViewModel(Transaction::factory()->create([
         'type'       => 666,
         'type_group' => 666,
-        'asset'      => $asset,
+        'asset'      => $transaction->asset,
     ]));
 
-    expect($subject->$method())->toBeFalse();
+    expect($subject->{'is'.ucfirst($type)}())->toBeFalse();
 })->with([
-    [
-        'isTransfer',
-        CoreTransactionTypeEnum::TRANSFER,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isSecondSignature',
-        CoreTransactionTypeEnum::SECOND_SIGNATURE,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isDelegateRegistration',
-        CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isVote',
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['+publicKey'],
-        ],
-    ], [
-        'isUnvote',
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['-publicKey'],
-        ],
-    ], [
-        'isVoteCombination',
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['+publicKey', '-publicKey'],
-        ],
-    ], [
-        'isMultiSignature',
-        CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isIpfs',
-        CoreTransactionTypeEnum::IPFS,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isDelegateResignation',
-        CoreTransactionTypeEnum::DELEGATE_RESIGNATION,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isMultiPayment',
-        CoreTransactionTypeEnum::MULTI_PAYMENT,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isTimelock',
-        CoreTransactionTypeEnum::TIMELOCK,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isTimelockClaim',
-        CoreTransactionTypeEnum::TIMELOCK_CLAIM,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isTimelockRefund',
-        CoreTransactionTypeEnum::TIMELOCK_REFUND,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        'isEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        'isEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        'isEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        'isBusinessEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        'isBusinessEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        'isBusinessEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        'isProductEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        'isProductEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        'isProductEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        'isPluginEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        'isPluginEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        'isPluginEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        'isModuleEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        'isModuleEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        'isModuleEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        'isDelegateEntityRegistration',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        'isDelegateEntityResignation',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        'isDelegateEntityUpdate',
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        'isLegacyBusinessRegistration',
-        MagistrateTransactionTypeEnum::BUSINESS_REGISTRATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        'isLegacyBusinessResignation',
-        MagistrateTransactionTypeEnum::BUSINESS_RESIGNATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        'isLegacyBusinessUpdate',
-        MagistrateTransactionTypeEnum::BUSINESS_UPDATE,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        'isLegacyBridgechainRegistration',
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_REGISTRATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        'isLegacyBridgechainResignation',
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_RESIGNATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        'isLegacyBridgechainUpdate',
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_UPDATE,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ],
+    ['transfer'],
+    ['secondSignature'],
+    ['delegateRegistration'],
+    ['vote'],
+    ['unvote'],
+    ['voteCombination'],
+    ['multiSignature'],
+    ['ipfs'],
+    ['delegateResignation'],
+    ['multiPayment'],
+    ['timelock'],
+    ['timelockClaim'],
+    ['timelockRefund'],
+    ['entityRegistration'],
+    ['entityResignation'],
+    ['entityUpdate'],
+    ['businessEntityRegistration'],
+    ['businessEntityResignation'],
+    ['businessEntityUpdate'],
+    ['productEntityRegistration'],
+    ['productEntityResignation'],
+    ['productEntityUpdate'],
+    ['pluginEntityRegistration'],
+    ['pluginEntityResignation'],
+    ['pluginEntityUpdate'],
+    ['moduleEntityRegistration'],
+    ['moduleEntityResignation'],
+    ['moduleEntityUpdate'],
+    ['delegateEntityRegistration'],
+    ['delegateEntityResignation'],
+    ['delegateEntityUpdate'],
+    ['legacyBusinessRegistration'],
+    ['legacyBusinessResignation'],
+    ['legacyBusinessUpdate'],
+    ['legacyBridgechainRegistration'],
+    ['legacyBridgechainResignation'],
+    ['legacyBridgechainUpdate'],
 ]);
 
-it('should determine if the transaction is self-receiving', function (int $type, int $typeGroup, array $asset) {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => $type,
-        'type_group' => $typeGroup,
-        'asset'      => $asset,
-    ]));
+it('should determine if the transaction is self-receiving', function (string $type) {
+    $transaction = Transaction::factory()->{$type}()->create();
+    $subject     = new TransactionViewModel($transaction);
 
     expect($subject->isSelfReceiving())->toBeTrue();
 
     $subject = new TransactionViewModel(Transaction::factory()->create([
         'type'       => 666,
         'type_group' => 666,
-        'asset'      => $asset,
+        'asset'      => $transaction->asset,
     ]));
 
     expect($subject->isSelfReceiving())->toBeFalse();
 })->with([
-    [
-        CoreTransactionTypeEnum::SECOND_SIGNATURE,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['+publicKey'],
-        ],
-    ], [
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['-publicKey'],
-        ],
-    ], [
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['+publicKey', '-publicKey'],
-        ],
-    ], [
-        CoreTransactionTypeEnum::DELEGATE_RESIGNATION,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::BUSINESS_REGISTRATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        MagistrateTransactionTypeEnum::BUSINESS_RESIGNATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        MagistrateTransactionTypeEnum::BUSINESS_UPDATE,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_REGISTRATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_RESIGNATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_UPDATE,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ],
+    ['secondSignature'],
+    ['delegateRegistration'],
+    ['vote'],
+    ['unvote'],
+    ['voteCombination'],
+    ['delegateResignation'],
+    ['entityRegistration'],
+    ['entityResignation'],
+    ['entityUpdate'],
+    ['businessEntityRegistration'],
+    ['businessEntityResignation'],
+    ['businessEntityUpdate'],
+    ['productEntityRegistration'],
+    ['productEntityResignation'],
+    ['productEntityUpdate'],
+    ['pluginEntityRegistration'],
+    ['pluginEntityResignation'],
+    ['pluginEntityUpdate'],
+    ['moduleEntityRegistration'],
+    ['moduleEntityResignation'],
+    ['moduleEntityUpdate'],
+    ['delegateEntityRegistration'],
+    ['delegateEntityResignation'],
+    ['delegateEntityUpdate'],
+    ['legacyBusinessRegistration'],
+    ['legacyBusinessResignation'],
+    ['legacyBusinessUpdate'],
+    ['legacyBridgechainRegistration'],
+    ['legacyBridgechainResignation'],
+    ['legacyBridgechainUpdate'],
 ]);
 
 it('should determine the state icon', function () {
@@ -740,69 +439,75 @@ it('should determine the type icon', function () {
     expect($this->subject->iconType())->toBeString();
 });
 
-it('should determine the type label', function (int $type, int $typeGroup) {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => $type,
-        'type_group' => $typeGroup,
-        'asset'      => [],
-    ]));
+it('should determine the type label', function (string $type) {
+    $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());
 
     expect($subject->typeLabel())->toBeString();
 })->with([
-    [
-        CoreTransactionTypeEnum::SECOND_SIGNATURE,
-        TransactionTypeGroupEnum::CORE,
-    ],
-    [
-        MagistrateTransactionTypeEnum::BUSINESS_REGISTRATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-    ],
+    ['secondSignature'],
+    ['legacyBusinessRegistration'],
 ]);
 
-it('should determine legacy types', function (int $type, int $typeGroup, bool $expectation) {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => $type,
-        'type_group' => $typeGroup,
-        'asset'      => [],
-    ]));
+it('should determine legacy types', function (string $type, bool $expectation) {
+    $transaction = Transaction::factory()->{$type}()->create();
+    $subject     = new TransactionViewModel($transaction);
 
     expect($subject->isLegacyType())->toBe($expectation);
 })->with([
     [
-        CoreTransactionTypeEnum::SECOND_SIGNATURE,
-        TransactionTypeGroupEnum::CORE,
-        false,
-    ], [
-        CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
-        TransactionTypeGroupEnum::CORE,
+        'secondSignature',
         false,
     ],
     [
-        MagistrateTransactionTypeEnum::BUSINESS_REGISTRATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
+        'delegateRegistration',
+        false,
+    ],
+    [
+        'legacyBusinessRegistration',
         true,
-    ], [
-        MagistrateTransactionTypeEnum::BUSINESS_RESIGNATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
+    ],
+    [
+        'legacyBusinessResignation',
         true,
-    ], [
-        MagistrateTransactionTypeEnum::BUSINESS_UPDATE,
-        TransactionTypeGroupEnum::MAGISTRATE,
+    ],
+    [
+        'legacyBusinessUpdate',
         true,
-    ], [
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_REGISTRATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
+    ],
+    [
+        'legacyBridgechainRegistration',
         true,
-    ], [
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_RESIGNATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
+    ],
+    [
+        'legacyBridgechainResignation',
         true,
-    ], [
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_UPDATE,
-        TransactionTypeGroupEnum::MAGISTRATE,
+    ],
+    [
+        'legacyBridgechainUpdate',
         true,
     ],
 ]);
+
+it('should determine transactions that doesnt have amount', function (string $type) {
+    $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());
+
+    expect($subject->hasAmount())->toBeFalse();
+})->with([
+    'delegateRegistration',
+    'entityRegistration',
+    'entityResignation',
+    'entityUpdate',
+    'multiSignature',
+    'voteCombination',
+    'unvote',
+    'vote',
+]);
+
+it('should determine that transactions have amount by default', function () {
+    $subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
+
+    expect($subject->hasAmount())->toBeTrue();
+});
 
 it('should determine the direction icon', function () {
     expect($this->subject->iconDirection('sender'))->toBeString();
@@ -819,30 +524,20 @@ it('should fallback to the sender if no recipient exists', function () {
 it('should get the voted delegate', function () {
     Wallet::factory()->create(['public_key' => 'publicKey']);
 
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::VOTE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => ['votes' => ['+publicKey']],
-    ]));
+    $subject = new TransactionViewModel(Transaction::factory()->vote()->create());
 
     expect($subject->voted())->toBeInstanceOf(WalletViewModel::class);
 });
 
 it('should fail to get the voted delegate if the transaction is not an unvote', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::VOTE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => ['votes' => ['-publicKey']],
-    ]));
+    $subject = new TransactionViewModel(Transaction::factory()->unvote()->create());
 
     expect($subject->voted())->toBeNull();
 });
 
 it('should fail to get the voted delegate if the transaction asset is empty', function ($asset) {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::VOTE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => $asset,
+    $subject = new TransactionViewModel(Transaction::factory()->vote()->create([
+        'asset' => $asset,
     ]));
 
     expect($subject->voted())->toBeNull();
@@ -851,31 +546,21 @@ it('should fail to get the voted delegate if the transaction asset is empty', fu
 it('should get the unvoted delegate', function () {
     Wallet::factory()->create(['public_key' => 'publicKey']);
 
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::VOTE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => ['votes' => ['-publicKey']],
-    ]));
+    $subject = new TransactionViewModel(Transaction::factory()->unvote()->create());
 
     expect($subject->unvoted())->toBeInstanceOf(WalletViewModel::class);
 });
 
 it('should fail to get the unvoted delegate if the transaction is not an unvote', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::VOTE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => ['votes' => ['+publicKey']],
-    ]));
+    $subject = new TransactionViewModel(Transaction::factory()->vote()->create());
 
     expect($subject->unvoted())->toBeNull();
 });
 
 it('should fail to get the unvoted delegate if the transaction asset is empty', function ($asset) {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::VOTE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => $asset,
-    ]));
+    $subject = new TransactionViewModel(Transaction::factory()
+        ->vote()
+        ->create(['asset' => $asset]));
 
     expect($subject->unvoted())->toBeNull();
 })->with([[[]], null]);
@@ -887,18 +572,14 @@ it('should get the nonce', function () {
 it('should get the multi signature address', function () {
     expect($this->subject->multiSignatureAddress())->toBeNull();
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => null,
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()
+        ->multiSignature()
+        ->create(['asset' => null]));
 
     expect($this->subject->multiSignatureAddress())->toBeNull();
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => [
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiSignature()->create([
+        'asset' => [
             'multiSignature' => [
                 'min'        => 3,
                 'publicKeys' => [
@@ -918,17 +599,13 @@ it('should get the multi signature address', function () {
 it('should derive the correct multisignature address', function () {
     expect($this->subject->multiSignatureAddress())->toBeNull();
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => null,
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()
+        ->multiSignature()
+        ->create(['asset' => null]));
 
     expect($this->subject->multiSignatureAddress())->toBeNull();
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiSignature()->create([
         'asset'      => [
             'multiSignature' => [
                 'min'        => 3,
@@ -958,18 +635,14 @@ it('should derive the correct multisignature address', function () {
 it('should get the multi signature minimum', function () {
     expect($this->subject->multiSignatureMinimum())->toBeNull();
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => null,
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()
+        ->multiSignature()
+        ->create(['asset' => null]));
 
     expect($this->subject->multiSignatureMinimum())->toBeNull();
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => [
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiSignature()->create([
+        'asset' => [
             'multiSignature' => [
                 'min'        => 3,
                 'publicKeys' => [
@@ -990,18 +663,14 @@ it('should get the multi signature minimum', function () {
 it('should get the multi signature participant count', function () {
     expect($this->subject->multiSignatureParticipantCount())->toBeNull();
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => null,
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()
+        ->multiSignature()
+        ->create(['asset' => null]));
 
     expect($this->subject->multiSignatureParticipantCount())->toBeNull();
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => [
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiSignature()->create([
+        'asset' => [
             'multiSignature' => [
                 'min'        => 3,
                 'publicKeys' => [
@@ -1020,11 +689,9 @@ it('should get the multi signature participant count', function () {
 });
 
 it('should get the payments', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => null,
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()
+        ->multiPayment()
+        ->create(['asset' => null]));
 
     expect($this->subject->payments())->toBeEmpty();
 
@@ -1034,10 +701,8 @@ it('should get the payments', function () {
     $D = Wallet::factory()->create();
     $E = Wallet::factory()->create();
 
-    $model = Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => [
+    $model = Transaction::factory()->multiPayment()->create([
+        'asset' => [
             'payments' => [
                 [
                     'amount'      => '1000000000',
@@ -1088,35 +753,26 @@ it('should get the payments', function () {
 });
 
 it('should fail to get the payments if the transaction is not a multi payment', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::TRANSFER,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
 
     expect($this->subject->payments())->toBeEmpty();
 });
 
 it('should get the recipients count', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => null,
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()
+        ->multiPayment()
+        ->create(['asset' => null]));
 
     expect($this->subject->recipientsCount())->toBe(0);
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => ['payments' => []],
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()
+        ->multiPayment()
+        ->create(['asset' => ['payments' => []]]));
 
     expect($this->subject->recipientsCount())->toBe(0);
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => [
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
+        'asset' => [
             'payments' => [
                 ['amount' => 10, 'recipientId' => 'ABC'],
                 ['amount' => 10, 'recipientId' => 'ABC'],
@@ -1131,27 +787,20 @@ it('should get the recipients count', function () {
 });
 
 it('should fail to get the recipients count if the transaction is not a multi payment', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::TRANSFER,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
 
     expect($this->subject->recipientsCount())->toBe(0);
 });
 
 it('should get the participants', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => null,
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()
+        ->multiSignature()
+        ->create(['asset' => null]));
 
     expect($this->subject->participants())->toHaveCount(0);
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => [
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiSignature()->create([
+        'asset' => [
             'multiSignature' => [
                 'min'        => 3,
                 'publicKeys' => [
@@ -1194,27 +843,20 @@ it('should get the participants', function () {
 });
 
 it('should fail to get the participants if the transaction is not a multi signature registrations', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::TRANSFER,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
 
     expect($this->subject->participants())->toBeEmpty();
 });
 
 it('should get the multi signature wallet', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => null,
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()
+        ->multiSignature()
+        ->create(['asset' => null]));
 
     expect($this->subject->participants())->toHaveCount(0);
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => [
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiSignature()->create([
+        'asset' => [
             'multiSignature' => [
                 'min'        => 3,
                 'publicKeys' => [
@@ -1237,26 +879,17 @@ it('should get the multi signature wallet', function () {
 });
 
 it('should fail to get the multi signature wallet if the transaction is not a multi signature registrations', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::TRANSFER,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
 
     expect($this->subject->multiSignatureWallet())->toBeEmpty();
 });
 
 it('should get the type component', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::TRANSFER,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
 
     expect($this->subject->typeComponent())->toBe('transaction.details.transfer');
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::TIMELOCK,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-    ]));
+    $this->subject = new TransactionViewModel(Transaction::factory()->timelock()->create());
 
     expect($this->subject->typeComponent())->toBe('transaction.details.fallback');
 });
@@ -1265,273 +898,48 @@ it('should get the extra component', function () {
     expect($this->subject->extensionComponent())->toBeString();
 });
 
-it('should determine if the transaction has extra data', function (bool $outcome, int $type, int $typeGroup, array $asset) {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => $type,
-        'type_group' => $typeGroup,
-        'asset'      => $asset,
-    ]));
+it('should determine if the transaction has extra data', function (bool $outcome, string $type) {
+    $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());
 
     expect($subject->hasExtraData())->toBe($outcome);
 })->with([
-    [
-        false,
-        CoreTransactionTypeEnum::TRANSFER,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        false,
-        CoreTransactionTypeEnum::SECOND_SIGNATURE,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        false,
-        CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        false,
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['+publicKey'],
-        ],
-    ], [
-        false,
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['-publicKey'],
-        ],
-    ], [
-        true,
-        CoreTransactionTypeEnum::VOTE,
-        TransactionTypeGroupEnum::CORE,
-        [
-            'votes' => ['+publicKey', '-publicKey'],
-        ],
-    ], [
-        true,
-        CoreTransactionTypeEnum::MULTI_SIGNATURE,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        false,
-        CoreTransactionTypeEnum::IPFS,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        false,
-        CoreTransactionTypeEnum::DELEGATE_RESIGNATION,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        true,
-        CoreTransactionTypeEnum::MULTI_PAYMENT,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        false,
-        CoreTransactionTypeEnum::TIMELOCK,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        false,
-        CoreTransactionTypeEnum::TIMELOCK_CLAIM,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        false,
-        CoreTransactionTypeEnum::TIMELOCK_REFUND,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'action' => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
-        ],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::BUSINESS_REGISTRATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::BUSINESS_RESIGNATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::BUSINESS_UPDATE,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_REGISTRATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_RESIGNATION,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ], [
-        false,
-        MagistrateTransactionTypeEnum::BRIDGECHAIN_UPDATE,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [],
-    ],
+    [false, 'transfer'],
+    [false, 'secondSignature'],
+    [false, 'delegateRegistration'],
+    [false, 'vote'],
+    [false, 'unvote'],
+    [true, 'voteCombination'],
+    [true, 'multiSignature'],
+    [false, 'ipfs'],
+    [false, 'delegateResignation'],
+    [true, 'multiPayment'],
+    [false, 'timelock'],
+    [false, 'timelockClaim'],
+    [false, 'timelockRefund'],
+    [false, 'entityRegistration'],
+    [false, 'entityResignation'],
+    [false, 'entityUpdate'],
+    [false, 'businessEntityRegistration'],
+    [false, 'businessEntityResignation'],
+    [false, 'businessEntityUpdate'],
+    [false, 'productEntityRegistration'],
+    [false, 'productEntityResignation'],
+    [false, 'productEntityUpdate'],
+    [false, 'pluginEntityRegistration'],
+    [false, 'pluginEntityResignation'],
+    [false, 'pluginEntityUpdate'],
+    [false, 'moduleEntityRegistration'],
+    [false, 'moduleEntityResignation'],
+    [false, 'moduleEntityUpdate'],
+    [false, 'delegateEntityRegistration'],
+    [false, 'delegateEntityResignation'],
+    [false, 'delegateEntityUpdate'],
+    [false, 'legacyBusinessRegistration'],
+    [false, 'legacyBusinessResignation'],
+    [false, 'legacyBusinessUpdate'],
+    [false, 'legacyBridgechainRegistration'],
+    [false, 'legacyBridgechainResignation'],
+    [false, 'legacyBridgechainUpdate'],
 ]);
 
 it('should determine if the transaction type is unknown', function () {
@@ -1544,106 +952,60 @@ it('should determine if the transaction type is unknown', function () {
 });
 
 it('should get the entity type', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => MagistrateTransactionTypeEnum::ENTITY,
-        'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
-        'asset'      => [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-            'data'    => ['name' => 'John', 'ipfsData' => 'ipfs'],
-        ],
-    ]));
+    $subject = new TransactionViewModel(Transaction::factory()
+        ->productEntityRegistration(['name' => 'John', 'ipfsData' => 'ipfs'])
+        ->create());
 
     expect($subject->entityType())->toBe('product-entity-registration');
 });
 
 it('should get the entity name', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => MagistrateTransactionTypeEnum::ENTITY,
-        'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
-        'asset'      => [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-            'data'    => ['name' => 'John', 'ipfsData' => 'ipfs'],
-        ],
-    ]));
+    $subject = new TransactionViewModel(Transaction::factory()
+        ->productEntityRegistration(['name' => 'John', 'ipfsData' => 'ipfs'])
+        ->create());
 
     expect($subject->entityName())->toBe('John');
 });
 
 it('should get the entity name for entity update types', function () {
-    $registrationId = Transaction::factory()->create([
-        'type'       => MagistrateTransactionTypeEnum::ENTITY,
-        'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
-        'asset'      => [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-            'data'    => ['name' => 'John', 'ipfsData' => 'ipfs'],
-        ],
-    ])->id;
+    $registrationId = Transaction::factory()
+        ->productEntityRegistration(['name' => 'John', 'ipfsData' => 'ipfs'])
+        ->create()
+        ->id;
 
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => MagistrateTransactionTypeEnum::ENTITY,
-        'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
-        'asset'      => [
-            'type'           => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType'        => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'         => MagistrateTransactionEntityActionEnum::UPDATE,
-            'registrationId' => $registrationId,
-        ],
-    ]));
+    $subject = new TransactionViewModel(Transaction::factory()
+        ->productEntityUpdate($registrationId)
+        ->create());
 
     expect($subject->entityName())->toBe('John');
 });
 
 it('should get the entity category', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => MagistrateTransactionTypeEnum::ENTITY,
-        'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
-        'asset'      => [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-            'data'    => ['name' => 'John', 'ipfsData' => 'ipfs'],
-        ],
-    ]));
+    $subject = new TransactionViewModel(Transaction::factory()
+        ->productEntityRegistration(['name' => 'John', 'ipfsData' => 'ipfs'])
+        ->create());
 
     expect($subject->entityCategory())->toBeNull();
 });
 
 it('should get the entity hash', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => MagistrateTransactionTypeEnum::ENTITY,
-        'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
-        'asset'      => [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-            'data'    => ['name' => 'John', 'ipfsData' => 'ipfs'],
-        ],
-    ]));
+    $subject = new TransactionViewModel(Transaction::factory()
+        ->productEntityRegistration(['name' => 'John', 'ipfsData' => 'ipfs'])
+        ->create());
 
     expect($subject->entityHash())->toBe('ipfs');
 });
 
 it('should get the username if the transaction is not a delegate registration', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-        'asset'      => ['delegate' => ['username' => 'john']],
-    ]));
+    $subject = new TransactionViewModel(Transaction::factory()
+        ->delegateRegistration()
+        ->create(['asset' => ['delegate' => ['username' => 'john']]]));
 
     expect($subject->delegateUsername())->toBe('john');
 });
 
 it('should fail to get the username if the transaction is not a delegate registration', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => CoreTransactionTypeEnum::TRANSFER,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-    ]));
+    $subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
 
     expect($subject->delegateUsername())->toBeNull();
 });
@@ -1682,60 +1044,17 @@ it('should fail to get the vendor field if it is empty after reading it', functi
     expect($this->subject->vendorField())->toBeNull();
 });
 
-it('should determine if the transaction is any kind of registration', function (int $type, int $typeGroup, array $asset) {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => $type,
-        'type_group' => $typeGroup,
-        'asset'      => $asset,
-    ]));
+it('should determine if the transaction is any kind of registration', function (string $type) {
+    $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());
 
     expect($subject->isRegistration())->toBeTrue();
 })->with([
-    [
-        CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
-        TransactionTypeGroupEnum::CORE,
-        [],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::BUSINESS,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PRODUCT,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::PLUGIN,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::MODULE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ], [
-        MagistrateTransactionTypeEnum::ENTITY,
-        TransactionTypeGroupEnum::MAGISTRATE,
-        [
-            'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
-            'subType' => MagistrateTransactionEntitySubTypeEnum::NONE,
-            'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
-        ],
-    ],
+    ['delegateRegistration'],
+    ['businessEntityRegistration'],
+    ['productEntityRegistration'],
+    ['pluginEntityRegistration'],
+    ['moduleEntityRegistration'],
+    ['delegateEntityRegistration'],
 ]);
 
 it('should determine that the transaction is not any kind of registration', function () {

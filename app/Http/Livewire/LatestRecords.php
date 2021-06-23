@@ -16,6 +16,9 @@ final class LatestRecords extends Component
     use ManagesLatestBlocks;
     use ManagesLatestTransactions;
 
+    /** @phpstan-ignore-next-line */
+    protected $listeners = ['currencyChanged' => 'currencyChanged'];
+
     public array $state = [
         'selected' => 'transactions',
         'type'     => 'all',
@@ -32,6 +35,15 @@ final class LatestRecords extends Component
         }
 
         return $this->renderTransactions();
+    }
+
+    public function currencyChanged(): void
+    {
+        if ($this->state['selected'] === 'blocks') {
+            $this->pollBlocks();
+        } else {
+            $this->pollTransactions();
+        }
     }
 
     private function renderBlocks(): View

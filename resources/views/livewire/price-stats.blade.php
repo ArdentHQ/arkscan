@@ -20,7 +20,7 @@
             <canvas
                 x-ref="chart"
                 class="w-full h-full"
-                width="{{ \App\Services\NumberFormatter::isFiat(Settings::currency()) ? 210 : 120 }}"
+                width="{{ ExplorerNumberFormatter::isFiat(Settings::currency()) ? 210 : 120 }}"
                 height="40"
             ></canvas>
         </div>

@@ -2,19 +2,19 @@
     'transactions',
     'wallet',
     'useDirection' => false,
+    'excludeItself' => false,
     'useConfirmations' => false,
+    'isSent' => null,
+    'isReceived' => null,
+    'state' => [],
 ])
 
-<x-ark-tables.table sticky class="hidden md:block">
+<x-ark-tables.table sticky class="hidden md:block" wire:key="{{ Helpers::generateId('transactions', ...$state) }}">
     <thead>
         <tr>
             <x-tables.headers.desktop.id name="general.transaction.id" />
             <x-tables.headers.desktop.text name="general.transaction.timestamp" responsive />
-            @if($useDirection)
-                <x-tables.headers.desktop.address name="general.transaction.sender" icon use-direction />
-            @else
-                <x-tables.headers.desktop.address name="general.transaction.sender" icon />
-            @endif
+            <x-tables.headers.desktop.address name="general.transaction.sender" icon />
             <x-tables.headers.desktop.address name="general.transaction.recipient" />
             <x-tables.headers.desktop.number name="general.transaction.amount" last-on="xl" />
             <x-tables.headers.desktop.number name="general.transaction.fee" responsive breakpoint="xl" />
@@ -29,7 +29,7 @@
     </thead>
     <tbody>
         @foreach($transactions as $transaction)
-            <x-ark-tables.row wire:key="transaction-{{ $transaction->id() }}">
+            <x-ark-tables.row>
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.transaction-id :model="$transaction" />
                 </x-ark-tables.cell>
@@ -51,14 +51,14 @@
                     last-on="xl"
                 >
                     @if($useDirection)
-                        @if($transaction->isSent($wallet->address()))
-                            <x-tables.rows.desktop.amount-sent :model="$transaction" />
+                        @if(($transaction->isSent($wallet->address()) || $isSent === true) && $isReceived !== true)
+                            <x-tables.rows.desktop.amount-sent :model="$transaction" :exclude-itself="$excludeItself" />
                         @else
                             <x-tables.rows.desktop.amount-received :model="$transaction" :wallet="$wallet" />
                         @endif
                     @else
                         <x-tables.rows.desktop.amount :model="$transaction" />
-                    @endisset
+                    @endif
                 </x-ark-tables.cell>
                 <x-ark-tables.cell
                     class="text-right"
@@ -75,7 +75,7 @@
                     >
                         <x-tables.rows.desktop.confirmations :model="$transaction" />
                     </x-ark-tables.cell>
-                @endisset
+                @endif
             </x-ark-tables.row>
         @endforeach
     </tbody>

@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use App\Console\Commands\CacheDelegateResignationIds;
-use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\TransactionTypeGroupEnum;
 use App\Jobs\CacheResignationId;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Queue;
@@ -15,10 +13,7 @@ it('should execute the command', function () {
 
     configureExplorerDatabase();
 
-    Transaction::factory(10)->create([
-        'type'       => CoreTransactionTypeEnum::DELEGATE_RESIGNATION,
-        'type_group' => TransactionTypeGroupEnum::CORE,
-    ]);
+    Transaction::factory(10)->delegateResignation()->create();
 
     (new CacheDelegateResignationIds())->handle();
 

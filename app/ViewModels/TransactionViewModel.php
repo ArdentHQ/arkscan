@@ -92,10 +92,33 @@ final class TransactionViewModel implements ViewModel
         return ExchangeRate::convert($this->transaction->fee->toFloat(), $this->transaction->timestamp);
     }
 
+    public function amountForItself(): float
+    {
+        return collect(Arr::get($this->transaction->asset ?? [], 'payments', []))
+            ->filter(function ($payment): bool {
+                $sender = $this->sender();
+
+                return $sender !== null && $sender->address === $payment['recipientId'];
+            })
+            ->sum('amount') / 1e8;
+    }
+
+    public function amountExcludingItself(): float
+    {
+        return collect(Arr::get($this->transaction->asset ?? [], 'payments', []))
+            ->filter(function ($payment): bool {
+                $sender = $this->sender();
+
+                return $sender === null || $sender->address !== $payment['recipientId'];
+            })
+            ->sum('amount') / 1e8;
+    }
+
     public function amount(): float
     {
         if ($this->isMultiPayment()) {
-            return collect(Arr::get($this->transaction->asset ?? [], 'payments', []))->sum('amount') / 1e8;
+            return collect(Arr::get($this->transaction->asset ?? [], 'payments', []))
+                ->sum('amount') / 1e8;
         }
 
         return $this->transaction->amount->toFloat();
@@ -110,6 +133,11 @@ final class TransactionViewModel implements ViewModel
         }
 
         return $this->amount();
+    }
+
+    public function amountFiatExcludingItself(): string
+    {
+        return ExchangeRate::convert($this->amountExcludingItself(), $this->transaction->timestamp);
     }
 
     public function amountFiat(): string

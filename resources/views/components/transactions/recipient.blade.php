@@ -1,6 +1,6 @@
 @php($iconType = $transaction->iconType())
 
-<div wire:key="{{ $transaction->id() }}">
+<div>
     <div>
         @if ($transaction->isTransfer() || $transaction->isUnknown())
             <x-general.identity :model="$transaction->recipient()" />
