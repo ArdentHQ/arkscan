@@ -236,6 +236,7 @@ return [
         'Percentage'              => Mattiasgeniar\Percentage\Percentage::class,
         'ExchangeRate'            => App\Services\ExchangeRate::class,
         'Helpers'                 => App\Services\Helpers::class,
+        'Forms'                   => App\Services\Forms::class,
     ],
 
 ];

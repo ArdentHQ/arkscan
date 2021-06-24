@@ -65,6 +65,11 @@ final class Network implements Contract
         return $this->config['canBeExchanged'];
     }
 
+    public function hasTimelock(): bool
+    {
+        return $this->config['hasTimelock'];
+    }
+
     public function epoch(): Carbon
     {
         return Carbon::parse($this->config['epoch']);

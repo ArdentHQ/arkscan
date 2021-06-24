@@ -5,22 +5,7 @@
     icon-class="hidden"
     initial-value="{{ $this->state['type'] }}"
     wire:model="state.type"
-    :options="collect([
-        'all',
-        'transfer',
-        'secondSignature',
-        'delegateRegistration',
-        'vote',
-        'voteCombination',
-        'multiSignature',
-        'ipfs',
-        'multiPayment',
-        'delegateResignation',
-        'timelock',
-        'timelockClaim',
-        'timelockRefund',
-        'magistrate',
-    ])->mapWithKeys(fn ($type) => [$type => trans('forms.search.transaction_types.'.$type)])->toArray()"
+    :options="Forms::getTransactionOptions()"
 >
     <x-slot name="dropdownEntry">
         <div class="flex justify-between items-center w-full font-semibold md:justify-end md:space-x-2 text-theme-secondary-500 md:text-theme-secondary-700">

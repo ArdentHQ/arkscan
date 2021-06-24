@@ -6,6 +6,7 @@ namespace App\Http\Livewire;
 
 use App\Contracts\Search;
 use App\Http\Livewire\Concerns\ManagesSearch;
+use App\Services\Forms;
 use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
@@ -34,22 +35,6 @@ final class SearchModule extends Component
         'openSearchModal' => 'openModal',
     ];
 
-    protected array $transactionOptionsValues = [
-        'all',
-        'transfer',
-        'secondSignature',
-        'delegateRegistration',
-        'vote',
-        'voteCombination',
-        'multiSignature',
-        'ipfs',
-        'multiPayment',
-        'timelock',
-        'timelockClaim',
-        'timelockRefund',
-        'magistrate',
-    ];
-
     public function mount(bool $isModal = false, string $type = 'block'): void
     {
         $this->isModal    = $isModal;
@@ -60,12 +45,12 @@ final class SearchModule extends Component
     {
         if ($this->isModal) {
             return view('components.general.search.search-modal', [
-                'transactionOptions' => $this->getTransactionOptions(),
+                'transactionOptions' => Forms::getTransactionOptions(),
             ]);
         }
 
         return view('components.general.search.search', [
-            'transactionOptions' => $this->getTransactionOptions(),
+            'transactionOptions' => Forms::getTransactionOptions(),
         ]);
     }
 
@@ -130,15 +115,5 @@ final class SearchModule extends Component
         $callback($model);
 
         return true;
-    }
-
-    /**
-     * Map the transaction options as the rich select component expects.
-     */
-    private function getTransactionOptions(): array
-    {
-        return collect($this->transactionOptionsValues)
-            ->mapWithKeys(fn ($option) => [$option =>__('forms.search.transaction_types.'.$option)])
-            ->toArray();
     }
 }
