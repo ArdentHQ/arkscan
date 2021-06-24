@@ -1,4 +1,4 @@
-<div class="flex flex-col space-y-8 sm:flex-row sm:space-y-0 xl:pr-7 xl:border-r xl:border-theme-secondary-300">
+<div class="flex flex-col space-y-8 sm:flex-row sm:space-y-0 xl:pr-7 xl:border-r border-theme-secondary-300 dark:border-theme-secondary-800">
     <x-page-headers.transaction.icon-type :model="$transaction" wrapper-class="sm:w-1/2" />
 
     <x-general.entity-header-item
