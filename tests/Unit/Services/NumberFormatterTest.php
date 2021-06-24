@@ -28,6 +28,22 @@ it('should format a number with a currency symbol if it has a [.]', function () 
     assertMatchesSnapshot(NumberFormatter::currency('0.000003', 'ARK'));
 });
 
+it('should format fiat currency with the correct decimal places', function () {
+    assertMatchesSnapshot(NumberFormatter::currency(123.456, 'GBP'));
+    assertMatchesSnapshot(NumberFormatter::currency('123.456', 'GBP'));
+
+    assertMatchesSnapshot(NumberFormatter::currency(123.456, 'USD'));
+    assertMatchesSnapshot(NumberFormatter::currency('123.456', 'USD'));
+
+    assertMatchesSnapshot(NumberFormatter::currency(123.456, 'CAD'));
+    assertMatchesSnapshot(NumberFormatter::currency('123.456', 'CAD'));
+});
+
+it('should format crypto currency with the correct decimal places', function () {
+    assertMatchesSnapshot(NumberFormatter::currency(123.456, 'BTC'));
+    assertMatchesSnapshot(NumberFormatter::currency('123.456', 'BTC'));
+});
+
 it('should format a number without a suffix', function () {
     assertMatchesSnapshot(NumberFormatter::currencyWithoutSuffix(123, 'ARK'));
     assertMatchesSnapshot(NumberFormatter::currencyWithoutSuffix(1e8, 'ARK'));

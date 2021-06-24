@@ -177,7 +177,7 @@ it('should get the amount in fiat for multi payments excluding payment to the sa
         Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
     ]));
 
-    expect($this->subject->amountFiatExcludingItself())->toEqual('46.51 USD');
+    assertMatchesSnapshot($this->subject->amountFiatExcludingItself());
 });
 
 it('should get the amount for itself on multi payments', function () {
@@ -275,8 +275,6 @@ it('should get the amount as fiat', function () {
         Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
     ]));
 
-    expect($this->subject->amountFiat())->toBe('43.61 USD');
-
     assertMatchesSnapshot($this->subject->amountFiat());
 });
 
@@ -312,8 +310,6 @@ it('should get the specific multi payment fiat amount for a wallet recipient', f
     (new CryptoCompareCache())->setPrices('USD', collect([
         Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
     ]));
-
-    expect($this->subject->amountReceivedFiat('B'))->toBe('20.35 USD');
 
     assertMatchesSnapshot($this->subject->amountReceivedFiat('B'));
 });

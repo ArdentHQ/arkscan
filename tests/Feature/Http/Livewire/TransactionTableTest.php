@@ -131,7 +131,9 @@ it('should update the records fiat tooltip when currency changed', function () {
 
     $component = Livewire::test(TransactionTable::class);
 
-    $component->assertSeeHtml('data-tippy-content="12,080,790 USD"');
+    $expectedValue = NumberFormatter::currency(12080790, 'USD');
+
+    $component->assertSeeHtml('data-tippy-content="'.$expectedValue.'"');
     $component->assertDontSeeHtml('data-tippy-content="61.6048933 BTC"');
 
     $settings = Settings::all();
@@ -140,6 +142,6 @@ it('should update the records fiat tooltip when currency changed', function () {
 
     $component->emit('currencyChanged', 'BTC');
 
-    $component->assertDontSeeHtml('data-tippy-content="12,080,790 USD"');
+    $component->assertDontSeeHtml('data-tippy-content="'.$expectedValue.'"');
     $component->assertSeeHtml('data-tippy-content="61.6048933 BTC"');
 });

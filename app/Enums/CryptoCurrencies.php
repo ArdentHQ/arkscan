@@ -13,4 +13,6 @@ final class CryptoCurrencies
     const LTC = 'LTC';
 
     const ARK = 'ARK';
+
+    const DARK = 'DARK';
 }
