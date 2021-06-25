@@ -25,7 +25,7 @@
                     }
                 },
             })"
-            class="container flex overflow-auto fixed inset-0 z-50 flex-col py-24 mx-auto w-full h-screen outline-none md:overflow-visible md:px-8"
+            class="container flex overflow-auto fixed inset-0 z-50 flex-col pt-24 mx-auto w-full h-screen outline-none md:overflow-visible md:px-8 md:pb-24"
             tabindex="0"
             data-modal
             wire:keydown.escape="closeModal"
@@ -42,7 +42,7 @@
                     @lang('pages.search.title')
                 </h2>
 
-                <div class="flex overflow-auto flex-col mb-14 bg-white rounded-xl md:overflow-visible dark:bg-theme-secondary-900">
+                <div class="flex overflow-auto flex-col bg-white rounded-xl md:overflow-visible md:mb-14 dark:bg-theme-secondary-900">
                     <x-general.search.search-input />
 
                     <x-general.search.advanced-search
