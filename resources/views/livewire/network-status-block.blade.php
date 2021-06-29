@@ -1,6 +1,6 @@
 <div class="overflow-auto dark:bg-black bg-theme-secondary-100">
     <div class="py-8 content-container-full-width">
-        <div class="px-10 md:w-full">
+        <div class="px-8 md:px-10 md:w-full">
             <div
                 class="flex grid-cols-2 gap-3 w-full md:grid xl:flex xl:gap-0 xl:space-x-3"
                 wire:poll.{{ Network::blockTime() }}s
