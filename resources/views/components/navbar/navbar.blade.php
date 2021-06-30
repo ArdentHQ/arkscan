@@ -11,8 +11,8 @@
     @toggle-dark-mode.window="dark = !dark"
 >
     <nav x-ref="nav" class="relative z-30 bg-white border-b border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800">
-        <div class="py-0.5 px-8 md:px-10">
-            <div class="flex relative justify-between h-20">
+        <div class="px-8 md:px-10">
+            <div class="flex relative justify-between h-21">
 
                 {{-- LOGO --}}
                 <div class="flex flex-shrink-0 items-center">
@@ -60,8 +60,8 @@
                                         @endif
                                     "
                                 >
-                                    <span class="flex items-center w-full h-full mt-0.5 border-b-2  @if(optional(Route::current())->getName() === $navItem['route']) border-theme-primary-600 @else border-transparent group-hover:border-theme-secondary-300 @endif">
-                                        <span class="-mt-0.5">{{ $navItem['label'] }}</span>
+                                    <span class="flex items-center w-full h-full border-b-2  @if(optional(Route::current())->getName() === $navItem['route']) border-theme-primary-600 @else border-transparent group-hover:border-theme-secondary-300 @endif">
+                                        <span>{{ $navItem['label'] }}</span>
                                     </span>
                                 </a>
                             @endforeach
