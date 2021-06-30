@@ -16,14 +16,14 @@
     <tbody>
         @foreach($delegates as $delegate)
             <x-ark-tables.row
-                wire:key="{{ $delegate->publicKey() }}-{{ $round }}"
+                wire:key="{{ Helpers::generateId($delegate->publicKey(), $round, $delegate->status()) }}"
                 :danger="$delegate->keepsMissing()"
                 :warning="$delegate->justMissed()"
             >
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.slot-id :model="$delegate" />
                 </x-ark-tables.cell>
-                <x-ark-tables.cell wire:key="{{ $delegate->publicKey() }}-username-desktop">
+                <x-ark-tables.cell>
                     <span class="hidden md:inline">
                         <x-tables.rows.desktop.username :model="$delegate->wallet()" />
                     </span>
@@ -34,7 +34,7 @@
                 <x-ark-tables.cell responsive breakpoint="sm">
                     <x-tables.rows.desktop.slot-time :model="$delegate" />
                 </x-ark-tables.cell>
-                <x-ark-tables.cell wire:key="{{ $delegate->publicKey() }}-round-status-{{ $delegate->status() }}-desktop" last-on="md">
+                <x-ark-tables.cell last-on="md">
                     <x-tables.rows.desktop.round-status :model="$delegate" />
                 </x-ark-tables.cell>
                 <x-ark-tables.cell class="text-right" responsive breakpoint="md" >
