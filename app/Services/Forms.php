@@ -13,6 +13,7 @@ final class Forms
         'transfer',
         'secondSignature',
         'delegateRegistration',
+        'delegateResignation',
         'vote',
         'voteCombination',
         'multiSignature',
