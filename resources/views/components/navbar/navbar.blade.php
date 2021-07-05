@@ -87,7 +87,7 @@
                         {{-- Mobile Hamburger icon --}}
                         <x-navbar.button
                             @click="open = !open"
-                            margin-class="ml-1 ml-4 -mr-3 md:mr-4"
+                            margin-class="ml-4 -mr-4 md:mr-4"
                         >
                             <span :class="{'hidden': open, 'inline-flex': !open }">
                                 <x-ark-icon name="menu" />
