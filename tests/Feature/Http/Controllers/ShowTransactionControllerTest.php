@@ -12,6 +12,6 @@ it('should render the page without any errors', function () {
     configureExplorerDatabase();
 
     $this
-        ->get(route('transaction', Transaction::factory()->create()))
+        ->get(route('transaction', Transaction::factory()->transfer()->create()))
         ->assertOk();
 });

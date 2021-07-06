@@ -36,34 +36,34 @@ final class FeeCache implements Contract
         $this->put(sprintf('historical/%s', $period), $this->chartjs($data));
     }
 
-    public function getMinimum(string $period): float
+    public function getMinimum(string $key): float
     {
-        return (float) $this->get(sprintf('minimum/%s', $period));
+        return (float) $this->get(sprintf('minimum/%s', $key));
     }
 
-    public function setMinimum(string $period, float $data): void
+    public function setMinimum(string $key, float $data): void
     {
-        $this->put(sprintf('minimum/%s', $period), $data);
+        $this->put(sprintf('minimum/%s', $key), $data);
     }
 
-    public function getAverage(string $period): float
+    public function getAverage(string $key): float
     {
-        return (float) $this->get(sprintf('average/%s', $period));
+        return (float) $this->get(sprintf('average/%s', $key));
     }
 
-    public function setAverage(string $period, float $data): void
+    public function setAverage(string $key, float $data): void
     {
-        $this->put(sprintf('average/%s', $period), $data);
+        $this->put(sprintf('average/%s', $key), $data);
     }
 
-    public function getMaximum(string $period): float
+    public function getMaximum(string $key): float
     {
-        return (float) $this->get(sprintf('maximum/%s', $period));
+        return (float) $this->get(sprintf('maximum/%s', $key));
     }
 
-    public function setMaximum(string $period, float $data): void
+    public function setMaximum(string $key, float $data): void
     {
-        $this->put(sprintf('maximum/%s', $period), $data);
+        $this->put(sprintf('maximum/%s', $key), $data);
     }
 
     public function getCache(): TaggedCache

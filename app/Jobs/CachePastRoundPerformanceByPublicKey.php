@@ -23,20 +23,23 @@ final class CachePastRoundPerformanceByPublicKey implements ShouldQueue
 
     public function handle(): void
     {
-        (new WalletCache())->setPerformance($this->publicKey, collect(range($this->round - 6, $this->round - 2))->mapWithKeys(function ($round): array {
-            $roundStart = (int) $round * Network::delegateCount();
+        (new WalletCache())->setPerformance(
+            $this->publicKey,
+            collect(range($this->round - 6, $this->round - 2))
+                ->mapWithKeys(function ($round): array {
+                    $roundStart = (int) $round * Network::delegateCount();
 
-            return [
-                $round => [
-                    'min' => $roundStart,
-                    'max' => $roundStart + (Network::delegateCount() - 1),
-                ],
-            ];
-        })->map(function ($round): bool {
-            return Block::query()
-                ->where('generator_public_key', $this->publicKey)
-                ->whereBetween('height', [$round['min'], $round['max']])
-                ->count() > 0;
-        })->values()->toArray());
+                    return [
+                        $round => [
+                            'min' => $roundStart,
+                            'max' => $roundStart + Network::delegateCount(),
+                        ],
+                    ];
+                })->map(function ($round): bool {
+                    return Block::query()
+                        ->where('generator_public_key', $this->publicKey)
+                        ->whereBetween('height', [$round['min'], $round['max']])
+                        ->count() > 0;
+                })->values()->toArray());
     }
 }

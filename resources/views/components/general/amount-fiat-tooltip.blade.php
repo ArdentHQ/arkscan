@@ -31,15 +31,8 @@
         </span>
     @endif
 
-    @if(Network::canBeExchanged())
-        <span @if ($amount) data-tippy-content="{{ $fiat }}" @endif>
-            {{ $isSent ? '-' : ($isReceived ? '+' : '')}}
-            <x-currency :currency="Network::currency()">{{ $amount }}</x-currency>
-        </span>
-    @else
-        <span>
-            {{ $isSent ? '-' : ($isReceived ? '+' : '')}}
-            <x-currency :currency="Network::currency()">{{ $amount }}</x-currency>
-        </span>
-    @endif
+    <span @if(Network::canBeExchanged()) data-tippy-content="{{ $fiat }}" @endif>
+        {{ $isSent ? '-' : ($isReceived ? '+' : '')}}
+        <x-currency :currency="Network::currency()">{{ $amount }}</x-currency>
+    </span>
 </span>

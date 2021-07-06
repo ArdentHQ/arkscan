@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Livewire\WalletBalance;
 use App\Models\Wallet;
 use App\Services\Cache\CryptoCompareCache;
+use App\Services\NumberFormatter;
 use App\Services\Settings;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
@@ -17,7 +18,8 @@ it('should show the balance of the wallet', function () {
 
     $wallet = Wallet::factory()->create(['balance' => 125456]);
 
-    Livewire::test(WalletBalance::class, ['wallet' => $wallet])->assertSee('0.01 USD');
+    Livewire::test(WalletBalance::class, ['wallet' => $wallet])
+        ->assertSee(NumberFormatter::currency(0.01, 'USD'));
 });
 
 it('updates the balance when currency changes', function () {
@@ -31,7 +33,8 @@ it('updates the balance when currency changes', function () {
 
     $wallet = Wallet::factory()->create(['balance' => 125456]);
 
-    $component = Livewire::test(WalletBalance::class, ['wallet' => $wallet])->assertSee('0.01 USD');
+    $component = Livewire::test(WalletBalance::class, ['wallet' => $wallet])
+        ->assertSee(NumberFormatter::currency(0.01, 'USD'));
 
     $settings = Settings::all();
     $settings['currency'] = 'BTC';

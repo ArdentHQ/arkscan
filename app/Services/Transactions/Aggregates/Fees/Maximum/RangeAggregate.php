@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Transactions\Aggregates\Fees\Maximum;
 
 use App\Services\BigNumber;
-use App\Services\Transactions\Aggregates\Fees\Concerns\HasQueries;
+use App\Services\Transactions\Aggregates\Concerns\HasQueries;
 use Carbon\Carbon;
 
 final class RangeAggregate

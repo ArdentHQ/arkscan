@@ -70,7 +70,6 @@ return [
         'recipient_list'          => 'Recipient List',
         'musig_participants'      => 'M-of-N Multisig',
         'musig_participants_text' => ':0 of :1',
-        'transaction_type'        => 'Transaction Type',
         'name'                    => 'Name',
         'category'                => 'Category',
         'ipfs_hash'               => 'IPFS Hash',
@@ -212,6 +211,15 @@ return [
             'voting'               => 'Voting (:percent)',
             'registered-delegates' => 'Registered Delegates',
             'wallets'              => 'Wallets',
+        ],
+        'insights' => [
+            'all-time-transactions'   => 'All-Time Transactions',
+            'transactions'            => 'Transactions',
+            'current-average-fee'     => 'Current Average Fee (:type)',
+            'min-fee'                 => 'Min Fee',
+            'max-fee'                 => 'Max Fee',
+            'all-time-fees-collected' => 'All-Time Fees Collected',
+            'fees'                    => 'Fees',
         ],
     ],
 

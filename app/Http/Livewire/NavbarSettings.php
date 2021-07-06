@@ -23,11 +23,18 @@ final class NavbarSettings extends Component
         $originalCurrency = Arr::get(Settings::all(), 'currency');
         $newCurrency      = Arr::get($this->state, 'currency');
 
+        $originalTheme = Arr::get(Settings::all(), 'darkTheme');
+        $newTheme      = Arr::get($this->state, 'darkTheme');
+
         Session::put('settings', json_encode($this->state));
 
         if ($originalCurrency !== $newCurrency) {
             $this->emit('currencyChanged', $newCurrency);
             $this->emit('refreshNetworkStatusBlock');
+        }
+
+        if ($originalTheme !== $newTheme) {
+            $this->emit('toggleDarkMode', Settings::theme());
         }
     }
 }

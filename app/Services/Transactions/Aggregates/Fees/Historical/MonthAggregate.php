@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Transactions\Aggregates\Fees\Historical;
 
-use App\Services\Transactions\Aggregates\Fees\Concerns\HasPlaceholders;
-use App\Services\Transactions\Aggregates\Fees\Concerns\HasQueries;
+use App\Services\Transactions\Aggregates\Concerns\HasPlaceholders;
+use App\Services\Transactions\Aggregates\Concerns\HasQueries;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
