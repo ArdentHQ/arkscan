@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Jobs\GenerateVoteReport as Job;
+use App\Jobs\GenerateVoteReport as GenerateVoteReportJob;
 use Illuminate\Console\Command;
 
 final class GenerateVoteReport extends Command
@@ -30,6 +30,6 @@ final class GenerateVoteReport extends Command
      */
     public function handle()
     {
-        (new Job())->handle();
+        GenerateVoteReportJob::dispatch();
     }
 }
