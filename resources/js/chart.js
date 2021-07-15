@@ -99,8 +99,18 @@ const CustomChart = (
                         value.type === "bar"
                             ? "transparent"
                             : graphic.borderWidth,
-                    lineTension: graphic.lineTension,
+                    cubicInterpolationMode: "monotone",
+                    tension: graphic.lineTension,
                     pointRadius: graphic.pointRadius,
+                    pointBackgroundColor: graphic.pointBackgroundColor,
+                    pointHoverRadius: tooltips ? graphic.pointHoverRadius : 0,
+                    pointHoverBorderWidth: tooltips
+                        ? graphic.pointHoverBorderWidth
+                        : 0,
+                    pointHoverBorderColor: tooltips ? graphic.borderColor : 0,
+                    pointHoverBackgroundColor: tooltips
+                        ? graphic.pointHoverBackgroundColor
+                        : 0,
                 });
             });
 
@@ -122,13 +132,13 @@ const CustomChart = (
                     ticks: {
                         ...fontConfig,
                         padding: 15,
-                        display: grid === "true" && key === 0,
+                        display: grid && key === 0,
                         suggestedMax: range.max,
                         callback: (value, index, data) =>
                             this.getCurrencyValue(value),
                     },
                     gridLines: {
-                        display: grid === "true" && key === 0,
+                        display: grid && key === 0,
                         drawBorder: false,
                     },
                 });
@@ -152,8 +162,6 @@ const CustomChart = (
                 datasets: this.loadData(),
             };
 
-            const yAxes = this.loadYAxes();
-
             const options = {
                 parsing: false,
                 normalized: true,
@@ -171,24 +179,27 @@ const CustomChart = (
                         bottom: 0,
                     },
                 },
+                tooltips: {
+                    enabled: false,
+                },
                 scales: {
+                    yAxes: this.loadYAxes(),
                     xAxes: [
                         {
                             type: "category",
                             labels: labels,
                             ticks: {
-                                display: grid === "true",
+                                display: grid,
                                 includeBounds: true,
                                 padding: 10,
                                 ...fontConfig,
                             },
                             gridLines: {
-                                display: grid === "true",
+                                display: grid,
                                 drawBorder: false,
                             },
                         },
                     ],
-                    yAxes: yAxes,
                 },
             };
 

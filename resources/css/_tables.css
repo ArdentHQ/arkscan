@@ -18,7 +18,7 @@ tr:hover td.hoverable-cell .table-avatar {
 }
 
 .dark tr:hover td.hoverable-cell .table-avatar {
-    @apply border-theme-secondary-800;
+    @apply border-black;
 }
 
 .fiat-hint {
