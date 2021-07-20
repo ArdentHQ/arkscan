@@ -21,15 +21,17 @@
     </div>
 
     <div class="pt-6 w-full border-t border-theme-secondary-300 dark:border-theme-secondary-800">
-        <x-ark-rich-select
-            wire:model="{{ $model }}"
-            wrapper-class="relative left-0 xl:inline-block"
-            dropdown-class="left-0 mt-1 origin-top-left"
-            button-class="block text-sm font-semibold text-left bg-transparent text-theme-secondary-700 dark:text-theme-secondary-200"
-            :initial-value="$selected"
-            :placeholder="$selected"
-            :options="$options"
-        />
+        <div wire:ignore>
+            <x-ark-rich-select
+                wire:model="{{ $model }}"
+                wrapper-class="relative left-0 xl:inline-block"
+                dropdown-class="left-0 mt-1 origin-top-left"
+                button-class="block text-sm font-semibold text-left bg-transparent text-theme-secondary-700 dark:text-theme-secondary-200"
+                :initial-value="$selected"
+                :placeholder="$selected"
+                :options="$options"
+            />
+        </div>
 
         <div class="flex flex-col gap-5 sm:flex-row sm:items-end xl:w-full @if($chart) sm:justify-between @endif">
             <div class="">
