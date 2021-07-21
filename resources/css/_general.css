@@ -169,25 +169,6 @@ body {
     }
 }
 
-/* Dropdowns Scrolling */
-.dropdown-scrolling::-webkit-scrollbar {
-    @apply rounded-lg;
-    width: 6px;
-    height: 4px;
-}
-
-.dropdown-scrolling::-webkit-scrollbar-track-piece:start {
-    background: transparent;
-}
-
-.dropdown-scrolling::-webkit-scrollbar-thumb {
-    @apply rounded-lg bg-theme-primary-200;
-}
-
-.dropdown-scrolling {
-    scrollbar-color: #bad6f0 transparent;
-}
-
 /* Loading States */
 .loading-state {
     @apply bg-theme-secondary-300 animate-pulse;
