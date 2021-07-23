@@ -13,9 +13,6 @@ use App\ViewModels\ViewModelFactory;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Livewire\Livewire;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should list the first page of records', function () {
     Block::factory(30)->create();

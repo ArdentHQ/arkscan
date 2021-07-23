@@ -10,9 +10,6 @@ use App\Models\Transaction;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should list the first page of records', function () {
     Transaction::factory(30)->transfer()->create();

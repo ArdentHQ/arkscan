@@ -8,9 +8,6 @@ use App\Services\Timestamp;
 use App\Services\Transactions\Aggregates\Fees\Historical\RangeAggregate;
 use Illuminate\Support\Collection;
 use function Spatie\Snapshots\assertMatchesSnapshot;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should aggregate the fees for the given range', function () {
     $start = Transaction::factory(10)->create([

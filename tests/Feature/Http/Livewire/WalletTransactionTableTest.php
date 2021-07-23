@@ -11,13 +11,10 @@ use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
 use Ramsey\Uuid\Uuid;
-use function Tests\configureExplorerDatabase;
 use function Tests\fakeCryptoCompare;
 
 beforeEach(function () {
     fakeCryptoCompare();
-
-    configureExplorerDatabase();
 
     $this->subject = Wallet::factory()->create();
 });

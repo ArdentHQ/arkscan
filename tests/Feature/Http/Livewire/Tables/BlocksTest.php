@@ -9,9 +9,6 @@ use App\Models\Scopes\OrderByHeightScope;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should list the first page of records', function () {
     Block::factory(30)->create();

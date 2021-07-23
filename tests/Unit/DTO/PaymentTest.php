@@ -5,11 +5,8 @@ declare(strict_types=1);
 use App\DTO\Payment;
 use App\Models\Wallet;
 use App\Services\NumberFormatter;
-use function Tests\configureExplorerDatabase;
 
 it('should make an instance that has all properties', function () {
-    configureExplorerDatabase();
-
     $wallet = Wallet::factory()->create();
 
     $subject = new Payment(123, [

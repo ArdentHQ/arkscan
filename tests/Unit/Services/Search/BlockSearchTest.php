@@ -8,9 +8,6 @@ use App\Models\Wallet;
 use App\Services\Search\BlockSearch;
 use App\Services\Timestamp;
 use Carbon\Carbon;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should search for a block by id', function (?string $modifier) {
     $block = Block::factory(10)->create()[0];

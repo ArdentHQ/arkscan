@@ -10,13 +10,10 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 
-use function Tests\configureExplorerDatabase;
 use function Tests\fakeCryptoCompare;
 
 it('should cache the history', function () {
     fakeCryptoCompare();
-
-    configureExplorerDatabase();
 
     $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.production')));
 
@@ -55,8 +52,6 @@ it('should cache the history', function () {
 });
 
 it('set values to null when cryptocompare is down', function () {
-    configureExplorerDatabase();
-
     $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.production')));
 
     $cache = new NetworkStatusBlockCache();

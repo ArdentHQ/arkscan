@@ -11,7 +11,6 @@ use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
-use function Tests\configureExplorerDatabase;
 use function Tests\fakeCryptoCompare;
 
 it('should execute the command', function () {
@@ -23,8 +22,6 @@ it('should execute the command', function () {
     ]);
 
     fakeCryptoCompare();
-
-    configureExplorerDatabase();
 
     $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.production')));
 
@@ -46,8 +43,6 @@ it('set values to null when cryptocompare is down', function () {
             'locale'   => 'en_US',
         ],
     ]);
-
-    configureExplorerDatabase();
 
     $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.production')));
 
@@ -77,8 +72,6 @@ it('should ignore the cache for development network', function () {
     ]);
 
     fakeCryptoCompare();
-
-    configureExplorerDatabase();
 
     $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.development')));
 

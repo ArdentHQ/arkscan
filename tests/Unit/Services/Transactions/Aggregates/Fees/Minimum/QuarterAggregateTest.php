@@ -7,9 +7,6 @@ use App\Models\Transaction;
 use App\Services\Timestamp;
 use App\Services\Transactions\Aggregates\Fees\Minimum\QuarterAggregate;
 use Carbon\Carbon;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should determine the average fee for the given date range', function () {
     Carbon::setTestNow('2021-01-01 00:00:00');

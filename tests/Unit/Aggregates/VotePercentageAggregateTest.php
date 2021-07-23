@@ -7,11 +7,8 @@ use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
-use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
-    configureExplorerDatabase();
-
     (new NetworkCache())->setSupply(fn () => '13628098200000000');
 
     $wallet = Wallet::factory()->create(['balance' => '10000000000000000']);

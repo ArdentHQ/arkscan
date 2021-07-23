@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use App\Services\Transactions\TransactionType;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should determine the type', function (string $type, string $expected) {
     $transaction     = Transaction::factory()->{$type}()->create();

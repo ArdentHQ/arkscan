@@ -6,12 +6,9 @@ use App\Console\Commands\CacheDelegatesWithVoters;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Support\Facades\Queue;
-use function Tests\configureExplorerDatabase;
 
 it('should execute the command', function () {
     Queue::fake();
-
-    configureExplorerDatabase();
 
     $delegate = Wallet::factory()->create([
         'attributes' => ['delegate' => ['voteBalance' => 100]],

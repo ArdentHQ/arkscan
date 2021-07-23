@@ -7,9 +7,6 @@ use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Livewire\Livewire;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should search for a wallet and redirect', function () {
     $wallet = Wallet::factory()->create();

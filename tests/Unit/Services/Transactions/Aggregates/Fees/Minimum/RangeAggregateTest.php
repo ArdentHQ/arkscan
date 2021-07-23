@@ -7,9 +7,6 @@ use App\Models\Transaction;
 use App\Services\Timestamp;
 
 use App\Services\Transactions\Aggregates\Fees\Minimum\RangeAggregate;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should determine the average fee for the given date range', function () {
     Transaction::factory()->create(['fee' => 1e8]);

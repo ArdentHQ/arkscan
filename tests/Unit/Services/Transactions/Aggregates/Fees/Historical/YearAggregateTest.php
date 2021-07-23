@@ -9,9 +9,6 @@ use App\Services\Transactions\Aggregates\Fees\Historical\YearAggregate;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use function Spatie\Snapshots\assertMatchesSnapshot;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should aggregate the fees for 12 months', function () {
     Carbon::setTestNow('2021-01-01 00:00:00');

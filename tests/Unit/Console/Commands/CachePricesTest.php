@@ -8,13 +8,10 @@ use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\CryptoCompareCache;
 use App\Services\Cache\PriceChartCache;
 use Illuminate\Support\Collection;
-use function Tests\configureExplorerDatabase;
 use function Tests\fakeCryptoCompare;
 
 it('should execute the command', function (string $network) {
     fakeCryptoCompare();
-
-    configureExplorerDatabase();
 
     $this->app->singleton(Network::class, fn () => new Blockchain(config($network)));
 

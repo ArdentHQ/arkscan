@@ -10,11 +10,8 @@ use App\Services\Cache\NetworkCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
 use Livewire\Livewire;
-use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
-    configureExplorerDatabase();
-
     (new NetworkCache())->setSupply(fn () => strval(10e8));
 });
 

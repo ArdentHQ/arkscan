@@ -7,10 +7,8 @@ use App\Models\Transaction;
 use App\Services\Cache\FeeCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
-use function Tests\configureExplorerDatabase;
 
 it('should execute the command', function () {
-    configureExplorerDatabase();
     Carbon::setTestNow('2021-01-01 00:00:00');
 
     $start = Transaction::factory(10)->create([

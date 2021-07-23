@@ -6,12 +6,8 @@ use App\Models\Wallet;
 use App\Services\Cache\DelegateCache;
 use App\Services\Cache\NetworkCache;
 
-use function Tests\configureExplorerDatabase;
-
 it('should render the page without any errors', function () {
     $this->withoutExceptionHandling();
-
-    configureExplorerDatabase();
 
     $wallet = Wallet::factory()->create();
 

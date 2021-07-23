@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 use App\Aggregates\VoteCountAggregate;
 use App\Models\Wallet;
-use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
-    configureExplorerDatabase();
-
     Wallet::factory(10)->create([
         'balance'    => 1e8,
         'attributes' => ['vote' => 'pubkey'],

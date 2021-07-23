@@ -8,11 +8,7 @@ use App\Models\ForgingStats;
 use App\Models\Round;
 use Illuminate\Support\Facades\Artisan;
 
-use function Tests\configureExplorerDatabase;
-
 beforeEach(function () {
-    configureExplorerDatabase();
-
     $delegatePublicKeysBalanceDesc = [
         '027716e659220085e41389efc7cf6a05f7f7c659cf3db9126caabce6cda9156582',
         '03d3c6889608074b44155ad2e6577c3368e27e6e129c457418eb3e5ed029544e8d',

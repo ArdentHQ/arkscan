@@ -9,11 +9,8 @@ use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
-use function Tests\configureExplorerDatabase;
 
 it('should make an instance that has all properties', function (string $status) {
-    configureExplorerDatabase();
-
     $wallet = Wallet::factory()->create();
 
     $subject = new Slot([
@@ -44,8 +41,6 @@ it('should make an instance that has all properties', function (string $status) 
 })->with(['done', 'next', 'pending']);
 
 it('should not be marked as missing if it never had a block', function () {
-    configureExplorerDatabase();
-
     $wallet = Wallet::factory()->create();
 
     $subject = new Slot([
@@ -62,8 +57,6 @@ it('should not be marked as missing if it never had a block', function () {
 });
 
 it('should show the correct missed blocks amount when spanning multiple rounds', function () {
-    configureExplorerDatabase();
-
     $wallet = Wallet::factory()->create();
 
     $subject = new Slot([

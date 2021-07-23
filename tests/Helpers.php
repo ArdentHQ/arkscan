@@ -6,30 +6,7 @@ namespace Tests;
 
 use ArkEcosystem\Crypto\Identities\PublicKey;
 use FurqanSiddiqui\BIP39\BIP39;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
-
-function configureExplorerDatabase(): void
-{
-    // $database = database_path('explorer.sqlite');
-
-    // File::delete($database);
-
-    // touch($database);
-
-    // Config::set('database.connections.explorer', [
-    //     'driver'                  => 'sqlite',
-    //     'url'                     => '',
-    //     'database'                => $database,
-    //     'prefix'                  => '',
-    //     'foreign_key_constraints' => true,
-    // ]);
-
-    Artisan::call('migrate:fresh', [
-        '--database' => 'explorer',
-        '--path'     => 'tests/migrations',
-    ]);
-}
 
 function fakeKnownWallets(): void
 {

@@ -7,9 +7,6 @@ use App\Models\Wallet;
 
 use App\Services\Cache\NetworkCache;
 use App\Services\Transactions\TransactionState;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should determine if the transaction is confirmed', function () {
     (new NetworkCache())->setHeight(fn () => 2000);

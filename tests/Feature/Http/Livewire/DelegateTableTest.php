@@ -12,10 +12,6 @@ use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
 
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
-
 it('should render with all delegates', function () {
     $component = Livewire::test(DelegateTable::class);
 

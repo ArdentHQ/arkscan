@@ -6,11 +6,8 @@ use App\Models\Round;
 use App\ViewModels\RoundViewModel;
 
 use function Spatie\Snapshots\assertMatchesSnapshot;
-use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
-    configureExplorerDatabase();
-
     $this->subject = new RoundViewModel(Round::factory()->create(['balance' => '500000000000']));
 });
 

@@ -7,12 +7,9 @@ use App\Services\Cache\FeeCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\PriceChartCache;
-use function Tests\configureExplorerDatabase;
 
 it('should render the page without any errors', function () {
     $this->withoutExceptionHandling();
-
-    configureExplorerDatabase();
 
     (new PriceChartCache())->setDay('USD', collect([]));
     (new PriceChartCache())->setWeek('USD', collect([]));

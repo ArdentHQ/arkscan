@@ -8,7 +8,6 @@ use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Livewire\Livewire;
-use function Tests\configureExplorerDatabase;
 
 function createRoundWithDelegates(): void
 {
@@ -39,8 +38,6 @@ function createRoundWithDelegates(): void
         ]);
     });
 }
-
-beforeEach(fn () => configureExplorerDatabase());
 
 // @TODO: make assertions about data visibility
 it('should render without errors', function () {
