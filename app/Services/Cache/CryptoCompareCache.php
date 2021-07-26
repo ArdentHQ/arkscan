@@ -32,7 +32,7 @@ final class CryptoCompareCache implements Contract
 
     public function setPrices(string $currency, Collection $prices): Collection
     {
-        return $this->remember(sprintf('prices/%s', $currency), now()->addMinutes(10), fn () =>$prices);
+        return $this->remember(sprintf('prices/%s', $currency), now()->addMinutes(10), fn () => $prices);
     }
 
     public function getCache(): TaggedCache

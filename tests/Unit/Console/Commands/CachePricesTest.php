@@ -21,9 +21,9 @@ it('should execute the command', function (string $network) {
     (new CachePrices())->handle($crypto, $prices);
 
     expect($crypto->getPrices('USD'))->toBeInstanceOf(Collection::class);
-    expect($prices->getDay('USD'))->toBeArray();
-    expect($prices->getWeek('USD'))->toBeArray();
-    expect($prices->getMonth('USD'))->toBeArray();
-    expect($prices->getQuarter('USD'))->toBeArray();
-    expect($prices->getYear('USD'))->toBeArray();
+    expect($prices->getHistorical('USD', 'day'))->toBeArray();
+    expect($prices->getHistorical('USD', 'week'))->toBeArray();
+    expect($prices->getHistorical('USD', 'month'))->toBeArray();
+    expect($prices->getHistorical('USD', 'quarter'))->toBeArray();
+    expect($prices->getHistorical('USD', 'year'))->toBeArray();
 })->with(['explorer.networks.development', 'explorer.networks.production']);

@@ -67,20 +67,6 @@ return [
     ],
 
     'statistics' => [
-        'transaction_types' => [
-            'transfer'              => 'Transfer',
-            'second_signature'      => 'Second Signature',
-            'delegate_registration' => 'Delegate Registration',
-            'vote'                  => 'Vote',
-            'multi_signature'       => 'Multi Signature',
-            'ipfs'                  => 'IPFS',
-            'multi_payment'         => 'Multi Payment',
-            'delegate_resignation'  => 'Delegate Resignation',
-            'timelock'              => 'Timelock',
-            'timelock_claim'        => 'Timelock Claim',
-            'timelock_refund'       => 'Timelock Refund',
-        ],
-
         'periods' => [
             'day'     => 'Day',
             'week'    => 'Week',

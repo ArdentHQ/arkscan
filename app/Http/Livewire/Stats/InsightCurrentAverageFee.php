@@ -17,7 +17,7 @@ final class InsightCurrentAverageFee extends Component
 
     public string $transactionType = 'transfer';
 
-    private string $refreshInterval = '';
+    public string $refreshInterval = '';
 
     public function mount(): void
     {

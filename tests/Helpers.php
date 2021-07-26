@@ -121,12 +121,15 @@ function fakeKnownWallets(): void
     ]);
 }
 
-function fakeCryptoCompare(): void
+function fakeCryptoCompare(bool $setToZero = false): void
 {
+    $histohour = 'histohour'.($setToZero ? '-zero' : '');
+
     Http::fake([
         'cryptocompare.com/data/pricemultifull*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/pricemultifull.json')), true), 200),
+        'cryptocompare.com/data/price*'          => Http::response(['USD' => 0.2907, 'BTC' => 0.00002907], 200),
         'cryptocompare.com/data/histoday*'       => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/historical.json')), true), 200),
-        'cryptocompare.com/data/histohour*'      => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histohour.json')), true), 200),
+        'cryptocompare.com/data/histohour*'      => Http::response(json_decode(file_get_contents(base_path("tests/fixtures/cryptocompare/{$histohour}.json")), true), 200),
     ]);
 }
 

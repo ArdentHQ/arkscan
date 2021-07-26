@@ -212,6 +212,7 @@ return [
             'registered-delegates' => 'Registered Delegates',
             'wallets'              => 'Wallets',
         ],
+
         'insights' => [
             'all-time-transactions'   => 'All-Time Transactions',
             'transactions'            => 'Transactions',
@@ -220,6 +221,13 @@ return [
             'max-fee'                 => 'Max Fee',
             'all-time-fees-collected' => 'All-Time Fees Collected',
             'fees'                    => 'Fees',
+        ],
+
+        'chart' => [
+            'price'      => 'Price:',
+            'market-cap' => 'Market Cap',
+            'min-price'  => 'Min Price',
+            'max-price'  => 'Max Price',
         ],
     ],
 

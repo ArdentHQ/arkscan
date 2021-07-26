@@ -20,7 +20,7 @@
         '{{ $tooltips }}',
         {{ $theme }},
         '{{ time() }}',
-        '{{ $currency }}'
+        '{{ $currency }}',
     )"
     x-init="init"
     @stats-period-updated.window="updateChart"
