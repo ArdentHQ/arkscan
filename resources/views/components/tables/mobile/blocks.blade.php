@@ -1,6 +1,6 @@
 <div class="divide-y table-list-mobile">
     @foreach ($blocks as $block)
-        <div class="table-list-mobile-row" wire:key="wire:key="{{ Helpers::generateId('mobile', $block->id(), Settings::currency()) }}">
+        <div class="table-list-mobile-row" wire:key="{{ Helpers::generateId('mobile', $block->id(), Settings::currency()) }}">
             <x-tables.rows.mobile.block-id :model="$block" />
 
             <x-tables.rows.mobile.timestamp :model="$block" />
