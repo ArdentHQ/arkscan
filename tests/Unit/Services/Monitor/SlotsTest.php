@@ -16,7 +16,7 @@ it('return epoch time as number', function () {
     $result = $this->subject->getTime(1603703705);
 
     expect($result)->toBeNumeric();
-    expect($result)->toEqual(113602);
+    expect($result)->toEqual(113602505);
 });
 
 it('return slot number', function () {

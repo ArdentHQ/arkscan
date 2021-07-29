@@ -125,7 +125,7 @@ final class Slot
         return $this->status;
     }
 
-    private function isWaiting(): bool
+    public function isWaiting(): bool
     {
         if ($this->isNext()) {
             return true;

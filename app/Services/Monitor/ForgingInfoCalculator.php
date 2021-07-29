@@ -8,7 +8,7 @@ use App\Facades\Network;
 
 final class ForgingInfoCalculator
 {
-    public static function calculate(int $timestamp, int $height): array
+    public static function calculate(?int $timestamp, int $height): array
     {
         $slotInfo = (new Slots())->getSlotInfo($timestamp, $height);
 
