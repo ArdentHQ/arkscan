@@ -36,7 +36,7 @@
         "symfony/psr-http-message-bridge": "^2.0"
     },
     "require-dev": {
-        "arkecosystem/stan": "^3.0",
+        "arkecosystem/stan": "^3.3",
         "barryvdh/laravel-debugbar": "^3.5",
         "facade/ignition": "^2.3.6",
         "furqansiddiqui/bip39-mnemonic-php": "^0.1.3",

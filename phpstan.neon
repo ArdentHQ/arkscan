@@ -16,7 +16,6 @@ parameters:
         # Laravel
         - '#Variable method call#'
         - '#Dynamic call to static method#'
-        - '#but return statement is missing#'
         - '#InvalidArgumentException constructor expects string#'
         - '#withScope#'
         # FIXME
