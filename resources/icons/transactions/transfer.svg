@@ -1,17 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 25.2.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;}
-	.st1{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-miterlimit:4.0005;}
-</style>
-<g id="Transaction_Type" transform="translate(24.5 -1294.5)">
-	<g id="Сгруппировать_775">
-		<line id="Линия_24" class="st0" x1="-17.8" y1="1297.4" x2="-17.8" y2="1311.6"/>
-		<line id="Линия_26" class="st1" x1="-12.1" y1="1303.1" x2="-5.5" y2="1311.3"/>
-		<line id="Линия_27" class="st1" x1="-5.5" y1="1303.1" x2="-12.1" y2="1311.3"/>
-	</g>
-	<line id="Линия_25" class="st0" x1="-23.5" y1="1297.4" x2="-12.1" y2="1297.4"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6.7 2.9v14.2m5.7-8.5l6.6 8.2m0-8.2l-6.6 8.2M1 2.9h11.4"/></svg>
