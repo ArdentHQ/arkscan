@@ -23,7 +23,7 @@
                                     <a href="{{ route('wallet', $transaction->voted()->address()) }}" class="font-semibold link">
                                         {{ $transaction->voted()->username() }}
                                     </a>
-                                    <span class="min-w-0 text-theme-secondary-400">
+                                    <span class="min-w-0 font-semibold text-theme-secondary-500 dark:text-theme-secondary-700">
                                         <x-truncate-dynamic>{{ $transaction->voted()->address() }}</x-truncate-dynamic>
                                     </span>
                                 </div>
@@ -37,13 +37,7 @@
                             <div class="flex flex-grow justify-end items-center space-x-4">
                                 <span>@lang('pages.transaction.vote')</span>
 
-                                <div class="hidden lg:block">
-                                    <div class="circled-icon text-theme-success-500 border-theme-success-500 dark:text-theme-success-600 dark:border-theme-success-600">
-                                        <x-ark-icon name="app-transactions.vote" style="success" />
-                                    </div>
-                                </div>
-
-                                <div class="lg:hidden">
+                                <div class="vote-circle">
                                     <x-ark-icon name="app-transactions.vote" style="success" />
                                 </div>
                             </div>
@@ -58,7 +52,7 @@
                                     <a href="{{ route('wallet', $transaction->unvoted()->address()) }}" class="font-semibold link">
                                         {{ $transaction->unvoted()->username() }}
                                     </a>
-                                    <span class="min-w-0 text-theme-secondary-400">
+                                    <span class="min-w-0 font-semibold text-theme-secondary-500 dark:text-theme-secondary-700">
                                         <x-truncate-dynamic>{{ $transaction->unvoted()->address() }}</x-truncate-dynamic>
                                     </span>
                                 </div>
@@ -71,13 +65,7 @@
                             <div class="flex flex-grow justify-end items-center space-x-4">
                                 <span>@lang('pages.transaction.unvote')</span>
 
-                                <div class="hidden lg:block">
-                                    <div class="circled-icon text-theme-danger-500 border-theme-danger-500 dark:text-theme-danger-600 dark:border-theme-danger-600">
-                                        <x-ark-icon name="app-transactions.unvote" style="danger" />
-                                    </div>
-                                </div>
-
-                                <div class="lg:hidden">
+                                <div class="unvote-circle">
                                     <x-ark-icon name="app-transactions.unvote" style="danger" />
                                 </div>
                             </div>

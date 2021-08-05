@@ -39,7 +39,9 @@ tr:hover td.hoverable-cell .table-avatar {
     @apply py-3;
 }
 
-.table-compact .table-container table > tbody .transaction-icon {
+.table-compact .table-container table > tbody .transaction-icon,
+.table-compact .table-container table > tbody .vote-circle,
+.table-compact .table-container table > tbody .unvote-circle {
     @apply w-5 h-5 border-0;
 }
 
