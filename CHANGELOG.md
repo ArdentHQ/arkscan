@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 - monitor not updating when blocks are missed ([#876]) (f6325cb0, @alexbarnsley)
 - transaction icons disappearing when latest transaction table updates ([#890]) (4caea7a4, @leMaur)
 - update horizon to support --rest ([#891]) (247d7500, @ItsANameToo)
+- use proper address colors for multivote and delegate addresses ([#894]) (f4046c8c, @ItsANameToo)
 
 ---
 
@@ -54,3 +55,4 @@ All notable changes to this project will be documented in this file.
 [#876]: https://github.com/ArkEcosystem/explorer.ark.io/pull/876
 [#890]: https://github.com/ArkEcosystem/explorer.ark.io/pull/890
 [#891]: https://github.com/ArkEcosystem/explorer.ark.io/pull/891
+[#894]: https://github.com/ArkEcosystem/explorer.ark.io/pull/894
