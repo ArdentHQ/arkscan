@@ -2,7 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Models\Round;
 use App\Services\Monitor\Monitor;
+
+beforeEach(function () {
+    Round::factory()->create([
+        'round'      => '112168',
+    ]);
+});
 
 it('should calculate the forging information', function () {
     expect(Monitor::roundNumber())->toBeInt();

@@ -10,7 +10,6 @@ use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Livewire\Livewire;
-use function Tests\configureExplorerDatabase;
 
 function createRoundWithDelegatesAndPerformances(array $performances = null, bool $addBlockForNextRound = true): void
 {
@@ -51,8 +50,6 @@ function createRoundWithDelegatesAndPerformances(array $performances = null, boo
         ]);
     });
 }
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should render without errors', function () {
     createRoundWithDelegatesAndPerformances();

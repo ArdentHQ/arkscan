@@ -5,11 +5,8 @@ declare(strict_types=1);
 use App\Jobs\CacheMultiSignatureAddress;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Cache;
-use function Tests\configureExplorerDatabase;
 
 it('should compute and cache the multi signature address', function () {
-    configureExplorerDatabase();
-
     $min = 3;
     $publicKeys = [
         '02fb3def2593a00c5b84620addf28ff21bac452bd71a37d4d8e24f301683a81b56',

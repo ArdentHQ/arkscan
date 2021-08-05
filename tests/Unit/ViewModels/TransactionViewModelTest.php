@@ -17,11 +17,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use function Spatie\Snapshots\assertMatchesSnapshot;
-use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
-    configureExplorerDatabase();
-
     $this->block = Block::factory()->create(['height' => 1]);
     Block::factory()->create(['height' => 5000000]);
 
@@ -1007,8 +1004,6 @@ it('should fail to get the username if the transaction is not a delegate registr
 });
 
 it('should get the vendor field', function () {
-    configureExplorerDatabase();
-
     $transaction = Transaction::factory()->create([]);
 
     DB::connection('explorer')->update('UPDATE transactions SET vendor_field = ? WHERE id = ?', ['Hello World', $transaction->id]);
@@ -1019,8 +1014,6 @@ it('should get the vendor field', function () {
 });
 
 it('should fail to get the vendor field if it is empty', function () {
-    configureExplorerDatabase();
-
     $transaction = Transaction::factory()->create(['vendor_field' => null]);
 
     $this->subject = new TransactionViewModel($transaction->fresh());
@@ -1029,8 +1022,6 @@ it('should fail to get the vendor field if it is empty', function () {
 });
 
 it('should fail to get the vendor field if it is empty after reading it', function () {
-    configureExplorerDatabase();
-
     $transaction = Transaction::factory()->create([]);
 
     DB::connection('explorer')->update('UPDATE transactions SET vendor_field = ? WHERE id = ?', ['', $transaction->id]);

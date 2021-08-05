@@ -69,7 +69,7 @@
 
         @livewireScripts()
 
-        @stack('extraStyle')
+        @stack('scripts')
 
         <!-- Scripts -->
         <script src="{{ mix('js/manifest.js') }}" defer></script>

@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 use App\Console\Commands\CacheNetworkAggregates;
 use App\Services\Cache\NetworkCache;
-use function Tests\configureExplorerDatabase;
 
 it('should execute the command', function () {
-    configureExplorerDatabase();
-
     $cache = new NetworkCache();
     $cache->setSupply(fn () => strval(100e8));
 

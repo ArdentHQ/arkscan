@@ -13,12 +13,9 @@ use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 
 use Illuminate\Support\Collection;
-use function Tests\configureExplorerDatabase;
 use Tests\InvalidModel;
 
 it('should make a view model', function ($modelClass, $viewModel) {
-    configureExplorerDatabase();
-
     expect(ViewModelFactory::make($modelClass::factory()->create()))->toBeInstanceOf($viewModel);
 })->with([
     [Block::class, BlockViewModel::class],
@@ -28,8 +25,6 @@ it('should make a view model', function ($modelClass, $viewModel) {
 ]);
 
 it('should make a view model collection', function ($modelClass, $viewModel) {
-    configureExplorerDatabase();
-
     $models = $modelClass::factory(10)->create();
 
     expect(ViewModelFactory::collection($models))->toBeInstanceOf(Collection::class);

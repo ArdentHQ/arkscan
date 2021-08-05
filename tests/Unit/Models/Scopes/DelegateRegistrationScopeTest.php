@@ -5,11 +5,8 @@ declare(strict_types=1);
 use App\Models\Scopes\DelegateRegistrationScope;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Scope;
-use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
-    configureExplorerDatabase();
-
     $this->subject = new DelegateRegistrationScope();
 });
 

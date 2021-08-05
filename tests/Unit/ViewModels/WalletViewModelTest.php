@@ -13,12 +13,9 @@ use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Support\Facades\Cache;
 use function Spatie\Snapshots\assertMatchesSnapshot;
-use function Tests\configureExplorerDatabase;
 use function Tests\fakeKnownWallets;
 
 beforeEach(function () {
-    configureExplorerDatabase();
-
     $this->app->singleton(Contract::class, fn () => NetworkFactory::make('production'));
 
     $this->wallet = Wallet::factory()->create([

@@ -7,11 +7,8 @@ use App\Jobs\CachePastRoundPerformanceByPublicKey;
 use App\Models\Block;
 use App\Services\Cache\WalletCache;
 use Illuminate\Support\Facades\Cache;
-use function Tests\configureExplorerDatabase;
 
 it('should cache the past performance for a public key', function () {
-    configureExplorerDatabase();
-
     $publicKey = 'generator';
     foreach (range(10, 14) as $round) {
         Block::factory()->create([
@@ -36,8 +33,6 @@ it('should cache the past performance for a public key', function () {
 });
 
 it('should cache end of a round missed blocks for a public key ', function () {
-    configureExplorerDatabase();
-
     $publicKey = 'generator';
     foreach (range(10, 13) as $round) {
         Block::factory()->create([

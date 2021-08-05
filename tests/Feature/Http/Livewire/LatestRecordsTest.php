@@ -13,9 +13,6 @@ use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
 use Ramsey\Uuid\Uuid;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should list the first page of blocks', function () {
     Block::factory(30)->create();

@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-final class CreateForgingStatsTestTable extends Migration
+final class CreateForgingStatsTableForTests extends Migration
 {
     public function up()
     {
@@ -17,10 +17,5 @@ final class CreateForgingStatsTestTable extends Migration
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
-    }
-
-    public function down()
-    {
-        Schema::dropIfExists('forging_stats');
     }
 }

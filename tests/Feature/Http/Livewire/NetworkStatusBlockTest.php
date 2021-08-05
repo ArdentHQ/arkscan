@@ -10,11 +10,8 @@ use App\Services\Settings;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Livewire\Livewire;
-use function Tests\configureExplorerDatabase;
 
 it('should render with a height, supply and not available market cap', function () {
-    configureExplorerDatabase();
-
     Block::factory()->create([
         'height'               => 5651290,
         'generator_public_key' => Wallet::factory()->create([
@@ -32,8 +29,6 @@ it('should render with a height, supply and not available market cap', function 
 
 it('should render with a height, supply and market cap', function () {
     Config::set('explorer.network', 'production');
-
-    configureExplorerDatabase();
 
     Block::factory()->create([
         'height'               => 5651290,
@@ -59,8 +54,6 @@ it('should render with a height, supply and market cap for BTC', function () {
     $settings['currency'] = 'BTC';
 
     Session::put('settings', json_encode($settings));
-
-    configureExplorerDatabase();
 
     Block::factory()->create([
         'height'               => 5651290,

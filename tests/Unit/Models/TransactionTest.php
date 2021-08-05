@@ -6,11 +6,8 @@ use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
-    configureExplorerDatabase();
-
     $this->subject = Transaction::factory()->create([
         'fee'    => '100000000',
         'amount' => '200000000',

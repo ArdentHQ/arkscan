@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use App\Services\Transactions\TransactionTypeIcon;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should determine the icon that matches the type', function (string $type, string $icon) {
     $transaction = Transaction::factory()->{$type}()->create();

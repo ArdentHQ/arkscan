@@ -21,7 +21,7 @@ final class Slots
 
         $start = Network::epoch()->unix();
 
-        return (int) floor(($timestamp - $start) / 1000);
+        return $timestamp - $start;
     }
 
     public function getTimeInMsUntilNextSlot(): int
@@ -71,8 +71,6 @@ final class Slots
         if (is_null($timestamp)) {
             $timestamp = $this->getTime();
         }
-
-        $height = $this->getLatestHeight($height);
 
         $blockTime               = Network::blockTime();
         $totalSlotsFromLastSpan  = 0;

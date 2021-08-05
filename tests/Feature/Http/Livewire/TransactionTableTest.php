@@ -16,9 +16,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Livewire\Livewire;
 use Ramsey\Uuid\Uuid;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should list the first page of records', function () {
     Transaction::factory(30)->transfer()->create();

@@ -16,7 +16,7 @@ final class StatsHighlights extends Component
 {
     private string $currency = '';
 
-    private string $refreshInterval = '';
+    public string $refreshInterval = '';
 
     public function mount(): void
     {

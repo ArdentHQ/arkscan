@@ -5,11 +5,8 @@ declare(strict_types=1);
 use App\Models\Block;
 
 use App\Services\Monitor\Slots;
-use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
-    configureExplorerDatabase();
-
     Block::factory()->create();
 
     $this->subject = new Slots();
@@ -19,7 +16,7 @@ it('return epoch time as number', function () {
     $result = $this->subject->getTime(1603703705);
 
     expect($result)->toBeNumeric();
-    expect($result)->toEqual(113602);
+    expect($result)->toEqual(113602505);
 });
 
 it('return slot number', function () {
@@ -140,8 +137,6 @@ it('[isForgingAllowed] returns false when under half the time in the block remai
 });
 
 it('should get the time in ms until next slot', function () {
-    configureExplorerDatabase();
-
     Block::factory()->create(['height' => 1]);
 
     $nextSlotTime = $this->subject->getSlotTime($this->subject->getNextSlot());

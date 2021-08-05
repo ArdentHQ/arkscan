@@ -6,11 +6,8 @@ use App\Aggregates\ForgedAmountsAggregate;
 use App\Models\Block;
 
 use function Spatie\Snapshots\assertMatchesSnapshot;
-use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
-    configureExplorerDatabase();
-
     Block::factory(10)->create([
         'total_amount' => '1000000000',
         'total_fee'    => '800000000',

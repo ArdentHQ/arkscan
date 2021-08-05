@@ -7,9 +7,6 @@ use App\Models\Wallet;
 use App\Services\Search\TransactionSearch;
 use App\Services\Timestamp;
 use Carbon\Carbon;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should search for a transaction by id', function (?string $modifier) {
     $transaction = Transaction::factory(10)->create()[0];

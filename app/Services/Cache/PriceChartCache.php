@@ -16,54 +16,14 @@ final class PriceChartCache implements Contract
     use ManagesCache;
     use ManagesChart;
 
-    public function getDay(string $currency): array
+    public function getHistorical(string $currency, string $period): array
     {
-        return $this->get("day/$currency", []);
+        return $this->get(sprintf('historical/%s/%s', $currency, $period), []);
     }
 
-    public function setDay(string $currency, Collection $data): array
+    public function setHistorical(string $currency, string $period, Collection $data): void
     {
-        return $this->remember("day/$currency", now()->addHour(), fn () => $this->chartjs($data));
-    }
-
-    public function getWeek(string $currency): array
-    {
-        return $this->get("week/$currency", []);
-    }
-
-    public function setWeek(string $currency, Collection $data): array
-    {
-        return $this->remember("week/$currency", now()->addHour(), fn () => $this->chartjs($data));
-    }
-
-    public function getMonth(string $currency): array
-    {
-        return $this->get("month/$currency", []);
-    }
-
-    public function setMonth(string $currency, Collection $data): array
-    {
-        return $this->remember("month/$currency", now()->addHour(), fn () => $this->chartjs($data));
-    }
-
-    public function getQuarter(string $currency): array
-    {
-        return $this->get("quarter/$currency", []);
-    }
-
-    public function setQuarter(string $currency, Collection $data): array
-    {
-        return $this->remember("quarter/$currency", now()->addHour(), fn () => $this->chartjs($data));
-    }
-
-    public function getYear(string $currency): array
-    {
-        return $this->get("year/$currency", []);
-    }
-
-    public function setYear(string $currency, Collection $data): array
-    {
-        return $this->remember("year/$currency", now()->addHour(), fn () => $this->chartjs($data));
+        $this->put(sprintf('historical/%s/%s', $currency, $period), $this->chartjs($data));
     }
 
     public function getCache(): TaggedCache

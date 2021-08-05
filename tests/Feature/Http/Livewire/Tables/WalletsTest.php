@@ -11,9 +11,6 @@ use App\Services\Cache\NetworkCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should list the first page of records', function () {
     (new NetworkCache())->setSupply(fn () => strval(10e8));

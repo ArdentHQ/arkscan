@@ -5,11 +5,8 @@ declare(strict_types=1);
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
-use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
-    configureExplorerDatabase();
-
     $this->subject = Wallet::factory()->create([
         'balance'    => '100000000000',
         'attributes' => [

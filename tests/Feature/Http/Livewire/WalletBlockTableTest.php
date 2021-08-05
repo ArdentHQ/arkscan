@@ -9,13 +9,10 @@ use App\Models\Wallet;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
-use function Tests\configureExplorerDatabase;
 use function Tests\fakeCryptoCompare;
 
 beforeEach(function () {
     fakeCryptoCompare();
-
-    configureExplorerDatabase();
 
     $this->subject = Wallet::factory()->create();
 });

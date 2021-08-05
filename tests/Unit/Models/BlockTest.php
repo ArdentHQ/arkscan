@@ -9,11 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 
-use function Tests\configureExplorerDatabase;
-
 beforeEach(function () {
-    configureExplorerDatabase();
-
     $previousBlock = Block::factory()->create(['height' => 1]);
 
     $this->subject = Block::factory()->create([

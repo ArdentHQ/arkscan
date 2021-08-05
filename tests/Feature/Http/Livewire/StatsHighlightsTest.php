@@ -8,11 +8,8 @@ use App\Models\Block;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use Livewire\Livewire;
-use function Tests\configureExplorerDatabase;
 
 it('should render the component', function (): void {
-    configureExplorerDatabase();
-
     $wallets = Wallet::factory()->count(10)->create(['balance' => '13628098200000000']);
 
     Block::factory()->create([

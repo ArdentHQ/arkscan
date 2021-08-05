@@ -5,11 +5,8 @@ declare(strict_types=1);
 use App\Models\Round;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
-    configureExplorerDatabase();
-
     $this->subject = Round::factory()->create(['balance' => '500000000000']);
 });
 

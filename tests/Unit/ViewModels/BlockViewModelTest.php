@@ -8,11 +8,8 @@ use App\Models\Wallet;
 
 use App\ViewModels\BlockViewModel;
 use function Spatie\Snapshots\assertMatchesSnapshot;
-use function Tests\configureExplorerDatabase;
 
 beforeEach(function () {
-    configureExplorerDatabase();
-
     $previousBlock = Block::factory()->create(['height' => 1]);
 
     $this->subject = new BlockViewModel(Block::factory()->create([

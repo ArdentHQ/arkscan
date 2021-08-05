@@ -21,7 +21,7 @@ final class InsightAllTimeFeesCollected extends Component
 
     public string $period = '';
 
-    private string $refreshInterval = '';
+    public string $refreshInterval = '';
 
     /** @phpstan-ignore-next-line */
     protected $listeners = ['toggleDarkMode' => '$refresh'];

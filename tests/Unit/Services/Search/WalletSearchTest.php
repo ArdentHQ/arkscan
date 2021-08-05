@@ -5,10 +5,6 @@ declare(strict_types=1);
 use App\Models\Wallet;
 use App\Services\Search\WalletSearch;
 
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
-
 it('should search for a wallet by address', function (?string $modifier) {
     $wallet = Wallet::factory(10)->create()[0];
 
@@ -45,6 +41,7 @@ it('should search for a wallet by username', function (?string $modifier) {
     $wallet = Wallet::factory(10)->create()[0];
 
     $result = (new WalletSearch())->search([
+        'term'     => '',
         'username' => $modifier ? $modifier($wallet->attributes['delegate']['username']) : $wallet->attributes['delegate']['username'],
     ]);
 

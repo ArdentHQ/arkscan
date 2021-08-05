@@ -6,12 +6,6 @@ use App\Models\Block;
 use App\Models\Round;
 use App\Services\Monitor\MissedBlocksCalculator;
 
-use function Tests\configureExplorerDatabase;
-
-beforeEach(function () {
-    configureExplorerDatabase();
-});
-
 it('should calculate the missed blocks', function () {
     $expectedStats = []; // expected { forged, missed } by delegate public key
     $heightIterator = 0;

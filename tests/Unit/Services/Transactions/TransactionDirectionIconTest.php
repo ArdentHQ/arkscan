@@ -6,9 +6,6 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 
 use App\Services\Transactions\TransactionDirectionIcon;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should determine if the transaction is sent', function () {
     $sender = Wallet::factory()->create();

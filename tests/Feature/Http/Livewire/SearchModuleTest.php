@@ -7,12 +7,12 @@ use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Livewire\Livewire;
-use function Tests\configureExplorerDatabase;
-
-beforeEach(fn () => configureExplorerDatabase());
 
 it('should search for a wallet and redirect', function () {
     $wallet = Wallet::factory()->create();
+    Transaction::factory()->create();
+    $block = Block::factory()->create();
+    Transaction::factory()->create(['block_id' => $block->id]);
 
     Livewire::test(SearchModule::class)
         ->set('state.term', $wallet->address)
@@ -22,6 +22,9 @@ it('should search for a wallet and redirect', function () {
 });
 
 it('should search for a transaction and redirect', function () {
+    Transaction::factory()->create();
+    $block = Block::factory()->create();
+    Transaction::factory()->create(['block_id' => $block->id]);
     $transaction = Transaction::factory()->create();
 
     Livewire::test(SearchModule::class)
@@ -32,7 +35,9 @@ it('should search for a transaction and redirect', function () {
 });
 
 it('should search for a block and redirect', function () {
+    Transaction::factory()->create();
     $block = Block::factory()->create();
+    Transaction::factory()->create(['block_id' => $block->id]);
 
     Livewire::test(SearchModule::class)
         ->set('state.term', $block->id)
