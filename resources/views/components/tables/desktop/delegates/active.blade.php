@@ -1,5 +1,5 @@
 <x-ark-tables.table sticky class="w-full">
-    <thead>
+    <thead wire:ignore>
         <tr>
             <x-tables.headers.desktop.text name="general.delegates.rank" />
             <x-tables.headers.desktop.address name="general.delegates.name" />
@@ -15,13 +15,14 @@
     <tbody>
         @foreach($delegates as $delegate)
             <x-ark-tables.row
+                wire:key="{{ Helpers::generateId($delegate->username(), $delegate->rank()) }}"
                 :danger="$delegate->keepsMissing()"
                 :warning="$delegate->justMissed()"
             >
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.rank :model="$delegate" />
                 </x-ark-tables.cell>
-                <x-ark-tables.cell wire:key="{{ $delegate->username() }}-username">
+                <x-ark-tables.cell>
                     <span class="hidden md:inline">
                         <x-tables.rows.desktop.username :model="$delegate" />
                     </span>
@@ -29,7 +30,7 @@
                         <x-tables.rows.mobile.username-with-avatar :model="$delegate" />
                     </span>
                 </x-ark-tables.cell>
-                <x-ark-tables.cell wire:key="{{ $delegate->username() }}-round-status-history" last-on="md">
+                <x-ark-tables.cell last-on="md">
                     <x-tables.rows.desktop.round-status-history :model="$delegate" />
                 </x-ark-tables.cell>
                 <x-ark-tables.cell class="text-right" responsive>

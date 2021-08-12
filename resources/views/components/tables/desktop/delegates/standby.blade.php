@@ -1,5 +1,5 @@
 <x-ark-tables.table sticky class="w-full">
-    <thead>
+    <thead wire:ignore>
         <tr>
             <x-tables.headers.desktop.text name="general.delegates.rank" />
             <x-tables.headers.desktop.address name="general.delegates.name" />
@@ -8,7 +8,7 @@
     </thead>
     <tbody>
         @foreach($delegates as $delegate)
-            <x-ark-tables.row>
+            <x-ark-tables.row wire:key="{{ Helpers::generateId($delegate->username(), $delegate->rank()) }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.rank :model="$delegate" />
                 </x-ark-tables.cell>
