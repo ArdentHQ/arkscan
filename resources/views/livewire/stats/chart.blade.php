@@ -61,18 +61,19 @@
                 <x-stats.periods-selector wire:model="period" :selected="$period" :options="$options"
                                           class="hidden sm:block"/>
                 <div class="mt-6 sm:hidden">
-                    <x-chart
+                    <x-ark-chart
                         class="w-full h-auto"
                         id="stats-chart-mobile"
                         :data="collect($chart->get('datasets'))->toJson()"
                         :labels="collect($chart->get('labels'))->toJson()"
                         :theme="$chartTheme"
                         height="50"
+                        :currency="Settings::currency()"
                     />
                 </div>
 
                 <div class="hidden mt-6 sm:block">
-                    <x-chart
+                    <x-ark-chart
                         class="w-full h-auto"
                         id="stats-chart"
                         :data="collect($chart->get('datasets'))->toJson()"
@@ -81,6 +82,7 @@
                         height="500"
                         tooltips
                         grid
+                        :currency="Settings::currency()"
                     />
                 </div>
             </div>
