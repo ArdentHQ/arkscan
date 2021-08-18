@@ -20,6 +20,18 @@ it('should render with all delegates', function () {
     expect($component->instance()->state['status'])->toBe('active');
 });
 
+it('should init the state using the query parameter', function ($tab) {
+    Livewire::withQueryParams(['tab' => $tab])
+        ->test(DelegateTable::class)
+        ->assertSet('state.status', $tab);
+})->with(['active', 'resigned', 'standby']);
+
+it('should not accept an invalid state', function () {
+    Livewire::withQueryParams(['tab' => 'custom'])
+        ->test(DelegateTable::class)
+        ->assertSet('state.status', 'active');
+});
+
 it('should render with standby delegates', function () {
     $component = Livewire::test(DelegateTable::class);
 
