@@ -6,6 +6,21 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased Devnet](https://github.com/ArkEcosystem/explorer.ark.io/compare/staging...develop)
 
+## 2021-19-08 (Dexplorer)
+
+### Changed
+
+- implement &quot;chart&quot; component ([#892]) (e0b25d5f, @leMaur)
+- persist selected tab on delegate monitor ([#899]) (c6a65a0b, @alfonsobries)
+
+### Fixed
+
+- status icon disappearing ([#896]) (0ce7c2a5, @alfonsobries)
+- disappearing icons on delegate page ([#895]) (06dbf3a9, @alexbarnsley)
+- resigned label cropped ([#898]) (ded51820, @alfonsobries)
+
+---
+
 ## 2021-08-04 (Dexplorer)
 
 ### Added
@@ -56,3 +71,8 @@ All notable changes to this project will be documented in this file.
 [#890]: https://github.com/ArkEcosystem/explorer.ark.io/pull/890
 [#891]: https://github.com/ArkEcosystem/explorer.ark.io/pull/891
 [#894]: https://github.com/ArkEcosystem/explorer.ark.io/pull/894
+[#892]: https://github.com/ArkEcosystem/explorer.ark.io/pull/892
+[#899]: https://github.com/ArkEcosystem/explorer.ark.io/pull/899
+[#896]: https://github.com/ArkEcosystem/explorer.ark.io/pull/896
+[#895]: https://github.com/ArkEcosystem/explorer.ark.io/pull/895
+[#898]: https://github.com/ArkEcosystem/explorer.ark.io/pull/898
