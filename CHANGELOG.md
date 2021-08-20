@@ -12,12 +12,14 @@ All notable changes to this project will be documented in this file.
 
 - implement &quot;chart&quot; component ([#892]) (e0b25d5f, @leMaur)
 - persist selected tab on delegate monitor ([#899]) (c6a65a0b, @alfonsobries)
+- upgrade laravel framework to version 8.55 ([#901]) (f831a1c3, @Highjhacker)
 
 ### Fixed
 
 - status icon disappearing ([#896]) (0ce7c2a5, @alfonsobries)
 - disappearing icons on delegate page ([#895]) (06dbf3a9, @alexbarnsley)
 - resigned label cropped ([#898]) (ded51820, @alfonsobries)
+- truncated block ids inconsistencies ([#897]) (eadf8cb8, @alfonsobries)
 
 ---
 
@@ -76,3 +78,5 @@ All notable changes to this project will be documented in this file.
 [#896]: https://github.com/ArkEcosystem/explorer.ark.io/pull/896
 [#895]: https://github.com/ArkEcosystem/explorer.ark.io/pull/895
 [#898]: https://github.com/ArkEcosystem/explorer.ark.io/pull/898
+[#897]: https://github.com/ArkEcosystem/explorer.ark.io/pull/897
+[#901]: https://github.com/ArkEcosystem/explorer.ark.io/pull/901
