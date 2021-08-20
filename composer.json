@@ -22,7 +22,7 @@
         "guzzlehttp/guzzle": "^6.5",
         "konceiver/laravel-blade-components": "^2.0",
         "konceiver/laravel-data-bags": "^1.1",
-        "laravel/framework": "^8.1",
+        "laravel/framework": "^8.55",
         "laravel/horizon": "^5.3",
         "laravel/telescope": "^4.0",
         "laravel/tinker": "^3.0",
