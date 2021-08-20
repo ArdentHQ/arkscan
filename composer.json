@@ -20,7 +20,7 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.5",
-        "konceiver/laravel-blade-components": "^2.0",
+        "konceiver/laravel-blade-components": "^2.1",
         "konceiver/laravel-data-bags": "^1.1",
         "laravel/framework": "^8.55",
         "laravel/horizon": "^5.3",
