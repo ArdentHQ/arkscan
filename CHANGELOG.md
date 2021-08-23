@@ -6,13 +6,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased Devnet](https://github.com/ArkEcosystem/explorer.ark.io/compare/staging...develop)
 
-## 2021-19-08 (Dexplorer)
+## 2021-23-08 (Dexplorer)
 
 ### Changed
 
 - implement &quot;chart&quot; component ([#892]) (e0b25d5f, @leMaur)
 - persist selected tab on delegate monitor ([#899]) (c6a65a0b, @alfonsobries)
 - upgrade laravel framework to version 8.55 ([#901]) (f831a1c3, @Highjhacker)
+- wallet info icon color ([#903]) (a8b64fc1, @ItsANameToo)
 
 ### Fixed
 
@@ -20,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - disappearing icons on delegate page ([#895]) (06dbf3a9, @alexbarnsley)
 - resigned label cropped ([#898]) (ded51820, @alfonsobries)
 - truncated block ids inconsistencies ([#897]) (eadf8cb8, @alfonsobries)
+- prioritize wallet over blocks in search ([#902]) (abaa59e6, @ItsANameToo)
 
 ---
 
@@ -80,3 +82,5 @@ All notable changes to this project will be documented in this file.
 [#898]: https://github.com/ArkEcosystem/explorer.ark.io/pull/898
 [#897]: https://github.com/ArkEcosystem/explorer.ark.io/pull/897
 [#901]: https://github.com/ArkEcosystem/explorer.ark.io/pull/901
+[#902]: https://github.com/ArkEcosystem/explorer.ark.io/pull/902
+[#903]: https://github.com/ArkEcosystem/explorer.ark.io/pull/903
