@@ -6,6 +6,7 @@ use App\Http\Livewire\SearchModule;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use Illuminate\Support\Arr;
 use Livewire\Livewire;
 
 it('should search for a wallet and redirect', function () {
@@ -17,6 +18,25 @@ it('should search for a wallet and redirect', function () {
     Livewire::test(SearchModule::class)
         ->set('state.term', $wallet->address)
         ->set('state.type', 'wallet')
+        ->call('performSearch')
+        ->assertRedirect(route('wallet', $wallet->address));
+});
+
+it('should search for a wallet username over a block generator', function () {
+    $wallet = Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => [
+                'username' => 'pieface',
+            ],
+        ],
+    ]);
+    $block = Block::factory()->create([
+        'generator_public_key' => $wallet->public_key,
+    ]);
+    Transaction::factory()->create(['block_id' => $block->id]);
+
+    Livewire::test(SearchModule::class)
+        ->set('state.term', Arr::get($wallet, 'attributes.delegate.username'))
         ->call('performSearch')
         ->assertRedirect(route('wallet', $wallet->address));
 });
