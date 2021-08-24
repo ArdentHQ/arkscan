@@ -48,7 +48,7 @@
 
             @if($chart)
                 <div class="w-full max-w-xs xl:w-1/3">
-                    <x-chart
+                    <x-ark-chart
                         class="w-full h-auto"
                         id="stats-insight-{{ $id }}"
                         :data="collect($chart->get('datasets'))->toJson()"
@@ -56,6 +56,7 @@
                         :theme="$chartTheme"
                         width="200"
                         height="50"
+                        :currency="Settings::currency()"
                     />
                 </div>
             @else

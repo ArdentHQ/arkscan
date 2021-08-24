@@ -25,7 +25,6 @@ mix.webpackConfig({
     })
     // App
     .js('resources/js/app.js', 'public/js')
-    .copy('resources/js/chart.js', 'public/js/chart.js')
     .copy('vendor/arkecosystem/ui/resources/assets/js/clipboard.js', 'public/js/clipboard.js')
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),

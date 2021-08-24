@@ -9,13 +9,21 @@
         <div class="bg-white dark:bg-theme-secondary-900">
             <x-ark-container>
                 <div
-                    x-data="Tabs(
-                        'active',
-                        {
+                    x-data="function() {
+                        const initialSelected = window.location.search.split('tab=')[1] || 'active';
+                        const initialComponent = initialSelected === 'monitor' ? 'monitor' : 'table';
+
+                        const extraData = {
                             dropdownOpen: false,
-                            component: 'table',
-                        },
-                        function(selected) {
+                            component: initialComponent,
+                        };
+
+                        function onSelected (selected) {
+                            {{-- Push the tab to the search query parameters --}}
+                            const { protocol, host, pathname } = window.location;
+                            const newurl = `${protocol}//${host}${pathname}?tab=${selected}`;
+                            window.history.pushState({ path: newurl },'',newurl);
+
                             if (selected === 'monitor') {
                                 this.component = 'monitor';
                             } else {
@@ -23,7 +31,13 @@
                                 Livewire.emit('filterByDelegateStatus', selected);
                             }
                         }
-                    )"
+
+                        return Tabs(
+                            initialSelected,
+                            extraData,
+                            onSelected
+                        );
+                    }()"
                     x-cloak
                     class="w-full"
                 >

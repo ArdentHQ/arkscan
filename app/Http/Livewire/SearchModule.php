@@ -62,15 +62,15 @@ final class SearchModule extends Component
             $data['term'] = preg_replace('/(0x[0-9A-Z]+)/', '', $data['term']);
         }
 
+        if ($this->searchWallet($data)) {
+            return;
+        }
+
         if ($this->searchBlock($data)) {
             return;
         }
 
         if ($this->searchTransaction($data)) {
-            return;
-        }
-
-        if ($this->searchWallet($data)) {
             return;
         }
 

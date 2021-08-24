@@ -10,7 +10,7 @@ import Pikaday from "pikaday";
 import PriceChart from "./price-chart";
 import Tabs from "./tabs";
 import Navbar from "@ui/js/navbar";
-import CustomChart from "./chart";
+import CustomChart from "@ui/js/chart.js";
 
 window.Tabs = Tabs;
 window.Pikaday = Pikaday;

@@ -175,8 +175,8 @@ const CustomChart = (
                 responsive: true,
                 maintainAspectRatio: false,
                 showScale: grid,
-                animation: { duration: 300, easing: "easeOutQuad" },
-                legend: { display: false },
+                animation: {duration: 300, easing: "easeOutQuad"},
+                legend: {display: false},
                 layout: {
                     padding: {
                         left: 0,
@@ -199,7 +199,8 @@ const CustomChart = (
                     displayColors: false,
                     stacked: false,
                     callbacks: {
-                        title: (items) => {},
+                        title: (items) => {
+                        },
                         label: (context) =>
                             this.getCurrencyValue(context.value),
                         labelTextColor: (context) =>
@@ -231,7 +232,7 @@ const CustomChart = (
                 },
             };
 
-            this.chart = new Chart(this.getCanvasContext(), { data, options });
+            this.chart = new Chart(this.getCanvasContext(), {data, options});
         },
     };
 };

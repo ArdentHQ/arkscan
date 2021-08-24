@@ -10,7 +10,7 @@
 
                         <x-ark-icon
                             name="app-verified"
-                            class="text-theme-secondary-900"
+                            class="text-theme-secondary-700 dark:text-theme-secondary-500"
                         />
                     </div>
                 </div>
@@ -23,7 +23,7 @@
 
                         <x-ark-icon
                             name="app.transactions-multi-signature"
-                            class="text-theme-secondary-900"
+                            class="text-theme-secondary-700 dark:text-theme-secondary-500"
                         />
                     </div>
                 </div>
@@ -36,7 +36,7 @@
 
                         <x-ark-icon
                             name="app-exchange"
-                            class="text-theme-secondary-900"
+                            class="text-theme-secondary-700 dark:text-theme-secondary-500"
                         />
                     </div>
                 </div>
@@ -49,7 +49,7 @@
 
                         <x-ark-icon
                             name="app.transactions-second-signature"
-                            class="text-theme-secondary-900"
+                            class="text-theme-secondary-700 dark:text-theme-secondary-500"
                         />
                     </div>
                 </div>
