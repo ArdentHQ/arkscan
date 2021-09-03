@@ -1,5 +1,5 @@
-<div class="flex flex-col rounded-xl border-2 border-theme-secondary-300 dark:border-theme-secondary-800">
-    <div class="{{ $padding ?? 'px-8 py-6' }} bg-theme-secondary-900 @if (isset($bottom)) rounded-t-xl @else rounded-xl @endif lg:relative">
+<div class="flex flex-col">
+    <div class="{{ $padding ?? 'px-8 py-6' }} bg-theme-secondary-900 dark:border-theme-secondary-800 border-theme-secondary-300 @if (isset($bottom)) rounded-t-xl border-t-2 border-l-2 border-r-2 @else rounded-xl border-2  @endif lg:relative">
         <div class="flex overflow-auto flex-col justify-between space-y-8 lg:flex-row lg:space-y-0">
             <div class="flex overflow-auto md:space-x-4">
                 <div class="hidden items-center md:flex">
@@ -32,7 +32,7 @@
     </div>
 
     @isset($bottom)
-        <div class="py-4 px-8 rounded-b-xl border-t bg-theme-secondary-100 border-theme-secondary-300 dark:border-theme-secondary-800 dark:bg-theme-secondary-900">
+        <div class="py-4 px-8 rounded-b-xl border-r-2 border-b-2 border-l-2 border-t border-theme-secondary-300 bg-theme-secondary-100 dark:border-theme-secondary-800 dark:bg-theme-secondary-900">
             {{ $bottom }}
         </div>
     @endisset
