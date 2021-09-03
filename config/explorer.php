@@ -3,8 +3,9 @@
 declare(strict_types=1);
 
 return [
-
     'network' => env('EXPLORER_NETWORK', 'development'),
+
+    'uri_prefix' => env('EXPLORER_URI_PREFIX', 'payvo'),
 
     'networks' => [
         'production' => [
