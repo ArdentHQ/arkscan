@@ -55,6 +55,7 @@
                 <x-navbar.setting-option
                     :title="trans('forms.settings.table.title')"
                     :subtitle="trans('forms.settings.table.description')"
+                    breakpoint="md"
                 >
                     <x-ark-toggle
                         name="state.compactTables"
