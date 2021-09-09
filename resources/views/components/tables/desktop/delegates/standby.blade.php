@@ -1,5 +1,5 @@
 <x-ark-tables.table sticky class="w-full">
-    <thead wire:ignore>
+    <thead>
         <tr>
             <x-tables.headers.desktop.text name="general.delegates.rank" />
             <x-tables.headers.desktop.address name="general.delegates.name" />
