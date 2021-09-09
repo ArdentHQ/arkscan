@@ -1,4 +1,4 @@
-<div class="pb-8 w-full bg-white content-container dark:bg-theme-secondary-900">
+<div class="pb-8 -mt-2 w-full bg-white content-container dark:bg-theme-secondary-900">
     <div class="flex py-4 px-8 w-full rounded-xl border border-theme-secondary-300 dark:border-theme-secondary-800">
         <div class="flex flex-col justify-between space-y-6 w-full sm:flex-row sm:space-y-0">
             <div class="flex justify-start">
