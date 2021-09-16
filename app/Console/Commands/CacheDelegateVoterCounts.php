@@ -31,6 +31,8 @@ final class CacheDelegateVoterCounts extends Command
      */
     public function handle(): void
     {
-        Wallets::allWithUsername()->each(fn ($wallet) => CacheVoterCountByPublicKey::dispatch($wallet->public_key)->onQueue('voters'));
+        Wallets::allWithUsername()
+            ->orderBy('balance')
+            ->each(fn ($wallet) => CacheVoterCountByPublicKey::dispatch($wallet->public_key)->onQueue('voters'));
     }
 }

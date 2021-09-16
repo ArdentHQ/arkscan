@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Facades\Wallets;
 use App\Services\Cache\DelegateCache;
-use App\Services\Monitor\Aggregates\TotalAmountsByPublicKeysAggregate;
-use App\Services\Monitor\Aggregates\TotalBlocksByPublicKeysAggregate;
-use App\Services\Monitor\Aggregates\TotalFeesByPublicKeysAggregate;
-use App\Services\Monitor\Aggregates\TotalRewardsByPublicKeysAggregate;
+use App\Services\Monitor\Aggregates\DelegateTotalAggregates;
 use Illuminate\Console\Command;
 
 final class CacheDelegateAggregates extends Command
@@ -35,14 +31,14 @@ final class CacheDelegateAggregates extends Command
      */
     public function handle(DelegateCache $cache)
     {
-        $publicKeys = Wallets::allWithUsername()->pluck('public_key')->toArray();
+        $aggregate = (new DelegateTotalAggregates())->aggregate();
 
-        $cache->setTotalAmounts(fn () => (new TotalAmountsByPublicKeysAggregate())->aggregate($publicKeys));
+        $cache->setTotalAmounts(fn () => $aggregate->pluck('total_amount', 'generator_public_key')->toArray());
 
-        $cache->setTotalFees(fn () => (new TotalFeesByPublicKeysAggregate())->aggregate($publicKeys));
+        $cache->setTotalFees(fn () => $aggregate->pluck('total_fee', 'generator_public_key')->toArray());
 
-        $cache->setTotalRewards(fn () => (new TotalRewardsByPublicKeysAggregate())->aggregate($publicKeys));
+        $cache->setTotalRewards(fn () => $aggregate->pluck('reward', 'generator_public_key')->toArray());
 
-        $cache->setTotalBlocks(fn () => (new TotalBlocksByPublicKeysAggregate())->aggregate($publicKeys));
+        $cache->setTotalBlocks(fn () => $aggregate->pluck('count', 'generator_public_key')->toArray());
     }
 }
