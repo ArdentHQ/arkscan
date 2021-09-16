@@ -12,7 +12,7 @@ final class ExchangeRate
 {
     public static function convert(float $amount, int $timestamp): string
     {
-        $prices       = (new CryptoDataCache())->getPrices(Settings::currency());
+        $prices       = (new CryptoDataCache())->getPrices(Settings::currency().'.week');
         $exchangeRate = Arr::get($prices, Carbon::parse(static::timestamp($timestamp))->format('Y-m-d'), 0);
 
         return NumberFormatter::currency($amount * $exchangeRate, Settings::currency());
@@ -20,11 +20,7 @@ final class ExchangeRate
 
     public static function now(): float
     {
-        return (float) Arr::get(
-            (new CryptoDataCache())->getPrices(Settings::currency()),
-            Carbon::now()->format('Y-m-d'),
-            0
-        );
+        return (float) (new CryptoDataCache())->getPrices(Settings::currency().'.day')->last();
     }
 
     private static function timestamp(int $timestamp): Carbon
