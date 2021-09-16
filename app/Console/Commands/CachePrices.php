@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Contracts\MarketDataProvider;
 use App\Enums\StatsPeriods;
 use App\Facades\Network;
-use App\Services\Cache\CryptoCompareCache;
+use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\PriceChartCache;
-use App\Services\CryptoCompare;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
@@ -30,16 +30,16 @@ final class CachePrices extends Command
      */
     protected $description = 'Cache prices and exchange rates.';
 
-    public function handle(CryptoCompareCache $crypto, PriceChartCache $cache): void
+    public function handle(CryptoDataCache $crypto, PriceChartCache $cache, MarketDataProvider $marketDataProvider): void
     {
         if (! Network::canBeExchanged()) {
             return;
         }
 
-        collect(config('currencies'))->values()->each(function ($currency) use ($crypto, $cache): void {
+        collect(config('currencies'))->values()->each(function ($currency) use ($crypto, $cache, $marketDataProvider): void {
             $currency = $currency['currency'];
-            $prices   = CryptoCompare::historical(Network::currency(), $currency);
-            $hourlyPrices   = CryptoCompare::historicalHourly(Network::currency(), $currency);
+            $prices = $marketDataProvider->historical(Network::currency(), $currency);
+            $hourlyPrices = $marketDataProvider->historicalHourly(Network::currency(), $currency);
 
             collect([
                 StatsPeriods::DAY,

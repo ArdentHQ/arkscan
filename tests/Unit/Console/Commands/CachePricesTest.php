@@ -3,9 +3,10 @@
 declare(strict_types=1);
 
 use App\Console\Commands\CachePrices;
+use App\Contracts\MarketDataProvider;
 use App\Contracts\Network;
 use App\Services\Blockchain\Network as Blockchain;
-use App\Services\Cache\CryptoCompareCache;
+use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\PriceChartCache;
 use Illuminate\Support\Collection;
 use function Tests\fakeCryptoCompare;
@@ -15,10 +16,11 @@ it('should execute the command', function (string $network) {
 
     $this->app->singleton(Network::class, fn () => new Blockchain(config($network)));
 
-    $crypto = new CryptoCompareCache();
-    $prices = new PriceChartCache();
+    $crypto = app(CryptoDataCache::class);
+    $prices = app(PriceChartCache::class);
+    $marketDataProvider = app(MarketDataProvider::class);
 
-    (new CachePrices())->handle($crypto, $prices);
+    app(CachePrices::class)->handle($crypto, $prices, $marketDataProvider);
 
     expect($crypto->getPrices('USD'))->toBeInstanceOf(Collection::class);
     expect($prices->getHistorical('USD', 'day'))->toBeArray();

@@ -6,7 +6,7 @@ use App\Facades\Network;
 use App\Http\Livewire\BlockTable;
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
-use App\Services\Cache\CryptoCompareCache;
+use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
 use App\Services\Settings;
 use App\ViewModels\ViewModelFactory;
@@ -33,11 +33,11 @@ it('should list the first page of records', function () {
 it('should update the records fiat tooltip when currency changed', function () {
     Config::set('explorer.networks.development.canBeExchanged', true);
 
-    (new CryptoCompareCache())->setPrices('USD', collect([
+    (new CryptoDataCache())->setPrices('USD', collect([
         '2020-10-19' => 24210,
     ]));
 
-    (new CryptoCompareCache())->setPrices('BTC', collect([
+    (new CryptoDataCache())->setPrices('BTC', collect([
         '2020-10-19' => 0.1234567,
     ]));
 

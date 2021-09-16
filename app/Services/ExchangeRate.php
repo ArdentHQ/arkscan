@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Services\Cache\CryptoCompareCache;
+use App\Services\Cache\CryptoDataCache;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
@@ -12,7 +12,7 @@ final class ExchangeRate
 {
     public static function convert(float $amount, int $timestamp): string
     {
-        $prices       = (new CryptoCompareCache())->getPrices(Settings::currency());
+        $prices       = (new CryptoDataCache())->getPrices(Settings::currency());
         $exchangeRate = Arr::get($prices, Carbon::parse(static::timestamp($timestamp))->format('Y-m-d'), 0);
 
         return NumberFormatter::currency($amount * $exchangeRate, Settings::currency());
@@ -21,7 +21,7 @@ final class ExchangeRate
     public static function now(): float
     {
         return (float) Arr::get(
-            (new CryptoCompareCache())->getPrices(Settings::currency()),
+            (new CryptoDataCache())->getPrices(Settings::currency()),
             Carbon::now()->format('Y-m-d'),
             0
         );

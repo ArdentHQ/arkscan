@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Livewire\WalletBalance;
 use App\Models\Wallet;
-use App\Services\Cache\CryptoCompareCache;
+use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
 use App\Services\Settings;
 use Carbon\Carbon;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Livewire;
 
 it('should show the balance of the wallet', function () {
-    (new CryptoCompareCache())->setPrices('USD', collect([
+    (new CryptoDataCache())->setPrices('USD', collect([
         Carbon::now()->format('Y-m-d') => 10,
     ]));
 
@@ -23,11 +23,11 @@ it('should show the balance of the wallet', function () {
 });
 
 it('updates the balance when currency changes', function () {
-    (new CryptoCompareCache())->setPrices('USD', collect([
+    (new CryptoDataCache())->setPrices('USD', collect([
         Carbon::now()->format('Y-m-d') => 10,
     ]));
 
-    (new CryptoCompareCache())->setPrices('BTC', collect([
+    (new CryptoDataCache())->setPrices('BTC', collect([
         Carbon::now()->format('Y-m-d') => 0.1234567,
     ]));
 

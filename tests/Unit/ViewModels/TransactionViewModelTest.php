@@ -7,7 +7,7 @@ use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkFactory;
-use App\Services\Cache\CryptoCompareCache;
+use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
@@ -170,7 +170,7 @@ it('should get the amount in fiat for multi payments excluding payment to the sa
         ],
     ]));
 
-    (new CryptoCompareCache())->setPrices('USD', collect([
+    (new CryptoDataCache())->setPrices('USD', collect([
         Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
     ]));
 
@@ -268,7 +268,7 @@ it('should get the amount as fiat', function () {
 
     $this->subject = new TransactionViewModel($transaction);
 
-    (new CryptoCompareCache())->setPrices('USD', collect([
+    (new CryptoDataCache())->setPrices('USD', collect([
         Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
     ]));
 
@@ -304,7 +304,7 @@ it('should get the specific multi payment fiat amount for a wallet recipient', f
 
     $this->subject = new TransactionViewModel($transaction);
 
-    (new CryptoCompareCache())->setPrices('USD', collect([
+    (new CryptoDataCache())->setPrices('USD', collect([
         Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
     ]));
 
