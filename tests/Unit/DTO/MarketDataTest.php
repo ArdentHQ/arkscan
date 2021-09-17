@@ -19,7 +19,7 @@ it('should make an instance from the coingecko response', function () {
     $response = [];
 
     Arr::set($response, 'market_data.current_price.usd', 11.21);
-    Arr::set($response, 'market_data.price_change_24h_in_currency.usd', 1.62);
+    Arr::set($response, 'market_data.price_change_percentage_24h_in_currency.usd', 1.62);
 
     $subject = MarketData::fromCoinGeckoApiResponse('USD', $response);
 

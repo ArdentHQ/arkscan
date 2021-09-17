@@ -17,7 +17,7 @@ final class MarketData
     {
         return new static(
             price: Arr::get($data, 'market_data.current_price.'.Str::lower($baseCurrency)),
-            priceChange: Arr::get($data, 'market_data.price_change_24h_in_currency.'.Str::lower($baseCurrency)),
+            priceChange: Arr::get($data, 'market_data.price_change_percentage_24h_in_currency.'.Str::lower($baseCurrency)),
         );
     }
 
