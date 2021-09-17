@@ -12,7 +12,7 @@ it('should fetch the price data for the given collection', function () {
     ]);
 
     $dto = (new CoinGecko())->priceAndPriceChange('ARK', collect(['USD']))->get('USD');
-    expect($dto->priceChange())->toEqual(-4.66092);
+    expect($dto->priceChange())->toEqual(-0.0466092);
     expect($dto->price())->toEqual(1.63);
 });
 
