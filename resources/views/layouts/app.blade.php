@@ -63,7 +63,26 @@
             </main>
         </div>
 
-        <x-footer />
+        <x-ark-footer>
+            <x-slot name="copyrightSlot">
+                <div class="flex">
+                    <span class="mx-1 sm:inline"> | </span>
+                    <span class="flex items-center space-x-2 whitespace-nowrap">
+                        <span>@lang('general.market_data_by')</span>
+
+                        <a
+                            href="@lang('general.urls.coingecko')"
+                            target="_blank"
+                        >
+                            <x-ark-icon
+                                name="brands.coingecko"
+                                class="inline-block -mt-1"
+                            />
+                        </a>
+                    </span>
+                </div>
+            </x-slot>
+        </x-ark-footer>
 
         <livewire:search-module is-modal />
 
