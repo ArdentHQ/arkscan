@@ -1,6 +1,6 @@
 <div class="flex flex-col">
     <div class="{{ $padding ?? 'px-8 py-6' }} bg-theme-secondary-900 dark:border-theme-secondary-800 border-theme-secondary-300 @if (isset($bottom)) rounded-t-xl border-t-2 border-l-2 border-r-2 @else rounded-xl border-2  @endif lg:relative">
-        <div class="flex overflow-auto flex-col justify-between space-y-8 lg:flex-row lg:space-y-0">
+        <div class="flex overflow-auto flex-col justify-between space-y-6 lg:flex-row lg:space-y-0">
             <div class="flex overflow-auto md:space-x-4">
                 <div class="hidden items-center md:flex">
                     {!! $logo !!}
