@@ -1,7 +1,7 @@
 <x-ark-tables.table sticky class="w-full">
     <thead>
         <tr>
-            <x-tables.headers.desktop.text name="pages.delegates.order" />
+            <x-tables.headers.desktop.text name="pages.delegates.order" width="70" />
             <x-tables.headers.desktop.address name="pages.delegates.name" />
             <x-tables.headers.desktop.text name="pages.delegates.forging_at" responsive breakpoint="sm" />
             <x-tables.headers.desktop.status name="pages.delegates.status" last-on="md"  />
