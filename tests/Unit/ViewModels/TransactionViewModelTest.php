@@ -67,6 +67,7 @@ it('should determine if multipayment transaction is sent to self', function () {
         ->multiPayment()
         ->create([
             'sender_public_key' => $this->sender->public_key,
+            'recipient_id'      => $this->sender->address,
             'asset'             => [
                 'payments' => [
                     ['recipientId' => $this->sender->address],
@@ -78,6 +79,23 @@ it('should determine if multipayment transaction is sent to self', function () {
 
     expect($transaction->isSentToSelf($this->sender->address))->toBeTrue();
     expect($transaction->isSentToSelf('recipient-3'))->toBeFalse();
+});
+
+it('should determine if multipayment transaction is not sent to self', function () {
+    $transaction = new TransactionViewModel(Transaction::factory()
+        ->multiPayment()
+        ->create([
+            'sender_public_key' => $this->sender->public_key,
+            'recipient_id'      => $this->sender->address,
+            'asset'             => [
+                'payments' => [
+                    ['recipientId' => 'recipient'],
+                    ['recipientId' => 'recipient-2'],
+                ],
+            ],
+        ]));
+
+    expect($transaction->isSentToSelf($this->sender->address))->toBeFalse();
 });
 
 it('should not be sent to self if not multipayment or transfer', function () {

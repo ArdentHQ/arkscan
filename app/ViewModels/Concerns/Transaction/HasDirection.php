@@ -23,7 +23,7 @@ trait HasDirection
             return false;
         }
 
-        if ($this->recipient() !== null && $address === $this->recipient()->address) {
+        if ($this->isTransfer() && $this->recipient() !== null && $address === $this->recipient()->address) {
             return true;
         }
 
