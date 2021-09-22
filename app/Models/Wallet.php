@@ -1,14 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Models\Casts\BigInteger;
+use App\Models\Concerns\HasEmptyScope;
+use App\Models\Concerns\SearchesCaseInsensitive;
+use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Wallet extends Model
+/**
+ * @property string $address
+ * @property string|null $public_key
+ * @property BigNumber $balance
+ * @property BigNumber $nonce
+ * @property array $attributes
+ */
+final class Wallet extends Model
 {
     use HasFactory;
+    use SearchesCaseInsensitive;
+    use HasEmptyScope;
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -18,9 +33,20 @@ class Wallet extends Model
     public $incrementing = false;
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'balance'    => BigInteger::class,
+        'nonce'      => BigInteger::class,
+        'attributes' => 'array',
+    ];
+
+    /**
      * A wallet has many sent transactions.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function sentTransactions(): HasMany
     {
@@ -30,7 +56,7 @@ class Wallet extends Model
     /**
      * A wallet has many received transactions.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function receivedTransactions(): HasMany
     {
@@ -40,7 +66,7 @@ class Wallet extends Model
     /**
      * A wallet has many blocks if it is a delegate.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function blocks(): HasMany
     {
@@ -48,72 +74,15 @@ class Wallet extends Model
     }
 
     /**
-     * Scope a query to only include transactions by the recipient.
+     * Get the route key for the model.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string                                $publicKey
+     * @return string
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @codeCoverageIgnore
      */
-    public function scopeVote($query, $publicKey)
+    public function getRouteKeyName()
     {
-        return $query->where('vote', $publicKey);
-    }
-
-    /**
-     * Get the human readable representation of the balance.
-     *
-     * @return float
-     */
-    public function getFormattedBalanceAttribute(): float
-    {
-        return $this->balance / 1e8;
-    }
-
-    /**
-     * Get the human readable representation of the vote balance.
-     *
-     * @return float
-     */
-    public function getFormattedVoteBalanceAttribute(): float
-    {
-        return $this->vote_balance / 1e8;
-    }
-
-    /**
-     * Find a wallet by its address.
-     *
-     * @param string $value
-     *
-     * @return Wallet
-     */
-    public static function findByAddress(string $value): self
-    {
-        return static::whereAddress($value)->firstOrFail();
-    }
-
-    /**
-     * Find a wallet by its public-key.
-     *
-     * @param string $value
-     *
-     * @return Wallet
-     */
-    public static function findByPublicKey(string $value): self
-    {
-        return static::wherePublicKey($value)->firstOrFail();
-    }
-
-    /**
-     * Find a wallet by its username.
-     *
-     * @param string $value
-     *
-     * @return Wallet
-     */
-    public static function findByUsername(string $value): self
-    {
-        return static::whereUsername($value)->firstOrFail();
+        return 'address';
     }
 
     /**

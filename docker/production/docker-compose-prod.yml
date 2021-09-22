@@ -1,0 +1,32 @@
+version: '3'
+services:
+  explorer:
+    image: arkecosystem/explorer
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.middlewares.explorer.retry.attempts=3"
+        - "traefik.http.routers.explorer.rule=Host(`${DOMAIN}`)"
+        - "traefik.http.routers.explorer.entrypoints=websecure"
+        - "traefik.http.routers.explorer.tls.certresolver=myresolver"
+        - "traefik.http.services.explorer.loadbalancer.server.port=8898"
+        - "traefik.http.services.explorer.loadbalancer.healthCheck.path=/"
+        - "traefik.http.services.explorer.loadbalancer.healthCheck.interval=10s"
+        - "traefik.http.services.explorer.loadbalancer.healthCheck.timeout=5s"
+        
+    restart: unless-stopped 
+    working_dir: /var/www/explorer
+    networks:
+      - traefik 
+    volumes:
+      - explorer:/var/www/explorer
+    tty: true
+networks:
+  traefik:
+      external:
+          name: traefik_webgateway
+volumes:
+  explorer:
+    driver_opts:
+      type: none
+      device: $PWD/../../
+      o: bind

@@ -1,11 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions;
 
+use App\Exceptions\Contracts\EntityNotFoundInterface;
+use App\Http\Kernel;
+use App\Http\Middleware\SubstituteBindings;
+use Closure;
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Session\SessionManager;
+use Illuminate\Support\Collection;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
-class Handler extends ExceptionHandler
+final class Handler extends ExceptionHandler
 {
     /**
      * A list of the exception types that are not reported.
@@ -29,9 +41,9 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param \Throwable $exception
+     * @param Throwable $exception
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return void
      */
@@ -43,15 +55,76 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Throwable               $exception
+     * @param Request   $request
+     * @param Throwable $exception
      *
-     * @throws \Throwable
+     * @throws Throwable
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function render($request, Throwable $exception)
     {
-        return parent::render($request, $exception);
+        if ($this->shouldShowEntity404Page($request, $exception)) {
+            return $this->getNotFoundEntityResponse($exception);
+        }
+
+        if ($this->sessionAlreadyStarted()) {
+            return parent::render($request, $exception);
+        }
+
+        return $this->applyWebMiddlewares($request, fn ($request) => parent::render($request, $exception));
+    }
+
+    private function applyWebMiddlewares(Request $request, Closure $next): Response
+    {
+        $except = [
+            SubstituteBindings::class,
+        ];
+
+        $middlewares = collect(app(Kernel::class)->getMiddlewareGroups()['web'])
+            ->filter(fn ($middleware) => ! in_array($middleware, $except, true));
+
+        return $this->applyMiddlewares($middlewares, $request, $next);
+    }
+
+    private function applyMiddlewares(Collection $middlewares, Request $request, Closure $next): Response
+    {
+        if ($middlewares->count() === 0) {
+            return $next($request);
+        }
+
+        $middleware = $middlewares->shift();
+
+        return app($middleware)
+            ->handle($request, fn ($req) => $this->applyMiddlewares($middlewares, $req, $next));
+    }
+
+    private function shouldShowEntity404Page(Request $request, Throwable $exception): bool
+    {
+        $expectedException     = $this->prepareException($this->mapException($exception));
+        $mainNotFoundException = $expectedException->getPrevious();
+
+        return $this->isARegularGetRequest($request)
+            && $mainNotFoundException !== null
+            && is_a($mainNotFoundException, EntityNotFoundInterface::class);
+    }
+
+    private function getNotFoundEntityResponse(Throwable $exception): HttpResponse
+    {
+        $expectedException = $this->prepareException($this->mapException($exception));
+
+        return response()->view('errors.404_entity', [
+            'exception' => $expectedException,
+        ], 404);
+    }
+
+    private function isARegularGetRequest(Request $request): bool
+    {
+        return $request->method() === 'GET' && ! $request->expectsJson();
+    }
+
+    private function sessionAlreadyStarted(): bool
+    {
+        return app(SessionManager::class)->driver()->isStarted();
     }
 }

@@ -1,12 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Models\Casts\BigInteger;
+use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Round extends Model
+/**
+ * @property int $round
+ * @property BigNumber $balance
+ */
+final class Round extends Model
 {
     use HasFactory;
 
@@ -18,23 +26,24 @@ class Round extends Model
     public $incrementing = false;
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'balance'    => BigInteger::class,
+        'public_key' => 'string',
+        'round'      => 'int',
+    ];
+
+    /**
      * A round slot belongs to a delegate.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function delegate(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'public_key', 'public_key');
-    }
-
-    /**
-     * Get the human readable representation of the balance.
-     *
-     * @return float
-     */
-    public function getFormattedBalanceAttribute(): float
-    {
-        return $this->balance / 1e8;
     }
 
     /**

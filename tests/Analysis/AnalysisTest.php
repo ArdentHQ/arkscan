@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Analysis;
 
 use GrahamCampbell\Analyzer\AnalysisTrait;
@@ -8,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversNothing
  */
-class AnalysisTest extends TestCase
+final class AnalysisTest extends TestCase
 {
     use AnalysisTrait;
 
@@ -23,7 +25,12 @@ class AnalysisTest extends TestCase
     public function getIgnored(): array
     {
         return [
+            'InvalidModel',
             'Laravel\Scout\Builder',
+            'Spatie\Snapshots\assertMatchesSnapshot',
+            'Tests\bip39',
+            'Tests\fakeCryptoCompare',
+            'Tests\fakeKnownWallets',
         ];
     }
 }

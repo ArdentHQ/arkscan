@@ -1,18 +1,41 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use ArkEcosystem\Crypto\Configuration\Network;
+use App\Models\Casts\BigInteger;
+use App\Models\Concerns\HasEmptyScope;
+use App\Models\Concerns\SearchesCaseInsensitive;
+use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Carbon;
 
-class Block extends Model
+/**
+ * @property string $id
+ * @property BigNumber $height
+ * @property int $number_of_transactions
+ * @property BigNumber $reward
+ * @property int $timestamp
+ * @property BigNumber $total_amount
+ * @property BigNumber $total_fee
+ * @property string $generator_public_key
+ */
+final class Block extends Model
 {
     use HasFactory;
+    use SearchesCaseInsensitive;
+    use HasEmptyScope;
+
+    /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    public $keyType = 'string';
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -22,9 +45,23 @@ class Block extends Model
     public $incrementing = false;
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'height'                 => BigInteger::class,
+        'number_of_transactions' => 'int',
+        'reward'                 => BigInteger::class,
+        'timestamp'              => 'int',
+        'total_amount'           => BigInteger::class,
+        'total_fee'              => BigInteger::class,
+    ];
+
+    /**
      * A block has many transactions.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function transactions(): HasMany
     {
@@ -34,7 +71,7 @@ class Block extends Model
     /**
      * A block belongs to a delegate.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function delegate(): BelongsTo
     {
@@ -44,65 +81,11 @@ class Block extends Model
     /**
      * A block has one previous block.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      */
     public function previous(): HasOne
     {
-        return $this->hasOne(self::class, 'previous_block', 'id');
-    }
-
-    /**
-     * Scope a query to only include blocks by the generator.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string                                $publicKey
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeGenerator($query, $publicKey)
-    {
-        return $query->where('generator_public_key', $publicKey);
-    }
-
-    /**
-     * Get the human readable representation of the timestamp.
-     *
-     * @return \Illuminate\Support\Carbon
-     */
-    public function getTimestampCarbonAttribute(): Carbon
-    {
-        return Carbon::parse(Network::get()->epoch())
-            ->addSeconds($this->attributes['timestamp']);
-    }
-
-    /**
-     * Get the human readable representation of the total.
-     *
-     * @return float
-     */
-    public function getFormattedTotalAttribute(): float
-    {
-        return $this->totalAmount / 1e8;
-    }
-
-    /**
-     * Get the human readable representation of the fee.
-     *
-     * @return float
-     */
-    public function getFormattedFeeAttribute(): float
-    {
-        return $this->totalFee / 1e8;
-    }
-
-    /**
-     * Get the human readable representation of the reward.
-     *
-     * @return float
-     */
-    public function getFormattedRewardAttribute(): float
-    {
-        return $this->reward / 1e8;
+        return $this->hasOne(self::class, 'id', 'previous_block');
     }
 
     /**

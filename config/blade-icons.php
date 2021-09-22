@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -60,6 +62,12 @@ return [
         'app' => [
             'path'   => 'resources/icons',
             'prefix' => 'app',
+            'class'  => 'fill-current',
+        ],
+
+        'transactions' => [
+            'path'   => 'resources/icons/transactions',
+            'prefix' => 'app.transactions',
             'class'  => 'fill-current',
         ],
 

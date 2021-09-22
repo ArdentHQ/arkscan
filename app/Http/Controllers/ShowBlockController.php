@@ -1,14 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Block;
-use Illuminate\Http\Request;
+use App\ViewModels\ViewModelFactory;
+use Illuminate\View\View;
 
-class ShowBlockController extends Controller
+final class ShowBlockController
 {
-    public function __invoke(Request $request, Block $block)
+    public function __invoke(Block $block): View
     {
-        return $block;
+        return view('app.block', [
+            'block'           => ViewModelFactory::make($block),
+            'hasTransactions' => $block->transactions()->exists(),
+        ]);
     }
 }

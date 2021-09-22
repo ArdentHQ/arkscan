@@ -1,0 +1,99 @@
+name: UI
+
+on:
+    pull_request:
+        paths:
+            - "**.css"
+            - "**.js"
+            - "**.php"
+            - "**.svg"
+
+jobs:
+    prettier:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  ref: ${{ github.head_ref }}
+                  token: ${{ secrets.GH_TOKEN }}
+
+            - name: Install
+              run: yarn install --frozen-lockfile
+
+            - name: Run prettier
+              run: yarn run prettier --write 'resources/**/*.{css,js,vue}'
+
+            - uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  commit_message: "style: resolve style guide violations"
+                  branch: ${{ github.head_ref }}
+
+    rustywind:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  ref: ${{ github.head_ref }}
+                  token: ${{ secrets.GH_TOKEN }}
+
+            - name: Format
+              run: |
+                  export PATH="$(yarn global bin):$PATH"
+                  yarn global add rustywind
+                  rustywind --write resources/views
+
+            - uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  commit_message: "style: resolve style guide violations"
+                  branch: ${{ github.head_ref }}
+
+    svg:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - uses: ericcornelissen/svgo-action@v1.0.1
+              with:
+                  conventional-commits: true
+                  repo-token: ${{ secrets.GH_TOKEN }}
+
+    build:
+        needs: [prettier, rustywind, svg]
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  ref: ${{ github.head_ref }}
+                  token: ${{ secrets.GH_TOKEN }}
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.0"
+                  extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
+                  coverage: pcov
+
+            - name: Cache dependencies
+              uses: actions/cache@v1
+              with:
+                  path: ~/.composer/cache/files
+                  key: dependencies-composer-${{ hashFiles('composer.json') }}
+
+            - name: Install Composer dependencies
+              run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
+
+            - name: Install
+              run: yarn install --frozen-lockfile
+
+            - name: Build
+              run: yarn prod
+
+            - uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  commit_message: "chore: rebuild assets"
+                  branch: ${{ github.head_ref }}

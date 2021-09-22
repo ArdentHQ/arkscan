@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const focusVisible = require('postcss-focus-visible');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,15 +12,28 @@ const mix = require('laravel-mix');
  |
  */
 
-mix
-    .ts('resources/js/app.ts', 'public/js')
+mix.webpackConfig({
+        resolve: {
+            alias: {
+                '@ui': path.resolve(__dirname, 'vendor/arkecosystem/ui/resources/assets/')
+            }
+        }
+    })
+    // Options
+    .options({
+        processCssUrls: false,
+    })
+    // App
+    .js('resources/js/app.js', 'public/js')
+    .copy('vendor/arkecosystem/ui/resources/assets/js/clipboard.js', 'public/js/clipboard.js')
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
-        require('tailwindcss'),
+        require('tailwindcss')(),
+        focusVisible()
     ])
     .copyDirectory('resources/images', 'public/images')
-    .copyDirectory('resources/fonts', 'public/fonts')
-    .extract();
+    // Extract node_modules
+    .extract(['alpinejs', 'chart.js']);
 
 if (mix.inProduction()) {
     mix.version();

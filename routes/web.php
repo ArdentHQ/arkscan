@@ -1,16 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ListBlocksByWalletController;
-use App\Http\Controllers\ListBlocksController;
-use App\Http\Controllers\ListTransactionsByBlockController;
-use App\Http\Controllers\ListTransactionsByWalletController;
-use App\Http\Controllers\ListTransactionsController;
 use App\Http\Controllers\ListVotersByWalletController;
 use App\Http\Controllers\ShowBlockController;
-use App\Http\Controllers\ShowDelegateMonitorController;
-use App\Http\Controllers\ShowTopWalletsController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\ShowWalletController;
+use App\Http\Controllers\TransactionsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,25 +22,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', HomeController::class)->name('home');
+Route::view('/search', 'app.search-results')->name('search');
+Route::view('/delegates', 'app.delegates')->name('delegates');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::view('/blocks', 'blocks')->name('blocks');
+Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
 
-Route::get('/wallets/{wallet}', ShowWalletController::class);
-Route::get('/wallets/{wallet}/voters', ListVotersByWalletController::class);
-Route::get('/wallets/{wallet}/blocks', ListBlocksByWalletController::class);
-Route::get('/wallets/{wallet}/transactions', ListTransactionsByWalletController::class);
+Route::get('/transactions', TransactionsController::class)->name('transactions');
+Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
 
-Route::get('/blocks', ListBlocksController::class);
-Route::get('/blocks/{block}', ShowBlockController::class);
-Route::get('/blocks/{block}/transactions', ListTransactionsByBlockController::class);
+Route::view('/wallets', 'app.wallets')->name('wallets');
+Route::get('/wallets/{wallet}', ShowWalletController::class)->name('wallet');
+Route::get('/wallets/{wallet}/voters', ListVotersByWalletController::class)->name('wallet.voters');
+Route::get('/wallets/{wallet}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
 
-Route::get('/transactions', ListTransactionsController::class);
-Route::get('/transactions/{transaction}', ShowTransactionController::class);
+Route::view('/statistics', 'app.statistics')->name('statistics');
 
-Route::get('/delegate-monitor', ShowDelegateMonitorController::class);
-Route::get('/top-wallets', ShowTopWalletsController::class);
+// Explorer 3.0 BC - Remove after some time!
+Route::redirect('/advanced-search', '/search');
+Route::redirect('/block/{blockId}', '/blocks/{blockId}');
+Route::redirect('/delegate-monitor', '/delegates');
+Route::redirect('/top-wallets', '/wallets');
+Route::redirect('/transaction/{transactionId}', '/transactions/{transactionId}');
+Route::redirect('/wallet/{walletId}', '/wallets/{walletId}');

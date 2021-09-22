@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Str;
 
 return [
@@ -104,6 +106,7 @@ return [
             'prefix_indexes' => true,
             'schema'         => 'public',
             'sslmode'        => 'prefer',
+            'options'        => [\PDO::ATTR_PERSISTENT => env('PDO_ATTR_PERSISTENT', true)],
         ],
 
     ],

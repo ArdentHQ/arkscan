@@ -1,1 +1,23 @@
-//
+import "focus-visible";
+import "@ui/js/tippy.js";
+import "@ui/js/page-scroll";
+import "@ui/js/reposition-dropdown";
+import Pagination from "@ui/js/pagination";
+import Modal from "@ui/js/modal";
+import ReadMore from "@ui/js/read-more.js";
+import RichSelect from "@ui/js/rich-select.js";
+import Pikaday from "pikaday";
+import PriceChart from "./price-chart";
+import Tabs from "./tabs";
+import Navbar from "@ui/js/navbar";
+import CustomChart from "@ui/js/chart.js";
+
+window.Tabs = Tabs;
+window.Pikaday = Pikaday;
+window.Pagination = Pagination;
+window.Modal = Modal;
+window.ReadMore = ReadMore;
+window.RichSelect = RichSelect;
+window.PriceChart = PriceChart;
+window.Navbar = Navbar;
+window.CustomChart = CustomChart;

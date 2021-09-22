@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Wallet;
-use Illuminate\Http\Request;
+use App\ViewModels\ViewModelFactory;
+use Illuminate\View\View;
 
-class ListBlocksByWalletController extends Controller
+final class ListBlocksByWalletController
 {
-    public function __invoke(Request $request, Wallet $wallet)
+    public function __invoke(Wallet $wallet): View
     {
-        return $wallet->blocks()->paginate();
+        return view('app.blocks-by-wallet', [
+            'wallet' => ViewModelFactory::make($wallet),
+        ]);
     }
 }

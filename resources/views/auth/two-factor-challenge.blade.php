@@ -28,8 +28,8 @@
                     <x-jet-input class="block mt-1 w-full" type="text" name="recovery_code" x-ref="recovery_code" autocomplete="one-time-code" />
                 </div>
 
-                <div class="flex items-center justify-end mt-4">
-                    <button type="button" class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer"
+                <div class="flex justify-end items-center mt-4">
+                    <button type="button" class="text-sm text-gray-600 underline cursor-pointer hover:text-gray-900"
                                     x-show="! recovery"
                                     x-on:click="
                                         recovery = true;
@@ -38,7 +38,7 @@
                         {{ __('Use a recovery code') }}
                     </button>
 
-                    <button type="button" class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer"
+                    <button type="button" class="text-sm text-gray-600 underline cursor-pointer hover:text-gray-900"
                                     x-show="recovery"
                                     x-on:click="
                                         recovery = false;

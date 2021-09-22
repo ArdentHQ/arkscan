@@ -1,6 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
+/public/VoteReport.txt
 /storage/*.key
 /vendor
 .env
@@ -16,3 +17,4 @@ coverage.xml
 .env.bak.vessel
 .DS_Store
 auth.json
+TxtVoteReport.txt

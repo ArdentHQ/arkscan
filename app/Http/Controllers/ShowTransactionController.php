@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
-use Illuminate\Http\Request;
+use App\ViewModels\ViewModelFactory;
+use Illuminate\View\View;
 
-class ShowTransactionController extends Controller
+final class ShowTransactionController
 {
-    public function __invoke(Request $request, Transaction $transaction)
+    public function __invoke(Transaction $transaction): View
     {
-        return $transaction;
+        return view('app.transaction', [
+            'transaction' => ViewModelFactory::make($transaction),
+        ]);
     }
 }

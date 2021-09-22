@@ -3,40 +3,96 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>@yield('title', Network::explorerTitle())</title>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#c9292c">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- Meta --->
+        <meta property="og:image" content="{{ url('/') }}/images/explorer-preview.png" />
+        <meta property="og:url" content="{{ url()->full() }}" />
+        <meta property="og:type" content="website" />
+
+        @hasSection('metatags')
+            @yield('metatags')
+        @else
+            <x-data-bag key="metatags" resolver="path" view="components.metatags" />
+        @endif
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet">
         @livewireStyles
 
         <!-- Scripts -->
-        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.6.0/dist/alpine.js" defer></script>
+        @stack('scripts')
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-dropdown')
+    <body
+        class="@if(Settings::usesDarkTheme()) dark @endif @if(Settings::usesCompactTables()) table-compact @endif"
+        x-data="{ 'theme': '{{ Settings::theme() }}', 'compact': {{ Settings::usesCompactTables() ? 'true' : 'false' }} }"
+        :class="{ 'dark': theme === 'dark', 'table-compact': compact }"
+        @toggle-dark-mode.window="theme === 'dark' ? theme = 'light' : theme = 'dark'"
+        @toggle-compact-table="compact = ! compact"
+    >
+        <div id="app" class="flex flex-col antialiased bg-white dark:bg-theme-secondary-900">
+            <x-navbar.navbar
+                :navigation="[
+                    ['route' => 'delegates',  'label' => trans('menus.delegates')],
+                    ['route' => 'wallets',    'label' => trans('menus.wallets')],
+                    ['route' => 'statistics', 'label' => trans('menus.statistics')],
+                ]"
+            >
+                <x-slot name="logo">
+                    <x-navbar.logo />
+                </x-slot>
+            </x-navbar.navbar>
 
-            <!-- Page Heading -->
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
+            <main class="container flex flex-1 w-full mx-auto @unless($isLanding ?? false) pb-14 mt-16 @endif sm:max-w-full @unless($fullWidth ?? false) px-4 sm:px-8 lg:max-w-7xl @endif">
+                <div class="{{ $containerChildClass ?? 'w-full bg-white dark:bg-theme-secondary-900' }}">
+                    @yield('content')
                 </div>
-            </header>
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
             </main>
         </div>
 
-        @stack('modals')
+        <x-ark-footer>
+            <x-slot name="copyrightSlot">
+                <div class="flex">
+                    <span class="mx-1 sm:inline"> | </span>
+                    <span class="flex items-center space-x-2 whitespace-nowrap">
+                        <span>@lang('general.market_data_by')</span>
 
-        @livewireScripts
+                        <a
+                            href="@lang('general.urls.coingecko')"
+                            target="_blank"
+                        >
+                            <x-ark-icon
+                                name="brands.coingecko"
+                                class="inline-block -mt-1"
+                            />
+                        </a>
+                    </span>
+                </div>
+            </x-slot>
+        </x-ark-footer>
+
+        <livewire:search-module is-modal />
+
+        @livewireScripts()
+
+        @stack('scripts')
+
+        <!-- Scripts -->
+        <script src="{{ mix('js/manifest.js') }}" defer></script>
+        <script src="{{ mix('js/vendor.js') }}" defer></script>
+        <script src="{{ mix('js/app.js') }}" defer></script>
     </body>
 </html>
