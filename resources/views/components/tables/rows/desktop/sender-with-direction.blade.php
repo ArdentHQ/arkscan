@@ -1,7 +1,11 @@
 <div class="flex items-center space-x-4">
     <div class="flex justify-center items-center sender-direction-wrapper">
         <div class="flex">
-            @if($model->isSent($wallet->address()))
+            @if($model->isSentToSelf($wallet->address()))
+                <div class="arrow-direction text-theme-success-600 border-theme-success-200 dark:border-theme-success-600">
+                    <x-ark-icon name="return" />
+                </div>
+            @elseif($model->isSent($wallet->address()))
                 <div class="arrow-direction text-theme-danger-400 border-theme-danger-100 dark:border-theme-danger-400">
                     <x-ark-icon name="sent" />
                 </div>

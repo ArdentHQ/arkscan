@@ -25,7 +25,7 @@ beforeEach(function () {
     (new NetworkCache())->setHeight(fn () => 5000000);
 
     $this->sender = Wallet::factory()->create();
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+    $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create([
         'block_id'          => $this->block->id,
         'block_height'      => 1,
         'fee'               => '100000000',
@@ -48,6 +48,44 @@ it('should determine if the transaction is incoming', function () {
 it('should determine if the transaction is outgoing', function () {
     expect($this->subject->isSent($this->sender->address))->toBeTrue();
     expect($this->subject->isSent('recipient'))->toBeFalse();
+});
+
+it('should determine if transfer transaction is sent to self', function () {
+    $transaction = new TransactionViewModel(Transaction::factory()
+        ->transfer()
+        ->create([
+            'sender_public_key' => $this->sender->public_key,
+            'recipient_id'      => $this->sender->address,
+        ]));
+
+    expect($transaction->isSentToSelf($this->sender->address))->toBeTrue();
+    expect($transaction->isSentToSelf('recipient'))->toBeFalse();
+});
+
+it('should determine if multipayment transaction is sent to self', function () {
+    $transaction = new TransactionViewModel(Transaction::factory()
+        ->multiPayment()
+        ->create([
+            'sender_public_key' => $this->sender->public_key,
+            'asset'             => [
+                'payments' => [
+                    ['recipientId' => $this->sender->address],
+                    ['recipientId' => 'recipient'],
+                    ['recipientId' => 'recipient-2'],
+                ],
+            ],
+        ]));
+
+    expect($transaction->isSentToSelf($this->sender->address))->toBeTrue();
+    expect($transaction->isSentToSelf('recipient-3'))->toBeFalse();
+});
+
+it('should not be sent to self if not multipayment or transfer', function () {
+    $transaction = new TransactionViewModel(Transaction::factory()
+        ->vote()
+        ->create());
+
+    expect($transaction->isSentToSelf($this->sender->address))->toBeFalse();
 });
 
 it('should get the timestamp', function () {
@@ -321,8 +359,10 @@ it('should determine if the transaction is confirmed', function () {
 });
 
 it('should get the ipfs hash', function () {
-    expect($this->subject->ipfsHash())->toBeString();
-    expect($this->subject->ipfsHash())->toBe('QmXrvSZaDr8vjLUB9b7xz26S3kpk3S3bSc8SUyZmNPvmVo');
+    $transaction = new TransactionViewModel(Transaction::factory()->ipfs()->create());
+
+    expect($transaction->ipfsHash())->toBeString();
+    expect($transaction->ipfsHash())->toBe('QmXrvSZaDr8vjLUB9b7xz26S3kpk3S3bSc8SUyZmNPvmVo');
 });
 
 it('should determine the transaction type', function (string $type) {

@@ -114,7 +114,9 @@ final class TransactionFactory extends Factory
         return $this->state(fn () => [
             'type'       => CoreTransactionTypeEnum::IPFS,
             'type_group' => TransactionTypeGroupEnum::CORE,
-            'asset'      => [],
+            'asset'      => [
+                'ipfs' => 'QmXrvSZaDr8vjLUB9b7xz26S3kpk3S3bSc8SUyZmNPvmVo',
+            ],
         ]);
     }
 
