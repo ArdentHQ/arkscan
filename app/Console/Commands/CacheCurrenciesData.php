@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Contracts\MarketDataProvider;
+use App\DTO\MarketData;
 use App\Facades\Network;
 use App\Services\Cache\NetworkStatusBlockCache;
-use App\Services\CryptoCompare;
 use Illuminate\Console\Command;
 use Illuminate\Http\Client\ConnectionException;
 
@@ -26,27 +27,26 @@ final class CacheCurrenciesData extends Command
      */
     protected $description = 'Cache currencies data';
 
-    public function handle(NetworkStatusBlockCache $cache): void
+    public function handle(NetworkStatusBlockCache $cache, MarketDataProvider $marketDataProvider): void
     {
         if (! Network::canBeExchanged()) {
             return;
         }
 
-        $source     = Network::currency();
-        $currencies = collect(config('currencies'))->pluck('currency');
+        $baseCurrency     = Network::currency();
+        $targetCurrencies = collect(config('currencies'))->pluck('currency');
 
         try {
-            $currenciesData = CryptoCompare::getCurrenciesData($source, $currencies);
+            $priceAndPriceChange = $marketDataProvider->priceAndPriceChange($baseCurrency, $targetCurrencies);
 
-            $currenciesData->each(function ($data, $currency) use ($source, $cache) : void {
-                ['price' => $price, 'priceChange' => $priceChange] = $data;
-                $cache->setPrice($source, $currency, $price);
-                $cache->setPriceChange($source, $currency, $priceChange);
+            $priceAndPriceChange->each(function (MarketData $dto, string $currency) use ($baseCurrency, $cache) : void {
+                $cache->setPrice($baseCurrency, $currency, $dto->price());
+                $cache->setPriceChange($baseCurrency, $currency, $dto->priceChange());
             });
         } catch (ConnectionException $e) {
-            $currencies->each(function ($currency) use ($source, $cache) : void {
-                $cache->setPrice($source, $currency, null);
-                $cache->setPriceChange($source, $currency, null);
+            $targetCurrencies->each(function ($currency) use ($baseCurrency, $cache) : void {
+                $cache->setPrice($baseCurrency, $currency, null);
+                $cache->setPriceChange($baseCurrency, $currency, null);
             });
         }
     }

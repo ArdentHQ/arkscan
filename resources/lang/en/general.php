@@ -25,6 +25,7 @@ return [
     'more_details'            => 'For more :transactionType details',
     'learn_more'              => 'Learn more',
     'confirmations'           => ':count confirmation|:count confirmations',
+    'market_data_by'          => 'Market Data by',
 
     'block' => [
         'id'            => 'ID',
@@ -119,5 +120,9 @@ return [
         'profile'      => 'Profile',
         'commission'   => 'Commission',
         'productivity' => 'Productivity',
+    ],
+
+    'urls' => [
+        'coingecko' => 'https://www.coingecko.com/',
     ],
 ];

@@ -5,6 +5,7 @@
     'lastOn' => null,
     'class' => '',
     'name' => '',
+    'width' => '40',
 ])
 
 <x-ark-tables.header
@@ -14,5 +15,5 @@
     :last-on="$lastOn"
     :class="$class . ' text-left'"
     :name="$name"
-    width="40"
+    :width="$width"
 />

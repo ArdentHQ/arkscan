@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Contracts\MarketDataProvider;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Konceiver\DataBags\DataBag;
 
@@ -20,6 +22,11 @@ final class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Model::unguard();
+
+        $this->app->singleton(
+            MarketDataProvider::class,
+            fn () => new (Config::get('explorer.market_data_provider_service'))
+        );
     }
 
     /**

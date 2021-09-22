@@ -11,7 +11,7 @@ use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
-final class CryptoCompareCache implements Contract
+final class CryptoDataCache implements Contract
 {
     use ManagesCache;
 

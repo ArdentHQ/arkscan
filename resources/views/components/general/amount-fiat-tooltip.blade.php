@@ -10,7 +10,7 @@
     $class = '';
 
     if($isSent || $isReceived) {
-        $class .= ' flex px-1.5 py-1 font-semibold whitespace-nowrap rounded border';
+        $class .= ' flex px-1.5 py-1 font-semibold whitespace-nowrap rounded border-2';
     }
 
     if($isSent) {

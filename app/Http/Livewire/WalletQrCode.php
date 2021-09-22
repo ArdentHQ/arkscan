@@ -60,7 +60,8 @@ final class WalletQrCode extends Component
     // @codeCoverageIgnoreStart
     public function getWalletUriProperty(): string
     {
-        $uri  = 'ark:'.$this->address;
+        $uri  = config('explorer.uri_prefix').':'.$this->address;
+
         $data = '';
 
         if ($this->amount !== null && $this->amount !== '') {

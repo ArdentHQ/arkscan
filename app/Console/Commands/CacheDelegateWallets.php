@@ -31,10 +31,12 @@ final class CacheDelegateWallets extends Command
      */
     public function handle(WalletCache $cache)
     {
-        Wallets::allWithUsername()->chunk(200, function ($wallets) use ($cache): void {
-            foreach ($wallets as $wallet) {
-                $cache->setDelegate($wallet->public_key, $wallet);
-            }
-        });
+        Wallets::allWithUsername()
+            ->orderBy('balance')
+            ->chunk(200, function ($wallets) use ($cache): void {
+                foreach ($wallets as $wallet) {
+                    $cache->setDelegate($wallet->public_key, $wallet);
+                }
+            });
     }
 }

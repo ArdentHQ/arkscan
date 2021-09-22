@@ -2,7 +2,10 @@
     class="block"
     device="desktop"
     :items="[
-        'general.delegates.rank' => 'rank',
+        'general.delegates.rank' => [
+            'type'  => 'rank',
+            'width' => '70',
+        ],
         'general.delegates.name' => 'address',
         'general.delegates.votes'  => 'number',
     ]"

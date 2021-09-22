@@ -11,7 +11,6 @@
         </span>
     </x-navbar.button>
 
-
     <div
         x-show.transition.origin.top="showSettings"
         class="fixed top-0 right-0 left-0 z-30 px-4 pt-3 mt-20 w-full md:absolute md:left-auto md:p-0 md:mt-24 md:w-120"
@@ -30,13 +29,15 @@
                             wire:model="state.currency"
                             wrapper-class="left-0 mt-3"
                             dropdown-class="right-0 mt-1 origin-top-right"
-                            initial-value="{{ $this->state['currency'] ?? 'USD' }}"
+                            initial-value="{{ Str::lower($this->state['currency'] ?? 'USD') }}"
                             placeholder="{{ $this->state['currency'] ?? 'USD' }}"
-                            button-class="block font-medium text-left bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200"
+                            button-class="block font-medium text-left bg-transparent text-theme-secondary-700 dark:text-theme-secondary-200"
                             :options="collect(config('currencies'))->keys()->mapWithKeys(function ($currency) {
                                 return [$currency => config('currencies.' . $currency)['currency']];
                             })->toArray()"
                         />
+
+
                     </x-navbar.setting-option>
                 @endif
 
@@ -55,6 +56,7 @@
                 <x-navbar.setting-option
                     :title="trans('forms.settings.table.title')"
                     :subtitle="trans('forms.settings.table.description')"
+                    breakpoint="md"
                 >
                     <x-ark-toggle
                         name="state.compactTables"

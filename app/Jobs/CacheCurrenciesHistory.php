@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Contracts\MarketDataProvider;
 use App\Services\Cache\NetworkStatusBlockCache;
-use App\Services\CryptoCompare;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -28,15 +28,13 @@ final class CacheCurrenciesHistory implements ShouldQueue
     {
     }
 
-    public function handle(): void
+    public function handle(NetworkStatusBlockCache $cache, MarketDataProvider $marketDataProvider): void
     {
-        $cache = app(NetworkStatusBlockCache::class);
-
         try {
             $cache->setHistoricalHourly(
                 $this->source,
                 $this->currency,
-                CryptoCompare::historicalHourly($this->source, $this->currency)
+                $marketDataProvider->historicalHourly($this->source, $this->currency)
             );
         } catch (ConnectionException $e) {
             $cache->setHistoricalHourly($this->source, $this->currency, null);

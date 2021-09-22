@@ -34,11 +34,11 @@ final class CacheCurrenciesHistory extends Command
         $currencies = collect(config('currencies'))->pluck('currency');
 
         $currencies->each(function ($currency, $index) use ($source): void {
-            // Cache one currency history per-minute
             if ($this->option('no-delay') === true) {
                 $delay = null;
             } else {
-                $delay = now()->addMinutes($index);
+                // Spread out requests to avoid ratelimits, 6 per minute currently
+                $delay = now()->addSeconds((int) $index * 10);
             }
 
             CacheCurrenciesHistoryJob::dispatch($source, $currency)->delay($delay);

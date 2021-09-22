@@ -6,6 +6,41 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased Devnet](https://github.com/ArkEcosystem/explorer.ark.io/compare/staging...develop)
 
+## 2021-22-09 (Dexplorer)
+
+### Added
+
+- add wallet uri prefix to the env settings ([#905]) (9ef98940, @alfonsobries)
+- replace receive and sent icons ([#911]) (b651408a, @alfonsobries)
+- feature: implement coingecko api ([#913]) (e0e01621, @alfonsobries)
+
+### Fixed
+
+- use overflow to prevent gap in headers ([#906]) (7cb73162, @alfonsobries)
+- delegate broken headers ([#910]) (92eaa638, @alfonsobries)
+- fiat tooltip exchange rate ([#914]) (d5c0850e, @alexbarnsley)
+- 24h price change percentage value ([#915]) (980a5dee, @ItsANameToo)
+- 24h percentage percent ([#916]) (43e79a73, @ItsANameToo)
+- reduce currency fetching delay to avoid timeouts ([#920]) (ac13f388, @ItsANameToo)
+- reduce padding between address and balance ([#921]) (752d72a3, @leMaur)
+- multipayment sender return status ([#927]) (a9b97c3c, @alexbarnsley)
+
+### Changed
+
+- reduce the margin between voting and header to 1.5 rem ([#907]) (eaf6307c, @alfonsobries)
+- hide expanded tables setting on mobile ([#908]) (bfefebf1, @alfonsobries)
+- update color of the selected currency ([#909]) (019f32c7, @alfonsobries)
+- calculate delegate aggregates in a single query for performance ([#904]) (25472a59, @alfonsobries)
+- first column width on delegate tabs ([#919]) (c7660187, @alexbarnsley)
+- update arrow direction colour ([#922]) (f0f1c057, @alexbarnsley)
+- coingecko footer notice ([#918]) (7f75bc1b, @alexbarnsley)
+- increase amount border width ([#923]) (2e61fea1, @alexbarnsley)
+- add trusted proxy config ([#925]) (bfd117af, @alexbarnsley)
+- update footer css height ([#926]) (c9e23f8e, @alexbarnsley)
+- add return transaction status ([#924]) (cbb1948d, @alexbarnsley)
+
+---
+
 ## 2021-23-08 (Dexplorer)
 
 ### Changed
@@ -84,3 +119,25 @@ All notable changes to this project will be documented in this file.
 [#901]: https://github.com/ArkEcosystem/explorer.ark.io/pull/901
 [#902]: https://github.com/ArkEcosystem/explorer.ark.io/pull/902
 [#903]: https://github.com/ArkEcosystem/explorer.ark.io/pull/903
+[#905]: https://github.com/ArkEcosystem/explorer.ark.io/pull/905
+[#911]: https://github.com/ArkEcosystem/explorer.ark.io/pull/911
+[#913]: https://github.com/ArkEcosystem/explorer.ark.io/pull/913
+[#906]: https://github.com/ArkEcosystem/explorer.ark.io/pull/906
+[#910]: https://github.com/ArkEcosystem/explorer.ark.io/pull/910
+[#914]: https://github.com/ArkEcosystem/explorer.ark.io/pull/914
+[#915]: https://github.com/ArkEcosystem/explorer.ark.io/pull/915
+[#916]: https://github.com/ArkEcosystem/explorer.ark.io/pull/916
+[#920]: https://github.com/ArkEcosystem/explorer.ark.io/pull/920
+[#921]: https://github.com/ArkEcosystem/explorer.ark.io/pull/921
+[#927]: https://github.com/ArkEcosystem/explorer.ark.io/pull/927
+[#907]: https://github.com/ArkEcosystem/explorer.ark.io/pull/907
+[#908]: https://github.com/ArkEcosystem/explorer.ark.io/pull/908
+[#909]: https://github.com/ArkEcosystem/explorer.ark.io/pull/909
+[#904]: https://github.com/ArkEcosystem/explorer.ark.io/pull/904
+[#919]: https://github.com/ArkEcosystem/explorer.ark.io/pull/919
+[#922]: https://github.com/ArkEcosystem/explorer.ark.io/pull/922
+[#918]: https://github.com/ArkEcosystem/explorer.ark.io/pull/918
+[#923]: https://github.com/ArkEcosystem/explorer.ark.io/pull/923
+[#925]: https://github.com/ArkEcosystem/explorer.ark.io/pull/925
+[#926]: https://github.com/ArkEcosystem/explorer.ark.io/pull/926
+[#924]: https://github.com/ArkEcosystem/explorer.ark.io/pull/924
