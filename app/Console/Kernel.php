@@ -56,7 +56,7 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(CacheDelegateAggregates::class)->everyMinute();
 
-        $schedule->command(CacheFees::class)->everyMinute();
+        $schedule->command(CacheFees::class)->everyFiveMinutes();
 
         $schedule->command(CacheDelegateUsernames::class)->everyMinute();
 
@@ -74,7 +74,7 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(CacheDelegateProductivity::class)->everyMinute();
 
-        $schedule->command(CacheTransactions::class)->everyMinute();
+        $schedule->command(CacheTransactions::class)->everyFiveMinutes();
 
         $schedule->command(GenerateVoteReport::class)->everyFiveMinutes();
     }
