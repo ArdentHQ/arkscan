@@ -40,13 +40,13 @@ final class MaximumAggregateFactory
             return new YearAggregate();
         }
 
-        if (Str::of($period)->contains('last')) {
-            preg_match('/^[a-z]+(\d+)$/', $period, $match);
+        // if (Str::of($period)->contains('last')) {
+        //     preg_match('/^[a-z]+(\d+)$/', $period, $match);
 
-            return (new LastAggregate())
-                ->setLimit((int) $match[1])
-                ->setType($type ?? '');
-        }
+        //     return (new LastAggregate())
+        //         ->setLimit((int) $match[1])
+        //         ->setType($type ?? '');
+        // }
 
         throw new InvalidArgumentException('Invalid aggregate period.');
     }
