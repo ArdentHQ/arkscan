@@ -71,10 +71,22 @@ final class Chart extends Component
 
     private function mainValueFiat(): string
     {
-        return BetterNumberFormatter::new()
+        $currency = Settings::currency();
+        $price    = $this->getPrice($currency);
+
+        if (ServiceNumberFormatter::isFiat($currency)) {
+            return BetterNumberFormatter::new()
                 ->withLocale(Settings::locale())
                 ->withFractionDigits(2)
-                ->formatWithCurrencyAccounting($this->getPrice(Settings::currency()));
+                ->formatWithCurrencyAccounting($price);
+        }
+
+        return BetterNumberFormatter::new()
+                ->formatWithCurrencyCustom(
+                    $price,
+                    $currency,
+                    ServiceNumberFormatter::CRYPTO_DECIMALS
+                );
     }
 
     private function mainValuePercentage(): float

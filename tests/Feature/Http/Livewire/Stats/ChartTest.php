@@ -7,6 +7,7 @@ use App\Services\Cache\NetworkCache;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 use Livewire\Livewire;
 use function Tests\fakeCryptoCompare;
 
@@ -14,7 +15,7 @@ beforeEach(function (): void {
     Carbon::setTestNow('2020-01-01 00:00:00');
 });
 
-it('should render the component', function () {
+it('should render the component with fiat value', function () {
     fakeCryptoCompare();
 
     Config::set('explorer.networks.development.canBeExchanged', true);
@@ -34,6 +35,34 @@ it('should render the component', function () {
         ->assertSee('14.99%')
         ->assertSee(trans('pages.statistics.chart.market-cap'))
         ->assertSee('$558,145,930')
+        ->assertSee(trans('pages.statistics.chart.min-price'))
+        ->assertSee('1.275 BTC')
+        ->assertSee(trans('pages.statistics.chart.max-price'))
+        ->assertSee('2.469 BTC')
+        ->assertSee('[1.898,1.904,1.967,1.941,2.013,2.213,2.414,2.369,2.469,2.374,2.228,2.211,2.266,2.364,2.341,2.269,1.981,1.889,1.275,1.471,1.498,1.518,1.61,1.638]');
+});
+
+it('should render the component with non fiat value', function () {
+    Session::put('settings', json_encode(['currency' => 'BTC']));
+
+    fakeCryptoCompare(false, 'BTC');
+
+    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('explorer.networks.development.currency', 'ARK');
+
+    Artisan::call('explorer:cache-currencies-data');
+    Artisan::call('explorer:cache-currencies-history --no-delay');
+    Artisan::call('explorer:cache-prices');
+
+    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
+
+    Livewire::test(Chart::class)
+        ->set('period', 'day')
+        ->assertSee(trans('pages.statistics.chart.price'))
+        ->assertSee('0.00003363 BTC')
+        ->assertSee('1.88%')
+        ->assertSee(trans('pages.statistics.chart.market-cap'))
+        ->assertSee('15,360.45468964 BTC')
         ->assertSee(trans('pages.statistics.chart.min-price'))
         ->assertSee('1.275 BTC')
         ->assertSee(trans('pages.statistics.chart.max-price'))

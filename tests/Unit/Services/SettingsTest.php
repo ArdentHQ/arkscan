@@ -40,6 +40,10 @@ it('should have all settings with values from a session', function () {
 
 it('should have a currency setting', function () {
     expect(Settings::currency())->toBe('USD');
+
+    Session::put('settings', json_encode(['currency' => 'BTC']));
+
+    expect(Settings::currency())->toBe('BTC');
 });
 
 it('should have a price chart setting', function () {
@@ -155,4 +159,12 @@ it('should determine if visitor uses compact mode', function () {
     Session::put('settings', json_encode(['compactTables' => true]));
 
     expect(Settings::usesCompactTables())->toBeTrue();
+});
+
+it('should have a locale setting', function () {
+    expect(Settings::locale())->toBe('en_US');
+
+    Session::put('settings', json_encode(['currency' => 'BTC']));
+
+    expect(Settings::locale())->toBe('en_US');
 });
