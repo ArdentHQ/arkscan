@@ -6,7 +6,21 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased Devnet](https://github.com/ArkEcosystem/explorer.ark.io/compare/staging...develop)
 
-## 2021-22-09 (Dexplorer)
+## 2021-24-09 (Explorer + Dexplorer)
+
+### Fixed
+
+- statistics page when switching to non-fiat value ([#931]) (a6f616f3, @leMaur)
+
+### Changed
+
+- optimize cache-transactions command  ([#932]) (ad1d15dd, @alfonsobries)
+- optimize cache-fees command ([#933]) (3393d60e, @ItsANameToo)
+- reduce update frequency of fees and transaction stats ([#934]) (df2d8cbe, @ItsANameToo)
+
+---
+
+## 2021-22-09 (Explorer + Dexplorer)
 
 ### Added
 
@@ -141,3 +155,7 @@ All notable changes to this project will be documented in this file.
 [#925]: https://github.com/ArkEcosystem/explorer.ark.io/pull/925
 [#926]: https://github.com/ArkEcosystem/explorer.ark.io/pull/926
 [#924]: https://github.com/ArkEcosystem/explorer.ark.io/pull/924
+[#931]: https://github.com/ArkEcosystem/explorer.ark.io/pull/931
+[#932]: https://github.com/ArkEcosystem/explorer.ark.io/pull/932
+[#933]: https://github.com/ArkEcosystem/explorer.ark.io/pull/933
+[#934]: https://github.com/ArkEcosystem/explorer.ark.io/pull/934
