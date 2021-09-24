@@ -17,7 +17,7 @@ final class DayAggregate
     public function aggregate(): Collection
     {
         return $this->mergeWithPlaceholders(
-            (new RangeAggregate())->aggregate(Carbon::now()->subDay()->addHour(), Carbon::now(), 'H'),
+            (new RangeAggregate())->aggregate(Carbon::now()->subDay()->addHour(), Carbon::now(), 'HH24'),
             $this->placeholders((int) Carbon::now()->subDay()->addHour()->timestamp, (int) Carbon::now()->timestamp, 3600, 'H')->take(24)
         );
     }

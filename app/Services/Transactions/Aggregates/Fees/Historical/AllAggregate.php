@@ -18,11 +18,16 @@ final class AllAggregate
 
     public function aggregate(): Collection
     {
+        $select = [
+            'SUM(fee) as fee',
+            sprintf("to_char(to_timestamp(%d+timestamp) AT TIME ZONE 'UTC', '%s') as formatted_date", Network::epoch()->timestamp, 'YYYY-MM'),
+        ];
+
         return Transaction::query()
-            ->select(DB::raw('SUM(fee) as fee, to_char(to_timestamp(timestamp+'.Network::epoch()->timestamp."), 'YYYY-MM') as month"))
-            ->groupBy('month')
-            ->orderBy('month')
-            ->pluck('fee', 'month')
+            ->select(DB::raw(implode(', ', $select)))
+            ->orderBy('formatted_date')
+            ->groupBy('formatted_date')
+            ->pluck('fee', 'formatted_date')
             ->mapWithKeys(fn ($fee, $month) => [$month => $fee->toFloat()]);
     }
 }
