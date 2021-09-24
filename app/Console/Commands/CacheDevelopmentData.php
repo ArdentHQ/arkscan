@@ -33,6 +33,7 @@ final class CacheDevelopmentData extends Command
         collect([
             'explorer:cache-network-aggregates',
             'explorer:cache-fees',
+            'explorer:cache-transactions',
             'explorer:cache-prices',
             'explorer:cache-currencies-data',
             'explorer:cache-currencies-history --no-delay',
