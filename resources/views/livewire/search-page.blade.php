@@ -5,7 +5,7 @@
         </div>
     </div>
 
-    <x-ark-container>
+    <x-ark-container id="results-list">
         <h1 class="header-2">@lang('pages.search_results.title')</h1>
 
         @if($results && $results->count())
