@@ -14,7 +14,9 @@ use Livewire\Component;
 final class PriceTicker extends Component
 {
     /** @phpstan-ignore-next-line */
-    protected $listeners = ['currencyChanged' => 'setValues'];
+    protected $listeners = [
+        'currencyChanged' => 'setValues',
+    ];
 
     public string $price;
 
