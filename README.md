@@ -1,4 +1,4 @@
-# Template - Laravel
+# ARK Explorer
 
 <p align="center">
     <img src="./banner.png" />
