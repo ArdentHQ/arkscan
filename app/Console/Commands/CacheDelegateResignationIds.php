@@ -25,16 +25,12 @@ final class CacheDelegateResignationIds extends Command
      */
     protected $description = 'Cache all transaction IDs for delegate resignations.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return void
-     */
     public function handle(): void
     {
         Transaction::query()
+            ->select('sender_public_key', 'id')
             ->withScope(DelegateResignationScope::class)
             ->cursor()
-            ->each(fn ($transaction) => CacheResignationId::dispatch($transaction)->onQueue('resignations'));
+            ->each(fn ($transaction) => CacheResignationId::dispatch($transaction->sender_public_key, (string) $transaction->id)->onQueue('resignations'));
     }
 }
