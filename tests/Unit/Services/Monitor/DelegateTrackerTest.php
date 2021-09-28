@@ -8,7 +8,6 @@ use App\Models\Wallet;
 use App\Services\Monitor\DelegateTracker;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {

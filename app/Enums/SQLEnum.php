@@ -6,5 +6,5 @@ namespace App\Enums;
 
 final class SQLEnum
 {
-    const INT4_MAXVALUE = 2147483647;
+    public const INT4_MAXVALUE = 2147483647;
 }

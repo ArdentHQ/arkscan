@@ -15,7 +15,10 @@ use Illuminate\Queue\SerializesModels;
 
 final class CachePastRoundPerformanceByPublicKey implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(public int $round, public string $publicKey)
     {
@@ -40,6 +43,7 @@ final class CachePastRoundPerformanceByPublicKey implements ShouldQueue
                         ->where('generator_public_key', $this->publicKey)
                         ->whereBetween('height', [$round['min'], $round['max']])
                         ->count() > 0;
-                })->values()->toArray());
+                })->values()->toArray()
+        );
     }
 }

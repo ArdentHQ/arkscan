@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\DTO\MemoryWallet;
 use App\Models\Block;
 use App\Models\Wallet;
-
 use App\ViewModels\BlockViewModel;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 

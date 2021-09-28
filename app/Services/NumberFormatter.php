@@ -11,9 +11,9 @@ use ReflectionClass;
 
 final class NumberFormatter
 {
-    const CRYPTO_DECIMALS = 8;
+    public const CRYPTO_DECIMALS = 8;
 
-    const FIAT_DECIMALS = 2;
+    public const FIAT_DECIMALS = 2;
 
     /**
      * @param string|int|float $value
@@ -84,6 +84,8 @@ final class NumberFormatter
      */
     public static function currencyShortNotation($value): string
     {
+        $value = is_string($value) ? (float) $value : $value;
+
         if ($value < 1000) {
             return sprintf('%d', $value);
         }

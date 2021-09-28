@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Block;
 use App\Models\Wallet;
-
 use App\Services\Search\BlockSearch;
 use App\Services\Timestamp;
 use Carbon\Carbon;

@@ -6,5 +6,5 @@ namespace App\Enums;
 
 final class MagistrateTransactionEntitySubTypeEnum
 {
-    const NONE = 0;
+    public const NONE = 0;
 }

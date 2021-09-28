@@ -9,7 +9,6 @@ use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\NetworkStatusBlockCache;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
-
 use function Tests\fakeCryptoCompare;
 
 it('should cache the history', function () {

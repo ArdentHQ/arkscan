@@ -23,12 +23,7 @@ final class CacheDevelopmentData extends Command
      */
     protected $description = 'Executes all caching commands. DO NOT USE THIS IN PRODUCTION!';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle()
+    public function handle(): void
     {
         collect([
             'explorer:cache-network-aggregates',

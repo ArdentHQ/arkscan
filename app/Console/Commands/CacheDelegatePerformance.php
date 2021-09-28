@@ -25,12 +25,7 @@ final class CacheDelegatePerformance extends Command
      */
     protected $description = 'Cache the past performance for each active delegate in the current round.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle()
+    public function handle(): void
     {
         Rounds::allByRound(Monitor::roundNumber())
             ->each(fn ($round) => CachePastRoundPerformanceByPublicKey::dispatch($round->round, $round->public_key)->onQueue('performance'));

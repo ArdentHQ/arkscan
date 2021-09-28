@@ -51,7 +51,7 @@ final class Transaction extends Model
      * Exposed through the model to keep its usage consistent across
      * all places that need to filter transactions by their type.
      */
-    const TYPE_SCOPES = [
+    public const TYPE_SCOPES = [
         'delegateRegistration'          => DelegateRegistrationScope::class,
         'delegateResignation'           => DelegateResignationScope::class,
         'ipfs'                          => IpfsScope::class,
