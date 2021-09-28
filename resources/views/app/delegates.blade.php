@@ -1,4 +1,6 @@
 @component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
+    <x-metadata page="delegates" />
+
     @section('content')
         <x-general.header class="overflow-auto">
             <div class="px-8 md:px-10 md:w-full">
@@ -54,5 +56,4 @@
             </x-ark-container>
         </div>
     @endsection
-
 @endcomponent

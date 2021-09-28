@@ -1,7 +1,5 @@
 @component('layouts.app', ['containerChildClass' => 'w-full bg-white dark:bg-theme-secondary-900 flex-grow flex items-center justify-center'])
-    @push('metatags')
-        <meta property="og:title" content="404 - Error | ARK Documentation" />
-    @endpush
+    <x-metadata page="404" />
 
     @section('content')
         <div class="flex flex-col justify-center items-center">
