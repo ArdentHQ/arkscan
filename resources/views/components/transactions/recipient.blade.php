@@ -48,7 +48,7 @@
                     @lang('general.transaction.types.'.$transaction->typeName())
 
                     @if ($transaction->isMultiPayment())
-                        <span class="ml-1 text-theme-secondary-600">+{{ $transaction->recipientsCount() }}</span>
+                        <span class="ml-1 text-theme-secondary-600">{{ $transaction->recipientsCount() }}</span>
                     @endif
                 </div>
             </div>
