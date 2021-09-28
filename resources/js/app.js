@@ -1,3 +1,6 @@
+// @see https://laravel-mix.com/docs/6.0/upgrade#unused-library-extraction
+import "alpinejs";
+import "chart.js";
 import "focus-visible";
 import "@ui/js/tippy.js";
 import "@ui/js/page-scroll";
