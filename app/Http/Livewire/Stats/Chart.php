@@ -12,9 +12,9 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\MarketCap;
 use App\Services\NumberFormatter as ServiceNumberFormatter;
 use App\Services\Settings;
+use ARKEcosystem\UserInterface\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
-use Konceiver\BetterNumberFormatter\BetterNumberFormatter;
 use Livewire\Component;
 
 final class Chart extends Component

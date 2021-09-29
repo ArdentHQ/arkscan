@@ -8,8 +8,8 @@ use App\Facades\Network;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\NumberFormatter;
 use App\Services\Settings;
+use ARKEcosystem\UserInterface\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 use Illuminate\View\View;
-use Konceiver\BetterNumberFormatter\BetterNumberFormatter;
 use Livewire\Component;
 
 final class NetworkStatusBlockPrice extends Component

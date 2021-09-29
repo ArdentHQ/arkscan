@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e9a3026eaa303c34f33ce9d1b3adc9ab",
+    "content-hash": "2a9d18b317253c3582b754e496156755",
     "packages": [
         {
             "name": "arkecosystem/crypto",
@@ -74,20 +74,20 @@
         },
         {
             "name": "arkecosystem/fortify",
-            "version": "5.0.0",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-fortify.git",
-                "reference": "66f2b62390a099d869c9670fe65efa5f65b37873"
+                "reference": "883bab0323b0c024e8e1e0d7c745aae6aa9f96ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-fortify/zipball/66f2b62390a099d869c9670fe65efa5f65b37873",
-                "reference": "66f2b62390a099d869c9670fe65efa5f65b37873",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-fortify/zipball/883bab0323b0c024e8e1e0d7c745aae6aa9f96ce",
+                "reference": "883bab0323b0c024e8e1e0d7c745aae6aa9f96ce",
                 "shasum": ""
             },
             "require": {
-                "arkecosystem/ui": "^4.0",
+                "arkecosystem/ui": "^5.0",
                 "danharrin/livewire-rate-limiting": "^0.3.0",
                 "illuminate/support": "^8.0",
                 "jenssegers/agent": "^2.6",
@@ -141,22 +141,22 @@
             "description": "Authentication Scaffolding for Laravel. Powered by Laravel Fortify.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-fortify/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-fortify/tree/5.0.0"
+                "source": "https://github.com/ArkEcosystem/laravel-fortify/tree/6.0.0"
             },
-            "time": "2021-09-27T10:53:44+00:00"
+            "time": "2021-09-29T01:58:36+00:00"
         },
         {
             "name": "arkecosystem/ui",
-            "version": "4.0.4",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-ui.git",
-                "reference": "9c3d401b754d547813d0a72fa6b46420841bd464"
+                "reference": "6fb2b8222f29e2021b326d6106c33b321cfe2277"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-ui/zipball/9c3d401b754d547813d0a72fa6b46420841bd464",
-                "reference": "9c3d401b754d547813d0a72fa6b46420841bd464",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-ui/zipball/6fb2b8222f29e2021b326d6106c33b321cfe2277",
+                "reference": "6fb2b8222f29e2021b326d6106c33b321cfe2277",
                 "shasum": ""
             },
             "require": {
@@ -167,7 +167,6 @@
                 "illuminate/mail": "^8.0",
                 "illuminate/support": "^8.0",
                 "illuminate/view": "^8.0",
-                "konceiver/better-number-formatter": "^2.2",
                 "livewire/livewire": "^2.0",
                 "php": "^8.0",
                 "pragmarx/google2fa-laravel": "^1.3",
@@ -221,9 +220,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by TailwindCSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-ui/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-ui/tree/4.0.4"
+                "source": "https://github.com/ArkEcosystem/laravel-ui/tree/5.0.0"
             },
-            "time": "2021-09-28T14:46:23+00:00"
+            "time": "2021-09-29T01:56:53+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -2441,67 +2440,6 @@
             "time": "2020-06-13T08:05:20+00:00"
         },
         {
-            "name": "konceiver/better-number-formatter",
-            "version": "2.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/konceiver/better-number-formatter.git",
-                "reference": "016b2dc9e8e8fc754efe2e4ebf00689bdfb84efb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/konceiver/better-number-formatter/zipball/016b2dc9e8e8fc754efe2e4ebf00689bdfb84efb",
-                "reference": "016b2dc9e8e8fc754efe2e4ebf00689bdfb84efb",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "^8.0",
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "konceiver/stan": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Konceiver\\BetterNumberFormatter\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Brian Faust",
-                    "email": "brian@konceiver.dev",
-                    "homepage": "https://konceiver.dev",
-                    "role": "Developer"
-                }
-            ],
-            "description": ":package_description",
-            "homepage": "https://github.com/konceiver/better-number-formatter",
-            "keywords": [
-                "better-number-formatter",
-                "konceiver"
-            ],
-            "support": {
-                "issues": "https://github.com/konceiver/better-number-formatter/issues",
-                "source": "https://github.com/konceiver/better-number-formatter/tree/2.2.1"
-            },
-            "funding": [
-                {
-                    "url": "https://konceiver.dev/open-source/support-us",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/faustbrian",
-                    "type": "github"
-                }
-            ],
-            "time": "2021-06-18T12:09:38+00:00"
-        },
-        {
             "name": "laravel/fortify",
             "version": "v1.8.2",
             "source": {
@@ -2566,16 +2504,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.61.0",
+            "version": "v8.62.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "3d528d3d3c8ecb444b50a266c212a52973a6669b"
+                "reference": "60a7e00488167ce2babf3a2aeb3677e48aaf39be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/3d528d3d3c8ecb444b50a266c212a52973a6669b",
-                "reference": "3d528d3d3c8ecb444b50a266c212a52973a6669b",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/60a7e00488167ce2babf3a2aeb3677e48aaf39be",
+                "reference": "60a7e00488167ce2babf3a2aeb3677e48aaf39be",
                 "shasum": ""
             },
             "require": {
@@ -2585,15 +2523,17 @@
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "ext-openssl": "*",
-                "league/commonmark": "^1.3|^2.0",
+                "laravel/serializable-closure": "^1.0",
+                "league/commonmark": "^1.3|^2.0.2",
                 "league/flysystem": "^1.1",
                 "monolog/monolog": "^2.0",
                 "nesbot/carbon": "^2.31",
                 "opis/closure": "^3.6",
                 "php": "^7.3|^8.0",
                 "psr/container": "^1.0",
+                "psr/log": "^1.0 || ^2.0",
                 "psr/simple-cache": "^1.0",
-                "ramsey/uuid": "^4.0",
+                "ramsey/uuid": "^4.2.2",
                 "swiftmailer/swiftmailer": "^6.0",
                 "symfony/console": "^5.1.4",
                 "symfony/error-handler": "^5.1.4",
@@ -2650,21 +2590,21 @@
             },
             "require-dev": {
                 "aws/aws-sdk-php": "^3.189.0",
-                "doctrine/dbal": "^2.6|^3.0",
+                "doctrine/dbal": "^2.13.3|^3.1.2",
                 "filp/whoops": "^2.8",
                 "guzzlehttp/guzzle": "^6.5.5|^7.0.1",
                 "league/flysystem-cached-adapter": "^1.0",
-                "mockery/mockery": "^1.4.2",
+                "mockery/mockery": "^1.4.4",
                 "orchestra/testbench-core": "^6.23",
                 "pda/pheanstalk": "^4.0",
-                "phpunit/phpunit": "^8.5.8|^9.3.3",
+                "phpunit/phpunit": "^8.5.19|^9.5.8",
                 "predis/predis": "^1.1.2",
                 "symfony/cache": "^5.1.4"
             },
             "suggest": {
                 "aws/aws-sdk-php": "Required to use the SQS queue driver, DynamoDb failed job storage and SES mail driver (^3.189.0).",
                 "brianium/paratest": "Required to run tests in parallel (^6.0).",
-                "doctrine/dbal": "Required to rename columns and drop SQLite columns (^2.6|^3.0).",
+                "doctrine/dbal": "Required to rename columns and drop SQLite columns (^2.13.3|^3.1.2).",
                 "ext-ftp": "Required to use the Flysystem FTP driver.",
                 "ext-gd": "Required to use Illuminate\\Http\\Testing\\FileFactory::image().",
                 "ext-memcached": "Required to use the memcache cache driver.",
@@ -2678,10 +2618,10 @@
                 "league/flysystem-aws-s3-v3": "Required to use the Flysystem S3 driver (^1.0).",
                 "league/flysystem-cached-adapter": "Required to use the Flysystem cache (^1.0).",
                 "league/flysystem-sftp": "Required to use the Flysystem SFTP driver (^1.0).",
-                "mockery/mockery": "Required to use mocking (^1.4.2).",
+                "mockery/mockery": "Required to use mocking (^1.4.4).",
                 "nyholm/psr7": "Required to use PSR-7 bridging features (^1.2).",
                 "pda/pheanstalk": "Required to use the beanstalk queue driver (^4.0).",
-                "phpunit/phpunit": "Required to use assertions and run tests (^8.5.8|^9.3.3).",
+                "phpunit/phpunit": "Required to use assertions and run tests (^8.5.19|^9.5.8).",
                 "predis/predis": "Required to use the predis connector (^1.1.2).",
                 "psr/http-message": "Required to allow Storage::put to accept a StreamInterface (^1.0).",
                 "pusher/pusher-php-server": "Required to use the Pusher broadcast driver (^4.0|^5.0|^6.0).",
@@ -2731,7 +2671,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-09-14T13:31:32+00:00"
+            "time": "2021-09-28T13:30:25+00:00"
         },
         {
             "name": "laravel/horizon",
@@ -2811,6 +2751,65 @@
             "time": "2021-09-14T16:01:18+00:00"
         },
         {
+            "name": "laravel/serializable-closure",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/serializable-closure.git",
+                "reference": "2f4d826e04f2f54df30716b6d3a5dbe761b14a4e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/2f4d826e04f2f54df30716b6d3a5dbe761b14a4e",
+                "reference": "2f4d826e04f2f54df30716b6d3a5dbe761b14a4e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "pestphp/pest": "^1.18",
+                "phpstan/phpstan": "^0.12.98",
+                "symfony/var-dumper": "^5.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\SerializableClosure\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                },
+                {
+                    "name": "Nuno Maduro",
+                    "email": "nuno@laravel.com"
+                }
+            ],
+            "description": "Laravel Serializable Closure provides an easy and secure way to serialize closures in PHP.",
+            "keywords": [
+                "closure",
+                "laravel",
+                "serializable"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/serializable-closure/issues",
+                "source": "https://github.com/laravel/serializable-closure"
+            },
+            "time": "2021-09-14T15:41:19+00:00"
+        },
+        {
             "name": "laravel/telescope",
             "version": "v4.6.4",
             "source": {
@@ -2880,12 +2879,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/tinker.git",
-                "reference": "3cbcd845e8008769908a13760855810de9b8ba18"
+                "reference": "584ae26cf51a4b8f883fa583e25800f536cff8bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/tinker/zipball/3cbcd845e8008769908a13760855810de9b8ba18",
-                "reference": "3cbcd845e8008769908a13760855810de9b8ba18",
+                "url": "https://api.github.com/repos/laravel/tinker/zipball/584ae26cf51a4b8f883fa583e25800f536cff8bb",
+                "reference": "584ae26cf51a4b8f883fa583e25800f536cff8bb",
                 "shasum": ""
             },
             "require": {
@@ -2940,7 +2939,7 @@
                 "issues": "https://github.com/laravel/tinker/issues",
                 "source": "https://github.com/laravel/tinker/tree/master"
             },
-            "time": "2021-03-05T21:15:54+00:00"
+            "time": "2021-09-28T15:48:35+00:00"
         },
         {
             "name": "lastguest/murmurhash",
@@ -12979,16 +12978,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "0.11.55",
+            "version": "0.11.56",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "fe8c0e8c986661e21f0724d01532c8a0a9506840"
+                "reference": "9f601b77550dbfa6e096028f8aaecf7021c1bc46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/fe8c0e8c986661e21f0724d01532c8a0a9506840",
-                "reference": "fe8c0e8c986661e21f0724d01532c8a0a9506840",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/9f601b77550dbfa6e096028f8aaecf7021c1bc46",
+                "reference": "9f601b77550dbfa6e096028f8aaecf7021c1bc46",
                 "shasum": ""
             },
             "require": {
@@ -13026,7 +13025,7 @@
             "description": "Prefixed and PHP 7.1 downgraded version of rector/rector",
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/0.11.55"
+                "source": "https://github.com/rectorphp/rector/tree/0.11.56"
             },
             "funding": [
                 {
@@ -13034,7 +13033,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-09-27T16:07:45+00:00"
+            "time": "2021-09-28T19:06:03+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -15607,5 +15606,5 @@
         "ext-gmp": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
