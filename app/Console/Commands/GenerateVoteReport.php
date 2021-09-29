@@ -23,12 +23,7 @@ final class GenerateVoteReport extends Command
      */
     protected $description = 'Generate Vote Report file.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle()
+    public function handle(): void
     {
         GenerateVoteReportJob::dispatch();
     }

@@ -50,6 +50,6 @@
     @endif
 
     <script>
-        window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#transaction-list')));
+        window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#delegate-list')));
     </script>
 </div>

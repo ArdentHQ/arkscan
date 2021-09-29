@@ -6,9 +6,9 @@ namespace App\Enums;
 
 final class DelegateForgingStatus
 {
-    const forging = 'forging';
+    public const forging = 'forging';
 
-    const missed = 'missed';
+    public const missed = 'missed';
 
-    const missing = 'missing';
+    public const missing = 'missing';
 }

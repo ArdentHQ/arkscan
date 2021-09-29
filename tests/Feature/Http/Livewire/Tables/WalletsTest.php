@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Facades\Network;
 use App\Http\Livewire\Tables\Wallets;
 use App\Models\Scopes\OrderByBalanceScope;
-
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\NumberFormatter;

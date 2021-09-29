@@ -30,12 +30,7 @@ final class CacheNetworkAggregates extends Command
      */
     protected $description = 'Cache expensive network aggregates.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle(NetworkCache $cache)
+    public function handle(NetworkCache $cache): void
     {
         $cache->setVolume((new TransactionVolumeAggregate())->aggregate());
 

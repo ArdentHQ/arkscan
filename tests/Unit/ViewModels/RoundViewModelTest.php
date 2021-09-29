@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Round;
 use App\ViewModels\RoundViewModel;
-
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {

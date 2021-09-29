@@ -15,7 +15,10 @@ use Mattiasgeniar\Percentage\Percentage;
 
 final class CacheProductivityByPublicKey implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(public string $publicKey)
     {

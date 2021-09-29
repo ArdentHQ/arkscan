@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\Block;
-
 use App\Services\Monitor\Slots;
 
 beforeEach(function () {

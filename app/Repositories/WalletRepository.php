@@ -17,7 +17,7 @@ final class WalletRepository implements Contract
 
     public function allWithUsername(): Builder
     {
-        return Wallet::whereNotNull('attributes->delegate->username');
+        return Wallet::whereNotNull('wallets.attributes->delegate->username');
     }
 
     public function allWithVote(): Builder

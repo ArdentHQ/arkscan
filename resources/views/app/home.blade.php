@@ -1,4 +1,6 @@
 @component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
+    <x-metadata page="home" />
+
     @section('content')
         <livewire:network-status-block />
 

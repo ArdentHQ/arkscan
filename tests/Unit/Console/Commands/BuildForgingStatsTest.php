@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\Block;
-
 use App\Models\ForgingStats;
 use App\Models\Round;
 use Illuminate\Support\Facades\Artisan;

@@ -1,4 +1,5 @@
 @component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
+    <x-metadata page="blocks" />
 
     @section('content')
         <x-ark-container>
@@ -11,5 +12,4 @@
             </div>
         </x-ark-container>
     @endsection
-
 @endcomponent

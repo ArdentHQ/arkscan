@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\Wallet;
-
 use App\Services\Cache\WalletCache;
 
 beforeEach(fn () => $this->subject = new WalletCache());

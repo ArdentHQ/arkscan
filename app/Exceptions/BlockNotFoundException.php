@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Exceptions;
 
 use App\Exceptions\Contracts\EntityNotFoundInterface;
+use ARKEcosystem\UserInterface\Components\TruncateMiddle;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\HtmlString;
-use Konceiver\BladeComponents\View\Components\TruncateMiddle;
 
 final class BlockNotFoundException extends ModelNotFoundException implements EntityNotFoundInterface
 {

@@ -111,6 +111,11 @@ it('should get the timestamp', function () {
     expect($this->subject->timestamp())->toBe('19 Oct 2020 04:54:16');
 });
 
+it('should get the dateTime', function () {
+    expect($this->subject->dateTime())->toBeInstanceOf(Carbon::class);
+    expect($this->subject->dateTime()->format('Y-m-d H:i:s'))->toBe('2020-10-19 04:54:16');
+});
+
 it('should get the block ID', function () {
     expect($this->subject->blockId())->toBeString();
     expect($this->subject->blockId())->toBe($this->block->id);

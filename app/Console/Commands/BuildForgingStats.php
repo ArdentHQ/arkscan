@@ -23,15 +23,10 @@ final class BuildForgingStats extends Command
      */
     protected $description = 'Build forging stats into forging_stats database.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle()
+    public function handle(): void
     {
-        $height = intval($this->option('height'));
-        $days   = floatval($this->option('days'));
+        $height = (int) $this->option('height');
+        $days   = (float) $this->option('days');
         (new Job($height, $days))->handle();
     }
 }

@@ -1,7 +1,7 @@
 <x-ark-rich-select
     wrapper-class="relative p-2 w-full rounded-xl border md:p-0 md:w-auto md:border-0 border-theme-primary-100 dark:border-theme-secondary-800"
     dropdown-class="right-0 mt-2 origin-top-right"
-    button-class="flex relative items-center p-3 w-full font-semibold text-left md:inline md:items-end md:px-8 focus:outline-none text-theme-secondary-900 dark:text-theme-secondary-200"
+    button-class="flex relative items-center p-3 mr-10 w-full font-semibold text-left md:inline md:items-end md:px-8 focus:outline-none text-theme-secondary-900 dark:text-theme-secondary-200"
     icon-class="hidden"
     initial-value="{{ $this->state['type'] }}"
     wire:model="state.type"

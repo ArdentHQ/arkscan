@@ -11,7 +11,6 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
-
 use function Tests\fakeCryptoCompare;
 
 it('should execute the command', function () {

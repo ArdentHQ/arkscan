@@ -12,7 +12,7 @@ it('should cache the resignation ID for the public key', function () {
 
     expect(Cache::tags('wallet')->has(md5("resignation_id/$transaction->sender_public_key")))->toBeFalse();
 
-    (new CacheResignationId($transaction))->handle(new WalletCache());
+    (new CacheResignationId($transaction->sender_public_key, (string) $transaction->id))->handle(new WalletCache());
 
     expect(Cache::tags('wallet')->has(md5("resignation_id/$transaction->sender_public_key")))->toBeTrue();
 

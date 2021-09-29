@@ -24,12 +24,7 @@ final class CacheDelegateAggregates extends Command
      */
     protected $description = 'Cache expensive aggregation data for all delegates.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle(DelegateCache $cache)
+    public function handle(DelegateCache $cache): void
     {
         $aggregate = (new DelegateTotalAggregates())->aggregate();
 

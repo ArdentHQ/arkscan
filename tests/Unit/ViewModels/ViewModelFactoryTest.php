@@ -11,7 +11,6 @@ use App\ViewModels\RoundViewModel;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
-
 use Illuminate\Support\Collection;
 use Tests\InvalidModel;
 

@@ -80,7 +80,7 @@ return [
             'module-entity-registration'          => 'Module Registration',
             'module-entity-resignation'           => 'Module Resignation',
             'module-entity-update'                => 'Module Update',
-            'vote-combination'                    => 'Multivote',
+            'vote-combination'                    => 'Switch Vote',
             'multi-signature'                     => 'Multisignature',
             'plugin-entity-registration'          => 'Plugin Registration',
             'plugin-entity-resignation'           => 'Plugin Resignation',

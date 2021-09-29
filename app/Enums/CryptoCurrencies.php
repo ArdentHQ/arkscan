@@ -6,13 +6,13 @@ namespace App\Enums;
 
 final class CryptoCurrencies
 {
-    const BTC = 'BTC';
+    public const BTC = 'BTC';
 
-    const ETH = 'ETH';
+    public const ETH = 'ETH';
 
-    const LTC = 'LTC';
+    public const LTC = 'LTC';
 
-    const ARK = 'ARK';
+    public const ARK = 'ARK';
 
-    const DARK = 'DARK';
+    public const DARK = 'DARK';
 }
