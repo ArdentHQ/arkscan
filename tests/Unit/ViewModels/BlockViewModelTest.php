@@ -6,6 +6,7 @@ use App\DTO\MemoryWallet;
 use App\Models\Block;
 use App\Models\Wallet;
 use App\ViewModels\BlockViewModel;
+use Carbon\Carbon;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
@@ -28,6 +29,11 @@ it('should get the url', function () {
 it('should get the timestamp', function () {
     expect($this->subject->timestamp())->toBeString();
     expect($this->subject->timestamp())->toBe('19 Oct 2020 04:54:16');
+});
+
+it('should get the dateTime', function () {
+    expect($this->subject->dateTime())->toBeInstanceOf(Carbon::class);
+    expect($this->subject->dateTime()->format('Y-m-d H:i:s'))->toBe('2020-10-19 04:54:16');
 });
 
 it('should get the height', function () {

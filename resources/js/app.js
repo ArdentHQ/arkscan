@@ -5,6 +5,7 @@ import "focus-visible";
 import "@ui/js/tippy.js";
 import "@ui/js/page-scroll";
 import "@ui/js/reposition-dropdown";
+import * as dayjs from "dayjs";
 import Pagination from "@ui/js/pagination";
 import Modal from "@ui/js/modal";
 import ReadMore from "@ui/js/read-more.js";
@@ -15,6 +16,7 @@ import Tabs from "./tabs";
 import Navbar from "@ui/js/navbar";
 import CustomChart from "@ui/js/chart.js";
 
+window.dayjs = dayjs;
 window.Tabs = Tabs;
 window.Pikaday = Pikaday;
 window.Pagination = Pagination;

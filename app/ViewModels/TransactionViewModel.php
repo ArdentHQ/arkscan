@@ -25,6 +25,7 @@ use App\ViewModels\Concerns\Transaction\InteractsWithTypeData;
 use App\ViewModels\Concerns\Transaction\InteractsWithVendorField;
 use App\ViewModels\Concerns\Transaction\InteractsWithVotes;
 use App\ViewModels\Concerns\Transaction\InteractsWithWallets;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
 final class TransactionViewModel implements ViewModel
@@ -73,6 +74,11 @@ final class TransactionViewModel implements ViewModel
     public function timestamp(bool $short = false): string
     {
         return Timestamp::fromGenesisHuman($this->transaction->timestamp, $short);
+    }
+
+    public function dateTime(): Carbon
+    {
+        return Timestamp::fromGenesis($this->transaction->timestamp);
     }
 
     public function nonce(): int
