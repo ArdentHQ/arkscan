@@ -21,6 +21,8 @@ All notable changes to this project will be documented in this file.
 - sync navbar price and price blocks in home page ([#935]) (0339fb79, @alfonsobries)
 - remove id on all svg icons ([#941]) (a9987791, @alfonsobries)
 - pagination not changing page query ([#958]) (420d9a1e, @ItsANameToo)
+- delegate table loading state ([#961]) (668f446, @ItsANameToo)
+- search page pagination ([#963]) (5489a4b, @leMaur)
 
 ### Changed
 
@@ -214,3 +216,5 @@ All notable changes to this project will be documented in this file.
 [#957]: https://github.com/ArkEcosystem/explorer/pull/957
 [#960]: https://github.com/ArkEcosystem/explorer/pull/960
 [#930]: https://github.com/ArkEcosystem/explorer/pull/930
+[#961]: https://github.com/ArkEcosystem/explorer/pull/961
+[#963]: https://github.com/ArkEcosystem/explorer/pull/963
