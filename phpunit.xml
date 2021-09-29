@@ -60,6 +60,6 @@
         <server name="PDO_ATTR_PERSISTENT" value="false"/>
     </php>
     <listeners>
-        <listener class="Konceiver\SpeedTrap\SpeedTrapListener" />
+        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
     </listeners>
 </phpunit>

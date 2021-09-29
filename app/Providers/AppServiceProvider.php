@@ -6,11 +6,11 @@ namespace App\Providers;
 
 use App\Contracts\MarketDataProvider;
 use App\Services\BigNumber;
+use ARKEcosystem\UserInterface\DataBags\DataBag;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
-use Konceiver\DataBags\DataBag;
 
 final class AppServiceProvider extends ServiceProvider
 {
