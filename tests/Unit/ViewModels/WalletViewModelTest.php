@@ -552,11 +552,25 @@ it('can determine the colors for icons based on the status of a delegate', funct
     expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-900 border-theme-secondary-900');
     expect($this->subject->delegateStatusStyling())->toBe('text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800');
 
+    // Pending colors
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'John',
+                'rank'     => 0,
+            ],
+        ],
+    ]));
+
+    expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-900 border-theme-secondary-900');
+    expect($this->subject->delegateStatusStyling())->toBe('text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800');
+
     // Active colors
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
             'delegate' => [
                 'username' => 'John',
+                'rank'     => 1,
             ],
         ],
     ]));
