@@ -1,5 +1,14 @@
 @if($shortened ?? false)
-    <span data-tippy-content="{{ $model->timestamp() }}">{{ $model->timestamp(true) }}</span>
+    <x-ark-local-time
+        :datetime="$model->dateTime()"
+        :format="DateFormat::TIME_SHORT_JS"
+        :placeholder="$model->timestamp(true)"
+        :tooltip-format="DateFormat::TIME_JS"
+    />
 @else
-    {{ $model->timestamp() }}
+    <x-ark-local-time
+        :datetime="$model->dateTime()"
+        :format="DateFormat::TIME_JS"
+        :placeholder="$model->timestamp()"
+    />
 @endif

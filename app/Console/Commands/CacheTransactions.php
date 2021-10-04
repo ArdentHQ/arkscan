@@ -25,12 +25,7 @@ final class CacheTransactions extends Command
      */
     protected $description = 'Cache expensive transactions aggregates.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle(TransactionCache $cache)
+    public function handle(TransactionCache $cache): void
     {
         collect([
             StatsPeriods::DAY,

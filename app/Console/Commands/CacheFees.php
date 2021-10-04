@@ -29,12 +29,7 @@ final class CacheFees extends Command
      */
     protected $description = 'Cache expensive fee aggregates.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle(FeeCache $cache)
+    public function handle(FeeCache $cache): void
     {
         $cache->setHistorical(StatsPeriods::ALL, HistoricalAggregateFactory::make(StatsPeriods::ALL)->aggregate());
 

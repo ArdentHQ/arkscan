@@ -12,6 +12,7 @@ use App\Services\Timestamp;
 use App\ViewModels\Concerns\Block\HasDelegate;
 use App\ViewModels\Concerns\Block\HasTransactions;
 use App\ViewModels\Concerns\Block\InteractsWithNeighbours;
+use Carbon\Carbon;
 
 final class BlockViewModel implements ViewModel
 {
@@ -36,6 +37,11 @@ final class BlockViewModel implements ViewModel
     public function timestamp(): string
     {
         return Timestamp::fromGenesisHuman($this->block->timestamp);
+    }
+
+    public function dateTime(): Carbon
+    {
+        return Timestamp::fromGenesis($this->block->timestamp);
     }
 
     public function height(): int

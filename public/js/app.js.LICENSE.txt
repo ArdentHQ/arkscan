@@ -4,6 +4,12 @@
  * Copyright © 2014 David Bushell | BSD & MIT license | https://github.com/Pikaday/Pikaday
  */
 
+/**!
+* tippy.js v6.3.1
+* (c) 2017-2021 atomiks
+* MIT License
+*/
+
 //! moment.js
 
 //! moment.js locale configuration

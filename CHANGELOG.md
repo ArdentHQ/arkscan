@@ -2,11 +2,47 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased Mainnet](https://github.com/ArkEcosystem/explorer.ark.io/compare/master...staging)
+## [Unreleased Mainnet](https://github.com/ArkEcosystem/explorer/compare/master...staging)
 
-## [Unreleased Devnet](https://github.com/ArkEcosystem/explorer.ark.io/compare/staging...develop)
+## [Unreleased Devnet](https://github.com/ArkEcosystem/explorer/compare/staging...develop)
 
-## 2021-24-09 (Explorer + Dexplorer)
+## 2021-09-29 (Dexplorer)
+
+### Added
+
+- add recipients count next to multipayment transactions ([#940]) (33b8d68f, @alfonsobries)
+- add metadata images per section ([#959]) (c677b64a, @alfonsobries)
+
+### Fixed
+
+- add cache-transactions to development data command ([#938]) (99229073, @ItsANameToo)
+- `scrollToQuery` incorrect targets ([#944]) (7f7274d0, @alfonsobries)
+- ensure it reloads the page when use back button on safari ([#942]) (27a2ad42, @alfonsobries)
+- sync navbar price and price blocks in home page ([#935]) (0339fb79, @alfonsobries)
+- remove id on all svg icons ([#941]) (a9987791, @alfonsobries)
+- pagination not changing page query ([#958]) (420d9a1e, @ItsANameToo)
+- delegate table loading state ([#961]) (668f446, @ItsANameToo)
+- search page pagination ([#963]) (5489a4b, @leMaur)
+
+### Changed
+
+- removal of unused aggregates and their tests ([#947]) (27f1925d, @Highjhacker)
+- change multivote to switch vote ([#943]) (03dc5b4f, @alfonsobries)
+- update readme ([#950]) (52eaa4ac, @ItsANameToo)
+- optimize delegate voters count command ([#945]) (58b0fe12, @alfonsobries)
+- remove plus sign on multipayment ([#955]) (a145ce1d, @alfonsobries)
+- update page metadata ([#951]) (fff4e005, @leMaur)
+- update dependencies ([#952]) (b5f310b1, @alexbarnsley)
+- optimize delegate resignation ids command ([#949]) (f5e9a6e3, @leMaur)
+- upgrade oudated npm dependencies ([#954]) (002667ee, @alfonsobries)
+- update dependencies ([#956]) (9d727ade, @leMaur)
+- update dependencies ([#957]) (e612af3c, @faustbrian)
+- update dependencies ([#960]) (d103eeac, @faustbrian)
+- use datetime local timezone format ([#930]) (2fd38492, @alexbarnsley)
+
+---
+
+## 2021-09-24 (Explorer + Dexplorer)
 
 ### Fixed
 
@@ -20,7 +56,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## 2021-22-09 (Explorer + Dexplorer)
+## 2021-09-22 (Explorer + Dexplorer)
 
 ### Added
 
@@ -55,7 +91,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## 2021-23-08 (Dexplorer)
+## 2021-08-23 (Dexplorer)
 
 ### Changed
 
@@ -112,50 +148,73 @@ All notable changes to this project will be documented in this file.
 - block gap on safari on statistics page (#877) (3123befc, @leMaur)
 - push the generation of a vote report to the queue (#882) (db706909, @crnkovic)
 
-[#733]: https://github.com/ArkEcosystem/explorer.ark.io/pull/733
-[#883]: https://github.com/ArkEcosystem/explorer.ark.io/pull/883
-[#879]: https://github.com/ArkEcosystem/explorer.ark.io/pull/879
-[#887]: https://github.com/ArkEcosystem/explorer.ark.io/pull/887
-[#884]: https://github.com/ArkEcosystem/explorer.ark.io/pull/884
-[#885]: https://github.com/ArkEcosystem/explorer.ark.io/pull/885
-[#888]: https://github.com/ArkEcosystem/explorer.ark.io/pull/888
-[#889]: https://github.com/ArkEcosystem/explorer.ark.io/pull/889
-[#876]: https://github.com/ArkEcosystem/explorer.ark.io/pull/876
-[#890]: https://github.com/ArkEcosystem/explorer.ark.io/pull/890
-[#891]: https://github.com/ArkEcosystem/explorer.ark.io/pull/891
-[#894]: https://github.com/ArkEcosystem/explorer.ark.io/pull/894
-[#892]: https://github.com/ArkEcosystem/explorer.ark.io/pull/892
-[#899]: https://github.com/ArkEcosystem/explorer.ark.io/pull/899
-[#896]: https://github.com/ArkEcosystem/explorer.ark.io/pull/896
-[#895]: https://github.com/ArkEcosystem/explorer.ark.io/pull/895
-[#898]: https://github.com/ArkEcosystem/explorer.ark.io/pull/898
-[#897]: https://github.com/ArkEcosystem/explorer.ark.io/pull/897
-[#901]: https://github.com/ArkEcosystem/explorer.ark.io/pull/901
-[#902]: https://github.com/ArkEcosystem/explorer.ark.io/pull/902
-[#903]: https://github.com/ArkEcosystem/explorer.ark.io/pull/903
-[#905]: https://github.com/ArkEcosystem/explorer.ark.io/pull/905
-[#911]: https://github.com/ArkEcosystem/explorer.ark.io/pull/911
-[#913]: https://github.com/ArkEcosystem/explorer.ark.io/pull/913
-[#906]: https://github.com/ArkEcosystem/explorer.ark.io/pull/906
-[#910]: https://github.com/ArkEcosystem/explorer.ark.io/pull/910
-[#914]: https://github.com/ArkEcosystem/explorer.ark.io/pull/914
-[#915]: https://github.com/ArkEcosystem/explorer.ark.io/pull/915
-[#916]: https://github.com/ArkEcosystem/explorer.ark.io/pull/916
-[#920]: https://github.com/ArkEcosystem/explorer.ark.io/pull/920
-[#921]: https://github.com/ArkEcosystem/explorer.ark.io/pull/921
-[#927]: https://github.com/ArkEcosystem/explorer.ark.io/pull/927
-[#907]: https://github.com/ArkEcosystem/explorer.ark.io/pull/907
-[#908]: https://github.com/ArkEcosystem/explorer.ark.io/pull/908
-[#909]: https://github.com/ArkEcosystem/explorer.ark.io/pull/909
-[#904]: https://github.com/ArkEcosystem/explorer.ark.io/pull/904
-[#919]: https://github.com/ArkEcosystem/explorer.ark.io/pull/919
-[#922]: https://github.com/ArkEcosystem/explorer.ark.io/pull/922
-[#918]: https://github.com/ArkEcosystem/explorer.ark.io/pull/918
-[#923]: https://github.com/ArkEcosystem/explorer.ark.io/pull/923
-[#925]: https://github.com/ArkEcosystem/explorer.ark.io/pull/925
-[#926]: https://github.com/ArkEcosystem/explorer.ark.io/pull/926
-[#924]: https://github.com/ArkEcosystem/explorer.ark.io/pull/924
-[#931]: https://github.com/ArkEcosystem/explorer.ark.io/pull/931
-[#932]: https://github.com/ArkEcosystem/explorer.ark.io/pull/932
-[#933]: https://github.com/ArkEcosystem/explorer.ark.io/pull/933
-[#934]: https://github.com/ArkEcosystem/explorer.ark.io/pull/934
+[#733]: https://github.com/ArkEcosystem/explorer/pull/733
+[#883]: https://github.com/ArkEcosystem/explorer/pull/883
+[#879]: https://github.com/ArkEcosystem/explorer/pull/879
+[#887]: https://github.com/ArkEcosystem/explorer/pull/887
+[#884]: https://github.com/ArkEcosystem/explorer/pull/884
+[#885]: https://github.com/ArkEcosystem/explorer/pull/885
+[#888]: https://github.com/ArkEcosystem/explorer/pull/888
+[#889]: https://github.com/ArkEcosystem/explorer/pull/889
+[#876]: https://github.com/ArkEcosystem/explorer/pull/876
+[#890]: https://github.com/ArkEcosystem/explorer/pull/890
+[#891]: https://github.com/ArkEcosystem/explorer/pull/891
+[#894]: https://github.com/ArkEcosystem/explorer/pull/894
+[#892]: https://github.com/ArkEcosystem/explorer/pull/892
+[#899]: https://github.com/ArkEcosystem/explorer/pull/899
+[#896]: https://github.com/ArkEcosystem/explorer/pull/896
+[#895]: https://github.com/ArkEcosystem/explorer/pull/895
+[#898]: https://github.com/ArkEcosystem/explorer/pull/898
+[#897]: https://github.com/ArkEcosystem/explorer/pull/897
+[#901]: https://github.com/ArkEcosystem/explorer/pull/901
+[#902]: https://github.com/ArkEcosystem/explorer/pull/902
+[#903]: https://github.com/ArkEcosystem/explorer/pull/903
+[#905]: https://github.com/ArkEcosystem/explorer/pull/905
+[#911]: https://github.com/ArkEcosystem/explorer/pull/911
+[#913]: https://github.com/ArkEcosystem/explorer/pull/913
+[#906]: https://github.com/ArkEcosystem/explorer/pull/906
+[#910]: https://github.com/ArkEcosystem/explorer/pull/910
+[#914]: https://github.com/ArkEcosystem/explorer/pull/914
+[#915]: https://github.com/ArkEcosystem/explorer/pull/915
+[#916]: https://github.com/ArkEcosystem/explorer/pull/916
+[#920]: https://github.com/ArkEcosystem/explorer/pull/920
+[#921]: https://github.com/ArkEcosystem/explorer/pull/921
+[#927]: https://github.com/ArkEcosystem/explorer/pull/927
+[#907]: https://github.com/ArkEcosystem/explorer/pull/907
+[#908]: https://github.com/ArkEcosystem/explorer/pull/908
+[#909]: https://github.com/ArkEcosystem/explorer/pull/909
+[#904]: https://github.com/ArkEcosystem/explorer/pull/904
+[#919]: https://github.com/ArkEcosystem/explorer/pull/919
+[#922]: https://github.com/ArkEcosystem/explorer/pull/922
+[#918]: https://github.com/ArkEcosystem/explorer/pull/918
+[#923]: https://github.com/ArkEcosystem/explorer/pull/923
+[#925]: https://github.com/ArkEcosystem/explorer/pull/925
+[#926]: https://github.com/ArkEcosystem/explorer/pull/926
+[#924]: https://github.com/ArkEcosystem/explorer/pull/924
+[#931]: https://github.com/ArkEcosystem/explorer/pull/931
+[#932]: https://github.com/ArkEcosystem/explorer/pull/932
+[#933]: https://github.com/ArkEcosystem/explorer/pull/933
+[#934]: https://github.com/ArkEcosystem/explorer/pull/934
+[#940]: https://github.com/ArkEcosystem/explorer/pull/940
+[#959]: https://github.com/ArkEcosystem/explorer/pull/959
+[#938]: https://github.com/ArkEcosystem/explorer/pull/938
+[#944]: https://github.com/ArkEcosystem/explorer/pull/944
+[#942]: https://github.com/ArkEcosystem/explorer/pull/942
+[#935]: https://github.com/ArkEcosystem/explorer/pull/935
+[#941]: https://github.com/ArkEcosystem/explorer/pull/941
+[#958]: https://github.com/ArkEcosystem/explorer/pull/958
+[#947]: https://github.com/ArkEcosystem/explorer/pull/947
+[#943]: https://github.com/ArkEcosystem/explorer/pull/943
+[#950]: https://github.com/ArkEcosystem/explorer/pull/950
+[#945]: https://github.com/ArkEcosystem/explorer/pull/945
+[#955]: https://github.com/ArkEcosystem/explorer/pull/955
+[#951]: https://github.com/ArkEcosystem/explorer/pull/951
+[#952]: https://github.com/ArkEcosystem/explorer/pull/952
+[#949]: https://github.com/ArkEcosystem/explorer/pull/949
+[#954]: https://github.com/ArkEcosystem/explorer/pull/954
+[#956]: https://github.com/ArkEcosystem/explorer/pull/956
+[#957]: https://github.com/ArkEcosystem/explorer/pull/957
+[#960]: https://github.com/ArkEcosystem/explorer/pull/960
+[#930]: https://github.com/ArkEcosystem/explorer/pull/930
+[#961]: https://github.com/ArkEcosystem/explorer/pull/961
+[#963]: https://github.com/ArkEcosystem/explorer/pull/963

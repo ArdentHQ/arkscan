@@ -6,7 +6,6 @@ namespace App\Services\Monitor;
 
 use App\Facades\Network;
 use App\Models\Block;
-
 use App\Models\Round;
 use App\Services\Monitor\Actions\ShuffleDelegates;
 

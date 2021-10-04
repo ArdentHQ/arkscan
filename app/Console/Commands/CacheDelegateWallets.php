@@ -24,12 +24,7 @@ final class CacheDelegateWallets extends Command
      */
     protected $description = 'Cache all delegates by their public key to avoid expensive database queries.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle(WalletCache $cache)
+    public function handle(WalletCache $cache): void
     {
         Wallets::allWithUsername()
             ->orderBy('balance')

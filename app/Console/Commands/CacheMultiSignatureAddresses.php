@@ -24,12 +24,7 @@ final class CacheMultiSignatureAddresses extends Command
      */
     protected $description = 'Cache all multi-signature addresses.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle()
+    public function handle(): void
     {
         Wallets::allWithMultiSignature()
             ->cursor()

@@ -1,22 +1,18 @@
 const mix = require('laravel-mix');
 const focusVisible = require('postcss-focus-visible');
-
-/*
- |--------------------------------------------------------------------------
- | Mix Asset Management
- |--------------------------------------------------------------------------
- |
- | Mix provides a clean, fluent API for defining some Webpack build steps
- | for your Laravel applications. By default, we are compiling the CSS
- | file for the application as well as bundling up all the JS files.
- |
- */
+const path = require('path');
 
 mix.webpackConfig({
         resolve: {
             alias: {
                 '@ui': path.resolve(__dirname, 'vendor/arkecosystem/ui/resources/assets/')
             }
+        },
+        // @see: https://laravel-mix.com/docs/6.0/upgrade#unused-library-extraction
+        optimization: {
+            providedExports: false,
+            sideEffects: false,
+            usedExports: false
         }
     })
     // Options

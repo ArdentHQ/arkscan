@@ -27,11 +27,12 @@
                     >
                         <x-ark-rich-select
                             wire:model="state.currency"
-                            wrapper-class="left-0 mt-3"
+                            wrapper-class="left-0 mt-3 mr-4"
                             dropdown-class="right-0 mt-1 origin-top-right"
                             initial-value="{{ Str::lower($this->state['currency'] ?? 'USD') }}"
                             placeholder="{{ $this->state['currency'] ?? 'USD' }}"
                             button-class="block font-medium text-left bg-transparent text-theme-secondary-700 dark:text-theme-secondary-200"
+                            icon-class="flex absolute inset-y-0 right-0 justify-center items-center -mr-4"
                             :options="collect(config('currencies'))->keys()->mapWithKeys(function ($currency) {
                                 return [$currency => config('currencies.' . $currency)['currency']];
                             })->toArray()"

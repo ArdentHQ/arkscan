@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Services\MarketDataProviders\CryptoCompare;
 use Illuminate\Support\Facades\Http;
-
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeCryptoCompare;
 

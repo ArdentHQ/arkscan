@@ -7,7 +7,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>@yield('title', Network::explorerTitle())</title>
+        <title>{{ trim(View::yieldContent('title', trans("metatags.home.title"))) }}</title>
 
         <!-- Favicon -->
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -19,15 +19,11 @@
         <meta name="theme-color" content="#ffffff">
 
         <!-- Meta --->
-        <meta property="og:image" content="{{ url('/') }}/images/explorer-preview.png" />
-        <meta property="og:url" content="{{ url()->full() }}" />
-        <meta property="og:type" content="website" />
-
-        @hasSection('metatags')
-            @yield('metatags')
-        @else
-            <x-data-bag key="metatags" resolver="path" view="components.metatags" />
-        @endif
+        <x-ark-metadata-tags>
+            <x-slot name="title">@yield('meta-title', trans('metatags.home.title'))</x-slot>
+            <x-slot name="description">@yield('meta-description', trans('metatags.home.description'))</x-slot>
+            <x-slot name="image">@yield('meta-image', trans('metatags.home.image'))</x-slot>
+        </x-ark-metadata-tags>
 
         <!-- Styles -->
         <link href="{{ mix('css/app.css') }}" rel="stylesheet">

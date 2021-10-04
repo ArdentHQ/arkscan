@@ -24,12 +24,7 @@ final class CacheDelegateUsernames extends Command
      */
     protected $description = 'Cache all usernames by their address and public key.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle()
+    public function handle(): void
     {
         Wallets::allWithUsername()
             ->cursor()

@@ -6,7 +6,6 @@ use App\Facades\Network;
 use App\Http\Livewire\Tables\Transactions;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
-
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;

@@ -6,7 +6,7 @@ namespace App\Enums;
 
 final class TransactionTypeGroupEnum
 {
-    const CORE = 1;
+    public const CORE = 1;
 
-    const MAGISTRATE = 2;
+    public const MAGISTRATE = 2;
 }

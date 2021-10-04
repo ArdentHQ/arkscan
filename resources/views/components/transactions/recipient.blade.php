@@ -46,6 +46,10 @@
 
                 <div class="mr-4 font-semibold md:mr-0 md:ml-4 text-theme-secondary-900 dark:text-theme-secondary-200">
                     @lang('general.transaction.types.'.$transaction->typeName())
+
+                    @if ($transaction->isMultiPayment())
+                        <span class="ml-1 text-theme-secondary-600">{{ $transaction->recipientsCount() }}</span>
+                    @endif
                 </div>
             </div>
         @endif

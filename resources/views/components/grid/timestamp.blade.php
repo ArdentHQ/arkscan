@@ -1,3 +1,7 @@
 <x-grid.generic :title="trans('general.transaction.timestamp')" icon="calendar">
-    {{ $model->timestamp() }}
+    <x-ark-local-time
+        :datetime="$model->dateTime()"
+        :format="DateFormat::TIME_JS"
+        :placeholder="$model->timestamp()"
+    />
 </x-grid.generic>

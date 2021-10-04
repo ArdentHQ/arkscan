@@ -6,13 +6,13 @@ namespace App\Enums;
 
 final class MagistrateTransactionEntityTypeEnum
 {
-    const BUSINESS = 0;
+    public const BUSINESS = 0;
 
-    const PRODUCT = 1;
+    public const PRODUCT = 1;
 
-    const PLUGIN = 2;
+    public const PLUGIN = 2;
 
-    const MODULE = 3;
+    public const MODULE = 3;
 
-    const DELEGATE = 4;
+    public const DELEGATE = 4;
 }

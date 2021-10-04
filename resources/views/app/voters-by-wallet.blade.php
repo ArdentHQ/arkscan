@@ -1,9 +1,10 @@
 
 @component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
-
     @push('scripts')
         <script src="{{ mix('js/clipboard.js')}}"></script>
     @endpush
+
+    <x-metadata page="wallet-voters" :detail="['delegate' => $wallet->username()]" />
 
     @section('content')
         <x-page-headers.wallet.voters :wallet="$wallet" />
@@ -16,5 +17,4 @@
             </x-ark-container>
         </div>
     @endsection
-
 @endcomponent

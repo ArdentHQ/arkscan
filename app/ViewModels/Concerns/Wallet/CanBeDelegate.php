@@ -67,7 +67,7 @@ trait CanBeDelegate
 
     public function delegateStatusStyling(): string
     {
-        if ($this->isResigned()) {
+        if ($this->rank() === 0 || $this->isResigned()) {
             return 'text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800';
         }
 

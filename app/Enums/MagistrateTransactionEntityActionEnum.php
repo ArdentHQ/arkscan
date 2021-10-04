@@ -6,9 +6,9 @@ namespace App\Enums;
 
 final class MagistrateTransactionEntityActionEnum
 {
-    const REGISTER = 0;
+    public const REGISTER = 0;
 
-    const UPDATE = 1;
+    public const UPDATE = 1;
 
-    const RESIGN = 2;
+    public const RESIGN = 2;
 }
