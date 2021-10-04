@@ -6,7 +6,6 @@ namespace App\ViewModels;
 
 use App\Actions\CacheNetworkHeight;
 use App\Contracts\ViewModel;
-use App\Facades\Wallets;
 use App\Models\Transaction;
 use App\Services\ExchangeRate;
 use App\Services\Timestamp;
@@ -83,9 +82,7 @@ final class TransactionViewModel implements ViewModel
 
     public function nonce(): int
     {
-        $wallet = Wallets::findByPublicKey($this->transaction->sender_public_key);
-
-        return $wallet->nonce->toNumber();
+        return $this->transaction->nonce;
     }
 
     public function fee(): float
