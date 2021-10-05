@@ -30,6 +30,7 @@
         "nyholm/psr7": "^1.3",
         "ruafozy/mersenne-twister": "^1.3",
         "savvot/random": "^0.3.0",
+        "sentry/sentry-laravel": "^2.8",
         "spatie/laravel-responsecache": "^7.1.0",
         "symfony/psr-http-message-bridge": "^2.0"
     },
