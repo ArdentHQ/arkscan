@@ -6,8 +6,6 @@
 
         <x-general.pagination :results="$wallets" class="mt-8" />
 
-        <script>
-            window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#wallet-list')));
-        </script>
+        <x-script.onload-scroll-to-query selector="#wallet-list" />
     </x-skeletons.wallets>
 </div>

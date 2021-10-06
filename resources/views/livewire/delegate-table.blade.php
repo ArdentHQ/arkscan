@@ -49,7 +49,5 @@
         </x-loading.hidden>
     @endif
 
-    <script>
-        window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#delegate-list')));
-    </script>
+    <x-script.onload-scroll-to-query selector="#delegate-list" />
 </div>

@@ -159,7 +159,7 @@ const CustomChart = (
             }
 
             this.$watch("time", () => this.updateChart());
-            window.addEventListener("resize", () =>
+            document.addEventListener("resize", () =>
                 window.livewire.emit("updateChart")
             );
 

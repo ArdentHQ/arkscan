@@ -6,8 +6,6 @@
 
         <x-general.pagination :results="$transactions" class="mt-8" />
 
-        <script>
-            window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#transaction-list')));
-        </script>
+        <x-script.onload-scroll-to-query selector="#transaction-list" />
     </x-skeletons.transactions>
 </div>
