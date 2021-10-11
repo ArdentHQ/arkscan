@@ -9,7 +9,7 @@
             </div>
 
             <div class="text-lg font-semibold text-center text-theme-secondary-900 dark:text-theme-secondary-600">
-                {!! ARKEcosystem\UserInterface\UI::getErrorMessage(404) !!}
+                {!! \ARKEcosystem\Foundation\UserInterface\UI::getErrorMessage(404) !!}
             </div>
             <div class="space-x-3">
                 <a href="{{ route('home') }}" class="button-primary">@lang('menus.home')</a>

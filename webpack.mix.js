@@ -5,7 +5,7 @@ const path = require('path');
 mix.webpackConfig({
         resolve: {
             alias: {
-                '@ui': path.resolve(__dirname, 'vendor/arkecosystem/ui/resources/assets/')
+                '@ui': path.resolve(__dirname, 'vendor/arkecosystem/foundation/resources/assets/')
             }
         },
         // @see: https://laravel-mix.com/docs/6.0/upgrade#unused-library-extraction
@@ -21,7 +21,7 @@ mix.webpackConfig({
     })
     // App
     .js('resources/js/app.js', 'public/js')
-    .copy('vendor/arkecosystem/ui/resources/assets/js/clipboard.js', 'public/js/clipboard.js')
+    .copy('vendor/arkecosystem/foundation/resources/assets/js/clipboard.js', 'public/js/clipboard.js')
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss')(),

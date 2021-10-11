@@ -44,7 +44,7 @@
                         </div>
 
                         <div class="text-lg font-semibold text-center text-theme-secondary-900 dark:text-theme-secondary-600">
-                            {{ ARKEcosystem\UserInterface\UI::getErrorMessage($errorType) }}
+                            {{ \ARKEcosystem\Foundation\UserInterface\UI::getErrorMessage($errorType) }}
                         </div>
                         <div class="space-x-3">
                             <a href="/" class="button-primary">@lang('menus.home')</a>

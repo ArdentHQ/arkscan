@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Exceptions;
 
 use App\Exceptions\Contracts\EntityNotFoundInterface;
-use ARKEcosystem\UserInterface\Components\TruncateMiddle;
+use ARKEcosystem\Foundation\UserInterface\Components\TruncateMiddle;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\HtmlString;
 

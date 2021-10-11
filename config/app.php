@@ -230,7 +230,7 @@ return [
         'Validator'               => Illuminate\Support\Facades\Validator::class,
         'View'                    => Illuminate\Support\Facades\View::class,
         'Avatar'                  => App\Services\Avatar::class,
-        'DateFormat'              => ARKEcosystem\UserInterface\Support\DateFormat::class,
+        'DateFormat'              => ARKEcosystem\Foundation\UserInterface\Support\DateFormat::class,
         'Network'                 => App\Facades\Network::class,
         'ExplorerNumberFormatter' => App\Services\NumberFormatter::class,
         'Settings'                => App\Services\Settings::class,

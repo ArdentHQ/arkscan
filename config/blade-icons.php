@@ -30,7 +30,7 @@ return [
             |
             */
 
-            'path' => 'vendor/arkecosystem/ui/resources/assets/icons',
+            'path' => 'vendor/arkecosystem/foundation/resources/assets/icons',
 
             /*
             |--------------------------------------------------------------------------
