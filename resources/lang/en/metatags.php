@@ -41,8 +41,8 @@ return [
     ],
 
     'block' => [
-        'title'       => 'Block :blockID Details - :name Blockchain Explorer',
-        'description' => 'View information and details for block with ID :blockID on the :name Blockchain.',
+        'title'       => 'Block :blockid Details - :name Blockchain Explorer',
+        'description' => 'View information and details for block with ID :blockid on the :name Blockchain.',
         'image'       => asset('images/metadata/blocks.png'),
     ],
 
