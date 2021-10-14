@@ -23,15 +23,11 @@
                         function onSelected (selected) {
                             {{-- Push the tab to the search query parameters --}}
                             const { protocol, host, pathname } = window.location;
-                            const newurl = `${protocol}//${host}${pathname}?tab=${selected}`;
-                            window.history.pushState({ path: newurl },'',newurl);
+                            const newUrl = `${protocol}//${host}${pathname}?tab=${selected}`;
+                            window.history.pushState({ path: newUrl },'',newUrl);
 
-                            if (selected === 'monitor') {
-                                this.component = 'monitor';
-                            } else {
-                                this.component = 'table';
-                                Livewire.emit('filterByDelegateStatus', selected);
-                            }
+                            this.component = selected === 'monitor' ? 'monitor' : 'table';
+                            Livewire.emit('tabFiltered', selected);
                         }
 
                         return Tabs(
@@ -40,6 +36,7 @@
                             onSelected
                         );
                     }()"
+                    x-init="Livewire.emit('tabFiltered', 'active');"
                     x-cloak
                     class="w-full"
                 >
@@ -50,7 +47,15 @@
                     </div>
 
                     <div x-show="component === 'table'">
-                        <livewire:delegate-table />
+                        <div x-show="selected === 'active'">
+                            <livewire:delegate-active-table />
+                        </div>
+                        <div x-show="selected === 'standby'">
+                            <livewire:delegate-standby-table />
+                        </div>
+                        <div x-show="selected === 'resigned'">
+                            <livewire:delegate-resigned-table />
+                        </div>
                     </div>
                 </div>
             </x-ark-container>
