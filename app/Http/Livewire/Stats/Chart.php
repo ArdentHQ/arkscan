@@ -12,7 +12,7 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\MarketCap;
 use App\Services\NumberFormatter as ServiceNumberFormatter;
 use App\Services\Settings;
-use ARKEcosystem\UserInterface\NumberFormatter\NumberFormatter as BetterNumberFormatter;
+use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;

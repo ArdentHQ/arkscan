@@ -27,7 +27,5 @@
         @endif
     </x-ark-container>
 
-    <script>
-        window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#results-list')));
-    </script>
+    <x-script.onload-scroll-to-query selector="#results-list" />
 </div>

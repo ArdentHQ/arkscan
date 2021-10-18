@@ -9,8 +9,9 @@
 
     @if($wallet->isDelegate())
         @php
+            $rank = $wallet->rank();
             $isResigned = $wallet->isResigned();
-            $isStandby = $wallet->rank() > Network::delegateCount();
+            $isStandby = (! $isResigned && $rank === 0) || $rank > Network::delegateCount();
             $vote = $wallet->vote()
         @endphp
 
@@ -38,7 +39,7 @@
 
                         <x-slot name="text">
                             @if(! $isResigned)
-                                {{ trans('pages.wallet.vote_rank', [$wallet->rank()]) }} /
+                                {{ $rank === 0 ? '-' : trans('pages.wallet.vote_rank', [$rank]) }} /
                             @endif
                             @if($isResigned)
                                 <span class="text-theme-danger-400">@lang('pages.delegates.resigned')</span>

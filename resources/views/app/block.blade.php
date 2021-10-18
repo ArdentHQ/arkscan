@@ -3,7 +3,7 @@
         <script src="{{ mix('js/clipboard.js')}}"></script>
     @endpush
 
-    <x-metadata page="block" :detail="['txid' => $block->id()]" />
+    <x-metadata page="block" :detail="['blockid' => $block->id()]" />
 
     @section('content')
         <x-page-headers.block :block="$block" />

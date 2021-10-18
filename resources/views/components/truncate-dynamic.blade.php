@@ -4,7 +4,7 @@
         init() {
             new ResizeObserver(() => this.truncate()).observe(this.$el);
 
-            window.addEventListener('resize', () => this.truncate());
+            document.addEventListener('resize', () => this.truncate());
 
             this.truncate();
         },

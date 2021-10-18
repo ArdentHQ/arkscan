@@ -425,6 +425,49 @@ it('should get the vote weight as percentage', function () {
     expect($this->subject->votePercentage())->toBe(10.0);
 });
 
+it('should handle vote weight percentage with 0 vote balance', function () {
+    expect($this->subject->votePercentage())->toBeNull();
+
+    $vote = Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => ['voteBalance' => 0],
+        ],
+    ]);
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'balance'    => 0,
+        'attributes' => ['vote' => $vote->public_key],
+    ]));
+
+    expect($this->subject->votePercentage())->toBeNull();
+
+    (new WalletCache())->setVote($vote->public_key, $vote);
+
+    expect($this->subject->votePercentage())->toBeNull();
+});
+
+it('should handle vote weight percentage with 1 arktoshi vote balance', function () {
+    expect($this->subject->votePercentage())->toBeNull();
+
+    $vote = Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => ['voteBalance' => 1e8],
+        ],
+    ]);
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'balance'    => 1e8,
+        'attributes' => ['vote' => $vote->public_key],
+    ]));
+
+    expect($this->subject->votePercentage())->toBeNull();
+
+    (new WalletCache())->setVote($vote->public_key, $vote);
+
+    expect($this->subject->votePercentage())->toBeFloat();
+    expect($this->subject->votePercentage())->toBe(100.0);
+});
+
 it('should fail to get the vote weight as percentage if the wallet has no public key', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'public_key' => null,
@@ -552,11 +595,25 @@ it('can determine the colors for icons based on the status of a delegate', funct
     expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-900 border-theme-secondary-900');
     expect($this->subject->delegateStatusStyling())->toBe('text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800');
 
+    // Pending colors
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'John',
+                'rank'     => 0,
+            ],
+        ],
+    ]));
+
+    expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-900 border-theme-secondary-900');
+    expect($this->subject->delegateStatusStyling())->toBe('text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800');
+
     // Active colors
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
             'delegate' => [
                 'username' => 'John',
+                'rank'     => 1,
             ],
         ],
     ]));

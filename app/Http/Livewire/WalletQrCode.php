@@ -7,7 +7,7 @@ namespace App\Http\Livewire;
 use App\Facades\Wallets;
 use App\Services\QRCode;
 use App\ViewModels\ViewModelFactory;
-use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasModal;
+use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasModal;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 

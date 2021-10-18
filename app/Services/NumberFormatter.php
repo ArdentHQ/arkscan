@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\CryptoCurrencies;
-use ARKEcosystem\UserInterface\NumberFormatter\NumberFormatter as BetterNumberFormatter;
-use ARKEcosystem\UserInterface\NumberFormatter\ResolveScientificNotation;
+use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
+use ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation;
 use ReflectionClass;
 
 final class NumberFormatter

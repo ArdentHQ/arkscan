@@ -29,7 +29,7 @@ return [
     ],
 
     'transaction' => [
-        'title'       => ':txid Transaction Details - :name Blockchain Explorer',
+        'title'       => 'Transaction :txid Details - :name Blockchain Explorer',
         'description' => 'View information and details for transaction with ID :txid on the :name Blockchain.',
         'image'       => asset('images/metadata/transactions.png'),
     ],
@@ -41,8 +41,8 @@ return [
     ],
 
     'block' => [
-        'title'       => ':blockID Block Details - :name Blockchain Explorer',
-        'description' => 'View information and details for block with ID :blockID on the :name Blockchain.',
+        'title'       => 'Block :blockid Details - :name Blockchain Explorer',
+        'description' => 'View information and details for block with ID :blockid on the :name Blockchain.',
         'image'       => asset('images/metadata/blocks.png'),
     ],
 
@@ -53,7 +53,7 @@ return [
     ],
 
     'wallet' => [
-        'title'       => ':address Wallet Details - :name Blockchain Explorer',
+        'title'       => 'Wallet :address Details - :name Blockchain Explorer',
         'description' => 'View balance, transaction history, and other details for :address on the :name Blockchain.',
         'image'       => asset('images/metadata/wallets.png'),
     ],

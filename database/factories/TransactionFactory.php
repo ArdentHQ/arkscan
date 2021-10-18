@@ -34,6 +34,7 @@ final class TransactionFactory extends Factory
             'timestamp'         => 112982056,
             'fee'               => $this->faker->numberBetween(1, 100) * 1e8,
             'amount'            => $this->faker->numberBetween(1, 100) * 1e8,
+            'nonce'             => 1,
             'asset'             => [
                 'ipfs' => 'QmXrvSZaDr8vjLUB9b7xz26S3kpk3S3bSc8SUyZmNPvmVo',
             ],

@@ -35,7 +35,7 @@
                         <x-general.no-results :text="trans('pages.home.no_transaction_results', [trans('forms.search.transaction_types.'.$state['type'])])" />
                     </div>
                 @else
-                    <div wire:poll="pollTransactions" wire:key="poll_transactions_skeleton">
+                    <div wire:init="pollTransactions" wire:key="poll_transactions_skeleton">
                         <x-tables.desktop.skeleton.transactions />
 
                         <x-tables.mobile.skeleton.transactions />

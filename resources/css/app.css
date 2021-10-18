@@ -7,8 +7,8 @@
 @import "../../node_modules/pikaday/css/pikaday.css";
 
 /** UI Repo Styles **/
-@import "../../vendor/arkecosystem/ui/resources/assets/css/styles.css";
-@import "../../vendor/arkecosystem/ui/resources/assets/css/_pikaday.css";
+@import "../../vendor/arkecosystem/foundation/resources/assets/css/styles.css";
+@import "../../vendor/arkecosystem/foundation/resources/assets/css/_pikaday.css";
 
 /** Custom Styles */
 @import "_general.css";

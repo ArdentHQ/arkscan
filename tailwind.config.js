@@ -1,4 +1,4 @@
-const defaultConfig = require('./vendor/arkecosystem/ui/resources/tailwind.config.js');
+const defaultConfig = require('./vendor/arkecosystem/foundation/resources/tailwind.config.js');
 const plugin = require("tailwindcss/plugin");
 const selectorParser = require("postcss-selector-parser");
 
