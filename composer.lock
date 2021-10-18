@@ -74,16 +74,16 @@
         },
         {
             "name": "arkecosystem/foundation",
-            "version": "0.2.0",
+            "version": "0.2.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-foundation.git",
-                "reference": "442eb6d90461fc89330b7b32e2fc8a114fb7d4e5"
+                "reference": "26ac6524fd0fc801ded057b00b24e207aa3cf9a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/442eb6d90461fc89330b7b32e2fc8a114fb7d4e5",
-                "reference": "442eb6d90461fc89330b7b32e2fc8a114fb7d4e5",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/26ac6524fd0fc801ded057b00b24e207aa3cf9a2",
+                "reference": "26ac6524fd0fc801ded057b00b24e207aa3cf9a2",
                 "shasum": ""
             },
             "require": {
@@ -126,6 +126,7 @@
                 "pragmarx/google2fa-laravel": "^2.0",
                 "rector/rector": "^0.11",
                 "ruafozy/mersenne-twister": "^1.3",
+                "savvot/random": "^0.3.0",
                 "spatie/laravel-flash": "^1.8",
                 "spatie/laravel-honeypot": "^4.0",
                 "spatie/laravel-medialibrary": "^9.8",
@@ -167,9 +168,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by TailwindCSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-foundation/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/0.2.0"
+                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/0.2.15"
             },
-            "time": "2021-10-07T00:39:07+00:00"
+            "time": "2021-10-12T08:18:40+00:00"
         },
         {
             "name": "asm89/stack-cors",
