@@ -10,7 +10,7 @@ use App\Services\Forms;
 use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
-use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasModal;
+use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasModal;
 use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\View\View;

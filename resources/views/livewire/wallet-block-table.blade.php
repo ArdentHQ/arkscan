@@ -11,9 +11,7 @@
 
             <x-general.pagination :results="$blocks" class="mt-8" />
 
-            <script>
-                window.addEventListener('livewire:load', () => window.livewire.on('pageChanged', () => scrollToQuery('#block-list')));
-            </script>
+            <x-script.onload-scroll-to-query selector="#block-list" />
         </x-skeletons.blocks>
     @else
         <x-general.no-results :text="trans('pages.blocks_by_wallet.no_results', [$username])" />

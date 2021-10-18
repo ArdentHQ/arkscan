@@ -6,7 +6,34 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased Devnet](https://github.com/ArkEcosystem/explorer/compare/staging...develop)
 
-## 2021-09-29 (Dexplorer)
+## 2021-10-18 (Dexplorer)
+
+### Added
+
+- implement sentry for error reporting ([#969]) (b166c994, @alfonsobries)
+- upgrade deps and add foundation ([#968]) (6081a359, @alfonsobries)
+
+### Fixed
+
+- delegate voters 0 vote weight ([#971]) (b4dcec68, @alexbarnsley)
+- onload pagescroll scripts ([#973]) (da65f01d, @leMaur)
+- properly display block id in metatags ([#976]) (e36db59c, @Highjhacker)
+- delegate table loading state ([#965]) (c5e187d4, @leMaur)
+- broken search modal ([#979]) (32ce7bb, @leMaur)
+
+### Changed
+
+- handle new delegate rank and status ([#962]) (6b64bb10, @alexbarnsley)
+- display transaction nonce on transaction detail page ([#966]) (2b5397f2, @Highjhacker)
+- pollTransactions to be unnecessary called multiple times ([#970]) (c892bdd8, @alfonsobries)
+- update page metatitles ([#972]) (67ec2084, @alexbarnsley)
+- add view clear command to scheduler ([#977]) (7db434bd, @ItsANameToo)
+- cache delegate performance command ([#953]) (02e0b212, @alfonsobries)
+- use php-cs-fixer and rector config from foundation ([#974]) (565897e9, @leMaur)
+
+---
+
+## 2021-09-29 (Explorer + Dexplorer)
 
 ### Added
 
@@ -218,3 +245,17 @@ All notable changes to this project will be documented in this file.
 [#930]: https://github.com/ArkEcosystem/explorer/pull/930
 [#961]: https://github.com/ArkEcosystem/explorer/pull/961
 [#963]: https://github.com/ArkEcosystem/explorer/pull/963
+[#969]: https://github.com/ArkEcosystem/explorer/pull/969
+[#968]: https://github.com/ArkEcosystem/explorer/pull/968
+[#971]: https://github.com/ArkEcosystem/explorer/pull/971
+[#976]: https://github.com/ArkEcosystem/explorer/pull/976
+[#965]: https://github.com/ArkEcosystem/explorer/pull/965
+[#937]: https://github.com/ArkEcosystem/explorer/pull/937
+[#962]: https://github.com/ArkEcosystem/explorer/pull/962
+[#966]: https://github.com/ArkEcosystem/explorer/pull/966
+[#970]: https://github.com/ArkEcosystem/explorer/pull/970
+[#972]: https://github.com/ArkEcosystem/explorer/pull/972
+[#977]: https://github.com/ArkEcosystem/explorer/pull/977
+[#953]: https://github.com/ArkEcosystem/explorer/pull/953
+[#974]: https://github.com/ArkEcosystem/explorer/pull/974
+[#979]: https://github.com/ArkEcosystem/explorer/pull/979

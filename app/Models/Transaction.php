@@ -38,6 +38,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $sender_public_key
  * @property int $block_height
  * @property resource|null $vendor_field
+ * @property int $nonce
  */
 final class Transaction extends Model
 {

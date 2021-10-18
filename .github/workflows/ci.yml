@@ -51,7 +51,7 @@ jobs:
               run: cp .env.example .env && php artisan key:generate
 
             - name: Run PHPStan
-              run: ./vendor/bin/phpstan analyse --memory-limit=2G
+              run: composer analyse
 
     format:
         runs-on: ubuntu-latest
@@ -131,7 +131,7 @@ jobs:
               run: php artisan config:clear && php artisan route:clear
 
             - name: Run Tests
-              run: ./vendor/bin/pest --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml
+              run: composer test:coverage
               env:
                   DB_CONNECTION: pgsql
                   DB_HOST: 127.0.0.1

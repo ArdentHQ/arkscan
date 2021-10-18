@@ -24,7 +24,7 @@
                         input.focus();
                     }
                 },
-            })"
+            }, { disableFocusTrap: true })"
             class="container flex overflow-auto fixed inset-0 z-50 flex-col pt-24 mx-auto w-full h-screen outline-none md:overflow-visible md:px-8 md:pb-24"
             tabindex="0"
             data-modal

@@ -11,7 +11,6 @@
     @lang('metatags.'.$page.'.title', $detail)
 @endsection
 
-
 @section('meta-title')
     @lang("metatags.{$page}.title", $detail)
 @endsection

@@ -8,7 +8,7 @@ use App\Facades\Wallets;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
-use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasPagination;
+use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;

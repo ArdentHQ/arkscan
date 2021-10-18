@@ -1,5 +1,5 @@
 @php
-['pageName' => $pageName, 'urlParams' => $urlParams] = ARKEcosystem\UserInterface\UI::getPaginationData($paginator);
+['pageName' => $pageName, 'urlParams' => $urlParams] = \ARKEcosystem\Foundation\UserInterface\UI::getPaginationData($paginator);
 @endphp
 <div
     x-data="Pagination('{{ $pageName }}', {{ $paginator->lastPage() }})"

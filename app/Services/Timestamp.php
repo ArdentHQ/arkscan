@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Facades\Network;
-use ARKEcosystem\UserInterface\Support\DateFormat;
+use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
 
 final class Timestamp

@@ -6,7 +6,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Block;
 use App\ViewModels\ViewModelFactory;
-use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasPagination;
+use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 

@@ -4,6 +4,16 @@
  * Copyright © 2014 David Bushell | BSD & MIT license | https://github.com/Pikaday/Pikaday
  */
 
+/*!
+* focus-trap 6.7.1
+* @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
+*/
+
+/*!
+* tabbable 5.2.1
+* @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
+*/
+
 /**!
 * tippy.js v6.3.1
 * (c) 2017-2021 atomiks

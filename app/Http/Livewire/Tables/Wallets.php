@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Tables;
 
 use App\ViewModels\ViewModelFactory;
-use ARKEcosystem\UserInterface\Http\Livewire\Concerns\HasPagination;
+use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\View;
