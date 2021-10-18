@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - onload pagescroll scripts ([#973]) (da65f01d, @leMaur)
 - properly display block id in metatags ([#976]) (e36db59c, @Highjhacker)
 - delegate table loading state ([#965]) (c5e187d4, @leMaur)
+- broken search modal ([#979]) (32ce7bb, @leMaur)
 
 ### Changed
 
@@ -257,3 +258,4 @@ All notable changes to this project will be documented in this file.
 [#977]: https://github.com/ArkEcosystem/explorer/pull/977
 [#953]: https://github.com/ArkEcosystem/explorer/pull/953
 [#974]: https://github.com/ArkEcosystem/explorer/pull/974
+[#979]: https://github.com/ArkEcosystem/explorer/pull/979
