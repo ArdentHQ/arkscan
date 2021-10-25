@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
-use App\Services\QRCode;
 use App\ViewModels\ViewModelFactory;
 use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasModal;
+use ARKEcosystem\Foundation\UserInterface\Support\QRCode;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
