@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Facades\Network;
+use App\Facades\Settings;
 use App\Services\Cache\NetworkStatusBlockCache;
-use App\Services\Settings;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;

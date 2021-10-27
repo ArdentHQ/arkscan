@@ -7,8 +7,8 @@ namespace App\Http\Livewire;
 use App\Actions\CacheNetworkHeight;
 use App\Actions\CacheNetworkSupply;
 use App\Facades\Network;
+use App\Facades\Settings;
 use App\Services\MarketCap;
-use App\Services\Settings;
 use Illuminate\View\View;
 use Livewire\Component;
 

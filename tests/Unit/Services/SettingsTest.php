@@ -2,9 +2,25 @@
 
 declare(strict_types=1);
 
-use App\Services\Settings;
+use App\Facades\Settings;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Route;
+
+// Since the settings rely on the cookies I need to create a fake route that will
+// contain the cookie passed as a param and will respond with the data that the
+// Settings service returns for the given method. The response will be a json
+// that we can use for testing the values.
+function getSettingsFromCookies($ctx, $method = 'all', array $settings = [])
+{
+    Route::get('get-settings', ['middleware' => 'web', fn () => Arr::wrap(Settings::$method())]);
+
+    $response = $ctx->withCookies([
+        'settings' => json_encode($settings),
+    ])->get('get-settings');
+
+    return is_string($response) ? $response : $response->json();
+}
 
 it('should have all settings with defaults', function () {
     expect(Settings::all())->toBe([
@@ -25,25 +41,14 @@ it('should have all settings with values from a session', function () {
         'compactTables' => false,
     ];
 
-    Session::shouldReceive('has')
-        ->once()
-        ->with('settings')
-        ->andReturn(true);
-
-    Session::shouldReceive('get')
-        ->once()
-        ->with('settings')
-        ->andReturn(json_encode($settings));
-
-    expect(Settings::all())->toBe($settings);
+    expect(getSettingsFromCookies($this, 'all', $settings))->toBe($settings);
 });
 
 it('should have a currency setting', function () {
     expect(Settings::currency())->toBe('USD');
 
-    Session::put('settings', json_encode(['currency' => 'BTC']));
-
-    expect(Settings::currency())->toBe('BTC');
+    expect(getSettingsFromCookies($this, 'currency', ['currency' => 'BTC']))
+        ->toBe(['BTC']);
 });
 
 it('should have a price chart setting', function () {
@@ -63,40 +68,30 @@ it('should have a compact mode setting', function () {
 });
 
 it('should determine the name of the theme', function () {
-    Session::put('settings', json_encode(['darkTheme' => true]));
-
-    expect(Settings::theme())->toBe('dark');
-
-    Session::put('settings', json_encode(['darkTheme' => false]));
-
     expect(Settings::theme())->toBe('light');
 
-    Session::put('settings', json_encode(['darkTheme' => true]));
+    expect(getSettingsFromCookies($this, 'theme', ['darkTheme' => false]))
+        ->toBe(['light']);
 
-    expect(Settings::theme())->toBe('dark');
+    expect(getSettingsFromCookies($this, 'theme', ['darkTheme' => true]))
+        ->toBe(['dark']);
 });
 
 it('should determine if visitor uses any chart', function () {
-    Session::put('settings', json_encode([
+    expect(getSettingsFromCookies($this, 'usesCharts', [
         'priceChart' => true,
         'feeChart'   => true,
-    ]));
+    ]))->toBe([true]);
 
-    expect(Settings::usesCharts())->toBeTrue();
-
-    Session::put('settings', json_encode([
+    expect(getSettingsFromCookies($this, 'usesCharts', [
         'priceChart' => false,
         'feeChart'   => false,
-    ]));
+    ]))->toBe([false]);
 
-    expect(Settings::usesCharts())->toBeFalse();
-
-    Session::put('settings', json_encode([
+    expect(getSettingsFromCookies($this, 'usesCharts', [
         'priceChart' => true,
         'feeChart'   => true,
-    ]));
-
-    expect(Settings::usesCharts())->toBeTrue();
+    ]))->toBe([true]);
 });
 
 it('should determine if visitor uses price chart', function () {
@@ -106,65 +101,47 @@ it('should determine if visitor uses price chart', function () {
 
     Config::set('explorer.network', 'production');
 
-    Session::put('settings', json_encode(['priceChart' => true]));
+    expect(getSettingsFromCookies($this, 'usesPriceChart', [
+        'priceChart' => true,
+    ]))->toBe([true]);
 
-    expect(Settings::usesPriceChart())->toBeTrue();
-
-    Session::put('settings', json_encode(['priceChart' => false]));
-
-    expect(Settings::usesPriceChart())->toBeFalse();
-
-    Session::put('settings', json_encode(['priceChart' => true]));
-
-    expect(Settings::usesPriceChart())->toBeTrue();
+    expect(getSettingsFromCookies($this, 'usesPriceChart', [
+        'priceChart' => false,
+    ]))->toBe([false]);
 });
 
 it('should determine if visitor uses fee chart', function () {
-    Session::put('settings', json_encode(['feeChart' => true]));
-
     expect(Settings::usesFeeChart())->toBeTrue();
 
-    Session::put('settings', json_encode(['feeChart' => false]));
+    expect(getSettingsFromCookies($this, 'usesFeeChart', [
+        'feeChart' => false,
+    ]))->toBe([false]);
 
-    expect(Settings::usesFeeChart())->toBeFalse();
-
-    Session::put('settings', json_encode(['feeChart' => true]));
-
-    expect(Settings::usesFeeChart())->toBeTrue();
+    expect(getSettingsFromCookies($this, 'usesFeeChart', [
+        'feeChart' => true,
+    ]))->toBe([true]);
 });
 
 it('should determine if visitor uses dark theme', function () {
-    Session::put('settings', json_encode(['darkTheme' => true]));
-
-    expect(Settings::usesDarkTheme())->toBeTrue();
-
-    Session::put('settings', json_encode(['darkTheme' => false]));
-
     expect(Settings::usesDarkTheme())->toBeFalse();
 
-    Session::put('settings', json_encode(['darkTheme' => true]));
+    expect(getSettingsFromCookies($this, 'usesDarkTheme', [
+        'darkTheme' => true,
+    ]))->toBe([true]);
 
-    expect(Settings::usesDarkTheme())->toBeTrue();
+    expect(getSettingsFromCookies($this, 'usesDarkTheme', [
+        'darkTheme' => false,
+    ]))->toBe([false]);
 });
 
 it('should determine if visitor uses compact mode', function () {
-    Session::put('settings', json_encode(['compactTables' => true]));
-
     expect(Settings::usesCompactTables())->toBeTrue();
 
-    Session::put('settings', json_encode(['compactTables' => false]));
+    expect(getSettingsFromCookies($this, 'usesCompactTables', [
+        'compactTables' => true,
+    ]))->toBe([true]);
 
-    expect(Settings::usesCompactTables())->toBeFalse();
-
-    Session::put('settings', json_encode(['compactTables' => true]));
-
-    expect(Settings::usesCompactTables())->toBeTrue();
-});
-
-it('should have a locale setting', function () {
-    expect(Settings::locale())->toBe('en_US');
-
-    Session::put('settings', json_encode(['currency' => 'BTC']));
-
-    expect(Settings::locale())->toBe('en_US');
+    expect(getSettingsFromCookies($this, 'usesCompactTables', [
+        'compactTables' => false,
+    ]))->toBe([false]);
 });

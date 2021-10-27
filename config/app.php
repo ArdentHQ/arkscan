@@ -233,7 +233,7 @@ return [
         'DateFormat'              => ARKEcosystem\Foundation\UserInterface\Support\DateFormat::class,
         'Network'                 => App\Facades\Network::class,
         'ExplorerNumberFormatter' => App\Services\NumberFormatter::class,
-        'Settings'                => App\Services\Settings::class,
+        'Settings'                => App\Facades\Settings::class,
         'Percentage'              => Mattiasgeniar\Percentage\Percentage::class,
         'ExchangeRate'            => App\Services\ExchangeRate::class,
         'Helpers'                 => App\Services\Helpers::class,

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use App\Services\Settings;
+use App\Facades\Settings;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cookie;
 use Livewire\Component;
 
 final class NavbarSettings extends Component
@@ -26,7 +26,7 @@ final class NavbarSettings extends Component
         $originalTheme = Arr::get(Settings::all(), 'darkTheme');
         $newTheme      = Arr::get($this->state, 'darkTheme');
 
-        Session::put('settings', json_encode($this->state));
+        Cookie::queue('settings', json_encode($this->state), 60 * 24 * 365 * 5);
 
         if ($originalCurrency !== $newCurrency) {
             $this->emit('currencyChanged', $newCurrency);
