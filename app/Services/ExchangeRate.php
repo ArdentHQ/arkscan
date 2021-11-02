@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Facades\Settings;
 use App\Services\Cache\CryptoDataCache;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;

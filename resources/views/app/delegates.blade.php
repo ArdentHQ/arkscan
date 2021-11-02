@@ -18,6 +18,14 @@
                         const extraData = {
                             dropdownOpen: false,
                             component: initialComponent,
+                            filter(selected) {
+                                Livewire.emit('tabFiltered', selected);
+                            },
+                            init() {
+                                if (initialComponent === 'table') {
+                                    this.filter(initialSelected);
+                                }
+                            }
                         };
 
                         function onSelected (selected) {
@@ -27,7 +35,10 @@
                             window.history.pushState({ path: newUrl },'',newUrl);
 
                             this.component = selected === 'monitor' ? 'monitor' : 'table';
-                            Livewire.emit('tabFiltered', selected);
+
+                            if (this.component === 'table') {
+                                this.filter(selected);
+                            }
                         }
 
                         return Tabs(
@@ -36,7 +47,7 @@
                             onSelected
                         );
                     }()"
-                    x-init="Livewire.emit('tabFiltered', 'active');"
+                    x-init="init"
                     x-cloak
                     class="w-full"
                 >

@@ -3,15 +3,14 @@
 declare(strict_types=1);
 
 use App\Facades\Network;
+use App\Facades\Settings;
 use App\Http\Livewire\BlockTable;
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
-use App\Services\Settings;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Session;
 use Livewire\Livewire;
 
 it('should list the first page of records', function () {
@@ -54,7 +53,9 @@ it('should update the records fiat tooltip when currency changed', function () {
 
     $settings = Settings::all();
     $settings['currency'] = 'BTC';
-    Session::put('settings', json_encode($settings));
+
+    Settings::shouldReceive('all')->andReturn($settings);
+    Settings::shouldReceive('currency')->andReturn('BTC');
 
     $component->emit('currencyChanged', 'BTC');
 

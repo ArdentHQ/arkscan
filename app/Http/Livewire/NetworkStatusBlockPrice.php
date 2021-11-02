@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Facades\Network;
+use App\Facades\Settings;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\NumberFormatter;
-use App\Services\Settings;
 use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 use Illuminate\View\View;
 use Livewire\Component;
