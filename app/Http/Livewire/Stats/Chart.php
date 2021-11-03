@@ -6,12 +6,12 @@ namespace App\Http\Livewire\Stats;
 
 use App\Enums\CryptoCurrencies;
 use App\Facades\Network;
+use App\Facades\Settings;
 use App\Http\Livewire\Concerns\AvailablePeriods;
 use App\Http\Livewire\Concerns\StatisticsChart;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\MarketCap;
 use App\Services\NumberFormatter as ServiceNumberFormatter;
-use App\Services\Settings;
 use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;

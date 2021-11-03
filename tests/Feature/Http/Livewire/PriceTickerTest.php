@@ -3,10 +3,9 @@
 declare(strict_types=1);
 
 use App\Facades\Network;
+use App\Facades\Settings;
 use App\Http\Livewire\PriceTicker;
 use App\Services\Cache\NetworkStatusBlockCache;
-use App\Services\Settings;
-use Illuminate\Support\Facades\Session;
 use Livewire\Livewire;
 
 it('should render with the source currency, target currency and exchange rate', function () {
@@ -34,7 +33,8 @@ it('should update the price if the currency changes', function () {
     $settings = Settings::all();
     $settings['currency'] = 'MXN';
 
-    Session::put('settings', json_encode($settings));
+    Settings::shouldReceive('all')->andReturn($settings);
+    Settings::shouldReceive('currency')->andReturn('MXN');
 
     $component
         ->assertSee('DARK')

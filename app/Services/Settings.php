@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Services;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
 
-final class Settings
+/** @phpstan-ignore-next-line */
+class Settings
 {
-    public static function all(): array
+    public function all(): array
     {
         $defaultSettings = [
             'currency'      => 'USD',
@@ -20,8 +21,8 @@ final class Settings
             'compactTables' => true,
         ];
 
-        if (Session::has('settings')) {
-            $sessionSettings = json_decode(Session::get('settings'), true);
+        if (Cookie::has('settings')) {
+            $sessionSettings = json_decode(strval(Cookie::get('settings')), true);
 
             return $sessionSettings + $defaultSettings;
         }
@@ -29,73 +30,73 @@ final class Settings
         return $defaultSettings;
     }
 
-    public static function currency(): string
+    public function currency(): string
     {
-        return Str::upper(Arr::get(static::all(), 'currency'));
+        return Str::upper(Arr::get($this->all(), 'currency'));
     }
 
-    public static function locale(): string
+    public function locale(): string
     {
         // Since sometimes the key exists (crypto values) but returns `null`, we need another default value
         // in the end to handle that case
-        return Arr::get(config('currencies'), strtolower(static::currency()).'.locale', 'en_US') ?? 'en_US';
+        return Arr::get(config('currencies'), strtolower($this->currency()).'.locale', 'en_US') ?? 'en_US';
     }
 
-    public static function priceChart(): bool
+    public function priceChart(): bool
     {
-        return (bool) Arr::get(static::all(), 'priceChart', true);
+        return (bool) Arr::get($this->all(), 'priceChart', true);
     }
 
-    public static function feeChart(): bool
+    public function feeChart(): bool
     {
-        return (bool) Arr::get(static::all(), 'feeChart', true);
+        return (bool) Arr::get($this->all(), 'feeChart', true);
     }
 
-    public static function darkTheme(): bool
+    public function darkTheme(): bool
     {
-        return (bool) Arr::get(static::all(), 'darkTheme', true);
+        return (bool) Arr::get($this->all(), 'darkTheme', true);
     }
 
-    public static function theme(): string
+    public function theme(): string
     {
-        if (static::darkTheme()) {
+        if ($this->darkTheme()) {
             return 'dark';
         }
 
         return 'light';
     }
 
-    public static function compactTables(): bool
+    public function compactTables(): bool
     {
-        return (bool) Arr::get(static::all(), 'compactTables', true);
+        return (bool) Arr::get($this->all(), 'compactTables', true);
     }
 
-    public static function usesCharts(): bool
+    public function usesCharts(): bool
     {
-        return static::usesPriceChart() || static::usesFeeChart();
+        return $this->usesPriceChart() || $this->usesFeeChart();
     }
 
-    public static function usesPriceChart(): bool
+    public function usesPriceChart(): bool
     {
         if (config('explorer.network') !== 'production') {
             return false;
         }
 
-        return static::priceChart();
+        return $this->priceChart();
     }
 
-    public static function usesFeeChart(): bool
+    public function usesFeeChart(): bool
     {
-        return static::feeChart();
+        return $this->feeChart();
     }
 
-    public static function usesDarkTheme(): bool
+    public function usesDarkTheme(): bool
     {
-        return static::darkTheme();
+        return $this->darkTheme();
     }
 
-    public static function usesCompactTables(): bool
+    public function usesCompactTables(): bool
     {
-        return static::compactTables();
+        return $this->compactTables();
     }
 }

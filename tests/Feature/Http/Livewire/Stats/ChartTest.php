@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Facades\Settings;
 use App\Http\Livewire\Stats\Chart;
 use App\Services\Cache\NetworkCache;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Session;
 use Livewire\Livewire;
 use function Tests\fakeCryptoCompare;
 
@@ -43,7 +43,9 @@ it('should render the component with fiat value', function () {
 });
 
 it('should render the component with non fiat value', function () {
-    Session::put('settings', json_encode(['currency' => 'BTC']));
+    Settings::shouldReceive('all')->andReturn(Settings::all());
+    Settings::shouldReceive('theme')->andReturn('light');
+    Settings::shouldReceive('currency')->andReturn('BTC');
 
     fakeCryptoCompare(false, 'BTC');
 

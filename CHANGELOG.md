@@ -6,7 +6,26 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased Devnet](https://github.com/ArkEcosystem/explorer/compare/staging...develop)
 
-## 2021-10-18 (Dexplorer)
+## 2021-11-02 (Dexplorer)
+
+### Fixed
+
+- direct linking to delegate table ([#983]) (df5768bf, @alfonsobries)
+- user configuration lost ([#987]) (5732b457, @alfonsobries)
+- missing icon for confirmed transactions ([#985]) (02e0e832, @leMaur)
+- confirmation icon ([#991]) (1cb16f75, @Highjhacker)
+
+### Changed
+
+- use QRCode class from foundation ([#982]) (574b3470, @Highjhacker)
+- upgrade foundation dependency ([#986]) (1dca0edb, @alfonsobries)
+- handle empty responses from coingecko ([#988]) (71757c72, @alfonsobries)
+- show known wallet name when defined ([#990]) (d8751473, @alfonsobries)
+- clean up SVGs to prevent clashes ([#989]) (5099b845, @Highjhacker)
+
+---
+
+## 2021-10-18 (Explorer + Dexplorer)
 
 ### Added
 
@@ -259,3 +278,12 @@ All notable changes to this project will be documented in this file.
 [#953]: https://github.com/ArkEcosystem/explorer/pull/953
 [#974]: https://github.com/ArkEcosystem/explorer/pull/974
 [#979]: https://github.com/ArkEcosystem/explorer/pull/979
+[#983]: https://github.com/ArkEcosystem/explorer/pull/983
+[#987]: https://github.com/ArkEcosystem/explorer/pull/987
+[#985]: https://github.com/ArkEcosystem/explorer/pull/985
+[#991]: https://github.com/ArkEcosystem/explorer/pull/991
+[#982]: https://github.com/ArkEcosystem/explorer/pull/982
+[#986]: https://github.com/ArkEcosystem/explorer/pull/986
+[#988]: https://github.com/ArkEcosystem/explorer/pull/988
+[#990]: https://github.com/ArkEcosystem/explorer/pull/990
+[#989]: https://github.com/ArkEcosystem/explorer/pull/989

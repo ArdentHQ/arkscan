@@ -18,8 +18,5 @@ it('should update the theme', function () {
         ->assertSet('state.darkTheme', false)
         ->set('state.darkTheme', true)
         ->assertSet('state.darkTheme', true)
-        ->assertEmitted('toggleDarkMode', 'dark')
-        ->set('state.darkTheme', false)
-        ->assertSet('state.darkTheme', false)
-        ->assertEmitted('toggleDarkMode', 'light');
+        ->assertEmitted('toggleDarkMode');
 });

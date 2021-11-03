@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Facades\Settings;
 use App\Http\Livewire\NetworkStatusBlock;
 use App\Models\Block;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkStatusBlockCache;
-use App\Services\Settings;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Session;
 use Livewire\Livewire;
 
 it('should render with a height, supply and not available market cap', function () {
@@ -53,7 +52,9 @@ it('should render with a height, supply and market cap for BTC', function () {
     $settings = Settings::all();
     $settings['currency'] = 'BTC';
 
-    Session::put('settings', json_encode($settings));
+    Settings::shouldReceive('all')->andReturn($settings);
+    Settings::shouldReceive('currency')->andReturn('BTC');
+    Settings::shouldReceive('usesDarkTheme')->andReturn(false);
 
     Block::factory()->create([
         'height'               => 5651290,
