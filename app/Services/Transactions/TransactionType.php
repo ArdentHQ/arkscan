@@ -59,7 +59,7 @@ final class TransactionType
     public function name(): string
     {
         foreach ($this->types as $method => $name) {
-            if ($this->$method()) {
+            if ((bool) call_user_func_safe([$this, $method])) {
                 return $name;
             }
         }

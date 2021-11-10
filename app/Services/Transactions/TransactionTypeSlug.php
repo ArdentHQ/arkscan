@@ -21,7 +21,7 @@ final class TransactionTypeSlug
     public function generic(): string
     {
         foreach ($this->typesGeneric as $method => $slug) {
-            if ($this->type->$method()) {
+            if ((bool) call_user_func_safe([$this->type, $method])) {
                 return $slug;
             }
         }
@@ -32,7 +32,7 @@ final class TransactionTypeSlug
     public function exact(): string
     {
         foreach ($this->typesExact as $method => $slug) {
-            if ($this->type->$method()) {
+            if ((bool) call_user_func_safe([$this->type, $method])) {
                 return $slug;
             }
         }

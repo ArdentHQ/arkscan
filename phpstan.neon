@@ -14,7 +14,6 @@ parameters:
         # Same as the null return type because a null value sometimes makes more sense than a specific default or exception.
         - '#with null as default value#'
         # Laravel
-        - '#Variable method call#'
         - '#Dynamic call to static method#'
         - '#InvalidArgumentException constructor expects string#'
         - '#withScope#'
