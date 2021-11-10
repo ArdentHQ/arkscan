@@ -15,7 +15,6 @@ parameters:
         - '#with null as default value#'
         # Laravel
         - '#Dynamic call to static method#'
-        - '#withScope#'
         # FIXME
         - '#AbstractNetwork#'
         - '#PendingDispatch given#'

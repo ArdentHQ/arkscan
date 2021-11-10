@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property BigNumber $total_amount
  * @property BigNumber $total_fee
  * @property string $generator_public_key
+ * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Block extends Model
 {
