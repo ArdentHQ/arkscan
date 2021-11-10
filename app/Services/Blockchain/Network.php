@@ -6,6 +6,7 @@ namespace App\Services\Blockchain;
 
 use App\Contracts\Network as Contract;
 use App\Services\Cache\WalletCache;
+use ArkEcosystem\Crypto\Networks\AbstractNetwork;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
@@ -90,7 +91,7 @@ final class Network implements Contract
         return $this->config['blockReward'];
     }
 
-    public function config(): \BitWasp\Bitcoin\Network\Network
+    public function config(): AbstractNetwork
     {
         return new CustomNetwork($this->config);
     }

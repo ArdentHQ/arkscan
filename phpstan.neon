@@ -16,7 +16,6 @@ parameters:
         # Laravel
         - '#Dynamic call to static method#'
         # FIXME
-        - '#AbstractNetwork#'
         - '#PendingDispatch given#'
         - '#with a nullable type declaration#'
     checkMissingIterableValueType: false
