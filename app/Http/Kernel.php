@@ -12,6 +12,7 @@ use App\Http\Middleware\SubstituteBindings;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\VerifyCsrfToken;
+use ARKEcosystem\Foundation\UserInterface\Http\Middlewares\DropInvalidLivewireRequests;
 use Fruitcake\Cors\HandleCors;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
@@ -64,6 +65,7 @@ final class Kernel extends HttpKernel
             VerifyCsrfToken::class,
             SubstituteBindings::class,
             CacheResponse::class,
+            DropInvalidLivewireRequests::class,
         ],
 
         'api' => [
