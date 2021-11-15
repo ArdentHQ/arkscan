@@ -31,7 +31,6 @@ final class Slot
     public function __construct(array $data, Collection $roundBlocks, private int $roundNumber)
     {
         foreach ($data as $key => $value) {
-            /* @phpstan-ignore-next-line */
             $key = Str::camel($key);
 
             /* @phpstan-ignore-next-line */

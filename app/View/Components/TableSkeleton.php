@@ -11,9 +11,9 @@ use Illuminate\View\View;
 
 final class TableSkeleton extends Component
 {
-    private Collection $items;
-
     public string $class;
+
+    private Collection $items;
 
     /* @phpstan-ignore-next-line */
     public function __construct(private string $device, array $items, string $class = 'hidden md:block')

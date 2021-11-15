@@ -15,12 +15,12 @@ final class WalletVoterTable extends Component
 {
     use HasPagination;
 
-    /** @phpstan-ignore-next-line */
-    protected $listeners = ['currencyChanged' => '$refresh'];
-
     public string $publicKey;
 
     public string $username;
+
+    /** @phpstan-ignore-next-line */
+    protected $listeners = ['currencyChanged' => '$refresh'];
 
     public function mount(string $publicKey, string $username): void
     {

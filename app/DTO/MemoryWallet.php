@@ -23,7 +23,7 @@ final class MemoryWallet
         return new static(Identity::address($publicKey), $publicKey);
     }
 
-    public function address(): string
+    public function address(): ?string
     {
         return $this->address;
     }

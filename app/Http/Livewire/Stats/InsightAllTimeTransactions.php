@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Stats;
 
+use App\Enums\StatsCache;
 use App\Enums\StatsPeriods;
 use App\Http\Livewire\Concerns\AvailablePeriods;
 use App\Http\Livewire\Concerns\ChartNumberFormatters;
 use App\Http\Livewire\Concerns\StatisticsChart;
-use App\Services\Cache\TransactionCache;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -22,6 +22,8 @@ final class InsightAllTimeTransactions extends Component
 
     public string $refreshInterval = '';
 
+    public string $cache = '';
+
     /** @phpstan-ignore-next-line */
     protected $listeners = ['toggleDarkMode' => '$refresh'];
 
@@ -29,16 +31,17 @@ final class InsightAllTimeTransactions extends Component
     {
         $this->refreshInterval = (string) config('explorer.statistics.refreshInterval', '60');
         $this->period          = $this->defaultPeriod();
+        $this->cache           = StatsCache::TRANSACTIONS;
     }
 
     public function render(): View
     {
         return view('livewire.stats.insight-all-time-transactions', [
             'allTimeTransactionsTitle' => trans('pages.statistics.insights.all-time-transactions'),
-            'allTimeTransactionsValue' => $this->asNumber($this->totalTransactionsPerPeriod(TransactionCache::class, StatsPeriods::ALL)),
+            'allTimeTransactionsValue' => $this->asNumber($this->totalTransactionsPerPeriod($this->cache, StatsPeriods::ALL)),
             'transactionsTitle'        => trans('pages.statistics.insights.transactions'),
-            'transactionsValue'        => $this->asNumber($this->totalTransactionsPerPeriod(TransactionCache::class, $this->period)),
-            'chartValues'              => $this->chartTotalTransactionsPerPeriod(TransactionCache::class, $this->period),
+            'transactionsValue'        => $this->asNumber($this->totalTransactionsPerPeriod($this->cache, $this->period)),
+            'chartValues'              => $this->chartTotalTransactionsPerPeriod($this->cache, $this->period),
             'chartTheme'               => $this->chartTheme('black'),
             'options'                  => $this->availablePeriods(),
             'refreshInterval'          => $this->refreshInterval,

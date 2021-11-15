@@ -15,7 +15,7 @@ final class BlockNotFoundException extends ModelNotFoundException implements Ent
     {
         $truncateMiddle = new TruncateMiddle();
 
-        [$blockID] = $this->getIds();
+        $blockID = $this->getIds();
 
         $truncatedBlockID = $truncateMiddle->render()([
             'slot'       => $blockID,

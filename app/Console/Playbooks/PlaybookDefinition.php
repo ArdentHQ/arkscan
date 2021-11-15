@@ -18,6 +18,12 @@ final class PlaybookDefinition
     /** @var bool */
     public $once = false;
 
+    public function __construct(string $className)
+    {
+        $this->playbook = app($className);
+        $this->id       = get_class($this->playbook);
+    }
+
     public static function times(string $className, int $times): self
     {
         $definition = new static($className);
@@ -34,11 +40,5 @@ final class PlaybookDefinition
         $definition->once = true;
 
         return $definition;
-    }
-
-    public function __construct(string $className)
-    {
-        $this->playbook = app($className);
-        $this->id       = get_class($this->playbook);
     }
 }

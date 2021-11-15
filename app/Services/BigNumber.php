@@ -20,6 +20,16 @@ final class BigNumber implements Stringable
     }
 
     /**
+     * @codeCoverageIgnore
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->value;
+    }
+
+    /**
      * @param int|float|string $value
      */
     public static function new($value): self
@@ -55,15 +65,5 @@ final class BigNumber implements Stringable
     public function valueOf(): BigDecimal
     {
         return $this->value;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string) $this->value;
     }
 }

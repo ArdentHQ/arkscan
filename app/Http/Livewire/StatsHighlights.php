@@ -14,9 +14,9 @@ use Livewire\Component;
 
 final class StatsHighlights extends Component
 {
-    private string $currency = '';
-
     public string $refreshInterval = '';
+
+    public string $currency = '';
 
     public function mount(): void
     {

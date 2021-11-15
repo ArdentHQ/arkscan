@@ -13,11 +13,6 @@ use Livewire\Component;
 
 final class PriceTicker extends Component
 {
-    /** @phpstan-ignore-next-line */
-    protected $listeners = [
-        'currencyChanged' => 'setValues',
-    ];
-
     public string $price;
 
     public string $from;
@@ -25,6 +20,11 @@ final class PriceTicker extends Component
     public string $to;
 
     public bool $isAvailable = false;
+
+    /** @phpstan-ignore-next-line */
+    protected $listeners = [
+        'currencyChanged' => 'setValues',
+    ];
 
     public function mount(): void
     {
@@ -39,6 +39,15 @@ final class PriceTicker extends Component
         $this->to          = Settings::currency();
     }
 
+    public function render(): View
+    {
+        return view('livewire.price-ticker', [
+            'from'  => $this->from,
+            'to'    => $this->to,
+            'price' => $this->price,
+        ]);
+    }
+
     private function getPriceFormatted(): string
     {
         $price = (new NetworkStatusBlockCache())->getPrice(Network::currency(), Settings::currency());
@@ -48,14 +57,5 @@ final class PriceTicker extends Component
         }
 
         return NumberFormatter::currencyWithDecimalsWithoutSuffix($price, Settings::currency());
-    }
-
-    public function render(): View
-    {
-        return view('livewire.price-ticker', [
-            'from'  => $this->from,
-            'to'    => $this->to,
-            'price' => $this->price,
-        ]);
     }
 }

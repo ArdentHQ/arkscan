@@ -12,16 +12,23 @@ use Livewire\Component;
 
 final class WalletBalance extends Component
 {
+    public string $walletAddress;
+
     /** @phpstan-ignore-next-line */
     protected $listeners = [
         'currencyChanged' => '$refresh',
     ];
 
-    public string $walletAddress;
-
     public function mount(Wallet $wallet): void
     {
         $this->walletAddress = $wallet->address;
+    }
+
+    public function render(): View
+    {
+        return view('livewire.wallet-balance', [
+            'balance' => $this->getWalletView()->balanceFiat(),
+        ]);
     }
 
     private function getWallet(): Wallet
@@ -32,12 +39,5 @@ final class WalletBalance extends Component
     private function getWalletView(): WalletViewModel
     {
         return new WalletViewModel($this->getWallet());
-    }
-
-    public function render(): View
-    {
-        return view('livewire.wallet-balance', [
-            'balance' => $this->getWalletView()->balanceFiat(),
-        ]);
     }
 }
