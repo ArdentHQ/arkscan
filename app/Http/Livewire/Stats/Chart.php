@@ -28,7 +28,7 @@ final class Chart extends Component
 
     public string $refreshInterval = '';
 
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $listeners = [
         'currencyChanged' => '$refresh',
         'toggleDarkMode'  => '$refresh',

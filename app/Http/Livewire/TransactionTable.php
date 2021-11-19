@@ -19,7 +19,7 @@ final class TransactionTable extends Component
         'type' => 'all',
     ];
 
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $listeners = ['currencyChanged' => '$refresh'];
 
     public function updatedStateType(): void

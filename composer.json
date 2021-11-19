@@ -11,7 +11,7 @@
         "php": "^8.0",
         "ext-gmp": "*",
         "arkecosystem/crypto": "^1.8",
-        "arkecosystem/foundation": "^0.11.0",
+        "arkecosystem/foundation": "^0.15.3",
         "blade-ui-kit/blade-icons": "^1.1",
         "brick/math": "^0.9.3",
         "doctrine/dbal": "^3.1.2",
@@ -88,7 +88,7 @@
             "@php artisan playbook:run DevelopmentPlaybook"
         ],
         "analyse": [
-            "vendor/bin/phpstan analyse --memory-limit=2G"
+            "vendor/bin/phpstan analyse --configuration=vendor/arkecosystem/foundation/phpstan.neon --memory-limit=2G"
         ],
         "format": [
             "vendor/bin/php-cs-fixer fix --config=vendor/arkecosystem/foundation/.php-cs-fixer.php"

@@ -24,7 +24,7 @@ final class InsightAllTimeTransactions extends Component
 
     public string $cache = '';
 
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $listeners = ['toggleDarkMode' => '$refresh'];
 
     public function mount(): void

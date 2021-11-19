@@ -19,7 +19,7 @@ final class WalletVoterTable extends Component
 
     public string $username;
 
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $listeners = ['currencyChanged' => '$refresh'];
 
     public function mount(string $publicKey, string $username): void

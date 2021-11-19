@@ -25,12 +25,12 @@ final class SearchModule extends Component
 
     public string $type = 'block';
 
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $queryString = [
         'state' => ['except' => []],
     ];
 
-    /* @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $listeners = [
         'openSearchModal' => 'openModal',
     ];

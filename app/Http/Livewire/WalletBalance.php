@@ -14,7 +14,7 @@ final class WalletBalance extends Component
 {
     public string $walletAddress;
 
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $listeners = [
         'currencyChanged' => '$refresh',
     ];

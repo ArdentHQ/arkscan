@@ -21,7 +21,7 @@ final class PriceTicker extends Component
 
     public bool $isAvailable = false;
 
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $listeners = [
         'currencyChanged' => 'setValues',
     ];

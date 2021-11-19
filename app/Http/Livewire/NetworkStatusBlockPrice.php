@@ -14,7 +14,7 @@ use Livewire\Component;
 
 final class NetworkStatusBlockPrice extends Component
 {
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $listeners = [
         'currencyChanged' => '$refresh',
     ];
