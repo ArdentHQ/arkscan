@@ -17,7 +17,7 @@ jobs:
               run: npx @faustbrian/node-composer-check-updates --caret-minor
 
             - name: Install dependencies
-              run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
+              run: composer update --no-ansi --no-interaction --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
             - name: Create Pull Request
               id: cpr
@@ -44,6 +44,9 @@ jobs:
 
             - name: Install dependencies
               run: yarn --ignore-engines
+
+            - name: Rebuild assets
+              run: yarn prod
 
             - name: Create Pull Request
               id: cpr
