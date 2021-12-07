@@ -71,7 +71,7 @@
                             target="_blank"
                         >
                             <x-ark-icon
-                                name="brands.coingecko"
+                                name="app-coingecko"
                                 class="inline-block -mt-1"
                             />
                         </a>
