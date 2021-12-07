@@ -12,8 +12,6 @@ services:
     volumes:
       - explorer:/var/www/explorer
     tty: true
-    extra_hosts:
-      host.docker.internal: host-gateway
 networks:
   explorer:
 volumes:
