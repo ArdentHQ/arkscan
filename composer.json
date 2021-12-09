@@ -11,7 +11,7 @@
         "php": "^8.0",
         "ext-gmp": "*",
         "arkecosystem/crypto": "^1.8",
-        "arkecosystem/foundation": "^0.15.3",
+        "arkecosystem/foundation": "^0.23.2",
         "blade-ui-kit/blade-icons": "^1.1",
         "brick/math": "^0.9.3",
         "doctrine/dbal": "^3.1.2",

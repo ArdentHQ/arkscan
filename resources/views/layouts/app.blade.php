@@ -33,9 +33,9 @@
         @stack('scripts')
     </head>
     <body
-        class="@if(Settings::usesDarkTheme()) dark @endif @if(Settings::usesCompactTables()) table-compact @endif"
+        class="table-compact @if(Settings::usesDarkTheme()) dark @endif @unless(Settings::usesCompactTables()) table-compact-until-md @endunless"
         x-data="{ 'theme': '{{ Settings::theme() }}', 'compact': {{ Settings::usesCompactTables() ? 'true' : 'false' }} }"
-        :class="{ 'dark': theme === 'dark', 'table-compact': compact }"
+        :class="{ 'dark': theme === 'dark', 'table-compact-until-md': !compact, }"
         @toggle-dark-mode.window="theme === 'dark' ? theme = 'light' : theme = 'dark'"
         @toggle-compact-table="compact = ! compact"
     >
