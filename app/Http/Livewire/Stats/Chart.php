@@ -31,7 +31,7 @@ final class Chart extends Component
     /** @var mixed */
     protected $listeners = [
         'currencyChanged' => '$refresh',
-        'toggleDarkMode'  => '$refresh',
+        'themeChanged'    => '$refresh',
         'updateChart'     => '$refresh',
     ];
 

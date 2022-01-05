@@ -49,8 +49,7 @@
                     <x-ark-toggle
                         name="state.darkTheme"
                         hide-label
-                        :default="$this->state['darkTheme'] ? 'true' : 'false'"
-                        alpine-click="$dispatch('toggle-dark-mode')"
+                        default="window.getThemeMode() === 'dark' ? true : false"
                     />
                 </x-navbar.setting-option>
 

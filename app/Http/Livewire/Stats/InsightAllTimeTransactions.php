@@ -25,7 +25,7 @@ final class InsightAllTimeTransactions extends Component
     public string $cache = '';
 
     /** @var mixed */
-    protected $listeners = ['toggleDarkMode' => '$refresh'];
+    protected $listeners = ['themeChanged' => '$refresh'];
 
     public function mount(): void
     {

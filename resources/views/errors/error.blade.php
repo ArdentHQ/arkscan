@@ -6,6 +6,8 @@
 
         <title>{{ Network::explorerTitle() }}</title>
 
+        <x-ark-dark-theme-script />
+
         <!-- Favicon -->
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -31,7 +33,7 @@
     </head>
     <body
         class="min-h-screen bg-white dark"
-        x-data="{ 'theme': '{{ Settings::theme() }}' }"
+        x-data="{ 'theme': window.getThemeMode() }"
         :class="{ 'dark bg-theme-secondary-900': theme === 'dark', 'bg-white': theme !== 'dark' }"
     >
         <div id="app" class="flex flex-col h-full antialiased">

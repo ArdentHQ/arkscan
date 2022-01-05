@@ -26,7 +26,7 @@ final class InsightAllTimeFeesCollected extends Component
     public string $cache = '';
 
     /** @var mixed */
-    protected $listeners = ['toggleDarkMode' => '$refresh'];
+    protected $listeners = ['themeChanged' => '$refresh'];
 
     public function mount(): void
     {

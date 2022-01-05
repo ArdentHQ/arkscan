@@ -9,6 +9,8 @@
 
         <title>{{ trim(View::yieldContent('title', trans("metatags.home.title"))) }}</title>
 
+        <x-ark-dark-theme-script />
+
         <!-- Favicon -->
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -33,10 +35,9 @@
         @stack('scripts')
     </head>
     <body
-        class="table-compact @if(Settings::usesDarkTheme()) dark @endif @unless(Settings::usesCompactTables()) table-compact-until-md @endunless"
-        x-data="{ 'theme': '{{ Settings::theme() }}', 'compact': {{ Settings::usesCompactTables() ? 'true' : 'false' }} }"
-        :class="{ 'dark': theme === 'dark', 'table-compact-until-md': !compact, }"
-        @toggle-dark-mode.window="theme === 'dark' ? theme = 'light' : theme = 'dark'"
+        class="table-compact"
+        x-data="{ 'compact': {{ Settings::usesCompactTables() ? 'true' : 'false' }} }"
+        :class="{ 'table-compact-until-md': !compact, }"
         @toggle-compact-table="compact = ! compact"
     >
         <div id="app" class="flex flex-col antialiased bg-white dark:bg-theme-secondary-900">
