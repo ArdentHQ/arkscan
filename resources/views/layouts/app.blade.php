@@ -38,7 +38,7 @@
         class="table-compact"
         x-data="{ 'compact': {{ Settings::usesCompactTables() ? 'true' : 'false' }} }"
         :class="{ 'table-compact-until-md': !compact, }"
-        @toggle-compact-table="compact = ! compact"
+        @toggle-compact-table="compact = ! $event.detail.expand"
     >
         <div id="app" class="flex flex-col antialiased bg-white dark:bg-theme-secondary-900">
             <x-navbar.navbar

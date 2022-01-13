@@ -49,7 +49,7 @@
                     <x-ark-toggle
                         name="state.darkTheme"
                         hide-label
-                        default="window.getThemeMode() === 'dark' ? true : false"
+                        default="window.getThemeMode() === 'dark'"
                     />
                 </x-navbar.setting-option>
 
@@ -62,7 +62,7 @@
                         name="state.compactTables"
                         hide-label
                         :default="$this->state['compactTables'] ? 'false' : 'true'"
-                        alpine-click="$dispatch('toggle-compact-table')"
+                        alpine-click="$dispatch('toggle-compact-table', { expand: value })"
                     />
                 </x-navbar.setting-option>
             </div>

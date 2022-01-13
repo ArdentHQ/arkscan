@@ -9,7 +9,7 @@
             showSettings: false
         })"
         x-init="init"
-        @theme-changed.window="dark = !dark"
+        @theme-changed.window="dark = $event.detail.theme === 'dark'"
     >
         <nav x-ref="nav" class="relative z-30 bg-white border-b border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800">
             <div class="px-8 md:px-10">
