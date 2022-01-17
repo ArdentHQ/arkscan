@@ -6,6 +6,37 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased Devnet](https://github.com/ArkEcosystem/explorer/compare/staging...develop)
 
+## 2022-01-18 (Dexplorer)
+
+### Fixed
+
+- phpstan error &quot;InvalidArgumentException constructor expects string&quot; ([#998]) (66449ce3, @leMaur)
+- phpstan error &quot;withScope&quot; ([#997]) (ae032573, @leMaur)
+- phpstan error AbstractNetwork ([#996]) (0c64c300, @leMaur)
+- js dark mode component initial toggle ([#1021]) (0333cae2, @alexbarnsley)
+- switch filter label messing ([#1022]) (b76aa048, @alfonsobries)
+
+### Changed
+
+- setup labeler workflow ([#993]) (38a8dda0, @ItsANameToo)
+- phpstan error &quot;Variable method call&quot; ([#999]) (ab92d077, @leMaur)
+- phpstan error &quot;PendingDispatch given&quot; ([#995]) (f827c2a5, @leMaur)
+- add drop invalid livewire requests middleware ([#1000]) (f1c01e22, @ItsANameToo)
+- upgrade to latest version of chartjs ([#981]) (2c01d72a, @Highjhacker)
+- use phpstan.neon configuration file from Foundation ([#1005]) (6dde64e4, @leMaur)
+- add `host.docker.internal` host to the docker container ([#1013]) (01a992ac, @crnkovic)
+- roundness issue on transactions table + chrome ([#1012]) (245fd071, @alfonsobries)
+- import coingecko icon ([#1014]) (285ba208, @leMaur)
+- update JavaScript dependencies ([#1010]) (8b653d1b, @faustbrian)
+- remove `extra_hosts` from docker config ([#1015]) (1b9f86da, @crnkovic)
+- use table-compact styling from foundation ([#1011]) (3d8d7360, @alfonsobries)
+- add dark theme script ([#1019]) (a6df8bed, @leMaur)
+- update PHP dependencies ([#1009]) (4ff7e610, @faustbrian)
+- update mobile search design ([#1018]) (fdbdc32a, @alexbarnsley)
+- update icon references ([#1017]) (2ff08a74, @leMaur)
+
+---
+
 ## 2021-11-02 (Dexplorer)
 
 ### Fixed
@@ -287,3 +318,24 @@ All notable changes to this project will be documented in this file.
 [#988]: https://github.com/ArkEcosystem/explorer/pull/988
 [#990]: https://github.com/ArkEcosystem/explorer/pull/990
 [#989]: https://github.com/ArkEcosystem/explorer/pull/989
+[#998]: https://github.com/ArkEcosystem/explorer/pull/998
+[#997]: https://github.com/ArkEcosystem/explorer/pull/997
+[#996]: https://github.com/ArkEcosystem/explorer/pull/996
+[#1021]: https://github.com/ArkEcosystem/explorer/pull/1021
+[#1022]: https://github.com/ArkEcosystem/explorer/pull/1022
+[#993]: https://github.com/ArkEcosystem/explorer/pull/993
+[#999]: https://github.com/ArkEcosystem/explorer/pull/999
+[#995]: https://github.com/ArkEcosystem/explorer/pull/995
+[#1000]: https://github.com/ArkEcosystem/explorer/pull/1000
+[#981]: https://github.com/ArkEcosystem/explorer/pull/981
+[#1005]: https://github.com/ArkEcosystem/explorer/pull/1005
+[#1013]: https://github.com/ArkEcosystem/explorer/pull/1013
+[#1012]: https://github.com/ArkEcosystem/explorer/pull/1012
+[#1014]: https://github.com/ArkEcosystem/explorer/pull/1014
+[#1010]: https://github.com/ArkEcosystem/explorer/pull/1010
+[#1015]: https://github.com/ArkEcosystem/explorer/pull/1015
+[#1011]: https://github.com/ArkEcosystem/explorer/pull/1011
+[#1019]: https://github.com/ArkEcosystem/explorer/pull/1019
+[#1009]: https://github.com/ArkEcosystem/explorer/pull/1009
+[#1018]: https://github.com/ArkEcosystem/explorer/pull/1018
+[#1017]: https://github.com/ArkEcosystem/explorer/pull/1017
