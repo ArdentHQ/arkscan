@@ -15,7 +15,7 @@
                         @if($mainValueVariation === 'up') bg-theme-success-600
                         @elseif($mainValueVariation === 'down') bg-theme-danger-400
                         @endif">
-                        <x-ark-icon name="triangle-{{ $mainValueVariation }}" size="2xs" class="mr-1"/>
+                        <x-ark-icon name="{{ $mainValueVariation === 'up' ? 'arrows.caret-up' : 'arrows.caret-down' }}" size="2xs" class="mr-1"/>
                         <x-percentage>{{ $mainValuePercentage }}</x-percentage>
                     </span>
                 </p>

@@ -7,7 +7,7 @@
         dusk="navigation-search-modal-trigger"
     >
         <span class="inline-flex">
-            <x-ark-icon name="filter"/>
+            <x-ark-icon name="sliders-vertical"/>
         </span>
     </x-navbar.button>
 

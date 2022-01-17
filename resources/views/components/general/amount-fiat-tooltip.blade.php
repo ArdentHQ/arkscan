@@ -27,7 +27,7 @@
         <span class="fiat-hint" data-tippy-content="{{ trans('general.fiat_excluding_itself', [
             'amount' => ExplorerNumberFormatter::currency($amountForItself, Network::currency())
         ]) }}">
-            <x-ark-icon name="hint" size="xs" />
+            <x-ark-icon name="hint-small" size="xs" />
         </span>
     @endif
 

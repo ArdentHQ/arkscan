@@ -13,7 +13,7 @@
         @if ($priceChange < 0)
             <span class="flex items-center space-x-1 text-sm font-semibold leading-none text-theme-danger-400">
                 <span>
-                    <x-ark-icon name="triangle-down" size="2xs" />
+                    <x-ark-icon name="arrows.caret-down" size="2xs" />
                 </span>
                 <span>
                     <x-percentage>{{ $priceChange * 100 * -1 }}</x-percentage>
@@ -22,7 +22,7 @@
         @else
             <span class="flex items-center space-x-1 text-sm font-semibold leading-none text-theme-success-600">
                 <span>
-                    <x-ark-icon name="triangle-up" size="2xs" />
+                    <x-ark-icon name="arrows.caret-up" size="2xs" />
                 </span>
                 <span>
                     <x-percentage>{{ $priceChange * 100 }}</x-percentage>

@@ -54,7 +54,7 @@
         </span>
 
         <span x-show="!searching">
-            <x-ark-icon name="search" size="sm" />
+            <x-ark-icon name="magnifying-glass" size="sm" />
         </span>
     </button>
 </div>
