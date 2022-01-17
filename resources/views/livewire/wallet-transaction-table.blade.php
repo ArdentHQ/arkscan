@@ -37,7 +37,7 @@
             :init-alpine="false"
         >
             <x-slot name="button">
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-4" wire:ignore>
                     <div>
                         <div x-show="dropdownOpen !== true">
                             <x-ark-icon name="menu" size="sm" />
