@@ -31,7 +31,7 @@
 
                                 <div class="hidden rounded-full border-4 md:flex border-theme-secondary-100 dark:border-theme-secondary-900">
                                     <div class="rounded-full circled-icon {{ $wallet->delegateStatusStyling() }} bg-theme-secondary-100 dark:bg-theme-secondary-900">
-                                        <x-ark-icon :name="$isStandby ? 'clock' : 'checkmark-smooth'" />
+                                        <x-ark-icon :name="$isStandby ? 'clock' : 'check-mark'" />
                                     </div>
                                 </div>
                             </div>
