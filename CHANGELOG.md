@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - phpstan error AbstractNetwork ([#996]) (0c64c300, @leMaur)
 - js dark mode component initial toggle ([#1021]) (0333cae2, @alexbarnsley)
 - switch filter label messing ([#1022]) (b76aa048, @alfonsobries)
+- use correct checkmark icon for delegate status ([#1025]) (98692b5, @itsanametoo)
 
 ### Changed
 
@@ -34,6 +35,8 @@ All notable changes to this project will be documented in this file.
 - update PHP dependencies ([#1009]) (4ff7e610, @faustbrian)
 - update mobile search design ([#1018]) (fdbdc32a, @alexbarnsley)
 - update icon references ([#1017]) (2ff08a74, @leMaur)
+- move public key button to match new design ([#1027]) (bf1d494, @alfonsobries)
+- only clear views that are older than one hour ([#1026]) (a5e8a2b, @alfonsobries)
 
 ---
 
@@ -339,3 +342,6 @@ All notable changes to this project will be documented in this file.
 [#1009]: https://github.com/ArkEcosystem/explorer/pull/1009
 [#1018]: https://github.com/ArkEcosystem/explorer/pull/1018
 [#1017]: https://github.com/ArkEcosystem/explorer/pull/1017
+[#1025]: https://github.com/ArkEcosystem/explorer/pull/1025
+[#1026]: https://github.com/ArkEcosystem/explorer/pull/1026
+[#1027]: https://github.com/ArkEcosystem/explorer/pull/1027
