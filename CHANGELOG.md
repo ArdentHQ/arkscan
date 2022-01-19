@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - js dark mode component initial toggle ([#1021]) (0333cae2, @alexbarnsley)
 - switch filter label messing ([#1022]) (b76aa048, @alfonsobries)
 - use correct checkmark icon for delegate status ([#1025]) (98692b5, @itsanametoo)
+- dynamic truncated text ([#1028]) (92e55c7, @alfonsobries)
 
 ### Changed
 
@@ -345,3 +346,4 @@ All notable changes to this project will be documented in this file.
 [#1025]: https://github.com/ArkEcosystem/explorer/pull/1025
 [#1026]: https://github.com/ArkEcosystem/explorer/pull/1026
 [#1027]: https://github.com/ArkEcosystem/explorer/pull/1027
+[#1028]: https://github.com/ArkEcosystem/explorer/pull/1028
