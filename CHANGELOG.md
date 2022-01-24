@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased Devnet](https://github.com/ArkEcosystem/explorer/compare/staging...develop)
 
-## 2022-01-18 (Dexplorer)
+## 2022-01-24 (Dexplorer)
 
 ### Fixed
 
