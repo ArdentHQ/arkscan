@@ -38,6 +38,8 @@ All notable changes to this project will be documented in this file.
 - update icon references ([#1017]) (2ff08a74, @leMaur)
 - move public key button to match new design ([#1027]) (bf1d494, @alfonsobries)
 - only clear views that are older than one hour ([#1026]) (a5e8a2b, @alfonsobries)
+- update foundation ([#1029]) (35430a9, @alexbarnsley)
+- add composer allow-plugins on docker ([#1030]) (42a41f9, @leMaur)
 
 ---
 
@@ -347,3 +349,5 @@ All notable changes to this project will be documented in this file.
 [#1026]: https://github.com/ArkEcosystem/explorer/pull/1026
 [#1027]: https://github.com/ArkEcosystem/explorer/pull/1027
 [#1028]: https://github.com/ArkEcosystem/explorer/pull/1028
+[#1029]: https://github.com/ArkEcosystem/explorer/pull/1029
+[#1030]: https://github.com/ArkEcosystem/explorer/pull/1030
