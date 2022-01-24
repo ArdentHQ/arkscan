@@ -13,6 +13,7 @@ use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\Monitor;
 use App\Services\Timestamp;
 use App\ViewModels\ViewModelFactory;
+use App\ViewModels\WalletViewModel;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -86,14 +87,19 @@ trait DelegateData
         for ($i = 0; $i < count($tracking); $i++) {
             $delegate = array_values($tracking)[$i];
 
-            $delegates[] = new Slot([
-                'publicKey'  => $delegate['publicKey'],
-                'order'      => $i + 1,
-                'wallet'     => ViewModelFactory::make((new WalletCache())->getDelegate($delegate['publicKey'])),
-                'forging_at' => Timestamp::fromGenesis($roundBlocks->last()->timestamp)->addMilliseconds($delegate['time']),
-                'last_block' => (new WalletCache())->getLastBlock($delegate['publicKey']),
-                'status'     => $delegate['status'],
-            ], $roundBlocks, $roundNumber);
+            /** @var WalletViewModel $walletViewModel */
+            $walletViewModel = ViewModelFactory::make((new WalletCache())->getDelegate($delegate['publicKey']));
+
+            $delegates[] = new Slot(
+                publicKey: $delegate['publicKey'],
+                order: $i + 1,
+                wallet: $walletViewModel,
+                forgingAt: Timestamp::fromGenesis($roundBlocks->last()->timestamp)->addMilliseconds($delegate['time']),
+                lastBlock: (new WalletCache())->getLastBlock($delegate['publicKey']),
+                status: $delegate['status'],
+                roundBlocks: $roundBlocks,
+                roundNumber: $roundNumber
+            );
         }
 
         return $delegates;

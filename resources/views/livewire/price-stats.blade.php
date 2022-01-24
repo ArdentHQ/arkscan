@@ -9,12 +9,11 @@
             {{ $historical->values()->toJson() }},
             {{ $historical->keys()->toJson() }},
             {{ $usePlaceholder ? 'true' : 'false' }},
-            {{ Settings::usesDarkTheme() ? 'true' : 'false' }},
+            window.getThemeMode() === 'dark' ? 'true' : 'false',
             '{{ time() }}',
             {{ $isPositive ? 'true' : 'false' }}
         )"
         x-init="init"
-        @toggle-dark-mode.window="toggleDarkMode"
     >
         <div class="block" wire:ignore>
             <canvas

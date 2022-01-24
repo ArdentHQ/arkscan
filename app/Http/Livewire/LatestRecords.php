@@ -16,13 +16,13 @@ final class LatestRecords extends Component
     use ManagesLatestBlocks;
     use ManagesLatestTransactions;
 
-    /** @phpstan-ignore-next-line */
-    protected $listeners = ['currencyChanged' => 'currencyChanged'];
-
     public array $state = [
         'selected' => 'transactions',
         'type'     => 'all',
     ];
+
+    /** @phpstan-ignore-next-line */
+    protected $listeners = ['currencyChanged' => 'currencyChanged'];
 
     private ?Collection $blocks = null;
 

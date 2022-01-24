@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property BigNumber $balance
  * @property BigNumber $nonce
  * @property array $attributes
+ * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Wallet extends Model
 {

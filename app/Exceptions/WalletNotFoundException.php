@@ -15,7 +15,7 @@ final class WalletNotFoundException extends ModelNotFoundException implements En
     {
         $truncateMiddle = new TruncateMiddle();
 
-        [$walletID] = $this->getIds();
+        $walletID = $this->getIds();
 
         $truncatedWalletID = $truncateMiddle->render()([
             'slot'       => $walletID,

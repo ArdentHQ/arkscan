@@ -2,11 +2,23 @@
     x-data="{
         value: '{{ $slot }}',
         init() {
-            new ResizeObserver(() => this.truncate()).observe(this.$el);
+            new ResizeObserver(() => this.throttledTruncate()).observe(this.$el);
 
-            document.addEventListener('resize', () => this.truncate());
+            window.addEventListener('resize', () => this.throttledTruncate());
 
             this.truncate();
+        },
+        throttleTimeout: null,
+        throttledTruncate() {
+            if (this.throttleTimeout !== null) {
+                clearTimeout(this.throttleTimeout);
+            }
+
+            this.throttleTimeout = setTimeout(() => {
+                this.truncate();
+
+                this.throttleTimeout = null;
+            }, 50);
         },
         truncate() {
             const el = this.$el;
@@ -28,7 +40,7 @@
                 el.appendChild(document.createTextNode(truncated));
 
                 length--;
-            } while(this.hasOverflow(el))
+            } while(this.hasOverflow(el) && length >= 0)
         },
         hasOverflow(el) {
             return el.offsetWidth < el.scrollWidth;

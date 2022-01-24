@@ -18,5 +18,5 @@ it('should update the theme', function () {
         ->assertSet('state.darkTheme', false)
         ->set('state.darkTheme', true)
         ->assertSet('state.darkTheme', true)
-        ->assertEmitted('toggleDarkMode');
+        ->assertDispatchedBrowserEvent('setThemeMode', ['theme' => 'dark']);
 });

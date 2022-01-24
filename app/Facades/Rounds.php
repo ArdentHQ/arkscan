@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Facades;
 
 use App\Contracts\RoundRepository;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Facade;
 
 /**

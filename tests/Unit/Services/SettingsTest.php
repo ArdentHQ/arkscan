@@ -60,7 +60,7 @@ it('should have a fee chart setting', function () {
 });
 
 it('should have a dark theme setting', function () {
-    expect(Settings::darkTheme())->toBeFalse();
+    expect(Settings::theme())->toBeString();
 });
 
 it('should have a compact mode setting', function () {
@@ -123,15 +123,13 @@ it('should determine if visitor uses fee chart', function () {
 });
 
 it('should determine if visitor uses dark theme', function () {
-    expect(Settings::usesDarkTheme())->toBeFalse();
-
-    expect(getSettingsFromCookies($this, 'usesDarkTheme', [
+    expect(getSettingsFromCookies($this, 'theme', [
         'darkTheme' => true,
-    ]))->toBe([true]);
+    ]))->toBe(['dark']);
 
-    expect(getSettingsFromCookies($this, 'usesDarkTheme', [
+    expect(getSettingsFromCookies($this, 'theme', [
         'darkTheme' => false,
-    ]))->toBe([false]);
+    ]))->toBe(['light']);
 });
 
 it('should determine if visitor uses compact mode', function () {

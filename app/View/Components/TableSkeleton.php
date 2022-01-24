@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace App\View\Components;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\Component;
-use Illuminate\View\View;
 
 final class TableSkeleton extends Component
 {
-    private Collection $items;
-
     public string $class;
 
-    /* @phpstan-ignore-next-line */
+    private Collection $items;
+
     public function __construct(private string $device, array $items, string $class = 'hidden md:block')
     {
-        $this->items   = collect($items);
-        $this->class   = $class;
+        $this->items = collect($items);
+        $this->class = $class;
     }
 
     public function render(): View
@@ -47,8 +47,7 @@ final class TableSkeleton extends Component
             });
         }
 
-        /* @phpstan-ignore-next-line */
-        return view("components.tables.skeletons.{$this->device}", [
+        return ViewFacade::make("components.tables.skeletons.{$this->device}", [
             'headers' => $headers->toArray(),
             'rows'    => $rows->toArray(),
         ]);

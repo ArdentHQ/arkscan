@@ -44,8 +44,7 @@ final class CacheDelegateVoterCounts extends Command
             ->join(
                 'wallets as voters',
                 'wallets.public_key',
-                /* @phpstan-ignore-next-line */
-                DB::raw('voters.attributes->>\'vote\'')
+                (string) DB::raw('voters.attributes->vote')
             )
             ->groupBy('wallets.public_key')
             ->pluck('total', 'public_key');

@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static int delegateCount()
  * @method static int blockTime()
  * @method static int blockReward()
- * @method static \BitWasp\Bitcoin\Network\Network config()
+ * @method static \ArkEcosystem\Crypto\Networks\AbstractNetwork config()
  */
 final class Network extends Facade
 {

@@ -15,7 +15,7 @@ final class TransactionNotFoundException extends ModelNotFoundException implemen
     {
         $truncateMiddle = new TruncateMiddle();
 
-        [$transactionID] = $this->getIds();
+        $transactionID = $this->getIds();
 
         $truncatedTransactionID = $truncateMiddle->render()([
             'slot'       => $transactionID,

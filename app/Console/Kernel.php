@@ -78,7 +78,7 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(GenerateVoteReport::class)->everyFiveMinutes();
 
-        $schedule->command('view:clear')->hourly();
+        $schedule->command('view:clear-expired')->hourly();
     }
 
     /**

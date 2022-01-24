@@ -14,6 +14,10 @@
                             <x-truncate-dynamic>{{ $value}}</x-truncate-dynamic>
 
                             <x-clipboard :value="$value" colors="text-theme-secondary-600 hover:text-theme-secondary-400" />
+
+                            @if ($valueExtension ?? false)
+                                {{ $valueExtension }}
+                            @endif
                         </span>
                     </div>
                 </div>

@@ -10,14 +10,14 @@
             <span>@lang('pages.wallet.all_transactions')</span>
         </x-tabs.tab>
 
-        <x-tabs.tab name="received">
+        <x-tabs.tab name="transaction.received">
             <span>@lang('pages.wallet.received_transactions')</span>
 
             <span class="info-badge">{{ $countReceived }}</span>
         </x-tabs.tab>
 
         @unless($state['isCold'])
-            <x-tabs.tab name="sent">
+            <x-tabs.tab name="transaction.sent">
                 <span>@lang('pages.wallet.sent_transactions', [$countSent])</span>
 
                 <span class="info-badge">{{ $countSent }}</span>
@@ -37,7 +37,7 @@
             :init-alpine="false"
         >
             <x-slot name="button">
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-4" wire:ignore>
                     <div>
                         <div x-show="dropdownOpen !== true">
                             <x-ark-icon name="menu" size="sm" />

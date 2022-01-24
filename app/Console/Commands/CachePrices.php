@@ -12,7 +12,6 @@ use App\Services\Cache\PriceChartCache;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 final class CachePrices extends Command
 {
@@ -54,41 +53,21 @@ final class CachePrices extends Command
                 }
 
                 $crypto->setPrices($currency.'.'.$period, $prices);
-                $method = sprintf('get%s', Str::title($period));
-
-                $cache->setHistorical($currency, $period, $this->{$method}($prices));
+                $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $prices));
             });
         });
     }
 
-    private function getDay(Collection $datasets): Collection
+    private function statsByPeriod(string $period, Collection $datasets): Collection
     {
-        return $this->groupByDate($datasets->take(-24), 'H:s');
-    }
-
-    private function getWeek(Collection $datasets): Collection
-    {
-        return $this->groupByDate($datasets->take(-7), 'd.m');
-    }
-
-    private function getMonth(Collection $datasets): Collection
-    {
-        return $this->groupByDate($datasets->take(-30), 'd.m');
-    }
-
-    private function getQuarter(Collection $datasets): Collection
-    {
-        return $this->groupByDate($datasets->take(-120), 'd.m');
-    }
-
-    private function getYear(Collection $datasets): Collection
-    {
-        return $this->groupByDate($datasets->take(-365), 'd.m');
-    }
-
-    private function getAll(Collection $datasets): Collection
-    {
-        return $this->groupByDate($datasets, 'm.Y');
+        return match ($period) {
+            'day'     => $this->groupByDate($datasets->take(-24), 'H:s'),
+            'week'    => $this->groupByDate($datasets->take(-7), 'd.m'),
+            'month'   => $this->groupByDate($datasets->take(-30), 'd.m'),
+            'quarter' => $this->groupByDate($datasets->take(-120), 'd.m'),
+            'year'    => $this->groupByDate($datasets->take(-365), 'd.m'),
+            default   => $this->groupByDate($datasets, 'm.Y'),
+        };
     }
 
     private function groupByDate(Collection $datasets, string $format): Collection

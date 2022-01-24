@@ -25,7 +25,7 @@ final class WalletTransactionTable extends Component
         'direction' => 'all',
     ];
 
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $listeners = [
         'filterTransactionsByDirection',
         'currencyChanged' => '$refresh',

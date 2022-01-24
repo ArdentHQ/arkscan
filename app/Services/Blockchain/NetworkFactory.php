@@ -14,6 +14,6 @@ final class NetworkFactory
             return new Network(config("explorer.networks.$name"));
         }
 
-        throw new InvalidArgumentException(__('exceptions.invalid_network'));
+        throw new InvalidArgumentException(trans('exceptions.invalid_network'));
     }
 }
