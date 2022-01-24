@@ -1,3 +1,9 @@
+import { Chart, registerables } from "chart.js";
+import "chartjs-adapter-date-fns";
+import { en } from "date-fns/locale";
+
+Chart.register(...registerables);
+
 const PriceChart = (
     values,
     labels,
@@ -70,6 +76,7 @@ const PriceChart = (
                     pointRadius: 0,
                     borderWidth: "2",
                     lineTension: 0.25,
+                    fill: true,
                 },
             ];
 
@@ -99,42 +106,49 @@ const PriceChart = (
             }
 
             const options = {
-                animation: {
-                    duration: 500,
-                    easing: "linear",
+                animations: {
+                    tension: {
+                        duration: 500,
+                        easing: "linear",
+                    },
                 },
-                tooltips: {
-                    enabled: false,
-                },
-                legend: {
-                    display: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                        enabled: false,
+                    },
                 },
                 scales: {
-                    xAxes: [
-                        {
-                            type: "time",
-                            ticks: {
-                                display: false,
-                            },
-                            gridLines: {
-                                display: false,
-                                tickMarkLength: 0,
+                    x: {
+                        type: "time",
+                        adapters: {
+                            date: {
+                                locale: en,
                             },
                         },
-                    ],
-                    yAxes: [
-                        {
-                            ticks: {
-                                display: false,
-                                max: maxValue,
-                                min: minValue,
-                            },
-                            gridLines: {
-                                display: false,
-                                tickMarkLength: 0,
-                            },
+                        ticks: {
+                            display: false,
                         },
-                    ],
+                        grid: {
+                            display: false,
+                            tickLength: 0,
+                            drawBorder: false,
+                        },
+                    },
+                    y: {
+                        ticks: {
+                            display: false,
+                            max: maxValue,
+                            min: minValue,
+                        },
+                        grid: {
+                            display: false,
+                            tickLength: 0,
+                            drawBorder: false,
+                        },
+                    },
                 },
             };
 

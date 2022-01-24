@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Concerns;
 
 use App\Facades\Settings;
+use App\Services\Cache\FeeCache;
 use App\Services\Cache\PriceChartCache;
+use App\Services\Cache\TransactionCache;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 trait StatisticsChart
 {
@@ -34,6 +37,14 @@ trait StatisticsChart
 
     private function transactionsPerPeriod(string $cache, string $period): Collection
     {
-        return collect((new $cache())->getHistorical($period));
+        if ($cache === FeeCache::class) {
+            return collect((new FeeCache())->getHistorical($period));
+        }
+
+        if ($cache === TransactionCache::class) {
+            return collect((new TransactionCache())->getHistorical($period));
+        }
+
+        throw new InvalidArgumentException("Given cache [$cache] is invalid. Use FeeCache or TransactionCache.");
     }
 }

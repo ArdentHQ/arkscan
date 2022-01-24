@@ -16,7 +16,7 @@ final class DelegateActiveTable extends Component
     public bool $load = false;
 
     /**
-     * @var array
+     * @var mixed
      */
     protected $listeners = ['tabFiltered'];
 

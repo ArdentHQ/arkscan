@@ -18,7 +18,7 @@
                                     circle-color="success-600"
                                     progress="{{ Percentage::calculate($statistics['performances']['forging'], Network::delegateCount()) }}"
                                 >
-                                    <x-ark-icon class="rotate-90 text-theme-success-600 border-theme-success-600" name="checkmark-smooth" size="sm" />
+                                    <x-ark-icon class="rotate-90 text-theme-success-600 border-theme-success-600" name="check-mark" size="sm" />
                                 </x-delegates.progress-circle>
                             </div>
                         </x-slot>

@@ -13,7 +13,7 @@ use Livewire\Component;
 
 final class PriceStats extends Component
 {
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $listeners = ['currencyChanged' => '$refresh'];
 
     public function render(): View

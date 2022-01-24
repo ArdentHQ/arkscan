@@ -7,12 +7,13 @@ namespace App\Http\Livewire\Concerns;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Services\Cache\TableCache;
+use Illuminate\Database\Eloquent\Collection;
 
 trait ManagesLatestTransactions
 {
     public function pollTransactions(): void
     {
-        $this->transactions = (new TableCache())->setLatestTransactions($this->state['type'], function () {
+        $this->transactions = (new TableCache())->setLatestTransactions($this->state['type'], function (): Collection {
             $query = Transaction::withScope(OrderByTimestampScope::class);
 
             if ($this->state['type'] !== 'all') {

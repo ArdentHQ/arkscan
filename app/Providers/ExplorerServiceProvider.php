@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Contracts\Network;
 use App\Services\Blockchain\NetworkFactory;
 use ArkEcosystem\Crypto\Configuration\Network as NetworkConfiguration;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 
 final class ExplorerServiceProvider extends ServiceProvider
@@ -24,7 +25,7 @@ final class ExplorerServiceProvider extends ServiceProvider
         );
 
         // Used for crypto calculations, e.g. multisig address derivation
-        NetworkConfiguration::set(NetworkFactory::make($this->app['config']['explorer']['network'])->config());
+        NetworkConfiguration::set(NetworkFactory::make(Arr::get($this->app->get('config')->get('explorer'), 'network'))->config());
     }
 
     /**

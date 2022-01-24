@@ -55,11 +55,15 @@
                     />
 
                     <div
-                        class="py-4 font-semibold text-center rounded-b-lg md:hidden bg-theme-primary-100 text-theme-primary-600 dark:bg-theme-secondary-800 dark:text-theme-secondary-200"
+                        class="flex justify-center items-center py-3 space-x-2 font-semibold text-center rounded-b-lg md:hidden bg-theme-secondary-200 text-theme-primary-600 dark:bg-theme-secondary-800 dark:text-theme-secondary-200"
                         @click="showAdvanced = !showAdvanced"
                     >
-                        <span x-show="!showAdvanced">@lang('actions.advanced_search')</span>
-                        <span x-show="showAdvanced">@lang('actions.hide_advanced')</span>
+                        <div>
+                            <span x-show="!showAdvanced">@lang('actions.advanced_search')</span>
+                            <span x-show="showAdvanced">@lang('actions.hide_advanced')</span>
+                        </div>
+
+                        <x-ark-chevron-toggle is-open="showAdvanced === true" />
                     </div>
                 </div>
             </div>

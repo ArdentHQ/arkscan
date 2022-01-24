@@ -55,7 +55,7 @@ final class TransactionTypeIcon
     public function name(): string
     {
         foreach ($this->types as $method => $icon) {
-            if ($this->type->$method()) {
+            if ((bool) call_user_func_safe([$this->type, $method])) {
                 return $icon;
             }
         }

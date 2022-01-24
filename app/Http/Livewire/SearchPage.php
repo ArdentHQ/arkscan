@@ -19,10 +19,10 @@ final class SearchPage extends Component
     use ManagesSearch;
     use WithPagination;
 
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $listeners = ['pageChanged' => 'performSearch'];
 
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $queryString = ['state'];
 
     private ?LengthAwarePaginator $results = null;

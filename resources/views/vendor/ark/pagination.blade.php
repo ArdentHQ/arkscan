@@ -22,10 +22,10 @@
             <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
             @endforeach
             <button type="submit" class="p-2 text-theme-secondary-500 transition-default dark:text-theme-secondary-200 hover:text-theme-primary-500" :disabled="!page">
-                <x-ark-icon name="search" size="sm" />
+                <x-ark-icon name="magnifying-glass" size="sm" />
             </button>
             <button type="button" class="p-2 text-theme-secondary-500 transition-default dark:text-theme-secondary-200 hover:text-theme-primary-500" x-on:click="hideSearch()">
-                <x-ark-icon name="close" size="sm" />
+                <x-ark-icon name="cross" size="sm" />
             </button>
         </form>
 
@@ -42,7 +42,7 @@
             x-on:click="hideSearch"
             class="items-center button-secondary pagination-button-mobile" @if($paginator->onFirstPage()) disabled @endif
         >
-            <x-ark-icon name="pagination-first" size="xs" />
+            <x-ark-icon name="arrows.double-chevron-left" size="xs" />
         </button>
         <button
             wire:click="gotoPage({{ $paginator->currentPage() - 1 }})"
@@ -50,7 +50,7 @@
             class="items-center button-secondary pagination-button-mobile" @if($paginator->onFirstPage()) disabled @endif
         >
             <div class="flex items-center">
-                <x-ark-icon class="inline-block lg:hidden" name="chevron-left" size="xs" />
+                <x-ark-icon class="inline-block lg:hidden" name="arrows.chevron-left" size="xs" />
                 <span class="hidden lg:flex">Previous</span>
             </div>
         </button>
@@ -72,10 +72,10 @@
                 <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
                 @endforeach
                 <button type="submit" class="p-2 text-theme-secondary-500 transition-default dark:text-theme-secondary-200 hover:text-theme-primary-500" :disabled="!page">
-                    <x-ark-icon name="search" size="sm" />
+                    <x-ark-icon name="magnifying-glass" size="sm" />
                 </button>
                 <button type="button" class="p-2 text-theme-secondary-500 transition-default dark:text-theme-secondary-200 hover:text-theme-primary-500" x-on:click="hideSearch">
-                    <x-ark-icon name="close" size="sm" />
+                    <x-ark-icon name="cross" size="sm" />
                 </button>
             </form>
 
@@ -92,7 +92,7 @@
                             class="button-pagination-page-indicator button-pagination-page-indicator--search"
                             :class="{ 'opacity-0': search }"
                         >
-                            <span class="button-pagination-search"><x-ark-icon name="search" size="sm" /></span>
+                            <span class="button-pagination-search"><x-ark-icon name="magnifying-glass" size="sm" /></span>
                             <span class="button-pagination-ellipsis">{{ $element }}</span>
                         </button>
                     @endif
@@ -130,7 +130,7 @@
         >
             <div class="flex items-center">
                 <span class="hidden lg:flex">Next</span>
-                <x-ark-icon class="inline-block lg:hidden" name="chevron-right" size="xs" />
+                <x-ark-icon class="inline-block lg:hidden" name="arrows.chevron-right" size="xs" />
             </div>
         </button>
         <button
@@ -139,7 +139,7 @@
             class="items-center button-secondary pagination-button-mobile"
             @if($paginator->currentPage() === $paginator->lastPage()) disabled @endif
         >
-            <x-ark-icon name="pagination-last" size="xs" />
+            <x-ark-icon name="arrows.double-chevron-right" size="xs" />
         </button>
     </div>
 </div>

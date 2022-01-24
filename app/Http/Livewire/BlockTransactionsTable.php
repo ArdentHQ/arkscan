@@ -16,7 +16,7 @@ final class BlockTransactionsTable extends Component
 
     public string $blockId;
 
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $listeners = ['currencyChanged' => '$refresh'];
 
     public function mount(string $blockId): void

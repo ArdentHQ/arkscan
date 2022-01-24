@@ -19,7 +19,7 @@ final class DelegateResignedTable extends Component
     public bool $load = false;
 
     /**
-     * @var array
+     * @var mixed
      */
     protected $listeners = ['tabFiltered'];
 

@@ -7,7 +7,7 @@ namespace App\Repositories;
 use App\Contracts\RoundRepository as Contract;
 use App\Facades\Network;
 use App\Models\Round;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 final class RoundRepository implements Contract
 {

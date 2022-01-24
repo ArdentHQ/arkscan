@@ -1,5 +1,5 @@
-<div class="flex items-center py-6 px-8">
-    <div class="flex-1 mr-8">
+<div class="flex items-center py-4 px-6 md:py-5">
+    <div class="flex-1 mr-8 leading-none">
         <input
             x-ref="input"
             type="text"
@@ -36,19 +36,25 @@
         wire:click="performSearch"
         @click="searching = true"
     >
-        <span x-show="searching" class="flex absolute right-0 left-0 justify-center items-center" x-cloak>
+        <span x-show="searching" class="flex absolute inset-0 justify-center items-center" x-cloak>
             <x-ark-spinner-icon />
         </span>
+
         <span :class="{ 'invisible': searching }">@lang('actions.find_it')</span>
     </button>
 
     <button
         type="button"
-        class="cursor-pointer md:hidden text-theme-secondary-700 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400 hover:text-theme-primary-600"
+        class="md:hidden button-primary"
         wire:click="performSearch"
         @click="searching = true"
     >
-        <span x-show="searching"><x-ark-spinner-icon /></span>
-        <span x-show="!searching"><x-ark-icon name="search" /></span>
+        <span x-show="searching" x-cloak>
+            <x-ark-spinner-icon size="w-4 h-4" />
+        </span>
+
+        <span x-show="!searching">
+            <x-ark-icon name="magnifying-glass" size="sm" />
+        </span>
     </button>
 </div>

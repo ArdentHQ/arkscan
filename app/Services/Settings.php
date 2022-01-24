@@ -52,14 +52,9 @@ class Settings
         return (bool) Arr::get($this->all(), 'feeChart', true);
     }
 
-    public function darkTheme(): bool
-    {
-        return (bool) Arr::get($this->all(), 'darkTheme', true);
-    }
-
     public function theme(): string
     {
-        if ($this->darkTheme()) {
+        if ((bool) Arr::get($this->all(), 'darkTheme', true)) {
             return 'dark';
         }
 
@@ -88,11 +83,6 @@ class Settings
     public function usesFeeChart(): bool
     {
         return $this->feeChart();
-    }
-
-    public function usesDarkTheme(): bool
-    {
-        return $this->darkTheme();
     }
 
     public function usesCompactTables(): bool

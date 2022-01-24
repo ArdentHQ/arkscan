@@ -15,7 +15,7 @@ final class BlockTable extends Component
 {
     use HasPagination;
 
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $listeners = ['currencyChanged' => '$refresh'];
 
     public function render(): View

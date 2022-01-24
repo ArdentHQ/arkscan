@@ -3,15 +3,15 @@
         <div class="flex">
             @if($model->isSentToSelf($wallet->address()))
                 <div class="arrow-direction text-theme-success-600 border-theme-success-200 dark:border-theme-success-600">
-                    <x-ark-icon name="return" />
+                    <x-ark-icon name="transaction.return" />
                 </div>
             @elseif($model->isSent($wallet->address()))
                 <div class="arrow-direction text-theme-danger-400 border-theme-danger-100 dark:border-theme-danger-400">
-                    <x-ark-icon name="sent" />
+                    <x-ark-icon name="transaction.sent" />
                 </div>
             @else
                 <div class="arrow-direction text-theme-success-600 border-theme-success-200 dark:border-theme-success-600">
-                    <x-ark-icon name="received" />
+                    <x-ark-icon name="transaction.received" />
                 </div>
             @endif
 

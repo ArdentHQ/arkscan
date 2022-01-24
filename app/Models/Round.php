@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $round
+ * @property string $public_key
  * @property BigNumber $balance
  */
 final class Round extends Model

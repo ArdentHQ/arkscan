@@ -1,6 +1,8 @@
-<div x-data="{ publicKeyModalVisible: false }" class="flex-1 mt-4 w-full sm:mt-0 sm:w-auto">
-    <button type="button" @click="publicKeyModalVisible = !publicKeyModalVisible"
-        class="flex justify-center items-center px-3 w-full h-11 rounded cursor-pointer lg:flex-none lg:w-16 bg-theme-secondary-800 transition-default dark:text-theme-secondary-600 dark:hover:text-theme-secondary-200 hover:bg-theme-primary-600">
+<div x-data="{ publicKeyModalVisible: false }" class="flex-1 ml-2 w-full">
+    <button
+        type="button"
+        @click="publicKeyModalVisible = !publicKeyModalVisible"
+        class="text-theme-secondary-600 hover:text-theme-secondary-400">
         <x-ark-icon name="key" />
     </button>
 
