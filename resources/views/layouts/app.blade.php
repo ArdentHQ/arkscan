@@ -25,11 +25,13 @@
             </x-slot>
         </x-navbar.navbar>
 
-        <main class="container flex flex-1 w-full mx-auto @unless($isLanding ?? false) pb-14 mt-16 @endif sm:max-w-full @unless($fullWidth ?? false) px-4 sm:px-8 lg:max-w-7xl @endif">
-            <div class="{{ $containerChildClass ?? 'w-full bg-white dark:bg-theme-secondary-900' }}">
-                @yield('content')
-            </div>
-        </main>
+        <x-slot name="content">
+            <main class="container flex flex-1 w-full mx-auto @unless($isLanding ?? false) pb-14 mt-16 @endif sm:max-w-full @unless($fullWidth ?? false) px-4 sm:px-8 lg:max-w-7xl @endif">
+                <div class="{{ $containerChildClass ?? 'w-full bg-white dark:bg-theme-secondary-900' }}">
+                    @yield('content')
+                </div>
+            </main>
+        </x-slot>
 
         <x-slot name="footer">
             <x-ark-footer>
