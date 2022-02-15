@@ -47,7 +47,6 @@
                             onSelected
                         );
                     }()"
-                    x-init="init"
                     x-cloak
                     class="w-full"
                 >

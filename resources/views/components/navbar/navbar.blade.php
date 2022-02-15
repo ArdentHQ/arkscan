@@ -8,10 +8,13 @@
             open: false,
             showSettings: false
         })"
-        x-init="init"
         @theme-changed.window="dark = $event.detail.theme === 'dark'"
     >
-        <nav x-ref="nav" class="relative z-30 bg-white border-b border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800">
+        <nav
+            x-ref="nav"
+            class="relative z-30 bg-white border-b border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
+            @click.outside="open = false"
+        >
             <div class="px-8 md:px-10">
                 <div class="flex relative justify-between h-21">
 
@@ -87,7 +90,7 @@
 
                             {{-- Mobile Hamburger icon --}}
                             <x-navbar.button
-                                @click="open = !open"
+                                @click="toggle"
                                 margin-class="ml-4 -mr-4 md:mr-4"
                             >
                                 <span :class="{'hidden': open, 'inline-flex': !open }">
@@ -121,7 +124,7 @@
             </div>
 
             <template x-if="open">
-                <div class="border-t-2 shadow-xl lg:hidden border-theme-secondary-200 dark:border-theme-secondary-800" @click.away="open = false">
+                <div class="border-t-2 shadow-xl lg:hidden border-theme-secondary-200 dark:border-theme-secondary-800">
                     <div class="pt-2 pb-4 rounded-b-lg">
                         @foreach ($navigation as $navItem)
                             <x-ark-navbar-link-mobile :route="$navItem['route']" :name="$navItem['label']" :params="$navItem['params'] ?? []" />

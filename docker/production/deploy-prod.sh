@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-type docker >/dev/null 2>&1 || { echo >&2 "Docker missing. Please install and run the script again."; exit 1; } 
+type docker >/dev/null 2>&1 || { echo >&2 "Docker missing. Please install and run the script again."; exit 1; }
 type docker-compose >/dev/null 2>&1 || { echo >&2 "Docker Compose missing. Please install and run the script again."; exit 1; }
 
 trap '' INT
@@ -56,14 +56,14 @@ fi
 if [[ -z $blue ]] && [[ -z $green ]]; then
     info "Looks like initial setup ... deploying $(echo "${greeny}green${reset}") container"
     docker-compose --env-file prod.env -f docker-compose-prod.yml --project-name=green up -d
-    while ! docker logs green_explorer_1 | grep -q "success: short-schedule entered RUNNING state";
+    while ! docker logs green_explorer_1 | grep -q "success: redis entered RUNNING state";
     do
         ( trap '' INT; exec sleep 2; )
         info "Waiting for deployment to finish ..."
     done
     success "Done! - $(echo "${greeny}green${reset}") Explorer container started!"
     info "It may take few more seconds until Explorer is fully UP ..."
-    sleep 5 
+    sleep 5
     success "Done!"
     exit 0
 fi
@@ -82,7 +82,7 @@ docker-compose --env-file prod.env -f docker-compose-prod.yml --project-name=$LA
 
 while ! docker logs "$LATEST"_explorer_1 | grep -q "cron daemon, started with loglevel notice";
 do
-   ( trap '' INT; exec sleep 2; ) 
+   ( trap '' INT; exec sleep 2; )
    info "Waiting for deployment to finish ..."
 done
 
@@ -92,7 +92,7 @@ info "Sending checks to make sure $(exp) Explorer is UP ..."
 latest_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$LATEST"_explorer_1)
 latest_alive=$(curl -LI http://$latest_ip:8898 -o /dev/null -w '%{http_code}\n' -s)
 
-sleep 5 
+sleep 5
 
 if [[ $latest_alive -eq 200  ]]; then
     success "Done! - $(exp) Explorer container successfully deployed!"

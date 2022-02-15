@@ -6,7 +6,24 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased Devnet](https://github.com/ArkEcosystem/explorer/compare/staging...develop)
 
-## 2022-01-24 (Dexplorer)
+## 2022-02-14 (Dexplorer)
+
+### Fixed
+
+- price graph height on the homepage ([#1033]) (491c9dfb, @leMaur)
+
+### Changed
+
+- remove supervisor for short-schedule ([#1035]) (8f88cf5c, @marianogoldman)
+- add dark mode env var ([#1036]) (f4e5b463, @crnkovic)
+- use layout head &amp; body components ([#1034]) (31561f45, @alexbarnsley)
+- update alpine ([#1016]) (0d159736, @alexbarnsley)
+- update PHP dependencies ([#1031]) (9dc5df89, @faustbrian)
+- update foundation and remove reddit links ([#1039]) (6d09d22, @itsanametoo)
+
+---
+
+## 2022-01-24 (Explorer + Dexplorer)
 
 ### Fixed
 
@@ -43,7 +60,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## 2021-11-02 (Dexplorer)
+## 2021-11-02 (Explorer + Dexplorer)
 
 ### Fixed
 
@@ -351,3 +368,10 @@ All notable changes to this project will be documented in this file.
 [#1028]: https://github.com/ArkEcosystem/explorer/pull/1028
 [#1029]: https://github.com/ArkEcosystem/explorer/pull/1029
 [#1030]: https://github.com/ArkEcosystem/explorer/pull/1030
+[#1033]: https://github.com/ArkEcosystem/explorer/pull/1033
+[#1035]: https://github.com/ArkEcosystem/explorer/pull/1035
+[#1036]: https://github.com/ArkEcosystem/explorer/pull/1036
+[#1034]: https://github.com/ArkEcosystem/explorer/pull/1034
+[#1016]: https://github.com/ArkEcosystem/explorer/pull/1016
+[#1031]: https://github.com/ArkEcosystem/explorer/pull/1031
+[#1031]: https://github.com/ArkEcosystem/explorer/pull/1039

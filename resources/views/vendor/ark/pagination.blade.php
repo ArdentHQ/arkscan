@@ -3,7 +3,6 @@
 @endphp
 <div
     x-data="Pagination('{{ $pageName }}', {{ $paginator->lastPage() }})"
-    x-init="init"
     class="pagination-wrapper"
 >
     <div class="relative pagination-pages-mobile">

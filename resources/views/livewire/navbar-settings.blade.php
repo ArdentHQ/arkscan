@@ -12,10 +12,11 @@
     </x-navbar.button>
 
     <div
-        x-show.transition.origin.top="showSettings"
+        x-show="showSettings"
         class="fixed top-0 right-0 left-0 z-30 px-4 pt-3 mt-20 w-full md:absolute md:left-auto md:p-0 md:mt-24 md:w-120"
+        x-transition.origin.top
         x-cloak
-        @click.away="showSettings = false"
+        @click.outside="showSettings = false"
     >
         <div class="p-8 bg-white rounded-xl shadow-xl md:p-10 dark:bg-theme-secondary-900">
             <div class="flex flex-col">
