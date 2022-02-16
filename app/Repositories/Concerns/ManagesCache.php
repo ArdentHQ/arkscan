@@ -22,7 +22,7 @@ trait ManagesCache
             '%s/%s-%s',
             class_basename($this),
             debug_backtrace()[2]['function'],
-            serialize(debug_backtrace()[2]['args'])
+            serialize(debug_backtrace()[2]['args'] ?? '')
         );
     }
 }

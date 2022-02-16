@@ -2,7 +2,7 @@
     x-data="{
         value: '{{ $slot }}',
         init() {
-            new ResizeObserver(() => this.throttledTruncate()).observe(this.$el);
+            new ResizeObserver(() => this.throttledTruncate()).observe(this.$root);
 
             window.addEventListener('resize', () => this.throttledTruncate());
 
@@ -21,7 +21,7 @@
             }, 50);
         },
         truncate() {
-            const el = this.$el;
+            const el = this.$root;
 
             el.innerHTML = ''
             el.appendChild(document.createTextNode(this.value));
@@ -46,6 +46,5 @@
             return el.offsetWidth < el.scrollWidth;
         },
     }"
-    x-init="init"
     class="inline-flex overflow-hidden w-full max-w-full whitespace-nowrap"
 >{{ $slot }}</span>
