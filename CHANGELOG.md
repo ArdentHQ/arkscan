@@ -6,7 +6,19 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased Devnet](https://github.com/ArkEcosystem/explorer/compare/staging...develop)
 
-## 2022-02-14 (Dexplorer)
+## 2022-03-09 (Explorer + Dexplorer)
+
+### Changed
+
+- update PHP dependencies ([#1038]) (c60f4298, @faustbrian)
+
+### Fixed
+
+- legacy multisignature details ([#1041]) (8f1c7873, @alexbarnsley)
+
+---
+
+## 2022-02-14 (Explorer + Dexplorer)
 
 ### Fixed
 
