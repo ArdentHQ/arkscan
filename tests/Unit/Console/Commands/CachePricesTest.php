@@ -16,8 +16,8 @@ it('should execute the command', function (string $network) {
 
     $this->app->singleton(Network::class, fn () => new Blockchain(config($network)));
 
-    $crypto = app(CryptoDataCache::class);
-    $prices = app(PriceChartCache::class);
+    $crypto             = app(CryptoDataCache::class);
+    $prices             = app(PriceChartCache::class);
     $marketDataProvider = app(MarketDataProvider::class);
 
     app(CachePrices::class)->handle($crypto, $prices, $marketDataProvider);

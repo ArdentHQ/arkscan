@@ -31,10 +31,10 @@ it('should search for a block by generator public key', function (?string $modif
 })->with([null, 'strtolower', 'strtoupper']);
 
 it('should search for blocks by timestamp minimum', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     Block::factory(10)->create(['timestamp' => $todayGenesis]);
@@ -48,10 +48,10 @@ it('should search for blocks by timestamp minimum', function () {
 });
 
 it('should search for blocks by timestamp maximum', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     Block::factory(10)->create(['timestamp' => $todayGenesis]);
@@ -65,10 +65,10 @@ it('should search for blocks by timestamp maximum', function () {
 });
 
 it('should search for blocks by timestamp range', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     Block::factory(10)->create(['timestamp' => $todayGenesis]);
@@ -152,7 +152,7 @@ it('should search for blocks by total_fee range', function () {
 
 it('should search for blocks by height minimum', function () {
     $heightStart = 1000;
-    $heightEnd = 2000;
+    $heightEnd   = 2000;
 
     Block::factory(10)->create(['height' => $heightStart]);
     Block::factory(10)->create(['height' => $heightEnd]);
@@ -190,7 +190,7 @@ it('should search for blocks by formatted height as a term', function () {
 
 it('should search for blocks by height maximum', function () {
     $heightStart = 1000;
-    $heightEnd = 2000;
+    $heightEnd   = 2000;
 
     Block::factory(10)->create(['height' => $heightStart]);
     Block::factory(10)->create(['height' => $heightEnd]);
@@ -204,7 +204,7 @@ it('should search for blocks by height maximum', function () {
 
 it('should search for blocks by height range', function () {
     $heightStart = 1000;
-    $heightEnd = 2000;
+    $heightEnd   = 2000;
 
     Block::factory(10)->create(['height' => $heightStart]);
     Block::factory(10)->create(['height' => $heightEnd]);

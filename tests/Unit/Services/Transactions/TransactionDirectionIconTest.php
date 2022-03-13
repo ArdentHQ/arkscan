@@ -7,7 +7,7 @@ use App\Models\Wallet;
 use App\Services\Transactions\TransactionDirectionIcon;
 
 it('should determine if the transaction is sent', function () {
-    $sender = Wallet::factory()->create();
+    $sender      = Wallet::factory()->create();
     $transaction = Transaction::factory()->create([
         'sender_public_key' => $sender->public_key,
         'recipient_id'      => Wallet::factory()->create()->address,

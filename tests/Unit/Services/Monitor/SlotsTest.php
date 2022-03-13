@@ -139,7 +139,7 @@ it('should get the time in ms until next slot', function () {
     Block::factory()->create(['height' => 1]);
 
     $nextSlotTime = $this->subject->getSlotTime($this->subject->getNextSlot());
-    $now = $this->subject->getTime();
+    $now          = $this->subject->getTime();
 
     expect($this->subject->getTimeInMsUntilNextSlot())->toEqual(($nextSlotTime - $now) * 1000);
 });

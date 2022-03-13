@@ -12,7 +12,7 @@ beforeEach(function () {
     (new NetworkCache())->setSupply(fn () => '13628098200000000');
 
     $wallet = Wallet::factory()->create(['balance' => '10000000000000000']);
-    $block = Block::factory()->create(['generator_public_key' => $wallet->public_key]);
+    $block  = Block::factory()->create(['generator_public_key' => $wallet->public_key]);
 
     Transaction::factory()->vote()->create([
         'block_id'          => $block->id,

@@ -36,8 +36,8 @@ final class CachePrices extends Command
         }
 
         collect(config('currencies'))->values()->each(function ($currency) use ($crypto, $cache, $marketDataProvider): void {
-            $currency = $currency['currency'];
-            $prices = $marketDataProvider->historical(Network::currency(), $currency);
+            $currency     = $currency['currency'];
+            $prices       = $marketDataProvider->historical(Network::currency(), $currency);
             $hourlyPrices = $marketDataProvider->historicalHourly(Network::currency(), $currency);
 
             collect([

@@ -30,10 +30,10 @@ it('should search for a transaction by vendor field', function () {
 });
 
 it('should search for transactions by timestamp minimum', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     Transaction::factory(10)->create(['timestamp' => $todayGenesis]);
@@ -47,10 +47,10 @@ it('should search for transactions by timestamp minimum', function () {
 });
 
 it('should search for transactions by timestamp maximum', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     Transaction::factory(10)->create(['timestamp' => $todayGenesis]);
@@ -64,10 +64,10 @@ it('should search for transactions by timestamp maximum', function () {
 });
 
 it('should search for transactions by timestamp range', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     Transaction::factory(10)->create(['timestamp' => $todayGenesis]);

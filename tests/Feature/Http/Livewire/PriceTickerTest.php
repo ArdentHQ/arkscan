@@ -30,7 +30,7 @@ it('should update the price if the currency changes', function () {
 
     $component = Livewire::test(PriceTicker::class);
 
-    $settings = Settings::all();
+    $settings             = Settings::all();
     $settings['currency'] = 'MXN';
 
     Settings::shouldReceive('all')->andReturn($settings);
