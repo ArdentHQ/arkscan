@@ -29,7 +29,7 @@
         </x-slot>
     </x-tabs.wrapper>
 
-    <div class="mb-5 md:hidden">
+    <div class="mb-5 md:hidden" wire:key="{{ Illuminate\Support\Str::random(20) }}">
         <x-ark-dropdown
             wrapper-class="relative p-2 w-full rounded-xl border border-theme-primary-100 dark:border-theme-secondary-800"
             button-class="p-3 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
