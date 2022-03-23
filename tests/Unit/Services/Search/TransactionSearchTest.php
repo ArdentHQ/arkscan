@@ -284,6 +284,41 @@ it('should search for transactions by wallet with a username', function (?string
     expect($result->get())->toHaveCount(3);
 })->with([null, 'strtolower', 'strtoupper']);
 
+it('should search for transactions by wallet with a username containing special characters', function (?string $modifier) {
+    Transaction::factory(10)->create();
+    $username = 'john.doe (old) [new] 2';
+
+    $wallet = Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => [
+                'username' => $username,
+            ],
+        ],
+    ]);
+
+    Transaction::factory()->create([
+        'sender_public_key' => $wallet->public_key,
+    ]);
+
+    Transaction::factory()->create([
+        'recipient_id' => $wallet->address,
+    ]);
+
+    Transaction::factory()->create([
+        'asset' => [
+            'payments' => [
+                ['amount' => 10, 'recipientId' => $wallet->address],
+            ],
+        ],
+    ]);
+
+    $result = (new TransactionSearch())->search([
+        'term' => $modifier ? $modifier($username) : $username,
+    ]);
+
+    expect($result->get())->toHaveCount(3);
+})->with([null, 'strtolower', 'strtoupper']);
+
 it('should search for transactions by block with an ID', function (?string $modifier) {
     Transaction::factory(10)->create();
 
