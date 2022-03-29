@@ -74,7 +74,7 @@ it('should cache end of a round missed blocks for a public key ', function () {
 });
 
 it('uses the 1st block to set the performance on the first range', function () {
-    $round = 16;
+    $round     = 16;
     $publicKey = 'generator';
 
     Round::factory()->create([
@@ -104,7 +104,7 @@ it('uses the 1st block to set the performance on the first range', function () {
 });
 
 it('uses the 51st block to set the performance on the first range', function () {
-    $round = 16;
+    $round     = 16;
     $publicKey = 'generator';
 
     Round::factory()->create([
@@ -134,7 +134,7 @@ it('uses the 51st block to set the performance on the first range', function () 
 });
 
 it('uses the 52st block to set the performance on the second range', function () {
-    $round = 16;
+    $round     = 16;
     $publicKey = 'generator';
 
     Round::factory()->create([

@@ -32,7 +32,7 @@ it('should list the first page of records', function () {
 });
 
 it('should apply filters', function () {
-    $block = Block::factory()->create();
+    $block  = Block::factory()->create();
     $wallet = Wallet::factory()->create();
 
     $component = Livewire::test(TransactionTable::class);
@@ -71,7 +71,7 @@ it('should apply filters', function () {
 });
 
 it('should apply filters through an event', function () {
-    $block = Block::factory()->create();
+    $block  = Block::factory()->create();
     $wallet = Wallet::factory()->create();
 
     $component = Livewire::test(TransactionTable::class);
@@ -132,7 +132,7 @@ it('should update the records fiat tooltip when currency changed', function () {
     $component->assertSeeHtml('data-tippy-content="'.$expectedValue.'"');
     $component->assertDontSeeHtml('data-tippy-content="61.6048933 BTC"');
 
-    $settings = Settings::all();
+    $settings             = Settings::all();
     $settings['currency'] = 'BTC';
 
     Settings::shouldReceive('all')->andReturn($settings);

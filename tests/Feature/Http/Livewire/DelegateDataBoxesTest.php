@@ -93,7 +93,7 @@ it('should determine if delegates are forging based on their round history', fun
     $component->call('pollStatistics');
 
     $delegateWallet = Wallet::first();
-    $delegate = new WalletViewModel($delegateWallet);
+    $delegate       = new WalletViewModel($delegateWallet);
 
     expect($component->instance()->getDelegatePerformance($delegate->publicKey()))->toBeString();
     expect($component->instance()->getDelegatePerformance($delegate->publicKey()))->toBe(DelegateForgingStatus::forging);
@@ -107,7 +107,7 @@ it('should determine if delegates are not forging based on their round history',
     $component->call('pollStatistics');
 
     $delegateWallet = Wallet::first();
-    $delegate = new WalletViewModel($delegateWallet);
+    $delegate       = new WalletViewModel($delegateWallet);
 
     expect($component->instance()->getDelegatePerformance($delegate->publicKey()))->toBeString();
     expect($component->instance()->getDelegatePerformance($delegate->publicKey()))->toBe(DelegateForgingStatus::missing);
@@ -121,7 +121,7 @@ it('should determine if delegates just missed based on their round history', fun
     $component->call('pollStatistics');
 
     $delegateWallet = Wallet::first();
-    $delegate = new WalletViewModel($delegateWallet);
+    $delegate       = new WalletViewModel($delegateWallet);
 
     expect($component->instance()->getDelegatePerformance($delegate->publicKey()))->toBeString();
     expect($component->instance()->getDelegatePerformance($delegate->publicKey()))->toBe(DelegateForgingStatus::missed);
@@ -135,7 +135,7 @@ it('should determine if delegates are forging after missing 4 slots based on the
     $component->call('pollStatistics');
 
     $delegateWallet = Wallet::first();
-    $delegate = new WalletViewModel($delegateWallet);
+    $delegate       = new WalletViewModel($delegateWallet);
 
     expect($component->instance()->getDelegatePerformance($delegate->publicKey()))->toBeString();
     expect($component->instance()->getDelegatePerformance($delegate->publicKey()))->toBe(DelegateForgingStatus::forging);

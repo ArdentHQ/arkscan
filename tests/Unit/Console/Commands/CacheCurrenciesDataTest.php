@@ -25,7 +25,7 @@ it('should execute the command', function () {
 
     $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.production')));
 
-    $cache = app(NetworkStatusBlockCache::class);
+    $cache              = app(NetworkStatusBlockCache::class);
     $marketDataProvider = app(MarketDataProvider::class);
 
     expect($cache->getPrice(Network::currency(), 'USD'))->toBeNull();
@@ -47,7 +47,7 @@ it('set values to null when cryptocompare is down', function () {
 
     $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.production')));
 
-    $cache = app(NetworkStatusBlockCache::class);
+    $cache              = app(NetworkStatusBlockCache::class);
     $marketDataProvider = app(MarketDataProvider::class);
 
     $cache->setPrice(Network::currency(), 'USD', 1);
@@ -77,7 +77,7 @@ it('should ignore the cache for development network', function () {
 
     $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.development')));
 
-    $cache = app(NetworkStatusBlockCache::class);
+    $cache              = app(NetworkStatusBlockCache::class);
     $marketDataProvider = app(MarketDataProvider::class);
 
     expect($cache->getPrice(Network::currency(), 'USD'))->toBeNull();

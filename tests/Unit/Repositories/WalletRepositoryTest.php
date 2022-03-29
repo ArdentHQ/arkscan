@@ -48,3 +48,15 @@ it('should find a wallet by username', function () {
 
     expect($this->subject->findByUsername($wallet->attributes['delegate']['username']))->toBeInstanceOf(Wallet::class);
 });
+
+it('should find a wallet by username containing a whitespace', function () {
+    $wallet               = Wallet::factory()->create();
+    $delegate             = $wallet->attributes['delegate'];
+    $delegate['username'] = 'something with a whitespace';
+
+    $wallet->update([
+        'attributes' => array_merge($wallet->attributes, ['delegate' => $delegate]),
+    ]);
+
+    expect($this->subject->findByUsername($wallet->attributes['delegate']['username']))->toBeInstanceOf(Wallet::class);
+});

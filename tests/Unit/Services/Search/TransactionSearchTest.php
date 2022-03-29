@@ -30,10 +30,10 @@ it('should search for a transaction by vendor field', function () {
 });
 
 it('should search for transactions by timestamp minimum', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     Transaction::factory(10)->create(['timestamp' => $todayGenesis]);
@@ -47,10 +47,10 @@ it('should search for transactions by timestamp minimum', function () {
 });
 
 it('should search for transactions by timestamp maximum', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     Transaction::factory(10)->create(['timestamp' => $todayGenesis]);
@@ -64,10 +64,10 @@ it('should search for transactions by timestamp maximum', function () {
 });
 
 it('should search for transactions by timestamp range', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     Transaction::factory(10)->create(['timestamp' => $todayGenesis]);
@@ -279,6 +279,41 @@ it('should search for transactions by wallet with a username', function (?string
 
     $result = (new TransactionSearch())->search([
         'term' => $modifier ? $modifier('johndoe') : 'johndoe',
+    ]);
+
+    expect($result->get())->toHaveCount(3);
+})->with([null, 'strtolower', 'strtoupper']);
+
+it('should search for transactions by wallet with a username containing special characters', function (?string $modifier) {
+    Transaction::factory(10)->create();
+    $username = 'john.doe (old) [new] 2';
+
+    $wallet = Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => [
+                'username' => $username,
+            ],
+        ],
+    ]);
+
+    Transaction::factory()->create([
+        'sender_public_key' => $wallet->public_key,
+    ]);
+
+    Transaction::factory()->create([
+        'recipient_id' => $wallet->address,
+    ]);
+
+    Transaction::factory()->create([
+        'asset' => [
+            'payments' => [
+                ['amount' => 10, 'recipientId' => $wallet->address],
+            ],
+        ],
+    ]);
+
+    $result = (new TransactionSearch())->search([
+        'term' => $modifier ? $modifier($username) : $username,
     ]);
 
     expect($result->get())->toHaveCount(3);

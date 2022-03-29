@@ -45,7 +45,7 @@
                 <div wire:poll.{{ Network::blockTime() }}s="pollTransactions" wire:key="poll_transactions_real">
                     <x-tables.desktop.transactions :transactions="$transactions" />
 
-                    <x-tables.mobile.transactions :transactions="$transactions" />
+                    <x-tables.mobile.transactions :transactions="$transactions" :state="[$state['type']]" />
 
                     @if(count($transactions) === 15)
                         <a href="{{ route('transactions', ['page' => 2, 'state[type]' => $state['type']]) }}" class="mt-4 w-full button-secondary">@lang('actions.view_all')</a>

@@ -36,10 +36,14 @@ trait ValidatesTerm
      */
     private function couldBeUsername(string $term): bool
     {
-        $regex = '/^[a-zA-Z0-9!@$&_.]+$/';
+        // "Known wallets" are not related to anything on-chain, they are set by ARK team and can be seen here: https://github.com/ArkEcosystem/common/tree/master/mainnet
+        // They are not related to delegate usernames that are registered on-chain, meaning that they can be anything.
+        // Therefore 30 character restriction is not something that's actively enforced for those names
+
+        $regex = '/^[a-zA-Z0-9!@$&_.()\[\] ]+$/';
 
         return strlen($term) >= 1
-            && strlen($term) <= 20
+            && strlen($term) <= 30
             && preg_match($regex, $term, $matches) > 0;
     }
 

@@ -35,7 +35,7 @@ it('updates the balance when currency changes', function () {
     $component = Livewire::test(WalletBalance::class, ['wallet' => $wallet])
         ->assertSee(NumberFormatter::currency(0.01, 'USD'));
 
-    $settings = Settings::all();
+    $settings             = Settings::all();
     $settings['currency'] = 'BTC';
 
     Settings::shouldReceive('all')->andReturn($settings);

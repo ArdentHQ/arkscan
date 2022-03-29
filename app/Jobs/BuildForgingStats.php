@@ -69,7 +69,7 @@ final class BuildForgingStats implements ShouldQueue
                 ->firstOr(function (): ForgingStats {
                     // by default if forging_stats table is not initialized we just build stats for last hour
                     // (building stats is expensive, if we want data from last X days we need to ask for it explicitly)
-                    $forgingStats1HourAgo = new ForgingStats();
+                    $forgingStats1HourAgo            = new ForgingStats();
                     $forgingStats1HourAgo->timestamp = Timestamp::now()->getTimestamp() - 60 * 60;
 
                     return $forgingStats1HourAgo;

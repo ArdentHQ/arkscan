@@ -6,6 +6,22 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased Devnet](https://github.com/ArkEcosystem/explorer/compare/staging...develop)
 
+## 2022-03-29 (Explorer + Dexplorer)
+
+### Changed
+
+- update PHP dependencies ([#1043]) (930c68d4, @faustbrian)
+- update PHP dependencies ([#1045]) (a4c407dc, @faustbrian)
+
+### Fixed
+
+- transaction filter direction ([#1047]) (6da22d8d, @crnkovic)
+- close transaction filter on wallet details page on data fetch ([#1049]) (12916ee0, @crnkovic)
+- searching for wallet names containing whitespace ([#1048]) (d246ec36, @crnkovic)
+- add unique key to mobile transactions on homepage ([#1052]) (e13cd691, @ItsANameToo)
+
+---
+
 ## 2022-03-09 (Explorer + Dexplorer)
 
 ### Changed
@@ -387,3 +403,9 @@ All notable changes to this project will be documented in this file.
 [#1016]: https://github.com/ArkEcosystem/explorer/pull/1016
 [#1031]: https://github.com/ArkEcosystem/explorer/pull/1031
 [#1031]: https://github.com/ArkEcosystem/explorer/pull/1039
+[#1043]: https://github.com/Arkecosystem/explorer/pull/1043
+[#1045]: https://github.com/Arkecosystem/explorer/pull/1045
+[#1047]: https://github.com/Arkecosystem/explorer/pull/1047
+[#1049]: https://github.com/Arkecosystem/explorer/pull/1049
+[#1048]: https://github.com/Arkecosystem/explorer/pull/1048
+[#1052]: https://github.com/Arkecosystem/explorer/pull/1052
