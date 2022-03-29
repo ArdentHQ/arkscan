@@ -7,8 +7,8 @@ use App\Models\Round;
 use App\Services\Monitor\MissedBlocksCalculator;
 
 it('should calculate the missed blocks', function () {
-    $expectedStats = []; // expected { forged, missed } by delegate public key
-    $heightIterator = 0;
+    $expectedStats                 = []; // expected { forged, missed } by delegate public key
+    $heightIterator                = 0;
     $delegatePublicKeysBalanceDesc = [
         '027716e659220085e41389efc7cf6a05f7f7c659cf3db9126caabce6cda9156582',
         '03d3c6889608074b44155ad2e6577c3368e27e6e129c457418eb3e5ed029544e8d',
@@ -145,7 +145,7 @@ it('should calculate the missed blocks', function () {
                 'height'    => 6970324 + $heightIterator,
                 'timestamp' => 124595296 + $key * 8,
             ]);
-            $heightIterator = $heightIterator + 1;
+            $heightIterator            = $heightIterator + 1;
             $expectedStats[$publicKey] = isset($expectedStats[$publicKey]) ? $expectedStats[$publicKey] : ['forged'=> 0, 'missed'=> 0];
             $expectedStats[$publicKey]['forged']++;
         } else {
@@ -157,7 +157,7 @@ it('should calculate the missed blocks', function () {
         'timestamp' => 124595288,
     ]);
 
-    $blocksInfo = MissedBlocksCalculator::calculateForRound(6970364); // any height in the round [6970324, 6970374]
+    $blocksInfo    = MissedBlocksCalculator::calculateForRound(6970364); // any height in the round [6970324, 6970374]
     $delegateStats = [];
     foreach ($blocksInfo as $blockInfo) {
         if (! isset($delegateStats[$blockInfo['publicKey']])) {

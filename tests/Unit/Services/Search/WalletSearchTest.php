@@ -37,12 +37,45 @@ it('should search for a wallet by delegate username in terms', function (?string
     expect($result->get())->toHaveCount(1);
 })->with([null, 'strtolower', 'strtoupper']);
 
+it('can search for a wallet by term matching the username containing special characters', function (?string $modifier) {
+    $wallet               = Wallet::factory(10)->create()[0];
+    $delegate             = $wallet->attributes['delegate'];
+    $delegate['username'] = 'john.doe (old) [new] 2';
+
+    $wallet->update([
+        'attributes' => array_merge($wallet->attributes, ['delegate' => $delegate]),
+    ]);
+
+    $result = (new WalletSearch())->search([
+        'term' => $modifier ? $modifier('john.doe (old) [new] 2') : 'john.doe (old) [new] 2',
+    ]);
+
+    expect($result->get())->toHaveCount(1);
+})->with([null, 'strtolower', 'strtoupper']);
+
 it('should search for a wallet by username', function (?string $modifier) {
     $wallet = Wallet::factory(10)->create()[0];
 
     $result = (new WalletSearch())->search([
         'term'     => '',
         'username' => $modifier ? $modifier($wallet->attributes['delegate']['username']) : $wallet->attributes['delegate']['username'],
+    ]);
+
+    expect($result->get())->toHaveCount(1);
+})->with([null, 'strtolower', 'strtoupper']);
+
+it('can search for a wallet by username containing special characters', function (?string $modifier) {
+    $wallet               = Wallet::factory(10)->create()[0];
+    $delegate             = $wallet->attributes['delegate'];
+    $delegate['username'] = 'john.doe (old) [new] 2';
+
+    $wallet->update([
+        'attributes' => array_merge($wallet->attributes, ['delegate' => $delegate]),
+    ]);
+
+    $result = (new WalletSearch())->search([
+        'term'     => '',
+        'username' => $modifier ? $modifier('john.doe (old) [new] 2') : 'john.doe (old) [new] 2',
     ]);
 
     expect($result->get())->toHaveCount(1);

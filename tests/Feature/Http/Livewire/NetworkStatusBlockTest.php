@@ -49,7 +49,7 @@ it('should render with a height, supply and market cap', function () {
 it('should render with a height, supply and market cap for BTC', function () {
     Config::set('explorer.network', 'production');
 
-    $settings = Settings::all();
+    $settings             = Settings::all();
     $settings['currency'] = 'BTC';
 
     Settings::shouldReceive('all')->andReturn($settings);

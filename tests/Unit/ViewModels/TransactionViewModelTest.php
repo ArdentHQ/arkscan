@@ -24,7 +24,7 @@ beforeEach(function () {
 
     (new NetworkCache())->setHeight(fn () => 5000000);
 
-    $this->sender = Wallet::factory()->create();
+    $this->sender  = Wallet::factory()->create();
     $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create([
         'block_id'          => $this->block->id,
         'block_height'      => 1,

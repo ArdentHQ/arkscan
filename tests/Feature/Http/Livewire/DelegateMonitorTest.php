@@ -159,9 +159,9 @@ it('should correctly show the block is missed', function () {
     expect($delegates)->toHaveCount(51);
 
     // Split up delegate slot data to check
-    $forgedDelegates = $delegates->splice(0, 5);
+    $forgedDelegates  = $delegates->splice(0, 5);
     $waitingDelegates = $delegates->splice(0, 1);
-    $missedDelegates = $delegates->splice(0, 5);
+    $missedDelegates  = $delegates->splice(0, 5);
 
     $forgedDelegates->each(fn ($delegate) => expect($delegate->hasForged())->toBeTrue());
     $waitingDelegates->each(fn ($delegate) => expect($delegate->isNext())->toBeTrue());
@@ -182,8 +182,8 @@ it('should correctly show the block is missed', function () {
     expect($delegates)->toHaveCount(51);
 
     // Check delegate data is correct after 15 missed blocks
-    $forgedDelegates = $delegates->splice(0, 5);
-    $missedDelegates = $delegates->splice(0, 15);
+    $forgedDelegates  = $delegates->splice(0, 5);
+    $missedDelegates  = $delegates->splice(0, 15);
     $waitingDelegates = $delegates->splice(0, 1);
 
     $forgedDelegates->each(fn ($delegate) => expect($delegate->isWaiting())->toBeFalse());

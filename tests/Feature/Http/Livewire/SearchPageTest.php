@@ -56,10 +56,10 @@ it('should search for a block by id', function () {
 });
 
 it('should search for blocks by timestamp minimum', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     $blocks = Block::factory(10)->create(['timestamp' => $todayGenesis]);
@@ -73,10 +73,10 @@ it('should search for blocks by timestamp minimum', function () {
 });
 
 it('should search for blocks by timestamp maximum', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     Block::factory(10)->create(['timestamp' => $todayGenesis]);
@@ -90,10 +90,10 @@ it('should search for blocks by timestamp maximum', function () {
 });
 
 it('should search for blocks by timestamp range', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     Block::factory(10)->create(['timestamp' => $todayGenesis]);
@@ -177,7 +177,7 @@ it('should search for blocks by total_fee range', function () {
 
 it('should search for blocks by height minimum', function () {
     $heightStart = 1000;
-    $heightEnd = 2000;
+    $heightEnd   = 2000;
 
     Block::factory(10)->create(['height' => $heightStart]);
     $blocks = Block::factory(10)->create(['height' => $heightEnd]);
@@ -191,7 +191,7 @@ it('should search for blocks by height minimum', function () {
 
 it('should search for blocks by height maximum', function () {
     $heightStart = 1000;
-    $heightEnd = 2000;
+    $heightEnd   = 2000;
 
     $blocks = Block::factory(10)->create(['height' => $heightStart]);
     Block::factory(10)->create(['height' => $heightEnd]);
@@ -205,7 +205,7 @@ it('should search for blocks by height maximum', function () {
 
 it('should search for blocks by height range', function () {
     $heightStart = 1000;
-    $heightEnd = 2000;
+    $heightEnd   = 2000;
 
     $blocks = Block::factory(10)->create(['height' => $heightStart]);
     Block::factory(10)->create(['height' => $heightEnd]);
@@ -330,10 +330,10 @@ it('should search for a transaction by vendor field', function () {
 });
 
 it('should search for transactions by timestamp minimum', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     $transactions = Transaction::factory(10)->create(['timestamp' => $todayGenesis]);
@@ -348,10 +348,10 @@ it('should search for transactions by timestamp minimum', function () {
 });
 
 it('should search for transactions by timestamp maximum', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     Transaction::factory(10)->create(['timestamp' => $todayGenesis]);
@@ -366,10 +366,10 @@ it('should search for transactions by timestamp maximum', function () {
 });
 
 it('should search for transactions by timestamp range', function () {
-    $today = Carbon::now();
+    $today        = Carbon::now();
     $todayGenesis = Timestamp::fromUnix($today->unix())->unix();
 
-    $yesterday = Carbon::now()->subDay();
+    $yesterday        = Carbon::now()->subDay();
     $yesterdayGenesis = Timestamp::fromUnix($yesterday->unix())->unix();
 
     Transaction::factory(10)->create(['timestamp' => $todayGenesis]);
@@ -702,7 +702,7 @@ it('should search for a wallet by balance minimum', function () {
 
 it('should search for a wallet by balance maximum', function () {
     $wallets = Wallet::factory(10)->create(['balance' => 100 * 1e8]);
-    $wallet = Wallet::factory()->create(['balance' => 100 * 1e8]);
+    $wallet  = Wallet::factory()->create(['balance' => 100 * 1e8]);
     $wallet->update(['balance' => 1000 * 1e8]);
 
     Livewire::test(SearchPage::class)
@@ -715,7 +715,7 @@ it('should search for a wallet by balance maximum', function () {
 
 it('should search for a wallet by balance range', function () {
     $wallets = Wallet::factory(10)->create(['balance' => 10 * 1e8]);
-    $wallet = Wallet::factory(10)->create(['balance' => 100 * 1e8])[0];
+    $wallet  = Wallet::factory(10)->create(['balance' => 100 * 1e8])[0];
     $wallet->update(['balance' => 1000 * 1e8]);
 
     Livewire::test(SearchPage::class)

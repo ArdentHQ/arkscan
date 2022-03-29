@@ -7,7 +7,7 @@ use App\Models\Wallet;
 use Illuminate\Support\Facades\Cache;
 
 it('should compute and cache the multi signature address', function () {
-    $min = 3;
+    $min        = 3;
     $publicKeys = [
         '02fb3def2593a00c5b84620addf28ff21bac452bd71a37d4d8e24f301683a81b56',
         '02bc9f661fcc8abca65fe9aff4614036867b7fdcc5730085ccc5cb854664d0194b',
