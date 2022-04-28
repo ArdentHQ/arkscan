@@ -8,6 +8,7 @@ return [
     'optional'                => 'Optional',
     'or'                      => 'or',
     'arkscan'                 => 'ARKScan',
+    'scan'                    => 'Scan',
     'height'                  => 'Height',
     'network'                 => 'Network',
     'total_supply'            => 'Total Supply',
