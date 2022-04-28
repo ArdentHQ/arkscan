@@ -89,8 +89,8 @@ jobs:
             postgres:
                 image: postgres:12
                 env:
-                    POSTGRES_DB: explorer
-                    POSTGRES_USER: explorer
+                    POSTGRES_DB: arkscan
+                    POSTGRES_USER: arkscan
                     POSTGRES_PASSWORD: password
                 ports:
                     - 5432:5432
@@ -136,7 +136,7 @@ jobs:
                   DB_CONNECTION: pgsql
                   DB_HOST: 127.0.0.1
                   DB_PORT: 5432
-                  DB_DATABASE: explorer
-                  DB_USERNAME: explorer
+                  DB_DATABASE: arkscan
+                  DB_USERNAME: arkscan
                   DB_PASSWORD: password
                   PDO_ATTR_PERSISTENT: false

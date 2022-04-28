@@ -26,7 +26,7 @@
                             @else
                                 <x-ark-icon name="networks.ark-square" size="xxl" />
 
-                                <div class="hidden ml-6 text-lg lg:block"><span class="font-black text-theme-secondary-900">ARK</span> {{ $title }}</div>
+                                <div class="hidden ml-6 text-lg lg:block">{{ $title }}</div>
                             @endif
                         </a>
                     </div>
