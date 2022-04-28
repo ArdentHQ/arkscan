@@ -54,8 +54,8 @@
         <server name="ARKSCAN_NETWORK" value="development"/>
         <server name="ARKSCAN_DB_HOST" value="127.0.0.1"/>
         <server name="ARKSCAN_DB_PORT" value="5432"/>
-        <server name="ARKSCAN_DB_DATABASE" value="arkscan"/>
-        <server name="ARKSCAN_DB_USERNAME" value="arkscan"/>
+        <server name="ARKSCAN_DB_DATABASE" value="arkscan_test_db"/>
+        <server name="ARKSCAN_DB_USERNAME" value="arkscan_test_db"/>
         <server name="ARKSCAN_DB_PASSWORD" value="password"/>
         <server name="PDO_ATTR_PERSISTENT" value="false"/>
     </php>
