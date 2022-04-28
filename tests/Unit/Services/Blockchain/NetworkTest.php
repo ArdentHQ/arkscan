@@ -17,6 +17,7 @@ it('should have all required properties', function (array $config) {
     expect($subject->name())->toBe($config['name']);
     expect($subject->alias())->toBe($config['alias']);
     expect($subject->api())->toBe($config['api']);
+    expect($subject->explorerTitle())->toBe(config('app.name'));
     expect($subject->currency())->toBe($config['currency']);
     expect($subject->currencySymbol())->toBe($config['currencySymbol']);
     expect($subject->confirmations())->toBe($config['confirmations']);
