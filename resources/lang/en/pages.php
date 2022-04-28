@@ -231,4 +231,9 @@ return [
         ],
     ],
 
+    'footer' => [
+        'all_rights_reserved' => 'All rights reserved',
+        'copyright'           => 'Made with ♥ by',
+    ],
+
 ];

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 return [
+    'ardent'                  => 'Ardent',
     'address'                 => 'Address',
     'beta_uppercase'          => 'BETA',
     'optional'                => 'Optional',
