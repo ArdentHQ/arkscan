@@ -43,7 +43,7 @@
                     @lang('pages.footer.copyright')
 
                     <a
-                        href="@lang('urls.ardent')"
+                        href="@lang('general.urls.ardent')"
                         target="_blank"
                         class="inline-block underline hover:no-underline transition-default hover:text-theme-secondary-200"
                     >

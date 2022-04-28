@@ -124,6 +124,7 @@ return [
     ],
 
     'urls' => [
+        'ardent'    => 'https://ardenthq.com',
         'coingecko' => 'https://www.coingecko.com/',
     ],
 ];
