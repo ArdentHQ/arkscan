@@ -34,7 +34,7 @@ final class Network implements Contract
 
     public function explorerTitle(): string
     {
-        return $this->currency().' '.trans('general.explorer');
+        return config('app.name');
     }
 
     public function currency(): string
