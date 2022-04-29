@@ -7,7 +7,7 @@
         <x-skeletons.wallets>
             <x-tables.desktop.wallets :wallets="$wallets" without-truncate use-vote-weight />
 
-            <x-tables.mobile.wallets :wallets="$wallets" />
+            <x-tables.mobile.wallets :wallets="$wallets" use-vote-weight />
 
             <x-general.pagination :results="$wallets" class="mt-8" />
 
