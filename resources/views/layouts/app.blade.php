@@ -2,8 +2,8 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <x-ark-pages-includes-layout-head
         :default-name="trans('metatags.home.title')"
-        mask-icon-color="#c9292c"
-        microsoft-tile-color="#da532c"
+        mask-icon-color="#de5846"
+        microsoft-tile-color="#de5846"
         theme-color="#ffffff"
     />
 
