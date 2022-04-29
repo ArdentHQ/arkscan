@@ -21,13 +21,7 @@
                     {{-- LOGO --}}
                     <div class="flex flex-shrink-0 items-center">
                         <a class="flex items-center" href="{{ route('home') }}">
-                            @if($logo ?? false)
-                                {{ $logo }}
-                            @else
-                                <x-ark-icon name="networks.ark-square" size="xxl" />
-
-                                <div class="hidden ml-6 text-lg lg:block">{{ $title }}</div>
-                            @endif
+                            {{ $logo }}
                         </a>
                     </div>
 
