@@ -37,6 +37,16 @@ final class Network implements Contract
         return config('app.name');
     }
 
+    public function mainnetExplorerUrl(): string
+    {
+        return $this->config['mainnetExplorerUrl'];
+    }
+
+    public function testnetExplorerUrl(): string
+    {
+        return $this->config['testnetExplorerUrl'];
+    }
+
     public function currency(): string
     {
         return $this->config['currency'];
