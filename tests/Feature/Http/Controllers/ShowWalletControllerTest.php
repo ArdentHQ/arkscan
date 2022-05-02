@@ -22,3 +22,24 @@ it('should render the page without any errors', function () {
         ->get(route('wallet', $wallet))
         ->assertOk();
 });
+
+
+it('can lookup wallets by the username', function () {
+    $this->withoutExceptionHandling();
+
+    $wallet = Wallet::factory()->create();
+    $username = $wallet->attributes['delegate']['username'];
+
+    (new NetworkCache())->setSupply(fn () => '10000000000');
+
+    ((new DelegateCache())->setTotalAmounts(fn () => [$wallet->public_key => '1000000000']));
+    ((new DelegateCache())->setTotalFees(fn () => [$wallet->public_key => '1000000000']));
+    ((new DelegateCache())->setTotalRewards(fn () => [$wallet->public_key => '1000000000']));
+    ((new DelegateCache())->setTotalBlocks(fn () => [$wallet->public_key => '1000000000']));
+
+    expect($username)->not->toBeEmpty();
+
+    $this
+        ->get('/wallets/'.$username)
+        ->assertOk();
+});
