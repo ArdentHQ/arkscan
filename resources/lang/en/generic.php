@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 return [
+    'scan'          => 'Scan',
     'not_specified' => 'Not Specified',
     'at'            => 'at',
     'not-available' => 'N/A',
