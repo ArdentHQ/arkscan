@@ -21,7 +21,7 @@
         <div class="p-8 bg-white rounded-xl shadow-xl md:p-10 dark:bg-theme-secondary-900">
             <div class="flex flex-col">
                 <x-navbar.network-switch
-                    class="pb-6 {{ Network::canBeExchanged() ? '' : 'border-b border-dashed border-theme-secondary-300' }}"
+                    class="pb-6 {{ Network::canBeExchanged() ? '' : 'border-b border-dashed border-theme-secondary-300 dark:border-theme-secondary-800' }}"
                 />
 
                 @if(Network::canBeExchanged())
