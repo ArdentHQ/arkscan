@@ -23,11 +23,10 @@ it('should render the page without any errors', function () {
         ->assertOk();
 });
 
-
 it('can lookup wallets by the username', function () {
     $this->withoutExceptionHandling();
 
-    $wallet = Wallet::factory()->create();
+    $wallet   = Wallet::factory()->create();
     $username = $wallet->attributes['delegate']['username'];
 
     (new NetworkCache())->setSupply(fn () => '10000000000');
