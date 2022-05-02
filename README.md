@@ -1,4 +1,4 @@
-# ARK Explorer
+# ARKScan
 
 <p align="center">
     <img src="./banner.png" />
