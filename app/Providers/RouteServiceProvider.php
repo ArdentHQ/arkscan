@@ -49,10 +49,14 @@ final class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('wallet', function (string $walletID): Wallet {
-            abort_unless(Address::validate($walletID, Network::config()), 404);
+            if (Address::isValidLength($walletID)) {
+                abort_unless(Address::validate($walletID, Network::config()), 404);
+            }
 
             try {
-                return Wallets::findByAddress($walletID);
+                return Address::isValidLength($walletID)
+                        ? Wallets::findByAddress($walletID)
+                        : Wallets::findByUsername($walletID);
             } catch (Throwable) {
                 throw (new WalletNotFoundException())->setModel(Wallet::class, [$walletID]);
             }
