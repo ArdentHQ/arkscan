@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 use App\Services\MarketDataProviders\CoinGecko;
 
+$mainnetExplorer = env('ARKSCAN_MAINNET_EXPLORER_URL', 'https://live.arkscan.io');
+$testnetExplorer = env('ARKSCAN_TESTNET_EXPLORER_URL', 'https://test.arkscan.io');
+
 return [
     'network' => env('ARKSCAN_NETWORK', 'development'),
 
@@ -16,7 +19,8 @@ return [
             'name'             => env('ARKSCAN_NETWORK_NAME', 'ARK Public Network'),
             'alias'            => env('ARKSCAN_NETWORK_ALIAS', 'mainnet'),
             'api'              => env('ARKSCAN_NETWORK_API', 'https://wallets.ark.io/api'),
-            'explorerUrl'      => env('ARKSCAN_MAINNET_URL', 'https://live.arkscan.io'),
+            'mainnetExplorerUrl' => $mainnetExplorer,
+            'testnetExplorerUrl' => $testnetExplorer,
             'currency'         => env('ARKSCAN_NETWORK_CURRENCY', 'ARK'),
             'currencySymbol'   => env('ARKSCAN_NETWORK_CURRENCY_SYMBOL', 'Ѧ'),
             'confirmations'    => intval(env('ARKSCAN_NETWORK_CONFIRMATIONS', 51)),
@@ -33,7 +37,8 @@ return [
             'name'             => env('ARKSCAN_NETWORK_NAME', 'ARK Development Network'),
             'api'              => env('ARKSCAN_NETWORK_API', 'https://dwallets.ark.io/api'),
             'alias'            => env('ARKSCAN_NETWORK_ALIAS', 'devnet'),
-            'explorerUrl'      => env('ARKSCAN_TESTNET_URL', 'https://test.arkscan.io'),
+            'mainnetExplorerUrl' => $mainnetExplorer,
+            'testnetExplorerUrl' => $testnetExplorer,
             'currency'         => env('ARKSCAN_NETWORK_CURRENCY', 'DARK'),
             'currencySymbol'   => env('ARKSCAN_NETWORK_CURRENCY_SYMBOL', 'DѦ'),
             'confirmations'    => intval(env('ARKSCAN_NETWORK_CONFIRMATIONS', 51)),
