@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Facades\Wallets;
-use App\Services\Cache\WalletCache;
+use App\Jobs\CacheDelegateWallets as Job;
 use Illuminate\Console\Command;
 
 final class CacheDelegateWallets extends Command
@@ -24,14 +23,8 @@ final class CacheDelegateWallets extends Command
      */
     protected $description = 'Cache all delegates by their public key to avoid expensive database queries.';
 
-    public function handle(WalletCache $cache): void
+    public function handle(): void
     {
-        Wallets::allWithUsername()
-            ->orderBy('balance')
-            ->chunk(200, function ($wallets) use ($cache): void {
-                foreach ($wallets as $wallet) {
-                    $cache->setDelegate($wallet->public_key, $wallet);
-                }
-            });
+        Job::dispatch();
     }
 }
