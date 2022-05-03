@@ -7,6 +7,7 @@ namespace App\Http\Livewire\Concerns;
 use App\DTO\Slot;
 use App\Facades\Network;
 use App\Facades\Rounds;
+use App\Jobs\CacheDelegateWallets;
 use App\Models\Block;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\DelegateTracker;
@@ -84,6 +85,8 @@ trait DelegateData
 
         $delegates = [];
 
+        $this->ensureLoadedDelegates($tracking);
+
         for ($i = 0; $i < count($tracking); $i++) {
             $delegate = array_values($tracking)[$i];
 
@@ -103,5 +106,26 @@ trait DelegateData
         }
 
         return $delegates;
+    }
+
+    private function ensureLoadedDelegates(array $tracking): void
+    {
+        $cache = new WalletCache();
+        $hasMissingDelegates = false;
+        for ($i = 0; $i < count($tracking); $i++) {
+            $delegate = array_values($tracking)[$i];
+
+            if ($cache->getDelegate($delegate['publicKey']) === null) {
+                $hasMissingDelegates = true;
+
+                break;
+            }
+        }
+
+        if (! $hasMissingDelegates) {
+            return;
+        }
+
+        (new CacheDelegateWallets())->handle($cache);
     }
 }
