@@ -21,7 +21,7 @@ final class ValueRangeComposer
 
         if (! is_null($from) && $from > 0) {
             if ($useSatoshi) {
-                $query->where($column, '>=', $from * 1e8);
+                $query->where($column, '>=', intval($from * 1e8));
             } else {
                 $query->where($column, '>=', $from);
             }
@@ -29,7 +29,7 @@ final class ValueRangeComposer
 
         if (! is_null($to) && $to > 0) {
             if ($useSatoshi) {
-                $query->where($column, '<=', $to * 1e8);
+                $query->where($column, '<=', intval($to * 1e8));
             } else {
                 $query->where($column, '<=', $to);
             }
