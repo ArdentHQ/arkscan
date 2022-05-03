@@ -9,9 +9,9 @@
 
     <x-ark-pages-includes-layout-body
         class="table-compact"
-        x-data="{ 'compact': {{ Settings::usesCompactTables() ? 'true' : 'false' }} }"
-        x-bind:class="{ 'table-compact-until-md': !compact, }"
-        @toggle-compact-table="compact = ! $event.detail.expand"
+        x-data="{ 'expanded': {{ Settings::usesExpandedTables() ? 'true' : 'false' }} }"
+        x-bind:class="{ 'table-compact-until-md': expanded }"
+        @toggle-expanded-table="expanded = ($event.detail === true)"
     >
         <x-navbar.navbar
             :navigation="[

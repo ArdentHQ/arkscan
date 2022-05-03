@@ -34,5 +34,9 @@ final class NavbarSettings extends Component
                 'theme' => $this->state['darkTheme'] === true ? 'dark' : 'light',
             ]);
         }
+
+        if ($key === 'expandedTables') {
+            $this->dispatchBrowserEvent('toggle-expanded-table', $value);
+        }
     }
 }

@@ -15,12 +15,12 @@ use Illuminate\Support\Facades\Facade;
  * @method static bool feeChart()
  * @method static bool darkTheme()
  * @method static string theme()
- * @method static bool compactTables()
+ * @method static bool expandedTables()
  * @method static bool usesCharts()
  * @method static bool usesPriceChart()
  * @method static bool usesFeeChart()
  * @method static bool usesDarkTheme()
- * @method static bool usesCompactTables()
+ * @method static bool usesExpandedTables()
  */
 final class Settings extends Facade
 {
