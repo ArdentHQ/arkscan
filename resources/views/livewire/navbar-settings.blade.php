@@ -64,10 +64,9 @@
                     breakpoint="md"
                 >
                     <x-ark-toggle
-                        name="state.compactTables"
+                        name="state.expandedTables"
                         hide-label
-                        :default="$this->state['compactTables'] ? 'false' : 'true'"
-                        alpine-click="$dispatch('toggle-compact-table', { expand: value })"
+                        :default="$this->state['expandedTables'] ? 'true' : 'false'"
                     />
                 </x-navbar.setting-option>
             </div>

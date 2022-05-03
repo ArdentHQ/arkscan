@@ -24,21 +24,21 @@ function getSettingsFromCookies($ctx, $method = 'all', array $settings = [])
 
 it('should have all settings with defaults', function () {
     expect(Settings::all())->toBe([
-        'currency'      => 'USD',
-        'priceChart'    => true,
-        'feeChart'      => true,
-        'darkTheme'     => false,
-        'compactTables' => true,
+        'currency'       => 'USD',
+        'priceChart'     => true,
+        'feeChart'       => true,
+        'darkTheme'      => false,
+        'expandedTables' => false,
     ]);
 });
 
 it('should have all settings with values from a session', function () {
     $settings = [
-        'currency'      => 'CHF',
-        'priceChart'    => true,
-        'feeChart'      => true,
-        'darkTheme'     => false,
-        'compactTables' => false,
+        'currency'       => 'CHF',
+        'priceChart'     => true,
+        'feeChart'       => true,
+        'darkTheme'      => false,
+        'expandedTables' => false,
     ];
 
     expect(getSettingsFromCookies($this, 'all', $settings))->toBe($settings);
@@ -63,8 +63,8 @@ it('should have a dark theme setting', function () {
     expect(Settings::theme())->toBeString();
 });
 
-it('should have a compact mode setting', function () {
-    expect(Settings::compactTables())->toBeTrue();
+it('should have an expanded table setting', function () {
+    expect(Settings::expandedTables())->toBeFalse();
 });
 
 it('should determine the name of the theme', function () {
@@ -132,14 +132,14 @@ it('should determine if visitor uses dark theme', function () {
     ]))->toBe(['light']);
 });
 
-it('should determine if visitor uses compact mode', function () {
-    expect(Settings::usesCompactTables())->toBeTrue();
+it('should determine if visitor uses expanded tables mode', function () {
+    expect(Settings::usesExpandedTables())->toBeFalse();
 
-    expect(getSettingsFromCookies($this, 'usesCompactTables', [
-        'compactTables' => true,
+    expect(getSettingsFromCookies($this, 'usesExpandedTables', [
+        'expandedTables' => true,
     ]))->toBe([true]);
 
-    expect(getSettingsFromCookies($this, 'usesCompactTables', [
-        'compactTables' => false,
+    expect(getSettingsFromCookies($this, 'usesExpandedTables', [
+        'expandedTables' => false,
     ]))->toBe([false]);
 });
