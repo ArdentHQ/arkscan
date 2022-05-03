@@ -728,3 +728,19 @@ it('should search for a wallet by balance range', function () {
         $component->assertDontSee($largerWallet->address);
     }
 });
+
+it('should handle balance with large numbers', function () {
+    $wallets = Wallet::factory(10)->create(['balance' => 10 * 1e8]);
+    $wallet  = Wallet::factory()->create(['balance' => 100 * 1e8]);
+
+    $component = Livewire::test(SearchPage::class)
+        ->set('state.type', 'wallet')
+        ->set('state.balanceFrom', 99)
+        ->set('state.balanceTo', 1234567)
+        ->call('performSearch')
+        ->assertSee($wallet->address);
+
+    foreach ($wallets as $largerWallet) {
+        $component->assertDontSee($largerWallet->address);
+    }
+});
