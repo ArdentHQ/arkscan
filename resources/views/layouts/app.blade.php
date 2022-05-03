@@ -37,7 +37,6 @@
             <x-ark-footer
                 :is-ark-product="false"
                 :socials="config('social.networks')"
-                copy-class="pb-4 space-y-0 lg:pb-6"
             >
                 <x-slot name="copyText">
                     @lang('pages.footer.copyright')
