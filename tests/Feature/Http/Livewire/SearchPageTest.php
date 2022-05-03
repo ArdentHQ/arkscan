@@ -709,20 +709,22 @@ it('should search for a wallet by balance maximum', function () {
         ->set('state.type', 'wallet')
         ->set('state.balanceTo', 999)
         ->call('performSearch')
-        ->assertDontSee($wallet->id)
+        ->assertDontSee($wallet->address)
         ->assertSeeInOrder($wallets->pluck('address')->toArray());
 });
 
 it('should search for a wallet by balance range', function () {
     $wallets = Wallet::factory(10)->create(['balance' => 10 * 1e8]);
-    $wallet  = Wallet::factory(10)->create(['balance' => 100 * 1e8])[0];
-    $wallet->update(['balance' => 1000 * 1e8]);
+    $wallet  = Wallet::factory()->create(['balance' => 100 * 1e8]);
 
-    Livewire::test(SearchPage::class)
+    $component = Livewire::test(SearchPage::class)
         ->set('state.type', 'wallet')
-        ->set('state.balanceTo', 50)
+        ->set('state.balanceFrom', 50)
         ->set('state.balanceTo', 100)
         ->call('performSearch')
-        ->assertDontSee($wallet->id)
-        ->assertSeeInOrder($wallets->pluck('address')->toArray());
+        ->assertSee($wallet->address);
+
+    foreach ($wallets as $largerWallet) {
+        $component->assertDontSee($largerWallet->address);
+    }
 });
