@@ -110,7 +110,7 @@ trait DelegateData
 
     private function ensureLoadedDelegates(array $tracking): void
     {
-        $cache = new WalletCache();
+        $cache               = new WalletCache();
         $hasMissingDelegates = false;
         for ($i = 0; $i < count($tracking); $i++) {
             $delegate = array_values($tracking)[$i];
