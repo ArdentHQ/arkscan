@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Fortify\Fortify;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -39,6 +40,8 @@ final class AppServiceProvider extends ServiceProvider
         $this->registerCollectionMacros();
 
         $this->registerDataBags();
+
+        Fortify::loginView(fn () => abort(404));
     }
 
     private function registerCollectionMacros(): void
