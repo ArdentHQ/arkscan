@@ -14,10 +14,10 @@ class Settings
     public function all(): array
     {
         $defaultSettings = [
-            'currency'      => 'USD',
-            'priceChart'    => true,
-            'feeChart'      => true,
-            'darkTheme'     => false,
+            'currency'       => 'USD',
+            'priceChart'     => true,
+            'feeChart'       => true,
+            'darkTheme'      => false,
             'expandedTables' => false,
         ];
 
