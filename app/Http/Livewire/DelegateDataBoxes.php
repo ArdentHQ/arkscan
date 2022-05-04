@@ -9,6 +9,7 @@ use App\Enums\DelegateForgingStatus;
 use App\Facades\Network;
 use App\Http\Livewire\Concerns\DelegateData;
 use App\Models\Block;
+use App\Models\Wallet;
 use App\Services\Cache\MonitorCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\Monitor;
@@ -27,11 +28,7 @@ final class DelegateDataBoxes extends Component
 
     public function render(): View
     {
-        try {
-            $this->delegates = $this->fetchDelegates();
-        } catch (\Throwable) {
-            //
-        }
+        $this->delegates = $this->fetchDelegates();
 
         return view('livewire.delegate-data-boxes', [
             'statistics' => $this->statistics,
@@ -67,10 +64,8 @@ final class DelegateDataBoxes extends Component
 
     public function getDelegatePerformance(string $publicKey): string
     {
+        /** @var Wallet $delegateWallet */
         $delegateWallet = (new WalletCache())->getDelegate($publicKey);
-        if ($delegateWallet === null) {
-            return DelegateForgingStatus::missed;
-        }
 
         /** @var WalletViewModel $delegate */
         $delegate = ViewModelFactory::make($delegateWallet);
@@ -96,15 +91,7 @@ final class DelegateDataBoxes extends Component
 
     public function getNextDelegate(): ? WalletViewModel
     {
-        try {
-            $this->delegates = $this->fetchDelegates();
-
-            return (new MonitorCache())->setNextDelegate(fn () => optional($this->getSlotsByStatus($this->delegates, 'pending'))->wallet());
-        } catch (\Throwable) {
-            //
-        }
-
-        return null;
+        return (new MonitorCache())->setNextDelegate(fn () => optional($this->getSlotsByStatus($this->delegates, 'pending'))->wallet());
     }
 
     private function getSlotsByStatus(array $slots, string $status): ?Slot
