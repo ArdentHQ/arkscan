@@ -12,7 +12,7 @@
     "devDependencies": {
         "@tailwindcss/ui": "^0.7.2",
         "alpinejs": "^3.10.2",
-        "autoprefixer": "^10.4.7",
+        "autoprefixer": "10.4.5",
         "chart.js": "^3.7.1",
         "cross-env": "^7.0.3",
         "dayjs": "^1.11.1",
@@ -40,5 +40,8 @@
         "date-fns": "^2.28.0",
         "focus-trap": "^6.9.0",
         "focus-visible": "^5.2.0"
+    },
+    "resolutions": {
+        "autoprefixer": "10.4.5"
     }
 }
