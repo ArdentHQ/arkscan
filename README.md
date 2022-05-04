@@ -4,8 +4,8 @@
     <img src="./banner.png" />
 </p>
 
-[![Build Status](https://badgen.now.sh/github/status/ArkEcosystem/explorer/develop)](https://github.com/ArkEcosystem/explorer/actions?query=branch%3Adevelop)
-[![Codecov](https://badgen.now.sh/codecov/c/github/arkecosystem/explorer)](https://codecov.io/gh/arkecosystem/explorer)
+[![Build Status](https://badgen.now.sh/github/status/ArdentHQ/arkscan/develop)](https://github.com/ArdentHQ/arkscan/actions?query=branch%3Adevelop)
+[![Codecov](https://badgen.now.sh/codecov/c/github/ArdentHQ/arkscan)](https://codecov.io/gh/ArdentHQ/arkscan)
 [![License: MIT](https://badgen.now.sh/badge/license/MIT/green)](https://opensource.org/licenses/MIT)
 
 > Lead Maintainer: [Michel Kraaijeveld](https://github.com/ItsANameToo)
