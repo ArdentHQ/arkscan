@@ -7,8 +7,9 @@ namespace App\Http\Livewire\Concerns;
 use App\DTO\Slot;
 use App\Facades\Network;
 use App\Facades\Rounds;
-use App\Jobs\CacheDelegateWallets;
+use App\Facades\Wallets;
 use App\Models\Block;
+use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\Monitor;
@@ -21,6 +22,8 @@ use Illuminate\Support\Facades\Cache;
 
 trait DelegateData
 {
+    use EnsureDelegateData;
+
     private function cacheLastBlocks(array $delegates): void
     {
         $ttl = (int) ceil(Network::blockTime() / 2);
@@ -90,8 +93,11 @@ trait DelegateData
         for ($i = 0; $i < count($tracking); $i++) {
             $delegate = array_values($tracking)[$i];
 
+            /** @var Wallet $delegateWallet */
+            $delegateWallet = (new WalletCache())->getDelegate($delegate['publicKey']);
+
             /** @var WalletViewModel $walletViewModel */
-            $walletViewModel = ViewModelFactory::make((new WalletCache())->getDelegate($delegate['publicKey']));
+            $walletViewModel = ViewModelFactory::make($delegateWallet);
 
             $delegates[] = new Slot(
                 publicKey: $delegate['publicKey'],
@@ -106,26 +112,5 @@ trait DelegateData
         }
 
         return $delegates;
-    }
-
-    private function ensureLoadedDelegates(array $tracking): void
-    {
-        $cache = new WalletCache();
-        $hasMissingDelegates = false;
-        for ($i = 0; $i < count($tracking); $i++) {
-            $delegate = array_values($tracking)[$i];
-
-            if ($cache->getDelegate($delegate['publicKey']) === null) {
-                $hasMissingDelegates = true;
-
-                break;
-            }
-        }
-
-        if (! $hasMissingDelegates) {
-            return;
-        }
-
-        (new CacheDelegateWallets())->handle($cache);
     }
 }

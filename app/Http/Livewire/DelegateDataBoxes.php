@@ -9,6 +9,7 @@ use App\Enums\DelegateForgingStatus;
 use App\Facades\Network;
 use App\Http\Livewire\Concerns\DelegateData;
 use App\Models\Block;
+use App\Models\Wallet;
 use App\Services\Cache\MonitorCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\Monitor;
@@ -47,6 +48,8 @@ final class DelegateDataBoxes extends Component
     {
         $performances = [];
 
+        $this->ensureLoadedDelegates($this->delegates);
+
         foreach ($this->delegates as $delegate) {
             $publicKey                = $delegate->wallet()->model()->public_key;
             $performances[$publicKey] = $this->getDelegatePerformance($publicKey);
@@ -63,8 +66,11 @@ final class DelegateDataBoxes extends Component
 
     public function getDelegatePerformance(string $publicKey): string
     {
+        /** @var Wallet $delegateWallet */
+        $delegateWallet = (new WalletCache())->getDelegate($publicKey);
+
         /** @var WalletViewModel $delegate */
-        $delegate = ViewModelFactory::make((new WalletCache())->getDelegate($publicKey));
+        $delegate = ViewModelFactory::make($delegateWallet);
 
         if ($delegate->hasForged()) {
             return DelegateForgingStatus::forging;
