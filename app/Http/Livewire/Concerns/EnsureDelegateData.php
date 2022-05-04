@@ -14,7 +14,6 @@ trait EnsureDelegateData
     {
         $cache = new WalletCache();
         $hasMissingDelegates = false;
-        // for ($i = 0; $i < count($tracking); $i++) {
         foreach ($delegates as $delegateData) {
             $publicKey = null;
             if (is_array($delegateData)) {
