@@ -67,8 +67,13 @@ final class DelegateDataBoxes extends Component
 
     public function getDelegatePerformance(string $publicKey): string
     {
+        $delegateWallet = (new WalletCache())->getDelegate($publicKey);
+        if ($delegateWallet === null) {
+            return DelegateForgingStatus::missed;
+        }
+
         /** @var WalletViewModel $delegate */
-        $delegate = ViewModelFactory::make((new WalletCache())->getDelegate($publicKey));
+        $delegate = ViewModelFactory::make($delegateWallet);
 
         if ($delegate->hasForged()) {
             return DelegateForgingStatus::forging;
