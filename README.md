@@ -20,15 +20,15 @@
 
 ## Development
 
-You can read more about production instructions at our [Development Documentation](https://ark.dev/docs/explorer/running-your-own-explorer-for-development).
+You can read more about production instructions at our [Development Documentation](https://arkscan.io/docs/setup/production).
 
 ## Deployment
 
-You can read more about deployment instructions at our [Deployment Documentation](https://ark.dev/docs/explorer/running-your-own-explorer).
+You can read more about deployment instructions at our [Deployment Documentation](https://arkscan.io/docs/setup/development).
 
 ## Docker Deployment
 
-You can read more about Docker deployment instructions at our [Docker Deployment Documentation](https://ark.dev/docs/explorer/running-your-own-explorer-with-docker).
+You can read more about Docker deployment instructions at our [Docker Deployment Documentation](https://arkscan.io/docs/setup/docker).
 
 ## Security
 
@@ -40,4 +40,4 @@ This project exists thanks to all the people who [contribute](../../contributors
 
 ## License
 
-[MIT](LICENSE) © [ARK Ecosystem](https://ark.io)
+[MIT](LICENSE) © [ArdentHQ](https://ardenthq.com)
