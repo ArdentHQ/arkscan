@@ -141,7 +141,7 @@ final class Handler extends ExceptionHandler
     private function isViewException(Throwable $exception) : bool
     {
         return Str::contains($exception->getMessage(), [
-            'ErrorException: filemtime(): stat failed for',
+            'filemtime(): stat failed for',
         ]);
     }
 }
