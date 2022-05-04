@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 use App\Enums\DelegateForgingStatus;
 use App\Http\Livewire\DelegateDataBoxes;
+use App\Jobs\CacheDelegateWallets;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
+use Illuminate\Support\Facades\Queue;
 use Livewire\Livewire;
 
 function createRoundWithDelegatesAndPerformances(array $performances = null, bool $addBlockForNextRound = true): void
@@ -155,4 +157,38 @@ it('should return the next delegate', function () {
     $component = Livewire::test(DelegateDataBoxes::class);
 
     expect($component->instance()->getNextdelegate())->toBeInstanceOf(WalletViewModel::class);
+});
+
+it('should run job if no delegate data', function () {
+    $wallets = Wallet::factory(51)
+        ->activeDelegate()
+        ->create()
+        ->each(function ($wallet) {
+            $block = Block::factory()->create([
+                'height'               => 5720529,
+                'timestamp'            => 113620904,
+                'generator_public_key' => $wallet->public_key,
+            ]);
+
+            Block::factory()->create([
+                'height'               => 5720518,
+                'timestamp'            => 113620904,
+                'generator_public_key' => $wallet->public_key,
+            ]);
+
+            Round::factory()->create([
+                'round'      => '112168',
+                'public_key' => $wallet->public_key,
+            ]);
+        });
+
+    foreach ($wallets as $wallet) {
+        expect((new WalletCache())->getDelegate($wallet->public_key))->toBeNull();
+    }
+
+    Livewire::test(DelegateDataBoxes::class);
+
+    foreach ($wallets as $wallet) {
+        expect((new WalletCache())->getDelegate($wallet->public_key))->not->toBeNull();
+    }
 });
