@@ -88,9 +88,7 @@ trait DelegateData
         for ($i = 0; $i < count($tracking); $i++) {
             $delegate = array_values($tracking)[$i];
 
-            /** @var Wallet $delegateWallet */
             $delegateWallet = (new WalletCache())->getDelegate($delegate['publicKey']);
-
             if ($delegateWallet === null) {
                 continue;
             }
