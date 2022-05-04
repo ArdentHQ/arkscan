@@ -8,7 +8,6 @@ use App\DTO\Slot;
 use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
-use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\Monitor;
