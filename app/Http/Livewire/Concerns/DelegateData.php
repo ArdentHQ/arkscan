@@ -7,7 +7,6 @@ namespace App\Http\Livewire\Concerns;
 use App\DTO\Slot;
 use App\Facades\Network;
 use App\Facades\Rounds;
-use App\Facades\Wallets;
 use App\Models\Block;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
