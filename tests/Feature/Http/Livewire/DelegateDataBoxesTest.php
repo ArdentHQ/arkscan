@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 use App\Enums\DelegateForgingStatus;
 use App\Http\Livewire\DelegateDataBoxes;
-use App\Jobs\CacheDelegateWallets;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
-use Illuminate\Support\Facades\Queue;
 use Livewire\Livewire;
 
 function createRoundWithDelegatesAndPerformances(array $performances = null, bool $addBlockForNextRound = true): void
