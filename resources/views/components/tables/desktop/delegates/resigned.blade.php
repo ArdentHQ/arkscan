@@ -16,7 +16,7 @@
                         </div>
                     </x-ark-tables.cell>
                 @else
-                    <x-tables.rows.desktop.skeletons.icon width="70" />
+                    <x-tables.rows.desktop.skeletons.icon />
                 @endif
                 <x-ark-tables.cell>
                     <span class="hidden md:inline">
