@@ -12,7 +12,7 @@ trait EnsureDelegateData
 {
     private function ensureLoadedDelegates(array $delegates): void
     {
-        $cache = new WalletCache();
+        $cache               = new WalletCache();
         $hasMissingDelegates = false;
         foreach ($delegates as $delegateData) {
             $publicKey = null;
