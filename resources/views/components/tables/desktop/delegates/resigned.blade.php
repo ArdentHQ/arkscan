@@ -9,11 +9,15 @@
     <tbody>
         @foreach($delegates as $delegate)
             <x-ark-tables.row wire:key="{{ Helpers::generateId($delegate->username(), $delegate->resignationId()) }}">
-                <x-ark-tables.cell>
-                    <div class="text-left">
-                        <x-tables.rows.desktop.resignation-id :model="$delegate" />
-                    </div>
-                </x-ark-tables.cell>
+                @if ($delegate->resignationId())
+                    <x-ark-tables.cell>
+                        <div class="text-left">
+                            <x-tables.rows.desktop.resignation-id :model="$delegate" />
+                        </div>
+                    </x-ark-tables.cell>
+                @else
+                    <x-tables.rows.desktop.skeletons.icon width="70" />
+                @endif
                 <x-ark-tables.cell>
                     <span class="hidden md:inline">
                         <x-tables.rows.desktop.username :model="$delegate" />

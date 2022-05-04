@@ -27,7 +27,11 @@ final class DelegateDataBoxes extends Component
 
     public function render(): View
     {
-        $this->delegates = $this->fetchDelegates();
+        try {
+            $this->delegates = $this->fetchDelegates();
+        } catch (\Throwable) {
+            //
+        }
 
         return view('livewire.delegate-data-boxes', [
             'statistics' => $this->statistics,
@@ -87,9 +91,15 @@ final class DelegateDataBoxes extends Component
 
     public function getNextDelegate(): ? WalletViewModel
     {
-        $this->delegates = $this->fetchDelegates();
+        try {
+            $this->delegates = $this->fetchDelegates();
 
-        return (new MonitorCache())->setNextDelegate(fn () => optional($this->getSlotsByStatus($this->delegates, 'pending'))->wallet());
+            return (new MonitorCache())->setNextDelegate(fn () => optional($this->getSlotsByStatus($this->delegates, 'pending'))->wallet());
+        } catch (\Throwable) {
+            //
+        }
+
+        return null;
     }
 
     private function getSlotsByStatus(array $slots, string $status): ?Slot

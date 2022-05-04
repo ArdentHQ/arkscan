@@ -8,6 +8,7 @@ use App\DTO\Slot;
 use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
+use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\Monitor;
@@ -87,8 +88,15 @@ trait DelegateData
         for ($i = 0; $i < count($tracking); $i++) {
             $delegate = array_values($tracking)[$i];
 
+            /** @var Wallet $delegateWallet */
+            $delegateWallet = (new WalletCache())->getDelegate($delegate['publicKey']);
+
+            if ($delegateWallet === null) {
+                continue;
+            }
+
             /** @var WalletViewModel $walletViewModel */
-            $walletViewModel = ViewModelFactory::make((new WalletCache())->getDelegate($delegate['publicKey']));
+            $walletViewModel = ViewModelFactory::make($delegateWallet);
 
             $delegates[] = new Slot(
                 publicKey: $delegate['publicKey'],
