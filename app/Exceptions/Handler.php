@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Session\SessionManager;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -56,7 +55,7 @@ final class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) : void {
-            if ($this->shouldReport($e) && app()->bound('sentry') && ! $this->isViewException($e)) {
+            if ($this->shouldReport($e) && app()->bound('sentry')) {
                 app('sentry')->captureException($e);
             }
         });
@@ -136,12 +135,5 @@ final class Handler extends ExceptionHandler
     private function sessionAlreadyStarted(): bool
     {
         return app(SessionManager::class)->driver()->isStarted();
-    }
-
-    private function isViewException(Throwable $exception) : bool
-    {
-        return Str::contains($exception->getMessage(), [
-            'filemtime(): stat failed for',
-        ]);
     }
 }

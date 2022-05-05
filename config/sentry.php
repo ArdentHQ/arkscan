@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Str;
+use Sentry\Event;
+use Sentry\EventHint;
+
 return [
 
     'dsn' => env('SENTRY_LARAVEL_DSN', env('SENTRY_DSN')),
@@ -28,6 +32,14 @@ return [
         // Capture command information in breadcrumbs
         'command_info' => true,
     ],
+
+    'before_send' => function (Event $event, ?EventHint $hint): ?Event {
+        if ($hint !== null && Str::contains($hint->exception?->getMessage() ?? '', ['filemtime(): stat failed for'])) {
+            return null;
+        }
+
+        return $event;
+    },
 
     'tracing' => [
         // Trace queue jobs as their own transactions
