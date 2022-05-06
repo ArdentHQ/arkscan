@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use Sentry\Event;
 use Sentry\EventHint;
 
-class Sentry
+final class Sentry
 {
     public static function before(Event $event, ?EventHint $hint) : ?Event
     {
