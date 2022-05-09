@@ -29,6 +29,8 @@ return [
         'command_info' => true,
     ],
 
+    'before_send' => [App\Exceptions\Sentry::class, 'before'],
+
     'tracing' => [
         // Trace queue jobs as their own transactions
         'queue_job_transactions' => env('SENTRY_TRACE_QUEUE_ENABLED', false),
