@@ -55,7 +55,7 @@ return [
     'wallet' => [
         'title'       => 'Wallet :address Details | :name Blockchain Explorer',
         'description' => 'View balance, transaction history, and other details for :address on the :name Blockchain.',
-        'image'       => asset('images/metadata/wallets.png'),
+        'image'       => asset('images/metadata/wallet.png'),
     ],
 
     'wallet-voters' => [
