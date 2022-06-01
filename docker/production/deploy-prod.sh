@@ -56,13 +56,13 @@ fi
 if [[ -z $blue ]] && [[ -z $green ]]; then
     info "Looks like initial setup ... deploying $(echo "${greeny}green${reset}") container"
     docker-compose --env-file prod.env -f docker-compose-prod.yml --project-name=green up -d
-    while ! docker logs green_explorer_1 | grep -q "success: redis entered RUNNING state";
+    while ! docker logs green_arkscan_1 | grep -q "success: redis entered RUNNING state";
     do
         ( trap '' INT; exec sleep 2; )
         info "Waiting for deployment to finish ..."
     done
-    success "Done! - $(echo "${greeny}green${reset}") Explorer container started!"
-    info "It may take few more seconds until Explorer is fully UP ..."
+    success "Done! - $(echo "${greeny}green${reset}") ARKscan container started!"
+    info "It may take few more seconds until ARKscan is fully UP ..."
     sleep 5
     success "Done!"
     exit 0
@@ -76,32 +76,32 @@ else
     OLD="blue"
 fi
 
-info "Deploying $(exp) Explorer container ..."
+info "Deploying $(exp) ARKscan container ..."
 docker-compose --env-file prod.env -f docker-compose-prod.yml pull
 docker-compose --env-file prod.env -f docker-compose-prod.yml --project-name=$LATEST up -d
 
-while ! docker logs "$LATEST"_explorer_1 | grep -q "cron daemon, started with loglevel notice";
+while ! docker logs "$LATEST"_arkscan_1 | grep -q "cron daemon, started with loglevel notice";
 do
    ( trap '' INT; exec sleep 2; )
    info "Waiting for deployment to finish ..."
 done
 
-success "Done! - $(exp) Explorer container started!"
-info "Sending checks to make sure $(exp) Explorer is UP ..."
+success "Done! - $(exp) ARKscan container started!"
+info "Sending checks to make sure $(exp) ARKscan is UP ..."
 
-latest_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$LATEST"_explorer_1)
+latest_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$LATEST"_arkscan_1)
 latest_alive=$(curl -LI http://$latest_ip:8898 -o /dev/null -w '%{http_code}\n' -s)
 
 sleep 5
 
 if [[ $latest_alive -eq 200  ]]; then
-    success "Done! - $(exp) Explorer container successfully deployed!"
-    warning "Removing $(old) Explorer container ..."
+    success "Done! - $(exp) ARKscan container successfully deployed!"
+    warning "Removing $(old) ARKscan container ..."
     docker-compose --env-file prod.env -f docker-compose-prod.yml --project-name=$OLD down -v
-    success "Done! - You can safely remove explorer-$(old) folder!"
+    success "Done! - You can safely remove arkscan-$(old) folder!"
 else
-    warning "Seems like $(exp) container is UP but Explorer was slow to respond checks - please check your logs ..."
-    warning "Removing $(old) Explorer container ..."
+    warning "Seems like $(exp) container is UP but ARKscan was slow to respond checks - please check your logs ..."
+    warning "Removing $(old) ARKscan container ..."
     docker-compose --env-file prod.env -f docker-compose-prod.yml --project-name=$OLD down -v
     success "Done!"
     exit 0

@@ -1,20 +1,20 @@
 FROM php:fpm-alpine
 
-ENV NODE_VERSION 14.17.6
-ENV YARN_VERSION 1.22.5
+ENV NODE_VERSION 14.19.3
+ENV YARN_VERSION 1.22.19
 
 
-WORKDIR /var/www/explorer
+WORKDIR /var/www/arkscan
 
 ADD docker/entrypoint.sh /entrypoint.sh
 ADD docker/nginx-default.conf /etc/nginx/http.d/default.conf
 ADD docker/supervisord.conf /etc/supervisord.conf
 
-RUN adduser -S -h /var/www/explorer -s /bin/bash -G www-data -u 1000 explorer explorer \
+RUN adduser -S -h /var/www/arkscan -s /bin/bash -G www-data -u 1000 arkscan arkscan \
     && apk add --no-cache --virtual .build-deps curl gnupg tar autoconf dpkg-dev dpkg file pkgconf re2c pcre-dev \
     && apk add --no-cache sqlite-dev postgresql-dev libzip-dev libsodium-dev gmp-dev dcron bash sudo libstdc++ nginx redis supervisor make gcc g++ python3  \
     && sed -i -e "s/bin\/ash/bin\/bash/" /etc/passwd \
-    && echo 'explorer ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
+    && echo 'arkscan ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && docker-php-ext-configure bcmath --enable-bcmath \
     && docker-php-ext-configure pcntl --enable-pcntl \
     && docker-php-ext-configure pdo_pgsql --with-pdo-pgsql \
@@ -37,8 +37,8 @@ RUN adduser -S -h /var/www/explorer -s /bin/bash -G www-data -u 1000 explorer ex
     && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
     && rm -f yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz \
     && rm -f node-v$NODE_VERSION-linux-x64-musl.tar.xz \
-    && echo '* * * * * php artisan schedule:run >> /dev/null 2>&1' > /etc/crontabs/explorer \
+    && echo '* * * * * php artisan schedule:run >> /dev/null 2>&1' > /etc/crontabs/arkscan \
     && apk del .build-deps \ 
     && rm -rf /tmp/*
-USER explorer 
+USER arkscan 
 ENTRYPOINT ["bash", "-c", "/entrypoint.sh \"$@\"", "--"]
