@@ -91,6 +91,8 @@ final class DelegateDataBoxes extends Component
 
     public function getNextDelegate(): ? WalletViewModel
     {
+        $this->delegates = $this->fetchDelegates();
+
         return (new MonitorCache())->setNextDelegate(fn () => optional($this->getSlotsByStatus($this->delegates, 'pending'))->wallet());
     }
 
