@@ -20,6 +20,10 @@
     >
         <div class="p-8 bg-white rounded-xl shadow-xl md:p-10 dark:bg-theme-secondary-900">
             <div class="flex flex-col">
+                <x-navbar.network-switch
+                    class="pb-6 border-b border-dashed border-theme-secondary-300 dark:border-theme-secondary-800"
+                />
+
                 @if(Network::canBeExchanged())
                     <x-navbar.setting-option
                         :title="trans('forms.settings.currency.title')"
@@ -60,10 +64,9 @@
                     breakpoint="md"
                 >
                     <x-ark-toggle
-                        name="state.compactTables"
+                        name="state.expandedTables"
                         hide-label
-                        :default="$this->state['compactTables'] ? 'false' : 'true'"
-                        alpine-click="$dispatch('toggle-compact-table', { expand: value })"
+                        :default="$this->state['expandedTables'] ? 'true' : 'false'"
                     />
                 </x-navbar.setting-option>
             </div>

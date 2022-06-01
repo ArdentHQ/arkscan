@@ -14,11 +14,11 @@ class Settings
     public function all(): array
     {
         $defaultSettings = [
-            'currency'      => 'USD',
-            'priceChart'    => true,
-            'feeChart'      => true,
-            'darkTheme'     => false,
-            'compactTables' => true,
+            'currency'       => 'USD',
+            'priceChart'     => true,
+            'feeChart'       => true,
+            'darkTheme'      => false,
+            'expandedTables' => false,
         ];
 
         if (Cookie::has('settings')) {
@@ -61,9 +61,9 @@ class Settings
         return 'light';
     }
 
-    public function compactTables(): bool
+    public function expandedTables(): bool
     {
-        return (bool) Arr::get($this->all(), 'compactTables', true);
+        return (bool) Arr::get($this->all(), 'expandedTables', false);
     }
 
     public function usesCharts(): bool
@@ -85,8 +85,8 @@ class Settings
         return $this->feeChart();
     }
 
-    public function usesCompactTables(): bool
+    public function usesExpandedTables(): bool
     {
-        return $this->compactTables();
+        return $this->expandedTables();
     }
 }

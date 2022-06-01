@@ -11,67 +11,67 @@ return [
     ],
 
     'statistics' => [
-        'title'       => 'Statistics & Analytics - :name Blockchain Explorer',
+        'title'       => 'Statistics & Analytics | :name Blockchain Explorer',
         'description' => 'View statistics and analyze network activity on the :name Blockchain.',
         'image'       => asset('images/metadata/statistics.png'),
     ],
 
     'delegates' => [
-        'title'       => 'Delegates - :name Blockchain Explorer',
+        'title'       => 'Delegates | :name Blockchain Explorer',
         'description' => 'View Delegates (Validators) and their activity on the :name Blockchain.',
         'image'       => asset('images/metadata/delegates.png'),
     ],
 
     'transactions' => [
-        'title'       => 'Transactions - :name Blockchain Explorer',
+        'title'       => 'Transactions | :name Blockchain Explorer',
         'description' => 'View transaction details from the :name Blockchain.',
         'image'       => asset('images/metadata/transactions.png'),
     ],
 
     'transaction' => [
-        'title'       => 'Transaction :txid Details - :name Blockchain Explorer',
+        'title'       => 'Transaction :txid Details | :name Blockchain Explorer',
         'description' => 'View information and details for transaction with ID :txid on the :name Blockchain.',
         'image'       => asset('images/metadata/transactions.png'),
     ],
 
     'blocks' => [
-        'title'       => 'Blocks - :name Blockchain Explorer',
+        'title'       => 'Blocks | :name Blockchain Explorer',
         'description' => 'View details for blocks on the :name Blockchain.',
         'image'       => asset('images/metadata/blocks.png'),
     ],
 
     'block' => [
-        'title'       => 'Block :blockid Details - :name Blockchain Explorer',
+        'title'       => 'Block :blockid Details | :name Blockchain Explorer',
         'description' => 'View information and details for block with ID :blockid on the :name Blockchain.',
         'image'       => asset('images/metadata/blocks.png'),
     ],
 
     'wallets' => [
-        'title'       => 'Wallets - :name Blockchain Explorer',
+        'title'       => 'Wallets | :name Blockchain Explorer',
         'description' => 'View wallet address details on the :name Blockchain.',
         'image'       => asset('images/metadata/wallets.png'),
     ],
 
     'wallet' => [
-        'title'       => 'Wallet :address Details - :name Blockchain Explorer',
+        'title'       => 'Wallet :address Details | :name Blockchain Explorer',
         'description' => 'View balance, transaction history, and other details for :address on the :name Blockchain.',
-        'image'       => asset('images/metadata/wallets.png'),
+        'image'       => asset('images/metadata/wallet.png'),
     ],
 
     'wallet-voters' => [
-        'title'       => 'Voters of :delegate - :name Blockchain Explorer',
+        'title'       => 'Voters of :delegate | :name Blockchain Explorer',
         'description' => 'View all voters of :delegate on the :name Blockchain.',
         'image'       => asset('images/metadata/wallets.png'),
     ],
 
     'wallet-blocks' => [
-        'title'       => 'Blocks Validated by :delegate - :name Blockchain Explorer',
+        'title'       => 'Blocks Validated by :delegate | :name Blockchain Explorer',
         'description' => 'View blocks validated by :delegate on the :name Blockchain.',
         'image'       => asset('images/metadata/wallets.png'),
     ],
 
     'search' => [
-        'title'       => 'Search Results for :searchTerm - :name Blockchain Explorer',
+        'title'       => 'Search Results for :searchTerm | :name Blockchain Explorer',
         'description' => 'View search results for :searchTerm on the :name Blockchain.',
         'image'       => asset('images/metadata/search.png'),
     ],

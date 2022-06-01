@@ -87,8 +87,13 @@ trait DelegateData
         for ($i = 0; $i < count($tracking); $i++) {
             $delegate = array_values($tracking)[$i];
 
+            $delegateWallet = (new WalletCache())->getDelegate($delegate['publicKey']);
+            if ($delegateWallet === null) {
+                continue;
+            }
+
             /** @var WalletViewModel $walletViewModel */
-            $walletViewModel = ViewModelFactory::make((new WalletCache())->getDelegate($delegate['publicKey']));
+            $walletViewModel = ViewModelFactory::make($delegateWallet);
 
             $delegates[] = new Slot(
                 publicKey: $delegate['publicKey'],

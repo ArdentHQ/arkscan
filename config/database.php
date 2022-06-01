@@ -95,12 +95,12 @@ return [
 
         'explorer' => [
             'driver'         => 'pgsql',
-            'url'            => env('EXPLORER_DATABASE_URL'),
-            'host'           => env('EXPLORER_DB_HOST', '127.0.0.1'),
-            'port'           => env('EXPLORER_DB_PORT', '5432'),
-            'database'       => env('EXPLORER_DB_DATABASE', 'forge'),
-            'username'       => env('EXPLORER_DB_USERNAME', 'forge'),
-            'password'       => env('EXPLORER_DB_PASSWORD', ''),
+            'url'            => env('ARKSCAN_DATABASE_URL'),
+            'host'           => env('ARKSCAN_DB_HOST', '127.0.0.1'),
+            'port'           => env('ARKSCAN_DB_PORT', '5432'),
+            'database'       => env('ARKSCAN_DB_DATABASE', 'forge'),
+            'username'       => env('ARKSCAN_DB_USERNAME', 'forge'),
+            'password'       => env('ARKSCAN_DB_PASSWORD', ''),
             'charset'        => 'utf8',
             'prefix'         => '',
             'prefix_indexes' => true,
