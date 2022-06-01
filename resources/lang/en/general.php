@@ -3,18 +3,19 @@
 declare(strict_types=1);
 
 return [
+    'ardent'                  => 'Ardent',
     'address'                 => 'Address',
     'beta_uppercase'          => 'BETA',
     'optional'                => 'Optional',
     'or'                      => 'or',
-    'explorer'                => 'Explorer',
+    'arkscan'                 => 'ARKScan',
+    'scan'                    => 'Scan',
     'height'                  => 'Height',
     'network'                 => 'Network',
     'total_supply'            => 'Total Supply',
     'not_available'           => 'Not Available',
     'price'                   => 'Price',
     'market_cap'              => 'Market Cap',
-    'search_explorer'         => 'Search Explorer',
     'verified_address'        => 'Verified Address',
     'exchange'                => 'Exchange',
     'reload'                  => 'Reload',
@@ -123,6 +124,7 @@ return [
     ],
 
     'urls' => [
+        'ardent'    => 'https://ardenthq.com',
         'coingecko' => 'https://www.coingecko.com/',
     ],
 ];

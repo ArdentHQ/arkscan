@@ -34,7 +34,17 @@ final class Network implements Contract
 
     public function explorerTitle(): string
     {
-        return $this->currency().' '.trans('general.explorer');
+        return config('app.name');
+    }
+
+    public function mainnetExplorerUrl(): string
+    {
+        return $this->config['mainnetExplorerUrl'];
+    }
+
+    public function testnetExplorerUrl(): string
+    {
+        return $this->config['testnetExplorerUrl'];
     }
 
     public function currency(): string

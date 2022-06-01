@@ -20,3 +20,11 @@ it('should update the theme', function () {
         ->assertSet('state.darkTheme', true)
         ->assertDispatchedBrowserEvent('setThemeMode', ['theme' => 'dark']);
 });
+
+it('should update expanded tables setting', function () {
+    Livewire::test(NavbarSettings::class)
+        ->assertSet('state.expandedTables', false)
+        ->set('state.expandedTables', true)
+        ->assertSet('state.expandedTables', true)
+        ->assertDispatchedBrowserEvent('toggle-expanded-table', true);
+});

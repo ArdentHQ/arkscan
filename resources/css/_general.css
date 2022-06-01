@@ -3,13 +3,11 @@ html {
 }
 
 body {
-    @apply font-sans text-theme-secondary-700;
+    @apply flex flex-col min-h-screen font-sans text-theme-secondary-700;
 }
 
-/* Footer bottom fix */
 #app {
-    min-height: calc(100vh - 69px);
-    /* 100vh - footer height */
+    @apply flex-grow;
 }
 
 /* Network Status Block */

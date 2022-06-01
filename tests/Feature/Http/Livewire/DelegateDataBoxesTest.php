@@ -156,3 +156,35 @@ it('should return the next delegate', function () {
 
     expect($component->instance()->getNextdelegate())->toBeInstanceOf(WalletViewModel::class);
 });
+
+it('should not error if no cached delegate data', function () {
+    $wallets = Wallet::factory(51)
+        ->activeDelegate()
+        ->create()
+        ->each(function ($wallet) {
+            $block = Block::factory()->create([
+                'height'               => 5720529,
+                'timestamp'            => 113620904,
+                'generator_public_key' => $wallet->public_key,
+            ]);
+
+            Block::factory()->create([
+                'height'               => 5720518,
+                'timestamp'            => 113620904,
+                'generator_public_key' => $wallet->public_key,
+            ]);
+
+            Round::factory()->create([
+                'round'      => '112168',
+                'public_key' => $wallet->public_key,
+            ]);
+        });
+
+    foreach ($wallets as $wallet) {
+        expect((new WalletCache())->getDelegate($wallet->public_key))->toBeNull();
+    }
+
+    Livewire::test(DelegateDataBoxes::class)
+        ->assertSee('poll_statistics_skeleton')
+        ->assertSet('statistics.nextDelegate', null);
+});
