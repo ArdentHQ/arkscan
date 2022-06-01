@@ -1,24 +1,24 @@
 version: '2'
 services:
-  explorer:
+  arkscan:
     build: 
       context: ../
       dockerfile: docker/Dockerfile
-    image: explorer
-    container_name: ark-explorer 
+    image: arkscan
+    container_name: ark-arkscan 
     restart: always
     ports:
       - '8898:8898'
-    working_dir: /var/www/explorer
+    working_dir: /var/www/arkscan
     networks:
-      - explorer 
+      - arkscan 
     volumes:
-      - explorer:/var/www/explorer
+      - arkscan:/var/www/arkscan
     tty: true
 networks:
-  explorer:
+  arkscan:
 volumes:
-  explorer:
+  arkscan:
     driver_opts:
       type: none
       device: $PWD/../

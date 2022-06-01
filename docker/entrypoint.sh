@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-sudo chown -R explorer:www-data /var/www/explorer
+sudo chown -R arkscan:www-data /var/www/arkscan
 touch database/database.sqlite
 #--- run installs
 composer install --ignore-platform-reqs
 yarn install
 #--- fire up services
 sudo supervisord &
-sudo chmod -R 775 /var/www/explorer/database
-sudo chmod -R 775 /var/www/explorer/storage
-sudo chmod -R 775 /var/www/explorer/bootstrap/cache
+sudo chmod -R 775 /var/www/arkscan/database
+sudo chmod -R 775 /var/www/arkscan/storage
+sudo chmod -R 775 /var/www/arkscan/bootstrap/cache
 yarn cache clean
 rm -rf ~/.composer/
 #--- laravel and cache setup
