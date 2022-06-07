@@ -17,6 +17,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'navbar_name' => env('APP_NAVBAR_NAME', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
