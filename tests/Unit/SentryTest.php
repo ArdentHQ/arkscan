@@ -7,11 +7,10 @@ use Facade\Ignition\Exceptions\ViewException as FacadeViewException;
 use Illuminate\View\ViewException;
 use Sentry\Event;
 use Sentry\EventHint;
-use Sentry\EventType;
 
 it('ignores if event hint is null', function () {
     $event = Event::createEvent();
-    $hint = null;
+    $hint  = null;
 
     $result = Sentry::before($event, $hint);
 
@@ -20,7 +19,7 @@ it('ignores if event hint is null', function () {
 
 it('ignores if exception is not set', function () {
     $event = Event::createEvent();
-    $hint = EventHint::fromArray([
+    $hint  = EventHint::fromArray([
         //
     ]);
 
