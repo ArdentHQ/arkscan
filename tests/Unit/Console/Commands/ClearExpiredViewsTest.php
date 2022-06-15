@@ -28,6 +28,8 @@ afterEach(function () {
 });
 
 it('clears only the views that are older than the expiration time', function () {
+    Carbon::setTestNow('2021-01-01 00:00:00');
+
     $expiresMinutes = ClearExpiredViews::EXPIRES_MINUTES;
 
     // Updated the expiration time ago + 1 minute
