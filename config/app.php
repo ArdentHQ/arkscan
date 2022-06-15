@@ -17,6 +17,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'navbar_name' => env('APP_NAVBAR_NAME', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -177,6 +179,7 @@ return [
         App\Providers\ExplorerServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\DevelopmentServiceProvider::class,
+        ARKEcosystem\Foundation\Providers\TelescopeServiceProvider::class,
 
     ],
 
