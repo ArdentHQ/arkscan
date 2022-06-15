@@ -59,11 +59,16 @@ trait DelegateData
 
     private function getBlocksByRange(array $publicKeys, array $heightRange): Collection
     {
-        return Block::query()
-            ->whereIn('generator_public_key', $publicKeys)
-            ->whereBetween('height', $heightRange)
-            ->orderBy('height', 'asc')
-            ->get();
+        $key = 'monitor:last-blocks:'.md5(implode(',', $publicKeys)).':'.$heightRange[0].'-'.$heightRange[1];
+        $ttl = (int) ceil(Network::blockTime() / 2);
+
+        return Cache::remember($key, $ttl, function () use ($publicKeys, $heightRange) {
+            return Block::query()
+                ->whereIn('generator_public_key', $publicKeys)
+                ->whereBetween('height', $heightRange)
+                ->orderBy('height', 'asc')
+                ->get();
+        });
     }
 
     private function fetchDelegates(): array
@@ -78,11 +83,15 @@ trait DelegateData
             return [];
         }
 
-        $tracking    = DelegateTracker::execute($delegates, $heightRange[0]);
+        $tracking       = DelegateTracker::execute($delegates, $heightRange[0]);
+        $roundBlocks    = $this->getBlocksByRange(Arr::pluck($tracking, 'publicKey'), $heightRange);
+        $blockTimestamp = $roundBlocks->last()->timestamp;
+        $delegates      = [];
 
-        $roundBlocks = $this->getBlocksByRange(Arr::pluck($tracking, 'publicKey'), $heightRange);
-
-        $delegates = [];
+        $roundBlockCount = $roundBlocks->groupBy('generator_public_key')
+            ->map(function ($blocks) {
+                return count($blocks);
+            });
 
         for ($i = 0; $i < count($tracking); $i++) {
             $delegate = array_values($tracking)[$i];
@@ -99,10 +108,10 @@ trait DelegateData
                 publicKey: $delegate['publicKey'],
                 order: $i + 1,
                 wallet: $walletViewModel,
-                forgingAt: Timestamp::fromGenesis($roundBlocks->last()->timestamp)->addMilliseconds($delegate['time']),
+                forgingAt: Timestamp::fromGenesis($blockTimestamp)->addMilliseconds($delegate['time']),
                 lastBlock: (new WalletCache())->getLastBlock($delegate['publicKey']),
                 status: $delegate['status'],
-                roundBlocks: $roundBlocks,
+                roundBlockCount: $roundBlockCount,
                 roundNumber: $roundNumber
             );
         }
