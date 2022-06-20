@@ -59,16 +59,16 @@ trait DelegateData
 
     private function getBlocksByRange(array $publicKeys, array $heightRange): Collection
     {
-        // $key = 'monitor:last-blocks:'.md5(implode(',', $publicKeys)).':'.$heightRange[0].'-'.$heightRange[1];
-        // $ttl = (int) ceil(Network::blockTime() / 2);
+        $key = 'monitor:last-blocks:'.md5(implode(',', $publicKeys)).':'.$heightRange[0].'-'.$heightRange[1];
+        $ttl = (int) ceil(Network::blockTime() / 2);
 
-        // return Cache::remember($key, $ttl, function () use ($publicKeys, $heightRange) {
-        return Block::query()
-                ->whereIn('generator_public_key', $publicKeys)
-                ->whereBetween('height', $heightRange)
-                ->orderBy('height', 'asc')
-                ->get();
-        // });
+        return Cache::remember($key, $ttl, function () use ($publicKeys, $heightRange) {
+            return Block::query()
+                    ->whereIn('generator_public_key', $publicKeys)
+                    ->whereBetween('height', $heightRange)
+                    ->orderBy('height', 'asc')
+                    ->get();
+        });
     }
 
     private function fetchDelegates(): array
