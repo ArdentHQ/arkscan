@@ -26,7 +26,7 @@ final class Slot
         private int $roundNumber
     ) {
         $this->currentRoundBlocks = $this->roundBlockCount
-            ->get($this->publicKey);
+            ->get($this->publicKey, 0);
     }
 
     public function publicKey(): string
