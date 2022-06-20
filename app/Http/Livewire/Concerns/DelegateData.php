@@ -63,7 +63,7 @@ trait DelegateData
         // $ttl = (int) ceil(Network::blockTime() / 2);
 
         // return Cache::remember($key, $ttl, function () use ($publicKeys, $heightRange) {
-            return Block::query()
+        return Block::query()
                 ->whereIn('generator_public_key', $publicKeys)
                 ->whereBetween('height', $heightRange)
                 ->orderBy('height', 'asc')
