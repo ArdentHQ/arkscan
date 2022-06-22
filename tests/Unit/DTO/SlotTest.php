@@ -15,6 +15,14 @@ use Carbon\Carbon;
 it('should make an instance that has all properties', function (string $status) {
     $wallet = Wallet::factory()->create();
 
+    $lastBlockHeight = Block::factory()->create()->height->toNumber();
+    $roundBlockCount = Block::whereBetween('height', [1, 5])
+        ->get()
+        ->groupBy('generator_public_key')
+        ->map(function ($blocks) {
+            return count($blocks);
+        });
+
     $subject = new Slot(
         publicKey: $wallet->public_key,
         order: 5,
@@ -22,10 +30,10 @@ it('should make an instance that has all properties', function (string $status) 
         forgingAt: Carbon::now(),
         lastBlock: [
             'publicKey' => $wallet->public_key,
-            'height'    => Block::factory()->create()->height->toNumber(),
+            'height'    => $lastBlockHeight,
         ],
         status: $status,
-        roundBlocks: Block::whereBetween('height', [1, 5])->get(),
+        roundBlockCount: $roundBlockCount,
         roundNumber: 1
     );
 
@@ -46,6 +54,13 @@ it('should make an instance that has all properties', function (string $status) 
 it('should not be marked as missing if it never had a block', function () {
     $wallet = Wallet::factory()->create();
 
+    $roundBlockCount = Block::whereBetween('height', [1, 5])
+        ->get()
+        ->groupBy('generator_public_key')
+        ->map(function ($blocks) {
+            return count($blocks);
+        });
+
     $subject = new Slot(
         publicKey: $wallet->public_key,
         order: 1,
@@ -53,7 +68,7 @@ it('should not be marked as missing if it never had a block', function () {
         forgingAt: Timestamp::fromGenesis(1),
         lastBlock: [],
         status: 'done',
-        roundBlocks: Block::whereBetween('height', [1, 5])->get(),
+        roundBlockCount: $roundBlockCount,
         roundNumber: 1
     );
 
@@ -67,6 +82,13 @@ it('should not be marked as missing if it never had a block', function () {
 it('should show the correct missed blocks amount when spanning multiple rounds', function () {
     $wallet = Wallet::factory()->create();
 
+    $roundBlockCount = Block::whereBetween('height', [1, 5])
+        ->get()
+        ->groupBy('generator_public_key')
+        ->map(function ($blocks) {
+            return count($blocks);
+        });
+
     $subject = new Slot(
         publicKey: $wallet->public_key,
         order: 1,
@@ -77,7 +99,7 @@ it('should show the correct missed blocks amount when spanning multiple rounds',
             'height'    => 1,
         ],
         status: 'done',
-        roundBlocks: Block::whereBetween('height', [1, 5])->get(),
+        roundBlockCount: $roundBlockCount,
         roundNumber: 10
     );
 
