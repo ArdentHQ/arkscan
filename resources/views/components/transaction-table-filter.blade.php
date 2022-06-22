@@ -1,4 +1,4 @@
-<x-ark-rich-select
+<x-rich-select
     wrapper-class="relative p-2 w-full rounded-xl border md:p-0 md:w-auto md:border-0 border-theme-primary-100 dark:border-theme-secondary-800"
     dropdown-class="right-0 mt-2 origin-top-right"
     button-class="flex relative items-center p-3 mr-10 w-full font-semibold text-left md:inline md:items-end md:px-8 focus:outline-none text-theme-secondary-900 dark:text-theme-secondary-200"
@@ -6,6 +6,7 @@
     initial-value="{{ $this->state['type'] }}"
     wire:model="state.type"
     :options="Forms::getTransactionOptions()"
+    width="w-auto"
 >
     <x-slot name="dropdownEntry">
         <div class="flex justify-between items-center w-full font-semibold md:justify-end md:space-x-2 text-theme-secondary-500 md:text-theme-secondary-700">
@@ -26,4 +27,4 @@
             </span>
         </div>
     </x-slot>
-</x-ark-rich-select>
+</x-rich-select>
