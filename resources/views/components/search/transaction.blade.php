@@ -1,7 +1,7 @@
 @props(['transactionOptions', 'transactionType' => 'all'])
 
 <x-general.search.advanced-option :title="trans('forms.search.transaction_type')" class="md:border-b" option-class="xl:border-r" type="transaction">
-    <x-ark-rich-select
+    <x-rich-select
         button-class="block mr-10 w-full font-medium text-left bg-transparent text-theme-secondary-900 dark:text-theme-secondary-200"
         :initial-value="$transactionType"
         wire:model.defer="state.transactionType"

@@ -9,7 +9,7 @@ import * as dayjs from "dayjs";
 import Pagination from "@ui/js/pagination";
 import Modal from "@ui/js/modal";
 import ReadMore from "@ui/js/read-more.js";
-import RichSelect from "@ui/js/rich-select.js";
+import RichSelect from "./rich-select.js";
 import Pikaday from "pikaday";
 import PriceChart from "./price-chart";
 import Tabs from "./tabs";

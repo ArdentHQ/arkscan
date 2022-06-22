@@ -22,12 +22,11 @@ final class Slot
         private Carbon $forgingAt,
         private array $lastBlock,
         private string $status,
-        private Collection $roundBlocks,
+        private Collection $roundBlockCount,
         private int $roundNumber
     ) {
-        $this->currentRoundBlocks = $this->roundBlocks
-            ->where('generator_public_key', $this->publicKey)
-            ->count();
+        $this->currentRoundBlocks = $this->roundBlockCount
+            ->get($this->publicKey, 0);
     }
 
     public function publicKey(): string

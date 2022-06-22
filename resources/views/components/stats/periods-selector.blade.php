@@ -8,7 +8,7 @@
     {{--mobile: input select--}}
     <label class="relative sm:hidden">
         <div wire:ignore>
-            <x-ark-rich-select
+            <x-rich-select
                 wire:model="{{ $attributes->wire('model')->value() }}"
                 wrapper-class="relative left-0 xl:inline-block"
                 dropdown-class="left-0 mt-1 origin-top-left"
