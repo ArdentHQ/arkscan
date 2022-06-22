@@ -30,7 +30,7 @@
                         :subtitle="trans('forms.settings.currency.description')"
                         border
                     >
-                        <x-ark-rich-select
+                        <x-rich-select
                             wire:model="state.currency"
                             wrapper-class="left-0 mt-3 mr-4"
                             dropdown-class="right-0 mt-1 origin-top-right"
