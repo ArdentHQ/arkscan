@@ -55,10 +55,14 @@ trait InteractsWithMultiSignature
 
         $participants = null;
         if (Arr::has($this->transaction->asset, 'multiSignatureLegacy')) {
-            $participants = collect(Arr::get($this->transaction->asset, 'multiSignatureLegacy.keysgroup', []))
+            /** @var string[] */
+            $participants = Arr::get($this->transaction->asset, 'multiSignatureLegacy.keysgroup', []);
+            $participants = collect($participants)
                 ->map(fn ($publicKey) => substr($publicKey, 1));
         } else {
-            $participants = collect(Arr::get($this->transaction->asset, 'multiSignature.publicKeys', []));
+            /** @var string[] */
+            $participants = Arr::get($this->transaction->asset, 'multiSignature.publicKeys', []);
+            $participants = collect($participants);
         }
 
         return $participants->map(fn ($publicKey) => Address::fromPublicKey($publicKey))

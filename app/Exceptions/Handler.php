@@ -90,8 +90,10 @@ final class Handler extends ExceptionHandler
             SubstituteBindings::class,
         ];
 
-        $middlewares = collect(app(Kernel::class)->getMiddlewareGroups()['web'])
-            ->filter(fn ($middleware) => ! in_array($middleware, $except, true));
+        /** @var array<int, string|class-string> */
+        $middlewares = app(Kernel::class)->getMiddlewareGroups()['web'];
+
+        $middlewares = collect($middlewares)->filter(fn ($middleware) => ! in_array($middleware, $except, true));
 
         return $this->applyMiddlewares($middlewares, $request, $next);
     }

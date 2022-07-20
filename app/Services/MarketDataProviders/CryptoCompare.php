@@ -18,6 +18,7 @@ final class CryptoCompare implements MarketDataProvider
     public function historical(string $source, string $target, string $format = 'Y-m-d'): Collection
     {
         return (new CryptoDataCache())->setHistorical($source, $target, $format, function () use ($source, $target, $format): Collection {
+            /** @var array<int, array<string, string>> */
             $result = Http::get('https://min-api.cryptocompare.com/data/histoday', [
                 'fsym'  => $source,
                 'tsym'  => $target,
@@ -34,6 +35,7 @@ final class CryptoCompare implements MarketDataProvider
     public function historicalHourly(string $source, string $target, int $limit = 23, string $format = 'Y-m-d H:i:s'): Collection
     {
         return (new CryptoDataCache())->setHistoricalHourly($source, $target, $format, $limit, function () use ($source, $target, $format, $limit): Collection {
+            /** @var array<int, array<string, string>> */
             $result = Http::get('https://min-api.cryptocompare.com/data/histohour', [
                 'fsym'  => $source,
                 'tsym'  => $target,
