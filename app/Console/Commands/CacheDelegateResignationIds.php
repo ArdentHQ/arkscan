@@ -32,7 +32,7 @@ final class CacheDelegateResignationIds extends Command
             ->withScope(DelegateResignationScope::class)
             ->cursor()
             ->each(function ($transaction) {
-                /** @var Transaction $transaction */
+                // @phpstan-ignore-next-line
                 CacheResignationId::dispatch($transaction->sender_public_key, (string) $transaction->id)->onQueue('resignations');
             });
     }

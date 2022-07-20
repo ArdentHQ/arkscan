@@ -60,7 +60,7 @@ final class TransactionViewModel implements ViewModel
         return route('transaction', $this->transaction);
     }
 
-    public function id(): int
+    public function id(): string
     {
         return $this->transaction->id;
     }
