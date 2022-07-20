@@ -27,8 +27,13 @@ trait HasDirection
             return true;
         }
 
-        return collect(Arr::get($this->transaction, 'asset.payments', []))
-            ->some(fn ($payment) => $address === $payment['recipientId']);
+        /** @var array<int, array<string, string>> */
+        $payments = Arr::get($this->transaction, 'asset.payments', []);
+
+        return collect($payments)->some(function ($payment) use ($address) {
+            /** @var array $payment */
+            return $address === $payment['recipientId'];
+        });
     }
 
     public function isReceived(string $address): bool
