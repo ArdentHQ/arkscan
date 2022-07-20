@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property string $id
+ * @property int $id
  * @property array|null $asset
  * @property BigNumber $amount
  * @property BigNumber $fee
