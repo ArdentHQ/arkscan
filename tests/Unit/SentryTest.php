@@ -54,7 +54,7 @@ it('does not report spatie view exceptions that contain specific messages', func
     $event = Event::createEvent();
 
     $result = Sentry::before($event, EventHint::fromArray([
-        'exception' => new FacadeViewException('unclosed'),
+        'exception' => new FacadeViewException('Unclosed'),
     ]));
 
     expect($result)->toBeNull();
@@ -76,7 +76,7 @@ it('reports all other exceptions even if they contain specific messages', functi
     $event = Event::createEvent();
 
     $result = Sentry::before($event, EventHint::fromArray([
-        'exception' => new RuntimeException('unclosed'),
+        'exception' => new RuntimeException('Unclosed'),
     ]));
 
     expect($result)->toBe($event);

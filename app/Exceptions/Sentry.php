@@ -30,7 +30,7 @@ final class Sentry
             'filemtime(): stat failed for',
             'Unclosed',
             'Failed to open stream: No such file or directory',
-            'File does not exist at path'
+            'File does not exist at path',
         ];
 
         return ($exception instanceof ViewException || $exception instanceof LaravelViewException)
