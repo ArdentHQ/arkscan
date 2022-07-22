@@ -27,6 +27,6 @@ final class Sentry
     private static function shouldBeIgnored(Throwable $exception) : bool
     {
         return ($exception instanceof ViewException || $exception instanceof LaravelViewException)
-            && Str::contains($exception->getMessage(), ['filemtime(): stat failed for', 'unclosed']);
+            && Str::contains($exception->getMessage(), ['filemtime(): stat failed for', 'Unclosed']);
     }
 }
