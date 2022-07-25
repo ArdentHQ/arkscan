@@ -32,7 +32,7 @@ it('does not report laravel view exceptions that contain specific messages', fun
     $event = Event::createEvent();
 
     $result = Sentry::before($event, EventHint::fromArray([
-        'exception' => new ViewException('unclosed'),
+        'exception' => new ViewException('Unclosed'),
     ]));
 
     expect($result)->toBeNull();
