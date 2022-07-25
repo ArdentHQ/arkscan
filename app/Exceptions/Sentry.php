@@ -26,7 +26,14 @@ final class Sentry
 
     private static function shouldBeIgnored(Throwable $exception) : bool
     {
+        $ignorables = [
+            'filemtime(): stat failed for',
+            'Unclosed',
+            'Failed to open stream: No such file or directory',
+            'File does not exist at path',
+        ];
+
         return ($exception instanceof ViewException || $exception instanceof LaravelViewException)
-            && Str::contains($exception->getMessage(), ['filemtime(): stat failed for', 'unclosed']);
+            && Str::contains($exception->getMessage(), $ignorables);
     }
 }
