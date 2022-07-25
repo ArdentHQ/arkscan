@@ -44,17 +44,15 @@
                     <a
                         href="@lang('general.urls.ardent')"
                         target="_blank"
-                        class="inline-block underline hover:no-underline transition-default hover:text-theme-secondary-200"
-                    >
-                        @lang('general.ardent')
-                    </a>
+                        class="underline hover:no-underline transition-default hover:text-theme-secondary-200"
+                    >@lang('general.ardent')</a>
                 </x-slot>
 
                 <x-slot name="copyrightSlot">
-                    <div class="-mt-2 leading-normal break-words sm:mt-0">
-                        <span class="hidden sm:inline">|</span>
+                    <span class="break-words">
+                        <span>|</span>
 
-                        <span class="sm:inline">@lang('pages.footer.all_rights_reserved')</span>
+                        <span>@lang('pages.footer.all_rights_reserved')</span>
 
                         <span>|</span>
 
@@ -65,12 +63,11 @@
                                 href="@lang('general.urls.coingecko')"
                                 target="_blank"
                                 rel="noopener nofollow noreferrer"
-                                class="inline-block"
                             >
                                 <x-ark-icon name="app-coingecko" />
                             </a>
                         </span>
-                    </div>
+                    </span>
                 </x-slot>
             </x-ark-footer>
 
