@@ -33,7 +33,7 @@ final class Avatar
 
             $twister = new Mersenne(static::hash($seed));
 
-            $genColor = function () use (&$defaultColors, $twister): string {
+            $genColor  = function () use (&$defaultColors, $twister): string {
                 $index = (int) floor(count($defaultColors) * $twister->random());
 
                 return array_splice($defaultColors, $index, 1)[0];

@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use App\Exceptions\Sentry;
-use Facade\Ignition\Exceptions\ViewException as FacadeViewException;
 use Illuminate\View\ViewException;
 use Sentry\Event;
 use Sentry\EventHint;
+use Spatie\LaravelIgnition\Exceptions\ViewException as FacadeViewException;
 
 it('ignores if event hint is null', function () {
     $event = Event::createEvent();

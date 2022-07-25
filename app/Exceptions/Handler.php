@@ -22,7 +22,7 @@ final class Handler extends ExceptionHandler
     /**
      * A list of the exception types that are not reported.
      *
-     * @var string[]
+     * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
         //
@@ -31,7 +31,7 @@ final class Handler extends ExceptionHandler
     /**
      * A list of the inputs that are never flashed for validation exceptions.
      *
-     * @var string[]
+     * @var array<int, string>
      */
     protected $dontFlash = [
         'password',
@@ -90,8 +90,10 @@ final class Handler extends ExceptionHandler
             SubstituteBindings::class,
         ];
 
-        $middlewares = collect(app(Kernel::class)->getMiddlewareGroups()['web'])
-            ->filter(fn ($middleware) => ! in_array($middleware, $except, true));
+        /** @var array<int, string|class-string> */
+        $middlewares = app(Kernel::class)->getMiddlewareGroups()['web'];
+
+        $middlewares = collect($middlewares)->filter(fn ($middleware) => ! in_array($middleware, $except, true));
 
         return $this->applyMiddlewares($middlewares, $request, $next);
     }

@@ -82,7 +82,7 @@ final class BuildForgingStats implements ShouldQueue
 
             if ($timeRange < 0 || $timeRange > 24 * 60 * 60) {
                 return 0;   // when time range is not specified, go back maximum 1 day (because
-                            // it is then supposed to be an incremental stats build)
+                // it is then supposed to be an incremental stats build)
             }
         }
 

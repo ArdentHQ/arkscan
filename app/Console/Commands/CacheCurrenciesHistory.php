@@ -30,8 +30,12 @@ final class CacheCurrenciesHistory extends Command
             return;
         }
 
-        $source     = Network::currency();
-        $currencies = collect(config('currencies'))->pluck('currency');
+        $source = Network::currency();
+
+        /** @var array<string, array<string, string>> */
+        $allCurrencies = config('currencies');
+
+        $currencies = collect($allCurrencies)->pluck('currency');
 
         $currencies->each(function ($currency, $index) use ($source): void {
             if ($this->option('no-delay') === true) {

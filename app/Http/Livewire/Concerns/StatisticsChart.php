@@ -30,6 +30,7 @@ trait StatisticsChart
 
     private function totalTransactionsPerPeriod(string $cache, string $period): int | float
     {
+        /** @var array<int, int|float> */
         $datasets = $this->transactionsPerPeriod($cache, $period)->get('datasets');
 
         return collect($datasets)->sum();
