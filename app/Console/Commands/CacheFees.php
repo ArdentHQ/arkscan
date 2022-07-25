@@ -43,7 +43,7 @@ final class CacheFees extends Command
             $cache->setHistorical($period, HistoricalAggregateFactory::make($period)->aggregate());
         });
 
-        collect(Forms::getTransactionOptions())->except(['all'])->keys()->each(function ($type) use ($cache): void {
+        collect(Forms::getTransactionOptions())->except(['all'])->keys()->each(function (string $type) use ($cache): void {
             preg_match('/^[a-z]+(\d+)$/', self::LAST_20, $match);
 
             $result = (new LastFeeAggregate())
