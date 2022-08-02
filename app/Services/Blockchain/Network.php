@@ -57,6 +57,11 @@ final class Network implements Contract
         return $this->config['currencySymbol'];
     }
 
+    public function nethash(): string
+    {
+        return $this->config['nethash'];
+    }
+
     public function confirmations(): int
     {
         return $this->config['confirmations'];
