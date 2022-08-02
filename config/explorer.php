@@ -10,7 +10,7 @@ $testnetExplorer = env('ARKSCAN_TESTNET_EXPLORER_URL', 'https://test.arkscan.io'
 return [
     'network' => env('ARKSCAN_NETWORK', 'development'),
 
-    'uri_prefix' => env('ARKSCAN_URI_PREFIX', 'payvo'),
+    'vault_url' => env('ARKSCAN_VAULT_URL', 'https://app.arkvault.io/#/'),
 
     'market_data_provider_service' => env('ARKSCAN_MARKET_DATA_PROVIDER_SERVICE', CoinGecko::class),
 
