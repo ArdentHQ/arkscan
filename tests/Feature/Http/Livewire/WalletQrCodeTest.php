@@ -6,7 +6,6 @@ use App\Contracts\Network;
 use App\Http\Livewire\WalletQrCode;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkFactory;
-use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
 it('should render the QR Code', function () {
