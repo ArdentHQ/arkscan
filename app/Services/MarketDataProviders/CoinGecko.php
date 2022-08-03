@@ -31,10 +31,14 @@ final class CoinGecko implements MarketDataProvider
             )->json();
 
             if ($this->isEmptyResponse($data)) {
-                return collect();
+                /** @var Collection<int, mixed> */
+                return collect([]);
             }
 
-            return collect($data['prices'])
+            /** @var array<int, array<int, string>> */
+            $prices = $data['prices'];
+
+            return collect($prices)
                 ->mapWithKeys(fn ($item) => [Carbon::createFromTimestampMs($item[0])->format($format) => $item[1]]);
         });
     }
@@ -47,13 +51,15 @@ final class CoinGecko implements MarketDataProvider
                 'days'        => strval(ceil($limit / 24)),
             ];
 
+            /** @var array<string, array<string, string>> */
             $data = Http::get(
                 'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
                 $params
             )->json();
 
             if ($this->isEmptyResponse($data)) {
-                return collect();
+                /** @var Collection<int, mixed> */
+                return collect([]);
             }
 
             return collect($data['prices'])
