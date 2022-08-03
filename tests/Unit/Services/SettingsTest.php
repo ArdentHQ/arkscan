@@ -27,7 +27,7 @@ it('should have all settings with defaults', function () {
         'currency'       => 'USD',
         'priceChart'     => true,
         'feeChart'       => true,
-        'darkTheme'      => false,
+        'darkTheme'      => null,
         'expandedTables' => false,
     ]);
 });
@@ -68,7 +68,7 @@ it('should have an expanded table setting', function () {
 });
 
 it('should determine the name of the theme', function () {
-    expect(Settings::theme())->toBe('light');
+    expect(Settings::theme())->toBe('auto');
 
     expect(getSettingsFromCookies($this, 'theme', ['darkTheme' => false]))
         ->toBe(['light']);
