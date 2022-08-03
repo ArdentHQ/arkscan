@@ -42,9 +42,9 @@ final class LastFeeAggregate
             ->map(fn ($fee) => $fee->toFloat());
 
         return [
-            'minimum' => $fees->min() ?? 0,
+            'minimum' => $fees->min() ?? 0, // @phpstan-ignore-line
             'average' => $fees->avg() ?? 0,
-            'maximum' => $fees->max() ?? 0,
+            'maximum' => $fees->max() ?? 0, // @phpstan-ignore-line
         ];
     }
 }

@@ -80,7 +80,7 @@ final class Transaction extends Model
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array
+     * @var array<string>
      */
     protected $hidden = ['serialized'];
 
