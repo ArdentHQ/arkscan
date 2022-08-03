@@ -56,7 +56,7 @@ class Settings
     {
         if (Arr::get($this->all(), 'darkTheme') === true) {
             return 'dark';
-        } else if (Arr::get($this->all(), 'darkTheme') === false) {
+        } elseif (Arr::get($this->all(), 'darkTheme') === false) {
             return 'light';
         }
 
