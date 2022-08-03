@@ -10,7 +10,7 @@ $testnetExplorer = env('ARKSCAN_TESTNET_EXPLORER_URL', 'https://test.arkscan.io'
 return [
     'network' => env('ARKSCAN_NETWORK', 'development'),
 
-    'uri_prefix' => env('ARKSCAN_URI_PREFIX', 'payvo'),
+    'vault_url' => env('ARKSCAN_VAULT_URL', 'https://app.arkvault.io/#/'),
 
     'market_data_provider_service' => env('ARKSCAN_MARKET_DATA_PROVIDER_SERVICE', CoinGecko::class),
 
@@ -19,6 +19,7 @@ return [
             'name'               => env('ARKSCAN_NETWORK_NAME', 'ARK Public Network'),
             'alias'              => env('ARKSCAN_NETWORK_ALIAS', 'mainnet'),
             'api'                => env('ARKSCAN_NETWORK_API', 'https://wallets.ark.io/api'),
+            'nethash'            => env('ARKSCAN_NETHASH', '6e84d08bd299ed97c212c886c98a57e36545c8f5d645ca7eeae63a8bd62d8988'),
             'mainnetExplorerUrl' => $mainnetExplorer,
             'testnetExplorerUrl' => $testnetExplorer,
             'currency'           => env('ARKSCAN_NETWORK_CURRENCY', 'ARK'),
@@ -37,6 +38,7 @@ return [
             'name'               => env('ARKSCAN_NETWORK_NAME', 'ARK Development Network'),
             'api'                => env('ARKSCAN_NETWORK_API', 'https://dwallets.ark.io/api'),
             'alias'              => env('ARKSCAN_NETWORK_ALIAS', 'devnet'),
+            'nethash'            => env('ARKSCAN_NETHASH', '2a44f340d76ffc3df204c5f38cd355b7496c9065a1ade2ef92071436bd72e867'),
             'mainnetExplorerUrl' => $mainnetExplorer,
             'testnetExplorerUrl' => $testnetExplorer,
             'currency'           => env('ARKSCAN_NETWORK_CURRENCY', 'DARK'),

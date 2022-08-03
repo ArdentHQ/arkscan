@@ -62,7 +62,11 @@
                         <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-secondary-800"></div>
                     </div>
 
-                    <a href="{{ $this->walletUri }}" class="mt-2 w-full button-secondary">
+                    <a
+                        href="{{ $this->walletUri }}"
+                        class="mt-2 w-full button-secondary"
+                        target="_blank"
+                    >
                         @lang('pages.wallet.qrcode.send_from_wallet')
                     </a>
                 </div>
