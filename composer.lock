@@ -74,16 +74,16 @@
         },
         {
             "name": "arkecosystem/foundation",
-            "version": "6.6.2",
+            "version": "6.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-foundation.git",
-                "reference": "cf5fdb30a150e28380f2aac4ab45e54c07e60a7a"
+                "reference": "07a01730e644b6743848328e4662a71dc32b0724"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/cf5fdb30a150e28380f2aac4ab45e54c07e60a7a",
-                "reference": "cf5fdb30a150e28380f2aac4ab45e54c07e60a7a",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/07a01730e644b6743848328e4662a71dc32b0724",
+                "reference": "07a01730e644b6743848328e4662a71dc32b0724",
                 "shasum": ""
             },
             "require": {
@@ -182,9 +182,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by Tailwind CSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-foundation/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/6.6.2"
+                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/6.6.3"
             },
-            "time": "2022-08-02T12:44:58+00:00"
+            "time": "2022-08-03T14:46:41+00:00"
         },
         {
             "name": "asm89/stack-cors",
