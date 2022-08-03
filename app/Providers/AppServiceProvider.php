@@ -51,6 +51,7 @@ final class AppServiceProvider extends ServiceProvider
             $collection = $this;
 
             return $collection->reduce(function ($result, $item) use ($key) {
+                /** @var array $item */
                 return $result->plus($item[$key]->valueOf());
             }, BigNumber::new(0));
         });
