@@ -58,7 +58,7 @@ class Settings
             return 'dark';
         }
 
-        return 'light';
+        return 'auto';
     }
 
     public function expandedTables(): bool
