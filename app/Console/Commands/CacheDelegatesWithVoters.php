@@ -30,6 +30,7 @@ final class CacheDelegatesWithVoters extends Command
     public function handle(WalletCache $cache): void
     {
         Wallet::where('attributes->delegate->voteBalance', '>=', 0)->cursor()->each(function ($wallet) use ($cache): void {
+            /** @var Wallet $wallet */
             if (! is_null($wallet->public_key)) {
                 $cache->setVote($wallet->public_key, $wallet);
             }

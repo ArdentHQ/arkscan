@@ -17,7 +17,11 @@ trait InteractsWithVotes
             return null;
         }
 
-        $publicKey = collect(Arr::get($this->transaction->asset ?? [], 'votes'))
+        /** @var array<int, string> */
+        $votes = Arr::get($this->transaction->asset ?? [], 'votes');
+
+        /** @var string */
+        $publicKey = collect($votes)
             ->filter(fn ($vote) => Str::startsWith($vote, '+'))
             ->first();
 
@@ -30,7 +34,11 @@ trait InteractsWithVotes
             return null;
         }
 
-        $publicKey = collect(Arr::get($this->transaction->asset ?? [], 'votes'))
+        /** @var array<int, string> */
+        $votes = Arr::get($this->transaction->asset ?? [], 'votes');
+
+        /** @var string */
+        $publicKey = collect($votes)
             ->filter(fn ($vote) => Str::startsWith($vote, '-'))
             ->first();
 

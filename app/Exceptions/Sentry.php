@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
-use Facade\Ignition\Exceptions\ViewException;
 use Illuminate\Support\Str;
 use Illuminate\View\ViewException as LaravelViewException;
 use Sentry\Event;
 use Sentry\EventHint;
+use Spatie\LaravelIgnition\Exceptions\ViewException;
 use Throwable;
 
 final class Sentry
