@@ -11,6 +11,7 @@ use App\Services\Search\WalletSearch;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -60,16 +61,20 @@ final class SearchPage extends Component
                 $this->results = (new TransactionSearch())->search($data)->paginate();
             }
         } else {
-            $results = collect()
-                ->concat((new WalletSearch())->search($data))
-                ->concat((new TransactionSearch())->search($data))
-                ->concat((new BlockSearch())->search($data));
+            $this->state['type'] = 'wallet';
 
-            if (! $results->isEmpty()) {
-                $this->results = new LengthAwarePaginator(
-                    $results,
-                    $results->count()
-                );
+            $this->results = (new WalletSearch())->search(['term' => Arr::get($data, 'term')])->paginate();
+
+            if ($this->results->isEmpty()) {
+                $this->state['type'] = 'transaction';
+
+                $this->results = (new TransactionSearch())->search(['term' => Arr::get($data, 'term')])->paginate();
+            }
+
+            if ($this->results->isEmpty()) {
+                $this->state['type'] = 'block';
+
+                $this->results = (new BlockSearch())->search(['term' => Arr::get($data, 'term')])->paginate();
             }
         }
 
