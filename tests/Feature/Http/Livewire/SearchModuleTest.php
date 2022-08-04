@@ -66,7 +66,7 @@ it('should search for a block and redirect', function () {
         ->assertRedirect(route('block', $block->id));
 });
 
-it('should redirect to the advanced search page if there are no results', function () {
+it('should redirect to the basic search page if there are no results', function () {
     Livewire::test(SearchModule::class)
         ->set('state.term', 'unknown')
         ->set('state.type', 'block')
@@ -74,10 +74,24 @@ it('should redirect to the advanced search page if there are no results', functi
         ->assertRedirect(route('search', [
             'state[term]' => 'unknown',
             'state[type]' => 'block',
+            'advanced'    => 'false',
         ]));
 });
 
-it('should redirect to the advanced search page if the term is null', function () {
+it('should redirect to the advanced search page if there are no results', function () {
+    Livewire::test(SearchModule::class)
+        ->set('state.term', 'unknown')
+        ->set('state.type', 'block')
+        ->set('isAdvanced', 'true')
+        ->call('performSearch')
+        ->assertRedirect(route('search', [
+            'state[term]' => 'unknown',
+            'state[type]' => 'block',
+            'advanced'    => 'true',
+        ]));
+});
+
+it('should redirect to the basic search page if the term is null', function () {
     Livewire::test(SearchModule::class)
         ->set('state.term', null)
         ->set('state.type', 'block')
@@ -85,10 +99,24 @@ it('should redirect to the advanced search page if the term is null', function (
         ->assertRedirect(route('search', [
             'state[term]' => null,
             'state[type]' => 'block',
+            'advanced'    => 'false',
         ]));
 });
 
-it('should redirect to the advanced search page if the term is empty', function () {
+it('should redirect to the advanced search page if the term is null', function () {
+    Livewire::test(SearchModule::class)
+        ->set('state.term', null)
+        ->set('state.type', 'block')
+        ->set('isAdvanced', true)
+        ->call('performSearch')
+        ->assertRedirect(route('search', [
+            'state[term]' => null,
+            'state[type]' => 'block',
+            'advanced'    => 'true',
+        ]));
+});
+
+it('should redirect to the basic search page if the term is empty', function () {
     Livewire::test(SearchModule::class)
         ->set('state.term', '')
         ->set('state.type', 'block')
@@ -96,6 +124,20 @@ it('should redirect to the advanced search page if the term is empty', function 
         ->assertRedirect(route('search', [
             'state[term]' => '',
             'state[type]' => 'block',
+            'advanced'    => 'false',
+        ]));
+});
+
+it('should redirect to the advanced search page if the term is empty', function () {
+    Livewire::test(SearchModule::class)
+        ->set('state.term', '')
+        ->set('state.type', 'block')
+        ->set('isAdvanced', true)
+        ->call('performSearch')
+        ->assertRedirect(route('search', [
+            'state[term]' => '',
+            'state[type]' => 'block',
+            'advanced'    => 'true',
         ]));
 });
 
@@ -103,11 +145,13 @@ it('should redirect to the advanced search page if there are more than 2 criteri
     Livewire::test(SearchModule::class)
         ->set('state.term', 'address')
         ->set('state.type', 'transaction')
+        ->set('isAdvanced', true)
         ->set('state.amountFrom', 1)
         ->call('performSearch')
         ->assertRedirect(route('search', [
             'state[term]'       => 'address',
             'state[type]'       => 'transaction',
             'state[amountFrom]' => 1,
+            'advanced'          => 'true',
         ]));
 });
