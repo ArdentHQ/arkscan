@@ -42,7 +42,19 @@ it('should search for a wallet username over a block generator', function () {
         ->assertRedirect(route('wallet', $wallet->address));
 });
 
-it('should search for a transaction and redirect', function () {
+it('should do a basic search for a transaction and redirect', function () {
+    Transaction::factory()->create();
+    $block = Block::factory()->create();
+    Transaction::factory()->create(['block_id' => $block->id]);
+    $transaction = Transaction::factory()->create();
+
+    Livewire::test(SearchModule::class)
+        ->set('state.term', $transaction->id)
+        ->call('performSearch')
+        ->assertRedirect(route('transaction', $transaction->id));
+});
+
+it('should do an advanced search for a transaction and redirect', function () {
     Transaction::factory()->create();
     $block = Block::factory()->create();
     Transaction::factory()->create(['block_id' => $block->id]);
@@ -56,7 +68,18 @@ it('should search for a transaction and redirect', function () {
         ->assertRedirect(route('transaction', $transaction->id));
 });
 
-it('should search for a block and redirect', function () {
+it('should do a basic search for a block and redirect', function () {
+    Transaction::factory()->create();
+    $block = Block::factory()->create();
+    Transaction::factory()->create(['block_id' => $block->id]);
+
+    Livewire::test(SearchModule::class)
+        ->set('state.term', $block->id)
+        ->call('performSearch')
+        ->assertRedirect(route('block', $block->id));
+});
+
+it('should do an advanced search for a block and redirect', function () {
     Transaction::factory()->create();
     $block = Block::factory()->create();
     Transaction::factory()->create(['block_id' => $block->id]);
@@ -157,4 +180,11 @@ it('should redirect to the advanced search page if there are more than 2 criteri
             'state[amountFrom]' => 1,
             'advanced'          => 'true',
         ]));
+});
+
+it('should toggle advanced filters', function () {
+    Livewire::test(SearchModule::class)
+        ->assertSet('isAdvanced', false)
+        ->call('toggleAdvanced')
+        ->assertSet('isAdvanced', true);
 });
