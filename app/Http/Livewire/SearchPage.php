@@ -38,8 +38,6 @@ final class SearchPage extends Component
     public function mount(): void
     {
         $this->restoreState(request('state', []));
-
-        $this->performSearch();
     }
 
     public function render(): View

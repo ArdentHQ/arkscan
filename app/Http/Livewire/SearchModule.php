@@ -25,11 +25,6 @@ final class SearchModule extends Component
 
     public bool $isAdvanced = false;
 
-    /** @var mixed */
-    protected $queryString = [
-        'state' => ['except' => []],
-    ];
-
     public string $type = 'block';
 
     /** @var mixed */

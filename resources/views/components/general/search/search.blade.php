@@ -14,7 +14,7 @@
         <x-general.search.advanced-search
             :transaction-options="$transactionOptions"
             :type="$type ?? 'block'"
-            :state="$state"
+            :state="$this->state"
             x-cloak
             x-show="showAdvanced"
             class="hidden md:block"
@@ -23,7 +23,7 @@
         <x-general.search.advanced-search
             :transaction-options="$transactionOptions"
             :type="$type ?? 'block'"
-            :state="$state"
+            :state="$this->state"
             x-show="showAdvancedMobile"
             class="md:hidden"
             x-cloak
