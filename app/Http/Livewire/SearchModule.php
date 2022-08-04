@@ -60,12 +60,12 @@ final class SearchModule extends Component
         }
 
         if ($this->isAdvanced) {
-            if ($this->type === 'wallet') {
-                $this->searchWallet($data);
-            } else if ($this->type === 'block') {
-                $this->searchBlock($data);
-            } else if ($this->type === 'transaction') {
-                $this->searchTransaction($data);
+            if ($data['type'] === 'wallet' && $this->searchWallet($data)) {
+                return;
+            } else if ($data['type'] === 'block' && $this->searchBlock($data)) {
+                return;
+            } else if ($data['type'] === 'transaction' && $this->searchTransaction($data)) {
+                return;
             }
         } else {
             if ($this->searchWallet($data)) {
