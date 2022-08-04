@@ -20,6 +20,8 @@ final class SearchPage extends Component
     use ManagesSearch;
     use WithPagination;
 
+    public bool $isAdvanced = true;
+
     /** @var mixed */
     protected $listeners = ['pageChanged' => 'performSearch'];
 
@@ -31,8 +33,6 @@ final class SearchPage extends Component
             'as'     => 'advanced',
         ],
     ];
-
-    public bool $isAdvanced = true;
 
     private ?LengthAwarePaginator $results = null;
 
@@ -55,9 +55,9 @@ final class SearchPage extends Component
         if ($this->isAdvanced) {
             if ($data['type'] === 'wallet') {
                 $this->results = (new WalletSearch())->search($data)->paginate();
-            } else if ($data['type'] === 'block') {
+            } elseif ($data['type'] === 'block') {
                 $this->results = (new BlockSearch())->search($data)->paginate();
-            } else if ($data['type'] === 'transaction') {
+            } elseif ($data['type'] === 'transaction') {
                 $this->results = (new TransactionSearch())->search($data)->paginate();
             }
         } else {

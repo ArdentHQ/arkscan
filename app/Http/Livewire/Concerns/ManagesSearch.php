@@ -10,6 +10,11 @@ trait ManagesSearch
 {
     public array $state = [];
 
+    public function toggleAdvanced(): void
+    {
+        $this->isAdvanced = ! $this->isAdvanced;
+    }
+
     private function validateSearchQuery(): array
     {
         return $this->validate([
@@ -42,10 +47,5 @@ trait ManagesSearch
             'state.balanceFrom' => ['nullable', 'numeric', 'min:0'],
             'state.balanceTo'   => ['nullable', 'numeric', 'min:0'],
         ])['state'];
-    }
-
-    public function toggleAdvanced(): void
-    {
-        $this->isAdvanced = ! $this->isAdvanced;
     }
 }
