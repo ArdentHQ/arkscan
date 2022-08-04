@@ -1,6 +1,6 @@
 <div
     x-data="{
-        showAdvanced: true,
+        showAdvanced: @entangle('isAdvanced'),
         searching: false,
         showAdvancedMobile: false,
         searchType: '{{ $type ?? 'block' }}',

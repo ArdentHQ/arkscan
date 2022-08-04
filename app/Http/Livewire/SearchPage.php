@@ -23,7 +23,15 @@ final class SearchPage extends Component
     protected $listeners = ['pageChanged' => 'performSearch'];
 
     /** @var mixed */
-    protected $queryString = ['state'];
+    protected $queryString = [
+        'state',
+        'isAdvanced' => [
+            'except' => false,
+            'as'     => 'advanced',
+        ],
+    ];
+
+    public bool $isAdvanced = true;
 
     private ?LengthAwarePaginator $results = null;
 
@@ -45,19 +53,29 @@ final class SearchPage extends Component
     {
         $data = $this->validateSearchQuery();
 
-        if ($data['type'] === 'block') {
-            $this->results = (new BlockSearch())->search($data)->paginate();
+        if ($this->isAdvanced) {
+            if ($data['type'] === 'wallet') {
+                $this->results = (new WalletSearch())->search($data)->paginate();
+            } else if ($data['type'] === 'block') {
+                $this->results = (new BlockSearch())->search($data)->paginate();
+            } else if ($data['type'] === 'transaction') {
+                $this->results = (new TransactionSearch())->search($data)->paginate();
+            }
+        } else {
+            $results = collect()
+                ->concat((new WalletSearch())->search($data))
+                ->concat((new TransactionSearch())->search($data))
+                ->concat((new BlockSearch())->search($data));
+
+            if (! $results->isEmpty()) {
+                $this->results = new LengthAwarePaginator(
+                    $results,
+                    $results->count()
+                );
+            }
         }
 
-        if ($data['type'] === 'transaction') {
-            $this->results = (new TransactionSearch())->search($data)->paginate();
-        }
-
-        if ($data['type'] === 'wallet') {
-            $this->results = (new WalletSearch())->search($data)->paginate();
-        }
-
-        if (! is_null($this->results)) {
+        if ($this->results !== null) {
             $this->results = ViewModelFactory::paginate($this->results);
         }
     }

@@ -43,4 +43,9 @@ trait ManagesSearch
             'state.balanceTo'   => ['nullable', 'numeric', 'min:0'],
         ])['state'];
     }
+
+    public function toggleAdvanced(): void
+    {
+        $this->isAdvanced = ! $this->isAdvanced;
+    }
 }

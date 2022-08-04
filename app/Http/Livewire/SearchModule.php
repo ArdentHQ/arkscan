@@ -23,12 +23,14 @@ final class SearchModule extends Component
 
     public bool $isModal = false;
 
-    public string $type = 'block';
+    public bool $isAdvanced = false;
 
     /** @var mixed */
     protected $queryString = [
         'state' => ['except' => []],
     ];
+
+    public string $type = 'block';
 
     /** @var mixed */
     protected $listeners = [
@@ -62,19 +64,28 @@ final class SearchModule extends Component
             $data['term'] = preg_replace('/(0x[0-9A-Z]+)/', '', $data['term']);
         }
 
-        if ($this->searchWallet($data)) {
-            return;
+        if ($this->isAdvanced) {
+            if ($this->type === 'wallet') {
+                $this->searchWallet($data);
+            } else if ($this->type === 'block') {
+                $this->searchBlock($data);
+            } else if ($this->type === 'transaction') {
+                $this->searchTransaction($data);
+            }
+        } else {
+            if ($this->searchWallet($data)) {
+                return;
+            } else if ($this->searchBlock($data)) {
+                return;
+            } else if ($this->searchTransaction($data)) {
+                return;
+            }
         }
 
-        if ($this->searchBlock($data)) {
-            return;
-        }
-
-        if ($this->searchTransaction($data)) {
-            return;
-        }
-
-        $this->redirectRoute('search', ['state' => $data]);
+        $this->redirectRoute('search', [
+            'state'    => $data,
+            'advanced' => $this->isAdvanced ? 'true' : 'false',
+        ]);
     }
 
     private function searchWallet(array $data): bool
@@ -98,11 +109,6 @@ final class SearchModule extends Component
 
         // Skip and search for everything if the term is empty
         if (is_null($term) || $term === '') {
-            return false;
-        }
-
-        // We have an advanced search so we skip looking for a specific model
-        if (count($data) > 2) {
             return false;
         }
 
