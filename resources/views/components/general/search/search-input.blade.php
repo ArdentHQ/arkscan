@@ -40,7 +40,7 @@
                 wire:loading.class="inline"
                 wire:loading.class.remove="hidden"
                 wire:target="performSearch"
-                class="flex absolute inset-0 justify-center items-center hidden"
+                class="flex hidden absolute inset-0 justify-center items-center"
                 x-cloak
             >
                 <x-ark-spinner-icon />
