@@ -18,6 +18,7 @@ it('should search for a wallet and redirect', function () {
     Livewire::test(SearchModule::class)
         ->set('state.term', $wallet->address)
         ->set('state.type', 'wallet')
+        ->set('isAdvanced', true)
         ->call('performSearch')
         ->assertRedirect(route('wallet', $wallet->address));
 });
@@ -50,6 +51,7 @@ it('should search for a transaction and redirect', function () {
     Livewire::test(SearchModule::class)
         ->set('state.term', $transaction->id)
         ->set('state.type', 'transaction')
+        ->set('isAdvanced', true)
         ->call('performSearch')
         ->assertRedirect(route('transaction', $transaction->id));
 });
@@ -62,6 +64,7 @@ it('should search for a block and redirect', function () {
     Livewire::test(SearchModule::class)
         ->set('state.term', $block->id)
         ->set('state.type', 'block')
+        ->set('isAdvanced', true)
         ->call('performSearch')
         ->assertRedirect(route('block', $block->id));
 });
@@ -82,7 +85,7 @@ it('should redirect to the advanced search page if there are no results', functi
     Livewire::test(SearchModule::class)
         ->set('state.term', 'unknown')
         ->set('state.type', 'block')
-        ->set('isAdvanced', 'true')
+        ->set('isAdvanced', true)
         ->call('performSearch')
         ->assertRedirect(route('search', [
             'state[term]' => 'unknown',
