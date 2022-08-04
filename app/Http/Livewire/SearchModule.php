@@ -70,9 +70,9 @@ final class SearchModule extends Component
         } else {
             if ($this->searchWallet($data)) {
                 return;
-            } else if ($this->searchBlock($data)) {
-                return;
             } else if ($this->searchTransaction($data)) {
+                return;
+            } else if ($this->searchBlock($data)) {
                 return;
             }
         }
