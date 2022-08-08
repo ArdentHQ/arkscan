@@ -12,8 +12,8 @@ use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\ForgingInfoCalculator;
 use App\Services\Monitor\Slots;
 use Carbon\Carbon;
-use Livewire\Livewire;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Livewire;
 
 beforeEach(function () {
     $this->activeDelegates = require dirname(dirname(dirname(__DIR__))).'/fixtures/forgers.php';
@@ -72,7 +72,6 @@ it('should render without errors', function () {
     $component = Livewire::test(DelegateMonitor::class);
     $component->call('pollDelegates');
 });
-
 
 it('should throw an exception after 3 tries', function () {
     createRoundWithDelegates();

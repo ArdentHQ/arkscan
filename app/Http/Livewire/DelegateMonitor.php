@@ -32,7 +32,6 @@ final class DelegateMonitor extends Component
             $this->delegates = $this->fetchDelegates();
 
             Cache::forget('poll-delegates-exception-occurrence');
-
         } catch (Throwable $e) {
             $occurrences = Cache::increment('poll-delegates-exception-occurrence');
 
