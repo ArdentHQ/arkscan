@@ -101,7 +101,12 @@ final class CoinGecko implements MarketDataProvider
 
     private function isAcceptableResponse(?array $data, string $cacheKey, string $message): bool
     {
-        if (isset($data['status']['error_code']) && $data['status']['error_code'] !== null) {
+        $errorCode = null;
+        if ($data !== null && array_key_exists('status', $data) && array_key_exists('error_code', $data['status'])) {
+            $errorCode = $data['status']['error_code'];
+        }
+
+        if ($errorCode !== null || $data === null) {
             if (Cache::increment($cacheKey) > config('explorer.coingecko_exception_frequency')) {
                 Cache::forget($cacheKey);
 
