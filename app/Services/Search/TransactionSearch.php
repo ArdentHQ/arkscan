@@ -66,8 +66,7 @@ final class TransactionSearch implements Search
                 // If this throws then the term was not a valid address, public key or username.
             }
 
-            if ($this->searchBlocks && ($this->couldBeBlockID($term) || $this->couldBeHeightValue($term))) {
-                // Consider the term to be a block
+            $query->when($this->searchBlocks && ($this->couldBeBlockID($term) || $this->couldBeHeightValue($term)), function ($query) use ($term) {
                 $query->orWhere(function ($query) use ($term): void {
                     if ($this->couldBeBlockID($term)) {
                         $query->where(fn ($query): Builder => $query->whereLower('block_id', $term));
@@ -78,7 +77,7 @@ final class TransactionSearch implements Search
                         $query->orWhere(fn ($query): Builder => $query->where('block_height', $numericTerm));
                     }
                 });
-            }
+            });
         }
 
         return $query;
