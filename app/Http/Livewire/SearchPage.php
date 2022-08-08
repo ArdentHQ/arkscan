@@ -58,7 +58,7 @@ final class SearchPage extends Component
             } elseif ($data['type'] === 'block') {
                 $this->results = (new BlockSearch())->search($data)->paginate();
             } elseif ($data['type'] === 'transaction') {
-                $this->results = (new TransactionSearch())->search($data)->paginate();
+                $this->results = (new TransactionSearch(true))->search($data)->paginate();
             }
         } else {
             $this->state['type'] = 'wallet';

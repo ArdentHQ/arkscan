@@ -19,6 +19,11 @@ final class TransactionSearch implements Search
 {
     use ValidatesTerm;
 
+    public function __construct(private bool $searchBlocks = false)
+    {
+        //
+    }
+
     public function search(array $parameters): Builder
     {
         $query = Transaction::query();
@@ -61,7 +66,7 @@ final class TransactionSearch implements Search
                 // If this throws then the term was not a valid address, public key or username.
             }
 
-            if ($this->couldBeBlockID($term) || $this->couldBeHeightValue($term)) {
+            if ($this->searchBlocks && ($this->couldBeBlockID($term) || $this->couldBeHeightValue($term))) {
                 // Consider the term to be a block
                 $query->orWhere(function ($query) use ($term): void {
                     if ($this->couldBeBlockID($term)) {

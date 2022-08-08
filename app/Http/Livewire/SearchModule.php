@@ -64,7 +64,7 @@ final class SearchModule extends Component
                 return;
             } elseif ($data['type'] === 'block' && $this->searchBlock($data)) {
                 return;
-            } elseif ($data['type'] === 'transaction' && $this->searchTransaction($data)) {
+            } elseif ($data['type'] === 'transaction' && $this->searchTransaction($data, true)) {
                 return;
             }
         } else {
@@ -88,9 +88,9 @@ final class SearchModule extends Component
         return $this->searchWithService(new WalletSearch(), $data, fn ($model) => $this->redirectRoute('wallet', $model->address));
     }
 
-    private function searchTransaction(array $data): bool
+    private function searchTransaction(array $data, bool $searchBlocks = false): bool
     {
-        return $this->searchWithService(new TransactionSearch(), $data, fn ($model) => $this->redirectRoute('transaction', $model->id));
+        return $this->searchWithService(new TransactionSearch($searchBlocks), $data, fn ($model) => $this->redirectRoute('transaction', $model->id));
     }
 
     private function searchBlock(array $data): bool
