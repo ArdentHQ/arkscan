@@ -56,11 +56,16 @@ final class CoinGecko implements MarketDataProvider
                 'days'        => strval(ceil($limit / 24)),
             ];
 
-            /** @var array<string, array<string, string>> */
-            $data = Http::get(
-                'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
-                $params
-            )->json();
+            $data = null;
+            try {
+                /** @var array<string, array<string, string>> */
+                $data = Http::get(
+                    'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
+                    $params
+                )->json();
+            } catch (Throwable) {
+                //
+            }
 
             if ($this->isEmptyResponse($data)) {
                 /** @var Collection<int, mixed> */
@@ -80,7 +85,12 @@ final class CoinGecko implements MarketDataProvider
 
     public function priceAndPriceChange(string $baseCurrency, Collection $targetCurrencies): Collection
     {
-        $data = Http::get('https://api.coingecko.com/api/v3/coins/'.Str::lower($baseCurrency))->json();
+        $data = null;
+        try {
+            $data = Http::get('https://api.coingecko.com/api/v3/coins/'.Str::lower($baseCurrency))->json();
+        } catch (Throwable) {
+            //
+        }
 
         return $targetCurrencies
             ->mapWithKeys(fn (string $currency) => [strtoupper($currency) => MarketData::fromCoinGeckoApiResponse($currency, $data)]);
