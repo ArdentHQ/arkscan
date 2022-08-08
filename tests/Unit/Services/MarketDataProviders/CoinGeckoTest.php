@@ -49,18 +49,18 @@ it('should return an empty value if empty response for historical hourly', funct
     expect((new CoinGecko())->historicalHourly('ARK', 'USD'))->toEqual(collect());
 });
 
-it('should only trigger an exception every 30 empty responses', function ($attempt) {
+it('should reset exception trigger for empty responses', function ($attempt) {
     Http::fake([
         'api.coingecko.com/*' => Http::response(null, 200),
     ]);
 
-    Cache::set('coin_gecko_response_error', (($attempt - 1) % 30) + 1);
+    Cache::set('coin_gecko_response_error', (($attempt - 1) % 60) + 1);
 
-    if (($attempt % 30) === 0) {
+    if (($attempt % 60) === 0) {
         $this->expectException(\Exception::class);
     } else {
         $this->expectNotToPerformAssertions();
     }
 
     (new CoinGecko())->historicalHourly('ARK', 'USD');
-})->with(range(1, 90));
+})->with(range(1, 120));
