@@ -30,7 +30,7 @@ final class CoinGecko implements MarketDataProvider
                 $params
             )->json();
 
-            if ($this->isEmptyResponse($data)) {
+            if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
                 /** @var Collection<int, mixed> */
                 return collect([]);
             }
@@ -57,7 +57,7 @@ final class CoinGecko implements MarketDataProvider
                 $params
             )->json();
 
-            if ($this->isEmptyResponse($data)) {
+            if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
                 /** @var Collection<int, mixed> */
                 return collect([]);
             }
@@ -83,19 +83,35 @@ final class CoinGecko implements MarketDataProvider
 
     private function isEmptyResponse(?array $data): bool
     {
-        if ($data === null) {
-            $times = Cache::increment('coin_gecko_response_error');
+        return $this->isAcceptableResponse(
+            $data,
+            'coin_gecko_response_error',
+            'Too many empty coinGecko responses',
+        );
+    }
 
-            if ($times > config('explorer.coingecko_exception_frequency')) {
-                Cache::forget('coin_gecko_response_error');
+    private function isThrottledResponse(?array $data): bool
+    {
+        return $this->isAcceptableResponse(
+            $data,
+            'coin_gecko_response_throttled',
+            'CoinGecko requests are being throttled',
+        );
+    }
 
-                throw new \Exception('Too many empty coinGecko responses');
+    private function isAcceptableResponse(?array $data, string $cacheKey, string $message): bool
+    {
+        if (isset($data['status']['error_code']) && $data['status']['error_code'] !== null) {
+            if (Cache::increment($cacheKey) > config('explorer.coingecko_exception_frequency')) {
+                Cache::forget($cacheKey);
+
+                throw new \Exception($message);
             }
 
             return true;
         }
 
-        Cache::forget('coin_gecko_response_error');
+        Cache::forget($cacheKey);
 
         return false;
     }
