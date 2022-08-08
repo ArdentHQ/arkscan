@@ -25,8 +25,6 @@ final class SearchModule extends Component
 
     public bool $isAdvanced = false;
 
-    public string $type = 'block';
-
     /** @var mixed */
     protected $listeners = [
         'openSearchModal' => 'openModal',
@@ -34,8 +32,8 @@ final class SearchModule extends Component
 
     public function mount(bool $isModal = false, string $type = 'block'): void
     {
-        $this->isModal    = $isModal;
-        $this->type       = $type;
+        $this->isModal       = $isModal;
+        $this->state['type'] = $type;
     }
 
     public function render(): View
