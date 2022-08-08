@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use App\Exceptions\Sentry;
-use Facade\Ignition\Exceptions\ViewException as FacadeViewException;
 use Illuminate\View\ViewException;
 use Sentry\Event;
 use Sentry\EventHint;
+use Spatie\LaravelIgnition\Exceptions\ViewException as FacadeViewException;
 
 it('ignores if event hint is null', function () {
     $event = Event::createEvent();
@@ -32,7 +32,7 @@ it('does not report laravel view exceptions that contain specific messages', fun
     $event = Event::createEvent();
 
     $result = Sentry::before($event, EventHint::fromArray([
-        'exception' => new ViewException('unclosed'),
+        'exception' => new ViewException('Unclosed'),
     ]));
 
     expect($result)->toBeNull();
@@ -54,7 +54,7 @@ it('does not report spatie view exceptions that contain specific messages', func
     $event = Event::createEvent();
 
     $result = Sentry::before($event, EventHint::fromArray([
-        'exception' => new FacadeViewException('unclosed'),
+        'exception' => new FacadeViewException('Unclosed'),
     ]));
 
     expect($result)->toBeNull();
@@ -76,7 +76,7 @@ it('reports all other exceptions even if they contain specific messages', functi
     $event = Event::createEvent();
 
     $result = Sentry::before($event, EventHint::fromArray([
-        'exception' => new RuntimeException('unclosed'),
+        'exception' => new RuntimeException('Unclosed'),
     ]));
 
     expect($result)->toBe($event);

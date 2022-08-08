@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Facades\Wallets;
 use App\Jobs\CacheMultiSignatureAddress;
+use App\Models\Wallet;
 use Illuminate\Console\Command;
 
 final class CacheMultiSignatureAddresses extends Command
@@ -28,6 +29,9 @@ final class CacheMultiSignatureAddresses extends Command
     {
         Wallets::allWithMultiSignature()
             ->cursor()
-            ->each(fn ($wallet) => CacheMultiSignatureAddress::dispatch($wallet->toArray())->onQueue('musig'));
+            ->each(function ($wallet) {
+                /** @var Wallet $wallet */
+                CacheMultiSignatureAddress::dispatch($wallet->toArray())->onQueue('musig');
+            });
     }
 }

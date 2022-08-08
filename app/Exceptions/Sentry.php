@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
-use Facade\Ignition\Exceptions\ViewException;
 use Illuminate\Support\Str;
 use Illuminate\View\ViewException as LaravelViewException;
 use Sentry\Event;
 use Sentry\EventHint;
+use Spatie\LaravelIgnition\Exceptions\ViewException;
 use Throwable;
 
 final class Sentry
@@ -26,7 +26,14 @@ final class Sentry
 
     private static function shouldBeIgnored(Throwable $exception) : bool
     {
+        $ignorables = [
+            'filemtime(): stat failed for',
+            'Unclosed',
+            'Failed to open stream: No such file or directory',
+            'File does not exist at path',
+        ];
+
         return ($exception instanceof ViewException || $exception instanceof LaravelViewException)
-            && Str::contains($exception->getMessage(), ['filemtime(): stat failed for', 'unclosed']);
+            && Str::contains($exception->getMessage(), $ignorables);
     }
 }

@@ -33,8 +33,12 @@ final class CacheCurrenciesData extends Command
             return;
         }
 
-        $baseCurrency     = Network::currency();
-        $targetCurrencies = collect(config('currencies'))->pluck('currency');
+        $baseCurrency = Network::currency();
+
+        /** @var array<string, array<string, string>> */
+        $allCurrencies = config('currencies');
+
+        $targetCurrencies = collect($allCurrencies)->pluck('currency');
 
         try {
             $priceAndPriceChange = $marketDataProvider->priceAndPriceChange($baseCurrency, $targetCurrencies);
