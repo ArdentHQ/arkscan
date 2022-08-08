@@ -87,6 +87,8 @@ final class CoinGecko implements MarketDataProvider
             $times = Cache::increment('coin_gecko_response_error');
 
             if ($times > 30) {
+                Cache::forget('coin_gecko_response_error');
+
                 throw new \Exception('Too many empty coinGecko responses');
             }
 
