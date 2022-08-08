@@ -32,7 +32,7 @@ final class CoinGecko implements MarketDataProvider
                     'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
                     $params
                 )->json();
-            } catch (Throwable) {
+            } catch (\Throwable) {
                 //
             }
 
@@ -65,7 +65,7 @@ final class CoinGecko implements MarketDataProvider
                     'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
                     $params
                 )->json();
-            } catch (Throwable) {
+            } catch (\Throwable) {
                 //
             }
 
@@ -74,6 +74,7 @@ final class CoinGecko implements MarketDataProvider
                 return collect([]);
             }
 
+            /** @var array<string, array<string, string>> $data */
             return collect($data['prices'])
                 ->groupBy(fn ($item) => Carbon::createFromTimestampMsUTC($item[0])->format('Y-m-d H:').'00:00')
                 ->mapWithKeys(fn ($items, $day) => [
@@ -91,7 +92,7 @@ final class CoinGecko implements MarketDataProvider
 
         try {
             $data = Http::get('https://api.coingecko.com/api/v3/coins/'.Str::lower($baseCurrency))->json();
-        } catch (Throwable) {
+        } catch (\Throwable) {
             //
         }
 
