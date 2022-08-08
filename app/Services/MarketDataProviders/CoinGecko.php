@@ -26,6 +26,7 @@ final class CoinGecko implements MarketDataProvider
             ];
 
             $data = null;
+
             try {
                 $data = Http::get(
                     'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
@@ -57,6 +58,7 @@ final class CoinGecko implements MarketDataProvider
             ];
 
             $data = null;
+
             try {
                 /** @var array<string, array<string, string>> */
                 $data = Http::get(
@@ -86,6 +88,7 @@ final class CoinGecko implements MarketDataProvider
     public function priceAndPriceChange(string $baseCurrency, Collection $targetCurrencies): Collection
     {
         $data = null;
+
         try {
             $data = Http::get('https://api.coingecko.com/api/v3/coins/'.Str::lower($baseCurrency))->json();
         } catch (Throwable) {
