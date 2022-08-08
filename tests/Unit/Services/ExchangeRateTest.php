@@ -22,10 +22,10 @@ it('should convert with a historical rate', function () {
 
 it('should convert with the current rate', function () {
     (new CryptoDataCache())->setPrices('USD.day', collect([
-        Carbon::now('-3 hours')->format('Y-m-d H:i:s') => 1,
-        Carbon::now('-2 hours')->format('Y-m-d H:i:s') => 2,
-        Carbon::now('-1 hour')->format('Y-m-d H:i:s')  => 3,
-        Carbon::now()->format('Y-m-d H:i:s')           => 10,
+        Carbon::parse('-3 hours')->format('Y-m-d H:i:s') => 1,
+        Carbon::parse('-2 hours')->format('Y-m-d H:i:s') => 2,
+        Carbon::parse('-1 hour')->format('Y-m-d H:i:s')  => 3,
+        Carbon::now()->format('Y-m-d H:i:s')             => 10,
     ]));
 
     expect(ExchangeRate::now())->toBe(10.0);

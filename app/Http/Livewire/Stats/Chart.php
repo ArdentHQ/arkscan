@@ -135,6 +135,7 @@ final class Chart extends Component
 
     private function getHistoricalHourly(string $target): Collection
     {
-        return (new NetworkStatusBlockCache())->getHistoricalHourly(Network::currency(), $target) ?? collect();
+        /** @var Collection<int, mixed> */
+        return (new NetworkStatusBlockCache())->getHistoricalHourly(Network::currency(), $target) ?? collect([]);
     }
 }

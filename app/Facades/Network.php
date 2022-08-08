@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static string explorerTitle()
  * @method static string currency()
  * @method static string currencySymbol()
+ * @method static string nethash()
  * @method static int confirmations()
  * @method static array knownWallets()
  * @method static bool canBeExchanged()

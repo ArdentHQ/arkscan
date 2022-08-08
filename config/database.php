@@ -76,7 +76,7 @@ return [
             'charset'        => 'utf8',
             'prefix'         => '',
             'prefix_indexes' => true,
-            'schema'         => 'public',
+            'search_path'    => 'public',
             'sslmode'        => 'prefer',
         ],
 
@@ -104,7 +104,7 @@ return [
             'charset'        => 'utf8',
             'prefix'         => '',
             'prefix_indexes' => true,
-            'schema'         => 'public',
+            'search_path'    => 'public',
             'sslmode'        => 'prefer',
             'options'        => [\PDO::ATTR_PERSISTENT => env('PDO_ATTR_PERSISTENT', true)],
         ],

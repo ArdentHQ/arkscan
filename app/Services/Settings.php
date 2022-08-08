@@ -17,7 +17,7 @@ class Settings
             'currency'       => 'USD',
             'priceChart'     => true,
             'feeChart'       => true,
-            'darkTheme'      => false,
+            'darkTheme'      => null,
             'expandedTables' => false,
         ];
 
@@ -54,11 +54,13 @@ class Settings
 
     public function theme(): string
     {
-        if ((bool) Arr::get($this->all(), 'darkTheme', true)) {
+        if (Arr::get($this->all(), 'darkTheme') === true) {
             return 'dark';
+        } elseif (Arr::get($this->all(), 'darkTheme') === false) {
+            return 'light';
         }
 
-        return 'light';
+        return 'auto';
     }
 
     public function expandedTables(): bool
