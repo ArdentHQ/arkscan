@@ -25,10 +25,15 @@ final class CoinGecko implements MarketDataProvider
                 'interval'    => 'daily',
             ];
 
-            $data = Http::get(
-                'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
-                $params
-            )->json();
+            $data = null;
+            try {
+                $data = Http::get(
+                    'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
+                    $params
+                )->json();
+            } catch (Throwable) {
+                //
+            }
 
             if ($this->isEmptyResponse($data)) {
                 /** @var Collection<int, mixed> */
