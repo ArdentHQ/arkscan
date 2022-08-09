@@ -3,6 +3,7 @@
         <div class="p-8 w-full content-container-full-width">
             <x-general.search.search
                 :transaction-options="Forms::getTransactionOptions()"
+                :type="$this->state['type'] ?? 'block'"
             />
         </div>
     </div>

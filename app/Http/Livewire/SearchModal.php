@@ -16,12 +16,10 @@ use Illuminate\Support\Arr;
 use Illuminate\View\View;
 use Livewire\Component;
 
-final class SearchModule extends Component
+final class SearchModal extends Component
 {
     use ManagesSearch;
     use HasModal;
-
-    public bool $isModal = false;
 
     public bool $isAdvanced = false;
 
@@ -30,22 +28,16 @@ final class SearchModule extends Component
         'openSearchModal' => 'openModal',
     ];
 
-    public function mount(bool $isModal = false, string $type = 'block'): void
+    public function mount(string $type = 'block'): void
     {
-        $this->isModal       = $isModal;
         $this->state['type'] = $type;
     }
 
     public function render(): View
     {
-        if ($this->isModal) {
-            return view('components.general.search.search-modal', [
-                'transactionOptions' => Forms::getTransactionOptions(),
-            ]);
-        }
-
-        return view('components.general.search.search', [
+        return view('components.general.search.search-modal', [
             'transactionOptions' => Forms::getTransactionOptions(),
+            'type'               => $this->state['type'],
         ]);
     }
 
