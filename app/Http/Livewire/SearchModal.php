@@ -23,9 +23,12 @@ final class SearchModal extends Component
 
     public bool $isAdvanced = false;
 
+    public bool $isRedirecting = false;
+
     /** @var mixed */
     protected $listeners = [
         'openSearchModal' => 'openModal',
+        'redirectToPage',
     ];
 
     public function mount(string $type = 'block'): void
@@ -49,24 +52,28 @@ final class SearchModal extends Component
             $data['term'] = preg_replace('/(0x[0-9A-Z]+)/', '', $data['term']);
         }
 
-        if ($this->isAdvanced) {
-            if ($data['type'] === 'wallet' && $this->searchWallet($data)) {
-                return;
-            } elseif ($data['type'] === 'block' && $this->searchBlock($data)) {
-                return;
-            } elseif ($data['type'] === 'transaction' && $this->searchTransaction($data, true)) {
-                return;
+        $this->isRedirecting = true;
+        try {
+            if (! $this->isAdvanced) {
+                if ($this->searchWallet($data)) {
+                    $performedSearch = true;
+                } elseif ($this->searchTransaction($data)) {
+                    $performedSearch = true;
+                } elseif ($this->searchBlock($data)) {
+                    $performedSearch = true;
+                }
             }
-        } else {
-            if ($this->searchWallet($data)) {
-                return;
-            } elseif ($this->searchTransaction($data)) {
-                return;
-            } elseif ($this->searchBlock($data)) {
-                return;
-            }
+        } catch (\Throwable) {
+            $this->isRedirecting = false;
+
+            return;
         }
 
+        $this->emitSelf('redirectToPage', $data);
+    }
+
+    public function redirectToPage(array $data): void
+    {
         $this->redirectRoute('search', [
             'state'    => $data,
             'advanced' => $this->isAdvanced ? 'true' : 'false',
@@ -78,9 +85,9 @@ final class SearchModal extends Component
         return $this->searchWithService(new WalletSearch(), $data, fn ($model) => $this->redirectRoute('wallet', $model->address));
     }
 
-    private function searchTransaction(array $data, bool $searchBlocks = false): bool
+    private function searchTransaction(array $data): bool
     {
-        return $this->searchWithService(new TransactionSearch($searchBlocks), $data, fn ($model) => $this->redirectRoute('transaction', $model->id));
+        return $this->searchWithService(new TransactionSearch(), $data, fn ($model) => $this->redirectRoute('transaction', $model->id));
     }
 
     private function searchBlock(array $data): bool
