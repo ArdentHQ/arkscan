@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b37c34f9b6e77250441f21f69d0b37e3",
+    "content-hash": "7da012dff1f95a646956fe9b8df01dcf",
     "packages": [
         {
             "name": "arkecosystem/crypto",
@@ -74,16 +74,16 @@
         },
         {
             "name": "arkecosystem/foundation",
-            "version": "6.6.3",
+            "version": "7.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-foundation.git",
-                "reference": "07a01730e644b6743848328e4662a71dc32b0724"
+                "reference": "cc90478270a145d73e71f4796a75699be578a273"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/07a01730e644b6743848328e4662a71dc32b0724",
-                "reference": "07a01730e644b6743848328e4662a71dc32b0724",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/cc90478270a145d73e71f4796a75699be578a273",
+                "reference": "cc90478270a145d73e71f4796a75699be578a273",
                 "shasum": ""
             },
             "require": {
@@ -96,12 +96,12 @@
                 "google/recaptcha": "^1.2",
                 "graham-campbell/analyzer": "^3.0",
                 "guzzlehttp/guzzle": "^7.4",
-                "illuminate/bus": "^8.73|^9.0",
-                "illuminate/contracts": "^8.73|^9.0",
-                "illuminate/http": "^8.73|^9.0",
-                "illuminate/mail": "^8.73|^9.0",
-                "illuminate/support": "^8.73|^9.0",
-                "illuminate/view": "^8.73|^9.0",
+                "illuminate/bus": "^9.2",
+                "illuminate/contracts": "^9.2",
+                "illuminate/http": "^9.2",
+                "illuminate/mail": "^9.2",
+                "illuminate/support": "^9.2",
+                "illuminate/view": "^9.2",
                 "jamesmills/laravel-timezone": "^1.11",
                 "jasonmccreary/laravel-test-assertions": "^2.0",
                 "jenssegers/agent": "^2.6",
@@ -130,7 +130,7 @@
                 "rector/rector": "^0.12.23",
                 "ruafozy/mersenne-twister": "^1.3",
                 "spatie/laravel-flash": "^1.8",
-                "spatie/laravel-honeypot": "^4.0",
+                "spatie/laravel-honeypot": "^4.3",
                 "spatie/laravel-medialibrary": "^9.9|^10.3",
                 "spatie/laravel-newsletter": "^4.10",
                 "spatie/laravel-package-tools": "^1.9",
@@ -145,7 +145,7 @@
             },
             "require-dev": {
                 "laravel/nova": "^3.30",
-                "spatie/laravel-permission": "^3.16",
+                "spatie/laravel-permission": "^5.3",
                 "vyuldashev/nova-permission": "^3.0"
             },
             "suggest": {
@@ -182,9 +182,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by Tailwind CSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-foundation/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/6.6.3"
+                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/7.0.0"
             },
-            "time": "2022-08-03T14:46:41+00:00"
+            "time": "2022-08-09T09:28:04+00:00"
         },
         {
             "name": "asm89/stack-cors",

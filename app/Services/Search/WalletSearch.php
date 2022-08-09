@@ -7,11 +7,11 @@ namespace App\Services\Search;
 use App\Contracts\Search;
 use App\Models\Composers\ValueRangeComposer;
 use App\Models\Wallet;
+use App\Repositories\WalletRepositoryWithCache;
 use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use App\Repositories\WalletRepositoryWithCache;
 
 final class WalletSearch implements Search
 {
