@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Livewire\SearchModule;
+use App\Http\Livewire\SearchModal;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -15,12 +15,11 @@ it('should search for a wallet and redirect', function () {
     $block = Block::factory()->create();
     Transaction::factory()->create(['block_id' => $block->id]);
 
-    Livewire::test(SearchModule::class)
+    Livewire::test(SearchModal::class)
         ->set('state.term', $wallet->address)
         ->set('state.type', 'wallet')
-        ->set('isAdvanced', true)
         ->call('performSearch')
-        ->assertRedirect(route('wallet', $wallet->address));
+        ->assertEmitted('redirectToPage', 'wallet', $wallet->address);
 });
 
 it('should search for a wallet username over a block generator', function () {
@@ -36,10 +35,10 @@ it('should search for a wallet username over a block generator', function () {
     ]);
     Transaction::factory()->create(['block_id' => $block->id]);
 
-    Livewire::test(SearchModule::class)
+    Livewire::test(SearchModal::class)
         ->set('state.term', Arr::get($wallet, 'attributes.delegate.username'))
         ->call('performSearch')
-        ->assertRedirect(route('wallet', $wallet->address));
+        ->assertEmitted('redirectToPage', 'wallet', $wallet->address);
 });
 
 it('should do a basic search for a transaction and redirect', function () {
@@ -48,10 +47,10 @@ it('should do a basic search for a transaction and redirect', function () {
     Transaction::factory()->create(['block_id' => $block->id]);
     $transaction = Transaction::factory()->create();
 
-    Livewire::test(SearchModule::class)
+    Livewire::test(SearchModal::class)
         ->set('state.term', $transaction->id)
         ->call('performSearch')
-        ->assertRedirect(route('transaction', $transaction->id));
+        ->assertEmitted('redirectToPage', 'transaction', $transaction->id);
 });
 
 it('should do an advanced search for a transaction and redirect', function () {
@@ -60,12 +59,11 @@ it('should do an advanced search for a transaction and redirect', function () {
     Transaction::factory()->create(['block_id' => $block->id]);
     $transaction = Transaction::factory()->create();
 
-    Livewire::test(SearchModule::class)
+    Livewire::test(SearchModal::class)
         ->set('state.term', $transaction->id)
         ->set('state.type', 'transaction')
-        ->set('isAdvanced', true)
         ->call('performSearch')
-        ->assertRedirect(route('transaction', $transaction->id));
+        ->assertEmitted('redirectToPage', 'transaction', $transaction->id);
 });
 
 it('should do a basic search for a block and redirect', function () {
@@ -73,10 +71,10 @@ it('should do a basic search for a block and redirect', function () {
     $block = Block::factory()->create();
     Transaction::factory()->create(['block_id' => $block->id]);
 
-    Livewire::test(SearchModule::class)
+    Livewire::test(SearchModal::class)
         ->set('state.term', $block->id)
         ->call('performSearch')
-        ->assertRedirect(route('block', $block->id));
+        ->assertEmitted('redirectToPage', 'block', $block->id);
 });
 
 it('should do an advanced search for a block and redirect', function () {
@@ -84,106 +82,118 @@ it('should do an advanced search for a block and redirect', function () {
     $block = Block::factory()->create();
     Transaction::factory()->create(['block_id' => $block->id]);
 
-    Livewire::test(SearchModule::class)
+    Livewire::test(SearchModal::class)
         ->set('state.term', $block->id)
         ->set('state.type', 'block')
-        ->set('isAdvanced', true)
         ->call('performSearch')
-        ->assertRedirect(route('block', $block->id));
+        ->assertEmitted('redirectToPage', 'block', $block->id);
 });
 
 it('should redirect to the basic search page if there are no results', function () {
-    Livewire::test(SearchModule::class)
+    Livewire::test(SearchModal::class)
         ->set('state.term', 'unknown')
-        ->set('state.type', 'block')
         ->call('performSearch')
-        ->assertRedirect(route('search', [
-            'state[term]' => 'unknown',
-            'state[type]' => 'block',
-            'advanced'    => 'false',
-        ]));
+        ->assertEmitted('redirectToPage', 'search', [
+            'state' => [
+                'term' => 'unknown',
+                'type' => 'block',
+            ],
+            'advanced' => 'false',
+        ]);
 });
 
 it('should redirect to the advanced search page if there are no results', function () {
-    Livewire::test(SearchModule::class)
+    Livewire::test(SearchModal::class)
         ->set('state.term', 'unknown')
         ->set('state.type', 'block')
         ->set('isAdvanced', true)
         ->call('performSearch')
-        ->assertRedirect(route('search', [
-            'state[term]' => 'unknown',
-            'state[type]' => 'block',
-            'advanced'    => 'true',
-        ]));
+        ->assertEmitted('redirectToPage', 'search', [
+            'state' => [
+                'term' => 'unknown',
+                'type' => 'block',
+            ],
+            'advanced' => 'true',
+        ]);
 });
 
 it('should redirect to the basic search page if the term is null', function () {
-    Livewire::test(SearchModule::class)
+    Livewire::test(SearchModal::class)
         ->set('state.term', null)
         ->set('state.type', 'block')
         ->call('performSearch')
-        ->assertRedirect(route('search', [
-            'state[term]' => null,
-            'state[type]' => 'block',
-            'advanced'    => 'false',
-        ]));
+        ->assertEmitted('redirectToPage', 'search', [
+            'state' => [
+                'term' => null,
+                'type' => 'block',
+            ],
+            'advanced' => 'false',
+        ]);
 });
 
 it('should redirect to the advanced search page if the term is null', function () {
-    Livewire::test(SearchModule::class)
+    Livewire::test(SearchModal::class)
         ->set('state.term', null)
         ->set('state.type', 'block')
         ->set('isAdvanced', true)
         ->call('performSearch')
-        ->assertRedirect(route('search', [
-            'state[term]' => null,
-            'state[type]' => 'block',
-            'advanced'    => 'true',
-        ]));
+        ->assertEmitted('redirectToPage', 'search', [
+            'state' => [
+                'term' => null,
+                'type' => 'block',
+            ],
+            'advanced' => 'true',
+        ]);
 });
 
 it('should redirect to the basic search page if the term is empty', function () {
-    Livewire::test(SearchModule::class)
+    Livewire::test(SearchModal::class)
         ->set('state.term', '')
         ->set('state.type', 'block')
         ->call('performSearch')
-        ->assertRedirect(route('search', [
-            'state[term]' => '',
-            'state[type]' => 'block',
-            'advanced'    => 'false',
-        ]));
+        ->assertEmitted('redirectToPage', 'search', [
+            'state' => [
+                'term' => '',
+                'type' => 'block',
+            ],
+            'advanced' => 'false',
+        ]);
 });
 
 it('should redirect to the advanced search page if the term is empty', function () {
-    Livewire::test(SearchModule::class)
+    Livewire::test(SearchModal::class)
         ->set('state.term', '')
         ->set('state.type', 'block')
         ->set('isAdvanced', true)
         ->call('performSearch')
-        ->assertRedirect(route('search', [
-            'state[term]' => '',
-            'state[type]' => 'block',
-            'advanced'    => 'true',
-        ]));
+        ->assertEmitted('redirectToPage', 'search', [
+            'state' => [
+                'term' => '',
+                'type' => 'block',
+            ],
+            'advanced' => 'true',
+        ]);
 });
 
 it('should redirect to the advanced search page if there are more than 2 criteria', function () {
-    Livewire::test(SearchModule::class)
+    Livewire::test(SearchModal::class)
         ->set('state.term', 'address')
         ->set('state.type', 'transaction')
         ->set('isAdvanced', true)
         ->set('state.amountFrom', 1)
         ->call('performSearch')
-        ->assertRedirect(route('search', [
-            'state[term]'       => 'address',
-            'state[type]'       => 'transaction',
-            'state[amountFrom]' => 1,
-            'advanced'          => 'true',
-        ]));
+        ->assertEmitted('redirectToPage', 'search', [
+            'state' => [
+                'term'       => 'address',
+                'type'       => 'transaction',
+                'amountFrom' => 1,
+            ],
+            'advanced' => 'true',
+        ]);
 });
 
 it('should toggle advanced filters', function () {
-    Livewire::test(SearchModule::class)
+    Livewire::test(SearchModal::class)
         ->assertSet('isAdvanced', false)
         ->call('toggleAdvanced')
         ->assertSet('isAdvanced', true);
