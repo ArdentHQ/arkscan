@@ -11,6 +11,7 @@ use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\WalletRepositoryWithCache;
 
 final class WalletSearch implements Search
 {
@@ -45,6 +46,16 @@ final class WalletSearch implements Search
 
         if (! is_null(Arr::get($parameters, 'vote'))) {
             $vote = substr(DB::getPdo()->quote($parameters['vote']), 1, -1);
+            if ($this->couldBeUsername($vote)) {
+                try {
+                    $wallet = app(WalletRepositoryWithCache::class)->findByUsername($vote);
+
+                    $vote = $wallet->public_key;
+                } catch (\Throwable) {
+                    //
+                }
+            }
+
             $query->orWhereRaw('lower(attributes::text)::jsonb @> lower(\'{"vote":"'.$vote.'"}\')::jsonb');
         }
 
