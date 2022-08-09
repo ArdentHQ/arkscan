@@ -48,7 +48,7 @@ final class WalletSearch implements Search
             $vote = substr(DB::getPdo()->quote($parameters['vote']), 1, -1);
             if ($this->couldBeUsername($vote)) {
                 try {
-                    $wallet = app(WalletRepositoryWithCache::class)->findByUsernameCaseInsensitive($vote);
+                    $wallet = app(WalletRepositoryWithCache::class)->findByUsername($vote, false);
 
                     $vote = $wallet->public_key;
                 } catch (\Throwable) {

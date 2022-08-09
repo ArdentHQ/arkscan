@@ -50,17 +50,16 @@ final class WalletRepository implements Contract
         return Wallet::whereIn('public_key', $publicKeys)->get();
     }
 
-    public function findByUsername(string $username): Wallet
+    public function findByUsername(string $username, bool $caseSensitive = true): Wallet
     {
+        if ($caseSensitive === false) {
+            $username = substr(DB::getPdo()->quote($username), 1, -1);
+
+            return Wallet::whereRaw('lower(attributes::text)::jsonb @> lower(\'{"delegate":{"username":"'.$username.'"}}\')::jsonb')
+                ->firstOrFail();
+        }
+
         return Wallet::where('attributes->delegate->username', $username)->firstOrFail();
-    }
-
-    public function findByUsernameCaseInsensitive(string $username): Wallet
-    {
-        $username = substr(DB::getPdo()->quote($username), 1, -1);
-
-        return Wallet::whereRaw('lower(attributes::text)::jsonb @> lower(\'{"delegate":{"username":"'.$username.'"}}\')::jsonb')
-            ->firstOrFail();
     }
 
     public function findByIdentifier(string $identifier): Wallet
