@@ -56,11 +56,11 @@ final class SearchModal extends Component
         try {
             if (! $this->isAdvanced) {
                 if ($this->searchWallet($data)) {
-                    $performedSearch = true;
+                    return;
                 } elseif ($this->searchTransaction($data)) {
-                    $performedSearch = true;
+                    return;
                 } elseif ($this->searchBlock($data)) {
-                    $performedSearch = true;
+                    return;
                 }
             }
         } catch (\Throwable) {
@@ -69,30 +69,30 @@ final class SearchModal extends Component
             return;
         }
 
-        $this->emitSelf('redirectToPage', $data);
-    }
-
-    public function redirectToPage(array $data): void
-    {
-        $this->redirectRoute('search', [
+        $this->emitSelf('redirectToPage', 'search', [
             'state'    => $data,
             'advanced' => $this->isAdvanced ? 'true' : 'false',
         ]);
     }
 
+    public function redirectToPage(string $route, mixed $data): void
+    {
+        $this->redirectRoute($route, $data);
+    }
+
     private function searchWallet(array $data): bool
     {
-        return $this->searchWithService(new WalletSearch(), $data, fn ($model) => $this->redirectRoute('wallet', $model->address));
+        return $this->searchWithService(new WalletSearch(), $data, fn ($model) => $this->emitSelf('redirectToPage', 'wallet', $model->address));
     }
 
     private function searchTransaction(array $data): bool
     {
-        return $this->searchWithService(new TransactionSearch(), $data, fn ($model) => $this->redirectRoute('transaction', $model->id));
+        return $this->searchWithService(new TransactionSearch(), $data, fn ($model) => $this->emitSelf('redirectToPage', 'transaction', $model->id));
     }
 
     private function searchBlock(array $data): bool
     {
-        return $this->searchWithService(new BlockSearch(), $data, fn ($model) => $this->redirectRoute('block', $model->id));
+        return $this->searchWithService(new BlockSearch(), $data, fn ($model) => $this->emitSelf('redirectToPage', 'block', $model->id));
     }
 
     private function searchWithService(Search $service, array $data, Closure $callback): bool
