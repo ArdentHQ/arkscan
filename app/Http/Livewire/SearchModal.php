@@ -53,6 +53,7 @@ final class SearchModal extends Component
         }
 
         $this->isRedirecting = true;
+
         try {
             if (! $this->isAdvanced) {
                 if ($this->searchWallet($data)) {
