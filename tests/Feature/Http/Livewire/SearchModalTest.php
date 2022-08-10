@@ -9,6 +9,9 @@ use App\Models\Wallet;
 use Illuminate\Support\Arr;
 use Livewire\Livewire;
 
+/**
+ * @coversNothing
+ */
 class SearchModalTest extends \Livewire\Component
 {
     use App\Http\Livewire\Concerns\ManagesSearch;
