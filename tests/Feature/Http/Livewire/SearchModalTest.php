@@ -29,6 +29,14 @@ it('should search for a wallet and redirect', function () {
         ->assertEmitted('redirectToPage', 'wallet', $wallet->address);
 });
 
+it('should search redirect when event emitted', function () {
+    $wallet = Wallet::factory()->create();
+
+    Livewire::test(SearchModal::class)
+        ->emit('redirectToPage', 'wallet', $wallet->address)
+        ->assertRedirect(route('wallet', $wallet->address));
+});
+
 it('should search for a wallet username over a block generator', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
