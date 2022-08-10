@@ -9,6 +9,13 @@ use App\Models\Wallet;
 use Illuminate\Support\Arr;
 use Livewire\Livewire;
 
+class SearchModalExceptionStub extends \Livewire\Component
+{
+    use App\Http\Livewire\Concerns\ManagesSearch;
+    use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasModal;
+    use App\Http\Livewire\Concerns\HandlesSearchModal;
+}
+
 it('should search for a wallet and redirect', function () {
     $wallet = Wallet::factory()->create();
     Transaction::factory()->create();
@@ -51,6 +58,29 @@ it('should do a basic search for a transaction and redirect', function () {
         ->set('state.term', $transaction->id)
         ->call('performSearch')
         ->assertEmitted('redirectToPage', 'transaction', $transaction->id);
+});
+
+it('should flag as not redirecting on exception', function () {
+    $wallet = Wallet::factory()->create();
+
+    $mock = $this->mock(SearchModalExceptionStub::class)->makePartial();
+    $mock->shouldAllowMockingProtectedMethods()
+        ->shouldReceive('searchWallet')
+        ->andThrow(new \Exception('Failed to search for wallet'))
+        ->once();
+
+    $mock->state['term'] = $wallet->address;
+    $mock->performSearch();
+});
+
+it('should flag as redirecting', function () {
+    $wallet = Wallet::factory()->create();
+
+    Livewire::test(SearchModal::class)
+        ->set('state.term', $wallet->address)
+        ->set('state.type', 'wallet')
+        ->call('performSearch')
+        ->assertSet('isRedirecting', true);
 });
 
 it('should do an advanced search for a transaction and redirect', function () {
