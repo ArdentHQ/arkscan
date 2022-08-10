@@ -757,7 +757,7 @@ it('should search for a wallet by balance range and voting for', function () {
     ]);
 
     $wallet = Wallet::factory()->create([
-        'balance' => 80 * 1e8,
+        'balance'    => 80 * 1e8,
         'attributes' => [
             'vote' => $delegate->public_key,
         ],
@@ -781,7 +781,7 @@ it('should search for a wallet by balance range and username', function () {
     $wallets = Wallet::factory(10)->create(['balance' => 10 * 1e8]);
 
     $delegate = Wallet::factory()->create([
-        'balance' => 80 * 1e8,
+        'balance'    => 80 * 1e8,
         'attributes' => [
             'delegate' => [
                 'username' => 'johndoe',
@@ -790,7 +790,7 @@ it('should search for a wallet by balance range and username', function () {
     ]);
 
     $wallet = Wallet::factory()->create([
-        'balance' => 80 * 1e8,
+        'balance'    => 80 * 1e8,
         'attributes' => [
             'vote' => $delegate->public_key,
         ],

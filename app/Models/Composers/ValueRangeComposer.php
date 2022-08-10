@@ -19,7 +19,7 @@ final class ValueRangeComposer
             return $query;
         }
 
-        $query->where(function($query) use ($from, $to, $column, $useSatoshi) {
+        $query->where(function ($query) use ($from, $to, $column, $useSatoshi) {
             if (! is_null($from) && $from > 0) {
                 if ($useSatoshi) {
                     $query->where($column, '>=', intval($from * 1e8));
