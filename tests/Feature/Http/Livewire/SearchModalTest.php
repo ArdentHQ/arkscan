@@ -8,16 +8,7 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Support\Arr;
 use Livewire\Livewire;
-
-/**
- * @coversNothing
- */
-class SearchModalTest extends \Livewire\Component
-{
-    use App\Http\Livewire\Concerns\ManagesSearch;
-    use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasModal;
-    use App\Http\Livewire\Concerns\HandlesSearchModal;
-}
+use Tests\Feature\Http\Livewire\__stubs\SearchModalExceptionStub;
 
 it('should search for a wallet and redirect', function () {
     $wallet = Wallet::factory()->create();
