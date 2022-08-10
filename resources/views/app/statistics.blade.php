@@ -1,10 +1,10 @@
-@component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
+@component('layouts.app')
     <x-metadata page="statistics" />
 
     @section('content')
         <livewire:stats-highlights/>
 
-        <x-ark-container class="bg-white dark:bg-theme-secondary-900">
+        <x-ark-container>
             <x-stats.insights-wrapper>
                 <livewire:stats.insight-all-time-transactions/>
                 <livewire:stats.insight-current-average-fee/>
