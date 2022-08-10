@@ -9,7 +9,7 @@ use App\Models\Wallet;
 use Illuminate\Support\Arr;
 use Livewire\Livewire;
 
-class SearchModalExceptionStub extends \Livewire\Component
+class SearchModalTest extends \Livewire\Component
 {
     use App\Http\Livewire\Concerns\ManagesSearch;
     use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasModal;
