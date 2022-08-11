@@ -91,7 +91,9 @@ final class CoinGecko implements MarketDataProvider
         if ($data === null) {
             $times = Cache::increment('coin_gecko_response_error');
 
-            if ($times > 30) {
+            if ($times > config('explorer.coingecko_exception_frequency')) {
+                Cache::forget('coin_gecko_response_error');
+
                 throw new \Exception('Too many empty coinGecko responses');
             }
 

@@ -14,6 +14,8 @@ return [
 
     'market_data_provider_service' => env('ARKSCAN_MARKET_DATA_PROVIDER_SERVICE', CoinGecko::class),
 
+    'coingecko_exception_frequency' => env('COINGECKO_EXCEPTION_FREQUENCY', 60),
+
     'networks' => [
         'production' => [
             'name'               => env('ARKSCAN_NETWORK_NAME', 'ARK Public Network'),
