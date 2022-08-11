@@ -51,7 +51,7 @@
                 </span>
             </x-ark-footer>
 
-            <livewire:search-module is-modal />
+            <livewire:search-modal />
         </x-slot>
     </x-ark-pages-includes-layout-body>
 </html>
