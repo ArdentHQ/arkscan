@@ -3,13 +3,14 @@
         <tr>
             <x-tables.headers.desktop.text name="general.delegates.rank" width="70" />
             <x-tables.headers.desktop.address name="general.delegates.name" />
-            <x-tables.headers.desktop.status name="general.delegates.status" last-on="md">
+            <x-tables.headers.desktop.status name="general.delegates.status">
                 <x-ark-info :tooltip="trans('pages.delegates.info.status')" />
             </x-tables.headers.desktop.status>
             <x-tables.headers.desktop.number name="general.delegates.votes" responsive />
             <x-tables.headers.desktop.number name="general.delegates.productivity" responsive breakpoint="md">
                 <x-ark-info :tooltip="trans('pages.delegates.info.productivity')" />
             </x-tables.headers.desktop.number>
+            <x-tables.headers.desktop.text />
         </tr>
     </thead>
     <tbody>
@@ -30,7 +31,7 @@
                         <x-tables.rows.mobile.username-with-avatar :model="$delegate" />
                     </span>
                 </x-ark-tables.cell>
-                <x-ark-tables.cell last-on="md">
+                <x-ark-tables.cell>
                     <x-tables.rows.desktop.round-status-history :model="$delegate" />
                 </x-ark-tables.cell>
                 <x-ark-tables.cell class="text-right" responsive>
@@ -43,6 +44,9 @@
                 </x-ark-tables.cell>
                 <x-ark-tables.cell class="text-right" responsive breakpoint="md">
                     <x-tables.rows.desktop.productivity :model="$delegate" />
+                </x-ark-tables.cell>
+                <x-ark-tables.cell>
+                    <x-tables.rows.desktop.vote :model="$delegate" />
                 </x-ark-tables.cell>
             </x-ark-tables.row>
         @endforeach

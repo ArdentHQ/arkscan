@@ -8,5 +8,9 @@
         ],
         'general.delegates.name' => 'address',
         'general.delegates.votes'  => 'number',
+        '' => [
+            'type'  => 'text',
+            'width' => '70',
+        ]
     ]"
 />
