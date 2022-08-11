@@ -4,7 +4,7 @@
             x-ref="modal"
             x-data="Modal.livewire({
                 searchType: '{{ $type ?? 'block' }}',
-                showAdvanced: false,
+                showAdvanced: @entangle('isAdvanced'),
                 searching: false,
                 initSearch() {
                     this.$nextTick(() => {
@@ -59,8 +59,13 @@
                         @click="showAdvanced = !showAdvanced"
                     >
                         <div>
-                            <span x-show="!showAdvanced">@lang('actions.advanced_search')</span>
-                            <span x-show="showAdvanced">@lang('actions.hide_advanced')</span>
+                            <span x-show="!showAdvanced">
+                                @lang('actions.advanced_search')
+                            </span>
+
+                            <span x-show="showAdvanced">
+                                @lang('actions.hide_advanced')
+                            </span>
                         </div>
 
                         <x-ark-chevron-toggle is-open="showAdvanced === true" />
