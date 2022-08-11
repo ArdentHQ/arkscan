@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use App\Facades\Network;
 use App\Facades\Wallets;
 use App\ViewModels\ViewModelFactory;
 use Ardenthq\UrlBuilder\UrlBuilder;
