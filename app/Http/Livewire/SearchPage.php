@@ -11,6 +11,7 @@ use App\Services\Search\WalletSearch;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -19,11 +20,19 @@ final class SearchPage extends Component
     use ManagesSearch;
     use WithPagination;
 
+    public bool $isAdvanced = true;
+
     /** @var mixed */
     protected $listeners = ['pageChanged' => 'performSearch'];
 
     /** @var mixed */
-    protected $queryString = ['state'];
+    protected $queryString = [
+        'state',
+        'isAdvanced' => [
+            'except' => false,
+            'as'     => 'advanced',
+        ],
+    ];
 
     private ?LengthAwarePaginator $results = null;
 
@@ -31,7 +40,9 @@ final class SearchPage extends Component
     {
         $this->restoreState(request('state', []));
 
-        $this->performSearch();
+        if ($this->isAdvanced) {
+            $this->performSearch();
+        }
     }
 
     public function render(): View
@@ -45,19 +56,33 @@ final class SearchPage extends Component
     {
         $data = $this->validateSearchQuery();
 
-        if ($data['type'] === 'block') {
-            $this->results = (new BlockSearch())->search($data)->paginate();
+        if ($this->isAdvanced) {
+            if ($data['type'] === 'wallet') {
+                $this->results = (new WalletSearch())->search($data)->paginate();
+            } elseif ($data['type'] === 'block') {
+                $this->results = (new BlockSearch())->search($data)->paginate();
+            } elseif ($data['type'] === 'transaction') {
+                $this->results = (new TransactionSearch(true))->search($data)->paginate();
+            }
+        } else {
+            $this->state['type'] = 'wallet';
+
+            $this->results = (new WalletSearch())->search(['term' => Arr::get($data, 'term')])->paginate();
+
+            if ($this->results->isEmpty()) {
+                $this->state['type'] = 'transaction';
+
+                $this->results = (new TransactionSearch())->search(['term' => Arr::get($data, 'term')])->paginate();
+            }
+
+            if ($this->results->isEmpty()) {
+                $this->state['type'] = 'block';
+
+                $this->results = (new BlockSearch())->search(['term' => Arr::get($data, 'term')])->paginate();
+            }
         }
 
-        if ($data['type'] === 'transaction') {
-            $this->results = (new TransactionSearch())->search($data)->paginate();
-        }
-
-        if ($data['type'] === 'wallet') {
-            $this->results = (new WalletSearch())->search($data)->paginate();
-        }
-
-        if (! is_null($this->results)) {
+        if ($this->results !== null) {
             $this->results = ViewModelFactory::paginate($this->results);
         }
     }

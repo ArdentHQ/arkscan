@@ -107,8 +107,8 @@ final class CoinGecko implements MarketDataProvider
         }
 
         if ($errorCode !== null || $data === null) {
-            if (Cache::increment($cacheKey) > config('explorer.coingecko_exception_frequency')) {
-                Cache::forget($cacheKey);
+            if ($times > config('explorer.coingecko_exception_frequency')) {
+                Cache::forget('coin_gecko_response_error');
 
                 throw new \Exception($message);
             }
