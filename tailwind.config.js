@@ -2,6 +2,7 @@ const defaultConfig = require('./vendor/arkecosystem/foundation/resources/tailwi
 const plugin = require("tailwindcss/plugin");
 const selectorParser = require("postcss-selector-parser");
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
     ...defaultConfig,
     theme: {
@@ -38,17 +39,5 @@ module.exports = {
                 '15': 15,
             }
         },
-    },
-    variants: {
-        ...defaultConfig.variants,
-        extend: {
-            ...defaultConfig.variants.extend,
-            borderRadius: ['focus-visible'],
-            ringColor: ['focus-visible'],
-            ringWidth: ['focus-visible'],
-            textDecoration: ['focus-visible'],
-            transitionProperty: ['focus-visible'],
-            zIndex: ['focus-visible'],
-        },
-    },
+    }
 }
