@@ -1,1 +1,1 @@
-<button type="button">Vote</button>
+<a href="#" class="button-vote">Vote</a>
