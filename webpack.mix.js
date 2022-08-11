@@ -21,10 +21,10 @@ mix.webpackConfig({
     })
     // App
     .js('resources/js/app.js', 'public/js')
-    .copy('vendor/arkecosystem/foundation/resources/assets/js/clipboard.js', 'public/js/clipboard.js')
+    .js('vendor/arkecosystem/foundation/resources/assets/js/clipboard.js', 'public/js/clipboard.js')
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
-        require('tailwindcss')(),
+        require('tailwindcss'),
         focusVisible()
     ])
     .copyDirectory('resources/images', 'public/images')
