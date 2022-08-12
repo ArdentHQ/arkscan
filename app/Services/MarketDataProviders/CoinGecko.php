@@ -77,6 +77,11 @@ final class CoinGecko implements MarketDataProvider
     {
         $data = Http::get('https://api.coingecko.com/api/v3/coins/'.Str::lower($baseCurrency))->json();
 
+        if ($this->isEmptyResponse($data)) {
+            /** @var Collection<string, MarketData> */
+            return collect([]);
+        }
+
         return $targetCurrencies
             ->mapWithKeys(fn (string $currency) => [strtoupper($currency) => MarketData::fromCoinGeckoApiResponse($currency, $data)]);
     }
