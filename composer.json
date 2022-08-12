@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.0",
         "ext-gmp": "*",
+        "ardenthq/arkvault-url-php": "dev-master",
         "arkecosystem/crypto": "^1.8",
         "arkecosystem/foundation": "^8.0",
         "blade-ui-kit/blade-icons": "^1.2",
@@ -66,6 +67,12 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "/Users/alfonso/Projects/ark/arkvault-url-php"
+        }
+    ],
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

@@ -4,8 +4,69 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4eee0f3799130b28ec56c050dd576ea3",
+    "content-hash": "b5edcc422a7d6b731ce6c10fa20fa84a",
     "packages": [
+        {
+            "name": "ardenthq/arkvault-url-php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "/Users/alfonso/Projects/ark/arkvault-url-php",
+                "reference": "e17f26c88ee3a546ddf46bda23c1f3bed7a4e080"
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.9",
+                "pestphp/pest": "^1.21",
+                "phpstan/phpstan": "^1.8",
+                "rector/rector": "^0.13.10"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ardenthq\\UrlBuilder\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "analyse": [
+                    "vendor/bin/phpstan analyse"
+                ],
+                "refactor": [
+                    "vendor/bin/rector process"
+                ],
+                "format": [
+                    "./vendor/bin/php-cs-fixer fix"
+                ],
+                "test": [
+                    "./vendor/bin/pest"
+                ],
+                "test:fast": [
+                    "./vendor/bin/pest --parallel"
+                ],
+                "test:coverage": [
+                    "./vendor/bin/pest --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alfonso",
+                    "email": "alfonso@ardenthq.com"
+                }
+            ],
+            "description": "Deeplink URL generator for ARK based networks",
+            "time": "2022-08-11T18:57:04+00:00"
+        },
         {
             "name": "arkecosystem/crypto",
             "version": "1.8.0",
@@ -17629,7 +17690,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "ardenthq/arkvault-url-php": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

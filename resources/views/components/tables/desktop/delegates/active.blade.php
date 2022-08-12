@@ -4,7 +4,7 @@
             <x-tables.headers.desktop.text name="general.delegates.rank" width="70" />
             <x-tables.headers.desktop.address name="general.delegates.name" />
             <x-tables.headers.desktop.status name="general.delegates.status">
-                <x-ark-info :tooltip="trans('pages.delegates.info.status')" />
+                <x-ark-info class="hidden sm:inline-block" :tooltip="trans('pages.delegates.info.status')" />
             </x-tables.headers.desktop.status>
             <x-tables.headers.desktop.number name="general.delegates.votes" responsive />
             <x-tables.headers.desktop.number name="general.delegates.productivity" responsive breakpoint="md">
