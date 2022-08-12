@@ -12,6 +12,7 @@ use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\ForgingInfoCalculator;
 use App\Services\Monitor\Slots;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
 
 beforeEach(function () {
@@ -69,6 +70,44 @@ it('should render without errors', function () {
     createRoundWithDelegates();
 
     $component = Livewire::test(DelegateMonitor::class);
+    $component->call('pollDelegates');
+});
+
+it('should throw an exception after 3 tries', function () {
+    createRoundWithDelegates();
+
+    $this->expectExceptionMessage('Something went wrong!');
+
+    Cache::shouldReceive('tags')
+        ->with('rounds')
+        ->andThrow(new Exception('Something went wrong!'))
+        ->shouldReceive('increment')
+        ->andReturn(1, 2, 3);
+
+    $component = Livewire::test(DelegateMonitor::class);
+    $component->call('pollDelegates');
+});
+
+it('shouldnt throw an exception if only fails 2 times', function () {
+    createRoundWithDelegates();
+
+    $taggedCache = Cache::tags('tags');
+
+    $component = Livewire::test(DelegateMonitor::class);
+
+    Cache::shouldReceive('tags')
+        ->with('rounds')
+        ->once()
+        ->andThrow(new Exception('Something went wrong!'))
+        ->shouldReceive('increment')
+        ->andReturn(1, 2, 3)
+        ->shouldReceive('remember')
+        ->andReturnUsing(fn ($tag, $time, $closure) => $closure())
+        ->shouldReceive('tags')
+        ->andReturn($taggedCache)
+        ->shouldReceive('forget')
+        ->andReturn(null);
+
     $component->call('pollDelegates');
 });
 
