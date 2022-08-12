@@ -1,4 +1,10 @@
-<div class="flex-1 w-full sm:w-auto">
+@php
+    $showReceiveLabel = !$wallet->isDelegate() || $wallet->isResigned();
+@endphp
+
+<div @class([
+    'w-full' => $showReceiveLabel
+])>
     @if($this->modalShown)
     <x-ark-modal width-class="max-w-md" wire-close="closeModal" title-class="header-2" x-data="{ options: false }">
         @slot('title')
@@ -75,12 +81,21 @@
     </x-ark-modal>
     @endif
 
+
+
     <button
         wire:click="toggleQrCode"
         type="button"
-        class="flex flex-1 justify-center items-center rounded cursor-pointer w-full bg-theme-secondary-800 transition-default h-11 sm:w-14 hover:bg-theme-primary-700 text-white mt-2 sm:mt-0"
+        @class([
+            "flex flex-1 justify-center items-center rounded cursor-pointer w-full bg-theme-secondary-800 transition-default h-11 hover:bg-theme-primary-700 text-white flex-shrink-0",
+            "sm:w-14 w-full" => $showReceiveLabel,
+            "w-14 " => !$showReceiveLabel,
+        ])
     >
         <x-ark-icon name="app-qr-code" size="sm" />
-        <span class="sm:hidden ml-2 font-semibold">@lang('actions.receive')</span>
+
+        @if($showReceiveLabel)
+            <span class="sm:hidden ml-2 font-semibold">@lang('actions.receive')</span>
+        @endif
     </button>
 </div>

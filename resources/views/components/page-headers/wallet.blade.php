@@ -1,3 +1,11 @@
+@php
+    $isDelegate = $wallet->isDelegate();
+    $rank = $wallet->rank();
+    $isResigned = $wallet->isResigned();
+    $isStandby = (! $isResigned && $rank === 0) || $rank > Network::delegateCount();
+    $vote = $wallet->vote()
+@endphp
+
 <x-page-headers.wallet.frame title="pages.wallet.title" :wallet="$wallet">
     <x-page-headers.wallet.frame-item icon="wallet" title-class="whitespace-nowrap">
         <x-slot name="title">
@@ -7,19 +15,18 @@
         <x-currency :currency="Network::currency()">{{ $wallet->balance() }}</x-currency>
 
         <x-slot name="extension">
-            <div class="ml-auto hidden sm:flex">
+            <div class="ml-auto hidden sm:flex pl-3 items-center">
                 <x-page-headers.wallet.actions.qr-code :wallet="$wallet" />
+
+                @if($isDelegate && !$isResigned)
+                    <x-page-headers.wallet.actions.vote :wallet="$wallet" />
+                @endif
             </div>
         </x-slot>
     </x-page-headers.wallet.frame-item>
 
-    @if($wallet->isDelegate())
-        @php
-            $rank = $wallet->rank();
-            $isResigned = $wallet->isResigned();
-            $isStandby = (! $isResigned && $rank === 0) || $rank > Network::delegateCount();
-            $vote = $wallet->vote()
-        @endphp
+    @if($isDelegate)
+
 
         <x-slot name="extension">
             <div class="flex flex-col space-y-4 w-full lg:flex-row lg:justify-between lg:space-y-0">
