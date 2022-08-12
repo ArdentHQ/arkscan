@@ -29,22 +29,22 @@ tr:hover td.hoverable-cell .table-avatar {
     @apply text-white bg-theme-danger-400 hover:bg-theme-danger-500;
 }
 
-.table-compact:not(.table-compact-until-md) table .fiat-hint {
+.table-compact:not(.table-compact-until-lg) table .fiat-hint {
     @apply w-5 h-5 px-0 my-0 ml-0 mr-1 rounded-full;
 }
 
 /** Compact Table Styling **/
-.table-compact:not(.table-compact-until-md)
+.table-compact:not(.table-compact-until-lg)
     .table-container
     table
     > tbody
     .transaction-icon,
-.table-compact:not(.table-compact-until-md)
+.table-compact:not(.table-compact-until-lg)
     .table-container
     table
     > tbody
     .vote-circle,
-.table-compact:not(.table-compact-until-md)
+.table-compact:not(.table-compact-until-lg)
     .table-container
     table
     > tbody
@@ -52,23 +52,23 @@ tr:hover td.hoverable-cell .table-avatar {
     @apply w-5 h-5 border-0;
 }
 
-.table-compact:not(.table-compact-until-md)
+.table-compact:not(.table-compact-until-lg)
     .table-container
     table
     > tbody
     .avatar-wrapper,
-.table-compact:not(.table-compact-until-md)
+.table-compact:not(.table-compact-until-lg)
     .table-container
     table
     > tbody
     .status-circle,
-.table-compact:not(.table-compact-until-md)
+.table-compact:not(.table-compact-until-lg)
     .table-container
     table
     > tbody
     .arrow-direction
     svg,
-.table-compact:not(.table-compact-until-md)
+.table-compact:not(.table-compact-until-lg)
     .table-container
     table
     > tbody
@@ -77,8 +77,8 @@ tr:hover td.hoverable-cell .table-avatar {
     @apply w-5 h-5;
 }
 
-@screen md {
-    .table-compact:not(.table-compact-until-md)
+@screen lg {
+    .table-compact:not(.table-compact-until-lg)
         .table-container
         table
         > tbody
@@ -86,12 +86,12 @@ tr:hover td.hoverable-cell .table-avatar {
         @apply w-5 h-5 border-0;
     }
 
-    .table-compact:not(.table-compact-until-md)
+    .table-compact:not(.table-compact-until-lg)
         .table-container
         table
         > tbody
         .avatar-wrapper,
-    .table-compact:not(.table-compact-until-md)
+    .table-compact:not(.table-compact-until-lg)
         .table-container
         table
         > tbody
@@ -100,33 +100,33 @@ tr:hover td.hoverable-cell .table-avatar {
     }
 }
 
-.table-compact:not(.table-compact-until-md) .round-status-history {
+.table-compact:not(.table-compact-until-lg) .round-status-history {
     @apply space-x-2;
 }
 
-.table-compact:not(.table-compact-until-md) .sender-direction-wrapper {
+.table-compact:not(.table-compact-until-lg) .sender-direction-wrapper {
     @apply p-0 pr-2;
 }
 
-.table-compact:not(.table-compact-until-md) table .fiat-tooltip-sent,
-.table-compact:not(.table-compact-until-md) table .fiat-tooltip-received {
+.table-compact:not(.table-compact-until-lg) table .fiat-tooltip-sent,
+.table-compact:not(.table-compact-until-lg) table .fiat-tooltip-received {
     @apply p-0 border-0;
 }
 
-body.table-compact-until-md table .fiat-tooltip-sent,
-body.table-compact-until-md table .fiat-tooltip-received {
+body.table-compact-until-lg table .fiat-tooltip-sent,
+body.table-compact-until-lg table .fiat-tooltip-received {
     @apply -my-1;
 }
 
-body.table-compact-until-md .table-avatar > div {
+body.table-compact-until-lg .table-avatar > div {
     @apply bg-white border-white circled-icon;
 }
 
-body.table-compact-until-md .arrow-direction {
+body.table-compact-until-lg .arrow-direction {
     @apply -mr-2 circled-icon;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
     .table-container
         table
         > tbody

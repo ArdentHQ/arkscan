@@ -8,6 +8,7 @@ use App\Contracts\Network as NetworkContract;
 use App\Facades\Network;
 use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\NetworkStatusBlockCache;
+use App\Services\MarketDataProviders\CoinGecko;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
@@ -87,4 +88,20 @@ it('should ignore the cache for development network', function () {
 
     expect($cache->getPrice(Network::currency(), 'USD'))->toBeNull();
     expect($cache->getPriceChange(Network::currency(), 'USD'))->toBeNull();
+});
+
+it('should not update prices if coingecko is down', function () {
+    $cache = app(NetworkStatusBlockCache::class);
+
+    Http::fake([
+        'api.coingecko.com/*' => Http::response(null, 200),
+    ]);
+
+    $cache->setPrice('ARK', 'USD', 15);
+    $cache->setPriceChange('ARK', 'USD', 30);
+
+    app(CacheCurrenciesData::class)->handle($cache, new CoinGecko());
+
+    expect($cache->getPrice('ARK', 'USD'))->toEqual(15);
+    expect($cache->getPriceChange('ARK', 'USD'))->toEqual(30);
 });

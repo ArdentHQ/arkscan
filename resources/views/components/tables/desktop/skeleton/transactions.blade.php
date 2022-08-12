@@ -3,7 +3,10 @@
         device="desktop"
         :items="[
             'general.transaction.id'            => 'icon',
-            'general.transaction.timestamp'     => 'text',
+            'general.block.timestamp' => [
+                'type' => 'text',
+                'responsive' => true,
+            ],
             'general.transaction.sender'        => 'address',
             'general.transaction.recipient'     => 'address',
             'general.transaction.amount'        => [
@@ -27,7 +30,10 @@
         device="desktop"
         :items="[
             'general.transaction.id'            => 'icon',
-            'general.transaction.timestamp'     => 'text',
+            'general.block.timestamp' => [
+                'type' => 'text',
+                'responsive' => true,
+            ],
             'general.transaction.sender'        => 'address',
             'general.transaction.recipient'     => 'address',
             'general.transaction.amount'        => [
