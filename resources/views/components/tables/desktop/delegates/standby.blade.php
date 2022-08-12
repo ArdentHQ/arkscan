@@ -4,7 +4,7 @@
             <x-tables.headers.desktop.text name="general.delegates.rank" width="70" />
             <x-tables.headers.desktop.address name="general.delegates.name" />
             <x-tables.headers.desktop.number name="general.delegates.votes" />
-            <x-tables.headers.desktop.text />
+            <x-tables.headers.desktop.text width="1" />
         </tr>
     </thead>
     <tbody>

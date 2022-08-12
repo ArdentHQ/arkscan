@@ -10,7 +10,7 @@
             <x-tables.headers.desktop.number name="general.delegates.productivity" responsive breakpoint="md">
                 <x-ark-info :tooltip="trans('pages.delegates.info.productivity')" />
             </x-tables.headers.desktop.number>
-            <x-tables.headers.desktop.text />
+            <x-tables.headers.desktop.text width="1" />
         </tr>
     </thead>
     <tbody>
