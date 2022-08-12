@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M1.05 10.65v1.2h1.2m-1.2-10.8h4.5v4.5h-4.5zm13.2 0h4.8v4.8h-4.8zm-13.2 13.2h4.8v4.8h-4.8zm9-13.2h1.8m-3.6 0v2.4h1.8m1.8-.1v2.4h-3.6m-7.2 2.5h4.8v1.2m-1.2 2.3h1.1m13.3 7.3h-2.4v-2.4h2.4v-2.4h-2.4m-4.8 4.8h-3.6v-4.8m6 0v4.8m-3.6-4.8h1.2v2.4h-1.2m-2.4-6v1.2h1.2m2.4-.1h2.4m-1.4 0v-2.4m-4.6-1.1h2.4v1.2m8.4-1.2v1.1m0 1.9v.5m-3.7-3.5v1.2h1.2v1.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.39932 0.800293H0.799316V6.40029H6.39932V0.800293Z" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+<path d="M15.1991 0.800293H9.59912V6.40029H15.1991V0.800293Z" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+<path d="M6.39932 9.6001H0.799316V15.2001H6.39932V9.6001Z" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+<path d="M9.59912 9.6001H11.1991M9.59912 12.0001V15.2001H11.1991M11.9991 12.0001H15.1991V9.6001H13.5991M13.5991 15.2001H15.1991" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

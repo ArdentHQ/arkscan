@@ -78,8 +78,8 @@
     <button
         wire:click="toggleQrCode"
         type="button"
-        class="flex flex-1 justify-center items-center w-full h-11 rounded cursor-pointer lg:flex-none lg:px-3 lg:w-16 bg-theme-primary-600 transition-default hover:bg-theme-primary-700"
+        class="flex flex-1 justify-center items-center w-full h-11 rounded cursor-pointer lg:flex-none lg:px-3 lg:w-16 bg-theme-secondary-800 transition-default hover:bg-theme-primary-700"
     >
-        <x-ark-icon name="app-qr-code" size="md" />
+        <x-ark-icon name="app-qr-code" size="sm" />
     </button>
 </div>
