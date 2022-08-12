@@ -621,3 +621,7 @@ it('can determine the colors for icons based on the status of a delegate', funct
     expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-900 border-theme-secondary-900');
     expect($this->subject->delegateStatusStyling())->toBe('text-theme-success-600 border-theme-success-600');
 });
+
+it('should get the vote url', function () {
+    expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?method=vote&coin=ARK&nethash=');
+});
