@@ -6,11 +6,11 @@ namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
 use App\ViewModels\ViewModelFactory;
-use Ardenthq\UrlBuilder\UrlBuilder;
 use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasModal;
 use ARKEcosystem\Foundation\UserInterface\Support\QRCode;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use App\Services\ArkVaultUrlBuilder;
 
 /**
  * @property string $walletUri
@@ -58,8 +58,6 @@ final class WalletQrCode extends Component
     // @codeCoverageIgnoreStart
     public function getWalletUriProperty(): string
     {
-        $urlBuilder = new UrlBuilder(config('explorer.vault_url'));
-
         $options = [];
 
         if ($this->amount !== null && $this->amount !== '') {
@@ -70,7 +68,7 @@ final class WalletQrCode extends Component
             $options['memo'] = rawurlencode($this->smartbridge);
         }
 
-        return $urlBuilder->generateTransfer($this->address, $options);
+        return ArkVaultUrlBuilder::get()->generateTransfer($this->address, $options);
     }
 
     // @codeCoverageIgnoreEnd

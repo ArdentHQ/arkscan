@@ -7,6 +7,7 @@ namespace App\ViewModels;
 use App\Actions\CacheNetworkSupply;
 use App\Contracts\ViewModel;
 use App\Models\Wallet;
+use App\Services\ArkVaultUrlBuilder;
 use App\Services\ExchangeRate;
 use App\Services\Timestamp;
 use App\ViewModels\Concerns\Wallet\CanBeCold;
@@ -68,5 +69,10 @@ final class WalletViewModel implements ViewModel
     public function nonce(): int
     {
         return $this->wallet->nonce->toNumber();
+    }
+
+    public function voteUrl(): string
+    {
+        return ArkVaultUrlBuilder::get()->generateVote($this->address());
     }
 }
