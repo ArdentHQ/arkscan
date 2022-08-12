@@ -27,7 +27,6 @@ final class DelegateMonitor extends Component
 
     public function pollDelegates(): void
     {
-        // $tracking = DelegateTracker::execute(Rounds::allByRound(112168));
         try {
             $this->delegates = $this->fetchDelegates();
 
