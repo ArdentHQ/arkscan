@@ -95,7 +95,7 @@
         <x-ark-icon name="app-qr-code" size="sm" />
 
         @if($showReceiveLabel)
-            <span class="sm:hidden ml-2 font-semibold">@lang('actions.receive')</span>
+            <span class="ml-2 font-semibold sm:hidden">@lang('actions.receive')</span>
         @endif
     </button>
 </div>

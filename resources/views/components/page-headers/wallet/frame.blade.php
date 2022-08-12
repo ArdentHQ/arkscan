@@ -73,7 +73,7 @@
             <x-slot name="extension">
                 {{ $slot }}
 
-                <div class="sm:hidden flex mt-2">
+                <div class="flex mt-2 sm:hidden">
                     <x-page-headers.wallet.actions.qr-code :wallet="$wallet" />
 
                     @if($wallet->isDelegate() && !$wallet->isResigned())

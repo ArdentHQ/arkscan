@@ -15,7 +15,7 @@
         <x-currency :currency="Network::currency()">{{ $wallet->balance() }}</x-currency>
 
         <x-slot name="extension">
-            <div class="ml-auto hidden sm:flex pl-3 items-center">
+            <div class="hidden items-center pl-3 ml-auto sm:flex">
                 <x-page-headers.wallet.actions.qr-code :wallet="$wallet" />
 
                 @if($isDelegate && !$isResigned)
