@@ -326,7 +326,7 @@ it('should search for transactions by block with an ID', function (?string $modi
         'block_id' => 'ffff273321907d20bda3278ade259e6364ec2091ecd5993398a2ef2402725a31',
     ]);
 
-    $result = (new TransactionSearch())->search([
+    $result = (new TransactionSearch(true))->search([
         'term' => $modifier ? $modifier('ffff273321907d20bda3278ade259e6364ec2091ecd5993398a2ef2402725a31') : 'ffff273321907d20bda3278ade259e6364ec2091ecd5993398a2ef2402725a31',
     ]);
 
@@ -340,7 +340,7 @@ it('should search for transactions by block with a height', function () {
         'block_height' => 123456789,
     ]);
 
-    $result = (new TransactionSearch())->search([
+    $result = (new TransactionSearch(true))->search([
         'term' => '123456789',
     ]);
 

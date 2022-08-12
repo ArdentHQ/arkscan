@@ -24,7 +24,7 @@ interface WalletRepository
 
     public function findByPublicKeys(array $publicKey): Collection;
 
-    public function findByUsername(string $username): Wallet;
+    public function findByUsername(string $username, bool $caseSensitive = true): Wallet;
 
     public function findByIdentifier(string $identifier): Wallet;
 }

@@ -55,9 +55,9 @@ final class WalletRepositoryWithCache implements WalletRepository
         return $this->remember(fn () => $this->wallets->findByPublicKeys($publicKeys));
     }
 
-    public function findByUsername(string $username): Wallet
+    public function findByUsername(string $username, bool $caseSensitive = true): Wallet
     {
-        return $this->remember(fn () => $this->wallets->findByUsername($username));
+        return $this->remember(fn () => $this->wallets->findByUsername($username, $caseSensitive));
     }
 
     public function findByIdentifier(string $identifier): Wallet
