@@ -6,6 +6,7 @@ namespace App\Services;
 
 use Ardenthq\UrlBuilder\UrlBuilder;
 use Ardenthq\UrlBuilder\Enums\Networks;
+use App\Facades\Network;
 
 final class ArkVaultUrlBuilder
 {
@@ -13,7 +14,7 @@ final class ArkVaultUrlBuilder
     {
         $urlBuilder = new UrlBuilder(config('explorer.vault_url'));
 
-        $urlBuilder->setNetwork(config('explorer.network') === 'production' ? Networks::ARKMainnet : Networks::ARKDevnet);
+        $urlBuilder->setNetwork(Network::alias() === 'mainnet' ? Networks::ARKMainnet : Networks::ARKDevnet);
 
         return $urlBuilder;
     }
