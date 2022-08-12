@@ -5,6 +5,12 @@
         </x-slot>
 
         <x-currency :currency="Network::currency()">{{ $wallet->balance() }}</x-currency>
+
+        <x-slot name="extension">
+            <div class="ml-auto hidden sm:flex">
+                <x-page-headers.wallet.actions.qr-code :wallet="$wallet" />
+            </div>
+        </x-slot>
     </x-page-headers.wallet.frame-item>
 
     @if($wallet->isDelegate())

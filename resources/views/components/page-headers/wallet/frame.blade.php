@@ -73,7 +73,7 @@
             <x-slot name="extension">
                 {{ $slot }}
 
-                <div class="flex flex-col-reverse items-center p-1 mt-6 space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 lg:mt-0 lg:ml-4 text-theme-secondary-200">
+                <div class="sm:hidden">
                     <x-page-headers.wallet.actions.qr-code :wallet="$wallet" />
                 </div>
             </x-slot>

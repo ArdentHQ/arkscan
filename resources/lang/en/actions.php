@@ -7,4 +7,6 @@ return [
     'hide_advanced'   => 'Hide Advanced',
     'find_it'         => 'Find It',
     'view_all'        => 'View All',
+    'receive'         => 'Receive',
+    'vote'            => 'Vote',
 ];

@@ -78,8 +78,9 @@
     <button
         wire:click="toggleQrCode"
         type="button"
-        class="flex flex-1 justify-center items-center w-full h-11 rounded cursor-pointer lg:flex-none lg:px-3 lg:w-16 bg-theme-secondary-800 transition-default hover:bg-theme-primary-700"
+        class="flex flex-1 justify-center items-center rounded cursor-pointer w-full bg-theme-secondary-800 transition-default h-11 sm:w-14 hover:bg-theme-primary-700 text-white mt-2 sm:mt-0"
     >
         <x-ark-icon name="app-qr-code" size="sm" />
+        <span class="sm:hidden ml-2 font-semibold">@lang('actions.receive')</span>
     </button>
 </div>

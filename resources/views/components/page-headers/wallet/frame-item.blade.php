@@ -16,4 +16,8 @@
             </span>
         </div>
     </div>
+
+    @isset ($extension)
+        {{ $extension }}
+    @endif
 </div>
