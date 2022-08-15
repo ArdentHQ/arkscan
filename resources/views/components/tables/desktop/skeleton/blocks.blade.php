@@ -3,7 +3,10 @@
         device="desktop"
         :items="[
             'general.block.id'           => 'icon',
-            'general.block.timestamp'    => 'text',
+            'general.block.timestamp' => [
+                'type' => 'text',
+                'responsive' => true,
+            ],
             'general.block.height'       => 'number',
             'general.block.transactions' => 'number',
             'general.block.amount' => [
@@ -21,7 +24,10 @@
         device="desktop"
         :items="[
             'general.block.id'           => 'icon',
-            'general.block.timestamp'    => 'text',
+            'general.block.timestamp' => [
+                'type' => 'text',
+                'responsive' => true,
+            ],
             'general.block.generated_by' => 'address',
             'general.block.height'       => 'number',
             'general.block.transactions' => 'number',
