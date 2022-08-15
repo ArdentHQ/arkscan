@@ -141,10 +141,6 @@ body.table-compact-until-lg .arrow-direction {
     }
 }
 
-/* body.table-compact-until-lg .button-vote {
-    @apply ;
-} */
-
 @media (max-width: 1023px) {
     .table-container
         table

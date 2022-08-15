@@ -1,4 +1,4 @@
-@component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
+@component('layouts.app')
     <x-metadata page="search" :detail="['searchTerm' => request()->get('term')]" />
 
     @section('content')

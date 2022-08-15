@@ -1,7 +1,9 @@
-@component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
+@component('layouts.app')
     <x-metadata page="wallets" />
 
     @section('content')
-        <x-wallets.sorted-by-balance />
+        <x-ark-container>
+            <livewire:wallet-table />
+        </x-ark-container>
     @endsection
 @endcomponent
