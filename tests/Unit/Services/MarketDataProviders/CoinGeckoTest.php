@@ -25,6 +25,14 @@ it('should return an empty value if failed response for price data', function ()
     expect((new CoinGecko())->priceAndPriceChange('ARK', collect(['USD'])))->toEqual(collect());
 });
 
+it('should return an empty value if empty response for price data', function () {
+    Http::fake([
+        'api.coingecko.com/*' => Http::response(null, 200),
+    ]);
+
+    expect((new CoinGecko())->priceAndPriceChange('ARK', collect(['USD'])))->toEqual(collect());
+});
+
 it('should fetch the historical prices for the given pair', function () {
     Http::fake([
         'api.coingecko.com/*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/coingecko/market_data.json')), true), 200),
@@ -73,14 +81,18 @@ it('should return an empty value if failed response for historical hourly', func
     expect((new CoinGecko())->historicalHourly('ARK', 'USD'))->toEqual(collect());
 });
 
-it('should throw an exception after 30 empty responses', function () {
+it('should reset exception trigger for empty responses', function ($attempt) {
     Http::fake([
         'api.coingecko.com/*' => Http::response(null, 200),
     ]);
 
-    Cache::set('coin_gecko_response_error', 30);
+    Cache::set('coin_gecko_response_error', (($attempt - 1) % 60) + 1);
 
-    $this->expectException(\Exception::class);
+    if (($attempt % 60) === 0) {
+        $this->expectException(\Exception::class);
+    } else {
+        $this->expectNotToPerformAssertions();
+    }
 
     (new CoinGecko())->historicalHourly('ARK', 'USD');
-});
+})->with(range(1, 120));

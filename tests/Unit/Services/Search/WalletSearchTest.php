@@ -81,7 +81,7 @@ it('can search for a wallet by username containing special characters', function
     expect($result->get())->toHaveCount(1);
 })->with([null, 'strtolower', 'strtoupper']);
 
-it('should search for a wallet by vote', function (?string $modifier) {
+it('should search for a wallet public key by vote', function (?string $modifier) {
     Wallet::factory(10)->create();
 
     $wallet = Wallet::factory()->create([
@@ -92,6 +92,28 @@ it('should search for a wallet by vote', function (?string $modifier) {
 
     $result = (new WalletSearch())->search([
         'vote' => $modifier ? $modifier($wallet->attributes['vote']) : $wallet->attributes['vote'],
+    ]);
+
+    expect($result->get())->toHaveCount(1);
+})->with([null, 'strtolower', 'strtoupper']);
+
+it('should search for a wallet username by vote', function (?string $modifier) {
+    $delegateWallet       = Wallet::factory()->create();
+    $delegate             = $delegateWallet->attributes['delegate'];
+    $delegate['username'] = 'john.doe (old) [new] 2';
+
+    $delegateWallet->update([
+        'attributes' => array_merge($delegateWallet->attributes, ['delegate' => $delegate]),
+    ]);
+
+    Wallet::factory()->create([
+        'attributes' => [
+            'vote' => $delegateWallet->public_key,
+        ],
+    ]);
+
+    $result = (new WalletSearch())->search([
+        'vote' => $modifier ? $modifier('john.doe (old) [new] 2') : 'john.doe (old) [new] 2',
     ]);
 
     expect($result->get())->toHaveCount(1);

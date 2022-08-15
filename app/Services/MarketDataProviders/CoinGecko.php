@@ -96,6 +96,11 @@ final class CoinGecko implements MarketDataProvider
             //
         }
 
+        if ($this->isEmptyResponse($data)) {
+            /** @var Collection<string, MarketData> */
+            return collect([]);
+        }
+
         return $targetCurrencies
             ->mapWithKeys(fn (string $currency) => [strtoupper($currency) => MarketData::fromCoinGeckoApiResponse($currency, $data)]);
     }
@@ -105,7 +110,9 @@ final class CoinGecko implements MarketDataProvider
         if ($data === null) {
             $times = Cache::increment('coin_gecko_response_error');
 
-            if ($times > 30) {
+            if ($times > config('explorer.coingecko_exception_frequency')) {
+                Cache::forget('coin_gecko_response_error');
+
                 throw new \Exception('Too many empty coinGecko responses');
             }
 

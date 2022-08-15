@@ -25,53 +25,25 @@
             </x-slot>
         </x-navbar.navbar>
 
-        <x-slot name="content">
-            <main class="container flex flex-1 w-full mx-auto @unless($isLanding ?? false) pb-14 mt-16 @endif sm:max-w-full @unless($fullWidth ?? false) px-4 sm:px-8 lg:max-w-7xl @endif">
-                <div class="{{ $containerChildClass ?? 'w-full bg-white dark:bg-theme-secondary-900' }}">
-                    @yield('content')
-                </div>
-            </main>
-        </x-slot>
-
         <x-slot name="footer">
             <x-ark-footer
-                :is-ark-product="false"
+                :creator="[
+                    'url' => trans('general.urls.ardent'),
+                    'label' => trans('general.ardent'),
+                    'newWindow' => true,
+                ]"
                 :socials="config('social.networks')"
             >
-                <x-slot name="copyText">
-                    @lang('pages.footer.copyright')
+                <span class="inline-flex items-center space-x-1 whitespace-nowrap">
+                    <span>@lang ('general.market_data_by')</span>
 
-                    <a
-                        href="@lang('general.urls.ardent')"
-                        target="_blank"
-                        class="underline hover:no-underline transition-default hover:text-theme-secondary-200"
-                    >@lang('general.ardent')</a>
-                </x-slot>
-
-                <x-slot name="copyrightSlot">
-                    <span class="break-words">
-                        <span>|</span>
-
-                        <span>@lang('pages.footer.all_rights_reserved')</span>
-
-                        <span>|</span>
-
-                        <span class="inline-flex items-center space-x-1 whitespace-nowrap">
-                            <span>@lang('general.market_data_by')</span>
-
-                            <a
-                                href="@lang('general.urls.coingecko')"
-                                target="_blank"
-                                rel="noopener nofollow noreferrer"
-                            >
-                                <x-ark-icon name="app-coingecko" />
-                            </a>
-                        </span>
-                    </span>
-                </x-slot>
+                    <a href="@lang ('general.urls.coingecko')" target="_blank" rel="noopener nofollow noreferrer">
+                        <x-ark-icon name="app-coingecko" />
+                    </a>
+                </span>
             </x-ark-footer>
 
-            <livewire:search-module is-modal />
+            <livewire:search-modal />
         </x-slot>
     </x-ark-pages-includes-layout-body>
 </html>
