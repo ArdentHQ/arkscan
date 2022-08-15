@@ -745,6 +745,71 @@ it('should handle balance with large numbers', function () {
     }
 });
 
+it('should search for a wallet by balance range and voting for', function () {
+    $wallets = Wallet::factory(10)->create(['balance' => 10 * 1e8]);
+
+    $delegate = Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => [
+                'username' => 'johndoe',
+            ],
+        ],
+    ]);
+
+    $wallet = Wallet::factory()->create([
+        'balance'    => 80 * 1e8,
+        'attributes' => [
+            'vote' => $delegate->public_key,
+        ],
+    ]);
+
+    $component = Livewire::test(SearchPage::class)
+        ->set('state.type', 'wallet')
+        ->set('state.balanceFrom', 50)
+        ->set('state.balanceTo', 100)
+        ->set('state.vote', $delegate->attributes['delegate']['username'])
+        ->call('performSearch')
+        ->assertSee($wallet->address)
+        ->assertDontSee($delegate->address);
+
+    foreach ($wallets as $largerWallet) {
+        $component->assertDontSee($largerWallet->address);
+    }
+});
+
+it('should search for a wallet by balance range and username', function () {
+    $wallets = Wallet::factory(10)->create(['balance' => 10 * 1e8]);
+
+    $delegate = Wallet::factory()->create([
+        'balance'    => 80 * 1e8,
+        'attributes' => [
+            'delegate' => [
+                'username' => 'johndoe',
+            ],
+        ],
+    ]);
+
+    $wallet = Wallet::factory()->create([
+        'balance'    => 80 * 1e8,
+        'attributes' => [
+            'vote' => $delegate->public_key,
+        ],
+    ]);
+
+    $component = Livewire::test(SearchPage::class)
+        ->set('state.type', 'wallet')
+        ->set('state.balanceFrom', 50)
+        ->set('state.balanceTo', 100)
+        ->set('state.username', $delegate->attributes['delegate']['username'])
+        ->call('performSearch')
+        ->assertSee($delegate->address)
+        ->assertDontSee($wallet->address);
+
+    foreach ($wallets as $largerWallet) {
+        $component->assertDontSee($largerWallet->address);
+    }
+});
+
 it('should do a basic search for a wallet', function () {
     Wallet::factory(10)->create(['public_key' => '123']);
 
