@@ -61,7 +61,7 @@
                 <x-navbar.setting-option
                     :title="trans('forms.settings.table.title')"
                     :subtitle="trans('forms.settings.table.description')"
-                    breakpoint="md"
+                    breakpoint="lg"
                 >
                     <x-ark-toggle
                         name="state.expandedTables"
