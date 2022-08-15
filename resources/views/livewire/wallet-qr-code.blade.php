@@ -92,7 +92,7 @@
             "w-14 " => !$showReceiveLabel,
         ])
     >
-        <x-ark-icon name="app-qr-code" size="sm" />
+        <x-ark-icon name="qr-code" size="sm" />
 
         @if($showReceiveLabel)
             <span class="ml-2 font-semibold sm:hidden">@lang('actions.receive')</span>
