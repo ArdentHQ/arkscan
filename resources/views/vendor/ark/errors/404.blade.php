@@ -5,14 +5,14 @@
         <x-ark-icon
             name="app-errors.generic"
             class="light-dark-icon"
-            size="w-full h-full"
+            size="w-full"
         />
     @endsection
 
     @section('content')
         <x-ark-container class="flex mx-auto w-full md:items-center md:h-error">
             <div class="text-center">
-                <div class="mx-auto max-w-error-image">
+                <div class="mx-auto w-84">
                     @yield('image')
                 </div>
 
