@@ -75,3 +75,23 @@ it('should reset exception trigger for empty responses', function ($attempt) {
 
     (new CoinGecko())->historicalHourly('ARK', 'USD');
 })->with(range(1, 12));
+
+it('should trigger exception for throttled requests', function ($attempt) {
+    Http::fake([
+        'api.coingecko.com/*' => Http::response([
+            'status' => [
+                'error_code' => 1,
+            ],
+        ], 500),
+    ]);
+
+    Config::set('explorer.coingecko_exception_frequency', 6);
+
+    if (($attempt % 60) === 0) {
+        $this->expectException(\Exception::class);
+    } else {
+        $this->expectNotToPerformAssertions();
+    }
+
+    (new CoinGecko())->historicalHourly('ARK', 'USD');
+})->with(range(1, 12));
