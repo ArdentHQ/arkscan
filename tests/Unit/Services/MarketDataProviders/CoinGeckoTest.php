@@ -18,9 +18,7 @@ it('should fetch the price data for the given collection', function () {
 });
 
 it('should return an empty value if failed response for price data', function () {
-    Http::fake([
-        'api.coingecko.com/*' => Http::response(null, 500),
-    ]);
+    Http::preventStrayRequests();
 
     expect((new CoinGecko())->priceAndPriceChange('ARK', collect(['USD'])))->toEqual(collect());
 });
@@ -50,9 +48,7 @@ it('should return an empty value if empty response for historical', function () 
 });
 
 it('should return an empty value if failed response for historical', function () {
-    Http::fake([
-        'api.coingecko.com/*' => Http::response(null, 500),
-    ]);
+    Http::preventStrayRequests();
 
     expect((new CoinGecko())->historical('ARK', 'USD'))->toEqual(collect());
 });
@@ -74,9 +70,7 @@ it('should return an empty value if empty response for historical hourly', funct
 });
 
 it('should return an empty value if failed response for historical hourly', function () {
-    Http::fake([
-        'api.coingecko.com/*' => Http::response(null, 500),
-    ]);
+    Http::preventStrayRequests();
 
     expect((new CoinGecko())->historicalHourly('ARK', 'USD'))->toEqual(collect());
 });
