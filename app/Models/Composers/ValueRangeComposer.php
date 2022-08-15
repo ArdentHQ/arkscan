@@ -19,21 +19,23 @@ final class ValueRangeComposer
             return $query;
         }
 
-        if (! is_null($from) && $from > 0) {
-            if ($useSatoshi) {
-                $query->where($column, '>=', intval($from * 1e8));
-            } else {
-                $query->where($column, '>=', $from);
+        $query->where(function ($query) use ($from, $to, $column, $useSatoshi) {
+            if (! is_null($from) && $from > 0) {
+                if ($useSatoshi) {
+                    $query->where($column, '>=', intval($from * 1e8));
+                } else {
+                    $query->where($column, '>=', $from);
+                }
             }
-        }
 
-        if (! is_null($to) && $to > 0) {
-            if ($useSatoshi) {
-                $query->where($column, '<=', intval($to * 1e8));
-            } else {
-                $query->where($column, '<=', $to);
+            if (! is_null($to) && $to > 0) {
+                if ($useSatoshi) {
+                    $query->where($column, '<=', intval($to * 1e8));
+                } else {
+                    $query->where($column, '<=', $to);
+                }
             }
-        }
+        });
 
         return $query;
     }
