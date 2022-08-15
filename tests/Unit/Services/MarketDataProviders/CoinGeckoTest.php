@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Services\MarketDataProviders\CoinGecko;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
@@ -62,6 +63,8 @@ it('should reset exception trigger for empty responses', function ($attempt) {
         'api.coingecko.com/*' => Http::response(null, 200),
     ]);
 
+    Config::set('explorer.coingecko_exception_frequency', 6);
+
     Cache::set('coin_gecko_response_error', (($attempt - 1) % 60) + 1);
 
     if (($attempt % 60) === 0) {
@@ -71,4 +74,4 @@ it('should reset exception trigger for empty responses', function ($attempt) {
     }
 
     (new CoinGecko())->historicalHourly('ARK', 'USD');
-})->with(range(1, 120));
+})->with(range(1, 12));
