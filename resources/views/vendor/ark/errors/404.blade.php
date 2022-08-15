@@ -21,7 +21,7 @@
                 </div>
 
                 @if(is_a($exception->getPrevious(), \App\Exceptions\WalletNotFoundException::class))
-                    <div class="leading-7 text-center text-theme-secondary-900 dark:text-theme-secondary-600">
+                    <div class="leading-7 text-center text-theme-secondary-900 dark:text-theme-secondary-600 mt-3">
                         @lang('errors.wallet_not_found_details')
                     </div>
                 @endif
