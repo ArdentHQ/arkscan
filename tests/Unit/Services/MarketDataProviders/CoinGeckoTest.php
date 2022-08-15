@@ -65,9 +65,9 @@ it('should reset exception trigger for empty responses', function ($attempt) {
 
     Config::set('explorer.coingecko_exception_frequency', 6);
 
-    Cache::set('coin_gecko_response_error', (($attempt - 1) % 60) + 1);
+    Cache::set('coin_gecko_response_error', (($attempt - 1) % 6) + 1);
 
-    if (($attempt % 60) === 0) {
+    if (($attempt % 6) === 0) {
         $this->expectException(\Exception::class);
     } else {
         $this->expectNotToPerformAssertions();
