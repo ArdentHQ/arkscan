@@ -25,10 +25,16 @@ final class CoinGecko implements MarketDataProvider
                 'interval'    => 'daily',
             ];
 
-            $data = Http::get(
-                'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
-                $params
-            )->json();
+            $data = null;
+
+            try {
+                $data = Http::get(
+                    'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
+                    $params
+                )->json();
+            } catch (\Throwable) {
+                //
+            }
 
             if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
                 /** @var Collection<int, mixed> */
@@ -51,17 +57,24 @@ final class CoinGecko implements MarketDataProvider
                 'days'        => strval(ceil($limit / 24)),
             ];
 
-            /** @var array<string, array<string, string>> */
-            $data = Http::get(
-                'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
-                $params
-            )->json();
+            $data = null;
+
+            try {
+                /** @var array<string, array<string, string>> */
+                $data = Http::get(
+                    'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
+                    $params
+                )->json();
+            } catch (\Throwable) {
+                //
+            }
 
             if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
                 /** @var Collection<int, mixed> */
                 return collect([]);
             }
 
+            /** @var array<string, array<string, string>> $data */
             return collect($data['prices'])
                 ->groupBy(fn ($item) => Carbon::createFromTimestampMsUTC($item[0])->format('Y-m-d H:').'00:00')
                 ->mapWithKeys(fn ($items, $day) => [
@@ -75,7 +88,13 @@ final class CoinGecko implements MarketDataProvider
 
     public function priceAndPriceChange(string $baseCurrency, Collection $targetCurrencies): Collection
     {
-        $data = Http::get('https://api.coingecko.com/api/v3/coins/'.Str::lower($baseCurrency))->json();
+        $data = null;
+
+        try {
+            $data = Http::get('https://api.coingecko.com/api/v3/coins/'.Str::lower($baseCurrency))->json();
+        } catch (\Throwable) {
+            //
+        }
 
         if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
             /** @var Collection<string, MarketData> */
