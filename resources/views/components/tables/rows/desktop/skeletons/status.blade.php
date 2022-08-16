@@ -12,11 +12,11 @@
     :first-on="$firstOn"
     :last-on="$lastOn"
 >
-    <div class="flex flex-row justify-end items-center space-x-2 w-full md:justify-start md:space-x-3">
-        <div class="w-6 h-6 rounded-full md:w-11 md:h-11 loading-state status-circle"></div>
-        <div class="hidden w-6 h-6 rounded-full sm:block md:w-11 md:h-11 loading-state status-circle"></div>
-        <div class="hidden w-6 h-6 rounded-full sm:block md:w-11 md:h-11 loading-state status-circle"></div>
-        <div class="hidden w-6 h-6 rounded-full sm:block md:w-11 md:h-11 loading-state status-circle"></div>
-        <div class="hidden w-6 h-6 rounded-full sm:block md:w-11 md:h-11 loading-state status-circle"></div>
+    <div class="flex flex-row justify-end items-center space-x-2 w-full lg:justify-start lg:space-x-3">
+        <div class="w-5 h-5 rounded-full lg:w-11 lg:h-11 loading-state status-circle"></div>
+        <div class="hidden w-5 h-5 rounded-full sm:block lg:w-11 lg:h-11 loading-state status-circle"></div>
+        <div class="hidden w-5 h-5 rounded-full sm:block lg:w-11 lg:h-11 loading-state status-circle"></div>
+        <div class="hidden w-5 h-5 rounded-full sm:block lg:w-11 lg:h-11 loading-state status-circle"></div>
+        <div class="hidden w-5 h-5 rounded-full sm:block lg:w-11 lg:h-11 loading-state status-circle"></div>
     </div>
 </x-ark-tables.cell>
