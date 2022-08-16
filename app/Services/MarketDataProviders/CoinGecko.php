@@ -109,7 +109,7 @@ final class CoinGecko implements MarketDataProvider
     {
         return $this->isAcceptableResponse(
             $data,
-            'coin_gecko_response_error',
+            'coingecko_response_error',
             'Too many empty coinGecko responses',
         );
     }
@@ -118,7 +118,7 @@ final class CoinGecko implements MarketDataProvider
     {
         return $this->isAcceptableResponse(
             $data,
-            'coin_gecko_response_throttled',
+            'coingecko_response_throttled',
             'CoinGecko requests are being throttled',
         );
     }
@@ -131,8 +131,8 @@ final class CoinGecko implements MarketDataProvider
         }
 
         if ($errorCode !== null || $data === null) {
-            if (Cache::increment('coin_gecko_response_error') > config('explorer.coingecko_exception_frequency')) {
-                Cache::forget('coin_gecko_response_error');
+            if (Cache::increment('coingecko_response_error') > config('explorer.coingecko_exception_frequency')) {
+                Cache::forget('coingecko_response_error');
 
                 throw new \Exception($message);
             }
