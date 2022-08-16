@@ -25,6 +25,16 @@
                         @lang('errors.wallet_not_found_details')
                     </div>
                 @endif
+
+                <div class="flex flex-col mt-8 space-y-3 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-3">
+                    <a href="{{ route('home') }}" class="button button-secondary">
+                        @lang('ui::general.home')
+                    </a>
+
+                    <a href="{{ url()->current() }}" class="button button-primary">
+                        @lang('general.reload')
+                    </a>
+                </div>
             </div>
         </x-ark-container>
     @endsection
