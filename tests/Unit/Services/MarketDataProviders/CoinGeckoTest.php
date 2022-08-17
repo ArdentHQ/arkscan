@@ -83,7 +83,7 @@ it('should reset exception trigger for empty responses', function ($attempt) {
 
     Config::set('explorer.coingecko_exception_frequency', 6);
 
-    Cache::set('coin_gecko_response_error', (($attempt - 1) % 6) + 1);
+    Cache::set('coingecko_response_error', (($attempt - 1) % 6) + 1);
 
     if (($attempt % 6) === 0) {
         $this->expectException(\Exception::class);
@@ -105,7 +105,7 @@ it('should trigger exception for throttled requests', function ($attempt) {
 
     Config::set('explorer.coingecko_exception_frequency', 6);
 
-    Cache::set('coin_gecko_response_error', (($attempt - 1) % 6) + 1);
+    Cache::set('coingecko_response_error', (($attempt - 1) % 6) + 1);
 
     if (($attempt % 6) === 0) {
         $this->expectException(\Exception::class);
