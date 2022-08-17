@@ -36,7 +36,7 @@ final class CoinGecko implements MarketDataProvider
                 //
             }
 
-            if ($this->isEmptyResponse($data)) {
+            if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
                 /** @var Collection<int, mixed> */
                 return collect([]);
             }
@@ -69,7 +69,7 @@ final class CoinGecko implements MarketDataProvider
                 //
             }
 
-            if ($this->isEmptyResponse($data)) {
+            if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
                 /** @var Collection<int, mixed> */
                 return collect([]);
             }
@@ -96,7 +96,7 @@ final class CoinGecko implements MarketDataProvider
             //
         }
 
-        if ($this->isEmptyResponse($data)) {
+        if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
             /** @var Collection<string, MarketData> */
             return collect([]);
         }
@@ -107,19 +107,40 @@ final class CoinGecko implements MarketDataProvider
 
     private function isEmptyResponse(?array $data): bool
     {
-        if ($data === null) {
-            $times = Cache::increment('coin_gecko_response_error');
+        return $this->isAcceptableResponse(
+            $data,
+            'coingecko_response_error',
+            'Too many empty coinGecko responses',
+        );
+    }
 
-            if ($times > config('explorer.coingecko_exception_frequency')) {
-                Cache::forget('coin_gecko_response_error');
+    private function isThrottledResponse(?array $data): bool
+    {
+        return $this->isAcceptableResponse(
+            $data,
+            'coingecko_response_throttled',
+            'CoinGecko requests are being throttled',
+        );
+    }
 
-                throw new \Exception('Too many empty coinGecko responses');
+    private function isAcceptableResponse(?array $data, string $cacheKey, string $message): bool
+    {
+        $errorCode = null;
+        if ($data !== null && array_key_exists('status', $data) && array_key_exists('error_code', $data['status'])) {
+            $errorCode = $data['status']['error_code'];
+        }
+
+        if ($errorCode !== null || $data === null) {
+            if (Cache::increment('coingecko_response_error') > config('explorer.coingecko_exception_frequency')) {
+                Cache::forget('coingecko_response_error');
+
+                throw new \Exception($message);
             }
 
             return true;
         }
 
-        Cache::forget('coin_gecko_response_error');
+        Cache::forget($cacheKey);
 
         return false;
     }
