@@ -83,7 +83,7 @@ it('should not update prices if coingecko throws an exception', function () {
     expect($cache->getHistoricalHourly('ARK', 'USD'))->toEqual(collect([1, 2, 3]));
 });
 
-it('should update prices if coingecko does not return an empty response', function () {
+it('should update prices if coingecko does return a response', function () {
     $cache = app(NetworkStatusBlockCache::class);
 
     $now = Carbon::now();
@@ -130,7 +130,7 @@ it('should not update prices if cryptocompare throws an exception', function () 
     }
 });
 
-it('should update prices if cryptocompare does not return an empty response', function () {
+it('should update prices if cryptocompare does return a response', function () {
     $cache = app(NetworkStatusBlockCache::class);
 
     $now = Carbon::now();
