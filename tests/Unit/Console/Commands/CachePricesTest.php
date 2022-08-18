@@ -178,6 +178,9 @@ it('should update prices if cryptocompare does return a response', function () {
     $crypto = app(CryptoDataCache::class);
     $prices = app(PriceChartCache::class);
 
+    $crypto->getCache()->flush();
+    $prices->getCache()->flush();
+
     $now = Carbon::now();
 
     $mockPrices     = [];
