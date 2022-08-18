@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use function Tests\fakeCryptoCompare;
 
+beforeEach(function () {
+    $this->travelTo(Carbon::parse('2022-08-18 13:00:00'));
+});
+
 it('should execute the command', function (string $network) {
     fakeCryptoCompare();
 
