@@ -91,7 +91,7 @@ it('should update prices if coingecko does not return an empty response', functi
     $mockPrices     = [];
     $expectedPrices = [];
     foreach (range(0, 23) as $hour) {
-        $time = $now->sub($hour, 'hours');
+        $time         = $now->sub($hour, 'hours');
         $mockPrices[] = [
             $time->valueOf(),
             $hour,
@@ -138,7 +138,7 @@ it('should update prices if cryptocompare does not return an empty response', fu
     $mockPrices     = [];
     $expectedPrices = [];
     foreach (range(0, 23) as $hour) {
-        $time = $now->sub($hour, 'hours');
+        $time         = $now->sub($hour, 'hours');
         $mockPrices[] = [
             'time'  => $time->timestamp,
             'close' => $hour,
