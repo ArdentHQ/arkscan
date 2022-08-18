@@ -72,7 +72,7 @@ final class CryptoCompare extends AbstractMarketDataProvider
             $prices = $data['Data'];
 
             return collect($prices)
-                ->groupBy(fn ($day) => Carbon::createFromTimestamp($day['time'])->format('Y-m-d H:00:00'))
+                ->groupBy(fn ($day) => Carbon::createFromTimestamp($day['time'])->format($format))
                 ->mapWithKeys(fn ($transactions, $day) => [
                     $day => ResolveScientificNotation::execute($transactions->sum('close')),
                 ]);
