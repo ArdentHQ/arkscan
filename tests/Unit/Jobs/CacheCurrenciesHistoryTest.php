@@ -7,6 +7,7 @@ use App\Facades\Network;
 use App\Jobs\CacheCurrenciesHistory;
 use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\NetworkStatusBlockCache;
+use App\Services\MarketDataProviders\CoinGecko;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use function Tests\fakeCryptoCompare;
@@ -68,4 +69,18 @@ it('set values to null when cryptocompare is down', function () {
     } catch (ConnectionException $e) {
         expect($cache->getHistoricalHourly(Network::currency(), 'USD'))->toBeNull();
     }
+});
+
+it('should not update prices if coingecko returns an empty response', function () {
+    $cache = app(NetworkStatusBlockCache::class);
+
+    Http::fake([
+        'api.coingecko.com/*' => Http::response(null, 200),
+    ]);
+
+    $cache->setHistoricalHourly('ARK', 'USD', collect([1, 2, 3]));
+
+    (new CacheCurrenciesHistory('ARK', 'USD'))->handle($cache, new CoinGecko());
+
+    expect($cache->getHistoricalHourly('ARK', 'USD'))->toEqual(collect([1, 2, 3]));
 });
