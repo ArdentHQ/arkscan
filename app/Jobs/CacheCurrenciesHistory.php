@@ -43,8 +43,6 @@ final class CacheCurrenciesHistory implements ShouldQueue
                 );
             }
         } catch (ConnectionException $e) {
-            $cache->setHistoricalHourly($this->source, $this->currency, null);
-
             throw $e;
         }
     }
