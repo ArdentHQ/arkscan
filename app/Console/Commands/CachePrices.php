@@ -55,8 +55,10 @@ final class CachePrices extends Command
                     $prices = $hourlyPrices;
                 }
 
-                $crypto->setPrices($currency.'.'.$period, $prices);
-                $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $prices));
+                if (! $prices->isEmpty()) {
+                    $crypto->setPrices($currency.'.'.$period, $prices);
+                    $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $prices));
+                }
             });
         });
     }
