@@ -35,7 +35,7 @@ final class CacheCurrenciesHistory implements ShouldQueue
     {
         try {
             $data = $marketDataProvider->historicalHourly($this->source, $this->currency);
-            if (!$data->isEmpty()) {
+            if (! $data->isEmpty()) {
                 $cache->setHistoricalHourly(
                     $this->source,
                     $this->currency,
