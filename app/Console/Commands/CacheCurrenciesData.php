@@ -9,7 +9,6 @@ use App\DTO\MarketData;
 use App\Facades\Network;
 use App\Services\Cache\NetworkStatusBlockCache;
 use Illuminate\Console\Command;
-use Illuminate\Http\Client\ConnectionException;
 
 final class CacheCurrenciesData extends Command
 {
