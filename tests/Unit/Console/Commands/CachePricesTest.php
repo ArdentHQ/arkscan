@@ -130,7 +130,7 @@ it('should update prices if coingecko does return a response', function () {
         'datasets' => [],
     ];
     foreach (range(0, 23) as $hour) {
-        $time = Carbon::now()->sub($hour, 'hours');
+        $time         = Carbon::now()->sub($hour, 'hours');
         $mockPrices[] = [
             $time->valueOf(),
             $hour,
@@ -140,8 +140,8 @@ it('should update prices if coingecko does return a response', function () {
             ->setSeconds(0);
 
         $expectedCrypto[$time->format('Y-m-d H:00:00')] = (string) $hour;
-        $expectedPrices['labels'][]   = $time->format('H:00');
-        $expectedPrices['datasets'][] = (float) $hour;
+        $expectedPrices['labels'][]                     = $time->format('H:00');
+        $expectedPrices['datasets'][]                   = (float) $hour;
     }
 
     Http::fake([
@@ -182,7 +182,7 @@ it('should update prices if cryptocompare does return a response', function () {
         'datasets' => [],
     ];
     foreach (range(0, 23) as $hour) {
-        $time = Carbon::now()->sub($hour, 'hours');
+        $time         = Carbon::now()->sub($hour, 'hours');
         $mockPrices[] = [
             'time'  => $time->timestamp,
             'close' => $hour,
@@ -196,8 +196,8 @@ it('should update prices if cryptocompare does return a response', function () {
             'close' => $hour,
         ];
         $expectedCrypto[$time->format('Y-m-d H:00:00')] = (string) $hour;
-        $expectedPrices['labels'][]   = $time->format('H:00');
-        $expectedPrices['datasets'][] = (float) $hour;
+        $expectedPrices['labels'][]                     = $time->format('H:00');
+        $expectedPrices['datasets'][]                   = (float) $hour;
     }
 
     Http::fake([

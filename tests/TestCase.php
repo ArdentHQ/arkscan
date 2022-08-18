@@ -17,6 +17,18 @@ abstract class TestCase extends BaseTestCase
     use RefreshDatabase;
 
     /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Http::preventStrayRequests();
+    }
+
+    /**
      * Creates the application.
      *
      * @return \Illuminate\Foundation\Application
@@ -33,18 +45,6 @@ abstract class TestCase extends BaseTestCase
         );
 
         return $app;
-    }
-
-    /**
-     * Setup the test environment.
-     *
-     * @return void
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Http::preventStrayRequests();
     }
 
     /**
