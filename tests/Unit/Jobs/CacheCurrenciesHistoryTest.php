@@ -161,7 +161,8 @@ it('should update prices if cryptocompare does return a response', function () {
 
     Http::fake([
         'cryptocompare.com/*' => Http::response([
-            'Data' => $mockPrices,
+            'Response' => 'Success',
+            'Data'     => $mockPrices,
         ], 200),
     ]);
 

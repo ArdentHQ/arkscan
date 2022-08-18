@@ -219,13 +219,15 @@ it('should update prices if cryptocompare does return a response', function () {
 
     Http::fake([
         'https://min-api.cryptocompare.com/data/histoday*' => Http::response([
-            'Data' => $mockPrices,
+            'Response' => 'Success',
+            'Data'     => $mockPrices,
         ], 200),
     ]);
 
     Http::fake([
         'https://min-api.cryptocompare.com/data/histohour*' => Http::response([
-            'Data' => $mockCrypto,
+            'Response' => 'Success',
+            'Data'     => $mockCrypto,
         ], 200),
     ]);
 
