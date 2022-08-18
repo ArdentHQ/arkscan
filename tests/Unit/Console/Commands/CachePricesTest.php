@@ -36,6 +36,78 @@ it('should execute the command', function (string $network) {
     expect($prices->getHistorical('USD', 'year'))->toBeArray();
 })->with(['explorer.networks.development', 'explorer.networks.production']);
 
+it('should not update prices if coingecko returns an empty response', function () {
+    $crypto = app(CryptoDataCache::class);
+    $prices = app(PriceChartCache::class);
+
+    $crypto->getCache()->flush();
+    $prices->getCache()->flush();
+
+    Http::fake([
+        'api.coingecko.com/*' => Http::response(null, 200),
+    ]);
+
+    $crypto->setPrices('USD.day', collect([1, 2, 3]));
+    $prices->setHistorical('USD', 'day', collect([
+        '12:00' => 1,
+        '13:00' => 2,
+        '14:00' => 3,
+    ]));
+
+    (new CachePrices())->handle($crypto, $prices, new CoinGecko());
+
+    expect($crypto->getPrices('USD.day'))->toEqual(collect([1, 2, 3]));
+    expect($prices->getHistorical('USD', 'day'))->toEqual([
+        'labels' => [
+            '12:00',
+            '13:00',
+            '14:00',
+        ],
+        'datasets' => [
+            1,
+            2,
+            3,
+        ],
+    ]);
+});
+
+it('should not update prices if coingecko throws an exception', function () {
+    $crypto = app(CryptoDataCache::class);
+    $prices = app(PriceChartCache::class);
+
+    $crypto->getCache()->flush();
+    $prices->getCache()->flush();
+
+    Http::fake([
+        'api.coingecko.com/*' => function () {
+            throw new ConnectionException();
+        },
+    ]);
+
+    $crypto->setPrices('USD.day', collect([1, 2, 3]));
+    $prices->setHistorical('USD', 'day', collect([
+        '12:00' => 1,
+        '13:00' => 2,
+        '14:00' => 3,
+    ]));
+
+    (new CachePrices())->handle($crypto, $prices, new CoinGecko());
+
+    expect($crypto->getPrices('USD.day'))->toEqual(collect([1, 2, 3]));
+    expect($prices->getHistorical('USD', 'day'))->toEqual([
+        'labels' => [
+            '12:00',
+            '13:00',
+            '14:00',
+        ],
+        'datasets' => [
+            1,
+            2,
+            3,
+        ],
+    ]);
+});
+
 it('should update prices if coingecko does return a response', function () {
     Config::set('currencies', [
         'usd' => [
