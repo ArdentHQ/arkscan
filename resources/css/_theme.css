@@ -1,0 +1,14 @@
+.light-dark-icon {
+    --icon-error-primary-100: var(--theme-color-danger-100);
+    --icon-error-primary-600: var(--theme-color-danger-400);
+    --icon-error-secondary-300: var(--theme-color-secondary-300);
+    --icon-error-secondary-900: var(--theme-color-secondary-900);
+}
+
+.dark .light-dark-icon {
+    --icon-error-primary-100: var(--theme-color-danger-900);
+    --icon-error-primary-600: var(--theme-color-danger-400);
+    --icon-error-secondary-200: var(--theme-color-secondary-800);
+    --icon-error-secondary-300: var(--theme-color-secondary-800);
+    --icon-error-secondary-900: var(--theme-color-secondary-600);
+}

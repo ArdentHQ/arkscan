@@ -10,6 +10,11 @@ trait ManagesSearch
 {
     public array $state = [];
 
+    public function toggleAdvanced(): void
+    {
+        $this->isAdvanced = ! $this->isAdvanced;
+    }
+
     private function validateSearchQuery(): array
     {
         return $this->validate([

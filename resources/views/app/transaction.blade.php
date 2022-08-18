@@ -1,4 +1,4 @@
-@component('layouts.app', ['isLanding' => true, 'fullWidth' => true])
+@component('layouts.app')
     @push('scripts')
         <script src="{{ mix('js/clipboard.js')}}"></script>
     @endpush

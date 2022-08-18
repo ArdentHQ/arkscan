@@ -744,3 +744,112 @@ it('should handle balance with large numbers', function () {
         $component->assertDontSee($largerWallet->address);
     }
 });
+
+it('should search for a wallet by balance range and voting for', function () {
+    $wallets = Wallet::factory(10)->create(['balance' => 10 * 1e8]);
+
+    $delegate = Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => [
+                'username' => 'johndoe',
+            ],
+        ],
+    ]);
+
+    $wallet = Wallet::factory()->create([
+        'balance'    => 80 * 1e8,
+        'attributes' => [
+            'vote' => $delegate->public_key,
+        ],
+    ]);
+
+    $component = Livewire::test(SearchPage::class)
+        ->set('state.type', 'wallet')
+        ->set('state.balanceFrom', 50)
+        ->set('state.balanceTo', 100)
+        ->set('state.vote', $delegate->attributes['delegate']['username'])
+        ->call('performSearch')
+        ->assertSee($wallet->address)
+        ->assertDontSee($delegate->address);
+
+    foreach ($wallets as $largerWallet) {
+        $component->assertDontSee($largerWallet->address);
+    }
+});
+
+it('should search for a wallet by balance range and username', function () {
+    $wallets = Wallet::factory(10)->create(['balance' => 10 * 1e8]);
+
+    $delegate = Wallet::factory()->create([
+        'balance'    => 80 * 1e8,
+        'attributes' => [
+            'delegate' => [
+                'username' => 'johndoe',
+            ],
+        ],
+    ]);
+
+    $wallet = Wallet::factory()->create([
+        'balance'    => 80 * 1e8,
+        'attributes' => [
+            'vote' => $delegate->public_key,
+        ],
+    ]);
+
+    $component = Livewire::test(SearchPage::class)
+        ->set('state.type', 'wallet')
+        ->set('state.balanceFrom', 50)
+        ->set('state.balanceTo', 100)
+        ->set('state.username', $delegate->attributes['delegate']['username'])
+        ->call('performSearch')
+        ->assertSee($delegate->address)
+        ->assertDontSee($wallet->address);
+
+    foreach ($wallets as $largerWallet) {
+        $component->assertDontSee($largerWallet->address);
+    }
+});
+
+it('should do a basic search for a wallet', function () {
+    Wallet::factory(10)->create(['public_key' => '123']);
+
+    $wallet = Wallet::factory()->create();
+
+    Livewire::test(SearchPage::class)
+        ->set('state.term', $wallet->public_key)
+        ->set('isAdvanced', false)
+        ->call('performSearch')
+        ->assertSee($wallet->address);
+});
+
+it('should do a basic search for a transaction', function () {
+    Transaction::factory()->create();
+    $block = Block::factory()->create();
+    Transaction::factory()->create(['block_id' => $block->id]);
+    $transaction = Transaction::factory()->create();
+
+    Livewire::test(SearchPage::class)
+        ->set('state.term', $transaction->id)
+        ->set('isAdvanced', false)
+        ->call('performSearch')
+        ->assertSee($transaction->id);
+});
+
+it('should do a basic search for a block', function () {
+    Transaction::factory()->create();
+    $block = Block::factory()->create();
+    Transaction::factory()->create(['block_id' => $block->id]);
+
+    Livewire::test(SearchPage::class)
+        ->set('state.term', $block->id)
+        ->set('isAdvanced', false)
+        ->call('performSearch')
+        ->assertSee($block->id);
+});
+
+it('should toggle advanced filters', function () {
+    Livewire::test(SearchPage::class)
+        ->assertSet('isAdvanced', true)
+        ->call('toggleAdvanced')
+        ->assertSet('isAdvanced', false);
+});

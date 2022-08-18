@@ -26,6 +26,8 @@ it('should execute the job', function () {
 it('should execute the command with no delay command', function () {
     Bus::fake();
 
+    Config::set('explorer.network', 'development');
+
     Config::set('currencies', [
         'usd' => [
             'currency' => 'USD',
