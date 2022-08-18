@@ -22,12 +22,14 @@ final class CryptoCompare extends AbstractMarketDataProvider
 
             try {
                 $data = Http::get(
-                    'https://min-api.cryptocompare.com/data/histoday', [
+                    'https://min-api.cryptocompare.com/data/histoday',
+                    [
                         'fsym'  => $source,
                         'tsym'  => $target,
                         'toTs'  => Carbon::now()->unix(),
                         'limit' => Network::epoch()->diffInDays(),
-                    ])->json();
+                    ]
+                )->json();
             } catch (\Throwable) {
                 //
             }
@@ -53,12 +55,14 @@ final class CryptoCompare extends AbstractMarketDataProvider
 
             try {
                 $data = Http::get(
-                    'https://min-api.cryptocompare.com/data/histohour', [
+                    'https://min-api.cryptocompare.com/data/histohour',
+                    [
                         'fsym'  => $source,
                         'tsym'  => $target,
                         'toTs'  => Carbon::now()->unix(),
                         'limit' => $limit,
-                    ])->json();
+                    ]
+                )->json();
             } catch (\Throwable) {
                 //
             }
@@ -85,10 +89,12 @@ final class CryptoCompare extends AbstractMarketDataProvider
 
         try {
             $data = Http::get(
-                'https://min-api.cryptocompare.com/data/pricemultifull', [
+                'https://min-api.cryptocompare.com/data/pricemultifull',
+                [
                     'fsyms'  => $baseCurrency,
                     'tsyms'  => $targetCurrencies->join(','),
-                ])->json();
+                ]
+            )->json();
         } catch (\Throwable) {
             //
         }
