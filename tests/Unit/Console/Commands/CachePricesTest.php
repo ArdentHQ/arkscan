@@ -175,6 +175,81 @@ it('should update prices if coingecko does return a response', function () {
     expect($prices->getHistorical('USD', 'day'))->toEqual($expectedPrices);
 });
 
+it('should not update prices if cryptocompare returns an empty response', function () {
+    $crypto = app(CryptoDataCache::class);
+    $prices = app(PriceChartCache::class);
+
+    $crypto->getCache()->flush();
+    $prices->getCache()->flush();
+
+    Http::fake([
+        'https://min-api.cryptocompare.com/data/*' => Http::response([
+            'Response' => 'Success',
+            'Data'     => [],
+        ], 200),
+    ]);
+
+    $crypto->setPrices('USD.day', collect([1, 2, 3]));
+    $prices->setHistorical('USD', 'day', collect([
+        '12:00' => 1,
+        '13:00' => 2,
+        '14:00' => 3,
+    ]));
+
+    (new CachePrices())->handle($crypto, $prices, new CryptoCompare());
+
+    expect($crypto->getPrices('USD.day'))->toEqual(collect([1, 2, 3]));
+    expect($prices->getHistorical('USD', 'day'))->toEqual([
+        'labels' => [
+            '12:00',
+            '13:00',
+            '14:00',
+        ],
+        'datasets' => [
+            1,
+            2,
+            3,
+        ],
+    ]);
+});
+
+it('should not update prices if cryptocompare throws an exception', function () {
+    $crypto = app(CryptoDataCache::class);
+    $prices = app(PriceChartCache::class);
+
+    $crypto->getCache()->flush();
+    $prices->getCache()->flush();
+
+    Http::fake([
+        'cryptocompare.com/*' => function () {
+            throw new ConnectionException();
+        },
+    ]);
+
+    $crypto->setPrices('USD.day', collect([1, 2, 3]));
+    $prices->setHistorical('USD', 'day', collect([
+        '12:00' => 1,
+        '13:00' => 2,
+        '14:00' => 3,
+    ]));
+
+    (new CachePrices())->handle($crypto, $prices, new CryptoCompare());
+
+    expect($crypto->getPrices('USD.day'))->toEqual(collect([1, 2, 3]));
+    expect($prices->getHistorical('USD', 'day'))->toEqual([
+        'labels' => [
+            '12:00',
+            '13:00',
+            '14:00',
+        ],
+        'datasets' => [
+            1,
+            2,
+            3,
+        ],
+    ]);
+});
+
 it('should update prices if cryptocompare does return a response', function () {
     Config::set('currencies', [
         'usd' => [
