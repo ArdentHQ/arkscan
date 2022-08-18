@@ -9,12 +9,13 @@ use App\DTO\MarketData;
 use App\Facades\Network;
 use App\Services\Cache\CryptoDataCache;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
-final class CoinGecko implements MarketDataProvider
+final class CoinGecko extends AbstractMarketDataProvider
 {
     public function historical(string $source, string $target, string $format = 'Y-m-d'): Collection
     {
@@ -110,7 +111,9 @@ final class CoinGecko implements MarketDataProvider
         return $this->isAcceptableResponse(
             $data,
             'coingecko_response_error',
-            'Too many empty coinGecko responses',
+            config('explorer.coingecko_exception_frequency', 60),
+            'Too many empty CoinGecko responses',
+            fn ($data) => Arr::get($data, 'status.error_code') !== null,
         );
     }
 
@@ -119,29 +122,9 @@ final class CoinGecko implements MarketDataProvider
         return $this->isAcceptableResponse(
             $data,
             'coingecko_response_throttled',
+            config('explorer.coingecko_exception_frequency', 60),
             'CoinGecko requests are being throttled',
+            fn ($data) => Arr::get($data, 'status.error_code') !== null,
         );
-    }
-
-    private function isAcceptableResponse(?array $data, string $cacheKey, string $message): bool
-    {
-        $errorCode = null;
-        if ($data !== null && array_key_exists('status', $data) && array_key_exists('error_code', $data['status'])) {
-            $errorCode = $data['status']['error_code'];
-        }
-
-        if ($errorCode !== null || $data === null) {
-            if (Cache::increment('coingecko_response_error') > config('explorer.coingecko_exception_frequency')) {
-                Cache::forget('coingecko_response_error');
-
-                throw new \Exception($message);
-            }
-
-            return true;
-        }
-
-        Cache::forget($cacheKey);
-
-        return false;
     }
 }
