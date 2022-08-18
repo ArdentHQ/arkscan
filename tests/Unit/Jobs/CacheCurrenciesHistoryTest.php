@@ -7,11 +7,17 @@ use App\Facades\Network;
 use App\Jobs\CacheCurrenciesHistory;
 use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\NetworkStatusBlockCache;
+use App\Services\MarketDataProviders\CoinGecko;
+use App\Services\MarketDataProviders\CryptoCompare;
+use Carbon\Carbon;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use function Tests\fakeCryptoCompare;
 
 it('should cache the history', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
     fakeCryptoCompare();
 
     $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.production')));
@@ -50,12 +56,75 @@ it('should cache the history', function () {
     ]));
 });
 
-it('set values to null when cryptocompare is down', function () {
-    $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.production')));
+it('should not update prices if coingecko returns an empty response', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
 
-    $cache = new NetworkStatusBlockCache();
+    $cache = app(NetworkStatusBlockCache::class);
 
-    $cache->setHistoricalHourly(Network::currency(), 'USD', collect());
+    Http::fake([
+        'api.coingecko.com/*' => Http::response(null, 200),
+    ]);
+
+    $cache->setHistoricalHourly('ARK', 'USD', collect([1, 2, 3]));
+
+    (new CacheCurrenciesHistory('ARK', 'USD'))->handle($cache, new CoinGecko());
+
+    expect($cache->getHistoricalHourly('ARK', 'USD'))->toEqual(collect([1, 2, 3]));
+});
+
+it('should not update prices if coingecko throws an exception', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
+    $cache = app(NetworkStatusBlockCache::class);
+
+    Http::fake([
+        'api.coingecko.com/*' => function () {
+            throw new ConnectionException();
+        },
+    ]);
+
+    $cache->setHistoricalHourly('ARK', 'USD', collect([1, 2, 3]));
+
+    (new CacheCurrenciesHistory('ARK', 'USD'))->handle($cache, new CoinGecko());
+
+    expect($cache->getHistoricalHourly('ARK', 'USD'))->toEqual(collect([1, 2, 3]));
+});
+
+it('should update prices if coingecko does return a response', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
+    $cache = app(NetworkStatusBlockCache::class);
+
+    $now = Carbon::now();
+
+    $mockPrices     = [];
+    $expectedPrices = [];
+    foreach (range(0, 23) as $hour) {
+        $time         = $now->sub($hour, 'hours');
+        $mockPrices[] = [
+            $time->valueOf(),
+            $hour,
+        ];
+        $expectedPrices[$time->format('Y-m-d H:00:00')] = $hour;
+    }
+
+    Http::fake([
+        'api.coingecko.com/*' => Http::response([
+            'prices' => $mockPrices,
+        ], 200),
+    ]);
+
+    $cache->setHistoricalHourly('ARK', 'USD', collect([1, 2, 3]));
+
+    (new CacheCurrenciesHistory('ARK', 'USD'))->handle($cache, new CoinGecko());
+
+    expect($cache->getHistoricalHourly('ARK', 'USD'))->toEqual(collect($expectedPrices));
+});
+
+it('should not update prices if cryptocompare throws an exception', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
+    $cache = app(NetworkStatusBlockCache::class);
 
     Http::fake([
         'cryptocompare.com/*' => function () {
@@ -63,9 +132,42 @@ it('set values to null when cryptocompare is down', function () {
         },
     ]);
 
+    $cache->setHistoricalHourly('ARK', 'USD', collect([1, 2, 3]));
+
     try {
-        CacheCurrenciesHistory::dispatch('ARK', 'USD');
+        (new CacheCurrenciesHistory('ARK', 'USD'))->handle($cache, new CryptoCompare());
     } catch (ConnectionException $e) {
-        expect($cache->getHistoricalHourly(Network::currency(), 'USD'))->toBeNull();
+        expect($cache->getHistoricalHourly('ARK', 'USD'))->toEqual(collect([1, 2, 3]));
     }
+});
+
+it('should update prices if cryptocompare does return a response', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
+    $cache = app(NetworkStatusBlockCache::class);
+
+    $now = Carbon::now();
+
+    $mockPrices     = [];
+    $expectedPrices = [];
+    foreach (range(0, 23) as $hour) {
+        $time         = $now->sub($hour, 'hours');
+        $mockPrices[] = [
+            'time'  => $time->timestamp,
+            'close' => $hour,
+        ];
+        $expectedPrices[$time->format('Y-m-d H:i:s')] = (string) $hour;
+    }
+
+    Http::fake([
+        'cryptocompare.com/*' => Http::response([
+            'Data' => $mockPrices,
+        ], 200),
+    ]);
+
+    $cache->setHistoricalHourly('ARK', 'USD', collect([1, 2, 3]));
+
+    (new CacheCurrenciesHistory('ARK', 'USD'))->handle($cache, new CryptoCompare());
+
+    expect($cache->getHistoricalHourly('ARK', 'USD'))->toEqual(collect($expectedPrices));
 });

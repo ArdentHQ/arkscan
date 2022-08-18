@@ -25,12 +25,18 @@ final class CoinGecko implements MarketDataProvider
                 'interval'    => 'daily',
             ];
 
-            $data = Http::get(
-                'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
-                $params
-            )->json();
+            $data = null;
 
-            if ($this->isEmptyResponse($data)) {
+            try {
+                $data = Http::get(
+                    'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
+                    $params
+                )->json();
+            } catch (\Throwable) {
+                //
+            }
+
+            if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
                 /** @var Collection<int, mixed> */
                 return collect([]);
             }
@@ -51,17 +57,24 @@ final class CoinGecko implements MarketDataProvider
                 'days'        => strval(ceil($limit / 24)),
             ];
 
-            /** @var array<string, array<string, string>> */
-            $data = Http::get(
-                'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
-                $params
-            )->json();
+            $data = null;
 
-            if ($this->isEmptyResponse($data)) {
+            try {
+                /** @var array<string, array<string, string>> */
+                $data = Http::get(
+                    'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
+                    $params
+                )->json();
+            } catch (\Throwable) {
+                //
+            }
+
+            if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
                 /** @var Collection<int, mixed> */
                 return collect([]);
             }
 
+            /** @var array<string, array<string, string>> $data */
             return collect($data['prices'])
                 ->groupBy(fn ($item) => Carbon::createFromTimestampMsUTC($item[0])->format('Y-m-d H:').'00:00')
                 ->mapWithKeys(fn ($items, $day) => [
@@ -75,7 +88,18 @@ final class CoinGecko implements MarketDataProvider
 
     public function priceAndPriceChange(string $baseCurrency, Collection $targetCurrencies): Collection
     {
-        $data = Http::get('https://api.coingecko.com/api/v3/coins/'.Str::lower($baseCurrency))->json();
+        $data = null;
+
+        try {
+            $data = Http::get('https://api.coingecko.com/api/v3/coins/'.Str::lower($baseCurrency))->json();
+        } catch (\Throwable) {
+            //
+        }
+
+        if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
+            /** @var Collection<string, MarketData> */
+            return collect([]);
+        }
 
         return $targetCurrencies
             ->mapWithKeys(fn (string $currency) => [strtoupper($currency) => MarketData::fromCoinGeckoApiResponse($currency, $data)]);
@@ -83,17 +107,40 @@ final class CoinGecko implements MarketDataProvider
 
     private function isEmptyResponse(?array $data): bool
     {
-        if ($data === null) {
-            $times = Cache::increment('coin_gecko_response_error');
+        return $this->isAcceptableResponse(
+            $data,
+            'coingecko_response_error',
+            'Too many empty coinGecko responses',
+        );
+    }
 
-            if ($times > 30) {
-                throw new \Exception('Too many empty coinGecko responses');
+    private function isThrottledResponse(?array $data): bool
+    {
+        return $this->isAcceptableResponse(
+            $data,
+            'coingecko_response_throttled',
+            'CoinGecko requests are being throttled',
+        );
+    }
+
+    private function isAcceptableResponse(?array $data, string $cacheKey, string $message): bool
+    {
+        $errorCode = null;
+        if ($data !== null && array_key_exists('status', $data) && array_key_exists('error_code', $data['status'])) {
+            $errorCode = $data['status']['error_code'];
+        }
+
+        if ($errorCode !== null || $data === null) {
+            if (Cache::increment('coingecko_response_error') > config('explorer.coingecko_exception_frequency')) {
+                Cache::forget('coingecko_response_error');
+
+                throw new \Exception($message);
             }
 
             return true;
         }
 
-        Cache::forget('coin_gecko_response_error');
+        Cache::forget($cacheKey);
 
         return false;
     }

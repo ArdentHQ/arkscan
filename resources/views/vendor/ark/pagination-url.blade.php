@@ -1,5 +1,5 @@
 @php
-['pageName' => $pageName, 'urlParams' => $urlParams] = \ARKEcosystem\Foundation\UserInterface\UI::getPaginationData($paginator);
+['pageName' => $pageName, 'urlParams' => $urlParams] = ARKEcosystem\Foundation\UserInterface\UI::getPaginationData($paginator);
 @endphp
 <div
     x-data="Pagination('{{ $pageName }}', {{ $paginator->lastPage() }})"
@@ -13,7 +13,7 @@
                 min="1"
                 max="{{ $paginator->lastPage() }}"
                 name="{{ $pageName }}"
-                placeholder="Enter the page"
+                placeholder="@lang ('ui::actions.enter_the_page')"
                 class="py-2 px-3 w-full bg-transparent dark:text-theme-secondary-200"
                 x-on:blur="blurHandler"
             />
@@ -28,11 +28,19 @@
             </button>
         </form>
 
-        <button type="button"
+        <button
+            type="button"
             class="button-pagination-page-indicator button-pagination-page-indicator--search"
             :class="{ 'opacity-0': search }"
             x-on:click="toggleSearch"
-        ><span>Page {{ $paginator->currentPage() }} of {{ $paginator->lastPage() }}</span></button>
+        >
+            <span>
+                @lang('ui::generic.pagination.current_to', [
+                    'currentPage' => $paginator->currentPage(),
+                    'lastPage' => $paginator->lastPage()
+                ])
+            </span
+        ></button>
     </div>
 
     <div class="flex space-x-3">
@@ -45,9 +53,9 @@
         @else
             <a class="flex" href="{{ $paginator->url(1) }}">
                 <div class="flex items-center h-full button-secondary pagination-button-mobile">
-                    <span class="flex items-center">
+                    <div class="flex items-center">
                         <x-ark-icon name="arrows.double-chevron-left" size="xs" />
-                    </span>
+                    </div>
                 </div>
             </a>
         @endif
@@ -55,21 +63,23 @@
         @if($paginator->onFirstPage())
             <div class="flex items-center button-generic button-disabled">
                 <div class="flex items-center">
-                    <span class="hidden lg:flex lg:ml-2">Previous</span>
+                    <span class="hidden lg:flex lg:ml-2">@lang('ui::generic.previous')</span>
+                    <x-ark-icon class="inline-block lg:hidden" name="arrows.chevron-left" size="xs" />
                 </div>
             </div>
         @else
             <a class="flex" href="{{ $paginator->previousPageUrl() }}">
                 <div class="flex items-center h-full button-secondary pagination-button-mobile">
                     <div class="flex items-center">
-                        <span class="hidden lg:flex lg:ml-2">Previous</span>
+                        <span class="hidden lg:flex lg:ml-2">@lang('ui::generic.previous')</span>
+                        <x-ark-icon class="inline-block lg:hidden" name="arrows.chevron-left" size="xs" />
                     </div>
                 </div>
             </a>
         @endif
 
         <div class="relative">
-            <form x-show="search" name="searchForm" type="get" class="flex overflow-hidden absolute left-0 z-10 px-2 w-full h-full rounded bg-theme-primary-100 pagination-form-desktop dark:bg-theme-secondary-800">
+            <form x-cloak x-show="search" name="searchForm" type="get" class="flex overflow-hidden absolute left-0 z-10 px-2 w-full h-full rounded bg-theme-primary-100 pagination-form-desktop dark:bg-theme-secondary-800">
                 <input
                     x-ref="search"
                     x-model.number="page"
@@ -77,7 +87,7 @@
                     min="1"
                     max="{{ $paginator->lastPage() }}"
                     name="{{ $pageName }}"
-                    placeholder="Enter the page number"
+                    placeholder="@lang ('ui::actions.enter_the_page_number')"
                     class="py-2 px-3 w-full bg-transparent dark:text-theme-secondary-200"
                     x-on:blur="blurHandler"
                 />
@@ -127,7 +137,14 @@
                     type="button"
                     class="button-pagination-page-indicator button-pagination-page-indicator--search"
                     :class="{ 'opacity-0': search }"
-                ><span>Page {{ $paginator->currentPage() }} of {{ $paginator->lastPage() }}</span></button>
+                >
+                    <span>
+                        @lang('ui::generic.pagination.current_to', [
+                            'currentPage' => $paginator->currentPage(),
+                            'lastPage' => $paginator->lastPage()
+                        ])
+                    </span>
+                </button>
             </div>
         </div>
 
@@ -135,14 +152,16 @@
             <a class="flex" href="{{ $paginator->nextPageUrl() }}">
                 <div class="flex items-center h-full button-secondary pagination-button-mobile">
                     <div class="flex items-center">
-                        <span class="hidden lg:flex lg:mr-2">Next</span>
+                        <span class="hidden lg:flex lg:mr-2">@lang('ui::generic.next')</span>
+                        <x-ark-icon class="inline-block lg:hidden" name="arrows.chevron-right" size="xs" />
                     </div>
                 </div>
             </a>
         @else
             <div class="flex items-center button-generic button-disabled">
                 <div class="flex items-center">
-                    <span class="hidden lg:flex lg:mr-2">Next</span>
+                    <span class="hidden lg:flex">@lang('ui::generic.next')</span>
+                    <x-ark-icon class="inline-block lg:hidden" name="arrows.chevron-right" size="xs" />
                 </div>
             </div>
         @endif
