@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Http;
 use function Tests\fakeCryptoCompare;
 
 it('should cache the history', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
     fakeCryptoCompare();
 
     $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.production')));
@@ -54,6 +56,8 @@ it('should cache the history', function () {
 });
 
 it('should not update prices if coingecko returns an empty response', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
     $cache = app(NetworkStatusBlockCache::class);
 
     Http::fake([
@@ -68,6 +72,8 @@ it('should not update prices if coingecko returns an empty response', function (
 });
 
 it('should not update prices if coingecko throws an exception', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
     $cache = app(NetworkStatusBlockCache::class);
 
     Http::fake([
@@ -84,6 +90,8 @@ it('should not update prices if coingecko throws an exception', function () {
 });
 
 it('should update prices if coingecko does return a response', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
     $cache = app(NetworkStatusBlockCache::class);
 
     $now = Carbon::now();
@@ -113,6 +121,8 @@ it('should update prices if coingecko does return a response', function () {
 });
 
 it('should not update prices if cryptocompare throws an exception', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
     $cache = app(NetworkStatusBlockCache::class);
 
     Http::fake([
@@ -131,6 +141,8 @@ it('should not update prices if cryptocompare throws an exception', function () 
 });
 
 it('should update prices if cryptocompare does return a response', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
     $cache = app(NetworkStatusBlockCache::class);
 
     $now = Carbon::now();

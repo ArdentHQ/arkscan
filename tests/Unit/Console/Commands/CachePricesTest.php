@@ -22,6 +22,8 @@ beforeEach(function () {
 });
 
 it('should execute the command', function (string $network) {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
     fakeCryptoCompare();
 
     $this->app->singleton(Network::class, fn () => new Blockchain(config($network)));
@@ -41,6 +43,8 @@ it('should execute the command', function (string $network) {
 })->with(['explorer.networks.development', 'explorer.networks.production']);
 
 it('should not update prices if coingecko returns an empty response', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
     $crypto = app(CryptoDataCache::class);
     $prices = app(PriceChartCache::class);
 
@@ -76,6 +80,8 @@ it('should not update prices if coingecko returns an empty response', function (
 });
 
 it('should not update prices if coingecko throws an exception', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
     $crypto = app(CryptoDataCache::class);
     $prices = app(PriceChartCache::class);
 
@@ -119,6 +125,8 @@ it('should update prices if coingecko does return a response', function () {
             'locale'   => 'en_US',
         ],
     ]);
+
+    Config::set('explorer.network', 'production');
 
     $crypto = app(CryptoDataCache::class);
     $prices = app(PriceChartCache::class);
@@ -174,6 +182,8 @@ it('should update prices if cryptocompare does return a response', function () {
             'locale'   => 'en_US',
         ],
     ]);
+
+    Config::set('explorer.network', 'production');
 
     $crypto = app(CryptoDataCache::class);
     $prices = app(PriceChartCache::class);
