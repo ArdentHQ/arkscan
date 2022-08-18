@@ -10,7 +10,6 @@ use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\MarketDataProviders\CoinGecko;
 use App\Services\MarketDataProviders\CryptoCompare;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use function Tests\fakeCryptoCompare;
