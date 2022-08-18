@@ -93,7 +93,7 @@ final class CryptoCompare extends AbstractMarketDataProvider
             //
         }
 
-        if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
+        if ($this->isEmptyResponse($data, false) || $this->isThrottledResponse($data, false)) {
             /** @var Collection<string, MarketData> */
             return collect([]);
         }
@@ -103,25 +103,35 @@ final class CryptoCompare extends AbstractMarketDataProvider
         ]);
     }
 
-    private function isEmptyResponse(?array $data): bool
+    private function isEmptyResponse(?array $data, bool $checkStatus = true): bool
     {
+        $errorCheck = fn () => false;
+        if ($checkStatus) {
+            $errorCheck = fn ($data) => Arr::get($data, 'Response') !== 'Success';
+        }
+
         return $this->isAcceptableResponse(
             $data,
             'cryptocompare_response_error',
             config('explorer.cryptocompare_exception_frequency', 60),
             'Too many empty CryptoCompare responses',
-            fn ($data) => Arr::get($data, 'Response') !== 'Success',
+            $errorCheck,
         );
     }
 
-    private function isThrottledResponse(?array $data): bool
+    private function isThrottledResponse(?array $data, bool $checkStatus = true): bool
     {
+        $errorCheck = fn () => false;
+        if ($checkStatus) {
+            $errorCheck = fn ($data) => Arr::get($data, 'Response') !== 'Success';
+        }
+
         return $this->isAcceptableResponse(
             $data,
             'cryptocompare_response_throttled',
             config('explorer.cryptocompare_exception_frequency', 60),
             'CryptoCompare requests are being throttled',
-            fn ($data) => Arr::get($data, 'Response') !== 'Success',
+            $errorCheck,
         );
     }
 }
