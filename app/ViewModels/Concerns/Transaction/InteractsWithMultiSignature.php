@@ -66,7 +66,7 @@ trait InteractsWithMultiSignature
         }
 
         return $participants->map(fn ($publicKey) => Address::fromPublicKey($publicKey))
-            ->map(fn ($address)                   => MemoryWallet::fromAddress($address))
+            ->map(fn ($address) => MemoryWallet::fromAddress($address))
             ->toArray();
     }
 

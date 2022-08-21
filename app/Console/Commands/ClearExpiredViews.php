@@ -35,7 +35,7 @@ final class ClearExpiredViews extends Command
 
         collect($files->glob("{$path}/*"))
             ->filter(fn (string $view) => $files->lastModified($view) < Carbon::now()->subMinutes($expiresMinutes)->getTimestamp())
-            ->each(fn (string $view)   => $files->delete($view));
+            ->each(fn (string $view) => $files->delete($view));
 
         $this->info(sprintf('Compiled views that are older than %s minute(s) cleared!', $expiresMinutes));
     }
