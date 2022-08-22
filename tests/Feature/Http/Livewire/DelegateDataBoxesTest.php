@@ -12,7 +12,7 @@ use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Livewire\Livewire;
 
-beforeEach(function() {
+beforeEach(function () {
     $this->travelTo(Carbon::parse('2022-08-22 00:00'));
 });
 
