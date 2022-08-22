@@ -41,8 +41,8 @@ final class CacheCurrenciesHistory extends Command
             if ($this->option('no-delay') === true) {
                 $delay = null;
             } else {
-                // Spread out requests to avoid ratelimits, 6 per minute currently
-                $delay = now()->addSeconds($index * 10);
+                // Spread out requests to avoid ratelimits, 2 per minute currently
+                $delay = now()->addSeconds($index * 30);
             }
 
             CacheCurrenciesHistoryJob::dispatch($source, $currency)->delay($delay);

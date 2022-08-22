@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Services\MarketDataProviders\CoinGecko;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
@@ -18,8 +19,6 @@ it('should fetch the price data for the given collection', function () {
 });
 
 it('should return an empty value if failed response for price data', function () {
-    Http::preventStrayRequests();
-
     expect((new CoinGecko())->priceAndPriceChange('ARK', collect(['USD'])))->toEqual(collect());
 });
 
@@ -48,8 +47,6 @@ it('should return an empty value if empty response for historical', function () 
 });
 
 it('should return an empty value if failed response for historical', function () {
-    Http::preventStrayRequests();
-
     expect((new CoinGecko())->historical('ARK', 'USD'))->toEqual(collect());
 });
 
@@ -70,8 +67,6 @@ it('should return an empty value if empty response for historical hourly', funct
 });
 
 it('should return an empty value if failed response for historical hourly', function () {
-    Http::preventStrayRequests();
-
     expect((new CoinGecko())->historicalHourly('ARK', 'USD'))->toEqual(collect());
 });
 
@@ -80,13 +75,37 @@ it('should reset exception trigger for empty responses', function ($attempt) {
         'api.coingecko.com/*' => Http::response(null, 200),
     ]);
 
-    Cache::set('coin_gecko_response_error', (($attempt - 1) % 60) + 1);
+    Config::set('explorer.coingecko_exception_frequency', 6);
 
-    if (($attempt % 60) === 0) {
+    Cache::set('coingecko_response_error', (($attempt - 1) % 6) + 1);
+
+    if (($attempt % 6) === 0) {
         $this->expectException(\Exception::class);
     } else {
         $this->expectNotToPerformAssertions();
     }
 
     (new CoinGecko())->historicalHourly('ARK', 'USD');
-})->with(range(1, 120));
+})->with(range(1, 12));
+
+it('should trigger exception for throttled requests', function ($attempt) {
+    Http::fake([
+        'api.coingecko.com/*' => Http::response([
+            'status' => [
+                'error_code' => 1,
+            ],
+        ], 500),
+    ]);
+
+    Config::set('explorer.coingecko_exception_frequency', 6);
+
+    Cache::set('coingecko_response_error', (($attempt - 1) % 6) + 1);
+
+    if (($attempt % 6) === 0) {
+        $this->expectException(\Exception::class);
+    } else {
+        $this->expectNotToPerformAssertions();
+    }
+
+    (new CoinGecko())->historicalHourly('ARK', 'USD');
+})->with(range(1, 12));

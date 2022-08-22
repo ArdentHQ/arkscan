@@ -31,11 +31,12 @@ trait ManagesCache
 
     /**
      * @param mixed $value
+     * @param Carbon|int $ttl
      *
      * @return mixed
      */
-    private function put(string $key, $value)
+    private function put(string $key, $value, $ttl = null)
     {
-        return $this->getCache()->put(md5($key), $value);
+        return $this->getCache()->put(md5($key), $value, $ttl = null);
     }
 }

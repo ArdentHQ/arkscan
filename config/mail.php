@@ -109,4 +109,6 @@ return [
         ],
     ],
 
+    'contact_email' => 'contact@arkscan.io',
+
 ];
