@@ -9,14 +9,21 @@ use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
+use Carbon\Carbon;
 use Livewire\Livewire;
+
+beforeEach(function() {
+    $this->travelTo(Carbon::parse('2022-08-22 00:00'));
+});
 
 function createRoundWithDelegatesAndPerformances(array $performances = null, bool $addBlockForNextRound = true): void
 {
-    Wallet::factory(51)->create()->each(function ($wallet) use ($performances, $addBlockForNextRound) {
+    Wallet::factory(51)->create()->each(function ($wallet, $index) use ($performances, $addBlockForNextRound) {
+        $timestamp = Carbon::now()->add($index * 8, 'seconds')->timestamp;
+
         $block = Block::factory()->create([
             'height'               => 5720529,
-            'timestamp'            => 113620904,
+            'timestamp'            => $timestamp,
             'generator_public_key' => $wallet->public_key,
         ]);
 
@@ -24,7 +31,7 @@ function createRoundWithDelegatesAndPerformances(array $performances = null, boo
         if ($addBlockForNextRound) {
             Block::factory()->create([
                 'height'               => 5720518,
-                'timestamp'            => 113620904,
+                'timestamp'            => $timestamp,
                 'generator_public_key' => $wallet->public_key,
             ]);
         }
