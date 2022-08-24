@@ -7,9 +7,9 @@ namespace App\Exceptions;
 use App\Exceptions\Contracts\EntityNotFoundInterface;
 use App\Http\Kernel;
 use App\Http\Middleware\SubstituteBindings;
+use ARKEcosystem\Foundation\UserInterface\Exceptions\Handler as ExceptionHandler;
 use Closure;
 use Exception;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Session\SessionManager;
@@ -73,6 +73,8 @@ final class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        $this->registerErrorViewPaths();
+
         if ($this->shouldShowEntity404Page($request, $exception)) {
             return $this->getNotFoundEntityResponse($exception);
         }
@@ -124,7 +126,7 @@ final class Handler extends ExceptionHandler
     {
         $expectedException = $this->prepareException($this->mapException($exception));
 
-        return response()->view('errors.404_entity', [
+        return response()->view('ark::errors.404', [
             'exception' => $expectedException,
         ], 404);
     }

@@ -32,7 +32,9 @@ final class CryptoDataCache implements Contract
 
     public function setPrices(string $currency, Collection $prices): Collection
     {
-        return $this->remember(sprintf('prices/%s', $currency), now()->addMinutes(10), fn () => $prices);
+        $this->put(sprintf('prices/%s', $currency), $prices, now()->addMinutes(10));
+
+        return $prices;
     }
 
     public function getCache(): TaggedCache

@@ -71,7 +71,7 @@ $initialText = $grouped
             x-transition:leave="transition ease-in duration-75"
             x-transition:leave-start="transform opacity-100 scale-100"
             x-transition:leave-end="transform opacity-0 scale-95"
-            class="absolute w-full min-w-max-content z-10 dropdown {{ $dropdownClass }}"
+            class="absolute w-full min-w-max z-10 dropdown {{ $dropdownClass }}"
             style="display: none;"
             @if ($height) data-height="{{ $height }}" @endif
         >
@@ -145,5 +145,7 @@ $initialText = $grouped
         </div>
     </div>
 
-    @include('ark::inputs.includes.input-error')
+    @if (isset($name))
+        <x-ark::inputs.input-error :name="$name" />
+    @endif
 </div>

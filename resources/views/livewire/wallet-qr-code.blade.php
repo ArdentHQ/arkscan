@@ -29,7 +29,7 @@
                         type="number"
                         id="amount"
                         name="amount"
-                        max="17"
+                        maxlength="17"
                         :errors="$errors"
                         autofocus
                     />
@@ -38,7 +38,7 @@
                         type="text"
                         id="smartbridge"
                         name="smartbridge"
-                        max="255"
+                        maxlength="255"
                         :errors="$errors"
                     >
                         <x-slot name="label">
