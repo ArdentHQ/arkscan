@@ -249,6 +249,13 @@ body {
     @apply delegate-name-truncate;
     max-width: 7rem;
 }
+
+@media (max-width: 375px) {
+    .delegate-name-truncate-listing {
+        max-width: 4.6rem;
+    }
+}
+
 .delegate-name-truncate-prefix {
     @apply delegate-name-truncate;
     max-width: 6rem;
