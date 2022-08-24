@@ -33,6 +33,11 @@ trait CanBeDelegate
         return (new WalletCache())->getResignationId($this->wallet->public_key);
     }
 
+    public function delegateUsername(): ?string
+    {
+        return Arr::get($this->wallet, 'attributes.delegate.username');
+    }
+
     public function username(): ?string
     {
         $knownWallet = $this->findWalletByKnown();
@@ -41,7 +46,7 @@ trait CanBeDelegate
             return $knownWallet['name'];
         }
 
-        return Arr::get($this->wallet, 'attributes.delegate.username');
+        return $this->delegateUsername();
     }
 
     /**

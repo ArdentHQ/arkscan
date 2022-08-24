@@ -622,6 +622,34 @@ it('can determine the colors for icons based on the status of a delegate', funct
     expect($this->subject->delegateStatusStyling())->toBe('text-theme-success-600 border-theme-success-600');
 });
 
-it('should get the vote url', function () {
+it('should get the delegate user name', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'john',
+            ],
+        ],
+    ]));
+
+    expect($this->subject->delegateUsername())->toBe('john');
+});
+
+it('should get the vote url with public key', function () {
     expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?method=vote&coin=ARK&nethash=');
+    expect($this->subject->voteUrl())->toContain('&publicKey=');
+    expect($this->subject->voteUrl())->not->toContain('&delegate=');
+});
+
+it('should get the vote url with delegate', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'john',
+            ],
+        ],
+    ]));
+
+    expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?method=vote&coin=ARK&nethash=');
+    expect($this->subject->voteUrl())->not->toContain('&publicKey=');
+    expect($this->subject->voteUrl())->toContain('&delegate=john');
 });
