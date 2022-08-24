@@ -51,6 +51,11 @@ final class WalletViewModel implements ViewModel
         return $this->wallet->public_key;
     }
 
+    public function name(): ?string
+    {
+        return $this->wallet->name;
+    }
+
     public function balance(): float
     {
         return $this->wallet->balance->toFloat();
@@ -73,6 +78,6 @@ final class WalletViewModel implements ViewModel
 
     public function voteUrl(): string
     {
-        return ArkVaultUrlBuilder::get()->generateVote($this->publicKey());
+        return ArkVaultUrlBuilder::get()->generateVote($this->name() ?? $this->publicKey());
     }
 }
