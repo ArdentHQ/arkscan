@@ -14,7 +14,7 @@ final class TransactionRepository implements Contract
     public function allByWallet(string $address, string $publicKey): Collection
     {
         return Transaction::query()
-            ->where(fn ($query): Builder   => $query->where('sender_public_key', $publicKey))
+            ->where(fn ($query): Builder => $query->where('sender_public_key', $publicKey))
             ->orWhere(fn ($query): Builder => $query->where('recipient_id', $address))
             ->orWhere(fn ($query): Builder => $query->whereJsonContains('asset->payments', [['recipientId' => $address]]))
             ->get();

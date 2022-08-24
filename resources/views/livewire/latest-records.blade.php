@@ -30,7 +30,7 @@
     @else
         <div id="transaction-list" class="w-full">
             @if($transactions->isEmpty())
-                @if($state['type'] !== 'all')
+                @if($state['type'] !== 'all' && ! $this->isLoading)
                     <div wire:poll.{{ Network::blockTime() }}s="pollTransactions" wire:key="poll_transactions_empty">
                         <x-general.no-results :text="trans('pages.home.no_transaction_results', [trans('forms.search.transaction_types.'.$state['type'])])" />
                     </div>

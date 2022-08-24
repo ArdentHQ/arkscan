@@ -56,7 +56,6 @@ final class DelegateTracker
 
         return collect($delegatesOrdered)
             ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $originalOrder, $delegateCount) {
-
                 // Determine forging order based on the original offset
                 $difference      = $forgingInfo['currentForger'] - $originalOrder['currentForger'];
                 $normalizedOrder = $difference >= 0 ? $difference : $delegateCount + $difference;
