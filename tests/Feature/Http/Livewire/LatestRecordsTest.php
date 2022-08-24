@@ -76,7 +76,9 @@ it('should apply filters for transactions', function () {
 
     $expected = Transaction::factory(10)->vote()->create(['asset' => null]);
 
-    $component->set('state.type', 'vote');
+    $component->set('state.type', 'vote')
+        ->assertEmitted('refreshLatestTransactions')
+        ->call('pollTransactions');
 
     foreach (ViewModelFactory::collection($expected) as $transaction) {
         $component->assertSee($transaction->id());
@@ -116,7 +118,9 @@ it('should apply filters through an event for transactions', function () {
 
     $expected = Transaction::factory(10)->vote()->create(['asset' => null]);
 
-    $component->set('state.type', 'vote');
+    $component->set('state.type', 'vote')
+        ->assertEmitted('refreshLatestTransactions')
+        ->call('pollTransactions');
 
     foreach (ViewModelFactory::collection($expected) as $transaction) {
         $component->assertSee($transaction->id());

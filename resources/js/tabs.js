@@ -2,8 +2,8 @@ const Tabs = (defaultSelected = "", extraData = {}, onSelected = () => {}) => {
     return {
         selected: defaultSelected,
         select(name) {
-            this.selected = name;
             this.onSelected(name);
+            this.selected = name;
         },
         selectPrevTab(e) {
             const el = e.target;
