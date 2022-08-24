@@ -16,6 +16,8 @@ return [
 
     'coingecko_exception_frequency' => env('COINGECKO_EXCEPTION_FREQUENCY', 60),
 
+    'cryptocompare_exception_frequency' => env('CRYPTOCOMPARE_EXCEPTION_FREQUENCY', 60),
+
     'networks' => [
         'production' => [
             'name'               => env('ARKSCAN_NETWORK_NAME', 'ARK Public Network'),

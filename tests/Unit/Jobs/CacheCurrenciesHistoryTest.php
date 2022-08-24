@@ -121,6 +121,22 @@ it('should update prices if coingecko does return a response', function () {
     expect($cache->getHistoricalHourly('ARK', 'USD'))->toEqual(collect($expectedPrices));
 });
 
+it('should not update prices if cryptocompare returns an empty response', function () {
+    Config::set('explorer.networks.development.canBeExchanged', true);
+
+    $cache = app(NetworkStatusBlockCache::class);
+
+    Http::fake([
+        'cryptocompare.com/*' => Http::response(null, 200),
+    ]);
+
+    $cache->setHistoricalHourly('ARK', 'USD', collect([1, 2, 3]));
+
+    (new CacheCurrenciesHistory('ARK', 'USD'))->handle($cache, new CryptoCompare());
+
+    expect($cache->getHistoricalHourly('ARK', 'USD'))->toEqual(collect([1, 2, 3]));
+});
+
 it('should not update prices if cryptocompare throws an exception', function () {
     Config::set('explorer.networks.development.canBeExchanged', true);
 
@@ -134,11 +150,9 @@ it('should not update prices if cryptocompare throws an exception', function () 
 
     $cache->setHistoricalHourly('ARK', 'USD', collect([1, 2, 3]));
 
-    try {
-        (new CacheCurrenciesHistory('ARK', 'USD'))->handle($cache, new CryptoCompare());
-    } catch (ConnectionException $e) {
-        expect($cache->getHistoricalHourly('ARK', 'USD'))->toEqual(collect([1, 2, 3]));
-    }
+    (new CacheCurrenciesHistory('ARK', 'USD'))->handle($cache, new CryptoCompare());
+
+    expect($cache->getHistoricalHourly('ARK', 'USD'))->toEqual(collect([1, 2, 3]));
 });
 
 it('should update prices if cryptocompare does return a response', function () {
@@ -161,7 +175,8 @@ it('should update prices if cryptocompare does return a response', function () {
 
     Http::fake([
         'cryptocompare.com/*' => Http::response([
-            'Data' => $mockPrices,
+            'Response' => 'Success',
+            'Data'     => $mockPrices,
         ], 200),
     ]);
 
