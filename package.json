@@ -11,7 +11,7 @@
     },
     "devDependencies": {
         "alpinejs": "^3.10.3",
-        "autoprefixer": "10.4.8",
+        "autoprefixer": "10.4.5",
         "chart.js": "^3.9.1",
         "cross-env": "^7.0.3",
         "dayjs": "^1.11.5",
@@ -41,6 +41,6 @@
         "moment": "^2.29.4"
     },
     "resolutions": {
-        "autoprefixer": "10.4.8"
+        "autoprefixer": "10.4.5"
     }
 }
