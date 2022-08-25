@@ -4,6 +4,7 @@
             <x-tables.headers.desktop.text name="general.delegates.rank" width="70" />
             <x-tables.headers.desktop.address name="general.delegates.name" />
             <x-tables.headers.desktop.number name="general.delegates.votes" />
+            <x-tables.headers.desktop.text width="1" />
         </tr>
     </thead>
     <tbody>
@@ -27,6 +28,9 @@
                     <span class="sm:hidden">
                         <x-tables.rows.mobile.votes :model="$delegate" />
                     </span>
+                </x-ark-tables.cell>
+                <x-ark-tables.cell>
+                    <x-tables.rows.desktop.vote :model="$delegate" />
                 </x-ark-tables.cell>
             </x-ark-tables.row>
         @endforeach

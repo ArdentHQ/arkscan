@@ -28,6 +28,7 @@ it('should have all required properties', function (array $config) {
     expect($subject->blockTime())->toBe($config['blockTime']);
     expect($subject->blockReward())->toBe($config['blockReward']);
     expect($subject->config())->toBeInstanceOf(Bitwasp::class);
+    expect($subject->nethash())->toBe($config['nethash']);
 })->with([
     [[
         'name'             => 'ARK Public Network',
@@ -43,6 +44,7 @@ it('should have all required properties', function (array $config) {
         'blockTime'        => 8,
         'blockReward'      => 2,
         'base58Prefix'     => 23,
+        'nethash'          => '6e84d08bd299ed97c212c886c98a57e36545c8f5d645ca7eeae63a8bd62d8988',
     ]],
     [[
         'name'             => 'ARK Development Network',
@@ -57,5 +59,6 @@ it('should have all required properties', function (array $config) {
         'blockTime'        => 8,
         'blockReward'      => 2,
         'base58Prefix'     => 30,
+        'nethash'          => '2a44f340d76ffc3df204c5f38cd355b7496c9065a1ade2ef92071436bd72e867',
     ]],
 ]);

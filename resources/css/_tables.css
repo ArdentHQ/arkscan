@@ -126,6 +126,21 @@ body.table-compact-until-lg .arrow-direction {
     @apply -mr-2 circled-icon;
 }
 
+.table-compact:not(.table-compact-until-lg) table .button-vote {
+    @apply link font-semibold;
+}
+
+@media (max-width: 1023px) {
+    body.table-compact-until-lg table .button-vote {
+        @apply link font-semibold;
+    }
+}
+@screen lg {
+    body.table-compact-until-lg table .button-vote {
+        @apply button-secondary;
+    }
+}
+
 @media (max-width: 1023px) {
     .table-container
         table
