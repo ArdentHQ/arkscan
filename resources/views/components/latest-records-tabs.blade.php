@@ -18,11 +18,11 @@
             @lang('pages.home.latest_blocks')
         </x-tabs.tab>
 
-        <x-slot name="right">
-            <div x-show="selected === 'transactions'">
+        @if($this->state['selected'] === 'transactions')
+            <x-slot name="right">
                 <x-transaction-table-filter />
-            </div>
-        </x-slot>
+            </x-slot>
+        @endif
     </x-tabs.wrapper>
 
     <div class="mb-5 md:hidden">
