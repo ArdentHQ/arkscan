@@ -22,7 +22,10 @@ final class LatestRecords extends Component
     ];
 
     /** @phpstan-ignore-next-line */
-    protected $listeners = ['currencyChanged' => 'currencyChanged'];
+    protected $listeners = [
+        'currencyChanged',
+        'refreshLatestTransactions' => 'pollTransactions',
+    ];
 
     private ?Collection $blocks = null;
 

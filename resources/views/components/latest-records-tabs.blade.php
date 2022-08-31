@@ -5,7 +5,9 @@
         class="hidden mb-4 md:flex"
         default-selected="{{ $selected }}"
         on-selected="function (value) {
-            this.$wire.set('state.selected', value);
+            if (this.selected !== value) {
+                this.$wire.set('state.selected', value);
+            }
         }"
     >
         <x-tabs.tab name="transactions">
@@ -16,11 +18,11 @@
             @lang('pages.home.latest_blocks')
         </x-tabs.tab>
 
-        <x-slot name="right">
-            <div x-show="selected === 'transactions'">
+        @if($this->state['selected'] === 'transactions')
+            <x-slot name="right">
                 <x-transaction-table-filter />
-            </div>
-        </x-slot>
+            </x-slot>
+        @endif
     </x-tabs.wrapper>
 
     <div class="mb-5 md:hidden">
@@ -48,10 +50,37 @@
             </x-slot>
 
             <div class="block items-center py-3 mt-1">
-                <button wire:key="transactions" type="button" x-on:click="$wire.set('state.selected', 'transactions')" class="dropdown-entry @if($selected === 'transactions') dropdown-entry-selected @endif">
+                <button
+                    wire:key="btn-latest-transactions"
+                    type="button"
+                    x-on:click="function () {
+                        if (this.selected !== 'transactions') {
+                            $wire.set('state.selected', 'transactions');
+                            this.selected = 'transactions';
+                        }
+                    }"
+                    @class([
+                        'dropdown-entry',
+                        'dropdown-entry-selected' => $selected === 'transactions',
+                    ])
+                >
                     @lang('pages.home.latest_transactions')
                 </button>
-                <button wire:key="blocks" type="button" x-on:click="$wire.set('state.selected', 'blocks')" class="dropdown-entry @if($selected === 'blocks') dropdown-entry-selected @endif">
+
+                <button
+                    wire:key="btn-latest-blocks"
+                    type="button"
+                    x-on:click="function () {
+                        if (this.selected !== 'blocks') {
+                            $wire.set('state.selected', 'blocks');
+                            this.selected = 'blocks';
+                        }
+                    }"
+                    @class([
+                        'dropdown-entry',
+                        'dropdown-entry-selected' => $selected === 'blocks',
+                    ])
+                >
                     @lang('pages.home.latest_blocks')
                 </button>
             </div>

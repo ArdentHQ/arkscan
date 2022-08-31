@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use App\Facades\Network;
 use App\Facades\Wallets;
+use App\Services\ArkVaultUrlBuilder;
 use App\ViewModels\ViewModelFactory;
 use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasModal;
 use ARKEcosystem\Foundation\UserInterface\Support\QRCode;
@@ -55,20 +55,10 @@ final class WalletQrCode extends Component
         }
     }
 
-    /**
-     * @TODO: use http_build_query once v3 wallet is done
-     */
     // @codeCoverageIgnoreStart
     public function getWalletUriProperty(): string
     {
-        $uri = config('explorer.vault_url');
-
-        $options = [
-            'method'    => 'transfer',
-            'coin'      => 'ARK',
-            'nethash'   => Network::nethash(),
-            'recipient' => $this->address,
-        ];
+        $options = [];
 
         if ($this->amount !== null && $this->amount !== '') {
             $options['amount'] = $this->amount;
@@ -78,7 +68,7 @@ final class WalletQrCode extends Component
             $options['memo'] = rawurlencode($this->smartbridge);
         }
 
-        return $uri.'?'.http_build_query($options);
+        return ArkVaultUrlBuilder::get()->generateTransfer($this->address, $options);
     }
 
     // @codeCoverageIgnoreEnd

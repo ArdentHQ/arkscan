@@ -9,7 +9,6 @@
         'general.delegates.name' => 'address',
         'general.delegates.status' => [
             'type'   => 'status',
-            'lastOn' => 'md',
         ],
         'general.delegates.votes' => [
             'type'       => 'number',
@@ -19,6 +18,10 @@
             'type'       => 'number',
             'responsive' => true,
             'breakpoint' => 'md',
+        ],
+        '' => [
+            'type'  => 'text',
+            'width' => '70',
         ]
     ]"
 />

@@ -9,7 +9,6 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
@@ -33,17 +32,13 @@ final class CacheCurrenciesHistory implements ShouldQueue
 
     public function handle(NetworkStatusBlockCache $cache, MarketDataProvider $marketDataProvider): void
     {
-        try {
-            $data = $marketDataProvider->historicalHourly($this->source, $this->currency);
-            if (! $data->isEmpty()) {
-                $cache->setHistoricalHourly(
-                    $this->source,
-                    $this->currency,
-                    $data,
-                );
-            }
-        } catch (ConnectionException $e) {
-            throw $e;
+        $data = $marketDataProvider->historicalHourly($this->source, $this->currency);
+        if (! $data->isEmpty()) {
+            $cache->setHistoricalHourly(
+                $this->source,
+                $this->currency,
+                $data,
+            );
         }
     }
 

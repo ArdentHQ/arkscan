@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Collection;
 
 trait ManagesLatestTransactions
 {
+    public bool $isLoading = false;
+
     public function pollTransactions(): void
     {
         $this->transactions = (new TableCache())->setLatestTransactions($this->state['type'], function (): Collection {
@@ -25,10 +27,15 @@ trait ManagesLatestTransactions
 
             return $query->take(15)->get();
         });
+
+        $this->isLoading = false;
     }
 
     public function updatedStateType(): void
     {
-        $this->pollTransactions();
+        $this->isLoading    = true;
+        $this->transactions = null;
+
+        $this->emitSelf('refreshLatestTransactions');
     }
 }
