@@ -9,7 +9,6 @@ use App\DTO\MarketData;
 use App\Facades\Network;
 use App\Services\Cache\NetworkStatusBlockCache;
 use Illuminate\Console\Command;
-use Illuminate\Http\Client\ConnectionException;
 
 final class CacheCurrenciesData extends Command
 {
@@ -40,18 +39,11 @@ final class CacheCurrenciesData extends Command
 
         $targetCurrencies = collect($allCurrencies)->pluck('currency');
 
-        try {
-            $priceAndPriceChange = $marketDataProvider->priceAndPriceChange($baseCurrency, $targetCurrencies);
+        $priceAndPriceChange = $marketDataProvider->priceAndPriceChange($baseCurrency, $targetCurrencies);
 
-            $priceAndPriceChange->each(function (MarketData $dto, string $currency) use ($baseCurrency, $cache) : void {
-                $cache->setPrice($baseCurrency, $currency, $dto->price());
-                $cache->setPriceChange($baseCurrency, $currency, $dto->priceChange());
-            });
-        } catch (ConnectionException $e) {
-            $targetCurrencies->each(function ($currency) use ($baseCurrency, $cache) : void {
-                $cache->setPrice($baseCurrency, $currency, null);
-                $cache->setPriceChange($baseCurrency, $currency, null);
-            });
-        }
+        $priceAndPriceChange->each(function (MarketData $dto, string $currency) use ($baseCurrency, $cache) : void {
+            $cache->setPrice($baseCurrency, $currency, $dto->price());
+            $cache->setPriceChange($baseCurrency, $currency, $dto->priceChange());
+        });
     }
 }

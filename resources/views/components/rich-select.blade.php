@@ -145,5 +145,7 @@ $initialText = $grouped
         </div>
     </div>
 
-    @include('ark::inputs.includes.input-error')
+    @if (isset($name))
+        <x-ark::inputs.input-error :name="$name" />
+    @endif
 </div>

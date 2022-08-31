@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Services\MarketDataProviders\CryptoCompare;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeCryptoCompare;
@@ -17,12 +19,36 @@ it('should fetch the price data for the given collection', function () {
     expect($dto->price())->toEqual(1.2219981765);
 });
 
+it('should return an empty value if failed response for price data', function () {
+    expect((new CryptoCompare())->priceAndPriceChange('ARK', collect(['USD'])))->toEqual(collect());
+});
+
+it('should return an empty value if empty response for price data', function () {
+    Http::fake([
+        'cryptocompare.com/*' => Http::response(null, 200),
+    ]);
+
+    expect((new CryptoCompare())->priceAndPriceChange('ARK', collect(['USD'])))->toEqual(collect());
+});
+
 it('should fetch the historical prices for the given pair', function () {
     Http::fake([
         'cryptocompare.com/*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/historical.json')), true)),
     ]);
 
     assertMatchesSnapshot((new CryptoCompare())->historical('ARK', 'USD'));
+});
+
+it('should return an empty value if empty response for historical', function () {
+    Http::fake([
+        'cryptocompare.com/*' => Http::response(null, 200),
+    ]);
+
+    expect((new CryptoCompare())->historical('ARK', 'USD'))->toEqual(collect());
+});
+
+it('should return an empty value if failed response for historical', function () {
+    expect((new CryptoCompare())->historical('ARK', 'USD'))->toEqual(collect());
 });
 
 it('should fetch the historical prices per hour for the given pair', function () {
@@ -32,3 +58,53 @@ it('should fetch the historical prices per hour for the given pair', function ()
 
     assertMatchesSnapshot((new CryptoCompare())->historicalHourly('ARK', 'USD'));
 });
+
+it('should return an empty value if empty response for historical hourly', function () {
+    Http::fake([
+        'cryptocompare.com/*' => Http::response(null, 200),
+    ]);
+
+    expect((new CryptoCompare())->historicalHourly('ARK', 'USD'))->toEqual(collect());
+});
+
+it('should return an empty value if failed response for historical hourly', function () {
+    expect((new CryptoCompare())->historicalHourly('ARK', 'USD'))->toEqual(collect());
+});
+
+it('should reset exception trigger for empty responses', function ($attempt) {
+    Http::fake([
+        'cryptocompare.com/*' => Http::response(null, 200),
+    ]);
+
+    Config::set('explorer.cryptocompare_exception_frequency', 6);
+
+    Cache::set('cryptocompare_response_error', (($attempt - 1) % 6) + 1);
+
+    if (($attempt % 6) === 0) {
+        $this->expectException(\Exception::class);
+    } else {
+        $this->expectNotToPerformAssertions();
+    }
+
+    (new CryptoCompare())->historicalHourly('ARK', 'USD');
+})->with(range(1, 12));
+
+it('should trigger exception for throttled requests', function ($attempt) {
+    Http::fake([
+        'cryptocompare.com/*' => Http::response([
+            'Response' => 'Failed',
+        ], 500),
+    ]);
+
+    Config::set('explorer.cryptocompare_exception_frequency', 6);
+
+    Cache::set('cryptocompare_response_error', (($attempt - 1) % 6) + 1);
+
+    if (($attempt % 6) === 0) {
+        $this->expectException(\Exception::class);
+    } else {
+        $this->expectNotToPerformAssertions();
+    }
+
+    (new CryptoCompare())->historicalHourly('ARK', 'USD');
+})->with(range(1, 12));
