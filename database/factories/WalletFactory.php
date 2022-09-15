@@ -50,13 +50,13 @@ final class WalletFactory extends Factory
         });
     }
 
-    public function standbyDelegate()
+    public function standbyDelegate(bool $isResigned = true)
     {
-        return $this->state(function () {
+        return $this->state(function () use ($isResigned) {
             return [
                 'attributes'        => [
                     'delegate'        => [
-                        'resigned'       => true,
+                        'resigned'       => $isResigned,
                         'rank'           => $this->faker->numberBetween(52, 102),
                         'username'       => $this->faker->userName,
                         'voteBalance'    => $this->faker->numberBetween(1, 100) * 1e8,

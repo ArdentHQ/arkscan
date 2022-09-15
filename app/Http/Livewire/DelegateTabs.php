@@ -34,7 +34,8 @@ final class DelegateTabs extends Component
         return DB::connection('explorer')
             ->table('wallets')
             ->whereNotNull('attributes->delegate->username')
-            ->whereRaw("(\"attributes\"->'delegate'->>'rank')::numeric > ?", [Network::delegateCount()]);
+            ->whereRaw("(\"attributes\"->'delegate'->>'rank')::numeric > ?", [Network::delegateCount()])
+            ->where('attributes->delegate->resigned', false);
     }
 
     public function resignedQuery(): Builder
