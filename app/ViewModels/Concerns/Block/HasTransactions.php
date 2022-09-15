@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels\Concerns\Block;
 
 use App\Services\ExchangeRate;
-use App\ViewModels\ViewModelFactory;
+use App\ViewModels\TransactionViewModel;
 
 trait HasTransactions
 {
@@ -18,7 +18,7 @@ trait HasTransactions
     {
         $amount = 0;
         foreach ($this->block->transactions as $transaction) {
-            $amount += ViewModelFactory::make($transaction)->amount();
+            $amount += (new TransactionViewModel($transaction))->amount();
         }
 
         return $amount;
