@@ -6,10 +6,13 @@ use App\Facades\Network;
 use App\Facades\Settings;
 use App\Http\Livewire\BlockTable;
 use App\Models\Block;
+use App\Models\Transaction;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
+use App\ViewModels\TransactionViewModel;
 use App\ViewModels\ViewModelFactory;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
@@ -32,24 +35,51 @@ it('should list the first page of records', function () {
 it('should update the records fiat tooltip when currency changed', function () {
     Config::set('explorer.networks.development.canBeExchanged', true);
 
+    $usdExchangeRate = 24210;
+    $btcExchangeRate = 0.1234567;
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        '2020-10-19' => 24210,
+        '2020-10-19' => $usdExchangeRate,
     ]));
 
     (new CryptoDataCache())->setPrices('BTC.week', collect([
-        '2020-10-19' => 0.1234567,
+        '2020-10-19' => $btcExchangeRate,
     ]));
 
-    Block::factory()->create([
-        'total_amount' => 499 * 1e8,
-    ]);
+    $block = Block::factory()->create();
+
+    $transactions = Transaction::factory(10)
+        ->transfer()
+        ->create([
+            'block_id'  => $block->id,
+            'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+        ])->concat(
+            Transaction::factory(10)
+                ->vote()
+                ->create([
+                    'block_id'  => $block->id,
+                    'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+                ])
+        )->concat(
+            Transaction::factory(10)
+                ->multiPayment()
+                ->create([
+                    'block_id'  => $block->id,
+                    'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+                ])
+        );
+
+    $amount = 0;
+    foreach ($transactions as $transaction) {
+        $amount += (new TransactionViewModel($transaction))->amount();
+    }
 
     $component = Livewire::test(BlockTable::class);
 
-    $expectedValue = NumberFormatter::currency(12080790, 'USD');
+    $expectedUsd = NumberFormatter::currency($amount * $usdExchangeRate, 'USD');
+    $expectedBtc = NumberFormatter::currency($amount * $btcExchangeRate, 'BTC');
 
-    $component->assertSeeHtml('data-tippy-content="'.$expectedValue.'"');
-    $component->assertDontSeeHtml('data-tippy-content="61.6048933 BTC"');
+    $component->assertSeeHtml('data-tippy-content="'.$expectedUsd.'"');
+    $component->assertDontSeeHtml('data-tippy-content="'.$expectedBtc.'"');
 
     $settings             = Settings::all();
     $settings['currency'] = 'BTC';
@@ -59,6 +89,6 @@ it('should update the records fiat tooltip when currency changed', function () {
 
     $component->emit('currencyChanged', 'BTC');
 
-    $component->assertDontSeeHtml('data-tippy-content="'.$expectedValue.'"');
-    $component->assertSeeHtml('data-tippy-content="61.6048933 BTC"');
+    $expectedUsd = NumberFormatter::currency($amount * $usdExchangeRate, 'USD');
+    $expectedBtc = NumberFormatter::currency($amount * $btcExchangeRate, 'BTC');
 });

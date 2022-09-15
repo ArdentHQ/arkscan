@@ -7,6 +7,7 @@ use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\CryptoDataCache;
+use App\Services\NumberFormatter;
 use App\ViewModels\BlockViewModel;
 use App\ViewModels\TransactionViewModel;
 use Carbon\Carbon;
@@ -105,7 +106,7 @@ it('should get the amount as fiat', function () {
     }
 
     expect($this->subject->amountFiat())->toBeString();
-    expect($this->subject->amountFiat())->toEqual('US$ '.number_format($amount * $exchangeRate, 2));
+    expect($this->subject->amountFiat())->toEqual(NumberFormatter::currency($amount * $exchangeRate, 'USD'));
 });
 
 it('should get the fee', function () {
