@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 use App\DTO\MemoryWallet;
 use App\Models\Block;
+use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\Cache\CryptoDataCache;
 use App\ViewModels\BlockViewModel;
+use App\ViewModels\TransactionViewModel;
 use Carbon\Carbon;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
@@ -41,10 +44,68 @@ it('should get the height', function () {
     expect($this->subject->height())->toBe(10000);
 });
 
-it('should get the amount', function () {
-    expect($this->subject->amount())->toBeFloat();
+it('should get the amount for different transaction types', function () {
+    $transactions = Transaction::factory(10)
+        ->transfer()
+        ->create([
+            'block_id' => $this->subject->id(),
+        ])->concat(
+            Transaction::factory(10)
+                ->vote()
+                ->create([
+                    'block_id' => $this->subject->id(),
+                ])
+        )->concat(
+            Transaction::factory(10)
+                ->multiPayment()
+                ->create([
+                    'block_id' => $this->subject->id(),
+                ])
+        );
 
-    assertMatchesSnapshot($this->subject->amount());
+    $amount = 0;
+    foreach ($transactions as $transaction) {
+        $amount += (new TransactionViewModel($transaction))->amount();
+    }
+
+    expect($this->subject->amount())->toBeFloat();
+    expect($this->subject->amount())->toEqual($amount);
+});
+
+it('should get the amount as fiat', function () {
+    $exchangeRate = 0.1234567;
+    app(CryptoDataCache::class)->setPrices('USD.week', collect([
+        '2020-10-19' => $exchangeRate,
+    ]));
+
+    $transactions = Transaction::factory(10)
+        ->transfer()
+        ->create([
+            'block_id' => $this->subject->id(),
+            'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+        ])->concat(
+            Transaction::factory(10)
+                ->vote()
+                ->create([
+                    'block_id' => $this->subject->id(),
+                    'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+                ])
+        )->concat(
+            Transaction::factory(10)
+                ->multiPayment()
+                ->create([
+                    'block_id' => $this->subject->id(),
+                    'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+                ])
+        );
+
+    $amount = 0;
+    foreach ($transactions as $transaction) {
+        $amount += (new TransactionViewModel($transaction))->amount();
+    }
+
+    expect($this->subject->amountFiat())->toBeString();
+    expect($this->subject->amountFiat())->toEqual('US$ '.number_format($amount * $exchangeRate, 2));
 });
 
 it('should get the fee', function () {
@@ -63,10 +124,6 @@ it('should get the total reward', function () {
     expect($this->subject->totalReward())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->totalReward());
-});
-
-it('should get the amount as fiat', function () {
-    expect($this->subject->amountFiat())->toBeString();
 });
 
 it('should get the fee as fiat', function () {
