@@ -81,20 +81,20 @@ it('should get the amount as fiat', function () {
     $transactions = Transaction::factory(10)
         ->transfer()
         ->create([
-            'block_id' => $this->subject->id(),
+            'block_id'  => $this->subject->id(),
             'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
         ])->concat(
             Transaction::factory(10)
                 ->vote()
                 ->create([
-                    'block_id' => $this->subject->id(),
+                    'block_id'  => $this->subject->id(),
                     'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
                 ])
         )->concat(
             Transaction::factory(10)
                 ->multiPayment()
                 ->create([
-                    'block_id' => $this->subject->id(),
+                    'block_id'  => $this->subject->id(),
                     'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
                 ])
         );
