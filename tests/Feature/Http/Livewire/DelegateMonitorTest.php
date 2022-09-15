@@ -65,12 +65,11 @@ function forgeBlock(string $publicKey, int &$height): void
     $height++;
 }
 
-// @TODO: make assertions about data visibility
 it('should render without errors', function () {
     createRoundWithDelegates();
 
-    $component = Livewire::test(DelegateMonitor::class);
-    $component->call('pollDelegates');
+    $component = Livewire::test(DelegateMonitor::class)
+        ->assertSeeHtml('<div wire:poll="pollDelegates" wire:key="poll_delegates_skeleton">');
 });
 
 it('should throw an exception after 3 tries', function () {
@@ -84,8 +83,8 @@ it('should throw an exception after 3 tries', function () {
         ->shouldReceive('increment')
         ->andReturn(1, 2, 3);
 
-    $component = Livewire::test(DelegateMonitor::class);
-    $component->call('pollDelegates');
+    Livewire::test(DelegateMonitor::class)
+        ->call('pollDelegates');
 });
 
 it('shouldnt throw an exception if only fails 2 times', function () {
