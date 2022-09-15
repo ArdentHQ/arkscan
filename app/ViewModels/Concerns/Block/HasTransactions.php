@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels\Concerns\Block;
 
 use App\Services\ExchangeRate;
+use App\ViewModels\ViewModelFactory;
 
 trait HasTransactions
 {
@@ -15,12 +16,17 @@ trait HasTransactions
 
     public function amount(): float
     {
-        return $this->block->total_amount->toFloat();
+        $amount = 0;
+        foreach ($this->block->transactions as $transaction) {
+            $amount += ViewModelFactory::make($transaction)->amount();
+        }
+
+        return $amount;
     }
 
     public function amountFiat(): string
     {
-        return ExchangeRate::convert($this->block->total_amount->toFloat(), $this->block->timestamp);
+        return ExchangeRate::convert($this->amount(), $this->block->timestamp);
     }
 
     public function fee(): float
