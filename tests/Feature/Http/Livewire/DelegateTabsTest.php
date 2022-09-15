@@ -8,7 +8,7 @@ use Livewire\Livewire;
 
 it('should render without errors', function () {
     Livewire::test(DelegateTabs::class)
-        ->assertSeeHtml(trans('pages.delegates.monitor'));
+        ->assertSee(trans('pages.delegates.monitor'));
 });
 
 it('should get active delegates', function () {
