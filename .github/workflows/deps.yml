@@ -62,10 +62,10 @@ jobs:
                   coverage: none
 
             - name: Install PHP dependencies
-              run: composer update --no-ansi --no-interaction --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
+              run: composer install --no-ansi --no-interaction --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
             - name: Update JS dependencies
-              run: npx npm-check-updates -u --target minor
+              run: npx npm-check-updates --configFilePath ./vendor/arkecosystem/foundation/
 
             - name: Install Updated JS dependencies
               run: yarn --ignore-engines
