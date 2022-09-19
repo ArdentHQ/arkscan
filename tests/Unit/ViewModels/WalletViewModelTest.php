@@ -635,7 +635,8 @@ it('should get the delegate user name', function () {
 });
 
 it('should get the vote url with public key', function () {
-    expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?method=vote&coin=ARK&nethash=');
+    expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?coin=ARK&nethash=');
+    expect($this->subject->voteUrl())->toContain('&method=vote');
     expect($this->subject->voteUrl())->toContain('&publicKey=');
     expect($this->subject->voteUrl())->not->toContain('&delegate=');
 });
@@ -649,7 +650,8 @@ it('should get the vote url with delegate', function () {
         ],
     ]));
 
-    expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?method=vote&coin=ARK&nethash=');
+    expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?coin=ARK&nethash=');
+    expect($this->subject->voteUrl())->toContain('&method=vote');
     expect($this->subject->voteUrl())->not->toContain('&publicKey=');
     expect($this->subject->voteUrl())->toContain('&delegate=john');
 });
