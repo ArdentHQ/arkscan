@@ -17,7 +17,7 @@ final class MarketData
     {
         return new static(
             price: Arr::get($data, 'market_data.current_price.'.Str::lower($baseCurrency)),
-            priceChange: Arr::get($data, 'market_data.price_change_percentage_24h_in_currency.'.Str::lower($baseCurrency), 0) / 100,
+            priceChange: (float) number_format(Arr::get($data, 'market_data.price_change_percentage_24h_in_currency.'.Str::lower($baseCurrency), 0) / 100, 7),
         );
     }
 
@@ -25,7 +25,7 @@ final class MarketData
     {
         return new static(
             price: Arr::get($data, 'RAW.'.$baseCurrency.'.'.strtoupper($targetCurrency).'.PRICE', 0),
-            priceChange: Arr::get($data, 'RAW.'.$baseCurrency.'.'.strtoupper($targetCurrency).'.CHANGEPCT24HOUR', 0) / 100,
+            priceChange: (float) number_format(Arr::get($data, 'RAW.'.$baseCurrency.'.'.strtoupper($targetCurrency).'.CHANGEPCT24HOUR', 0) / 100, 7),
         );
     }
 
