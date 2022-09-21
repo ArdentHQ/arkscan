@@ -4,6 +4,7 @@
     :class="{ 'opacity-50': busy }"
     x-data="{ to: '{{ $to }}', busy: false }"
     x-init="livewire.on('currencyChanged', () => busy = true);"
+    @has-loaded-price-data="busy = false"
 >
     {{ $from }}/{{ $to }}:
     @if($isAvailable)

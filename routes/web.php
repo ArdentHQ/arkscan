@@ -9,6 +9,9 @@ use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\ShowWalletController;
 use App\Http\Controllers\TransactionsController;
+use App\Models\Block;
+use App\Models\Transaction;
+use App\Models\Wallet;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,8 +44,8 @@ Route::view('/statistics', 'app.statistics')->name('statistics');
 
 // Explorer 3.0 BC - Remove after some time!
 Route::redirect('/advanced-search', '/search');
-Route::redirect('/block/{blockId}', '/blocks/{blockId}');
 Route::redirect('/delegate-monitor', '/delegates');
 Route::redirect('/top-wallets', '/wallets');
-Route::redirect('/transaction/{transactionId}', '/transactions/{transactionId}');
-Route::redirect('/wallet/{walletId}', '/wallets/{walletId}');
+Route::get('/block/{block}', fn (Block $block) => redirect()->route('block', ['block' => $block]));
+Route::get('/transaction/{transaction}', fn (Transaction $transaction) => redirect()->route('transaction', ['transaction' => $transaction]));
+Route::get('/wallet/{wallet}', fn (Wallet $wallet) => redirect()->route('wallet', ['wallet' => $wallet]));
