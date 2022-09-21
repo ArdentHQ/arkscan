@@ -37,6 +37,8 @@ final class PriceTicker extends Component
         $this->price       = $this->getPriceFormatted();
         $this->from        = Network::currency();
         $this->to          = Settings::currency();
+
+        $this->dispatchBrowserEvent('has-loaded-price-data');
     }
 
     public function render(): View
