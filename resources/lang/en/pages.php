@@ -178,7 +178,7 @@ return [
             'current_delegate'       => 'Current',
             'next_delegate'          => 'Next',
             'next_slot'              => 'Next Slot',
-            'blocks_generated'       => ':0/:1 Blocks',
+            'blocks_generated'       => ':forged/:total Blocks',
             'forging'                => 'Forging',
             'missed'                 => 'Missed',
             'not_forging'            => 'Not Forging',
