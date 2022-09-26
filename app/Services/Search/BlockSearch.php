@@ -45,9 +45,11 @@ final class BlockSearch implements Search
                 $query->orWhere(function ($query) use ($parameters, $term): void {
                     $wallet = Wallets::findByIdentifier($term);
 
-                    $query->whereLower('generator_public_key', $wallet->public_key);
+                    if ($wallet->public_key !== null) {
+                        $query->whereLower('generator_public_key', $wallet->public_key);
 
-                    $this->applyScopes($query, $parameters);
+                        $this->applyScopes($query, $parameters);
+                    }
                 });
             } catch (Throwable) {
                 // If this throws then the term was not a valid address, public key or username.

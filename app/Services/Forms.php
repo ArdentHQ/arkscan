@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Facades\Network;
+use Illuminate\Support\Collection;
 
 final class Forms
 {
@@ -32,6 +33,7 @@ final class Forms
      */
     public static function getTransactionOptions(): array
     {
+        /** @var Collection<string, string> $options */
         $options = collect(static::$transactionOptionsValues)
             ->mapWithKeys(fn ($option) => [$option =>__('forms.search.transaction_types.'.$option)]);
 
