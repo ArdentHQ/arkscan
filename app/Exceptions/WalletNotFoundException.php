@@ -17,6 +17,7 @@ final class WalletNotFoundException extends ModelNotFoundException implements En
 
         $walletID = collect($this->getIds());
 
+        /** @var string $truncatedWalletID  */
         $truncatedWalletID = $truncateMiddle->render()([
             'slot'       => $walletID->first(),
             'attributes' => ['length' => 17],
