@@ -65,6 +65,18 @@ it('should determine the type', function (string $type, string $expected) {
         'timelock-refund',
     ],
     [
+        'bridgechainEntityRegistration',
+        'bridgechain-entity-registration',
+    ],
+    [
+        'bridgechainEntityResignation',
+        'bridgechain-entity-resignation',
+    ],
+    [
+        'bridgechainEntityUpdate',
+        'bridgechain-entity-update',
+    ],
+    [
         'businessEntityRegistration',
         'business-entity-registration',
     ],
@@ -138,15 +150,15 @@ it('should determine the type', function (string $type, string $expected) {
     ],
     [
         'legacyBridgechainRegistration',
-        'bridgechain-entity-registration',
+        'legacy-bridgechain-registration',
     ],
     [
         'legacyBridgechainResignation',
-        'bridgechain-entity-resignation',
+        'legacy-bridgechain-resignation',
     ],
     [
         'legacyBridgechainUpdate',
-        'bridgechain-entity-update',
+        'legacy-bridgechain-update',
     ],
 ]);
 
@@ -180,6 +192,9 @@ it('should play through every scenario of an unknown type', function (string $ty
     ['timelock'],
     ['timelockClaim'],
     ['timelockRefund'],
+    ['bridgechainEntityRegistration'],
+    ['bridgechainEntityResignation'],
+    ['bridgechainEntityUpdate'],
     ['businessEntityRegistration'],
     ['businessEntityResignation'],
     ['businessEntityUpdate'],

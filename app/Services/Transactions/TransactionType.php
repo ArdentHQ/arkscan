@@ -29,6 +29,9 @@ final class TransactionType
         'isTimelock'                      => 'timelock',
         'isTimelockClaim'                 => 'timelock-claim',
         'isTimelockRefund'                => 'timelock-refund',
+        'isBridgechainEntityRegistration' => 'bridgechain-entity-registration',
+        'isBridgechainEntityResignation'  => 'bridgechain-entity-resignation',
+        'isBridgechainEntityUpdate'       => 'bridgechain-entity-update',
         'isBusinessEntityRegistration'    => 'business-entity-registration',
         'isBusinessEntityResignation'     => 'business-entity-resignation',
         'isBusinessEntityUpdate'          => 'business-entity-update',
@@ -47,9 +50,9 @@ final class TransactionType
         'isLegacyBusinessRegistration'    => 'legacy-business-registration',
         'isLegacyBusinessResignation'     => 'legacy-business-resignation',
         'isLegacyBusinessUpdate'          => 'legacy-business-update',
-        'isLegacyBridgechainRegistration' => 'bridgechain-entity-registration',
-        'isLegacyBridgechainResignation'  => 'bridgechain-entity-resignation',
-        'isLegacyBridgechainUpdate'       => 'bridgechain-entity-update',
+        'isLegacyBridgechainRegistration' => 'legacy-bridgechain-registration',
+        'isLegacyBridgechainResignation'  => 'legacy-bridgechain-resignation',
+        'isLegacyBridgechainUpdate'       => 'legacy-bridgechain-update',
     ];
 
     public function __construct(private Transaction $transaction)
@@ -147,6 +150,21 @@ final class TransactionType
     public function isEntityUpdate(): bool
     {
         return $this->isEntityAction(MagistrateTransactionEntityActionEnum::UPDATE);
+    }
+
+    public function isBridgechainEntityRegistration(): bool
+    {
+        return $this->isEntityWithRegistration(MagistrateTransactionEntityTypeEnum::BRIDGECHAIN);
+    }
+
+    public function isBridgechainEntityResignation(): bool
+    {
+        return $this->isEntityWithResignation(MagistrateTransactionEntityTypeEnum::BRIDGECHAIN);
+    }
+
+    public function isBridgechainEntityUpdate(): bool
+    {
+        return $this->isEntityWithUpdate(MagistrateTransactionEntityTypeEnum::BRIDGECHAIN);
     }
 
     public function isBusinessEntityRegistration(): bool
@@ -305,6 +323,18 @@ final class TransactionType
         }
 
         if ($this->isTimelockRefund()) {
+            return false;
+        }
+
+        if ($this->isBridgechainEntityRegistration()) {
+            return false;
+        }
+
+        if ($this->isBridgechainEntityResignation()) {
+            return false;
+        }
+
+        if ($this->isBridgechainEntityUpdate()) {
             return false;
         }
 

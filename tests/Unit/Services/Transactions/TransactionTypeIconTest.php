@@ -63,6 +63,18 @@ it('should determine the icon that matches the type', function (string $type, st
         'timelock',
     ],
     [
+        'bridgechainEntityRegistration',
+        'bridgechain',
+    ],
+    [
+        'bridgechainEntityResignation',
+        'bridgechain',
+    ],
+    [
+        'bridgechainEntityUpdate',
+        'bridgechain',
+    ],
+    [
         'businessEntityRegistration',
         'business',
     ],
