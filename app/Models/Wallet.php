@@ -36,7 +36,7 @@ final class Wallet extends Model
     /**
      * The attributes that should be cast.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'balance'    => BigInteger::class,
