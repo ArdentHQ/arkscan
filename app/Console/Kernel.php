@@ -20,6 +20,7 @@ use App\Console\Commands\CacheMultiSignatureAddresses;
 use App\Console\Commands\CacheNetworkAggregates;
 use App\Console\Commands\CachePrices;
 use App\Console\Commands\CacheTransactions;
+use App\Console\Commands\ClearExpiredViews;
 use App\Console\Commands\GenerateVoteReport;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -78,7 +79,7 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(GenerateVoteReport::class)->everyFiveMinutes();
 
-        $schedule->command('view:clear-expired')->hourly();
+        $schedule->command(ClearExpiredViews::class)->hourly();
     }
 
     /**

@@ -7,6 +7,7 @@ namespace App\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 
 final class ClearExpiredViews extends Command
@@ -36,6 +37,8 @@ final class ClearExpiredViews extends Command
         collect($files->glob("{$path}/*"))
             ->filter(fn (string $view) => $files->lastModified($view) < Carbon::now()->subMinutes($expiresMinutes)->getTimestamp())
             ->each(fn (string $view) => $files->delete($view));
+
+        Artisan::call('cache:clear');
 
         $this->info(sprintf('Compiled views that are older than %s minute(s) cleared!', $expiresMinutes));
     }
