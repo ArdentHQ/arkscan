@@ -44,14 +44,14 @@ final class ContactController extends Controller
         try {
             Zendesk::tickets()->create([
                 'requester' => [
-                    'name' => $data['name'],
+                    'name'  => $data['name'],
                     'email' => $data['email'],
                 ],
                 'subject' => $data['subject'],
                 'comment' => [
                     'body' => $data['message'],
                 ],
-                'priority' => 'normal'
+                'priority' => 'normal',
             ]);
         } catch (ApiResponseException $exception) {
             flash()->error(trans('messages.contact_error'));
