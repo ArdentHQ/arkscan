@@ -52,7 +52,7 @@ final class ContactController extends Controller
                     'body' => $data['message'],
                 ],
                 'priority' => 'normal',
-                'tags' => ['arkscan'],
+                'tags'     => ['arkscan'],
             ]);
         } catch (ApiResponseException $exception) {
             flash()->error(trans('messages.contact_error'));
