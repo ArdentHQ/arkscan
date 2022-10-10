@@ -44,11 +44,11 @@ Route::get('/wallets/{wallet}/blocks', ListBlocksByWalletController::class)->nam
 
 Route::view('/statistics', 'app.statistics')->name('statistics');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
-Route::post('contact', [ContactController::class, 'handle']);
-// ->middleware([
-//     ProtectAgainstSpam::class,
-//     'throttle:5,60',
-// ]);
+Route::post('contact', [ContactController::class, 'handle'])
+    ->middleware([
+        ProtectAgainstSpam::class,
+        'throttle:5,60',
+    ]);
 
 // Explorer 3.0 BC - Remove after some time!
 Route::redirect('/advanced-search', '/search');
