@@ -56,13 +56,13 @@ final class ContactController extends Controller
                 'tags'     => ['arkscan'],
             ]);
         } catch (ApiResponseException $exception) {
-            /** @phpstan-ignore-next-line */
+            /* @phpstan-ignore-next-line */
             flash()->error(trans('messages.contact_error'));
 
             return redirect()->route('contact');
         }
 
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         flash()->success(trans('messages.contact'));
 
         return redirect()->route('contact');
