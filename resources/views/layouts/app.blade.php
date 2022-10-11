@@ -13,13 +13,7 @@
         x-bind:class="{ 'table-compact-until-lg': expanded }"
         @toggle-expanded-table="expanded = ($event.detail === true)"
     >
-        <x-navbar.navbar
-            :navigation="[
-                ['route' => 'delegates',  'label' => trans('menus.delegates')],
-                ['route' => 'wallets',    'label' => trans('menus.wallets')],
-                ['route' => 'statistics', 'label' => trans('menus.statistics')],
-            ]"
-        >
+        <x-navbar.navbar :navigation="$navigationEntries ?? []">
             <x-slot name="logo">
                 <x-navbar.logo />
             </x-slot>
