@@ -81,4 +81,10 @@ return [
         'description' => '',
         'image'       => asset('images/metadata/homepage.png'),
     ],
+
+    'contact' => [
+        'title'       => 'Contact Us | :name Blockchain Explorer',
+        'description' => 'Get help with the use of the Blockchain Explorer',
+        'image'       => asset('/images/metadata/homepage.png'),
+    ],
 ];

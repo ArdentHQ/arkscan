@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ListBlocksByWalletController;
 use App\Http\Controllers\ListVotersByWalletController;
@@ -13,6 +14,7 @@ use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Route;
+use Spatie\Honeypot\ProtectAgainstSpam;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +43,12 @@ Route::get('/wallets/{wallet}/voters', ListVotersByWalletController::class)->nam
 Route::get('/wallets/{wallet}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
 
 Route::view('/statistics', 'app.statistics')->name('statistics');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('contact', [ContactController::class, 'handle'])
+    ->middleware([
+        ProtectAgainstSpam::class,
+        'throttle:5,60',
+    ]);
 
 // Explorer 3.0 BC - Remove after some time!
 Route::redirect('/advanced-search', '/search');

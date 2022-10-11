@@ -236,4 +236,12 @@ return [
         'copyright'           => 'Made with ♥ by',
     ],
 
+    'support' => [
+        'page_name'      => 'Help & Support',
+        'description'    => 'Use our contact form to get in touch with the ARKScan team, and we will do everything we can to get your issues resolved.',
+        'docs'           => 'https://arkscan.io/docs',
+        'additional'     => 'Need more help? Check out our documentation below or reach us via social channels.',
+        'form_submitted' => 'Thank you for submitting the contact form. We\'ll be in touch soon!',
+    ],
+
 ];
