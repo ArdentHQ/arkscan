@@ -87,7 +87,8 @@ final class AppServiceProvider extends ServiceProvider
         ]);
     }
 
-    private function navigationEntries(): array {
+    private function navigationEntries(): array
+    {
         $navigationEntries = [
             ['route' => 'delegates',  'label' => trans('menus.delegates')],
             ['route' => 'wallets',    'label' => trans('menus.wallets')],
