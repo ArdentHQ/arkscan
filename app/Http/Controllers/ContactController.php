@@ -19,7 +19,7 @@ final class ContactController extends Controller
     public function index(Request $request): View
     {
         $validator = Validator::make($request->all(), [
-            'subject'        => ['string', Rule::in($this->getSubjects())],
+            'subject' => ['string', Rule::in($this->getSubjects())],
         ]);
 
         if ($validator->fails()) {
@@ -29,16 +29,17 @@ final class ContactController extends Controller
         $subject = $request->subject;
         $message = '';
 
-        return view('app.contact', compact('message', 'subject'));
+        return view('app.contact', ['message' => $message, 'subject' => $subject]);
     }
 
     public function handle(Request $request): RedirectResponse
     {
+        /** @phpstan-ignore-next-line */
         $data = $request->validate([
-            'name'       => ['required', 'max:64'],
-            'email'      => ['required', 'email'],
-            'subject'    => ['required', 'string', Rule::in($this->getSubjects())],
-            'message'    => ['required', 'max:2048'],
+            'name'    => ['required', 'max:64'],
+            'email'   => ['required', 'email'],
+            'subject' => ['required', 'string', Rule::in($this->getSubjects())],
+            'message' => ['required', 'max:2048'],
         ]);
 
         try {
@@ -55,11 +56,13 @@ final class ContactController extends Controller
                 'tags'     => ['arkscan'],
             ]);
         } catch (ApiResponseException $exception) {
+            /** @phpstan-ignore-next-line */
             flash()->error(trans('messages.contact_error'));
 
             return redirect()->route('contact');
         }
 
+        /** @phpstan-ignore-next-line */
         flash()->success(trans('messages.contact'));
 
         return redirect()->route('contact');
@@ -67,6 +70,9 @@ final class ContactController extends Controller
 
     private function getSubjects(): Collection
     {
-        return collect(config('web.contact.subjects'))->pluck('value');
+        /** @var array<string, array<string, array>> */
+        $subjects = config('web.contact.subjects');
+
+        return collect($subjects)->pluck('value');
     }
 }
