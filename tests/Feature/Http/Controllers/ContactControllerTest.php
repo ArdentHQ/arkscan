@@ -16,8 +16,8 @@ it('should be possible to successfully send the form', function () {
     Zendesk::shouldReceive('tickets->create')->andReturn([]);
 
     $this->post(route('contact'), [
-        'name' => 'test',
-        'email' => 'test@ardenthq.com',
+        'name'    => 'test',
+        'email'   => 'test@ardenthq.com',
         'subject' => 'general_inquiry',
         'message' => 'test',
     ])->assertRedirect(route('contact'));
@@ -25,8 +25,8 @@ it('should be possible to successfully send the form', function () {
 
 it('should show validation error if validation fails', function () {
     $this->post(route('contact'), [
-        'name' => 'test',
-        'email' => 'test',
+        'name'    => 'test',
+        'email'   => 'test',
         'subject' => 'general_inquiry',
         'message' => 'test',
     ])->assertSessionHasErrors(['email']);
@@ -37,8 +37,8 @@ it('should show an error when something goes wrong', function () {
         ->andThrow(new ApiResponseException(new RequestException('test', new Request('get', '/test'))));
 
     $this->post(route('contact'), [
-        'name' => 'test',
-        'email' => 'test@ardenthq.com',
+        'name'    => 'test',
+        'email'   => 'test@ardenthq.com',
         'subject' => 'general_inquiry',
         'message' => 'test',
     ])->assertRedirect(route('contact'))
