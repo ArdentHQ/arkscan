@@ -44,8 +44,7 @@ final class AppServiceProvider extends ServiceProvider
 
         Fortify::loginView(fn () => abort(404));
 
-        $navigationEntries = $this->navigationEntries();
-        View::composer('layouts.app', static fn ($view) => $view->with(['navigationEntries' => $navigationEntries]));
+        View::composer('layouts.app', fn ($view) => $view->with(['navigationEntries' => $this->navigationEntries()]));
     }
 
     private function registerCollectionMacros(): void
