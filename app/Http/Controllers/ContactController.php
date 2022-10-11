@@ -9,7 +9,6 @@ use Huddle\Zendesk\Facades\Zendesk;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Zendesk\API\Exceptions\ApiResponseException;
@@ -18,18 +17,7 @@ final class ContactController extends Controller
 {
     public function index(Request $request): View
     {
-        $validator = Validator::make($request->all(), [
-            'subject' => ['string', Rule::in($this->getSubjects())],
-        ]);
-
-        if ($validator->fails()) {
-            abort(422);
-        }
-
-        $subject = $request->subject;
-        $message = '';
-
-        return view('app.contact', ['message' => $message, 'subject' => $subject]);
+        return view('app.contact');
     }
 
     public function handle(Request $request): RedirectResponse
