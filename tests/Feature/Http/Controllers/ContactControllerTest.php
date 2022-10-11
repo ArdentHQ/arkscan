@@ -24,8 +24,6 @@ it('should be possible to successfully send the form', function () {
 });
 
 it('should show validation error if validation fails', function () {
-    Zendesk::shouldReceive('tickets->create')->andReturn([]);
-
     $this->post(route('contact'), [
         'name' => 'test',
         'email' => 'test',
