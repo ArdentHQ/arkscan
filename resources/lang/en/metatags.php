@@ -83,7 +83,7 @@ return [
     ],
 
     'contact' => [
-        'title'       => 'Contact Us | :name Blockchain Explorer',
+        'title'       => 'Support | :name Blockchain Explorer',
         'description' => 'Get help with the use of the Blockchain Explorer',
         'image'       => asset('/images/metadata/homepage.png'),
     ],

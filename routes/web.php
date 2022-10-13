@@ -43,8 +43,8 @@ Route::get('/wallets/{wallet}/voters', ListVotersByWalletController::class)->nam
 Route::get('/wallets/{wallet}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
 
 Route::view('/statistics', 'app.statistics')->name('statistics');
-Route::get('/contact', [ContactController::class, 'index'])->name('contact');
-Route::post('contact', [ContactController::class, 'handle'])
+Route::get('/support', [ContactController::class, 'index'])->name('contact');
+Route::post('support', [ContactController::class, 'handle'])
     ->middleware([
         ProtectAgainstSpam::class,
         'throttle:5,60',

@@ -7,7 +7,7 @@ return [
     'home'           => 'Home',
     'wallets'        => 'Wallets',
     'statistics'     => 'Statistics',
-    'contact'        => 'Contact',
+    'contact'        => 'Support',
     'network-select' => [
         'main' => [
             'label'        => 'Main Network',
