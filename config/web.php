@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 return [
     'contact'     => [
+        'source'   => 'ARKScan',
         'subjects' => [
             [
                 'label' => 'General',

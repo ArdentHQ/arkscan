@@ -36,7 +36,7 @@ final class ContactController extends Controller
                     'name'  => $data['name'],
                     'email' => $data['email'],
                 ],
-                'subject' => $data['subject'],
+                'subject' => config('web.contact.source').' - '.$this->getSubjectLabel($data['subject']),
                 'comment' => [
                     'body' => $data['message'],
                 ],
@@ -58,9 +58,22 @@ final class ContactController extends Controller
 
     private function getSubjects(): Collection
     {
-        /** @var array<string, array<string, array>> */
+        /** @var array<int, array<string, string>> */
         $subjects = config('web.contact.subjects');
 
         return collect($subjects)->pluck('value');
+    }
+
+    private function getSubjectLabel(string $value): string
+    {
+        /** @var array<int, array<string, string>> */
+        $subjects = config('web.contact.subjects');
+
+        /** @var array{value:string, label:string} */
+        $subject = collect($subjects)->filter(function ($element) use ($value) {
+            return $element['value'] === $value;
+        })->first();
+
+        return $subject['label'];
     }
 }
