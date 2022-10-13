@@ -6,12 +6,12 @@ return [
     'contact'     => [
         'subjects' => [
             [
-                'label' => 'General Inquiry',
-                'value' => 'general_inquiry',
+                'label' => 'General',
+                'value' => 'general',
             ],
             [
-                'label' => 'Technical Question',
-                'value' => 'technical_question',
+                'label' => 'Bug',
+                'value' => 'bug',
             ],
             [
                 'label' => 'Other',

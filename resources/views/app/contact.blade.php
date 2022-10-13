@@ -8,13 +8,16 @@
         <x-ark-pages-contact
             :subject="$subject ?? null"
             :message="$message ?? null"
-            :help-description="trans('pages.support.description')"
+            :page-title="trans('pages.support.title')"
+            :page-description="trans('pages.support.description')"
+            :help-description="trans('pages.support.let_us_help.description')"
             :documentation-url="trans('pages.support.docs')"
             :additional-description="trans('pages.support.additional')"
             :contact-networks="[
                 'brands.twitter' => config('social.networks.twitter.url'),
                 'brands.github' => config('social.networks.github.url'),
             ]"
+            :form-title="trans('pages.support.form.title')"
         />
     @endsection
 
