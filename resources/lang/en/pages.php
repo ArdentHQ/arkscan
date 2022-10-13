@@ -237,17 +237,17 @@ return [
     ],
 
     'support' => [
-        'title' => 'Support',
+        'title'       => 'Support',
         'description' => 'We are here to help. Get the answers to your ARKScan-related questions below.',
         'let_us_help' => [
-            'description' => "Can't find what you're looking for? Many support-related questions can be answered by checking out our extensive documentation."
+            'description' => "Can't find what you're looking for? Many support-related questions can be answered by checking out our extensive documentation.",
         ],
         'page_name'      => 'Help & Support',
         'docs'           => 'https://arkscan.io/docs',
         'additional'     => 'Need more help? You can contact our support team and we can work on resolving your issue directly.',
         'form_submitted' => 'Thank you for submitting the contact form. We\'ll be in touch soon!',
-        'form' => [
-            'title' => 'Contact Our Support Team',
+        'form'           => [
+            'title'       => 'Contact Our Support Team',
             'description' => '',
         ],
     ],
