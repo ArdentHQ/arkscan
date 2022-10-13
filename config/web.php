@@ -10,8 +10,8 @@ return [
                 'value' => 'general',
             ],
             [
-                'label' => 'Bug',
-                'value' => 'bug',
+                'label' => 'Bug Report',
+                'value' => 'bug_report',
             ],
             [
                 'label' => 'Other',
