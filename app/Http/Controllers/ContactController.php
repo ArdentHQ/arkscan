@@ -70,7 +70,7 @@ final class ContactController extends Controller
         $subjects = config('web.contact.subjects');
 
         /** @var array{value:string, label:string} */
-        $subject = collect($subjects)->filter(function($element) use ($value) {
+        $subject = collect($subjects)->filter(function ($element) use ($value) {
             return $element['value'] === $value;
         })->first();
 
