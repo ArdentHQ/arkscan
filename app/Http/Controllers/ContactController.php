@@ -41,7 +41,7 @@ final class ContactController extends Controller
                     'body' => $data['message'],
                 ],
                 'priority' => 'normal',
-                'tags'     => ['arkscan'],
+                'tags'     => [strtolower(config('web.contact.source'))],
             ]);
         } catch (ApiResponseException $exception) {
             /* @phpstan-ignore-next-line */
