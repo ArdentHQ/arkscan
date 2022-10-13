@@ -18,7 +18,7 @@ it('should be possible to successfully send the form', function () {
     $this->post(route('contact'), [
         'name'    => 'test',
         'email'   => 'test@ardenthq.com',
-        'subject' => 'general_inquiry',
+        'subject' => 'general',
         'message' => 'test',
     ])->assertRedirect(route('contact'));
 });
@@ -27,7 +27,7 @@ it('should show validation error if validation fails', function () {
     $this->post(route('contact'), [
         'name'    => 'test',
         'email'   => 'test',
-        'subject' => 'general_inquiry',
+        'subject' => 'general',
         'message' => 'test',
     ])->assertSessionHasErrors(['email']);
 });
@@ -39,7 +39,7 @@ it('should show an error when something goes wrong', function () {
     $this->post(route('contact'), [
         'name'    => 'test',
         'email'   => 'test@ardenthq.com',
-        'subject' => 'general_inquiry',
+        'subject' => 'general',
         'message' => 'test',
     ])->assertRedirect(route('contact'))
     ->assertSessionHas('laravel_flash_message');
