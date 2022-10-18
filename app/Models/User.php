@@ -27,7 +27,7 @@ final class User extends Authenticatable
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -39,7 +39,7 @@ final class User extends Authenticatable
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',

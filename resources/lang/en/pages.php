@@ -178,7 +178,7 @@ return [
             'current_delegate'       => 'Current',
             'next_delegate'          => 'Next',
             'next_slot'              => 'Next Slot',
-            'blocks_generated'       => ':0/:1 Blocks',
+            'blocks_generated'       => ':forged/:total Blocks',
             'forging'                => 'Forging',
             'missed'                 => 'Missed',
             'not_forging'            => 'Not Forging',
@@ -234,6 +234,22 @@ return [
     'footer' => [
         'all_rights_reserved' => 'All rights reserved',
         'copyright'           => 'Made with ♥ by',
+    ],
+
+    'support' => [
+        'title'       => 'Support',
+        'description' => 'We are here to help. Get the answers to your ARKScan-related questions below.',
+        'let_us_help' => [
+            'description' => "Can't find what you're looking for? Many support-related questions can be answered by checking out our extensive documentation.",
+        ],
+        'page_name'      => 'Help & Support',
+        'docs'           => 'https://arkscan.io/docs',
+        'additional'     => 'Need more help? You can contact our support team and we can work on resolving your issue directly.',
+        'form_submitted' => 'Thank you for submitting the contact form. We\'ll be in touch soon!',
+        'form'           => [
+            'title'       => 'Contact Our Support Team',
+            'description' => '',
+        ],
     ],
 
 ];

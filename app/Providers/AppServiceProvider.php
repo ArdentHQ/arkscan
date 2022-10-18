@@ -10,6 +10,7 @@ use ARKEcosystem\Foundation\DataBags\DataBag;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
 
@@ -42,6 +43,8 @@ final class AppServiceProvider extends ServiceProvider
         $this->registerDataBags();
 
         Fortify::loginView(fn () => abort(404));
+
+        View::composer('layouts.app', fn ($view) => $view->with(['navigationEntries' => $this->navigationEntries()]));
     }
 
     private function registerCollectionMacros(): void
@@ -81,5 +84,20 @@ final class AppServiceProvider extends ServiceProvider
                 'description' => 'View cryptocurrency transactions and track cryptocurrency balances. A simple block explorer to monitor Blockchain activity on the ARK Public Network.',
             ],
         ]);
+    }
+
+    private function navigationEntries(): array
+    {
+        $navigationEntries = [
+            ['route' => 'delegates',  'label' => trans('menus.delegates')],
+            ['route' => 'wallets',    'label' => trans('menus.wallets')],
+            ['route' => 'statistics', 'label' => trans('menus.statistics')],
+        ];
+
+        if (config('explorer.support.enabled') === true) {
+            $navigationEntries[] = ['route' => 'contact', 'label' => trans('menus.contact')];
+        }
+
+        return $navigationEntries;
     }
 }

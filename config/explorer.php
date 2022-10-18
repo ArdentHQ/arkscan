@@ -65,4 +65,8 @@ return [
          */
         'refreshInterval' => env('ARKSCAN_STATISTICS_REFRESH_INTERVAL', '60'),
     ],
+
+    'support' => [
+        'enabled' => env('ARKSCAN_SUPPORT_ENABLED', false),
+    ],
 ];
