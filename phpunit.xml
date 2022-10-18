@@ -50,6 +50,9 @@
         <server name="MODEL_CACHE_ENABLED" value="false"/>
         <server name="TELESCOPE_ENABLED" value="false"/>
         <server name="RESPONSE_CACHE_ENABLED" value="false"/>
+        <server name="ZENDESK_SUBDOMAIN" value="subdomain"/>
+        <server name="ZENDESK_TOKEN" value="token"/>
+        <server name="ZENDESK_USERNAME" value="username"/>
         <!-- App -->
         <server name="ARKSCAN_NETWORK" value="development"/>
         <server name="ARKSCAN_DB_HOST" value="127.0.0.1"/>

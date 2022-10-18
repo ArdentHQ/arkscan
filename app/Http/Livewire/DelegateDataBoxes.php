@@ -83,8 +83,8 @@ final class DelegateDataBoxes extends Component
     {
         return (new MonitorCache())->setBlockCount(function (): string {
             return trans('pages.delegates.statistics.blocks_generated', [
-                Network::delegateCount() - (Monitor::heightRangeByRound(Monitor::roundNumber())[1] - Block::max('height')),
-                Network::delegateCount(),
+                'forged' => Network::delegateCount() - (Monitor::heightRangeByRound(Monitor::roundNumber())[1] - Block::max('height')),
+                'total'  => Network::delegateCount(),
             ]);
         });
     }
