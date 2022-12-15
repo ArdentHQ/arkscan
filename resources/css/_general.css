@@ -93,7 +93,7 @@ body.table-compact-until-lg .migration-icon {
 .migration-icon-small {
     @apply flex-shrink-0 w-6 h-6;
 
-    --migration-icon-color-border: #5452CE;
+    --migration-icon-color-border: #5452ce;
 }
 
 .dark .transaction-icon {
@@ -102,7 +102,7 @@ body.table-compact-until-lg .migration-icon {
 
 .dark .migration-icon,
 .dark .migration-icon-small {
-    --migration-icon-color-border: #9C9AFF;
+    --migration-icon-color-border: #9c9aff;
     --migration-icon-color-fill: none;
 }
 

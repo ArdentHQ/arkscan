@@ -38,7 +38,8 @@ tr:hover td.hoverable-cell .table-avatar {
     .table-container
     table
     > tbody
-    .full-transaction-icon svg,
+    .full-transaction-icon
+    svg,
 .table-compact:not(.table-compact-until-lg)
     .table-container
     table
@@ -87,7 +88,8 @@ tr:hover td.hoverable-cell .table-avatar {
         .table-container
         table
         > tbody
-        .full-transaction-icon svg,
+        .full-transaction-icon
+        svg,
     .table-compact:not(.table-compact-until-lg)
         .table-container
         table
