@@ -18,6 +18,8 @@ return [
 
     'cryptocompare_exception_frequency' => env('CRYPTOCOMPARE_EXCEPTION_FREQUENCY', 60),
 
+    'migration_address' => env('ARKSCAN_MIGRATION_ADDRESS'),
+
     'networks' => [
         'production' => [
             'name'               => env('ARKSCAN_NETWORK_NAME', 'ARK Public Network'),

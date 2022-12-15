@@ -73,6 +73,10 @@ body {
     @apply flex-shrink-0 text-theme-secondary-900 border-theme-secondary-900;
 }
 
+.full-transaction-icon svg {
+    @apply flex-shrink-0 w-6 md:h-11;
+}
+
 .dark .transaction-icon {
     @apply text-theme-secondary-600 border-theme-secondary-600;
 }
@@ -80,6 +84,10 @@ body {
 @screen md {
     .transaction-icon {
         @apply flex items-center justify-center border-2 rounded-full w-11 h-11;
+    }
+
+    .full-transaction-icon svg {
+        @apply w-11 h-11;
     }
 }
 
