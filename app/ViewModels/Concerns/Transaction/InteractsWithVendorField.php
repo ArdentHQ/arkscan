@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
+use Illuminate\Support\Str;
+
 trait InteractsWithVendorField
 {
     /**
@@ -24,5 +26,17 @@ trait InteractsWithVendorField
         }
 
         return $vendorField;
+    }
+
+    public function migratedAddress(): ?string
+    {
+        $vendorField = $this->vendorField();
+
+        if ($vendorField === null) {
+            return null;
+        }
+
+        return Str::length($vendorField) === 42
+            && Str::startsWith($vendorField, '0x');
     }
 }

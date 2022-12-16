@@ -11,6 +11,7 @@ final class TransactionTypeIcon
     private TransactionType $type;
 
     private array $types = [
+        'isMigration'                     => 'migration',
         'isTransfer'                      => 'transfer',
         'isSecondSignature'               => 'second-signature',
         'isDelegateRegistration'          => 'delegate-registration',

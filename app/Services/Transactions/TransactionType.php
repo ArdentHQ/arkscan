@@ -72,6 +72,11 @@ final class TransactionType
         return $this->isCoreType(CoreTransactionTypeEnum::TRANSFER);
     }
 
+    public function isMigration(): bool
+    {
+        return $this->isTransfer() && $this->transaction->recipient->address === config('explorer.migration_address');
+    }
+
     public function isSecondSignature(): bool
     {
         return $this->isCoreType(CoreTransactionTypeEnum::SECOND_SIGNATURE);
