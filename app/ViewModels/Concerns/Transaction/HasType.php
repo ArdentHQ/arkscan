@@ -20,7 +20,7 @@ trait HasType
 
     public function isMigration(): bool
     {
-        return $this->isTransfer() && $this->recipient()->address === config('explorer.migration_address');
+        return $this->isTransfer() && $this->recipient()?->address === config('explorer.migration_address');
     }
 
     public function isSecondSignature(): bool
