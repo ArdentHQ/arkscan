@@ -28,6 +28,9 @@ trait InteractsWithVendorField
         return $vendorField;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function migratedAddress(): ?string
     {
         $vendorField = $this->vendorField();
@@ -36,7 +39,10 @@ trait InteractsWithVendorField
             return null;
         }
 
-        return Str::length($vendorField) === 42
-            && Str::startsWith($vendorField, '0x');
+        if (Str::length($vendorField) === 42 && Str::startsWith($vendorField, '0x')) {
+            return $vendorField;
+        }
+
+        return null;
     }
 }

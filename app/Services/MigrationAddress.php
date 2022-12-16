@@ -6,6 +6,9 @@ namespace App\Services;
 
 final class MigrationAddress
 {
+    /**
+     * Added so it's shown with both the username and the avatar in the UI.
+     */
     public function isDelegate(): bool
     {
         return true;
