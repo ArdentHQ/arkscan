@@ -74,7 +74,7 @@ final class TransactionType
 
     public function isMigration(): bool
     {
-        return $this->isTransfer() && $this->transaction->recipient->address === config('explorer.migration_address');
+        return $this->isTransfer() && $this->transaction->recipient?->address === config('explorer.migration_address');
     }
 
     public function isSecondSignature(): bool
