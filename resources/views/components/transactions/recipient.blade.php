@@ -2,7 +2,15 @@
 
 <div>
     <div>
-        @if ($transaction->isTransfer() || $transaction->isUnknown())
+        @if ($transaction->isTransfer() && $transaction->recipient()->address === config('explorer.migration_address'))
+            <x-general.identity-custom>
+                <x-slot name="icon">
+                    <x-transactions.icon.migration />
+                </x-slot>
+
+                @lang('general.transaction.types.migration')
+            </x-general.identity>
+        @elseif ($transaction->isTransfer() || $transaction->isUnknown())
             <x-general.identity :model="$transaction->recipient()" />
         @elseif ($transaction->isVoteCombination())
             <x-general.identity :model="$transaction->voted()">
@@ -41,17 +49,17 @@
                 </x-slot>
             </x-general.identity>
         @else
-            <div class="flex flex-row-reverse items-center md:flex-row">
-                <x-transactions.icon :icon-type="$iconType" />
+            <x-general.identity-custom>
+                <x-slot name="icon">
+                    <x-transactions.icon :icon-type="$iconType" />
+                </x-slot>
 
-                <div class="mr-4 font-semibold md:mr-0 md:ml-4 text-theme-secondary-900 dark:text-theme-secondary-200">
-                    @lang('general.transaction.types.'.$transaction->typeName())
+                @lang('general.transaction.types.'.$transaction->typeName())
 
-                    @if ($transaction->isMultiPayment())
-                        <span class="ml-1 text-theme-secondary-600">{{ $transaction->recipientsCount() }}</span>
-                    @endif
-                </div>
-            </div>
+                @if ($transaction->isMultiPayment())
+                    <span class="ml-1 text-theme-secondary-600">{{ $transaction->recipientsCount() }}</span>
+                @endif
+            </x-general.identity-custom>
         @endif
     </div>
 </div>

@@ -73,13 +73,52 @@ body {
     @apply flex-shrink-0 text-theme-secondary-900 border-theme-secondary-900;
 }
 
+body.table-compact:not(.table-compact-until-lg) .migration-icon-small {
+    @apply block;
+}
+
+body.table-compact:not(.table-compact-until-lg) .migration-icon {
+    @apply hidden;
+}
+
+body.table-compact-until-lg .migration-icon-small {
+    @apply block lg:hidden;
+}
+
+body.table-compact-until-lg .migration-icon {
+    @apply hidden lg:block;
+}
+
+.migration-icon,
+.migration-icon-small {
+    @apply flex-shrink-0 w-6 h-6;
+
+    --migration-icon-color-border: #5452ce;
+}
+
 .dark .transaction-icon {
     @apply text-theme-secondary-600 border-theme-secondary-600;
+}
+
+.dark .migration-icon,
+.dark .migration-icon-small {
+    --migration-icon-color-border: #9c9aff;
+    --migration-icon-color-fill: none;
 }
 
 @screen md {
     .transaction-icon {
         @apply flex items-center justify-center border-2 rounded-full w-11 h-11;
+    }
+}
+
+@screen lg {
+    body.table-compact:not(.table-compact-until-lg) .migration-icon-small {
+        @apply w-5 h-5;
+    }
+
+    body.table-compact-until-lg .migration-icon {
+        @apply w-11 h-11;
     }
 }
 

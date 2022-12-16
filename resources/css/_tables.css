@@ -38,6 +38,12 @@ tr:hover td.hoverable-cell .table-avatar {
     .table-container
     table
     > tbody
+    .full-transaction-icon
+    svg,
+.table-compact:not(.table-compact-until-lg)
+    .table-container
+    table
+    > tbody
     .transaction-icon,
 .table-compact:not(.table-compact-until-lg)
     .table-container
@@ -78,6 +84,12 @@ tr:hover td.hoverable-cell .table-avatar {
 }
 
 @screen lg {
+    .table-compact:not(.table-compact-until-lg)
+        .table-container
+        table
+        > tbody
+        .full-transaction-icon
+        svg,
     .table-compact:not(.table-compact-until-lg)
         .table-container
         table
@@ -152,6 +164,7 @@ body.table-compact-until-lg .arrow-direction {
         @apply py-3;
     }
 
+    .table-container table > tbody .full-transaction-icon svg,
     .table-container table > tbody .transaction-icon {
         @apply w-5 h-5 border-0;
     }

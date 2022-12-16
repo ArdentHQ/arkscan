@@ -96,6 +96,7 @@ return [
             'transfer'                            => 'Transfer',
             'unvote'                              => 'Unvote',
             'vote'                                => 'Vote',
+            'migration'                           => 'Migration',
             'unknown'                             => 'Unknown',
 
             // TODO: remove once legacy magistrate shows proper type texts
