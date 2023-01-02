@@ -15,9 +15,9 @@ import PriceChart from "./price-chart";
 import Tabs from "./tabs";
 import Navbar from "@ui/js/navbar";
 import CustomChart from "@ui/js/chart.js";
-import blockies from "ethereum-blockies";
+import makeBlockie from "ethereum-blockies-base64";
 
-window.blockies = blockies;
+window.makeBlockie = makeBlockie;
 window.Alpine = Alpine;
 window.Chart = Chart;
 window.dayjs = dayjs;

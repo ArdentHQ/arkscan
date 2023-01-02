@@ -28,20 +28,14 @@
     </div>
 
     <div
-        class="flex justify-center items-center w-12 h-12 rounded-full"
+        class="flex justify-center items-center w-11 h-11 rounded-full"
         x-data="{
             init() {
-                const canvas = window.blockies.create({
-                    seed: '{{ $model->migratedAddress() }}',
-                    color: '#fff',
-                    size: 11,
-                    scale: 4,
-                    spotcolor: 'random',
-                })
+                const img = new Image
+                img.src = makeBlockie('{{ $model->migratedAddress() }}')
+                img.classList.add('rounded-full')
 
-                canvas.classList.add('rounded-full')
-
-                $root.appendChild(canvas)
+                $root.appendChild(img)
             }
         }"
     >
