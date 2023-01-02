@@ -14,9 +14,9 @@ use App\ViewModels\WalletViewModel;
 use ArkEcosystem\Crypto\Configuration\Network as NetworkConfiguration;
 use ArkEcosystem\Crypto\Identities\Address;
 use Carbon\Carbon;
-use function Spatie\Snapshots\assertMatchesSnapshot;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
     $this->block = Block::factory()->create(['height' => 1]);
