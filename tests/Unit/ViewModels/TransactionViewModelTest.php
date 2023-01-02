@@ -14,9 +14,9 @@ use App\ViewModels\WalletViewModel;
 use ArkEcosystem\Crypto\Configuration\Network as NetworkConfiguration;
 use ArkEcosystem\Crypto\Identities\Address;
 use Carbon\Carbon;
+use function Spatie\Snapshots\assertMatchesSnapshot;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
     $this->block = Block::factory()->create(['height' => 1]);
@@ -440,6 +440,25 @@ it('should determine the transaction type', function (string $type) {
     ['legacyBridgechainResignation'],
     ['legacyBridgechainUpdate'],
 ]);
+
+it('should determine the migration transaction', function () {
+    config([
+        'explorer.migration_address' => '0xTest',
+    ]);
+
+    $transaction = Transaction::factory()->transfer()->create();
+    $transaction->update([
+        'recipient_id' => '0xTest',
+    ]);
+
+    $subject = new TransactionViewModel($transaction);
+
+    expect($subject->isMigration())->toBeTrue();
+
+    $subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
+
+    expect($subject->isMigration())->toBeFalse();
+});
 
 it('should determine if the transaction is self-receiving', function (string $type) {
     $transaction = Transaction::factory()->{$type}()->create();
@@ -1074,6 +1093,44 @@ it('should get the vendor field', function () {
     $this->subject = new TransactionViewModel($transaction->fresh());
 
     expect($this->subject->vendorField())->toBe('Hello World');
+});
+
+it('should get the migration address from the vendor field if transaction is a migration', function () {
+    config([
+        'explorer.migration_address' => '0xTest',
+    ]);
+
+    $transaction = Transaction::factory()->transfer()->create();
+    $transaction->update([
+        'recipient_id' => '0xTest',
+    ]);
+
+    DB::connection('explorer')->update('UPDATE transactions SET vendor_field = ? WHERE id = ?', ['0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n', $transaction->id]);
+
+    $subject = new TransactionViewModel($transaction->fresh());
+
+    expect($subject->migratedAddress())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n');
+
+    $subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
+
+    expect($subject->migratedAddress())->toBeNull();
+});
+
+it('should not get the migration address from the vendor field if vendor field contents are not a valid address', function () {
+    config([
+        'explorer.migration_address' => '0xTest',
+    ]);
+
+    $transaction = Transaction::factory()->transfer()->create();
+    $transaction->update([
+        'recipient_id' => '0xTest',
+    ]);
+
+    DB::connection('explorer')->update('UPDATE transactions SET vendor_field = ? WHERE id = ?', ['test', $transaction->id]);
+
+    $subject = new TransactionViewModel($transaction->fresh());
+
+    expect($subject->migratedAddress())->toBeNull();
 });
 
 it('should fail to get the vendor field if it is empty', function () {

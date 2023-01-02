@@ -150,6 +150,20 @@ it('should determine the type', function (string $type, string $expected) {
     ],
 ]);
 
+it('should determine the migration type', function () {
+    config([
+        'explorer.migration_address' => '0xTest',
+    ]);
+
+    $transaction     = Transaction::factory()->transfer()->create();
+    $transaction->recipient->update([
+        'address' => '0xTest',
+    ]);
+    $transactionType = new TransactionType($transaction);
+
+    expect($transactionType->isMigration())->toBeTrue();
+});
+
 it('should determine is unknown type', function () {
     $transaction = Transaction::factory()->create([
         'type'       => 0,
