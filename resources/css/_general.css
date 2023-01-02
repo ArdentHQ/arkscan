@@ -89,6 +89,15 @@ body.table-compact-until-lg .migration-icon {
     @apply hidden lg:block;
 }
 
+.migration-icon-detail {
+    --migration-icon-color-border: #5452ce;
+}
+
+.dark .migration-icon-detail {
+    --migration-icon-color-border: #9c9aff;
+    --migration-icon-color-fill: none;
+}
+
 .migration-icon,
 .migration-icon-small {
     @apply flex-shrink-0 w-6 h-6;
