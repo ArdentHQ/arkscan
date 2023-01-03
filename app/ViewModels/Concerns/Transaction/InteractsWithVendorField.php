@@ -28,9 +28,6 @@ trait InteractsWithVendorField
         return $vendorField;
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function migratedAddress(): ?string
     {
         $vendorField = $this->vendorField();
