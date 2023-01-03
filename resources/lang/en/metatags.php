@@ -87,4 +87,10 @@ return [
         'description' => 'Get help with the use of the Blockchain Explorer',
         'image'       => asset('/images/metadata/homepage.png'),
     ],
+
+    'migration' => [
+        'title'       => 'Miration | :name Blockchain Explorer',
+        'description' => 'ARK Ecosystem is migrating to the Polygon Ecosystem. Track all migration transactions and statistics on this page.',
+        'image'       => asset('/images/metadata/homepage.png'),
+    ],
 ];
