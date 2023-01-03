@@ -1,7 +1,7 @@
 <x-ark-container>
     <div class="flex bg-theme-primary-100 dark:bg-black md:space-x-8 rounded-xl p-6 sm:p-8">
         <div class="flex flex-1 flex-col justify-center">
-            <div>
+            <div class="flex flex-col space-y-3 md:space-y-2">
                 <h3>
                     <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
                         @lang('pages.migration.banner.title')
