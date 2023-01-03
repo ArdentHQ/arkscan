@@ -3,7 +3,7 @@
     icon="app-transactions.{{ $model->iconType() }}"
     :wrapper-class="$wrapperClass ?? ''"
     :icon-class="$model->isMigration() ? 'migration-icon-detail' : null"
-    icon-size="w-11 h-11"
+    :icon-size="$model->isMigration() ? 'w-11 h-11' : null"
 >
     <x-slot name="text">
         @isset($asEntity)
