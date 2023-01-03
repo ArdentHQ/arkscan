@@ -1,6 +1,6 @@
 <x-ark-container>
-    <div class="flex bg-theme-primary-100 dark:bg-black md:space-x-8 rounded-xl p-6 sm:p-8">
-        <div class="flex flex-1 flex-col justify-center">
+    <div class="flex p-6 rounded-xl sm:p-8 md:space-x-8 dark:bg-black bg-theme-primary-100">
+        <div class="flex flex-col flex-1 justify-center">
             <div class="flex flex-col space-y-3 md:space-y-2">
                 <h3>
                     <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <div class="flex flex-col sm:flex-row sm:space-x-3 space-y-3 sm:space-y-0 pt-8">
+            <div class="flex flex-col pt-8 space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3">
                 <a
                     href="@lang('urls.migration.migrate')"
                     class="button-primary"
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <div class="hidden md:flex items-center">
+        <div class="hidden items-center md:flex">
             <x-ark-icon
                 name="app-migration.banner"
                 class="light-dark-icon"
