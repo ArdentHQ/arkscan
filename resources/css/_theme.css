@@ -3,6 +3,10 @@
     --icon-error-primary-600: var(--theme-color-danger-400);
     --icon-error-secondary-300: var(--theme-color-secondary-300);
     --icon-error-secondary-900: var(--theme-color-secondary-900);
+    --migration-banner-primary-300: var(--theme-color-primary-300);
+    --migration-banner-hint-200: var(--theme-color-hint-200);
+    --migration-banner-danger-100: var(--theme-color-danger-100);
+    --migration-banner-danger-200: var(--theme-color-danger-200);
 }
 
 .dark .light-dark-icon {
@@ -11,4 +15,8 @@
     --icon-error-secondary-200: var(--theme-color-secondary-800);
     --icon-error-secondary-300: var(--theme-color-secondary-800);
     --icon-error-secondary-900: var(--theme-color-secondary-600);
+    --migration-banner-primary-300: var(--theme-color-secondary-800);
+    --migration-banner-hint-200: var(--theme-color-hint-900);
+    --migration-banner-danger-100: var(--theme-color-danger-900);
+    --migration-banner-danger-200: var(--theme-color-danger-900);
 }
