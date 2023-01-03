@@ -41,7 +41,7 @@
             <x-ark-icon
                 name="app-migration.banner"
                 class="light-dark-icon"
-                size="w-64 lg:w-auto"
+                size="w-64 lg:w-116"
             />
         </div>
     </div>
