@@ -21,9 +21,11 @@ use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\VoteCombinationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * @property string $id
@@ -127,6 +129,16 @@ final class Transaction extends Model
     public function recipient(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'recipient_id', 'address');
+    }
+
+    /**
+     * Get migrated transactions.
+     *
+     * @return Builder
+     */
+    public function scopeMigrated(): Builder
+    {
+        return self::where('recipient_id', config('explorer.migration_address'));
     }
 
     /**
