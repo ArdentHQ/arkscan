@@ -11,7 +11,7 @@ it('should render the page without any errors', function () {
 
     $wallet = Wallet::factory()->create([
         'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
-        'balance' => 9876543210
+        'balance' => 9876543210,
     ]);
 
     (new NetworkCache())->setSupply(function (): float {
