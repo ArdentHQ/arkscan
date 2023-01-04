@@ -16,7 +16,8 @@
     --icon-error-secondary-300: var(--theme-color-secondary-800);
     --icon-error-secondary-900: var(--theme-color-secondary-600);
     --migration-banner-primary-300: var(--theme-color-secondary-800);
-    --migration-banner-hint-200: var(--theme-color-hint-900);
+    --migration-banner-hint-200: var(--theme-color-secondary-800);
+    --migration-banner-ark-hint-200: var(--theme-color-hint-900);
     --migration-banner-danger-100: var(--theme-color-danger-900);
-    --migration-banner-danger-200: var(--theme-color-danger-900);
+    --migration-banner-danger-200: var(--theme-color-secondary-800);
 }
