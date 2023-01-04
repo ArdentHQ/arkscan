@@ -11,7 +11,7 @@
         </div>
 
         <span class="font-semibold text-theme-secondary-700">
-            <x-ark-external-link url="https://polygonscan.com/address/{{ $model->migratedAddress() }}">
+            <x-ark-external-link :url="trans('urls.migration.polygonscan', ['address' => $model->migratedAddress()])">
                 <x-slot name="text">
                     <span class="sm:hidden md:inline lg:hidden">
                         <x-truncate-middle :length="12">
