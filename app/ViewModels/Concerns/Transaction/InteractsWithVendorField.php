@@ -9,6 +9,12 @@ use Illuminate\Support\Str;
 trait InteractsWithVendorField
 {
     /**
+     * This property is false only if the migrated address has never been computed.
+     * When computed, it will either be a string (if migrated address found), or null (if not found).
+     */
+    protected bool|string|null $migratedAddress = false;
+
+    /**
      * @codeCoverageIgnore
      */
     public function vendorField(): ?string
@@ -30,16 +36,22 @@ trait InteractsWithVendorField
 
     public function migratedAddress(): ?string
     {
+        if (! is_bool($this->migratedAddress)) {
+            return $this->migratedAddress;
+        }
+
         $vendorField = $this->vendorField();
 
         if ($vendorField === null) {
+            $this->migratedAddress = null;
+
             return null;
         }
 
-        if (Str::length($vendorField) === 42 && Str::startsWith($vendorField, '0x')) {
-            return $vendorField;
-        }
+        $this->migratedAddress = Str::length($vendorField) === 42 && Str::startsWith($vendorField, '0x')
+                    ? $vendorField
+                    : null;
 
-        return null;
+        return $this->migratedAddress;
     }
 }

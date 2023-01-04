@@ -1116,6 +1116,28 @@ it('should get the migration address from the vendor field if transaction is a m
     expect($subject->migratedAddress())->toBeNull();
 });
 
+it('should resolve the migrated address multiple times', function () {
+    config([
+        'explorer.migration_address' => '0xTest',
+    ]);
+
+    $transaction = Transaction::factory()->transfer()->create();
+    $transaction->update([
+        'recipient_id' => '0xTest',
+    ]);
+
+    DB::connection('explorer')->update('UPDATE transactions SET vendor_field = ? WHERE id = ?', ['0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n', $transaction->id]);
+
+    $subject = new TransactionViewModel($transaction->fresh());
+
+    // Related to: https://github.com/ArdentHQ/arkscan/pull/129#discussion_r1061345520
+
+    expect($subject->migratedAddress())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n');
+    expect($subject->migratedAddress())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n');
+    expect($subject->migratedAddress())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n');
+    expect($subject->migratedAddress())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n');
+});
+
 it('should not get the migration address from the vendor field if vendor field contents are not a valid address', function () {
     config([
         'explorer.migration_address' => '0xTest',
