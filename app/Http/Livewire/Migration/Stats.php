@@ -19,7 +19,7 @@ final class Stats extends Component
     {
         $migratedBalance = $this->migratedBalance();
         $totalSupply     = $this->totalSupply();
-        $remainingSupply = $totalSupply->minus($migratedBalance);
+        $remainingSupply = $totalSupply->minus($migratedBalance->valueOf());
 
         return view('livewire.migration.stats', [
             'amountMigrated'  => $migratedBalance->toFloat(),
@@ -31,7 +31,12 @@ final class Stats extends Component
 
     private function migratedBalance(): BigNumber
     {
-        return Wallet::firstWhere('address', config('explorer.migration_address'))->balance;
+        $wallet = Wallet::firstWhere('address', config('explorer.migration_address'));
+        if ($wallet === null) {
+            return BigNumber::new(0);
+        }
+
+        return $wallet->balance;
     }
 
     private function totalSupply(): BigNumber
