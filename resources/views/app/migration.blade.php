@@ -7,5 +7,9 @@
 
             <livewire:migration.stats />
         </div>
+
+        <x-ark-container>
+            <livewire:migration.transactions />
+        </x-ark-container>
     @endsection
 @endcomponent

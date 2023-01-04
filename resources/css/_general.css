@@ -89,6 +89,15 @@ body.table-compact-until-lg .migration-icon {
     @apply hidden lg:block;
 }
 
+.migration-icon-detail {
+    --migration-icon-color-border: #5452ce;
+}
+
+.dark .migration-icon-detail {
+    --migration-icon-color-border: #9c9aff;
+    --migration-icon-color-fill: none;
+}
+
 .migration-icon,
 .migration-icon-small {
     @apply flex-shrink-0 w-6 h-6;
@@ -347,4 +356,9 @@ body.table-compact-until-lg .migration-icon {
     .unvote-circle {
         @apply flex items-center justify-center border-2 rounded-full w-11 h-11;
     }
+}
+
+/* Wallet Address Styling */
+.no-contextual {
+    font-variant-ligatures: no-contextual;
 }

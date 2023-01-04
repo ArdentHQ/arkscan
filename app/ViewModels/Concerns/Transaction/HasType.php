@@ -18,6 +18,11 @@ trait HasType
         return $this->type->isTransfer();
     }
 
+    public function isMigration(): bool
+    {
+        return $this->isTransfer() && $this->recipient()?->address === config('explorer.migration_address');
+    }
+
     public function isSecondSignature(): bool
     {
         return $this->type->isSecondSignature();

@@ -3,6 +3,7 @@
     'text',
     'wrapperClass' => '',
     'contentClass' => 'md:ml-4 md:pr-4',
+    'iconClass' => null,
     'url' => false,
     'withoutIcon' => false,
     'icon' => false,
@@ -14,7 +15,7 @@
 <div class="entity-header-item {{ $wrapperClass }}{{ $truncate ? ' overflow-x-auto truncate' : '' }}">
     @unless($withoutIcon)
         <div class="hidden items-center md:flex">
-            <div class="circled-icon text-theme-secondary-900 border-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-600">
+            <div class="{{ $iconClass ?? 'circled-icon text-theme-secondary-900 border-theme-secondary-900 dark:text-theme-secondary-600 dark:border-theme-secondary-600' }}">
                 @if ($icon)
                     @if ($iconSize)
                         <x-ark-icon :name="$icon" :size="$iconSize" />

@@ -54,6 +54,7 @@ return [
         'confirmations'           => 'Confirmations',
         'block_id'                => 'Block ID',
         'smartbridge'             => 'SmartBridge',
+        'migrated_address'        => 'Migrated Address',
         'nonce'                   => 'Nonce',
         'multi_signature_address' => 'Multisignature Address',
         'participant'             => 'Participant #:0',

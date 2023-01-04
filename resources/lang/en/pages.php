@@ -265,6 +265,11 @@ return [
             'remaining_supply' => 'Remaining Supply',
             'wallets_migrated' => 'Wallets Migrated',
         ],
+
+        'transactions' => [
+            'title'        => 'Migration Transactions',
+            'title_mobile' => 'Transactions',
+        ],
     ],
 
 ];
