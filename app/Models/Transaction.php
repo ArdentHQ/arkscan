@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\CoreTransactionTypeEnum;
+use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Casts\BigInteger;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
@@ -21,6 +23,7 @@ use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\VoteCombinationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -127,6 +130,18 @@ final class Transaction extends Model
     public function recipient(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'recipient_id', 'address');
+    }
+
+    /**
+     * Get migrated transactions.
+     *
+     * @return Builder
+     */
+    public function scopeMigrated(): Builder
+    {
+        return self::where('recipient_id', config('explorer.migration_address'))
+            ->where('type', CoreTransactionTypeEnum::TRANSFER)
+            ->where('type_group', TransactionTypeGroupEnum::CORE);
     }
 
     /**

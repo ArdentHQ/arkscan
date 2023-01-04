@@ -3,5 +3,9 @@
 
     @section('content')
         <x-page-headers.migration />
+
+        <x-ark-container>
+            <livewire:migration.transactions />
+        </x-ark-container>
     @endsection
 @endcomponent
