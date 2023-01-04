@@ -1,7 +1,7 @@
-<div class="flex flex-col xl:flex-row xl:max-w-7xl xl:space-x-5 space-y-5 xl:space-y-0 m-auto px-8 md:px-10">
+<div class="flex flex-col px-8 m-auto space-y-5 md:px-10 xl:flex-row xl:space-y-0 xl:space-x-5 xl:max-w-7xl">
     <div class="flex md:space-x-4 xl:w-164">
-        <div class="flex flex-1 flex-col sm:flex-row space-y-5 sm:space-y-0 justify-between font-semibold sm:bg-theme-hint-800 sm:rounded-xl">
-            <div class="flex bg-theme-hint-800 md:space-x-4 px-8 sm:pr-0 py-4 rounded-xl sm:bg-transparent sm:rounded-none">
+        <div class="flex flex-col flex-1 justify-between space-y-5 font-semibold sm:flex-row sm:space-y-0 sm:rounded-xl sm:bg-theme-hint-800">
+            <div class="flex py-4 px-8 rounded-xl sm:pr-0 sm:bg-transparent sm:rounded-none md:space-x-4 bg-theme-hint-800">
                 <x-ark-icon
                     name="app-transactions.migration"
                     size="w-11 h-11"
@@ -9,11 +9,11 @@
                 />
 
                 <div class="flex flex-col justify-between space-y-2">
-                    <span class="text-sm text-theme-hint-300 leading-none">
+                    <span class="text-sm leading-none text-theme-hint-300">
                         @lang('pages.migration.stats.migration_wallet')
                     </span>
 
-                    <div class="flex items-center space-x-1 text-white leading-tight">
+                    <div class="flex items-center space-x-1 leading-tight text-white">
                         <a href="{{ route('wallet', config('explorer.migration_address')) }}">
                             <x-truncate-middle length="20">
                                 {{ config('explorer.migration_address') }}
@@ -29,13 +29,13 @@
                 </div>
             </div>
 
-            <div class="flex space-x-6 justify-between divide-x divide-theme-hint-700 bg-theme-hint-800 px-8 sm:pl-0 py-4 rounded-xl sm:bg-transparent sm:rounded-none">
-                <div class="flex flex-col justify-between sm:text-right space-y-2">
-                    <span class="text-sm text-theme-hint-300 leading-none">
+            <div class="flex justify-between py-4 px-8 space-x-6 rounded-xl divide-x sm:pl-0 sm:bg-transparent sm:rounded-none divide-theme-hint-700 bg-theme-hint-800">
+                <div class="flex flex-col justify-between space-y-2 sm:text-right">
+                    <span class="text-sm leading-none text-theme-hint-300">
                         @lang('pages.migration.stats.amount_migrated')
                     </span>
 
-                    <div class="text-white leading-tight">
+                    <div class="leading-tight text-white">
                         <x-currency
                             :currency="Network::currency()"
                             decimals="3"
@@ -45,12 +45,12 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col justify-between text-right space-y-2 pl-6">
-                    <span class="text-sm text-theme-hint-300 leading-none">
+                <div class="flex flex-col justify-between pl-6 space-y-2 text-right">
+                    <span class="text-sm leading-none text-theme-hint-300">
                         @lang('pages.migration.stats.supply')
                     </span>
 
-                    <div class="text-white leading-tight">
+                    <div class="leading-tight text-white">
                         {{ $percentage }}
                     </div>
                 </div>
@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <div class="flex flex-col sm:flex-row sm:space-x-5 space-y-5 sm:space-y-0">
+    <div class="flex flex-col space-y-5 sm:flex-row sm:space-y-0 sm:space-x-5">
         <x-stats.stat
             :label="trans('pages.migration.stats.remaining_supply')"
             padding="py-4 px-8"
