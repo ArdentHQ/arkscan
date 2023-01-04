@@ -12,7 +12,7 @@
                     @lang('pages.migration.banner.description', [
                         'link' => view('ark::external-link', [
                             'url'   => trans('urls.migration.guide'),
-                            'text'  => 'Migration Guide',
+                            'text'  => trans('actions.migration_guide'),
                         ]),
                     ])
                 </div>
