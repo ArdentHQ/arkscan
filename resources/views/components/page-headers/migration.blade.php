@@ -1,5 +1,5 @@
-<x-ark-container>
-    <div class="flex p-6 rounded-xl sm:p-8 md:space-x-8 dark:bg-black bg-theme-primary-100">
+<x-ark-container container-class="pb-5">
+    <div class="flex p-6 rounded-xl sm:p-8 md:space-x-8 dark:bg-theme-secondary-900 bg-theme-primary-100">
         <div class="flex flex-col flex-1 justify-center">
             <div class="flex flex-col space-y-3 md:space-y-2">
                 <h3>
