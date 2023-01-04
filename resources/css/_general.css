@@ -356,3 +356,8 @@ body.table-compact-until-lg .migration-icon {
         @apply flex items-center justify-center border-2 rounded-full w-11 h-11;
     }
 }
+
+/* Wallet Address Styling */
+.no-contextual {
+    font-variant-ligatures: no-contextual;
+}

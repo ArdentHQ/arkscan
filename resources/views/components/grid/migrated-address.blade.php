@@ -10,7 +10,7 @@
             </span>
         </div>
 
-        <span class="font-semibold text-theme-secondary-700">
+        <span class="font-semibold text-theme-secondary-700 tabular-num no-contextual">
             <x-ark-external-link :url="trans('urls.migration.polygonscan', ['address' => $model->migratedAddress()])">
                 <x-slot name="text">
                     <span class="sm:hidden md:inline lg:hidden">
