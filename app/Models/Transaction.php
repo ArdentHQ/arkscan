@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\CoreTransactionTypeEnum;
+use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Casts\BigInteger;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
@@ -137,7 +139,9 @@ final class Transaction extends Model
      */
     public function scopeMigrated(): Builder
     {
-        return self::where('recipient_id', config('explorer.migration_address'));
+        return self::where('recipient_id', config('explorer.migration_address'))
+            ->where('type', CoreTransactionTypeEnum::TRANSFER)
+            ->where('type_group', TransactionTypeGroupEnum::CORE);
     }
 
     /**
