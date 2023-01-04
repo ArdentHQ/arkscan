@@ -1,5 +1,5 @@
 <div>
-    <div class="flex items-center space-x-3 mb-6 md:mb-3">
+    <div class="flex items-center mb-6 space-x-3 md:mb-3">
         <h2>
             <span class="hidden sm:inline">
                 @lang('pages.migration.transactions.title')
@@ -10,7 +10,7 @@
             </span>
         </h2>
 
-        <div class="bg-theme-primary-100 text-theme-secondary-700 dark:bg-theme-secondary-800 dark:text-theme-secondary-500 text-sm md:text-lg leading-tight rounded font-semibold px-1.5 py-0.5 md:px-2 md:py-1.5 transition-default">
+        <div class="py-0.5 px-1.5 text-sm font-semibold leading-tight rounded md:py-1.5 md:px-2 md:text-lg bg-theme-primary-100 text-theme-secondary-700 transition-default dark:bg-theme-secondary-800 dark:text-theme-secondary-500">
             {{ $transactions->total() }}
         </div>
     </div>
