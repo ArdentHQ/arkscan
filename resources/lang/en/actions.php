@@ -11,4 +11,5 @@ return [
     'vote'            => 'Vote',
     'migrate_tokens'  => 'Migrate Tokens',
     'learn_more'      => 'Learn More',
+    'migration_guide' => 'Migration Guide',
 ];
