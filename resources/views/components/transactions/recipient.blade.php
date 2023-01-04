@@ -2,7 +2,7 @@
 
 <div>
     <div>
-        @if ($transaction->isTransfer() && $transaction->recipient()->address === config('explorer.migration_address'))
+        @if ($transaction->isMigration())
             <x-general.identity-custom>
                 <x-slot name="icon">
                     <x-transactions.icon.migration />
