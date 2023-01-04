@@ -19,7 +19,6 @@ return [
     'cryptocompare_exception_frequency' => env('CRYPTOCOMPARE_EXCEPTION_FREQUENCY', 60),
 
     'migration_address' => env('ARKSCAN_MIGRATION_ADDRESS'),
-    'migration_wallet'  => env('ARKSCAN_MIGRATION_WALLET_NAME', 'Migration Wallet'),
 
     'networks' => [
         'production' => [
