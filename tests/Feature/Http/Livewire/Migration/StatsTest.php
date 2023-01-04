@@ -9,12 +9,12 @@ use App\Services\Cache\NetworkCache;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
-it('should list the first page of records', function () {
+it('should calculate stats correctly', function () {
     Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     $wallet = Wallet::factory()->create([
         'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
-        'balance' => 9876543210
+        'balance' => 9876543210,
     ]);
 
     Transaction::factory()->create([
@@ -31,4 +31,17 @@ it('should list the first page of records', function () {
         ->assertViewHas('remainingSupply', '813.5802468')
         ->assertViewHas('percentage', '0.12%')
         ->assertViewHas('walletsMigrated', '1');
+});
+
+it('should handle no migration wallet', function () {
+    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+
+    $wallet = Wallet::factory()->create([
+        'balance' => 9876543210,
+    ]);
+
+    expect($wallet->address)->not->toBe('DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+
+    Livewire::test(Stats::class)
+        ->assertViewHas('amountMigrated', '0');
 });
