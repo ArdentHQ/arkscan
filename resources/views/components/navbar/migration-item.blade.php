@@ -22,7 +22,7 @@
         <div class="flex absolute -right-3 h-6">
             <div
                 class="inline-block bg-gradient-to-r animate-move-bg from-theme-danger-400 to-theme-danger-400 bg-500 via-theme-hint-600 dark:via-theme-hint-400"
-                style="clip-path: url(#sparksClipPath)"
+                style="clip-path: url(#keep_sparksClipPath)"
             >
                 <x-ark-icon name="app-sparks" />
             </div>
