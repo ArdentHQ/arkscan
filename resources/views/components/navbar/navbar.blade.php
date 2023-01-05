@@ -47,22 +47,14 @@
                             {{-- Desktop Navbar Items --}}
                             <div class="hidden items-center -mx-4 lg:flex">
                                 @foreach ($navigation as $navItem)
-                                    <a
-                                        href="{{ route($navItem['route'], $navItem['params'] ?? []) }}"
-                                        class="inline-flex font-semibold leading-5 group
-                                            focus:outline-none transition duration-150 ease-in-out h-full px-2 mx-2 relative border-t-2 border-transparent rounded
-                                            @if(optional(Route::current())->getName() === $navItem['route'])
-                                                text-theme-secondary-900 dark:text-theme-secondary-400
-                                            @else
-                                                text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400
-                                            @endif
-                                        "
-                                    >
-                                        <span class="flex items-center w-full h-full border-b-2  @if(optional(Route::current())->getName() === $navItem['route']) border-theme-primary-600 @else border-transparent group-hover:border-theme-secondary-300 @endif">
-                                            <span>{{ $navItem['label'] }}</span>
-                                        </span>
-                                    </a>
+                                    <x-navbar.item
+                                        :route="$navItem['route']"
+                                        :params="$navItem['params'] ?? null"
+                                        :label="$navItem['label']"
+                                    />
                                 @endforeach
+
+                                <x-navbar.migration-item />
                             </div>
                         </div>
 
