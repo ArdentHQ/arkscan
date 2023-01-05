@@ -30,11 +30,7 @@ tr:hover td.hoverable-cell .table-avatar {
 }
 
 .fiat-hint-migration {
-    @apply -ml-1.5 -my-1 bg-theme-hint-100 hover:bg-theme-hint-200 flex items-center justify-center px-2 mr-2 transition-default;
-}
-
-.dark .fiat-hint-migration {
-    @apply text-white bg-theme-hint-400 hover:bg-theme-hint-500;
+    @apply -ml-1.5 -my-1 bg-theme-hint-100 hover:bg-theme-hint-200 flex items-center justify-center px-2 mr-2 transition-default dark:text-white dark:bg-theme-hint-400 dark:hover:bg-theme-hint-500;
 }
 
 .table-compact:not(.table-compact-until-lg) table .fiat-hint {
