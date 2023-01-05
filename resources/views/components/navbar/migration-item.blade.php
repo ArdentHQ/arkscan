@@ -13,15 +13,15 @@
         'border-theme-primary-600' => $currentRoute === 'migration',
         'border-transparent group-hover:border-theme-secondary-300' => $currentRoute !== 'migration',
     ])>
-        <span class="flex animate-move-bg-start-right bg-gradient-to-r from-theme-danger-400 to-theme-danger-400 bg-500 bg-clip-text text-transparent dark:via-theme-hint-400 via-theme-hint-600">
+        <span class="flex text-transparent bg-clip-text bg-gradient-to-r animate-move-bg-start-right from-theme-danger-400 to-theme-danger-400 bg-500 via-theme-hint-600 dark:via-theme-hint-400">
             <span>
                 @lang('menus.migration')
             </span>
         </span>
 
-        <div class="absolute -right-3 flex h-6">
+        <div class="flex absolute -right-3 h-6">
             <div
-                class="inline-block animate-move-bg bg-gradient-to-r from-theme-danger-400 to-theme-danger-400 bg-500 dark:via-theme-hint-400 via-theme-hint-600"
+                class="inline-block bg-gradient-to-r animate-move-bg from-theme-danger-400 to-theme-danger-400 bg-500 via-theme-hint-600 dark:via-theme-hint-400"
                 style="clip-path: url(#sparksClipPath)"
             >
                 <x-ark-icon name="app-sparks" />
