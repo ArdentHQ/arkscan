@@ -124,11 +124,6 @@ tr:hover td.hoverable-cell .table-avatar {
     @apply p-0 pr-2;
 }
 
-.table-compact:not(.table-compact-until-lg) table .fiat-tooltip-sent,
-.table-compact:not(.table-compact-until-lg) table .fiat-tooltip-received {
-    @apply p-0 border-0;
-}
-
 body.table-compact-until-lg table .fiat-tooltip-sent,
 body.table-compact-until-lg table .fiat-tooltip-received {
     @apply -my-1;
