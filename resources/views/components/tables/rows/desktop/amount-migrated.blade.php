@@ -7,9 +7,9 @@
         <x-ark-icon name="hint-small" size="xs" />
     </span>
 
-    <span @if(Network::canBeExchanged()) data-tippy-content="{{ $model->amountFiatExcludingItSelf() }}" @endif>
+    <span @if(Network::canBeExchanged()) data-tippy-content="{{ $model->amountFiat() }}" @endif>
         -
-        <x-currency :currency="Network::currency()">{{ $model->amountExcludingItSelf() }}</x-currency>
+        <x-currency :currency="Network::currency()">{{ $model->amount() }}</x-currency>
     </span>
 </span>
 
