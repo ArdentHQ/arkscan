@@ -8,7 +8,9 @@
                     <x-transactions.icon.migration />
                 </x-slot>
 
-                @lang('general.transaction.types.migration')
+                <a href="{{ route('migration') }}" class="link">
+                    @lang('general.transaction.types.migration')
+                </a>
             </x-general.identity>
         @elseif ($transaction->isTransfer() || $transaction->isUnknown())
             <x-general.identity :model="$transaction->recipient()" />

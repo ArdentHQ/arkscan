@@ -81,6 +81,10 @@ body.table-compact:not(.table-compact-until-lg) .migration-icon {
     @apply hidden;
 }
 
+body.table-compact:not(.table-compact-until-lg) .transparent {
+    @apply bg-transparent;
+}
+
 body.table-compact-until-lg .migration-icon-small {
     @apply block lg:hidden;
 }
