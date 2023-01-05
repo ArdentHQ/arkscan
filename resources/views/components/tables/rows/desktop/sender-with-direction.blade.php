@@ -2,7 +2,7 @@
     <div class="flex justify-center items-center sender-direction-wrapper">
         <div class="flex">
             @if($model->isMigration())
-                <div class="arrow-direction text-theme-hint-600 dark:text-theme-hint-300 border-theme-hint-100 bg-theme-hint-50 dark:bg-theme-secondary-900 dark:border-theme-hint-300 [&>svg]:rotate-180">
+                <div class="arrow-direction text-theme-hint-600 dark:text-theme-hint-300 border-theme-hint-100 bg-theme-hint-50 transparent dark:bg-theme-secondary-900 dark:border-theme-hint-300 [&>svg]:rotate-180">
                     <x-ark-icon name="transaction.received" />
                 </div>
             @elseif($model->isSentToSelf($wallet->address()))
