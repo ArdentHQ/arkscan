@@ -21,14 +21,15 @@ class Stats extends Component
 
     public function render(): View
     {
-        $migratedBalance = $this->migratedBalance();
-        $totalSupply     = $this->totalSupply();
-        $remainingSupply = $totalSupply->minus($migratedBalance->valueOf());
+        $migratedBalance    = $this->migratedBalance();
+        $totalSupply        = $this->totalSupply();
+        $migratedPercentage = $migratedBalance->toInt() / $totalSupply->toInt() * 100;
+        $remainingSupply    = $totalSupply->minus($migratedBalance->valueOf());
 
         return view('livewire.migration.stats', [
             'amountMigrated'  => $migratedBalance->toFloat(),
             'remainingSupply' => $remainingSupply->toFloat(),
-            'percentage'      => NumberFormatter::percentage($migratedBalance->toInt() / $totalSupply->toInt()),
+            'percentage'      => NumberFormatter::percentage($migratedPercentage),
             'walletsMigrated' => $this->walletsMigrated(),
         ]);
     }

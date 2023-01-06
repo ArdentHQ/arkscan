@@ -30,7 +30,7 @@ it('should calculate stats correctly', function () {
     Livewire::test(Stats::class)
         ->assertViewHas('amountMigrated', '98.7654321')
         ->assertViewHas('remainingSupply', '813.5802468')
-        ->assertViewHas('percentage', '0.12%')
+        ->assertViewHas('percentage', '10.75%')
         ->assertViewHas('walletsMigrated', '1');
 });
 
