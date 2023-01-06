@@ -93,20 +93,16 @@ body.table-compact-until-lg .migration-icon {
     @apply hidden lg:block;
 }
 
-.migration-icon-detail {
-    --migration-icon-color-border: #5452ce;
-}
-
-.dark .migration-icon-detail {
-    --migration-icon-color-border: #9c9aff;
-    --migration-icon-color-fill: none;
+.migration-icon-detail,
+.migration-wallet-icon-dark {
+    --migration-icon-color-border: var(--theme-color-hint-600);
 }
 
 .migration-icon,
 .migration-icon-small {
     @apply flex-shrink-0 w-6 h-6;
 
-    --migration-icon-color-border: #5452ce;
+    --migration-icon-color-border: var(--theme-color-hint-600);
 }
 
 .dark .transaction-icon {
@@ -114,9 +110,11 @@ body.table-compact-until-lg .migration-icon {
 }
 
 .migration-icon-dark,
+.dark .migration-wallet-icon-dark,
 .dark .migration-icon,
-.dark .migration-icon-small {
-    --migration-icon-color-border: #9c9aff;
+.dark .migration-icon-small,
+.dark .migration-icon-detail {
+    --migration-icon-color-border: var(--theme-color-hint-300);
     --migration-icon-color-fill: none;
 }
 
