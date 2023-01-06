@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Component;
 
-final class Stats extends Component
+class Stats extends Component
 {
     public const CACHE_WALLETS_SECONDS = 300;
 
@@ -31,7 +31,7 @@ final class Stats extends Component
         ]);
     }
 
-    private function migratedBalance(): BigNumber
+    protected function migratedBalance(): BigNumber
     {
         $wallet = Wallet::firstWhere('address', config('explorer.migration_address'));
         if ($wallet === null) {
@@ -41,12 +41,12 @@ final class Stats extends Component
         return $wallet->balance;
     }
 
-    private function totalSupply(): BigNumber
+    protected function totalSupply(): BigNumber
     {
         return BigNumber::new(CacheNetworkSupply::execute());
     }
 
-    private function walletsMigrated(): int
+    protected function walletsMigrated(): int
     {
         /** @var string $cache */
         $cache = Cache::remember('migration:wallets_count', self::CACHE_WALLETS_SECONDS, function () {
