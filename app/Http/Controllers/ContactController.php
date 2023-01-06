@@ -36,12 +36,12 @@ final class ContactController extends Controller
                     'name'  => $data['name'],
                     'email' => $data['email'],
                 ],
-                'subject' => config('web.contact.source').' - '.$this->getSubjectLabel($data['subject']),
-                'comment' => [
+                'subject'   => config('web.contact.source').' - '.$this->getSubjectLabel($data['subject']),
+                'comment'   => [
                     'body' => $data['message'],
                 ],
-                'priority' => 'normal',
-                'tags'     => [strtolower(config('web.contact.source'))],
+                'priority'  => 'normal',
+                'tags'      => [strtolower(config('web.contact.source'))],
             ]);
         } catch (ApiResponseException $exception) {
             /* @phpstan-ignore-next-line */

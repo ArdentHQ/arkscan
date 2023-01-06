@@ -22,7 +22,7 @@ final class CacheDelegateProductivity extends Command
     /**
      * The console command description.
      *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Calculate and cache the productivity for each active delegate.';
 

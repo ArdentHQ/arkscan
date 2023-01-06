@@ -22,7 +22,7 @@ final class CacheCurrenciesData extends Command
     /**
      * The console command description.
      *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Cache currencies data';
 
