@@ -6,6 +6,7 @@ use App\Http\Livewire\Migration\Stats;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
@@ -44,4 +45,32 @@ it('should handle no migration wallet', function () {
 
     Livewire::test(Stats::class)
         ->assertViewHas('amountMigrated', '0');
+});
+
+it('should cache migrated wallet count', function () {
+    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+
+    (new NetworkCache())->setSupply(function (): float {
+        return (float) 91234567890;
+    });
+
+    $this->travelTo(Carbon::parse('2022-01-06 00:15:00'));
+
+    Livewire::test(Stats::class)
+        ->assertViewHas('walletsMigrated', 0);
+
+    $this->travelTo(Carbon::parse('2022-01-06 00:19:00'));
+
+    Livewire::test(Stats::class)
+        ->assertViewHas('walletsMigrated', 0);
+
+    $this->travelTo(Carbon::parse('2022-01-06 00:21:00'));
+
+    Transaction::factory()->create([
+        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+        'amount'       => 9876543210,
+    ]);
+
+    Livewire::test(Stats::class)
+        ->assertViewHas('walletsMigrated', 1);
 });
