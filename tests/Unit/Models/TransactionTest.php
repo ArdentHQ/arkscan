@@ -49,7 +49,7 @@ it('should exclude migrated transactions which are not transfers', function () {
     expect(Transaction::migrated()->count())->toBe(0);
 });
 
-it('should exclude transactions which are not core group type', function () {
+it('should exclude migrated transactions which are not core group type', function () {
     $migratedTransactions = Transaction::factory(5)->legacyBusinessRegistration()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
     ]);
