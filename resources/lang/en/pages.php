@@ -124,6 +124,7 @@ return [
         'productivity'          => 'Productivity',
         'productivity_tooltip'  => 'Success rate of validating blocks over the last 30 days.',
         'no_results'            => 'No :0 transactions could be found.',
+        'migration'             => 'Migration to Polygon Network',
         'qrcode'                => [
             'title'            => 'Send Funds',
             'description'      => 'Enter the amount you wish to transfer to this address and confirm.',
