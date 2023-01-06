@@ -63,7 +63,7 @@
             :label="trans('pages.migration.stats.remaining_supply')"
             padding="py-4 px-8"
             text-class="space-y-2"
-            icon="app-coins"
+            icon="coins-stack"
             icon-class="hidden md:flex"
             container-spacing="md:space-x-4"
             class="flex-1"
