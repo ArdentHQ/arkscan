@@ -9,13 +9,13 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\NumberFormatter;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\View\View;
 use Livewire\Component;
 
 final class Stats extends Component
 {
-    const CACHE_WALLETS_SECONDS = 300;
+    public const CACHE_WALLETS_SECONDS = 300;
 
     public function render(): View
     {
