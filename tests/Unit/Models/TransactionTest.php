@@ -32,3 +32,27 @@ it('should belong to a recipient', function () {
     expect($this->subject->recipient())->toBeInstanceOf(BelongsTo::class);
     expect($this->subject->recipient)->toBeInstanceOf(Wallet::class);
 });
+
+it('should get migrated transactions', function () {
+    $migratedTransactions = Transaction::factory(5)->transfer()->create([
+        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+    ]);
+
+    expect(Transaction::migrated()->count())->toBe(5);
+});
+
+it('should exclude migrated transactions which are not transfers', function () {
+    $migratedTransactions = Transaction::factory(5)->vote()->create([
+        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+    ]);
+
+    expect(Transaction::migrated()->count())->toBe(0);
+});
+
+it('should exclude transactions which are not core group type', function () {
+    $migratedTransactions = Transaction::factory(5)->legacyBusinessRegistration()->create([
+        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+    ]);
+
+    expect(Transaction::migrated()->count())->toBe(0);
+});
