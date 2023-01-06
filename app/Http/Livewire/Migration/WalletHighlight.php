@@ -7,7 +7,7 @@ namespace App\Http\Livewire\Migration;
 use App\Services\NumberFormatter;
 use Illuminate\View\View;
 
-class WalletHighlight extends Stats
+final class WalletHighlight extends Stats
 {
     public function render(): View
     {

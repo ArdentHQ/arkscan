@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Component;
 
+// We need this as a regular class as we inherit from it for WalletHighlight
+/** @phpstan-ignore-next-line */
 class Stats extends Component
 {
     public const CACHE_WALLETS_SECONDS = 300;
