@@ -44,6 +44,7 @@ final class ViewModelFactory
 
     public static function paginate(LengthAwarePaginator $paginator): LengthAwarePaginator
     {
+        // @phpstan-ignore-next-line
         $paginator->getCollection()->transform(fn ($model) => static::make($model));
 
         return $paginator;

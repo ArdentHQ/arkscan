@@ -21,7 +21,7 @@ final class CacheDelegateVoterCounts extends Command
     /**
      * The console command description.
      *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Cache the voter count for each delegate.';
 

@@ -22,7 +22,7 @@ final class CacheDelegateUsernames extends Command
     /**
      * The console command description.
      *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Cache all usernames by their address and public key.';
 

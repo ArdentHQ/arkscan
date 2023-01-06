@@ -75,11 +75,11 @@ final class AppServiceProvider extends ServiceProvider
                 'title'       => 'Delegate Monitor | ARKScan | Cryptocurrency Block Explorer',
                 'description' => 'Monitor Delegate activity for the ARK Public Network. See Delegate rankings and track Voting Power in the ARK Blockchain.',
             ],
-            'wallets' => [
+            'wallets'   => [
                 'title'       => 'Wallet Addresses | ARKScan | Cryptocurrency Block Explorer',
                 'description' => 'See wallet addresses on the ARKScan. Track balances and see transaction activity for wallet addresses on the ARK Public Nework',
             ],
-            '*' => [
+            '*'         => [
                 'title'       => 'ARKScan | Cryptocurrency Block Explorer',
                 'description' => 'View cryptocurrency transactions and track cryptocurrency balances. A simple block explorer to monitor Blockchain activity on the ARK Public Network.',
             ],

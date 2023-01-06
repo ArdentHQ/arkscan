@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => [
+    'paths'    => [
         resource_path('views'),
     ],
 
