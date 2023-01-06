@@ -1,8 +1,8 @@
 <div class="overflow-auto dark:bg-black bg-theme-secondary-100">
     <div class="py-8 content-container-full-width">
-        <div class="px-8 md:px-10 w-full">
-            <div class="flex bg-white dark:bg-theme-secondary-900 rounded-xl px-8 py-4 font-semibold justify-between space-x-12">
-                <div class="flex min-w-0 space-x-4">
+        <div class="px-8 w-full md:px-10">
+            <div class="flex justify-between py-4 px-8 space-x-12 font-semibold bg-white rounded-xl dark:bg-theme-secondary-900">
+                <div class="flex space-x-4 min-w-0">
                     <x-ark-icon
                         name="app-transactions.migration"
                         size="w-11 h-11"
@@ -26,13 +26,13 @@
                     </div>
                 </div>
 
-                <div class="flex divide-x space-x-6 divide-theme-secondary-300 dark:divide-theme-secondary-800">
-                    <div class="flex flex-col justify-between space-y-2 whitespace-nowrap text-right">
+                <div class="flex space-x-6 divide-x divide-theme-secondary-300 dark:divide-theme-secondary-800">
+                    <div class="flex flex-col justify-between space-y-2 text-right whitespace-nowrap">
                         <span class="text-sm leading-none text-theme-secondary-500 dark:text-theme-secondary-600">
                             @lang('pages.migration.stats.amount_migrated')
                         </span>
 
-                        <div class="leading-tight text-theme-secondary-900 dark:text-white">
+                        <div class="leading-tight dark:text-white text-theme-secondary-900">
                             <x-currency
                                 :currency="Network::currency()"
                                 decimals="3"
@@ -47,7 +47,7 @@
                             @lang('pages.migration.stats.supply')
                         </span>
 
-                        <div class="leading-tight text-theme-secondary-900 dark:text-white">
+                        <div class="leading-tight dark:text-white text-theme-secondary-900">
                             {{ $percentage }}
                         </div>
                     </div>
