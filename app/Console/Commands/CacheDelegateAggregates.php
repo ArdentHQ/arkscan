@@ -20,7 +20,7 @@ final class CacheDelegateAggregates extends Command
     /**
      * The console command description.
      *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Cache expensive aggregation data for all delegates.';
 

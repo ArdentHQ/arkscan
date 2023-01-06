@@ -25,7 +25,7 @@ final class CacheFees extends Command
     /**
      * The console command description.
      *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Cache expensive fee aggregates.';
 
