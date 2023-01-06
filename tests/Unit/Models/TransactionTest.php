@@ -6,6 +6,7 @@ use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Config;
 
 beforeEach(function () {
     $this->subject = Transaction::factory()->create([
@@ -34,6 +35,8 @@ it('should belong to a recipient', function () {
 });
 
 it('should get migrated transactions', function () {
+    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+
     $migratedTransactions = Transaction::factory(5)->transfer()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
     ]);
@@ -42,6 +45,8 @@ it('should get migrated transactions', function () {
 });
 
 it('should exclude migrated transactions which are not transfers', function () {
+    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+
     $migratedTransactions = Transaction::factory(5)->vote()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
     ]);
@@ -50,6 +55,8 @@ it('should exclude migrated transactions which are not transfers', function () {
 });
 
 it('should exclude migrated transactions which are not core group type', function () {
+    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+
     $migratedTransactions = Transaction::factory(5)->legacyBusinessRegistration()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
     ]);
