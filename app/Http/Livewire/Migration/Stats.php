@@ -10,10 +10,13 @@ use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\NumberFormatter;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 final class Stats extends Component
 {
+    const CACHE_WALLETS_SECONDS = 300;
+
     public function render(): View
     {
         $migratedBalance = $this->migratedBalance();
@@ -45,11 +48,13 @@ final class Stats extends Component
 
     private function walletsMigrated(): int
     {
-        return Transaction::select('sender_public_key')
-            ->where('recipient_id', config('explorer.migration_address'))
-            ->get()
-            ->pluck('sender_public_key')
-            ->unique()
-            ->count();
+        return (int) Cache::remember('migration:wallets_count', self::CACHE_WALLETS_SECONDS, function () {
+            return Transaction::select('sender_public_key')
+                ->where('recipient_id', config('explorer.migration_address'))
+                ->get()
+                ->pluck('sender_public_key')
+                ->unique()
+                ->count();
+        });
     }
 }
