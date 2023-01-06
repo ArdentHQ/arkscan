@@ -48,7 +48,7 @@ final class Stats extends Component
 
     private function walletsMigrated(): int
     {
-        return (int) Cache::remember('migration:wallets_count', self::CACHE_WALLETS_SECONDS, function () {
+        return Cache::remember('migration:wallets_count', self::CACHE_WALLETS_SECONDS, function () {
             return Transaction::select('sender_public_key')
                 ->where('recipient_id', config('explorer.migration_address'))
                 ->get()
