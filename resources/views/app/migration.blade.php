@@ -2,7 +2,11 @@
     <x-metadata page="migration" />
 
     @section('content')
-        <x-page-headers.migration />
+        <div class="pb-8 dark:bg-black bg-theme-secondary-100">
+            <x-page-headers.migration />
+
+            <livewire:migration.stats />
+        </div>
 
         <x-ark-container>
             <livewire:migration.transactions />

@@ -1,17 +1,33 @@
 @props([
     'icon',
     'label',
-    'disabled' => false,
+    'disabled'         => false,
+    'padding'          => 'px-6 py-4',
+    'iconClass'        => null,
+    'textClass'        => null,
+    'containerSpacing' => 'space-x-4',
 ])
 
-<div {{ $attributes->merge(['class' => 'flex py-4 bg-white dark:bg-theme-secondary-900 rounded-xl px-6']) }}>
-    <div class="flex flex-grow items-center space-x-4">
+<div {{ $attributes->class(['flex bg-white dark:bg-theme-secondary-900 rounded-xl', $padding]) }}>
+    <div @class([
+        'flex flex-grow items-center',
+        $containerSpacing,
+    ])>
         <span
-            class="flex items-center justify-center w-11 h-11 border-2 rounded-full @if($disabled) dark:border-theme-secondary-600 border-theme-secondary-500 dark:text-theme-secondary-600 text-theme-secondary-500 @else border-theme-secondary-900 text-theme-secondary-900 dark:text-theme-secondary-700 dark:border-theme-secondary-700 @endif"
+            @class([
+                'flex items-center justify-center w-11 h-11 border-2 rounded-full',
+                'dark:border-theme-secondary-600 border-theme-secondary-500 dark:text-theme-secondary-600 text-theme-secondary-500' => $disabled,
+                'border-theme-secondary-900 text-theme-secondary-900 dark:text-theme-secondary-700 dark:border-theme-secondary-700' => ! $disabled,
+                $iconClass,
+            ])
         >
             <x-ark-icon :name="$icon" />
         </span>
-        <span class="flex flex-col flex-grow justify-between h-full">
+
+        <span @class([
+            'flex flex-col flex-grow justify-between h-full',
+            $textClass,
+        ])>
             <span class="text-sm font-semibold leading-none whitespace-nowrap text-theme-secondary-500 dark:text-theme-secondary-600">{{$label}}</span>
 
             @if ($disabled)
