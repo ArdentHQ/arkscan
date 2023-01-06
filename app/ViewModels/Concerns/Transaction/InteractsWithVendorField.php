@@ -24,7 +24,7 @@ trait InteractsWithVendorField
         }
 
         $this->vendorField = null;
-        $vendorField = $this->transaction->vendor_field;
+        $vendorField       = $this->transaction->vendor_field;
 
         if (is_null($vendorField)) {
             return null;
@@ -37,6 +37,7 @@ trait InteractsWithVendorField
         }
 
         $this->vendorField = $vendorField;
+
         return $vendorField;
     }
 
@@ -48,7 +49,7 @@ trait InteractsWithVendorField
             return null;
         }
 
-        if(Str::length($vendorField) === 42 && Str::startsWith($vendorField, '0x')) {
+        if (Str::length($vendorField) === 42 && Str::startsWith($vendorField, '0x')) {
             return $vendorField;
         }
 
