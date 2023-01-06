@@ -101,10 +101,10 @@ final class SearchPage extends Component
     {
         $this->state = array_merge([
             // Generic
-            'term'        => null,
-            'type'        => 'block',
-            'dateFrom'    => null,
-            'dateTo'      => null,
+            'term'               => null,
+            'type'               => 'block',
+            'dateFrom'           => null,
+            'dateTo'             => null,
             // Blocks
             'totalAmountFrom'    => null,
             'totalAmountTo'      => null,
@@ -114,17 +114,17 @@ final class SearchPage extends Component
             'rewardTo'           => null,
             'generatorPublicKey' => null,
             // Transactions
-            'transactionType' => 'all',
-            'amountFrom'      => null,
-            'amountTo'        => null,
-            'feeFrom'         => null,
-            'feeTo'           => null,
-            'smartBridge'     => null,
+            'transactionType'    => 'all',
+            'amountFrom'         => null,
+            'amountTo'           => null,
+            'feeFrom'            => null,
+            'feeTo'              => null,
+            'smartBridge'        => null,
             // Wallets
-            'username'    => null,
-            'vote'        => null,
-            'balanceFrom' => null,
-            'balanceTo'   => null,
+            'username'           => null,
+            'vote'               => null,
+            'balanceFrom'        => null,
+            'balanceTo'          => null,
         ], $state);
     }
 }

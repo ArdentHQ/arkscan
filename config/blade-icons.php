@@ -15,9 +15,9 @@ return [
     |
     */
 
-    'sets' => [
+    'sets'  => [
 
-        'default' => [
+        'default'      => [
 
             /*
             |-----------------------------------------------------------------
@@ -30,7 +30,7 @@ return [
             |
             */
 
-            'path' => 'vendor/arkecosystem/foundation/resources/assets/icons',
+            'path'   => 'vendor/arkecosystem/foundation/resources/assets/icons',
 
             /*
             |--------------------------------------------------------------------------
@@ -55,11 +55,11 @@ return [
             |
             */
 
-            'class' => 'fill-current',
+            'class'  => 'fill-current',
 
         ],
 
-        'app' => [
+        'app'          => [
             'path'   => 'resources/icons',
             'prefix' => 'app',
             'class'  => 'fill-current',

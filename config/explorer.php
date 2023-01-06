@@ -8,20 +8,20 @@ $mainnetExplorer = env('ARKSCAN_MAINNET_EXPLORER_URL', 'https://live.arkscan.io'
 $testnetExplorer = env('ARKSCAN_TESTNET_EXPLORER_URL', 'https://test.arkscan.io');
 
 return [
-    'network' => env('ARKSCAN_NETWORK', 'development'),
+    'network'                           => env('ARKSCAN_NETWORK', 'development'),
 
-    'vault_url' => env('ARKSCAN_VAULT_URL', 'https://app.arkvault.io/#/'),
+    'vault_url'                         => env('ARKSCAN_VAULT_URL', 'https://app.arkvault.io/#/'),
 
-    'market_data_provider_service' => env('ARKSCAN_MARKET_DATA_PROVIDER_SERVICE', CoinGecko::class),
+    'market_data_provider_service'      => env('ARKSCAN_MARKET_DATA_PROVIDER_SERVICE', CoinGecko::class),
 
-    'coingecko_exception_frequency' => env('COINGECKO_EXCEPTION_FREQUENCY', 60),
+    'coingecko_exception_frequency'     => env('COINGECKO_EXCEPTION_FREQUENCY', 60),
 
     'cryptocompare_exception_frequency' => env('CRYPTOCOMPARE_EXCEPTION_FREQUENCY', 60),
 
-    'migration_address' => env('ARKSCAN_MIGRATION_ADDRESS'),
+    'migration_address'                 => env('ARKSCAN_MIGRATION_ADDRESS'),
 
-    'networks' => [
-        'production' => [
+    'networks'                          => [
+        'production'  => [
             'name'               => env('ARKSCAN_NETWORK_NAME', 'ARK Public Network'),
             'alias'              => env('ARKSCAN_NETWORK_ALIAS', 'mainnet'),
             'api'                => env('ARKSCAN_NETWORK_API', 'https://wallets.ark.io/api'),
@@ -60,7 +60,7 @@ return [
         ],
     ],
 
-    'statistics' => [
+    'statistics'                        => [
 
         /*
          * Number of seconds to wait before refreshing the page.
@@ -68,7 +68,7 @@ return [
         'refreshInterval' => env('ARKSCAN_STATISTICS_REFRESH_INTERVAL', '60'),
     ],
 
-    'support' => [
+    'support'                           => [
         'enabled' => env('ARKSCAN_SUPPORT_ENABLED', false),
     ],
 ];
