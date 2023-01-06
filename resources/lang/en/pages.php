@@ -259,7 +259,7 @@ return [
             'description' => 'Users can now migrate their tokens to the new ERC20 token on 0xPolygon. Find out more in our <span class="whitespace-nowrap">:link.</span>',
         ],
 
-        'stats' => [
+        'stats'        => [
             'migration_wallet' => 'Migration Wallet',
             'amount_migrated'  => 'Amount Migrated',
             'supply'           => 'Supply',
