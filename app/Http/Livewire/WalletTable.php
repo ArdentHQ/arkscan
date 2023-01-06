@@ -18,7 +18,7 @@ final class WalletTable extends Component
     public function render(): View
     {
         return view('livewire.wallet-table', [
-            'wallets' => ViewModelFactory::paginate(Wallet::withScope(OrderByBalanceScope::class)->paginate()),
+            'wallets' => ViewModelFactory::paginate(Wallet::withScope(OrderByBalanceScope::class)->where('address', '<>', config('explorer.migration_address'))->paginate()),
         ]);
     }
 }
