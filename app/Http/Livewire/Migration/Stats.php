@@ -57,6 +57,7 @@ final class Stats extends Component
                 ->unique()
                 ->count();
         });
+
         return (int) $cache;
     }
 }
