@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'input' => [
+    'input'  => [
         '033a5474f68f92f254691e93c06a2f22efaf7d66b543a53efcece021819653a200',
         '0215789ac26155b7a338708f595b97c453e08918d0630c896cbd31d83fe2ad1c33',
         '03d60e675b8a4b461361689e29fcf809cc4724de57ad7e7f73825e16d7b092d338',

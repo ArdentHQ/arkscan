@@ -126,7 +126,7 @@ it('should redirect to the basic search page if there are no results', function 
         ->set('state.term', 'unknown')
         ->call('performSearch')
         ->assertEmitted('redirectToPage', 'search', [
-            'state' => [
+            'state'    => [
                 'term' => 'unknown',
                 'type' => 'block',
             ],
@@ -141,7 +141,7 @@ it('should redirect to the advanced search page if there are no results', functi
         ->set('isAdvanced', true)
         ->call('performSearch')
         ->assertEmitted('redirectToPage', 'search', [
-            'state' => [
+            'state'    => [
                 'term' => 'unknown',
                 'type' => 'block',
             ],
@@ -155,7 +155,7 @@ it('should redirect to the basic search page if the term is null', function () {
         ->set('state.type', 'block')
         ->call('performSearch')
         ->assertEmitted('redirectToPage', 'search', [
-            'state' => [
+            'state'    => [
                 'term' => null,
                 'type' => 'block',
             ],
@@ -170,7 +170,7 @@ it('should redirect to the advanced search page if the term is null', function (
         ->set('isAdvanced', true)
         ->call('performSearch')
         ->assertEmitted('redirectToPage', 'search', [
-            'state' => [
+            'state'    => [
                 'term' => null,
                 'type' => 'block',
             ],
@@ -184,7 +184,7 @@ it('should redirect to the basic search page if the term is empty', function () 
         ->set('state.type', 'block')
         ->call('performSearch')
         ->assertEmitted('redirectToPage', 'search', [
-            'state' => [
+            'state'    => [
                 'term' => '',
                 'type' => 'block',
             ],
@@ -199,7 +199,7 @@ it('should redirect to the advanced search page if the term is empty', function 
         ->set('isAdvanced', true)
         ->call('performSearch')
         ->assertEmitted('redirectToPage', 'search', [
-            'state' => [
+            'state'    => [
                 'term' => '',
                 'type' => 'block',
             ],
@@ -215,7 +215,7 @@ it('should redirect to the advanced search page if there are more than 2 criteri
         ->set('state.amountFrom', 1)
         ->call('performSearch')
         ->assertEmitted('redirectToPage', 'search', [
-            'state' => [
+            'state'    => [
                 'term'       => 'address',
                 'type'       => 'transaction',
                 'amountFrom' => 1,

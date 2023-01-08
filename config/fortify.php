@@ -17,7 +17,7 @@ return [
     |
     */
 
-    'guard' => 'web',
+    'guard'                   => 'web',
 
     /*
     |--------------------------------------------------------------------------
@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'passwords' => 'users',
+    'passwords'               => 'users',
 
     /*
     |--------------------------------------------------------------------------
@@ -47,11 +47,11 @@ return [
     |
     */
 
-    'username' => 'email',
+    'username'                => 'email',
 
-    'username_alt' => 'username',
+    'username_alt'            => 'username',
 
-    'email' => 'email',
+    'email'                   => 'email',
 
     /*
     |--------------------------------------------------------------------------
@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'home' => config('home'),
+    'home'                    => config('home'),
 
     /*
     |--------------------------------------------------------------------------
@@ -88,9 +88,9 @@ return [
     |
     */
 
-    'middleware' => ['web'],
+    'middleware'              => ['web'],
 
-    'middlewares' => [
+    'middlewares'             => [
         'account_settings' => [
             'update_profile'  => ['web', 'auth'],
             'update_password' => ['web', 'auth'],
@@ -108,7 +108,7 @@ return [
     |
     */
 
-    'limiters' => [
+    'limiters'                => [
         'login' => null,
     ],
 
@@ -123,7 +123,7 @@ return [
     |
     */
 
-    'features' => [
+    'features'                => [
         // Features::registration(),
         // Features::resetPasswords(),
         // Features::emailVerification(),
@@ -143,7 +143,7 @@ return [
     |
     */
 
-    'models' => [
+    'models'                  => [
         'user'       => '',
         'invitation' => '',
     ],
@@ -154,8 +154,8 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'mail' => [
-        'default' => [
+    'mail'                    => [
+        'default'  => [
             'name'    => env('MAIL_DEFAULT_NAME', 'ARK Ecosystem'),
             'address' => env('MAIL_DEFAULT_ADDRESS', 'noreply@ark.io'),
         ],
@@ -172,7 +172,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'routes' => [
+    'routes'                  => [
         'feedback_thank_you'        => env('ROUTE_FEEDBACK_THANK_YOU', '/feedback/thank-you'),
         'two_factor_reset_password' => env('ROUTE_TWO_RESET_PASSWORD', '/two-factor/reset-password/{token}'),
         'account_settings_account'  => env('ROUTE_ACCOUNT_SETTINGS_ACCOUNT', '/account/settings/account'),

@@ -66,7 +66,7 @@ it('should not update prices if coingecko returns an empty response', function (
 
     expect($crypto->getPrices('USD.day'))->toEqual(collect([1, 2, 3]));
     expect($prices->getHistorical('USD', 'day'))->toEqual([
-        'labels' => [
+        'labels'   => [
             '12:00',
             '13:00',
             '14:00',
@@ -105,7 +105,7 @@ it('should not update prices if coingecko throws an exception', function () {
 
     expect($crypto->getPrices('USD.day'))->toEqual(collect([1, 2, 3]));
     expect($prices->getHistorical('USD', 'day'))->toEqual([
-        'labels' => [
+        'labels'   => [
             '12:00',
             '13:00',
             '14:00',
@@ -200,7 +200,7 @@ it('should not update prices if cryptocompare returns an empty response', functi
 
     expect($crypto->getPrices('USD.day'))->toEqual(collect([1, 2, 3]));
     expect($prices->getHistorical('USD', 'day'))->toEqual([
-        'labels' => [
+        'labels'   => [
             '12:00',
             '13:00',
             '14:00',
@@ -237,7 +237,7 @@ it('should not update prices if cryptocompare throws an exception', function () 
 
     expect($crypto->getPrices('USD.day'))->toEqual(collect([1, 2, 3]));
     expect($prices->getHistorical('USD', 'day'))->toEqual([
-        'labels' => [
+        'labels'   => [
             '12:00',
             '13:00',
             '14:00',
