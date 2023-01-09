@@ -7,7 +7,6 @@ namespace App\Http\Livewire\Migration;
 use App\Actions\CacheTotalSupply;
 use App\Facades\Network;
 use App\Models\Transaction;
-use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\NumberFormatter;
 use Illuminate\Support\Facades\Cache;
