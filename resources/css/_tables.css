@@ -123,7 +123,7 @@ body.table-compact-until-lg .table-avatar > div {
 }
 
 body.table-compact-until-lg .arrow-direction {
-    @apply -mr-2 circled-icon;
+    @apply lg:-mr-2 flex items-center justify-center border-0 lg:border-2 rounded-full lg:w-11 lg:h-11;
 }
 
 .table-compact:not(.table-compact-until-lg) table .button-vote {
