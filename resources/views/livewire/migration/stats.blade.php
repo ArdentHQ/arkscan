@@ -20,9 +20,11 @@
                             </x-truncate-dynamic>
                         </a>
 
-                        <x-clipboard-button
+                        <x-ark-clipboard
                             :value="config('explorer.migration_address')"
-                            class="flex items-center"
+                            class="text-theme-primary-400"
+                            wrapper-class="flex items-center"
+                            no-styling
                         />
                     </div>
                 </div>
