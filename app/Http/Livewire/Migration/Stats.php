@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Migration;
 
-use App\Actions\CacheNetworkSupply;
+use App\Actions\CacheTotalSupply;
+use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -21,7 +22,7 @@ class Stats extends Component
 
     public function render(): View
     {
-        $migratedBalance    = $this->migratedBalance();
+        $migratedBalance    = Network::migratedBalance();
         $totalSupply        = $this->totalSupply();
         $migratedPercentage = $migratedBalance->toInt() / $totalSupply->toInt() * 100;
         $remainingSupply    = $totalSupply->minus($migratedBalance->valueOf());
@@ -34,19 +35,9 @@ class Stats extends Component
         ]);
     }
 
-    protected function migratedBalance(): BigNumber
-    {
-        $wallet = Wallet::firstWhere('address', config('explorer.migration_address'));
-        if ($wallet === null) {
-            return BigNumber::new(0);
-        }
-
-        return $wallet->balance;
-    }
-
     protected function totalSupply(): BigNumber
     {
-        return BigNumber::new(CacheNetworkSupply::execute());
+        return BigNumber::new(CacheTotalSupply::execute());
     }
 
     protected function walletsMigrated(): int

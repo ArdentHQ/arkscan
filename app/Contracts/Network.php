@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contracts;
 
+use App\Services\BigNumber;
 use Carbon\Carbon;
 
 interface Network
@@ -35,6 +36,8 @@ interface Network
     public function blockTime(): int;
 
     public function blockReward(): int;
+
+    public function supply(): BigNumber;
 
     public function config(): \BitWasp\Bitcoin\Network\Network;
 }

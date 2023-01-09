@@ -35,6 +35,16 @@ final class NetworkCache implements Contract
         return (float) $this->remember('supply', $this->blockTimeTTL(), $callback);
     }
 
+    public function getTotalSupply(): float
+    {
+        return (float) $this->get('total_supply');
+    }
+
+    public function setTotalSupply(Closure $callback): float
+    {
+        return (float) $this->remember('total_supply', $this->blockTimeTTL(), $callback);
+    }
+
     public function getVolume(): float
     {
         return (int) $this->get('volume');
