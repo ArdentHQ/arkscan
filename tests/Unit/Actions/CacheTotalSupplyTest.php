@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Actions\CacheNetworkSupply;
+use App\Actions\CacheTotalSupply;
 use App\Models\Block;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
@@ -11,15 +11,15 @@ use Illuminate\Support\Facades\Config;
 it('should execute the command', function () {
     $block = Block::factory()->create(['height' => 1000]);
 
-    CacheNetworkSupply::execute();
+    CacheTotalSupply::execute();
 
-    expect((new NetworkCache())->getSupply())->toBe((float) $block->delegate->balance->toNumber());
+    expect((new NetworkCache())->getTotalSupply())->toBe((float) $block->delegate->balance->toNumber());
 });
 
 it('should execute the command with missing data', function () {
-    CacheNetworkSupply::execute();
+    CacheTotalSupply::execute();
 
-    expect((new NetworkCache())->getSupply())->toBe(0.0);
+    expect((new NetworkCache())->getTotalSupply())->toBe(0.0);
 });
 
 it('should generate based on all wallet balances', function () {
@@ -34,7 +34,7 @@ it('should generate based on all wallet balances', function () {
         'balance' => 100 * 1e8,
     ]);
 
-    CacheNetworkSupply::execute();
+    CacheTotalSupply::execute();
 
-    expect((new NetworkCache())->getSupply())->toBe(1000 * 1e8);
+    expect((new NetworkCache())->getTotalSupply())->toBe((1000 * 1e8) + 9876543210);
 });
