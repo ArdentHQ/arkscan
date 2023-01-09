@@ -12,7 +12,7 @@ return [
     'scan'                    => 'Scan',
     'height'                  => 'Height',
     'network'                 => 'Network',
-    'total_supply'            => 'Total Supply',
+    'current_supply'          => 'Current Supply',
     'not_available'           => 'Not Available',
     'price'                   => 'Price',
     'market_cap'              => 'Market Cap',
