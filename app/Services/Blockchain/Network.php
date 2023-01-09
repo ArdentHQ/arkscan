@@ -111,7 +111,7 @@ final class Network implements Contract
     public function supply(): BigNumber
     {
         return BigNumber::new(Wallet::where('balance', '>', 0)->sum('balance'))
-            ->minus($this->migratedBalance());
+            ->minus($this->migratedBalance()->valueOf());
     }
 
     public function migratedBalance(): BigNumber
