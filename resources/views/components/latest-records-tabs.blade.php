@@ -2,7 +2,7 @@
 
 <div>
     <x-tabs.wrapper
-        class="hidden mb-4 md:flex"
+        class="hidden mb-4 lg:flex"
         default-selected="{{ $selected }}"
         on-selected="function (value) {
             if (this.selected !== value) {
@@ -25,9 +25,9 @@
         @endif
     </x-tabs.wrapper>
 
-    <div class="mb-5 md:hidden">
+    <div class="mb-5 md:flex lg:hidden md:space-x-3">
         <x-ark-dropdown
-            wrapper-class="relative p-2 w-full rounded-xl border border-theme-primary-100 dark:border-theme-secondary-800"
+            wrapper-class="relative p-2 w-full {{ $selected === 'transactions' ? 'md:w-1/2' : '' }} rounded-xl border border-theme-primary-100 dark:border-theme-secondary-800"
             button-class="p-3 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
             dropdown-classes="left-0 w-full z-20"
             :init-alpine="false"
@@ -87,7 +87,7 @@
         </x-ark-dropdown>
 
         @if($selected === 'transactions')
-            <div class="mt-3">
+            <div class="mt-3 md:mt-0 md:w-1/2">
                 <x-transaction-table-filter />
             </div>
         @endif
