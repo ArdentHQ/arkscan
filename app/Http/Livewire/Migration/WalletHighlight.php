@@ -4,24 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Migration;
 
-use App\Facades\Network;
-use App\Services\NumberFormatter;
+use App\Http\Livewire\Migration\Concerns\HandlesStats;
 use Illuminate\View\View;
+use Livewire\Component;
 
-final class WalletHighlight extends Stats
+final class WalletHighlight extends Component
 {
+    use HandlesStats;
+
     public function render(): View
     {
-        $migratedBalance    = Network::migratedBalance();
-        $totalSupply        = $this->totalSupply();
-        $migratedPercentage = $this->migratedPercentage($migratedBalance, $totalSupply);
-        $remainingSupply    = $totalSupply->minus($migratedBalance->valueOf());
-
-        return view('livewire.migration.wallet-highlight', [
-            'amountMigrated'  => $migratedBalance->toFloat(),
-            'remainingSupply' => $remainingSupply->toFloat(),
-            'percentage'      => NumberFormatter::percentage($migratedPercentage),
-            'walletsMigrated' => $this->walletsMigrated(),
-        ]);
+        return view('livewire.migration.wallet-highlight', $this->viewData());
     }
 }
