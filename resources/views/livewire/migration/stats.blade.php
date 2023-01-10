@@ -20,10 +20,11 @@
                             </x-truncate-dynamic>
                         </a>
 
-                        <x-ark-icon
-                            name="hand-touch"
-                            size="sm"
-                            class="text-theme-primary-400"
+                        <x-ark-clipboard
+                            :value="config('explorer.migration_address')"
+                            wrapper-class="flex items-center text-theme-primary-400 transition-default hover:text-theme-primary-200"
+                            class=""
+                            no-styling
                         />
                     </div>
                 </div>

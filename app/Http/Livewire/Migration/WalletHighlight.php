@@ -12,14 +12,15 @@ final class WalletHighlight extends Stats
 {
     public function render(): View
     {
-        $migratedBalance = Network::migratedBalance();
-        $totalSupply     = $this->totalSupply();
-        $remainingSupply = $totalSupply->minus($migratedBalance->valueOf());
+        $migratedBalance    = Network::migratedBalance();
+        $totalSupply        = $this->totalSupply();
+        $migratedPercentage = $this->migratedPercentage($migratedBalance, $totalSupply);
+        $remainingSupply    = $totalSupply->minus($migratedBalance->valueOf());
 
         return view('livewire.migration.wallet-highlight', [
             'amountMigrated'  => $migratedBalance->toFloat(),
             'remainingSupply' => $remainingSupply->toFloat(),
-            'percentage'      => NumberFormatter::percentage($migratedBalance->toInt() / $totalSupply->toInt()),
+            'percentage'      => NumberFormatter::percentage($migratedPercentage),
             'walletsMigrated' => $this->walletsMigrated(),
         ]);
     }
