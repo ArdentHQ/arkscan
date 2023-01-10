@@ -2,7 +2,7 @@
     <div class="py-8 content-container-full-width">
         <div class="px-8 w-full md:px-10">
             <div class="flex justify-between py-4 px-8 space-x-12 font-semibold bg-white rounded-xl dark:bg-theme-secondary-900">
-                <div class="flex space-x-4 min-w-0">
+                <div class="flex space-x-4 min-w-0 flex-shrink-0 whitespace-no-wrap">
                     <x-ark-icon
                         name="app-transactions.migration"
                         size="w-11 h-11"
