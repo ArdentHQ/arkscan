@@ -88,8 +88,6 @@
             </div>
         </x-slot>
 
-
-
         @if($extension)
             <x-slot name="bottom">
                 {{ $extension }}
