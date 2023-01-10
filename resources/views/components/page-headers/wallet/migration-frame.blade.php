@@ -1,8 +1,6 @@
 @props([
     'title',
     'wallet',
-    'useGenerator' => false,
-    'extension'    => null,
 ])
 
 <x-ark-container container-class="flex flex-col space-y-6">
@@ -10,18 +8,12 @@
         @lang($title)
     </h1>
 
-    <x-general.entity-header :value="$wallet->address()" padding="lg:pl-8 lg:pr-7 px-7 lg:py-5 py-6">
+    <x-general.entity-header 
+        :value="$wallet->address()" 
+        padding="lg:pl-8 lg:pr-7 px-7 lg:py-5 py-6"
+    >
         <x-slot name="title">
-            @if($useGenerator)
-                <span class="hidden xl:inline">@lang('pages.wallet.generated_by')&nbsp;</span>
-                <span>{{ $wallet->username() }}</span>
-            @else
-                @if($wallet->isDelegate())
-                    {{ $wallet->username() }}
-                @else
-                    @lang('pages.wallet.address')
-                @endif
-            @endif
+            @lang('pages.wallet.migration_wallet')
 
             <div class="ml-2 divide-x divide-gray-400 wallet-icons-row">
                 @if ($wallet->isKnown())
@@ -51,24 +43,12 @@
         </x-slot>
 
         <x-slot name="logo">
-            @if($wallet->isDelegate())
-                @if ($wallet->isResigned())
-                    <x-page-headers.avatar-with-icon :model="$wallet" icon="app.transactions-delegate-resignation" />
-                @else
-                    <x-page-headers.avatar-with-icon :model="$wallet" icon="app-delegate" />
-                @endif
-            @else
-                <x-page-headers.avatar :model="$wallet" />
-            @endif
+            <x-ark-icon 
+                name="app-transactions.migration" 
+                size="w-11 h-11" 
+                class="migration-icon-dark" 
+            />
         </x-slot>
-
-        @if($wallet->isDelegate())
-            <x-slot name="extraLogo">
-                <div class="lg:hidden circled-icon text-theme-secondary-400 border-theme-danger-400">
-                    <x-ark-icon name="app-delegate" />
-                </div>
-            </x-slot>
-        @endif
 
         @unless($wallet->isCold())
             <x-slot name="valueExtension">
@@ -81,19 +61,7 @@
 
             <div class="flex mt-2 sm:hidden">
                 <x-page-headers.wallet.actions.qr-code :wallet="$wallet" />
-
-                @if($wallet->isDelegate() && !$wallet->isResigned())
-                    <x-page-headers.wallet.actions.vote :wallet="$wallet" />
-                @endif
             </div>
         </x-slot>
-
-
-
-        @if($extension)
-            <x-slot name="bottom">
-                {{ $extension }}
-            </x-slot>
-        @endif
     </x-general.entity-header>
 </x-ark-container>
