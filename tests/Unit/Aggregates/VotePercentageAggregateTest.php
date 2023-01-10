@@ -24,7 +24,8 @@ it('should aggregate and format', function () {
     $aggregate = (new VotePercentageAggregate())->aggregate();
 
     expect($aggregate)->toBeString();
-    expect($aggregate)->toBe('73.377809972047');
+    expect($aggregate)->toBe('73.37780997204732');
+    expect($aggregate)->toBe(number_format(10000000000000000 / 13628098200000000 * 100, 12));
 });
 
 it('should return zero if no vote balance', function () {
