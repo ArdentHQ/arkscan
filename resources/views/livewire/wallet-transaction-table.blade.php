@@ -29,9 +29,9 @@
         </x-slot>
     </x-tabs.wrapper>
 
-    <div class="mb-5 md:flex lg:hidden md:space-x-3" wire:key="{{ Illuminate\Support\Str::random(20) }}">
+    <div class="mb-5 md:flex md:space-x-3 lg:hidden" wire:key="{{ Illuminate\Support\Str::random(20) }}">
         <x-ark-dropdown
-            wrapper-class="relative p-2 w-full md:w-1/2 rounded-xl border border-theme-primary-100 dark:border-theme-secondary-800"
+            wrapper-class="relative p-2 w-full rounded-xl border md:w-1/2 border-theme-primary-100 dark:border-theme-secondary-800"
             button-class="p-3 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
             dropdown-classes="left-0 w-full z-20"
             :init-alpine="false"
