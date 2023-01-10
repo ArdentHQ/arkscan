@@ -22,7 +22,7 @@
 
                         <x-ark-clipboard
                             :value="config('explorer.migration_address')"
-                            wrapper-class="flex items-center text-theme-primary-400 hover:text-theme-primary-200 transition-default"
+                            wrapper-class="flex items-center text-theme-primary-400 transition-default hover:text-theme-primary-200"
                             class=""
                             no-styling
                         />
