@@ -23,7 +23,7 @@ class Stats extends Component
     {
         $migratedBalance    = $this->migratedBalance();
         $totalSupply        = $this->totalSupply();
-        $migratedPercentage = $migratedBalance->toInt() / $totalSupply->toInt() * 100;
+        $migratedPercentage = $this->migratedPercentage($migratedBalance, $totalSupply);
         $remainingSupply    = $totalSupply->minus($migratedBalance->valueOf());
 
         return view('livewire.migration.stats', [
@@ -32,6 +32,11 @@ class Stats extends Component
             'percentage'      => NumberFormatter::percentage($migratedPercentage),
             'walletsMigrated' => $this->walletsMigrated(),
         ]);
+    }
+
+    protected function migratedPercentage(BigNumber $migrated, BigNumber $supply): float
+    {
+        return $migrated->toInt() / $supply->toInt() * 100;
     }
 
     protected function migratedBalance(): BigNumber
