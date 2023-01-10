@@ -29,6 +29,6 @@ it('should render the component correctly', function () {
     Livewire::test(WalletHighlight::class)
         ->assertViewHas('amountMigrated', '98.7654321')
         ->assertViewHas('remainingSupply', '813.5802468')
-        ->assertViewHas('percentage', '0.12%')
+        ->assertViewHas('percentage', '10.75%')
         ->assertSee(trans('pages.migration.stats.migration_wallet'));
 });
