@@ -5,7 +5,7 @@
                 <h1 class="mb-8 md:mb-0">@lang('pages.transactions.title')</h1>
 
                 <div class="-my-3 mb-5 md:mb-0 md:-mr-8">
-                    <x-transaction-table-filter />
+                    <x-transaction-table-filter breakpoint="md" />
                 </div>
             </div>
         </div>
