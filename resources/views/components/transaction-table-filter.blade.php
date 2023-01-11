@@ -57,8 +57,7 @@
                 :class="{ 'rotate-180 {{ $openIconClass }}': open }"
                 class="flex absolute right-0 justify-center items-center mr-4 w-6 h-6 rounded-full transition duration-150 ease-in-out text-theme-secondary-400 md:relative md:mr-0 {{ $iconWrapperClass }} dark:bg-theme-secondary-800 dark:text-theme-secondary-200"
             >
-                <x-ark-icon name="arrows.chevron-down-small" size="xs" :class="[
-                    'md' => 'md:w-2 md:h-3',
+                <x-ark-icon name="arrows.chevron-down-small" size="xs" :class="['md' => 'md:w-2 md:h-3',
                     'lg' => 'lg:w-2 lg:h-3',
                 ][$breakpoint]" />
             </span>
