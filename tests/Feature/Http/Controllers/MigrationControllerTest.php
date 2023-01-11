@@ -14,7 +14,7 @@ it('should render the page without any errors', function () {
         'balance' => 9876543210,
     ]);
 
-    (new NetworkCache())->setSupply(function (): float {
+    (new NetworkCache())->setTotalSupply(function (): float {
         return (float) 91234567890;
     });
 

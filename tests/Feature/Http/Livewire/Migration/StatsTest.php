@@ -23,7 +23,7 @@ it('should calculate stats correctly', function () {
         'amount'       => 9876543210,
     ]);
 
-    (new NetworkCache())->setSupply(function (): float {
+    (new NetworkCache())->setTotalSupply(function (): float {
         return (float) 91234567890;
     });
 
@@ -50,7 +50,7 @@ it('should handle no migration wallet', function () {
 it('should cache migrated wallet count', function () {
     Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
-    (new NetworkCache())->setSupply(function (): float {
+    (new NetworkCache())->setTotalSupply(function (): float {
         return (float) 91234567890;
     });
 
