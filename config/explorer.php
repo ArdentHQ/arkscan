@@ -20,6 +20,8 @@ return [
 
     'migration_address'                 => env('ARKSCAN_MIGRATION_ADDRESS'),
 
+    'polygonscan_url'                   => env('POLYGONSCAN_BASE_URL', 'https://polygonscan.com'),
+
     'networks'                          => [
         'production'  => [
             'name'               => env('ARKSCAN_NETWORK_NAME', 'ARK Public Network'),
