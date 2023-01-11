@@ -35,7 +35,7 @@
                         <div class="leading-tight dark:text-white text-theme-secondary-900">
                             <x-currency
                                 :currency="Network::currency()"
-                                decimals="3"
+                                :decimals="0"
                             >
                                 {{ $amountMigrated }}
                             </x-currency>
