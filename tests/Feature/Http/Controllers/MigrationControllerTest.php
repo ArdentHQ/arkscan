@@ -22,6 +22,6 @@ it('should render the page without any errors', function () {
         ->get(route('migration'))
         ->assertOk()
         ->assertSee('DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj')
-        ->assertSee('98.765 DARK')
+        ->assertSee('99 DARK')
         ->assertSee('813.58 DARK');
 });
