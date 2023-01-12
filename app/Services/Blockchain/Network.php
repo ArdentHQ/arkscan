@@ -49,6 +49,11 @@ final class Network implements Contract
         return $this->config['testnetExplorerUrl'];
     }
 
+    public function polygonExplorerUrl(): string
+    {
+        return $this->config['polygonExplorerUrl'];
+    }
+
     public function currency(): string
     {
         return $this->config['currency'];

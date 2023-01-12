@@ -20,8 +20,6 @@ return [
 
     'migration_address'                 => env('ARKSCAN_MIGRATION_ADDRESS'),
 
-    'polygonscan_url'                   => env('POLYGONSCAN_BASE_URL', 'https://polygonscan.com'),
-
     'networks'                          => [
         'production'  => [
             'name'               => env('ARKSCAN_NETWORK_NAME', 'ARK Public Network'),
@@ -30,6 +28,7 @@ return [
             'nethash'            => env('ARKSCAN_NETHASH', '6e84d08bd299ed97c212c886c98a57e36545c8f5d645ca7eeae63a8bd62d8988'),
             'mainnetExplorerUrl' => $mainnetExplorer,
             'testnetExplorerUrl' => $testnetExplorer,
+            'polygonExplorerUrl' => env('POLYGONSCAN_EXPLORER_URL', 'https://polygonscan.com'),
             'currency'           => env('ARKSCAN_NETWORK_CURRENCY', 'ARK'),
             'currencySymbol'     => env('ARKSCAN_NETWORK_CURRENCY_SYMBOL', 'Ѧ'),
             'confirmations'      => intval(env('ARKSCAN_NETWORK_CONFIRMATIONS', 51)),
@@ -49,6 +48,7 @@ return [
             'nethash'            => env('ARKSCAN_NETHASH', '2a44f340d76ffc3df204c5f38cd355b7496c9065a1ade2ef92071436bd72e867'),
             'mainnetExplorerUrl' => $mainnetExplorer,
             'testnetExplorerUrl' => $testnetExplorer,
+            'polygonExplorerUrl' => env('POLYGONSCAN_EXPLORER_URL', 'https://mumbai.polygonscan.com'),
             'currency'           => env('ARKSCAN_NETWORK_CURRENCY', 'DARK'),
             'currencySymbol'     => env('ARKSCAN_NETWORK_CURRENCY_SYMBOL', 'DѦ'),
             'confirmations'      => intval(env('ARKSCAN_NETWORK_CONFIRMATIONS', 51)),
