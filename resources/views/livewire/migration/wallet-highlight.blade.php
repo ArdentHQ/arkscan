@@ -1,6 +1,6 @@
 <div class="overflow-auto dark:bg-black bg-theme-secondary-100">
     <div class="py-8 content-container-full-width">
-        <div class="px-8 md:w-full md:px-10">
+        <div class="px-8 md:px-10 md:w-full">
             <div class="flex justify-between py-4 px-8 space-x-12 font-semibold bg-white rounded-xl dark:bg-theme-secondary-900">
                 <div class="flex flex-shrink-0 space-x-4 min-w-0 whitespace-nowrap">
                     <x-ark-icon
