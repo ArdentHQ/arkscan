@@ -1,6 +1,6 @@
 <div class="">
     <x-tabs.wrapper
-        class="hidden mb-4 md:flex"
+        class="hidden mb-4 lg:flex"
         default-selected="all"
         on-selected="function (value) {
             this.$wire.set('state.direction', value);
@@ -29,9 +29,9 @@
         </x-slot>
     </x-tabs.wrapper>
 
-    <div class="mb-5 md:hidden" wire:key="{{ Illuminate\Support\Str::random(20) }}">
+    <div class="mb-5 md:flex md:space-x-3 lg:hidden" wire:key="{{ Illuminate\Support\Str::random(20) }}">
         <x-ark-dropdown
-            wrapper-class="relative p-2 w-full rounded-xl border border-theme-primary-100 dark:border-theme-secondary-800"
+            wrapper-class="relative p-2 w-full rounded-xl border md:w-1/2 border-theme-primary-100 dark:border-theme-secondary-800"
             button-class="p-3 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
             dropdown-classes="left-0 w-full z-20"
             :init-alpine="false"
@@ -89,7 +89,7 @@
             </div>
         </x-ark-dropdown>
 
-        <div class="mt-3">
+        <div class="mt-3 md:mt-0 md:w-1/2">
             <x-transaction-table-filter />
         </div>
     </div>

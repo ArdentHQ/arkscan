@@ -10,8 +10,8 @@
                     <div class="flex text-sm leading-tight text-theme-secondary-600 dark:text-theme-secondary-700">{{ $title }}</div>
 
                     <div class="flex items-center space-x-2 leading-tight">
-                        <span class="flex pr-1 max-w-full text-theme-secondary-400 dark:text-theme-secondary-200">
-                            <x-truncate-dynamic>{{ $value}}</x-truncate-dynamic>
+                        <span class="flex pr-1 max-w-full text-theme-secondary-200 dark:text-theme-secondary-200">
+                            <x-truncate-dynamic>{{ $value }}</x-truncate-dynamic>
 
                             <x-clipboard :value="$value" colors="text-theme-secondary-600 hover:text-theme-secondary-400" />
 
