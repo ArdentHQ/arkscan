@@ -178,9 +178,4 @@ body.table-compact-until-lg .arrow-direction {
     .sender-direction-wrapper {
         @apply p-0 pr-2;
     }
-
-    table .fiat-tooltip-sent,
-    table .fiat-tooltip-received {
-        @apply p-0 border-0;
-    }
 }
