@@ -136,6 +136,6 @@ final class Network implements Contract
 
     public function hasMigration(): bool
     {
-        return config('explorer.migration_address') !== null;
+        return config('explorer.migration_address') !== null && config('explorer.migration_address') !== '';
     }
 }
