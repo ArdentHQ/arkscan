@@ -25,7 +25,12 @@
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>
-                    <x-tables.rows.desktop.sender :model="$transaction" dynamic-truncate />
+                    <span class="hidden lg:inline">
+                        <x-tables.rows.desktop.sender :model="$transaction" without-truncate />
+                    </span>
+                    <span class="lg:hidden">
+                        <x-tables.rows.desktop.sender :model="$transaction" />
+                    </span>
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell class="text-right">
