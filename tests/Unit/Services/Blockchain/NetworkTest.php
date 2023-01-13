@@ -9,7 +9,6 @@ use ArkEcosystem\Crypto\Networks\Mainnet;
 use BitWasp\Bitcoin\Network\Network as Bitwasp;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
-
 use function Tests\fakeKnownWallets;
 
 it('should have all required properties', function (array $config) {
