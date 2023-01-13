@@ -20,7 +20,7 @@ final class Transactions extends Component
     public function render(): View
     {
         return view('livewire.migration.transactions', [
-            'transactions' => ViewModelFactory::paginate(Transaction::migrated()->paginate(10)),
+            'transactions' => ViewModelFactory::paginate(Transaction::migrated()->orderBy('timestamp', 'desc')->paginate(10)),
         ]);
     }
 }
