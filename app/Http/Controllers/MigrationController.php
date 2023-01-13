@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Facades\Network;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 final class MigrationController
 {
-    public function __invoke(): View
+    public function __invoke(): View|RedirectResponse
     {
-        return view('app.migration');
+        if (Network::hasMigration()) {
+            return view('app.migration');
+        }
+
+        return redirect('/404');
     }
 }

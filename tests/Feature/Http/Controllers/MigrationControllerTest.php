@@ -25,3 +25,9 @@ it('should render the page without any errors', function () {
         ->assertSee('99 DARK')
         ->assertSee('813.58 DARK');
 });
+
+it('should redirect if no migration is active', function () {
+    $this
+        ->get(route('migration'))
+        ->assertRedirect('/404');
+});
