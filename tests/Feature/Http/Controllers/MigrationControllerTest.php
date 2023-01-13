@@ -29,5 +29,5 @@ it('should render the page without any errors', function () {
 it('should redirect if no migration is active', function () {
     $this
         ->get(route('migration'))
-        ->assertStatus('404');
+        ->assertRedirect('/404');
 });
