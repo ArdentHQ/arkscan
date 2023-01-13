@@ -29,6 +29,7 @@ it('should have all required properties', function (array $config) {
     expect($subject->blockReward())->toBe($config['blockReward']);
     expect($subject->config())->toBeInstanceOf(Bitwasp::class);
     expect($subject->nethash())->toBe($config['nethash']);
+    expect($subject->hasMigration())->toBe(false);
 })->with([
     [[
         'name'             => 'ARK Public Network',
