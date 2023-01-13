@@ -2,7 +2,9 @@
     <x-metadata page="wallets" />
 
     @section('content')
-        <livewire:migration.wallet-highlight />
+        @if(Network::hasMigration())
+            <livewire:migration.wallet-highlight />
+        @endif
 
         <x-ark-container>
             <livewire:wallet-table />
