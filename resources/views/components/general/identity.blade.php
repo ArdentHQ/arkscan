@@ -7,7 +7,6 @@
     'suffix'          => false,
     'withoutReverse'  => false,
     'withoutTruncate' => false,
-    'dynamicTruncate' => false,
 ])
 
 <div>
@@ -45,13 +44,9 @@
                         @if($withoutTruncate)
                             {{ $model->address() }}
                         @else
-                            @if($dynamicTruncate)
-                                <x-truncate-dynamic>{{ $model->address() }}</x-truncate-dynamic>
-                            @else
-                                <x-truncate-middle>
-                                    {{ $model->address() }}
-                                </x-truncate-middle>
-                            @endif
+                            <x-truncate-middle>
+                                {{ $model->address() }}
+                            </x-truncate-middle>
                         @endisset
                     @endif
                 @endif

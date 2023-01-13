@@ -1,9 +1,9 @@
 @props([
     'model',
-    'dynamicTruncate' => false,
+    'withoutTruncate' => false,
 ])
 
 <x-general.identity
     :model="$model->sender()"
-    :dynamic-truncate="$dynamicTruncate"
+    :without-truncate="$withoutTruncate"
 />
