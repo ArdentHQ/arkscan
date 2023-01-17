@@ -14,19 +14,19 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
               with:
                   ref: ${{ github.head_ref }}
 
             - name: Merge Conflict finder
-              uses: olivernybroe/action-conflict-finder@v1.1
+              uses: olivernybroe/action-conflict-finder@v4.0
 
     analyse:
         runs-on: ubuntu-latest
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -36,7 +36,7 @@ jobs:
                   coverage: pcov
 
             - name: Cache dependencies
-              uses: actions/cache@v1
+              uses: actions/cache@v3
               with:
                   path: ~/.composer/cache/files
                   key: dependencies-composer-${{ hashFiles('composer.json') }}
@@ -57,7 +57,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -98,7 +98,7 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
               with:
                   ref: ${{ github.head_ref }}
 
@@ -110,7 +110,7 @@ jobs:
                   coverage: pcov
 
             - name: Cache dependencies
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               with:
                   path: ~/.composer/cache/files
                   key: dependencies-composer-${{ hashFiles('composer.json') }}
