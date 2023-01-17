@@ -73,7 +73,7 @@
         <button
             type="button"
             @class([
-                'md:hidden button-primary',
+                'md:hidden flex flex-col button-primary',
                 'pointer-events-none' => $isRedirecting,
             ])
             @unless ($isRedirecting)
