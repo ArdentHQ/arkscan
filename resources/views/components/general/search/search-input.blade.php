@@ -101,7 +101,7 @@
                     wire:target="performSearch"
                 @endunless
                 @class([
-                    'invisible' => $isRedirecting,
+                    'hidden' => $isRedirecting,
                 ])
             >
                 <x-ark-icon name="magnifying-glass" size="sm" />
