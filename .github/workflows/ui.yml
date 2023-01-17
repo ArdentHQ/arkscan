@@ -13,7 +13,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -33,7 +33,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -53,12 +53,25 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
+          - name: Checkout repository
+            uses: actions/checkout@v3
+            with:
+              ref: ${{ github.head_ref }}
+              token: ${{ secrets.GH_TOKEN }}
 
-            - uses: ericcornelissen/svgo-action@v1.0.1
-              with:
-                  conventional-commits: true
-                  repo-token: ${{ secrets.GH_TOKEN }}
+          - name: Optimize SVGs
+            uses: ericcornelissen/svgo-action@v3
+            id: svgo
+            with:
+              ignore: public/vendor/**/*.svg
+              repo-token: ${{ secrets.GH_TOKEN }}
+              svgo-config: .svgo.js
+
+          - name: Commit optimizations
+            uses: stefanzweifel/git-auto-commit-action@v4
+            if: ${{steps.svgo.outputs.DID_OPTIMIZE}}
+            with:
+              commit_message: Optimize ${{steps.svgo.outputs.OPTIMIZED_COUNT}} SVG(s)
 
     build:
         needs: [prettier, rustywind, svg]
@@ -66,7 +79,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -79,7 +92,7 @@ jobs:
                   coverage: pcov
 
             - name: Cache dependencies
-              uses: actions/cache@v1
+              uses: actions/cache@v3
               with:
                   path: ~/.composer/cache/files
                   key: dependencies-composer-${{ hashFiles('composer.json') }}
