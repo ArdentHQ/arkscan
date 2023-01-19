@@ -1,5 +1,6 @@
 <x-table-skeleton
     device="desktop"
+    row-count="10"
     :items="[
         'general.transaction.id'  => 'icon',
         'general.block.timestamp' => [
