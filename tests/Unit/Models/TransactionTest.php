@@ -104,7 +104,7 @@ it('should exclude migrated transactions which has an invalid vendorfield value'
 
     Transaction::factory(5)->transfer()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
-        'fee'          => '1000000', // 0.01
+        'fee'          => '10000000', // 0.1
         'amount'       => '200000000', // 2
         'vendor_field' => $vendorField,
     ]);

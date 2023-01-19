@@ -34,6 +34,31 @@ it('should calculate stats correctly', function () {
         ->assertViewHas('walletsMigrated', '1');
 });
 
+it('should calculate stats despite unmatched transaction criteria', function () {
+    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+
+    $wallet = Wallet::factory()->create([
+        'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+        'balance' => 9876543210,
+    ]);
+
+    Transaction::factory()->create([
+        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+        'fee'          => '1000000', // 0.01
+        'amount'       => '20000000', // 0.2
+    ]);
+
+    (new NetworkCache())->setTotalSupply(function (): float {
+        return (float) 91234567890;
+    });
+
+    Livewire::test(Stats::class)
+        ->assertViewHas('amountMigrated', '98.7654321')
+        ->assertViewHas('remainingSupply', '813.5802468')
+        ->assertViewHas('percentage', '10.75%')
+        ->assertViewHas('walletsMigrated', '1');
+});
+
 it('should handle no migration wallet', function () {
     Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
