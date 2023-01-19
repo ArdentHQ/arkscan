@@ -443,7 +443,7 @@ it('should determine the transaction type', function (string $type) {
 
 it('should determine the migration transaction', function () {
     config([
-        'explorer.migration_address' => '0xTest',
+        'explorer.migration.address' => '0xTest',
     ]);
 
     $transaction = Transaction::factory()->transfer()->create();
@@ -1097,7 +1097,7 @@ it('should get the vendor field', function () {
 
 it('should get the migration address from the vendor field if transaction is a migration', function () {
     config([
-        'explorer.migration_address' => '0xTest',
+        'explorer.migration.address' => '0xTest',
     ]);
 
     $transaction = Transaction::factory()->transfer()->create();
@@ -1118,7 +1118,7 @@ it('should get the migration address from the vendor field if transaction is a m
 
 it('should resolve the migrated address multiple times', function () {
     config([
-        'explorer.migration_address' => '0xTest',
+        'explorer.migration.address' => '0xTest',
     ]);
 
     $transaction = Transaction::factory()->transfer()->create();
@@ -1140,7 +1140,7 @@ it('should resolve the migrated address multiple times', function () {
 
 it('should not get the migration address from the vendor field if vendor field contents are not a valid address', function () {
     config([
-        'explorer.migration_address' => '0xTest',
+        'explorer.migration.address' => '0xTest',
     ]);
 
     $transaction = Transaction::factory()->transfer()->create();

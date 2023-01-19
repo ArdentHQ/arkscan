@@ -35,7 +35,7 @@ it('should belong to a recipient', function () {
 });
 
 it('should get migrated transactions', function () {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     Transaction::factory(5)->transfer()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
@@ -48,7 +48,7 @@ it('should get migrated transactions', function () {
 });
 
 it('should exclude migrated transactions which are not transfers', function () {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     Transaction::factory(5)->vote()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
@@ -61,7 +61,7 @@ it('should exclude migrated transactions which are not transfers', function () {
 });
 
 it('should exclude migrated transactions which are not core group type', function () {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     Transaction::factory(5)->legacyBusinessRegistration()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
@@ -74,7 +74,7 @@ it('should exclude migrated transactions which are not core group type', functio
 });
 
 it('should exclude migrated transactions which are below the minimum amount', function () {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     Transaction::factory(5)->transfer()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
@@ -87,7 +87,7 @@ it('should exclude migrated transactions which are below the minimum amount', fu
 });
 
 it('should exclude migrated transactions which are below the minimum fee', function () {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     Transaction::factory(5)->transfer()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
@@ -100,7 +100,7 @@ it('should exclude migrated transactions which are below the minimum fee', funct
 });
 
 it('should exclude migrated transactions which has an invalid vendorfield value', function ($vendorField) {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     Transaction::factory(5)->transfer()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',

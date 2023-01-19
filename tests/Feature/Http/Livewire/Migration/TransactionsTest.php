@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
 it('should get migrated transactions', function () {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     $transactions         = Transaction::factory(5)->transfer()->create();
     $migratedTransactions = Transaction::factory(5)->transfer()->create([
@@ -27,7 +27,7 @@ it('should get migrated transactions', function () {
 });
 
 it('should paginate transactions', function () {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     $migratedTransactions = Transaction::factory(10)->transfer()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',

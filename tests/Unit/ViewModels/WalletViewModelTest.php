@@ -658,7 +658,7 @@ it('should get the vote url with delegate', function () {
 });
 
 it('should determine migration wallet', function () {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     $wallet = new WalletViewModel(Wallet::factory()->create([
         'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
@@ -668,7 +668,7 @@ it('should determine migration wallet', function () {
 });
 
 it('should determine not a migration wallet', function () {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     $wallet = new WalletViewModel(Wallet::factory()->create());
 

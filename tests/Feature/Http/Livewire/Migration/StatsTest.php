@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
 it('should calculate stats correctly', function () {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     $wallet = Wallet::factory()->create([
         'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
@@ -35,7 +35,7 @@ it('should calculate stats correctly', function () {
 });
 
 it('should calculate stats despite unmatched transaction criteria', function () {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     $wallet = Wallet::factory()->create([
         'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
@@ -60,7 +60,7 @@ it('should calculate stats despite unmatched transaction criteria', function () 
 });
 
 it('should handle no migration wallet', function () {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     $wallet = Wallet::factory()->create([
         'balance' => 9876543210,
@@ -73,7 +73,7 @@ it('should handle no migration wallet', function () {
 });
 
 it('should cache migrated wallet count', function () {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     (new NetworkCache())->setTotalSupply(function (): float {
         return (float) 91234567890;

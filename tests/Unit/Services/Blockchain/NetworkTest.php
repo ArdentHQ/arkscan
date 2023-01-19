@@ -68,11 +68,11 @@ it('should have all required properties', function (array $config) {
 it('should handle migration status properly', function () {
     expect(FacadesNetwork::hasMigration())->toBe(false);
 
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     expect(FacadesNetwork::hasMigration())->toBe(true);
 
-    Config::set('explorer.migration_address', '');
+    Config::set('explorer.migration.address', '');
 
     expect(FacadesNetwork::hasMigration())->toBe(false);
 });

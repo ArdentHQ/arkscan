@@ -23,7 +23,7 @@ it('should execute the command with missing data', function () {
 });
 
 it('should generate based on all wallet balances', function () {
-    Config::set('explorer.migration_address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
 
     $wallet = Wallet::factory()->create([
         'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',

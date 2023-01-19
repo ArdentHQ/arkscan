@@ -17,9 +17,9 @@
                         <div class="flex items-center space-x-1 leading-tight text-theme-secondary-500 dark:text-theme-secondary-600">
                             <a class="link" href="{{ route('migration') }}">@lang('pages.migration.stats.migration_wallet')</a>
 
-                            <a href="{{ route('wallet', config('explorer.migration_address')) }}" class="min-w-0">
+                            <a href="{{ route('wallet', config('explorer.migration.address')) }}" class="min-w-0">
                                 <x-truncate-middle length="10">
-                                    {{ config('explorer.migration_address') }}
+                                    {{ config('explorer.migration.address') }}
                                 </x-truncate-middle>
                             </a>
                         </div>

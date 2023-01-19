@@ -139,7 +139,7 @@ final class Transaction extends Model
      */
     public function scopeMigrated(): Builder
     {
-        return self::where('recipient_id', config('explorer.migration_address'))
+        return self::where('recipient_id', config('explorer.migration.address'))
             ->where('type', CoreTransactionTypeEnum::TRANSFER)
             ->where('type_group', TransactionTypeGroupEnum::CORE)
             ->where('amount', '>=', config('explorer.migration.minimum_amount'))
