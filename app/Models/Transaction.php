@@ -51,6 +51,10 @@ final class Transaction extends Model
     use SearchesCaseInsensitive;
     use HasEmptyScope;
 
+    public const MIN_MIGRATION_AMOUNT = 100000000;
+
+    public const MIN_MIGRATION_FEE = 5000000;
+
     /**
      * A list of transaction scopes used for filtering based on type.
      *
@@ -141,7 +145,10 @@ final class Transaction extends Model
     {
         return self::where('recipient_id', config('explorer.migration_address'))
             ->where('type', CoreTransactionTypeEnum::TRANSFER)
-            ->where('type_group', TransactionTypeGroupEnum::CORE);
+            ->where('type_group', TransactionTypeGroupEnum::CORE)
+            ->where('amount', '>=', self::MIN_MIGRATION_AMOUNT)
+            ->where('fee', '>=', self::MIN_MIGRATION_FEE)
+            ->whereRaw("encode(vendor_field::bytea, 'escape') ~ '^0x[a-zA-Z0-9]{40}$'");
     }
 
     /**
