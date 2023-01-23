@@ -18,7 +18,11 @@ return [
 
     'cryptocompare_exception_frequency' => env('CRYPTOCOMPARE_EXCEPTION_FREQUENCY', 60),
 
-    'migration_address'                 => env('ARKSCAN_MIGRATION_ADDRESS'),
+    'migration'                         => [
+        'address'        => env('ARKSCAN_MIGRATION_ADDRESS'),
+        'minimum_fee'    => env('ARKSCAN_MIGRATION_MIN_FEE', 5000000),
+        'minimum_amount' => env('ARKSCAN_MIGRATION_MIN_AMOUNT', 100000000),
+    ],
 
     'networks'                          => [
         'production'  => [

@@ -121,7 +121,7 @@ final class Network implements Contract
 
     public function migratedBalance(): BigNumber
     {
-        $wallet = Wallet::firstWhere('address', config('explorer.migration_address'));
+        $wallet = Wallet::firstWhere('address', config('explorer.migration.address'));
         if ($wallet === null) {
             return BigNumber::new(0);
         }
@@ -136,6 +136,6 @@ final class Network implements Contract
 
     public function hasMigration(): bool
     {
-        return config('explorer.migration_address') !== null && config('explorer.migration_address') !== '';
+        return config('explorer.migration.address') !== null && config('explorer.migration.address') !== '';
     }
 }

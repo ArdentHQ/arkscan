@@ -51,7 +51,7 @@ trait HandlesStats
         /** @var string $cache */
         $cache = Cache::remember('migration:wallets_count', self::$cacheWalletsSeconds, function () {
             return Transaction::select('sender_public_key')
-                ->where('recipient_id', config('explorer.migration_address'))
+                ->where('recipient_id', config('explorer.migration.address'))
                 ->get()
                 ->pluck('sender_public_key')
                 ->unique()

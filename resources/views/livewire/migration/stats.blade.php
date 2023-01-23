@@ -14,14 +14,14 @@
                     </span>
 
                     <div class="flex items-center space-x-1 leading-tight text-white">
-                        <a href="{{ route('wallet', config('explorer.migration_address')) }}" class="min-w-0">
+                        <a href="{{ route('wallet', config('explorer.migration.address')) }}" class="min-w-0">
                             <x-truncate-dynamic>
-                                {{ config('explorer.migration_address') }}
+                                {{ config('explorer.migration.address') }}
                             </x-truncate-dynamic>
                         </a>
 
                         <x-ark-clipboard
-                            :value="config('explorer.migration_address')"
+                            :value="config('explorer.migration.address')"
                             wrapper-class="flex items-center text-theme-primary-400 transition-default hover:text-theme-primary-200"
                             class=""
                             no-styling

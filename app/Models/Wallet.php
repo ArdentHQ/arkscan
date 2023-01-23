@@ -81,7 +81,7 @@ final class Wallet extends Model
      */
     public function isMigration(): bool
     {
-        return $this->address === config('explorer.migration_address');
+        return $this->address === config('explorer.migration.address');
     }
 
     /**
