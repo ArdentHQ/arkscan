@@ -16,7 +16,7 @@
         </tr>
     </thead>
     <tbody>
-        <x-skeleton>
+        <x-skeleton :row-count="$rowCount">
             <x-ark-tables.row>
                 @foreach($rows as $row)
                     <x-dynamic-component
