@@ -441,24 +441,67 @@ it('should determine the transaction type', function (string $type) {
     ['legacyBridgechainUpdate'],
 ]);
 
-it('should determine the migration transaction', function () {
-    config([
-        'explorer.migration.address' => '0xTest',
+it('should determine the migration type', function () {
+    config(['explorer.migration.address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj']);
+
+    Wallet::factory()->create([
+        'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
     ]);
 
-    $transaction = Transaction::factory()->transfer()->create();
-    $transaction->update([
-        'recipient_id' => '0xTest',
+    $transaction = Transaction::factory()->transfer()->create([
+        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+        'fee'          => '5000000', // 0.5
+        'amount'       => '100000000', // 1
+        'vendor_field' => '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n',
     ]);
+
+    $transaction = Transaction::find($transaction->id);
 
     $subject = new TransactionViewModel($transaction);
 
     expect($subject->isMigration())->toBeTrue();
+});
 
-    $subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
+it('should not determine the migration type', function ($transaction) {
+    config(['explorer.migration.address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj']);
+
+    Wallet::factory()->create([
+        'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+    ]);
+
+    $transaction = Transaction::factory()->transfer()->create([
+        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+        'fee'          => '5000000', // 0.5
+        'amount'       => '100000000', // 1
+        'vendor_field' => '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n',
+        ...$transaction,
+    ]);
+
+    $transaction = Transaction::find($transaction->id);
+
+    $subject = new TransactionViewModel($transaction);
 
     expect($subject->isMigration())->toBeFalse();
-});
+})->with([
+    'different recipient' => [[
+        'recipient_id' => 'DFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEE',
+    ]],
+    'low amount'          => [[
+        'amount' => '10000000', // 0.1
+    ]],
+    'low fee'             => [[
+        'fee' => '500000', // 0.05
+    ]],
+    'short vendor field'  => [[
+        'vendor_field' => '0x123',
+    ]],
+    'empty vendor field'  => [[
+        'vendor_field' => '',
+    ]],
+    'null vendor field'   => [[
+        'vendor_field' => null,
+    ]],
+]);
 
 it('should determine if the transaction is self-receiving', function (string $type) {
     $transaction = Transaction::factory()->{$type}()->create();
