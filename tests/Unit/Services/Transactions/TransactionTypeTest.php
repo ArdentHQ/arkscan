@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\Transactions\TransactionType;
 
 it('should determine the type', function (string $type, string $expected) {
@@ -151,18 +152,66 @@ it('should determine the type', function (string $type, string $expected) {
 ]);
 
 it('should determine the migration type', function () {
-    config([
-        'explorer.migration.address' => '0xTest',
+    config(['explorer.migration.address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj']);
+
+    Wallet::factory()->create([
+        'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
     ]);
 
-    $transaction     = Transaction::factory()->transfer()->create();
-    $transaction->recipient->update([
-        'address' => '0xTest',
+    $transaction = Transaction::factory()->transfer()->create([
+        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+        'fee'          => '5000000', // 0.5
+        'amount'       => '100000000', // 1
+        'vendor_field' => '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n',
     ]);
+
+    $transaction = Transaction::find($transaction->id);
+
     $transactionType = new TransactionType($transaction);
 
     expect($transactionType->isMigration())->toBeTrue();
 });
+
+it('should not determine the migration type', function ($transaction) {
+    config(['explorer.migration.address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj']);
+
+    Wallet::factory()->create([
+        'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+    ]);
+
+    $transaction = Transaction::factory()->transfer()->create([
+        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+        'fee'          => '5000000', // 0.5
+        'amount'       => '100000000', // 1
+        'vendor_field' => '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n',
+        ...$transaction,
+    ]);
+
+    $transaction = Transaction::find($transaction->id);
+
+    $transactionType = new TransactionType($transaction);
+
+    expect($transactionType->isMigration())->toBeFalse();
+})->with([
+    'different recipient' => [[
+        'recipient_id' => 'DFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEE',
+    ]],
+    'low amount' => [[
+        'amount' => '10000000', // 0.1
+    ]],
+    'low fee' => [[
+        'fee' => '500000', // 0.05
+    ]],
+    'short vendor field' => [[
+        'vendor_field' => '0x123',
+    ]],
+    'empty vendor field' => [[
+        'vendor_field' => '',
+    ]],
+    'null vendor field' => [[
+        'vendor_field' => null,
+    ]],
+]);
 
 it('should determine is unknown type', function () {
     $transaction = Transaction::factory()->create([
