@@ -10,11 +10,14 @@ use App\Enums\MagistrateTransactionEntityTypeEnum;
 use App\Enums\MagistrateTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Transaction;
+use App\ViewModels\Concerns\Transaction\DeterminesMigration;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 final class TransactionType
 {
+    use DeterminesMigration;
+
     private array $types = [
         'isTransfer'                      => 'transfer',
         'isSecondSignature'               => 'second-signature',
@@ -70,11 +73,6 @@ final class TransactionType
     public function isTransfer(): bool
     {
         return $this->isCoreType(CoreTransactionTypeEnum::TRANSFER);
-    }
-
-    public function isMigration(): bool
-    {
-        return $this->isTransfer() && $this->transaction->recipient?->address === config('explorer.migration.address');
     }
 
     public function isSecondSignature(): bool

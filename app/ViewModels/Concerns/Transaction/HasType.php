@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\ViewModels\Concerns\Transaction;
 
 use App\Services\Transactions\TransactionType;
+use App\ViewModels\Concerns\Transaction\DeterminesMigration;
 
 trait HasType
 {
+    use DeterminesMigration;
+
     public function typeName(): string
     {
         return (new TransactionType($this->transaction))->name();
@@ -16,11 +19,6 @@ trait HasType
     public function isTransfer(): bool
     {
         return $this->type->isTransfer();
-    }
-
-    public function isMigration(): bool
-    {
-        return $this->isTransfer() && $this->recipient()?->address === config('explorer.migration.address');
     }
 
     public function isSecondSignature(): bool
