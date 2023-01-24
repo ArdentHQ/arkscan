@@ -196,19 +196,19 @@ it('should not determine the migration type', function ($transaction) {
     'different recipient' => [[
         'recipient_id' => 'DFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEE',
     ]],
-    'low amount' => [[
+    'low amount'          => [[
         'amount' => '10000000', // 0.1
     ]],
-    'low fee' => [[
+    'low fee'             => [[
         'fee' => '500000', // 0.05
     ]],
-    'short vendor field' => [[
+    'short vendor field'  => [[
         'vendor_field' => '0x123',
     ]],
-    'empty vendor field' => [[
+    'empty vendor field'  => [[
         'vendor_field' => '',
     ]],
-    'null vendor field' => [[
+    'null vendor field'   => [[
         'vendor_field' => null,
     ]],
 ]);

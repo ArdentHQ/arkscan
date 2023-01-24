@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\ViewModels\Concerns\Transaction;
 
 use App\Services\Transactions\TransactionType;
-use App\ViewModels\Concerns\Transaction\DeterminesMigration;
 
 trait HasType
 {
