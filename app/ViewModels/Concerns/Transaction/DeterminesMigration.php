@@ -28,6 +28,7 @@ trait DeterminesMigration
             return false;
         }
 
+        /** @var string $vendorField */
         $vendorField = stream_get_contents($this->transaction->vendor_field);
         rewind($this->transaction->vendor_field);
 
