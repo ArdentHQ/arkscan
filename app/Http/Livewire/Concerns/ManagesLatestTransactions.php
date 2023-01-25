@@ -7,6 +7,7 @@ namespace App\Http\Livewire\Concerns;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Services\Cache\TableCache;
+use App\Services\VendorField;
 use Illuminate\Database\Eloquent\Collection;
 
 trait ManagesLatestTransactions
@@ -25,7 +26,14 @@ trait ManagesLatestTransactions
                 $query = $query->withScope($scopeClass);
             }
 
-            return $query->take(15)->get();
+            return $query
+                ->take(15)
+                ->get()
+                ->map(function ($transaction) {
+                    $transaction->vendor_field = VendorField::toHex($transaction->vendor_field);
+
+                    return $transaction;
+                });
         });
 
         $this->isLoading = false;

@@ -23,6 +23,7 @@ use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\VoteCombinationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
+use App\Services\VendorField;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -72,6 +73,8 @@ final class Transaction extends Model
         'voteCombination'               => VoteCombinationScope::class,
         'magistrate'                    => MagistrateScope::class,
     ];
+
+    private bool|string|null $vendorFieldContent = false;
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -145,6 +148,15 @@ final class Transaction extends Model
             ->where('amount', '>=', config('explorer.migration.minimum_amount'))
             ->where('fee', '>=', config('explorer.migration.minimum_fee'))
             ->whereRaw("encode(vendor_field::bytea, 'escape') ~ '^0x[a-zA-Z0-9]{40}$'");
+    }
+
+    public function vendorField(): string|null
+    {
+        if (is_bool($this->vendorFieldContent)) {
+            $this->vendorFieldContent = VendorField::parse($this->vendor_field);
+        }
+
+        return $this->vendorFieldContent;
     }
 
     /**
