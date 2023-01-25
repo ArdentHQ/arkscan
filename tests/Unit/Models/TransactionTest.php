@@ -115,3 +115,24 @@ it('should exclude migrated transactions which has an invalid vendorfield value'
     'too short' => '0x0000',
     'too long'  => '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0',
 ]);
+
+it('should get vendorfield value multiple times despite resource', function () {
+    $transaction = Transaction::factory()->transfer()->create([
+        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+        'fee'          => '10000000', // 0.1
+        'amount'       => '200000000', // 2
+        'vendor_field' => '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0',
+    ]);
+
+    expect($transaction->vendor_field)->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
+    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
+
+    $transaction = Transaction::find($transaction->id);
+
+    expect(is_resource($transaction->vendor_field))->toBeTrue();
+    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
+    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
+    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
+    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
+    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
+});

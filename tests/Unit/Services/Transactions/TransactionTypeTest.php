@@ -167,12 +167,14 @@ it('should determine the migration type', function () {
 
     $transaction = Transaction::find($transaction->id);
 
+    expect(is_resource($transaction->vendor_field))->toBeTrue();
+
     $transactionType = new TransactionType($transaction);
 
     expect($transactionType->isMigration())->toBeTrue();
 });
 
-it('should not determine the migration type', function ($transaction) {
+it('should not determine the migration type', function ($transaction, $fetchAgain) {
     config(['explorer.migration.address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj']);
 
     Wallet::factory()->create([
@@ -187,7 +189,9 @@ it('should not determine the migration type', function ($transaction) {
         ...$transaction,
     ]);
 
-    $transaction = Transaction::find($transaction->id);
+    if ($fetchAgain) {
+        $transaction = Transaction::find($transaction->id);
+    }
 
     $transactionType = new TransactionType($transaction);
 
@@ -195,22 +199,25 @@ it('should not determine the migration type', function ($transaction) {
 })->with([
     'different recipient' => [[
         'recipient_id' => 'DFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEE',
-    ]],
+    ], true],
     'low amount'          => [[
         'amount' => '10000000', // 0.1
-    ]],
+    ], true],
     'low fee'             => [[
         'fee' => '500000', // 0.05
-    ]],
+    ], true],
     'short vendor field'  => [[
         'vendor_field' => '0x123',
-    ]],
+    ], false],
     'empty vendor field'  => [[
         'vendor_field' => '',
-    ]],
+    ], false],
     'null vendor field'   => [[
         'vendor_field' => null,
-    ]],
+    ], false],
+    'int vendor field'    => [[
+        'vendor_field' => 1,
+    ], false],
 ]);
 
 it('should determine is unknown type', function () {
