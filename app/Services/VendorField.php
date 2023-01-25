@@ -16,11 +16,11 @@ final class VendorField
             $vendorField = stream_get_contents($vendorField);
         }
 
-        if (! is_string($vendorField) && ! is_int($vendorField)) {
+        if (is_bool($vendorField)) {
             return null;
         }
 
-        if ($vendorField === '') {
+        if (is_string($vendorField) && $vendorField === '') {
             return null;
         }
 
@@ -57,10 +57,8 @@ final class VendorField
             return $vendorField;
         }
 
+        /** @var string $vendorField */
         $vendorField = hex2bin($vendorField);
-        if ($vendorField === false) {
-            return null;
-        }
 
         return $vendorField;
     }
