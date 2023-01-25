@@ -74,8 +74,6 @@ final class Transaction extends Model
         'magistrate'                    => MagistrateScope::class,
     ];
 
-    private bool|string|null $vendorFieldContent = false;
-
     /**
      * Indicates if the IDs are auto-incrementing.
      *
@@ -104,6 +102,8 @@ final class Transaction extends Model
         'type'         => 'int',
         'block_height' => 'int',
     ];
+
+    private bool|string|null $vendorFieldContent = false;
 
     /**
      * A transaction belongs to a block.
