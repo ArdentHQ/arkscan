@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Services\VendorField;
 
 it('should convert to hex', function ($content, $expected) {
@@ -20,7 +22,7 @@ it('should convert resource to hex', function () {
 it('should parse vendor field value', function ($content, $expected) {
     expect(VendorField::parse($content))->toBe($expected);
 })->with([
-    ['3078524b656f495a394b6832673448736c6765487235423979626c48626e77575967666546674f33366e30', '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0', ],
+    ['3078524b656f495a394b6832673448736c6765487235423979626c48626e77575967666546674f33366e30', '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0'],
     ['31', '1'],
     ['3231', '21'],
     [184, '184'],
