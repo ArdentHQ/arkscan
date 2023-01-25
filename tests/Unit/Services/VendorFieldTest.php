@@ -11,6 +11,9 @@ it('should convert to hex', function ($content, $expected) {
     ['1', '31'],
     [21, '3231'],
     [null, null],
+    [1.4, '312e34'],
+    [true, null],
+    ['', null],
 ]);
 
 it('should convert resource to hex', function () {
@@ -31,6 +34,7 @@ it('should parse vendor field value', function ($content, $expected) {
     [null, null],
     [1.4, null],
     [true, null],
+    ['', null],
 ]);
 
 it('should parse resource', function ($content, $expected) {
