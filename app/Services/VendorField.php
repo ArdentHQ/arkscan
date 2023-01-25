@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 final class VendorField
@@ -22,7 +24,7 @@ final class VendorField
             return null;
         }
 
-        return bin2hex($vendorField);
+        return bin2hex((string) $vendorField);
     }
 
     public static function parse(mixed $vendorField): ?string
@@ -32,7 +34,7 @@ final class VendorField
         }
 
         if (is_int($vendorField)) {
-            return $vendorField;
+            return (string) $vendorField;
         }
 
         if (is_resource($vendorField)) {
@@ -55,12 +57,17 @@ final class VendorField
             return $vendorField;
         }
 
-        return hex2bin($vendorField);
+        $vendorField = hex2bin($vendorField);
+        if ($vendorField === false) {
+            return null;
+        }
+
+        return $vendorField;
     }
 
     private static function isValidHex(string $value): bool
     {
-        if (strlen($value) & 1) {
+        if ((strlen($value) & 1) === 1) {
             return false;
         }
 
@@ -68,6 +75,6 @@ final class VendorField
             return false;
         }
 
-        return preg_match('/^[a-f0-9]{2,}$/i', $value);
+        return preg_match('/^[a-f0-9]{2,}$/i', $value) !== false;
     }
 }

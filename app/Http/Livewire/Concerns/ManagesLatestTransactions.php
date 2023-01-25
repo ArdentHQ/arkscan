@@ -8,7 +8,7 @@ use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Services\Cache\TableCache;
 use App\Services\VendorField;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 trait ManagesLatestTransactions
 {
@@ -30,6 +30,7 @@ trait ManagesLatestTransactions
                 ->take(15)
                 ->get()
                 ->map(function ($transaction) {
+                    /** @var Transaction $transaction */
                     $transaction->vendor_field = VendorField::toHex($transaction->vendor_field);
 
                     return $transaction;

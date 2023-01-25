@@ -41,7 +41,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $recipient_id
  * @property string $sender_public_key
  * @property int $block_height
- * @property resource|null $vendor_field
+ * @property resource|string|null $vendor_field
  * @property int $nonce
  * @property Wallet $sender
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
