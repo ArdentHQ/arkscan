@@ -24,14 +24,6 @@ trait DeterminesMigration
             return false;
         }
 
-        if ($this->transaction->vendor_field === null) {
-            return false;
-        }
-
-        /** @var string $vendorField */
-        $vendorField = stream_get_contents($this->transaction->vendor_field);
-        rewind($this->transaction->vendor_field);
-
-        return boolval(preg_match('/^0x[a-zA-Z0-9]{40}$/', $vendorField));
+        return $this->migratedAddress() !== null;
     }
 }
