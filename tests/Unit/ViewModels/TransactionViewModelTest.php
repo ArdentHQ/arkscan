@@ -457,12 +457,14 @@ it('should determine the migration type', function () {
 
     $transaction = Transaction::find($transaction->id);
 
+    expect(is_resource($transaction->vendor_field))->toBeTrue();
+
     $subject = new TransactionViewModel($transaction);
 
     expect($subject->isMigration())->toBeTrue();
 });
 
-it('should not determine the migration type', function ($transaction) {
+it('should not determine the migration type', function ($transaction, $fetchAgain = true) {
     config(['explorer.migration.address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj']);
 
     Wallet::factory()->create([
@@ -494,13 +496,16 @@ it('should not determine the migration type', function ($transaction) {
     ]],
     'short vendor field'  => [[
         'vendor_field' => '0x123',
-    ]],
+    ], false],
     'empty vendor field'  => [[
         'vendor_field' => '',
-    ]],
+    ], false],
     'null vendor field'   => [[
         'vendor_field' => null,
-    ]],
+    ], false],
+    'int vendor field'    => [[
+        'vendor_field' => 1,
+    ], false],
 ]);
 
 it('should determine if the transaction is self-receiving', function (string $type) {

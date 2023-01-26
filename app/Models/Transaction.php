@@ -23,6 +23,7 @@ use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\VoteCombinationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
+use App\Services\VendorField;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -40,7 +41,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $recipient_id
  * @property string $sender_public_key
  * @property int $block_height
- * @property resource|null $vendor_field
+ * @property resource|string|null $vendor_field
  * @property int $nonce
  * @property Wallet $sender
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
@@ -102,6 +103,8 @@ final class Transaction extends Model
         'block_height' => 'int',
     ];
 
+    private bool|string|null $vendorFieldContent = false;
+
     /**
      * A transaction belongs to a block.
      *
@@ -145,6 +148,15 @@ final class Transaction extends Model
             ->where('amount', '>=', config('explorer.migration.minimum_amount'))
             ->where('fee', '>=', config('explorer.migration.minimum_fee'))
             ->whereRaw("encode(vendor_field::bytea, 'escape') ~ '^0x[a-zA-Z0-9]{40}$'");
+    }
+
+    public function vendorField(): string|null
+    {
+        if (is_bool($this->vendorFieldContent)) {
+            $this->vendorFieldContent = VendorField::parse($this->vendor_field);
+        }
+
+        return $this->vendorFieldContent;
     }
 
     /**
