@@ -45,7 +45,7 @@ return [
             'blockReward'        => intval(env('ARKSCAN_NETWORK_BLOCK_REWARD', 2)),
             'base58Prefix'       => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 23)),
             'migration'          => [
-                'url'  => env('ARKSCAN_NETWORK_MIGRATION_URL', ''),
+                'url'  => env('ARKSCAN_NETWORK_MIGRATION_URL', 'https://app.arkvault.io/#/?page=migration'),
                 'docs' => env('ARKSCAN_NETWORK_MIGRATION_DOCS', 'https://ark.dev/docs/core/migration/mainnet'),
             ],
         ],
@@ -69,7 +69,7 @@ return [
             'blockReward'        => intval(env('ARKSCAN_NETWORK_BLOCK_REWARD', 2)),
             'base58Prefix'       => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 30)),
             'migration'          => [
-                'url'  => env('ARKSCAN_NETWORK_MIGRATION_URL', ''),
+                'url'  => env('ARKSCAN_NETWORK_MIGRATION_URL', 'https://demo.arkvault.io/#/?page=migration'),
                 'docs' => env('ARKSCAN_NETWORK_MIGRATION_DOCS', 'https://ark.dev/docs/core/migration/devnet'),
             ],
         ],
