@@ -20,7 +20,7 @@
 
             <div class="flex flex-col pt-8 space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3">
                 <a
-                    href="@lang('urls.migration.migrate')"
+                    href="{{ Network::migrationPageUrl() }}"
                     class="button-primary"
                     target="_blank"
                 >
@@ -28,7 +28,7 @@
                 </a>
 
                 <a
-                    href="@lang('urls.migration.learn_more')"
+                    href="{{ Network::migrationDocsUrl() }}"
                     class="button-secondary bg-theme-primary-200"
                     target="_blank"
                 >
