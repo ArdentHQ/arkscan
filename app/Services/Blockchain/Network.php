@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Services\Blockchain;
 
 use App\Contracts\Network as Contract;
+use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Cache\WalletCache;
 use ArkEcosystem\Crypto\Networks\AbstractNetwork;
 use Carbon\Carbon;
@@ -45,6 +47,11 @@ final class Network implements Contract
     public function testnetExplorerUrl(): string
     {
         return $this->config['testnetExplorerUrl'];
+    }
+
+    public function polygonExplorerUrl(): string
+    {
+        return $this->config['polygonExplorerUrl'];
     }
 
     public function currency(): string
@@ -106,8 +113,39 @@ final class Network implements Contract
         return $this->config['blockReward'];
     }
 
+    public function supply(): BigNumber
+    {
+        return BigNumber::new(Wallet::where('balance', '>', 0)->sum('balance'))
+            ->minus($this->migratedBalance()->valueOf());
+    }
+
+    public function migratedBalance(): BigNumber
+    {
+        $wallet = Wallet::firstWhere('address', config('explorer.migration.address'));
+        if ($wallet === null) {
+            return BigNumber::new(0);
+        }
+
+        return $wallet->balance;
+    }
+
     public function config(): AbstractNetwork
     {
         return new CustomNetwork($this->config);
+    }
+
+    public function hasMigration(): bool
+    {
+        return config('explorer.migration.address') !== null && config('explorer.migration.address') !== '';
+    }
+
+    public function migrationPageUrl(): string
+    {
+        return $this->config['migration']['url'];
+    }
+
+    public function migrationDocsUrl(): string
+    {
+        return $this->config['migration']['docs'];
     }
 }

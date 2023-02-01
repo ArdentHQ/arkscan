@@ -23,7 +23,7 @@ it('should render the component', function (): void {
     $currency = Network::currency();
 
     Livewire::test(StatsHighlights::class)
-        ->assertSee(trans('pages.statistics.highlights.total-supply'))
+        ->assertSee(trans('pages.statistics.highlights.current_supply'))
         ->assertSee('1,362,809,820 '.$currency)
         ->assertSee(trans('pages.statistics.highlights.voting', ['percent' => '74.08%']))
         ->assertSee('84,235,364 '.$currency)

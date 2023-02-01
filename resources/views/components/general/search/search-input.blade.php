@@ -73,7 +73,7 @@
         <button
             type="button"
             @class([
-                'md:hidden button-primary',
+                'md:hidden flex flex-col button-primary',
                 'pointer-events-none' => $isRedirecting,
             ])
             @unless ($isRedirecting)
@@ -101,7 +101,7 @@
                     wire:target="performSearch"
                 @endunless
                 @class([
-                    'invisible' => $isRedirecting,
+                    'hidden' => $isRedirecting,
                 ])
             >
                 <x-ark-icon name="magnifying-glass" size="sm" />

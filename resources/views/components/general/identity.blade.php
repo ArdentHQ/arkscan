@@ -1,21 +1,36 @@
+@props([
+    'model',
+    'icon'            => false,
+    'prefix'          => false,
+    'isListing'       => false,
+    'address'         => false,
+    'suffix'          => false,
+    'withoutReverse'  => false,
+    'withoutTruncate' => false,
+])
+
 <div>
-    <div class="flex {{ ($withoutReverse ?? false) ? 'space-x-3' : 'flex-row-reverse md:space-x-4' }} items-center md:flex-row md:justify-start">
-        @unless ($icon ?? false)
+    <div @class([
+        'flex items-center md:flex-row md:justify-start',
+        'space-x-3' => $withoutReverse,
+        'flex-row-reverse md:space-x-4' => ! $withoutReverse,
+    ])>
+        @unless ($icon)
             <x-general.avatar :identifier="$model->address()" />
         @else
             {{ $icon }}
         @endunless
 
         <div class="flex items-center mr-4 md:mr-0">
-            @if ($prefix ?? false)
+            @if ($prefix)
                 {{ $prefix }}
             @endif
 
             <a href="{{ route('wallet', $model->address()) }}" class="font-semibold sm:hidden md:flex link">
                 @if ($model->username())
-                    @if ($prefix ?? false)
+                    @if ($prefix)
                         <div class="delegate-name-truncate-prefix">
-                    @elseif ($isListing ?? false)
+                    @elseif ($isListing)
                         <div class="delegate-name-truncate-listing">
                     @else
                         <div class="delegate-name-truncate">
@@ -23,19 +38,15 @@
                         {{ $model->username() }}
                     </div>
                 @else
-                    @if ($address ?? false)
+                    @if ($address)
                         {{ $address }}
                     @else
-                        @if($withoutTruncate ?? false)
+                        @if($withoutTruncate)
                             {{ $model->address() }}
                         @else
-                            @isset($dynamicTruncate)
-                            <x-truncate-dynamic>{{ $model->address() }}</x-truncate-dynamic>
-                            @else
                             <x-truncate-middle>
                                 {{ $model->address() }}
                             </x-truncate-middle>
-                            @endif
                         @endisset
                     @endif
                 @endif
@@ -49,7 +60,7 @@
                 @endif
             </a>
 
-            @if ($suffix ?? false)
+            @if ($suffix)
                 {{ $suffix }}
             @endif
         </div>

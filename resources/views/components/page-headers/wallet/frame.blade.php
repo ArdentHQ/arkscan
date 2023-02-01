@@ -1,3 +1,10 @@
+@props([
+    'title',
+    'wallet',
+    'useGenerator' => false,
+    'extension'    => null,
+])
+
 <x-ark-container container-class="flex flex-col space-y-6">
     <h1>
         @lang($title)
@@ -5,7 +12,7 @@
 
     <x-general.entity-header :value="$wallet->address()" padding="lg:pl-8 lg:pr-7 px-7 lg:py-5 py-6">
         <x-slot name="title">
-            @isset($useGenerator)
+            @if($useGenerator)
                 <span class="hidden xl:inline">@lang('pages.wallet.generated_by')&nbsp;</span>
                 <span>{{ $wallet->username() }}</span>
             @else
@@ -81,12 +88,10 @@
             </div>
         </x-slot>
 
-
-
-        @isset($extension)
+        @if($extension)
             <x-slot name="bottom">
                 {{ $extension }}
             </x-slot>
-        @endisset
+        @endif
     </x-general.entity-header>
 </x-ark-container>

@@ -118,7 +118,7 @@ it('should list received transactions (multi)', function () {
 });
 
 it('should list sent transactions', function () {
-    $sent = Transaction::factory()->create([
+    $sent = Transaction::factory()->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 

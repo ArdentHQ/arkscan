@@ -14,6 +14,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 
 final class BuildForgingStats implements ShouldQueue
 {
@@ -33,15 +34,17 @@ final class BuildForgingStats implements ShouldQueue
 
         $forgingStats = MissedBlocksCalculator::calculateFromHeightGoingBack($height, $timeRange);
         foreach ($forgingStats as $timestamp => $statsForTimestamp) {
-            ForgingStats::updateOrCreate(
-                [
-                    'timestamp' => $timestamp,
-                ],
-                [
-                    'public_key' => $statsForTimestamp['publicKey'],
-                    'forged'     => $statsForTimestamp['forged'],
-                ],
-            );
+            DB::transaction(function () use ($timestamp, $statsForTimestamp) {
+                ForgingStats::updateOrCreate(
+                    [
+                        'timestamp' => $timestamp,
+                    ],
+                    [
+                        'public_key' => $statsForTimestamp['publicKey'],
+                        'forged'     => $statsForTimestamp['forged'],
+                    ],
+                );
+            }, attempts: 2);
         }
 
         // clean up old stats entries

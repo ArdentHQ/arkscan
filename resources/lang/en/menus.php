@@ -8,6 +8,8 @@ return [
     'wallets'        => 'Wallets',
     'statistics'     => 'Statistics',
     'contact'        => 'Support',
+    'migration'      => 'Migration',
+
     'network-select' => [
         'main' => [
             'label'        => 'Main Network',

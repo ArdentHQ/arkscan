@@ -21,7 +21,7 @@ final class CacheMultiSignatureAddresses extends Command
     /**
      * The console command description.
      *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Cache all multi-signature addresses.';
 

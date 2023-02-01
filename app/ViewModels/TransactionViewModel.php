@@ -12,6 +12,7 @@ use App\Services\Timestamp;
 use App\Services\Transactions\TransactionDirection;
 use App\Services\Transactions\TransactionState;
 use App\Services\Transactions\TransactionType;
+use App\ViewModels\Concerns\Transaction\DeterminesMigration;
 use App\ViewModels\Concerns\Transaction\HasDirection;
 use App\ViewModels\Concerns\Transaction\HasIcons;
 use App\ViewModels\Concerns\Transaction\HasState;
@@ -29,6 +30,7 @@ use Illuminate\Support\Arr;
 
 final class TransactionViewModel implements ViewModel
 {
+    use DeterminesMigration;
     use HasDirection;
     use HasIcons;
     use HasState;
