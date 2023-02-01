@@ -13,6 +13,24 @@ module.exports = {
                 3: '3px',
                 20: '20px',
             },
+            backgroundSize: {
+                ...defaultConfig.theme.extend.backgroundSize,
+                500: '500px',
+            },
+            animation: {
+                "move-bg": "move-bg 15s infinite linear",
+                "move-bg-start-right": "move-bg-start-right 15s infinite linear",
+            },
+            keyframes: {
+                "move-bg": {
+                    "0%": { backgroundPosition: 0 },
+                    "100%": { backgroundPosition: "500px" },
+                },
+                "move-bg-start-right": {
+                    "0%": { backgroundPosition: "calc(100%)" },
+                    "100%": { backgroundPosition: "calc(100% + 500px)" },
+                },
+            },
             height: {
                 ...defaultConfig.theme.extend.height,
                 '7': '1.75rem',
@@ -26,6 +44,8 @@ module.exports = {
                 '25': '6.25rem',
                 '30': '7.5rem',
                 '84': '21rem',
+                '116': '29rem',
+                '164': '41rem',
             },
             padding: {
                 '26': '6.5rem',

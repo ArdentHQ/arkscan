@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network as FacadesNetwork;
 use App\Services\Blockchain\Network;
 use ArkEcosystem\Crypto\Networks\Devnet;
 use ArkEcosystem\Crypto\Networks\Mainnet;
 use BitWasp\Bitcoin\Network\Network as Bitwasp;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
 use function Tests\fakeKnownWallets;
 
 it('should have all required properties', function (array $config) {
@@ -62,3 +64,15 @@ it('should have all required properties', function (array $config) {
         'nethash'          => '2a44f340d76ffc3df204c5f38cd355b7496c9065a1ade2ef92071436bd72e867',
     ]],
 ]);
+
+it('should handle migration status properly', function () {
+    expect(FacadesNetwork::hasMigration())->toBe(false);
+
+    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
+
+    expect(FacadesNetwork::hasMigration())->toBe(true);
+
+    Config::set('explorer.migration.address', '');
+
+    expect(FacadesNetwork::hasMigration())->toBe(false);
+});

@@ -9,4 +9,7 @@ return [
     'view_all'        => 'View All',
     'receive'         => 'Receive',
     'vote'            => 'Vote',
+    'migration_guide' => 'Migration Guide',
+    'migrate_tokens'  => 'Migrate Tokens',
+    'learn_more'      => 'Learn More',
 ];

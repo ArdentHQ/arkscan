@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Facades;
 
+use App\Services\BigNumber;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Facade;
 
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static int delegateCount()
  * @method static int blockTime()
  * @method static int blockReward()
+ * @method static BigNumber supply()
  * @method static \ArkEcosystem\Crypto\Networks\AbstractNetwork config()
  */
 final class Network extends Facade

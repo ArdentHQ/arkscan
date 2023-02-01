@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\Transactions\TransactionType;
 
 it('should determine the type', function (string $type, string $expected) {
@@ -148,6 +149,75 @@ it('should determine the type', function (string $type, string $expected) {
         'legacyBridgechainUpdate',
         'bridgechain-entity-update',
     ],
+]);
+
+it('should determine the migration type', function () {
+    config(['explorer.migration.address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj']);
+
+    Wallet::factory()->create([
+        'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+    ]);
+
+    $transaction = Transaction::factory()->transfer()->create([
+        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+        'fee'          => '5000000', // 0.5
+        'amount'       => '100000000', // 1
+        'vendor_field' => '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n',
+    ]);
+
+    $transaction = Transaction::find($transaction->id);
+
+    expect(is_resource($transaction->vendor_field))->toBeTrue();
+
+    $transactionType = new TransactionType($transaction);
+
+    expect($transactionType->isMigration())->toBeTrue();
+});
+
+it('should not determine the migration type', function ($transaction, $fetchAgain) {
+    config(['explorer.migration.address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj']);
+
+    Wallet::factory()->create([
+        'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+    ]);
+
+    $transaction = Transaction::factory()->transfer()->create([
+        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
+        'fee'          => '5000000', // 0.5
+        'amount'       => '100000000', // 1
+        'vendor_field' => '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n',
+        ...$transaction,
+    ]);
+
+    if ($fetchAgain) {
+        $transaction = Transaction::find($transaction->id);
+    }
+
+    $transactionType = new TransactionType($transaction);
+
+    expect($transactionType->isMigration())->toBeFalse();
+})->with([
+    'different recipient' => [[
+        'recipient_id' => 'DFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEE',
+    ], true],
+    'low amount'          => [[
+        'amount' => '10000000', // 0.1
+    ], true],
+    'low fee'             => [[
+        'fee' => '500000', // 0.05
+    ], true],
+    'short vendor field'  => [[
+        'vendor_field' => '0x123',
+    ], false],
+    'empty vendor field'  => [[
+        'vendor_field' => '',
+    ], false],
+    'null vendor field'   => [[
+        'vendor_field' => null,
+    ], false],
+    'int vendor field'    => [[
+        'vendor_field' => 1,
+    ], false],
 ]);
 
 it('should determine is unknown type', function () {

@@ -13,6 +13,7 @@ trait ManagesCache
      */
     private function remember(Closure $callback, int $seconds = 60)
     {
+        // @phpstan-ignore-next-line
         return $this->getCache()->remember($this->cacheKey(), $seconds, $callback);
     }
 

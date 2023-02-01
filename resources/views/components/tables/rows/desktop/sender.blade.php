@@ -1,1 +1,9 @@
-<x-general.identity :model="$model->sender()" />
+@props([
+    'model',
+    'withoutTruncate' => false,
+])
+
+<x-general.identity
+    :model="$model->sender()"
+    :without-truncate="$withoutTruncate"
+/>

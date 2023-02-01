@@ -25,11 +25,21 @@ tr:hover td.hoverable-cell .table-avatar {
     @apply text-white bg-theme-danger-400 hover:bg-theme-danger-500;
 }
 
+.fiat-hint-migration {
+    @apply -ml-1.5 -my-1 bg-theme-hint-100 hover:bg-theme-hint-200 flex items-center justify-center px-2 mr-2 transition-default dark:text-white dark:bg-theme-hint-400 dark:hover:bg-theme-hint-500;
+}
+
 .table-compact:not(.table-compact-until-lg) table .fiat-hint {
     @apply w-5 h-5 px-0 my-0 ml-0 mr-1 rounded-full;
 }
 
 /** Compact Table Styling **/
+.table-compact:not(.table-compact-until-lg)
+    .table-container
+    table
+    > tbody
+    .full-transaction-icon
+    svg,
 .table-compact:not(.table-compact-until-lg)
     .table-container
     table
@@ -78,6 +88,12 @@ tr:hover td.hoverable-cell .table-avatar {
         .table-container
         table
         > tbody
+        .full-transaction-icon
+        svg,
+    .table-compact:not(.table-compact-until-lg)
+        .table-container
+        table
+        > tbody
         .transaction-icon {
         @apply w-5 h-5 border-0;
     }
@@ -102,11 +118,6 @@ tr:hover td.hoverable-cell .table-avatar {
 
 .table-compact:not(.table-compact-until-lg) .sender-direction-wrapper {
     @apply p-0 pr-2;
-}
-
-.table-compact:not(.table-compact-until-lg) table .fiat-tooltip-sent,
-.table-compact:not(.table-compact-until-lg) table .fiat-tooltip-received {
-    @apply p-0 border-0;
 }
 
 body.table-compact-until-lg table .fiat-tooltip-sent,
@@ -148,6 +159,7 @@ body.table-compact-until-lg .arrow-direction {
         @apply py-3;
     }
 
+    .table-container table > tbody .full-transaction-icon svg,
     .table-container table > tbody .transaction-icon {
         @apply w-5 h-5 border-0;
     }
@@ -165,10 +177,5 @@ body.table-compact-until-lg .arrow-direction {
 
     .sender-direction-wrapper {
         @apply p-0 pr-2;
-    }
-
-    table .fiat-tooltip-sent,
-    table .fiat-tooltip-received {
-        @apply p-0 border-0;
     }
 }

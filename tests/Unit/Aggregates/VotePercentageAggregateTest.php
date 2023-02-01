@@ -14,7 +14,7 @@ it('should aggregate and format', function () {
 
     $wallet  = Wallet::factory()->create();
     $wallet2 = Wallet::factory()->create([
-        'balance' => '10000000000000000',
+        'balance'    => '10000000000000000',
 
         'attributes' => [
             'vote' => $wallet->public_key,

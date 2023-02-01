@@ -45,39 +45,33 @@
                     <div class="flex justify-end">
                         <div class="flex flex-1 justify-end items-center sm:justify-between sm:items-stretch">
                             {{-- Desktop Navbar Items --}}
-                            <div class="hidden items-center -mx-4 lg:flex">
+                            <div class="hidden items-center -mx-4 xl:flex">
                                 @foreach ($navigation as $navItem)
-                                    <a
-                                        href="{{ route($navItem['route'], $navItem['params'] ?? []) }}"
-                                        class="inline-flex font-semibold leading-5 group
-                                            focus:outline-none transition duration-150 ease-in-out h-full px-2 mx-2 relative border-t-2 border-transparent rounded
-                                            @if(optional(Route::current())->getName() === $navItem['route'])
-                                                text-theme-secondary-900 dark:text-theme-secondary-400
-                                            @else
-                                                text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400
-                                            @endif
-                                        "
-                                    >
-                                        <span class="flex items-center w-full h-full border-b-2  @if(optional(Route::current())->getName() === $navItem['route']) border-theme-primary-600 @else border-transparent group-hover:border-theme-secondary-300 @endif">
-                                            <span>{{ $navItem['label'] }}</span>
-                                        </span>
-                                    </a>
+                                    <x-navbar.item
+                                        :route="$navItem['route']"
+                                        :params="$navItem['params'] ?? null"
+                                        :label="$navItem['label']"
+                                    />
                                 @endforeach
+
+                                @if(Network::hasMigration())
+                                    <x-navbar.migration-item />
+                                @endif
                             </div>
                         </div>
 
                         @if(Network::canBeExchanged())
                             <div class="hidden items-center md:flex">
-                                <x-navbar.separator class="md:hidden lg:inline" />
+                                <x-navbar.separator class="md:hidden xl:inline" />
 
-                                <div class="hidden font-semibold md:flex lg:pl-8 dark:text-white text-theme-secondary-900">
+                                <div class="hidden font-semibold md:flex xl:pl-8 dark:text-white text-theme-secondary-900">
                                     <livewire:price-ticker />
                                 </div>
                             </div>
                         @endif
 
 
-                        <div class="flex items-center -mr-5 md:-mr-8 lg:hidden">
+                        <div class="flex items-center -mr-5 md:-mr-8 xl:hidden">
                             @if(Network::canBeExchanged())
                                 <x-navbar.separator class="hidden md:inline" />
                             @endif
@@ -118,11 +112,15 @@
             </div>
 
             <template x-if="open">
-                <div class="border-t-2 shadow-xl lg:hidden border-theme-secondary-200 dark:border-theme-secondary-800">
+                <div class="border-t-2 shadow-xl xl:hidden border-theme-secondary-200 dark:border-theme-secondary-800">
                     <div class="pt-2 pb-4 rounded-b-lg">
                         @foreach ($navigation as $navItem)
                             <x-ark-navbar-link-mobile :route="$navItem['route']" :name="$navItem['label']" :params="$navItem['params'] ?? []" />
                         @endforeach
+
+                        @if(Network::hasMigration())
+                            <x-ark-navbar-link-mobile route="migration" :name="trans('menus.migration')" :params="[]" />
+                        @endif
 
                         @if(Network::canBeExchanged())
                             <div class="flex py-3 px-8 mt-2 -mb-4 font-semibold md:hidden dark:text-white bg-theme-secondary-100 text-theme-secondary-900 dark:bg-theme-secondary-800">

@@ -23,9 +23,9 @@
     >
         <x-slot name="text">
             <x-general.amount-fiat-tooltip
-            :amount="$transaction->fee()"
-            :fiat="$transaction->feeFiat()"
-        />
+                :amount="$transaction->fee()"
+                :fiat="$transaction->feeFiat()"
+            />
         </x-slot>
     </x-general.entity-header-item>
 

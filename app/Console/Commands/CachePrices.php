@@ -25,7 +25,7 @@ final class CachePrices extends Command
     /**
      * The console command description.
      *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Cache prices and exchange rates.';
 

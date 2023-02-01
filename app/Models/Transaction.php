@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\CoreTransactionTypeEnum;
+use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Casts\BigInteger;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
@@ -21,6 +23,8 @@ use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\VoteCombinationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
+use App\Services\VendorField;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -37,7 +41,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $recipient_id
  * @property string $sender_public_key
  * @property int $block_height
- * @property resource|null $vendor_field
+ * @property resource|string|null $vendor_field
  * @property int $nonce
  * @property Wallet $sender
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
@@ -99,6 +103,8 @@ final class Transaction extends Model
         'block_height' => 'int',
     ];
 
+    private bool|string|null $vendorFieldContent = false;
+
     /**
      * A transaction belongs to a block.
      *
@@ -127,6 +133,30 @@ final class Transaction extends Model
     public function recipient(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'recipient_id', 'address');
+    }
+
+    /**
+     * Get migrated transactions.
+     *
+     * @return Builder
+     */
+    public function scopeMigrated(): Builder
+    {
+        return self::where('recipient_id', config('explorer.migration.address'))
+            ->where('type', CoreTransactionTypeEnum::TRANSFER)
+            ->where('type_group', TransactionTypeGroupEnum::CORE)
+            ->where('amount', '>=', config('explorer.migration.minimum_amount'))
+            ->where('fee', '>=', config('explorer.migration.minimum_fee'))
+            ->whereRaw("encode(vendor_field::bytea, 'escape') ~ '^0x[a-zA-Z0-9]{40}$'");
+    }
+
+    public function vendorField(): string|null
+    {
+        if (is_bool($this->vendorFieldContent)) {
+            $this->vendorFieldContent = VendorField::parse($this->vendor_field);
+        }
+
+        return $this->vendorFieldContent;
     }
 
     /**
