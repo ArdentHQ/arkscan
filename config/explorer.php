@@ -23,7 +23,7 @@ return [
         'minimum_fee'    => env('ARKSCAN_MIGRATION_MIN_FEE', 5000000),
         'minimum_amount' => env('ARKSCAN_MIGRATION_MIN_AMOUNT', 100000000),
 
-        'urls' => [
+        'urls'           => [
             'guide'          => env('ARKSCAN_MIGRATION_GUIDE_URL', 'https://ark.dev/docs/core/migration/devnet'),
             'learn_more'     => env('ARKSCAN_MIGRATION_LEARN_MORE_URL', 'https://arkscic.com/blog/ark-is-moving-to-polygon'),
             'migrate_tokens' => env('ARKSCAN_MIGRATION_MIGRATE_TOKENS_URL', 'https://demo.arkvault.io/#/?page=migration'),
