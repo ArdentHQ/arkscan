@@ -138,14 +138,4 @@ final class Network implements Contract
     {
         return config('explorer.migration.address') !== null && config('explorer.migration.address') !== '';
     }
-
-    public function migrationPageUrl(): string
-    {
-        return $this->config['migration']['url'];
-    }
-
-    public function migrationDocsUrl(): string
-    {
-        return $this->config['migration']['docs'];
-    }
 }

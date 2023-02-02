@@ -11,7 +11,7 @@
                 <div class="dark:text-theme-secondary-500">
                     @lang('pages.migration.banner.description', [
                         'link' => view('ark::external-link', [
-                            'url'   => trans('urls.migration.guide'),
+                            'url'   => config('explorer.migration.urls.guide'),
                             'text'  => trans('actions.migration_guide'),
                         ]),
                     ])
@@ -20,7 +20,7 @@
 
             <div class="flex flex-col pt-8 space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3">
                 <a
-                    href="{{ Network::migrationPageUrl() }}"
+                    href="{{ config('explorer.migration.urls.migrate_tokens') }}"
                     class="button-primary"
                     target="_blank"
                 >
@@ -28,7 +28,7 @@
                 </a>
 
                 <a
-                    href="{{ Network::migrationDocsUrl() }}"
+                    href="{{ config('explorer.migration.urls.learn_more') }}"
                     class="button-secondary bg-theme-primary-200"
                     target="_blank"
                 >
