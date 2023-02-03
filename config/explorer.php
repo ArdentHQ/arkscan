@@ -22,6 +22,12 @@ return [
         'address'        => env('ARKSCAN_MIGRATION_ADDRESS'),
         'minimum_fee'    => env('ARKSCAN_MIGRATION_MIN_FEE', 5000000),
         'minimum_amount' => env('ARKSCAN_MIGRATION_MIN_AMOUNT', 100000000),
+
+        'urls'           => [
+            'guide'          => env('ARKSCAN_MIGRATION_GUIDE_URL', 'https://ark.dev/docs/core/migration/devnet'),
+            'learn_more'     => env('ARKSCAN_MIGRATION_LEARN_MORE_URL', 'https://arkscic.com/blog/ark-is-moving-to-polygon'),
+            'migrate_tokens' => env('ARKSCAN_MIGRATION_MIGRATE_TOKENS_URL', 'https://demo.arkvault.io/#/?page=migration'),
+        ],
     ],
 
     'networks'                          => [
@@ -44,10 +50,6 @@ return [
             'blockTime'          => intval(env('ARKSCAN_NETWORK_BLOCK_TIME', 8)),
             'blockReward'        => intval(env('ARKSCAN_NETWORK_BLOCK_REWARD', 2)),
             'base58Prefix'       => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 23)),
-            'migration'          => [
-                'url'  => env('ARKSCAN_NETWORK_MIGRATION_URL', 'https://app.arkvault.io/#/?page=migration'),
-                'docs' => env('ARKSCAN_NETWORK_MIGRATION_DOCS', 'https://ark.dev/docs/core/migration/mainnet'),
-            ],
         ],
         'development' => [
             'name'               => env('ARKSCAN_NETWORK_NAME', 'ARK Development Network'),
@@ -68,10 +70,6 @@ return [
             'blockTime'          => intval(env('ARKSCAN_NETWORK_BLOCK_TIME', 8)),
             'blockReward'        => intval(env('ARKSCAN_NETWORK_BLOCK_REWARD', 2)),
             'base58Prefix'       => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 30)),
-            'migration'          => [
-                'url'  => env('ARKSCAN_NETWORK_MIGRATION_URL', 'https://demo.arkvault.io/#/?page=migration'),
-                'docs' => env('ARKSCAN_NETWORK_MIGRATION_DOCS', 'https://ark.dev/docs/core/migration/devnet'),
-            ],
         ],
     ],
 
