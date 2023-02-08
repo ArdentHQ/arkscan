@@ -24,7 +24,7 @@ final class ForgingStats extends Model
     public $keyType = 'string';
 
     /**
-     * The column name of the primary key
+     * The column name of the primary key.
      *
      * @var string
      */
