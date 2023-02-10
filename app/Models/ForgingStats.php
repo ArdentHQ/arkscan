@@ -24,6 +24,13 @@ final class ForgingStats extends Model
     public $keyType = 'string';
 
     /**
+     * The column name of the primary key.
+     *
+     * @var string
+     */
+    public $primaryKey = 'timestamp';
+
+    /**
      * Indicates if the IDs are auto-incrementing.
      *
      * @var bool
