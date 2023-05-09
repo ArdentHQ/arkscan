@@ -20,9 +20,9 @@
                     </div>
                     <div class="flex flex-col justify-between py-3 pr-3 pl-6 rounded-xl sm:flex-row bg-theme-primary-50 dark:bg-theme-dark-blue-800">
                         <div class="flex flex-1 items-center py-1 bg-no-repeat bg-right sm:dark:bg-[url('/images/wallets/arrows-dark.svg')] sm:bg-[url('/images/wallets/arrows.svg')] min-[960px]:bg-none lg:dark:bg-[url('/images/wallets/arrows-dark.svg')] lg:bg-[url('/images/wallets/arrows.svg')] mr-2">
-                            <div><x-ark-icon name="app.wallets-arkvault" size="none" class="w-10 h-10 text-theme-navy-600 dark:text-white" /></div>
+                            <div><x-ark-icon name="app.wallets-arkvault" size="none" class="w-10 h-10 dark:text-white text-theme-navy-600" /></div>
                             <div class="flex flex-col ml-3">
-                                <span class="text-lg font-semibold text-theme-secondary-900 dark:text-white">@lang('general.arkvault')</span>
+                                <span class="text-lg font-semibold dark:text-white text-theme-secondary-900">@lang('general.arkvault')</span>
                                 <span class="text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-blue-400">@lang('pages.compatible-wallets.arkvault.subtitle')</span>
                             </div>
                         </div>
