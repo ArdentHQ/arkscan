@@ -253,45 +253,45 @@ return [
     ],
 
     'compatible-wallets' => [
-        'title' => 'Compatible Wallets',
+        'title'    => 'Compatible Wallets',
         'subtitle' => 'These wallets support the ARK Token.',
 
         'arkvault' => [
-            'disclaimer' => 'ARK Desktop Wallet is discontinued. Please use ARKVault instead!',
-            'web_wallet' => 'Web Wallet',
+            'disclaimer'  => 'ARK Desktop Wallet is discontinued. Please use ARKVault instead!',
+            'web_wallet'  => 'Web Wallet',
             'description' => 'ARKVault is the native web-wallet solution developed by the team behind ARK Core. It was built from the ground up to be the best ARK wallet possible and we highly recommend you give it a try!',
-            'subtitle' => 'Control Your Assets',
-            'url' => 'https://arkvault.io',
+            'subtitle'    => 'Control Your Assets',
+            'url'         => 'https://arkvault.io',
         ],
 
         'wallets' => [
             'abra' => [
                 'title' => 'Abra',
-                'url' => 'https://www.abra.com/',
-                'logo' => 'abra',
+                'url'   => 'https://www.abra.com/',
+                'logo'  => 'abra',
             ],
             'atomic' => [
                 'title' => 'Atomic Wallet',
-                'url' => 'https://atomicwallet.io/downloads',
-                'logo' => 'atomic',
+                'url'   => 'https://atomicwallet.io/downloads',
+                'logo'  => 'atomic',
             ],
             'exodus' => [
                 'title' => 'Exodus',
-                'url' => 'https://www.exodus.com/download',
-                'logo' => 'exodus',
+                'url'   => 'https://www.exodus.com/download',
+                'logo'  => 'exodus',
             ],
             'ledger' => [
                 'title' => 'Ledger',
-                'url' => 'https://www.ledger.com/ledger-live',
-                'logo' => 'ledger',
+                'url'   => 'https://www.ledger.com/ledger-live',
+                'logo'  => 'ledger',
             ],
             'crypto' => [
                 'title' => 'Crypto',
-                'url' => 'https://crypto.com/app',
-                'logo' => 'crypto',
+                'url'   => 'https://crypto.com/app',
+                'logo'  => 'crypto',
             ],
         ],
 
         'get_listed' => "Don't see a wallet listed? Let us know!",
-    ]
+    ],
 ];
