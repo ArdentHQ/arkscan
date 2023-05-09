@@ -12,7 +12,6 @@ use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeKnownWallets;
 

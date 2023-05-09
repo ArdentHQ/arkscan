@@ -8,7 +8,6 @@ use App\Services\Transactions\TransactionType;
 
 trait HasType
 {
-
     public function typeName(): string
     {
         return (new TransactionType($this->transaction))->name();
