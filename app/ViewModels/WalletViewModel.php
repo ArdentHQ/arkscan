@@ -78,9 +78,4 @@ final class WalletViewModel implements ViewModel
 
         return ArkVaultUrlBuilder::get()->generateVote($subject);
     }
-
-    public function isMigration(): bool
-    {
-        return $this->wallet->isMigration();
-    }
 }

@@ -51,9 +51,7 @@
                     last-on="xl"
                 >
                     @if($useDirection)
-                        @if($transaction->isMigration())
-                            <x-tables.rows.desktop.amount-migrated :model="$transaction" />
-                        @elseif(($transaction->isSent($wallet->address()) || $isSent === true) && $isReceived !== true)
+                        @if(($transaction->isSent($wallet->address()) || $isSent === true) && $isReceived !== true)
                             <x-tables.rows.desktop.amount-sent :model="$transaction" :exclude-itself="$excludeItself" />
                         @else
                             <x-tables.rows.desktop.amount-received :model="$transaction" :wallet="$wallet" />

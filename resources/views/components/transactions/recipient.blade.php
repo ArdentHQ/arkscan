@@ -2,17 +2,7 @@
 
 <div>
     <div>
-        @if ($transaction->isMigration())
-            <x-general.identity-custom>
-                <x-slot name="icon">
-                    <x-transactions.icon.migration />
-                </x-slot>
-
-                <a href="{{ route('migration') }}" class="link">
-                    @lang('general.transaction.types.migration')
-                </a>
-            </x-general.identity>
-        @elseif ($transaction->isTransfer() || $transaction->isUnknown())
+        @if ($transaction->isTransfer() || $transaction->isUnknown())
             <x-general.identity :model="$transaction->recipient()" />
         @elseif ($transaction->isVoteCombination())
             <x-general.identity :model="$transaction->voted()">

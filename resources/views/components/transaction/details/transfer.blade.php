@@ -6,10 +6,6 @@
 
 <x-grid.timestamp :model="$transaction" />
 
-@if ($transaction->migratedAddress() !== null && $transaction->isMigration())
-    <x-grid.migrated-address :model="$transaction" />
-@else
-    <x-grid.vendor-field :model="$transaction" />
-@endif
+<x-grid.vendor-field :model="$transaction" />
 
 <x-grid.nonce :model="$transaction" />
