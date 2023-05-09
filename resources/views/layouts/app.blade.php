@@ -13,6 +13,7 @@
         x-bind:class="{ 'table-compact-until-lg': expanded }"
         @toggle-expanded-table="expanded = ($event.detail === true)"
     >
+        <x-navbar.top />
         <x-navbar.navbar :navigation="$navigationEntries ?? []">
             <x-slot name="logo">
                 <x-navbar.logo />
