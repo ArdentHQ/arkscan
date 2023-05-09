@@ -47,16 +47,6 @@ final class BigNumber implements Stringable
         return $this;
     }
 
-    /**
-     * @param BigDecimal|int|string $value
-     */
-    public function minus($value): self
-    {
-        $this->value = $this->value->minus($value);
-
-        return $this;
-    }
-
     public function toNumber(): int
     {
         return $this->value->toInt();
