@@ -28,6 +28,10 @@ return [
     'confirmations'           => ':count confirmation|:count confirmations',
     'market_data_by'          => 'Market Data by',
 
+    'navbar' => [
+        'search_placeholder' => 'Address / Tx ID / Block ID',
+    ],
+
     'block'                   => [
         'id'            => 'ID',
         'timestamp'     => 'Timestamp',

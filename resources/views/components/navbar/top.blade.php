@@ -14,7 +14,7 @@
                 type="text"
                 id="search"
                 name="search"
-                placeholder="Address / Tx ID / Block ID"
+                :placeholder="trans('general.navbar.search_placeholder')"
                 container-class="flex pl-1 bg-theme-secondary-200 dark:bg-theme-secondary-800"
                 wrapper-class-override="relative rounded shadow-sm"
                 field-class-override="block w-full border-0 rounded outline-none appearance-none transition-default pl-2 pr-4 py-2 text-sm leading-4 placeholder:text-theme-secondary-700 text-theme-secondary-900 dark:text-theme-secondary-400 bg-theme-secondary-200 dark:bg-theme-secondary-800"
