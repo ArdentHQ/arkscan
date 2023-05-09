@@ -71,6 +71,12 @@ return [
             'class'  => 'fill-current',
         ],
 
+        'wallets' => [
+            'path'   => 'resources/icons/wallets',
+            'prefix' => 'app.wallets',
+            'class'  => 'fill-current',
+        ],
+
     ],
 
     /*

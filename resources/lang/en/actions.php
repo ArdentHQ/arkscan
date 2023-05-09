@@ -9,4 +9,6 @@ return [
     'view_all'        => 'View All',
     'receive'         => 'Receive',
     'vote'            => 'Vote',
+    'submit_wallet'   => 'Submit Wallet',
+    'learn_more'      => 'Learn More',
 ];
