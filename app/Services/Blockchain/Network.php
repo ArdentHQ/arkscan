@@ -115,27 +115,11 @@ final class Network implements Contract
 
     public function supply(): BigNumber
     {
-        return BigNumber::new(Wallet::where('balance', '>', 0)->sum('balance'))
-            ->minus($this->migratedBalance()->valueOf());
-    }
-
-    public function migratedBalance(): BigNumber
-    {
-        $wallet = Wallet::firstWhere('address', config('explorer.migration.address'));
-        if ($wallet === null) {
-            return BigNumber::new(0);
-        }
-
-        return $wallet->balance;
+        return BigNumber::new(Wallet::where('balance', '>', 0)->sum('balance'));
     }
 
     public function config(): AbstractNetwork
     {
         return new CustomNetwork($this->config);
-    }
-
-    public function hasMigration(): bool
-    {
-        return config('explorer.migration.address') !== null && config('explorer.migration.address') !== '';
     }
 }

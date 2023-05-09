@@ -53,10 +53,6 @@
                                         :label="$navItem['label']"
                                     />
                                 @endforeach
-
-                                @if(Network::hasMigration())
-                                    <x-navbar.migration-item />
-                                @endif
                             </div>
                         </div>
 
@@ -117,10 +113,6 @@
                         @foreach ($navigation as $navItem)
                             <x-ark-navbar-link-mobile :route="$navItem['route']" :name="$navItem['label']" :params="$navItem['params'] ?? []" />
                         @endforeach
-
-                        @if(Network::hasMigration())
-                            <x-ark-navbar-link-mobile route="migration" :name="trans('menus.migration')" :params="[]" />
-                        @endif
 
                         @if(Network::canBeExchanged())
                             <div class="flex py-3 px-8 mt-2 -mb-4 font-semibold md:hidden dark:text-white bg-theme-secondary-100 text-theme-secondary-900 dark:bg-theme-secondary-800">

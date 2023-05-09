@@ -656,21 +656,3 @@ it('should get the vote url with delegate', function () {
     expect($this->subject->voteUrl())->not->toContain('&publicKey=');
     expect($this->subject->voteUrl())->toContain('&delegate=john');
 });
-
-it('should determine migration wallet', function () {
-    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
-
-    $wallet = new WalletViewModel(Wallet::factory()->create([
-        'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
-    ]));
-
-    expect($wallet->isMigration())->toBeTrue();
-});
-
-it('should determine not a migration wallet', function () {
-    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
-
-    $wallet = new WalletViewModel(Wallet::factory()->create());
-
-    expect($wallet->isMigration())->toBeFalse();
-});

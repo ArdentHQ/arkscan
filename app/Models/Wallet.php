@@ -75,16 +75,6 @@ final class Wallet extends Model
     }
 
     /**
-     * Determine whether the wallet is the migration wallet.
-     *
-     * @return bool
-     */
-    public function isMigration(): bool
-    {
-        return $this->address === config('explorer.migration.address');
-    }
-
-    /**
      * Get the route key for the model.
      *
      * @return string

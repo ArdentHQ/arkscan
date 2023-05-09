@@ -135,21 +135,6 @@ final class Transaction extends Model
         return $this->belongsTo(Wallet::class, 'recipient_id', 'address');
     }
 
-    /**
-     * Get migrated transactions.
-     *
-     * @return Builder
-     */
-    public function scopeMigrated(): Builder
-    {
-        return self::where('recipient_id', config('explorer.migration.address'))
-            ->where('type', CoreTransactionTypeEnum::TRANSFER)
-            ->where('type_group', TransactionTypeGroupEnum::CORE)
-            ->where('amount', '>=', config('explorer.migration.minimum_amount'))
-            ->where('fee', '>=', config('explorer.migration.minimum_fee'))
-            ->whereRaw("encode(vendor_field::bytea, 'escape') ~ '^0x[a-zA-Z0-9]{40}$'");
-    }
-
     public function vendorField(): string|null
     {
         if (is_bool($this->vendorFieldContent)) {
