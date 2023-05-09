@@ -1,3 +1,6 @@
+@import "../../vendor/arkecosystem/foundation/resources/assets/css/themes/_navy.css";
+@import "../../vendor/arkecosystem/foundation/resources/assets/css/themes/_dark_blue.css";
+
 .light-dark-icon {
     --icon-error-primary-100: var(--theme-color-danger-100);
     --icon-error-primary-600: var(--theme-color-danger-400);
