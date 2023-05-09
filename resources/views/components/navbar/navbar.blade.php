@@ -15,7 +15,7 @@
             class="relative z-30 bg-white border-b border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
             @click.outside="open = false"
         >
-            <div class="flex relative justify-between h-16 w-full content-container">
+            <div class="flex relative justify-between w-full h-16 content-container">
                 {{-- LOGO --}}
                 <div class="flex flex-shrink-0 items-center">
                     <a class="flex items-center" href="{{ route('home') }}">

@@ -1,5 +1,5 @@
-<div class="hidden md:flex md:flex-col sticky top-0 bg-white dark:bg-theme-secondary-900 z-30">
-    <div class="flex w-full content-container items-center justify-between py-3">
+<div class="hidden sticky top-0 z-30 bg-white md:flex md:flex-col dark:bg-theme-secondary-900">
+    <div class="flex justify-between items-center py-3 w-full content-container">
         <div class="flex items-center">
             @if(Network::canBeExchanged())
                 <div class="hidden font-semibold md:flex dark:text-white text-theme-secondary-900">
@@ -15,7 +15,7 @@
                 id="search"
                 name="search"
                 placeholder="Address / Tx ID / Block ID"
-                container-class="flex bg-theme-secondary-200 dark:bg-theme-secondary-800 pl-1"
+                container-class="flex pl-1 bg-theme-secondary-200 dark:bg-theme-secondary-800"
                 wrapper-class-override="relative rounded shadow-sm"
                 field-class-override="block w-full border-0 rounded outline-none appearance-none transition-default pl-2 pr-4 py-2 text-sm leading-4 placeholder:text-theme-secondary-700 text-theme-secondary-900 dark:text-theme-secondary-400 bg-theme-secondary-200 dark:bg-theme-secondary-800"
                 hide-label
@@ -24,5 +24,5 @@
         </div>
     </div>
 
-    <div class="absolute bottom-0 border-b border-theme-secondary-300 dark:border-theme-secondary-800 w-full"></div>
+    <div class="absolute bottom-0 w-full border-b border-theme-secondary-300 dark:border-theme-secondary-800"></div>
 </div>
