@@ -103,12 +103,11 @@ final class AppServiceProvider extends ServiceProvider
             ['label' => trans('menus.developers'), 'children' => [
                 ['url' => 'https://ark.dev/',  'label' => trans('menus.docs')],
                 ['url'   => 'https://ark.dev/docs/api',  'label' => trans('menus.api')],
-                ['route' => 'contact',  'label' => trans('menus.contact')],
             ]],
         ];
 
         if (config('explorer.support.enabled') === true) {
-            $navigationEntries[] = ['route' => 'contact', 'label' => trans('menus.contact')];
+            $navigationEntries[3]['children'][] = ['route' => 'contact', 'label' => trans('menus.contact')];
         }
 
         return $navigationEntries;

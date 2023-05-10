@@ -15,6 +15,8 @@ return [
     'statistics'     => 'Statistics',
     'contact'        => 'Support',
     'exchanges'      => 'Exchanges',
+    'docs'           => 'Docs',
+    'api'            => 'API',
 
     'network-select' => [
         'main' => [

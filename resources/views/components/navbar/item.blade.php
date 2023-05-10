@@ -9,7 +9,7 @@
 <a
     href="{{ route($route, $params) }}"
     @class([
-        'inline-flex font-semibold leading-5 group focus:outline-none transition duration-150 ease-in-out h-full px-2 mx-2 relative border-t-2 border-transparent rounded',
+        'inline-flex font-semibold leading-5 group focus:outline-none transition duration-150 ease-in-out h-full px-2 mx-4 relative border-t-2 border-transparent rounded',
         'text-theme-secondary-900 dark:text-theme-secondary-400' => $currentRoute === $route,
         'text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400' => $currentRoute !== $route,
     ])
