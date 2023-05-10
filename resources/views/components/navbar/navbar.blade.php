@@ -102,17 +102,17 @@
 
             <template x-if="open">
                 <div class="border-t-2 shadow-xl md:hidden border-theme-secondary-200 dark:border-theme-secondary-800">
-                    <div class="pt-2 pb-4 rounded-b-lg">
+                    <div class="pt-2 pb-4 rounded-b-lg bg-white dark:bg-theme-secondary-800">
                         @foreach ($navigation as $navItem)
                             @if (Arr::exists($navItem, 'children'))
-                                <div class="relative h-full">
+                                <div class="relative h-full dark:bg-theme-secondary-800">
                                     <a
                                         href="#"
-                                        class="inline-flex relative justify-center items-center px-1 pt-px mr-6 h-full font-semibold leading-5 border-b-2 border-transparent transition duration-150 ease-in-out focus:outline-none text-theme-secondary-700 dark:text-theme-secondary-400 hover:text-theme-secondary-800 hover:border-theme-secondary-300"
+                                        class="inline-flex relative justify-between w-full items-center py-3 px-6 h-full font-semibold leading-5 focus:outline-none text-theme-secondary-700 dark:text-theme-secondary-400 hover:text-theme-secondary-800"
                                         @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
                                     >
                                         <span :class="{ 'text-theme-secondary-700 dark:text-theme-secondary-200': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
-                                        <span class="ml-2 transition duration-150 ease-in-out text-theme-secondary-700 dark:text-theme-secondary-400" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }">
+                                        <span class="ml-2 text-theme-secondary-700 dark:text-theme-secondary-400" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }">
                                             <x-ark-icon name="arrows.chevron-down-small" size="xs" />
                                         </span>
                                     </a>
@@ -120,10 +120,9 @@
                                     <div
                                         x-show="openDropdown === '{{ $navItem['label'] }}'"
                                         class="bg-white dark:bg-theme-secondary-800"
-                                        x-transition.origin.top
                                         x-cloak
                                     >
-                                        <div class="flex flex-col pt-2 pb-2 w-60">
+                                        <div class="flex flex-col pt-2 pb-2 w-full">
                                             @foreach ($navItem['children'] as $menuItem)
                                                 <x-navbar.mobile.list-item
                                                     :route="$menuItem['route'] ?? null"
