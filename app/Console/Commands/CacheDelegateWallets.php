@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Facades\Wallets;
+use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
 
@@ -29,7 +30,12 @@ final class CacheDelegateWallets extends Command
         Wallets::allWithUsername()
             ->orderBy('balance')
             ->chunk(200, function ($wallets) use ($cache): void {
+                /** @var Wallet $wallet */
                 foreach ($wallets as $wallet) {
+                    if ($wallet->public_key === null) {
+                        continue;
+                    }
+
                     $cache->setDelegate($wallet->public_key, $wallet);
                 }
             });
