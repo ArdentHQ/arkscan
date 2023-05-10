@@ -2,7 +2,7 @@
     "/js/app.js": "/js/app.js?id=ea883f53c8195160d5e32c823f16390c",
     "/js/clipboard.js": "/js/clipboard.js?id=2ee5a8bf29dadf2096f73115e2abca2c",
     "/js/manifest.js": "/js/manifest.js?id=d7f05315a876420076a2066217d34e8f",
-    "/css/app.css": "/css/app.css?id=de5d5be82758d79ba5667bac86c1aad7",
+    "/css/app.css": "/css/app.css?id=71d37dc818b98d332606306bdc9728d1",
     "/js/vendor.js": "/js/vendor.js?id=1e03246a108ec48875a0d67254d30cd6",
     "/images/errors/401.svg": "/images/errors/401.svg?id=f0752ffe6436f6cb98210be88dd36eb5",
     "/images/errors/401_dark.svg": "/images/errors/401_dark.svg?id=ade1bb3ec92d4001f1af918885b2b5c7",
@@ -30,5 +30,9 @@
     "/images/metadata/wallet.png": "/images/metadata/wallet.png?id=a71f661f646f0264dd5913995f88c56f",
     "/images/metadata/wallets.png": "/images/metadata/wallets.png?id=6000292b7f346ea5ad96f8fc59a463aa",
     "/images/search/empty-dark.svg": "/images/search/empty-dark.svg?id=4eed69e56a07c385677afb75f7963adf",
-    "/images/search/empty.svg": "/images/search/empty.svg?id=775db5d295153832b785f01d7002bbde"
+    "/images/search/empty.svg": "/images/search/empty.svg?id=775db5d295153832b785f01d7002bbde",
+    "/images/wallets/arkvault-dark.svg": "/images/wallets/arkvault-dark.svg?id=6522f56221a6060e5be61439d67cd5ea",
+    "/images/wallets/arkvault.svg": "/images/wallets/arkvault.svg?id=9282f73b764c9511882be827a609eef1",
+    "/images/wallets/arrows-dark.svg": "/images/wallets/arrows-dark.svg?id=133a5f701b53fc00fe17b479698710d2",
+    "/images/wallets/arrows.svg": "/images/wallets/arrows.svg?id=4b106788d496df090459c1727cf8a97d"
 }
