@@ -101,7 +101,10 @@ final class AppServiceProvider extends ServiceProvider
                 ['route' => 'exchanges',  'label' => trans('menus.exchanges')],
             ]],
             ['label' => trans('menus.developers'), 'children' => [
-                ]],
+                ['url' => 'https://ark.dev/',  'label' => trans('menus.docs')],
+                ['url' => 'https://ark.dev/docs/api',  'label' => trans('menus.api')],
+                ['route' => 'contact',  'label' => trans('menus.contact')],
+            ]],
         ];
 
         if (config('explorer.support.enabled') === true) {

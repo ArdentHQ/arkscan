@@ -35,27 +35,28 @@
                                         <div class="relative h-full">
                                             <a
                                                 href="#"
-                                                class="inline-flex relative justify-center items-center px-1 pt-px mr-8 h-full font-semibold leading-5 border-b-2 border-transparent transition duration-150 ease-in-out focus:outline-none text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300"
+                                                class="inline-flex relative justify-center items-center px-1 pt-px mr-8 h-full font-semibold leading-5 border-b-2 border-transparent transition duration-150 ease-in-out focus:outline-none text-theme-secondary-700 dark:text-theme-secondary-400 hover:text-theme-secondary-800 hover:border-theme-secondary-300"
                                                 @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
                                             >
-                                                <span :class="{ 'text-theme-secondary-700': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
-                                                <span class="ml-2 transition duration-150 ease-in-out text-theme-secondary-700" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }">
+                                                <span :class="{ 'text-theme-secondary-700 dark:text-theme-secondary-200': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
+                                                <span class="ml-2 transition duration-150 ease-in-out text-theme-secondary-700 dark:text-theme-secondary-400" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }">
                                                     <x-ark-icon name="arrows.chevron-down-small" size="xs" />
                                                 </span>
                                             </a>
 
                                             <div
                                                 x-show="openDropdown === '{{ $navItem['label'] }}'"
-                                                class="absolute z-30 max-w-4xl bg-white rounded-lg shadow-lg top-[5.5rem]"
+                                                class="absolute z-30 max-w-4xl bg-white dark:bg-theme-secondary-800 rounded-lg shadow-lg top-[5.5rem]"
                                                 x-transition.origin.top
                                                 x-cloak
                                             >
                                                 <div class="flex flex-col pt-2 pb-2 w-60">
                                                     @foreach ($navItem['children'] as $menuItem)
                                                         <x-navbar.list-item
-                                                            :route="$menuItem['route']"
+                                                            :route="$menuItem['route'] ?? null"
                                                             :params="$menuItem['params'] ?? null"
                                                             :label="$menuItem['label']"
+                                                            :url="$menuItem['url'] ?? null"
                                                         />
                                                     @endforeach
                                                 </div>
