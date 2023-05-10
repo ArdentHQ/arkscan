@@ -4,10 +4,10 @@
     @section('content')
         <x-ark-container>
             <div>
-                <h1 class="text-2xl font-semibold text-theme-secondary-900">
+                <h1 class="text-2xl font-semibold text-theme-secondary-900 xl:mb-1.5">
                     @lang('pages.compatible-wallets.title')
                 </h1>
-                <span class="text-sm">
+                <span class="font-semibold text-xs">
                     @lang('pages.compatible-wallets.subtitle')
                 </span>
             </div>
