@@ -12,10 +12,12 @@
                 </span>
             </div>
 
-            <div class="flex flex-col mt-6 w-full rounded-xl border min-[960px]:flex-row border-theme-secondary-300 dark:border-theme-secondary-800">
-                <div class="flex flex-col flex-1 justify-between py-8 px-8 space-y-6">
+            <hr class="-mx-8 my-6 h-1 sm:hidden text-theme-secondary-200 bg-theme-secondary-200 dark:text-theme-secondary-800 dark:bg-theme-secondary-800" />
+
+            <div class="flex flex-col sm:mt-6 w-full rounded-xl sm:border min-[960px]:flex-row border-theme-secondary-300 dark:border-theme-secondary-800">
+                <div class="flex flex-col flex-1 justify-center pb-8 sm:py-8 sm:px-8 space-y-6">
                     <span class="text-sm items-center rounded font-semibold px-2 py-1 flex space-x-2 text-theme-secondary-900 dark:text-white dark:from-theme-navy-600 dark:via-theme-navy-600 dark:to-theme-navy-600 bg-gradient-to-r from-[#E5F0F8] via-[#FFF8EB] to-[#E5F0F8]">
-                        <x-ark-icon name="circle.info" />
+                        <x-ark-icon name="circle.info" class="shrink-0" />
                         <span>
                             @lang('pages.compatible-wallets.arkvault.disclaimer')
                         </span>
@@ -56,13 +58,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-1 py-2 pr-3">
+                <div class="flex flex-1 pt-2 sm:py-2 pr-3 grow">
                     <img src="{{ mix('images/wallets/arkvault.svg') }}" class="dark:hidden" />
                     <img src="{{ mix('images/wallets/arkvault-dark.svg') }}" class="hidden dark:block" />
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 gap-3 mt-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            <hr class="-mx-8 my-6 h-1 sm:hidden text-theme-secondary-200 bg-theme-secondary-200 dark:text-theme-secondary-800 dark:bg-theme-secondary-800" />
+
+            <div class="grid grid-cols-1 gap-3 sm:mt-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 @foreach (trans('pages.compatible-wallets.wallets') as $wallet)
                     <div class="flex flex-col bg-white rounded-xl border border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800">
                         <div class="flex justify-center items-center mx-2 mt-2 rounded-xl aspect-square">
@@ -78,7 +82,7 @@
             </div>
 
             <div class="text-center sm:text-start flex-col sm:flex-row mt-6 w-full flex py-6 sm:py-2 px-6 justify-between items-center dark:from-theme-secondary-800 dark:via-theme-secondary-800 dark:to-theme-secondary-800 bg-gradient-to-r from-[#E5F0F8] via-[#FFF8EB] to-[#E5F0F8] rounded-xl">
-                <span class="text-lg font-semibold dark:text-white text-theme-primary-900">
+                <span class="sm:text-lg font-semibold dark:text-white text-theme-primary-900">
                     @lang('pages.compatible-wallets.get_listed')
                 </span>
                 <button type="button" class="mt-3 w-full sm:mt-0 sm:w-auto button-primary">
