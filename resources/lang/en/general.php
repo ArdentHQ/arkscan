@@ -27,6 +27,7 @@ return [
     'learn_more'              => 'Learn more',
     'confirmations'           => ':count confirmation|:count confirmations',
     'market_data_by'          => 'Market Data by',
+    'arkvault'                => 'ARKVault',
 
     'block'                   => [
         'id'            => 'ID',

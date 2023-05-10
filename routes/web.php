@@ -57,3 +57,5 @@ Route::redirect('/top-wallets', '/wallets');
 Route::get('/block/{block}', fn (Block $block) => redirect()->route('block', ['block' => $block]));
 Route::get('/transaction/{transaction}', fn (Transaction $transaction) => redirect()->route('transaction', ['transaction' => $transaction]));
 Route::get('/wallet/{wallet}', fn (Wallet $wallet) => redirect()->route('wallet', ['wallet' => $wallet]));
+
+Route::view('/compatible-wallets', 'app.compatible-wallets')->name('compatible-wallets');
