@@ -31,12 +31,11 @@ class Toggle extends Component
         string $setting,
         mixed $activeValue = true,
         mixed $inactiveValue = false,
-    ): void
-    {
-        $this->activeIcon = $activeIcon;
-        $this->inactiveIcon = $inactiveIcon;
-        $this->setting = $setting;
-        $this->activeValue = $activeValue;
+    ): void {
+        $this->activeIcon    = $activeIcon;
+        $this->inactiveIcon  = $inactiveIcon;
+        $this->setting       = $setting;
+        $this->activeValue   = $activeValue;
         $this->inactiveValue = $inactiveValue;
 
         $this->currentValue = Settings::get($this->setting);
@@ -69,7 +68,7 @@ class Toggle extends Component
 
     protected function save(): void
     {
-        $settings = Settings::all();
+        $settings                 = Settings::all();
         $settings[$this->setting] = $this->currentValue;
 
         Cookie::queue('settings', json_encode($settings), 60 * 24 * 365 * 5);
