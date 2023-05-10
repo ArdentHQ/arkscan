@@ -59,3 +59,4 @@ Route::get('/transaction/{transaction}', fn (Transaction $transaction) => redire
 Route::get('/wallet/{wallet}', fn (Wallet $wallet) => redirect()->route('wallet', ['wallet' => $wallet]));
 
 Route::view('/compatible-wallets', 'app.compatible-wallets')->name('compatible-wallets');
+Route::view('/exchanges', 'app.compatible-wallets')->name('exchanges');
