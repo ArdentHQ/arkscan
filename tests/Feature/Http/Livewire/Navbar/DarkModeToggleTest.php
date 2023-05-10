@@ -61,3 +61,13 @@ it('should toggle and save settings', function () {
             'theme' => 'light',
         ]);
 });
+
+it('should store theme from an event only on first load', function () {
+    Cookie::shouldReceive('queue')
+        ->once();
+
+    $this->component->emit('themeChanged', 'dark')
+        ->assertNotDispatchedBrowserEvent('setThemeMode')
+        ->emit('themeChanged', 'dark')
+        ->assertNotDispatchedBrowserEvent('setThemeMode');
+});
