@@ -18,6 +18,8 @@ it('should have all required properties', function (array $config) {
     expect($subject->alias())->toBe($config['alias']);
     expect($subject->api())->toBe($config['api']);
     expect($subject->explorerTitle())->toBe(config('app.name'));
+    expect($subject->mainnetExplorerUrl())->toBe($config['mainnetExplorerUrl']);
+    expect($subject->testnetExplorerUrl())->toBe($config['testnetExplorerUrl']);
     expect($subject->currency())->toBe($config['currency']);
     expect($subject->currencySymbol())->toBe($config['currencySymbol']);
     expect($subject->confirmations())->toBe($config['confirmations']);
@@ -45,6 +47,8 @@ it('should have all required properties', function (array $config) {
         'blockReward'      => 2,
         'base58Prefix'     => 23,
         'nethash'          => '6e84d08bd299ed97c212c886c98a57e36545c8f5d645ca7eeae63a8bd62d8988',
+        'mainnetExplorerUrl' => 'https://mainnet.ark.io/',
+        'testnetExplorerUrl' => 'https://testnet.ark.io/',
     ]],
     [[
         'name'             => 'ARK Development Network',
@@ -60,5 +64,7 @@ it('should have all required properties', function (array $config) {
         'blockReward'      => 2,
         'base58Prefix'     => 30,
         'nethash'          => '2a44f340d76ffc3df204c5f38cd355b7496c9065a1ade2ef92071436bd72e867',
+        'mainnetExplorerUrl' => 'https://mainnet.dark.io/',
+        'testnetExplorerUrl' => 'https://testnet.dark.io/',
     ]],
 ]);
