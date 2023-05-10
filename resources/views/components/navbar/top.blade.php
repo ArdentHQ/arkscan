@@ -20,6 +20,7 @@
                 field-class-override="block w-full border-0 rounded outline-none appearance-none transition-default pl-2 pr-4 py-2 text-sm leading-4 placeholder:text-theme-secondary-700 text-theme-secondary-900 dark:text-theme-secondary-400 bg-theme-secondary-200 dark:bg-theme-secondary-800"
                 hide-label
                 disable-dirty-styling
+                iconSize="sm"
             />
         </div>
     </div>
