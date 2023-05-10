@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\View\View;
 use Livewire\Component;
 
+/* Ignore phpstan error for final or abstract class, as we can use this toggle component as a generic setting toggle.
 /* @phpstan-ignore-next-line */
 class Toggle extends Component
 {
