@@ -32,11 +32,10 @@ final class CacheDelegateWallets extends Command
             ->chunk(200, function ($wallets) use ($cache): void {
                 /** @var Wallet $wallet */
                 foreach ($wallets as $wallet) {
-                    if ($wallet->public_key === null) {
-                        continue;
-                    }
+                    /** @var string $publicKey */
+                    $publicKey = $wallet->public_key;
 
-                    $cache->setDelegate($wallet->public_key, $wallet);
+                    $cache->setDelegate($publicKey, $wallet);
                 }
             });
     }
