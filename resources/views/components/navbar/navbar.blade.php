@@ -102,13 +102,13 @@
 
             <template x-if="open">
                 <div class="border-t-2 shadow-xl md:hidden border-theme-secondary-200 dark:border-theme-secondary-800">
-                    <div class="pt-2 pb-4 rounded-b-lg bg-white dark:bg-theme-secondary-800">
+                    <div class="pt-2 pb-4 bg-white rounded-b-lg dark:bg-theme-secondary-800">
                         @foreach ($navigation as $navItem)
                             @if (Arr::exists($navItem, 'children'))
                                 <div class="relative h-full dark:bg-theme-secondary-800">
                                     <a
                                         href="#"
-                                        class="inline-flex relative justify-between w-full items-center py-3 px-6 h-full font-semibold leading-5 focus:outline-none text-theme-secondary-700 dark:text-theme-secondary-400 hover:text-theme-secondary-800"
+                                        class="inline-flex relative justify-between items-center py-3 px-6 w-full h-full font-semibold leading-5 focus:outline-none text-theme-secondary-700 dark:text-theme-secondary-400 hover:text-theme-secondary-800"
                                         @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
                                     >
                                         <span :class="{ 'text-theme-secondary-700 dark:text-theme-secondary-200': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
