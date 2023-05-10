@@ -89,13 +89,25 @@ final class AppServiceProvider extends ServiceProvider
     private function navigationEntries(): array
     {
         $navigationEntries = [
-            ['route' => 'delegates',  'label' => trans('menus.delegates')],
-            ['route' => 'wallets',    'label' => trans('menus.wallets')],
-            ['route' => 'statistics', 'label' => trans('menus.statistics')],
+            ['route' => 'home', 'label' => trans('menus.home')],
+            ['label' => trans('menus.blockchain'), 'children' => [
+                ['route' => 'blocks',  'label' => trans('menus.blocks')],
+                ['route' => 'transactions', 'label' => trans('menus.transactions')],
+                ['route' => 'delegates',    'label' => trans('menus.delegates')],
+                ['route' => 'wallets', 'label' => trans('menus.wallets')],
+            ]],
+            ['label' => trans('menus.resources'), 'children' => [
+                ['route' => 'compatible-wallets',  'label' => trans('menus.wallets')],
+                ['route' => 'exchanges',  'label' => trans('menus.exchanges')],
+            ]],
+            ['label' => trans('menus.developers'), 'children' => [
+                ['url' => 'https://ark.dev/',  'label' => trans('menus.docs')],
+                ['url'   => 'https://ark.dev/docs/api',  'label' => trans('menus.api')],
+            ]],
         ];
 
         if (config('explorer.support.enabled') === true) {
-            $navigationEntries[] = ['route' => 'contact', 'label' => trans('menus.contact')];
+            $navigationEntries[3]['children'][] = ['route' => 'contact', 'label' => trans('menus.contact')];
         }
 
         return $navigationEntries;

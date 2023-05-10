@@ -3,11 +3,20 @@
 declare(strict_types=1);
 
 return [
-    'delegates'      => 'Delegates',
     'home'           => 'Home',
+    'blockchain'     => 'Blockchain',
+    'resources'      => 'Resources',
+    'developers'     => 'Developers',
+
+    'delegates'      => 'Delegates',
     'wallets'        => 'Wallets',
+    'blocks'         => 'Blocks',
+    'transactions'   => 'Transactions',
     'statistics'     => 'Statistics',
     'contact'        => 'Support',
+    'exchanges'      => 'Exchanges',
+    'docs'           => 'Docs',
+    'api'            => 'API',
 
     'network-select' => [
         'main' => [
