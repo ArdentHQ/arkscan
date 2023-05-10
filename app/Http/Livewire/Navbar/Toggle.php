@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Livewire\Navbar;
 
 use App\Facades\Settings;
@@ -7,6 +9,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\View\View;
 use Livewire\Component;
 
+/* @phpstan-ignore-next-line */
 class Toggle extends Component
 {
     public string $activeIcon;
@@ -19,7 +22,7 @@ class Toggle extends Component
 
     public mixed $inactiveValue;
 
-    public mixed $currentValue;
+    public mixed $currentValue = null;
 
     public function mount(
         string $activeIcon,
@@ -34,6 +37,8 @@ class Toggle extends Component
         $this->setting = $setting;
         $this->activeValue = $activeValue;
         $this->inactiveValue = $inactiveValue;
+
+        $this->currentValue = Settings::get($this->setting);
     }
 
     public function render(): View
@@ -61,31 +66,16 @@ class Toggle extends Component
         return $this->inactiveIcon;
     }
 
-    private function save(): void
+    protected function save(): void
     {
         $settings = Settings::all();
-        $settings[$this->setting] = $this->value();
+        $settings[$this->setting] = $this->currentValue;
 
         Cookie::queue('settings', json_encode($settings), 60 * 24 * 365 * 5);
-
-        if ($this->setting === 'darkTheme') {
-            $this->dispatchBrowserEvent('setThemeMode', [
-                'theme' => $this->isActive() ? 'dark' : 'light',
-            ]);
-        }
     }
 
-    private function value(): mixed
+    protected function isActive(): bool
     {
-        if (! isset($this->currentValue)) {
-            $this->currentValue = Settings::get($this->setting);
-        }
-
-        return $this->currentValue;
-    }
-
-    private function isActive(): bool
-    {
-        return $this->value() === $this->activeValue;
+        return $this->currentValue === $this->activeValue;
     }
 }

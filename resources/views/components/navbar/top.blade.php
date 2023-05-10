@@ -23,7 +23,7 @@
                 iconSize="sm"
             />
 
-            <livewire:navbar.toggle
+            <livewire:navbar.dark-mode-toggle
                 active-icon="underline-moon"
                 inactive-icon="underline-sun"
                 setting="darkTheme"
