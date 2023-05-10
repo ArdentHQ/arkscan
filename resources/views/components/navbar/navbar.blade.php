@@ -69,55 +69,6 @@
                                         />
                                     @endif
                                 @endforeach
-
-
-                                {{-- <a
-                                href="#"
-                                class="inline-flex relative justify-center items-center px-1 pt-px mr-8 h-full font-semibold leading-5 border-b-2 border-transparent transition duration-150 ease-in-out focus:outline-none text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300"
-                                @click="openDropdown = openDropdown === 'products' ? null : 'products'"
-                            >
-                                <span :class="{ 'text-theme-secondary-700': openDropdown === 'products' }">@lang('menus.documentation.title')</span>
-                                <span class="ml-2 transition duration-150 ease-in-out text-theme-secondary-700" :class="{ 'rotate-180': openDropdown === 'products' }">
-                                    <x-ark-icon name="arrows.chevron-down-small" size="xs" />
-                                </span>
-                            </a>
-                            <div
-                                x-show="openDropdown === 'products'"
-                                class="absolute top-0 z-30 max-w-4xl bg-white rounded-b-lg mt-21"
-                                x-transition.origin.top
-                                x-cloak
-                            >
-                                <div class="flex flex-col pt-2 pb-6 w-72">
-                                    @foreach ($productsMenu as $menuItem)
-                                        <x-product-link :name="$menuItem['name']" :slug="$menuItem['slug']" :coming-soon="$menuItem['is_coming_soon']">
-                                            <x-slot name="customIcon">
-                                                <x-ark-icon name="navbar-{{ $menuItem['slug'] }}" size="lg" />
-                                            </x-slot>
-                                        </x-product-link>
-                                    @endforeach
-                                    <div class="my-2 mx-6">
-                                        <hr class="bg-theme-secondary-300 border-theme-secondary-300" />
-                                    </div>
-                                    @foreach ($quickAccessMenu as $menuItem)
-                                        <x-product-link :name="$menuItem['name']" :slug="$menuItem['slug']" :coming-soon="$menuItem['is_coming_soon']">
-                                            <x-slot name="customIcon">
-                                                <x-ark-icon name="navbar-{{ $menuItem['slug'] }}" size="lg" />
-                                            </x-slot>
-                                        </x-product-link>
-                                    @endforeach
-                                </div>
-                            </div> --}}
-
-                            {{-- Rest of the navigation items --}}
-                            {{-- @foreach ($navigation as $navItem)
-                                <a
-                                    href="{{ route($navItem['route'], $navItem['params'] ?? []) }}"
-                                    class="inline-flex items-center px-1 pt-px font-semibold leading-5 border-b-2 @if(Request::path() === $navItem['path']) border-theme-secondary-700 text-theme-secondary-900 @else border-transparent text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300 @endif focus:outline-none transition duration-150 ease-in-out h-full @if(!$loop->first) ml-8 @endif"
-                                    @click="openDropdown = null;"
-                                >
-                                    {{ $navItem['label'] }}
-                                </a>
-                            @endforeach  --}}
                             </div>
                         </div>
 
