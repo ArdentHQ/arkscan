@@ -45,7 +45,7 @@
 
                                         <div
                                             x-show="openDropdown === '{{ $navItem['label'] }}'"
-                                            class="absolute z-30 max-w-4xl bg-white rounded-lg shadow-lg top-[5.5rem] dark:bg-theme-secondary-800"
+                                            class="absolute z-30 max-w-4xl bg-white rounded-lg shadow-lg top-[5rem] dark:bg-theme-secondary-800"
                                             x-transition.origin.top
                                             x-cloak
                                         >
@@ -101,11 +101,49 @@
             </div>
 
             <template x-if="open">
-                <div class="border-t-2 shadow-xl xl:hidden border-theme-secondary-200 dark:border-theme-secondary-800">
+                <div class="border-t-2 shadow-xl md:hidden border-theme-secondary-200 dark:border-theme-secondary-800">
                     <div class="pt-2 pb-4 rounded-b-lg">
-                        {{-- @foreach ($navigation as $navItem)
-                            <x-ark-navbar-link-mobile :route="$navItem['route']" :name="$navItem['label']" :params="$navItem['params'] ?? []" />
-                        @endforeach --}}
+                        @foreach ($navigation as $navItem)
+                            @if (Arr::exists($navItem, 'children'))
+                                <div class="relative h-full">
+                                    <a
+                                        href="#"
+                                        class="inline-flex relative justify-center items-center px-1 pt-px mr-6 h-full font-semibold leading-5 border-b-2 border-transparent transition duration-150 ease-in-out focus:outline-none text-theme-secondary-700 dark:text-theme-secondary-400 hover:text-theme-secondary-800 hover:border-theme-secondary-300"
+                                        @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
+                                    >
+                                        <span :class="{ 'text-theme-secondary-700 dark:text-theme-secondary-200': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
+                                        <span class="ml-2 transition duration-150 ease-in-out text-theme-secondary-700 dark:text-theme-secondary-400" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }">
+                                            <x-ark-icon name="arrows.chevron-down-small" size="xs" />
+                                        </span>
+                                    </a>
+
+                                    <div
+                                        x-show="openDropdown === '{{ $navItem['label'] }}'"
+                                        class="bg-white dark:bg-theme-secondary-800"
+                                        x-transition.origin.top
+                                        x-cloak
+                                    >
+                                        <div class="flex flex-col pt-2 pb-2 w-60">
+                                            @foreach ($navItem['children'] as $menuItem)
+                                                <x-navbar.mobile.list-item
+                                                    :route="$menuItem['route'] ?? null"
+                                                    :params="$menuItem['params'] ?? null"
+                                                    :label="$menuItem['label']"
+                                                    :url="$menuItem['url'] ?? null"
+                                                />
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <x-navbar.mobile.item
+                                    :route="$navItem['route']"
+                                    :params="$navItem['params'] ?? null"
+                                    :label="$navItem['label']"
+                                />
+                            @endif
+                        @endforeach
+
 
                         @if(Network::canBeExchanged())
                             <div class="flex py-3 px-8 mt-2 -mb-4 font-semibold md:hidden dark:text-white bg-theme-secondary-100 text-theme-secondary-900 dark:bg-theme-secondary-800">
