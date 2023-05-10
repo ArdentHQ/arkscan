@@ -17,7 +17,7 @@
             <div class="flex flex-col w-full rounded-xl sm:mt-6 sm:border min-[960px]:flex-row border-theme-secondary-300 dark:border-theme-secondary-800">
                 <div class="flex flex-col flex-1 justify-center pb-8 space-y-6 sm:py-8 sm:px-8">
                     <span class="text-sm items-center rounded font-semibold px-2 py-1 flex space-x-2 text-theme-secondary-900 dark:text-white dark:from-theme-navy-600 dark:via-theme-navy-600 dark:to-theme-navy-600 bg-gradient-to-r from-[#E5F0F8] via-[#FFF8EB] to-[#E5F0F8]">
-                        <x-ark-icon name="circle.info" class="shrink-0" />
+                        <x-ark-icon name="circle.info" size="sm" class="shrink-0" />
                         <span>
                             @lang('pages.compatible-wallets.arkvault.disclaimer')
                         </span>
@@ -33,7 +33,7 @@
                             @lang('pages.compatible-wallets.arkvault.description')
                         </p>
                     </div>
-                    <div class="flex flex-col justify-between py-3 pr-3 pl-6 rounded-xl sm:flex-row bg-theme-primary-50 dark:bg-theme-dark-blue-800">
+                    <div class="flex flex-col justify-between py-3 px-3 sm:pl-6 rounded-xl sm:flex-row bg-theme-primary-50 dark:bg-theme-dark-blue-800">
                         <div class="flex flex-1 items-center py-1 bg-no-repeat bg-right sm:dark:bg-[url('/images/wallets/arrows-dark.svg')] sm:bg-[url('/images/wallets/arrows.svg')] min-[960px]:bg-none lg:dark:bg-[url('/images/wallets/arrows-dark.svg')] lg:bg-[url('/images/wallets/arrows.svg')] mr-2">
                             <div>
                                 <x-ark-icon name="app-wallets.arkvault" size="none" class="w-10 h-10 dark:text-white text-theme-navy-600" />
