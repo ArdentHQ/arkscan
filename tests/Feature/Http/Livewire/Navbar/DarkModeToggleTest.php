@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Facades\Settings;
 use App\Http\Livewire\Navbar\DarkModeToggle;
 use Illuminate\Support\Facades\Cookie;

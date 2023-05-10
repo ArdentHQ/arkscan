@@ -11,17 +11,6 @@ final class DarkModeToggle extends Toggle
         'themeChanged' => 'storeTheme',
     ];
 
-    protected function save(bool $dispatchEvent = true): void
-    {
-        parent::save();
-
-        if ($dispatchEvent && $this->setting === 'darkTheme') {
-            $this->dispatchBrowserEvent('setThemeMode', [
-                'theme' => $this->isActive() ? 'dark' : 'light',
-            ]);
-        }
-    }
-
     public function storeTheme(string $theme): void
     {
         if ($this->currentValue !== null) {
@@ -31,5 +20,16 @@ final class DarkModeToggle extends Toggle
         $this->currentValue = $theme === 'dark';
 
         $this->save(false);
+    }
+
+    protected function save(bool $dispatchEvent = true): void
+    {
+        parent::save();
+
+        if ($dispatchEvent && $this->setting === 'darkTheme') {
+            $this->dispatchBrowserEvent('setThemeMode', [
+                'theme' => $this->isActive() ? 'dark' : 'light',
+            ]);
+        }
     }
 }
