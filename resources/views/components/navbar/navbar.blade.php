@@ -1,5 +1,5 @@
 <header class="flex flex-col">
-    <div class="mb-1 h-20"></div>
+    <div class="mb-1 h-15"></div>
     <div
         id="navbar"
         class="fixed z-20 w-full"
@@ -15,22 +15,30 @@
             class="relative z-30 bg-white border-b border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
             @click.outside="open = false"
         >
-            <div class="px-8 md:px-10">
-                <div class="flex relative justify-between h-21">
+            <div class="flex relative justify-between w-full h-16 content-container">
+                {{-- LOGO --}}
+                <div class="flex flex-shrink-0 items-center">
+                    <a class="flex items-center" href="{{ route('home') }}">
+                        {{ $logo }}
+                    </a>
+                </div>
 
-                    {{-- LOGO --}}
-                    <div class="flex flex-shrink-0 items-center">
-                        <a class="flex items-center" href="{{ route('home') }}">
-                            {{ $logo }}
-                        </a>
+                <div class="flex justify-end">
+                    <div class="flex flex-1 justify-end items-center sm:justify-between sm:items-stretch">
+                        {{-- Desktop Navbar Items --}}
+                        <div class="hidden items-center -mx-4 md:flex">
+                            @foreach ($navigation as $navItem)
+                                <x-navbar.item
+                                    :route="$navItem['route']"
+                                    :params="$navItem['params'] ?? null"
+                                    :label="$navItem['label']"
+                                />
+                            @endforeach
+                        </div>
                     </div>
 
-                    <div class="hidden items-center mr-auto md:flex">
-                        <x-navbar.separator />
-
-                        {{-- search modal trigger (tablet/desktop) --}}
+                    <div class="flex items-center space-x-1 md:hidden">
                         <x-navbar.button
-                            class="hidden sm:flex"
                             @click="Livewire.emit('openSearchModal')"
                             dusk="navigation-search-modal-trigger"
                         >
@@ -40,69 +48,17 @@
                                 @lang('actions.search')
                             </span>
                         </x-navbar.button>
-                    </div>
 
-                    <div class="flex justify-end">
-                        <div class="flex flex-1 justify-end items-center sm:justify-between sm:items-stretch">
-                            {{-- Desktop Navbar Items --}}
-                            <div class="hidden items-center -mx-4 xl:flex">
-                                @foreach ($navigation as $navItem)
-                                    <x-navbar.item
-                                        :route="$navItem['route']"
-                                        :params="$navItem['params'] ?? null"
-                                        :label="$navItem['label']"
-                                    />
-                                @endforeach
-                            </div>
-                        </div>
+                        {{-- Mobile Hamburger icon --}}
+                        <x-navbar.button @click="toggle">
+                            <span :class="{'hidden': open, 'inline-flex': !open }">
+                                <x-ark-icon name="menu" />
+                            </span>
 
-                        @if(Network::canBeExchanged())
-                            <div class="hidden items-center md:flex">
-                                <x-navbar.separator class="md:hidden xl:inline" />
-
-                                <div class="hidden font-semibold md:flex xl:pl-8 dark:text-white text-theme-secondary-900">
-                                    <livewire:price-ticker />
-                                </div>
-                            </div>
-                        @endif
-
-
-                        <div class="flex items-center -mr-5 md:-mr-8 xl:hidden">
-                            @if(Network::canBeExchanged())
-                                <x-navbar.separator class="hidden md:inline" />
-                            @endif
-
-                            {{-- Mobile Hamburger icon --}}
-                            <x-navbar.button
-                                @click="toggle"
-                                margin-class="ml-4 -mr-4 md:mr-4"
-                            >
-                                <span :class="{'hidden': open, 'inline-flex': !open }">
-                                    <x-ark-icon name="menu" />
-                                </span>
-
-                                <span :class="{'hidden': !open, 'inline-flex': open }" x-cloak>
-                                    <x-ark-icon name="menu-show" />
-                                </span>
-                            </x-navbar.button>
-
-                            <x-navbar.separator class="md:hidden" />
-
-                            <x-navbar.button
-                                class="md:hidden"
-                                @click="Livewire.emit('openSearchModal')"
-                                dusk="navigation-search-modal-trigger"
-                            >
-                                <x-ark-icon name="magnifying-glass" />
-
-                                <span class="sr-only">
-                                    @lang('actions.search')
-                                </span>
-                            </x-navbar.button>
-                        </div>
-
-
-                        <livewire:navbar-settings />
+                            <span :class="{'hidden': !open, 'inline-flex': open }" x-cloak>
+                                <x-ark-icon name="menu-show" />
+                            </span>
+                        </x-navbar.button>
                     </div>
                 </div>
             </div>

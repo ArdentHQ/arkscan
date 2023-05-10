@@ -29,6 +29,10 @@ return [
     'market_data_by'          => 'Market Data by',
     'arkvault'                => 'ARKVault',
 
+    'navbar' => [
+        'search_placeholder' => 'Address / Tx ID / Block ID',
+    ],
+
     'block'                   => [
         'id'            => 'ID',
         'timestamp'     => 'Timestamp',
