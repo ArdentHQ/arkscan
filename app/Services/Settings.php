@@ -31,9 +31,14 @@ class Settings
         return $defaultSettings;
     }
 
+    public function get(string $key, mixed $default = null): mixed
+    {
+        return Arr::get($this->all(), $key, $default);
+    }
+
     public function currency(): string
     {
-        return Str::upper(Arr::get($this->all(), 'currency'));
+        return Str::upper($this->get('currency'));
     }
 
     public function locale(): string
@@ -45,19 +50,20 @@ class Settings
 
     public function priceChart(): bool
     {
-        return (bool) Arr::get($this->all(), 'priceChart', true);
+        return (bool) $this->get('priceChart', true);
     }
 
     public function feeChart(): bool
     {
-        return (bool) Arr::get($this->all(), 'feeChart', true);
+        return (bool) $this->get('feeChart', true);
     }
 
     public function theme(): string
     {
-        if (Arr::get($this->all(), 'darkTheme') === true) {
+        $darkMode = $this->get('darkTheme');
+        if ($darkMode === true) {
             return 'dark';
-        } elseif (Arr::get($this->all(), 'darkTheme') === false) {
+        } elseif ($darkMode === false) {
             return 'light';
         }
 
@@ -66,7 +72,7 @@ class Settings
 
     public function expandedTables(): bool
     {
-        return (bool) Arr::get($this->all(), 'expandedTables', false);
+        return (bool) $this->get('expandedTables', false);
     }
 
     public function usesCharts(): bool
