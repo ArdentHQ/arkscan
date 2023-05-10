@@ -21,8 +21,9 @@ class Settings
             'expandedTables' => false,
         ];
 
-        if (Cookie::has('settings')) {
-            $sessionSettings = json_decode(strval(Cookie::get('settings')), true);
+        $settings = Cookie::get('settings');
+        if (Cookie::has('settings') && ! is_array($settings)) {
+            $sessionSettings = json_decode(strval($settings), true);
 
             return $sessionSettings + $defaultSettings;
         }
