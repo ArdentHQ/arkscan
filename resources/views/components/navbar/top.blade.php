@@ -8,7 +8,7 @@
             @endif
         </div>
 
-        <div>
+        <div class="flex space-x-3">
             <x-ark-input-with-prefix
                 icon="magnifying-glass"
                 type="text"
@@ -21,6 +21,12 @@
                 hide-label
                 disable-dirty-styling
                 iconSize="sm"
+            />
+
+            <livewire:navbar.toggle
+                active-icon="underline-moon"
+                inactive-icon="underline-sun"
+                setting="darkTheme"
             />
         </div>
     </div>
