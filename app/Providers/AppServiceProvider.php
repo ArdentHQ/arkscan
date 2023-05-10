@@ -102,7 +102,7 @@ final class AppServiceProvider extends ServiceProvider
             ]],
             ['label' => trans('menus.developers'), 'children' => [
                 ['url' => 'https://ark.dev/',  'label' => trans('menus.docs')],
-                ['url' => 'https://ark.dev/docs/api',  'label' => trans('menus.api')],
+                ['url'   => 'https://ark.dev/docs/api',  'label' => trans('menus.api')],
                 ['route' => 'contact',  'label' => trans('menus.contact')],
             ]],
         ];
