@@ -10,7 +10,7 @@
         })"
         @theme-changed.window="dark = $event.detail.theme === 'dark'"
     >
-        <div x-show="openDropdown !== null || open" class="fixed inset-0 z-30 overflow-y-auto" x-cloak @click="openDropdown = null; open = false;"></div>
+        <div x-show="openDropdown !== null || open" class="overflow-y-auto fixed inset-0 z-30" x-cloak @click="openDropdown = null; open = false;"></div>
         <nav
             x-ref="nav"
             class="relative z-30 bg-white border-b border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
@@ -35,7 +35,7 @@
                                         <div class="relative h-full">
                                             <a
                                                 href="#"
-                                                class="relative inline-flex items-center justify-center h-full px-1 pt-px mr-8 font-semibold leading-5 transition duration-150 ease-in-out border-b-2 border-transparent text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300 focus:outline-none"
+                                                class="inline-flex relative justify-center items-center px-1 pt-px mr-8 h-full font-semibold leading-5 border-b-2 border-transparent transition duration-150 ease-in-out focus:outline-none text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300"
                                                 @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
                                             >
                                                 <span :class="{ 'text-theme-secondary-700': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
@@ -46,11 +46,11 @@
 
                                             <div
                                                 x-show="openDropdown === '{{ $navItem['label'] }}'"
-                                                class="absolute top-[5.5rem] z-30 max-w-4xl bg-white rounded-lg shadow-lg"
+                                                class="absolute z-30 max-w-4xl bg-white rounded-lg shadow-lg top-[5.5rem]"
                                                 x-transition.origin.top
                                                 x-cloak
                                             >
-                                                <div class="flex flex-col w-60 pt-2 pb-2">
+                                                <div class="flex flex-col pt-2 pb-2 w-60">
                                                     @foreach ($navItem['children'] as $menuItem)
                                                         <x-navbar.list-item
                                                             :route="$menuItem['route']"
@@ -73,7 +73,7 @@
 
                                 {{-- <a
                                 href="#"
-                                class="relative inline-flex items-center justify-center h-full px-1 pt-px mr-8 font-semibold leading-5 transition duration-150 ease-in-out border-b-2 border-transparent text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300 focus:outline-none"
+                                class="inline-flex relative justify-center items-center px-1 pt-px mr-8 h-full font-semibold leading-5 border-b-2 border-transparent transition duration-150 ease-in-out focus:outline-none text-theme-secondary-700 hover:text-theme-secondary-800 hover:border-theme-secondary-300"
                                 @click="openDropdown = openDropdown === 'products' ? null : 'products'"
                             >
                                 <span :class="{ 'text-theme-secondary-700': openDropdown === 'products' }">@lang('menus.documentation.title')</span>
@@ -83,11 +83,11 @@
                             </a>
                             <div
                                 x-show="openDropdown === 'products'"
-                                class="absolute top-0 z-30 max-w-4xl mt-21 bg-white rounded-b-lg"
+                                class="absolute top-0 z-30 max-w-4xl bg-white rounded-b-lg mt-21"
                                 x-transition.origin.top
                                 x-cloak
                             >
-                                <div class="flex flex-col w-72 pt-2 pb-6">
+                                <div class="flex flex-col pt-2 pb-6 w-72">
                                     @foreach ($productsMenu as $menuItem)
                                         <x-product-link :name="$menuItem['name']" :slug="$menuItem['slug']" :coming-soon="$menuItem['is_coming_soon']">
                                             <x-slot name="customIcon">
@@ -95,7 +95,7 @@
                                             </x-slot>
                                         </x-product-link>
                                     @endforeach
-                                    <div class="mx-6 my-2">
+                                    <div class="my-2 mx-6">
                                         <hr class="bg-theme-secondary-300 border-theme-secondary-300" />
                                     </div>
                                     @foreach ($quickAccessMenu as $menuItem)
