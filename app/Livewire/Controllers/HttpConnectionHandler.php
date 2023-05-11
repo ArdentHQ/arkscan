@@ -16,10 +16,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 // livewire throws an exception. This handles it by using the route path.
 final class HttpConnectionHandler extends Base
 {
-    public function applyPersistentMiddleware()
+    public function applyPersistentMiddleware(): void
     {
         try {
-            return parent::applyPersistentMiddleware();
+            parent::applyPersistentMiddleware();
+
+            return;
         } catch (NotFoundHttpException $e) {
             $originalUrl = request()->root();
 

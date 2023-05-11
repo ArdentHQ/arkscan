@@ -10,7 +10,7 @@ use Livewire\LivewireServiceProvider as Base;
 
 final class LivewireServiceProvider extends Base
 {
-    protected function registerRoutes()
+    protected function registerRoutes(): void
     {
         Route::post('/livewire/message/{name}', HttpConnectionHandler::class)
             ->name('livewire.message')
