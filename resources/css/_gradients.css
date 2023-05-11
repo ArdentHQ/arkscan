@@ -1,0 +1,36 @@
+.arkvault-disclaimer-gradient {
+    background: linear-gradient(
+        89.55deg,
+        #e5f0f8 -4.01%,
+        #fff8eb 87.43%,
+        #e5f0f8 116.9%
+    );
+}
+
+.dark .arkvault-disclaimer-gradient {
+    background: initial;
+}
+
+.list-wallet-gradient {
+    background: linear-gradient(
+        130.51deg,
+        #e5f0f8 14.08%,
+        #fff8eb 91.78%,
+        #e5f0f8 116.82%
+    );
+}
+
+@screen sm {
+    .list-wallet-gradient {
+        background: linear-gradient(
+            89.83deg,
+            #e5f0f8 -3.9%,
+            #fff8eb 74.67%,
+            #e5f0f8 100%
+        );
+    }
+
+    .dark .list-wallet-gradient {
+        background: initial;
+    }
+}
