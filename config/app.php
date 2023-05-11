@@ -179,6 +179,7 @@ return [
         App\Providers\ExplorerServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\DevelopmentServiceProvider::class,
+        App\Providers\LivewireServiceProvider::class,
         ARKEcosystem\Foundation\Providers\TelescopeServiceProvider::class,
 
     ],
