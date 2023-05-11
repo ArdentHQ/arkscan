@@ -8,11 +8,6 @@ use Livewire\LivewireServiceProvider as Base;
 
 class LivewireServiceProvider extends Base
 {
-    // public function register()
-    // {
-    //     $this->registerRoutes();
-    // }
-
     protected function registerRoutes()
     {
         Route::post('/livewire/message/{name}', HttpConnectionHandler::class)
