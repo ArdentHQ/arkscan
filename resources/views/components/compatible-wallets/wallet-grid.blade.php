@@ -4,14 +4,14 @@
             href="{{ $wallet['url'] }}"
             target="_blank"
             rel="nofollow noopener noreferrer"
-            class="group hover:cursor-pointer flex flex-col bg-white rounded-xl border border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800 hover:border-theme-primary-200 hover:bg-theme-primary-50 dark:hover:bg-theme-secondary-800 transition"
+            class="flex flex-col bg-white rounded-xl border transition hover:cursor-pointer group border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800 dark:hover:bg-theme-secondary-800 hover:border-theme-primary-200 hover:bg-theme-primary-50"
         >
             <div class="flex justify-center items-center mx-2 mt-2 rounded-xl aspect-square">
                 <x-ark-icon name="app-wallets.{{$wallet['logo']}}" size="none" />
             </div>
             <div class="mx-6 mt-3 mb-6">
 
-                <span class="text-theme-primary-600 group-hover:text-theme-primary-700 font-semibold inline break-words transition">
+                <span class="inline font-semibold break-words transition text-theme-primary-600 group-hover:text-theme-primary-700">
                     <span>{{ $wallet['title'] }}</span>
                     <x-ark-icon
                         name="arrows.arrow-external"
