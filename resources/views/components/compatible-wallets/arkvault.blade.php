@@ -1,7 +1,7 @@
 <div class="flex flex-col w-full rounded-xl sm:mt-6 sm:border min-[960px]:flex-row border-theme-secondary-300 dark:border-theme-secondary-800">
     <div class="flex flex-col flex-1 justify-center pb-8 space-y-6 sm:py-8 sm:px-8">
         <div>
-            <span class="inline-flex text-xs items-center rounded font-semibold px-2 py-1 space-x-2 text-theme-primary-900 dark:text-white dark:bg-theme-dark-blue-700 arkvault-disclaimer-gradient">
+            <span class="inline-flex items-center py-1 px-2 space-x-2 text-xs font-semibold rounded dark:text-white text-theme-primary-900 arkvault-disclaimer-gradient dark:bg-theme-dark-blue-700">
                 <x-ark-icon name="circle.info" size="sm" class="shrink-0" />
                 <span>
                     @lang('pages.compatible-wallets.arkvault.disclaimer')
