@@ -20,7 +20,7 @@
         @foreach($wallets as $wallet)
             <x-ark-tables.row  wire:key="wallet-{{ $wallet->address() }}">
                 <x-ark-tables.cell>
-                    <span class="font-semibold">1</span>
+                    <x-tables.rows.desktop.encapsulated.rank :results="$wallets" :index="$loop->index + 1" />
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>

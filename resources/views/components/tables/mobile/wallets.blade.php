@@ -1,7 +1,7 @@
 <div class="divide-y table-list-mobile table-list-encapsulated">
     @foreach ($wallets as $wallet)
         <div class="table-list-mobile-row">
-            <x-tables.rows.mobile.encapsulated.rank :model="$wallet" />
+            <x-tables.rows.mobile.encapsulated.rank :results="$wallets" :index="$loop->index + 1" />
 
             <x-tables.rows.mobile.encapsulated.address :model="$wallet" />
 
