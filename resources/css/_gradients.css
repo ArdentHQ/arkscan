@@ -34,3 +34,23 @@
         background: initial;
     }
 }
+
+.encapsulated-table-header-gradient {
+    background: linear-gradient(
+        to bottom,
+        var(--theme-color-secondary-100),
+        var(--theme-color-secondary-100) 44px,
+        white 44px,
+        white 100%
+    );
+}
+
+.dark .encapsulated-table-header-gradient {
+    background: linear-gradient(
+        to bottom,
+        #121213,
+        #121213 44px,
+        var(--theme-color-secondary-900) 44px,
+        var(--theme-color-secondary-900) 100%
+    );
+}

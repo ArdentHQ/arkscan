@@ -185,5 +185,5 @@ body.table-compact-until-lg .arrow-direction {
 }
 
 .table-encapsulated thead th {
-    @apply text-theme-secondary-700;
+    @apply text-theme-secondary-700 dark:text-theme-secondary-500;
 }

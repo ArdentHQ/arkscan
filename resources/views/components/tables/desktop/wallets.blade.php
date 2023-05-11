@@ -1,5 +1,5 @@
 <x-tables.encapsulated-table sticky class="hidden w-full md:block">
-    <thead class="bg-theme-secondary-100">
+    <thead class="bg-theme-secondary-100 dark:bg-black">
         <tr class="border-b-none">
             <x-tables.headers.desktop.number name="general.wallet.rank" />
             <x-tables.headers.desktop.address name="general.wallet.address" />
@@ -14,7 +14,7 @@
         @foreach($wallets as $wallet)
             <x-ark-tables.row  wire:key="wallet-{{ $wallet->address() }}">
                 <x-ark-tables.cell>
-                    <span>1</span>
+                    <span class="font-semibold">1</span>
                 </x-ark-tables.cell>
                 <x-ark-tables.cell>
                     <span class="flex justify-between w-full">
@@ -24,7 +24,7 @@
                         <span class="lg:hidden"> {{-- TODO: truncate earlier at xl already --}}
                             <x-tables.rows.desktop.address :model="$wallet" without-username />
                         </span>
-                        <x-ark-clipboard :value="$wallet->address()" class="mr-3 transition text-theme-primary-400 hover:text-theme-primary-700" no-styling />
+                        <x-ark-clipboard :value="$wallet->address()" class="mr-3 transition text-theme-primary-400 dark:text-theme-secondary-600 hover:text-theme-primary-700" no-styling />
                     </span>
                 </x-ark-tables.cell>
                 <x-ark-tables.cell>
@@ -43,8 +43,11 @@
                     @endif
                 </x-ark-tables.cell>
                 <x-ark-tables.cell class="text-right">
-                    <div class="flex flex-col font-semibold">
-                        <span><x-tables.rows.desktop.balance :model="$wallet" /></span>
+                    <div class="flex flex-col font-semibold text-theme-secondary-900 dark:text-theme-secondary-200">
+                        <span @if(Network::canBeExchanged()) data-tippy-content="{{ $wallet->balanceFiat() }}" @endif>
+                            <span>{{ rtrim(rtrim(number_format((float) ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation::execute((float) $wallet->balance()), 8), 0), '.') }}</span> {{-- TODO: take decimals from network --}}
+                        </span>
+
                         <span class="mt-1 text-xs font-semibold lg:hidden text-theme-secondary-500">
                             @isset($useVoteWeight)
                                 <x-tables.rows.desktop.vote-percentage :model="$wallet" />
