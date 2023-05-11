@@ -1,14 +1,25 @@
 <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:mt-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
     @foreach (trans('pages.compatible-wallets.wallets') as $wallet)
-        <div class="flex flex-col bg-white rounded-xl border border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800">
+        <a
+            href="{{ $wallet['url'] }}"
+            target="_blank"
+            rel="nofollow noopener noreferrer"
+            class="group hover:cursor-pointer flex flex-col bg-white rounded-xl border border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800 hover:border-theme-primary-200 hover:bg-theme-primary-50 dark:hover:bg-theme-secondary-800 transition"
+        >
             <div class="flex justify-center items-center mx-2 mt-2 rounded-xl aspect-square">
                 <x-ark-icon name="app-wallets.{{$wallet['logo']}}" size="none" />
             </div>
             <div class="mx-6 mt-3 mb-6">
-                <x-ark-external-link :url="$wallet['url']">
-                    {{ $wallet['title'] }}
-                </x-ark-external-link>
+
+                <span class="text-theme-primary-600 group-hover:text-theme-primary-700 font-semibold inline break-words transition">
+                    <span>{{ $wallet['title'] }}</span>
+                    <x-ark-icon
+                        name="arrows.arrow-external"
+                        size="xs"
+                        class="inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-secondary-500"
+                    />
+                </span>
             </div>
-        </div>
+        </a>
     @endforeach
 </div>
