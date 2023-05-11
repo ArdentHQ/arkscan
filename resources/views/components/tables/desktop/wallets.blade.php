@@ -8,7 +8,9 @@
             @if(!($hideVoting ?? false))
                 <x-tables.headers.desktop.icon name="general.wallet.voting" class="text-center" responsive breakpoint="lg" />
             @endif
-            <x-tables.headers.desktop.number name="general.wallet.balance" last-on="lg" />
+            <x-tables.headers.desktop.number name="general.wallet.balance" last-on="lg">
+                <span>({{ Network::currency()}})</span>
+            </x-tables.headers.desktop.number>
             <x-tables.headers.desktop.number name="general.wallet.percentage" class="text-right" responsive breakpoint="lg">
                 <x-ark-info :tooltip="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])" />
             </x-tables.headers.desktop.number>
@@ -20,20 +22,25 @@
                 <x-ark-tables.cell>
                     <span class="font-semibold">1</span>
                 </x-ark-tables.cell>
+
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.address :model="$wallet" without-username />
                 </x-ark-tables.cell>
+
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.username :model="$wallet" />
                 </x-ark-tables.cell>
+
                 <x-ark-tables.cell class="text-center">
                     <x-tables.rows.desktop.wallet-type :model="$wallet" />
                 </x-ark-tables.cell>
+
                 @if(!($hideVoting ?? false))
                     <x-ark-tables.cell class="text-center" responsive breakpoint="lg" >
                         <x-tables.rows.desktop.encapsulated.voting :model="$wallet" />
                     </x-ark-tables.cell>
                 @endif
+
                 <x-ark-tables.cell class="text-right">
                     <div class="flex flex-col font-semibold text-theme-secondary-900 dark:text-theme-secondary-200">
                         <x-tables.rows.desktop.encapsulated.balance :model="$wallet" />
@@ -47,6 +54,7 @@
                         </span>
                     </div>
                 </x-ark-tables.cell>
+
                 <x-ark-tables.cell class="text-right" responsive breakpoint="lg">
                     <span class="font-semibold">
                         @isset($useVoteWeight)
