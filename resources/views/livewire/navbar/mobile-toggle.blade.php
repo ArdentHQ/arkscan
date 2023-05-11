@@ -2,7 +2,7 @@
 
 <button
     wire:click="toggle"
-    class="relative bg-theme-secondary-300 dark:bg-theme-secondary-900 rounded h-8 w-15"
+    class="relative h-8 rounded bg-theme-secondary-300 w-15 dark:bg-theme-secondary-900"
 >
     <div @class([
         'absolute top-1 bg-white dark:bg-theme-secondary-800 rounded w-6 h-6 transition-default',

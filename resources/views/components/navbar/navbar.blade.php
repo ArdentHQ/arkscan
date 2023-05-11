@@ -147,7 +147,7 @@
                             @endif
                         @endforeach
 
-                        <div class="bg-theme-secondary-100 dark:bg-black py-4">
+                        <div class="py-4 dark:bg-black bg-theme-secondary-100">
                             <div class="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
                                 <x-navbar.mobile.setting-item title="Select Theme">
                                     <livewire:navbar.dark-mode-toggle
@@ -171,7 +171,7 @@
                                 </x-navbar.mobile.setting-item>
 
                                 @if(Network::canBeExchanged())
-                                    <div class="flex font-semibold pt-3 dark:text-theme-secondary-500">
+                                    <div class="flex pt-3 font-semibold dark:text-theme-secondary-500">
                                         <livewire:price-ticker />
                                     </div>
                                 @endif
