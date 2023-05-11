@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Facades\Settings;
 use App\Http\Livewire\Navbar\DarkModeToggle;
 use Illuminate\Support\Facades\Cookie;
+use Livewire\ComponentChecksumManager;
 use Livewire\Livewire;
 
 beforeEach(function () {
@@ -75,7 +76,7 @@ it('should store theme from an event only on first load', function () {
 });
 
 it('should handle 404 and not spam livewire requests', function () {
-    $this->post('/livewire/message/navbar.dark-mode-toggle', [
+    $payload = [
         "fingerprint" => [
             "id" => "rYrH6NyxlBPbUP3uqMGk",
             "name" => "navbar.dark-mode-toggle",
@@ -97,7 +98,6 @@ it('should handle 404 and not spam livewire requests', function () {
                 "currentValue" => true,
             ],
             "dataMeta" => [],
-            "checksum" => "f06bb9f5431bb549f56e1ee4d16f48c2cf7995b3d7953fafcdf8d22c04403670",
         ],
         "updates" => [
             [
@@ -109,5 +109,10 @@ it('should handle 404 and not spam livewire requests', function () {
                 ],
             ],
         ],
-    ])->assertOk();
+    ];
+
+    $payload['serverMemo']['checksum'] = (new ComponentChecksumManager)->generate($payload['fingerprint'], $payload['serverMemo']);
+
+    $this->post('/livewire/message/navbar.dark-mode-toggle', $payload)
+        ->assertOk();
 });
