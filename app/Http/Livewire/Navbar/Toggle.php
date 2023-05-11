@@ -23,6 +23,8 @@ class Toggle extends Component
 
     public mixed $inactiveValue;
 
+    public bool $mobile;
+
     public mixed $currentValue = null;
 
     public function mount(
@@ -31,18 +33,24 @@ class Toggle extends Component
         string $setting,
         mixed $activeValue = true,
         mixed $inactiveValue = false,
+        mixed $mobile = false,
     ): void {
         $this->activeIcon    = $activeIcon;
         $this->inactiveIcon  = $inactiveIcon;
         $this->setting       = $setting;
         $this->activeValue   = $activeValue;
         $this->inactiveValue = $inactiveValue;
+        $this->mobile        = $mobile;
 
         $this->currentValue = Settings::get($this->setting);
     }
 
     public function render(): View
     {
+        if ($this->mobile) {
+            return view('livewire.navbar.mobile-toggle');
+        }
+
         return view('livewire.navbar.toggle');
     }
 
