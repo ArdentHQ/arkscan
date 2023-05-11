@@ -105,6 +105,7 @@ return [
     'wallets'          => [
         'title'    => 'Top Accounts',
         'subtitle' => 'A list of the largest ARK addresses by token holdings.',
+        'supply_tooltip' => 'Percentage of the total :symbol supply',
     ],
 
     'wallet'           => [

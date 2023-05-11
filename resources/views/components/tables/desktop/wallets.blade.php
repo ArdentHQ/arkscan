@@ -7,7 +7,9 @@
             <x-tables.headers.desktop.icon name="general.wallet.type" class="text-center" />
             <x-tables.headers.desktop.icon name="general.wallet.voting" class="text-center" responsive breakpoint="lg" />
             <x-tables.headers.desktop.number name="general.wallet.balance" last-on="lg" />
-            <x-tables.headers.desktop.number name="general.wallet.percentage" class="text-right" responsive breakpoint="lg" />
+            <x-tables.headers.desktop.number name="general.wallet.percentage" class="text-right" responsive breakpoint="lg">
+                <x-ark-info :tooltip="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])" />
+            </x-tables.headers.desktop.number>
         </tr>
     </thead>
     <tbody>
@@ -18,11 +20,8 @@
                 </x-ark-tables.cell>
                 <x-ark-tables.cell>
                     <span class="flex justify-between w-full">
-                        <span class="hidden lg:inline">
-                            <x-tables.rows.desktop.address :model="$wallet" :without-truncate="$withoutTruncate ?? false" without-username />
-                        </span>
-                        <span class="lg:hidden"> {{-- TODO: truncate earlier at xl already --}}
-                            <x-tables.rows.desktop.address :model="$wallet" without-username />
+                        <span>
+                            <x-tables.rows.desktop.address-simple :model="$wallet" without-username />
                         </span>
                         <x-ark-clipboard :value="$wallet->address()" class="mr-3 transition text-theme-primary-400 dark:text-theme-secondary-600 hover:text-theme-primary-700" no-styling />
                     </span>
