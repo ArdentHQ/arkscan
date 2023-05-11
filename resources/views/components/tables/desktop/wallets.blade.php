@@ -19,33 +19,20 @@
                     <span class="font-semibold">1</span>
                 </x-ark-tables.cell>
                 <x-ark-tables.cell>
-                    <span class="flex justify-between w-full">
-                        <span>
-                            <x-tables.rows.desktop.address-simple :model="$wallet" without-username />
-                        </span>
-                        <x-ark-clipboard :value="$wallet->address()" class="mr-3 transition text-theme-primary-400 dark:text-theme-secondary-600 hover:text-theme-primary-700" no-styling />
-                    </span>
+                    <x-tables.rows.desktop.encapsulated.address :model="$wallet" without-username />
                 </x-ark-tables.cell>
                 <x-ark-tables.cell>
-                    @if ($wallet->username())
-                        <span class="font-semibold">{{ $wallet->username() }}</span>
-                    @endif
+                    <x-tables.rows.desktop.encapsulated.username :model="$wallet" />
                 </x-ark-tables.cell>
                 <x-ark-tables.cell class="text-center">
                     <x-tables.rows.desktop.wallet-type :model="$wallet" />
                 </x-ark-tables.cell>
                 <x-ark-tables.cell class="text-center" responsive breakpoint="lg" >
-                    @if($wallet->isVoting())
-                        <div class="flex justify-center items-center w-full">
-                            <x-ark-icon name="check-mark-box" size="sm" />
-                        </div>
-                    @endif
+                    <x-tables.rows.desktop.encapsulated.voting :model="$wallet" />
                 </x-ark-tables.cell>
                 <x-ark-tables.cell class="text-right">
                     <div class="flex flex-col font-semibold text-theme-secondary-900 dark:text-theme-secondary-200">
-                        <span @if(Network::canBeExchanged()) data-tippy-content="{{ $wallet->balanceFiat() }}" @endif>
-                            <span>{{ rtrim(rtrim(number_format((float) ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation::execute((float) $wallet->balance()), 8), 0), '.') }}</span> {{-- TODO: take decimals from network --}}
-                        </span>
+                        <x-tables.rows.desktop.encapsulated.balance :model="$wallet" />
 
                         <span class="mt-1 text-xs font-semibold lg:hidden text-theme-secondary-500">
                             @isset($useVoteWeight)

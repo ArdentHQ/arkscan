@@ -27,6 +27,7 @@ return [
     'transaction_count'       => 'Transaction Count',
     'transaction_id'          => 'ID',
     'username'                => 'Username',
+    'name'                    => 'Name',
     'verified_address'        => 'Verified Address',
     'votes'                   => 'Votes',
     'wallet_type'             => 'Info',
