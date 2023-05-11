@@ -33,4 +33,5 @@ return [
     'wallet_type'             => 'Info',
     'multi_signature'         => 'Multisignature',
     'second_signature'        => 'Second Signature',
+    'percentage'              => 'Percentage',
 ];

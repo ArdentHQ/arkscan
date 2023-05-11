@@ -188,6 +188,6 @@ body.table-compact-until-lg .arrow-direction {
     @apply text-theme-secondary-700 dark:text-theme-secondary-500;
 }
 
-.table-list-encapsulated .table-list-mobile-row {
+.table-list-mobile .table-list-mobile-row {
     @apply space-y-3;
 }

@@ -54,7 +54,7 @@
             </a>
 
             <a href="{{ route('wallet', $model->address()) }}" class="hidden font-semibold sm:flex md:hidden link">
-                @if ($model->username())
+                @if ($model->username() && !$withoutUsername)
                     {{ $model->username() }}
                 @else
                     {{ $model->address() }}

@@ -12,9 +12,9 @@
             <x-tables.rows.mobile.encapsulated.balance :model="$wallet" />
 
             @isset($useVoteWeight)
-                <x-tables.rows.mobile.vote-percentage :model="$wallet" />
+                <x-tables.rows.mobile.encapsulated.vote-percentage :model="$wallet" />
             @else
-                <x-tables.rows.mobile.balance-percentage :model="$wallet" />
+                <x-tables.rows.mobile.encapsulated.balance-percentage :model="$wallet" />
             @endif
         </div>
     @endforeach

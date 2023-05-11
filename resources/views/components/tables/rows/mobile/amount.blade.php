@@ -1,5 +1,7 @@
 <div class="items-center">
-    @lang('labels.amount')
+    <span class="font-semibold">
+        @lang('labels.amount')
+    </span>
 
     <x-general.amount-fiat-tooltip>
         <x-slot name="amount">

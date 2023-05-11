@@ -1,9 +1,9 @@
 <div>
     <span class="font-semibold">
-        @lang('labels.balance_percentage')
+        @lang('labels.percentage')
     </span>
 
-    <span>
+    <span class="font-semibold">
         <x-percentage>{{ $model->votePercentage() }}</x-percentage>
     </span>
 </div>
