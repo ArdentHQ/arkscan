@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Livewire\Controllers;
 
+use Illuminate\Http\Response;
 use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Str;
 use Livewire\Controllers\HttpConnectionHandler as Base;
 use Livewire\Livewire;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Illuminate\Http\Response;
-use Illuminate\Support\Str;
 
 // Livewire made a change a few months ago which introduced issues. It tries to generate a request
 // based on the route/path of the livewire message, but if that page is a 404 (e.g. route does not exist),
@@ -35,15 +35,17 @@ final class HttpConnectionHandler extends Base
         $persistentMiddleware = Livewire::getPersistentMiddleware();
 
         $filteredMiddleware = collect($originalRouteMiddleware)->filter(function ($middleware) use ($persistentMiddleware) {
-            if (! is_string($middleware)) return false;
+            if (! is_string($middleware)) {
+                return false;
+            }
 
-            return in_array(Str::before($middleware, ':'), $persistentMiddleware);
+            return in_array(Str::before($middleware, ':'), $persistentMiddleware, true);
         })->toArray();
 
         (new Pipeline(app()))
             ->send($request)
             ->through($filteredMiddleware)
-            ->then(function() {
+            ->then(function () {
                 return new Response();
             });
     }
