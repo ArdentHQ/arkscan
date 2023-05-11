@@ -175,3 +175,15 @@ body.table-compact-until-lg .arrow-direction {
         @apply p-0 pr-2;
     }
 }
+
+.table-encapsulated thead tr {
+    @apply border-none;
+}
+
+.table-encapsulated thead th::after {
+    @apply border-none;
+}
+
+.table-encapsulated thead th {
+    @apply text-theme-secondary-700;
+}

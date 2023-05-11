@@ -103,7 +103,8 @@ return [
     ],
 
     'wallets'          => [
-        'title' => 'Wallets',
+        'title' => 'Top Accounts',
+        'subtitle' => 'A list of the largest ARK addresses by token holdings.',
     ],
 
     'wallet'           => [

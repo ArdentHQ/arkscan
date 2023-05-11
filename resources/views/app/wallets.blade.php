@@ -1,4 +1,8 @@
 @component('layouts.app')
+    @push('scripts')
+        <script src="{{ mix('js/clipboard.js')}}"></script>
+    @endpush
+
     <x-metadata page="wallets" />
 
     @section('content')
