@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Navbar;
 
 use App\Facades\Settings;
-use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -56,7 +56,7 @@ class Toggle extends Component
     }
 
     /**
-     * @return void|Response
+     * @return void|RedirectResponse
      */
     public function toggle()
     {
