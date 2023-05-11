@@ -78,16 +78,16 @@ class Toggle extends Component
         return $this->inactiveIcon;
     }
 
+    public function isActive(): bool
+    {
+        return $this->currentValue === $this->activeValue;
+    }
+
     protected function save(): void
     {
         $settings                 = Settings::all();
         $settings[$this->setting] = $this->currentValue;
 
         Cookie::queue('settings', json_encode($settings), 60 * 24 * 365 * 5);
-    }
-
-    public function isActive(): bool
-    {
-        return $this->currentValue === $this->activeValue;
     }
 }
