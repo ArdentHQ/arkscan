@@ -110,14 +110,14 @@ return [
     ],
 
     'wallet'                  => [
-        'rank'    => 'Rank',
-        'address' => 'Address',
-        'info'    => 'Info',
-        'balance' => 'Balance',
-        'supply'  => 'Supply',
-        'name'    => 'Name',
-        'type'    => 'Type',
-        'voting'  => 'Voting',
+        'rank'       => 'Rank',
+        'address'    => 'Address',
+        'info'       => 'Info',
+        'balance'    => 'Balance',
+        'supply'     => 'Supply',
+        'name'       => 'Name',
+        'type'       => 'Type',
+        'voting'     => 'Voting',
         'percentage' => 'Percentage',
     ],
 
