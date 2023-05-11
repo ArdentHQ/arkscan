@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Controllers;
 
 use Illuminate\Pipeline\Pipeline;
@@ -9,7 +11,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 
-class HttpConnectionHandler extends Base
+// Livewire made a change a few months ago which introduced issues. It tries to generate a request
+// based on the route/path of the livewire message, but if that page is a 404 (e.g. route does not exist),
+// livewire throws an exception. This handles it by using the route path.
+final class HttpConnectionHandler extends Base
 {
     public function applyPersistentMiddleware()
     {
@@ -24,20 +29,17 @@ class HttpConnectionHandler extends Base
             );
         }
 
-        // Gather all the middleware for the original route, and filter it by
-        // the ones we have designated for persistence on Livewire requests.
+        // Below is taken from the original HttpConnectionHandler#applyPersistentMiddleware method
         $originalRouteMiddleware = app('router')->gatherRouteMiddleware($request->route());
 
         $persistentMiddleware = Livewire::getPersistentMiddleware();
 
         $filteredMiddleware = collect($originalRouteMiddleware)->filter(function ($middleware) use ($persistentMiddleware) {
-            // Some middlewares can be closures.
             if (! is_string($middleware)) return false;
 
             return in_array(Str::before($middleware, ':'), $persistentMiddleware);
         })->toArray();
 
-        // Now run the faux request through the original middleware with a custom pipeline.
         (new Pipeline(app()))
             ->send($request)
             ->through($filteredMiddleware)

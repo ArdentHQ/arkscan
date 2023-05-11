@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Livewire\Controllers\HttpConnectionHandler;
 use Illuminate\Support\Facades\Route;
 use Livewire\LivewireServiceProvider as Base;
 
-class LivewireServiceProvider extends Base
+final class LivewireServiceProvider extends Base
 {
     protected function registerRoutes()
     {
