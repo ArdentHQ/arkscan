@@ -32,6 +32,7 @@ final class HttpConnectionHandler extends Base
         }
 
         // Below is taken from the original HttpConnectionHandler#applyPersistentMiddleware method
+        // @codeCoverageIgnoreStart
         $originalRouteMiddleware = app('router')->gatherRouteMiddleware($request->route());
 
         $persistentMiddleware = Livewire::getPersistentMiddleware();
@@ -50,5 +51,6 @@ final class HttpConnectionHandler extends Base
             ->then(function () {
                 return new Response();
             });
+        // @codeCoverageIgnoreEnd
     }
 }
