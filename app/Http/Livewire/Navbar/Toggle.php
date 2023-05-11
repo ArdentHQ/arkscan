@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Navbar;
 
 use App\Facades\Settings;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -54,7 +55,10 @@ class Toggle extends Component
         return view('livewire.navbar.toggle');
     }
 
-    public function toggle(): void
+    /**
+     * @return void|Response
+     */
+    public function toggle()
     {
         if ($this->isActive()) {
             $this->currentValue = $this->inactiveValue;
@@ -82,7 +86,7 @@ class Toggle extends Component
         Cookie::queue('settings', json_encode($settings), 60 * 24 * 365 * 5);
     }
 
-    protected function isActive(): bool
+    public function isActive(): bool
     {
         return $this->currentValue === $this->activeValue;
     }
