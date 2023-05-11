@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Controllers;
 
+use Illuminate\Http\Response;
 use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Str;
 use Livewire\Controllers\HttpConnectionHandler as Base;
 use Livewire\Livewire;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Illuminate\Http\Response;
-use Illuminate\Support\Str;
 
 class HttpConnectionHandler extends Base
 {
@@ -32,16 +34,18 @@ class HttpConnectionHandler extends Base
 
         $filteredMiddleware = collect($originalRouteMiddleware)->filter(function ($middleware) use ($persistentMiddleware) {
             // Some middlewares can be closures.
-            if (! is_string($middleware)) return false;
+            if (! is_string($middleware)) {
+                return false;
+            }
 
-            return in_array(Str::before($middleware, ':'), $persistentMiddleware);
+            return in_array(Str::before($middleware, ':'), $persistentMiddleware, true);
         })->toArray();
 
         // Now run the faux request through the original middleware with a custom pipeline.
         (new Pipeline(app()))
             ->send($request)
             ->through($filteredMiddleware)
-            ->then(function() {
+            ->then(function () {
                 return new Response();
             });
     }
