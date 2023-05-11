@@ -77,35 +77,35 @@ it('should store theme from an event only on first load', function () {
 
 it('should handle 404 and not spam livewire requests', function () {
     $payload = [
-        "fingerprint" => [
-            "id" => "rYrH6NyxlBPbUP3uqMGk",
-            "name" => "navbar.dark-mode-toggle",
-            "locale" => "en",
-            "path" => "invalid-route-path",
-            "method" => "GET",
-            "v" => "acj",
+        'fingerprint' => [
+            'id' => 'rYrH6NyxlBPbUP3uqMGk',
+            'name' => 'navbar.dark-mode-toggle',
+            'locale' => 'en',
+            'path' => 'invalid-route-path',
+            'method' => 'GET',
+            'v' => 'acj',
         ],
-        "serverMemo" => [
-            "children" => [],
-            "errors" => [],
-            "htmlHash" => "19fb4fd4",
-            "data" => [
-                "activeIcon" => "underline-moon",
-                "inactiveIcon" => "underline-sun",
-                "setting" => "darkTheme",
-                "activeValue" => true,
-                "inactiveValue" => false,
-                "currentValue" => true,
+        'serverMemo' => [
+            'children' => [],
+            'errors'   => [],
+            'htmlHash' => '19fb4fd4',
+            'data'     => [
+                'activeIcon'    => 'underline-moon',
+                'inactiveIcon'  => 'underline-sun',
+                'setting'       => 'darkTheme',
+                'activeValue'   => true,
+                'inactiveValue' => false,
+                'currentValue'  => true,
             ],
-            "dataMeta" => [],
+            'dataMeta' => [],
         ],
-        "updates" => [
+        'updates' => [
             [
-                "type" => "fireEvent",
-                "payload" => [
-                    "id" => "5i31j",
-                    "event" => "themeChanged",
-                    "params" => ["dark"],
+                'type'    => 'fireEvent',
+                'payload' => [
+                    'id'     => '5i31j',
+                    'event'  => 'themeChanged',
+                    'params' => ['dark'],
                 ],
             ],
         ],
