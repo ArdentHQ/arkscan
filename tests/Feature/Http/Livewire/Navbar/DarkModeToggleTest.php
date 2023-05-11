@@ -78,12 +78,12 @@ it('should store theme from an event only on first load', function () {
 it('should handle 404 and not spam livewire requests', function () {
     $payload = [
         'fingerprint' => [
-            'id' => 'rYrH6NyxlBPbUP3uqMGk',
-            'name' => 'navbar.dark-mode-toggle',
+            'id'     => 'rYrH6NyxlBPbUP3uqMGk',
+            'name'   => 'navbar.dark-mode-toggle',
             'locale' => 'en',
-            'path' => 'invalid-route-path',
+            'path'   => 'invalid-route-path',
             'method' => 'GET',
-            'v' => 'acj',
+            'v'      => 'acj',
         ],
         'serverMemo' => [
             'children' => [],
@@ -111,7 +111,7 @@ it('should handle 404 and not spam livewire requests', function () {
         ],
     ];
 
-    $payload['serverMemo']['checksum'] = (new ComponentChecksumManager)->generate($payload['fingerprint'], $payload['serverMemo']);
+    $payload['serverMemo']['checksum'] = (new ComponentChecksumManager())->generate($payload['fingerprint'], $payload['serverMemo']);
 
     $this->post('/livewire/message/navbar.dark-mode-toggle', $payload)
         ->assertOk();
