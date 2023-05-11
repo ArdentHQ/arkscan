@@ -1,5 +1,5 @@
 <x-tables.encapsulated-table sticky class="hidden w-full md:block">
-    <thead class="bg-theme-secondary-100 dark:bg-black">
+    <thead class="dark:bg-black bg-theme-secondary-100">
         <tr class="border-b-none">
             <x-tables.headers.desktop.number name="general.wallet.rank" />
             <x-tables.headers.desktop.address name="general.wallet.address" />
