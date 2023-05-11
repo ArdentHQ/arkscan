@@ -24,7 +24,7 @@
                         <span class="lg:hidden"> {{-- TODO: truncate earlier at xl already --}}
                             <x-tables.rows.desktop.address :model="$wallet" without-username />
                         </span>
-                        <x-ark-clipboard :value="$wallet->address()" class="text-theme-primary-400 hover:text-theme-primary-700 transition mr-3" no-styling />
+                        <x-ark-clipboard :value="$wallet->address()" class="mr-3 transition text-theme-primary-400 hover:text-theme-primary-700" no-styling />
                     </span>
                 </x-ark-tables.cell>
                 <x-ark-tables.cell>
@@ -45,7 +45,7 @@
                 <x-ark-tables.cell class="text-right">
                     <div class="flex flex-col font-semibold">
                         <span><x-tables.rows.desktop.balance :model="$wallet" /></span>
-                        <span class="font-semibold lg:hidden text-theme-secondary-500 text-xs mt-1">
+                        <span class="mt-1 text-xs font-semibold lg:hidden text-theme-secondary-500">
                             @isset($useVoteWeight)
                                 <x-tables.rows.desktop.vote-percentage :model="$wallet" />
                             @else
