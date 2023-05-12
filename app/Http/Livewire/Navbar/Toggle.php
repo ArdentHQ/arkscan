@@ -24,7 +24,7 @@ class Toggle extends Component
 
     public mixed $inactiveValue;
 
-    public bool $mobile;
+    public bool $mobile = false;
 
     public mixed $currentValue = null;
 
