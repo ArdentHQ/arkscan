@@ -34,8 +34,8 @@
                                     <div class="relative h-full">
                                         <a
                                             href="javascript:void(0)"
-                                            class="inline-flex relative justify-center items-center px-1 pt-px mr-6 h-full font-semibold leading-5 border-b-2 transition duration-150 ease-in-out focus:outline-none text-theme-secondary-700 dark:text-theme-secondary-400 hover:text-theme-secondary-800"
-                                            :class="openDropdown === '{{ $navItem['label'] }}' ? 'border-theme-primary-600' : 'border-transparent hover:border-theme-primary-300'"
+                                            class="inline-flex relative justify-center items-center px-1 pt-px mr-6 h-full font-semibold leading-5 border-b-2 transition duration-150 ease-in-out focus:outline-none text-theme-secondary-700 dark:text-theme-secondary-400 hover:text-theme-secondary-800 border-transparent"
+                                            :class="openDropdown === '{{ $navItem['label'] }}' ? '!border-theme-primary-600' : 'hover:border-theme-primary-300'"
                                             @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
                                         >
                                             <span :class="{ 'text-theme-secondary-700 dark:text-theme-secondary-200': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
