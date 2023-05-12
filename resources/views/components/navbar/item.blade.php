@@ -17,7 +17,7 @@
     <span @class([
         'flex items-center w-full h-full border-b-2',
         'border-theme-primary-600' => $currentRoute === $route,
-        'border-transparent group-hover:border-theme-secondary-300' => $currentRoute !== $route,
+        'border-transparent group-hover:border-theme-primary-300' => $currentRoute !== $route,
     ])>
         <span>{{ $label }}</span>
     </span>
