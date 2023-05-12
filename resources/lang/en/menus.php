@@ -10,6 +10,7 @@ return [
 
     'delegates'      => 'Delegates',
     'wallets'        => 'Wallets',
+    'top_accounts'   => 'Top Accounts',
     'blocks'         => 'Blocks',
     'transactions'   => 'Transactions',
     'statistics'     => 'Statistics',
