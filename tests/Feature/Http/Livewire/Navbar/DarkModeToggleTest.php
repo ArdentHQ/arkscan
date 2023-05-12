@@ -22,7 +22,7 @@ it('should render', function () {
         ->assertSet('setting', 'darkTheme')
         ->assertSet('activeValue', true)
         ->assertSet('inactiveValue', false)
-        ->assertSet('value', false)
+        ->assertSet('currentValue', false)
         ->assertSee('svg');
 });
 

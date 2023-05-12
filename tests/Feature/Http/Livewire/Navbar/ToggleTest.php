@@ -16,13 +16,35 @@ beforeEach(function () {
 });
 
 it('should render', function () {
+    expect(Settings::get('priceChart'))->toBeTrue();
+
     $this->component->assertSet('activeIcon', 'underline-moon')
         ->assertSet('inactiveIcon', 'underline-sun')
         ->assertSet('setting', 'priceChart')
         ->assertSet('activeValue', true)
         ->assertSet('inactiveValue', false)
-        ->assertSet('value', false)
+        ->assertSet('currentValue', true)
         ->assertSee('svg');
+});
+
+it('should mobile component', function () {
+    expect(Settings::get('priceChart'))->toBeTrue();
+
+    Livewire::test(Toggle::class, [
+        'activeIcon'   => 'underline-moon',
+        'inactiveIcon' => 'underline-sun',
+        'setting'      => 'priceChart',
+        'mobile'       => true,
+    ])
+        ->assertSet('activeIcon', 'underline-moon')
+        ->assertSet('inactiveIcon', 'underline-sun')
+        ->assertSet('setting', 'priceChart')
+        ->assertSet('activeValue', true)
+        ->assertSet('inactiveValue', false)
+        ->assertSet('mobile', true)
+        ->assertSet('currentValue', true)
+        ->assertSee('svg')
+        ->assertSee('absolute top-1 bg-white dark:bg-theme-secondary-800 rounded w-6 h-6 transition-default');
 });
 
 it('should get icon', function () {
