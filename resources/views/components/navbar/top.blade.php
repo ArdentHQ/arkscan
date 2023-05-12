@@ -28,6 +28,12 @@
                 inactive-icon="underline-sun"
                 setting="darkTheme"
             />
+
+            <livewire:navbar.network-toggle
+                active-icon="app-ark-testnet"
+                inactive-icon="networks.ark"
+                setting="testnet"
+            />
         </div>
     </div>
 

@@ -28,6 +28,8 @@ return [
     'confirmations'           => ':count confirmation|:count confirmations',
     'market_data_by'          => 'Market Data by',
     'arkvault'                => 'ARKVault',
+    'select_theme'            => 'Select Theme',
+    'select_network'          => 'Select Network',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
