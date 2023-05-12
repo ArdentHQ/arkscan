@@ -7,6 +7,7 @@
     'suffix'          => false,
     'withoutReverse'  => false,
     'withoutTruncate' => false,
+    'withoutUsername' => false,
 ])
 
 <div>
@@ -27,7 +28,7 @@
             @endif
 
             <a href="{{ route('wallet', $model->address()) }}" class="font-semibold sm:hidden md:flex link">
-                @if ($model->username())
+                @if ($model->username() && !$withoutUsername)
                     @if ($prefix)
                         <div class="delegate-name-truncate-prefix">
                     @elseif ($isListing)
@@ -53,7 +54,7 @@
             </a>
 
             <a href="{{ route('wallet', $model->address()) }}" class="hidden font-semibold sm:flex md:hidden link">
-                @if ($model->username())
+                @if ($model->username() && !$withoutUsername)
                     {{ $model->username() }}
                 @else
                     {{ $model->address() }}
