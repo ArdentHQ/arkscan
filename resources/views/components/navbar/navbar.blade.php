@@ -100,9 +100,13 @@
                 </div>
             </div>
 
-            <template x-if="open">
+            <div
+                x-show="open"
+                x-transition.opacity
+                x-cloak
+            >
                 <div class="border-t-2 shadow-xl md:hidden border-theme-secondary-200 dark:border-theme-secondary-800">
-                    <div class="pt-2 pb-4 bg-white rounded-b-lg dark:bg-theme-secondary-800">
+                    <div class="pt-2 bg-white rounded-b-lg dark:bg-theme-secondary-800">
                         @foreach ($navigation as $navItem)
                             @if (Arr::exists($navItem, 'children'))
                                 <div class="relative h-full dark:bg-theme-secondary-800">
@@ -143,15 +147,39 @@
                             @endif
                         @endforeach
 
+                        <div class="py-4 pb-5 dark:bg-black bg-theme-secondary-100">
+                            <div class="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
+                                <x-navbar.mobile.setting-item title="{{ trans('general.select_theme') }}">
+                                    <livewire:navbar.dark-mode-toggle
+                                        active-icon="underline-moon"
+                                        inactive-icon="underline-sun"
+                                        setting="darkTheme"
+                                        mobile
+                                    />
+                                </x-navbar.mobile.setting-item>
 
-                        @if(Network::canBeExchanged())
-                            <div class="flex py-3 px-8 mt-2 -mb-4 font-semibold md:hidden dark:text-white bg-theme-secondary-100 text-theme-secondary-900 dark:bg-theme-secondary-800">
-                                <livewire:price-ticker />
+                                <x-navbar.mobile.setting-item
+                                    title="{{ trans('general.select_network') }}"
+                                    class="pt-3"
+                                >
+                                    <livewire:navbar.network-toggle
+                                        active-icon="app-ark-testnet"
+                                        inactive-icon="networks.ark"
+                                        setting="testnet"
+                                        mobile
+                                    />
+                                </x-navbar.mobile.setting-item>
+
+                                @if(Network::canBeExchanged())
+                                    <div class="flex pt-3 font-semibold dark:text-theme-secondary-500">
+                                        <livewire:price-ticker />
+                                    </div>
+                                @endif
                             </div>
-                        @endif
+                        </div>
                     </div>
                 </div>
-            </template>
+            </div>
         </nav>
     </div>
 </header>
