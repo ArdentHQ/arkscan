@@ -49,7 +49,7 @@
                                             x-transition.origin.top
                                             x-cloak
                                         >
-                                            <div class="flex flex-col pt-2 pb-2 w-60">
+                                            <div class="flex flex-col pt-2 pb-2">
                                                 @foreach ($navItem['children'] as $menuItem)
                                                     <x-navbar.list-item
                                                         :route="$menuItem['route'] ?? null"
