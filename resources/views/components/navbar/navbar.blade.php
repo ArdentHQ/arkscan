@@ -106,7 +106,7 @@
                 x-cloak
             >
                 <div class="border-t-2 shadow-xl md:hidden border-theme-secondary-200 dark:border-theme-secondary-800">
-                    <div class="pt-2 pb-4 bg-white rounded-b-lg dark:bg-theme-secondary-800">
+                    <div class="pt-2 bg-white rounded-b-lg dark:bg-theme-secondary-800">
                         @foreach ($navigation as $navItem)
                             @if (Arr::exists($navItem, 'children'))
                                 <div class="relative h-full dark:bg-theme-secondary-800">
@@ -147,9 +147,9 @@
                             @endif
                         @endforeach
 
-                        <div class="py-4 dark:bg-black bg-theme-secondary-100">
+                        <div class="py-4 dark:bg-black bg-theme-secondary-100 pb-5">
                             <div class="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
-                                <x-navbar.mobile.setting-item title="Select Theme">
+                                <x-navbar.mobile.setting-item title="{{ trans('general.select_theme') }}">
                                     <livewire:navbar.dark-mode-toggle
                                         active-icon="underline-moon"
                                         inactive-icon="underline-sun"
@@ -159,7 +159,7 @@
                                 </x-navbar.mobile.setting-item>
 
                                 <x-navbar.mobile.setting-item
-                                    title="Select Network"
+                                    title="{{ trans('general.select_network') }}"
                                     class="pt-3"
                                 >
                                     <livewire:navbar.network-toggle
