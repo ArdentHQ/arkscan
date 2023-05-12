@@ -17,7 +17,7 @@
             class="relative z-30 bg-white border-b border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
             @click.outside="open = false"
         >
-            <div class="flex relative justify-between w-full h-[3.25rem] sm:h-16 content-container">
+            <div class="flex relative justify-between w-full sm:h-16 h-[3.25rem] content-container">
                 {{-- LOGO --}}
                 <div class="flex flex-shrink-0 items-center">
                     <a class="flex items-center" href="{{ route('home') }}">
@@ -34,7 +34,7 @@
                                     <div class="relative h-full">
                                         <a
                                             href="javascript:void(0)"
-                                            class="inline-flex relative justify-center items-center px-1 pt-px mr-6 h-full font-semibold leading-5 transition duration-150 ease-in-out focus:outline-none text-theme-secondary-700 dark:text-theme-secondary-400 hover:text-theme-secondary-800 border-b-2"
+                                            class="inline-flex relative justify-center items-center px-1 pt-px mr-6 h-full font-semibold leading-5 border-b-2 transition duration-150 ease-in-out focus:outline-none text-theme-secondary-700 dark:text-theme-secondary-400 hover:text-theme-secondary-800"
                                             :class="openDropdown === '{{ $navItem['label'] }}' ? 'border-theme-primary-600' : 'border-transparent hover:border-theme-primary-300'"
                                             @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
                                         >
