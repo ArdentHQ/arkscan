@@ -18,7 +18,7 @@
                 <span>({{ Network::currency()}})</span>
             </x-tables.headers.desktop.number>
             <x-tables.headers.desktop.number name="general.wallet.percentage" class="text-right" responsive breakpoint="lg">
-                <x-ark-info :tooltip="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])" />
+                <x-ark-info :tooltip="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])" type="info" />
             </x-tables.headers.desktop.number>
         </tr>
     </thead>

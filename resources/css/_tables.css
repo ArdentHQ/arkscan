@@ -191,3 +191,7 @@ body.table-compact-until-lg .arrow-direction {
 .table-list-mobile .table-list-mobile-row {
     @apply space-y-3;
 }
+
+.table-list-mobile .table-list-mobile-row {
+    @apply border-dashed;
+}
