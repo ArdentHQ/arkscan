@@ -1,6 +1,6 @@
 <div id="wallet-list" class="w-full">
     <x-skeletons.wallets>
-        <div class="mb-6">
+        <div class="flex flex-col mb-6">
             <h1 class="text-2xl font-semibold xl:mb-1.5 text-theme-secondary-900">
                 @lang('pages.wallets.title')
             </h1>

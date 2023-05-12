@@ -1,3 +1,9 @@
+@props([
+    'wallets',
+    'hideVoting' => false,
+    'useVoteWeight' => false,
+])
+
 <x-tables.encapsulated-table sticky class="hidden w-full md:block">
     <thead class="dark:bg-black bg-theme-secondary-100">
         <tr class="border-b-none">
@@ -5,9 +11,9 @@
             <x-tables.headers.desktop.address name="general.wallet.address" />
             <x-tables.headers.desktop.text name="general.wallet.name" />
             <x-tables.headers.desktop.icon name="general.wallet.type" class="text-center" />
-            @if(!($hideVoting ?? false))
+            @unless($hideVoting)
                 <x-tables.headers.desktop.icon name="general.wallet.voting" class="text-center" responsive breakpoint="lg" />
-            @endif
+            @endunless
             <x-tables.headers.desktop.number name="general.wallet.balance" last-on="lg">
                 <span>({{ Network::currency()}})</span>
             </x-tables.headers.desktop.number>
@@ -35,18 +41,18 @@
                     <x-tables.rows.desktop.wallet-type :model="$wallet" />
                 </x-ark-tables.cell>
 
-                @if(!($hideVoting ?? false))
+                @unless($hideVoting)
                     <x-ark-tables.cell class="text-center" responsive breakpoint="lg" >
                         <x-tables.rows.desktop.encapsulated.voting :model="$wallet" />
                     </x-ark-tables.cell>
-                @endif
+                @endunless
 
                 <x-ark-tables.cell class="text-right">
                     <div class="flex flex-col font-semibold text-theme-secondary-900 dark:text-theme-secondary-200">
                         <x-tables.rows.desktop.encapsulated.balance :model="$wallet" />
 
                         <span class="mt-1 text-xs font-semibold lg:hidden text-theme-secondary-500">
-                            @isset($useVoteWeight)
+                            @if($useVoteWeight)
                                 <x-tables.rows.desktop.vote-percentage :model="$wallet" />
                             @else
                                 <x-tables.rows.desktop.balance-percentage :model="$wallet" />
@@ -57,7 +63,7 @@
 
                 <x-ark-tables.cell class="text-right" responsive breakpoint="lg">
                     <span class="font-semibold">
-                        @isset($useVoteWeight)
+                        @if($useVoteWeight)
                             <x-tables.rows.desktop.vote-percentage :model="$wallet" />
                         @else
                             <x-tables.rows.desktop.balance-percentage :model="$wallet" />

@@ -1,6 +1,12 @@
+@props([
+    'model',
+    'withoutTruncate' => false,
+    'withoutUsername' => false,
+])
+
 <span class="flex justify-between w-full">
     <span>
-        <x-general.identity :model="$model" :without-truncate="$withoutTruncate ?? false" :without-username="$withoutUsername ?? false">
+        <x-general.identity :model="$model" :without-truncate="$withoutTruncate" :without-username="$withoutUsername">
             <x-slot name="address">
                 <span class="xl:hidden">
                     <x-truncate-middle>{{ $model->address() }}</x-truncate-middle>

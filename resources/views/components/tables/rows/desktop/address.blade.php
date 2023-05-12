@@ -1,5 +1,11 @@
-<x-general.identity :model="$model" :without-truncate="$withoutTruncate ?? false" :without-username="$withoutUsername ?? false">
-    @if ($model->username() && !($withoutUsername ?? false))
+@props([
+    'model',
+    'withoutTruncate' => false,
+    'withoutUsername' => false,
+])
+
+<x-general.identity :model="$model" :without-truncate="$withoutTruncate" :without-username="$withoutUsername">
+    @if ($model->username() && !($withoutUsername))
         <x-slot name="suffix">
             <span class="hidden ml-1 font-semibold lg:flex text-theme-secondary-500">
                 <x-truncate-middle>{{ $model->address() }}</x-truncate-middle>
