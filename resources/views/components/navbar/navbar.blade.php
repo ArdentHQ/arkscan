@@ -163,12 +163,7 @@
                                     title="{{ trans('general.select_network') }}"
                                     class="pt-3"
                                 >
-                                    <livewire:navbar.network-toggle
-                                        active-icon="app-ark-testnet"
-                                        inactive-icon="networks.ark"
-                                        setting="testnet"
-                                        mobile
-                                    />
+                                    <x-navbar.network-dropdown />
                                 </x-navbar.mobile.setting-item>
 
                                 @if(Network::canBeExchanged())
