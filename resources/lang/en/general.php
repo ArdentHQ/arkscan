@@ -33,10 +33,10 @@ return [
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
-        'live_network' => 'Live Network',
-        'test_network' => 'Test Network',
-        'live' => 'Live',
-        'test' => 'Test',
+        'live_network'       => 'Live Network',
+        'test_network'       => 'Test Network',
+        'live'               => 'Live',
+        'test'               => 'Test',
     ],
 
     'block'                   => [
