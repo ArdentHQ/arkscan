@@ -1,11 +1,11 @@
 <div class="flex-col rounded-xl md:mt-6 md:border border-theme-secondary-300 dark:border-theme-secondary-800">
     <x-compatible-wallets.disclaimer
-        class="xl:hidden md:px-8 md:pt-6 pb-4 inline-flex w-full"
+        class="inline-flex pb-4 w-full md:px-8 md:pt-6 xl:hidden"
         inner-class="w-full"
     />
 
     <div class="flex flex-col w-full min-[960px]:flex-row">
-        <div class="flex flex-col flex-1 justify-center pb-8 xl:py-8 md:px-8">
+        <div class="flex flex-col flex-1 justify-center pb-8 md:px-8 xl:py-8">
             <x-compatible-wallets.disclaimer class="hidden xl:block" />
 
             <div class="xl:mt-6">
@@ -21,7 +21,7 @@
                 </p>
             </div>
 
-            <div class="flex flex-col justify-between py-3 px-3 rounded-xl sm:flex-row md:pl-6 bg-theme-primary-50 dark:bg-theme-dark-blue-800 mt-6">
+            <div class="flex flex-col justify-between py-3 px-3 mt-6 rounded-xl sm:flex-row md:pl-6 bg-theme-primary-50 dark:bg-theme-dark-blue-800">
                 <div class="flex flex-1 items-center py-1 bg-no-repeat bg-right sm:dark:bg-[url('/images/wallets/arrows-dark.svg')] sm:bg-[url('/images/wallets/arrows.svg')] min-[960px]:bg-none lg:dark:bg-[url('/images/wallets/arrows-dark.svg')] lg:bg-[url('/images/wallets/arrows.svg')] mr-2">
                     <div>
                         <x-ark-icon name="app-wallets.arkvault" size="none" class="w-10 h-10 dark:text-white text-theme-navy-600" />
