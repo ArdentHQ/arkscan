@@ -56,6 +56,20 @@ it('should submit', function () {
     Mail::assertQueued(WalletFormSubmitted::class);
 });
 
+it('should cancel submission', function () {
+    Livewire::test(SubmitWallet::class)
+        ->call('openModal')
+        ->set('name', 'Potato Wallet')
+        ->set('website', 'https://potato.wallet')
+        ->set('message', 'Exciting new universal wallet')
+        ->assertSee(trans('pages.compatible-wallets.submit-modal.title'))
+        ->call('cancel')
+        ->assertSet('name', null)
+        ->assertSet('website', null)
+        ->assertSet('message', null)
+        ->assertDontSee(trans('pages.compatible-wallets.submit-modal.title'));
+});
+
 it('should throttle submissions', function () {
     Mail::fake();
 

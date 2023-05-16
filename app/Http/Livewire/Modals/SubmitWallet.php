@@ -53,6 +53,7 @@ final class SubmitWallet extends ThrottledComponent
     public function cancel(): void
     {
         $this->closeModal();
+        $this->resetForm();
     }
 
     public function updated(string $key): void
