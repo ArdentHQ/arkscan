@@ -11,7 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
-class SubmitWallet extends ThrottledComponent
+final class SubmitWallet extends ThrottledComponent
 {
     use HasModal;
 
@@ -21,6 +21,9 @@ class SubmitWallet extends ThrottledComponent
 
     public ?string $message = null;
 
+    /**
+     * @var string[][]
+     */
     protected $rules = [
         'name'    => ['required', 'string', 'max:50'],
         'website' => ['required', 'url'],
@@ -52,7 +55,7 @@ class SubmitWallet extends ThrottledComponent
         $this->closeModal();
     }
 
-    public function updated($key): void
+    public function updated(string $key): void
     {
         $this->validateOnly($key);
     }
