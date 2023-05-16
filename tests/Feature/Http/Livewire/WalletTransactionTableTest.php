@@ -162,8 +162,8 @@ it('should apply filters', function () {
         $component->assertDontSee($transaction->id());
         $component->assertDontSee($transaction->timestamp());
         // Need to include part of the url because the id is in the wire:key
-        $component->assertDontSee('/wallets/'.$transaction->sender()->address());
-        $component->assertDontSee('/wallets/'.$transaction->recipient()->address());
+        $component->assertDontSee('/address/'.$transaction->sender()->address());
+        $component->assertDontSee('/address/'.$transaction->recipient()->address());
         $component->assertDontSee(NumberFormatter::currency($transaction->fee(), Network::currency()));
         $component->assertDontSee(NumberFormatter::currency($transaction->amount(), Network::currency()));
     }
@@ -178,8 +178,8 @@ it('should apply filters', function () {
     foreach (ViewModelFactory::collection($expected) as $transaction) {
         $component->assertSee($transaction->id());
         $component->assertSee($transaction->timestamp());
-        $component->assertSee('/wallets/'.$transaction->sender()->address());
-        $component->assertSee('/wallets/'.$transaction->recipient()->address());
+        $component->assertSee('/address/'.$transaction->sender()->address());
+        $component->assertSee('/address/'.$transaction->recipient()->address());
         $component->assertSee(NumberFormatter::currency($transaction->fee(), Network::currency()));
         $component->assertSee(NumberFormatter::currency($transaction->amount(), Network::currency()));
     }
@@ -220,8 +220,8 @@ it('should apply filters through an event', function () {
         $component->assertDontSee($transaction->id());
         $component->assertDontSee($transaction->timestamp());
         // Need to include part of the url because the id is in the wire:key
-        $component->assertDontSee('/wallets/'.$transaction->sender()->address());
-        $component->assertDontSee('/wallets/'.$transaction->recipient()->address());
+        $component->assertDontSee('/address/'.$transaction->sender()->address());
+        $component->assertDontSee('/address/'.$transaction->recipient()->address());
         $component->assertDontSee(NumberFormatter::currency($transaction->fee(), Network::currency()));
         $component->assertDontSee(NumberFormatter::currency($transaction->amount(), Network::currency()));
     }
@@ -236,8 +236,8 @@ it('should apply filters through an event', function () {
     foreach (ViewModelFactory::collection($expected) as $transaction) {
         $component->assertSee($transaction->id());
         $component->assertSee($transaction->timestamp());
-        $component->assertSee('/wallets/'.$transaction->sender()->address());
-        $component->assertSee('/wallets/'.$transaction->recipient()->address());
+        $component->assertSee('/address/'.$transaction->sender()->address());
+        $component->assertSee('/address/'.$transaction->recipient()->address());
         $component->assertSee(NumberFormatter::currency($transaction->fee(), Network::currency()));
         $component->assertSee(NumberFormatter::currency($transaction->amount(), Network::currency()));
     }

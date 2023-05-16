@@ -40,5 +40,5 @@ it('can lookup wallets by the username', function () {
 
     $this
         ->get('/wallets/'.$username)
-        ->assertOk();
+        ->assertRedirect('/address/'.$wallet->address);
 });

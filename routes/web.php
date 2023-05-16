@@ -42,7 +42,9 @@ Route::get('/address/{wallet}', ShowWalletController::class)->name('wallet');
 Route::get('/address/{wallet}/voters', ListVotersByWalletController::class)->name('wallet.voters');
 Route::get('/address/{wallet}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
 
-Route::permanentRedirect('/wallets/{wallet}', '/address/{wallet}');
+Route::get('/wallets/{wallet}', function (Wallet $wallet) {
+    return redirect()->route('wallet', $wallet);
+});
 Route::get('/wallets/{wallet}/voters', function (Wallet $wallet) {
     return redirect()->route('wallet.voters', $wallet);
 });

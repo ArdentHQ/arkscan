@@ -17,7 +17,7 @@ it('redirects to the correct route for wallets', function (): void {
     $walletAddress = Wallet::factory()->create()->address;
 
     $this->get(sprintf('wallet/%s', $walletAddress))
-        ->assertRedirect(sprintf('wallets/%s', $walletAddress));
+        ->assertRedirect(sprintf('address/%s', $walletAddress));
 });
 
 it('redirects to the correct route for blocks', function (): void {
