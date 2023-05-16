@@ -29,11 +29,12 @@
                 setting="darkTheme"
             />
 
-            <livewire:navbar.network-toggle
-                active-icon="app-ark-testnet"
-                inactive-icon="networks.ark"
-                setting="testnet"
-            />
+            <x-navbar.network-dropdown>
+                <x-ark-icon
+                    name="networks.ark"
+                    size="sm"
+                />
+            </x-navbar.network-dropdown>
         </div>
     </div>
 
