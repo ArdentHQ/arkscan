@@ -38,9 +38,13 @@ Route::get('/transactions', TransactionsController::class)->name('transactions')
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
 
 Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
-Route::get('/wallets/{wallet}', ShowWalletController::class)->name('wallet');
-Route::get('/wallets/{wallet}/voters', ListVotersByWalletController::class)->name('wallet.voters');
-Route::get('/wallets/{wallet}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
+Route::get('/address/{wallet}', ShowWalletController::class)->name('wallet');
+Route::get('/address/{wallet}/voters', ListVotersByWalletController::class)->name('wallet.voters');
+Route::get('/address/{wallet}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
+
+Route::permanentRedirect('/wallets/{wallet}', '/address/{wallet}');
+Route::permanentRedirect('/wallets/{wallet}/voters', '/address/{wallet}/voters');
+Route::permanentRedirect('/wallets/{wallet}/blocks', '/address/{wallet}/blocks');
 
 Route::view('/statistics', 'app.statistics')->name('statistics');
 Route::get('/support', [ContactController::class, 'index'])->name('contact');
