@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Mail\WalletFormSubmitted;
 
 it('should build a mail object', function () {
     $mail = new WalletFormSubmitted([
-        'name' => 'Test User',
+        'name'    => 'Test User',
         'website' => 'https://google.com',
         'message' => 'This is a test mail message',
     ]);
@@ -13,9 +15,9 @@ it('should build a mail object', function () {
 
     expect($build->to)->toBe([
         [
-            'name' => null,
+            'name'    => null,
             'address' => config('mail.wallet_submitted.address'),
-        ]
+        ],
     ]);
 
     expect($build->markdown)->toBe('mails.wallet-submitted');
