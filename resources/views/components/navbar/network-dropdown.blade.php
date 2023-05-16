@@ -48,7 +48,7 @@
         @click.away="isOpen = false"
         x-transition
         x-cloak
-        class="flex overflow-hidden absolute right-0 top-full flex-col py-3 whitespace-nowrap bg-white rounded-xl md:right-0 dark:bg-theme-secondary-800"
+        class="flex overflow-hidden absolute z-10 right-0 top-full flex-col py-3 whitespace-nowrap bg-white rounded-xl md:right-0 dark:bg-theme-secondary-800 shadow-toggle-dropdown"
     >
         <a
             @click="isOpen = false"
