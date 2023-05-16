@@ -43,8 +43,12 @@ Route::get('/address/{wallet}/voters', ListVotersByWalletController::class)->nam
 Route::get('/address/{wallet}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
 
 Route::permanentRedirect('/wallets/{wallet}', '/address/{wallet}');
-Route::permanentRedirect('/wallets/{wallet}/voters', '/address/{wallet}/voters');
-Route::permanentRedirect('/wallets/{wallet}/blocks', '/address/{wallet}/blocks');
+Route::get('/wallets/{wallet}/voters', function (Wallet $wallet) {
+    return redirect()->route('wallet.voters', $wallet);
+});
+Route::get('/wallets/{wallet}/blocks', function (Wallet $wallet) {
+    return redirect()->route('wallet.blocks', $wallet);
+});
 
 Route::view('/statistics', 'app.statistics')->name('statistics');
 Route::get('/support', [ContactController::class, 'index'])->name('contact');
