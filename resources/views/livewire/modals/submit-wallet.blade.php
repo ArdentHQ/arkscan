@@ -10,17 +10,17 @@
     @if($this->modalShown)
         <x-ark-modal
             :title="trans('pages.compatible-wallets.submit-modal.title')"
-            title-class="text-left text-lg sm:text-2xl"
+            title-class="text-lg text-left sm:text-2xl"
             padding-class="p-6 sm:p-10"
             wire-close="closeModal"
-            close-button-class="absolute top-0 right-0 w-11 h-11 rounded-none sm:rounded mt-0 mr-0 sm:mt-6 sm:mr-6 button button-secondary p-0"
+            close-button-class="absolute top-0 right-0 p-0 mt-0 mr-0 w-11 h-11 rounded-none sm:mt-6 sm:mr-6 sm:rounded button button-secondary"
             buttons-style="flex flex-col sm:flex-row sm:justify-end !mt-6 sm:space-x-3 space-y-3 sm:space-y-0"
             breakpoint="sm"
             wrapper-class="max-w-full sm:max-w-[430px]"
-            content-class="relative bg-white sm:mx-auto sm:rounded-2.5xl sm:shadow-2xl dark:bg-theme-secondary-900"
+            content-class="relative bg-white sm:mx-auto sm:shadow-2xl sm:rounded-2.5xl dark:bg-theme-secondary-900"
         >
             <x-slot name="description">
-                <div class="flex flex-col space-y-5 pt-2">
+                <div class="flex flex-col pt-2 space-y-5">
                     <x-ark-input
                         name="name"
                         :label="trans('pages.compatible-wallets.submit-modal.name')"

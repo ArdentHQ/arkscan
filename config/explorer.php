@@ -74,7 +74,7 @@ return [
     'throttle'                           => [
         'wallet_submitted' => [
             'max_attempts' => env('THROTTLE_WALLET_SUBMITTED_MAX_ATTEMPTS', 3),
-            'duration' => env('THROTTLE_WALLET_SUBMITTED_DURATION', 3600),
+            'duration'     => env('THROTTLE_WALLET_SUBMITTED_DURATION', 3600),
         ],
     ],
 ];
