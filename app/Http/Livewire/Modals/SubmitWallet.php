@@ -64,22 +64,6 @@ class SubmitWallet extends ThrottledComponent
         return $validator->fails();
     }
 
-    private function data(): array
-    {
-        return [
-            'name' => $this->name,
-            'website' => $this->website,
-            'message' => $this->message,
-        ];
-    }
-
-    private function resetForm(): void
-    {
-        $this->name = null;
-        $this->website = null;
-        $this->message = null;
-    }
-
     protected function getThrottlingMaxAttempts(): int
     {
         return config('explorer.throttle.wallet_submitted.max_attempts', 3);
@@ -98,5 +82,21 @@ class SubmitWallet extends ThrottledComponent
     protected function getThrottlingMessage(string $availableIn): string
     {
         return trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => $availableIn]);
+    }
+
+    private function data(): array
+    {
+        return [
+            'name'    => $this->name,
+            'website' => $this->website,
+            'message' => $this->message,
+        ];
+    }
+
+    private function resetForm(): void
+    {
+        $this->name    = null;
+        $this->website = null;
+        $this->message = null;
     }
 }

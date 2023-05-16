@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Livewire\Modals\SubmitWallet;
 use App\Mail\WalletFormSubmitted;
 use Illuminate\Support\Facades\Mail;
@@ -29,7 +31,7 @@ it('should not send mail if not valid data', function () {
         ->assertSet('message', null)
         ->call('submit')
         ->assertHasErrors([
-            'name' => 'required',
+            'name'    => 'required',
             'website' => 'required',
             'message' => 'required',
         ]);
