@@ -111,4 +111,8 @@ return [
 
     'contact_email' => 'contact@arkscan.io',
 
+    'wallet_submitted' => [
+        'address' => 'support@ardenthq.com',
+    ],
+
 ];

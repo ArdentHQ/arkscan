@@ -11,4 +11,6 @@ return [
     'vote'            => 'Vote',
     'submit_wallet'   => 'Submit Wallet',
     'learn_more'      => 'Learn More',
+    'submit' => 'Submit',
+    'cancel' => 'Cancel',
 ];
