@@ -9,11 +9,11 @@
     @has-loaded-price-data="busy = false"
 >
     <div @class([
-        'flex rounded items-center md:text-theme-secondary-700 md:dark:text-theme-secondary-200 md:bg-theme-secondary-200 md:dark:bg-theme-secondary-800 md:border border-theme-secondary-300 dark:border-transparent cursor-default',
-        'text-theme-secondary-500 dark:text-theme-secondary-700' => $isDisabled,
-        'justify-between ',
+        'flex rounded items-center md:bg-theme-secondary-200 md:dark:bg-theme-secondary-800 md:border border-theme-secondary-300 dark:border-transparent cursor-default justify-between',
+        'md:text-theme-secondary-500 md:dark:text-theme-secondary-700' => $isDisabled,
+        'md:text-theme-secondary-700 md:dark:text-theme-secondary-200' => ! $isDisabled,
     ])>
-        <div class="font-semibold md:py-1.5 md:pr-2 md:pl-3 md:text-sm">
+        <div class="font-semibold md:py-1.5 md:pr-2 md:pl-3 md:text-sm transition-default">
             <span>@lang('general.navbar.price'):</span>
 
             @if ($isDisabled)
@@ -28,8 +28,8 @@
                 name="button"
                 @class([
                     'inline-flex items-center rounded-l rounded-r md:rounded-l-none',
-                    'text-theme-secondary-500 dark:text-theme-secondary-700 dark:bg-theme-secondary-800' => $isDisabled,
-                    'bg-theme-secondary-200 dark:bg-theme-secondary-800 md:bg-white md:dark:text-theme-secondary-200 md:hover:text-theme-secondary-900 md:hover:bg-theme-secondary-200 md:dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800 text-theme-secondary-700 dark:text-theme-secondary-200 md:dark:text-theme-secondary-600' => ! $isDisabled,
+                    'text-theme-secondary-500 dark:text-theme-secondary-700 bg-theme-secondary-200 dark:bg-theme-secondary-800' => $isDisabled,
+                    'bg-theme-secondary-200 dark:bg-theme-secondary-800 md:bg-white md:dark:text-theme-secondary-200 md:hover:text-theme-secondary-900 md:hover:bg-theme-secondary-200 md:dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800 text-theme-secondary-700 dark:text-theme-secondary-200' => ! $isDisabled,
                 ])
                 :disabled="$isDisabled"
             >
