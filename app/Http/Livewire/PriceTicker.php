@@ -57,7 +57,7 @@ final class PriceTicker extends Component
     public function setCurrency(string $newCurrency): void
     {
         $originalCurrency = Settings::currency();
-        $newCurrency = Str::upper($newCurrency);
+        $newCurrency      = Str::upper($newCurrency);
 
         if ($originalCurrency !== $newCurrency) {
             $this->saveSetting('currency', $newCurrency);
