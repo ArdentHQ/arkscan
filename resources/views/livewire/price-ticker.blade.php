@@ -14,7 +14,7 @@
         'text-theme-secondary-500 dark:text-theme-secondary-700' => $isDisabled,
         'justify-between ',
     ])>
-        <div class="md:text-sm font-semibold md:pl-3 md:py-1.5 md:pr-2">
+        <div class="font-semibold md:py-1.5 md:pr-2 md:pl-3 md:text-sm">
             <span>@lang('general.navbar.price'):</span>
 
             @if ($isDisabled)
@@ -35,12 +35,12 @@
                 :disabled="$isDisabled"
             >
                 <button
-                    class="flex justify-center items-center transition-default text-sm font-semibold space-x-2 leading-4 pr-3 py-2"
+                    class="flex justify-center items-center py-2 pr-3 space-x-2 text-sm font-semibold leading-4 transition-default"
                     @if ($isDisabled)
                         disabled
                     @endif
                 >
-                    <div class="w-px h-3.5 bg-theme-secondary-300 dark:bg-theme-secondary-700 hidden md:block"></div>
+                    <div class="hidden w-px h-3.5 md:block bg-theme-secondary-300 dark:bg-theme-secondary-700"></div>
 
                     <span>
                         {{ $to }}
