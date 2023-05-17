@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Navbar;
 
 use App\Facades\Settings;
+use App\Http\Livewire\Concerns\HandlesSettings;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -14,6 +14,8 @@ use Livewire\Component;
 /* @phpstan-ignore-next-line */
 class Toggle extends Component
 {
+    use HandlesSettings;
+
     public string $activeIcon;
 
     public string $inactiveIcon;
@@ -85,9 +87,6 @@ class Toggle extends Component
 
     protected function save(): void
     {
-        $settings                 = Settings::all();
-        $settings[$this->setting] = $this->currentValue;
-
-        Cookie::queue('settings', json_encode($settings), 60 * 24 * 365 * 5);
+        $this->saveSetting($this->setting, $this->currentValue);
     }
 }
