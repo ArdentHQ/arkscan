@@ -94,7 +94,7 @@ final class AppServiceProvider extends ServiceProvider
                 ['route' => 'blocks',  'label' => trans('menus.blocks')],
                 ['route' => 'transactions', 'label' => trans('menus.transactions')],
                 ['route' => 'delegates',    'label' => trans('menus.delegates')],
-                ['route' => 'wallets', 'label' => trans('menus.top_accounts')],
+                ['route' => 'top-accounts', 'label' => trans('menus.top_accounts')],
             ]],
             ['label' => trans('menus.resources'), 'children' => [
                 ['route' => 'compatible-wallets',  'label' => trans('menus.wallets')],

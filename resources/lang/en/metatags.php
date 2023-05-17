@@ -46,8 +46,8 @@ return [
         'image'       => asset('images/metadata/blocks.png'),
     ],
 
-    'wallets'       => [
-        'title'       => 'Wallets | :name Blockchain Explorer',
+    'top-accounts'  => [
+        'title'       => 'Top Accounts | :name Blockchain Explorer',
         'description' => 'View wallet address details on the :name Blockchain.',
         'image'       => asset('images/metadata/wallets.png'),
     ],
