@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Livewire\Concerns;
 
 use App\Facades\Settings;
@@ -7,7 +9,7 @@ use Illuminate\Support\Facades\Cookie;
 
 trait HandlesSettings
 {
-    protected function saveSetting(string $setting, mixed $value): void
+    private function saveSetting(string $setting, mixed $value): void
     {
         $settings           = Settings::all();
         $settings[$setting] = $value;
