@@ -1,5 +1,4 @@
 @php ($isDisabled = ! Network::canBeExchanged() || config('explorer.network') !== 'production' || ! $isAvailable)
-@php ($isDisabled = false)
 
 <div
     wire:poll.60s
