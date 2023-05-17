@@ -70,4 +70,11 @@ return [
     'support'                           => [
         'enabled' => env('ARKSCAN_SUPPORT_ENABLED', false),
     ],
+
+    'throttle'                           => [
+        'wallet_submitted' => [
+            'max_attempts' => env('THROTTLE_WALLET_SUBMITTED_MAX_ATTEMPTS', 3),
+            'duration'     => env('THROTTLE_WALLET_SUBMITTED_DURATION', 3600),
+        ],
+    ],
 ];
