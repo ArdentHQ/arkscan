@@ -2,7 +2,6 @@
     <span class="font-semibold sm:text-lg dark:text-white text-theme-primary-900">
         @lang('pages.compatible-wallets.get_listed')
     </span>
-    <button type="button" class="mt-3 w-full sm:mt-0 sm:w-auto button-primary">
-        @lang('actions.submit_wallet')
-    </button>
+
+    <livewire:modals.submit-wallet />
 </div>

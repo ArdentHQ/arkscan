@@ -41,7 +41,7 @@
         x-transition
         x-cloak
         {{ $content->attributes->class([
-            'flex flex-col overflow-hidden absolute py-3 whitespace-nowrap bg-white rounded-xl dark:bg-theme-secondary-800 z-10 mt-1',
+            'flex flex-col overflow-hidden absolute py-3 whitespace-nowrap bg-white rounded-xl dark:bg-theme-secondary-800 z-10 mt-1 shadow-toggle-dropdown',
             $dropdownClass,
         ]) }}
     >
