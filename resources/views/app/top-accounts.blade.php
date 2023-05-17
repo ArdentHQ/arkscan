@@ -3,7 +3,7 @@
         <script src="{{ mix('js/clipboard.js')}}"></script>
     @endpush
 
-    <x-metadata page="wallets" />
+    <x-metadata page="top-accounts" />
 
     @section('content')
         <x-ark-container>

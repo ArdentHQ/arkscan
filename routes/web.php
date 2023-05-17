@@ -37,10 +37,20 @@ Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
 Route::get('/transactions', TransactionsController::class)->name('transactions');
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
 
-Route::view('/wallets', 'app.wallets')->name('wallets');
-Route::get('/wallets/{wallet}', ShowWalletController::class)->name('wallet');
-Route::get('/wallets/{wallet}/voters', ListVotersByWalletController::class)->name('wallet.voters');
-Route::get('/wallets/{wallet}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
+Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
+Route::get('/addresses/{wallet}', ShowWalletController::class)->name('wallet');
+Route::get('/addresses/{wallet}/voters', ListVotersByWalletController::class)->name('wallet.voters');
+Route::get('/addresses/{wallet}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
+
+Route::get('/wallets/{wallet}', function (Wallet $wallet) {
+    return redirect()->route('wallet', $wallet);
+});
+Route::get('/wallets/{wallet}/voters', function (Wallet $wallet) {
+    return redirect()->route('wallet.voters', $wallet);
+});
+Route::get('/wallets/{wallet}/blocks', function (Wallet $wallet) {
+    return redirect()->route('wallet.blocks', $wallet);
+});
 
 Route::view('/statistics', 'app.statistics')->name('statistics');
 Route::get('/support', [ContactController::class, 'index'])->name('contact');
