@@ -45,7 +45,7 @@
             $dropdownClass,
         ]) }}
     >
-        <div class="custom-scroll overflow-y-auto h-full flex flex-col">
+        <div class="flex overflow-y-auto flex-col h-full custom-scroll">
             {{ $content }}
         </div>
     </div>
