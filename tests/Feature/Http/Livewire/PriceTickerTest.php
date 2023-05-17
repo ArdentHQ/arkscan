@@ -13,7 +13,7 @@ it('should render with the source currency, target currency and exchange rate', 
     Config::set('explorer.network', 'production');
     Config::set('explorer.networks.production.canBeExchanged', true);
 
-    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 0.2907);
+    (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 0.2907);
 
     Livewire::test(PriceTicker::class)
         ->assertDontSee('N/A')
@@ -37,8 +37,8 @@ it('should update the price if the currency changes', function () {
     Config::set('explorer.network', 'production');
     Config::set('explorer.networks.production.canBeExchanged', true);
 
-    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 0.2907);
-    (new NetworkStatusBlockCache())->setPrice('DARK', 'MXN', 0.22907);
+    (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 0.2907);
+    (new NetworkStatusBlockCache())->setPrice('ARK', 'MXN', 0.22907);
 
     $component = Livewire::test(PriceTicker::class);
 
