@@ -27,7 +27,7 @@ final class SubmitWallet extends ThrottledComponent
     protected $rules = [
         'name'    => ['required', 'string', 'max:50'],
         'website' => ['required', 'url'],
-        'message' => ['required', 'string', 'max:500'],
+        'message' => ['nullable', 'string', 'max:500'],
     ];
 
     public function submit(): void
@@ -102,5 +102,7 @@ final class SubmitWallet extends ThrottledComponent
         $this->name    = null;
         $this->website = null;
         $this->message = null;
+
+        $this->resetErrorBag();
     }
 }
