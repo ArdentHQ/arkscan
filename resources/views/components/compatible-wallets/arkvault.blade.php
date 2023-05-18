@@ -1,11 +1,11 @@
 <div class="flex-col rounded-xl md:mt-6 md:border border-theme-secondary-300 dark:border-theme-secondary-800">
     <x-compatible-wallets.disclaimer
-        class="inline-flex pb-4 w-full md:px-8 md:pt-6 xl:hidden"
+        class="inline-flex pb-6 w-full md:px-8 md:pt-6 xl:hidden"
         inner-class="w-full"
     />
 
     <div class="flex flex-col w-full min-[960px]:flex-row">
-        <div class="flex flex-col flex-1 justify-center pb-8 md:px-8 xl:py-8">
+        <div class="flex flex-col flex-1 justify-center pb-4 sm:pb-8 md:px-8 xl:py-8">
             <x-compatible-wallets.disclaimer class="hidden xl:block" />
 
             <div class="xl:mt-6">
@@ -35,9 +35,9 @@
                         </span>
                     </div>
                 </div>
-                <div class="flex items-center">
-                    <a href="@lang('pages.compatible-wallets.arkvault.url')" target="_blank" rel="noopener nofollow noreferrer" class="flex items-center mt-4 w-full h-full rounded-xl sm:mt-0 sm:w-auto md:mt-0 md:w-full lg:w-auto button-primary">
-                        <div class="flex justify-center items-center h-full">
+                <div class="flex items-center h-15 sm:h-auto mt-4">
+                    <a href="@lang('pages.compatible-wallets.arkvault.url')" target="_blank" rel="noopener nofollow noreferrer" class="flex items-center w-full h-full rounded-xl sm:mt-0 sm:w-auto md:mt-0 md:w-full lg:w-auto button-primary">
+                        <div class="flex justify-center items-center h-full ">
                             <span>
                                 @lang('actions.learn_more')
                             </span>
