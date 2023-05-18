@@ -7,34 +7,31 @@
 @endphp
 
 <x-general.dropdown.dropdown>
-    <x-slot name="button">
-        <button @class([
-            'flex justify-center items-center h-8 rounded transition-default p-2 text-sm font-semibold space-x-1.5 md:border md:w-8',
-            'text-theme-secondary-700 bg-theme-secondary-200 md:bg-white md:border-theme-secondary-300 md:hover:bg-theme-secondary-200',
-            'dark:text-theme-secondary-200 dark:bg-theme-secondary-800 md:dark:text-theme-secondary-600 md:dark:bg-theme-secondary-900 md:dark:border-theme-secondary-800 dark:hover:bg-theme-secondary-800',
-        ])>
-            @if (strlen($slot) > 0)
-                <span>{{ $slot }}</span>
-            @else
-                <span>
-                    @if ($isProduction)
-                        @lang('general.navbar.live')
-                    @else
-                        @lang('general.navbar.test')
-                    @endif
-                </span>
+    <x-slot
+        name="button"
+        class="justify-center md:hover:text-theme-secondary-700 space-x-1.5 p-2 h-8 md:w-8 rounded md:border md:border-theme-secondary-300 md:dark:border-theme-secondary-800"
+    >
+        @if (strlen($slot) > 0)
+            <span>{{ $slot }}</span>
+        @else
+            <span>
+                @if ($isProduction)
+                    @lang('general.navbar.live')
+                @else
+                    @lang('general.navbar.test')
+                @endif
+            </span>
 
-                <span
-                    class="transition-default"
-                    :class="{ 'rotate-180': isOpen }"
-                >
-                    <x-ark-icon
-                        name="arrows.chevron-down-small"
-                        size="w-2.5 h-2.5"
-                    />
-                </span>
-            @endif
-        </button>
+            <span
+                class="transition-default"
+                :class="{ 'rotate-180': dropdownOpen }"
+            >
+                <x-ark-icon
+                    name="arrows.chevron-down-small"
+                    size="w-2.5 h-2.5"
+                />
+            </span>
+        @endif
     </x-slot>
 
     <x-slot
