@@ -50,6 +50,9 @@ it('should ignore the cache for development network', function () {
 
     $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.development')));
 
+    // Set explicitly as phpunit.xml contains ARKSCAN_NETWORK_CAN_BE_EXCHANGED
+    Config::set('explorer.networks.development.canBeExchanged', false);
+
     $cache              = app(NetworkStatusBlockCache::class);
     $marketDataProvider = app(MarketDataProvider::class);
 
