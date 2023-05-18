@@ -19,10 +19,12 @@
             @if ($isDisabled)
                 @lang('general.na')
             @else
-                <div class="inline-flex">
-                    <span>
-                        {{ config('currencies.'.Str::lower($to).'.symbol') }}
-                    </span>
+                <div class="inline-flex items-center">
+                    @if (config('currencies.'.Str::lower($to).'.symbol'))
+                        <span>
+                            {{ config('currencies.'.Str::lower($to).'.symbol') }}
+                        </span>
+                    @endif
 
                     <span>
                         {{ $price }}
