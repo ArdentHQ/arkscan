@@ -37,7 +37,7 @@
             <x-slot
                 name="button"
                 @class([
-                    'inline-flex items-center rounded-l rounded-r md:rounded-l-none',
+                    'inline-flex items-center rounded-l rounded-r md:rounded-l-none transition-default',
                     'text-theme-secondary-500 dark:text-theme-secondary-700 bg-theme-secondary-200 dark:bg-theme-secondary-800' => $isDisabled,
                     'bg-theme-secondary-200 dark:bg-theme-secondary-800 md:bg-white md:dark:text-theme-secondary-200 md:hover:text-theme-secondary-900 md:hover:bg-theme-secondary-200 md:dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800 text-theme-secondary-700 dark:text-theme-secondary-200' => ! $isDisabled,
                 ])
@@ -45,7 +45,7 @@
             >
                 <button
                     @class([
-                        'flex justify-center items-center py-2 pr-3 space-x-2 text-sm font-semibold leading-4 transition-default',
+                        'flex justify-center items-center py-2 pr-3 space-x-2 text-sm font-semibold leading-4',
                         'cursor-not-allowed' => $isDisabled,
                     ])
                     @if ($isDisabled)
