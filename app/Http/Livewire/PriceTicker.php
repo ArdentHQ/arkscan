@@ -6,16 +6,18 @@ namespace App\Http\Livewire;
 
 use App\Facades\Network;
 use App\Facades\Settings;
+use App\Http\Livewire\Concerns\HandlesSettings;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\NumberFormatter;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Livewire\Component;
 
 final class PriceTicker extends Component
 {
-    public string $price;
+    use HandlesSettings;
 
-    public string $from;
+    public string $price;
 
     public string $to;
 
@@ -35,7 +37,6 @@ final class PriceTicker extends Component
     {
         $this->isAvailable = (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency());
         $this->price       = $this->getPriceFormatted();
-        $this->from        = Network::currency();
         $this->to          = Settings::currency();
 
         $this->dispatchBrowserEvent('has-loaded-price-data');
@@ -44,10 +45,21 @@ final class PriceTicker extends Component
     public function render(): View
     {
         return view('livewire.price-ticker', [
-            'from'  => $this->from,
             'to'    => $this->to,
             'price' => $this->price,
         ]);
+    }
+
+    public function setCurrency(string $newCurrency): void
+    {
+        $originalCurrency = Settings::currency();
+        $newCurrency      = Str::upper($newCurrency);
+
+        if ($originalCurrency !== $newCurrency) {
+            $this->saveSetting('currency', $newCurrency);
+
+            $this->emit('currencyChanged', $newCurrency);
+        }
     }
 
     private function getPriceFormatted(): string

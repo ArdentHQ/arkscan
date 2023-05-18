@@ -1,11 +1,9 @@
 <div class="hidden sticky top-0 z-30 bg-white md:flex md:flex-col dark:bg-theme-secondary-900">
     <div class="flex justify-between items-center py-3 w-full content-container">
         <div class="flex items-center">
-            @if(Network::canBeExchanged())
-                <div class="hidden font-semibold md:flex dark:text-white text-theme-secondary-900">
-                    <livewire:price-ticker />
-                </div>
-            @endif
+            <div class="flex font-semibold dark:text-white text-theme-secondary-900">
+                <livewire:price-ticker />
+            </div>
         </div>
 
         <div class="flex space-x-3">

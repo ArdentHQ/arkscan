@@ -166,11 +166,9 @@
                                     <x-navbar.network-dropdown />
                                 </x-navbar.mobile.setting-item>
 
-                                @if(Network::canBeExchanged())
-                                    <div class="flex pt-3 font-semibold dark:text-theme-secondary-500">
-                                        <livewire:price-ticker />
-                                    </div>
-                                @endif
+                                <div class="flex pt-3 font-semibold dark:text-theme-secondary-500">
+                                    <livewire:price-ticker />
+                                </div>
                             </div>
                         </div>
                     </div>
