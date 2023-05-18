@@ -26,7 +26,7 @@ final class WalletTable extends Component
 
     public function setPerPage(int $perPage): void
     {
-        if (! in_array($perPage, trans('pagination.per_page_options'))) {
+        if (! in_array($perPage, trans('pagination.per_page_options'), true)) {
             return;
         }
 
