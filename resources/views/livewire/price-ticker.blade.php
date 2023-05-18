@@ -51,15 +51,9 @@
                     @endif
                 >
                     <div @class([
-<<<<<<< HEAD
-                        'w-px h-3.5 md:block transition-default',
-                        'md:bg-theme-secondary-300 md:dark:bg-theme-secondary-700' => $isDisabled,
-                        'bg-transparent md:group-hover:bg-theme-secondary-300 md:group-hover:dark:bg-theme-secondary-700' => ! $isDisabled,
-=======
                         'md:w-px h-3.5 md:block bg-transparent transition-default',
                         'bg-theme-secondary-300 dark:bg-theme-secondary-700' => $isDisabled,
                         'md:group-hover:bg-theme-secondary-300 md:group-hover:dark:bg-theme-secondary-700' => ! $isDisabled,
->>>>>>> origin/develop
                     ])></div>
 
                     <span>
