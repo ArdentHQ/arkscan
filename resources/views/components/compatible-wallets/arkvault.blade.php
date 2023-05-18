@@ -35,9 +35,9 @@
                         </span>
                     </div>
                 </div>
-                <div class="flex items-center h-15 sm:h-auto mt-4">
+                <div class="flex items-center mt-4 sm:h-auto h-15">
                     <a href="@lang('pages.compatible-wallets.arkvault.url')" target="_blank" rel="noopener nofollow noreferrer" class="flex items-center w-full h-full rounded-xl sm:mt-0 sm:w-auto md:mt-0 md:w-full lg:w-auto button-primary">
-                        <div class="flex justify-center items-center h-full ">
+                        <div class="flex justify-center items-center h-full">
                             <span>
                                 @lang('actions.learn_more')
                             </span>
