@@ -19,7 +19,15 @@
             @if ($isDisabled)
                 @lang('general.na')
             @else
-                {{ $price }}
+                <div class="inline-flex">
+                    <span>
+                        {{ config('currencies.'.Str::lower($to).'.symbol') }}
+                    </span>
+
+                    <span>
+                        {{ $price }}
+                    </span>
+                </div>
             @endif
         </div>
 
@@ -61,7 +69,7 @@
                 name="content"
                 class="right-0 top-full"
             >
-                @foreach (collect(config('currencies')) as $currency)
+                @foreach (config('currencies') as $currency)
                     <x-general.dropdown.list-item
                         :is-active="$currency['currency'] === $to"
                         wire:click="setCurrency('{{ $currency['currency'] }}')"
