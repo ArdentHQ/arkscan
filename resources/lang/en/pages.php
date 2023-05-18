@@ -294,7 +294,7 @@ return [
             ],
         ],
 
-        'get_listed' => "Don't see a wallet listed? Let us know!",
+        'get_listed' => "Don't see a wallet listed? <span class=\"whitespace-nowrap\">Let us know!</span>",
 
         'submit-modal' => [
             'title'               => 'Submit a Listing',

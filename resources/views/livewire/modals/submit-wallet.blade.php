@@ -1,4 +1,4 @@
-<div>
+<div class="w-full sm:w-auto">
     <button
         type="button"
         class="mt-3 w-full sm:mt-0 sm:w-auto button-primary"

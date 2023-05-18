@@ -1,5 +1,5 @@
 <header class="flex flex-col">
-    <div class="mb-1 h-15"></div>
+    <div class="sm:mb-1 sm:h-16 h-[3.25rem]"></div>
     <div
         id="navbar"
         class="fixed z-20 w-full"
