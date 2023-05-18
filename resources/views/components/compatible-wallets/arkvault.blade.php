@@ -9,7 +9,7 @@
             <x-compatible-wallets.disclaimer class="hidden xl:block" />
 
             <div class="xl:mt-6">
-                <h2 class="text-lg sm:text-2xl font-semibold text-theme-secondary-900">
+                <h2 class="text-lg font-semibold sm:text-2xl text-theme-secondary-900">
                     <span>@lang('general.arkvault') </span>
                     <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
                         (@lang('pages.compatible-wallets.arkvault.web_wallet'))
