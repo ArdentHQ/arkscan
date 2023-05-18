@@ -30,6 +30,7 @@ return [
     'arkvault'                => 'ARKVault',
     'select_theme'            => 'Select Theme',
     'select_network'          => 'Select Network',
+    'na'                      => 'N/A',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
@@ -37,6 +38,7 @@ return [
         'test_network'       => 'Test Network',
         'live'               => 'Live',
         'test'               => 'Test',
+        'price'              => 'Price',
     ],
 
     'block'                   => [
