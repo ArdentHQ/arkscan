@@ -148,7 +148,7 @@
                             @endif
                         @endforeach
 
-                        <div class="py-4 pb-5 dark:bg-black bg-theme-secondary-100">
+                        <div class="py-4 dark:bg-black bg-theme-secondary-100">
                             <div class="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
                                 <x-navbar.mobile.setting-item title="{{ trans('general.select_theme') }}">
                                     <livewire:navbar.dark-mode-toggle
