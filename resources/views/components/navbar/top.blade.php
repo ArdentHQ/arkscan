@@ -14,6 +14,7 @@
                 type="text"
                 id="search"
                 name="search"
+                class="w-[340px]"
                 :placeholder="trans('general.navbar.search_placeholder')"
                 container-class="flex pl-1 bg-theme-secondary-200 dark:bg-theme-secondary-800"
                 wrapper-class-override="relative rounded shadow-sm"
