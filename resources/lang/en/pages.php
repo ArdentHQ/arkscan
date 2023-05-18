@@ -297,12 +297,13 @@ return [
         'get_listed' => "Don't see a wallet listed? Let us know!",
 
         'submit-modal' => [
-            'title'          => 'Submit a Listing',
-            'name'           => 'Wallet Name',
-            'website'        => 'Website Address',
-            'message'        => 'Additional Details',
-            'success_toast'  => 'Thank you. Your message has been submitted.',
-            'throttle_error' => 'You have made too many requests. Please wait :time before reporting again.',
+            'title'               => 'Submit a Listing',
+            'name'                => 'Wallet Name',
+            'website'             => 'Website Address',
+            'website_placeholder' => 'https://website.com',
+            'message'             => 'Additional Details',
+            'success_toast'       => 'Thank you. Your message has been submitted.',
+            'throttle_error'      => 'You have made too many requests. Please wait :time before reporting again.',
         ],
     ],
 ];

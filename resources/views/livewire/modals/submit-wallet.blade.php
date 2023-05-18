@@ -12,7 +12,7 @@
             :title="trans('pages.compatible-wallets.submit-modal.title')"
             title-class="text-lg text-left sm:text-2xl"
             padding-class="p-6 sm:p-10"
-            wire-close="closeModal"
+            wire-close="cancel"
             close-button-class="absolute top-0 right-0 p-0 mt-0 mr-0 w-11 h-11 rounded-none sm:mt-6 sm:mr-6 sm:rounded button button-secondary text-theme-secondary-900"
             buttons-style="flex flex-col sm:flex-row sm:justify-end !mt-6 sm:space-x-3 space-y-3 sm:space-y-0"
             breakpoint="sm"
@@ -31,6 +31,7 @@
                         name="website"
                         :label="trans('pages.compatible-wallets.submit-modal.website')"
                         autocomplete="none"
+                        :placeholder="trans('pages.compatible-wallets.submit-modal.website_placeholder')"
                     />
 
                     <x-ark-textarea
