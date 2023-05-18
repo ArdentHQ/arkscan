@@ -9,9 +9,9 @@
     @has-loaded-price-data="busy = false"
 >
     <div @class([
-        'flex rounded items-center md:bg-theme-secondary-200 md:dark:bg-theme-secondary-800 md:border border-theme-secondary-300 dark:border-transparent cursor-default justify-between',
-        'md:text-theme-secondary-500 md:dark:text-theme-secondary-700' => $isDisabled,
-        'md:text-theme-secondary-700 md:dark:text-theme-secondary-200' => ! $isDisabled,
+        'flex rounded items-center md:bg-theme-secondary-200 md:dark:bg-theme-secondary-800 md:border border-theme-secondary-300 dark:border-transparent justify-between',
+        'md:text-theme-secondary-500 md:dark:text-theme-secondary-700 cursor-not-allowed select-none' => $isDisabled,
+        'md:text-theme-secondary-700 md:dark:text-theme-secondary-200 cursor-default' => ! $isDisabled,
     ])>
         <div class="font-semibold md:py-1.5 md:pr-2 md:pl-3 md:text-sm transition-default">
             <span>@lang('general.navbar.price'):</span>
@@ -42,7 +42,10 @@
                 :disabled="$isDisabled"
             >
                 <button
-                    class="flex justify-center items-center py-2 pr-3 space-x-2 text-sm font-semibold leading-4 transition-default"
+                    @class([
+                        'flex justify-center items-center py-2 pr-3 space-x-2 text-sm font-semibold leading-4 transition-default',
+                        'cursor-not-allowed' => $isDisabled,
+                    ])
                     @if ($isDisabled)
                         disabled
                     @endif
