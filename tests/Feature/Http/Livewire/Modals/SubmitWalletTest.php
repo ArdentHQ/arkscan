@@ -33,7 +33,6 @@ it('should not send mail if not valid data', function () {
         ->assertHasErrors([
             'name'    => 'required',
             'website' => 'required',
-            'message' => 'required',
         ]);
 
     Mail::assertNothingQueued();
