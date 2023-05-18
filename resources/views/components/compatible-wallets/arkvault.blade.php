@@ -4,7 +4,7 @@
         inner-class="w-full"
     />
 
-    <div class="flex flex-col w-full min-[960px]:flex-row">
+    <div class="flex flex-col w-full md-lg:flex-row">
         <div class="flex flex-col flex-1 justify-center pb-4 sm:pb-8 md:px-8 xl:py-8">
             <x-compatible-wallets.disclaimer class="hidden xl:block" />
 
@@ -22,7 +22,7 @@
             </div>
 
             <div class="flex flex-col justify-between py-3 px-3 mt-6 rounded-xl sm:flex-row md:pl-6 bg-theme-primary-50 dark:bg-theme-dark-blue-800">
-                <div class="flex flex-1 items-center py-1 bg-no-repeat bg-right sm:dark:bg-[url('/images/wallets/arrows-dark.svg')] sm:bg-[url('/images/wallets/arrows.svg')] min-[960px]:bg-none lg:dark:bg-[url('/images/wallets/arrows-dark.svg')] lg:bg-[url('/images/wallets/arrows.svg')] mr-2">
+                <div class="flex flex-1 items-center py-1 bg-no-repeat bg-right sm:dark:bg-[url('/images/wallets/arrows-dark.svg')] sm:bg-[url('/images/wallets/arrows.svg')] md-lg:bg-none lg:dark:bg-[url('/images/wallets/arrows-dark.svg')] lg:bg-[url('/images/wallets/arrows.svg')] mr-2">
                     <div class="px-3 sm:px-0">
                         <x-ark-icon name="app-wallets.arkvault" size="none" class="w-10 h-10 dark:text-white text-theme-navy-600" />
                     </div>
