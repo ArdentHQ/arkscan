@@ -1,6 +1,6 @@
 <x-general.dropdown.dropdown>
     <x-slot name="button" class="rounded border border-theme-secondary-300 dark:border-theme-secondary-800">
-        <div class="flex justify-center items-center px-3 py-2 space-x-2 text-sm font-semibold leading-4 transition-default">
+        <div class="flex justify-center items-center py-2 px-3 space-x-2 text-sm font-semibold leading-4 transition-default">
             <span>{{ $this->perPage }}</span>
 
             <span

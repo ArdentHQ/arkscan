@@ -39,7 +39,7 @@
         >
             <x-slot
                 name="button"
-                class="rounded-l rounded-r md:rounded-l-none"
+                class="rounded-r rounded-l md:rounded-l-none"
             >
                 <div
                     @class([

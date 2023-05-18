@@ -11,9 +11,9 @@
         x-show="search"
         name="searchForm"
         type="get"
-        class="flex absolute left-0 z-10 w-full h-full space-x-2"
+        class="flex absolute left-0 z-10 space-x-2 w-full h-full"
     >
-        <div class="flex flex-1 items-center overflow-hidden px-2 rounded bg-theme-primary-100 dark:bg-theme-secondary-800">
+        <div class="flex overflow-hidden flex-1 items-center px-2 rounded bg-theme-primary-100 dark:bg-theme-secondary-800">
             <x-ark-icon name="magnifying-glass" />
 
             <input
@@ -52,7 +52,7 @@
     <button
         x-on:click="toggleSearch"
         type="button"
-        class="button-secondary inline-flex items-center py-1.5 px-2 md:px-4 leading-5 w-full justify-center"
+        class="inline-flex justify-center items-center py-1.5 px-2 w-full leading-5 md:px-4 button-secondary"
         :class="{ 'opacity-0': search }"
     >
         <span class="hidden md:inline">

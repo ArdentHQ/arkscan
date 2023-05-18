@@ -11,11 +11,11 @@
     @class(['pagination-wrapper flex flex-col sm:flex-row', $class])
 >
     <x-general.pagination.includes.middle
-        class="sm:hidden flex w-full mb-2"
+        class="flex mb-2 w-full sm:hidden"
         :paginator="$paginator"
     />
 
-    <div class="flex space-x-2 justify-end">
+    <div class="flex justify-end space-x-2">
         <x-general.pagination.includes.arrow
             :page="1"
             icon="arrows.double-chevron-left"
