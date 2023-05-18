@@ -55,7 +55,7 @@
                     <div @class([
                         'w-px h-3.5 md:block bg-transparent transition-default',
                         'bg-theme-secondary-300 dark:bg-theme-secondary-700' => $isDisabled,
-                        'group-hover:bg-theme-secondary-300 group-hover:dark:bg-theme-secondary-700' => ! $isDisabled,
+                        'md:group-hover:bg-theme-secondary-300 md:group-hover:dark:bg-theme-secondary-700' => ! $isDisabled,
                     ])></div>
 
                     <span>
