@@ -45,14 +45,18 @@
             >
                 <button
                     @class([
-                        'flex justify-center items-center py-2 pr-3 space-x-2 text-sm font-semibold leading-4',
+                        'flex justify-center items-center py-2 pr-3 space-x-2 text-sm font-semibold leading-4 group',
                         'cursor-not-allowed' => $isDisabled,
                     ])
                     @if ($isDisabled)
                         disabled
                     @endif
                 >
-                    <div class="hidden w-px h-3.5 md:block bg-theme-secondary-300 dark:bg-theme-secondary-700"></div>
+                    <div @class([
+                        'w-px h-3.5 md:block bg-transparent transition-default',
+                        'bg-theme-secondary-300 dark:bg-theme-secondary-700' => $isDisabled,
+                        'group-hover:bg-theme-secondary-300 group-hover:dark:bg-theme-secondary-700' => ! $isDisabled,
+                    ])></div>
 
                     <span>
                         {{ $to }}
