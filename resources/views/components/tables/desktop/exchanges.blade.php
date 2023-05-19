@@ -1,6 +1,6 @@
 @props(['exchanges'])
 
-<x-tables.encapsulated-table sticky class="hidden w-full md:block mt-6 rounded-b-xl">
+<x-tables.encapsulated-table sticky class="hidden mt-6 w-full rounded-b-xl md:block">
     <thead class="dark:bg-black bg-theme-secondary-100">
         <tr class="border-b-none">
             <x-tables.headers.desktop.text name="general.exchange.name" />
@@ -36,7 +36,7 @@
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>
-                    <div class="flex divide-x divide-theme-secondary-300 dark:divide-theme-secondary-800 space-x-2 text-theme-secondary-900 dark:text-theme-secondary-200 font-semibold">
+                    <div class="flex space-x-2 font-semibold divide-x divide-theme-secondary-300 text-theme-secondary-900 dark:divide-theme-secondary-800 dark:text-theme-secondary-200">
                         @foreach ($exchange['pairs'] as $pair)
                             <div class="pl-2 first:pl-0">
                                 {{ $pair }}
