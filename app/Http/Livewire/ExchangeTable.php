@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use App\Models\Scopes\OrderByBalanceScope;
-use App\Models\Wallet;
-use App\ViewModels\ViewModelFactory;
 use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
@@ -28,10 +25,10 @@ final class ExchangeTable extends Component
     {
         return new LengthAwarePaginator([
             [
-                'name' => '7b',
-                'price' => '0.34100',
+                'name'   => '7b',
+                'price'  => '0.34100',
                 'volume' => '2350503.97',
-                'url' => 'https://7b.com',
+                'url'    => 'https://7b.com',
 
                 'pairs' => [
                     'BTC',
@@ -40,10 +37,10 @@ final class ExchangeTable extends Component
                 ],
             ],
             [
-                'name' => '7b',
-                'price' => '0.34100',
+                'name'   => '7b',
+                'price'  => '0.34100',
                 'volume' => '2350503.97',
-                'url' => 'https://7b.com',
+                'url'    => 'https://7b.com',
 
                 'pairs' => [
                     'BTC',
@@ -52,10 +49,10 @@ final class ExchangeTable extends Component
                 ],
             ],
             [
-                'name' => '7b',
-                'price' => null,
+                'name'   => '7b',
+                'price'  => null,
                 'volume' => null,
-                'url' => 'https://7b.com',
+                'url'    => 'https://7b.com',
 
                 'pairs' => [
                     'BTC',
@@ -64,10 +61,10 @@ final class ExchangeTable extends Component
                 ],
             ],
             [
-                'name' => '7b',
-                'price' => '0.34100',
+                'name'   => '7b',
+                'price'  => '0.34100',
                 'volume' => '2350503.97',
-                'url' => 'https://7b.com',
+                'url'    => 'https://7b.com',
 
                 'pairs' => [
                     'BTC',
