@@ -140,6 +140,13 @@ return [
         'productivity' => 'Productivity',
     ],
 
+    'exchange'                  => [
+        'name'      => 'Name',
+        'top_pairs' => 'Top Pairs',
+        'price'     => 'Price',
+        'volume'    => 'Volume',
+    ],
+
     'urls'                    => [
         'ardent'    => 'https://ardenthq.com',
         'coingecko' => 'https://www.coingecko.com/',
