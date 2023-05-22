@@ -21,11 +21,11 @@ it('should render', function () {
 it('should have a computed exchanges property', function () {
     Livewire::test(ExchangeTable::class)
         ->assertSet('exchanges.0', [
-            'name' => '7b',
-            'icon' => 'app-exchanges.7b',
-            'price' => '0.34100',
+            'name'   => '7b',
+            'icon'   => 'app-exchanges.7b',
+            'price'  => '0.34100',
             'volume' => '2350503.97',
-            'url' => 'https://7b.com',
+            'url'    => 'https://7b.com',
 
             'pairs' => [
                 'BTC',
