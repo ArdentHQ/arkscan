@@ -6,12 +6,14 @@
     ['pageName' => $pageName, 'urlParams' => $urlParams] = ARKEcosystem\Foundation\UserInterface\UI::getPaginationData($paginator);
 @endphp
 
-<div {{ $attributes->class('relative') }}>
+<div {{ $attributes }}>
     <form
         x-show="search"
         name="searchForm"
         type="get"
-        class="flex absolute left-0 z-10 space-x-2 w-full h-full"
+        class="flex absolute left-0 z-10 space-x-2 w-full h-full bg-white dark:bg-theme-secondary-900"
+        x-transition.opacity
+        x-cloak
     >
         <div class="flex overflow-hidden flex-1 items-center px-2 rounded bg-theme-primary-100 dark:bg-theme-secondary-800">
             <x-ark-icon name="magnifying-glass" />

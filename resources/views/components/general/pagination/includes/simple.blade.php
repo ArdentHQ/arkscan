@@ -8,14 +8,14 @@
 
 <div
     x-data="Pagination('{{ $pageName }}', {{ $paginator->lastPage() }})"
-    @class(['pagination-wrapper flex flex-col sm:flex-row', $class])
+    @class(['relative pagination-wrapper flex justify-between flex-col sm:flex-row w-full sm:w-auto', $class])
 >
     <x-general.pagination.includes.middle
-        class="flex mb-2 w-full sm:hidden"
+        class="flex mb-2 w-full sm:hidden relative"
         :paginator="$paginator"
     />
 
-    <div class="flex justify-end space-x-2">
+    <div class="flex space-x-2 w-full sm:w-auto">
         <x-general.pagination.includes.arrow
             :page="1"
             icon="arrows.double-chevron-left"

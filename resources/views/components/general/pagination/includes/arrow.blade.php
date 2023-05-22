@@ -5,11 +5,12 @@
     'text' => null,
 ])
 
-<div>
+<div class="flex-1 sm:w-8 md:w-auto sm:flex-none">
     <button
         {{ $attributes->class([
-            'items-center button-secondary flex justify-center flex-1 w-8 h-8 p-0 sm:flex-initial',
-            'md:w-auto md:px-4' => $text,
+            'items-center button-secondary flex justify-center h-8 p-0 w-full',
+            'sm:w-8' => ! $text,
+            'w-8 md:w-auto md:px-4' => $text,
         ]) }}
         wire:click="gotoPage({{ $page }})"
         x-on:click="hideSearch"
