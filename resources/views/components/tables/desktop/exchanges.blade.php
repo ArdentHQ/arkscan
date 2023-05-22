@@ -28,11 +28,15 @@
                 class="font-semibold"
             >
                 <x-ark-tables.cell>
-                    <x-ark-external-link
-                        :url="$exchange['url']"
-                        :text="$exchange['name']"
-                        icon-class="dark:text-theme-secondary-700"
-                    />
+                    <div class="flex items-center space-x-3">
+                        <x-ark-icon :name="$exchange['icon']" />
+
+                        <x-ark-external-link
+                            :url="$exchange['url']"
+                            :text="$exchange['name']"
+                            icon-class="dark:text-theme-secondary-700"
+                        />
+                    </div>
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>
