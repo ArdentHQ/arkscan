@@ -24,7 +24,7 @@
             }
         },
     }"
-    class="relative"
+    {{ $attributes->class('relative') }}
 >
     <div
         {{ $button->attributes }}

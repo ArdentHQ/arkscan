@@ -2,14 +2,15 @@
     <x-metadata page="exchanges" />
 
     @section('content')
-        <x-ark-container>
+        <x-ark-container container-class="flex flex-col space-y-6">
             <x-information-pages.header
                 :title="trans('pages.exchanges.title')"
                 :subtitle="trans('pages.exchanges.subtitle')"
             >
-                <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
-                    <div>Type Dropdown</div>
-                    <div>Pair Dropdown</div>
+                <div class="flex flex-col space-y-2 w-full sm:flex-row sm:space-y-0 sm:space-x-3 md-lg:w-auto">
+                    <x-exchanges.type-dropdown />
+
+                    <x-exchanges.pair-dropdown />
                 </div>
             </x-information-pages.header>
 

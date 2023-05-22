@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
 
+/**
+ * @property Collection $exchanges
+ */
 final class ExchangeTable extends Component
 {
-    use HasPagination;
-
     public function render(): View
     {
         return view('livewire.exchange-table', [
@@ -21,11 +21,12 @@ final class ExchangeTable extends Component
         ]);
     }
 
-    public function getExchangesProperty(): LengthAwarePaginator
+    public function getExchangesProperty(): Collection
     {
-        return new LengthAwarePaginator([
+        return new Collection([
             [
                 'name'   => '7b',
+                'icon'   => 'app-exchanges.7b',
                 'price'  => '0.34100',
                 'volume' => '2350503.97',
                 'url'    => 'https://7b.com',
@@ -38,6 +39,7 @@ final class ExchangeTable extends Component
             ],
             [
                 'name'   => '7b',
+                'icon'   => 'app-exchanges.7b',
                 'price'  => '0.34100',
                 'volume' => '2350503.97',
                 'url'    => 'https://7b.com',
@@ -50,6 +52,7 @@ final class ExchangeTable extends Component
             ],
             [
                 'name'   => '7b',
+                'icon'   => 'app-exchanges.7b',
                 'price'  => null,
                 'volume' => null,
                 'url'    => 'https://7b.com',
@@ -62,6 +65,7 @@ final class ExchangeTable extends Component
             ],
             [
                 'name'   => '7b',
+                'icon'   => 'app-exchanges.7b',
                 'price'  => '0.34100',
                 'volume' => '2350503.97',
                 'url'    => 'https://7b.com',
@@ -72,6 +76,6 @@ final class ExchangeTable extends Component
                     'Stablecoins',
                 ],
             ],
-        ], 4, 10);
+        ]);
     }
 }

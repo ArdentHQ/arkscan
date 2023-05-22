@@ -308,10 +308,22 @@ return [
     ],
 
     'exchanges' => [
-        'title'    => 'Exchange Listings',
-        'subtitle' => 'A listing of active exchanges and their ARK pairs.',
-
+        'title'      => 'Exchange Listings',
+        'subtitle'   => 'A listing of active exchanges and their ARK pairs.',
         'get_listed' => "Don't see an exchange listed? <span class=\"whitespace-nowrap\">Let us know!</span>",
+
+        'type' => [
+            'title'       => 'Type',
+            'exchanges'   => 'Exchanges',
+            'agreggators' => 'Agreggators',
+        ],
+
+        'pair' => [
+            'title'       => 'Pair',
+            'btc'         => 'BTC',
+            'eth'         => 'ETH',
+            'stablecoins' => 'Stablecoins',
+        ],
 
         'submit-modal' => [
             'title'               => 'Submit a Listing',
