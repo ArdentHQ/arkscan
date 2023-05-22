@@ -18,7 +18,7 @@
         "doctrine/dbal": "^3.0",
         "fruitcake/laravel-cors": "^2.0",
         "huddledigital/zendesk-laravel": "^3.7",
-        "laravel/framework": "^9.10",
+        "laravel/framework": "^9.11",
         "laravel/horizon": "^5.15",
         "laravel/tinker": "^2.8",
         "leigh/mt-rand": "^0.1",
