@@ -11,7 +11,7 @@
     @class(['relative pagination-wrapper flex justify-between flex-col sm:flex-row w-full sm:w-auto', $class])
 >
     <x-general.pagination.includes.middle
-        class="flex mb-2 w-full sm:hidden relative"
+        class="flex relative mb-2 w-full sm:hidden"
         :paginator="$paginator"
     />
 

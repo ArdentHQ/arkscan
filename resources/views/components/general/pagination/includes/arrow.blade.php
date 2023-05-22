@@ -5,7 +5,7 @@
     'text' => null,
 ])
 
-<div class="flex-1 sm:w-8 md:w-auto sm:flex-none">
+<div class="flex-1 sm:flex-none sm:w-8 md:w-auto">
     <button
         {{ $attributes->class([
             'items-center button-secondary flex justify-center h-8 p-0 w-full',
