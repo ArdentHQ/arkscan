@@ -1,13 +1,13 @@
 <div class="flex flex-col space-y-3 sm:space-y-4 table-list-mobile table-list-encapsulated">
     @foreach ($exchanges as $exchange)
         <div class="rounded border border-theme-secondary-300 dark:border-theme-secondary-800">
-            <a class="flex items-center justify-between px-4 py-3 bg-theme-secondary-100 dark:bg-theme-secondary-800">
+            <a class="flex justify-between items-center py-3 px-4 bg-theme-secondary-100 dark:bg-theme-secondary-800">
                 <div class="flex items-center space-x-2">
-                    <div class="rounded-full p-1.5 border-theme-secondary-200 bg-white dark:border-theme-secondary-900 dark:bg-theme-secondary-900">
+                    <div class="p-1.5 bg-white rounded-full border-theme-secondary-200 dark:border-theme-secondary-900 dark:bg-theme-secondary-900">
                         <x-ark-icon :name="$exchange['icon']" />
                     </div>
 
-                    <span class="text-theme-primary-600 dark:text-theme-secondary-200 font-semibold text-sm">{{ $exchange['name'] }}</span>
+                    <span class="text-sm font-semibold text-theme-primary-600 dark:text-theme-secondary-200">{{ $exchange['name'] }}</span>
                 </div>
 
                 <x-ark-icon

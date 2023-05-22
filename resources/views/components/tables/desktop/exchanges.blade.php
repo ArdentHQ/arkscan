@@ -34,7 +34,7 @@
                         <x-ark-external-link
                             :url="$exchange['url']"
                             :text="$exchange['name']"
-                            class="link font-semibold flex items-center space-x-2 break-words leading-4"
+                            class="flex items-center space-x-2 font-semibold leading-4 break-words link"
                         />
                     </div>
                 </x-ark-tables.cell>
