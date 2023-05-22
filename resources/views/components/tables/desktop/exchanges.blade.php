@@ -27,31 +27,27 @@
                 wire:key="exchange-{{ $exchange['name'] }}"
                 class="font-semibold"
             >
-                <x-ark-tables.cell>
+                <x-ark-tables.cell class="text-sm">
                     <div class="flex items-center space-x-3">
                         <x-ark-icon :name="$exchange['icon']" />
 
                         <x-ark-external-link
                             :url="$exchange['url']"
                             :text="$exchange['name']"
-                            icon-class="dark:text-theme-secondary-700"
+                            class="link font-semibold flex items-center space-x-2 break-words leading-4"
                         />
                     </div>
                 </x-ark-tables.cell>
 
-                <x-ark-tables.cell>
-                    <div class="flex divide-x divide-theme-secondary-300 dark:divide-theme-secondary-800 space-x-2 text-theme-secondary-900 dark:text-theme-secondary-200 font-semibold">
-                        @foreach ($exchange['pairs'] as $pair)
-                            <div class="pl-2 first:pl-0">
-                                {{ $pair }}
-                            </div>
-                        @endforeach
-                    </div>
+                <x-ark-tables.cell class="text-sm">
+                    <x-exchanges.pairs :exchange="$exchange" />
                 </x-ark-tables.cell>
 
-                <x-ark-tables.cell class="text-right">
+                <x-ark-tables.cell class="text-sm text-right">
                     @if ($exchange['price'])
-                        {{ $exchange['price'] }}
+                        <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
+                            {{ ExplorerNumberFormatter::currency($exchange['price'], Settings::currency(), 4) }}
+                        </span>
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
                             @lang('general.na')
@@ -60,12 +56,12 @@
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell
-                    class="text-right"
+                    class="text-sm text-right"
                     breakpoint="md-lg"
                     responsive
                 >
                     @if ($exchange['volume'])
-                        {{ $exchange['volume'] }}
+                        {{ ExplorerNumberFormatter::currency($exchange['volume'], Settings::currency()) }}
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
                             @lang('general.na')

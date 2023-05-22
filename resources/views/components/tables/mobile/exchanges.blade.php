@@ -1,20 +1,62 @@
-<div class="divide-y table-list-mobile table-list-encapsulated">
+<div class="flex flex-col space-y-3 sm:space-y-4 table-list-mobile table-list-encapsulated">
     @foreach ($exchanges as $exchange)
-        <div class="table-list-mobile-row">
-            <div>
-                {{ $exchange['name'] }}
-            </div>
+        <div class="rounded border border-theme-secondary-300 dark:border-theme-secondary-800">
+            <a class="flex items-center justify-between px-4 py-3 bg-theme-secondary-100 dark:bg-theme-secondary-800">
+                <div class="flex items-center space-x-2">
+                    <div class="rounded-full p-1.5 border-theme-secondary-200 bg-white dark:border-theme-secondary-900 dark:bg-theme-secondary-900">
+                        <x-ark-icon :name="$exchange['icon']" />
+                    </div>
 
-            <div>
-                {{ implode(', ', $exchange['pairs']) }}
-            </div>
+                    <span class="text-theme-primary-600 dark:text-theme-secondary-200 font-semibold text-sm">{{ $exchange['name'] }}</span>
+                </div>
 
-            <div>
-                {{ $exchange['price'] }}
-            </div>
+                <x-ark-icon
+                    name="arrows.arrow-external"
+                    size="sm"
+                    class="text-theme-secondary-500"
+                />
+            </a>
 
-            <div>
-                {{ $exchange['volume'] }}
+            <div class="flex flex-col px-4 pt-3 pb-4 space-y-4">
+                <div class="flex flex-col space-y-2 text-sm font-semibold">
+                    <span class="text-theme-secondary-600">
+                        @lang('general.exchange.top_pairs')
+                    </span>
+
+                    <x-exchanges.pairs :exchange="$exchange" />
+                </div>
+
+                <div class="flex flex-col space-y-2 text-sm font-semibold">
+                    <span class="text-theme-secondary-600">
+                        @lang('general.exchange.price')
+                    </span>
+
+                    @if ($exchange['price'])
+                        <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
+                            {{ ExplorerNumberFormatter::currency($exchange['price'], Settings::currency(), 4) }}
+                        </span>
+                    @else
+                        <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
+                            @lang('general.na')
+                        </span>
+                    @endif
+                </div>
+
+                <div class="flex flex-col space-y-2 text-sm font-semibold">
+                    <span class="text-theme-secondary-600">
+                        @lang('general.exchange.volume')
+                    </span>
+
+                    @if ($exchange['volume'])
+                        <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
+                            {{ ExplorerNumberFormatter::currency($exchange['volume'], Settings::currency()) }}
+                        </span>
+                    @else
+                        <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
+                            @lang('general.na')
+                        </span>
+                    @endif
+                </div>
             </div>
         </div>
     @endforeach

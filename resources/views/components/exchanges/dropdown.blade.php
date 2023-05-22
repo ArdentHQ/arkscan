@@ -4,10 +4,13 @@
 ])
 
 <x-general.dropdown.dropdown class="flex-1 lg:flex-none">
-    <x-slot name="button" class="w-full md-lg:w-50 font-semibold rounded px-4 py-3 border border-theme-secondary-300 dark:border-theme-secondary-800 dark:text-theme-secondary-200">
-        <button class="flex items-center justify-between w-full">
+    <x-slot name="button" class="w-full md-lg:w-50 font-semibold rounded border border-theme-secondary-300 dark:border-theme-secondary-800 text-theme-secondary-900 dark:text-theme-secondary-200">
+        <button class="flex items-center justify-between w-full px-4 py-3">
             <div class="flex items-center space-x-2">
-                <x-ark-icon :name="$icon" />
+                <x-ark-icon
+                    :name="$icon"
+                    class="text-theme-secondary-700 dark:text-theme-secondary-600"
+                />
 
                 <span>{{ $title }}</span>
             </div>
@@ -19,6 +22,7 @@
                 <x-ark-icon
                     name="arrows.chevron-down-small"
                     size="w-2.5 h-2.5"
+                    class="text-theme-secondary-700 dark:text-theme-secondary-200"
                 />
             </span>
         </button>

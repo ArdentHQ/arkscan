@@ -1,6 +1,6 @@
 @props([
-    'icon',
     'label',
+    'icon'             => null,
     'disabled'         => false,
     'padding'          => 'px-6 py-4',
     'iconClass'        => null,
@@ -13,16 +13,18 @@
         'flex flex-grow items-center',
         $containerSpacing,
     ])>
-        <span
-            @class([
-                'flex items-center justify-center w-11 h-11 border-2 rounded-full',
-                'dark:border-theme-secondary-600 border-theme-secondary-500 dark:text-theme-secondary-600 text-theme-secondary-500' => $disabled,
-                'border-theme-secondary-900 text-theme-secondary-900 dark:text-theme-secondary-700 dark:border-theme-secondary-700' => ! $disabled,
-                $iconClass,
-            ])
-        >
-            <x-ark-icon :name="$icon" />
-        </span>
+        @if ($icon)
+            <span
+                @class([
+                    'flex items-center justify-center w-11 h-11 border-2 rounded-full',
+                    'dark:border-theme-secondary-600 border-theme-secondary-500 dark:text-theme-secondary-600 text-theme-secondary-500' => $disabled,
+                    'border-theme-secondary-900 text-theme-secondary-900 dark:text-theme-secondary-700 dark:border-theme-secondary-700' => ! $disabled,
+                    $iconClass,
+                ])
+            >
+                <x-ark-icon :name="$icon" />
+            </span>
+        @endif
 
         <span @class([
             'flex flex-col flex-grow justify-between h-full',

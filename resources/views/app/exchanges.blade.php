@@ -2,7 +2,7 @@
     <x-metadata page="exchanges" />
 
     @section('content')
-        <x-ark-container>
+        <x-ark-container container-class="flex flex-col space-y-6">
             <x-information-pages.header
                 :title="trans('pages.exchanges.title')"
                 :subtitle="trans('pages.exchanges.subtitle')"
