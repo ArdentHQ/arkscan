@@ -31,6 +31,7 @@ return [
     'select_theme'            => 'Select Theme',
     'select_network'          => 'Select Network',
     'na'                      => 'N/A',
+    'all'                     => 'All',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',

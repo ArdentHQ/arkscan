@@ -313,6 +313,19 @@ return [
 
         'get_listed' => "Don't see an exchange listed? <span class=\"whitespace-nowrap\">Let us know!</span>",
 
+        'type' => [
+            'title'       => 'Type',
+            'exchanges'   => 'Exchanges',
+            'agreggators' => 'Agreggators',
+        ],
+
+        'pair' => [
+            'title' => 'Pair',
+            'btc' => 'BTC',
+            'eth' => 'ETH',
+            'stablecoins' => 'Stablecoins',
+        ],
+
         'submit-modal' => [
             'title'               => 'Submit a Listing',
             'name'                => 'Exchange Name',

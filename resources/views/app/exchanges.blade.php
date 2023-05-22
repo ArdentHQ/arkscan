@@ -7,9 +7,10 @@
                 :title="trans('pages.exchanges.title')"
                 :subtitle="trans('pages.exchanges.subtitle')"
             >
-                <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
-                    <div>Type Dropdown</div>
-                    <div>Pair Dropdown</div>
+                <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3 w-full md-lg:w-auto">
+                    <x-exchanges.type-dropdown />
+
+                    <x-exchanges.pair-dropdown />
                 </div>
             </x-information-pages.header>
 
