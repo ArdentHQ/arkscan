@@ -1,6 +1,6 @@
 @props(['exchanges'])
 
-<x-tables.encapsulated-table sticky class="hidden w-full md:block mt-6 rounded-b-xl">
+<x-tables.encapsulated-table sticky class="hidden mt-6 w-full rounded-b-xl md:block">
     <thead class="dark:bg-black bg-theme-secondary-100">
         <tr class="border-b-none">
             <x-tables.headers.desktop.text name="general.exchange.name" />

@@ -25,11 +25,11 @@ final class ExchangeTable extends Component
     {
         return new Collection([
             [
-                'name' => '7b',
-                'icon' => 'app-exchanges.7b',
-                'price' => '0.34100',
+                'name'   => '7b',
+                'icon'   => 'app-exchanges.7b',
+                'price'  => '0.34100',
                 'volume' => '2350503.97',
-                'url' => 'https://7b.com',
+                'url'    => 'https://7b.com',
 
                 'pairs' => [
                     'BTC',
@@ -38,11 +38,11 @@ final class ExchangeTable extends Component
                 ],
             ],
             [
-                'name' => '7b',
-                'icon' => 'app-exchanges.7b',
-                'price' => '0.34100',
+                'name'   => '7b',
+                'icon'   => 'app-exchanges.7b',
+                'price'  => '0.34100',
                 'volume' => '2350503.97',
-                'url' => 'https://7b.com',
+                'url'    => 'https://7b.com',
 
                 'pairs' => [
                     'BTC',
@@ -51,11 +51,11 @@ final class ExchangeTable extends Component
                 ],
             ],
             [
-                'name' => '7b',
-                'icon' => 'app-exchanges.7b',
-                'price' => null,
+                'name'   => '7b',
+                'icon'   => 'app-exchanges.7b',
+                'price'  => null,
                 'volume' => null,
-                'url' => 'https://7b.com',
+                'url'    => 'https://7b.com',
 
                 'pairs' => [
                     'BTC',
@@ -64,11 +64,11 @@ final class ExchangeTable extends Component
                 ],
             ],
             [
-                'name' => '7b',
-                'icon' => 'app-exchanges.7b',
-                'price' => '0.34100',
+                'name'   => '7b',
+                'icon'   => 'app-exchanges.7b',
+                'price'  => '0.34100',
                 'volume' => '2350503.97',
-                'url' => 'https://7b.com',
+                'url'    => 'https://7b.com',
 
                 'pairs' => [
                     'BTC',
