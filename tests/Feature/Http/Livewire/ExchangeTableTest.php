@@ -8,8 +8,8 @@ use Livewire\Livewire;
 it('should render', function () {
     Livewire::test(ExchangeTable::class)
         ->assertSee('7b')
-        ->assertSee('$0.34')
-        ->assertSee('$2,350,503.97')
+        ->assertSee('US$ 0.34')
+        ->assertSee('US$ 2,350,503.97')
         ->assertSee('https://7b.com')
         ->assertSeeInOrder([
             'BTC',
