@@ -31,7 +31,7 @@
             />
 
             <x-ark-icon
-                name="arrows.keyboard-return"
+                name="square-return-arrow"
                 class="hidden sm:block dark:text-theme-secondary-600"
                 size="sm"
             />
