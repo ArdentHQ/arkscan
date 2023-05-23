@@ -3,7 +3,7 @@
         <div class="rounded border border-theme-secondary-300 dark:border-theme-secondary-800">
             <a class="flex justify-between items-center py-3 px-4 rounded-t bg-theme-secondary-100 dark:bg-theme-secondary-800">
                 <div class="flex items-center space-x-2">
-                    <div class="p-1.5 bg-white rounded-full border border-theme-secondary-200 dark:border-theme-secondary-900 dark:bg-theme-secondary-900 w-8 h-8 flex items-center justify-center">
+                    <div class="flex justify-center items-center p-1.5 w-8 h-8 bg-white rounded-full border border-theme-secondary-200 dark:border-theme-secondary-900 dark:bg-theme-secondary-900">
                         <img class="max-w-full max-h-full" src="{{ config('explorer.exchanges.icon_url') }}{{ $exchange->icon }}.svg" alt="{{ $exchange->name }} icon" />
                     </div>
 
