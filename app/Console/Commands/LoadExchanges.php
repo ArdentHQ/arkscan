@@ -10,7 +10,7 @@ use Illuminate\Console\Command;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
-class LoadExchanges extends Command
+final class LoadExchanges extends Command
 {
     /**
      * The name and signature of the console command.
@@ -22,21 +22,29 @@ class LoadExchanges extends Command
     /**
      * The console command description.
      *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Load ark exchanges';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle()
+    public function handle(): int
     {
         $response = Http::get($this->getUrl());
 
         $this->validateResponse($response);
 
+        /**
+         * @var array{
+         *     exchangeName: string,
+         *     baseURL: string,
+         *     exchange: bool,
+         *     aggregator: bool,
+         *     BTC: bool,
+         *     ETH: bool,
+         *     stablecoins: bool,
+         *     other: bool,
+         *     coingeckoId: string | null
+         * }[]
+         */
         $exchanges = $response->json();
 
         $this->validateResponseData($exchanges);
@@ -65,7 +73,7 @@ class LoadExchanges extends Command
     }
 
     /**
-     * @var array<mixed>
+     * @param array<mixed> $response
      */
     private function validateResponseData(array $response): void
     {
@@ -82,14 +90,11 @@ class LoadExchanges extends Command
         ];
 
         // check that keys are the same
-        if (array_diff($expectedKeys, array_keys($response[0]))) {
+        if (count(array_diff($expectedKeys, array_keys($response[0]))) > 0) {
             throw new Exception('Unexpected response format');
         }
     }
 
-    /**
-     * @var array<mixed>
-     */
     private function validateResponse(Response $response): void
     {
         if (! $response->ok()) {
@@ -101,7 +106,7 @@ class LoadExchanges extends Command
     {
         $url = config('explorer.exchanges.list_src');
 
-        if (! $url) {
+        if ($url === null || '' === $url) {
             throw new Exception('No exchanges list source configured');
         }
 
