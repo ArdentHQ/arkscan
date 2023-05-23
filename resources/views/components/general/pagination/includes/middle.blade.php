@@ -65,6 +65,9 @@
         type="button"
         class="inline-flex justify-center items-center py-1.5 px-2 w-full leading-5 md:px-4 button-secondary"
         :class="{ 'opacity-0': search }"
+        @unless ($paginator->hasPages())
+            disabled
+        @endunless
     >
         <span class="hidden md:inline">
             @lang('ui::generic.pagination.current_to', [
