@@ -12,9 +12,9 @@
                 type="text"
                 id="search"
                 name="search"
-                class="w-[340px] border border-transparent bg-theme-secondary-200 dark:bg-theme-secondary-900 hover:bg-white focus-within:bg-white hover:border-theme-primary-100 focus-within:border-theme-primary-100 group rounded-md transition-default hover:dark:border-theme-secondary-700 focus-within:dark:border-theme-secondary-700"
+                class="rounded-md border border-transparent focus-within:bg-white hover:bg-white w-[340px] bg-theme-secondary-200 group transition-default dark:bg-theme-secondary-900 focus-within:border-theme-primary-100 focus-within:dark:border-theme-secondary-700 hover:border-theme-primary-100 hover:dark:border-theme-secondary-700"
                 :placeholder="trans('general.navbar.search_placeholder')"
-                container-class="flex pl-1 border border-transparent hover:border-theme-primary-100 focus-within:border-theme-primary-100 dark:border-theme-secondary-800 group-hover:dark:border-theme-secondary-700 focus-within:dark:border-theme-secondary-700"
+                container-class="flex pl-1 border border-transparent dark:border-theme-secondary-800 group-hover:dark:border-theme-secondary-700 focus-within:border-theme-primary-100 focus-within:dark:border-theme-secondary-700 hover:border-theme-primary-100"
                 wrapper-class-override="relative rounded"
                 field-class-override="block w-full border-0 rounded outline-none appearance-none pl-2 pr-4 py-[7px] text-sm leading-4 placeholder:text-theme-secondary-700 text-theme-secondary-900 dark:text-theme-secondary-400 bg-transparent"
                 hide-label
