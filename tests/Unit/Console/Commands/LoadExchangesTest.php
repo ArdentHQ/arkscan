@@ -16,6 +16,7 @@ it('loads and syncs exchanges', function () {
             'stablecoins'  => true,
             'other'        => false,
             'coingeckoId'  => 'exchange1_id',
+            'icon'         => '7b',
         ],
         [
             'exchangeName' => 'Exchange 2',
@@ -27,6 +28,7 @@ it('loads and syncs exchanges', function () {
             'stablecoins'  => false,
             'other'        => true,
             'coingeckoId'  => 'exchange2_id',
+            'icon'         => '7b',
         ],
     ];
 
@@ -49,6 +51,7 @@ it('loads and syncs exchanges', function () {
         'stablecoins'   => true,
         'other'         => false,
         'coingecko_id'  => 'exchange1_id',
+        'icon'          => '7b',
     ]);
 
     $this->assertDatabaseHas('exchanges', [
@@ -61,6 +64,7 @@ it('loads and syncs exchanges', function () {
         'stablecoins'   => false,
         'other'         => true,
         'coingecko_id'  => 'exchange2_id',
+        'icon'          => '7b',
     ]);
 });
 
@@ -74,6 +78,7 @@ it('throws an exception if response format is unexpected', function () {
             'BTC'          => true,
             'ETH'          => false,
             'stablecoins'  => true,
+            'icon'         => '7b',
         ],
         [
             'exchangeName' => 'Exchange 2',
@@ -85,6 +90,7 @@ it('throws an exception if response format is unexpected', function () {
             'stablecoins'  => false,
             'other'        => true,
             'coingeckoId'  => 'exchange2_id',
+            'icon'         => '7b',
         ],
     ];
 
