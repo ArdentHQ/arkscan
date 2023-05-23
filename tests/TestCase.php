@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use Illuminate\Support\Facades\Http;
 use App\Contracts\MarketDataProvider;
-use App\Services\MarketDataProviders\CryptoCompare;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Services\MarketDataProviders\CryptoCompare;
+use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Http;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -57,9 +58,19 @@ abstract class TestCase extends BaseTestCase
      */
     protected function refreshTestDatabase()
     {
-        Artisan::call('migrate:fresh', [
-            '--database' => 'explorer',
-            '--path'     => 'tests/migrations',
-        ]);
+        if (! RefreshDatabaseState::$migrated) {
+            $this->artisan('migrate:fresh', $this->migrateFreshUsing());
+
+            $this->artisan('migrate:fresh', [
+                '--database' => 'explorer',
+                '--path'     => 'tests/migrations',
+            ]);
+
+            $this->app[Kernel::class]->setArtisan(null);
+
+            RefreshDatabaseState::$migrated = true;
+        }
+
+        $this->beginDatabaseTransaction();
     }
 }
