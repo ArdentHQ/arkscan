@@ -23,9 +23,8 @@ return [
     'last'     => 'Last',
 
     'per_page_options' => [
-        5,
         10,
-        20,
+        25,
         50,
         100,
     ],
