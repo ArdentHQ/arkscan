@@ -35,6 +35,7 @@ final class LoadExchanges extends Command
         /**
          * @var array{
          *     exchangeName: string,
+         *     icon: string,
          *     baseURL: string,
          *     exchange: bool,
          *     aggregator: bool,
@@ -60,6 +61,7 @@ final class LoadExchanges extends Command
                 'stablecoins'   => $item['stablecoins'],
                 'other'         => $item['other'],
                 'coingecko_id'  => $item['coingeckoId'],
+                'icon'          => $item['icon'],
             ];
         });
 
@@ -87,6 +89,7 @@ final class LoadExchanges extends Command
             'stablecoins',
             'other',
             'coingeckoId',
+            'icon',
         ];
 
         // check that keys are the same

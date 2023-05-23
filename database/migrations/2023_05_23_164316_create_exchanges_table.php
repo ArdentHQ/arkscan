@@ -19,6 +19,7 @@ return new class() extends Migration {
             $table->boolean('eth');
             $table->boolean('stablecoins');
             $table->boolean('other');
+            $table->string('icon');
             $table->string('coingecko_id')->nullable();
             $table->string('volume')->nullable();
             $table->timestamps();
