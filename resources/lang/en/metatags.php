@@ -52,6 +52,12 @@ return [
         'image'       => asset('images/metadata/wallets.png'),
     ],
 
+    'exchanges'  => [
+        'title'       => 'Exchanges and Aggregators | :name Blockchain Explorer',
+        'description' => 'A list of active exchanges and aggregators/swaps that support ARK Token.',
+        'image'       => asset('images/metadata/wallets.png'), // TODO: update image
+    ],
+
     'wallet'        => [
         'title'       => 'Wallet :address Details | :name Blockchain Explorer',
         'description' => 'View balance, transaction history, and other details for :address on the :name Blockchain.',
