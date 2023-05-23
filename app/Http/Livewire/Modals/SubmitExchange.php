@@ -103,10 +103,10 @@ final class SubmitExchange extends ThrottledComponent
 
     private function resetForm(): void
     {
-        $this->name    = null;
-        $this->website = null;
+        $this->name     = null;
+        $this->website  = null;
         $this->pairs    = null;
-        $this->message = null;
+        $this->message  = null;
 
         $this->resetErrorBag();
     }
