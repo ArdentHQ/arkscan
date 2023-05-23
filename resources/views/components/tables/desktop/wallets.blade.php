@@ -17,7 +17,7 @@
             <x-tables.headers.desktop.number name="general.wallet.balance" last-on="lg">
                 <span>({{ Network::currency()}})</span>
             </x-tables.headers.desktop.number>
-            <x-tables.headers.desktop.number name="general.wallet.percentage" class="text-right" responsive breakpoint="lg">
+            <x-tables.headers.desktop.number name="general.wallet.percentage" class="text-right" responsive breakpoint="md-lg">
                 <x-ark-info :tooltip="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])" type="info" />
             </x-tables.headers.desktop.number>
         </tr>
@@ -61,7 +61,7 @@
                     </div>
                 </x-ark-tables.cell>
 
-                <x-ark-tables.cell class="text-right" responsive breakpoint="lg">
+                <x-ark-tables.cell class="text-right" responsive breakpoint="md-lg">
                     <span class="font-semibold">
                         @if($useVoteWeight)
                             <x-tables.rows.desktop.vote-percentage :model="$wallet" />
