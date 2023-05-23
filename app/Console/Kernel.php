@@ -21,6 +21,7 @@ use App\Console\Commands\CacheNetworkAggregates;
 use App\Console\Commands\CachePrices;
 use App\Console\Commands\CacheTransactions;
 use App\Console\Commands\GenerateVoteReport;
+use App\Console\Commands\LoadExchanges;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -79,6 +80,8 @@ final class Kernel extends ConsoleKernel
         $schedule->command(GenerateVoteReport::class)->everyFiveMinutes();
 
         $schedule->command('view:clear-expired')->hourly();
+        
+        $schedule->command(LoadExchanges::class)->daily();
     }
 
     /**
