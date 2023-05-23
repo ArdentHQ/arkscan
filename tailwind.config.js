@@ -10,11 +10,6 @@ module.exports = {
         extend: {
             ...defaultConfig.theme.extend,
 
-            screens: {
-                ...defaultConfig.theme.extend.screens,
-                'md-lg': '960px',
-            },
-
             borderWidth: {
                 3: "3px",
                 20: "20px",
