@@ -9,19 +9,28 @@ module.exports = {
         ...defaultConfig.theme,
         extend: {
             ...defaultConfig.theme.extend,
+
+            screens: {
+                ...defaultConfig.theme.extend.screens,
+                'md-lg': '960px',
+            },
+
             borderWidth: {
                 3: "3px",
                 20: "20px",
             },
+
             backgroundSize: {
                 ...defaultConfig.theme.extend.backgroundSize,
                 500: "500px",
             },
+
             animation: {
                 "move-bg": "move-bg 15s infinite linear",
                 "move-bg-start-right":
                     "move-bg-start-right 15s infinite linear",
             },
+
             keyframes: {
                 "move-bg": {
                     "0%": { backgroundPosition: 0 },
@@ -32,6 +41,7 @@ module.exports = {
                     "100%": { backgroundPosition: "calc(100% + 500px)" },
                 },
             },
+
             height: {
                 ...defaultConfig.theme.extend.height,
                 7: "1.75rem",
@@ -40,6 +50,7 @@ module.exports = {
                 30: "7.5rem",
                 128: "32rem",
             },
+
             width: {
                 ...defaultConfig.theme.extend.width,
                 7: "1.75rem",
@@ -50,9 +61,11 @@ module.exports = {
                 116: "29rem",
                 164: "41rem",
             },
+
             padding: {
                 26: "6.5rem",
             },
+
             boxShadow: {
                 ...defaultConfig.theme.extend.boxShadow,
                 "search-subtle":
@@ -60,6 +73,7 @@ module.exports = {
                 "toggle-dropdown":
                     "0px 2px 6px rgba(33, 34, 37, 0.06), 0px 32px 41px -23px rgba(33, 34, 37, 0.07)",
             },
+
             zIndex: {
                 ...defaultConfig.theme.extend.zIndex,
                 15: 15,
