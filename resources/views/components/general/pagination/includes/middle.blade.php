@@ -30,6 +30,12 @@
                 x-on:blur="blurHandler"
             />
 
+            <x-ark-icon
+                name="arrows.keyboard-return"
+                class="hidden sm:block dark:text-theme-secondary-600"
+                size="sm"
+            />
+
             @foreach($urlParams as $key => $value)
                 <input
                     type="hidden"
