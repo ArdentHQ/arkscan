@@ -15,7 +15,7 @@
         x-transition.opacity
         x-cloak
     >
-        <div class="flex overflow-hidden flex-1 items-center px-2 rounded bg-white dark:bg-theme-secondary-800 outline outline-2 outline-theme-primary-600">
+        <div class="flex overflow-hidden flex-1 items-center px-2 bg-white rounded outline outline-2 outline-theme-primary-600 dark:bg-theme-secondary-800">
             <x-ark-icon
                 name="magnifying-glass"
                 class="text-theme-secondary-500 dark:text-theme-secondary-700"
