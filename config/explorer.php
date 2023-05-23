@@ -80,6 +80,6 @@ return [
 
     'exchanges' => [
         'list_src' => env('EXCHANGES_LIST_SRC'),
-        'icon_url' => env('EXCHANGES_ICON_URl'),
+        'icon_url' => env('EXCHANGES_ICON_URL'),
     ],
 ];
