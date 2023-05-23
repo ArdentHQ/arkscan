@@ -21,6 +21,7 @@ return new class() extends Migration {
             $table->boolean('other');
             $table->string('icon');
             $table->string('coingecko_id')->nullable();
+            $table->string('price')->nullable();
             $table->string('volume')->nullable();
             $table->timestamps();
         });
