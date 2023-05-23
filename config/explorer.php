@@ -77,4 +77,8 @@ return [
             'duration'     => env('THROTTLE_WALLET_SUBMITTED_DURATION', 3600),
         ],
     ],
+
+    'exchanges' => [
+        'list_src' => env('EXCHANGES_LIST_SRC'),
+    ],
 ];
