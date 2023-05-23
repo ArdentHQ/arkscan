@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Facades\Network;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ListBlocksByWalletController;
 use App\Http\Controllers\ListVotersByWalletController;
@@ -70,10 +70,4 @@ Route::get('/transaction/{transaction}', fn (Transaction $transaction) => redire
 Route::get('/wallet/{wallet}', fn (Wallet $wallet) => redirect()->route('wallet', ['wallet' => $wallet]));
 
 Route::view('/compatible-wallets', 'app.compatible-wallets')->name('compatible-wallets');
-Route::get('/exchanges', function () {
-    if (! Network::canBeExchanged()) {
-        return redirect()->route('home');
-    }
-
-    return view('app.exchanges');
-})->name('exchanges');
+Route::get('/exchanges', ExchangesController::class)->name('exchanges');
