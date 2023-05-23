@@ -124,5 +124,3 @@ jobs:
 
             - name: Run Tests
               run: composer test:coverage
-              env:
-                  DB_CONNECTION: sqlite
