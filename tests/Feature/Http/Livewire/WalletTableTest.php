@@ -27,16 +27,17 @@ it('should list the first page of records', function () {
 it('should change per page', function () {
     (new NetworkCache())->setSupply(fn () => strval(10e8));
 
-    $visibleWallets    = Wallet::factory(5)->create(['balance' => 1000]);
-    $notVisibleWallets = Wallet::factory(5)->create(['balance' => 10]);
+    $visibleWallets    = Wallet::factory(10)->create(['balance' => 1000]);
+    $notVisibleWallets = Wallet::factory(10)->create(['balance' => 10]);
 
-    $component = Livewire::test(WalletTable::class);
+    $component = Livewire::test(WalletTable::class)
+        ->set('perPage', 25);
 
     foreach ($visibleWallets->concat($notVisibleWallets) as $wallet) {
         $component->assertSee($wallet->address);
     }
 
-    $component->call('setPerPage', 5);
+    $component->call('setPerPage', 10);
 
     foreach ($visibleWallets as $wallet) {
         $component->assertSee($wallet->address);
@@ -53,7 +54,8 @@ it('should not per page if not a valid option', function () {
     $visibleWallets    = Wallet::factory(10)->create(['balance' => 1000]);
     $notVisibleWallets = Wallet::factory(8)->create(['balance' => 10]);
 
-    $component = Livewire::test(WalletTable::class);
+    $component = Livewire::test(WalletTable::class)
+        ->assertSet('perPage', 10);
 
     foreach ($visibleWallets as $wallet) {
         $component->assertSee($wallet->address);
@@ -63,7 +65,8 @@ it('should not per page if not a valid option', function () {
         $component->assertDontSee($wallet->address);
     }
 
-    $component->call('setPerPage', 18);
+    $component->call('setPerPage', 18)
+        ->assertSet('perPage', 10);
 
     foreach ($visibleWallets as $wallet) {
         $component->assertSee($wallet->address);
