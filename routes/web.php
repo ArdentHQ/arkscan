@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Facades\Network;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
