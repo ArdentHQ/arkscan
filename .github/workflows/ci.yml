@@ -124,9 +124,6 @@ jobs:
             - name: Prepare the database
               run: touch database/database.sqlite
 
-            - name: Migrate database
-              run: php artisan migrate --force
-
             - name: Prepare the application
               run: cp .env.example .env && php artisan key:generate
 
