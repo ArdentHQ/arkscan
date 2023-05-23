@@ -18,14 +18,14 @@
     <div class="flex space-x-2 w-full sm:w-auto">
         <x-general.pagination.includes.arrow
             :page="1"
-            icon="arrows.double-chevron-left"
+            icon="arrows.double-chevron-left-small"
             :text="trans('pagination.first')"
             :disabled="$paginator->onFirstPage()"
         />
 
         <x-general.pagination.includes.arrow
             :page="$paginator->currentPage() - 1"
-            icon="arrows.chevron-left"
+            icon="arrows.chevron-left-small"
             :disabled="$paginator->onFirstPage()"
         />
 
@@ -37,13 +37,13 @@
 
         <x-general.pagination.includes.arrow
             :page="$paginator->currentPage() + 1"
-            icon="arrows.chevron-right"
+            icon="arrows.chevron-right-small"
             :disabled="$paginator->currentPage() === $paginator->lastPage()"
         />
 
         <x-general.pagination.includes.arrow
             :page="$paginator->lastPage()"
-            icon="arrows.double-chevron-right"
+            icon="arrows.double-chevron-right-small"
             :text="trans('pagination.last')"
             :disabled="$paginator->currentPage() === $paginator->lastPage()"
         />
