@@ -16,7 +16,10 @@
 
             <livewire:exchange-table />
 
-            <x-information-pages.cta :text="trans('pages.exchanges.get_listed')">
+            <x-information-pages.cta
+                :text="trans('pages.exchanges.get_listed')"
+                breakpoint="md"
+            >
                 {{-- TODO: submit exchange modal --}}
                 <livewire:modals.submit-wallet />
             </x-information-pages.cta>
