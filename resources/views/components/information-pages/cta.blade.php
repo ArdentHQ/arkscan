@@ -1,6 +1,7 @@
 @props([
     'text',
     'breakpoint' => 'sm',
+    'padding' => 'mt-6',
 ])
 
 @php
@@ -16,8 +17,9 @@
 @endphp
 
 <div @class([
-    'flex flex-col justify-between items-center py-6 px-6 mt-6 w-full text-center rounded-xl bg-theme-primary-100 dark:bg-theme-secondary-800',
+    'flex flex-col justify-between items-center py-6 px-6 w-full text-center rounded-xl bg-theme-primary-100 dark:bg-theme-secondary-800',
     $containerBreakpoint,
+    $padding,
 ])>
     <span @class([
         'font-semibold  dark:text-white text-theme-primary-900',

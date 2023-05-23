@@ -2,7 +2,7 @@
     <x-metadata page="exchanges" />
 
     @section('content')
-        <x-ark-container container-class="flex flex-col space-y-6">
+        <x-ark-container container-class="flex flex-col">
             <x-information-pages.header
                 :title="trans('pages.exchanges.title')"
                 :subtitle="trans('pages.exchanges.subtitle')"
@@ -14,11 +14,14 @@
                 </div>
             </x-information-pages.header>
 
-            <livewire:exchange-table />
+            <div class="mt-6">
+                <livewire:exchange-table />
+            </div>
 
             <x-information-pages.cta
                 :text="trans('pages.exchanges.get_listed')"
                 breakpoint="md"
+                padding="mt-8 md:mt-6"
             >
                 {{-- TODO: submit exchange modal --}}
                 <livewire:modals.submit-wallet />
