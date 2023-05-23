@@ -29,7 +29,7 @@
                 max="{{ $paginator->lastPage() }}"
                 name="{{ $pageName }}"
                 placeholder="@lang ('ui::actions.enter_the_page_number')"
-                class="py-2 px-3 w-full bg-transparent dark:text-theme-secondary-200 placeholder:dark:text-theme-secondary-700"
+                class="py-2 px-3 w-full bg-transparent placeholder:dark:text-theme-secondary-700 dark:text-theme-secondary-200"
                 x-on:blur="blurHandler"
             />
 
