@@ -1,7 +1,7 @@
 <div class="flex flex-col space-y-3 sm:space-y-4 table-list-mobile table-list-encapsulated">
     @foreach ($exchanges as $exchange)
         <div class="rounded border border-theme-secondary-300 dark:border-theme-secondary-800">
-            <a class="flex justify-between items-center py-3 px-4 bg-theme-secondary-100 dark:bg-theme-secondary-800">
+            <a class="flex justify-between items-center py-3 px-4 bg-theme-secondary-100 dark:bg-theme-secondary-800 rounded-t">
                 <div class="flex items-center space-x-2">
                     <div class="p-1.5 bg-white rounded-full border border-theme-secondary-200 dark:border-theme-secondary-900 dark:bg-theme-secondary-900">
                         <x-ark-icon :name="$exchange['icon']" />
