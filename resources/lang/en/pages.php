@@ -323,6 +323,7 @@ return [
             'btc'         => 'BTC',
             'eth'         => 'ETH',
             'stablecoins' => 'Stablecoins',
+            'other'       => 'Other',
         ],
 
         'submit-modal' => [
