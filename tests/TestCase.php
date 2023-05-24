@@ -56,7 +56,9 @@ abstract class TestCase extends BaseTestCase
      */
     protected function refreshTestDatabase()
     {
-        $this->artisan('migrate:fresh', $this->migrateFreshUsing());
+        $this->artisan('migrate:fresh', [
+            '--database' => 'sqlite',
+        ]);
 
         $this->artisan('migrate:fresh', [
             '--database' => 'explorer',
