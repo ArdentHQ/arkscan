@@ -115,4 +115,8 @@ return [
         'address' => env('ARKSCAN_MAIL_WALLET_SUBMITTED', 'support@ardenthq.com'),
     ],
 
+    'exchange_submitted' => [
+        'address' => env('ARKSCAN_MAIL_EXCHANGE_SUBMITTED', 'support@ardenthq.com'),
+    ],
+
 ];

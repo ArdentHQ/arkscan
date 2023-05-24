@@ -10,6 +10,7 @@ return [
     'receive'         => 'Receive',
     'vote'            => 'Vote',
     'submit_wallet'   => 'Submit Wallet',
+    'submit_exchange' => 'Submit Exchange',
     'learn_more'      => 'Learn More',
     'submit'          => 'Submit',
     'cancel'          => 'Cancel',
