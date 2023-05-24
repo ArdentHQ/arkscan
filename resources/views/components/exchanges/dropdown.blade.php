@@ -5,7 +5,7 @@
 
 <x-general.dropdown.dropdown
     class="flex-1 lg:flex-none"
-    dropdown-class="w-full px-6 md:px-10 md-lg:px-0 md-lg:w-50"
+    dropdown-class="px-6 w-full md:px-10 md-lg:px-0 md-lg:w-50"
     dropdown-wrapper-class="w-full"
     activeButtonClass=""
 >
