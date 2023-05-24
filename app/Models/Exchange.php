@@ -27,20 +27,8 @@ final class Exchange extends Model
 
     public function scopeFilterByPair(Builder $query, ?string $pair): Builder
     {
-        if ($pair === 'btc') {
-            return $query->where('btc', true);
-        }
-
-        if ($pair === 'eth') {
-            return $query->where('eth', true);
-        }
-
-        if ($pair === 'stablecoins') {
-            return $query->where('stablecoins', true);
-        }
-
-        if ($pair === 'other') {
-            return $query->where('other', true);
+        if (in_array($pair, ['btc', 'eth', 'stablecoins', 'other'], true)) {
+            return $query->where($pair, true);
         }
 
         return $query;
