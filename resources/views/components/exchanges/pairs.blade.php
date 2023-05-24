@@ -1,6 +1,6 @@
 @props(['exchange'])
 
-@php 
+@php
     $pairs = array_filter([
         'btc' => $exchange->btc,
         'eth' => $exchange->eth,
