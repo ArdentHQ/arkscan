@@ -77,4 +77,9 @@ return [
             'duration'     => env('THROTTLE_WALLET_SUBMITTED_DURATION', 3600),
         ],
     ],
+
+    'exchanges' => [
+        'list_src' => env('EXCHANGES_LIST_SRC', 'https://raw.githubusercontent.com/ArkEcosystem/common/master/arkscan/exchanges.json'),
+        'icon_url' => env('EXCHANGES_ICON_URL', 'https://raw.githubusercontent.com/ArkEcosystem/common/master/arkscan/icons/'),
+    ],
 ];

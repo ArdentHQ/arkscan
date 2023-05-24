@@ -3,34 +3,28 @@
 declare(strict_types=1);
 
 use App\Http\Livewire\ExchangeTable;
+use App\Models\Exchange;
+use Illuminate\Support\Facades\Artisan;
 use Livewire\Livewire;
 
 it('should render', function () {
+    Artisan::call('migrate:fresh');
+
+    Exchange::factory()->create([
+        'name'        => '7b',
+        'url'         => 'https://7b.com',
+        'btc'         => true,
+        'eth'         => true,
+        'stablecoins' => true,
+        'other'       => false,
+    ]);
+
     Livewire::test(ExchangeTable::class)
         ->assertSee('7b')
-        ->assertSee('US$ 0.34')
-        ->assertSee('US$ 2,350,503.97')
         ->assertSee('https://7b.com')
         ->assertSeeInOrder([
             'BTC',
             'ETH',
             'Stablecoins',
-        ]);
-});
-
-it('should have a computed exchanges property', function () {
-    Livewire::test(ExchangeTable::class)
-        ->assertSet('exchanges.0', [
-            'name'   => '7b',
-            'icon'   => 'app-exchanges.7b',
-            'price'  => '0.34100',
-            'volume' => '2350503.97',
-            'url'    => 'https://7b.com',
-
-            'pairs' => [
-                'BTC',
-                'ETH',
-                'Stablecoins',
-            ],
         ]);
 });
