@@ -19,8 +19,7 @@
                 breakpoint="md"
                 padding="mt-8 md:mt-6"
             >
-                {{-- TODO: submit exchange modal --}}
-                <livewire:modals.submit-wallet />
+                <livewire:modals.submit-exchange />
             </x-information-pages.cta>
         </x-ark-container>
     @endsection
