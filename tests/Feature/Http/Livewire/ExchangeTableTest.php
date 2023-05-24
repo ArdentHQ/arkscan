@@ -41,8 +41,14 @@ it('uses the query string', function () {
         ->assertSet('pair', 'btc');
 });
 
-it('sets the filter', function ($type) {
+it('sets the filter', function () {
     Livewire::test(ExchangeTable::class)
-        ->call('setFilter', 'type', $type)
-        ->assertSet('type', $type);
-})->with(['exchanges', 'pair']);
+        ->call('setFilter', 'type', 'exchanges')
+        ->assertSet('type', 'exchanges');
+});
+
+it('sets the pair', function () {
+    Livewire::test(ExchangeTable::class)
+        ->call('setFilter', 'pair', 'btc')
+        ->assertSet('pair', 'btc');
+});
