@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use App\Models\Exchange;
-use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -31,6 +29,7 @@ final class ExchangeTableFilter extends Component
         'btc' => 'pages.exchanges.pair.btc',
         'eth' => 'pages.exchanges.pair.eth',
         'stablecoins' => 'pages.exchanges.pair.stablecoins',
+        'other' => 'pages.exchanges.pair.other',
     ];
 
     public function render(): View
@@ -44,5 +43,7 @@ final class ExchangeTableFilter extends Component
     public function setFilter(string $param, string $value): void
     {
         $this->{$param} = $value;
+
+        $this->emit('filterChanged', $param, $value);
     }
 }
