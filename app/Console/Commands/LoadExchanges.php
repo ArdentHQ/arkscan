@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Jobs\FetchExchangeDetails;
 use App\Models\Exchange;
 use Exception;
 use Illuminate\Console\Command;
@@ -71,7 +72,16 @@ final class LoadExchanges extends Command
         // Remove the ones that are no longer part of the list
         Exchange::whereNotIn('name', $items->pluck('name')->toArray())->delete();
 
+        $this->fetchExchangesDetails();
+
         return Command::SUCCESS;
+    }
+
+    private function fetchExchangesDetails(): void
+    {
+        Exchange::coingecko()->each(function ($exchage) {
+            FetchExchangeDetails::dispatch($exchage);
+        });
     }
 
     /**
@@ -96,6 +106,7 @@ final class LoadExchanges extends Command
         if (count(array_diff($expectedKeys, array_keys($response[0]))) > 0) {
             throw new Exception('Unexpected response format');
         }
+        
     }
 
     private function validateResponse(Response $response): void

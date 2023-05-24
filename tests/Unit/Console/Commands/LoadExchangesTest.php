@@ -3,10 +3,14 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Http;
+use App\Jobs\FetchExchangeDetails;
 
 beforeEach(function () {
     Artisan::call('migrate:fresh');
+
+    Bus::fake(FetchExchangeDetails::class);
 });
 
 it('loads and syncs exchanges', function () {
@@ -127,4 +131,45 @@ it('throws an exception if no exchanges list source is configured', function () 
     $this->expectExceptionMessage('No exchanges list source configured');
 
     $this->artisan('exchanges:load');
+});
+
+it('calls the job for fetching the exchange details', function () {
+    $responseJson = [
+        [
+            'exchangeName' => 'Exchange 1',
+            'baseURL'      => 'http://exchange1.com',
+            'exchange'     => true,
+            'aggregator'   => false,
+            'BTC'          => true,
+            'ETH'          => false,
+            'stablecoins'  => true,
+            'other'        => false,
+            'coingeckoId'  => 'exchange1_id',
+            'icon'         => '7b',
+        ],
+        [
+            'exchangeName' => 'Exchange 2',
+            'baseURL'      => 'http://exchange2.com',
+            'exchange'     => true,
+            'aggregator'   => true,
+            'BTC'          => false,
+            'ETH'          => true,
+            'stablecoins'  => false,
+            'other'        => true,
+            'coingeckoId'  => null,
+            'icon'         => '7b',
+        ],
+    ];
+
+    Http::fake([
+        '*' => Http::response($responseJson),
+    ]);
+
+    $this->artisan('exchanges:load');
+
+    Bus::assertDispatchedTimes(FetchExchangeDetails::class, 1);
+
+    Bus::assertDispatched(FetchExchangeDetails::class, function ($job) {
+        return $job->exchange->coingecko_id === 'exchange1_id';
+    });
 });
