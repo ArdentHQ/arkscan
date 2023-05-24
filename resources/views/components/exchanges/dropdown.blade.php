@@ -7,7 +7,7 @@
     class="flex-1 lg:flex-none"
     dropdown-class="px-6 w-full md:px-10 md-lg:px-0 md-lg:w-50"
     dropdown-wrapper-class="w-full"
-    activeButtonClass=""
+    activeButtonClass="hover:bg-theme-secondary-200 hover:dark:bg-theme-secondary-800"
 >
     <x-slot name="button" class="w-full font-semibold rounded border border-theme-secondary-300 text-theme-secondary-900 md-lg:w-50 dark:border-theme-secondary-800 dark:text-theme-secondary-200">
         <div class="flex justify-between items-center py-3 px-4 w-full">
