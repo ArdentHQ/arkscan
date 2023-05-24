@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Contracts\MarketDataProvider;
+use App\Facades\Network;
 use App\Services\BigNumber;
 use ARKEcosystem\Foundation\DataBags\DataBag;
 use Illuminate\Database\Eloquent\Model;
@@ -98,13 +99,16 @@ final class AppServiceProvider extends ServiceProvider
             ]],
             ['label' => trans('menus.resources'), 'children' => [
                 ['route' => 'compatible-wallets',  'label' => trans('menus.wallets')],
-                ['route' => 'exchanges',  'label' => trans('menus.exchanges')],
             ]],
             ['label' => trans('menus.developers'), 'children' => [
                 ['url' => 'https://ark.dev/',  'label' => trans('menus.docs')],
                 ['url'   => 'https://ark.dev/docs/api',  'label' => trans('menus.api')],
             ]],
         ];
+
+        if (Network::canBeExchanged()) {
+            $navigationEntries[2]['children'][] = ['route' => 'exchanges',  'label' => trans('menus.exchanges')];
+        }
 
         if (config('explorer.support.enabled') === true) {
             $navigationEntries[3]['children'][] = ['route' => 'contact', 'label' => trans('menus.contact')];

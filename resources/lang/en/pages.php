@@ -306,4 +306,35 @@ return [
             'throttle_error'      => 'You have made too many requests. Please wait :time before reporting again.',
         ],
     ],
+
+    'exchanges' => [
+        'title'      => 'Exchange Listings',
+        'subtitle'   => 'A listing of active exchanges and their ARK pairs.',
+        'get_listed' => "Don't see an exchange listed? <span class=\"whitespace-nowrap\">Let us know!</span>",
+
+        'type' => [
+            'title'       => 'Type',
+            'exchanges'   => 'Exchanges',
+            'agreggators' => 'Agreggators',
+        ],
+
+        'pair' => [
+            'title'       => 'Pair',
+            'btc'         => 'BTC',
+            'eth'         => 'ETH',
+            'stablecoins' => 'Stablecoins',
+        ],
+
+        'submit-modal' => [
+            'title'               => 'Submit a Listing',
+            'name'                => 'Exchange Name',
+            'website'             => 'Website Address',
+            'website_placeholder' => 'https://website.com',
+            'pairs'               => 'ARK Pairs',
+            'pairs_placeholder'   => 'USDT/BTC/ETH...',
+            'message'             => 'Additional Details',
+            'success_toast'       => 'Thank you. Your message has been submitted.',
+            'throttle_error'      => 'You have made too many requests. Please wait :time before reporting again.',
+        ],
+    ],
 ];

@@ -31,6 +31,7 @@ return [
     'select_theme'            => 'Select Theme',
     'select_network'          => 'Select Network',
     'na'                      => 'N/A',
+    'all'                     => 'All',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
@@ -138,6 +139,13 @@ return [
         'profile'      => 'Profile',
         'commission'   => 'Commission',
         'productivity' => 'Productivity',
+    ],
+
+    'exchange'                  => [
+        'name'      => 'Name',
+        'top_pairs' => 'Top Pairs',
+        'price'     => 'Price',
+        'volume'    => 'Volume',
     ],
 
     'urls'                    => [
