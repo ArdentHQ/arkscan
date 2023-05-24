@@ -1,5 +1,5 @@
-<div class="relative z-40 hidden bg-white md:flex md:flex-col dark:bg-theme-secondary-900">
-    <div class="flex items-center justify-between w-full py-3 content-container">
+<div class="hidden relative z-40 bg-white md:flex md:flex-col dark:bg-theme-secondary-900">
+    <div class="flex justify-between items-center py-3 w-full content-container">
         <div class="flex items-center">
             <div class="flex font-semibold dark:text-white text-theme-secondary-900">
                 <livewire:price-ticker />
