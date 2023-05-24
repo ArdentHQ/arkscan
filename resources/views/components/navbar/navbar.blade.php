@@ -1,8 +1,8 @@
 <header class="flex flex-col">
-    <div class="sm:mb-1 sm:h-16 h-[3.25rem]"></div>
+    <div class="sm:h-16 md:hidden h-[3.25rem]"></div>
     <div
         id="navbar"
-        class="fixed z-20 w-full"
+        class="fixed z-20 w-full md:relative"
         x-data="Navbar.dropdown({
             dark: window.getThemeMode() === 'dark',
             open: false,
@@ -10,7 +10,7 @@
         })"
         @theme-changed.window="dark = $event.detail.theme === 'dark'"
     >
-        <div x-show="openDropdown !== null || open" class="overflow-y-auto fixed inset-0 z-30" x-cloak @click="openDropdown = null; open = false;"></div>
+        <div x-show="openDropdown !== null || open" class="overflow-y-auto fixed inset-0 z-30 md:relative" x-cloak @click="openDropdown = null; open = false;"></div>
 
         <nav
             x-ref="nav"
