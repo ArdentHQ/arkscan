@@ -12,7 +12,7 @@ final class Exchange extends Model
 {
     use HasFactory;
 
-    public function scopeFilterByType(Builder $query, string $type)
+    public function scopeFilterByType(Builder $query, ?string $type): Builder
     {
         if ($type === 'exchanges') {
             return $query->where('is_exchange', true);
@@ -25,7 +25,7 @@ final class Exchange extends Model
         return $query;
     }
 
-    public function scopeFilterByPair(Builder $query, string $pair): Builder
+    public function scopeFilterByPair(Builder $query, ?string $pair): Builder
     {
         if ($pair === 'btc') {
             return $query->where('btc', true);

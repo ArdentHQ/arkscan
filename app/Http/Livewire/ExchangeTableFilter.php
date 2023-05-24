@@ -13,13 +13,19 @@ final class ExchangeTableFilter extends Component
 
     public ?string $pair = 'all';
 
-    public $types = [
+    /**
+     * @var array<string, string>
+     */
+    public array $types = [
         'all'         => 'general.all',
         'exchanges'   => 'pages.exchanges.type.exchanges',
         'aggregators' => 'pages.exchanges.type.agreggators',
     ];
 
-    public $pairs = [
+    /**
+     * @var array<string, string>
+     */
+    public array $pairs = [
         'all'         => 'general.all',
         'btc'         => 'pages.exchanges.pair.btc',
         'eth'         => 'pages.exchanges.pair.eth',
@@ -27,6 +33,9 @@ final class ExchangeTableFilter extends Component
         'other'       => 'pages.exchanges.pair.other',
     ];
 
+    /**
+     * @var mixed
+     */
     protected $queryString = [
         'type' => ['except' => 'all'],
         'pair' => ['except' => 'all'],
@@ -42,7 +51,13 @@ final class ExchangeTableFilter extends Component
 
     public function setFilter(string $param, string $value): void
     {
-        $this->{$param} = $value;
+        if ($param === 'type') {
+            $this->type = $value;
+        }
+
+        if ($param === 'pair') {
+            $this->pair = $value;
+        }
 
         $this->emit('filterChanged', $param, $value);
     }

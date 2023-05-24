@@ -15,11 +15,17 @@ final class ExchangeTable extends Component
 
     public ?string $pair = 'all';
 
+    /**
+     * @var mixed
+     */
     protected $queryString = [
         'type' => ['except' => 'all'],
         'pair' => ['except' => 'all'],
     ];
 
+    /**
+     * @var mixed
+     */
     protected $listeners = ['filterChanged' => 'setFilter'];
 
     public function render(): View
@@ -39,6 +45,12 @@ final class ExchangeTable extends Component
 
     public function setFilter(string $param, string $value): void
     {
-        $this->{$param} = $value;
+        if ($param === 'type') {
+            $this->type = $value;
+        }
+
+        if ($param === 'pair') {
+            $this->pair = $value;
+        }
     }
 }
