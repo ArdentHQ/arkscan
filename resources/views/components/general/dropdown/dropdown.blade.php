@@ -17,7 +17,7 @@
         :init-alpine="false"
         with-placement="bottom"
         :dropdown-classes="Arr::toCssClasses(['min-w-40 transition-opacity', $dropdownClass])"
-        dropdown-content-classes="bg-white dark:bg-theme-secondary-800 rounded-xl shadow-toggle-dropdown py-2"
+        dropdown-content-classes="bg-white dark:bg-theme-secondary-800 rounded-xl shadow-lg py-2"
         :disabled="$disabled"
         z-index="z-20"
         button-class="w-full"
