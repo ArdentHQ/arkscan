@@ -17,5 +17,15 @@ return [
 
     'previous' => '&laquo; Previous',
     'next'     => 'Next &raquo;',
+    'show'     => 'Show',
+    'records'  => 'Records',
+    'first'    => 'First',
+    'last'     => 'Last',
 
+    'per_page_options' => [
+        10,
+        25,
+        50,
+        100,
+    ],
 ];
