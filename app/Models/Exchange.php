@@ -14,15 +14,9 @@ final class Exchange extends Model
 
     public function scopeFilterByType(Builder $query, ?string $type): Builder
     {
-        if ($type === 'exchanges') {
-            return $query->where('is_exchange', true);
-        }
-
-        if ($type === 'aggregators') {
-            return $query->where('is_aggregator', true);
-        }
-
-        return $query;
+        return $query
+            ->when($type === 'exchanges', static fn ($query) => $query->where('is_exchange', true))
+            ->when($type === 'aggregators', static fn ($query) => $query->where('is_aggregator', true));
     }
 
     public function scopeFilterByPair(Builder $query, ?string $pair): Builder
