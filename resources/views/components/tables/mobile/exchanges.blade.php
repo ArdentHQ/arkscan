@@ -17,7 +17,7 @@
                 />
             </a>
 
-            <div class="flex flex-col px-4 pt-3 pb-4 space-y-4">
+            <div class="flex flex-col px-4 pt-3 pb-4 space-y-4 sm:flex-row sm:justify-between sm:space-y-0">
                 <div class="flex flex-col space-y-2 text-sm font-semibold">
                     <span class="text-theme-secondary-600">
                         @lang('general.exchange.top_pairs')

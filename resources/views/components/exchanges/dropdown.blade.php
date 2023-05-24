@@ -17,7 +17,7 @@
                     class="text-theme-secondary-700 dark:text-theme-secondary-600 group-hover:dark:text-theme-secondary-200"
                 />
 
-                <span>{{ $title }}</span>
+                <span class="leading-5">{{ $title }}</span>
             </div>
 
             <span
