@@ -19,18 +19,18 @@ class ExchangeFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->unique()->word(),
-            'url' => fake()->url(),
-            'is_exchange' => fake()->boolean(),
+            'name'          => fake()->unique()->word(),
+            'url'           => fake()->url(),
+            'is_exchange'   => fake()->boolean(),
             'is_aggregator' => fake()->boolean(),
-            'btc' => fake()->boolean(),
-            'eth' => fake()->boolean(),
-            'stablecoins' => fake()->boolean(),
-            'other' => fake()->boolean(),
-            'icon' => fake()->word(),
-            'coingecko_id' => fake()->optional()->word(),
-            'price' => fake()->optional()->randomNumber(),
-            'volume' => fake()->optional()->randomNumber(),
+            'btc'           => fake()->boolean(),
+            'eth'           => fake()->boolean(),
+            'stablecoins'   => fake()->boolean(),
+            'other'         => fake()->boolean(),
+            'icon'          => fake()->word(),
+            'coingecko_id'  => fake()->optional()->word(),
+            'price'         => fake()->optional()->randomNumber(),
+            'volume'        => fake()->optional()->randomNumber(),
         ];
     }
 }
