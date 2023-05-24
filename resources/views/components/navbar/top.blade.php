@@ -1,4 +1,4 @@
-<div class="hidden bg-white border-b md:flex md:flex-col dark:bg-theme-secondary-900 border-theme-secondary-300 dark:border-theme-secondary-800">
+<div class="relative z-40 hidden bg-white md:flex md:flex-col dark:bg-theme-secondary-900">
     <div class="flex items-center justify-between w-full py-3 content-container">
         <div class="flex items-center">
             <div class="flex font-semibold dark:text-white text-theme-secondary-900">
