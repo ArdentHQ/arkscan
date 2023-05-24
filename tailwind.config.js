@@ -65,8 +65,6 @@ module.exports = {
                 ...defaultConfig.theme.extend.boxShadow,
                 "search-subtle":
                     "0 10px 15px -3px rgba(0,0,0,.03), 0 4px 6px -2px rgba(0,0,0,.03)",
-                "toggle-dropdown":
-                    "0px 2px 6px rgba(33, 34, 37, 0.06), 0px 32px 41px -23px rgba(33, 34, 37, 0.07)",
             },
 
             zIndex: {
