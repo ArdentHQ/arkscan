@@ -13,7 +13,7 @@
 
         <x-tables.mobile.wallets :wallets="$wallets" />
 
-        <x-general.pagination :results="$wallets" class="mt-8" />
+        <x-general.pagination.table :results="$wallets" />
 
         <x-script.onload-scroll-to-query selector="#wallet-list" />
     </x-skeletons.wallets>
