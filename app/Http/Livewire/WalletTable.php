@@ -15,10 +15,21 @@ final class WalletTable extends Component
 {
     use HasPagination;
 
+    public int $perPage = 10;
+
     public function render(): View
     {
         return view('livewire.wallet-table', [
-            'wallets' => ViewModelFactory::paginate(Wallet::withScope(OrderByBalanceScope::class)->paginate()),
+            'wallets' => ViewModelFactory::paginate(Wallet::withScope(OrderByBalanceScope::class)->paginate($this->perPage)),
         ]);
+    }
+
+    public function setPerPage(int $perPage): void
+    {
+        if (! in_array($perPage, trans('pagination.per_page_options'), true)) {
+            return;
+        }
+
+        $this->perPage = $perPage;
     }
 }
