@@ -4,7 +4,7 @@
 ])
 
 <x-general.dropdown.dropdown
-    class="flex-1 lg:flex-none"
+    class="flex-1 lg:flex-none group"
     dropdown-class="px-6 w-full md:px-10 md-lg:px-0 md-lg:w-50"
     dropdown-wrapper-class="w-full"
     activeButtonClass="hover:bg-theme-secondary-200 hover:dark:bg-theme-secondary-800"
@@ -14,7 +14,7 @@
             <div class="flex items-center space-x-2">
                 <x-ark-icon
                     :name="$icon"
-                    class="text-theme-secondary-700 dark:text-theme-secondary-600"
+                    class="text-theme-secondary-700 dark:text-theme-secondary-600 group-hover:dark:text-theme-secondary-200"
                 />
 
                 <span>{{ $title }}</span>
