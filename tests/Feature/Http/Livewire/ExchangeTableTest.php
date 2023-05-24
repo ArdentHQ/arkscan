@@ -52,3 +52,10 @@ it('sets the pair', function () {
         ->call('setFilter', 'pair', 'btc')
         ->assertSet('pair', 'btc');
 });
+
+it('ignores an invalid filter', function () {
+    Livewire::test(ExchangeTable::class)
+        ->call('setFilter', 'invalid', 'btc')
+        ->assertSet('pair', 'all')
+        ->assertSet('type', 'all');
+});
