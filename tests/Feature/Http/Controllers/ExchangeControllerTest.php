@@ -2,7 +2,12 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
+
+beforeEach(function () {
+    Artisan::call('migrate:fresh');
+});
 
 it('should render the page', function () {
     $this

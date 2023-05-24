@@ -9,6 +9,7 @@ use App\Services\MarketDataProviders\CryptoCompare;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
@@ -56,11 +57,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function refreshTestDatabase()
     {
-        $this->artisan('migrate:fresh', [
-            '--database' => 'sqlite',
-        ]);
-
-        $this->artisan('migrate:fresh', [
+        Artisan::call('migrate:fresh', [
             '--database' => 'explorer',
             '--path'     => 'tests/migrations',
         ]);
