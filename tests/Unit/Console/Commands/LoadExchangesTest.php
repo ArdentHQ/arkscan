@@ -2,7 +2,12 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+
+beforeEach(function () {
+    Artisan::call('migrate:fresh');
+});
 
 it('loads and syncs exchanges', function () {
     $responseJson = [
