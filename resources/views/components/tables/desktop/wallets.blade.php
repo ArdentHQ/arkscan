@@ -10,14 +10,18 @@
             <x-tables.headers.desktop.number name="general.wallet.rank" />
             <x-tables.headers.desktop.address name="general.wallet.address" />
             <x-tables.headers.desktop.text name="general.wallet.name" />
-            <x-tables.headers.desktop.icon name="general.wallet.type" class="text-center" />
+            <x-tables.headers.desktop.icon name="general.wallet.type" class="text-center" responsive breakpoint="md-lg" />
             @unless($hideVoting)
                 <x-tables.headers.desktop.icon name="general.wallet.voting" class="text-center" responsive breakpoint="lg" />
             @endunless
             <x-tables.headers.desktop.number name="general.wallet.balance" last-on="lg">
                 <span>({{ Network::currency()}})</span>
             </x-tables.headers.desktop.number>
-            <x-tables.headers.desktop.number name="general.wallet.percentage" class="text-right" responsive breakpoint="lg">
+            <x-tables.headers.desktop.number name="general.wallet.percentage"
+                class="text-right"
+                breakpoint="md-lg"
+                responsive
+            >
                 <x-ark-info :tooltip="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])" type="info" />
             </x-tables.headers.desktop.number>
         </tr>
@@ -37,7 +41,11 @@
                     <x-tables.rows.desktop.encapsulated.username :model="$wallet" />
                 </x-ark-tables.cell>
 
-                <x-ark-tables.cell class="text-center">
+                <x-ark-tables.cell
+                    class="text-center"
+                    breakpoint="md-lg"
+                    responsive
+                >
                     <x-tables.rows.desktop.wallet-type :model="$wallet" />
                 </x-ark-tables.cell>
 
@@ -61,7 +69,10 @@
                     </div>
                 </x-ark-tables.cell>
 
-                <x-ark-tables.cell class="text-right" responsive breakpoint="lg">
+                <x-ark-tables.cell class="text-right"
+                    breakpoint="md-lg"
+                    responsive
+                >
                     <span class="font-semibold">
                         @if($useVoteWeight)
                             <x-tables.rows.desktop.vote-percentage :model="$wallet" />

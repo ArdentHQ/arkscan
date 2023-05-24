@@ -2,51 +2,34 @@
     'button',
     'content',
     'dropdownClass' => null,
+    'disabled' => false,
 ])
 
 <div
-    x-data="{
-        isOpen: false,
-
-        open() {
-            this.isOpen = true;
-        },
-
-        close() {
-            this.isOpen = false;
-        },
-
-        toggle() {
-            if (this.isOpen) {
-                this.close();
-            } else {
-                this.open();
-            }
-        },
-    }"
     {{ $attributes->class('relative') }}
+    x-data="{ dropdownOpen: false }"
 >
-    <div
-        {{ $button->attributes }}
-        @unless ($button->attributes->get('disabled') === true)
-            @click="toggle"
-        @endunless
+    <x-ark-dropdown
+        :init-alpine="false"
+        wrapper-class="inline-block"
+        with-placement="bottom"
+        dropdown-classes="min-w-40 transition-opacity"
+        dropdown-content-classes="bg-white dark:bg-theme-secondary-800 rounded-xl shadow-toggle-dropdown py-2"
+        :disabled="$disabled"
+        z-index="z-20"
     >
-        {{ $button }}
-    </div>
+        <x-slot name="button">
+            <div {{ $button->attributes->class([
+                'inline-flex items-center transition-default',
+                'text-theme-secondary-500 dark:text-theme-secondary-700 bg-theme-secondary-200 dark:bg-theme-secondary-800' => $disabled,
+                'bg-theme-secondary-200 dark:bg-theme-secondary-800 md:bg-white md:dark:text-theme-secondary-600 md:hover:text-theme-secondary-900 md:hover:bg-theme-secondary-200 md:dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800 text-theme-secondary-700 dark:text-theme-secondary-200' => ! $disabled,
+            ]) }}>
+                {{ $button }}
+            </div>
+        </x-slot>
 
-    <div
-        x-show="isOpen"
-        @click.away="close"
-        x-transition
-        x-cloak
-        {{ $content->attributes->class([
-            'flex flex-col overflow-hidden absolute py-3 whitespace-nowrap bg-white rounded-xl dark:bg-theme-secondary-800 z-10 mt-1 shadow-toggle-dropdown',
-            $dropdownClass,
-        ]) }}
-    >
         <div class="flex overflow-y-auto flex-col h-full custom-scroll">
             {{ $content }}
         </div>
-    </div>
+    </x-ark-dropdown>
 </div>

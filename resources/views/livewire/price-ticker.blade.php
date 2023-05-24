@@ -33,17 +33,15 @@
             @endif
         </div>
 
-        <x-general.dropdown.dropdown dropdown-class="max-h-[246px] md:max-h-[332px]">
+        <x-general.dropdown.dropdown
+            dropdown-class="max-h-[246px] md:max-h-[332px]"
+            :disabled="$isDisabled"
+        >
             <x-slot
                 name="button"
-                @class([
-                    'inline-flex items-center rounded-l rounded-r md:rounded-l-none transition-default',
-                    'text-theme-secondary-500 dark:text-theme-secondary-700 bg-theme-secondary-200 dark:bg-theme-secondary-800' => $isDisabled,
-                    'bg-theme-secondary-200 dark:bg-theme-secondary-800 md:bg-white md:dark:text-theme-secondary-200 md:hover:text-theme-secondary-900 md:hover:bg-theme-secondary-200 md:dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800 text-theme-secondary-700 dark:text-theme-secondary-200' => ! $isDisabled,
-                ])
-                :disabled="$isDisabled"
+                class="rounded-r rounded-l md:rounded-l-none"
             >
-                <button
+                <div
                     @class([
                         'flex justify-center items-center py-2 pr-3 space-x-2 text-sm font-semibold leading-4 group',
                         'cursor-not-allowed' => $isDisabled,
@@ -64,14 +62,14 @@
 
                     <span
                         class="transition-default"
-                        :class="{ 'rotate-180': isOpen }"
+                        :class="{ 'rotate-180': dropdownOpen }"
                     >
                         <x-ark-icon
                             name="arrows.chevron-down-small"
                             size="w-3 h-3"
                         />
                     </span>
-                </button>
+                </div>
             </x-slot>
 
             <x-slot
