@@ -10,7 +10,7 @@
             <x-tables.headers.desktop.number name="general.wallet.rank" />
             <x-tables.headers.desktop.address name="general.wallet.address" />
             <x-tables.headers.desktop.text name="general.wallet.name" />
-            <x-tables.headers.desktop.icon name="general.wallet.type" class="text-center" />
+            <x-tables.headers.desktop.icon name="general.wallet.type" class="text-center" responsive breakpoint="md-lg" />
             @unless($hideVoting)
                 <x-tables.headers.desktop.icon name="general.wallet.voting" class="text-center" responsive breakpoint="lg" />
             @endunless
@@ -41,7 +41,11 @@
                     <x-tables.rows.desktop.encapsulated.username :model="$wallet" />
                 </x-ark-tables.cell>
 
-                <x-ark-tables.cell class="text-center">
+                <x-ark-tables.cell
+                    class="text-center"
+                    breakpoint="md-lg"
+                    responsive
+                >
                     <x-tables.rows.desktop.wallet-type :model="$wallet" />
                 </x-ark-tables.cell>
 
