@@ -5,7 +5,7 @@
 
 <x-general.dropdown.dropdown class="flex-1 lg:flex-none">
     <x-slot name="button" class="w-full font-semibold rounded border border-theme-secondary-300 text-theme-secondary-900 md-lg:w-50 dark:border-theme-secondary-800 dark:text-theme-secondary-200">
-        <button class="flex justify-between items-center py-3 px-4 w-full">
+        <div class="flex justify-between items-center py-3 px-4 w-full">
             <div class="flex items-center space-x-2">
                 <x-ark-icon
                     :name="$icon"
@@ -25,7 +25,7 @@
                     class="text-theme-secondary-700 dark:text-theme-secondary-200"
                 />
             </span>
-        </button>
+        </div>
     </x-slot>
 
     <x-slot name="content" class="w-full">
