@@ -38,7 +38,7 @@ final class Exchange extends Model
         if ($pair === 'stablecoins') {
             return $query->where('stablecoins', true);
         }
-        
+
         if ($pair === 'other') {
             return $query->where('other', true);
         }

@@ -12,7 +12,7 @@ use Livewire\Component;
 final class ExchangeTable extends Component
 {
     public ?string $type = 'all';
-    
+
     public ?string $pair = 'all';
 
     protected $queryString = [
