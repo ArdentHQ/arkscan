@@ -136,7 +136,7 @@ final class CoinGecko extends AbstractMarketDataProvider
             ->first();
 
         if ($tickerData === null) {
-            return  null;
+            return null;
         }
 
         return [
