@@ -57,14 +57,9 @@ final class FetchExchangeDetails implements ShouldQueue
     {
         $result = app(MarketDataProvider::class)->exchangeDetails($this->exchange);
 
-        // No information for ark in any usd compatible exchange
-        if ($result === null) {
-            $this->exchange->price  = null;
-            $this->exchange->volume = null;
-        } else {
-            $this->exchange->price  = Arr::get($result, 'price');
-            $this->exchange->volume = Arr::get($result, 'volume');
-        }
+        $this->exchange->price  = Arr::get($result, 'price');
+        
+        $this->exchange->volume = Arr::get($result, 'volume');
 
         $this->exchange->save();
     }
