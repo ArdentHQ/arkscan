@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Exceptions\ApiNotAvailableException;
 use App\Models\Exchange;
 use App\Services\MarketDataProviders\CoinGecko;
 use Illuminate\Support\Arr;
@@ -150,7 +151,7 @@ it('should return null if no usd target on the response', function () {
     expect($details)->toBeNull();
 });
 
-it('returns null if the API response is empty for exchange details', function () {
+it('should throw an exception if the API response is empty for exchange details', function () {
     Artisan::call('migrate:fresh');
 
     Http::fake([
@@ -161,12 +162,10 @@ it('returns null if the API response is empty for exchange details', function ()
         'coingecko_id' => 'example_exchange_id',
     ]);
 
-    $details = (new CoinGecko())->exchangeDetails($exchange);
+    (new CoinGecko())->exchangeDetails($exchange);
+})->throws(ApiNotAvailableException::class);
 
-    expect($details)->toBeNull();
-});
-
-it('returns null if the API response throws an exception', function () {
+it('should throw an exception if the API response throws an exception', function () {
     Artisan::call('migrate:fresh');
 
     Http::fake([
@@ -177,12 +176,10 @@ it('returns null if the API response throws an exception', function () {
         'coingecko_id' => 'example_exchange_id',
     ]);
 
-    $details = (new CoinGecko())->exchangeDetails($exchange);
+    (new CoinGecko())->exchangeDetails($exchange);
+})->throws(ApiNotAvailableException::class);
 
-    expect($details)->toBeNull();
-});
-
-it('returns null if the API response indicates throttling for exchange details', function () {
+it('should throw an exception if the API response indicates throttling for exchange details', function () {
     Artisan::call('migrate:fresh');
 
     Http::fake([
@@ -197,7 +194,5 @@ it('returns null if the API response indicates throttling for exchange details',
         'coingecko_id' => 'example_exchange_id',
     ]);
 
-    $details = (new CoinGecko())->exchangeDetails($exchange);
-
-    expect($details)->toBeNull();
-});
+    (new CoinGecko())->exchangeDetails($exchange);
+})->throws(ApiNotAvailableException::class);
