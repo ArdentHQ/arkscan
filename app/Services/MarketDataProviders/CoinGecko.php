@@ -131,7 +131,7 @@ final class CoinGecko extends AbstractMarketDataProvider
         /** @var array<mixed> $data */
         $possibleTargets = collect(['USDT', 'USDC', 'BUSD']);
 
-        $tickerData =  collect($data)
+        $tickerData = collect($data)
             ->filter(fn (array $ticker) => $possibleTargets->contains($ticker['target']))
             ->first();
 
