@@ -8,12 +8,13 @@
     'withoutReverse'  => false,
     'withoutTruncate' => false,
     'withoutUsername' => false,
+    'withoutReverseClass' => 'space-x-3',
 ])
 
 <div>
     <div @class([
         'flex items-center md:flex-row md:justify-start',
-        'space-x-3' => $withoutReverse,
+        $withoutReverseClass => $withoutReverse,
         'flex-row-reverse md:space-x-4' => ! $withoutReverse,
     ])>
         @unless ($icon)
