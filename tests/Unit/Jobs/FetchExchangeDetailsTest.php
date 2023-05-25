@@ -45,3 +45,9 @@ it('should clear exchange details when no information is available for the excha
     expect($exchange->price)->toBeNull();
     expect($exchange->volume)->toBeNull();
 });
+
+it('retries after 60s', function () {
+    $exchange = Exchange::factory()->create();
+
+    expect((new FetchExchangeDetails($exchange))->retryAfter())->toBe(60);
+});
