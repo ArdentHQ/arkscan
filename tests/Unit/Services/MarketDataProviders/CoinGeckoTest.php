@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Exceptions\ApiNotAvailableException;
 use App\Models\Exchange;
 use App\Services\MarketDataProviders\CoinGecko;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -131,11 +132,44 @@ it('should fetch exchange details for the given exchange', function () {
     expect($details['volume'])->toEqual('54880');
 });
 
+it('should return null if no usd target on the response', function () {
+    Artisan::call('migrate:fresh');
+
+    $response = json_decode(file_get_contents(base_path('tests/fixtures/coingecko/exchange_details.json')), true);
+    Arr::set($response, 'tickers.0.target', 'EUR');
+    
+    Http::fake([
+        'api.coingecko.com/*' => Http::response($response, 200),
+    ]);
+
+    $exchange = Exchange::factory()->create([
+        'coingecko_id' => 'example_exchange_id',
+    ]);
+
+    $details = (new CoinGecko())->exchangeDetails($exchange);
+
+    expect($details)->toBeNull();
+});
+
 it('should throw an exception if the API response is empty for exchange details', function () {
     Artisan::call('migrate:fresh');
 
     Http::fake([
         'api.coingecko.com/*' => Http::response(null, 200),
+    ]);
+
+    $exchange = Exchange::factory()->create([
+        'coingecko_id' => 'example_exchange_id',
+    ]);
+
+    (new CoinGecko())->exchangeDetails($exchange);
+})->throws(ApiNotAvailableException::class);
+
+it('should throw an exception if the API response throws an exception', function () {
+    Artisan::call('migrate:fresh');
+
+    Http::fake([
+        'api.coingecko.com/*' => fn() => throw new \Exception('Test'),
     ]);
 
     $exchange = Exchange::factory()->create([
