@@ -7,7 +7,7 @@
             <x-tables.headers.desktop.text name="general.exchange.top_pairs" />
 
             <x-tables.headers.desktop.number name="general.exchange.price">
-                <span>({{ Settings::currency()}})</span>
+                <span>(USD)</span>
             </x-tables.headers.desktop.number>
 
             <x-tables.headers.desktop.number
@@ -16,7 +16,7 @@
                 breakpoint="md-lg"
                 responsive
             >
-                <span>({{ Settings::currency()}})</span>
+                <span>(USD)</span>
             </x-tables.headers.desktop.number>
         </tr>
     </thead>
@@ -29,7 +29,7 @@
             >
                 <x-ark-tables.cell class="text-sm">
                     <div class="flex items-center space-x-3">
-                        <div class="flex justify-center items-center w-5 h-5">
+                        <div class="flex items-center justify-center w-5 h-5">
                             <img class="max-w-full max-h-full" src="{{ config('explorer.exchanges.icon_url') }}{{ $exchange->icon }}.svg" alt="{{ $exchange->name }} icon" />
                         </div>
 
