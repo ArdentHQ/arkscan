@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Contracts\MarketDataProvider;
 use App\Models\Exchange;
+use Illuminate\Support\Arr;
 use Illuminate\Bus\Queueable;
+use App\Contracts\MarketDataProvider;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\RateLimited;
-use Illuminate\Queue\SerializesModels;
 
-class FetchExchangeDetails implements ShouldQueue
+final class FetchExchangeDetails implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -61,8 +62,8 @@ class FetchExchangeDetails implements ShouldQueue
             $this->exchange->price  = null;
             $this->exchange->volume = null;
         } else {
-            $this->exchange->price  = $result['price'];
-            $this->exchange->volume = $result['volume'];
+            $this->exchange->price  = Arr::get($result, 'price');
+            $this->exchange->volume = Arr::get($result, 'volume');
         }
 
         $this->exchange->save();
