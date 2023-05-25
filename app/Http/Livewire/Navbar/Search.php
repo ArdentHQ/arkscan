@@ -15,9 +15,7 @@ use Livewire\Component;
 
 class Search extends Component
 {
-    public ?string $query = '68be9f9ec22117aaa52f2cf50abcce2a0edcbdf44ca3b28e49e4466e898d9621';
-    // public ?string $query = '32232d59e0110835943527c87f0e749c62b5b4235dc35e2ce24f8d5add141cb1';
-    // public ?string $query = 'D62h47qvxjxWMw2aJf74iN6LG2o3nmb3We';
+    public ?string $query = null;
 
     public bool $hasResults = false;
 

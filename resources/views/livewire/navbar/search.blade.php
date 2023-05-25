@@ -2,7 +2,6 @@
     query: @entangle('query'),
     dropdownOpen: @entangle('hasResults'),
 }">
-    {{-- <div x-show="dropdownOpen">asd {{ count($this->results()->items()) }} @dump($this->results()->items())</div> --}}
     <x-ark-input-with-prefix
         icon="magnifying-glass"
         type="text"
