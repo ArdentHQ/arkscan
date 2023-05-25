@@ -7,7 +7,7 @@
             <x-tables.headers.desktop.text name="general.exchange.top_pairs" />
 
             <x-tables.headers.desktop.number name="general.exchange.price">
-                <span>(USD)</span>
+                <span>(@lang('currencies.usd.currency'))</span>
             </x-tables.headers.desktop.number>
 
             <x-tables.headers.desktop.number
