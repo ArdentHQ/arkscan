@@ -4,7 +4,7 @@
     <div class="flex items-center space-x-2">
         <div>@lang('general.search.transaction')</div>
 
-        <a href="{{ $transaction->url() }}" class="link min-w-0">
+        <a href="{{ $transaction->url() }}" class="min-w-0 link">
             <x-truncate-dynamic>
                 {{ $transaction->id() }}
             </x-truncate-dynamic>
@@ -50,7 +50,7 @@
             </x-general.identity>
         </div>
 
-        <div class="text-xs md-lg:flex-1 text-right">
+        <div class="text-xs text-right md-lg:flex-1">
             <x-currency :currency="Network::currency()">
                 {{ ExplorerNumberFormatter::number($transaction->amount()) }}
             </x-currency>

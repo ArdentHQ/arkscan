@@ -20,7 +20,7 @@
     </div>
 
     <div class="flex items-center space-x-1">
-        <div class="text-theme-secondary-500 text-xs">
+        <div class="text-xs text-theme-secondary-500">
             @lang('general.search.balance')
         </div>
 

@@ -18,14 +18,14 @@
         iconSize="sm"
     >
         <div
-            class="flex space-x-4 items-center mr-4"
+            class="flex items-center mr-4 space-x-4"
             x-show="query !== null && query !== ''"
             x-transition
         >
             <button
                 type="button"
                 wire:click="clear"
-                class="button-secondary p-2 bg-transparent text-theme-secondary-700 -my-px"
+                class="p-2 -my-px bg-transparent button-secondary text-theme-secondary-700"
                 x-cloak
             >
                 <x-ark-icon
@@ -51,7 +51,7 @@
             </x-slot>
 
             @if ($this->hasResults && $results !== null)
-                <div class="flex flex-col p-6 font-semibold whitespace-nowrap text-sm space-y-4 divide-y divide-dashed divide-theme-secondary-300">
+                <div class="flex flex-col p-6 space-y-4 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300">
                     @foreach ($results as $result)
                         @if (is_a($result->model(), \App\Models\Wallet::class))
                             <x-search.navbar.wallet :wallet="$result" />

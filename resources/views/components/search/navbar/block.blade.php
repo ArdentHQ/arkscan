@@ -4,7 +4,7 @@
     <div class="flex items-center space-x-2">
         <div>@lang('general.search.block')</div>
 
-        <a href="{{ $block->url() }}" class="link min-w-0">
+        <a href="{{ $block->url() }}" class="min-w-0 link">
             <x-truncate-dynamic>
                 {{ $block->id() }}
             </x-truncate-dynamic>
