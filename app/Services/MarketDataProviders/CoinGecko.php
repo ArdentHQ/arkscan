@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\MarketDataProviders;
 
 use App\DTO\MarketData;
-use App\Exceptions\ApiNotAvailableException;
+use App\Exceptions\CoinGeckoThrottledException;
 use App\Facades\Network;
 use App\Models\Exchange;
 use App\Services\Cache\CryptoDataCache;
@@ -124,8 +124,12 @@ final class CoinGecko extends AbstractMarketDataProvider
             //
         }
 
-        if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
-            throw new ApiNotAvailableException();
+        if ($this->isThrottledResponse($data)) {
+            throw new CoinGeckoThrottledException();
+        }
+
+        if ($this->isEmptyResponse($data)) {
+            return null;
         }
 
         /** @var array<mixed> $data */

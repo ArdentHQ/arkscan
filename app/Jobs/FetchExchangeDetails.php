@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Contracts\MarketDataProvider;
+use App\Exceptions\CoinGeckoThrottledException;
 use App\Models\Exchange;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -20,13 +21,6 @@ final class FetchExchangeDetails implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-
-    /**
-     * The maximum attempts for this job.
-     *
-     * @var int
-     */
-    public $tries = 3;
 
     /**
      * Create a new job instance.
@@ -55,27 +49,21 @@ final class FetchExchangeDetails implements ShouldQueue
      */
     public function handle()
     {
-        $result = app(MarketDataProvider::class)->exchangeDetails($this->exchange);
+        try {
+            $result = app(MarketDataProvider::class)->exchangeDetails($this->exchange);
+        } catch (CoinGeckoThrottledException $e) {
+            // Release back to the qeue
+            $this->release(60); // 60 seconds = 1 minute
 
-        // No information for ark in any usd compatible exchange
-        if ($result === null) {
-            $this->exchange->price  = null;
-            $this->exchange->volume = null;
-        } else {
-            $this->exchange->price  = Arr::get($result, 'price');
-            $this->exchange->volume = Arr::get($result, 'volume');
+            return;
         }
 
-        $this->exchange->save();
-    }
+        if ($result === null) {
+            return;
+        }
 
-    /**
-     * Calculate the number of seconds to wait before retrying the job.
-     *
-     * @return int
-     */
-    public function retryAfter()
-    {
-        return 60; // 60 seconds = 1 minute
+        $this->exchange->price  = Arr::get($result, 'price');
+        $this->exchange->volume = Arr::get($result, 'volume');
+        $this->exchange->save();
     }
 }

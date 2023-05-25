@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Exceptions\ApiNotAvailableException;
+use App\Exceptions\CoinGeckoThrottledException;
 use App\Models\Exchange;
 use App\Services\MarketDataProviders\CoinGecko;
 use Illuminate\Support\Arr;
@@ -163,7 +163,7 @@ it('should throw an exception if the API response is empty for exchange details'
     ]);
 
     (new CoinGecko())->exchangeDetails($exchange);
-})->throws(ApiNotAvailableException::class);
+})->throws(CoinGeckoThrottledException::class);
 
 it('should throw an exception if the API response throws an exception', function () {
     Artisan::call('migrate:fresh');
@@ -177,7 +177,7 @@ it('should throw an exception if the API response throws an exception', function
     ]);
 
     (new CoinGecko())->exchangeDetails($exchange);
-})->throws(ApiNotAvailableException::class);
+})->throws(CoinGeckoThrottledException::class);
 
 it('should throw an exception if the API response indicates throttling for exchange details', function () {
     Artisan::call('migrate:fresh');
@@ -195,4 +195,4 @@ it('should throw an exception if the API response indicates throttling for excha
     ]);
 
     (new CoinGecko())->exchangeDetails($exchange);
-})->throws(ApiNotAvailableException::class);
+})->throws(CoinGeckoThrottledException::class);

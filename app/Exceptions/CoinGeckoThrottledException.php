@@ -6,7 +6,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-final class ApiNotAvailableException extends Exception
+final class CoinGeckoThrottledException extends Exception
 {
     //
 }
