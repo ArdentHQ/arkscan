@@ -125,7 +125,7 @@ final class CoinGecko extends AbstractMarketDataProvider
         }
 
         if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
-            throw new ApiNotAvailableException();
+            return null;
         }
 
         /** @var array<mixed> $data */
