@@ -63,3 +63,9 @@ it('should release the job again if throttled exception', function () {
 
     FetchExchangeDetails::dispatch($exchange);
 });
+
+it('retries after 60s', function () {
+    $exchange = Exchange::factory()->create();
+
+    expect((new FetchExchangeDetails($exchange))->retryAfter())->toBe(60);
+});
