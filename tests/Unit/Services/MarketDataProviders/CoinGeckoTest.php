@@ -137,7 +137,7 @@ it('should return null if no usd target on the response', function () {
 
     $response = json_decode(file_get_contents(base_path('tests/fixtures/coingecko/exchange_details.json')), true);
     Arr::set($response, 'tickers.0.target', 'EUR');
-    
+
     Http::fake([
         'api.coingecko.com/*' => Http::response($response, 200),
     ]);
@@ -169,7 +169,7 @@ it('should throw an exception if the API response throws an exception', function
     Artisan::call('migrate:fresh');
 
     Http::fake([
-        'api.coingecko.com/*' => fn() => throw new \Exception('Test'),
+        'api.coingecko.com/*' => fn () => throw new \Exception('Test'),
     ]);
 
     $exchange = Exchange::factory()->create([
