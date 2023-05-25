@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\MarketDataProviders;
 
 use App\DTO\MarketData;
-use App\Exceptions\ApiNotAvailableException;
 use App\Facades\Network;
 use App\Models\Exchange;
 use App\Services\Cache\CryptoDataCache;
