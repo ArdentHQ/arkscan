@@ -26,8 +26,8 @@ final class FetchExchangesDetails extends Command
 
     public function handle(): int
     {
-        Exchange::coingecko()->each(function ($exchage) {
-            FetchExchangeDetails::dispatch($exchage);
+        Exchange::coingecko()->each(function ($exchange) {
+            FetchExchangeDetails::dispatch($exchange);
         });
 
         return Command::SUCCESS;
