@@ -7,7 +7,7 @@
             <x-tables.headers.desktop.text name="general.exchange.top_pairs" />
 
             <x-tables.headers.desktop.number name="general.exchange.price">
-                <span>(@lang('currencies.usd.currency'))</span>
+                <span>({{ config('currencies.usd.currency') }})</span>
             </x-tables.headers.desktop.number>
 
             <x-tables.headers.desktop.number
