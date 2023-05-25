@@ -16,7 +16,7 @@
                 breakpoint="md-lg"
                 responsive
             >
-                <span>(@lang('currencies.usd.currency'))</span>
+                <span>({{ config('currencies.usd.currency') }})</span>
             </x-tables.headers.desktop.number>
         </tr>
     </thead>
