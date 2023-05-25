@@ -19,7 +19,7 @@ it('calls the job for fetching the exchange details for exchanges with coingecko
     ]);
 
     Exchange::factory()->create([
-        'coingecko_id' => null
+        'coingecko_id' => null,
     ]);
 
     $this->artisan('exchanges:fetch-details');

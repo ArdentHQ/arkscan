@@ -132,4 +132,3 @@ it('throws an exception if no exchanges list source is configured', function () 
 
     $this->artisan('exchanges:load');
 });
-

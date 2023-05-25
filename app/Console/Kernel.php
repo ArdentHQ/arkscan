@@ -83,7 +83,7 @@ final class Kernel extends ConsoleKernel
         $schedule->command('view:clear-expired')->hourly();
 
         $schedule->command(LoadExchanges::class)->daily();
-        
+
         $schedule->command(FetchExchangesDetails::class)->twiceDaily();
     }
 
