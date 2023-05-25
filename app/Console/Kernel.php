@@ -84,7 +84,7 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(LoadExchanges::class)->daily();
 
-        $schedule->command(FetchExchangesDetails::class)->everyHour();
+        $schedule->command(FetchExchangesDetails::class)->hourly();
     }
 
     /**

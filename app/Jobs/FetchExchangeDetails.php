@@ -23,6 +23,11 @@ final class FetchExchangeDetails implements ShouldQueue
     use SerializesModels;
 
     /**
+     * @var int
+     */
+    protected $tries = 3;
+
+    /**
      * Create a new job instance.
      *
      * @return void
@@ -65,5 +70,15 @@ final class FetchExchangeDetails implements ShouldQueue
         $this->exchange->price  = Arr::get($result, 'price');
         $this->exchange->volume = Arr::get($result, 'volume');
         $this->exchange->save();
+    }
+
+    /**
+     * Calculate the number of seconds to wait before retrying the job.
+     *
+     * @return int
+     */
+    public function retryAfter()
+    {
+        return 60; // 60 seconds = 1 minute
     }
 }
