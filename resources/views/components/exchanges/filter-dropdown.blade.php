@@ -5,11 +5,10 @@
     :icon="$icon"
 >
     @foreach ($options as $value => $label)
-        @if ($value === $selected)
-            @continue
-        @endif
-
-        <x-general.dropdown.list-item  wire:click="setFilter('{{ $param }}', '{{ $value }}')">
+        <x-general.dropdown.list-item 
+            :is-active="$selected === $value"
+            wire:click="setFilter('{{ $param }}', '{{ $value }}')"
+        >
             @lang($label)
         </x-general.dropdown.list-item>
     @endforeach
