@@ -16,4 +16,20 @@ final class Exchange extends Model
     {
         return $query->whereNotNull('coingecko_id');
     }
+
+    public function scopeFilterByType(Builder $query, ?string $type): Builder
+    {
+        return $query
+            ->when($type === 'exchanges', static fn ($query) => $query->where('is_exchange', true))
+            ->when($type === 'aggregators', static fn ($query) => $query->where('is_aggregator', true));
+    }
+
+    public function scopeFilterByPair(Builder $query, ?string $pair): Builder
+    {
+        if (in_array($pair, ['btc', 'eth', 'stablecoins', 'other'], true)) {
+            return $query->where($pair, true);
+        }
+
+        return $query;
+    }
 }
