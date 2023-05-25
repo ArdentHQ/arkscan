@@ -106,7 +106,6 @@ final class LoadExchanges extends Command
         if (count(array_diff($expectedKeys, array_keys($response[0]))) > 0) {
             throw new Exception('Unexpected response format');
         }
-        
     }
 
     private function validateResponse(Response $response): void

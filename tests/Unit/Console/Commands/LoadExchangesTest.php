@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Jobs\FetchExchangeDetails;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Http;
-use App\Jobs\FetchExchangeDetails;
 
 beforeEach(function () {
     Artisan::call('migrate:fresh');
