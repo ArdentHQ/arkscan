@@ -22,7 +22,7 @@ final class FetchExchangesDetails extends Command
      *
      * @var string|null
      */
-    protected $description = 'Retrieves the details for the exchanges';
+    protected $description = 'Call the job that retrieves the volume and price for each compatible exchange';
 
     public function handle(): int
     {
