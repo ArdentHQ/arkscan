@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Exceptions\ApiNotAvailableException;
+use App\Models\Exchange;
 use App\Services\MarketDataProviders\CoinGecko;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
@@ -109,3 +112,53 @@ it('should trigger exception for throttled requests', function ($attempt) {
 
     (new CoinGecko())->historicalHourly('ARK', 'USD');
 })->with(range(1, 12));
+
+it('should fetch exchange details for the given exchange', function () {
+    Artisan::call('migrate:fresh');
+
+    Http::fake([
+        'api.coingecko.com/*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/coingecko/exchange_details.json')), true), 200),
+    ]);
+
+    $exchange = Exchange::factory()->create([
+        'coingecko_id' => 'example_exchange_id',
+    ]);
+
+    $details = (new CoinGecko())->exchangeDetails($exchange);
+
+    expect($details)->toHaveKeys(['price', 'volume']);
+    expect($details['price'])->toEqual('0.256662');
+    expect($details['volume'])->toEqual('54880');
+});
+
+it('should throw an exception if the API response is empty for exchange details', function () {
+    Artisan::call('migrate:fresh');
+
+    Http::fake([
+        'api.coingecko.com/*' => Http::response(null, 200),
+    ]);
+
+    $exchange = Exchange::factory()->create([
+        'coingecko_id' => 'example_exchange_id',
+    ]);
+
+    (new CoinGecko())->exchangeDetails($exchange);
+})->throws(ApiNotAvailableException::class);
+
+it('should throw an exception if the API response indicates throttling for exchange details', function () {
+    Artisan::call('migrate:fresh');
+
+    Http::fake([
+        'api.coingecko.com/*' => Http::response([
+            'status' => [
+                'error_code' => 1,
+            ],
+        ], 500),
+    ]);
+
+    $exchange = Exchange::factory()->create([
+        'coingecko_id' => 'example_exchange_id',
+    ]);
+
+    (new CoinGecko())->exchangeDetails($exchange);
+})->throws(ApiNotAvailableException::class);

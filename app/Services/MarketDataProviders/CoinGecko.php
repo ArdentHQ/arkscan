@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\MarketDataProviders;
 
 use App\DTO\MarketData;
+use App\Exceptions\ApiNotAvailableException;
 use App\Facades\Network;
 use App\Models\Exchange;
 use App\Services\Cache\CryptoDataCache;
@@ -120,10 +121,11 @@ final class CoinGecko extends AbstractMarketDataProvider
                 'coin_ids' => 'ark',
             ])->json('tickers');
         } catch (\Throwable) {
+            //
         }
 
         if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
-            return null;
+            throw new ApiNotAvailableException();
         }
 
         /** @var array<mixed> $data */
