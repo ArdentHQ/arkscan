@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Models\Exchange;
-use Illuminate\Support\Arr;
-use Illuminate\Bus\Queueable;
 use App\Contracts\MarketDataProvider;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Models\Exchange;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\RateLimited;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Arr;
 
 final class FetchExchangeDetails implements ShouldQueue
 {
