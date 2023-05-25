@@ -48,7 +48,7 @@
                 <x-ark-tables.cell class="text-sm text-right">
                     @if ($exchange->price)
                         <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
-                            {{ ExplorerNumberFormatter::currency($exchange->price, Settings::currency(), 4) }}
+                            {{ ExplorerNumberFormatter::currency($exchange->price, 'USD', 4) }}
                         </span>
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
@@ -63,7 +63,7 @@
                     responsive
                 >
                     @if ($exchange->volume)
-                        {{ ExplorerNumberFormatter::currency($exchange->volume, Settings::currency()) }}
+                        {{ ExplorerNumberFormatter::currency($exchange->volume, 'USD') }}
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
                             @lang('general.na')

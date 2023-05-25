@@ -1,7 +1,7 @@
 <div class="flex flex-col space-y-3 sm:space-y-4 table-list-mobile table-list-encapsulated">
     @foreach ($exchanges as $exchange)
-        <div class="rounded border border-theme-secondary-300 dark:border-theme-secondary-800">
-            <a class="flex justify-between items-center py-3 px-4 rounded-t dark:rounded-t-sm bg-theme-secondary-100 dark:bg-theme-secondary-800">
+        <div class="border rounded border-theme-secondary-300 dark:border-theme-secondary-800">
+            <a class="flex items-center justify-between px-4 py-3 rounded-t dark:rounded-t-sm bg-theme-secondary-100 dark:bg-theme-secondary-800">
                 <div class="flex items-center space-x-2">
                     <div class="flex justify-center items-center p-1.5 w-8 h-8 bg-white rounded-full border border-theme-secondary-200 dark:border-theme-secondary-900 dark:bg-theme-secondary-900">
                         <img class="max-w-full max-h-full" src="{{ config('explorer.exchanges.icon_url') }}{{ $exchange->icon }}.svg" alt="{{ $exchange->name }} icon" />
@@ -33,7 +33,7 @@
 
                     @if ($exchange->price)
                         <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
-                            {{ ExplorerNumberFormatter::currency($exchange->price, Settings::currency(), 4) }}
+                            {{ ExplorerNumberFormatter::currency($exchange->price, 'USD', 4) }}
                         </span>
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
@@ -49,7 +49,7 @@
 
                     @if ($exchange->volume)
                         <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
-                            {{ ExplorerNumberFormatter::currency($exchange->volume, Settings::currency()) }}
+                            {{ ExplorerNumberFormatter::currency($exchange->volume, 'USD') }}
                         </span>
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
