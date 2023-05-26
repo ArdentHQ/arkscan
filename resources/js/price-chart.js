@@ -71,9 +71,11 @@ const PriceChart = (values, labels, isPlaceholder, darkMode, isPositive) => {
             };
 
             const options = {
-                animation: {
-                    duration: 1000, // Animation duration (in milliseconds)
-                    easing: "linear", // Optional: Set the eas
+                animations: {
+                    tension: {
+                        duration: 500,
+                        easing: "linear",
+                    },
                 },
                 plugins: {
                     legend: {
