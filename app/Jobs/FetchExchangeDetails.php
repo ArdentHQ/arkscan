@@ -28,6 +28,13 @@ final class FetchExchangeDetails implements ShouldQueue
     protected $tries = 3;
 
     /**
+     * Indicate if the job should be marked as failed on timeout.
+     *
+     * @var bool
+     */
+    public $failOnTimeout = false;
+
+    /**
      * Create a new job instance.
      *
      * @return void
