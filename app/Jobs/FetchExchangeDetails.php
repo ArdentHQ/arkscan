@@ -57,7 +57,7 @@ final class FetchExchangeDetails implements ShouldQueue
         try {
             $result = app(MarketDataProvider::class)->exchangeDetails($this->exchange);
         } catch (CoinGeckoThrottledException $e) {
-            // Release back to the qeue
+            // Release back to the queue
             $this->release(60); // 60 seconds = 1 minute
 
             return;
