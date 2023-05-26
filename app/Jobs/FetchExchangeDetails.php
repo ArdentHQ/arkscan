@@ -23,16 +23,11 @@ final class FetchExchangeDetails implements ShouldQueue
     use SerializesModels;
 
     /**
+     * The number of times the job may be attempted.
+     *
      * @var int
      */
-    protected $tries = 5;
-
-    /**
-     * Indicate if the job should be marked as failed on timeout.
-     *
-     * @var bool
-     */
-    public $failOnTimeout = false;
+    public $tries = 5;
 
     /**
      * Create a new job instance.
