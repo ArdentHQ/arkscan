@@ -25,7 +25,7 @@ final class FetchExchangeDetails implements ShouldQueue
     /**
      * @var int
      */
-    protected $tries = 3;
+    protected $tries = 5;
 
     /**
      * Indicate if the job should be marked as failed on timeout.
