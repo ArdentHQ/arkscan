@@ -63,7 +63,7 @@
                     responsive
                 >
                     @if ($exchange->volume)
-                            {{ ExplorerNumberFormatter::usdWithDecimals($exchange->volume) }}
+                        {{ ExplorerNumberFormatter::currency($exchange->volume, 'USD') }}
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
                             @lang('general.na')

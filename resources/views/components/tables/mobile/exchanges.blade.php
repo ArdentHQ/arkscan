@@ -49,7 +49,7 @@
 
                     @if ($exchange->volume)
                         <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
-                            {{ ExplorerNumberFormatter::usdWithDecimals($exchange->volume) }}
+                            {{ ExplorerNumberFormatter::currency($exchange->volume, 'USD') }}
                         </span>
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
