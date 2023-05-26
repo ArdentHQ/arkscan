@@ -60,7 +60,7 @@ final class NumberFormatter
      */
     public static function usdWithDecimals($value, ?int $decimals = 4): string
     {
-        return '$'.rtrim(rtrim(number_format((float) $value, $decimals), '0'), '.');
+        return '$'.rtrim(rtrim(number_format((float) $value, $decimals ?? 4), '0'), '.');
     }
 
     /**
