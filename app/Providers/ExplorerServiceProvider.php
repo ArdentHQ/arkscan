@@ -21,11 +21,11 @@ final class ExplorerServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             Network::class,
-            fn ($app) => NetworkFactory::make($app['config']['explorer']['network'])
+            fn ($app) => NetworkFactory::make($app['config']['arkscan']['network'])
         );
 
         // Used for crypto calculations, e.g. multisig address derivation
-        NetworkConfiguration::set(NetworkFactory::make(Arr::get($this->app->get('config')->get('explorer'), 'network'))->config());
+        NetworkConfiguration::set(NetworkFactory::make(Arr::get($this->app->get('config')->get('arkscan'), 'network'))->config());
     }
 
     /**
