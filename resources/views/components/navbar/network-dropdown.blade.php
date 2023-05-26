@@ -1,5 +1,5 @@
 @php
-    $isProduction = config('explorer.network') === 'production';
+    $isProduction = config('arkscan.network') === 'production';
 
     $itemClass = 'border-l-4 pl-5 pr-6 py-3 font-semibold hover:text-theme-secondary-900 hover:bg-theme-secondary-200 dark:hover:bg-theme-secondary-900 dark:text-theme-secondary-200 transition-default';
     $inactiveClass = 'border-transparent';
@@ -39,7 +39,7 @@
         class="right-0 top-full"
     >
         <x-general.dropdown.list-item
-            :url="Network::mainnetExplorerUrl()"
+            :url="Network::mainnetarkscanUrl()"
             :is-active="$isProduction"
         >
             <span class="md:hidden">@lang('general.navbar.live')</span>
@@ -47,7 +47,7 @@
         </x-general.dropdown.list-item>
 
         <x-general.dropdown.list-item
-            :url="Network::testnetExplorerUrl()"
+            :url="Network::testnetarkscanUrl()"
             :is-active="! $isProduction"
         >
             <span class="md:hidden">@lang('general.navbar.test')</span>

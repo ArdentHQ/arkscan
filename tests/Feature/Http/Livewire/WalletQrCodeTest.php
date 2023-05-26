@@ -34,7 +34,7 @@ it('generates correct url for QR Code', function () {
 });
 
 it('generates correct url for QR Code on mainnet', function () {
-    Config::set('explorer.network', 'production');
+    Config::set('arkscan.network', 'production');
 
     $wallet = Wallet::factory()->create(['address' => 'AWkBFnqvCF4jhqPSdE2HBPJiwaf67tgfGR']);
 

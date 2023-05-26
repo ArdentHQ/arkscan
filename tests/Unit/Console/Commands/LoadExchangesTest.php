@@ -121,7 +121,7 @@ it('throws an exception if failed to load exchanges list', function () {
 });
 
 it('throws an exception if no exchanges list source is configured', function () {
-    config()->set('explorer.exchanges.list_src', '');
+    config()->set('arkscan.exchanges.list_src', '');
 
     $this->expectException(Exception::class);
     $this->expectExceptionMessage('No exchanges list source configured');

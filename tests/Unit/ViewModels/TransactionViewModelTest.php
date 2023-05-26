@@ -678,14 +678,14 @@ it('should derive the correct multisignature address', function () {
 
     expect($this->subject->multiSignatureAddress())->toBe('DMNBBtYt1teAKxA2BpiTW9PA3gX3Ad5dyk');
 
-    Config::set('explorer.network', 'production');
+    Config::set('arkscan.network', 'production');
 
-    $network = NetworkFactory::make(config('explorer.network'));
+    $network = NetworkFactory::make(config('arkscan.network'));
     NetworkConfiguration::set($network->config());
 
     expect($this->subject->multiSignatureAddress())->toBe('AXzxJ8Ts3dQ2bvBR1tPE7GUee9iSEJb8HX');
 
-    Config::set('explorer.network', 'development');
+    Config::set('arkscan.network', 'development');
 });
 
 it('should get the multi signature minimum', function () {

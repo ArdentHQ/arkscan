@@ -75,7 +75,7 @@ it('should reset exception trigger for empty responses', function ($attempt) {
         'api.coingecko.com/*' => Http::response(null, 200),
     ]);
 
-    Config::set('explorer.coingecko_exception_frequency', 6);
+    Config::set('arkscan.coingecko_exception_frequency', 6);
 
     Cache::set('coingecko_response_error', (($attempt - 1) % 6) + 1);
 
@@ -97,7 +97,7 @@ it('should trigger exception for throttled requests', function ($attempt) {
         ], 500),
     ]);
 
-    Config::set('explorer.coingecko_exception_frequency', 6);
+    Config::set('arkscan.coingecko_exception_frequency', 6);
 
     Cache::set('coingecko_response_error', (($attempt - 1) % 6) + 1);
 
