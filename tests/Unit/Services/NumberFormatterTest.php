@@ -91,3 +91,12 @@ it('should use two decimals for a fiat currency', function () {
     expect(NumberFormatter::decimalsFor('ETH'))->toBe(8);
     expect(NumberFormatter::decimalsFor('LTC'))->toBe(8);
 });
+
+it('should use up to decimals and trim zero', function () {
+    expect(NumberFormatter::usdWithDecimals(1))->toBe('$1');
+    expect(NumberFormatter::usdWithDecimals(1.1))->toBe('$1.1');
+    expect(NumberFormatter::usdWithDecimals(1.00005))->toBe('$1.0001');
+    expect(NumberFormatter::usdWithDecimals(1.00000))->toBe('$1');
+    expect(NumberFormatter::usdWithDecimals(1.1200001))->toBe('$1.12');
+    expect(NumberFormatter::usdWithDecimals(1.1200001, 1))->toBe('$1.1');
+});

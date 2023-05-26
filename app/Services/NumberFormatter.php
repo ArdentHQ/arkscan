@@ -58,6 +58,14 @@ final class NumberFormatter
     /**
      * @param string|int|float $value
      */
+    public static function usdWithDecimals($value, ?int $decimals = 4): string
+    {
+        return '$'.rtrim(rtrim(number_format((float) $value, $decimals), '0'), '.');
+    }
+
+    /**
+     * @param string|int|float $value
+     */
     public static function currencyWithoutSuffix($value, string $currency): string
     {
         return trim(BetterNumberFormatter::new()->formatWithCurrencyCustom($value, '', static::decimalsFor($currency)));
