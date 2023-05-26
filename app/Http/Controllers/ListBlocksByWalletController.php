@@ -17,7 +17,7 @@ final class ListBlocksByWalletController
         $viewModel = ViewModelFactory::make($wallet);
 
         if (! $viewModel->isDelegate()) {
-            abort(404, 'Wallet is not a delegate');
+            abort(404);
         }
 
         return view('app.blocks-by-wallet', [
