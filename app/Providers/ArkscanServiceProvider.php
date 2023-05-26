@@ -10,7 +10,7 @@ use ArkEcosystem\Crypto\Configuration\Network as NetworkConfiguration;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 
-final class ExplorerServiceProvider extends ServiceProvider
+final class ArkscanServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
