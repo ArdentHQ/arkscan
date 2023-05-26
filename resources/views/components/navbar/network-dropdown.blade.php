@@ -39,7 +39,7 @@
         class="right-0 top-full"
     >
         <x-general.dropdown.list-item
-            :url="Network::mainnetarkscanUrl()"
+            :url="Network::mainnetExplorerUrl()"
             :is-active="$isProduction"
         >
             <span class="md:hidden">@lang('general.navbar.live')</span>
@@ -47,7 +47,7 @@
         </x-general.dropdown.list-item>
 
         <x-general.dropdown.list-item
-            :url="Network::testnetarkscanUrl()"
+            :url="Network::testnetExplorerUrl()"
             :is-active="! $isProduction"
         >
             <span class="md:hidden">@lang('general.navbar.test')</span>
