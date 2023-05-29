@@ -9,7 +9,7 @@ use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasModal;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
-class Search extends Component
+final class Search extends Component
 {
     use HasModal;
     use ManagesSearch;
