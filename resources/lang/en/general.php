@@ -40,6 +40,7 @@ return [
         'live'               => 'Live',
         'test'               => 'Test',
         'price'              => 'Price',
+        'no_results'         => 'We could not find anything matching your search criteria, please try again!',
     ],
 
     'block'                   => [
