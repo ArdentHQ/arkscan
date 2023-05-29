@@ -25,12 +25,12 @@
             <button
                 type="button"
                 wire:click="clear"
-                class="p-2 -my-px bg-transparent button-secondary text-theme-secondary-700"
+                class="p-2 -my-px bg-transparent button-secondary text-theme-secondary-700 dark:text-theme-secondary-600"
                 x-cloak
             >
                 <x-ark-icon
                     name="cross"
-                    size="sm"
+                    size="xs"
                 />
             </button>
 
@@ -46,6 +46,7 @@
             :init-alpine="false"
             :close-on-blur="false"
             dropdown-classes="w-[561px] top-9"
+            dropdown-content-classes="bg-white rounded-xl shadow-lg dark:bg-theme-secondary-900 dark:text-theme-secondary-200 border border-transparent dark:border-theme-secondary-800"
         >
             <x-slot name="button">
             </x-slot>
@@ -53,13 +54,15 @@
             <div x-show="query" class="flex flex-col p-6 space-y-4 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300">
                 @if ($hasResults)
                     @foreach ($results as $result)
-                        @if (is_a($result->model(), \App\Models\Wallet::class))
-                            <x-search.navbar.wallet :wallet="$result" />
-                        @elseif (is_a($result->model(), \App\Models\Block::class))
-                            <x-search.navbar.block :block="$result" />
-                        @elseif (is_a($result->model(), \App\Models\Transaction::class))
-                            <x-search.navbar.transaction :transaction="$result" />
-                        @endif
+                        <div wire:key="{{ $result->model()->id }}" @class(['pt-4' => $loop->index > 0])>
+                            @if (is_a($result->model(), \App\Models\Wallet::class))
+                                <x-search.navbar.wallet :wallet="$result" />
+                            @elseif (is_a($result->model(), \App\Models\Block::class))
+                                <x-search.navbar.block :block="$result" />
+                            @elseif (is_a($result->model(), \App\Models\Transaction::class))
+                                <x-search.navbar.transaction :transaction="$result" />
+                            @endif
+                        </div>
                     @endforeach
                 @else
                     <p class="px-4 -my-1">@lang('general.navbar.no_results')</p>

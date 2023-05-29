@@ -9,15 +9,14 @@
     'withoutTruncate' => false,
     'withoutUsername' => false,
     'withoutReverseClass' => 'space-x-3',
-    'linkWallet'      => true,
 ])
 
 <div>
-    <div @class([
+    <div {{ $attributes->class([
         'flex items-center md:flex-row md:justify-start',
         $withoutReverseClass => $withoutReverse,
         'flex-row-reverse md:space-x-4' => ! $withoutReverse,
-    ])>
+    ]) }}>
         @unless ($icon)
             <x-general.avatar :identifier="$model->address()" />
         @else
@@ -29,11 +28,7 @@
                 {{ $prefix }}
             @endif
 
-            @if($linkWallet)
-                <a href="{{ route('wallet', $model->address()) }}" class="font-semibold sm:hidden md:flex link">
-            @else
-                <span class="font-semibold sm:hidden">
-            @endif
+            <a href="{{ route('wallet', $model->address()) }}" class="font-semibold sm:hidden md:flex link">
                 @if ($model->username() && !$withoutUsername)
                     @if ($prefix)
                         <div class="delegate-name-truncate-prefix">
@@ -57,27 +52,15 @@
                         @endisset
                     @endif
                 @endif
-            @if($linkWallet)
-                </a>
-            @else
-                </span>
-            @endif
+            </a>
 
-            @if($linkWallet)
-                <a href="{{ route('wallet', $model->address()) }}" class="hidden font-semibold sm:flex md:hidden link">
-            @else
-                <span class="hidden font-semibold sm:flex md:hidden">
-            @endif
+            <a href="{{ route('wallet', $model->address()) }}" class="hidden font-semibold sm:flex md:hidden link">
                 @if ($model->username() && !$withoutUsername)
                     {{ $model->username() }}
                 @else
                     {{ $model->address() }}
                 @endif
-            @if($linkWallet)
-                </a>
-            @else
-                </span>
-            @endif
+            </a>
 
             @if ($suffix)
                 {{ $suffix }}
