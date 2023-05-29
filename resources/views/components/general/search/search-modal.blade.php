@@ -11,8 +11,8 @@
                     });
                 },
                 getScrollable() {
-                    const { advancedSearch } = this.$refs;
-                    return advancedSearch;
+                    const { searchResults } = this.$refs;
+                    return searchResults;
                 },
                 focusSearchInput(){
                     const { input } = this.$refs;
@@ -34,7 +34,7 @@
 
                 <x-general.search.search-input />
 
-                <div class="flex flex-col space-y-4 whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 text-sm font-semibold overflow-auto custom-scroll">
+                <div x-ref="searchResults" class="flex flex-col space-y-4 whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 text-sm font-semibold overflow-auto custom-scroll">
                     @if ($hasResults && $results !== null)
                         @foreach ($results as $result)
                             <div wire:key="{{ $result->model()->id }}" class="pt-4">

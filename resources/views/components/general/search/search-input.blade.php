@@ -15,7 +15,7 @@
             class="w-full block text-theme-secondary-900 overflow-ellipsis h-full py-2 dark:bg-theme-secondary-900 dark:text-theme-secondary-200"
             wire:model.debounce.500ms="query"
             wire:keydown.enter="performSearch"
-            :placeholder="trans('general.navbar.search_placeholder')"
+            placeholder="@lang('general.navbar.search_placeholder')"
         />
     </div>
 
