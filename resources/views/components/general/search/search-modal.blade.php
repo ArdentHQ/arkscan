@@ -39,11 +39,11 @@
                         @foreach ($results as $result)
                             <div wire:key="{{ $result->model()->id }}" class="pt-4">
                                 @if (is_a($result->model(), \App\Models\Wallet::class))
-                                    <x-search.navbar.wallet :wallet="$result" />
+                                    <x-search.results.wallet :wallet="$result" />
                                 @elseif (is_a($result->model(), \App\Models\Block::class))
-                                    <x-search.navbar.block :block="$result" />
+                                    <x-search.results.block :block="$result" />
                                 @elseif (is_a($result->model(), \App\Models\Transaction::class))
-                                    <x-search.navbar.transaction :transaction="$result" />
+                                    <x-search.results.transaction :transaction="$result" />
                                 @endif
                             </div>
                         @endforeach
