@@ -25,7 +25,7 @@
             <button
                 type="button"
                 wire:click="clear"
-                class="p-2 -my-px bg-transparent button-secondary text-theme-secondary-700 dark:text-theme-secondary-600"
+                class="p-2 -my-px bg-transparent button-secondary text-theme-secondary-700 dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
                 x-cloak
             >
                 <x-ark-icon
