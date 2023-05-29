@@ -45,13 +45,13 @@
         <x-ark-dropdown
             :init-alpine="false"
             :close-on-blur="false"
-            dropdown-classes="min-w-[561px] top-9"
+            dropdown-classes="w-[561px] top-9"
         >
             <x-slot name="button">
             </x-slot>
 
             <div x-show="query" class="flex flex-col p-6 space-y-4 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300">
-                @if ($this->hasResults && $results !== null)
+                @if ($hasResults)
                     @foreach ($results as $result)
                         @if (is_a($result->model(), \App\Models\Wallet::class))
                             <x-search.navbar.wallet :wallet="$result" />

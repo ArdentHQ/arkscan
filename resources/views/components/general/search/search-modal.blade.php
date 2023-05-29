@@ -3,8 +3,7 @@
         <div
             x-ref="modal"
             x-data="Modal.livewire({
-                searchType: '{{ $type ?? 'block' }}',
-                showAdvanced: @entangle('isAdvanced'),
+                query: @entangle('query'),
                 searching: false,
                 initSearch() {
                     this.$nextTick(() => {
@@ -16,16 +15,11 @@
                     return advancedSearch;
                 },
                 focusSearchInput(){
-                    const { input, inputMobile } = this.$refs;
-                    const style = window.getComputedStyle(input);
-                    if (style.display === 'none') {
-                        inputMobile.focus();
-                    } else {
-                        input.focus();
-                    }
+                    const { input } = this.$refs;
+                    input.focus();
                 },
             }, { disableFocusTrap: true })"
-            class="container flex overflow-auto fixed inset-0 z-50 flex-col pt-24 mx-auto w-full h-screen outline-none md:overflow-visible md:px-8 md:pb-24"
+            class="container flex overflow-auto fixed inset-0 z-50 flex-col mx-auto w-full h-screen outline-none md:hidden"
             tabindex="0"
             data-modal
             wire:keydown.escape="closeModal"
@@ -33,43 +27,30 @@
                 init();
                 initSearch();
             "
-            @search-type-changed.window="searchType = $event.detail"
         >
             <div wire:click.self="closeModal" class="fixed inset-0 opacity-70 dark:opacity-80 bg-theme-secondary-900 dark:bg-theme-secondary-800"></div>
 
-            <div class="flex overflow-auto relative flex-col w-full md:overflow-visible md:px-8 content-container-full-width">
-                <h2 class="px-8 mx-auto mb-10 text-3xl font-bold text-center text-white md:text-4xl">
-                    @lang('pages.search.title')
-                </h2>
+            <div class="flex overflow-auto relative flex-col mx-4 my-6 p-6 bg-white rounded-xl dark:bg-theme-secondary-900">
 
-                <div class="flex overflow-auto flex-col bg-white rounded-xl md:overflow-visible md:mb-14 dark:bg-theme-secondary-900">
-                    <x-general.search.search-input />
+                <x-general.search.search-input />
 
-                    <x-general.search.advanced-search
-                        x-show="showAdvanced"
-                        :transaction-options="$transactionOptions"
-                        :type="$type ?? 'block'"
-                        :state="$state"
-                        class="overflow-auto md:overflow-visible"
-                        x-cloak
-                    />
-
-                    <div
-                        class="flex justify-center items-center py-3 space-x-2 font-semibold text-center rounded-b-lg md:hidden bg-theme-secondary-200 text-theme-primary-600 dark:bg-theme-secondary-800 dark:text-theme-secondary-200"
-                        @click="showAdvanced = !showAdvanced"
-                    >
-                        <div>
-                            <span x-show="!showAdvanced">
-                                @lang('actions.advanced_search')
-                            </span>
-
-                            <span x-show="showAdvanced">
-                                @lang('actions.hide_advanced')
-                            </span>
+                <div class="flex flex-col space-y-4 whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 text-sm font-semibold overflow-auto custom-scroll">
+                    @if ($hasResults && $results !== null)
+                        @foreach ($results as $result)
+                            @if (is_a($result->model(), \App\Models\Wallet::class))
+                                <x-search.navbar.wallet :wallet="$result" />
+                            @elseif (is_a($result->model(), \App\Models\Block::class))
+                                <x-search.navbar.block :block="$result" />
+                            @elseif (is_a($result->model(), \App\Models\Transaction::class))
+                                <x-search.navbar.transaction :transaction="$result" />
+                            @endif
+                        @endforeach
+                    @else
+                        <div class="whitespace-normal text-center mt-4">
+                            <p x-show="query">@lang('general.navbar.no_results')</p>
+                            <p x-show="!query">Results will show up here.</p>
                         </div>
-
-                        <x-ark-chevron-toggle is-open="showAdvanced === true" />
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>

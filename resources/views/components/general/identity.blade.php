@@ -9,6 +9,7 @@
     'withoutTruncate' => false,
     'withoutUsername' => false,
     'withoutReverseClass' => 'space-x-3',
+    'linkWallet'      => true,
 ])
 
 <div>
@@ -28,7 +29,11 @@
                 {{ $prefix }}
             @endif
 
-            <a href="{{ route('wallet', $model->address()) }}" class="font-semibold sm:hidden md:flex link">
+            @if($linkWallet)
+                <a href="{{ route('wallet', $model->address()) }}" class="font-semibold sm:hidden md:flex link">
+            @else
+                <span class="font-semibold sm:hidden">
+            @endif
                 @if ($model->username() && !$withoutUsername)
                     @if ($prefix)
                         <div class="delegate-name-truncate-prefix">
@@ -52,15 +57,27 @@
                         @endisset
                     @endif
                 @endif
-            </a>
+            @if($linkWallet)
+                </a>
+            @else
+                </span>
+            @endif
 
-            <a href="{{ route('wallet', $model->address()) }}" class="hidden font-semibold sm:flex md:hidden link">
+            @if($linkWallet)
+                <a href="{{ route('wallet', $model->address()) }}" class="hidden font-semibold sm:flex md:hidden link">
+            @else
+                <span class="hidden font-semibold sm:flex md:hidden">
+            @endif
                 @if ($model->username() && !$withoutUsername)
                     {{ $model->username() }}
                 @else
                     {{ $model->address() }}
                 @endif
-            </a>
+            @if($linkWallet)
+                </a>
+            @else
+                </span>
+            @endif
 
             @if ($suffix)
                 {{ $suffix }}

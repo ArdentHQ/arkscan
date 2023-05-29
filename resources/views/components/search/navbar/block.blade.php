@@ -1,6 +1,6 @@
 @props(['block'])
 
-<div class="space-y-2">
+<div class="space-y-2 pt-4">
     <div class="flex items-center space-x-2">
         <div>@lang('general.search.block')</div>
 
@@ -11,7 +11,7 @@
         </a>
     </div>
 
-    <div class="flex flex-col md-lg:items-center md-lg:flex-row md-lg:space-x-4">
+    <div class="flex flex-col md:items-center md:flex-row md:space-x-4 space-y-2 md:space-y-0">
         <div class="flex items-center space-x-2 text-xs">
             <div class="text-theme-secondary-500">
                 @lang('general.search.generated_by')
@@ -22,6 +22,7 @@
                 without-reverse
                 without-truncate
                 without-reverse-class="space-x-2"
+                :link-wallet="false"
             >
                 <x-slot name="icon">
                     <x-general.avatar-small

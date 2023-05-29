@@ -1,6 +1,6 @@
 @props(['transaction'])
 
-<div class="space-y-2">
+<div class="space-y-2 pt-4 ">
     <div class="flex items-center space-x-2">
         <div>@lang('general.search.transaction')</div>
 
@@ -11,7 +11,7 @@
         </a>
     </div>
 
-    <div class="flex flex-col md-lg:items-center md-lg:flex-row md-lg:space-x-4">
+    <div class="flex flex-col md:items-center md:flex-row md:space-x-4 space-y-2 md:space-y-0">
         <div class="flex items-center space-x-2 text-xs">
             <div class="text-theme-secondary-500">
                 @lang('general.search.from')
@@ -50,10 +50,16 @@
             </x-general.identity>
         </div>
 
-        <div class="text-xs text-right md-lg:flex-1">
-            <x-currency :currency="Network::currency()">
-                {{ ExplorerNumberFormatter::number($transaction->amount()) }}
-            </x-currency>
+        <div class="flex items-center space-x-2 text-xs text-right md:flex-1 md:space-x-0">
+            <div class="text-theme-secondary-500 md:hidden">
+                @lang('general.search.amount')
+            </div>
+
+            <div>
+                <x-currency :currency="Network::currency()">
+                    {{ ExplorerNumberFormatter::number($transaction->amount()) }}
+                </x-currency>
+            </div>
         </div>
     </div>
 </div>

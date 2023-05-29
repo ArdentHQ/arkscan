@@ -34,7 +34,8 @@ final class TransactionSearch implements Search
 
         if (! is_null($term)) {
             if ($this->couldBeTransactionID($term)) {
-                $query->whereLower('id', $term);
+                // transaction id is stored as lowercase
+                $query->where('id', strtolower($term));
             } else {
                 $query->empty();
             }

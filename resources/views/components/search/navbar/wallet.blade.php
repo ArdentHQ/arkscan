@@ -1,13 +1,12 @@
 @props(['wallet'])
 
 <div class="space-y-2">
-    <div class="flex items-center space-x-2">
+    <div class="flex items-center space-x-2 pt-4 overflow-auto">
         <div>@lang('general.search.address')</div>
 
         <x-general.identity
             :model="$wallet"
             without-reverse
-            without-truncate
             without-reverse-class="space-x-2"
         >
             <x-slot name="icon">
@@ -24,7 +23,7 @@
             @lang('general.search.balance')
         </div>
 
-        <div>
+        <div class="text-sm">
             <x-currency :currency="Network::currency()">
                 {{ ExplorerNumberFormatter::number($wallet->balance()) }}
             </x-currency>
