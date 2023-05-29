@@ -55,7 +55,7 @@ return [
     'exchanges'  => [
         'title'       => 'Exchanges and Aggregators | :name Blockchain Explorer',
         'description' => 'A list of active exchanges and aggregators/swaps that support ARK Token.',
-        'image'       => asset('images/metadata/exchanges.png')
+        'image'       => asset('images/metadata/exchanges.png'),
     ],
 
     'wallets'  => [
