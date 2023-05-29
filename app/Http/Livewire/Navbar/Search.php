@@ -11,13 +11,7 @@ use Livewire\Component;
 
 final class Search extends Component
 {
-    use HasModal;
     use ManagesSearch;
-
-    /** @var mixed */
-    protected $listeners = [
-        'openSearchModal' => 'openModal',
-    ];
 
     public function render(): View
     {
