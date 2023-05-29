@@ -1,7 +1,7 @@
 @props(['wallet'])
 
 <div class="space-y-2">
-    <div class="flex items-center space-x-2 overflow-auto">
+    <div class="flex overflow-auto items-center space-x-2">
         <div class="dark:text-theme-secondary-500">@lang('general.search.address')</div>
 
         <x-general.identity
