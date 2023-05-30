@@ -43,11 +43,9 @@ trait ManagesSearch
 
         $query = Arr::get($data, 'query');
 
-
         $results = Wallet::search($query)->paginate(5);
 
         // $results = (new WalletSearch())->search(['term' => Arr::get($data, 'query')])->paginate();
-
 
         // if ($results->isEmpty()) {
         //     $results = (new TransactionSearch())->search(['term' => Arr::get($data, 'query')])->paginate();
