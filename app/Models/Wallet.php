@@ -11,6 +11,7 @@ use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 
 /**
@@ -77,8 +78,9 @@ final class Wallet extends Model
     public function toSearchableArray(): array
     {
         return [
-            'address' => (string) $this->address,
-            'publicKey' => (string) $this->public_key,
+            'address' => $this->address,
+            'publicKey' => $this->public_key,
+            'username' => Arr::get(json_decode($this->attributes['attributes'], true), 'delegate.username'),
         ];
     }
 

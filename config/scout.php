@@ -136,8 +136,7 @@ return [
         'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
             Wallet::class => [
-                'filterableAttributes'=> ['address', 'public_key'],
-                // 'sortableAttributes' => ['created_at'],
+                'filterableAttributes'=> ['address', 'public_key', 'username'],
             ],
         ],
     ],

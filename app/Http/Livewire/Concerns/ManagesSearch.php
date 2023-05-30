@@ -12,6 +12,7 @@ use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\LengthAwarePaginator as PaginationLengthAwarePaginator;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 
 trait ManagesSearch
@@ -29,14 +30,14 @@ trait ManagesSearch
         $this->query = null;
     }
 
-    public function results(): ?LengthAwarePaginator
+    public function results(): ?Collection
     {
         $validator = Validator::make([
             'query' => $this->query,
         ], $this->rules);
 
         if ($validator->fails()) {
-            return new PaginationLengthAwarePaginator([], 0, 3);
+            return new Collection();
         }
 
         $data = $validator->validate();
@@ -44,7 +45,10 @@ trait ManagesSearch
         $query = Arr::get($data, 'query');
 
 
-        $results = Wallet::search($query)->paginate(5);
+        $results = Wallet::search($query)->take(5)->get();
+
+        // dd($results);
+
 
         // $results = (new WalletSearch())->search(['term' => Arr::get($data, 'query')])->paginate();
 
@@ -57,6 +61,6 @@ trait ManagesSearch
         //     $results = (new BlockSearch())->search(['term' => Arr::get($data, 'query')])->paginate();
         // }
 
-        return ViewModelFactory::paginate($results);
+        return ViewModelFactory::collection($results);
     }
 }
