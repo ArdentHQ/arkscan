@@ -3,6 +3,7 @@
     'content',
     'dropdownWrapperClass' => null,
     'dropdownClass' => null,
+    'scrollClass' => null,
     'disabled' => false,
     'disabledButtonClass' => 'text-theme-secondary-500 dark:text-theme-secondary-700 bg-theme-secondary-200 dark:bg-theme-secondary-800',
     'activeButtonClass' => 'bg-theme-secondary-200 dark:bg-theme-secondary-800 md:bg-white md:dark:text-theme-secondary-600 md:hover:text-theme-secondary-900 md:hover:bg-theme-secondary-200 md:dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800 text-theme-secondary-700 dark:text-theme-secondary-200',
@@ -32,7 +33,7 @@
             </div>
         </x-slot>
 
-        <div class="flex overflow-y-auto flex-col h-full custom-scroll">
+        <div @class(["flex overflow-y-auto flex-col h-full custom-scroll", $scrollClass])>
             {{ $content }}
         </div>
     </x-ark-dropdown>
