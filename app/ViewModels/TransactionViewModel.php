@@ -169,7 +169,7 @@ final class TransactionViewModel implements ViewModel
         return ExchangeRate::convert($this->amountReceived($wallet), $this->transaction->timestamp);
     }
 
-    /** @var array<int, array<string, mixed>> */
+    /** @return array<int, array<string, mixed>> */
     public function payments(): array
     {
         return Arr::get($this->transaction, 'asset.payments', []);
