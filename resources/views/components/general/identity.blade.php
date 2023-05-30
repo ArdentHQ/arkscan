@@ -8,10 +8,13 @@
     'withoutReverse'  => false,
     'withoutTruncate' => false,
     'withoutUsername' => false,
+    'addressVisible'  => false,
     'withoutReverseClass' => 'space-x-3',
+    'containerClass'  => null,
+    'contentClass'  => null,
 ])
 
-<div>
+<div @class($containerClass)>
     <div {{ $attributes->class([
         'flex items-center md:flex-row md:justify-start',
         $withoutReverseClass => $withoutReverse,
@@ -23,7 +26,10 @@
             {{ $icon }}
         @endunless
 
-        <div class="flex items-center mr-4 md:mr-0">
+        <div @class([
+            'flex items-center mr-4 md:mr-0',
+            $contentClass,
+        ])>
             @if ($prefix)
                 {{ $prefix }}
             @endif
@@ -61,6 +67,12 @@
                     {{ $model->address() }}
                 @endif
             </a>
+
+            @if ($model->username() && !$withoutUsername && $addressVisible)
+                <span class="ml-1 truncate">
+                    {{ $model->address() }}
+                </span>
+            @endif
 
             @if ($suffix)
                 {{ $suffix }}
