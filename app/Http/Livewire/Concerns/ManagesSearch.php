@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Concerns;
 
+use App\Models\Wallet;
 use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
@@ -40,15 +41,21 @@ trait ManagesSearch
 
         $data = $validator->validate();
 
-        $results = (new WalletSearch())->search(['term' => Arr::get($data, 'query')])->paginate();
+        $query = Arr::get($data, 'query');
 
-        if ($results->isEmpty()) {
-            $results = (new TransactionSearch())->search(['term' => Arr::get($data, 'query')])->paginate();
-        }
 
-        if ($results->isEmpty()) {
-            $results = (new BlockSearch())->search(['term' => Arr::get($data, 'query')])->paginate();
-        }
+        $results = Wallet::search($query)->paginate(5);
+
+        // $results = (new WalletSearch())->search(['term' => Arr::get($data, 'query')])->paginate();
+
+
+        // if ($results->isEmpty()) {
+        //     $results = (new TransactionSearch())->search(['term' => Arr::get($data, 'query')])->paginate();
+        // }
+
+        // if ($results->isEmpty()) {
+        //     $results = (new BlockSearch())->search(['term' => Arr::get($data, 'query')])->paginate();
+        // }
 
         return ViewModelFactory::paginate($results);
     }

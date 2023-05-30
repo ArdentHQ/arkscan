@@ -11,6 +11,7 @@ use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
 
 /**
  * @property string $address
@@ -25,6 +26,9 @@ final class Wallet extends Model
     use HasFactory;
     use SearchesCaseInsensitive;
     use HasEmptyScope;
+    use Searchable;
+
+    protected $primaryKey = 'address';
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -43,6 +47,41 @@ final class Wallet extends Model
         'nonce'      => BigInteger::class,
         'attributes' => 'array',
     ];
+
+    /**
+     * Get the value used to index the model.
+     */
+    public function getScoutKey(): mixed
+    {
+        return (string) $this->address;
+    }
+
+    /**
+     * Get the key name used to index the model.
+     */
+    public function getScoutKeyName(): mixed
+    {
+        return 'address';
+    }
+
+    public function getKeyType(): string
+    {
+        return 'string';
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'address' => (string) $this->address,
+            'publicKey' => (string) $this->public_key,
+        ];
+    }
+
 
     /**
      * A wallet has many sent transactions.
