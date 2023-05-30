@@ -9,8 +9,6 @@ use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
 use App\ViewModels\ViewModelFactory;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\LengthAwarePaginator as PaginationLengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
@@ -44,14 +42,11 @@ trait ManagesSearch
 
         $query = Arr::get($data, 'query');
 
-
         $results = Wallet::search($query)->take(5)->get();
 
         // dd($results);
 
-
         // $results = (new WalletSearch())->search(['term' => Arr::get($data, 'query')])->paginate();
-
 
         // if ($results->isEmpty()) {
         //     $results = (new TransactionSearch())->search(['term' => Arr::get($data, 'query')])->paginate();
