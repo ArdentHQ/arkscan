@@ -146,7 +146,7 @@ return [
                 'filterableAttributes'=> ['id'],
             ],
             Block::class => [
-                'filterableAttributes'=> ['id', "height"],
+                'filterableAttributes'=> ['id', 'height'],
             ],
         ],
     ],

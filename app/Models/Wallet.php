@@ -29,8 +29,6 @@ final class Wallet extends Model
     use HasEmptyScope;
     use Searchable;
 
-    protected $primaryKey = 'address';
-
     /**
      * Indicates if the IDs are auto-incrementing.
      *
@@ -44,6 +42,8 @@ final class Wallet extends Model
      * @var string
      */
     public $keyType = 'string';
+
+    protected $primaryKey = 'address';
 
     /**
      * The attributes that should be cast.
@@ -80,11 +80,10 @@ final class Wallet extends Model
     public function toSearchableArray(): array
     {
         return [
-            'address' => $this->address,
+            'address'  => $this->address,
             'username' => Arr::get(json_decode($this->attributes['attributes'], true), 'delegate.username'),
         ];
     }
-
 
     /**
      * A wallet has many sent transactions.
