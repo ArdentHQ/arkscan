@@ -27,10 +27,7 @@ trait HasDirection
             return true;
         }
 
-        /** @var array<int, array<string, string>> */
-        $payments = Arr::get($this->transaction, 'asset.payments', []);
-
-        return collect($payments)->some(function ($payment) use ($address) {
+        return collect($this->payments())->some(function ($payment) use ($address) {
             /** @var array $payment */
             return $address === $payment['recipientId'];
         });
