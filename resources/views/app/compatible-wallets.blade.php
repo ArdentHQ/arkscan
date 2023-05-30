@@ -1,5 +1,5 @@
 @component('layouts.app')
-    <x-metadata page="wallets" />
+    <x-metadata page="compatible-wallets" />
 
     @section('content')
         <x-ark-container>
