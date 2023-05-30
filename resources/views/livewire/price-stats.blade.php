@@ -10,7 +10,6 @@
             {{ $historical->keys()->toJson() }},
             {{ $usePlaceholder ? 'true' : 'false' }},
             window.getThemeMode() === 'dark' ? 'true' : 'false',
-            '{{ time() }}',
             {{ $isPositive ? 'true' : 'false' }}
         )"
         @toggle-dark-mode.window="toggleDarkMode"
