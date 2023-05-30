@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Arr;
+use Laravel\Scout\Searchable;
 
 /**
  * @property string $id
@@ -30,6 +32,7 @@ final class Block extends Model
     use HasFactory;
     use SearchesCaseInsensitive;
     use HasEmptyScope;
+    use Searchable;
 
     /**
      * The "type" of the primary key ID.
@@ -58,6 +61,19 @@ final class Block extends Model
         'total_amount'           => BigInteger::class,
         'total_fee'              => BigInteger::class,
     ];
+
+     /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'height' => $this->height,
+        ];
+    }
 
     /**
      * A block has many transactions.

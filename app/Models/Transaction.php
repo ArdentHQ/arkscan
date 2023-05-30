@@ -25,6 +25,8 @@ use App\Services\VendorField;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Arr;
+use Laravel\Scout\Searchable;
 
 /**
  * @property string $id
@@ -48,6 +50,14 @@ final class Transaction extends Model
     use HasFactory;
     use SearchesCaseInsensitive;
     use HasEmptyScope;
+    use Searchable;
+
+    /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    public $keyType = 'string';
 
     /**
      * A list of transaction scopes used for filtering based on type.
@@ -101,6 +111,18 @@ final class Transaction extends Model
     ];
 
     private bool|string|null $vendorFieldContent = false;
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+        ];
+    }
 
     /**
      * A transaction belongs to a block.

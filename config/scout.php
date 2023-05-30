@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Models\Block;
+use App\Models\Transaction;
 use App\Models\Wallet;
 
 return [
@@ -138,7 +140,13 @@ return [
         'key'            => env('MEILISEARCH_KEY'),
         'index-settings' => [
             Wallet::class => [
-                'filterableAttributes'=> ['address', 'public_key', 'username'],
+                'filterableAttributes'=> ['address', 'username'],
+            ],
+            Transaction::class => [
+                'filterableAttributes'=> ['id'],
+            ],
+            Block::class => [
+                'filterableAttributes'=> ['id', "height"],
             ],
         ],
     ],

@@ -39,6 +39,13 @@ final class Wallet extends Model
     public $incrementing = false;
 
     /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    public $keyType = 'string';
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
@@ -54,7 +61,7 @@ final class Wallet extends Model
      */
     public function getScoutKey(): mixed
     {
-        return (string) $this->address;
+        return $this->address;
     }
 
     /**
@@ -63,11 +70,6 @@ final class Wallet extends Model
     public function getScoutKeyName(): mixed
     {
         return 'address';
-    }
-
-    public function getKeyType(): string
-    {
-        return 'string';
     }
 
     /**
@@ -79,7 +81,6 @@ final class Wallet extends Model
     {
         return [
             'address' => $this->address,
-            'publicKey' => $this->public_key,
             'username' => Arr::get(json_decode($this->attributes['attributes'], true), 'delegate.username'),
         ];
     }
