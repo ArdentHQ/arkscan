@@ -58,7 +58,7 @@ return [
         'image'       => asset('images/metadata/exchanges.png'),
     ],
 
-    'wallets'  => [
+    'compatible-wallets'  => [
         'title'       => 'Compatible Wallets | :name Blockchain Explorer',
         'description' => 'List of web, desktop, and mobile wallets that support ARK Token.',
         'image'       => asset('images/metadata/compatible-wallets.png'),
