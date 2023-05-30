@@ -132,6 +132,17 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction->amount->toFloat();
     }
 
+    public function amountWithFee(): float
+    {
+        $amount = $this->transaction->amount->toFloat();
+        if ($this->isMultiPayment()) {
+            $amount = collect($this->payments())
+                ->sum('amount') / 1e8;
+        }
+
+        return $amount + $this->fee();
+    }
+
     public function amountReceived(?string $wallet = null): float
     {
         if ($this->isMultiPayment() && $wallet !== null) {
