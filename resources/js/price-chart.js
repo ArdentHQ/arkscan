@@ -4,39 +4,24 @@ import { en } from "date-fns/locale";
 
 Chart.register(...registerables);
 
-const PriceChart = (
-    values,
-    labels,
-    isPlaceholder,
-    darkMode,
-    time,
-    isPositive
-) => {
+const PriceChart = (values, labels, isPlaceholder, darkMode, isPositive) => {
     // The margin is used to not cut the line at the top/bottom
     const margin = Math.max.apply(Math, values) * 0.01;
     const maxValue = Math.max.apply(Math, values) + margin;
     const minValue = Math.min.apply(Math, values) - margin;
 
     return {
-        time: time,
         darkMode: darkMode,
         toggleDarkMode() {
             this.darkMode = !this.darkMode;
             this.updateChart();
         },
-        updateChart() {
+        init() {
             const ctx = this.$refs.chart.getContext("2d");
+
             const chart = Object.values(Chart.instances).find(
                 (i) => i.ctx === ctx
             );
-            this.init(chart);
-        },
-        init(chart = null) {
-            const ctx = this.$refs.chart.getContext("2d");
-
-            if (chart === null) {
-                this.$watch("time", () => this.updateChart());
-            }
 
             const gradient = ctx.createLinearGradient(0, 0, 0, 40);
 
@@ -84,26 +69,6 @@ const PriceChart = (
                 labels: labels,
                 datasets,
             };
-
-            if (chart) {
-                data.labels.forEach((label, index) => {
-                    chart.data.labels.splice(index, 1, label);
-                });
-
-                data.datasets[0].data.forEach((value, index) => {
-                    chart.data.datasets[0].data.splice(index, 1, value);
-                });
-
-                chart.data.datasets[0].backgroundColor = gradient;
-                chart.data.datasets[0].borderColor = border;
-
-                chart.options.scales.yAxes[0].ticks.max = maxValue;
-                chart.options.scales.yAxes[0].ticks.min = minValue;
-
-                chart.update();
-
-                return;
-            }
 
             const options = {
                 animations: {
@@ -158,7 +123,13 @@ const PriceChart = (
                 options,
             };
 
-            new Chart(ctx, config);
+            if (!chart) {
+                new Chart(ctx, config);
+            } else {
+                chart.options = options;
+                chart.data = data;
+                chart.update();
+            }
         },
     };
 };
