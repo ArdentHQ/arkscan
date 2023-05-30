@@ -34,7 +34,7 @@
         </div>
 
         <x-general.dropdown.dropdown
-            dropdown-class="max-h-[246px] md:max-h-[332px]"
+            scroll-class="max-h-[246px] md:max-h-[332px]"
             :disabled="$isDisabled"
         >
             <x-slot
