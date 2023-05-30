@@ -13,13 +13,15 @@ final class DarkModeToggle extends Toggle
 
     public function storeTheme(string $theme): void
     {
-        if ($this->currentValue !== null) {
-            return;
+        $currentValue = $theme === 'dark';
+
+        if ($currentValue !== $this->currentValue) {
+            $this->currentValue = $currentValue;
+
+            $this->save(false);
+
+            $this->emit('themeChanged', $theme);
         }
-
-        $this->currentValue = $theme === 'dark';
-
-        $this->save(false);
     }
 
     protected function save(bool $dispatchEvent = true): void
