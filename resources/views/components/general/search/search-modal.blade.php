@@ -34,7 +34,7 @@
 
                 <x-general.search.search-input />
 
-                <div x-ref="searchResults" class="flex overflow-auto flex-col space-y-4 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800 custom-scroll">
+                <div x-ref="searchResults" class="flex overflow-auto flex-col space-y-4 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 custom-scroll dark:divide-theme-secondary-800">
                     @if ($hasResults && $results !== null)
                         @foreach ($results as $result)
                             <div wire:key="{{ $result->model()->id }}" class="pt-4">
@@ -48,7 +48,7 @@
                             </div>
                         @endforeach
                     @else
-                        <div class="mt-[0.625rem] text-center whitespace-normal dark:text-theme-secondary-500">
+                        <div class="text-center whitespace-normal mt-[0.625rem] dark:text-theme-secondary-500">
                             <p x-show="query">@lang('general.navbar.no_results')</p>
                             <p x-show="!query">@lang('general.search.results_will_show_up')</p>
                         </div>
