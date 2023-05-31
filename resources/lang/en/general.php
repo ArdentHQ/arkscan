@@ -166,6 +166,7 @@ return [
         'amount'               => 'Amount',
         'type'                 => 'Type',
         'vote'                 => 'Vote',
+        'unvote'               => 'Unvote',
         'results_will_show_up' => 'Results will show up here',
     ],
 ];
