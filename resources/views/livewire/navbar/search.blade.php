@@ -52,7 +52,7 @@
         >
             <div
                 x-show="query"
-                class="flex flex-col space-y-1 px-6 py-3 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800 overflow-y-auto custom-scroll max-h-[410px]"
+                class="flex overflow-y-auto flex-col py-3 px-6 space-y-1 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 custom-scroll max-h-[410px] dark:divide-theme-secondary-800"
             >
                 @if ($hasResults)
                     @foreach ($results as $result)
