@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
+use Illuminate\Support\Arr;
+
 trait HasDirection
 {
     public function isSent(string $address): bool
@@ -25,7 +27,10 @@ trait HasDirection
             return true;
         }
 
-        return collect($this->payments())->some(function ($payment) use ($address) {
+        /** @var array<int, array<string, string>> */
+        $payments = Arr::get($this->transaction, 'asset.payments', []);
+
+        return collect($payments)->some(function ($payment) use ($address) {
             /** @var array $payment */
             return $address === $payment['recipientId'];
         });
