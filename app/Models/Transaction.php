@@ -138,6 +138,8 @@ final class Transaction extends Model
             'fee'    => $this->fee->__toString(),
             // Contains the multipayments payments and vote related data
             'asset' => $this->asset,
+            // used to build the payments
+            'timestamp' => $this->timestamp,
         ];
     }
 
