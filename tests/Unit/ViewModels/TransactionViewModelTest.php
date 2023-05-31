@@ -139,6 +139,12 @@ it('should get the amount received for non-multipayment', function () {
     assertMatchesSnapshot($this->subject->amountReceived('recipient'));
 });
 
+it('should get the amount including fee', function () {
+    expect($this->subject->amountWithFee())->toBeFloat();
+
+    assertMatchesSnapshot($this->subject->amountWithFee());
+});
+
 it('should get the amount for multi payments', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
         'asset' => [

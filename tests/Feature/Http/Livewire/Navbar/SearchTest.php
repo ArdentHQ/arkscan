@@ -77,3 +77,14 @@ it('should do nothing if no results on submit', function () {
         ->call('performSearch')
         ->assertOk();
 });
+
+it('should clear search query', function () {
+    $block = Block::factory()->create();
+
+    Livewire::test(Search::class)
+        ->set('query', $block->id)
+        ->assertSee($block->id)
+        ->call('clear')
+        ->assertDontSee($block->id)
+        ->assertOk();
+});
