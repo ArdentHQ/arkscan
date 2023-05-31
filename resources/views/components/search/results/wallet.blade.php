@@ -35,7 +35,8 @@
 
         <div class="truncate dark:text-theme-secondary-500">
             <x-currency :currency="Network::currency()">
-                {{ ExplorerNumberFormatter::number($wallet->balance()) }}
+                {{-- Taken from tables.rows.desktop.encapsulated.balance --}}
+                {{ rtrim(rtrim(number_format((float) ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation::execute((float) $wallet->balance()), 8), 0), '.') }}
             </x-currency>
         </div>
     </div>
