@@ -30,14 +30,14 @@
         >
             <div wire:click.self="closeModal" class="fixed inset-0 opacity-70 dark:opacity-80 bg-theme-secondary-900 dark:bg-theme-secondary-800"></div>
 
-            <div class="flex overflow-auto relative flex-col p-6 my-6 mx-4 bg-white rounded-xl border border-transparent dark:bg-theme-secondary-900 dark:text-theme-secondary-200 dark:border-theme-secondary-800">
+            <div class="flex overflow-auto relative flex-col p-6 my-6 mx-4 bg-white rounded-xl border border-transparent sm:m-8 dark:bg-theme-secondary-900 dark:text-theme-secondary-200 dark:border-theme-secondary-800">
 
                 <x-general.search.search-input />
 
-                <div x-ref="searchResults" class="flex overflow-auto flex-col space-y-4 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 custom-scroll">
+                <div x-ref="searchResults" class="flex overflow-auto flex-col space-y-1 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 custom-scroll dark:divide-theme-secondary-800">
                     @if ($hasResults && $results !== null)
                         @foreach ($results as $result)
-                            <div wire:key="{{ $result->model()->id }}" class="pt-4">
+                            <div wire:key="{{ $result->model()->id }}" class="pt-1">
                                 @if (is_a($result->model(), \App\Models\Wallet::class))
                                     <x-search.results.wallet :wallet="$result" />
                                 @elseif (is_a($result->model(), \App\Models\Block::class))
@@ -48,7 +48,7 @@
                             </div>
                         @endforeach
                     @else
-                        <div class="mt-4 text-center whitespace-normal dark:text-theme-secondary-500">
+                        <div class="text-center whitespace-normal mt-[0.625rem] dark:text-theme-secondary-500">
                             <p x-show="query">@lang('general.navbar.no_results')</p>
                             <p x-show="!query">@lang('general.search.results_will_show_up')</p>
                         </div>

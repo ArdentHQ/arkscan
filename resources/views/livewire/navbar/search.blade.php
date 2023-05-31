@@ -16,6 +16,7 @@
         hide-label
         disable-dirty-styling
         iconSize="sm"
+        wire:keydown.enter="performSearch"
     >
         <div
             class="flex items-center mr-4 space-x-4"
@@ -47,18 +48,19 @@
             :close-on-blur="false"
             dropdown-classes="w-[561px] top-9"
             dropdown-content-classes="bg-white rounded-xl shadow-lg dark:bg-theme-secondary-900 dark:text-theme-secondary-200 border border-transparent dark:border-theme-secondary-800"
+            without-button
         >
-            <x-slot name="button">
-            </x-slot>
-
-            <div x-show="query" class="flex flex-col p-6 space-y-4 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300">
+            <div
+                x-show="query"
+                class="flex overflow-y-auto flex-col py-3 px-6 space-y-1 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 custom-scroll max-h-[410px] dark:divide-theme-secondary-800"
+            >
                 @if ($hasResults)
                     @foreach ($results as $result)
                         <div
                             wire:key="{{ $result->model()->id }}"
                             @class([
                                 'select-none',
-                                'pt-4' => $loop->index > 0,
+                                'pt-1' => $loop->index > 0,
                             ])
                         >
                             @if (is_a($result->model(), \App\Models\Wallet::class))
@@ -71,7 +73,9 @@
                         </div>
                     @endforeach
                 @else
-                    <p class="px-4 -my-1">@lang('general.navbar.no_results')</p>
+                    <p class="text-center dark:text-theme-secondary-700">
+                        @lang('general.navbar.no_results')
+                    </p>
                 @endif
             </div>
         </x-ark-dropdown>

@@ -1,6 +1,6 @@
 @props(['wallet'])
 
-<div class="space-y-2 min-w-0">
+<x-search.results.result :model="$wallet">
     <div class="flex overflow-auto items-center space-x-2">
         <div class="dark:text-theme-secondary-500">
             @lang('general.search.address')
@@ -10,10 +10,12 @@
             :model="$wallet"
             without-reverse
             without-reverse-class="space-x-2"
+            without-link
             address-visible
-            class="text-theme-secondary-700 dark:text-theme-secondary-500"
+            class="text-theme-secondary-500 dark:text-theme-secondary-700"
             content-class="truncate"
             container-class="min-w-0"
+            link-class="link group-hover/result:no-underline hover:text-theme-primary-600"
         >
             <x-slot name="icon">
                 <div class="w-5 h-5">
@@ -33,8 +35,9 @@
 
         <div class="truncate dark:text-theme-secondary-500">
             <x-currency :currency="Network::currency()">
-                {{ ExplorerNumberFormatter::number($wallet->balance()) }}
+                {{-- Taken from tables.rows.desktop.encapsulated.balance --}}
+                {{ rtrim(rtrim(number_format((float) ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation::execute((float) $wallet->balance()), 8), 0), '.') }}
             </x-currency>
         </div>
     </div>
-</div>
+</x-search.results.result>

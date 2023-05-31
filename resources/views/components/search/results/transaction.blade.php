@@ -1,16 +1,16 @@
 @props(['transaction'])
 
-<div class="space-y-2">
+<x-search.results.result :model="$transaction">
     <div class="flex items-center space-x-2">
         <div class="dark:text-theme-secondary-500">
             @lang('general.search.transaction')
         </div>
 
-        <a href="{{ $transaction->url() }}" class="min-w-0 link">
+        <div class="min-w-0 link group-hover/result:no-underline hover:text-theme-primary-600">
             <x-truncate-dynamic>
                 {{ $transaction->id() }}
             </x-truncate-dynamic>
-        </a>
+        </div>
     </div>
 
     <div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-y-0 md:space-x-4">
@@ -23,6 +23,7 @@
                 :model="$transaction->sender()"
                 without-reverse
                 without-reverse-class="space-x-2"
+                without-link
                 class="text-theme-secondary-700 dark:text-theme-secondary-500"
             >
                 <x-slot name="icon">
@@ -48,4 +49,4 @@
             </div>
         </div>
     </div>
-</div>
+</x-search.results.result>

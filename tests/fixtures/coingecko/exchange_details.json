@@ -1,0 +1,37 @@
+{
+  "name": "Binance",
+  "tickers": [
+    {
+      "base": "ARK",
+      "target": "BUSD",
+      "market": {
+        "name": "Binance",
+        "identifier": "binance",
+        "has_trading_incentive": false
+      },
+      "last": 0.257,
+      "volume": 213822.86225680934,
+      "converted_last": {
+        "btc": 0.00000977,
+        "eth": 0.00014303,
+        "usd": 0.256662
+      },
+      "converted_volume": {
+        "btc": 2.089182,
+        "eth": 30.583433,
+        "usd": 54880
+      },
+      "trust_score": "green",
+      "bid_ask_spread_percentage": 0.07776,
+      "timestamp": "2023-05-25T15:45:02+00:00",
+      "last_traded_at": "2023-05-25T15:45:02+00:00",
+      "last_fetch_at": "2023-05-25T15:45:02+00:00",
+      "is_anomaly": false,
+      "is_stale": false,
+      "trade_url": "https://www.binance.com/en/trade/ARK_BUSD?ref=37754157",
+      "token_info_url": null,
+      "coin_id": "ark",
+      "target_coin_id": "binance-usd"
+    }
+  ]
+}
