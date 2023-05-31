@@ -9,6 +9,7 @@
         :model="$transaction->recipient()"
         without-reverse
         without-reverse-class="space-x-2"
+        without-link
         class="text-theme-secondary-700 dark:text-theme-secondary-500"
     >
         <x-slot name="icon">
