@@ -18,8 +18,8 @@ final class BlockSearch implements Search
         if ($this->couldBeBlockID($query) || $this->couldBeHeightValue($query)) {
             // Exact match
             return Block::search(sprintf('"%s"', $query));
-        } else {
-            return Block::search($query);
         }
+
+        return Block::search($query);
     }
 }
