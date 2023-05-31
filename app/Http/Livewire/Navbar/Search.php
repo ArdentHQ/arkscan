@@ -18,7 +18,7 @@ final class Search extends Component
 
         return view('livewire.navbar.search', [
             'results'    => $results,
-            'hasResults' => $results !== null && $results->isNotEmpty(),
+            'hasResults' => $results->isNotEmpty(),
         ]);
     }
 }

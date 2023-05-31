@@ -102,7 +102,10 @@ final class TransactionViewModel implements ViewModel
 
     public function amountForItself(): float
     {
-        return collect($this->payments())
+        /** @var array<int, array<string, mixed>> */
+        $payments = Arr::get($this->transaction, 'asset.payments', []);
+
+        return collect($payments)
             ->filter(function ($payment): bool {
                 $sender = $this->sender();
 
@@ -113,7 +116,10 @@ final class TransactionViewModel implements ViewModel
 
     public function amountExcludingItself(): float
     {
-        return collect($this->payments())
+        /** @var array<int, array<string, mixed>> */
+        $payments = Arr::get($this->transaction, 'asset.payments', []);
+
+        return collect($payments)
             ->filter(function ($payment): bool {
                 $sender = $this->sender();
 
@@ -125,7 +131,10 @@ final class TransactionViewModel implements ViewModel
     public function amount(): float
     {
         if ($this->isMultiPayment()) {
-            return collect($this->payments())
+            /** @var array<int, array<string, mixed>> */
+            $payments = Arr::get($this->transaction, 'asset.payments', []);
+
+            return collect($payments)
                 ->sum('amount') / 1e8;
         }
 
@@ -136,7 +145,10 @@ final class TransactionViewModel implements ViewModel
     {
         $amount = $this->transaction->amount->toFloat();
         if ($this->isMultiPayment()) {
-            $amount = collect($this->payments())
+            /** @var array<int, array<string, mixed>> */
+            $payments = Arr::get($this->transaction, 'asset.payments', []);
+
+            return collect($payments)
                 ->sum('amount') / 1e8;
         }
 
@@ -146,7 +158,10 @@ final class TransactionViewModel implements ViewModel
     public function amountReceived(?string $wallet = null): float
     {
         if ($this->isMultiPayment() && $wallet !== null) {
-            return collect($this->payments())
+            /** @var array<int, array<string, mixed>> */
+            $payments = Arr::get($this->transaction, 'asset.payments', []);
+
+            return collect($payments)
                 ->where('recipientId', $wallet)
                 ->sum('amount') / 1e8;
         }
@@ -167,12 +182,6 @@ final class TransactionViewModel implements ViewModel
     public function amountReceivedFiat(?string $wallet = null): string
     {
         return ExchangeRate::convert($this->amountReceived($wallet), $this->transaction->timestamp);
-    }
-
-    /** @return array<int, array<string, mixed>> */
-    public function payments(): array
-    {
-        return Arr::get($this->transaction, 'asset.payments', []);
     }
 
     public function confirmations(): int
