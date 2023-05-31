@@ -18,8 +18,8 @@ final class TransactionSearch implements Search
         if ($this->couldBeTransactionID($query)) {
             // Exact match
             return Transaction::search(sprintf('"%s"', $query));
-        } else {
-            return Transaction::search($query);
         }
+
+        return Transaction::search($query);
     }
 }

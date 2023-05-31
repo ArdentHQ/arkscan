@@ -23,8 +23,8 @@ final class WalletSearch implements Search
         if ($this->couldBeAddress($query)) {
             // Exact match
             return Wallet::search(sprintf('"%s"', $query));
-        } else {
-            return Wallet::search($query);
         }
+
+        return Wallet::search($query);
     }
 }
