@@ -6,6 +6,7 @@ namespace App\Http\Livewire\Navbar;
 
 use App\Http\Livewire\Concerns\ManagesSearch;
 use Illuminate\Contracts\View\View;
+use Livewire\Redirector;
 use Livewire\Component;
 
 final class Search extends Component
@@ -20,5 +21,15 @@ final class Search extends Component
             'results'    => $results,
             'hasResults' => $results !== null && $results->isNotEmpty(),
         ]);
+    }
+
+    public function submit(): null|Redirector
+    {
+        $result = $this->results()->getCollection()->first();
+        if (! $result) {
+            return null;
+        }
+
+        return redirect($result->url());
     }
 }

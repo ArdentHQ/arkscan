@@ -16,6 +16,7 @@
         hide-label
         disable-dirty-styling
         iconSize="sm"
+        wire:keydown.enter="submit"
     >
         <div
             class="flex items-center mr-4 space-x-4"
