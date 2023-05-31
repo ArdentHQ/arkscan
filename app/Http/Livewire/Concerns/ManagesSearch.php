@@ -41,17 +41,17 @@ trait ManagesSearch
 
         $query = Arr::get($data, 'query');
 
-        $walletBuilder = (new WalletSearch())->search($query);
+        $walletBuilder = (new WalletSearch())->search(query: $query, limit: 5);
 
         if ($walletBuilder !== null) {
-            $results = $walletBuilder->take(5)->get();
+            $results = $walletBuilder->get();
         } else {
             $results = new Collection();
         }
 
-        $results = $results->concat((new TransactionSearch())->search($query)->take(5)->get());
+        $results = $results->concat((new TransactionSearch())->search(query: $query, limit: 5)->get());
 
-        $results = $results->concat((new BlockSearch())->search($query)->take(5)->get());
+        $results = $results->concat((new BlockSearch())->search(query: $query, limit: 5)->get());
 
         return ViewModelFactory::collection($results);
     }

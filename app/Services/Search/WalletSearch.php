@@ -13,7 +13,7 @@ final class WalletSearch implements Search
 {
     use ValidatesTerm;
 
-    public function search(string $query): ?Builder
+    public function search(string $query, int $limit): Builder | null
     {
         // Prevents finding wallets by transaction ID
         if ($this->is64CharsHexadecimalString($query)) {
@@ -21,10 +21,10 @@ final class WalletSearch implements Search
         }
 
         if ($this->couldBeAddress($query)) {
-            // Exact match
-            return Wallet::search(sprintf('"%s"', $query));
+            // Quoted so it gets the exact match
+            return Wallet::search(sprintf('"%s"', $query))->take($limit);
         }
 
-        return Wallet::search($query);
+        return Wallet::search($query)->take($limit);
     }
 }
