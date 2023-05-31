@@ -2,7 +2,7 @@
 
 <div class="flex items-center space-x-2 text-xs">
     <div class="flex items-center text-theme-secondary-500 dark:text-theme-secondary-700">
-        <div class="md:hidden mr-2">
+        <div class="mr-2 md:hidden">
             @lang('general.search.type')
         </div>
 
