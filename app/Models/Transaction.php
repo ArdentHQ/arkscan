@@ -118,8 +118,26 @@ final class Transaction extends Model
      */
     public function toSearchableArray(): array
     {
+        // Notice that we only need to index the data used on to hydrate the model
+        // for the search results.
         return [
-            'id' => $this->id,
+            // Searchable id and used to link the transaction
+            "id" => $this->id,
+            // Used to get the sender wallets
+            "sender_public_key" => $this->sender_public_key,
+            // Used to get the recipient wallet
+            "recipient_id" => $this->recipient_id,
+
+            // Used to show the transaction type
+            "type" => $this->type,
+            "type_group" => $this->type_group,
+
+            // To get the amount for single payments
+            // Using `__toString` since are instances of `BigNumber`
+            "amount" => $this->amount->__toString(),
+            "fee" => $this->fee->__toString(),
+            // Contains the multipayments payments
+            "asset" => $this->asset,
         ];
     }
 
