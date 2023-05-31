@@ -41,8 +41,10 @@ trait ManagesSearch
 
         $query = Arr::get($data, 'query');
 
-        if ($builder = (new WalletSearch())->search($query)) {
-            $results = $builder->take(5)->get();
+        $walletBuilder = (new WalletSearch())->search($query);
+
+        if ($walletBuilder !== null) {
+            $results = $walletBuilder->take(5)->get();
         } else {
             $results = new Collection();
         }
