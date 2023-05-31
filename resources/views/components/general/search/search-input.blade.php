@@ -21,7 +21,10 @@
 
     <button
         type="button"
-        wire:click="clear"
+        @click="() => {
+            $wire.clear();
+            $refs.input.focus();
+        }"
         class="pr-4 -my-px bg-transparent button-secondary text-theme-secondary-700 dark:bg-theme-secondary-900 dark:text-theme-secondary-600"
         x-show="query"
         x-cloak
