@@ -51,7 +51,7 @@
             <x-slot name="button">
             </x-slot>
 
-            <div x-show="query" class="flex flex-col p-6 space-y-4 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300">
+            <div x-show="query" class="flex flex-col p-6 space-y-4 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
                 @if ($hasResults)
                     @foreach ($results as $result)
                         <div
