@@ -8,10 +8,14 @@
     'withoutReverse'  => false,
     'withoutTruncate' => false,
     'withoutUsername' => false,
+    'addressVisible'  => false,
     'withoutReverseClass' => 'space-x-3',
+    'containerClass'  => null,
+    'contentClass'    => null,
+    'withoutLink'     => false,
 ])
 
-<div>
+<div @class($containerClass)>
     <div {{ $attributes->class([
         'flex items-center md:flex-row md:justify-start',
         $withoutReverseClass => $withoutReverse,
@@ -23,12 +27,22 @@
             {{ $icon }}
         @endunless
 
-        <div class="flex items-center mr-4 md:mr-0">
+        <div @class([
+            'flex items-center mr-4 md:mr-0',
+            $contentClass,
+        ])>
             @if ($prefix)
                 {{ $prefix }}
             @endif
 
-            <a href="{{ route('wallet', $model->address()) }}" class="font-semibold sm:hidden md:flex link">
+            @if ($withoutLink)
+                <div class="font-semibold sm:hidden md:flex">
+            @else
+                <a
+                    href="{{ route('wallet', $model->address()) }}"
+                    class="font-semibold sm:hidden md:flex link"
+                >
+            @endif
                 @if ($model->username() && !$withoutUsername)
                     @if ($prefix)
                         <div class="delegate-name-truncate-prefix">
@@ -52,15 +66,36 @@
                         @endisset
                     @endif
                 @endif
-            </a>
+            @if ($withoutLink)
+                </div>
+            @else
+                </a>
+            @endif
 
-            <a href="{{ route('wallet', $model->address()) }}" class="hidden font-semibold sm:flex md:hidden link">
+            @if ($withoutLink)
+                <div class="hidden font-semibold sm:flex md:hidden">
+            @else
+                <a
+                    href="{{ route('wallet', $model->address()) }}"
+                    class="hidden font-semibold sm:flex md:hidden link"
+                >
+            @endif
                 @if ($model->username() && !$withoutUsername)
                     {{ $model->username() }}
                 @else
                     {{ $model->address() }}
                 @endif
-            </a>
+            @if ($withoutLink)
+                </div>
+            @else
+                </a>
+            @endif
+
+            @if ($model->username() && !$withoutUsername && $addressVisible)
+                <span class="ml-1 truncate">
+                    {{ $model->address() }}
+                </span>
+            @endif
 
             @if ($suffix)
                 {{ $suffix }}
