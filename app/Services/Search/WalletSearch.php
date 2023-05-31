@@ -7,24 +7,35 @@ namespace App\Services\Search;
 use App\Contracts\Search;
 use App\Models\Wallet;
 use App\Services\Search\Traits\ValidatesTerm;
-use Laravel\Scout\Builder;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 final class WalletSearch implements Search
 {
     use ValidatesTerm;
 
-    public function search(string $query, int $limit): Builder | null
+    public function search(string $query, int $limit): Collection
     {
-        // Prevents finding wallets by transaction ID
-        if ($this->is64CharsHexadecimalString($query)) {
-            return null;
+        if ($this->couldntBeAddress($query)) {
+            return collect();
         }
 
         if ($this->couldBeAddress($query)) {
             // Quoted so it gets the exact match
-            return Wallet::search(sprintf('"%s"', $query))->take($limit);
+            $builder = Wallet::search(sprintf('"%s"', $query))->take($limit);
+        } else {
+            $builder = Wallet::search($query)->take($limit);
         }
 
-        return Wallet::search($query)->take($limit);
+        return collect($builder->raw()['hits'])->map(function ($item) {
+            return new Wallet([
+                ...$item,
+                'attributes' => [
+                    'delegate' => [
+                        'username' => Arr::get($item, 'username'),
+                    ],
+                ],
+            ]);
+        });
     }
 }

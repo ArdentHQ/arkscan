@@ -79,9 +79,15 @@ final class Wallet extends Model
      */
     public function toSearchableArray(): array
     {
+        // Notice that we only need to index the data used on to hydrate the model
+        // for the search results.
+        $attributes       = json_decode($this->attributes['attributes'], true);
+        $delegateUsername = Arr::get($attributes, 'delegate.username');
+
         return [
             'address'  => $this->address,
-            'username' => Arr::get(json_decode($this->attributes['attributes'], true), 'delegate.username'),
+            'username' => $delegateUsername,
+            'balance'  => $this->balance->__toString(),
         ];
     }
 

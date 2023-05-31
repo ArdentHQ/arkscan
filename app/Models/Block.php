@@ -68,9 +68,15 @@ final class Block extends Model
      */
     public function toSearchableArray(): array
     {
+        // Notice that we only need to index the data used on to hydrate the model
+        // for the search results.
         return [
             'id'     => $this->id,
             'height' => $this->height,
+            // used to get the delegate
+            'generator_public_key' => $this->generator_public_key,
+            // shown on the results
+            'number_of_transactions' => $this->number_of_transactions,
         ];
     }
 

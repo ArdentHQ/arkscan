@@ -122,22 +122,22 @@ final class Transaction extends Model
         // for the search results.
         return [
             // Searchable id and used to link the transaction
-            "id" => $this->id,
+            'id' => $this->id,
             // Used to get the sender wallets
-            "sender_public_key" => $this->sender_public_key,
+            'sender_public_key' => $this->sender_public_key,
             // Used to get the recipient wallet
-            "recipient_id" => $this->recipient_id,
+            'recipient_id' => $this->recipient_id,
 
             // Used to show the transaction type
-            "type" => $this->type,
-            "type_group" => $this->type_group,
+            'type'       => $this->type,
+            'type_group' => $this->type_group,
 
             // To get the amount for single payments
             // Using `__toString` since are instances of `BigNumber`
-            "amount" => $this->amount->__toString(),
-            "fee" => $this->fee->__toString(),
-            // Contains the multipayments payments
-            "asset" => $this->asset,
+            'amount' => $this->amount->__toString(),
+            'fee'    => $this->fee->__toString(),
+            // Contains the multipayments payments and vote related data
+            'asset' => $this->asset,
         ];
     }
 

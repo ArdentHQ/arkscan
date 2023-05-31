@@ -7,20 +7,21 @@ namespace App\Services\Search;
 use App\Contracts\Search;
 use App\Models\Transaction;
 use App\Services\Search\Traits\ValidatesTerm;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Laravel\Scout\Builder;
+use Illuminate\Support\Collection;
 
 final class TransactionSearch implements Search
 {
     use ValidatesTerm;
 
-    public function search(string $query, int $limit): Builder | EloquentBuilder
+    public function search(string $query, int $limit): Collection
     {
         if ($this->couldBeTransactionID($query)) {
-            // We can use a regular query since is a exact match
-            return Transaction::where('id', strtolower($query))->limit(1);
+            // Quoted so it gets the exact match
+            $builder = Transaction::search(sprintf('"%s"', $query))->take(1);
+        } else {
+            $builder = Transaction::search($query)->take($limit);
         }
 
-        return Transaction::search($query)->take(10);
+        return collect($builder->raw()['hits'])->map(fn ($item) => new Transaction($item));
     }
 }

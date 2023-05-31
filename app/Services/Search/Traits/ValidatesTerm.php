@@ -23,6 +23,11 @@ trait ValidatesTerm
         return strlen($term) === 34;
     }
 
+    private function couldntBeAddress(string $term): bool
+    {
+        return strlen($term) > 34;
+    }
+
     private function couldBePublicKey(string $term): bool
     {
         return strlen($term) === 66 && $this->isHexadecimalString($term);
