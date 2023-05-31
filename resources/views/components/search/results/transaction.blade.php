@@ -6,7 +6,7 @@
             @lang('general.search.transaction')
         </div>
 
-        <div class="min-w-0 link">
+        <div class="min-w-0 link group-hover/result:no-underline hover:text-theme-primary-600">
             <x-truncate-dynamic>
                 {{ $transaction->id() }}
             </x-truncate-dynamic>

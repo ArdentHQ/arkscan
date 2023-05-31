@@ -4,7 +4,7 @@
     <div class="flex items-center space-x-2">
         <div class="dark:text-theme-secondary-500">@lang('general.search.block')</div>
 
-        <div class="min-w-0 link">
+        <div class="min-w-0 link group-hover/result:no-underline hover:text-theme-primary-600">
             <x-truncate-dynamic>
                 {{ $block->id() }}
             </x-truncate-dynamic>

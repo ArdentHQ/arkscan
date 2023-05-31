@@ -15,7 +15,7 @@
             class="text-theme-secondary-500 dark:text-theme-secondary-700"
             content-class="truncate"
             container-class="min-w-0"
-            link-class="link"
+            link-class="link group-hover/result:no-underline hover:text-theme-primary-600"
         >
             <x-slot name="icon">
                 <div class="w-5 h-5">
