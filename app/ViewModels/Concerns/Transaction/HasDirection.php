@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use Illuminate\Support\Arr;
-
 trait HasDirection
 {
     public function isSent(string $address): bool
