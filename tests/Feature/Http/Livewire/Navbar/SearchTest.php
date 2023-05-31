@@ -57,3 +57,13 @@ it('should search for a block', function () {
         ->set('query', $block->id)
         ->assertSee($block->id);
 });
+
+it('should redirect to first entry on submit', function () {
+    $block = Block::factory()->create();
+
+    Livewire::test(Search::class)
+        ->set('query', $block->id)
+        ->assertSee($block->id)
+        ->call('submit')
+        ->assertRedirect(route('block', $block));
+});
