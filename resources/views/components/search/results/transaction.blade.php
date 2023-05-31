@@ -36,7 +36,7 @@
 
         <x-search.results.transaction-type :transaction="$transaction" />
 
-        <div class="flex items-center space-x-2 text-xs md:justify-end md:flex-1 md:space-x-0">
+        <div class="flex items-center space-x-2 text-xs md:flex-1 md:justify-end md:space-x-0">
             <div class="md:hidden text-theme-secondary-500 dark:text-theme-secondary-700">
                 @lang('general.search.amount')
             </div>
