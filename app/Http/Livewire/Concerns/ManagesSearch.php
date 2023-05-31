@@ -9,11 +9,11 @@ use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Pagination\LengthAwarePaginator as PaginationLengthAwarePaginator;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
 
 trait ManagesSearch
 {
