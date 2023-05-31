@@ -12,6 +12,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\LengthAwarePaginator as PaginationLengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
+use Livewire\Redirector;
 
 trait ManagesSearch
 {
@@ -51,5 +52,15 @@ trait ManagesSearch
         }
 
         return ViewModelFactory::paginate($results);
+    }
+
+    public function performSearch(): null|Redirector
+    {
+        $result = $this->results()->getCollection()->first();
+        if (! $result) {
+            return null;
+        }
+
+        return redirect($result->url());
     }
 }
