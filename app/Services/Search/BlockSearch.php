@@ -13,6 +13,9 @@ final class BlockSearch implements Search
 {
     use ValidatesTerm;
 
+    /**
+     * @return Collection<Block>
+     */
     public function search(string $query, int $limit): Collection
     {
         if ($this->couldBeBlockID($query) || $this->couldBeHeightValue($query)) {
@@ -22,6 +25,13 @@ final class BlockSearch implements Search
             $builder = Block::search($query)->take($limit);
         }
 
-        return collect($builder->raw()['hits'])->map(fn ($item) => new Block($item));
+        /**
+         * @var array{
+         *   hits: array<int, mixed>
+         * }
+         */
+        $rawResults = $builder->raw();
+
+        return collect($rawResults['hits'])->map(fn ($item) => new Block($item));
     }
 }

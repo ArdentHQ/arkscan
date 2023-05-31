@@ -27,7 +27,7 @@ trait ManagesSearch
         $this->query = null;
     }
 
-    public function results(): ?Collection
+    public function results(): Collection
     {
         $validator = Validator::make([
             'query' => $this->query,

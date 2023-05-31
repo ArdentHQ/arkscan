@@ -27,7 +27,14 @@ final class WalletSearch implements Search
             $builder = Wallet::search($query)->take($limit);
         }
 
-        return collect($builder->raw()['hits'])->map(function ($item) {
+        /**
+         * @var array{
+         *   hits: array<int, mixed>
+         * }
+         */
+        $rawResults = $builder->raw();
+
+        return collect($rawResults['hits'])->map(function ($item) {
             return new Wallet([
                 ...$item,
                 'attributes' => [

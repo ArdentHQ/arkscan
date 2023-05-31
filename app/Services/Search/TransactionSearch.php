@@ -22,6 +22,13 @@ final class TransactionSearch implements Search
             $builder = Transaction::search($query)->take($limit);
         }
 
-        return collect($builder->raw()['hits'])->map(fn ($item) => new Transaction($item));
+        /**
+         * @var array{
+         *   hits: array<int, mixed>
+         * }
+         */
+        $rawResults = $builder->raw();
+
+        return collect($rawResults['hits'])->map(fn ($item) => new Transaction($item));
     }
 }
