@@ -7,7 +7,6 @@ namespace App\Services\Search;
 use App\Contracts\Search;
 use App\Models\Wallet;
 use App\Services\Search\Traits\ValidatesTerm;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Laravel\Scout\Builder;
 
 final class WalletSearch implements Search

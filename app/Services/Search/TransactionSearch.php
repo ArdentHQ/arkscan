@@ -13,11 +13,6 @@ final class TransactionSearch implements Search
 {
     use ValidatesTerm;
 
-    public function __construct(private bool $searchBlocks = false)
-    {
-        //
-    }
-
     public function search(string $query): Builder
     {
         if ($this->couldBeTransactionID($query)) {
