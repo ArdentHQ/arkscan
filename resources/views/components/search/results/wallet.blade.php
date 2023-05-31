@@ -33,7 +33,7 @@
             @lang('general.search.balance')
         </div>
 
-        <div class="dark:text-theme-secondary-500 truncate">
+        <div class="truncate dark:text-theme-secondary-500">
             <x-currency :currency="Network::currency()">
                 {{ ExplorerNumberFormatter::number($wallet->balance()) }}
             </x-currency>

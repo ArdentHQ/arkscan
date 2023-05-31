@@ -7,6 +7,7 @@ namespace App\Http\Livewire\Navbar;
 use App\Http\Livewire\Concerns\ManagesSearch;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use Livewire\Redirector;
 
 final class Search extends Component
 {
