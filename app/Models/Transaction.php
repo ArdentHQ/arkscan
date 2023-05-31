@@ -25,7 +25,6 @@ use App\Services\VendorField;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 
 /**
@@ -53,13 +52,6 @@ final class Transaction extends Model
     use Searchable;
 
     /**
-     * The "type" of the primary key ID.
-     *
-     * @var string
-     */
-    public $keyType = 'string';
-
-    /**
      * A list of transaction scopes used for filtering based on type.
      *
      * Exposed through the model to keep its usage consistent across
@@ -80,6 +72,13 @@ final class Transaction extends Model
         'voteCombination'               => VoteCombinationScope::class,
         'magistrate'                    => MagistrateScope::class,
     ];
+
+    /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    public $keyType = 'string';
 
     /**
      * Indicates if the IDs are auto-incrementing.

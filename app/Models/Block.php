@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 
 /**
@@ -62,7 +61,7 @@ final class Block extends Model
         'total_fee'              => BigInteger::class,
     ];
 
-     /**
+    /**
      * Get the indexable data array for the model.
      *
      * @return array<string, mixed>
@@ -70,7 +69,7 @@ final class Block extends Model
     public function toSearchableArray(): array
     {
         return [
-            'id' => $this->id,
+            'id'     => $this->id,
             'height' => $this->height,
         ];
     }
