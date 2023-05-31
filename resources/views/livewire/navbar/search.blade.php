@@ -50,14 +50,17 @@
             dropdown-content-classes="bg-white rounded-xl shadow-lg dark:bg-theme-secondary-900 dark:text-theme-secondary-200 border border-transparent dark:border-theme-secondary-800"
             without-button
         >
-            <div x-show="query" class="flex flex-col p-6 space-y-4 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
+            <div
+                x-show="query"
+                class="flex flex-col space-y-1 px-6 py-3 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800 overflow-y-auto custom-scroll max-h-[410px]"
+            >
                 @if ($hasResults)
                     @foreach ($results as $result)
                         <div
                             wire:key="{{ $result->model()->id }}"
                             @class([
                                 'select-none',
-                                'pt-4' => $loop->index > 0,
+                                'pt-1' => $loop->index > 0,
                             ])
                         >
                             @if (is_a($result->model(), \App\Models\Wallet::class))

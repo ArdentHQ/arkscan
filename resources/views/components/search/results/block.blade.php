@@ -1,14 +1,14 @@
 @props(['block'])
 
-<div class="space-y-2">
+<x-search.results.result :model="$block">
     <div class="flex items-center space-x-2">
         <div class="dark:text-theme-secondary-500">@lang('general.search.block')</div>
 
-        <a href="{{ $block->url() }}" class="min-w-0 link">
+        <div class="min-w-0 link">
             <x-truncate-dynamic>
                 {{ $block->id() }}
             </x-truncate-dynamic>
-        </a>
+        </div>
     </div>
 
     <div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-y-0 md:space-x-4">
@@ -22,6 +22,7 @@
                 without-reverse
                 without-truncate
                 without-reverse-class="space-x-2"
+                without-link
                 :link-wallet="false"
                 class="text-theme-secondary-700 dark:text-theme-secondary-500"
             >
@@ -44,4 +45,4 @@
             </div>
         </div>
     </div>
-</div>
+</x-search.results.result>

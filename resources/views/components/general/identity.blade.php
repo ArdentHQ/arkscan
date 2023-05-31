@@ -13,6 +13,7 @@
     'containerClass'  => null,
     'contentClass'    => null,
     'withoutLink'     => false,
+    'linkClass'       => null,
 ])
 
 <div @class($containerClass)>
@@ -36,11 +37,11 @@
             @endif
 
             @if ($withoutLink)
-                <div class="font-semibold sm:hidden md:flex">
+                <div @class(['font-semibold sm:hidden md:flex', $linkClass])>
             @else
                 <a
                     href="{{ route('wallet', $model->address()) }}"
-                    class="font-semibold sm:hidden md:flex link"
+                    @class(['font-semibold sm:hidden md:flex link', $linkClass])
                 >
             @endif
                 @if ($model->username() && !$withoutUsername)
@@ -73,11 +74,11 @@
             @endif
 
             @if ($withoutLink)
-                <div class="hidden font-semibold sm:flex md:hidden">
+                <div @class(['hidden font-semibold sm:flex md:hidden', $linkClass])>
             @else
                 <a
                     href="{{ route('wallet', $model->address()) }}"
-                    class="hidden font-semibold sm:flex md:hidden link"
+                    @class(['hidden font-semibold sm:flex md:hidden link', $linkClass])
                 >
             @endif
                 @if ($model->username() && !$withoutUsername)
