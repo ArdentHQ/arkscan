@@ -15,7 +15,7 @@
         <x-slot name="icon">
             <x-general.avatar-small
                 :identifier="$transaction->recipient()->address"
-                size="w-5 h-5"
+                size="w-4 h-4 md:w-5 md:h-5"
             />
         </x-slot>
     </x-general.identity>
