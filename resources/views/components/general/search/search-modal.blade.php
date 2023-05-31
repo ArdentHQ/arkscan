@@ -30,7 +30,7 @@
         >
             <div wire:click.self="closeModal" class="fixed inset-0 opacity-70 dark:opacity-80 bg-theme-secondary-900 dark:bg-theme-secondary-800"></div>
 
-            <div class="flex overflow-auto relative flex-col p-6 my-6 mx-4 sm:m-8 bg-white rounded-xl border border-transparent dark:bg-theme-secondary-900 dark:text-theme-secondary-200 dark:border-theme-secondary-800">
+            <div class="flex overflow-auto relative flex-col p-6 my-6 mx-4 bg-white rounded-xl border border-transparent sm:m-8 dark:bg-theme-secondary-900 dark:text-theme-secondary-200 dark:border-theme-secondary-800">
 
                 <x-general.search.search-input />
 
