@@ -30,7 +30,7 @@ trait ManagesSearch
         $this->query = null;
     }
 
-    public function results(): ?LengthAwarePaginator
+    public function results(): LengthAwarePaginator
     {
         $validator = Validator::make([
             'query' => $this->query,
@@ -57,11 +57,8 @@ trait ManagesSearch
 
     public function performSearch(): null|RedirectResponse|Redirector
     {
-        /** @var null|PaginationLengthAwarePaginator $results */
+        /** @var PaginationLengthAwarePaginator $results */
         $results = $this->results();
-        if ($results === null) {
-            return null;
-        }
 
         $result = $results->getCollection()->first();
         if ($result === null) {

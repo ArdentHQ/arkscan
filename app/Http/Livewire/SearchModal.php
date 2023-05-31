@@ -25,7 +25,7 @@ final class SearchModal extends Component
 
         return view('components.general.search.search-modal', [
             'results'    => $results,
-            'hasResults' => $results !== null && $results->isNotEmpty(),
+            'hasResults' => $results->isNotEmpty(),
         ]);
     }
 }
