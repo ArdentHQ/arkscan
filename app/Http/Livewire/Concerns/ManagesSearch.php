@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Concerns;
 
-use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Search\BlockSearch;
@@ -46,12 +45,11 @@ trait ManagesSearch
 
         $query = Arr::get($data, 'query');
 
+        $results = (new WalletSearch())->search($query)->take(5)->get();
 
-        $results = Wallet::search($query)->get();
+        $results = $results->concat((new TransactionSearch())->search($query)->take(5)->get());
 
-        $results = $results->concat(Transaction::search($query)->get());
-
-        $results = $results->concat(Block::search($query)->get());
+        $results = $results->concat((new BlockSearch())->search($query)->take(5)->get());
 
         return ViewModelFactory::collection($results);
     }
