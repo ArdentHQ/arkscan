@@ -72,7 +72,7 @@
                         </div>
                     @endforeach
                 @else
-                    <p class="px-4 -my-1">@lang('general.navbar.no_results')</p>
+                    <p class="text-center">@lang('general.navbar.no_results')</p>
                 @endif
             </div>
         </x-ark-dropdown>
