@@ -12,7 +12,7 @@
             without-reverse-class="space-x-2"
             without-link
             address-visible
-            class="text-theme-secondary-700 dark:text-theme-secondary-500"
+            class="text-theme-secondary-500 dark:text-theme-secondary-700"
             content-class="truncate"
             container-class="min-w-0"
             link-class="link"
