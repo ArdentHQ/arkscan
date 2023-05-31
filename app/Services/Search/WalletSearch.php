@@ -7,14 +7,20 @@ namespace App\Services\Search;
 use App\Contracts\Search;
 use App\Models\Wallet;
 use App\Services\Search\Traits\ValidatesTerm;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Laravel\Scout\Builder;
 
 final class WalletSearch implements Search
 {
     use ValidatesTerm;
 
-    public function search(string $query): Builder
+    public function search(string $query): ?Builder
     {
+        // Prevents finding wallets by transaction ID
+        if ($this->is64CharsHexadecimalString($query)) {
+            return null;
+        }
+
         if ($this->couldBeAddress($query)) {
             // Exact match
             return Wallet::search(sprintf('"%s"', $query));

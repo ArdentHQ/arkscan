@@ -8,5 +8,5 @@ use Laravel\Scout\Builder;
 
 interface Search
 {
-    public function search(string $query): Builder;
+    public function search(string $query): ?Builder;
 }
