@@ -77,6 +77,8 @@ final class Block extends Model
             'generator_public_key' => $this->generator_public_key,
             // shown on the results
             'number_of_transactions' => $this->number_of_transactions,
+            // sortable attribute
+            'timestamp' => $this->timestamp,
         ];
     }
 

@@ -144,9 +144,11 @@ return [
             ],
             Transaction::class => [
                 'filterableAttributes'=> ['id'],
+                'sortableAttributes' => ['timestamp'],
             ],
             Block::class => [
                 'filterableAttributes'=> ['id', 'height'],
+                'sortableAttributes' => ['timestamp'],
             ],
         ],
     ],
