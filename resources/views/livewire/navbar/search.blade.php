@@ -48,10 +48,8 @@
             :close-on-blur="false"
             dropdown-classes="w-[561px] top-9"
             dropdown-content-classes="bg-white rounded-xl shadow-lg dark:bg-theme-secondary-900 dark:text-theme-secondary-200 border border-transparent dark:border-theme-secondary-800"
+            without-button
         >
-            <x-slot name="button">
-            </x-slot>
-
             <div x-show="query" class="flex flex-col p-6 space-y-4 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
                 @if ($hasResults)
                     @foreach ($results as $result)
