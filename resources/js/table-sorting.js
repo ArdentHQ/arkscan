@@ -6,7 +6,7 @@ const TableSorting = (sortBy = "", sortDirection = "asc") => {
 
         init() {
             this.getTableRows().forEach((row, index) => {
-                row.dataset['rowIndex'] = index;
+                row.dataset["rowIndex"] = index;
             });
 
             this.sort(this.$refs[this.sortBy]);
@@ -56,9 +56,13 @@ const TableSorting = (sortBy = "", sortDirection = "asc") => {
                     const row2Value = this.getCellValue(row2, index);
 
                     const isRow1Numeric =
-                        row1Value !== "" && !isNaN(row1Value) && row1Value !== null;
+                        row1Value !== "" &&
+                        !isNaN(row1Value) &&
+                        row1Value !== null;
                     const isRow2Numeric =
-                        row2Value !== "" && !isNaN(row2Value) && row2Value !== null;
+                        row2Value !== "" &&
+                        !isNaN(row2Value) &&
+                        row2Value !== null;
 
                     if (isNaN(row1Value) && isNaN(row2Value)) {
                         return row1Value.toString().localeCompare(row2Value);
@@ -73,14 +77,15 @@ const TableSorting = (sortBy = "", sortDirection = "asc") => {
                     }
 
                     if (row1Value === row2Value) {
-                        return this.sortAsc ? row1.dataset['rowIndex'] - row2.dataset['rowIndex'] : row2.dataset['rowIndex'] - row1.dataset['rowIndex'];
+                        return this.sortAsc
+                            ? row1.dataset["rowIndex"] -
+                                  row2.dataset["rowIndex"]
+                            : row2.dataset["rowIndex"] -
+                                  row1.dataset["rowIndex"];
                     }
 
                     return this.sortAsc ? 1 : -1;
-                })(
-                    this.sortAsc ? a : b,
-                    this.sortAsc ? b : a
-                );
+                })(this.sortAsc ? a : b, this.sortAsc ? b : a);
         },
     };
 };
