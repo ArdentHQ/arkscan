@@ -93,10 +93,16 @@ it('should use two decimals for a fiat currency', function () {
 });
 
 it('should use up to decimals and trim zero', function () {
-    expect(NumberFormatter::usdWithDecimals(1))->toBe('$1');
-    expect(NumberFormatter::usdWithDecimals(1.1))->toBe('$1.1');
-    expect(NumberFormatter::usdWithDecimals(1.00005))->toBe('$1.0001');
-    expect(NumberFormatter::usdWithDecimals(1.00000))->toBe('$1');
-    expect(NumberFormatter::usdWithDecimals(1.1200001))->toBe('$1.12');
-    expect(NumberFormatter::usdWithDecimals(1.1200001, 1))->toBe('$1.1');
+    expect(NumberFormatter::usdWithDecimals(1))->toBe('US$ 1');
+    expect(NumberFormatter::usdWithDecimals(1.1))->toBe('US$ 1.1');
+    expect(NumberFormatter::usdWithDecimals(1.5))->toBe('US$ 1.5');
+    expect(NumberFormatter::usdWithDecimals(1.05))->toBe('US$ 1.05');
+    expect(NumberFormatter::usdWithDecimals(1.005))->toBe('US$ 1.005');
+    expect(NumberFormatter::usdWithDecimals(1.0005))->toBe('US$ 1.0005');
+    expect(NumberFormatter::usdWithDecimals(1.00005))->toBe('US$ 1.0001');
+    expect(NumberFormatter::usdWithDecimals(1.00004))->toBe('US$ 1');
+    expect(NumberFormatter::usdWithDecimals(1.00006))->toBe('US$ 1.0001');
+    expect(NumberFormatter::usdWithDecimals(1.00000))->toBe('US$ 1');
+    expect(NumberFormatter::usdWithDecimals(1.1200001))->toBe('US$ 1.12');
+    expect(NumberFormatter::usdWithDecimals(1.1200001, 1))->toBe('US$ 1.1');
 });
