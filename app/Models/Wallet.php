@@ -97,9 +97,6 @@ final class Wallet extends Model
     {
         $self = new static();
 
-        // Consider that the original `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
-        // method contains more logic to see stuff like if should use soft delete
-        // and stuff like that but we don't need it here.
         return $self->newQuery()
             ->select([
                 DB::raw("wallets.attributes->'delegate'->>'username' AS delegate_username"),
@@ -124,9 +121,6 @@ final class Wallet extends Model
     {
         $self = new static();
 
-        // Consider that the original `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
-        // method contains more logic to see stuff like if should use soft delete
-        // and stuff like that but we don't need it here.
         // @phpstan-ignore-next-line
         $self::getSearchableQuery()->searchable($chunk);
     }

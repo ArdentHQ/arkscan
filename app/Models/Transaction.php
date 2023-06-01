@@ -151,9 +151,6 @@ final class Transaction extends Model
     {
         $self = new static();
 
-        // Consider that the original `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
-        // method contains more logic to see stuff like if should use soft delete
-        // and stuff like that but we don't need it here.
         return $self->newQuery()
             ->select([
                 'id',
@@ -182,9 +179,6 @@ final class Transaction extends Model
     {
         $self = new static();
 
-        // Consider that the original `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
-        // method contains more logic to see stuff like if should use soft delete
-        // and stuff like that but we don't need it here.
         // @phpstan-ignore-next-line
         $self::getSearchableQuery()->searchable($chunk);
     }
