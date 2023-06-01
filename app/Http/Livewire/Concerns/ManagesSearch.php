@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Concerns;
 
+use App\Facades\Network;
 use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
@@ -15,7 +16,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Scout\Engines\MeilisearchEngine;
 use Meilisearch\Contracts\SearchQuery;
-use App\Facades\Network;
 
 const RESULT_LIMIT_PER_TYPE = 5;
 
@@ -89,7 +89,7 @@ trait ManagesSearch
         $results =  collect($results)
             ->flatMap(function ($result) {
                 $indexUid = $result['indexUid'];
-                $hits = $result['hits'];
+                $hits     = $result['hits'];
 
                 if ($indexUid === 'wallets') {
                     return WalletSearch::mapMeilisearchResults($hits);
