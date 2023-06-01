@@ -9,8 +9,8 @@ use App\Models\Wallet;
 use Illuminate\Support\Facades\Config;
 use Laravel\Scout\Engines\MeilisearchEngine;
 use Livewire\Livewire;
-use Meilisearch\Contracts\SearchQuery;
 use Meilisearch\Client as MeilisearchClient;
+use Meilisearch\Contracts\SearchQuery;
 use Meilisearch\Endpoints\Indexes;
 
 it('should search for a wallet', function () {
