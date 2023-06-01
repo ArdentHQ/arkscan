@@ -7,28 +7,29 @@ namespace App\Services\Search;
 use App\Contracts\Search;
 use App\Models\Transaction;
 use App\Services\Search\Traits\ValidatesTerm;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 
 final class TransactionSearch implements Search
 {
     use ValidatesTerm;
 
-    public function search(string $query, int $limit): Collection
+    /**
+     * @return EloquentCollection<Transaction>
+     */
+    public function search(string $query, int $limit): EloquentCollection
     {
         if ($this->couldBeTransactionID($query)) {
-            // Quoted so it gets the exact match
-            $builder = Transaction::search(sprintf('"%s"', $query))->take(1);
+            $builder = Transaction::where('id', $query)->take(1);
         } else {
-            $builder = Transaction::search($query)->take($limit);
+            $builder = Transaction::where('id', 'ilike', sprintf('%%%s%%', $query))->limit($limit);
         }
 
-        /**
-         * @var array{
-         *   hits: array<int, mixed>
-         * }
-         */
-        $rawResults = $builder->raw();
+        return $builder->get();
+    }
 
-        return collect($rawResults['hits'])->map(fn ($item) => new Transaction($item));
+    public static function mapMeilisearchResults(array $rawResults): Collection
+    {
+        return collect($rawResults)->map(fn ($item) => new Transaction($item));
     }
 }

@@ -9,40 +9,39 @@ use App\Models\Wallet;
 use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 final class WalletSearch implements Search
 {
     use ValidatesTerm;
 
-    public function search(string $query, int $limit): Collection
+    /**
+     * @return EloquentCollection<Wallet>
+     */
+    public function search(string $query, int $limit): EloquentCollection
     {
         if ($this->couldntBeAddress($query)) {
             return collect();
         }
 
         if ($this->couldBeAddress($query)) {
-            // Quoted so it gets the exact match
-            $builder = Wallet::search(sprintf('"%s"', $query))->take($limit);
+            $builder = Wallet::where('address', $query)->limit(1);
         } else {
-            $builder = Wallet::search($query)->take($limit);
+            $builder = Wallet::where('address', 'ilike', sprintf('%%%s%%', $query))->limit($limit);
         }
 
-        /**
-         * @var array{
-         *   hits: array<int, mixed>
-         * }
-         */
-        $rawResults = $builder->raw();
+        return $builder->get();
+    }
 
-        return collect($rawResults['hits'])->map(function ($item) {
-            return new Wallet([
-                ...$item,
-                'attributes' => [
-                    'delegate' => [
-                        'username' => Arr::get($item, 'username'),
-                    ],
+    public static function mapMeilisearchResults(array $rawResults): Collection
+    {
+        return collect($rawResults)->map(fn ($item) => new Wallet([
+            ...$item,
+            'attributes' => [
+                'delegate' => [
+                    'username' => Arr::get($item, 'username'),
                 ],
-            ]);
-        });
+            ],
+        ]));
     }
 }

@@ -8,30 +8,30 @@ use App\Contracts\Search;
 use App\Models\Block;
 use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 final class BlockSearch implements Search
 {
     use ValidatesTerm;
 
     /**
-     * @return Collection<Block>
+     * @return EloquentCollection<Block>
      */
-    public function search(string $query, int $limit): Collection
+    public function search(string $query, int $limit): EloquentCollection
     {
-        if ($this->couldBeBlockID($query) || $this->couldBeHeightValue($query)) {
-            // Quoted so it gets the exact match
-            $builder = Block::search(sprintf('"%s"', $query))->take(1);
+        if ($this->couldBeBlockID($query)) {
+            $builder = Block::where('id', $query)->take(1);
+        } else if ($this->couldBeHeightValue($query)) {
+            $builder = Block::where('height', $query)->take(1);
         } else {
-            $builder = Block::search($query)->take($limit);
+            $builder = Block::where('id', 'ilike', sprintf('%%%s%%', $query))->limit($limit);
         }
 
-        /**
-         * @var array{
-         *   hits: array<int, mixed>
-         * }
-         */
-        $rawResults = $builder->raw();
+        return $builder->get();
+    }
 
-        return collect($rawResults['hits'])->map(fn ($item) => new Block($item));
+    public static function mapMeilisearchResults(array $rawResults): Collection
+    {
+        return collect($rawResults)->map(fn ($item) => new Block($item));
     }
 }
