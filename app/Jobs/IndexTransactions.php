@@ -7,7 +7,7 @@ namespace App\Jobs;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Builder;
 
-class IndexTransactions extends IndexModel
+final class IndexTransactions extends IndexModel
 {
     public function handle(): void
     {

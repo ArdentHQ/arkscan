@@ -7,8 +7,8 @@ namespace App\Services\Search;
 use App\Contracts\Search;
 use App\Models\Block;
 use App\Services\Search\Traits\ValidatesTerm;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Support\Collection;
 
 final class BlockSearch implements Search
 {
@@ -21,7 +21,7 @@ final class BlockSearch implements Search
     {
         if ($this->couldBeBlockID($query)) {
             $builder = Block::where('id', $query)->take(1);
-        } else if ($this->couldBeHeightValue($query)) {
+        } elseif ($this->couldBeHeightValue($query)) {
             $builder = Block::where('height', $query)->take(1);
         } else {
             $builder = Block::where('id', 'ilike', sprintf('%%%s%%', $query))->limit($limit);

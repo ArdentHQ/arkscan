@@ -27,7 +27,7 @@ abstract class IndexModel implements ShouldQueue
 
     abstract protected function elementsToIndexQuery(int $latestIndexedTimestamp): Builder;
 
-    protected function execute(string $indexName): void
+    final protected function execute(string $indexName): void
     {
         $latestIndexedTimestamp = $this->getLatestIndexedTimestamp($indexName);
 
@@ -40,10 +40,11 @@ abstract class IndexModel implements ShouldQueue
 
         $query = $this->elementsToIndexQuery($latestIndexedTimestamp);
 
+        // @phpstan-ignore-next-line
         $query->searchable();
     }
 
-    private function getLatestIndexedTimestamp(string $indexName)
+    private function getLatestIndexedTimestamp(string $indexName): int|null
     {
         $url = sprintf(
             '%s/indexes/%s/search',

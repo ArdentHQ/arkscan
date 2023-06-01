@@ -13,7 +13,7 @@ use App\Models\Wallet;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 
-class ScoutIndexModels extends Command
+final class ScoutIndexModels extends Command
 {
     /**
      * The name and signature of the console command.
@@ -25,7 +25,7 @@ class ScoutIndexModels extends Command
     /**
      * The console command description.
      *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Update recently created laravel scout models';
 
@@ -36,21 +36,21 @@ class ScoutIndexModels extends Command
      */
     public function handle()
     {
-        if (Cache::get('scout_indexing_paused_'.Transaction::class)) {
+        if (Cache::get('scout_indexing_paused_'.Transaction::class) === true) {
             $this->info(sprintf('Indexing is paused for "%s". Use the command scout:resume-indexing to resume indexing.', Transaction::class));
         } else {
             $this->info(sprintf('Indexing "%s" models.', Transaction::class));
             IndexTransactions::dispatch();
         }
 
-        if (Cache::get('scout_indexing_paused_'.Wallet::class)) {
+        if (Cache::get('scout_indexing_paused_'.Wallet::class) === true) {
             $this->info(sprintf('Indexing is paused for "%s". Use the command scout:resume-indexing to resume indexing.', Wallet::class));
         } else {
             $this->info(sprintf('Indexing "%s" models.', Wallet::class));
             IndexWallets::dispatch();
         }
 
-        if (Cache::get('scout_indexing_paused_'.Block::class)) {
+        if (Cache::get('scout_indexing_paused_'.Block::class) === true) {
             $this->info(sprintf('Indexing is paused for "%s". Use the command scout:resume-indexing to resume indexing.', Block::class));
         } else {
             $this->info(sprintf('Indexing "%s" models.', Block::class));

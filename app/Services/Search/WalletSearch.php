@@ -7,9 +7,9 @@ namespace App\Services\Search;
 use App\Contracts\Search;
 use App\Models\Wallet;
 use App\Services\Search\Traits\ValidatesTerm;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 final class WalletSearch implements Search
 {
@@ -21,7 +21,10 @@ final class WalletSearch implements Search
     public function search(string $query, int $limit): EloquentCollection
     {
         if ($this->couldntBeAddress($query)) {
-            return collect();
+            /**
+             * @var EloquentCollection<Wallet>
+             */
+            return (new Wallet())->newCollection([]);
         }
 
         if ($this->couldBeAddress($query)) {

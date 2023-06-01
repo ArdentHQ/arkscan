@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Concerns;
 
-use App\Models\Wallet;
 use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
@@ -19,8 +18,6 @@ const RESULT_LIMIT_PER_TYPE = 5;
 
 trait ManagesSearch
 {
-
-
     public ?string $query = null;
 
     protected array $rules = [
@@ -48,16 +45,13 @@ trait ManagesSearch
 
         $query = Arr::get($data, 'query');
 
-        if(config('scout.driver') === 'meilisearch') {
-
+        if (config('scout.driver') === 'meilisearch') {
             return $this->searchWithMeilisearch($query);
         }
 
-        $results = (new WalletSearch())->search(query: $query, limit: 5);
-        $results = $results->concat((new TransactionSearch())->search(query: $query, limit: 5));
-
-        // dd($results);;
-        // $results = $results->concat((new BlockSearch())->search(query: $query, limit: 5));
+        $results = (new WalletSearch())->search(query: $query, limit: RESULT_LIMIT_PER_TYPE);
+        $results = $results->concat((new TransactionSearch())->search(query: $query, limit: RESULT_LIMIT_PER_TYPE));
+        $results = $results->concat((new BlockSearch())->search(query: $query, limit: RESULT_LIMIT_PER_TYPE));
 
         return ViewModelFactory::collection($results);
     }
@@ -69,13 +63,18 @@ trait ManagesSearch
     {
         $indexUids = collect(['wallets', 'transactions', 'blocks']);
 
-        $response = app(MeilisearchEngine::class)->__call("multiSearch", [
+        $response = app(MeilisearchEngine::class)->__call('multiSearch', [
             $indexUids
                 ->map(fn ($indexUid) => $this->buildSearchQueryForIndex($query, $indexUid))
-                ->toArray()
+                ->toArray(),
         ]);
 
-        $results =  collect(Arr::get($response, 'results'))
+        /**
+         * @var array<int, mixed>
+         */
+        $results = Arr::get($response, 'results');
+
+        $results =  collect($results)
             ->mapWithKeys(fn ($result) => [$result['indexUid'] => $result['hits']])
             ->flatMap(function ($hits, $indexUid) {
                 if ($indexUid === 'wallets') {

@@ -7,7 +7,7 @@ namespace App\Jobs;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Builder;
 
-class IndexWallets extends IndexModel
+final class IndexWallets extends IndexModel
 {
     public function handle(): void
     {

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Scout\Console\ImportCommand as LaravelScoutImportCommand;
 
-class ImportCommand extends LaravelScoutImportCommand
+final class ImportCommand extends LaravelScoutImportCommand
 {
     /**
      * Execute the console command.
@@ -40,7 +39,5 @@ class ImportCommand extends LaravelScoutImportCommand
         Artisan::call('scout:resume-indexing', [
             'model' => $model::class,
         ]);
-
-        return Command::SUCCESS;
     }
 }

@@ -7,7 +7,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 
-class ScoutResumeIndexing extends Command
+final class ScoutResumeIndexing extends Command
 {
     /**
      * The name and signature of the console command.
@@ -20,7 +20,7 @@ class ScoutResumeIndexing extends Command
     /**
      * The console command description.
      *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Resume laravel scout indexing';
 

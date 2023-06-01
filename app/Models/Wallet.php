@@ -21,6 +21,8 @@ use Laravel\Scout\Searchable;
  * @property BigNumber $balance
  * @property BigNumber $nonce
  * @property array $attributes
+ * @property string $delegate_username (only available when indexed by scout)
+ * @property string $timestamp (only available when indexed by scout)
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Wallet extends Model
@@ -88,6 +90,9 @@ final class Wallet extends Model
         ];
     }
 
+    /**
+     * @return Builder<self>
+     */
     public static function getSearchableQuery(): Builder
     {
         $self = new static();
@@ -127,7 +132,8 @@ final class Wallet extends Model
         // Consider that the original `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
         // method contains more logic to see stuff like if should use soft delete
         // and stuff like that but we don't need it here.
-        $self->getSearchableQuery()->searchable($chunk);
+        // @phpstan-ignore-next-line
+        $self::getSearchableQuery()->searchable($chunk);
     }
 
     /**
