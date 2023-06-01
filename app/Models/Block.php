@@ -103,10 +103,7 @@ final class Block extends Model
             ])
             ->when(true, function ($query) use ($self) {
                 $self->makeAllSearchableUsing($query);
-            })
-            ->orderBy(
-                $self->qualifyColumn($self->getScoutKeyName())
-            );
+            });
     }
 
     /**

@@ -7,7 +7,7 @@ use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
-use Meilisearch\Client;
+use Meilisearch\Client as MeilisearchClient;
 use Meilisearch\Endpoints\Indexes;
 
 beforeEach(function () {
@@ -61,7 +61,7 @@ it('adds the transaction timestamp and username when making searchable', functio
         'timestamp'         => 12345,
     ]);
 
-    $mock    = $this->mock(Client::class);
+    $mock    = $this->mock(MeilisearchClient::class);
     $indexes = $this->mock(Indexes::class);
 
     $mock->shouldReceive('index')
