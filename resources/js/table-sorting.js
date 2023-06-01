@@ -48,14 +48,16 @@ const TableSorting = (sortBy = "", sortDirection = "asc") => {
         sortCallback(index) {
             return (a, b) =>
                 ((row1, row2) => {
-                    const isRow1Empty = row1 === "" || isNaN(row1) || row1 === null;
-                    const isRow2Empty = row2 === "" || isNaN(row2) || row2 === null;
+                    const isRow1Empty =
+                        row1 === "" || isNaN(row1) || row1 === null;
+                    const isRow2Empty =
+                        row2 === "" || isNaN(row2) || row2 === null;
 
-                    if (! isRow1Empty && ! isRow2Empty) {
+                    if (!isRow1Empty && !isRow2Empty) {
                         return row1 - row2;
                     }
 
-                    if (! isRow1Empty && isRow2Empty) {
+                    if (!isRow1Empty && isRow2Empty) {
                         return 0;
                     }
 
