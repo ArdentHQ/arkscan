@@ -144,48 +144,48 @@ return [
             Wallet::class => [
                 'searchableAttributes'=> ['address', 'username'],
                 'sortableAttributes'  => ['timestamp'],
-                'typoTolerance' => [
+                'typoTolerance'       => [
                     'disableOnWords' => ['address'],
                 ],
-                "rankingRules" => [
-                    "typo",
-                    "words",
-                    "proximity",
-                    "attribute",
-                    "sort",
-                    "exactness"
-                ]
+                'rankingRules' => [
+                    'typo',
+                    'words',
+                    'proximity',
+                    'attribute',
+                    'sort',
+                    'exactness',
+                ],
             ],
             Transaction::class => [
                 'filterableAttributes'=> ['id', 'recipient_id'],
                 'searchableAttributes'=> ['id', 'recipient_id'],
                 'sortableAttributes'  => ['timestamp'],
-                'typoTolerance' => [
+                'typoTolerance'       => [
                     'disableOnWords' => ['id'],
                 ],
-                "rankingRules" => [
-                    "typo",
-                    "words",
-                    "proximity",
-                    "attribute",
-                    "sort",
-                    "exactness"
-                ]
+                'rankingRules' => [
+                    'typo',
+                    'words',
+                    'proximity',
+                    'attribute',
+                    'sort',
+                    'exactness',
+                ],
             ],
             Block::class => [
                 'searchableAttributes'=> ['id', 'height'],
                 'sortableAttributes'  => ['timestamp'],
-                'typoTolerance' => [
+                'typoTolerance'       => [
                     'disableOnWords' => ['id', 'height'],
                 ],
-                "rankingRules" => [
-                    "typo",
-                    "words",
-                    "proximity",
-                    "attribute",
-                    "sort",
-                    "exactness"
-                ]
+                'rankingRules' => [
+                    'typo',
+                    'words',
+                    'proximity',
+                    'attribute',
+                    'sort',
+                    'exactness',
+                ],
             ],
         ],
     ],
