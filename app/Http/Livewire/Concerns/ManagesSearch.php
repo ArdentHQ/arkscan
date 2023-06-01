@@ -111,7 +111,7 @@ trait ManagesSearch
             ->setLimit(RESULT_LIMIT_PER_TYPE);
     }
 
-    public function goToFirstResult(): null|Redirector
+    public function goToFirstResult(): null|Redirector|RedirectResponse
     {
         $results = $this->results();
 
