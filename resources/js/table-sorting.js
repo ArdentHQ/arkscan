@@ -39,7 +39,7 @@ const TableSorting = (sortBy = "", sortDirection = "asc") => {
 
         getCellValue(row, index) {
             if (typeof row.children[index].dataset["value"] !== "undefined") {
-                return row.children[index].dataset["value"] ?? 0;
+                return row.children[index].dataset["value"] ?? null;
             }
 
             return row.children[index].innerText;
@@ -48,12 +48,18 @@ const TableSorting = (sortBy = "", sortDirection = "asc") => {
         sortCallback(index) {
             return (a, b) =>
                 ((row1, row2) => {
-                    return row1 !== "" &&
-                        row2 !== "" &&
-                        !isNaN(row1) &&
-                        !isNaN(row2)
-                        ? row1 - row2
-                        : row1.toString().localeCompare(row2);
+                    const isRow1Empty = row1 === "" || isNaN(row1) || row1 === null;
+                    const isRow2Empty = row2 === "" || isNaN(row2) || row2 === null;
+
+                    if (! isRow1Empty && ! isRow2Empty) {
+                        return row1 - row2;
+                    }
+
+                    if (! isRow1Empty && isRow2Empty) {
+                        return 0;
+                    }
+
+                    return this.sortAsc ? 1 : -1;
                 })(
                     this.getCellValue(this.sortAsc ? a : b, index),
                     this.getCellValue(this.sortAsc ? b : a, index)
