@@ -29,6 +29,11 @@ final class BlockViewModel implements ViewModel
         return route('block', $this->block);
     }
 
+    public function model(): Block
+    {
+        return $this->block;
+    }
+
     public function id(): string
     {
         return $this->block->id;

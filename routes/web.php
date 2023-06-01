@@ -29,7 +29,6 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 */
 
 Route::get('/', HomeController::class)->name('home');
-Route::view('/search', 'app.search-results')->name('search');
 Route::view('/delegates', 'app.delegates')->name('delegates');
 
 Route::view('/blocks', 'blocks')->name('blocks');
@@ -62,7 +61,6 @@ Route::post('support', [ContactController::class, 'handle'])
     ]);
 
 // Explorer 3.0 BC - Remove after some time!
-Route::redirect('/advanced-search', '/search');
 Route::redirect('/delegate-monitor', '/delegates');
 Route::redirect('/top-wallets', '/wallets');
 Route::get('/block/{block}', fn (Block $block) => redirect()->route('block', ['block' => $block]));
