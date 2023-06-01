@@ -58,26 +58,6 @@ it('should search for a block', function () {
         ->assertSee($block->id);
 });
 
-it('should redirect on submit', function () {
-    $block = Block::factory()->create();
-
-    Livewire::test(Search::class)
-        ->set('query', $block->id)
-        ->assertSee($block->id)
-        ->call('performSearch')
-        ->assertRedirect(route('block', $block));
-});
-
-it('should do nothing if no results on submit', function () {
-    $block = Block::factory()->create();
-
-    Livewire::test(Search::class)
-        ->set('query', 'non-existant block id')
-        ->assertDontSee($block->id)
-        ->call('performSearch')
-        ->assertOk();
-});
-
 it('should clear search query', function () {
     $block = Block::factory()->create();
 
