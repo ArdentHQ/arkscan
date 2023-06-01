@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Models\Exchange;
 use App\Services\MarketDataProviders\CryptoCompare;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
@@ -108,3 +110,11 @@ it('should trigger exception for throttled requests', function ($attempt) {
 
     (new CryptoCompare())->historicalHourly('ARK', 'USD');
 })->with(range(1, 12));
+
+it('should throw an exception if the API response indicates throttling for exchange details', function () {
+    Artisan::call('migrate:fresh');
+
+    $exchange = Exchange::factory()->create();
+
+    (new CryptoCompare())->exchangeDetails($exchange);
+})->throws(Exception::class, 'Not implemented');
