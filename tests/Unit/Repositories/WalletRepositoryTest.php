@@ -60,3 +60,27 @@ it('should find a wallet by username containing a whitespace', function () {
 
     expect($this->subject->findByUsername($wallet->attributes['delegate']['username']))->toBeInstanceOf(Wallet::class);
 });
+
+it('should find a wallet by identifier if could be public key', function () {
+    $wallet = Wallet::factory()->create();
+
+    expect($this->subject->findByIdentifier($wallet->public_key))->toBeInstanceOf(Wallet::class);
+});
+
+it('should find a wallet by identifier if could be wallet address', function () {
+    $wallet = Wallet::factory()->create();
+
+    expect($this->subject->findByIdentifier($wallet->address))->toBeInstanceOf(Wallet::class);
+});
+
+it('should find a wallet by identifier if could be username', function () {
+    Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => [
+                'username' => 'johndoe',
+            ],
+        ],
+    ]);
+
+    expect($this->subject->findByIdentifier('johndoe'))->toBeInstanceOf(Wallet::class);
+});
