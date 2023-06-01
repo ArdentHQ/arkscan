@@ -9,11 +9,11 @@ use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Scout\Engines\MeilisearchEngine;
-use Livewire\Redirector;
 use Meilisearch\Contracts\SearchQuery;
 
 const RESULT_LIMIT_PER_TYPE = 5;
