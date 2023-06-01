@@ -19,11 +19,14 @@ final class ImportCommand extends LaravelScoutImportCommand
     public function handle(Dispatcher $events)
     {
         $this->alert('IMPORTANT: Pausing scout indexing while this command is running.');
-        $this->warn('If, for any reason, the process does not complete successfully');
-        $this->warn('due to an error or because you killed the process, you will need');
-        $this->warn('to manually resume the process To do this, use the command:');
+        $this->warn('If, for any reason, the process does not complete');
+        $this->warn('successfully due to an error or because you killed');
+        $this->warn('the process, you will need to manually resume the');
+        $this->warn('process. In production environments, you shouldn\'t');
+        $this->warn('manually resume the process, but start the import');
+        $this->warn('again. To do this, use the command:');
         $this->newLine();
-        $this->info(sprintf('`php artisan scout:resume-indexing` "%s"', $this->argument('model')));
+        $this->warn(sprintf('`php artisan scout:resume-indexing` "%s"', $this->argument('model')));
         $this->newLine();
 
         $class = $this->argument('model');
