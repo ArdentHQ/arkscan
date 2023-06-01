@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Models\Wallet;
+use App\Models\Block;
 use Illuminate\Database\Eloquent\Builder;
 
-class IndexWallets extends IndexModel
+class IndexBlocks extends IndexModel
 {
     public function handle(): void
     {
-        $this->execute(indexName: 'wallets');
+        $this->execute(indexName: 'blocks');
     }
 
     protected function elementsToIndexQuery(int $latestIndexedTimestamp): Builder
     {
-        return Wallet::getSearchableQuery()->where('timestamp', '>', $latestIndexedTimestamp);
+        return Block::where('timestamp', '>', $latestIndexedTimestamp);
     }
 }

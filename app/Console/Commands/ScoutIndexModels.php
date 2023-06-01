@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Jobs\IndexBlocks;
 use App\Jobs\IndexTransactions;
 use App\Jobs\IndexWallets;
 use App\Models\Block;
@@ -46,14 +47,14 @@ class ScoutIndexModels extends Command
             $this->info(sprintf('Indexing is paused for "%s". Use the command scout:resume-indexing to resume indexing.', Wallet::class));
         } else {
             $this->info(sprintf('Indexing "%s" models.', Wallet::class));
-            // IndexWallets::dispatch();
+            IndexWallets::dispatch();
         }
 
         if (Cache::get('scout_indexing_paused_'.Block::class)) {
             $this->info(sprintf('Indexing is paused for "%s". Use the command scout:resume-indexing to resume indexing.', Block::class));
         } else {
             $this->info(sprintf('Indexing "%s" models.', Block::class));
-            // IndexBlocks::dispatch();
+            IndexBlocks::dispatch();
         }
 
         return Command::SUCCESS;

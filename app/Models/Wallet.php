@@ -8,10 +8,10 @@ use App\Models\Casts\BigInteger;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Services\BigNumber;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 
@@ -81,44 +81,54 @@ final class Wallet extends Model
     public function toSearchableArray(): array
     {
         return [
-            'address'  => $this->address,
-            'username' => $this->delegate_username,
-            'balance'  => $this->balance->__toString(),
-            'timestamp' => $this->timestamp,
+            'address'   => $this->address,
+            'username'  => $this->delegate_username,
+            'balance'   => $this->balance->__toString(),
+            'timestamp' => $this->timestamp ?? 0,
         ];
+    }
+
+    public static function getSearchableQuery(): Builder
+    {
+        $self = new static();
+
+        // Consider that the original `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
+        // method contains more logic to see stuff like if should use soft delete
+        // and stuff like that but we don't need it here.
+        return $self->newQuery()
+            ->select([
+                DB::raw("wallets.attributes->'delegate'->>'username' AS delegate_username"),
+                'wallets.address',
+                'wallets.attributes',
+                'wallets.balance',
+                DB::raw('MIN(transactions.timestamp) as timestamp'),
+            ])
+            ->leftJoin('transactions', 'transactions.recipient_id', '=', 'wallets.address')
+            ->groupBy('wallets.address')
+            ->when(true, function ($query) use ($self) {
+                $self->makeAllSearchableUsing($query);
+            })
+            // ->orderBy(
+            //     $self->qualifyColumn($self->getScoutKeyName())
+            // );
+            ->orderBy('timestamp');
     }
 
     /**
      * Overrides `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
-     * to add a custom property and optimize the query
+     * to add a custom property and optimize the query.
      *
      * @param  int  $chunk
      * @return void
      */
     public static function makeAllSearchable($chunk = null)
     {
-        $self = new static;
+        $self = new static();
 
         // Consider that the original `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
         // method contains more logic to see stuff like if should use soft delete
         // and stuff like that but we don't need it here.
-        $self->newQuery()
-            ->select([
-                DB::raw("wallets.attributes->'delegate'->>'username' AS delegate_username"),
-                "wallets.address",
-                "wallets.attributes",
-                "wallets.balance",
-                DB::raw('MIN(transactions.timestamp) as timestamp'),
-            ])
-            ->leftJoin( 'transactions', 'transactions.recipient_id', '=', 'wallets.address')
-            ->groupBy("wallets.address")
-            ->when(true, function ($query) use ($self) {
-                $self->makeAllSearchableUsing($query);
-            })
-            ->orderBy(
-                $self->qualifyColumn($self->getScoutKeyName())
-            )
-            ->searchable($chunk);
+        $self->getSearchableQuery()->searchable($chunk);
     }
 
     /**
