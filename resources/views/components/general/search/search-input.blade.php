@@ -14,7 +14,7 @@
             type="text"
             class="block py-2 w-full h-full text-theme-secondary-900 overflow-ellipsis dark:bg-theme-secondary-900 dark:text-theme-secondary-200"
             wire:model.debounce.500ms="query"
-            wire:keydown.enter="performSearch"
+            wire:keydown.enter="goToFirstResult"
             placeholder="@lang('general.navbar.search_placeholder')"
         />
     </div>

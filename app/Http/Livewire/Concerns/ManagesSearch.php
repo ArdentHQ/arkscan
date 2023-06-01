@@ -8,10 +8,12 @@ use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
 use App\ViewModels\ViewModelFactory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Scout\Engines\MeilisearchEngine;
+use Livewire\Redirector;
 use Meilisearch\Contracts\SearchQuery;
 
 const RESULT_LIMIT_PER_TYPE = 5;
@@ -106,5 +108,16 @@ trait ManagesSearch
             ->setQuery($query)
             ->setIndexUid($indexUid)
             ->setLimit(RESULT_LIMIT_PER_TYPE);
+    }
+
+    public function goToFirstResult(): null|Redirector
+    {
+        $results = $this->results();
+
+        if ($results->isEmpty()) {
+            return null;
+        }
+
+        return redirect($results->first()->url());
     }
 }
