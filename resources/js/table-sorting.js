@@ -16,15 +16,11 @@ const TableSorting = (sortBy = "", sortDirection = "asc") => {
                 this.sortBy = header.getAttribute('x-ref');
                 this.sortAsc = (header.dataset['initialSort'] ?? 'asc') === 'asc';
             }
-            console.log('wot');
-
 
             this.sort(header);
         },
 
         sort(element) {
-            console.log(this.sortBy, this.sortAsc);
-
             this.getTableRows()
                 .sort(
                     this.sortCallback(
