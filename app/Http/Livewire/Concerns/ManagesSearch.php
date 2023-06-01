@@ -98,7 +98,7 @@ trait ManagesSearch
     private function parseQuery(string $query): string
     {
         // Remove all special characters from the beginning and end of the query.
-        $chars = implode('', ['*', '"', '\'', ' ']);
+        $chars = implode('', ['*', '"', '\'', ' ', '.']);
 
         return ltrim(rtrim($query, $chars), $chars);
     }
