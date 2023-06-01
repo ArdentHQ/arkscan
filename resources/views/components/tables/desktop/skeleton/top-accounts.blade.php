@@ -8,7 +8,7 @@
         'general.wallet.rank'       => 'rank',
         'general.wallet.address'    => [
             'type' => 'address',
-            'width' => '490',
+            'class' => 'md:w-[220px] xl:w-[490px]',
         ],
         'general.wallet.name'       => 'text',
         'general.wallet.type'       => 'icon',
