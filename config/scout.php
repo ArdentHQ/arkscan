@@ -138,6 +138,8 @@ return [
     'meilisearch' => [
         'host'           => env('MEILISEARCH_HOST', 'http://localhost:7700'),
         'key'            => env('MEILISEARCH_KEY'),
+        // Note: If you ever modify the index settings, run
+        // `php artisan scout:sync-index-settings` to apply the changes.
         'index-settings' => [
             Wallet::class => [
                 'filterableAttributes'=> ['address', 'username'],
