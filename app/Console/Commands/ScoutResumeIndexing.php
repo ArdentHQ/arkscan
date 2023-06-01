@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -31,9 +33,9 @@ class ScoutResumeIndexing extends Command
     {
         $class = $this->argument('model');
 
-        $model = new $class;
+        $model = new $class();
 
-        Cache::forget('scout_indexing_paused_' . $model::class);
+        Cache::forget('scout_indexing_paused_'.$model::class);
 
         return Command::SUCCESS;
     }
