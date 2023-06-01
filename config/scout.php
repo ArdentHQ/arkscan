@@ -142,16 +142,50 @@ return [
         // `php artisan scout:sync-index-settings` to apply the changes.
         'index-settings' => [
             Wallet::class => [
-                'filterableAttributes'=> ['address', 'username'],
+                'searchableAttributes'=> ['address', 'username'],
                 'sortableAttributes'  => ['timestamp'],
+                'typoTolerance' => [
+                    'disableOnWords' => ['address'],
+                ],
+                "rankingRules" => [
+                    "typo",
+                    "words",
+                    "proximity",
+                    "attribute",
+                    "sort",
+                    "exactness"
+                ]
             ],
             Transaction::class => [
-                'filterableAttributes'=> ['id'],
+                'filterableAttributes'=> ['id', 'recipient_id'],
+                'searchableAttributes'=> ['id', 'recipient_id'],
                 'sortableAttributes'  => ['timestamp'],
+                'typoTolerance' => [
+                    'disableOnWords' => ['id'],
+                ],
+                "rankingRules" => [
+                    "typo",
+                    "words",
+                    "proximity",
+                    "attribute",
+                    "sort",
+                    "exactness"
+                ]
             ],
             Block::class => [
-                'filterableAttributes'=> ['id', 'height'],
+                'searchableAttributes'=> ['id', 'height'],
                 'sortableAttributes'  => ['timestamp'],
+                'typoTolerance' => [
+                    'disableOnWords' => ['id', 'height'],
+                ],
+                "rankingRules" => [
+                    "typo",
+                    "words",
+                    "proximity",
+                    "attribute",
+                    "sort",
+                    "exactness"
+                ]
             ],
         ],
     ],

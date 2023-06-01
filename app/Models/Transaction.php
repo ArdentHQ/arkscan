@@ -124,10 +124,11 @@ final class Transaction extends Model
         return [
             // Searchable id and used to link the transaction
             'id' => $this->id,
-            // Used to get the sender wallets
-            'sender_public_key' => $this->sender_public_key,
             // Used to get the recipient wallet
             'recipient_id' => $this->recipient_id,
+
+            // Used to get the sender wallets
+            'sender_public_key' => $this->sender_public_key,
 
             // Used to show the transaction type
             'type'       => $this->type,
