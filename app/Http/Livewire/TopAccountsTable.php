@@ -11,7 +11,7 @@ use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
 use Illuminate\View\View;
 use Livewire\Component;
 
-final class WalletTable extends Component
+final class TopAccountsTable extends Component
 {
     use HasPagination;
 
@@ -19,7 +19,7 @@ final class WalletTable extends Component
 
     public function render(): View
     {
-        return view('livewire.wallet-table', [
+        return view('livewire.top-accounts-table', [
             'wallets' => ViewModelFactory::paginate(Wallet::withScope(OrderByBalanceScope::class)->paginate($this->perPage)),
         ]);
     }
