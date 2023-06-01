@@ -54,6 +54,8 @@
         <server name="ZENDESK_TOKEN" value="token"/>
         <server name="ZENDESK_USERNAME" value="username"/>
         <!-- App -->
+        <server name="DB_DATABASE" value="test_db"/>
+        <server name="DB_USERNAME" value="test_db"/>
         <server name="ARKSCAN_NETWORK" value="development"/>
         <server name="ARKSCAN_DB_HOST" value="127.0.0.1"/>
         <server name="ARKSCAN_DB_PORT" value="5432"/>
