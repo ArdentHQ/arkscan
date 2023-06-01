@@ -132,11 +132,11 @@ it('should fetch exchange details for the given exchange', function () {
     expect($details['volume'])->toEqual('54880');
 });
 
-it('should return null if no usd target on the response', function () {
+it('should return null if no usd price conversion on the response', function () {
     Artisan::call('migrate:fresh');
 
     $response = json_decode(file_get_contents(base_path('tests/fixtures/coingecko/exchange_details.json')), true);
-    Arr::set($response, 'tickers.0.target', 'EUR');
+    Arr::set($response, 'tickers.0.converted_last.usd', null);
 
     Http::fake([
         'api.coingecko.com/*' => Http::response($response, 200),
@@ -148,7 +148,28 @@ it('should return null if no usd target on the response', function () {
 
     $details = (new CoinGecko())->exchangeDetails($exchange);
 
-    expect($details)->toBeNull();
+    expect($details['price'])->toBeNull();
+    expect($details['volume'])->toBe(54880);
+});
+
+it('should return null if no usd volume conversion on the response', function () {
+    Artisan::call('migrate:fresh');
+
+    $response = json_decode(file_get_contents(base_path('tests/fixtures/coingecko/exchange_details.json')), true);
+    Arr::set($response, 'tickers.0.converted_volume.usd', null);
+
+    Http::fake([
+        'api.coingecko.com/*' => Http::response($response, 200),
+    ]);
+
+    $exchange = Exchange::factory()->create([
+        'coingecko_id' => 'example_exchange_id',
+    ]);
+
+    $details = (new CoinGecko())->exchangeDetails($exchange);
+
+    expect($details['price'])->toBe(0.256662);
+    expect($details['volume'])->toBeNull();
 });
 
 it('should throw an exception if the API response is empty for exchange details', function () {
