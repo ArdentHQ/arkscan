@@ -28,7 +28,7 @@ final class WalletSearch implements Search
         }
 
         if ($this->couldBeAddress($query)) {
-            $builder = Wallet::where('address', $query)->limit(1);
+            $builder = Wallet::where('address', 'ilike', $query)->limit(1);
         } else {
             $builder = Wallet::where('address', 'ilike', sprintf('%%%s%%', $query))->limit($limit);
         }
