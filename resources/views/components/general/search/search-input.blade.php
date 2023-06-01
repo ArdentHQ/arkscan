@@ -4,7 +4,7 @@
         <x-ark-icon
             name="magnifying-glass"
             size="sm"
-            class="dark:text-theme-secondary-600"
+            class="text-theme-secondary-500 dark:text-theme-secondary-600"
         />
     </div>
 
