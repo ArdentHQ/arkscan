@@ -170,7 +170,7 @@ final class Transaction extends Model
 
     /**
      * Overrides `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
-     * to add a custom property and optimize the query.
+     * to optimize the query.
      *
      * @param  int  $chunk
      * @return void
