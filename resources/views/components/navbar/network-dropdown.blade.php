@@ -9,7 +9,7 @@
 <x-general.dropdown.dropdown>
     <x-slot
         name="button"
-        class="justify-center p-2 space-x-1.5 h-8 rounded md:w-8 md:border md:hover:text-theme-secondary-700 md:border-theme-secondary-300 md:dark:border-theme-secondary-800"
+        class="justify-center text-sm p-2 font-semibold space-x-1.5 h-8 rounded md:w-8 md:border md:hover:text-theme-secondary-700 md:border-theme-secondary-300 md:dark:border-theme-secondary-800"
     >
         @if (strlen($slot) > 0)
             <span>{{ $slot }}</span>
