@@ -1,11 +1,11 @@
 <div id="block-list" class="w-full">
     @if($wallets->isNotEmpty())
-        <div class="flex relative justify-between items-center mb-6">
+        <div class="flex relative justify-between items-center">
             <h3>@lang('pages.voters_by_wallet.subtitle')</h3>
         </div>
 
         <x-skeletons.wallets>
-            <x-tables.desktop.wallets :wallets="$wallets" without-truncate use-vote-weight hide-voting />
+            <x-tables.desktop.wallets :wallets="$wallets" without-truncate use-vote-weight />
 
             <x-tables.mobile.wallets :wallets="$wallets" use-vote-weight />
 
