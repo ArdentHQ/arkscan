@@ -106,16 +106,12 @@ final class Wallet extends Model
                 'wallets.address',
                 'wallets.attributes',
                 'wallets.balance',
-                DB::raw('MIN(transactions.timestamp) as timestamp'),
+                DB::raw('(SELECT MIN(transactions.timestamp) FROM transactions WHERE transactions.recipient_id = wallets.address) as timestamp'),
             ])
-            ->leftJoin('transactions', 'transactions.recipient_id', '=', 'wallets.address')
             ->groupBy('wallets.address')
             ->when(true, function ($query) use ($self) {
                 $self->makeAllSearchableUsing($query);
-            })
-            ->orderBy(
-                $self->qualifyColumn($self->getScoutKeyName())
-            );
+            });
     }
 
     /**
