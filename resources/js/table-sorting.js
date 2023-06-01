@@ -1,3 +1,4 @@
+// Variation of https://codepen.io/ryangjchandler/pen/WNQQKeR
 const TableSorting = (sortBy = "", sortDirection = "asc") => {
     return {
         sortBy,
