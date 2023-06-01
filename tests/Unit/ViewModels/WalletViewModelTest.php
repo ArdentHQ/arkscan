@@ -47,7 +47,7 @@ it('should get the address', function () {
     expect($this->subject->address())->toBe($this->wallet->address);
 });
 
-it('should get use address to get an id', function () {
+it('should get an id from the address', function () {
     expect($this->subject->id())->toBe($this->wallet->address);
 });
 
