@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Config;
 use Laravel\Scout\Engines\MeilisearchEngine;
 use Livewire\Livewire;
 use Meilisearch\Contracts\SearchQuery;
+use Meilisearch\Client as MeilisearchClient;
+use Meilisearch\Endpoints\Indexes;
 
 it('should search for a wallet', function () {
     $wallet      = Wallet::factory()->create();
@@ -25,8 +27,14 @@ it('should search for a wallet', function () {
 });
 
 it('should search with meilisearch', function () {
-    // Default value, overriden in phpunit.xml on the tests
+    // Default value, overriden in phpunit.xml for the tests
     Config::set('scout.driver', 'meilisearch');
+
+    // Mock the Meilisearch client and indexes
+    $mock    = $this->mock(MeilisearchClient::class);
+    $indexes = $this->mock(Indexes::class);
+    $mock->shouldReceive('index')->andReturn($indexes);
+    $indexes->shouldReceive('addDocuments');
 
     $wallet      = Wallet::factory()->create();
     $otherWallet = Wallet::factory()->create();
