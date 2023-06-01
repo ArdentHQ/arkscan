@@ -45,15 +45,16 @@
                     @class([
                         'flex justify-center items-center py-2 pr-3 space-x-2 text-sm font-semibold leading-4 group',
                         'cursor-not-allowed' => $isDisabled,
+                        'hover:text-theme-secondary-900 hover:dark:text-theme-secondary-200 md:dark:text-theme-secondary-200' => ! $isDisabled,
                     ])
                     @if ($isDisabled)
                         disabled
                     @endif
                 >
                     <div @class([
-                        'md:w-px h-3.5 md:block bg-transparent transition-default',
+                        'md:w-px h-3.5 md:block transition-default',
                         'bg-theme-secondary-300 dark:bg-theme-secondary-700' => $isDisabled,
-                        'md:group-hover:bg-theme-secondary-300 md:group-hover:dark:bg-theme-secondary-700' => ! $isDisabled,
+                        'bg-transparent md:group-hover:bg-theme-secondary-300 md:group-hover:dark:bg-theme-secondary-700' => ! $isDisabled,
                     ])></div>
 
                     <span>
