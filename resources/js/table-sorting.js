@@ -5,6 +5,16 @@ const TableSorting = (sortBy = "", sortDirection = "asc") => {
         sortAsc: sortDirection === "asc",
 
         init() {
+            this.update();
+
+            if (typeof Livewire !== "undefined") {
+                Livewire.hook("message.processed", (message, component) => {
+                    this.update();
+                });
+            }
+        },
+
+        update() {
             this.getTableRows().forEach((row, index) => {
                 row.dataset["rowIndex"] = index;
             });
