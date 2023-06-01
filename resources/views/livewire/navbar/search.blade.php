@@ -73,7 +73,7 @@
                         </div>
                     @endforeach
                 @else
-                    <p class="text-center dark:text-theme-secondary-700">
+                    <p class="text-center dark:text-theme-secondary-500">
                         @lang('general.navbar.no_results')
                     </p>
                 @endif
