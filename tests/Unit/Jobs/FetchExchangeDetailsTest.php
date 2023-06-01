@@ -35,7 +35,7 @@ it('should fetch exchange details and update the exchange model', function () {
 
 it('should keep exchange details when no information is available for the exchange', function () {
     $this->mock(MarketDataProvider::class)->shouldReceive('exchangeDetails')->andReturn([
-        'price' => null,
+        'price'  => null,
         'volume' => null,
     ]);
 
