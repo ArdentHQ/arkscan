@@ -28,7 +28,8 @@ final class BlockSearch implements Search
 
         if (! is_null($term)) {
             if ($this->couldBeBlockID($term)) {
-                $query = $query->whereLower('id', $term);
+                // Block id is stored as lowercase
+                $query = $query->where('id', strtolower($term));
             } else {
                 // Forces empty results when it has a term but not possible
                 // block ID
