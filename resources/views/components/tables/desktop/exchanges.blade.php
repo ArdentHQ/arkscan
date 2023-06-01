@@ -1,12 +1,26 @@
 @props(['exchanges'])
 
-<x-tables.encapsulated-table sticky class="hidden w-full rounded-b-xl md:block">
+<x-tables.encapsulated-table
+    x-data="TableSorting('header-volume', 'desc')"
+    class="hidden w-full rounded-b-xl md:block"
+    sticky
+>
     <thead class="dark:bg-black bg-theme-secondary-100">
         <tr class="border-b-none">
-            <x-tables.headers.desktop.text name="general.exchange.name" />
-            <x-tables.headers.desktop.text name="general.exchange.top_pairs" />
+            <x-tables.headers.desktop.text
+                name="general.exchange.name"
+                sorting-id="header-name"
+            />
+            <x-tables.headers.desktop.text
+                name="general.exchange.top_pairs"
+                sorting-id="header-top_pairs"
+            />
 
-            <x-tables.headers.desktop.number name="general.exchange.price">
+            <x-tables.headers.desktop.number
+                name="general.exchange.price"
+                initial-sort="desc"
+                sorting-id="header-price"
+            >
                 <span>({{ config('currencies.usd.currency') }})</span>
             </x-tables.headers.desktop.number>
 
@@ -15,13 +29,15 @@
                 class="text-right"
                 breakpoint="md-lg"
                 responsive
+                initial-sort="desc"
+                sorting-id="header-volume"
             >
                 <span>({{ config('currencies.usd.currency') }})</span>
             </x-tables.headers.desktop.number>
         </tr>
     </thead>
 
-    <tbody>
+    <tbody x-ref="tbody">
         @foreach($exchanges as $exchange)
             <x-ark-tables.row
                 wire:key="exchange-{{ $exchange->name }}"
@@ -45,10 +61,13 @@
                     <x-exchanges.pairs :exchange="$exchange" />
                 </x-ark-tables.cell>
 
-                <x-ark-tables.cell class="text-sm text-right">
+                <x-ark-tables.cell
+                    class="text-sm text-right"
+                    data-value="{{ $exchange->price }}"
+                >
                     @if ($exchange->price)
                         <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
-                            {{ ExplorerNumberFormatter::currency($exchange->price, 'USD', 4) }}
+                            {{ ExplorerNumberFormatter::usdWithDecimals($exchange->price) }}
                         </span>
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
@@ -60,10 +79,11 @@
                 <x-ark-tables.cell
                     class="text-sm text-right"
                     breakpoint="md-lg"
+                    data-value="{{ $exchange->volume }}"
                     responsive
                 >
                     @if ($exchange->volume)
-                        {{ ExplorerNumberFormatter::currency($exchange->volume, 'USD') }}
+                        {{ ExplorerNumberFormatter::usdWithDecimals($exchange->volume, 2) }}
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
                             @lang('general.na')

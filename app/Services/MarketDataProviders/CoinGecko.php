@@ -108,11 +108,11 @@ final class CoinGecko extends AbstractMarketDataProvider
 
     /**
      * @return array{
-     *   price: float,
-     *   volume: float,
-     * }|null
+     *   price: float|int|null,
+     *   volume: float|int|null,
+     * }
      */
-    public function exchangeDetails(Exchange $exchange): array | null
+    public function exchangeDetails(Exchange $exchange): array
     {
         $data = null;
 
@@ -129,19 +129,12 @@ final class CoinGecko extends AbstractMarketDataProvider
         }
 
         /** @var array<mixed> $data */
-        $possibleTargets = collect(['USDT', 'USDC', 'BUSD']);
-
-        $tickerData = collect($data)
-            ->filter(fn (array $ticker) => $possibleTargets->contains($ticker['target']))
-            ->first();
-
-        if ($tickerData === null) {
-            return null;
-        }
+        $price  = collect($data)->avg('converted_last.usd');
+        $volume = collect($data)->sum('converted_volume.usd');
 
         return [
-            'price'  => $tickerData['converted_last']['usd'],
-            'volume' => $tickerData['converted_volume']['usd'],
+            'price'  => $price > 0 ? $price : null,
+            'volume' => $volume > 0 ? $volume : null,
         ];
     }
 
