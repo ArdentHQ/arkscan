@@ -5,62 +5,46 @@ declare(strict_types=1);
 namespace App\Services\Search;
 
 use App\Contracts\Search;
-use App\Models\Composers\ValueRangeComposer;
 use App\Models\Wallet;
-use App\Repositories\WalletRepositoryWithCache;
 use App\Services\Search\Traits\ValidatesTerm;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 final class WalletSearch implements Search
 {
     use ValidatesTerm;
 
-    public function search(array $parameters): Builder
+    /**
+     * @return EloquentCollection<Wallet>
+     */
+    public function search(string $query, int $limit): EloquentCollection
     {
-        $query = Wallet::query();
+        if ($this->couldntBeAddress($query)) {
+            /**
+             * @var EloquentCollection<Wallet>
+             */
+            return (new Wallet())->newCollection([]);
+        }
 
-        ValueRangeComposer::compose($query, $parameters, 'balance');
+        if ($this->couldBeAddress($query)) {
+            $builder = Wallet::where('address', 'ilike', $query)->limit(1);
+        } else {
+            $builder = Wallet::where('address', 'ilike', sprintf('%%%s%%', $query))->limit($limit);
+        }
 
-        $query->where(function ($query) use ($parameters) {
-            $term = Arr::get($parameters, 'term');
+        return $builder->get();
+    }
 
-            if (! is_null($term)) {
-                if ($this->couldBeAddress($term)) {
-                    $query->whereLower('address', $term);
-                } elseif ($this->couldBePublicKey($term)) {
-                    $query->whereLower('public_key', $term);
-                } elseif ($this->couldBeUsername($term)) {
-                    $username = substr(DB::getPdo()->quote($term), 1, -1);
-                    $query->whereRaw('lower(attributes::text)::jsonb @> lower(\'{"delegate":{"username":"'.$username.'"}}\')::jsonb');
-                } else {
-                    // Empty results when it has a term but not possible results
-                    $query->empty();
-                }
-            }
-
-            if (! is_null(Arr::get($parameters, 'username'))) {
-                $username = substr(DB::getPdo()->quote($parameters['username']), 1, -1);
-                $query->orWhereRaw('lower(attributes::text)::jsonb @> lower(\'{"delegate":{"username":"'.$username.'"}}\')::jsonb');
-            }
-
-            if (! is_null(Arr::get($parameters, 'vote'))) {
-                $vote = substr(DB::getPdo()->quote($parameters['vote']), 1, -1);
-                if ($this->couldBeUsername($vote)) {
-                    try {
-                        $wallet = app(WalletRepositoryWithCache::class)->findByUsername($vote, false);
-
-                        $vote = $wallet->public_key;
-                    } catch (\Throwable) {
-                        //
-                    }
-                }
-
-                $query->orWhereRaw('lower(attributes::text)::jsonb @> lower(\'{"vote":"'.$vote.'"}\')::jsonb');
-            }
-        });
-
-        return $query;
+    public static function mapMeilisearchResults(array $rawResults): Collection
+    {
+        return collect($rawResults)->map(fn ($item) => new Wallet([
+            ...$item,
+            'attributes' => [
+                'delegate' => [
+                    'username' => Arr::get($item, 'username'),
+                ],
+            ],
+        ]));
     }
 }

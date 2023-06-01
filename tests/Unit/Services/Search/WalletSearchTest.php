@@ -4,152 +4,60 @@ declare(strict_types=1);
 
 use App\Models\Wallet;
 use App\Services\Search\WalletSearch;
+use Illuminate\Support\Collection;
 
 it('should search for a wallet by address', function (?string $modifier) {
     $wallet = Wallet::factory(10)->create()[0];
 
-    $result = (new WalletSearch())->search([
-        'term' => $modifier ? $modifier($wallet->address) : $wallet->address,
-    ]);
+    $result = (new WalletSearch())->search($modifier ? $modifier($wallet->address) : $wallet->address, 5);
 
-    expect($result->first()->is($wallet))->toBeTrue();
+    expect($result)->toHaveCount(1);
 })->with([null, 'strtolower', 'strtoupper']);
 
-it('should search for a wallet by public key', function (?string $modifier) {
-    Wallet::factory(10)->create(['public_key' => '123']);
-
-    $wallet = Wallet::factory()->create();
-
-    $result = (new WalletSearch())->search([
-        'term' => $modifier ? $modifier($wallet->public_key) : $wallet->public_key,
-    ]);
-
-    expect($result->get())->toHaveCount(1);
-})->with([null, 'strtolower', 'strtoupper']);
-
-it('should search for a wallet by delegate username in terms', function (?string $modifier) {
-    $wallet = Wallet::factory(10)->create()[0];
-
-    $result = (new WalletSearch())->search([
-        'term' => $modifier ? $modifier($wallet->attributes['delegate']['username']) : $wallet->attributes['delegate']['username'],
-    ]);
-
-    expect($result->get())->toHaveCount(1);
-})->with([null, 'strtolower', 'strtoupper']);
-
-it('can search for a wallet by term matching the username containing special characters', function (?string $modifier) {
-    $wallet               = Wallet::factory(10)->create()[0];
-    $delegate             = $wallet->attributes['delegate'];
-    $delegate['username'] = 'john.doe (old) [new] 2';
-
-    $wallet->update([
-        'attributes' => array_merge($wallet->attributes, ['delegate' => $delegate]),
-    ]);
-
-    $result = (new WalletSearch())->search([
-        'term' => $modifier ? $modifier('john.doe (old) [new] 2') : 'john.doe (old) [new] 2',
-    ]);
-
-    expect($result->get())->toHaveCount(1);
-})->with([null, 'strtolower', 'strtoupper']);
-
-it('should search for a wallet by username', function (?string $modifier) {
-    $wallet = Wallet::factory(10)->create()[0];
-
-    $result = (new WalletSearch())->search([
-        'term'     => '',
-        'username' => $modifier ? $modifier($wallet->attributes['delegate']['username']) : $wallet->attributes['delegate']['username'],
-    ]);
-
-    expect($result->get())->toHaveCount(1);
-})->with([null, 'strtolower', 'strtoupper']);
-
-it('can search for a wallet by username containing special characters', function (?string $modifier) {
-    $wallet               = Wallet::factory(10)->create()[0];
-    $delegate             = $wallet->attributes['delegate'];
-    $delegate['username'] = 'john.doe (old) [new] 2';
-
-    $wallet->update([
-        'attributes' => array_merge($wallet->attributes, ['delegate' => $delegate]),
-    ]);
-
-    $result = (new WalletSearch())->search([
-        'term'     => '',
-        'username' => $modifier ? $modifier('john.doe (old) [new] 2') : 'john.doe (old) [new] 2',
-    ]);
-
-    expect($result->get())->toHaveCount(1);
-})->with([null, 'strtolower', 'strtoupper']);
-
-it('should search for a wallet public key by vote', function (?string $modifier) {
-    Wallet::factory(10)->create();
-
-    $wallet = Wallet::factory()->create([
-        'attributes' => [
-            'vote' => 'public_key',
-        ],
-    ]);
-
-    $result = (new WalletSearch())->search([
-        'vote' => $modifier ? $modifier($wallet->attributes['vote']) : $wallet->attributes['vote'],
-    ]);
-
-    expect($result->get())->toHaveCount(1);
-})->with([null, 'strtolower', 'strtoupper']);
-
-it('should search for a wallet username by vote', function (?string $modifier) {
-    $delegateWallet       = Wallet::factory()->create();
-    $delegate             = $delegateWallet->attributes['delegate'];
-    $delegate['username'] = 'john.doe (old) [new] 2';
-
-    $delegateWallet->update([
-        'attributes' => array_merge($delegateWallet->attributes, ['delegate' => $delegate]),
+it('should query wallet by address', function () {
+    Wallet::factory()->create([
+        'address' => 'aaaaaabbbbbbbccccccdddddd',
     ]);
 
     Wallet::factory()->create([
-        'attributes' => [
-            'vote' => $delegateWallet->public_key,
-        ],
+        'address' => 'bbbbbbbddddd',
     ]);
 
-    $result = (new WalletSearch())->search([
-        'vote' => $modifier ? $modifier('john.doe (old) [new] 2') : 'john.doe (old) [new] 2',
+    Wallet::factory()->create([
+        'address' => 'ccccccdddddd',
     ]);
 
-    expect($result->get())->toHaveCount(1);
-})->with([null, 'strtolower', 'strtoupper']);
+    expect((new WalletSearch())->search('aaaaaa', 5))->toHaveCount(1);
 
-it('should search for a wallet by balance minimum', function () {
-    $wallet = Wallet::factory(10)->create(['balance' => 100 * 1e8])[0];
-    $wallet->update(['balance' => 1000 * 1e8]);
+    expect((new WalletSearch())->search('bbbbbb', 5))->toHaveCount(2);
 
-    $result = (new WalletSearch())->search([
-        'balanceFrom' => 101,
-    ]);
-
-    expect($result->get())->toHaveCount(1);
+    expect((new WalletSearch())->search('ddddd', 5))->toHaveCount(3);
 });
 
-it('should search for a wallet by balance maximum', function () {
-    $wallet = Wallet::factory(10)->create(['balance' => 100 * 1e8])[0];
-    $wallet->update(['balance' => 1000 * 1e8]);
-
-    $result = (new WalletSearch())->search([
-        'balanceTo' => 999,
+it('limit the results', function () {
+    Wallet::factory()->create([
+        'address' => 'aaaaaabbbbbbbccccccdddddd',
     ]);
 
-    expect($result->get())->toHaveCount(9);
+    Wallet::factory()->create([
+        'address' => 'aaaaaabbbbbbbccccccdddddd2',
+    ]);
+
+    Wallet::factory()->create([
+        'address' => 'aaaaaabbbbbbbccccccdddddd3',
+    ]);
+
+    expect((new WalletSearch())->search('aaaaaa', 2))->toHaveCount(2);
 });
 
-it('should search for a wallet by balance range', function () {
-    Wallet::factory(10)->create(['balance' => 10 * 1e8]);
-    $wallet = Wallet::factory(10)->create(['balance' => 100 * 1e8])[0];
-    $wallet->update(['balance' => 1000 * 1e8]);
+it('should map meilisearch results array', function () {
+    $wallet = Wallet::factory()->create();
 
-    $result = (new WalletSearch())->search([
-        'balanceFrom' => 50,
-        'balanceTo'   => 100,
-    ]);
+    $result = WalletSearch::mapMeilisearchResults([$wallet->toSearchableArray()]);
 
-    expect($result->get())->toHaveCount(9);
+    expect($result)->toBeInstanceOf(Collection::class);
+
+    expect($result->first())->toBeInstanceOf(Wallet::class);
+
+    expect($result->first()->address)->toBe($wallet->address);
 });

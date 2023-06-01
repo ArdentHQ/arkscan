@@ -16,7 +16,7 @@
         hide-label
         disable-dirty-styling
         iconSize="sm"
-        wire:keydown.enter="performSearch"
+        wire:keydown.enter="goToFirstResult"
     >
         <div
             class="flex items-center mr-4 space-x-4"
@@ -57,7 +57,7 @@
                 @if ($hasResults)
                     @foreach ($results as $result)
                         <div
-                            wire:key="{{ $result->model()->id }}"
+                            wire:key="{{ $result->id() }}"
                             @class([
                                 'select-none',
                                 'pt-1' => $loop->index > 0,
