@@ -65,10 +65,6 @@ final class FetchExchangeDetails implements ShouldQueue
             return;
         }
 
-        if ($result === null) {
-            return;
-        }
-
         $this->exchange->price  = Arr::get($result, 'price');
         $this->exchange->volume = Arr::get($result, 'volume');
         $this->exchange->save();

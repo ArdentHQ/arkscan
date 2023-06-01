@@ -110,12 +110,11 @@ final class CoinGecko extends AbstractMarketDataProvider
      * @return array{
      *   price: float,
      *   volume: float,
-     * }|null
+     * }
      */
-    public function exchangeDetails(Exchange $exchange): array | null
+    public function exchangeDetails(Exchange $exchange): array
     {
         $data = null;
-
         try {
             $data = Http::get('https://api.coingecko.com/api/v3/exchanges/'.$exchange->coingecko_id.'/tickers', [
                 'coin_ids' => 'ark',
@@ -128,9 +127,12 @@ final class CoinGecko extends AbstractMarketDataProvider
             throw new CoinGeckoThrottledException();
         }
 
+        $price  = collect($data)->avg('converted_last.usd');
+        $volume = collect($data)->sum('converted_volume.usd');
+
         return [
-            'price' => collect($data)->avg('converted_last.usd'),
-            'volume' => collect($data)->sum('converted_volume.usd'),
+            'price' => $price > 0 ? $price : null,
+            'volume' => $volume > 0 ? $volume : null,
         ];
     }
 
