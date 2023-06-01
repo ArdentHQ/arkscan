@@ -7,8 +7,8 @@
     <div
         class="transition-default group-hover/header:text-theme-secondary-700"
         :class="{
-            'text-theme-secondary-500': sortBy === '{{ $id }}' && sortAsc === true,
-            'text-transparent': sortBy !== '{{ $id }}' || sortAsc === false,
+            'text-theme-secondary-500': sortBy === '{{ $id }}',
+            'text-transparent': sortBy !== '{{ $id }}',
             'rotate-180': (sortBy === '{{ $id }}' && sortAsc === false) || (sortBy !== '{{ $id }}' && '{{ $initialDirection }}' === 'desc'),
         }"
         x-cloak
