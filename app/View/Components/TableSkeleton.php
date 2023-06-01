@@ -52,7 +52,6 @@ final class TableSkeleton extends Component
             });
         }
 
-
         $component = sprintf(
             'components.tables.skeletons.%s%s',
             $this->encapsulated ? 'encapsulated.' : '',
