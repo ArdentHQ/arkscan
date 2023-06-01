@@ -31,7 +31,14 @@
                         <div class="hidden items-center -mx-4 md:flex">
                             @foreach ($navigation as $navItem)
                                 @if (Arr::exists($navItem, 'children'))
-                                    <div class="relative h-full">
+                                    <div
+                                        class="relative h-full"
+                                        @click.outside="() => {
+                                            if (openDropdown === '{{ $navItem['label'] }}') {
+                                                openDropdown = null;
+                                            }
+                                        }"
+                                    >
                                         <a
                                             href="javascript:void(0)"
                                             class="inline-flex relative justify-center items-center px-1 pt-px mr-6 h-full font-semibold leading-5 border-b-2 border-transparent transition duration-150 ease-in-out focus:outline-none text-theme-secondary-700 dark:text-theme-secondary-400 hover:text-theme-secondary-800"
