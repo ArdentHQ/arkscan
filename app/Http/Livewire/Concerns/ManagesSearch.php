@@ -43,7 +43,7 @@ trait ManagesSearch
 
         $data = $validator->validate();
 
-        $query = Arr::get($data, 'query');
+        $query = $this->parseQuery(Arr::get($data, 'query'));
 
         if (config('scout.driver') === 'meilisearch') {
             return $this->searchWithMeilisearch($query);
@@ -91,6 +91,13 @@ trait ManagesSearch
             });
 
         return ViewModelFactory::collection($results);
+    }
+
+    private function parseQuery(string $query): string
+    {
+        // Remove all special characters from the beginning and end of the query.
+        $chars = implode("", ['*', '"', '\'', ' ']);
+        return ltrim(rtrim($query, $chars), $chars);
     }
 
     private function buildSearchQueryForIndex(string $query, string $indexUid): SearchQuery
