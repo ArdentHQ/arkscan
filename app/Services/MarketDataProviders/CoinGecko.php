@@ -128,20 +128,9 @@ final class CoinGecko extends AbstractMarketDataProvider
             throw new CoinGeckoThrottledException();
         }
 
-        /** @var array<mixed> $data */
-        $possibleTargets = collect(['USDT', 'USDC', 'BUSD']);
-
-        $tickerData = collect($data)
-            ->filter(fn (array $ticker) => $possibleTargets->contains($ticker['target']))
-            ->first();
-
-        if ($tickerData === null) {
-            return null;
-        }
-
         return [
-            'price'  => $tickerData['converted_last']['usd'],
-            'volume' => $tickerData['converted_volume']['usd'],
+            'price' => collect($data)->avg('converted_last.usd'),
+            'volume' => collect($data)->sum('converted_volume.usd'),
         ];
     }
 
