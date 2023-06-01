@@ -16,6 +16,6 @@ class IndexTransactions extends IndexModel
 
     protected function elementsToIndexQuery(int $latestIndexedTimestamp): Builder
     {
-        return Transaction::where('timestamp', '>', $latestIndexedTimestamp);
+        return Transaction::getSearchableQuery()->where('timestamp', '>', $latestIndexedTimestamp);
     }
 }

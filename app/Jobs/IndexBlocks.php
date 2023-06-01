@@ -16,6 +16,6 @@ class IndexBlocks extends IndexModel
 
     protected function elementsToIndexQuery(int $latestIndexedTimestamp): Builder
     {
-        return Block::where('timestamp', '>', $latestIndexedTimestamp);
+        return Block::getSearchableQuery()->where('timestamp', '>', $latestIndexedTimestamp);
     }
 }

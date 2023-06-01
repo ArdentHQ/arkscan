@@ -108,10 +108,9 @@ final class Wallet extends Model
             ->when(true, function ($query) use ($self) {
                 $self->makeAllSearchableUsing($query);
             })
-            // ->orderBy(
-            //     $self->qualifyColumn($self->getScoutKeyName())
-            // );
-            ->orderBy('timestamp');
+            ->orderBy(
+                $self->qualifyColumn($self->getScoutKeyName())
+            );
     }
 
     /**

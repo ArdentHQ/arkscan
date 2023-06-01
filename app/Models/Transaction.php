@@ -22,6 +22,7 @@ use App\Models\Scopes\VoteCombinationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
 use App\Services\VendorField;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -141,6 +142,50 @@ final class Transaction extends Model
             // used to build the payments and sortable
             'timestamp' => $this->timestamp,
         ];
+    }
+
+    public static function getSearchableQuery(): Builder
+    {
+        $self = new static();
+
+        // Consider that the original `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
+        // method contains more logic to see stuff like if should use soft delete
+        // and stuff like that but we don't need it here.
+        return $self->newQuery()
+            ->select([
+                'id',
+                'sender_public_key',
+                'recipient_id',
+                'type',
+                'type_group',
+                'amount',
+                'fee',
+                'asset',
+                'timestamp',
+            ])
+            ->when(true, function ($query) use ($self) {
+                $self->makeAllSearchableUsing($query);
+            })
+            ->orderBy(
+                $self->qualifyColumn($self->getScoutKeyName())
+            );
+    }
+
+    /**
+     * Overrides `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
+     * to add a custom property and optimize the query.
+     *
+     * @param  int  $chunk
+     * @return void
+     */
+    public static function makeAllSearchable($chunk = null)
+    {
+        $self = new static();
+
+        // Consider that the original `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
+        // method contains more logic to see stuff like if should use soft delete
+        // and stuff like that but we don't need it here.
+        $self->getSearchableQuery()->searchable($chunk);
     }
 
     /**

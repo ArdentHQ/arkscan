@@ -8,6 +8,7 @@ use App\Models\Casts\BigInteger;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Services\BigNumber;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -80,6 +81,46 @@ final class Block extends Model
             // sortable attribute
             'timestamp' => $this->timestamp,
         ];
+    }
+
+    public static function getSearchableQuery(): Builder
+    {
+        $self = new static();
+
+        // Consider that the original `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
+        // method contains more logic to see stuff like if should use soft delete
+        // and stuff like that but we don't need it here.
+        return $self->newQuery()
+            ->select([
+                'id',
+                'height',
+                'generator_public_key',
+                'number_of_transactions',
+                'timestamp',
+            ])
+            ->when(true, function ($query) use ($self) {
+                $self->makeAllSearchableUsing($query);
+            })
+            ->orderBy(
+                $self->qualifyColumn($self->getScoutKeyName())
+            );
+    }
+
+    /**
+     * Overrides `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
+     * to add a custom property and optimize the query.
+     *
+     * @param  int  $chunk
+     * @return void
+     */
+    public static function makeAllSearchable($chunk = null)
+    {
+        $self = new static();
+
+        // Consider that the original `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
+        // method contains more logic to see stuff like if should use soft delete
+        // and stuff like that but we don't need it here.
+        $self->getSearchableQuery()->searchable($chunk);
     }
 
     /**
