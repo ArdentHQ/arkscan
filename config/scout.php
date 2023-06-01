@@ -141,7 +141,7 @@ return [
         'index-settings' => [
             Wallet::class => [
                 'filterableAttributes'=> ['address', 'username'],
-                'sortableAttributes' => ['timestamp'],
+                'sortableAttributes'  => ['timestamp'],
             ],
             Transaction::class => [
                 'filterableAttributes'=> ['id'],
