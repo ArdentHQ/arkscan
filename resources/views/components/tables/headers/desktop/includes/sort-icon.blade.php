@@ -5,7 +5,7 @@
 
 @if ($id !== null)
     <div
-        class="group-hover/header:text-theme-secondary-700 transition-default"
+        class="transition-default group-hover/header:text-theme-secondary-700"
         :class="{
             'text-theme-secondary-500': sortBy === '{{ $id }}' && sortAsc === true,
             'text-transparent': sortBy !== '{{ $id }}' || sortAsc === false,
