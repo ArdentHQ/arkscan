@@ -57,7 +57,7 @@
                 @if ($hasResults)
                     @foreach ($results as $result)
                         <div
-                            wire:key="{{ $result->model()->id }}"
+                            wire:key="{{ $result->id() }}"
                             @class([
                                 'select-none',
                                 'pt-1' => $loop->index > 0,

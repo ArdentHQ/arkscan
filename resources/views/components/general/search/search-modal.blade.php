@@ -36,7 +36,7 @@
                 <div x-ref="searchResults" class="flex overflow-auto flex-col space-y-1 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 custom-scroll dark:divide-theme-secondary-800">
                     @if ($hasResults && $results !== null)
                         @foreach ($results as $result)
-                            <div wire:key="{{ $result->model()->getMorphClass() }}:{{ $result->model()->id }}" class="pt-1">
+                            <div wire:key="{{ $result->id() }}" class="pt-1">
                                 @if (is_a($result->model(), \App\Models\Wallet::class))
                                     <x-search.results.wallet :wallet="$result" />
                                 @elseif (is_a($result->model(), \App\Models\Block::class))

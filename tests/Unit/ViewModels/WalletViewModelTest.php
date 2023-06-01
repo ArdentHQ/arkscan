@@ -43,6 +43,14 @@ it('should get the url', function () {
     expect($this->subject->url())->toBe(route('wallet', $this->subject->address()));
 });
 
+it('should get the address', function () {
+    expect($this->subject->address())->toBe($this->wallet->address);
+});
+
+it('should get use address to get an id', function () {
+    expect($this->subject->id())->toBe($this->wallet->address);
+});
+
 it('should get the balance', function () {
     expect($this->subject->balance())->toBeFloat();
 

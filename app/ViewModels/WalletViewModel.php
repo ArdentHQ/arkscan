@@ -41,6 +41,11 @@ final class WalletViewModel implements ViewModel
         return $this->wallet;
     }
 
+    public function id(): string
+    {
+        return $this->address();
+    }
+
     public function address(): string
     {
         return $this->wallet->address;
