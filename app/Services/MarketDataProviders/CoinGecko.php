@@ -108,8 +108,8 @@ final class CoinGecko extends AbstractMarketDataProvider
 
     /**
      * @return array{
-     *   price: float,
-     *   volume: float,
+     *   price: float|int|null,
+     *   volume: float|int|null,
      * }
      */
     public function exchangeDetails(Exchange $exchange): array
@@ -127,6 +127,7 @@ final class CoinGecko extends AbstractMarketDataProvider
             throw new CoinGeckoThrottledException();
         }
 
+        /** @var array<mixed> $data */
         $price  = collect($data)->avg('converted_last.usd');
         $volume = collect($data)->sum('converted_volume.usd');
 

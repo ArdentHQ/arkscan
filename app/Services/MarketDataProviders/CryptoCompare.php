@@ -112,8 +112,8 @@ final class CryptoCompare extends AbstractMarketDataProvider
 
     /**
      * @return array{
-     *   price: float,
-     *   volume: float,
+     *   price: float|int|null,
+     *   volume: float|int|null,
      * }
      */
     public function exchangeDetails(Exchange $exchange): array
