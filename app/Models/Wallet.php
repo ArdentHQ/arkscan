@@ -108,7 +108,6 @@ final class Wallet extends Model
                 'wallets.balance',
                 DB::raw('(SELECT MIN(transactions.timestamp) FROM transactions WHERE transactions.recipient_id = wallets.address) as timestamp'),
             ])
-            ->groupBy('wallets.address')
             ->when(true, function ($query) use ($self) {
                 $self->makeAllSearchableUsing($query);
             });
