@@ -95,6 +95,17 @@ trait ManagesSearch
         return ViewModelFactory::collection($results);
     }
 
+    public function goToFirstResult(): null|Redirector|RedirectResponse
+    {
+        $results = $this->results();
+
+        if ($results->isEmpty()) {
+            return null;
+        }
+
+        return redirect($results->first()->url());
+    }
+
     private function parseQuery(string $query): string
     {
         // Remove all special characters from the beginning and end of the query.
@@ -109,16 +120,5 @@ trait ManagesSearch
             ->setQuery($query)
             ->setIndexUid($indexUid)
             ->setLimit(RESULT_LIMIT_PER_TYPE);
-    }
-
-    public function goToFirstResult(): null|Redirector|RedirectResponse
-    {
-        $results = $this->results();
-
-        if ($results->isEmpty()) {
-            return null;
-        }
-
-        return redirect($results->first()->url());
     }
 }
