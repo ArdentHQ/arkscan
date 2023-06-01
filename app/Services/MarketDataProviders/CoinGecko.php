@@ -115,6 +115,7 @@ final class CoinGecko extends AbstractMarketDataProvider
     public function exchangeDetails(Exchange $exchange): array
     {
         $data = null;
+
         try {
             $data = Http::get('https://api.coingecko.com/api/v3/exchanges/'.$exchange->coingecko_id.'/tickers', [
                 'coin_ids' => 'ark',
@@ -131,7 +132,7 @@ final class CoinGecko extends AbstractMarketDataProvider
         $volume = collect($data)->sum('converted_volume.usd');
 
         return [
-            'price' => $price > 0 ? $price : null,
+            'price'  => $price > 0 ? $price : null,
             'volume' => $volume > 0 ? $volume : null,
         ];
     }
