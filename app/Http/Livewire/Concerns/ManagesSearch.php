@@ -8,7 +8,6 @@ use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
 use App\ViewModels\ViewModelFactory;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
@@ -95,6 +94,17 @@ trait ManagesSearch
         return ViewModelFactory::collection($results);
     }
 
+    public function goToFirstResult(): null|Redirector
+    {
+        $results = $this->results();
+
+        if ($results->isEmpty()) {
+            return null;
+        }
+
+        return redirect($results->first()->url());
+    }
+
     private function parseQuery(string $query): string
     {
         // Remove all special characters from the beginning and end of the query.
@@ -109,16 +119,5 @@ trait ManagesSearch
             ->setQuery($query)
             ->setIndexUid($indexUid)
             ->setLimit(RESULT_LIMIT_PER_TYPE);
-    }
-
-    public function goToFirstResult(): null|Redirector
-    {
-        $results = $this->results();
-
-        if ($results->isEmpty()) {
-            return null;
-        }
-
-        return redirect($results->first()->url());
     }
 }
