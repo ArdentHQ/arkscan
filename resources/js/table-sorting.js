@@ -9,15 +9,15 @@ const TableSorting = (sortBy = "", sortDirection = "asc") => {
         },
 
         sortByColumn($event) {
-            const header = $event.target.closest('th');
-            if (this.sortBy === header.getAttribute('x-ref')) {
+            const header = $event.target.closest("th");
+            if (this.sortBy === header.getAttribute("x-ref")) {
                 this.sortAsc = !this.sortAsc;
             } else {
-                this.sortBy = header.getAttribute('x-ref');
-                this.sortAsc = (header.dataset['initialSort'] ?? 'asc') === 'asc';
+                this.sortBy = header.getAttribute("x-ref");
+                this.sortAsc =
+                    (header.dataset["initialSort"] ?? "asc") === "asc";
             }
-            console.log('wot');
-
+            console.log("wot");
 
             this.sort(header);
         },
@@ -28,9 +28,7 @@ const TableSorting = (sortBy = "", sortDirection = "asc") => {
             this.getTableRows()
                 .sort(
                     this.sortCallback(
-                        Array.from(element.parentNode.children).indexOf(
-                            element
-                        )
+                        Array.from(element.parentNode.children).indexOf(element)
                     )
                 )
                 .forEach((tr) => {
@@ -43,8 +41,8 @@ const TableSorting = (sortBy = "", sortDirection = "asc") => {
         },
 
         getCellValue(row, index) {
-            if (typeof row.children[index].dataset['value'] !== 'undefined') {
-                return row.children[index].dataset['value'] ?? 0;
+            if (typeof row.children[index].dataset["value"] !== "undefined") {
+                return row.children[index].dataset["value"] ?? 0;
             }
 
             return row.children[index].innerText;
