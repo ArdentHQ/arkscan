@@ -60,7 +60,10 @@ final class NumberFormatter
      */
     public static function usdWithDecimals($value, ?int $decimals = 4): string
     {
-        return '$'.rtrim(rtrim(number_format((float) $value, $decimals ?? 4), '0'), '.');
+        return rtrim(BetterNumberFormatter::new()
+            ->withLocale('international')
+            ->withFractionDigits($decimals ?? 4)
+            ->formatCurrency((float) $value, 'USD'), '0.');
     }
 
     /**
