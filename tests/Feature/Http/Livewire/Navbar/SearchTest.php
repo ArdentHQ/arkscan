@@ -140,7 +140,7 @@ it('should search with meilisearch', function () {
         ->assertDontSee($otherWallet->address);
 });
 
-it('should search for know wallets addresses with meilisearch', function () {
+it('should search for known wallets addresses with meilisearch', function () {
     // Default value, overriden in phpunit.xml for the tests
     Config::set('scout.driver', 'meilisearch');
 
