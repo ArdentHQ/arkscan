@@ -17,6 +17,10 @@ final class WalletTable extends Component
 
     public int $perPage = 10;
 
+    protected $queryString = [
+        'perPage' => ['except' => 10],
+    ];
+
     public function render(): View
     {
         return view('livewire.wallet-table', [
