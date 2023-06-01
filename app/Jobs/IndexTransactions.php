@@ -36,13 +36,16 @@ class IndexTransactions implements ShouldQueue
     {
         $latestIndexedTimestamp = $this->getLatestIndexedTimestamp();
 
-        info($latestIndexedTimestamp);
+        // If there are no indexed transactions yet we should not index anything
+        // and wait for the user to run `php artisan scout:import "App\Models\Transaction"`
+        // for the first time
+        if ($latestIndexedTimestamp === null) {
+            return;
+        }
 
         $builder = Transaction::where('timestamp', '>', $latestIndexedTimestamp)
             ->orderBy('timestamp', 'asc')
             ->limit(self::CHUNK_SIZE);
-
-        info("to index " . $builder->count() . " transactions");
 
         $builder->searchable();
     }

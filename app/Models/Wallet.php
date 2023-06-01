@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 
 /**
@@ -79,16 +80,45 @@ final class Wallet extends Model
      */
     public function toSearchableArray(): array
     {
-        // Notice that we only need to index the data used on to hydrate the model
-        // for the search results.
-        $attributes       = json_decode($this->attributes['attributes'], true);
-        $delegateUsername = Arr::get($attributes, 'delegate.username');
-
         return [
             'address'  => $this->address,
-            'username' => $delegateUsername,
+            'username' => $this->delegate_username,
             'balance'  => $this->balance->__toString(),
+            'timestamp' => $this->timestamp,
         ];
+    }
+
+    /**
+     * Overrides `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
+     * to add a custom property and optimize the query
+     *
+     * @param  int  $chunk
+     * @return void
+     */
+    public static function makeAllSearchable($chunk = null)
+    {
+        $self = new static;
+
+        // Consider that the original `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
+        // method contains more logic to see stuff like if should use soft delete
+        // and stuff like that but we don't need it here.
+        $self->newQuery()
+            ->select([
+                DB::raw("wallets.attributes->'delegate'->>'username' AS delegate_username"),
+                "wallets.address",
+                "wallets.attributes",
+                "wallets.balance",
+                DB::raw('MIN(transactions.timestamp) as timestamp'),
+            ])
+            ->leftJoin( 'transactions', 'transactions.recipient_id', '=', 'wallets.address')
+            ->groupBy("wallets.address")
+            ->when(true, function ($query) use ($self) {
+                $self->makeAllSearchableUsing($query);
+            })
+            ->orderBy(
+                $self->qualifyColumn($self->getScoutKeyName())
+            )
+            ->searchable($chunk);
     }
 
     /**
