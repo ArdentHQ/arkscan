@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Wallet;
 use App\Repositories\WalletRepository;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 
 beforeEach(fn () => $this->subject = new WalletRepository());
@@ -49,6 +50,21 @@ it('should find a wallet by username', function () {
     expect($this->subject->findByUsername($wallet->attributes['delegate']['username']))->toBeInstanceOf(Wallet::class);
 });
 
+it('should find a wallet by username case insensitive', function () {
+    Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => [
+                'username' => 'johndoe',
+            ],
+        ],
+    ]);
+
+    expect($this->subject->findByUsername(
+        username: 'JohnDoe',
+        caseSensitive: false
+    ))->toBeInstanceOf(Wallet::class);
+});
+
 it('should find a wallet by username containing a whitespace', function () {
     $wallet               = Wallet::factory()->create();
     $delegate             = $wallet->attributes['delegate'];
@@ -84,3 +100,9 @@ it('should find a wallet by identifier if could be username', function () {
 
     expect($this->subject->findByIdentifier('johndoe'))->toBeInstanceOf(Wallet::class);
 });
+
+it('should find nothing when searching for a wallet by identifier that is not anything', function () {
+    Wallet::factory()->create();
+
+    $this->subject->findByIdentifier('+');
+})->throws(ModelNotFoundException::class);
