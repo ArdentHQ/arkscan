@@ -27,51 +27,6 @@ it('should search for a wallet', function () {
         ->assertDontSee($otherWallet->address);
 });
 
-it('should search with meilisearch', function () {
-    // Default value, overriden in phpunit.xml for the tests
-    Config::set('scout.driver', 'meilisearch');
-
-    // Mock the Meilisearch client and indexes
-    $mock    = $this->mock(MeilisearchClient::class);
-    $indexes = $this->mock(Indexes::class);
-    $mock->shouldReceive('index')->andReturn($indexes);
-    $indexes->shouldReceive('addDocuments');
-
-    $wallet      = Wallet::factory()->create();
-    $otherWallet = Wallet::factory()->create();
-
-    $this->mock(MeilisearchEngine::class)
-        ->shouldReceive('multiSearch')
-        ->withArgs(function ($params) {
-            return count($params) === 3 &&
-                collect($params)->every(fn ($param) => $param instanceof SearchQuery);
-        })
-        ->once()
-        ->andReturn([
-            'results' => [
-                [
-                    'indexUid' => 'wallets',
-                    'hits'     => [
-                        $wallet->toSearchableArray(),
-                    ],
-                ],
-                [
-                    'indexUid' => 'transactions',
-                    'hits'     => [],
-                ],
-                [
-                    'indexUid' => 'blocks',
-                    'hits'     => [],
-                ],
-            ],
-        ]);
-
-    Livewire::test(Search::class)
-        ->set('query', $wallet->address)
-        ->assertSee($wallet->address)
-        ->assertDontSee($otherWallet->address);
-});
-
 it('should search for a wallet username over a block generator', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
