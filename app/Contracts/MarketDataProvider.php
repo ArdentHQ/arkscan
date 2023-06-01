@@ -17,9 +17,9 @@ interface MarketDataProvider
 
     /**
      * @return array{
-     *   price: float,
-     *   volume: float,
-     * }|null
+     *   price: float|int|null,
+     *   volume: float|int|null,
+     * }
      */
-    public function exchangeDetails(Exchange $exchange): array | null;
+    public function exchangeDetails(Exchange $exchange): array;
 }
