@@ -38,7 +38,7 @@
                         @foreach ($results as $result)
                             <div wire:key="{{ $result->id() }}" class="pt-1">
                                 @if (is_a($result->model(), \App\Models\Wallet::class))
-                                    <x-search.results.wallet :wallet="$result" />
+                                    <x-search.results.wallet :wallet="$result" truncate :truncate-length="14" />
                                 @elseif (is_a($result->model(), \App\Models\Block::class))
                                     <x-search.results.block :block="$result" />
                                 @elseif (is_a($result->model(), \App\Models\Transaction::class))
