@@ -61,7 +61,7 @@ final class NumberFormatter
     public static function usdWithDecimals($value, ?int $decimals = 4): string
     {
         return rtrim(BetterNumberFormatter::new()
-            ->withLocale('international')
+            ->withLocale('en-US')
             ->withFractionDigits($decimals ?? 4)
             // Workaround to fix 5 rounding down (e.g. 1.00005 > 1 instead of 1.0001)
             ->formatCurrency(floatval(number_format((float) $value, $decimals ?? 4, '.', '')), 'USD'), '0.');
