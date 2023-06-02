@@ -14,4 +14,5 @@
     :last-on="$lastOn"
     :class="$class . ' text-left'"
     :name="$name"
+    :attributes="$attributes"
 />
