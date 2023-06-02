@@ -60,11 +60,11 @@ final class NumberFormatter
      */
     public static function usdWithDecimals($value, ?int $decimals = 4): string
     {
-        return rtrim(BetterNumberFormatter::new()
+        return self::trimZeros(BetterNumberFormatter::new()
             ->withLocale('en-US')
             ->withFractionDigits($decimals ?? 4)
             // Workaround to fix 5 rounding down (e.g. 1.00005 > 1 instead of 1.0001)
-            ->formatCurrency(floatval(number_format((float) $value, $decimals ?? 4, '.', '')), 'USD'), '0.');
+            ->formatCurrency(floatval(number_format((float) $value, $decimals ?? 4, '.', '')), 'USD'));
     }
 
     /**
@@ -123,5 +123,10 @@ final class NumberFormatter
         }
 
         return self::CRYPTO_DECIMALS;
+    }
+
+    private static function trimZeros(string $value): string
+    {
+        return rtrim(rtrim($value, '0'), '.');
     }
 }
