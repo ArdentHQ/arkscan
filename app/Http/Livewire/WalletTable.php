@@ -17,6 +17,9 @@ final class WalletTable extends Component
 
     public int $perPage = 10;
 
+    /**
+     * @var mixed
+     */
     protected $queryString = [
         'perPage' => ['except' => 10],
     ];
