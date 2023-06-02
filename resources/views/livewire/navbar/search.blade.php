@@ -4,6 +4,7 @@
 }">
     <x-ark-input-with-prefix
         icon="magnifying-glass"
+        icon-class="text-theme-secondary-500 dark:text-theme-secondary-700"
         type="text"
         id="search"
         name="search"
@@ -15,7 +16,7 @@
         field-class-override="block w-full border-0 rounded outline-none appearance-none px-2 py-[7px] text-sm leading-4 placeholder:text-theme-secondary-700 text-theme-secondary-900 dark:text-theme-secondary-400 bg-transparent"
         hide-label
         disable-dirty-styling
-        iconSize="sm"
+        icon-size="sm"
         wire:keydown.enter="goToFirstResult"
     >
         <div
@@ -73,7 +74,7 @@
                         </div>
                     @endforeach
                 @else
-                    <p class="text-center dark:text-theme-secondary-700">
+                    <p class="text-center dark:text-theme-secondary-500">
                         @lang('general.navbar.no_results')
                     </p>
                 @endif
