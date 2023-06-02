@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Facades\Network;
-use App\Http\Livewire\WalletTable;
+use App\Http\Livewire\TopAccountsTable;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
@@ -16,7 +16,7 @@ it('should list the first page of records', function () {
 
     Wallet::factory(10)->create();
 
-    $component = Livewire::test(WalletTable::class);
+    $component = Livewire::test(TopAccountsTable::class);
 
     foreach (ViewModelFactory::paginate(Wallet::withScope(OrderByBalanceScope::class)->paginate())->items() as $wallet) {
         $component->assertSee($wallet->address());
@@ -30,7 +30,7 @@ it('should change per page', function () {
     $visibleWallets    = Wallet::factory(10)->create(['balance' => 1000]);
     $notVisibleWallets = Wallet::factory(10)->create(['balance' => 10]);
 
-    $component = Livewire::test(WalletTable::class)
+    $component = Livewire::test(TopAccountsTable::class)
         ->set('perPage', 25);
 
     foreach ($visibleWallets->concat($notVisibleWallets) as $wallet) {
@@ -54,7 +54,7 @@ it('should not per page if not a valid option', function () {
     $visibleWallets    = Wallet::factory(10)->create(['balance' => 1000]);
     $notVisibleWallets = Wallet::factory(8)->create(['balance' => 10]);
 
-    $component = Livewire::test(WalletTable::class)
+    $component = Livewire::test(TopAccountsTable::class)
         ->assertSet('perPage', 10);
 
     foreach ($visibleWallets as $wallet) {

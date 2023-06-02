@@ -59,7 +59,7 @@
                     >
                         <x-ark-icon
                             name="arrows.chevron-down-small"
-                            size="w-3 h-3"
+                            size="w-2.5 h-2.5 md:w-3 md:h-3"
                         />
                     </span>
                 </div>
