@@ -10,9 +10,9 @@
     </div>
 
     <x-skeletons.top-accounts :row-count="$this->perPage">
-        <x-tables.desktop.wallets :wallets="$wallets" />
+        <x-tables.desktop.top-accounts :wallets="$wallets" />
 
-        <x-tables.mobile.wallets :wallets="$wallets" />
+        <x-tables.mobile.top-accounts :wallets="$wallets" />
     </x-skeletons.top-accounts>
 
     <x-general.pagination.table :results="$wallets" />
