@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Search\Traits;
 
-use App\Enums\SQLEnum;
-
 trait ValidatesTerm
 {
     private function couldBeTransactionID(string $term): bool
