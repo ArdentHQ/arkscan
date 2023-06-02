@@ -14,7 +14,7 @@ it('schedules the `scout:index-models` command correctly', function () {
         return stripos($event->command, 'scout:index-models');
     });
 
-    if ($events->count() == 0) {
+    if ($events->count() === 0) {
         $this->fail('No events found');
     }
 
