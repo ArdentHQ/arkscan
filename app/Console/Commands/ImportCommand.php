@@ -25,7 +25,7 @@ final class ImportCommand extends LaravelScoutImportCommand
         $this->warn('you shouldn\'t manually resume this process, but start the import again.');
         $this->warn('To resume indexing use the command:.');
         $this->newLine();
-        $this->warn(sprintf('`php artisan scout:resume-indexing` "%s"', $this->argument('model')));
+        $this->warn(sprintf('`php artisan scout:resume-indexing "%s"`', $this->argument('model')));
         $this->newLine();
 
         $class = $this->argument('model');
