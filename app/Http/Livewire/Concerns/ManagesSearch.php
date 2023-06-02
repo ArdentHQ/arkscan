@@ -74,11 +74,11 @@ trait ManagesSearch
 
         if ($knownWalletsAddresses->count() > 0) {
             $knownWalletsAddresses->each(function ($address) use ($searchQueries) {
+                /**
+                 * @var SearchQuery
+                 */
                 $query = $this->buildSearchQueryForIndex($address, 'wallets');
-
-                if ($query !== null) {
-                    $searchQueries->push($query);
-                }
+                $searchQueries->push($query);
             });
         }
 
