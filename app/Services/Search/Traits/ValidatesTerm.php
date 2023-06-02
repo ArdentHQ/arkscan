@@ -52,13 +52,6 @@ trait ValidatesTerm
             && preg_match($regex, $term, $matches) > 0;
     }
 
-    private function couldBeHeightValue(string $term): bool
-    {
-        $numericTerm = strval(filter_var($term, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND));
-
-        return $this->isOnlyNumbers($numericTerm) && $this->numericTermIsInRange($numericTerm);
-    }
-
     private function is64CharsHexadecimalString(string $term): bool
     {
         return $this->isOnlyNumbers($term)
@@ -73,16 +66,5 @@ trait ValidatesTerm
     private function isHexadecimalString(string $term): bool
     {
         return ctype_xdigit($term);
-    }
-
-    /**
-     * Validates that the numnber is smaller that the max size for a type integer
-     * on pgsql. Searching for a bigger number will result in an SQL exception.
-     *
-     * @return bool
-     */
-    private function numericTermIsInRange(string $term): bool
-    {
-        return floatval($term) <= SQLEnum::INT4_MAXVALUE;
     }
 }
