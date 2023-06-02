@@ -22,9 +22,11 @@ use App\Models\Scopes\VoteCombinationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
 use App\Services\VendorField;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laravel\Scout\Searchable;
 
 /**
  * @property string $id
@@ -48,6 +50,7 @@ final class Transaction extends Model
     use HasFactory;
     use SearchesCaseInsensitive;
     use HasEmptyScope;
+    use Searchable;
 
     /**
      * A list of transaction scopes used for filtering based on type.
@@ -70,6 +73,13 @@ final class Transaction extends Model
         'voteCombination'               => VoteCombinationScope::class,
         'magistrate'                    => MagistrateScope::class,
     ];
+
+    /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    public $keyType = 'string';
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -101,6 +111,78 @@ final class Transaction extends Model
     ];
 
     private bool|string|null $vendorFieldContent = false;
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        // Notice that we only need to index the data used on to hydrate the model
+        // for the search results.
+        return [
+            // Searchable id and used to link the transaction
+            'id' => $this->id,
+            // Used to get the recipient wallet
+            'recipient_id' => $this->recipient_id,
+
+            // Used to get the sender wallets
+            'sender_public_key' => $this->sender_public_key,
+
+            // Used to show the transaction type
+            'type'       => $this->type,
+            'type_group' => $this->type_group,
+
+            // To get the amount for single payments
+            // Using `__toString` since are instances of `BigNumber`
+            'amount' => $this->amount->__toString(),
+            'fee'    => $this->fee->__toString(),
+            // Contains the multipayments payments and vote related data
+            'asset' => $this->asset,
+            // used to build the payments and sortable
+            'timestamp' => $this->timestamp,
+        ];
+    }
+
+    /**
+     * @return Builder<self>
+     */
+    public static function getSearchableQuery(): Builder
+    {
+        $self = new static();
+
+        return $self->newQuery()
+            ->select([
+                'id',
+                'sender_public_key',
+                'recipient_id',
+                'type',
+                'type_group',
+                'amount',
+                'fee',
+                'asset',
+                'timestamp',
+            ])
+            ->when(true, function ($query) use ($self) {
+                $self->makeAllSearchableUsing($query);
+            });
+    }
+
+    /**
+     * Overrides `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
+     * to optimize the query.
+     *
+     * @param  int  $chunk
+     * @return void
+     */
+    public static function makeAllSearchable($chunk = null)
+    {
+        $self = new static();
+
+        // @phpstan-ignore-next-line
+        $self::getSearchableQuery()->searchable($chunk);
+    }
 
     /**
      * A transaction belongs to a block.

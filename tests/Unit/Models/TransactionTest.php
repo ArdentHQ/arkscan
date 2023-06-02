@@ -6,6 +6,9 @@ use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Config;
+use Meilisearch\Client as MeilisearchClient;
+use Meilisearch\Endpoints\Indexes;
 
 beforeEach(function () {
     $this->subject = Transaction::factory()->create([
@@ -52,4 +55,30 @@ it('should get vendorfield value multiple times despite resource', function () {
     expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
     expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
     expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
+});
+
+it('makes transactions searchable', function () {
+    $transaction = Transaction::factory()->create();
+
+    $mock    = $this->mock(MeilisearchClient::class);
+    $indexes = $this->mock(Indexes::class);
+
+    $mock->shouldReceive('index')
+        ->withArgs(['transactions'])
+        ->andReturn($indexes);
+
+    $indexes->shouldReceive('addDocuments')
+        ->withArgs(function ($documents) use ($transaction) {
+            $document = collect($documents)->first(fn ($document) => $document['id'] === $transaction->id);
+
+            return json_encode($document) === json_encode($transaction->toSearchableArray());
+        });
+
+    // Default value, overriden in phpunit.xml for the tests
+    Config::set('scout.driver', 'meilisearch');
+
+    Transaction::makeAllSearchable();
+
+    // Expect no exception to be thrown
+    expect(true)->toBeTrue();
 });
