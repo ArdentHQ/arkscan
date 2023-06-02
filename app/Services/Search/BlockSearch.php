@@ -34,7 +34,7 @@ final class BlockSearch implements Search
         return collect($rawResults)->map(fn ($item) => new Block($item));
     }
 
-    public static function buildSearchQueryForIndex(string $query, int $limit): SearchQuery
+    public static function buildSearchQueryForIndex(string $query, int $limit): ?SearchQuery
     {
         if ((new self())->couldBeAddress($query)) {
             return null;
