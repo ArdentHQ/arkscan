@@ -195,3 +195,12 @@ body.table-compact-until-lg .arrow-direction {
 .table-list-mobile .table-list-mobile-row {
     @apply border-dashed;
 }
+
+.table-encapsulated table > tbody > tr:hover > td.hoverable-cell > div.table-cell-bg {
+    @apply bg-theme-secondary-200 dark:bg-black !important;
+}
+
+.table-encapsulated table > tbody > tr:hover > td.hoverable-cell:first-child > div.table-cell-bg::before,
+.table-encapsulated table > tbody > tr:hover > td.hoverable-cell:last-child > div.table-cell-bg:before {
+    @apply bg-theme-secondary-200 dark:bg-black !important;
+}
