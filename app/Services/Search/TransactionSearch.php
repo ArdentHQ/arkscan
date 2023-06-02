@@ -36,7 +36,7 @@ final class TransactionSearch implements Search
 
     public static function buildSearchQueryForIndex(string $query, int $limit): SearchQuery
     {
-        if ((new self)->couldBeTransactionID($query)) {
+        if ((new self())->couldBeTransactionID($query)) {
             $query = sprintf('"%s"', $query);
         }
 
