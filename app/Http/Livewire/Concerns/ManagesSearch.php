@@ -68,13 +68,17 @@ trait ManagesSearch
 
         $searchQueries = $indexUids
                 ->map(fn ($indexUid) => $this->buildSearchQueryForIndex($query, $indexUid))
-                ->filter();
+                ->filter(fn ($query) => $query !== null);
 
         $knownWalletsAddresses = $this->matchKnownWalletsAddresses($query);
 
         if ($knownWalletsAddresses->count() > 0) {
             $knownWalletsAddresses->each(function ($address) use ($searchQueries) {
-                $searchQueries->push($this->buildSearchQueryForIndex($address, 'wallets'));
+                $query = $this->buildSearchQueryForIndex($address, 'wallets');
+
+                if ($query !== null) {
+                   $searchQueries->push($query);
+                }
             });
         }
 
