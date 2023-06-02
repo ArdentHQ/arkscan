@@ -17,6 +17,13 @@ final class TopAccountsTable extends Component
 
     public int $perPage = 10;
 
+    /**
+     * @var mixed
+     */
+    protected $queryString = [
+        'perPage' => ['except' => 10],
+    ];
+
     public function render(): View
     {
         return view('livewire.top-accounts-table', [

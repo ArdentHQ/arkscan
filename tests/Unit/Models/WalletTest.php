@@ -2,15 +2,20 @@
 
 declare(strict_types=1);
 
+use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
+use Meilisearch\Client as MeilisearchClient;
+use Meilisearch\Endpoints\Indexes;
 
 beforeEach(function () {
     $this->subject = Wallet::factory()->create([
         'balance'    => '100000000000',
         'attributes' => [
             'delegate' => [
+                'username'    => 'test',
                 'voteBalance' => '200000000000',
             ],
         ],
@@ -30,4 +35,53 @@ it('should have many received transactions', function () {
 it('should have many blocks', function () {
     expect($this->subject->blocks())->toBeInstanceOf(HasMany::class);
     expect($this->subject->blocks)->toBeInstanceOf(Collection::class);
+});
+
+it('has custom scout key', function () {
+    expect($this->subject->getScoutKey())->toBe($this->subject->address);
+});
+
+it('has custom scout key name', function () {
+    expect($this->subject->getScoutKeyName())->toBe('address');
+});
+
+it('adds the transaction timestamp and username when making searchable', function () {
+    Transaction::factory()->create([
+        'recipient_id'      => $this->subject->address,
+        'timestamp'         => 123456789,
+    ]);
+
+    Transaction::factory()->create([
+        'recipient_id'      => $this->subject->address,
+        'timestamp'         => 123,
+    ]);
+
+    Transaction::factory()->create([
+        'recipient_id'      => $this->subject->address,
+        'timestamp'         => 12345,
+    ]);
+
+    $mock    = $this->mock(MeilisearchClient::class);
+    $indexes = $this->mock(Indexes::class);
+
+    $mock->shouldReceive('index')
+        ->withArgs(['wallets'])
+        ->andReturn($indexes);
+
+    $indexes->shouldReceive('addDocuments')
+        ->withArgs(function ($documents) {
+            $document = collect($documents)->first(fn ($document) => $document['address'] === $this->subject->address);
+
+            return $document['username'] === 'test'
+                && $document['address'] === $this->subject->address
+                && $document['timestamp'] === 123;
+        });
+
+    // Default value, overriden in phpunit.xml for the tests
+    Config::set('scout.driver', 'meilisearch');
+
+    Wallet::makeAllSearchable();
+
+    // Expect no exception to be thrown
+    expect(true)->toBeTrue();
 });

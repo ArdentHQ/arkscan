@@ -20,15 +20,7 @@
                 @lang('general.na')
             @else
                 <div class="inline-flex items-center">
-                    @if (config('currencies.'.Str::lower($to).'.symbol'))
-                        <span>
-                            {{ config('currencies.'.Str::lower($to).'.symbol') }}
-                        </span>
-                    @endif
-
-                    <span>
-                        {{ $price }}
-                    </span>
+                    {{ ExplorerNumberFormatter::currency($price, Settings::currency()) }}
                 </div>
             @endif
         </div>
