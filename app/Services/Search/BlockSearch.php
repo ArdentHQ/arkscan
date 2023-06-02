@@ -9,6 +9,7 @@ use App\Models\Block;
 use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
+use Meilisearch\Contracts\SearchQuery;
 
 final class BlockSearch implements Search
 {
@@ -19,9 +20,7 @@ final class BlockSearch implements Search
      */
     public function search(string $query, int $limit): EloquentCollection
     {
-        if ($this->couldBeHeightValue($query)) {
-            $builder = Block::where('height', $query)->take(1);
-        } elseif ($this->couldBeBlockID($query)) {
+        if ($this->couldBeBlockID($query)) {
             $builder = Block::where('id', strtolower($query))->take(1);
         } else {
             $builder = Block::where('id', 'ilike', sprintf('%%%s%%', $query))->limit($limit);
@@ -33,5 +32,17 @@ final class BlockSearch implements Search
     public static function mapMeilisearchResults(array $rawResults): Collection
     {
         return collect($rawResults)->map(fn ($item) => new Block($item));
+    }
+
+    public static function buildSearchQueryForIndex(string $query, int $limit): SearchQuery
+    {
+        if ((new self)->couldBeBlockID($query)) {
+            $query = sprintf('"%s"', $query);
+        }
+
+        return (new SearchQuery())
+            ->setQuery($query)
+            ->setIndexUid('blocks')
+            ->setLimit($limit);
     }
 }

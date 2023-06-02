@@ -67,7 +67,8 @@ trait ManagesSearch
         $indexUids = collect(['wallets', 'transactions', 'blocks']);
 
         $searchQueries = $indexUids
-                ->map(fn ($indexUid) => $this->buildSearchQueryForIndex($query, $indexUid));
+                ->map(fn ($indexUid) => $this->buildSearchQueryForIndex($query, $indexUid))
+                ->filter();
 
         $knownWalletsAddresses = $this->matchKnownWalletsAddresses($query);
 
@@ -135,11 +136,16 @@ trait ManagesSearch
             ->map(fn ($wallet) => $wallet['address']);
     }
 
-    private function buildSearchQueryForIndex(string $query, string $indexUid): SearchQuery
+    private function buildSearchQueryForIndex(string $query, string $indexUid): ?SearchQuery
     {
-        return (new SearchQuery())
-            ->setQuery($query)
-            ->setIndexUid($indexUid)
-            ->setLimit(RESULT_LIMIT_PER_TYPE);
+        if ($indexUid === 'transactions') {
+            return TransactionSearch::buildSearchQueryForIndex($query, RESULT_LIMIT_PER_TYPE);
+        }
+
+        if ($indexUid === 'blocks') {
+            return BlockSearch::buildSearchQueryForIndex($query, RESULT_LIMIT_PER_TYPE);
+        }
+
+        return WalletSearch::buildSearchQueryForIndex($query, RESULT_LIMIT_PER_TYPE);
     }
 }

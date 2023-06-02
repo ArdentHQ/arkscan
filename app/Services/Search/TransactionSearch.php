@@ -9,6 +9,7 @@ use App\Models\Transaction;
 use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
+use Meilisearch\Contracts\SearchQuery;
 
 final class TransactionSearch implements Search
 {
@@ -31,5 +32,17 @@ final class TransactionSearch implements Search
     public static function mapMeilisearchResults(array $rawResults): Collection
     {
         return collect($rawResults)->map(fn ($item) => new Transaction($item));
+    }
+
+    public static function buildSearchQueryForIndex(string $query, int $limit): SearchQuery
+    {
+        if ((new self)->couldBeTransactionID($query)) {
+            $query = sprintf('"%s"', $query);
+        }
+
+        return (new SearchQuery())
+            ->setQuery($query)
+            ->setIndexUid('transactions')
+            ->setLimit($limit);
     }
 }
