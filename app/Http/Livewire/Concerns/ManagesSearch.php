@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Concerns;
 
+use App\Facades\Network;
 use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
@@ -65,10 +66,19 @@ trait ManagesSearch
     {
         $indexUids = collect(['wallets', 'transactions', 'blocks']);
 
+        $searchQueries = $indexUids
+                ->map(fn ($indexUid) => $this->buildSearchQueryForIndex($query, $indexUid));
+
+        $knownWalletsAddresses = $this->matchKnownWalletsAddresses($query);
+
+        if ($knownWalletsAddresses->count() > 0) {
+            $knownWalletsAddresses->each(function ($address) use ($searchQueries) {
+                $searchQueries->push($this->buildSearchQueryForIndex($address, 'wallets'));
+            });
+        }
+
         $response = app(MeilisearchEngine::class)->__call('multiSearch', [
-            $indexUids
-                ->map(fn ($indexUid) => $this->buildSearchQueryForIndex($query, $indexUid))
-                ->toArray(),
+            $searchQueries->toArray(),
         ]);
 
         /**
@@ -77,8 +87,10 @@ trait ManagesSearch
         $results = Arr::get($response, 'results');
 
         $results =  collect($results)
-            ->mapWithKeys(fn ($result) => [$result['indexUid'] => $result['hits']])
-            ->flatMap(function ($hits, $indexUid) {
+            ->flatMap(function ($result) {
+                $indexUid = $result['indexUid'];
+                $hits     = $result['hits'];
+
                 if ($indexUid === 'wallets') {
                     return WalletSearch::mapMeilisearchResults($hits);
                 }
@@ -112,6 +124,15 @@ trait ManagesSearch
         $chars = implode('', ['*', '"', '\'', ' ', '.']);
 
         return ltrim(rtrim($query, $chars), $chars);
+    }
+
+    private function matchKnownWalletsAddresses(string $query): Collection
+    {
+        $knownWallets = collect(Network::knownWallets());
+
+        return $knownWallets
+            ->filter(fn ($wallet) => str_contains(strtolower($wallet['name']), strtolower($query)))
+            ->map(fn ($wallet) => $wallet['address']);
     }
 
     private function buildSearchQueryForIndex(string $query, string $indexUid): SearchQuery
