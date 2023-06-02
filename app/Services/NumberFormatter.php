@@ -50,7 +50,7 @@ final class NumberFormatter
         }
 
         return BetterNumberFormatter::new()
-            ->withLocale('international')
+            ->withLocale('en-US')
             ->withFractionDigits(static::decimalsFor($currency))
             ->formatCurrency((float) $value, $currency);
     }
