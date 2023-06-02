@@ -7,7 +7,7 @@
 
     @section('content')
         <x-ark-container>
-            <livewire:wallet-table />
+            <livewire:top-accounts-table />
         </x-ark-container>
     @endsection
 @endcomponent
