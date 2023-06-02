@@ -4,6 +4,8 @@
 
 @php
     ['pageName' => $pageName, 'urlParams' => $urlParams] = ARKEcosystem\Foundation\UserInterface\UI::getPaginationData($paginator);
+
+    $urlParams['perPage'] = $paginator->perPage();
 @endphp
 
 <div {{ $attributes }}>
