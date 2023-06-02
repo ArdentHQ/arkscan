@@ -56,7 +56,7 @@ final class WalletSearch implements Search
         }
 
         if ((new self)->couldBeAddress($query)) {
-            $query = sprintf('id:"%s"', $query);
+            $query = sprintf('"%s"', $query);
         }
 
         return (new SearchQuery())
