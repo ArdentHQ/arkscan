@@ -6,11 +6,11 @@
             rel="nofollow noopener noreferrer"
             class="flex flex-col bg-white rounded-xl border transition hover:cursor-pointer group border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800 dark:hover:bg-theme-secondary-800 hover:border-theme-primary-200 hover:bg-theme-primary-50"
         >
-            <div class="flex justify-center items-center mx-2 mt-2 rounded-xl aspect-square">
-                <x-ark-icon name="app-wallets.{{$wallet['logo']}}" size="none" />
+            <div class="flex justify-center items-center mx-2 mt-2 rounded-xl">
+                <x-ark-icon name="app-wallets.{{$wallet['logo']}}" size="full" />
             </div>
-            <div class="mx-6 mt-3 mb-6">
 
+            <div class="mx-6 mt-3 mb-6">
                 <span class="inline font-semibold break-words transition text-theme-primary-600 group-hover:text-theme-primary-700">
                     <span>{{ $wallet['title'] }}</span>
                     <x-ark-icon
