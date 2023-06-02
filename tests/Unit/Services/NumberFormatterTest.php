@@ -105,4 +105,5 @@ it('should use up to decimals and trim zero', function () {
     expect(NumberFormatter::usdWithDecimals(1.00000))->toBe('$1');
     expect(NumberFormatter::usdWithDecimals(1.1200001))->toBe('$1.12');
     expect(NumberFormatter::usdWithDecimals(1.1200001, 1))->toBe('$1.1');
+    expect(NumberFormatter::usdWithDecimals(29510))->toBe('$29,510');
 });
