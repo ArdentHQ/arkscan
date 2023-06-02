@@ -77,7 +77,7 @@ trait ManagesSearch
                 $query = $this->buildSearchQueryForIndex($address, 'wallets');
 
                 if ($query !== null) {
-                   $searchQueries->push($query);
+                    $searchQueries->push($query);
                 }
             });
         }

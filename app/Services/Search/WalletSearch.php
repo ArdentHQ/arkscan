@@ -51,11 +51,11 @@ final class WalletSearch implements Search
 
     public static function buildSearchQueryForIndex(string $query, int $limit): ?SearchQuery
     {
-        if ((new self)->couldntBeAddress($query)) {
+        if ((new self())->couldntBeAddress($query)) {
             return null;
         }
 
-        if ((new self)->couldBeAddress($query)) {
+        if ((new self())->couldBeAddress($query)) {
             $query = sprintf('"%s"', $query);
         }
 

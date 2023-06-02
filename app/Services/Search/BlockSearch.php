@@ -36,11 +36,11 @@ final class BlockSearch implements Search
 
     public static function buildSearchQueryForIndex(string $query, int $limit): SearchQuery
     {
-        if ((new self)->couldBeAddress($query)) {
+        if ((new self())->couldBeAddress($query)) {
             return null;
         }
 
-        if ((new self)->couldBeBlockID($query)) {
+        if ((new self())->couldBeBlockID($query)) {
             $query = sprintf('"%s"', $query);
         }
 
