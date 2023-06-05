@@ -67,13 +67,18 @@ trait ManagesSearch
         $indexUids = collect(['wallets', 'transactions', 'blocks']);
 
         $searchQueries = $indexUids
-                ->map(fn ($indexUid) => $this->buildSearchQueryForIndex($query, $indexUid));
+                ->map(fn ($indexUid) => $this->buildSearchQueryForIndex($query, $indexUid))
+                ->filter(fn ($query) => $query !== null);
 
         $knownWalletsAddresses = $this->matchKnownWalletsAddresses($query);
 
         if ($knownWalletsAddresses->count() > 0) {
             $knownWalletsAddresses->each(function ($address) use ($searchQueries) {
-                $searchQueries->push($this->buildSearchQueryForIndex($address, 'wallets'));
+                /**
+                 * @var SearchQuery
+                 */
+                $query = $this->buildSearchQueryForIndex($address, 'wallets');
+                $searchQueries->push($query);
             });
         }
 
@@ -135,11 +140,16 @@ trait ManagesSearch
             ->map(fn ($wallet) => $wallet['address']);
     }
 
-    private function buildSearchQueryForIndex(string $query, string $indexUid): SearchQuery
+    private function buildSearchQueryForIndex(string $query, string $indexUid): ?SearchQuery
     {
-        return (new SearchQuery())
-            ->setQuery($query)
-            ->setIndexUid($indexUid)
-            ->setLimit(RESULT_LIMIT_PER_TYPE);
+        if ($indexUid === 'transactions') {
+            return TransactionSearch::buildSearchQueryForIndex($query, RESULT_LIMIT_PER_TYPE);
+        }
+
+        if ($indexUid === 'blocks') {
+            return BlockSearch::buildSearchQueryForIndex($query, RESULT_LIMIT_PER_TYPE);
+        }
+
+        return WalletSearch::buildSearchQueryForIndex($query, RESULT_LIMIT_PER_TYPE);
     }
 }

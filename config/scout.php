@@ -158,7 +158,7 @@ return [
             ],
             Transaction::class => [
                 'filterableAttributes'=> ['id', 'recipient_id'],
-                'searchableAttributes'=> ['id', 'recipient_id'],
+                'searchableAttributes'=> ['id'],
                 'sortableAttributes'  => ['timestamp'],
                 'typoTolerance'       => [
                     'disableOnWords' => ['id'],
@@ -173,10 +173,10 @@ return [
                 ],
             ],
             Block::class => [
-                'searchableAttributes'=> ['id', 'height'],
+                'searchableAttributes'=> ['id'],
                 'sortableAttributes'  => ['timestamp'],
                 'typoTolerance'       => [
-                    'disableOnWords' => ['id', 'height'],
+                    'disableOnWords' => ['id'],
                 ],
                 'rankingRules' => [
                     'typo',

@@ -7,6 +7,7 @@
     'suffix'          => false,
     'withoutReverse'  => false,
     'withoutTruncate' => false,
+    'truncateLength'  => null,
     'withoutUsername' => false,
     'addressVisible'  => false,
     'withoutReverseClass' => 'space-x-3',
@@ -61,7 +62,7 @@
                         @if($withoutTruncate)
                             {{ $model->address() }}
                         @else
-                            <x-truncate-middle>
+                            <x-truncate-middle :length="$truncateLength">
                                 {{ $model->address() }}
                             </x-truncate-middle>
                         @endisset
