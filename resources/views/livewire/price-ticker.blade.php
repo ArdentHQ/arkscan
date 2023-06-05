@@ -26,6 +26,7 @@
         </div>
 
         <x-general.dropdown.dropdown
+            dropdownClass="right-0 min-w-[125px]"
             scroll-class="max-h-[246px] md:max-h-[332px]"
             :disabled="$isDisabled"
         >
