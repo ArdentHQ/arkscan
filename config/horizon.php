@@ -45,6 +45,16 @@ $environments = [
         'balanceCooldown' => 1,
         'tries'           => 1,
     ],
+    'scout' => [
+        'connection'      => 'redis',
+        'queue'           => ['scout'],
+        'balance'         => 'auto',
+        'minProcesses'    => 5,
+        'maxProcesses'    => 15,
+        'balanceMaxShift' => 5,
+        'balanceCooldown' => 1,
+        'tries'           => 1,
+    ],
 ];
 
 return [
