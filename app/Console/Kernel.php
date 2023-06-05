@@ -93,7 +93,7 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(ImportCommand::class, [
             Wallet::class,
-            '--no-pause'
+            '--no-pause',
         ])->withoutOverlapping()->everyMinute();
     }
 

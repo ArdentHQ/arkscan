@@ -22,7 +22,7 @@ it('should not call the command and pause/resume indexing if --no-pause options 
     Cache::shouldReceive('forget')->never();
 
     Artisan::call('scout:import', [
-        'model' => Transaction::class,
+        'model'      => Transaction::class,
         '--no-pause' => true,
     ]);
 });
