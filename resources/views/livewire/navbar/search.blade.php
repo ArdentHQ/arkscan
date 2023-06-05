@@ -18,6 +18,7 @@
         disable-dirty-styling
         icon-size="sm"
         wire:keydown.enter="goToFirstResult"
+        wire:keydown.escape="clear"
     >
         <div
             class="flex items-center mr-4 space-x-4"
