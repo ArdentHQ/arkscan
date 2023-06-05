@@ -135,9 +135,86 @@ it('should search with meilisearch', function () {
         ]);
 
     Livewire::test(Search::class)
+        ->set('query', substr($wallet->address, 0, 12))
+        ->assertSee($wallet->address)
+        ->assertDontSee($otherWallet->address);
+});
+
+it('should search only wallets when searching for an address', function () {
+    // Default value, overriden in phpunit.xml for the tests
+    Config::set('scout.driver', 'meilisearch');
+
+    // Mock the Meilisearch client and indexes
+    $mock    = $this->mock(MeilisearchClient::class);
+    $indexes = $this->mock(Indexes::class);
+    $mock->shouldReceive('index')->andReturn($indexes);
+    $indexes->shouldReceive('addDocuments');
+
+    $wallet      = Wallet::factory()->create();
+    $otherWallet = Wallet::factory()->create();
+
+    $this->mock(MeilisearchEngine::class)
+        ->shouldReceive('multiSearch')
+        ->withArgs(function ($params) {
+            return count($params) === 1 && $params[0] instanceof SearchQuery;
+        })
+        ->once()
+        ->andReturn([
+            'results' => [
+                [
+                    'indexUid' => 'wallets',
+                    'hits'     => [
+                        $wallet->toSearchableArray(),
+                    ],
+                ],
+            ],
+        ]);
+
+    Livewire::test(Search::class)
         ->set('query', $wallet->address)
         ->assertSee($wallet->address)
         ->assertDontSee($otherWallet->address);
+});
+
+it('should search only transactions and blocks when searching for id', function () {
+    // Default value, overriden in phpunit.xml for the tests
+    Config::set('scout.driver', 'meilisearch');
+
+    // Mock the Meilisearch client and indexes
+    $mock    = $this->mock(MeilisearchClient::class);
+    $indexes = $this->mock(Indexes::class);
+    $mock->shouldReceive('index')->andReturn($indexes);
+    $indexes->shouldReceive('addDocuments');
+
+    $transaction      = Transaction::factory()->create([
+        'id' => '01119cd018eef8c7314aed7fc3af13ec04b05ad55dd558dcc3ff7169f0af921c',
+    ]);
+
+    $this->mock(MeilisearchEngine::class)
+        ->shouldReceive('multiSearch')
+        ->withArgs(function ($params) {
+            return count($params) === 2 &&
+                collect($params)->every(fn ($param) => $param instanceof SearchQuery);
+        })
+        ->once()
+        ->andReturn([
+            'results' => [
+                [
+                    'indexUid' => 'transactions',
+                    'hits'     => [
+                        $transaction->toSearchableArray(),
+                    ],
+                ],
+                [
+                    'indexUid' => 'blocks',
+                    'hits'     => [],
+                ],
+            ],
+        ]);
+
+    Livewire::test(Search::class)
+        ->set('query', $transaction->id)
+        ->assertSee($transaction->id);
 });
 
 it('should search for known wallets addresses with meilisearch', function () {

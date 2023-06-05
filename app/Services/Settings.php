@@ -18,7 +18,6 @@ class Settings
             'priceChart'     => true,
             'feeChart'       => true,
             'darkTheme'      => null,
-            'expandedTables' => false,
         ];
 
         $settings = Cookie::get('settings');
@@ -70,11 +69,6 @@ class Settings
         return 'auto';
     }
 
-    public function expandedTables(): bool
-    {
-        return (bool) $this->get('expandedTables', false);
-    }
-
     public function usesCharts(): bool
     {
         return $this->usesPriceChart() || $this->usesFeeChart();
@@ -92,10 +86,5 @@ class Settings
     public function usesFeeChart(): bool
     {
         return $this->feeChart();
-    }
-
-    public function usesExpandedTables(): bool
-    {
-        return $this->expandedTables();
     }
 }
