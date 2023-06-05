@@ -10,6 +10,7 @@ use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Meilisearch\Contracts\SearchQuery;
 
 final class WalletSearch implements Search
 {
@@ -46,5 +47,21 @@ final class WalletSearch implements Search
                 ],
             ],
         ]));
+    }
+
+    public static function buildSearchQueryForIndex(string $query, int $limit): ?SearchQuery
+    {
+        if ((new self())->couldntBeAddress($query)) {
+            return null;
+        }
+
+        if ((new self())->couldBeAddress($query)) {
+            $query = sprintf('"%s"', $query);
+        }
+
+        return (new SearchQuery())
+            ->setQuery($query)
+            ->setIndexUid('wallets')
+            ->setLimit($limit);
     }
 }
