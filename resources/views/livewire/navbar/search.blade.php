@@ -23,6 +23,7 @@
         wire:keydown.enter="goToFirstResult"
         wire:keydown.escape="clear"
         x-on:blur="blurHandler"
+        autocomplete="off"
     >
         <div
             class="flex items-center mr-4 space-x-4"
