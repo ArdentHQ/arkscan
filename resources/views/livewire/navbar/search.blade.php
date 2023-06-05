@@ -1,7 +1,10 @@
-<div x-data="{
-    query: @entangle('query'),
-    dropdownOpen: @entangle('query'),
-}">
+<div
+    x-ref="search"
+    x-data="Search.setup({
+        query: @entangle('query'),
+        dropdownOpen: @entangle('query'),
+    })"
+>
     <x-ark-input-with-prefix
         icon="magnifying-glass"
         icon-class="text-theme-secondary-500 dark:text-theme-secondary-700"
@@ -19,6 +22,7 @@
         icon-size="sm"
         wire:keydown.enter="goToFirstResult"
         wire:keydown.escape="clear"
+        x-on:blur="blurHandler"
     >
         <div
             class="flex items-center mr-4 space-x-4"
@@ -30,6 +34,7 @@
                 wire:click="clear"
                 class="p-2 -my-px bg-transparent button-secondary text-theme-secondary-700 dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
                 x-cloak
+                x-on:blur="blurHandler"
             >
                 <x-ark-icon
                     name="cross"
