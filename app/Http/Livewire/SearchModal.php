@@ -28,4 +28,13 @@ final class SearchModal extends Component
             'hasResults' => $results->isNotEmpty(),
         ]);
     }
+
+    public function closeModal(): void
+    {
+        $this->modalShown = false;
+
+        $this->clear();
+
+        $this->modalClosed();
+    }
 }

@@ -19,6 +19,7 @@ import ReadMore from "@ui/js/read-more.js";
 import RichSelect from "./rich-select.js";
 import TableSorting from "./table-sorting.js";
 import Tabs from "./tabs";
+import Search from "./search";
 import makeBlockie from "ethereum-blockies-base64";
 
 window.makeBlockie = makeBlockie;
@@ -35,7 +36,9 @@ window.RichSelect = RichSelect;
 window.PriceChart = PriceChart;
 window.Navbar = Navbar;
 window.CustomChart = CustomChart;
+window.CustomChart = CustomChart;
 window.TableSorting = TableSorting;
+window.Search = Search;
 
 Alpine.start();
 
