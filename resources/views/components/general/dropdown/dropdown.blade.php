@@ -33,7 +33,7 @@
             </div>
         </x-slot>
 
-        <div @class(["flex overflow-y-auto flex-col h-full custom-scroll", $scrollClass])>
+        <div @class(["flex overflow-y-auto flex-col h-full custom-scroll overscroll-contain", $scrollClass])>
             {{ $content }}
         </div>
     </x-ark-dropdown>
