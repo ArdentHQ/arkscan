@@ -92,7 +92,8 @@ final class Kernel extends ConsoleKernel
         $schedule->command(ScoutIndexModels::class)->everyMinute();
 
         $schedule->command(ImportCommand::class, [
-            Wallet::class
+            Wallet::class,
+            '--no-pause'
         ])->withoutOverlapping()->everyMinute();
     }
 
