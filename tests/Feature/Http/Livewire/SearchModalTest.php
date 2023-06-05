@@ -61,3 +61,13 @@ it('should search for a block', function () {
         ->set('query', $block->id)
         ->assertSee($block->id);
 });
+
+it('should clear search when modal is closed', function () {
+    $block = Block::factory()->create();
+
+    Livewire::test(SearchModal::class)
+        ->emit('openSearchModal')
+        ->set('query', $block->id)
+        ->call('closeModal')
+        ->assertSet('query', '');
+});
