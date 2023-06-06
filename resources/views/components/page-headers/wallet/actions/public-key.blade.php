@@ -28,19 +28,43 @@
 
     <div
         x-show="publicKeyModalVisible"
-        class="absolute right-0 left-0 mx-8 mt-4 w-auto bg-white rounded-xl shadow-lg lg:left-auto lg:mx-0 lg:mt-1 lg:mr-32 z-15 dark:shadow-lg-dark dark:bg-theme-secondary-900"
+        class="absolute flex items-end space-x-4 right-0 left-0 mx-8 p-6 mt-4 w-auto bg-white rounded-xl shadow-lg lg:left-auto lg:mx-0 lg:mt-1 lg:mr-32 z-15 dark:shadow-lg-dark dark:bg-theme-secondary-900"
         @click.outside="publicKeyModalVisible = false"
+        x-transition
         x-cloak
     >
-        <div class="flex flex-col p-6 space-y-2 leading-tight">
-            <span class="text-sm font-semibold text-theme-secondary-400 dark:text-theme-secondary-700">@lang('pages.wallet.public_key.title')</span>
-            <span class="flex font-semibold link">
+        <div class="flex flex-col space-y-2 leading-tight">
+            <span class="text-sm font-semibold text-theme-secondary-400 dark:text-theme-secondary-700">
+                @lang('pages.wallet.public_key.title')
+            </span>
+
+            <span class="flex font-semibold">
                 <span class="inline-block truncate">
                     {{ $publicKey }}
                 </span>
-
-                <x-clipboard :value="$publicKey" />
             </span>
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <x-ark-clipboard
+                :value="$publicKey"
+                class="flex items-center p-2 w-full h-auto"
+                wrapper-class="flex-1"
+                :tooltip-content="trans('pages.wallet.copied_public_key')"
+                with-checkmarks
+                checkmarks-class="text-theme-primary-900 dark:text-theme-secondary-200"
+            />
+
+            <button
+                type="button"
+                class="button button-generic p-2 hover:bg-theme-primary-700"
+                @click="publicKeyModalVisible = false"
+            >
+                <x-ark-icon
+                    name="cross"
+                    size="sm"
+                />
+            </button>
         </div>
     </div>
 </div>
