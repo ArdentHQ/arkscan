@@ -28,7 +28,7 @@
 
     <div
         x-show="publicKeyModalVisible"
-        class="absolute flex items-end space-x-4 right-0 left-0 mx-8 p-6 mt-4 w-auto bg-white rounded-xl shadow-lg lg:left-auto lg:mx-0 lg:mt-1 lg:mr-32 z-15 dark:shadow-lg-dark dark:bg-theme-secondary-900"
+        class="flex absolute right-0 left-0 items-end p-6 mx-8 mt-4 space-x-4 w-auto bg-white rounded-xl shadow-lg lg:left-auto lg:mx-0 lg:mt-1 lg:mr-32 z-15 dark:shadow-lg-dark dark:bg-theme-secondary-900"
         @click.outside="publicKeyModalVisible = false"
         x-transition
         x-cloak
@@ -57,7 +57,7 @@
 
             <button
                 type="button"
-                class="button button-generic p-2 hover:bg-theme-primary-700"
+                class="p-2 button button-generic hover:bg-theme-primary-700"
                 @click="publicKeyModalVisible = false"
             >
                 <x-ark-icon
