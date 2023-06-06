@@ -692,6 +692,26 @@ it('should get whether delegate is active', function () {
     expect($this->subject->isActive())->toBeTrue();
 });
 
+it('should get that resigned delegate is not an active delegate', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'resigned' => true,
+            ],
+        ],
+    ]));
+
+    expect($this->subject->isActive())->toBeFalse();
+});
+
+it('should get that non delegate is not an active delegate', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes' => [],
+    ]));
+
+    expect($this->subject->isActive())->toBeFalse();
+});
+
 it('should get delegate name for wallet name', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
@@ -748,4 +768,14 @@ it('should get delegate name before known wallet name for a wallet', function ()
     $this->subject = new WalletViewModel($wallet);
 
     expect($this->subject->name())->toBe('John');
+});
+
+it('should get no name if a standard wallet', function () {
+    fakeKnownWallets();
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes' => [],
+    ]));
+
+    expect($this->subject->name())->toBeNull();
 });

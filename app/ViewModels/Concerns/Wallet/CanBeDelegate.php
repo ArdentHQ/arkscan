@@ -27,6 +27,10 @@ trait CanBeDelegate
 
     public function isActive(): bool
     {
+        if (! $this->isDelegate()) {
+            return false;
+        }
+
         if ($this->isResigned()) {
             return false;
         }
