@@ -1,3 +1,8 @@
+@props([
+    'publicKey',
+    'button' => null,
+])
+
 <div
     x-data="{ publicKeyModalVisible: false }"
     class="flex-1 ml-2 w-full"
