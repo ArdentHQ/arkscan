@@ -12,7 +12,7 @@
         <x-slot
             name="button"
             wire:click="toggleQrCode"
-            class="p-2 w-full "
+            class="p-2 w-full"
         >
             <div>
                 <x-ark-icon name="qr-code" size="sm" />
@@ -20,7 +20,7 @@
         </x-slot>
 
         <x-slot name="content">
-            <div class="flex items-center p-6 justify-between border-b border-theme-secondary-300 dark:border-theme-secondary-800">
+            <div class="flex justify-between items-center p-6 border-b border-theme-secondary-300 dark:border-theme-secondary-800">
                 <div class="text-lg">
                     @lang('pages.wallet.qrcode.title')
                 </div>
@@ -28,7 +28,7 @@
                 <div>
                     <button
                         type="button"
-                        class="button button-generic hover:text-white p-2 hover:bg-theme-primary-700"
+                        class="p-2 hover:text-white button button-generic hover:bg-theme-primary-700"
                         @click="dropdownOpen = false"
                     >
                         <x-ark-icon
@@ -42,14 +42,14 @@
             <div class="p-6">
                 <div
                     x-show="showOptions"
-                    class="text-theme-secondary-700 font-normal"
+                    class="font-normal text-theme-secondary-700"
                 >
                     @lang('pages.wallet.qrcode.description')
                 </div>
 
                 <div
                     x-show="showOptions"
-                    class="space-y-3 pt-2 pb-4"
+                    class="pt-2 pb-4 space-y-3"
                 >
                     <x-ark-input
                         type="number"
@@ -76,7 +76,7 @@
                 </div>
 
                 <div>
-                    <div class="border border-theme-secondary-300 dark:border-theme-secondary-300 dark:bg-theme-secondary-300 rounded-lg p-2">
+                    <div class="p-2 rounded-lg border border-theme-secondary-300 dark:border-theme-secondary-300 dark:bg-theme-secondary-300">
                         {!! $this->code !!}
                     </div>
 
@@ -90,7 +90,7 @@
 
                     <div
                         x-show="showOptions"
-                        class="mt-4 mb-1 text-theme-secondary-700 font-normal"
+                        class="mt-4 mb-1 font-normal text-theme-secondary-700"
                     >
                         @lang('pages.wallet.qrcode.automatic_notice')
                     </div>
