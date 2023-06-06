@@ -78,7 +78,7 @@
     <button
         wire:click="toggleQrCode"
         type="button"
-        class="button button-secondary button-icon p-2 w-full"
+        class="p-2 w-full button button-secondary button-icon"
     >
         <x-ark-icon name="qr-code" size="sm" />
     </button>
