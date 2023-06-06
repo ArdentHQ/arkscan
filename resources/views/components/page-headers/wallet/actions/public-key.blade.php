@@ -1,10 +1,25 @@
-<div x-data="{ publicKeyModalVisible: false }" class="flex-1 ml-2 w-full">
-    <button
-        type="button"
-        @click="publicKeyModalVisible = !publicKeyModalVisible"
-        class="text-theme-secondary-600 hover:text-theme-secondary-400">
-        <x-ark-icon name="key" />
-    </button>
+<div
+    x-data="{ publicKeyModalVisible: false }"
+    class="flex-1 ml-2 w-full"
+    {{ $attributes }}
+>
+    @if ($button)
+        <button
+            type="button"
+            @click="publicKeyModalVisible = !publicKeyModalVisible"
+            {{ $button->attributes }}
+        >
+            {{ $button }}
+        </button>
+    @else
+        <button
+            type="button"
+            @click="publicKeyModalVisible = !publicKeyModalVisible"
+            class="text-theme-secondary-600 hover:text-theme-secondary-400"
+        >
+            <x-ark-icon name="key" />
+        </button>
+    @endif
 
     <div
         x-show="publicKeyModalVisible"
