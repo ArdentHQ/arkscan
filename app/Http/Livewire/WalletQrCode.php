@@ -27,7 +27,7 @@ final class WalletQrCode extends Component
 
     public ?string $class = null;
 
-    public function mount(?string $class): void
+    public function mount(?string $class = null): void
     {
         $this->class = $class;
     }
