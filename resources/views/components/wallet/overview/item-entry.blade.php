@@ -5,7 +5,7 @@
     'hasEmptyValue' => false,
 ])
 
-<div class="flex items-center justify-between font-semibold text-sm md:text-base">
+<div class="flex justify-between items-center text-sm font-semibold md:text-base">
     <div class="dark:text-theme-secondary-500">{{ $title }}</div>
 
     @if ($hasEmptyValue || $value === null || strlen($value) === 0)
