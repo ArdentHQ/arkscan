@@ -1,5 +1,5 @@
-<div class="pb-6 md:mx-auto md:max-w-7xl md:px-8 lg:px-10">
-    <div class="flex flex-col space-y-6 md:space-y-0 md:space-x-3 md:flex-row">
+<div class="md:pb-6 md:mx-auto md:max-w-7xl md:px-8 lg:px-10">
+    <div class="flex flex-col md:space-x-3 md:flex-row">
         <x-wallet.overview.item :title="trans('general.overview')">
             <x-wallet.overview.item-entry
                 :title="trans('pages.wallet.name')"
@@ -12,10 +12,13 @@
                 </x-slot>
             </x-wallet.overview.item-entry>
 
-            <x-wallet.overview.item-entry
-                :title="trans('pages.wallet.value')"
-                :value="$wallet->balanceFiat()"
-            />
+            <x-wallet.overview.item-entry :title="trans('pages.wallet.value')">
+                <x-slot name="value">
+                    <span>{{ $wallet->balanceFiat() }}</span>
+
+                    <span>{{ Settings::currency() }}</span>
+                </x-slot>
+            </x-wallet.overview.item-entry>
 
             <x-wallet.overview.item-entry
                 :title="trans('pages.wallet.voting_for')"
@@ -53,11 +56,17 @@
                             />
                         @endif
                     </x-slot>
+
+                    <x-slot name="tooltip">
+                        @if ($wallet->votes())
+                            <x-general.network-currency :value="$wallet->votes()" />
+                        @endif
+                    </x-slot>
                 </x-wallet.overview.item-entry>
 
                 <x-wallet.overview.item-entry
                     :title="trans('pages.wallet.delegate.productivity_title')"
-                    :has-empty-value="! $wallet->isDelegate()"
+                    :has-empty-value="! $wallet->isDelegate() || ! $wallet->isActive()"
                 >
                     <x-slot name="value">
                         <x-wallet.overview.delegate.productivity :wallet="$wallet" />
@@ -74,6 +83,12 @@
                                 :value="$wallet->totalForged()"
                                 decimals="0"
                             />
+                        @endif
+                    </x-slot>
+
+                    <x-slot name="tooltip">
+                        @if ($wallet->isDelegate())
+                            <x-general.network-currency :value="$wallet->totalForged()" />
                         @endif
                     </x-slot>
                 </x-wallet.overview.item-entry>

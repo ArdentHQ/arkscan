@@ -1,11 +1,13 @@
 @props(['wallet'])
 
 <div>
-    <span>#{{ $wallet->rank() }}</span>
-    <span>/</span>
+    @unless($wallet->isResigned())
+        <span>#{{ $wallet->rank() }}</span>
+        <span>/</span>
+    @endunless
 
     @if($wallet->isResigned())
-        <span class="text-theme-danger-400">
+        <span class="text-theme-danger-700">
             @lang('pages.delegates.resigned')
         </span>
     @elseif($wallet->rank() > Network::delegateCount())
@@ -13,7 +15,7 @@
             @lang('pages.delegates.standby')
         </span>
     @else
-        <span class="text-theme-success-600">
+        <span class="text-theme-success-700">
             @lang('pages.delegates.active')
         </span>
     @endif
