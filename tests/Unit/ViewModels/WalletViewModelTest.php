@@ -12,6 +12,8 @@ use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeKnownWallets;
 
@@ -662,4 +664,88 @@ it('should get the vote url with delegate', function () {
     expect($this->subject->voteUrl())->toContain('&method=vote');
     expect($this->subject->voteUrl())->not->toContain('&publicKey=');
     expect($this->subject->voteUrl())->toContain('&delegate=john');
+});
+
+it('should get whether delegate is standby', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'John',
+                'rank'     => 52,
+            ],
+        ],
+    ]));
+
+    expect($this->subject->isStandby())->toBeTrue();
+});
+
+it('should get whether delegate is active', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'John',
+                'rank'     => 50,
+            ],
+        ],
+    ]));
+
+    expect($this->subject->isActive())->toBeTrue();
+});
+
+it('should get delegate name for wallet name', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'John',
+                'rank'     => 50,
+            ],
+        ],
+    ]));
+
+    expect($this->subject->name())->toBe('John');
+});
+
+it('should get known wallet name for wallet name', function () {
+    $wallet = Wallet::factory()->create([
+        'attributes' => [],
+    ]);
+
+    Http::fake([
+        'githubusercontent.com/*' => [
+            [
+                'type'    => 'exchange',
+                'name'    => 'Test Wallet',
+                'address' => $wallet->address,
+            ],
+        ],
+    ]);
+
+    $this->subject = new WalletViewModel($wallet);
+
+    expect($this->subject->name())->toBe('Test Wallet');
+});
+
+it('should get delegate name before known wallet name for a wallet', function () {
+    $wallet = Wallet::factory()->create([
+        'attributes'   => [
+            'delegate' => [
+                'username' => 'John',
+                'rank'     => 50,
+            ],
+        ],
+    ]);
+
+    Http::fake([
+        'githubusercontent.com/*' => [
+            [
+                'type'    => 'exchange',
+                'name'    => 'Test Wallet',
+                'address' => $wallet->address,
+            ],
+        ],
+    ]);
+
+    $this->subject = new WalletViewModel($wallet);
+
+    expect($this->subject->name())->toBe('John');
 });
