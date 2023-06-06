@@ -22,7 +22,7 @@ final class WalletQrCode extends Component
 {
     use HasModal;
 
-    const QR_CODE_SIZE = 224;
+    public const QR_CODE_SIZE = 224;
 
     public string $address;
 
