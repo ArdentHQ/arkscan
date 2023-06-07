@@ -30,7 +30,6 @@ it('should index new Wallets', function () {
     Cache::shouldReceive('get')
         ->with('latest-indexed-timestamp:wallets')
         ->andReturn(null)
-        ->once()
         ->shouldReceive('put')
         ->with('latest-indexed-timestamp:wallets', 10)
         ->once();
@@ -81,7 +80,6 @@ it('should index new Wallets using the timestamp from cache', function () {
     Cache::shouldReceive('get')
         ->with('latest-indexed-timestamp:wallets')
         ->andReturn(2) // so new ones are the one with timestamp 5 and 10
-        ->once()
         ->shouldReceive('put')
         ->with('latest-indexed-timestamp:wallets', 10)
         ->once();

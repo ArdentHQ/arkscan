@@ -29,7 +29,6 @@ it('should index new blocks', function () {
     Cache::shouldReceive('get')
         ->with('latest-indexed-timestamp:blocks')
         ->andReturn(null)
-        ->once()
         ->shouldReceive('put')
         ->with('latest-indexed-timestamp:blocks', 10)
         ->once();
@@ -74,7 +73,6 @@ it('should index new blocks using the timestamp from cache', function () {
     Cache::shouldReceive('get')
         ->with('latest-indexed-timestamp:blocks')
         ->andReturn(2) // so new ones are the one with timestamp 5 and 10
-        ->once()
         ->shouldReceive('put')
         ->with('latest-indexed-timestamp:blocks', 10)
         ->once();

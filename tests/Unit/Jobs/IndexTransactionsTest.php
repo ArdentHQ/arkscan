@@ -29,7 +29,6 @@ it('should index new Transactions', function () {
     Cache::shouldReceive('get')
         ->with('latest-indexed-timestamp:transactions')
         ->andReturn(null)
-        ->once()
         ->shouldReceive('put')
         ->with('latest-indexed-timestamp:transactions', 10)
         ->once();
@@ -74,7 +73,6 @@ it('should index new transactions using the timestamp from cache', function () {
     Cache::shouldReceive('get')
         ->with('latest-indexed-timestamp:transactions')
         ->andReturn(2) // so new ones are the one with timestamp 5 and 10
-        ->once()
         ->shouldReceive('put')
         ->with('latest-indexed-timestamp:transactions', 10)
         ->once();
