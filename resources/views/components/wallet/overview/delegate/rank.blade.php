@@ -12,7 +12,7 @@
         @endunless
 
         @if($wallet->isResigned())
-            <span class="text-theme-danger-700">
+            <span class="text-theme-danger-700 dark:text-theme-danger-400">
                 @lang('pages.delegates.resigned')
             </span>
         @elseif($wallet->rank() > Network::delegateCount())
