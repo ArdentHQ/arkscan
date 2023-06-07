@@ -45,7 +45,7 @@ it('has custom scout key name', function () {
     expect($this->subject->getScoutKeyName())->toBe('address');
 });
 
-it('adds the transaction timestamp and username when making searchable', function () {
+it('adds the latest transaction timestamp and username when making searchable', function () {
     Transaction::factory()->create([
         'recipient_id'      => $this->subject->address,
         'timestamp'         => 123456789,
