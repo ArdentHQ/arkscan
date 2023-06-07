@@ -3,9 +3,10 @@
     @class($class)
 >
     <x-general.dropdown.dropdown
-        width="max-w-[288px]"
+        width="max-w-[320px] px-4"
         active-button-class="button button-secondary button-icon"
         dropdown-padding=""
+        dropdown-wrapper-class="w-full"
         dropdown-background="bg-white dark:bg-theme-secondary-900"
         :close-on-click="false"
     >
