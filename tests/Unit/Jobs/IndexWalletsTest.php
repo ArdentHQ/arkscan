@@ -92,7 +92,7 @@ it('should not store any value on cache if no new wallets', function () {
     Event::assertNotDispatched(ModelsImported::class);
 });
 
-it('should index new Wallets using the timestamp from cache', function () {
+it('should index new wallets using the timestamp from cache', function () {
     Event::fake();
 
     Cache::shouldReceive('get')
@@ -120,12 +120,23 @@ it('should index new Wallets using the timestamp from cache', function () {
         'timestamp'    => 1,
     ]);
 
+    $walletWithANewAndOldAndNewTransaction = Wallet::factory()->create();
+    Transaction::factory()->create([
+        'recipient_id' => $walletWithANewAndOldAndNewTransaction->address,
+        'timestamp'    => 2,
+    ]);
+    Transaction::factory()->create([
+        'recipient_id' => $walletWithANewAndOldAndNewTransaction->address,
+        'timestamp'    => 6,
+    ]);
+
     IndexWallets::dispatch();
 
-    Event::assertDispatched(ModelsImported::class, function ($event) {
-        return $event->models->count() === 2 &&
-            $event->models->pluck('timestamp')->sort()->values()->toArray() === [5, 10];
-    });
+    Event::assertDispatched(
+        ModelsImported::class,
+        fn ($event) => $event->models->count() === 3
+        && $event->models->pluck('timestamp')->sort()->values()->toArray() === [5, 6, 10]
+    );
 });
 
 it('should not index anything if meilisearch is empty', function () {

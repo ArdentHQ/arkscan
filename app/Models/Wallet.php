@@ -103,7 +103,7 @@ final class Wallet extends Model
                 'wallets.address',
                 'wallets.attributes',
                 'wallets.balance',
-                DB::raw('(SELECT MIN(transactions.timestamp) FROM transactions WHERE transactions.recipient_id = wallets.address) as timestamp'),
+                DB::raw('(SELECT MAX(transactions.timestamp) FROM transactions WHERE transactions.recipient_id = wallets.address) as timestamp'),
             ])
             ->when(true, function ($query) use ($self) {
                 $self->makeAllSearchableUsing($query);
