@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Jobs\IndexBlocks;
 use App\Models\Block;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
@@ -24,6 +25,14 @@ beforeEach(function () {
 
 it('should index new blocks', function () {
     Event::fake();
+
+    Cache::shouldReceive('get')
+        ->with('latest-indexed-timestamp:blocks')
+        ->andReturn(null)
+        ->once()
+        ->shouldReceive('put')
+        ->with('latest-indexed-timestamp:blocks', 10)
+        ->once();
 
     $latestIndexedBlock = Block::factory()->create([
         'timestamp' => 5,
@@ -56,6 +65,36 @@ it('should index new blocks', function () {
     Event::assertDispatched(ModelsImported::class, function ($event) use ($newBlock) {
         return $event->models->count() === 1
             && $event->models->first()->is($newBlock);
+    });
+});
+
+it('should index new blocks using the timestamp from cache', function () {
+    Event::fake();
+
+    Cache::shouldReceive('get')
+        ->with('latest-indexed-timestamp:blocks')
+        ->andReturn(2) // so new ones are the one with timestamp 5 and 10
+        ->once()
+        ->shouldReceive('put')
+        ->with('latest-indexed-timestamp:blocks', 10)
+        ->once();
+
+    Block::factory()->create([
+        'timestamp' => 10,
+    ]);
+
+    Block::factory()->create([
+        'timestamp' => 5,
+    ]);
+
+    Block::factory()->create([
+        'timestamp' => 1,
+    ]);
+
+    IndexBlocks::dispatch();
+
+    Event::assertDispatched(ModelsImported::class, function ($event) {
+        return $event->models->count() === 2;
     });
 });
 

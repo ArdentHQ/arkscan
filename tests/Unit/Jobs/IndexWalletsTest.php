@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Jobs\IndexWallets;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
@@ -25,6 +26,14 @@ beforeEach(function () {
 
 it('should index new Wallets', function () {
     Event::fake();
+
+    Cache::shouldReceive('get')
+        ->with('latest-indexed-timestamp:wallets')
+        ->andReturn(null)
+        ->once()
+        ->shouldReceive('put')
+        ->with('latest-indexed-timestamp:wallets', 10)
+        ->once();
 
     $lastIndexedWallet = Wallet::factory()->create();
     Transaction::factory()->create([
@@ -63,6 +72,42 @@ it('should index new Wallets', function () {
     Event::assertDispatched(ModelsImported::class, function ($event) use ($newWallet) {
         return $event->models->count() === 1
             && $event->models->first()->is($newWallet);
+    });
+});
+
+it('should index new Wallets using the timestamp from cache', function () {
+    Event::fake();
+
+    Cache::shouldReceive('get')
+        ->with('latest-indexed-timestamp:wallets')
+        ->andReturn(2) // so new ones are the one with timestamp 5 and 10
+        ->once()
+        ->shouldReceive('put')
+        ->with('latest-indexed-timestamp:wallets', 10)
+        ->once();
+
+    $newWallet = Wallet::factory()->create();
+    Transaction::factory()->create([
+        'recipient_id' => $newWallet->address,
+        'timestamp'    => 10,
+    ]);
+
+    $relativelyNewWallet = Wallet::factory()->create();
+    Transaction::factory()->create([
+        'recipient_id' => $relativelyNewWallet->address,
+        'timestamp'    => 5,
+    ]);
+
+    $oldWallet = Wallet::factory()->create();
+    Transaction::factory()->create([
+        'recipient_id' => $oldWallet->address,
+        'timestamp'    => 1,
+    ]);
+
+    IndexWallets::dispatch();
+
+    Event::assertDispatched(ModelsImported::class, function ($event) use ($newWallet) {
+        return $event->models->count() === 2;
     });
 });
 
