@@ -79,7 +79,12 @@ return [
     ],
 
     'exchanges' => [
+        'run_jobs' => env('EXCHANGES_RUN_JOBS', false),
         'list_src' => env('EXCHANGES_LIST_SRC', 'https://raw.githubusercontent.com/ArkEcosystem/common/master/arkscan/exchanges.json'),
         'icon_url' => env('EXCHANGES_ICON_URL', 'https://raw.githubusercontent.com/ArkEcosystem/common/master/arkscan/icons/'),
+    ],
+
+    'scout' => [
+        'run_jobs' => env('SCOUNT_RUN_JOBS', false),
     ],
 ];

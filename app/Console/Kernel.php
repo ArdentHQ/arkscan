@@ -85,16 +85,20 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command('view:clear-expired')->hourly();
 
-        $schedule->command(LoadExchanges::class)->daily();
+        if (config('explorer.exchanges.run_jobs', false) === true) {
+            $schedule->command(LoadExchanges::class)->daily();
 
-        $schedule->command(FetchExchangesDetails::class)->hourly();
+            $schedule->command(FetchExchangesDetails::class)->hourly();
+        }
 
-        $schedule->command(ScoutIndexModels::class)->everyMinute();
+        if (config('explorer.scout.run_jobs', false) === true) {
+            $schedule->command(ScoutIndexModels::class)->everyMinute();
 
-        $schedule->command(ImportCommand::class, [
-            Wallet::class,
-            '--no-pause',
-        ])->withoutOverlapping()->everyMinute();
+            $schedule->command(ImportCommand::class, [
+                Wallet::class,
+                '--no-pause',
+            ])->withoutOverlapping()->everyMinute();
+        }
     }
 
     /**
