@@ -22,7 +22,9 @@
 
         <x-wallet.overview.delegate.votes :wallet="$wallet" />
 
-        <x-wallet.overview.delegate.productivity :wallet="$wallet" />
+        @unless ($wallet->isResigned())
+            <x-wallet.overview.delegate.productivity :wallet="$wallet" />
+        @endunless
 
         <x-wallet.overview.item-entry
             :title="trans('pages.wallet.delegate.forged_total')"
