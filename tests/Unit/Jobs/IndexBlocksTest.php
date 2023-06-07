@@ -92,7 +92,8 @@ it('should index new blocks using the timestamp from cache', function () {
     IndexBlocks::dispatch();
 
     Event::assertDispatched(ModelsImported::class, function ($event) {
-        return $event->models->count() === 2;
+        return $event->models->count() === 2 &&
+            $event->models->pluck('timestamp')->sort()->values()->toArray() === [5, 10];
     });
 });
 

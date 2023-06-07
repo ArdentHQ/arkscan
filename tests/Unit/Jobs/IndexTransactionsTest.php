@@ -108,7 +108,8 @@ it('should index new transactions using the timestamp from cache', function () {
     IndexTransactions::dispatch();
 
     Event::assertDispatched(ModelsImported::class, function ($event) {
-        return $event->models->count() === 2;
+        return $event->models->count() === 2 &&
+            $event->models->pluck('timestamp')->sort()->values()->toArray() === [5, 10];
     });
 });
 

@@ -122,8 +122,9 @@ it('should index new Wallets using the timestamp from cache', function () {
 
     IndexWallets::dispatch();
 
-    Event::assertDispatched(ModelsImported::class, function ($event) use ($newWallet) {
-        return $event->models->count() === 2;
+    Event::assertDispatched(ModelsImported::class, function ($event) {
+        return $event->models->count() === 2 &&
+            $event->models->pluck('timestamp')->sort()->values()->toArray() === [5, 10];
     });
 });
 
