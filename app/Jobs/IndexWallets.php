@@ -10,13 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 final class IndexWallets extends IndexModel
 {
-    public function uniqueId(): string
-    {
-        $latestIndexedTimestamp = $this->getLatestIndexedTimestamp('wallets');
-
-        return  'wallets:'.$latestIndexedTimestamp;
-    }
-
     public function handle(): void
     {
         $this->execute(indexName: 'wallets');

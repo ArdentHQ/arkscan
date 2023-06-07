@@ -21,8 +21,6 @@ abstract class IndexModel implements ShouldQueue, ShouldBeUnique
     use Queueable;
     use SerializesModels;
 
-    abstract public function uniqueId(): string;
-
     /**
      * Execute the job.
      * @return void
@@ -44,12 +42,12 @@ abstract class IndexModel implements ShouldQueue, ShouldBeUnique
 
         $query = $this->elementsToIndexQuery($latestIndexedTimestamp);
 
-        // @phpstan-ignore-next-line
-        $query->searchable();
-
         if ($query->doesntExist()) {
             return;
         }
+
+        // @phpstan-ignore-next-line
+        $query->searchable();
 
         /** @var mixed */
         $latestItem      = $query->orderBy('timestamp', 'desc')->first();

@@ -9,13 +9,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 final class IndexBlocks extends IndexModel
 {
-    public function uniqueId(): string
-    {
-        $latestIndexedTimestamp = $this->getLatestIndexedTimestamp('blocks');
-
-        return  'blocks:'.$latestIndexedTimestamp;
-    }
-
     public function handle(): void
     {
         $this->execute(indexName: 'blocks');
