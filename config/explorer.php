@@ -82,4 +82,8 @@ return [
         'list_src' => env('EXCHANGES_LIST_SRC', 'https://raw.githubusercontent.com/ArkEcosystem/common/master/arkscan/exchanges.json'),
         'icon_url' => env('EXCHANGES_ICON_URL', 'https://raw.githubusercontent.com/ArkEcosystem/common/master/arkscan/icons/'),
     ],
+
+    'scout' => [
+        'run_jobs' => env('SCOUT_RUN_JOBS', false),
+    ],
 ];
