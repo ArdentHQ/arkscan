@@ -74,6 +74,24 @@ it('should index new Wallets', function () {
     });
 });
 
+it('should not store any value on cache if no new wallets', function () {
+    Event::fake();
+
+    Cache::shouldReceive('get')
+        ->with('latest-indexed-timestamp:wallets')
+        ->andReturn(6);
+
+    $lastIndexedWallet = Wallet::factory()->create();
+    Transaction::factory()->create([
+        'recipient_id' => $lastIndexedWallet->address,
+        'timestamp'    => 5,
+    ]);
+
+    IndexWallets::dispatch();
+
+    Event::assertNotDispatched(ModelsImported::class);
+});
+
 it('should index new Wallets using the timestamp from cache', function () {
     Event::fake();
 

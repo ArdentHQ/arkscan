@@ -67,6 +67,22 @@ it('should index new Transactions', function () {
     });
 });
 
+it('should not store any value on cache if no new transactions', function () {
+    Event::fake();
+
+    Cache::shouldReceive('get')
+        ->with('latest-indexed-timestamp:transactions')
+        ->andReturn(6);
+
+    Transaction::factory()->create([
+        'timestamp' => 5,
+    ]);
+
+    IndexTransactions::dispatch();
+
+    Event::assertNotDispatched(ModelsImported::class);
+});
+
 it('should index new transactions using the timestamp from cache', function () {
     Event::fake();
 

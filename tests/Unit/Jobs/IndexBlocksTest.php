@@ -96,6 +96,22 @@ it('should index new blocks using the timestamp from cache', function () {
     });
 });
 
+it('should not store any value on cache if no new transactions', function () {
+    Event::fake();
+
+    Cache::shouldReceive('get')
+        ->with('latest-indexed-timestamp:blocks')
+        ->andReturn(6);
+
+    Block::factory()->create([
+        'timestamp' => 5,
+    ]);
+
+    IndexBlocks::dispatch();
+
+    Event::assertNotDispatched(ModelsImported::class);
+});
+
 it('should not index anything if meilisearch is empty', function () {
     Event::fake();
 
