@@ -74,7 +74,7 @@ it('adds the transaction timestamp and username when making searchable', functio
 
             return $document['username'] === 'test'
                 && $document['address'] === $this->subject->address
-                && $document['timestamp'] === 123;
+                && $document['timestamp'] === 123456789;
         });
 
     // Default value, overriden in phpunit.xml for the tests
