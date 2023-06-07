@@ -4,7 +4,7 @@
 
 <x-wallet.overview.item-entry
     :title="trans('pages.wallet.delegate.productivity_title')"
-    :has-empty-value="! $wallet->isDelegate()"
+    :has-empty-value="! $wallet->isDelegate() || $wallet->isResigned()"
 >
     <x-slot name="value">
         <div @class([
