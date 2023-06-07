@@ -19,7 +19,7 @@
         </div>
 
         @if ($maskedMessage)
-            <div class="flex absolute inset-0 md:rounded-xl -mx-6 -my-2 md:m-0 justify-center items-center text-sm font-semibold select-none backdrop-blur text-theme-secondary-500">
+            <div class="flex absolute inset-0 justify-center items-center -my-2 -mx-6 text-sm font-semibold select-none md:m-0 md:rounded-xl backdrop-blur text-theme-secondary-500">
                 {{ $maskedMessage }}
             </div>
         @endif
