@@ -12,7 +12,6 @@ use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeKnownWallets;
 
@@ -42,6 +41,14 @@ beforeEach(function () {
 it('should get the url', function () {
     expect($this->subject->url())->toBeString();
     expect($this->subject->url())->toBe(route('wallet', $this->subject->address()));
+});
+
+it('should get the address', function () {
+    expect($this->subject->address())->toBe($this->wallet->address);
+});
+
+it('should get an id from the address', function () {
+    expect($this->subject->id())->toBe($this->wallet->address);
 });
 
 it('should get the balance', function () {
@@ -655,22 +662,4 @@ it('should get the vote url with delegate', function () {
     expect($this->subject->voteUrl())->toContain('&method=vote');
     expect($this->subject->voteUrl())->not->toContain('&publicKey=');
     expect($this->subject->voteUrl())->toContain('&delegate=john');
-});
-
-it('should determine migration wallet', function () {
-    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
-
-    $wallet = new WalletViewModel(Wallet::factory()->create([
-        'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
-    ]));
-
-    expect($wallet->isMigration())->toBeTrue();
-});
-
-it('should determine not a migration wallet', function () {
-    Config::set('explorer.migration.address', 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj');
-
-    $wallet = new WalletViewModel(Wallet::factory()->create());
-
-    expect($wallet->isMigration())->toBeFalse();
 });

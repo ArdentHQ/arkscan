@@ -58,14 +58,13 @@ final class CacheDelegatePerformance extends Command
             ->orderBy('public_key', 'asc')
             ->groupBy('rounds.public_key')
             ->get();
-
         $results->each(function ($row) : void {
-            (new WalletCache())->setPerformance($row->public_key, [
-                $row->round_0,
-                $row->round_1,
-                $row->round_2,
-                $row->round_3,
-                $row->round_4,
+            (new WalletCache())->setPerformance($row['public_key'], [
+                $row['round_0'],
+                $row['round_1'],
+                $row['round_2'],
+                $row['round_3'],
+                $row['round_4'],
             ]);
         });
     }

@@ -46,10 +46,22 @@ return [
         'image'       => asset('images/metadata/blocks.png'),
     ],
 
-    'wallets'       => [
-        'title'       => 'Wallets | :name Blockchain Explorer',
+    'top-accounts'  => [
+        'title'       => 'Top Accounts | :name Blockchain Explorer',
         'description' => 'View wallet address details on the :name Blockchain.',
         'image'       => asset('images/metadata/wallets.png'),
+    ],
+
+    'exchanges'  => [
+        'title'       => 'Exchanges and Aggregators | :name Blockchain Explorer',
+        'description' => 'A list of active exchanges and aggregators/swaps that support ARK Token.',
+        'image'       => asset('images/metadata/exchanges.png'),
+    ],
+
+    'compatible-wallets'  => [
+        'title'       => 'Compatible Wallets | :name Blockchain Explorer',
+        'description' => 'List of web, desktop, and mobile wallets that support ARK Token.',
+        'image'       => asset('images/metadata/compatible-wallets.png'),
     ],
 
     'wallet'        => [
@@ -85,12 +97,6 @@ return [
     'contact'       => [
         'title'       => 'Support | :name Blockchain Explorer',
         'description' => 'Get help with the use of the Blockchain Explorer',
-        'image'       => asset('/images/metadata/homepage.png'),
-    ],
-
-    'migration'     => [
-        'title'       => 'Migration | :name Blockchain Explorer',
-        'description' => 'ARK Ecosystem is migrating to the Polygon Ecosystem. Track all migration transactions and statistics on this page.',
         'image'       => asset('/images/metadata/homepage.png'),
     ],
 ];

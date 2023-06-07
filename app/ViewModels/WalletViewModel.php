@@ -41,6 +41,11 @@ final class WalletViewModel implements ViewModel
         return $this->wallet;
     }
 
+    public function id(): string
+    {
+        return $this->address();
+    }
+
     public function address(): string
     {
         return $this->wallet->address;
@@ -77,10 +82,5 @@ final class WalletViewModel implements ViewModel
         $subject = $this->delegateUsername() ?? $this->publicKey();
 
         return ArkVaultUrlBuilder::get()->generateVote($subject);
-    }
-
-    public function isMigration(): bool
-    {
-        return $this->wallet->isMigration();
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
+use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as ARKEcosystemNumberFormatter;
 use Livewire\Livewire;
 use function Tests\fakeCryptoCompare;
 
@@ -30,7 +31,7 @@ it('should list all blocks for the given public key', function () {
 
     foreach (ViewModelFactory::collection($voters) as $voter) {
         $component->assertSee($voter->address());
-        $component->assertSee($voter->balance());
+        $component->assertSee(ARKEcosystemNumberFormatter::new()->formatWithCurrencyCustom($voter->balance(), Network::currency(), 0));
         $component->assertSee(NumberFormatter::currency($voter->balance(), Network::currency()));
         $component->assertSee(NumberFormatter::percentage($voter->votePercentage()));
     }

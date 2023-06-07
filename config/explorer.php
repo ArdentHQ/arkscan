@@ -18,18 +18,6 @@ return [
 
     'cryptocompare_exception_frequency' => env('CRYPTOCOMPARE_EXCEPTION_FREQUENCY', 60),
 
-    'migration'                         => [
-        'address'        => env('ARKSCAN_MIGRATION_ADDRESS'),
-        'minimum_fee'    => env('ARKSCAN_MIGRATION_MIN_FEE', 5000000),
-        'minimum_amount' => env('ARKSCAN_MIGRATION_MIN_AMOUNT', 100000000),
-
-        'urls'           => [
-            'guide'          => env('ARKSCAN_MIGRATION_GUIDE_URL', 'https://ark.dev/docs/core/migration/devnet'),
-            'learn_more'     => env('ARKSCAN_MIGRATION_LEARN_MORE_URL', 'https://arkscic.com/blog/ark-is-moving-to-polygon'),
-            'migrate_tokens' => env('ARKSCAN_MIGRATION_MIGRATE_TOKENS_URL', 'https://demo.arkvault.io/#/?page=migration'),
-        ],
-    ],
-
     'networks'                          => [
         'production'  => [
             'name'               => env('ARKSCAN_NETWORK_NAME', 'ARK Public Network'),
@@ -38,7 +26,6 @@ return [
             'nethash'            => env('ARKSCAN_NETHASH', '6e84d08bd299ed97c212c886c98a57e36545c8f5d645ca7eeae63a8bd62d8988'),
             'mainnetExplorerUrl' => $mainnetExplorer,
             'testnetExplorerUrl' => $testnetExplorer,
-            'polygonExplorerUrl' => env('POLYGON_EXPLORER_URL', 'https://polygonscan.com'),
             'currency'           => env('ARKSCAN_NETWORK_CURRENCY', 'ARK'),
             'currencySymbol'     => env('ARKSCAN_NETWORK_CURRENCY_SYMBOL', 'Ѧ'),
             'confirmations'      => intval(env('ARKSCAN_NETWORK_CONFIRMATIONS', 51)),
@@ -58,7 +45,6 @@ return [
             'nethash'            => env('ARKSCAN_NETHASH', '2a44f340d76ffc3df204c5f38cd355b7496c9065a1ade2ef92071436bd72e867'),
             'mainnetExplorerUrl' => $mainnetExplorer,
             'testnetExplorerUrl' => $testnetExplorer,
-            'polygonExplorerUrl' => env('POLYGON_EXPLORER_URL', 'https://mumbai.polygonscan.com'),
             'currency'           => env('ARKSCAN_NETWORK_CURRENCY', 'DARK'),
             'currencySymbol'     => env('ARKSCAN_NETWORK_CURRENCY_SYMBOL', 'DѦ'),
             'confirmations'      => intval(env('ARKSCAN_NETWORK_CONFIRMATIONS', 51)),
@@ -83,5 +69,17 @@ return [
 
     'support'                           => [
         'enabled' => env('ARKSCAN_SUPPORT_ENABLED', false),
+    ],
+
+    'throttle'                           => [
+        'wallet_submitted' => [
+            'max_attempts' => env('THROTTLE_WALLET_SUBMITTED_MAX_ATTEMPTS', 3),
+            'duration'     => env('THROTTLE_WALLET_SUBMITTED_DURATION', 3600),
+        ],
+    ],
+
+    'exchanges' => [
+        'list_src' => env('EXCHANGES_LIST_SRC', 'https://raw.githubusercontent.com/ArkEcosystem/common/master/arkscan/exchanges.json'),
+        'icon_url' => env('EXCHANGES_ICON_URL', 'https://raw.githubusercontent.com/ArkEcosystem/common/master/arkscan/icons/'),
     ],
 ];

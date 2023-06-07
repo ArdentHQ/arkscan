@@ -10,6 +10,11 @@ body {
     @apply flex-grow;
 }
 
+/* Navbar container */
+.content-container {
+    @apply px-6 md:px-10;
+}
+
 /* Network Status Block */
 .network-status-block {
     @apply inline-block w-full text-center border border-transparent bg-theme-secondary-200;
@@ -73,64 +78,17 @@ body {
     @apply flex-shrink-0 text-theme-secondary-900 border-theme-secondary-900;
 }
 
-body.table-compact:not(.table-compact-until-lg) .migration-icon-small {
-    @apply block;
-}
-
-body.table-compact:not(.table-compact-until-lg) .migration-icon {
-    @apply hidden;
-}
-
 body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply bg-transparent;
-}
-
-body.table-compact-until-lg .migration-icon-small {
-    @apply block lg:hidden;
-}
-
-body.table-compact-until-lg .migration-icon {
-    @apply hidden lg:block;
-}
-
-.migration-icon-detail,
-.migration-wallet-icon-dark {
-    --migration-icon-color-border: var(--theme-color-hint-600);
-}
-
-.migration-icon,
-.migration-icon-small {
-    @apply flex-shrink-0 w-6 h-6;
-
-    --migration-icon-color-border: var(--theme-color-hint-600);
 }
 
 .dark .transaction-icon {
     @apply text-theme-secondary-600 border-theme-secondary-600;
 }
 
-.migration-icon-dark,
-.dark .migration-wallet-icon-dark,
-.dark .migration-icon,
-.dark .migration-icon-small,
-.dark .migration-icon-detail {
-    --migration-icon-color-border: var(--theme-color-hint-300);
-    --migration-icon-color-fill: none;
-}
-
 @screen md {
     .transaction-icon {
         @apply flex items-center justify-center border-2 rounded-full w-11 h-11;
-    }
-}
-
-@screen lg {
-    body.table-compact:not(.table-compact-until-lg) .migration-icon-small {
-        @apply w-5 h-5;
-    }
-
-    body.table-compact-until-lg .migration-icon {
-        @apply w-11 h-11;
     }
 }
 

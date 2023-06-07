@@ -12,7 +12,6 @@ use App\Services\Timestamp;
 use App\Services\Transactions\TransactionDirection;
 use App\Services\Transactions\TransactionState;
 use App\Services\Transactions\TransactionType;
-use App\ViewModels\Concerns\Transaction\DeterminesMigration;
 use App\ViewModels\Concerns\Transaction\HasDirection;
 use App\ViewModels\Concerns\Transaction\HasIcons;
 use App\ViewModels\Concerns\Transaction\HasState;
@@ -30,7 +29,6 @@ use Illuminate\Support\Arr;
 
 final class TransactionViewModel implements ViewModel
 {
-    use DeterminesMigration;
     use HasDirection;
     use HasIcons;
     use HasState;
@@ -60,6 +58,11 @@ final class TransactionViewModel implements ViewModel
     public function url(): string
     {
         return route('transaction', $this->transaction);
+    }
+
+    public function model(): Transaction
+    {
+        return $this->transaction;
     }
 
     public function id(): string
@@ -136,6 +139,20 @@ final class TransactionViewModel implements ViewModel
         }
 
         return $this->transaction->amount->toFloat();
+    }
+
+    public function amountWithFee(): float
+    {
+        $amount = $this->transaction->amount->toFloat();
+        if ($this->isMultiPayment()) {
+            /** @var array<int, array<string, mixed>> */
+            $payments = Arr::get($this->transaction, 'asset.payments', []);
+
+            return collect($payments)
+                ->sum('amount') / 1e8;
+        }
+
+        return $amount + $this->fee();
     }
 
     public function amountReceived(?string $wallet = null): float

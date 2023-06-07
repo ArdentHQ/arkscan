@@ -25,10 +25,6 @@ tr:hover td.hoverable-cell .table-avatar {
     @apply text-white bg-theme-danger-400 hover:bg-theme-danger-500;
 }
 
-.fiat-hint-migration {
-    @apply -ml-1.5 -my-1 bg-theme-hint-100 hover:bg-theme-hint-200 flex items-center justify-center px-2 mr-2 transition-default dark:text-white dark:bg-theme-hint-400 dark:hover:bg-theme-hint-500;
-}
-
 .table-compact:not(.table-compact-until-lg) table .fiat-hint {
     @apply w-5 h-5 px-0 my-0 ml-0 mr-1 rounded-full;
 }
@@ -178,4 +174,24 @@ body.table-compact-until-lg .arrow-direction {
     .sender-direction-wrapper {
         @apply p-0 pr-2;
     }
+}
+
+.table-encapsulated thead tr {
+    @apply border-none;
+}
+
+.table-encapsulated thead th::after {
+    @apply border-none;
+}
+
+.table-encapsulated thead th {
+    @apply text-theme-secondary-700 dark:text-theme-secondary-500 font-semibold;
+}
+
+.table-list-mobile .table-list-mobile-row {
+    @apply space-y-3;
+}
+
+.table-list-mobile .table-list-mobile-row {
+    @apply border-dashed;
 }

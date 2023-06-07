@@ -29,6 +29,9 @@ final class CacheDelegateProductivity extends Command
     public function handle(): void
     {
         Rounds::allByRound(Monitor::roundNumber())
-            ->each(fn (Round $round) => (bool) CacheProductivityByPublicKey::dispatch($round->public_key)->onQueue('productivity'));
+            ->each(function ($round) {
+                /** @var Round $round */
+                return (bool) CacheProductivityByPublicKey::dispatch($round->public_key)->onQueue('productivity');
+            });
     }
 }

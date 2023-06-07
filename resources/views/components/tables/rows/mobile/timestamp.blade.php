@@ -1,5 +1,7 @@
 <div>
-    @lang('labels.timestamp')
+    <span class="font-semibold">
+        @lang('labels.timestamp')
+    </span>
 
     <div>
         <x-ark-local-time

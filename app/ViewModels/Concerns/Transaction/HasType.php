@@ -8,8 +8,6 @@ use App\Services\Transactions\TransactionType;
 
 trait HasType
 {
-    use DeterminesMigration;
-
     public function typeName(): string
     {
         return (new TransactionType($this->transaction))->name();

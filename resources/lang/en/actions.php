@@ -9,7 +9,9 @@ return [
     'view_all'        => 'View All',
     'receive'         => 'Receive',
     'vote'            => 'Vote',
-    'migration_guide' => 'Migration Guide',
-    'migrate_tokens'  => 'Migrate Tokens',
+    'submit_wallet'   => 'Submit Wallet',
+    'submit_exchange' => 'Submit Exchange',
     'learn_more'      => 'Learn More',
+    'submit'          => 'Submit',
+    'cancel'          => 'Cancel',
 ];

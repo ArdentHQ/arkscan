@@ -139,6 +139,12 @@ it('should get the amount received for non-multipayment', function () {
     assertMatchesSnapshot($this->subject->amountReceived('recipient'));
 });
 
+it('should get the amount including fee', function () {
+    expect($this->subject->amountWithFee())->toBeFloat();
+
+    assertMatchesSnapshot($this->subject->amountWithFee());
+});
+
 it('should get the amount for multi payments', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
         'asset' => [
@@ -303,6 +309,38 @@ it('should get the specific multi payment amount for a wallet recipient', functi
     assertMatchesSnapshot($this->subject->amountReceived('B'));
 });
 
+it('should get multi payment amount with fee', function () {
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
+        'asset' => [
+            'payments' => [
+                [
+                    'amount'      => '1000000000',
+                    'recipientId' => 'A',
+                ], [
+                    'amount'      => '2000000000',
+                    'recipientId' => 'B',
+                ], [
+                    'amount'      => '3000000000',
+                    'recipientId' => 'C',
+                ], [
+                    'amount'      => '4000000000',
+                    'recipientId' => 'D',
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => 'E',
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => 'B',
+                ],
+            ],
+        ],
+    ]));
+
+    expect($this->subject->amountWithFee())->toBeFloat();
+
+    assertMatchesSnapshot($this->subject->amountWithFee());
+});
+
 it('should get the amount as fiat', function () {
     $transaction = Transaction::factory()->multiPayment()->create([
         'asset' => [
@@ -439,73 +477,6 @@ it('should determine the transaction type', function (string $type) {
     ['legacyBridgechainRegistration'],
     ['legacyBridgechainResignation'],
     ['legacyBridgechainUpdate'],
-]);
-
-it('should determine the migration type', function () {
-    config(['explorer.migration.address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj']);
-
-    Wallet::factory()->create([
-        'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
-    ]);
-
-    $transaction = Transaction::factory()->transfer()->create([
-        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
-        'fee'          => '5000000', // 0.5
-        'amount'       => '100000000', // 1
-        'vendor_field' => '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n',
-    ]);
-
-    $transaction = Transaction::find($transaction->id);
-
-    expect(is_resource($transaction->vendor_field))->toBeTrue();
-
-    $subject = new TransactionViewModel($transaction);
-
-    expect($subject->isMigration())->toBeTrue();
-});
-
-it('should not determine the migration type', function ($transaction, $fetchAgain = true) {
-    config(['explorer.migration.address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj']);
-
-    Wallet::factory()->create([
-        'address' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
-    ]);
-
-    $transaction = Transaction::factory()->transfer()->create([
-        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
-        'fee'          => '5000000', // 0.5
-        'amount'       => '100000000', // 1
-        'vendor_field' => '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n',
-        ...$transaction,
-    ]);
-
-    $transaction = Transaction::find($transaction->id);
-
-    $subject = new TransactionViewModel($transaction);
-
-    expect($subject->isMigration())->toBeFalse();
-})->with([
-    'different recipient' => [[
-        'recipient_id' => 'DFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEE',
-    ]],
-    'low amount'          => [[
-        'amount' => '10000000', // 0.1
-    ]],
-    'low fee'             => [[
-        'fee' => '500000', // 0.05
-    ]],
-    'short vendor field'  => [[
-        'vendor_field' => '0x123',
-    ], false],
-    'empty vendor field'  => [[
-        'vendor_field' => '',
-    ], false],
-    'null vendor field'   => [[
-        'vendor_field' => null,
-    ], false],
-    'int vendor field'    => [[
-        'vendor_field' => 1,
-    ], false],
 ]);
 
 it('should determine if the transaction is self-receiving', function (string $type) {
@@ -1141,66 +1112,6 @@ it('should get the vendor field', function () {
     $this->subject = new TransactionViewModel($transaction->fresh());
 
     expect($this->subject->vendorField())->toBe('Hello World');
-});
-
-it('should get the migration address from the vendor field if transaction is a migration', function () {
-    config([
-        'explorer.migration.address' => '0xTest',
-    ]);
-
-    $transaction = Transaction::factory()->transfer()->create();
-    $transaction->update([
-        'recipient_id' => '0xTest',
-    ]);
-
-    DB::connection('explorer')->update('UPDATE transactions SET vendor_field = ? WHERE id = ?', ['0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n', $transaction->id]);
-
-    $subject = new TransactionViewModel($transaction->fresh());
-
-    expect($subject->migratedAddress())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n');
-
-    $subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
-
-    expect($subject->migratedAddress())->toBeNull();
-});
-
-it('should resolve the migrated address multiple times', function () {
-    config([
-        'explorer.migration.address' => '0xTest',
-    ]);
-
-    $transaction = Transaction::factory()->transfer()->create();
-    $transaction->update([
-        'recipient_id' => '0xTest',
-    ]);
-
-    DB::connection('explorer')->update('UPDATE transactions SET vendor_field = ? WHERE id = ?', ['0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n', $transaction->id]);
-
-    $subject = new TransactionViewModel($transaction->fresh());
-
-    // Related to: https://github.com/ArdentHQ/arkscan/pull/129#discussion_r1061345520
-
-    expect($subject->migratedAddress())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n');
-    expect($subject->migratedAddress())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n');
-    expect($subject->migratedAddress())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n');
-    expect($subject->migratedAddress())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n');
-});
-
-it('should not get the migration address from the vendor field if vendor field contents are not a valid address', function () {
-    config([
-        'explorer.migration.address' => '0xTest',
-    ]);
-
-    $transaction = Transaction::factory()->transfer()->create();
-    $transaction->update([
-        'recipient_id' => '0xTest',
-    ]);
-
-    DB::connection('explorer')->update('UPDATE transactions SET vendor_field = ? WHERE id = ?', ['test', $transaction->id]);
-
-    $subject = new TransactionViewModel($transaction->fresh());
-
-    expect($subject->migratedAddress())->toBeNull();
 });
 
 it('should fail to get the vendor field if it is empty', function () {

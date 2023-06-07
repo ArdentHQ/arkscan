@@ -87,7 +87,7 @@
         wire:click="toggleQrCode"
         type="button"
         @class([
-            "flex flex-1 justify-center items-center rounded cursor-pointer w-full bg-theme-secondary-800 transition-default h-11 hover:bg-theme-primary-700 text-white flex-shrink-0",
+            "flex flex-1 justify-center items-center rounded cursor-pointer bg-theme-secondary-800 transition-default h-11 hover:bg-theme-primary-700 text-white shrink-0",
             "sm:w-14 w-full" => $showReceiveLabel,
             "w-14 " => !$showReceiveLabel,
         ])

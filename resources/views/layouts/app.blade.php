@@ -7,17 +7,15 @@
         theme-color="#ffffff"
     />
 
-    <x-ark-pages-includes-layout-body
-        class="table-compact"
-        x-data="{ 'expanded': {{ Settings::usesExpandedTables() ? 'true' : 'false' }} }"
-        x-bind:class="{ 'table-compact-until-lg': expanded }"
-        @toggle-expanded-table="expanded = ($event.detail === true)"
-    >
-        <x-navbar.navbar :navigation="$navigationEntries ?? []">
-            <x-slot name="logo">
-                <x-navbar.logo />
-            </x-slot>
-        </x-navbar.navbar>
+    <x-ark-pages-includes-layout-body class="table-compact">
+        <div class="z-30 md:sticky md:top-0">
+            <x-navbar.top />
+            <x-navbar.navbar :navigation="$navigationEntries ?? []">
+                <x-slot name="logo">
+                    <x-navbar.logo />
+                </x-slot>
+            </x-navbar.navbar>
+        </div>
 
         <x-slot name="footer">
             <x-ark-footer
