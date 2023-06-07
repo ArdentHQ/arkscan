@@ -13,7 +13,7 @@ final class IndexBlocks extends IndexModel
     {
         $latestIndexedTimestamp = $this->getLatestIndexedTimestamp('blocks');
 
-        return  'blocks:'.$latestIndexedTimestamp;
+        return 'blocks:'.$latestIndexedTimestamp;
     }
 
     public function handle(): void
