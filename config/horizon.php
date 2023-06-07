@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Str;
 
 $environments = [
-    'standard' => [
+    'standard'    => [
         'connection'      => 'redis',
         'queue'           => ['default'],
         'balance'         => 'auto',
@@ -15,7 +15,7 @@ $environments = [
         'balanceCooldown' => 1,
         'tries'           => 1,
     ],
-    'delegates' => [
+    'delegates'   => [
         'connection'      => 'redis',
         'queue'           => ['resignations', 'voters', 'usernames'],
         'balance'         => 'auto',
@@ -25,7 +25,7 @@ $environments = [
         'balanceCooldown' => 1,
         'tries'           => 1,
     ],
-    'wallets' => [
+    'wallets'     => [
         'connection'      => 'redis',
         'queue'           => ['musig'],
         'balance'         => 'auto',
@@ -38,6 +38,16 @@ $environments = [
     'performance' => [
         'connection'      => 'redis',
         'queue'           => ['performance', 'productivity'],
+        'balance'         => 'auto',
+        'minProcesses'    => 5,
+        'maxProcesses'    => 15,
+        'balanceMaxShift' => 5,
+        'balanceCooldown' => 1,
+        'tries'           => 1,
+    ],
+    'scout' => [
+        'connection'      => 'redis',
+        'queue'           => ['scout'],
         'balance'         => 'auto',
         'minProcesses'    => 5,
         'maxProcesses'    => 15,
@@ -60,7 +70,7 @@ return [
     |
     */
 
-    'domain' => null,
+    'domain'           => null,
 
     /*
     |--------------------------------------------------------------------------
@@ -73,7 +83,7 @@ return [
     |
     */
 
-    'path' => 'horizon',
+    'path'             => 'horizon',
 
     /*
     |--------------------------------------------------------------------------
@@ -86,7 +96,7 @@ return [
     |
     */
 
-    'use' => 'default',
+    'use'              => 'default',
 
     /*
     |--------------------------------------------------------------------------
@@ -99,7 +109,7 @@ return [
     |
     */
 
-    'prefix' => env(
+    'prefix'           => env(
         'HORIZON_PREFIX',
         Str::slug(env('APP_NAME', 'laravel'), '_').'_horizon:'
     ),
@@ -115,7 +125,7 @@ return [
     |
     */
 
-    'middleware' => ['web'],
+    'middleware'       => ['web'],
 
     /*
     |--------------------------------------------------------------------------
@@ -128,7 +138,7 @@ return [
     |
     */
 
-    'waits' => [
+    'waits'            => [
         'redis:default' => 60,
     ],
 
@@ -143,7 +153,7 @@ return [
     |
     */
 
-    'trim' => [
+    'trim'             => [
         'recent'        => 60,
         'pending'       => 60,
         'completed'     => 60,
@@ -163,7 +173,7 @@ return [
     |
     */
 
-    'metrics' => [
+    'metrics'          => [
         'trim_snapshots' => [
             'job'   => 24,
             'queue' => 24,
@@ -196,7 +206,7 @@ return [
     |
     */
 
-    'memory_limit' => 2048,
+    'memory_limit'     => 2048,
 
     /*
     |--------------------------------------------------------------------------
@@ -209,7 +219,7 @@ return [
     |
     */
 
-    'defaults' => [
+    'defaults'         => [
         'supervisor-1' => [
             'connection'   => 'redis',
             'queue'        => ['default'],
@@ -221,9 +231,9 @@ return [
         ],
     ],
 
-    'environments' => [
+    'environments'     => [
         'production' => $environments,
 
-        'local' => $environments,
+        'local'      => $environments,
     ],
 ];

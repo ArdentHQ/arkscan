@@ -16,8 +16,13 @@ final class TableSkeleton extends Component
 
     private Collection $items;
 
-    public function __construct(private string $device, array $items, string $class = 'hidden md:block')
-    {
+    public function __construct(
+        private string $device,
+        array $items,
+        string $class = 'hidden md:block',
+        private ?int $rowCount = null,
+        private bool $encapsulated = false,
+    ) {
         $this->items = collect($items);
         $this->class = $class;
     }
@@ -47,9 +52,16 @@ final class TableSkeleton extends Component
             });
         }
 
-        return ViewFacade::make("components.tables.skeletons.{$this->device}", [
-            'headers' => $headers->toArray(),
-            'rows'    => $rows->toArray(),
+        $component = sprintf(
+            'components.tables.skeletons.%s%s',
+            $this->encapsulated ? 'encapsulated.' : '',
+            $this->device
+        );
+
+        return ViewFacade::make($component, [
+            'headers'  => $headers->toArray(),
+            'rows'     => $rows->toArray(),
+            'rowCount' => $this->rowCount,
         ]);
     }
 

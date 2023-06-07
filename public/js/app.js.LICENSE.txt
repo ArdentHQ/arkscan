@@ -5,9 +5,9 @@
  */
 
 /*!
- * chartjs-adapter-date-fns v2.0.0
+ * chartjs-adapter-date-fns v2.0.1
  * https://www.chartjs.org
- * (c) 2021 chartjs-adapter-date-fns Contributors
+ * (c) 2022 chartjs-adapter-date-fns Contributors
  * Released under the MIT license
  */
 
@@ -20,6 +20,17 @@
 * tabbable 5.3.3
 * @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
 */
+
+/**
+	 * A handy class to calculate color values.
+	 *
+	 * @version 1.0
+	 * @author Robert Eisele <robert@xarg.org>
+	 * @copyright Copyright (c) 2010, Robert Eisele
+	 * @link http://www.xarg.org/2010/03/generate-client-side-png-files-using-javascript/
+	 * @license http://www.opensource.org/licenses/bsd-license.php BSD License
+	 *
+	 */
 
 /**!
 * tippy.js v6.3.7

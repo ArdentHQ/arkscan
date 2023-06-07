@@ -4,8 +4,9 @@
 ])
 
 <div class="items-center">
-    @lang('labels.amount')
-
+    <span class="font-semibold">
+        @lang('labels.amount')
+    </span>
 
     @if($excludeItself && $model->isMultiPayment())
         <x-general.amount-fiat-tooltip

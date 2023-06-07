@@ -9,7 +9,7 @@
                     <x-number>{{ $height }}</x-number>
                 </x-stats.stat>
 
-                <x-stats.stat :label="trans('general.total_supply')" icon="app-supply">
+                <x-stats.stat :label="trans('general.current_supply')" icon="app-supply">
                     <x-currency :currency="Network::currency()">{{ $supply }}</x-currency>
                 </x-stats.stat>
 

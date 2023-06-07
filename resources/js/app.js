@@ -1,23 +1,31 @@
-// @see https://laravel-mix.com/docs/6.0/upgrade#unused-library-extraction
-import Alpine from "alpinejs";
-import { Chart } from "chart.js";
 import "focus-visible";
 import "@ui/js/tippy.js";
 import "@ui/js/page-scroll";
 import "@ui/js/reposition-dropdown";
+
 import * as dayjs from "dayjs";
-import Pagination from "@ui/js/pagination";
+
+// @see https://laravel-mix.com/docs/6.0/upgrade#unused-library-extraction
+import Alpine from "alpinejs";
+import { Chart } from "chart.js";
+import CustomChart from "@ui/js/chart.js";
+import Dropdown from "@ui/js/dropdown.js";
 import Modal from "@ui/js/modal";
-import ReadMore from "@ui/js/read-more.js";
-import RichSelect from "./rich-select.js";
+import Navbar from "@ui/js/navbar";
+import Pagination from "@ui/js/pagination";
 import Pikaday from "pikaday";
 import PriceChart from "./price-chart";
+import ReadMore from "@ui/js/read-more.js";
+import RichSelect from "./rich-select.js";
+import TableSorting from "./table-sorting.js";
 import Tabs from "./tabs";
-import Navbar from "@ui/js/navbar";
-import CustomChart from "@ui/js/chart.js";
+import Search from "./search";
+import makeBlockie from "ethereum-blockies-base64";
 
+window.makeBlockie = makeBlockie;
 window.Alpine = Alpine;
 window.Chart = Chart;
+window.Dropdown = Dropdown;
 window.dayjs = dayjs;
 window.Tabs = Tabs;
 window.Pikaday = Pikaday;
@@ -28,6 +36,9 @@ window.RichSelect = RichSelect;
 window.PriceChart = PriceChart;
 window.Navbar = Navbar;
 window.CustomChart = CustomChart;
+window.CustomChart = CustomChart;
+window.TableSorting = TableSorting;
+window.Search = Search;
 
 Alpine.start();
 

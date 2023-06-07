@@ -10,6 +10,11 @@ body {
     @apply flex-grow;
 }
 
+/* Navbar container */
+.content-container {
+    @apply px-6 md:px-10;
+}
+
 /* Network Status Block */
 .network-status-block {
     @apply inline-block w-full text-center border border-transparent bg-theme-secondary-200;
@@ -71,6 +76,10 @@ body {
 /* Transaction Icon */
 .transaction-icon {
     @apply flex-shrink-0 text-theme-secondary-900 border-theme-secondary-900;
+}
+
+body.table-compact:not(.table-compact-until-lg) .transparent {
+    @apply bg-transparent;
 }
 
 .dark .transaction-icon {
@@ -307,4 +316,9 @@ body {
     .unvote-circle {
         @apply flex items-center justify-center border-2 rounded-full w-11 h-11;
     }
+}
+
+/* Wallet Address Styling */
+.no-contextual {
+    font-variant-ligatures: no-contextual;
 }

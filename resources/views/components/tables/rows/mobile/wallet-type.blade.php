@@ -1,6 +1,8 @@
 @if ($model->hasSpecialType())
     <div>
-        @lang('labels.wallet_type')
+        <span class="font-semibold">
+            @lang('labels.wallet_type')
+        </span>
 
         <div class="flex flex-col items-end space-y-4">
             @if ($model->isKnown())

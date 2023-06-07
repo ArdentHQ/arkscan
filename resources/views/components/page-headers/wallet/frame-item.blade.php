@@ -11,7 +11,7 @@
         </div>
 
         <div class="flex items-center space-x-2 leading-tight">
-            <span class="truncate text-theme-secondary-400 dark:text-theme-secondary-200">
+            <span class="truncate text-theme-secondary-200 dark:text-theme-secondary-200">
                 {{ $slot }}
             </span>
         </div>

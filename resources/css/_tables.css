@@ -6,15 +6,11 @@
 
 /* Table Avatar */
 td.hoverable-cell .table-avatar {
-    @apply -my-1 -mr-1 border-4 border-white rounded-full;
+    @apply -my-1 -mr-1 border-4 border-white dark:border-theme-secondary-900 rounded-full;
 }
 
 tr:hover td.hoverable-cell .table-avatar {
     @apply border-theme-secondary-100;
-}
-
-.dark td.hoverable-cell .table-avatar {
-    @apply border-theme-secondary-900;
 }
 
 .dark tr:hover td.hoverable-cell .table-avatar {
@@ -34,6 +30,12 @@ tr:hover td.hoverable-cell .table-avatar {
 }
 
 /** Compact Table Styling **/
+.table-compact:not(.table-compact-until-lg)
+    .table-container
+    table
+    > tbody
+    .full-transaction-icon
+    svg,
 .table-compact:not(.table-compact-until-lg)
     .table-container
     table
@@ -82,6 +84,12 @@ tr:hover td.hoverable-cell .table-avatar {
         .table-container
         table
         > tbody
+        .full-transaction-icon
+        svg,
+    .table-compact:not(.table-compact-until-lg)
+        .table-container
+        table
+        > tbody
         .transaction-icon {
         @apply w-5 h-5 border-0;
     }
@@ -108,22 +116,17 @@ tr:hover td.hoverable-cell .table-avatar {
     @apply p-0 pr-2;
 }
 
-.table-compact:not(.table-compact-until-lg) table .fiat-tooltip-sent,
-.table-compact:not(.table-compact-until-lg) table .fiat-tooltip-received {
-    @apply p-0 border-0;
-}
-
 body.table-compact-until-lg table .fiat-tooltip-sent,
 body.table-compact-until-lg table .fiat-tooltip-received {
     @apply -my-1;
 }
 
 body.table-compact-until-lg .table-avatar > div {
-    @apply bg-white border-white circled-icon;
+    @apply bg-white dark:bg-transparent border-white dark:border-transparent circled-icon;
 }
 
 body.table-compact-until-lg .arrow-direction {
-    @apply -mr-2 circled-icon;
+    @apply -mr-2 z-5 lg:z-auto flex items-center justify-center border-0 lg:border-2 rounded-full lg:w-11 lg:h-11;
 }
 
 .table-compact:not(.table-compact-until-lg) table .button-vote {
@@ -152,6 +155,7 @@ body.table-compact-until-lg .arrow-direction {
         @apply py-3;
     }
 
+    .table-container table > tbody .full-transaction-icon svg,
     .table-container table > tbody .transaction-icon {
         @apply w-5 h-5 border-0;
     }
@@ -170,9 +174,24 @@ body.table-compact-until-lg .arrow-direction {
     .sender-direction-wrapper {
         @apply p-0 pr-2;
     }
+}
 
-    table .fiat-tooltip-sent,
-    table .fiat-tooltip-received {
-        @apply p-0 border-0;
-    }
+.table-encapsulated thead tr {
+    @apply border-none;
+}
+
+.table-encapsulated thead th::after {
+    @apply border-none;
+}
+
+.table-encapsulated thead th {
+    @apply text-theme-secondary-700 dark:text-theme-secondary-500 font-semibold;
+}
+
+.table-list-mobile .table-list-mobile-row {
+    @apply space-y-3;
+}
+
+.table-list-mobile .table-list-mobile-row {
+    @apply border-dashed;
 }

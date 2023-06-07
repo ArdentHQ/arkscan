@@ -9,7 +9,7 @@ return [
             'url'  => 'https://twitter.com/Ardent_HQ',
         ],
 
-        'github' => [
+        'github'  => [
             'icon' => 'brands.solid.github',
             'url'  => 'https://github.com/ArdentHQ',
         ],

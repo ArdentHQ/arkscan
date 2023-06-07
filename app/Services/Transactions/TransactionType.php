@@ -10,11 +10,14 @@ use App\Enums\MagistrateTransactionEntityTypeEnum;
 use App\Enums\MagistrateTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Transaction;
+use App\ViewModels\Concerns\Transaction\InteractsWithVendorField;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 final class TransactionType
 {
+    use InteractsWithVendorField;
+
     private array $types = [
         'isTransfer'                      => 'transfer',
         'isSecondSignature'               => 'second-signature',

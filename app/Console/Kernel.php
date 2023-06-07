@@ -20,7 +20,12 @@ use App\Console\Commands\CacheMultiSignatureAddresses;
 use App\Console\Commands\CacheNetworkAggregates;
 use App\Console\Commands\CachePrices;
 use App\Console\Commands\CacheTransactions;
+use App\Console\Commands\FetchExchangesDetails;
 use App\Console\Commands\GenerateVoteReport;
+use App\Console\Commands\ImportCommand;
+use App\Console\Commands\LoadExchanges;
+use App\Console\Commands\ScoutIndexModels;
+use App\Models\Wallet;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -79,6 +84,17 @@ final class Kernel extends ConsoleKernel
         $schedule->command(GenerateVoteReport::class)->everyFiveMinutes();
 
         $schedule->command('view:clear-expired')->hourly();
+
+        $schedule->command(LoadExchanges::class)->daily();
+
+        $schedule->command(FetchExchangesDetails::class)->hourly();
+
+        $schedule->command(ScoutIndexModels::class)->everyMinute();
+
+        $schedule->command(ImportCommand::class, [
+            Wallet::class,
+            '--no-pause',
+        ])->withoutOverlapping()->everyMinute();
     }
 
     /**

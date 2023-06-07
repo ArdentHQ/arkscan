@@ -4,48 +4,152 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Concerns;
 
-use Illuminate\Validation\Rule;
+use App\Facades\Network;
+use App\Services\Search\BlockSearch;
+use App\Services\Search\TransactionSearch;
+use App\Services\Search\WalletSearch;
+use App\ViewModels\ViewModelFactory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
+use Laravel\Scout\Engines\MeilisearchEngine;
+use Meilisearch\Contracts\SearchQuery;
+
+const RESULT_LIMIT_PER_TYPE = 5;
 
 trait ManagesSearch
 {
-    public array $state = [];
+    public ?string $query = null;
 
-    public function toggleAdvanced(): void
+    protected array $rules = [
+        'query' => [
+            'required', 'string', 'max:66',
+        ],
+    ];
+
+    public function clear(): void
     {
-        $this->isAdvanced = ! $this->isAdvanced;
+        $this->query = null;
     }
 
-    private function validateSearchQuery(): array
+    public function results(): Collection
     {
-        return $this->validate([
-            // Generic
-            'state'             => 'array',
-            'state.term'        => ['nullable', 'string', 'max:66'],
-            'state.type'        => ['nullable', Rule::in(['block', 'transaction', 'wallet'])],
-            'state.dateFrom'    => ['nullable', 'date'],
-            'state.dateTo'      => ['nullable', 'date'],
-            // Blocks
-            'state.heightFrom'         => ['nullable', 'numeric', 'min:1'],
-            'state.heightTo'           => ['nullable', 'numeric', 'min:1'],
-            'state.totalAmountFrom'    => ['nullable', 'numeric', 'min:0'],
-            'state.totalAmountTo'      => ['nullable', 'numeric', 'min:0'],
-            'state.totalFeeFrom'       => ['nullable', 'numeric', 'min:0'],
-            'state.totalFeeTo'         => ['nullable', 'numeric', 'min:0'],
-            'state.rewardFrom'         => ['nullable', 'numeric', 'min:0'],
-            'state.rewardTo'           => ['nullable', 'numeric', 'min:0'],
-            'state.generatorPublicKey' => ['nullable', 'string', 'max:66'],
-            // Transactions
-            'state.transactionType' => ['nullable', Rule::in(array_keys(trans('forms.search.transaction_types')))],
-            'state.amountFrom'      => ['nullable', 'numeric', 'min:0'],
-            'state.amountTo'        => ['nullable', 'numeric', 'min:0'],
-            'state.feeFrom'         => ['nullable', 'numeric', 'min:0'],
-            'state.feeTo'           => ['nullable', 'numeric', 'min:0'],
-            'state.smartBridge'     => ['nullable', 'string', 'max:255'],
-            // Wallets
-            'state.username'    => ['nullable', 'string', 'min:1', 'max:20'],
-            'state.vote'        => ['nullable', 'string', 'max:66'],
-            'state.balanceFrom' => ['nullable', 'numeric', 'min:0'],
-            'state.balanceTo'   => ['nullable', 'numeric', 'min:0'],
-        ])['state'];
+        $validator = Validator::make([
+            'query' => $this->query,
+        ], $this->rules);
+
+        if ($validator->fails()) {
+            return new Collection();
+        }
+
+        $data = $validator->validate();
+
+        $query = $this->parseQuery(Arr::get($data, 'query'));
+
+        if (config('scout.driver') === 'meilisearch') {
+            return $this->searchWithMeilisearch($query);
+        }
+
+        $results = (new WalletSearch())->search(query: $query, limit: RESULT_LIMIT_PER_TYPE);
+        $results = $results->concat((new TransactionSearch())->search(query: $query, limit: RESULT_LIMIT_PER_TYPE));
+        $results = $results->concat((new BlockSearch())->search(query: $query, limit: RESULT_LIMIT_PER_TYPE));
+
+        return ViewModelFactory::collection($results);
+    }
+
+    /**
+     * Uses Meilisearch multisearch capabilities to search across multiple indexes.
+     */
+    public function searchWithMeilisearch(string $query): Collection
+    {
+        $indexUids = collect(['wallets', 'transactions', 'blocks']);
+
+        $searchQueries = $indexUids
+                ->map(fn ($indexUid) => $this->buildSearchQueryForIndex($query, $indexUid))
+                ->filter(fn ($query) => $query !== null);
+
+        $knownWalletsAddresses = $this->matchKnownWalletsAddresses($query);
+
+        if ($knownWalletsAddresses->count() > 0) {
+            $knownWalletsAddresses->each(function ($address) use ($searchQueries) {
+                /**
+                 * @var SearchQuery
+                 */
+                $query = $this->buildSearchQueryForIndex($address, 'wallets');
+                $searchQueries->push($query);
+            });
+        }
+
+        $response = app(MeilisearchEngine::class)->__call('multiSearch', [
+            $searchQueries->toArray(),
+        ]);
+
+        /**
+         * @var array<int, mixed>
+         */
+        $results = Arr::get($response, 'results');
+
+        $results =  collect($results)
+            ->flatMap(function ($result) {
+                $indexUid = $result['indexUid'];
+                $hits     = $result['hits'];
+
+                if ($indexUid === 'wallets') {
+                    return WalletSearch::mapMeilisearchResults($hits);
+                }
+
+                if ($indexUid === 'transactions') {
+                    return TransactionSearch::mapMeilisearchResults($hits);
+                }
+
+                if ($indexUid === 'blocks') {
+                    return BlockSearch::mapMeilisearchResults($hits);
+                }
+            });
+
+        return ViewModelFactory::collection($results);
+    }
+
+    public function goToFirstResult(): null|Redirector|RedirectResponse
+    {
+        $results = $this->results();
+
+        if ($results->isEmpty()) {
+            return null;
+        }
+
+        return redirect($results->first()->url());
+    }
+
+    private function parseQuery(string $query): string
+    {
+        // Remove all special characters from the beginning and end of the query.
+        $chars = implode('', ['*', '"', '\'', ' ', '.']);
+
+        return ltrim(rtrim($query, $chars), $chars);
+    }
+
+    private function matchKnownWalletsAddresses(string $query): Collection
+    {
+        $knownWallets = collect(Network::knownWallets());
+
+        return $knownWallets
+            ->filter(fn ($wallet) => str_contains(strtolower($wallet['name']), strtolower($query)))
+            ->map(fn ($wallet) => $wallet['address']);
+    }
+
+    private function buildSearchQueryForIndex(string $query, string $indexUid): ?SearchQuery
+    {
+        if ($indexUid === 'transactions') {
+            return TransactionSearch::buildSearchQueryForIndex($query, RESULT_LIMIT_PER_TYPE);
+        }
+
+        if ($indexUid === 'blocks') {
+            return BlockSearch::buildSearchQueryForIndex($query, RESULT_LIMIT_PER_TYPE);
+        }
+
+        return WalletSearch::buildSearchQueryForIndex($query, RESULT_LIMIT_PER_TYPE);
     }
 }

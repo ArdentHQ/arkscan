@@ -26,8 +26,6 @@
     </x-page-headers.wallet.frame-item>
 
     @if($isDelegate)
-
-
         <x-slot name="extension">
             <div class="flex flex-col space-y-4 w-full lg:flex-row lg:justify-between lg:space-y-0">
                 <div class="grid grid-cols-1 space-y-4 sm:grid-cols-3 sm:space-y-0 lg:flex lg:space-x-5">

@@ -8,11 +8,13 @@ use App\Models\Casts\BigInteger;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Services\BigNumber;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Laravel\Scout\Searchable;
 
 /**
  * @property string $id
@@ -30,6 +32,7 @@ final class Block extends Model
     use HasFactory;
     use SearchesCaseInsensitive;
     use HasEmptyScope;
+    use Searchable;
 
     /**
      * The "type" of the primary key ID.
@@ -58,6 +61,62 @@ final class Block extends Model
         'total_amount'           => BigInteger::class,
         'total_fee'              => BigInteger::class,
     ];
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        // Notice that we only need to index the data used on to hydrate the model
+        // for the search results.
+        return [
+            'id'     => $this->id,
+            'height' => $this->height,
+            // used to get the delegate
+            'generator_public_key' => $this->generator_public_key,
+            // shown on the results
+            'number_of_transactions' => $this->number_of_transactions,
+            // sortable attribute
+            'timestamp' => $this->timestamp,
+        ];
+    }
+
+    /**
+     * @return Builder<self>
+     */
+    public static function getSearchableQuery(): Builder
+    {
+        $self = new static();
+
+        return $self->newQuery()
+            ->select([
+                'id',
+                'height',
+                'generator_public_key',
+                'number_of_transactions',
+                'timestamp',
+            ])
+            ->when(true, function ($query) use ($self) {
+                $self->makeAllSearchableUsing($query);
+            });
+    }
+
+    /**
+     * Overrides `vendor/laravel/scout/src/Searchable.php@makeAllSearchable`
+     * to add a custom property and optimize the query.
+     *
+     * @param  int  $chunk
+     * @return void
+     */
+    public static function makeAllSearchable($chunk = null)
+    {
+        $self = new static();
+
+        // @phpstan-ignore-next-line
+        $self::getSearchableQuery()->searchable($chunk);
+    }
 
     /**
      * A block has many transactions.

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
 
-    'search' => [
+    'search'     => [
         'block'                   => 'Block',
         'transaction'             => 'Transaction',
         'wallet'                  => 'Wallet',
@@ -43,8 +43,8 @@ return [
 
     ],
 
-    'settings' => [
-        'currency' => [
+    'settings'   => [
+        'currency'    => [
             'title'       => 'Currency',
             'description' => 'Select display currency',
         ],
@@ -52,15 +52,15 @@ return [
             'title'       => 'Price Chart',
             'description' => 'Enable/Disable price chart',
         ],
-        'fee_chart' => [
+        'fee_chart'   => [
             'title'       => 'Fee Chart',
             'description' => 'Enable/Disable fee chart',
         ],
-        'theme' => [
+        'theme'       => [
             'title'       => 'Dark Theme',
             'description' => 'Enable/Disable dark theme',
         ],
-        'table' => [
+        'table'       => [
             'title'       => 'Expanded Tables',
             'description' => 'Increases spacing of table items (desktop only)',
         ],

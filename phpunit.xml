@@ -46,6 +46,7 @@
         <server name="MAIL_MAILER" value="array"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
+        <server name="SCOUT_DRIVER" value="null"/>
         <!-- Third-Party -->
         <server name="MODEL_CACHE_ENABLED" value="false"/>
         <server name="TELESCOPE_ENABLED" value="false"/>
@@ -60,6 +61,7 @@
         <server name="ARKSCAN_DB_DATABASE" value="arkscan_test_db"/>
         <server name="ARKSCAN_DB_USERNAME" value="arkscan_test_db"/>
         <server name="ARKSCAN_DB_PASSWORD" value="password"/>
+        <server name="ARKSCAN_NETWORK_CAN_BE_EXCHANGED" value="true" />
         <server name="PDO_ATTR_PERSISTENT" value="false"/>
     </php>
     <listeners>

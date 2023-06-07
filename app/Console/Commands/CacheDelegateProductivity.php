@@ -22,13 +22,16 @@ final class CacheDelegateProductivity extends Command
     /**
      * The console command description.
      *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Calculate and cache the productivity for each active delegate.';
 
     public function handle(): void
     {
         Rounds::allByRound(Monitor::roundNumber())
-            ->each(fn (Round $round) => (bool) CacheProductivityByPublicKey::dispatch($round->public_key)->onQueue('productivity'));
+            ->each(function ($round) {
+                /** @var Round $round */
+                return (bool) CacheProductivityByPublicKey::dispatch($round->public_key)->onQueue('productivity');
+            });
     }
 }

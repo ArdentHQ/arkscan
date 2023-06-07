@@ -1,5 +1,7 @@
 <div>
-    @lang('labels.productivity')
+    <span class="font-semibold">
+        @lang('labels.productivity')
+    </span>
 
     <span>
         @if($model->productivity() >= 0)
