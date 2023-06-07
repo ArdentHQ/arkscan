@@ -10,21 +10,12 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
     Bus::fake([
         IndexTransactions::class,
         IndexWallets::class,
         IndexBlocks::class,
-    ]);
-
-    Http::fake([
-        '*' => Http::response([
-            'hits' => [
-                ['timestamp' => 5],
-            ],
-        ]),
     ]);
 });
 
