@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -13,12 +14,14 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
-abstract class IndexModel implements ShouldQueue
+abstract class IndexModel implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
+    abstract public function uniqueId(): string;
 
     /**
      * Execute the job.
@@ -53,17 +56,7 @@ abstract class IndexModel implements ShouldQueue
         $this->updateLatestIndexedTimestamp($indexName, $latestTimestamp);
     }
 
-    private function getCacheKey(string $indexName): string
-    {
-        return sprintf('latest-indexed-timestamp:%s', $indexName);
-    }
-
-    private function updateLatestIndexedTimestamp(string $indexName, int $latestTimestamp): void
-    {
-        Cache::put($this->getCacheKey($indexName), $latestTimestamp);
-    }
-
-    private function getLatestIndexedTimestamp(string $indexName): int|null
+    protected function getLatestIndexedTimestamp(string $indexName): int|null
     {
         $timestamp = $this->getLatestIndexedTimestampFromCache($indexName);
 
@@ -72,6 +65,16 @@ abstract class IndexModel implements ShouldQueue
         }
 
         return $this->getLatestIndexedTimestampFromMeilisearch($indexName);
+    }
+
+    private function getCacheKey(string $indexName): string
+    {
+        return sprintf('latest-indexed-timestamp:%s', $indexName);
+    }
+
+    private function updateLatestIndexedTimestamp(string $indexName, int $latestTimestamp): void
+    {
+        Cache::put($this->getCacheKey($indexName), $latestTimestamp);
     }
 
     private function getLatestIndexedTimestampFromCache(string $indexName): int|null
