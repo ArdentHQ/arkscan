@@ -1,6 +1,9 @@
 @props(['wallet'])
 
-<x-ark-container x-data="{}">
+<div
+    x-data="{}"
+    class="pt-8 pb-6 px-6 md:mx-auto md:max-w-7xl md:px-10 flex flex-col"
+>
     <div class="flex overflow-hidden flex-col space-y-2 font-semibold md:flex-row md:items-center md:space-y-0 md:rounded-lg md:border md:border-theme-secondary-300 md:dark:border-theme-secondary-800">
         <div class="md:px-4 md:py-[14.5px] md:bg-theme-secondary-200 md:dark:bg-black text-sm md:text-lg dark:text-theme-secondary-500 !leading-[17px] md:!leading-[21px]">
             @lang('general.address')
@@ -34,4 +37,4 @@
             </div>
         </div>
     </div>
-</x-ark-container>
+</div>
