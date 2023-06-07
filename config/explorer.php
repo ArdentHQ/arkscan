@@ -85,6 +85,6 @@ return [
     ],
 
     'scout' => [
-        'run_jobs' => env('SCOUNT_RUN_JOBS', false),
+        'run_jobs' => env('SCOUT_RUN_JOBS', false),
     ],
 ];
