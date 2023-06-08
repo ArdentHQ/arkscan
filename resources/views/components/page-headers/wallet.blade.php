@@ -20,6 +20,9 @@
                 :value="$wallet->address()"
                 class="flex items-center p-2 w-full h-auto"
                 wrapper-class="flex-1"
+                :tooltip-content="trans('pages.wallet.address_copied')"
+                with-checkmarks
+                checkmarks-class="text-theme-primary-900 dark:text-theme-secondary-200"
             />
 
             @unless($wallet->isCold())
