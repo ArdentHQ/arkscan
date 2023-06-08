@@ -26,11 +26,11 @@
 
     <div
         wire:key="{{ Illuminate\Support\Str::random(20) }}"
-        class="mb-5 md:space-x-3 md:hidden"
+        class="mb-5 md:hidden md:space-x-3"
     >
         <x-ark-dropdown
             wrapper-class="relative w-full rounded border md:w-1/2 border-theme-secondary-300 dark:border-theme-secondary-800"
-            button-class="px-4 py-3 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200 justify-between"
+            button-class="justify-between py-3 px-4 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
             dropdown-classes="left-0 w-full z-20"
             :init-alpine="false"
         >

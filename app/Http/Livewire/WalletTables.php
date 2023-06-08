@@ -47,13 +47,7 @@ final class WalletTables extends Component
 
     public function render(): View
     {
-        // if ($this->state['view'] === 'blocks') {
-        //     $items = $this->getReceivedQuery()->withScope(OrderByTimestampScope::class)->paginate();
-        // } elseif ($this->state['view'] === 'voters') {
-        //     $items = $this->getSentQuery()->withScope(OrderByTimestampScope::class)->paginate();
-        // } else {
-            $items = $this->getTransactionsQuery()->withScope(OrderByTimestampScope::class)->paginate();
-        // }
+        $items = $this->getTransactionsQuery()->withScope(OrderByTimestampScope::class)->paginate();
 
         return view('livewire.wallet-tables', [
             'wallet'        => ViewModelFactory::make(Wallets::findByAddress($this->address)),
