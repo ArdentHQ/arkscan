@@ -122,6 +122,8 @@ return [
         'productivity'          => 'Productivity',
         'productivity_tooltip'  => 'Success rate of validating blocks over the last 30 days.',
         'no_results'            => 'No :0 transactions could be found.',
+        'transactions'          => 'Transactions',
+
         'qrcode'                => [
             'title'            => 'Send Funds',
             'description'      => 'Enter the amount you wish to transfer to this address and confirm.',
@@ -129,9 +131,11 @@ return [
             'specify_amount'   => 'Specify Amount',
             'send_from_wallet' => 'Send From Wallet',
         ],
+
         'public_key'            => [
             'title'       => 'Public Key',
         ],
+
         'delegate'              => [
             'title'            => 'Delegate :0',
             'rank'             => 'Rank',
@@ -146,6 +150,7 @@ return [
             'productivity'     => 'Productivity (30 Days)',
             'voters'           => 'Voters',
             'resigned'         => 'Resigned',
+            'validated_blocks'    => 'Validated Blocks',
         ],
     ],
 

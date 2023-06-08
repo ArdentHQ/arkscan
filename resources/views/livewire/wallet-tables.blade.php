@@ -1,6 +1,6 @@
-<div class="">
+<div x-data="{ tab: 'transactions' }">
     <x-tabs.inline-wrapper
-        class="hidden mb-4 lg:inline-flex"
+        class="hidden mb-4 md:inline-flex"
         default-selected="transactions"
         on-selected="function (value) {
             this.$wire.set('state.view', value);
@@ -26,39 +26,43 @@
 
     <div
         wire:key="{{ Illuminate\Support\Str::random(20) }}"
-        class="mb-5 md:flex md:space-x-3 lg:hidden"
+        class="mb-5 md:space-x-3 md:hidden"
     >
         <x-ark-dropdown
-            wrapper-class="relative p-2 w-full rounded-xl border md:w-1/2 border-theme-primary-100 dark:border-theme-secondary-800"
-            button-class="p-3 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
+            wrapper-class="relative w-full rounded border md:w-1/2 border-theme-secondary-300 dark:border-theme-secondary-800"
+            button-class="px-4 py-3 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200 justify-between"
             dropdown-classes="left-0 w-full z-20"
             :init-alpine="false"
         >
             <x-slot name="button">
-                <div class="flex items-center space-x-4" wire:ignore>
-                    <div>
-                        <div x-show="dropdownOpen !== true">
-                            <x-ark-icon name="menu" size="sm" />
-                        </div>
-
-                        <div x-show="dropdownOpen === true">
-                            <x-ark-icon name="menu-show" size="sm" />
-                        </div>
-                    </div>
-
-                    <div x-show="view === 'transactions'">@lang('pages.wallet.transactions')</div>
+                <div
+                    class="flex items-center space-x-4"
+                    wire:ignore
+                >
+                    <div x-show="tab === 'transactions'">@lang('pages.wallet.transactions')</div>
 
                     @if($wallet->isDelegate())
-                        <div x-show="view === 'blocks'">@lang('pages.wallet.delegate.validated_blocks')</div>
-                        <div x-show="view === 'voters'">@lang('pages.wallet.delegate.voters')</div>
+                        <div x-show="tab === 'blocks'">@lang('pages.wallet.delegate.validated_blocks')</div>
+                        <div x-show="tab === 'voters'">@lang('pages.wallet.delegate.voters')</div>
                     @endif
                 </div>
+
+                <span
+                    class="transition-default"
+                    :class="{ 'rotate-180': dropdownOpen }"
+                >
+                    <x-ark-icon
+                        name="arrows.chevron-down-small"
+                        size="w-3 h-3"
+                        class="text-theme-secondary-700 dark:text-theme-secondary-200"
+                    />
+                </span>
             </x-slot>
 
             <div class="block justify-center items-center py-3 mt-1">
                 <a
                     wire:click="$set('state.view', 'transactions');"
-                    @click="view = 'transactions'"
+                    @click="view = 'transactions'; tab = 'transactions';"
                     class="dropdown-entry @if($state['view'] === 'transactions') dropdown-entry-selected @endif"
                 >
                     @lang('pages.wallet.transactions')
@@ -67,7 +71,7 @@
                 @if($wallet->isDelegate())
                     <a
                         wire:click="$set('state.view', 'blocks');"
-                        @click="view = 'blocks'"
+                        @click="view = 'blocks'; tab = 'blocks';"
                         class="dropdown-entry @if($state['view'] === 'blocks') dropdown-entry-selected @endif"
                     >
                         <span>@lang('pages.wallet.delegate.validated_blocks')</span>
@@ -75,7 +79,7 @@
 
                     <a
                         wire:click="$set('state.view', 'voters');"
-                        @click="view = 'voters'"
+                        @click="view = 'voters'; tab = 'voters';"
                         class="dropdown-entry @if($state['view'] === 'voters') dropdown-entry-selected @endif"
                     >
                         <span>@lang('pages.wallet.delegate.voters')</span>
@@ -95,11 +99,8 @@
                     :wallet="$wallet"
                     use-confirmations
                     use-direction
-                    exclude-itself
-                    {{-- :exclude-itself="$state['direction'] === 'all'" --}}
-                    {{-- :is-sent="$state['direction'] === 'sent'" --}}
-                    {{-- :is-received="$state['direction'] === 'received'" --}}
                     :state="$state"
+                    exclude-itself
                 />
 
                 <x-tables.mobile.transactions
@@ -107,11 +108,8 @@
                     :wallet="$wallet"
                     use-confirmations
                     use-direction
-                    exclude-itself
-                    {{-- :exclude-itself="$state['direction'] === 'all'" --}}
-                    {{-- :is-sent="$state['direction'] === 'sent'" --}}
-                    {{-- :is-received="$state['direction'] === 'received'" --}}
                     :state="$state"
+                    exclude-itself
                 />
 
                 <x-general.pagination :results="$transactions" class="mt-8" />
