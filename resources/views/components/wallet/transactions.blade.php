@@ -10,10 +10,6 @@
         class="w-full"
         x-cloak
     >
-        <livewire:wallet-tables
-            :address="$wallet->address()"
-            :public-key="$wallet->publicKey()"
-            :is-cold="$wallet->isCold()"
-        />
+        <livewire:wallet-tables :wallet="$wallet" />
     </div>
 </x-ark-container>

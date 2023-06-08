@@ -91,15 +91,15 @@
 
     <div id="transaction-list" class="w-full">
         <x-skeletons.transactions>
-            @if ($transactions->isEmpty() && $state['type'] !== 'all')
-                <x-general.no-results :text="trans('pages.home.no_transaction_results', [trans('forms.search.transaction_types.'.$state['type'])])" />
+            @if ($transactions->isEmpty())
+                <x-general.no-results :text="trans('pages.home.no_transaction_results', [trans('forms.search.transaction_types.all')])" />
             @else
                 <x-tables.desktop.transactions
                     :transactions="$transactions"
                     :wallet="$wallet"
                     use-confirmations
                     use-direction
-                    :state="$state"
+                    :state="$this->state()"
                     exclude-itself
                 />
 
@@ -108,7 +108,7 @@
                     :wallet="$wallet"
                     use-confirmations
                     use-direction
-                    :state="$state"
+                    :state="$this->state()"
                     exclude-itself
                 />
 

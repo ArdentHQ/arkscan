@@ -8,6 +8,7 @@ use App\Facades\Wallets;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
+use App\ViewModels\WalletViewModel;
 use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,12 +18,14 @@ final class WalletTables extends Component
 {
     use HasPagination;
 
+    public string $address;
+
+    public ?string $publicKey = null;
+
+    public bool $isCold = false;
+
     public array $state = [
-        'address'   => null,
-        'publicKey' => null,
-        'isCold'    => null,
-        'type'      => 'all',
-        'view'      => 'transactions',
+        'view' => 'transactions',
     ];
 
     /** @var mixed */
@@ -30,11 +33,11 @@ final class WalletTables extends Component
         'currencyChanged' => '$refresh',
     ];
 
-    public function mount(string $address, bool $isCold, ?string $publicKey): void
+    public function mount(WalletViewModel $wallet): void
     {
-        $this->state['address']   = $address;
-        $this->state['publicKey'] = $publicKey;
-        $this->state['isCold']    = $isCold;
+        $this->address   = $wallet->address();
+        $this->publicKey = $wallet->publicKey();
+        $this->isCold    = $wallet->isCold();
     }
 
     public function updatedState(): void
@@ -45,17 +48,27 @@ final class WalletTables extends Component
     public function render(): View
     {
         // if ($this->state['view'] === 'blocks') {
-        //     $items         = $this->getReceivedQuery()->withScope(OrderByTimestampScope::class)->paginate();
+        //     $items = $this->getReceivedQuery()->withScope(OrderByTimestampScope::class)->paginate();
         // } elseif ($this->state['view'] === 'voters') {
-        //     $items         = $this->getSentQuery()->withScope(OrderByTimestampScope::class)->paginate();
+        //     $items = $this->getSentQuery()->withScope(OrderByTimestampScope::class)->paginate();
         // } else {
-            $items         = $this->getTransactionsQuery()->withScope(OrderByTimestampScope::class)->paginate();
+            $items = $this->getTransactionsQuery()->withScope(OrderByTimestampScope::class)->paginate();
         // }
 
         return view('livewire.wallet-tables', [
-            'wallet'        => ViewModelFactory::make(Wallets::findByAddress($this->state['address'])),
+            'wallet'        => ViewModelFactory::make(Wallets::findByAddress($this->address)),
             'transactions'  => ViewModelFactory::paginate($items),
         ]);
+    }
+
+    public function state(): array
+    {
+        return [
+            ...$this->state,
+            'address'   => $this->address,
+            'publicKey' => $this->publicKey,
+            'isCold'    => $this->isCold,
+        ];
     }
 
     private function getTransactionsQuery(): Builder
@@ -63,15 +76,15 @@ final class WalletTables extends Component
         $query = Transaction::query();
 
         $query->where(function ($query): void {
-            $query->where('sender_public_key', $this->state['publicKey']);
+            $query->where('sender_public_key', $this->publicKey);
         });
 
         $query->orWhere(function ($query): void {
-            $query->where('recipient_id', $this->state['address']);
+            $query->where('recipient_id', $this->address);
         });
 
         $query->orWhere(function ($query): void {
-            $query->whereJsonContains('asset->payments', [['recipientId' => $this->state['address']]]);
+            $query->whereJsonContains('asset->payments', [['recipientId' => $this->address]]);
         });
 
         return $query;
