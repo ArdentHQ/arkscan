@@ -28,7 +28,7 @@
 
     <div
         x-show="publicKeyModalVisible"
-        class="flex absolute right-0 left-0 items-end p-6 mx-8 mt-4 space-x-4 w-auto bg-white rounded-xl shadow-lg lg:left-auto lg:mx-0 lg:mt-1 lg:mr-32 z-15 dark:shadow-lg-dark dark:bg-theme-secondary-900"
+        class="flex absolute right-0 left-0 items-end p-6 mx-8 mt-4 space-x-4 w-auto bg-white rounded-xl shadow-lg lg:left-auto lg:mx-0 lg:mt-1 lg:mr-32 z-15 dark:shadow-lg-dark dark:bg-theme-secondary-900 border border-transparent dark:border-theme-secondary-800"
         @click.outside="publicKeyModalVisible = false"
         x-transition
         x-cloak
@@ -39,7 +39,7 @@
             </span>
 
             <span class="flex font-semibold">
-                <span class="inline-block truncate">
+                <span class="inline-block truncate text-theme-secondary-900 dark:text-theme-secondary-200">
                     {{ $publicKey }}
                 </span>
             </span>
