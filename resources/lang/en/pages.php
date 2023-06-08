@@ -123,6 +123,9 @@ return [
         'productivity_tooltip'  => 'Success rate of validating blocks over the last 30 days.',
         'no_results'            => 'No :0 transactions could be found.',
         'transactions'          => 'Transactions',
+        'delegate_info'         => 'Delegate Info',
+        'name'                  => 'Name',
+        'value'                 => 'Value',
 
         'qrcode'                => [
             'title'            => 'Send Funds',
@@ -151,6 +154,11 @@ return [
             'voters'              => 'Voters',
             'resigned'            => 'Resigned',
             'validated_blocks'    => 'Validated Blocks',
+            'votes_title'         => 'Votes',
+            'productivity_title'  => 'Productivity',
+            'not_registered_text' => 'This address is not a registered delegate',
+            'vote'                => 'Vote',
+            'vote_for_delegate'   => 'Vote for Delegate',
         ],
     ],
 

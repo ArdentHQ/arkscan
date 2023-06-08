@@ -8,9 +8,7 @@
     @section('content')
         <x-page-headers.wallet :wallet="$wallet" />
 
-        @if($wallet->isVoting())
-            <x-wallet.vote-for :vote="$wallet->vote()" :wallet="$wallet" />
-        @endif
+        <x-wallet.overview :wallet="$wallet" />
 
         <x-wallet.transactions :wallet="$wallet" />
     @endsection

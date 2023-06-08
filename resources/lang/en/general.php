@@ -32,6 +32,8 @@ return [
     'select_network'          => 'Select Network',
     'na'                      => 'N/A',
     'all'                     => 'All',
+    'overview'                => 'Overview',
+    'view'                    => 'View',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',

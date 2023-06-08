@@ -25,6 +25,13 @@ final class WalletQrCode extends Component
 
     public ?string $smartbridge = null;
 
+    public ?string $class = null;
+
+    public function mount(?string $class = null): void
+    {
+        $this->class = $class;
+    }
+
     public function render(): View
     {
         return view('livewire.wallet-qr-code', [
