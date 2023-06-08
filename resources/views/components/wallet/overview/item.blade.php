@@ -13,11 +13,13 @@
         @endif
     </div>
 
-    <div class="flex relative flex-col flex-1 space-y-3 md:p-6 md:rounded-xl md:border border-theme-secondary-300 dark:border-theme-secondary-800">
-        {{ $slot }}
+    <div class="relative flex-1 md:rounded-xl md:border border-theme-secondary-300 dark:border-theme-secondary-800">
+        <div class="flex relative flex-col space-y-3 md:p-6">
+            {{ $slot }}
+        </div>
 
         @if ($maskedMessage)
-            <div class="flex absolute inset-0 justify-center items-center text-sm font-semibold select-none backdrop-blur text-theme-secondary-500">
+            <div class="flex absolute inset-0 justify-center items-center -my-2 -mx-6 text-sm font-semibold select-none md:m-0 md:rounded-xl backdrop-blur text-theme-secondary-500">
                 {{ $maskedMessage }}
             </div>
         @endif

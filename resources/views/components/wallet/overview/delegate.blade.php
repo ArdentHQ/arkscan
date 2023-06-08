@@ -18,44 +18,11 @@
             </x-slot>
         @endif
 
-        <x-wallet.overview.item-entry
-            :title="trans('pages.wallet.delegate.rank')"
-            :value="$wallet->rank()"
-            :has-empty-value="! $wallet->isDelegate()"
-        >
-            <x-slot name="value">
-                <x-wallet.overview.delegate.rank :wallet="$wallet" />
-            </x-slot>
-        </x-wallet.overview.item-entry>
+        <x-wallet.overview.delegate.rank :wallet="$wallet" />
 
-        <x-wallet.overview.item-entry
-            :title="trans('pages.wallet.delegate.votes_title')"
-            :has-empty-value="! $wallet->isDelegate()"
-        >
-            <x-slot name="value">
-                @if ($wallet->isDelegate())
-                    <x-general.network-currency
-                        :value="$wallet->votes()"
-                        decimals="0"
-                    />
-                @endif
-            </x-slot>
+        <x-wallet.overview.delegate.votes :wallet="$wallet" />
 
-            <x-slot name="tooltip">
-                @if ($wallet->votes())
-                    <x-general.network-currency :value="$wallet->votes()" />
-                @endif
-            </x-slot>
-        </x-wallet.overview.item-entry>
-
-        <x-wallet.overview.item-entry
-            :title="trans('pages.wallet.delegate.productivity_title')"
-            :has-empty-value="! $wallet->isDelegate() || ! $wallet->isActive()"
-        >
-            <x-slot name="value">
-                <x-wallet.overview.delegate.productivity :wallet="$wallet" />
-            </x-slot>
-        </x-wallet.overview.item-entry>
+        <x-wallet.overview.delegate.productivity :wallet="$wallet" />
 
         <x-wallet.overview.item-entry
             :title="trans('pages.wallet.delegate.forged_total')"
