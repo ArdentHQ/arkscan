@@ -47,6 +47,7 @@ final class WalletTables extends Component
 
     public function render(): View
     {
+        // TODO: add block and voter table handling
         $items = $this->getTransactionsQuery()->withScope(OrderByTimestampScope::class)->paginate();
 
         return view('livewire.wallet-tables', [
