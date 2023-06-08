@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 use App\Facades\Network;
 use App\Http\Livewire\WalletTables;
-use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Livewire\Livewire;
-use Ramsey\Uuid\Uuid;
 use function Tests\fakeCryptoCompare;
 
 beforeEach(function () {
