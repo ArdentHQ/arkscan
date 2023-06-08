@@ -1,5 +1,5 @@
 <x-ark-container
-    class="border-t-4 border-theme-secondary-200 dark:border-black md:border-0"
+    class="border-t-4 md:border-0 dark:border-black border-theme-secondary-200"
     container-class="md:pt-0"
 >
     <div
