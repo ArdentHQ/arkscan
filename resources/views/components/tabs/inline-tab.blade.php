@@ -5,7 +5,7 @@
 
 <button
     type="button"
-    class="flex relative items-center space-x-6 cursor-pointer pr-6 last:pr-4 first:pl-4 transition-default dark:hover:text-theme-secondary-200 hover:text-theme-secondary-900"
+    class="flex relative items-center pr-6 space-x-6 cursor-pointer first:pl-4 last:pr-4 transition-default dark:hover:text-theme-secondary-200 hover:text-theme-secondary-900"
     @click="select('{{ $name }}')"
     @keydown.enter="select('{{ $name }}')"
     @keydown.space.prevent="select('{{ $name }}')"
