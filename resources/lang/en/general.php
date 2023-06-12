@@ -114,6 +114,7 @@ return [
             'unvote'                              => 'Unvote',
             'vote'                                => 'Vote',
             'unknown'                             => 'Unknown',
+            'other'                               => 'Other',
 
             // TODO: remove once legacy magistrate shows proper type texts
             'business'                            => 'Business',
