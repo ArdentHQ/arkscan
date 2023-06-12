@@ -14,7 +14,7 @@
 
     <x-tables.rows.desktop.encapsulated.fee
         :model="$model"
-        class="hidden md:block md-lg:hidden text-xs text-theme-secondary-700"
+        class="hidden text-xs md:block text-theme-secondary-700 md-lg:hidden"
         without-styling
     />
 </div>

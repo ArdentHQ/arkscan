@@ -14,7 +14,7 @@
     ]);
 @endphp
 
-<div class="rounded px-[3px] py-[2px] border border-transparent bg-theme-secondary-200 dark:bg-transparent dark:border-theme-secondary-800 dark:text-theme-secondary-500 font-semibold text-xs leading-[15px]">
+<div class="text-xs font-semibold rounded border border-transparent dark:bg-transparent px-[3px] py-[2px] bg-theme-secondary-200 leading-[15px] dark:border-theme-secondary-800 dark:text-theme-secondary-500">
     @unless ($isOther)
         @lang('general.transaction.types.'.$model->typeName())
     @else
