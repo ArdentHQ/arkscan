@@ -15,3 +15,8 @@
     --icon-error-secondary-300: var(--theme-color-secondary-800);
     --icon-error-secondary-900: var(--theme-color-secondary-600);
 }
+
+:root {
+    --theme-orange-dark: #A56D4C;
+    --theme-orange-light: #FBEED6;
+}
