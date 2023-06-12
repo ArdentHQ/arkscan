@@ -77,7 +77,7 @@ final class NumberFormatter
     /**
      * @param string|int|float $value
      */
-    public static function networkCurrency($value, ?int $decimals = 8): string
+    public static function networkCurrency($value, int $decimals = 8): string
     {
         return BetterNumberFormatter::new()
             ->withLocale('en-US')
