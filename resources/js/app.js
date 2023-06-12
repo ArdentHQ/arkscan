@@ -4,6 +4,7 @@ import "@ui/js/page-scroll";
 import "@ui/js/reposition-dropdown";
 
 import * as dayjs from "dayjs";
+import * as dayjsRelativeTime from "dayjs/plugin/relativeTime";
 
 // @see https://laravel-mix.com/docs/6.0/upgrade#unused-library-extraction
 import Alpine from "alpinejs";
@@ -39,6 +40,8 @@ window.CustomChart = CustomChart;
 window.CustomChart = CustomChart;
 window.TableSorting = TableSorting;
 window.Search = Search;
+
+dayjs.extend(dayjsRelativeTime);
 
 Alpine.start();
 
