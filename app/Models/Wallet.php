@@ -103,8 +103,19 @@ final class Wallet extends Model
                 'wallets.address',
                 'wallets.attributes',
                 'wallets.balance',
-                DB::raw('(SELECT MAX(transactions.timestamp) FROM transactions WHERE transactions.recipient_id = wallets.address) as timestamp'),
+                'tx.timestamp',
             ])
+            ->join(
+                DB::raw('(
+                    SELECT recipient_id, sender_public_key, asset, MAX(timestamp) as timestamp
+                    FROM transactions
+                    GROUP BY recipient_id, sender_public_key, asset, timestamp
+                ) tx'),
+                fn ($join) =>
+                    $join->on('tx.recipient_id', '=', 'wallets.address')
+                        ->orOn('tx.sender_public_key', '=', 'wallets.public_key')
+                        ->orWhere(DB::raw('wallets.address IN (SELECT (jsonb_array_elements(tx.asset->\'payments\')->>\'recipientId\'))'))
+            )
             ->when(true, function ($query) use ($self) {
                 $self->makeAllSearchableUsing($query);
             });
