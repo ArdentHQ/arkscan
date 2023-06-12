@@ -11,12 +11,12 @@ use Illuminate\Support\Arr;
 
 final class ExchangeRate
 {
-    public static function convert(float $amount, int $timestamp): string
+    public static function convert(float $amount, int $timestamp, bool $showSmallAmounts = false): string
     {
         $prices       = (new CryptoDataCache())->getPrices(Settings::currency().'.week');
         $exchangeRate = Arr::get($prices, Carbon::parse(static::timestamp($timestamp))->format('Y-m-d'), 0);
 
-        return NumberFormatter::currency($amount * $exchangeRate, Settings::currency());
+        return NumberFormatter::currency($amount * $exchangeRate, Settings::currency(), $showSmallAmounts);
     }
 
     public static function now(): float
