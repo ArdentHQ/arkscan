@@ -139,6 +139,12 @@ it('should get the amount received for non-multipayment', function () {
     assertMatchesSnapshot($this->subject->amountReceived('recipient'));
 });
 
+it('should get the amount including fee', function () {
+    expect($this->subject->amountWithFee())->toBeFloat();
+
+    assertMatchesSnapshot($this->subject->amountWithFee());
+});
+
 it('should get the amount for multi payments', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
         'asset' => [
@@ -301,6 +307,38 @@ it('should get the specific multi payment amount for a wallet recipient', functi
     expect($this->subject->amountReceived('B'))->toBeFloat();
 
     assertMatchesSnapshot($this->subject->amountReceived('B'));
+});
+
+it('should get multi payment amount with fee', function () {
+    $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
+        'asset' => [
+            'payments' => [
+                [
+                    'amount'      => '1000000000',
+                    'recipientId' => 'A',
+                ], [
+                    'amount'      => '2000000000',
+                    'recipientId' => 'B',
+                ], [
+                    'amount'      => '3000000000',
+                    'recipientId' => 'C',
+                ], [
+                    'amount'      => '4000000000',
+                    'recipientId' => 'D',
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => 'E',
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => 'B',
+                ],
+            ],
+        ],
+    ]));
+
+    expect($this->subject->amountWithFee())->toBeFloat();
+
+    assertMatchesSnapshot($this->subject->amountWithFee());
 });
 
 it('should get the amount as fiat', function () {

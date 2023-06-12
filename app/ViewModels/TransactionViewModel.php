@@ -60,6 +60,11 @@ final class TransactionViewModel implements ViewModel
         return route('transaction', $this->transaction);
     }
 
+    public function model(): Transaction
+    {
+        return $this->transaction;
+    }
+
     public function id(): string
     {
         return $this->transaction->id;
@@ -134,6 +139,20 @@ final class TransactionViewModel implements ViewModel
         }
 
         return $this->transaction->amount->toFloat();
+    }
+
+    public function amountWithFee(): float
+    {
+        $amount = $this->transaction->amount->toFloat();
+        if ($this->isMultiPayment()) {
+            /** @var array<int, array<string, mixed>> */
+            $payments = Arr::get($this->transaction, 'asset.payments', []);
+
+            return collect($payments)
+                ->sum('amount') / 1e8;
+        }
+
+        return $amount + $this->fee();
     }
 
     public function amountReceived(?string $wallet = null): float

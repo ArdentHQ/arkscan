@@ -33,7 +33,7 @@
 
                     @if ($exchange->price)
                         <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
-                            {{ ExplorerNumberFormatter::currency($exchange->price, 'USD', 4) }}
+                            {{ ExplorerNumberFormatter::usdWithDecimals($exchange->price) }}
                         </span>
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
@@ -49,7 +49,7 @@
 
                     @if ($exchange->volume)
                         <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
-                            {{ ExplorerNumberFormatter::currency($exchange->volume, 'USD') }}
+                            {{ ExplorerNumberFormatter::usdWithDecimals($exchange->volume, 2) }}
                         </span>
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">

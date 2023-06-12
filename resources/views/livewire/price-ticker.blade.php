@@ -20,20 +20,13 @@
                 @lang('general.na')
             @else
                 <div class="inline-flex items-center">
-                    @if (config('currencies.'.Str::lower($to).'.symbol'))
-                        <span>
-                            {{ config('currencies.'.Str::lower($to).'.symbol') }}
-                        </span>
-                    @endif
-
-                    <span>
-                        {{ $price }}
-                    </span>
+                    {{ ExplorerNumberFormatter::currency($price, Settings::currency()) }}
                 </div>
             @endif
         </div>
 
         <x-general.dropdown.dropdown
+            dropdownClass="right-0 min-w-[125px]"
             scroll-class="max-h-[246px] md:max-h-[332px]"
             :disabled="$isDisabled"
         >
@@ -45,15 +38,16 @@
                     @class([
                         'flex justify-center items-center py-2 pr-3 space-x-2 text-sm font-semibold leading-4 group',
                         'cursor-not-allowed' => $isDisabled,
+                        'hover:text-theme-secondary-900 hover:dark:text-theme-secondary-200 md:dark:text-theme-secondary-200' => ! $isDisabled,
                     ])
                     @if ($isDisabled)
                         disabled
                     @endif
                 >
                     <div @class([
-                        'md:w-px h-3.5 md:block bg-transparent transition-default',
+                        'md:w-px h-3.5 md:block transition-default',
                         'bg-theme-secondary-300 dark:bg-theme-secondary-700' => $isDisabled,
-                        'md:group-hover:bg-theme-secondary-300 md:group-hover:dark:bg-theme-secondary-700' => ! $isDisabled,
+                        'bg-transparent md:group-hover:bg-theme-secondary-300 md:group-hover:dark:bg-theme-secondary-700' => ! $isDisabled,
                     ])></div>
 
                     <span>
@@ -66,7 +60,7 @@
                     >
                         <x-ark-icon
                             name="arrows.chevron-down-small"
-                            size="w-3 h-3"
+                            size="w-2.5 h-2.5 md:w-3 md:h-3"
                         />
                     </span>
                 </div>

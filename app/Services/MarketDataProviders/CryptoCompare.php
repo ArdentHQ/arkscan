@@ -6,6 +6,7 @@ namespace App\Services\MarketDataProviders;
 
 use App\DTO\MarketData;
 use App\Facades\Network;
+use App\Models\Exchange;
 use App\Services\Cache\CryptoDataCache;
 use ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation;
 use Carbon\Carbon;
@@ -107,6 +108,17 @@ final class CryptoCompare extends AbstractMarketDataProvider
         return $targetCurrencies->mapWithKeys(fn ($targetCurrency) => [
             strtoupper($targetCurrency) => MarketData::fromCryptoCompareApiResponse($baseCurrency, $targetCurrency, $data),
         ]);
+    }
+
+    /**
+     * @return array{
+     *   price: float|int|null,
+     *   volume: float|int|null,
+     * }
+     */
+    public function exchangeDetails(Exchange $exchange): array
+    {
+        throw new \Exception('Not implemented');
     }
 
     private function isEmptyResponse(?array $data, bool $checkStatus = true): bool

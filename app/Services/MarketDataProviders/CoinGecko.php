@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Services\MarketDataProviders;
 
 use App\DTO\MarketData;
+use App\Exceptions\CoinGeckoThrottledException;
 use App\Facades\Network;
+use App\Models\Exchange;
 use App\Services\Cache\CryptoDataCache;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -102,6 +104,38 @@ final class CoinGecko extends AbstractMarketDataProvider
 
         return $targetCurrencies
             ->mapWithKeys(fn (string $currency) => [strtoupper($currency) => MarketData::fromCoinGeckoApiResponse($currency, $data)]);
+    }
+
+    /**
+     * @return array{
+     *   price: float|int|null,
+     *   volume: float|int|null,
+     * }
+     */
+    public function exchangeDetails(Exchange $exchange): array
+    {
+        $data = null;
+
+        try {
+            $data = Http::get('https://api.coingecko.com/api/v3/exchanges/'.$exchange->coingecko_id.'/tickers', [
+                'coin_ids' => 'ark',
+            ])->json('tickers');
+        } catch (\Throwable) {
+            //
+        }
+
+        if ($this->isThrottledResponse($data) || $this->isEmptyResponse($data)) {
+            throw new CoinGeckoThrottledException();
+        }
+
+        /** @var array<mixed> $data */
+        $price  = collect($data)->avg('converted_last.usd');
+        $volume = collect($data)->sum('converted_volume.usd');
+
+        return [
+            'price'  => $price > 0 ? $price : null,
+            'volume' => $volume > 0 ? $volume : null,
+        ];
     }
 
     private function isEmptyResponse(?array $data): bool

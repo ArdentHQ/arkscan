@@ -28,7 +28,6 @@ it('should have all settings with defaults', function () {
         'priceChart'     => true,
         'feeChart'       => true,
         'darkTheme'      => null,
-        'expandedTables' => false,
     ]);
 });
 
@@ -38,7 +37,6 @@ it('should have all settings with values from a session', function () {
         'priceChart'     => true,
         'feeChart'       => true,
         'darkTheme'      => false,
-        'expandedTables' => false,
     ];
 
     expect(getSettingsFromCookies($this, 'all', $settings))->toBe($settings);
@@ -61,10 +59,6 @@ it('should have a fee chart setting', function () {
 
 it('should have a dark theme setting', function () {
     expect(Settings::theme())->toBeString();
-});
-
-it('should have an expanded table setting', function () {
-    expect(Settings::expandedTables())->toBeFalse();
 });
 
 it('should determine the name of the theme', function () {
@@ -130,16 +124,4 @@ it('should determine if visitor uses dark theme', function () {
     expect(getSettingsFromCookies($this, 'theme', [
         'darkTheme' => false,
     ]))->toBe(['light']);
-});
-
-it('should determine if visitor uses expanded tables mode', function () {
-    expect(Settings::usesExpandedTables())->toBeFalse();
-
-    expect(getSettingsFromCookies($this, 'usesExpandedTables', [
-        'expandedTables' => true,
-    ]))->toBe([true]);
-
-    expect(getSettingsFromCookies($this, 'usesExpandedTables', [
-        'expandedTables' => false,
-    ]))->toBe([false]);
 });

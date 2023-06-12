@@ -8,9 +8,11 @@ use App\Contracts\MarketDataProvider;
 use App\Facades\Network;
 use App\Services\BigNumber;
 use ARKEcosystem\Foundation\DataBags\DataBag;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
@@ -46,6 +48,8 @@ final class AppServiceProvider extends ServiceProvider
         Fortify::loginView(fn () => abort(404));
 
         View::composer('layouts.app', fn ($view) => $view->with(['navigationEntries' => $this->navigationEntries()]));
+
+        RateLimiter::for('coingecko_api_rate', fn () => Limit::perMinute(10));
     }
 
     private function registerCollectionMacros(): void

@@ -50,9 +50,22 @@ final class NumberFormatter
         }
 
         return BetterNumberFormatter::new()
-            ->withLocale('international')
+            ->withLocale('en-US')
             ->withFractionDigits(static::decimalsFor($currency))
             ->formatCurrency((float) $value, $currency);
+    }
+
+    /**
+     * @param string|int|float $value
+     */
+    public static function usdWithDecimals($value, ?int $decimals = 4): string
+    {
+        return BetterNumberFormatter::new()
+            ->withLocale('en-US')
+            ->withFractionDigits($decimals ?? 4)
+            ->withMinFractionDigits(2)
+            // Workaround to fix 5 rounding down (e.g. 1.00005 > 1 instead of 1.0001)
+            ->formatCurrency(floatval(number_format((float) $value, $decimals ?? 4, '.', '')), 'USD');
     }
 
     /**

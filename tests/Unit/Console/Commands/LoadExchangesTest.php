@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
+use App\Jobs\FetchExchangeDetails;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
     Artisan::call('migrate:fresh');
+
+    Bus::fake(FetchExchangeDetails::class);
 });
 
 it('loads and syncs exchanges', function () {

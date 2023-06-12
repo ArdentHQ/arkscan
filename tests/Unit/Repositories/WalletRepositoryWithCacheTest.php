@@ -51,3 +51,9 @@ it('should find a wallet by username', function () {
 
     expect($this->subject->findByUsername($wallet->attributes['delegate']['username']))->toBeInstanceOf(Wallet::class);
 });
+
+it('should find a wallet by identifier', function () {
+    $wallet = Wallet::factory()->create();
+
+    expect($this->subject->findByIdentifier($wallet->address))->toBeInstanceOf(Wallet::class);
+});
