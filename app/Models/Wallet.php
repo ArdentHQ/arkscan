@@ -111,8 +111,7 @@ final class Wallet extends Model
                     FROM transactions
                     GROUP BY recipient_id, sender_public_key, asset, timestamp
                 ) tx'),
-                fn ($join) =>
-                    $join->on('tx.recipient_id', '=', 'wallets.address')
+                fn ($join) => $join->on('tx.recipient_id', '=', 'wallets.address')
                         ->orOn('tx.sender_public_key', '=', 'wallets.public_key')
                         ->orWhere(DB::raw('wallets.address IN (SELECT (jsonb_array_elements(tx.asset->\'payments\')->>\'recipientId\'))'))
             )
