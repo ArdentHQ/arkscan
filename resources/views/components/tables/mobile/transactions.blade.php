@@ -9,35 +9,28 @@
     'state' => [],
 ])
 
-<div class="divide-y table-list-mobile" wire:key="{{ Helpers::generateId('transactions-mobile', ...$state) }}">
+<x-tables.mobile.includes.encapsulated wire:key="{{ Helpers::generateId('transactions-mobile', ...$state) }}">
     @foreach ($transactions as $transaction)
-        <div class="table-list-mobile-row">
-            <x-tables.rows.mobile.transaction-id :model="$transaction" />
+        <x-tables.rows.mobile>
+            <x-slot name="header">
+                <x-tables.rows.mobile.encapsulated.transaction-id :model="$transaction" />
 
-            <x-tables.rows.mobile.timestamp :model="$transaction" />
+                <x-tables.rows.mobile.encapsulated.age
+                    :model="$transaction"
+                    class="leading-[17px]"
+                />
+            </x-slot>
 
-            <x-tables.rows.mobile.sender :model="$transaction" />
+            <x-tables.rows.mobile.encapsulated.transaction :model="$transaction" />
 
-            <x-tables.rows.mobile.recipient :model="$transaction" />
+            <x-tables.rows.mobile.encapsulated.amount
+                :model="$transaction"
+                :wallet="$wallet"
+                :is-sent="$isSent"
+                :is-received="$isReceived"
+            />
 
-            @if($useDirection)
-                @if(($transaction->isSent($wallet->address()) || $isSent === true) && $isReceived !== true)
-                    <x-tables.rows.mobile.amount-sent :model="$transaction" :exclude-itself="$excludeItself" />
-                @else
-                    <x-tables.rows.mobile.amount-received
-                        :model="$transaction"
-                        :wallet="$wallet"
-                    />
-                @endif
-            @else
-                <x-tables.rows.mobile.amount :model="$transaction" />
-            @endif
-
-            <x-tables.rows.mobile.fee :model="$transaction" />
-
-            @if($useConfirmations)
-                <x-tables.rows.mobile.confirmations :model="$transaction" />
-            @endif
-        </div>
+            <x-tables.rows.mobile.encapsulated.fee :model="$transaction" />
+        </x-tables.rows.mobile>
     @endforeach
-</div>
+</x-tables.mobile.includes.encapsulated>
