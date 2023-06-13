@@ -22,7 +22,7 @@ beforeEach(function () {
 });
 
 it('should execute the command', function (string $network) {
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     fakeCryptoCompare();
 
@@ -40,10 +40,10 @@ it('should execute the command', function (string $network) {
     expect($prices->getHistorical('USD', 'month'))->toBeArray();
     expect($prices->getHistorical('USD', 'quarter'))->toBeArray();
     expect($prices->getHistorical('USD', 'year'))->toBeArray();
-})->with(['explorer.networks.development', 'explorer.networks.production']);
+})->with(['arkscan.networks.development', 'arkscan.networks.production']);
 
 it('should not update prices if coingecko returns an empty response', function () {
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     $crypto = app(CryptoDataCache::class);
     $prices = app(PriceChartCache::class);
@@ -80,7 +80,7 @@ it('should not update prices if coingecko returns an empty response', function (
 });
 
 it('should not update prices if coingecko throws an exception', function () {
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     $crypto = app(CryptoDataCache::class);
     $prices = app(PriceChartCache::class);
@@ -126,7 +126,7 @@ it('should update prices if coingecko does return a response', function () {
         ],
     ]);
 
-    Config::set('explorer.network', 'production');
+    Config::set('arkscan.network', 'production');
 
     $crypto = app(CryptoDataCache::class);
     $prices = app(PriceChartCache::class);
@@ -258,7 +258,7 @@ it('should update prices if cryptocompare does return a response', function () {
         ],
     ]);
 
-    Config::set('explorer.network', 'production');
+    Config::set('arkscan.network', 'production');
 
     $crypto = app(CryptoDataCache::class);
     $prices = app(PriceChartCache::class);

@@ -70,12 +70,12 @@ final class SubmitWallet extends ThrottledComponent
 
     protected function getThrottlingMaxAttempts(): int
     {
-        return config('explorer.throttle.wallet_submitted.max_attempts', 3);
+        return config('arkscan.throttle.wallet_submitted.max_attempts', 3);
     }
 
     protected function getThrottlingTime(): int
     {
-        return config('explorer.throttle.wallet_submitted.duration', 3600);
+        return config('arkscan.throttle.wallet_submitted.duration', 3600);
     }
 
     protected function getThrottlingKey(): string

@@ -229,7 +229,7 @@ it('should search for known wallets addresses with meilisearch', function () {
 
     $knownWalletsUrl = 'https://knownwallets.com/known-wallets.json';
 
-    Config::set('explorer.networks.development.knownWallets', $knownWalletsUrl);
+    Config::set('arkscan.networks.development.knownWallets', $knownWalletsUrl);
 
     Http::fake(Http::response([
         [
