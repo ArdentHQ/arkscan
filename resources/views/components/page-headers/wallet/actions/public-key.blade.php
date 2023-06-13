@@ -6,6 +6,7 @@
 <div
     x-data="{ publicKeyModalVisible: false }"
     class="flex-1 ml-2 w-full"
+    @keydown.document.escape="publicKeyModalVisible = false"
     {{ $attributes }}
 >
     @if ($button)
@@ -28,19 +29,41 @@
 
     <div
         x-show="publicKeyModalVisible"
-        class="absolute right-0 left-0 mx-8 mt-4 w-auto bg-white rounded-xl shadow-lg lg:left-auto lg:mx-0 lg:mt-1 lg:mr-32 z-15 dark:shadow-lg-dark dark:bg-theme-secondary-900"
+        class="flex absolute right-0 left-0 justify-between items-end p-6 mx-8 mt-4 space-x-4 w-auto bg-white rounded-xl border border-transparent shadow-lg md:mt-1 lg:mr-32 z-15 md-lg:left-auto dark:shadow-lg-dark dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
         @click.outside="publicKeyModalVisible = false"
+        x-transition
         x-cloak
     >
-        <div class="flex flex-col p-6 space-y-2 leading-tight">
-            <span class="text-sm font-semibold text-theme-secondary-400 dark:text-theme-secondary-700">@lang('pages.wallet.public_key.title')</span>
-            <span class="flex font-semibold link">
-                <span class="inline-block truncate">
-                    {{ $publicKey }}
-                </span>
-
-                <x-clipboard :value="$publicKey" />
+        <div class="flex flex-col space-y-2 min-w-0 leading-tight">
+            <span class="text-sm font-semibold text-theme-secondary-700 dark:text-theme-secondary-500">
+                @lang('pages.wallet.public_key.title')
             </span>
+
+            <span class="font-semibold text-theme-secondary-900 dark:text-theme-secondary-200">
+                <x-truncate-dynamic>{{ $publicKey }}</x-truncate-dynamic>
+            </span>
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <x-ark-clipboard
+                :value="$publicKey"
+                class="flex items-center p-2 w-full h-auto group"
+                wrapper-class="flex-1"
+                :tooltip-content="trans('pages.wallet.copied_public_key')"
+                with-checkmarks
+                checkmarks-class="group-hover:text-white text-theme-primary-900 dark:text-theme-secondary-200"
+            />
+
+            <button
+                type="button"
+                class="p-2 hover:text-white button button-generic dark:hover:text-white dark:text-theme-secondary-500 hover:bg-theme-primary-700"
+                @click="publicKeyModalVisible = false"
+            >
+                <x-ark-icon
+                    name="cross"
+                    size="sm"
+                />
+            </button>
         </div>
     </div>
 </div>

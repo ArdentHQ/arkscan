@@ -126,6 +126,7 @@ return [
         'delegate_info'         => 'Delegate Info',
         'name'                  => 'Name',
         'value'                 => 'Value',
+        'copied_public_key'     => 'Copied Public Key',
         'address_copied'        => 'Address Copied',
 
         'qrcode'                => [
@@ -134,6 +135,8 @@ return [
             'automatic_notice' => 'The QR-code is updated automatically, you do not need to press anything.',
             'specify_amount'   => 'Specify Amount',
             'send_from_wallet' => 'Send From Wallet',
+            'currency_amount'  => ':currency Amount',
+            'memo_optional'    => 'Memo (optional)',
         ],
 
         'public_key'            => [
