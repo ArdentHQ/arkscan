@@ -18,11 +18,11 @@
         <div class="flex space-x-2 w-full sm:w-auto md:px-3">
             <x-ark-clipboard
                 :value="$wallet->address()"
-                class="flex items-center p-2 w-full h-auto"
+                class="flex items-center p-2 w-full h-auto group"
                 wrapper-class="flex-1"
                 :tooltip-content="trans('pages.wallet.address_copied')"
                 with-checkmarks
-                checkmarks-class="text-theme-primary-900 dark:text-theme-secondary-200"
+                checkmarks-class="text-theme-primary-900 dark:text-theme-secondary-200 group-hover:text-white"
             />
 
             @unless($wallet->isCold())
