@@ -133,7 +133,7 @@ return [
             'specify_amount'   => 'Specify Amount',
             'send_from_wallet' => 'Send From Wallet',
             'currency_amount'  => ':currency Amount',
-            'memo'             => 'Memo (optional)',
+            'memo_optional'    => 'Memo (optional)',
         ],
 
         'public_key'            => [

@@ -71,7 +71,7 @@
                         maxlength="255"
                         rows="4"
                         class="font-normal"
-                        :placeholder="trans('pages.wallet.qrcode.memo')"
+                        :placeholder="trans('pages.wallet.qrcode.memo_optional')"
                         :errors="$errors"
                         hide-label
                     />
