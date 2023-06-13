@@ -34,7 +34,7 @@
         x-cloak
     >
         <div class="flex flex-col space-y-2 leading-tight">
-            <span class="text-sm font-semibold text-theme-secondary-400 dark:text-theme-secondary-700">
+            <span class="text-sm font-semibold text-theme-secondary-700 dark:text-theme-secondary-500">
                 @lang('pages.wallet.public_key.title')
             </span>
 
@@ -57,7 +57,7 @@
 
             <button
                 type="button"
-                class="p-2 button button-generic hover:bg-theme-primary-700"
+                class="p-2 button button-generic hover:bg-theme-primary-700 hover:text-white dark:hover:text-white dark:text-theme-secondary-500"
                 @click="publicKeyModalVisible = false"
             >
                 <x-ark-icon
