@@ -29,12 +29,12 @@
 
     <div
         x-show="publicKeyModalVisible"
-        class="flex absolute right-0 left-0 justify-between items-end p-6 mx-8 mt-4 space-x-4 w-auto bg-white rounded-xl border border-transparent shadow-lg md-lg:left-auto md:mt-1 lg:mr-32 z-15 dark:shadow-lg-dark dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
+        class="flex absolute right-0 left-0 justify-between items-end p-6 mx-8 mt-4 space-x-4 w-auto bg-white rounded-xl border border-transparent shadow-lg md:mt-1 lg:mr-32 z-15 md-lg:left-auto dark:shadow-lg-dark dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
         @click.outside="publicKeyModalVisible = false"
         x-transition
         x-cloak
     >
-        <div class="flex flex-col space-y-2 leading-tight min-w-0">
+        <div class="flex flex-col space-y-2 min-w-0 leading-tight">
             <span class="text-sm font-semibold text-theme-secondary-700 dark:text-theme-secondary-500">
                 @lang('pages.wallet.public_key.title')
             </span>
