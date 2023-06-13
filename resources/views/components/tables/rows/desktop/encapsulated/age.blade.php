@@ -7,7 +7,7 @@
     x-data="{
         datetime: dayjs({{ $model->dateTime()->timestamp }} * 1000),
         tooltip: null,
-        output: '',
+        output: '{{ $model->timestamp() }}',
     }"
     x-init="
         output = dayjs().to(datetime);

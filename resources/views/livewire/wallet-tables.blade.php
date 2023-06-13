@@ -97,19 +97,13 @@
                 <x-tables.desktop.wallet-transactions
                     :transactions="$transactions"
                     :wallet="$wallet"
-                    use-confirmations
-                    use-direction
                     :state="$this->state()"
-                    exclude-itself
                 />
 
                 <x-tables.mobile.wallet-transactions
                     :transactions="$transactions"
                     :wallet="$wallet"
-                    use-confirmations
-                    use-direction
                     :state="$this->state()"
-                    exclude-itself
                 />
 
                 <x-general.pagination :results="$transactions" class="mt-8" />

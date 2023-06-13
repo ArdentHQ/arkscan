@@ -1,11 +1,6 @@
 @props([
     'transactions',
     'wallet' => null,
-    'useDirection' => false,
-    'excludeItself' => false,
-    'useConfirmations' => false,
-    'isSent' => null,
-    'isReceived' => null,
     'state' => [],
 ])
 
@@ -21,13 +16,14 @@
                 />
             </x-slot>
 
-            <x-tables.rows.mobile.encapsulated.transaction :model="$transaction" />
+            <x-tables.rows.mobile.encapsulated.transaction
+                :model="$transaction"
+                :wallet="$wallet"
+            />
 
             <x-tables.rows.mobile.encapsulated.amount
                 :model="$transaction"
                 :wallet="$wallet"
-                :is-sent="$isSent"
-                :is-received="$isReceived"
             />
 
             <x-tables.rows.mobile.encapsulated.fee :model="$transaction" />

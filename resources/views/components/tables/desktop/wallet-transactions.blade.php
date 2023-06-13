@@ -1,8 +1,6 @@
 @props([
     'transactions',
     'wallet' => null,
-    'isSent' => null,
-    'isReceived' => null,
     'state' => [],
 ])
 
@@ -49,7 +47,7 @@
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.addressing
                         :model="$transaction"
-                        :is-received="(($wallet && $transaction->isReceived($wallet->address())) || $isReceived === true) && $isSent !== true"
+                        :is-received="$wallet && $transaction->isReceived($wallet->address())"
                     />
                 </x-ark-tables.cell>
 
@@ -59,8 +57,8 @@
                 >
                     <x-tables.rows.desktop.encapsulated.amount
                         :model="$transaction"
-                        :is-received="(($wallet && $transaction->isReceived($wallet->address())) || $isReceived === true) && $isSent !== true"
-                        :is-sent="(($wallet && $transaction->isSent($wallet->address())) || $isSent === true) && $isReceived !== true"
+                        :is-received="$wallet && $transaction->isReceived($wallet->address())"
+                        :is-sent="$wallet && $transaction->isSent($wallet->address())"
                     />
                 </x-ark-tables.cell>
 
