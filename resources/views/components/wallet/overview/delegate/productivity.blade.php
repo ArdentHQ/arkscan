@@ -3,8 +3,8 @@
 @php
     $productivity = $wallet->isActive() ? $wallet->productivity() : 0;
     $isLow = $wallet->isActive() && $productivity < config('arkscan.productivity.danger');
-    $isMedium = ! $isLow && $wallet->isActive() && $productivity > config('arkscan.productivity.danger') && $productivity <= config('arkscan.productivity.warning');
-    $isHigh = ! $isMedium && $wallet->isActive() && $productivity > config('arkscan.productivity.warning');
+    $isMedium = ! $isLow && $wallet->isActive() && $productivity >= config('arkscan.productivity.danger') && $productivity < config('arkscan.productivity.warning');
+    $isHigh = ! $isMedium && $wallet->isActive() && $productivity >= config('arkscan.productivity.warning');
 @endphp
 
 <x-wallet.overview.item-entry
