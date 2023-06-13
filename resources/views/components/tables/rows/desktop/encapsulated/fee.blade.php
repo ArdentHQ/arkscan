@@ -4,7 +4,7 @@
     'withoutStyling' => false,
 ])
 
-<x-general.amount-fiat-tooltip
+<x-general.encapsulated.amount-fiat-tooltip
     :amount="$model->fee()"
     :fiat="$model->feeFiat(true)"
     :class="$class"

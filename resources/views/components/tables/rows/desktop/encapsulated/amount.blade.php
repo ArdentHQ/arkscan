@@ -5,7 +5,7 @@
 ])
 
 <div class="md:space-y-1 md-lg:space-y-0">
-    <x-general.amount-fiat-tooltip
+    <x-general.encapsulated.amount-fiat-tooltip
         :amount="$model->amount()"
         :fiat="$model->amountFiat(true)"
         :is-received="$isReceived"
