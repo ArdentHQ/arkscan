@@ -1,4 +1,4 @@
-@php ($isDisabled = ! Network::canBeExchanged() || config('explorer.network') !== 'production' || ! $isAvailable)
+@php ($isDisabled = ! Network::canBeExchanged() || config('arkscan.network') !== 'production' || ! $isAvailable)
 
 <div
     wire:poll.visible.60s

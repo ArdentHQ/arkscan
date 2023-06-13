@@ -6,7 +6,7 @@ use App\Services\Forms;
 use Illuminate\Support\Facades\Config;
 
 it('it should get all transaction options if timelock is enabled', function () {
-    Config::set('explorer.networks.development.hasTimelock', true);
+    Config::set('arkscan.networks.development.hasTimelock', true);
 
     expect(Forms::getTransactionOptions())->toHaveKeys([
         'all',
@@ -26,7 +26,7 @@ it('it should get all transaction options if timelock is enabled', function () {
 });
 
 it('it should exclude timelock transaction options if timelock is disabled', function () {
-    Config::set('explorer.networks.development.hasTimelock', false);
+    Config::set('arkscan.networks.development.hasTimelock', false);
 
     expect(Forms::getTransactionOptions())->toHaveKeys([
         'all',
