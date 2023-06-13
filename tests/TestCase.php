@@ -28,7 +28,7 @@ abstract class TestCase extends BaseTestCase
 
         Http::preventStrayRequests();
 
-        Config::set('explorer.networks.development.knownWallets', null);
+        Config::set('arkscan.networks.development.knownWallets', null);
     }
 
     /**

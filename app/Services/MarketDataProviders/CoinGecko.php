@@ -143,7 +143,7 @@ final class CoinGecko extends AbstractMarketDataProvider
         return $this->isAcceptableResponse(
             $data,
             'coingecko_response_error',
-            (int) config('explorer.coingecko_exception_frequency', 60),
+            (int) config('arkscan.coingecko_exception_frequency', 60),
             'Too many empty CoinGecko responses',
             fn ($data) => Arr::get($data, 'status.error_code') !== null,
         );
@@ -154,7 +154,7 @@ final class CoinGecko extends AbstractMarketDataProvider
         return $this->isAcceptableResponse(
             $data,
             'coingecko_response_throttled',
-            (int) config('explorer.coingecko_exception_frequency', 60),
+            (int) config('arkscan.coingecko_exception_frequency', 60),
             'CoinGecko requests are being throttled',
             fn ($data) => Arr::get($data, 'status.error_code') !== null,
         );

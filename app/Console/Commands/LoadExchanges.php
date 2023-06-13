@@ -107,7 +107,7 @@ final class LoadExchanges extends Command
 
     private function getUrl(): string
     {
-        $url = config('explorer.exchanges.list_src');
+        $url = config('arkscan.exchanges.list_src');
 
         if ($url === null || '' === $url) {
             throw new Exception('No exchanges list source configured');

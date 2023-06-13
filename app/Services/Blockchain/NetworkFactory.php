@@ -11,7 +11,7 @@ final class NetworkFactory
     public static function make(string $name): Network
     {
         if (in_array($name, ['development', 'production'], true)) {
-            return new Network(config("explorer.networks.$name"));
+            return new Network(config("arkscan.networks.$name"));
         }
 
         throw new InvalidArgumentException(trans('exceptions.invalid_network'));
