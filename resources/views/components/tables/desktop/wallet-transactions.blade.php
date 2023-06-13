@@ -47,7 +47,7 @@
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.addressing
                         :model="$transaction"
-                        :is-received="$wallet && ! $transaction->isSent($wallet->address())"
+                        :wallet="$wallet"
                     />
                 </x-ark-tables.cell>
 

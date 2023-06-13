@@ -10,6 +10,6 @@
 
     <x-tables.rows.desktop.encapsulated.addressing
         :model="$model"
-        :is-received="$wallet && $model->isReceived($wallet->address())"
+        :wallet="$wallet"
     />
 </div>
