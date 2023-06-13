@@ -22,14 +22,14 @@
 
         <x-slot name="content">
             <div class="flex justify-between items-center p-6 border-b border-theme-secondary-300 dark:border-theme-secondary-800">
-                <div class="text-lg">
+                <div class="text-lg text-theme-secondary-900 dark:text-theme-secondary-200">
                     @lang('pages.wallet.qrcode.title')
                 </div>
 
                 <div>
                     <button
                         type="button"
-                        class="p-2 hover:text-white button button-generic hover:bg-theme-primary-700"
+                        class="p-2 hover:text-white button button-generic hover:bg-theme-primary-700 dark:hover:text-white dark:text-theme-secondary-600"
                         @click="dropdownOpen = false"
                     >
                         <x-ark-icon
