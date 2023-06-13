@@ -29,7 +29,7 @@
                 <div>
                     <button
                         type="button"
-                        class="p-2 hover:text-white button button-generic hover:bg-theme-primary-700 dark:hover:text-white dark:text-theme-secondary-600"
+                        class="p-2 hover:text-white button button-generic dark:hover:text-white dark:text-theme-secondary-600 hover:bg-theme-primary-700"
                         @click="dropdownOpen = false"
                     >
                         <x-ark-icon
