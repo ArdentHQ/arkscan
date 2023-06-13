@@ -36,7 +36,7 @@
         >
             <x-slot name="button">
                 <div
-                    class="flex items-center space-x-4"
+                    class="flex items-center"
                     wire:ignore
                 >
                     <div x-show="tab === 'transactions'">@lang('pages.wallet.transactions')</div>
