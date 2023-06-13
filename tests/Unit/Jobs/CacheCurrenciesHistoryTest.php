@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Http;
 use function Tests\fakeCryptoCompare;
 
 it('should cache the history', function () {
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     fakeCryptoCompare();
 
-    $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.production')));
+    $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('arkscan.networks.production')));
 
     $cache = new NetworkStatusBlockCache();
 
@@ -57,7 +57,7 @@ it('should cache the history', function () {
 });
 
 it('should not update prices if coingecko returns an empty response', function () {
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     $cache = app(NetworkStatusBlockCache::class);
 
@@ -73,7 +73,7 @@ it('should not update prices if coingecko returns an empty response', function (
 });
 
 it('should not update prices if coingecko throws an exception', function () {
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     $cache = app(NetworkStatusBlockCache::class);
 
@@ -91,7 +91,7 @@ it('should not update prices if coingecko throws an exception', function () {
 });
 
 it('should update prices if coingecko does return a response', function () {
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     $cache = app(NetworkStatusBlockCache::class);
 
@@ -122,7 +122,7 @@ it('should update prices if coingecko does return a response', function () {
 });
 
 it('should not update prices if cryptocompare returns an empty response', function () {
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     $cache = app(NetworkStatusBlockCache::class);
 
@@ -138,7 +138,7 @@ it('should not update prices if cryptocompare returns an empty response', functi
 });
 
 it('should not update prices if cryptocompare throws an exception', function () {
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     $cache = app(NetworkStatusBlockCache::class);
 
@@ -156,7 +156,7 @@ it('should not update prices if cryptocompare throws an exception', function () 
 });
 
 it('should update prices if cryptocompare does return a response', function () {
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     $cache = app(NetworkStatusBlockCache::class);
 

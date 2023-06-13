@@ -89,12 +89,14 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(FetchExchangesDetails::class)->hourly();
 
-        $schedule->command(ScoutIndexModels::class)->everyMinute();
+        if (config('arkscan.scout.run_jobs', false) === true) {
+            $schedule->command(ScoutIndexModels::class)->everyMinute();
 
-        $schedule->command(ImportCommand::class, [
-            Wallet::class,
-            '--no-pause',
-        ])->withoutOverlapping()->everyMinute();
+            $schedule->command(ImportCommand::class, [
+                Wallet::class,
+                '--no-pause',
+            ])->withoutOverlapping()->everyMinute();
+        }
     }
 
     /**

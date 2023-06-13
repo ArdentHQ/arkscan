@@ -24,7 +24,7 @@ it('should execute the command', function () {
 
     fakeCryptoCompare();
 
-    $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.production')));
+    $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('arkscan.networks.production')));
 
     $cache              = app(NetworkStatusBlockCache::class);
     $marketDataProvider = app(MarketDataProvider::class);
@@ -48,10 +48,10 @@ it('should ignore the cache for development network', function () {
 
     fakeCryptoCompare();
 
-    $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('explorer.networks.development')));
+    $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('arkscan.networks.development')));
 
     // Set explicitly as phpunit.xml contains ARKSCAN_NETWORK_CAN_BE_EXCHANGED
-    Config::set('explorer.networks.development.canBeExchanged', false);
+    Config::set('arkscan.networks.development.canBeExchanged', false);
 
     $cache              = app(NetworkStatusBlockCache::class);
     $marketDataProvider = app(MarketDataProvider::class);
