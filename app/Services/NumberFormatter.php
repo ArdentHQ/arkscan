@@ -136,12 +136,12 @@ final class NumberFormatter
         return ! in_array($currency, $cryptoCurrencies, true);
     }
 
-    public static function decimalsFor(string $currency, bool $smallValue = false): int
+    public static function decimalsFor(string $currency, bool $isSmallValue = false): int
     {
         if (static::isFiat($currency)) {
-            return $smallValue ? self::FIAT_DECIMALS_SMALL : self::FIAT_DECIMALS;
+            return $isSmallValue ? self::FIAT_DECIMALS_SMALL : self::FIAT_DECIMALS;
         }
 
-        return $smallValue ? self::CRYPTO_DECIMALS_SMALL : self::CRYPTO_DECIMALS;
+        return $isSmallValue ? self::CRYPTO_DECIMALS_SMALL : self::CRYPTO_DECIMALS;
     }
 }
