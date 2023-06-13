@@ -9,7 +9,7 @@
         <x-page-headers.wallet.voters :wallet="$wallet" />
 
         <x-ark-container class="border-t-2 dark:border-black border-theme-secondary-200">
-            <div class="w-full" x-cloak>
+            <div class="w-full">
                 <livewire:wallet-voter-table :public-key="$wallet->publicKey()" :username="$wallet->username()" />
             </div>
         </x-ark-container>

@@ -16,7 +16,7 @@ it('should execute the job', function () {
         ],
     ]);
 
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     $this->artisan('explorer:cache-currencies-history');
 
@@ -26,7 +26,7 @@ it('should execute the job', function () {
 it('should execute the command with no delay command', function () {
     Bus::fake();
 
-    Config::set('explorer.network', 'development');
+    Config::set('arkscan.network', 'development');
 
     Config::set('currencies', [
         'usd' => [
@@ -35,7 +35,7 @@ it('should execute the command with no delay command', function () {
         ],
     ]);
 
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     $this->artisan('explorer:cache-currencies-history --no-delay');
 
@@ -52,7 +52,7 @@ it('should not execute the job if cannot be exchanged', function () {
         ],
     ]);
 
-    Config::set('explorer.networks.development.canBeExchanged', false);
+    Config::set('arkscan.networks.development.canBeExchanged', false);
 
     $this->artisan('explorer:cache-currencies-history');
 
