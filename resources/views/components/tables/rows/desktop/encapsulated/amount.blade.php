@@ -22,12 +22,14 @@
 @endphp
 
 <div class="md:space-y-1 md-lg:space-y-0">
-    <x-general.encapsulated.amount-fiat-tooltip
-        :amount="$amount"
-        :fiat="$amountFiat"
-        :is-received="$isReceived"
-        :is-sent="$isSent"
-    />
+    <div class="inline-block">
+        <x-general.encapsulated.amount-fiat-tooltip
+            :amount="$amount"
+            :fiat="$amountFiat"
+            :is-received="$isReceived"
+            :is-sent="$isSent"
+        />
+    </div>
 
     <x-tables.rows.desktop.encapsulated.fee
         :model="$model"
