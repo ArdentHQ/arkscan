@@ -125,6 +125,7 @@ return [
         'delegate_info'         => 'Delegate Info',
         'name'                  => 'Name',
         'value'                 => 'Value',
+        'address_copied'        => 'Address Copied',
 
         'qrcode'                => [
             'title'            => 'Send Funds',
