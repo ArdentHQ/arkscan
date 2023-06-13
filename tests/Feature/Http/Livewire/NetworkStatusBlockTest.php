@@ -27,7 +27,7 @@ it('should render with a height, supply and not available market cap', function 
 });
 
 it('should render with a height, supply and market cap', function () {
-    Config::set('explorer.network', 'production');
+    Config::set('arkscan.network', 'production');
 
     Block::factory()->create([
         'height'               => 5651290,
@@ -47,7 +47,7 @@ it('should render with a height, supply and market cap', function () {
 });
 
 it('should render with a height, supply and market cap for BTC', function () {
-    Config::set('explorer.network', 'production');
+    Config::set('arkscan.network', 'production');
 
     $settings             = Settings::all();
     $settings['currency'] = 'BTC';
@@ -74,7 +74,7 @@ it('should render with a height, supply and market cap for BTC', function () {
 });
 
 it('should render the price change', function () {
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     (new NetworkStatusBlockCache())->setPriceChange('DARK', 'USD', 0.137);
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 1);
@@ -84,7 +84,7 @@ it('should render the price change', function () {
 });
 
 it('handle price change when price is zero', function () {
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     (new NetworkStatusBlockCache())->setPriceChange('DARK', 'USD', 0);
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 1);

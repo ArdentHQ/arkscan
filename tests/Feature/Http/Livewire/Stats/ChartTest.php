@@ -18,8 +18,8 @@ beforeEach(function (): void {
 it('should render the component with fiat value', function () {
     fakeCryptoCompare();
 
-    Config::set('explorer.networks.development.canBeExchanged', true);
-    Config::set('explorer.networks.development.currency', 'ARK');
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.currency', 'ARK');
 
     Artisan::call('explorer:cache-currencies-data');
     Artisan::call('explorer:cache-currencies-history --no-delay');
@@ -49,8 +49,8 @@ it('should render the component with non fiat value', function () {
 
     fakeCryptoCompare(false, 'BTC');
 
-    Config::set('explorer.networks.development.canBeExchanged', true);
-    Config::set('explorer.networks.development.currency', 'ARK');
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.currency', 'ARK');
 
     Artisan::call('explorer:cache-currencies-data');
     Artisan::call('explorer:cache-currencies-history --no-delay');
@@ -75,8 +75,8 @@ it('should render the component with non fiat value', function () {
 it('should not render the component', function () {
     fakeCryptoCompare();
 
-    Config::set('explorer.networks.development.canBeExchanged', false);
-    Config::set('explorer.networks.development.currency', 'ARK');
+    Config::set('arkscan.networks.development.canBeExchanged', false);
+    Config::set('arkscan.networks.development.currency', 'ARK');
 
     Artisan::call('explorer:cache-currencies-data');
     Artisan::call('explorer:cache-currencies-history --no-delay');
@@ -102,8 +102,8 @@ it('should not render the component', function () {
 it('should filter by year', function () {
     fakeCryptoCompare();
 
-    Config::set('explorer.networks.development.canBeExchanged', true);
-    Config::set('explorer.networks.development.currency', 'ARK');
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.currency', 'ARK');
 
     Artisan::call('explorer:cache-currencies-data');
     Artisan::call('explorer:cache-currencies-history --no-delay');
@@ -129,8 +129,8 @@ it('should filter by year', function () {
 it('should render min max price and percentage', function () {
     fakeCryptoCompare();
 
-    Config::set('explorer.networks.development.canBeExchanged', true);
-    Config::set('explorer.networks.development.currency', 'ARK');
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.currency', 'ARK');
 
     Artisan::call('explorer:cache-currencies-data');
     Artisan::call('explorer:cache-currencies-history --no-delay');

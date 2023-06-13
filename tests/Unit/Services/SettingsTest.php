@@ -89,11 +89,11 @@ it('should determine if visitor uses any chart', function () {
 });
 
 it('should determine if visitor uses price chart', function () {
-    Config::set('explorer.network', 'development');
+    Config::set('arkscan.network', 'development');
 
     expect(Settings::usesPriceChart())->toBeFalse();
 
-    Config::set('explorer.network', 'production');
+    Config::set('arkscan.network', 'production');
 
     expect(getSettingsFromCookies($this, 'usesPriceChart', [
         'priceChart' => true,
