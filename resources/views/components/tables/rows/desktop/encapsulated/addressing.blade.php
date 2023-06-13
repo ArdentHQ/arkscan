@@ -43,11 +43,16 @@
             @endif
         @elseif ($model->isMultiPayment())
             @if ($isReceived)
-                <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
-                    @lang('tables.transactions.multiple')
-
-                    ({{ count($model->payments()) }})
-                </span>
+                <a
+                    class="link"
+                    href="{{ route('wallet', $model->sender()->address()) }}"
+                >
+                    @if ($model->sender()->isDelegate())
+                        {{ $model->sender()->username() }}
+                    @else
+                        <x-truncate-middle>{{ $model->sender()->address }}</x-truncate-middle>
+                    @endif
+                </a>
             @else
                 <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
                     @lang('tables.transactions.multiple')

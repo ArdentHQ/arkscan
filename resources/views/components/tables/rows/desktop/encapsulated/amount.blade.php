@@ -1,13 +1,25 @@
 @props([
     'model',
-    'isReceived' => false,
-    'isSent' => false,
+    'wallet' => null,
 ])
+
+@php
+    $isReceived = $wallet && ! $model->isSent($wallet->address());
+    $isSent = $wallet && $model->isSent($wallet->address());
+
+    $amount = $model->amount();
+    $amountFiat = $model->amountFiat(true);
+
+    if ($wallet && $isReceived) {
+        $amount = $model->amountReceived($wallet?->address());
+        $amountFiat = $model->amountReceivedFiat($wallet?->address());
+    }
+@endphp
 
 <div class="md:space-y-1 md-lg:space-y-0">
     <x-general.encapsulated.amount-fiat-tooltip
-        :amount="$model->amount()"
-        :fiat="$model->amountFiat(true)"
+        :amount="$amount"
+        :fiat="$amountFiat"
         :is-received="$isReceived"
         :is-sent="$isSent"
     />

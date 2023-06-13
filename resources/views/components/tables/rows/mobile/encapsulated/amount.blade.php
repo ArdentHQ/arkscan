@@ -13,8 +13,7 @@
     <div class="inline-block">
         <x-tables.rows.desktop.encapsulated.amount
             :model="$model"
-            :is-received="$wallet && $model->isReceived($wallet->address())"
-            :is-sent="$wallet && $model->isSent($wallet->address())"
+            :wallet="$wallet"
         />
     </div>
 </div>
