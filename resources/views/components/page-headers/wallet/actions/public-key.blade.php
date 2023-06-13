@@ -6,6 +6,7 @@
 <div
     x-data="{ publicKeyModalVisible: false }"
     class="flex-1 ml-2 w-full"
+    @keydown.document.escape="publicKeyModalVisible = false"
     {{ $attributes }}
 >
     @if ($button)
