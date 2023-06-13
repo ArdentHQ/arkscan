@@ -9,6 +9,7 @@
         dropdown-wrapper-class="w-full"
         dropdown-background="bg-white dark:bg-theme-secondary-900"
         :close-on-click="false"
+        on-close="() => showOptions = false"
     >
         <x-slot
             name="button"
