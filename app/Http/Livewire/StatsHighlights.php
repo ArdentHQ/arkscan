@@ -21,7 +21,7 @@ final class StatsHighlights extends Component
     public function mount(): void
     {
         $this->currency        = Network::currency();
-        $this->refreshInterval = (string) config('explorer.statistics.refreshInterval', '60');
+        $this->refreshInterval = (string) config('arkscan.statistics.refreshInterval', '60');
     }
 
     public function render(): View

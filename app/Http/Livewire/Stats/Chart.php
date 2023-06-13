@@ -37,7 +37,7 @@ final class Chart extends Component
 
     public function mount(): void
     {
-        $this->refreshInterval = (string) config('explorer.statistics.refreshInterval', '60');
+        $this->refreshInterval = (string) config('arkscan.statistics.refreshInterval', '60');
         $this->period          = $this->defaultPeriod();
         $this->show            = Network::canBeExchanged();
     }
