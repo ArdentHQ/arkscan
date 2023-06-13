@@ -47,11 +47,11 @@
         <div class="flex items-center space-x-2">
             <x-ark-clipboard
                 :value="$publicKey"
-                class="flex items-center p-2 w-full h-auto"
+                class="flex items-center p-2 w-full h-auto group"
                 wrapper-class="flex-1"
                 :tooltip-content="trans('pages.wallet.copied_public_key')"
                 with-checkmarks
-                checkmarks-class="text-theme-primary-900 dark:text-theme-secondary-200"
+                checkmarks-class="group-hover:text-white text-theme-primary-900 dark:text-theme-secondary-200"
             />
 
             <button
