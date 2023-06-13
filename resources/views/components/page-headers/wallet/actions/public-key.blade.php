@@ -58,7 +58,7 @@
 
             <button
                 type="button"
-                class="p-2 button button-generic hover:bg-theme-primary-700 hover:text-white dark:hover:text-white dark:text-theme-secondary-500"
+                class="p-2 hover:text-white button button-generic dark:hover:text-white dark:text-theme-secondary-500 hover:bg-theme-primary-700"
                 @click="publicKeyModalVisible = false"
             >
                 <x-ark-icon
