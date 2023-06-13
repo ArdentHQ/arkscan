@@ -126,6 +126,7 @@ return [
         'name'                  => 'Name',
         'value'                 => 'Value',
         'copied_public_key'     => 'Copied Public Key',
+        'address_copied'        => 'Address Copied',
 
         'qrcode'                => [
             'title'            => 'Send Funds',
