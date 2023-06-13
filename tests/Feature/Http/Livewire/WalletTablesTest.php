@@ -148,7 +148,7 @@ it('should show sent multipayment', function () {
 });
 
 it('should show received multipayment', function () {
-    $sender = Wallet::factory()->create();
+    $sender     = Wallet::factory()->create();
     $recipient2 = Wallet::factory()->create();
     $recipient3 = Wallet::factory()->create();
 
