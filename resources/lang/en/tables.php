@@ -15,4 +15,20 @@ return [
         'contract'   => 'Contract',
         'multiple'   => 'Multiple',
     ],
+
+    'filters' => [
+        'transactions' => [
+            'addressing'    => 'Addressing',
+            'types'         => 'Types',
+            'select_all'    => 'Select All',
+            'outgoing'      => 'Outgoing',
+            'incoming'      => 'Incoming',
+            'to'            => 'To',
+            'from'          => 'From',
+            'transfers'     => 'Transfers',
+            'votes'         => 'Votes',
+            'multipayments' => 'Multipayments',
+            'others'        => 'Others',
+        ],
+    ],
 ];

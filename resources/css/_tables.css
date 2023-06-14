@@ -195,3 +195,17 @@ body.table-compact-until-lg .arrow-direction {
 .table-list-mobile .table-list-mobile-row {
     @apply border-dashed;
 }
+
+.table-filter-item:hover input[type=checkbox] {
+    @apply border-theme-primary-600 dark:border-theme-primary-600;
+}
+
+.table-filter input[type=checkbox] {
+    @apply w-5 h-5 cursor-pointer dark:border-theme-secondary-600;
+}
+.table-filter input[type=checkbox]:checked {
+    @apply bg-theme-primary-600 border-theme-primary-600;
+}
+.table-filter label {
+    @apply cursor-pointer;
+}
