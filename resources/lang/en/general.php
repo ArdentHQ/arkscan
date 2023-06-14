@@ -98,7 +98,7 @@ return [
             'module-entity-registration'          => 'Module Registration',
             'module-entity-resignation'           => 'Module Resignation',
             'module-entity-update'                => 'Module Update',
-            'vote-combination'                    => 'Switch Vote',
+            'vote-combination'                    => 'Vote Swap',
             'multi-signature'                     => 'Multisignature',
             'plugin-entity-registration'          => 'Plugin Registration',
             'plugin-entity-resignation'           => 'Plugin Resignation',
@@ -106,7 +106,7 @@ return [
             'product-entity-registration'         => 'Product Registration',
             'product-entity-resignation'          => 'Product Resignation',
             'product-entity-update'               => 'Product Update',
-            'second-signature'                    => 'Second Signature',
+            'second-signature'                    => '2nd Signature',
             'timelock'                            => 'Timelock',
             'timelock-claim'                      => 'Timelock Claim',
             'timelock-refund'                     => 'Timelock Refund',
@@ -114,7 +114,7 @@ return [
             'unvote'                              => 'Unvote',
             'vote'                                => 'Vote',
             'unknown'                             => 'Unknown',
-            'other'                               => 'Other',
+            'legacy'                              => 'Legacy',
 
             // TODO: remove once legacy magistrate shows proper type texts
             'business'                            => 'Business',
