@@ -22,7 +22,7 @@
                 class="sm:flex-1"
             />
 
-            <div class="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:items-start sm:w-1/2">
+            <div class="flex flex-col space-y-4 sm:flex-row sm:items-start sm:space-y-0 sm:w-1/2">
                 <x-tables.rows.mobile.encapsulated.amount
                     :model="$transaction"
                     :wallet="$wallet"
