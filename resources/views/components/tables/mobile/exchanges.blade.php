@@ -1,4 +1,4 @@
-<div class="flex flex-col space-y-3 sm:space-y-4 table-list-mobile table-list-encapsulated">
+<x-tables.mobile.includes.encapsulated>
     @foreach ($exchanges as $exchange)
         <div class="rounded border border-theme-secondary-300 dark:border-theme-secondary-800">
             <a class="flex justify-between items-center py-3 px-4 rounded-t dark:rounded-t-sm bg-theme-secondary-100 dark:bg-theme-secondary-800">
@@ -60,4 +60,4 @@
             </div>
         </div>
     @endforeach
-</div>
+</x-tables.mobile.includes.encapsulated>

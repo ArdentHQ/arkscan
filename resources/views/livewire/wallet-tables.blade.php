@@ -94,22 +94,16 @@
             @if ($transactions->isEmpty())
                 <x-general.no-results :text="trans('pages.home.no_transaction_results', [trans('forms.search.transaction_types.all')])" />
             @else
-                <x-tables.desktop.transactions
+                <x-tables.desktop.wallet-transactions
                     :transactions="$transactions"
                     :wallet="$wallet"
-                    use-confirmations
-                    use-direction
                     :state="$this->state()"
-                    exclude-itself
                 />
 
-                <x-tables.mobile.transactions
+                <x-tables.mobile.wallet-transactions
                     :transactions="$transactions"
                     :wallet="$wallet"
-                    use-confirmations
-                    use-direction
                     :state="$this->state()"
-                    exclude-itself
                 />
 
                 <x-general.pagination :results="$transactions" class="mt-8" />

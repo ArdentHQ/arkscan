@@ -95,9 +95,9 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction->fee->toFloat();
     }
 
-    public function feeFiat(): string
+    public function feeFiat(bool $showSmallAmounts = false): string
     {
-        return ExchangeRate::convert($this->transaction->fee->toFloat(), $this->transaction->timestamp);
+        return ExchangeRate::convert($this->transaction->fee->toFloat(), $this->transaction->timestamp, $showSmallAmounts);
     }
 
     public function amountForItself(): float
@@ -174,9 +174,9 @@ final class TransactionViewModel implements ViewModel
         return ExchangeRate::convert($this->amountExcludingItself(), $this->transaction->timestamp);
     }
 
-    public function amountFiat(): string
+    public function amountFiat(bool $showSmallAmounts = false): string
     {
-        return ExchangeRate::convert($this->amount(), $this->transaction->timestamp);
+        return ExchangeRate::convert($this->amount(), $this->transaction->timestamp, $showSmallAmounts);
     }
 
     public function amountReceivedFiat(?string $wallet = null): string
