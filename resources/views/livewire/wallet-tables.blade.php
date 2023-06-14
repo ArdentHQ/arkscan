@@ -1,6 +1,6 @@
 <div x-data="{ tab: 'transactions' }">
     <x-tabs.inline-wrapper
-        class="hidden mb-4 md:inline-flex"
+        class="hidden mb-3 md:inline-flex"
         default-selected="transactions"
         on-selected="function (value) {
             this.$wire.set('state.view', value);
