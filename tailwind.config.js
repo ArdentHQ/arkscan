@@ -10,6 +10,13 @@ module.exports = {
         extend: {
             ...defaultConfig.theme.extend,
 
+            colors: {
+                ...defaultConfig.theme.extend.colors,
+
+                "theme-orange-dark": "var(--theme-orange-dark)",
+                "theme-orange-light": "var(--theme-orange-light)",
+            },
+
             borderWidth: {
                 3: "3px",
                 20: "20px",
