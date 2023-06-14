@@ -3,7 +3,7 @@
         {{ $header }}
     </div>
 
-    <div class="flex flex-col px-4 pt-3 pb-4 space-y-4 sm:flex-row sm:justify-between sm:space-y-0">
+    <div class="flex flex-col px-4 pt-3 pb-4 space-y-4 sm:flex-row sm:space-y-0">
         {{ $slot }}
     </div>
 </div>

@@ -19,14 +19,18 @@
             <x-tables.rows.mobile.encapsulated.transaction
                 :model="$transaction"
                 :wallet="$wallet"
+                class="sm:flex-1"
             />
 
-            <x-tables.rows.mobile.encapsulated.amount
-                :model="$transaction"
-                :wallet="$wallet"
-            />
+            <div class="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:items-center sm:w-1/2">
+                <x-tables.rows.mobile.encapsulated.amount
+                    :model="$transaction"
+                    :wallet="$wallet"
+                    class="sm:flex-1"
+                />
 
-            <x-tables.rows.mobile.encapsulated.fee :model="$transaction" />
+                <x-tables.rows.mobile.encapsulated.fee :model="$transaction" />
+            </div>
         </x-tables.rows.mobile>
     @endforeach
 </x-tables.mobile.includes.encapsulated>
