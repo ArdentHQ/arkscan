@@ -1,6 +1,5 @@
 @props([
     'button',
-    'content',
     'dropdownWrapperClass' => null,
     'dropdownClass' => null,
     'dropdownPadding' => 'py-2',
@@ -44,7 +43,7 @@
         </x-slot>
 
         <div @class(["flex overflow-y-auto flex-col h-full custom-scroll overscroll-contain", $scrollClass])>
-            {{ $content }}
+            {{ $slot }}
         </div>
     </x-ark-dropdown>
 </div>

@@ -15,17 +15,12 @@
         </div>
     </x-slot>
 
-    <x-slot
-        name="content"
-        class="right-0 top-full"
-    >
-        @foreach (trans('pagination.per_page_options') as $perPage)
-            <x-general.dropdown.list-item
-                :is-active="$perPage === $this->perPage"
-                wire:click="setPerPage({{ $perPage }})"
-            >
-                {{ $perPage }}
-            </x-general.dropdown.list-item>
-        @endforeach
-    </x-slot>
+    @foreach (trans('pagination.per_page_options') as $perPage)
+        <x-general.dropdown.list-item
+            :is-active="$perPage === $this->perPage"
+            wire:click="setPerPage({{ $perPage }})"
+        >
+            {{ $perPage }}
+        </x-general.dropdown.list-item>
+    @endforeach
 </x-general.dropdown.dropdown>
