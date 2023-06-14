@@ -79,8 +79,8 @@ return [
         'delegate'                => 'Delegate',
 
         'types'                   => [
-            'delegate-registration'               => 'Delegate Registration',
-            'delegate-resignation'                => 'Delegate Resignation',
+            'delegate-registration'               => 'Registration',
+            'delegate-resignation'                => 'Resignation',
             'delegate-entity-registration'        => 'Delegate Entity Registration',
             'delegate-entity-resignation'         => 'Delegate Entity Resignation',
             'delegate-entity-update'              => 'Delegate Entity Update',
