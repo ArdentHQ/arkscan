@@ -21,26 +21,6 @@
             'breakpoint' => 'md-lg',
             'nameProperties' => ['currency' => Network::currency()],
         ],
-
-
-
-
-
-        // 'tables.block.timestamp'       => [
-        //     'type' => 'text',
-        //     'responsive' => true,
-        // ],
-        // 'tables.transaction.sender'    => 'address',
-        // 'tables.transaction.recipient' => 'address',
-        // 'tables.transaction.amount'    => [
-        //     'type' => 'number',
-        //     'lastOn' => 'xl',
-        // ],
-        // 'tables.transaction.fee'       => [
-        //     'type' => 'number',
-        //     'responsive' => true,
-        //     'breakpoint' => 'md-lg',
-        // ],
     ]"
     :component-properties="['rounded' => false]"
     encapsulated
