@@ -196,16 +196,32 @@ body.table-compact-until-lg .arrow-direction {
     @apply border-dashed;
 }
 
-.table-filter-item:hover input[type=checkbox] {
+/* Filter */
+
+.table-filter-item__checkbox:hover input[type=checkbox] {
     @apply border-theme-primary-600 dark:border-theme-primary-600;
 }
 
-.table-filter input[type=checkbox] {
+.table-filter-item__checkbox input[type=checkbox] {
     @apply w-5 h-5 cursor-pointer dark:border-theme-secondary-600;
 }
-.table-filter input[type=checkbox]:checked {
+.table-filter-item__checkbox input[type=checkbox]:checked {
     @apply bg-theme-primary-600 border-theme-primary-600;
 }
-.table-filter label {
-    @apply cursor-pointer;
+.table-filter-item__checkbox:hover input[type=checkbox]:checked {
+    @apply border-theme-primary-600 bg-theme-primary-700;
+}
+
+.table-filter-item__checkbox > div {
+    @apply flex-1 flex flex-col;
+}
+.table-filter-item__checkbox > div > div {
+    @apply flex-1;
+}
+.table-filter-item__checkbox > div > div > div:nth-child(2) {
+    @apply flex items-center flex-1;
+}
+
+.table-filter-item__checkbox label {
+    @apply cursor-pointer flex-1 leading-5;
 }

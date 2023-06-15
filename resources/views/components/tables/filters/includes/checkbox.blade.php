@@ -14,7 +14,7 @@
 @endphp
 
 <x-tables.filters.includes.item
-    :attributes="$attributes"
+    :attributes="$attributes->class('table-filter-item__checkbox')"
     :is-selected="$isSelected"
 >
     <x-ark-checkbox
@@ -26,6 +26,7 @@
             'text-theme-secondary-900 dark:text-theme-secondary-200' => ! $isSelected,
             'text-theme-primary-600 font-semibold' => $isSelected,
         ])"
-        class="flex-1 flex flex-col"
+        class=""
+        wrapper-class="flex-1"
     />
 </x-tables.filters.includes.item>
