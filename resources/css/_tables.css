@@ -198,17 +198,17 @@ body.table-compact-until-lg .arrow-direction {
 
 /* Filter */
 
-.table-filter-item__checkbox:hover input[type=checkbox] {
+.table-filter-item__checkbox:hover input[type="checkbox"] {
     @apply border-theme-primary-600 dark:border-theme-primary-600;
 }
 
-.table-filter-item__checkbox input[type=checkbox] {
+.table-filter-item__checkbox input[type="checkbox"] {
     @apply w-5 h-5 cursor-pointer dark:border-theme-secondary-600;
 }
-.table-filter-item__checkbox input[type=checkbox]:checked {
+.table-filter-item__checkbox input[type="checkbox"]:checked {
     @apply bg-theme-primary-600 border-theme-primary-600;
 }
-.table-filter-item__checkbox:hover input[type=checkbox]:checked {
+.table-filter-item__checkbox:hover input[type="checkbox"]:checked {
     @apply border-theme-primary-600 bg-theme-primary-700;
 }
 
