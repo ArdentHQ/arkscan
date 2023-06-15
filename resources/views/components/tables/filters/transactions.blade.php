@@ -24,6 +24,7 @@
             name="select-all"
             :label="trans('tables.filters.transactions.select_all')"
             class="border-b border-theme-secondary-300 dark:border-theme-secondary-700 mb-1"
+            model="selectAllFilters"
         />
 
         <x-tables.filters.includes.group-label :text="trans('tables.filters.transactions.addressing')" />

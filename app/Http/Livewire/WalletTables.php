@@ -28,6 +28,17 @@ final class WalletTables extends Component
         'view' => 'transactions',
     ];
 
+    public array $filter = [
+        'outgoing'      => true,
+        'incoming'      => false,
+        'transfers'     => false,
+        'votes'         => false,
+        'multipayments' => false,
+        'others'        => false,
+    ];
+
+    public bool $selectAllFilters = false;
+
     /** @var mixed */
     protected $listeners = [
         'currencyChanged' => '$refresh',
@@ -64,6 +75,25 @@ final class WalletTables extends Component
             'publicKey' => $this->publicKey,
             'isCold'    => $this->isCold,
         ];
+    }
+
+    public function getIsAllSelectedProperty(): bool
+    {
+        return ! collect($this->filter)->contains(false);
+    }
+
+    public function updatedSelectAllFilters(bool $value): void
+    {
+        foreach ($this->filter as &$filter) {
+            $filter = $value;
+        }
+    }
+
+    public function updatedFilter(bool $value): void
+    {
+        if ($value === false) {
+            $this->selectAllFilters = false;
+        }
     }
 
     private function getTransactionsQuery(): Builder
