@@ -17,9 +17,6 @@ trait HasTablePagination
         $this->perPage = $this->getDefault();
     }
 
-    /**
-     * @var mixed
-     */
     public function getQueryString(): array
     {
         return [
