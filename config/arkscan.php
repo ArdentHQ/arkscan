@@ -59,6 +59,11 @@ return [
         ],
     ],
 
+    'productivity' => [
+        'danger'  => env('ARKSCAN_PRODUCTIVITY_DANGER', 97),
+        'warning' => env('ARKSCAN_PRODUCTIVITY_WARNING', 99.8),
+    ],
+
     'statistics'                        => [
 
         /*
