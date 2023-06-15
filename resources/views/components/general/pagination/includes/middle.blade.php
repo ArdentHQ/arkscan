@@ -65,7 +65,7 @@
     <button
         x-on:click="toggleSearch"
         type="button"
-        class="inline-flex justify-center items-center p-0 w-full leading-5 button-secondary"
+        class="inline-flex justify-center items-center p-0 w-full leading-5 button-secondary focus:ring-theme-primary-300"
         :class="{ 'opacity-0': search }"
         @unless ($paginator->hasPages())
             disabled
