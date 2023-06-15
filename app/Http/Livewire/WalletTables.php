@@ -18,7 +18,7 @@ final class WalletTables extends Component
 {
     use HasTablePagination;
 
-    const PER_PAGE = 10;
+    public const PER_PAGE = 10;
 
     public string $address;
 

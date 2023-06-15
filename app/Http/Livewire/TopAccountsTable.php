@@ -15,7 +15,7 @@ final class TopAccountsTable extends Component
 {
     use HasTablePagination;
 
-    const PER_PAGE = 25;
+    public const PER_PAGE = 25;
 
     public function render(): View
     {
