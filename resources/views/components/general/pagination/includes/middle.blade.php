@@ -65,7 +65,7 @@
     <button
         x-on:click="toggleSearch"
         type="button"
-        class="inline-flex justify-center items-center p-0 w-full leading-5 button-secondary group relative"
+        class="inline-flex relative justify-center items-center p-0 w-full leading-5 button-secondary group"
         :class="{ 'opacity-0': search }"
         @unless ($paginator->hasPages())
             disabled
@@ -87,7 +87,7 @@
             </span>
         </div>
 
-        <div class="absolute text-transparent group-hover:text-white m-auto">
+        <div class="absolute m-auto text-transparent group-hover:text-white">
             <x-ark-icon
                 name="magnifying-glass-small"
                 size="sm"
