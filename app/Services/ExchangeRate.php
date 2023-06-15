@@ -27,7 +27,7 @@ final class ExchangeRate
         $cache = new NetworkStatusBlockCache();
 
         $fromValue = $cache->getPrice(Network::currency(), $from);
-        $toValue = $cache->getPrice(Network::currency(), $to);
+        $toValue   = $cache->getPrice(Network::currency(), $to);
 
         if ($fromValue === null || $toValue === null) {
             return null;
