@@ -21,7 +21,7 @@ final class ExchangeRate
         return NumberFormatter::currency($amount * $exchangeRate, Settings::currency(), $showSmallAmounts);
     }
 
-    public static function convertFiatToCurrency(float $amount, string $from, string $to, $decimals = 4): ?string
+    public static function convertFiatToCurrency(float $amount, string $from, string $to, int $decimals = 4): ?string
     {
         // Determine the exchange rate based on Network token currency value
         $cache = new NetworkStatusBlockCache();
