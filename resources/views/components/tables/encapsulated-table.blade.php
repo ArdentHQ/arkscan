@@ -15,6 +15,6 @@
     </table>
 
     @if ($paginatorIsEmpty)
-        <div class="h-[5px] -mx-6 bg-theme-secondary-300 dark:bg-theme-secondary-800"></div>
+        <div class="-mx-6 h-[5px] bg-theme-secondary-300 dark:bg-theme-secondary-800"></div>
     @endif
 </div>
