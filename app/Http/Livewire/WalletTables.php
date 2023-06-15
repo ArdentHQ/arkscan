@@ -103,7 +103,7 @@ final class WalletTables extends Component
                 $query->when($this->showTransferTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::TRANSFER))
                     ->when($this->showVoteTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::VOTE))
                     ->when($this->showMultipaymentTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT));
-                    // ->when($this->showOtherTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT))
+                // ->when($this->showOtherTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT))
             })
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->showOutgoing(), fn ($query) => $query->where('sender_public_key', $this->publicKey)))
