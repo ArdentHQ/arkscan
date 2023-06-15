@@ -1,7 +1,7 @@
 <x-general.dropdown.dropdown
     placement="right-start"
     :placement-fallbacks="['bottom', 'bottom-end', 'left-start']"
-    dropdown-class="w-full px-6 md:w-[284px] table-filter md:px-8"
+    dropdown-class="px-6 w-full md:px-8 table-filter md:w-[284px]"
     :close-on-click="false"
     class="flex-1"
     dropdown-wrapper-class="w-full"
@@ -9,13 +9,13 @@
     dropdown-padding="py-1"
 >
     <x-slot name="button" class="w-full rounded">
-        <div class="md:p-2 button-secondary flex items-center sm:py-1.5 sm:px-4 flex-1 sm:flex-none justify-center">
+        <div class="flex flex-1 justify-center items-center sm:flex-none sm:py-1.5 sm:px-4 md:p-2 button-secondary">
             <x-ark-icon
                 name="filter"
                 size="sm"
             />
 
-            <div class="md:hidden ml-2">
+            <div class="ml-2 md:hidden">
                 @lang('actions.filter')
             </div>
         </div>
