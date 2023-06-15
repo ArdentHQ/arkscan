@@ -27,7 +27,7 @@ final class ExchangeTable extends Component
      * @var mixed
      */
     protected $listeners = [
-        'filterChanged' => 'setFilter',
+        'filterChanged'   => 'setFilter',
         'currencyChanged' => '$refresh',
     ];
 
