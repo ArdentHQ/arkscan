@@ -15,4 +15,9 @@ return [
         'contract'   => 'Contract',
         'multiple'   => 'Multiple',
     ],
+
+    'exchanges' => [
+        'price'  => 'Price (:currency)',
+        'volume' => 'Volume (:currency)',
+    ],
 ];

@@ -17,23 +17,21 @@
             />
 
             <x-tables.headers.desktop.number
-                name="general.exchange.price"
+                name="tables.exchanges.price"
+                :name-properties="['currency' => Settings::currency()]"
                 initial-sort="desc"
                 sorting-id="header-price"
-            >
-                <span>({{ config('currencies.usd.currency') }})</span>
-            </x-tables.headers.desktop.number>
+            />
 
             <x-tables.headers.desktop.number
-                name="general.exchange.volume"
+                name="tables.exchanges.volume"
+                :name-properties="['currency' => Settings::currency()]"
                 class="text-right"
                 breakpoint="md-lg"
                 responsive
                 initial-sort="desc"
                 sorting-id="header-volume"
-            >
-                <span>({{ config('currencies.usd.currency') }})</span>
-            </x-tables.headers.desktop.number>
+            />
         </tr>
     </thead>
 
@@ -67,7 +65,7 @@
                 >
                     @if ($exchange->price)
                         <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
-                            {{ ExplorerNumberFormatter::usdWithDecimals($exchange->price) }}
+                            {{ ExchangeRate::convertFiatToCurrency($exchange->price, 'USD', Settings::currency()) }}
                         </span>
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
@@ -83,7 +81,7 @@
                     responsive
                 >
                     @if ($exchange->volume)
-                        {{ ExplorerNumberFormatter::usdWithDecimals($exchange->volume, 2) }}
+                        {{ ExchangeRate::convertFiatToCurrency($exchange->volume, 'USD', Settings::currency(), 2) }}
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
                             @lang('general.na')
