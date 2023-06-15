@@ -5,7 +5,7 @@
         <div class="flex-1 sm:flex-none">
             <button
                 type="button"
-                class="button-secondary flex items-center space-x-2 sm:py-1.5 sm:px-4 justify-center w-full"
+                class="flex justify-center items-center space-x-2 w-full sm:py-1.5 sm:px-4 button-secondary"
             >
                 <x-ark-icon
                     name="arrows.underline-arrow-down"
