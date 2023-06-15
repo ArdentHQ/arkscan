@@ -4,7 +4,11 @@
     'useVoteWeight' => false,
 ])
 
-<x-tables.encapsulated-table sticky class="hidden w-full md:block">
+<x-tables.encapsulated-table
+    class="hidden w-full md:block"
+    :paginator="$wallets"
+    sticky
+>
     <thead class="dark:bg-black bg-theme-secondary-100">
         <tr class="border-b-none">
             <x-tables.headers.desktop.number name="general.wallet.rank" />
