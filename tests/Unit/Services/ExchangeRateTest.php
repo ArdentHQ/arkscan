@@ -43,6 +43,16 @@ it('should convert one currency to another', function () {
     expect(ExchangeRate::convertFiatToCurrency(4, 'USD', 'GBP'))->toBe('£8.00');
 });
 
+it('should convert one currency to crypto', function () {
+    Settings::shouldReceive('currency')
+        ->andReturn('BTC');
+
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 1);
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'BTC', 0.00002);
+
+    expect(ExchangeRate::convertFiatToCurrency(4, 'USD', 'BTC'))->toBe('0.00008 BTC');
+});
+
 it('should return null if a currency value is missing', function () {
     Settings::shouldReceive('currency')
         ->andReturn('GBP');
