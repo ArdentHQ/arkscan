@@ -14,6 +14,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 
+/** @property bool $isAllSelected */
 final class WalletTables extends Component
 {
     use HasPagination;
