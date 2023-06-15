@@ -29,7 +29,7 @@ final class WalletTables extends Component
     ];
 
     public array $filter = [
-        'outgoing'      => true,
+        'outgoing'      => false,
         'incoming'      => false,
         'transfers'     => false,
         'votes'         => false,
@@ -89,11 +89,9 @@ final class WalletTables extends Component
         }
     }
 
-    public function updatedFilter(bool $value): void
+    public function updatedFilter(): void
     {
-        if ($value === false) {
-            $this->selectAllFilters = false;
-        }
+        $this->selectAllFilters = $this->isAllSelected;
     }
 
     private function getTransactionsQuery(): Builder
