@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Enums\CoreTransactionTypeEnum;
 use App\Facades\Wallets;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
@@ -97,20 +98,127 @@ final class WalletTables extends Component
 
     private function getTransactionsQuery(): Builder
     {
-        $query = Transaction::query();
+        return Transaction::query()
+            ->where(function ($query) {
+                $query->when($this->showTransferTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::TRANSFER))
+                    ->when($this->showVoteTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::VOTE))
+                    ->when($this->showMultipaymentTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT));
+                    // ->when($this->showOtherTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT))
+            })
+            ->where(function ($query) {
+                $query->where(fn ($query) => $query->when($this->showOutgoing(), fn ($query) => $query->where('sender_public_key', $this->publicKey)))
+                    ->orWhere(fn ($query) => $query->when($this->showIncoming(), fn ($query) => $query->where('recipient_id', $this->address)))
+                    ->orWhere(fn ($query) => $query->when($this->showIncoming(), fn ($query) => $query->whereJsonContains('asset->payments', [['recipientId' => $this->address]])));
+            });
+    }
 
-        $query->where(function ($query): void {
-            $query->where('sender_public_key', $this->publicKey);
-        });
+    private function showOutgoing(): bool
+    {
+        if ($this->filter['outgoing']) {
+            return true;
+        }
 
-        $query->orWhere(function ($query): void {
-            $query->where('recipient_id', $this->address);
-        });
+        if ($this->filter['incoming']) {
+            return false;
+        }
 
-        $query->orWhere(function ($query): void {
-            $query->whereJsonContains('asset->payments', [['recipientId' => $this->address]]);
-        });
+        return true;
+    }
 
-        return $query;
+    private function showIncoming(): bool
+    {
+        if ($this->filter['incoming']) {
+            return true;
+        }
+
+        if ($this->filter['outgoing']) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function showTransferTransactions(): ?bool
+    {
+        if ($this->filter['transfers']) {
+            return true;
+        }
+
+        if ($this->filter['votes']) {
+            return false;
+        }
+
+        if ($this->filter['multipayments']) {
+            return false;
+        }
+
+        if ($this->filter['others']) {
+            return false;
+        }
+
+        return null;
+    }
+
+    private function showVoteTransactions(): ?bool
+    {
+        if ($this->filter['votes']) {
+            return true;
+        }
+
+        if ($this->filter['transfers']) {
+            return false;
+        }
+
+        if ($this->filter['multipayments']) {
+            return false;
+        }
+
+        if ($this->filter['others']) {
+            return false;
+        }
+
+        return null;
+    }
+
+    private function showMultipaymentTransactions(): ?bool
+    {
+        if ($this->filter['multipayments']) {
+            return true;
+        }
+
+        if ($this->filter['transfers']) {
+            return false;
+        }
+
+        if ($this->filter['votes']) {
+            return false;
+        }
+
+        if ($this->filter['others']) {
+            return false;
+        }
+
+        return null;
+    }
+
+    private function showOtherTransactions(): ?bool
+    {
+        if ($this->filter['others']) {
+            return true;
+        }
+
+        if ($this->filter['transfers']) {
+            return false;
+        }
+
+        if ($this->filter['votes']) {
+            return false;
+        }
+
+        if ($this->filter['multipayments']) {
+            return false;
+        }
+
+        return null;
     }
 }
