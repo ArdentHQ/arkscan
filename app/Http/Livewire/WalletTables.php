@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
+use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
-use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 
 final class WalletTables extends Component
 {
-    use HasPagination;
+    use HasTablePagination;
+
+    const PER_PAGE = 10;
 
     public string $address;
 
@@ -48,7 +50,7 @@ final class WalletTables extends Component
     public function render(): View
     {
         // TODO: add block and voter table handling
-        $items = $this->getTransactionsQuery()->withScope(OrderByTimestampScope::class)->paginate();
+        $items = $this->getTransactionsQuery()->withScope(OrderByTimestampScope::class)->paginate($this->perPage);
 
         return view('livewire.wallet-tables', [
             'wallet'        => ViewModelFactory::make(Wallets::findByAddress($this->address)),
