@@ -1,7 +1,7 @@
 @props(['label'])
 
 <div>
-    <div class="font-semibold mt-3 mb-1 px-4 leading-5 dark:text-theme-secondary-200">
+    <div class="px-4 mt-3 mb-1 font-semibold leading-5 dark:text-theme-secondary-200">
         {{ $label }}
     </div>
 
