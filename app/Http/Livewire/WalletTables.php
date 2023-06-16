@@ -79,7 +79,7 @@ final class WalletTables extends Component
         });
 
         $query->orWhere(function ($query): void {
-            $query->whereJsonContains('asset->payments', [['recipientId' => $this->address]]);
+            $query->where('type', 6)->whereJsonContains('asset->payments', [['recipientId' => $this->address]]);
         });
 
         return $query;
