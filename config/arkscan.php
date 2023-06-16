@@ -59,6 +59,11 @@ return [
         ],
     ],
 
+    'productivity' => [
+        'danger'  => env('ARKSCAN_PRODUCTIVITY_DANGER', 97),
+        'warning' => env('ARKSCAN_PRODUCTIVITY_WARNING', 99.8),
+    ],
+
     'statistics'                        => [
 
         /*
@@ -81,5 +86,9 @@ return [
     'exchanges' => [
         'list_src' => env('EXCHANGES_LIST_SRC', 'https://raw.githubusercontent.com/ArkEcosystem/common/master/arkscan/exchanges.json'),
         'icon_url' => env('EXCHANGES_ICON_URL', 'https://raw.githubusercontent.com/ArkEcosystem/common/master/arkscan/icons/'),
+    ],
+
+    'scout' => [
+        'run_jobs' => env('SCOUT_RUN_JOBS', false),
     ],
 ];

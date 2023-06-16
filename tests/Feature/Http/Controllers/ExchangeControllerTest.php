@@ -16,7 +16,7 @@ it('should render the page', function () {
 });
 
 it('should redirect if network can not exchange', function () {
-    Config::set('explorer.networks.development.canBeExchanged', false);
+    Config::set('arkscan.networks.development.canBeExchanged', false);
 
     $this
         ->get(route('exchanges'))

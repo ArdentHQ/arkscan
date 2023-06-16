@@ -32,6 +32,8 @@ return [
     'select_network'          => 'Select Network',
     'na'                      => 'N/A',
     'all'                     => 'All',
+    'overview'                => 'Overview',
+    'view'                    => 'View',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
@@ -77,8 +79,8 @@ return [
         'delegate'                => 'Delegate',
 
         'types'                   => [
-            'delegate-registration'               => 'Delegate Registration',
-            'delegate-resignation'                => 'Delegate Resignation',
+            'delegate-registration'               => 'Registration',
+            'delegate-resignation'                => 'Resignation',
             'delegate-entity-registration'        => 'Delegate Entity Registration',
             'delegate-entity-resignation'         => 'Delegate Entity Resignation',
             'delegate-entity-update'              => 'Delegate Entity Update',
@@ -96,7 +98,7 @@ return [
             'module-entity-registration'          => 'Module Registration',
             'module-entity-resignation'           => 'Module Resignation',
             'module-entity-update'                => 'Module Update',
-            'vote-combination'                    => 'Switch Vote',
+            'vote-combination'                    => 'Vote Swap',
             'multi-signature'                     => 'Multisignature',
             'plugin-entity-registration'          => 'Plugin Registration',
             'plugin-entity-resignation'           => 'Plugin Resignation',
@@ -104,7 +106,7 @@ return [
             'product-entity-registration'         => 'Product Registration',
             'product-entity-resignation'          => 'Product Resignation',
             'product-entity-update'               => 'Product Update',
-            'second-signature'                    => 'Second Signature',
+            'second-signature'                    => '2nd Signature',
             'timelock'                            => 'Timelock',
             'timelock-claim'                      => 'Timelock Claim',
             'timelock-refund'                     => 'Timelock Refund',
@@ -112,6 +114,7 @@ return [
             'unvote'                              => 'Unvote',
             'vote'                                => 'Vote',
             'unknown'                             => 'Unknown',
+            'legacy'                              => 'Legacy',
 
             // TODO: remove once legacy magistrate shows proper type texts
             'business'                            => 'Business',

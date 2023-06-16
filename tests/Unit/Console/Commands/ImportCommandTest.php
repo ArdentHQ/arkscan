@@ -15,3 +15,14 @@ it('should call the command and pause/resume indexing', function () {
         'model' => Transaction::class,
     ]);
 });
+
+it('should not call the command and pause/resume indexing if --no-pause options is passed', function () {
+    Cache::shouldReceive('forever')->never();
+
+    Cache::shouldReceive('forget')->never();
+
+    Artisan::call('scout:import', [
+        'model'      => Transaction::class,
+        '--no-pause' => true,
+    ]);
+});

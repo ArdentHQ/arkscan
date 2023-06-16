@@ -1,10 +1,10 @@
-<div class="flex flex-col space-y-3 sm:space-y-4 table-list-mobile table-list-encapsulated">
+<x-tables.mobile.includes.encapsulated>
     @foreach ($exchanges as $exchange)
         <div class="rounded border border-theme-secondary-300 dark:border-theme-secondary-800">
             <a class="flex justify-between items-center py-3 px-4 rounded-t dark:rounded-t-sm bg-theme-secondary-100 dark:bg-theme-secondary-800">
                 <div class="flex items-center space-x-2">
                     <div class="flex justify-center items-center p-1.5 w-8 h-8 bg-white rounded-full border border-theme-secondary-200 dark:border-theme-secondary-900 dark:bg-theme-secondary-900">
-                        <img class="max-w-full max-h-full" src="{{ config('explorer.exchanges.icon_url') }}{{ $exchange->icon }}.svg" alt="{{ $exchange->name }} icon" />
+                        <img class="max-w-full max-h-full" src="{{ config('arkscan.exchanges.icon_url') }}{{ $exchange->icon }}.svg" alt="{{ $exchange->name }} icon" />
                     </div>
 
                     <span class="text-sm font-semibold leading-4 text-theme-primary-600 dark:text-theme-secondary-200">{{ $exchange->name }}</span>
@@ -33,7 +33,7 @@
 
                     @if ($exchange->price)
                         <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
-                            {{ ExplorerNumberFormatter::usdWithDecimals($exchange->price) }}
+                            {{ ExchangeRate::convertFiatToCurrency($exchange->price, 'USD', Settings::currency()) }}
                         </span>
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
@@ -49,7 +49,7 @@
 
                     @if ($exchange->volume)
                         <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
-                            {{ ExplorerNumberFormatter::usdWithDecimals($exchange->volume, 2) }}
+                            {{ ExchangeRate::convertFiatToCurrency($exchange->volume, 'USD', Settings::currency(), 2) }}
                         </span>
                     @else
                         <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
@@ -60,4 +60,4 @@
             </div>
         </div>
     @endforeach
-</div>
+</x-tables.mobile.includes.encapsulated>

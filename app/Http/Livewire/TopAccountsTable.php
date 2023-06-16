@@ -15,13 +15,13 @@ final class TopAccountsTable extends Component
 {
     use HasPagination;
 
-    public int $perPage = 10;
+    public int $perPage = 25;
 
     /**
      * @var mixed
      */
     protected $queryString = [
-        'perPage' => ['except' => 10],
+        'perPage' => ['except' => 25],
     ];
 
     public function render(): View

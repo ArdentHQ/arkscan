@@ -14,16 +14,6 @@ it('should search for a block by id', function (?string $modifier) {
     expect($result)->toHaveCount(1);
 })->with([null, 'strtolower', 'strtoupper']);
 
-it('should search for a block by height', function () {
-    Block::factory()->create([
-        'height' => 2147483646,
-    ]);
-
-    $result = (new BlockSearch())->search('2147483646', 5);
-
-    expect($result)->toHaveCount(1);
-});
-
 it('should query blocks by id', function () {
     Block::factory()->create([
         'id' => 'aaaaaabbbbbbbccccccdddddd',

@@ -40,21 +40,21 @@ final class ScoutIndexModels extends Command
             $this->info(sprintf('Indexing is paused for "%s". Use the command scout:resume-indexing to resume indexing.', Transaction::class));
         } else {
             $this->info(sprintf('Indexing "%s" models.', Transaction::class));
-            IndexTransactions::dispatch();
+            IndexTransactions::dispatch()->onQueue('scout');
         }
 
         if (Cache::get('scout_indexing_paused_'.Wallet::class) === true) {
             $this->info(sprintf('Indexing is paused for "%s". Use the command scout:resume-indexing to resume indexing.', Wallet::class));
         } else {
             $this->info(sprintf('Indexing "%s" models.', Wallet::class));
-            IndexWallets::dispatch();
+            IndexWallets::dispatch()->onQueue('scout');
         }
 
         if (Cache::get('scout_indexing_paused_'.Block::class) === true) {
             $this->info(sprintf('Indexing is paused for "%s". Use the command scout:resume-indexing to resume indexing.', Block::class));
         } else {
             $this->info(sprintf('Indexing "%s" models.', Block::class));
-            IndexBlocks::dispatch();
+            IndexBlocks::dispatch()->onQueue('scout');
         }
 
         return Command::SUCCESS;

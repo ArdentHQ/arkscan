@@ -30,7 +30,7 @@ it('should list the first transactions for the giving block id', function () {
 });
 
 it('should update the records fiat tooltip when currency changed', function () {
-    Config::set('explorer.networks.development.canBeExchanged', true);
+    Config::set('arkscan.networks.development.canBeExchanged', true);
 
     (new CryptoDataCache())->setPrices('USD.week', collect([
         '2020-10-19' => 24210,

@@ -65,13 +65,13 @@
     <button
         x-on:click="toggleSearch"
         type="button"
-        class="inline-flex justify-center items-center p-0 w-full leading-5 button-secondary"
+        class="inline-flex relative justify-center items-center p-0 w-full leading-5 button-secondary group focus:ring-theme-primary-300"
         :class="{ 'opacity-0': search }"
         @unless ($paginator->hasPages())
             disabled
         @endunless
     >
-        <div class="py-1.5 px-2 sm:px-3 md:px-4">
+        <div class="py-1.5 px-2 sm:px-3 md:px-4 group-hover:text-transparent">
             <span class="sm:hidden md:inline">
                 @lang('ui::generic.pagination.current_to', [
                     'currentPage' => number_format($paginator->currentPage(), 0),
@@ -85,6 +85,13 @@
                     'lastPage' => number_format($paginator->lastPage(), 0),
                 ])
             </span>
+        </div>
+
+        <div class="absolute m-auto text-transparent group-hover:text-white">
+            <x-ark-icon
+                name="magnifying-glass-small"
+                size="sm"
+            />
         </div>
     </button>
 </div>

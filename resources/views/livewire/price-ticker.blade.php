@@ -1,10 +1,10 @@
-@php ($isDisabled = ! Network::canBeExchanged() || config('explorer.network') !== 'production' || ! $isAvailable)
+@php ($isDisabled = ! Network::canBeExchanged() || config('arkscan.network') !== 'production' || ! $isAvailable)
 
 <div
-    wire:poll.60s
+    wire:poll.visible.60s
     class="w-full md:w-auto"
     :class="{ 'opacity-50': busy }"
-    x-data="{ to: '{{ $to }}', busy: false }"
+    x-data="{ busy: false }"
     x-init="livewire.on('currencyChanged', () => busy = true);"
     @has-loaded-price-data="busy = false"
 >
@@ -26,6 +26,7 @@
         </div>
 
         <x-general.dropdown.dropdown
+            dropdownClass="right-0 min-w-[125px]"
             scroll-class="max-h-[246px] md:max-h-[332px]"
             :disabled="$isDisabled"
         >

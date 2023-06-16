@@ -11,6 +11,16 @@ use Laravel\Scout\Console\ImportCommand as LaravelScoutImportCommand;
 final class ImportCommand extends LaravelScoutImportCommand
 {
     /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'scout:import
+            {model : Class name of model to bulk import}
+            {--c|chunk= : The number of records to import at a time (Defaults to configuration value: `scout.chunk.searchable`)}
+            {--no-pause : Do not pause indexing while this command is running}';
+
+    /**
      * Execute the console command.
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
@@ -25,21 +35,26 @@ final class ImportCommand extends LaravelScoutImportCommand
         $this->warn('you shouldn\'t manually resume this process, but start the import again.');
         $this->warn('To resume indexing use the command:.');
         $this->newLine();
-        $this->warn(sprintf('`php artisan scout:resume-indexing` "%s"', $this->argument('model')));
+        $this->warn(sprintf('`php artisan scout:resume-indexing "%s"`', $this->argument('model')));
         $this->newLine();
 
         $class = $this->argument('model');
+        $pause = ! $this->option('no-pause');
 
         $model = new $class();
 
-        Artisan::call('scout:pause-indexing', [
-            'model' => $model::class,
-        ]);
+        if ($pause) {
+            Artisan::call('scout:pause-indexing', [
+                'model' => $model::class,
+            ]);
+        }
 
         parent::handle($events);
 
-        Artisan::call('scout:resume-indexing', [
-            'model' => $model::class,
-        ]);
+        if ($pause) {
+            Artisan::call('scout:resume-indexing', [
+                'model' => $model::class,
+            ]);
+        }
     }
 }
