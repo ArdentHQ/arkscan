@@ -3,4 +3,4 @@
     'results'
 ])
 
-<span class="font-semibold text-sm leading-[17px]">{{ $index + ($results->currentPage() - 1) * $results->perPage()  }}</span>
+<span class="text-sm font-semibold leading-[17px]">{{ $index + ($results->currentPage() - 1) * $results->perPage()  }}</span>

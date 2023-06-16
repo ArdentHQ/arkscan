@@ -3,5 +3,5 @@
 ])
 
 @if ($model->username())
-    <span class="font-semibold text-sm leading-[17px]">{{ $model->username() }}</span>
+    <span class="text-sm font-semibold leading-[17px]">{{ $model->username() }}</span>
 @endif
