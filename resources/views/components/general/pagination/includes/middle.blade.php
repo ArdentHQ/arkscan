@@ -72,19 +72,10 @@
         @endunless
     >
         <div class="py-1.5 px-2 sm:px-3 md:px-4 group-hover:text-transparent">
-            <span class="sm:hidden md:inline">
-                @lang('ui::generic.pagination.current_to', [
-                    'currentPage' => number_format($paginator->currentPage(), 0),
-                    'lastPage' => number_format($paginator->lastPage(), 0),
-                ])
-            </span>
-
-            <span class="hidden sm:block md:hidden">
-                @lang('ui::generic.pagination.current_to_short', [
-                    'currentPage' => number_format($paginator->currentPage(), 0),
-                    'lastPage' => number_format($paginator->lastPage(), 0),
-                ])
-            </span>
+            @lang('ui::generic.pagination.current_to', [
+                'currentPage' => number_format($paginator->currentPage(), 0),
+                'lastPage' => number_format($paginator->lastPage(), 0),
+            ])
         </div>
 
         <div class="absolute m-auto text-transparent group-hover:text-white">
