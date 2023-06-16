@@ -14,4 +14,6 @@ return [
     'learn_more'      => 'Learn More',
     'submit'          => 'Submit',
     'cancel'          => 'Cancel',
+    'export'          => 'Export',
+    'filter'          => 'Filter',
 ];
