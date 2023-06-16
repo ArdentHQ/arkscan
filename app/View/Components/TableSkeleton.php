@@ -22,6 +22,7 @@ final class TableSkeleton extends Component
         string $class = 'hidden md:block',
         private ?int $rowCount = null,
         private bool $encapsulated = false,
+        private array $componentProperties = [],
     ) {
         $this->items = collect($items);
         $this->class = $class;
@@ -62,6 +63,7 @@ final class TableSkeleton extends Component
             'headers'  => $headers->toArray(),
             'rows'     => $rows->toArray(),
             'rowCount' => $this->rowCount,
+            ...$this->componentProperties,
         ]);
     }
 

@@ -64,14 +64,19 @@ final class NumberFormatter
     /**
      * @param string|int|float $value
      */
-    public static function usdWithDecimals($value, ?int $decimals = 4): string
+    public static function currencyWithDecimals($value, string $currency, ?int $decimals = 4): string
     {
-        return BetterNumberFormatter::new()
+        $formatter = BetterNumberFormatter::new()
             ->withLocale('en-US')
             ->withFractionDigits($decimals ?? 4)
-            ->withMinFractionDigits(2)
+            ->withMinFractionDigits(2);
+
+        if (self::isFiat($currency)) {
             // Workaround to fix 5 rounding down (e.g. 1.00005 > 1 instead of 1.0001)
-            ->formatCurrency(floatval(number_format((float) $value, $decimals ?? 4, '.', '')), 'USD');
+            return $formatter->formatCurrency(floatval(number_format((float) $value, $decimals ?? 4, '.', '')), $currency);
+        }
+
+        return $formatter->formatWithCurrencyCustom($value, $currency, $decimals ?? 8);
     }
 
     /**

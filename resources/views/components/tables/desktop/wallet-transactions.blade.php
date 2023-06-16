@@ -6,7 +6,8 @@
 
 <x-tables.encapsulated-table
     wire:key="{{ Helpers::generateId('transactions', ...$state) }}"
-    class="hidden w-full md:block"
+    class="hidden w-full rounded-t-none md:block"
+    :rounded="false"
     sticky
 >
     <thead>

@@ -1,6 +1,6 @@
 <div x-data="{ tab: 'transactions' }">
     <x-tabs.inline-wrapper
-        class="hidden mb-4 md:inline-flex"
+        class="hidden mb-3 md:inline-flex"
         default-selected="transactions"
         on-selected="function (value) {
             this.$wire.set('state.view', value);
@@ -90,7 +90,9 @@
     </div>
 
     <div id="transaction-list" class="w-full">
-        <x-skeletons.transactions>
+        <x-tables.toolbars.transactions :transactions="$transactions" />
+
+        <x-skeletons.wallet-transactions>
             @if ($transactions->isEmpty())
                 <x-general.no-results :text="trans('pages.home.no_transaction_results', [trans('forms.search.transaction_types.all')])" />
             @else
