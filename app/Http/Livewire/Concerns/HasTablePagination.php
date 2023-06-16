@@ -42,6 +42,6 @@ trait HasTablePagination
             }
         }
 
-        return 10;
+        return 10; // @codeCoverageIgnore - we don't have any usage where it falls back to default
     }
 }
