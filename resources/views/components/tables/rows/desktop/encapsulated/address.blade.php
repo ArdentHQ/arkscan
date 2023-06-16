@@ -4,7 +4,7 @@
     'withoutUsername' => false,
 ])
 
-<span class="flex justify-between w-full">
+<span class="flex justify-between w-full text-sm leading-[17px]">
     <span>
         <x-general.identity
             :model="$model"
