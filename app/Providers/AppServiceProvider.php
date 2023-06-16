@@ -100,6 +100,7 @@ final class AppServiceProvider extends ServiceProvider
                 ['route' => 'transactions', 'label' => trans('menus.transactions')],
                 ['route' => 'delegates',    'label' => trans('menus.delegates')],
                 ['route' => 'top-accounts', 'label' => trans('menus.top_accounts')],
+                ['route' => 'statistics',   'label' => trans('menus.statistics')],
             ]],
             ['label' => trans('menus.resources'), 'children' => [
                 ['route' => 'compatible-wallets',  'label' => trans('menus.wallets')],
