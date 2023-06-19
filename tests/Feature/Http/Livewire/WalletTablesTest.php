@@ -386,8 +386,8 @@ it('should filter by outgoing transactions', function () {
         'recipient_id' => $this->subject->address,
     ]);
 
-    $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'transactions')
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->set('state.view', 'transactions')
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => false,
@@ -395,13 +395,9 @@ it('should filter by outgoing transactions', function () {
             'votes'         => false,
             'multipayments' => false,
             'others'        => false,
-        ]);
-
-    $sentTransaction = ViewModelFactory::make($sent);
-    $receivedTransaction = ViewModelFactory::make($received);
-
-    $component->assertSee($sentTransaction->id());
-    $component->assertDontSee($receivedTransaction->id());
+        ])
+        ->assertSee($sent->id)
+        ->assertDontSee($received->id);
 });
 
 it('should filter by incoming transactions', function () {
@@ -413,8 +409,8 @@ it('should filter by incoming transactions', function () {
         'recipient_id' => $this->subject->address,
     ]);
 
-    $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'transactions')
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->set('state.view', 'transactions')
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => true,
@@ -422,13 +418,9 @@ it('should filter by incoming transactions', function () {
             'votes'         => false,
             'multipayments' => false,
             'others'        => false,
-        ]);
-
-    $sentTransaction = ViewModelFactory::make($sent);
-    $receivedTransaction = ViewModelFactory::make($received);
-
-    $component->assertSee($receivedTransaction->id());
-    $component->assertDontSee($sentTransaction->id());
+        ])
+        ->assertSee($received->id)
+        ->assertDontSee($sent->id);
 });
 
 it('should show multipayments when filtered by incoming transactions', function () {
@@ -461,8 +453,8 @@ it('should show multipayments when filtered by incoming transactions', function 
         ],
     ]);
 
-    $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'transactions')
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->set('state.view', 'transactions')
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => true,
@@ -470,13 +462,9 @@ it('should show multipayments when filtered by incoming transactions', function 
             'votes'         => false,
             'multipayments' => false,
             'others'        => false,
-        ]);
-
-    $sentTransaction = ViewModelFactory::make($sent);
-    $receivedTransaction = ViewModelFactory::make($received);
-
-    $component->assertSee($receivedTransaction->id());
-    $component->assertDontSee($sentTransaction->id());
+        ])
+        ->assertSee($received->id)
+        ->assertDontSee($sent->id);
 });
 
 it('should filter by incoming and outgoing transactions', function () {
@@ -488,8 +476,8 @@ it('should filter by incoming and outgoing transactions', function () {
         'recipient_id' => $this->subject->address,
     ]);
 
-    $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'transactions')
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->set('state.view', 'transactions')
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => true,
@@ -497,13 +485,9 @@ it('should filter by incoming and outgoing transactions', function () {
             'votes'         => false,
             'multipayments' => false,
             'others'        => false,
-        ]);
-
-    $sentTransaction = ViewModelFactory::make($sent);
-    $receivedTransaction = ViewModelFactory::make($received);
-
-    $component->assertSee($receivedTransaction->id());
-    $component->assertSee($sentTransaction->id());
+        ])
+        ->assertSee($sent->id)
+        ->assertSee($received->id);
 });
 
 it('should filter by transfer transactions', function () {
@@ -515,8 +499,8 @@ it('should filter by transfer transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'transactions')
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->set('state.view', 'transactions')
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => false,
@@ -524,13 +508,9 @@ it('should filter by transfer transactions', function () {
             'votes'         => false,
             'multipayments' => false,
             'others'        => false,
-        ]);
-
-    $transferTransaction = ViewModelFactory::make($transfer);
-    $voteTransaction = ViewModelFactory::make($vote);
-
-    $component->assertSee($transferTransaction->id());
-    $component->assertDontSee($voteTransaction->id());
+        ])
+        ->assertSee($transfer->id)
+        ->assertDontSee($vote->id);
 });
 
 it('should filter by vote transactions', function () {
@@ -542,8 +522,8 @@ it('should filter by vote transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'transactions')
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->set('state.view', 'transactions')
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => false,
@@ -551,13 +531,9 @@ it('should filter by vote transactions', function () {
             'votes'         => true,
             'multipayments' => false,
             'others'        => false,
-        ]);
-
-    $transferTransaction = ViewModelFactory::make($transfer);
-    $voteTransaction = ViewModelFactory::make($vote);
-
-    $component->assertSee($voteTransaction->id());
-    $component->assertDontSee($transferTransaction->id());
+        ])
+        ->assertSee($vote->id)
+        ->assertDontSee($transfer->id);
 });
 
 it('should filter by multipayment transactions', function () {
@@ -569,8 +545,8 @@ it('should filter by multipayment transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'transactions')
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->set('state.view', 'transactions')
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => false,
@@ -578,13 +554,9 @@ it('should filter by multipayment transactions', function () {
             'votes'         => false,
             'multipayments' => true,
             'others'        => false,
-        ]);
-
-    $transferTransaction = ViewModelFactory::make($transfer);
-    $multipaymentTransaction = ViewModelFactory::make($multipayment);
-
-    $component->assertSee($multipaymentTransaction->id());
-    $component->assertDontSee($transferTransaction->id());
+        ])
+        ->assertSee($multipayment->id)
+        ->assertDontSee($transfer->id);
 });
 
 it('should filter by other transactions', function () {
@@ -596,8 +568,8 @@ it('should filter by other transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'transactions')
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->set('state.view', 'transactions')
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => false,
@@ -605,11 +577,27 @@ it('should filter by other transactions', function () {
             'votes'         => false,
             'multipayments' => false,
             'others'        => true,
-        ]);
+        ])
+        ->assertSee($delegateRegistration->id)
+        ->assertDontSee($transfer->id);
+});
 
-    $transferTransaction = ViewModelFactory::make($transfer);
-    $delegateRegistrationTransaction = ViewModelFactory::make($delegateRegistration);
+it('should reset pagination when filtering', function () {
+    $vote = Transaction::factory()->vote()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => 102982050, // oldest transaction
+    ]);
 
-    $component->assertSee($delegateRegistrationTransaction->id());
-    $component->assertDontSee($transferTransaction->id());
+    Transaction::factory(15)->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->set('state.view', 'transactions')
+        ->assertDontSee($vote->id)
+        ->call('setPage', 2)
+        ->assertSee($vote->id)
+        ->set('filter.transfers', false)
+        ->assertSet('page', 1)
+        ->assertSee($vote->id);
 });
