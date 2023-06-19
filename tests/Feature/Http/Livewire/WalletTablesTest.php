@@ -613,7 +613,7 @@ it('should show no transactions if no filters', function () {
         ->assertDontSee($transfer->id)
         ->assertDontSee($delegateRegistration->id)
         ->assertDontSee($entityRegistration->id)
-        ->assertSee(trans('tables.transactions.no_results.no_addressing_filters'));
+        ->assertSee(trans('tables.transactions.no_results.no_filters'));
 });
 
 it('should show no transactions if no addressing filter', function () {
@@ -671,7 +671,7 @@ it('should show no transactions if no type filter', function () {
         ->assertDontSee($transfer->id)
         ->assertDontSee($delegateRegistration->id)
         ->assertDontSee($entityRegistration->id)
-        ->assertSee(trans('tables.transactions.no_results.no_type_filters'));
+        ->assertSee(trans('tables.transactions.no_results.no_results'));
 });
 
 it('should show no results message if no transactions matching filter', function () {

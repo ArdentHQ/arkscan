@@ -91,12 +91,12 @@ final class WalletTables extends Component
 
     public function getNoResultsMessageProperty(): null|string
     {
-        if (! $this->hasFilters()) {
-            return trans('tables.transactions.no_results.no_addressing_filters');
+        if (! $this->hasAddressingFilters() && ! $this->hasTransactionTypeFilters()) {
+            return trans('tables.transactions.no_results.no_filters');
         }
 
-        if (! $this->hasTransactionTypeFilters()) {
-            return trans('tables.transactions.no_results.no_type_filters');
+        if (! $this->hasAddressingFilters()) {
+            return trans('tables.transactions.no_results.no_addressing_filters');
         }
 
         if ($this->transactions->total() === 0) {
@@ -123,7 +123,7 @@ final class WalletTables extends Component
     // TODO: add block and voter table handling
     public function getTransactionsProperty(): LengthAwarePaginator
     {
-        if ($this->hasFilters() && $this->hasTransactionTypeFilters()) {
+        if ($this->hasAddressingFilters() && $this->hasTransactionTypeFilters()) {
             return $this->getTransactionsQuery()
                 ->withScope(OrderByTimestampScope::class)
                 ->paginate($this->perPage);
@@ -132,7 +132,7 @@ final class WalletTables extends Component
         return new LengthAwarePaginator([], 0, $this->perPage);
     }
 
-    private function hasFilters(): bool
+    private function hasAddressingFilters(): bool
     {
         if ($this->filter['incoming'] === true) {
             return true;
