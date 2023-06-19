@@ -92,7 +92,7 @@
     <div id="transaction-list" class="w-full">
         <x-tables.toolbars.transactions :transactions="$transactions" />
 
-        <x-skeletons.transactions>
+        <x-skeletons.wallet-transactions>
             @if ($transactions->isEmpty())
                 <x-general.no-results :text="trans('pages.home.no_transaction_results', [trans('forms.search.transaction_types.all')])" />
             @else
