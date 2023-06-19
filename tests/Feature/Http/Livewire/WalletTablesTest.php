@@ -568,6 +568,10 @@ it('should filter by other transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
+    $entityRegistration = Transaction::factory()->entityRegistration()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
         ->set('state.view', 'transactions')
         ->set('filter', [
@@ -579,6 +583,7 @@ it('should filter by other transactions', function () {
             'others'        => true,
         ])
         ->assertSee($delegateRegistration->id)
+        ->assertSee($entityRegistration->id)
         ->assertDontSee($transfer->id);
 });
 
