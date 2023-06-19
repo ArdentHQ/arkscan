@@ -90,10 +90,7 @@
     </div>
 
     <div id="transaction-list" class="w-full">
-        <x-tables.toolbars.transactions
-            :transactions="$transactions"
-            :disabled="$transactions->isEmpty()"
-        />
+        <x-tables.toolbars.transactions :transactions="$transactions" />
 
         <x-skeletons.wallet-transactions>
             <x-tables.desktop.wallet-transactions
