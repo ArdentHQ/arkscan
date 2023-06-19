@@ -1,6 +1,7 @@
 @props([
     'rounded' => true,
     'paginator' => null,
+    'noResultsMessage' => null,
 ])
 
 @php ($paginatorIsEmpty = $paginator !== null && $paginator->total() < config('arkscan.pagination.min_items'))
@@ -13,6 +14,12 @@
     <table>
         {{ $slot }}
     </table>
+
+    @if ($noResultsMessage)
+        <div class="text-center py-4 px-6">
+            {{ $noResultsMessage }}
+        </div>
+    @endif
 
     @if ($paginatorIsEmpty)
         <div class="-mx-6 h-[5px] bg-theme-secondary-300 dark:bg-theme-secondary-800"></div>

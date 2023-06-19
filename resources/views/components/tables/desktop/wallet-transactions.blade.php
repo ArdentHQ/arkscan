@@ -2,6 +2,7 @@
     'transactions',
     'wallet' => null,
     'state' => [],
+    'noResultsMessage' => null,
 ])
 
 <x-tables.encapsulated-table
@@ -9,12 +10,20 @@
     class="hidden w-full rounded-t-none md:block"
     :rounded="false"
     :paginator="$transactions"
+    :no-results-message="$noResultsMessage"
     sticky
 >
     <thead>
         <tr>
-            <x-tables.headers.desktop.id name="tables.transactions.id" />
-            <x-tables.headers.desktop.text name="tables.transactions.age" responsive breakpoint="xl" />
+            <x-tables.headers.desktop.id
+                name="tables.transactions.id"
+                class="whitespace-nowrap"
+            />
+            <x-tables.headers.desktop.text
+                name="tables.transactions.age"
+                breakpoint="xl"
+                responsive
+            />
             <x-tables.headers.desktop.text name="tables.transactions.type" />
             <x-tables.headers.desktop.text name="tables.transactions.addressing" />
             <x-tables.headers.desktop.number

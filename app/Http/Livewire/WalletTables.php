@@ -65,19 +65,9 @@ final class WalletTables extends Component
 
     public function render(): View
     {
-        $items = null;
-        if ($this->hasFilters()) {
-            // TODO: add block and voter table handling
-            $items = $this->getTransactionsQuery()->withScope(OrderByTimestampScope::class)->paginate($this->perPage);
-        }
-
-        if ($items === null) {
-            $items = new LengthAwarePaginator([], 0, $this->perPage);
-        }
-
         return view('livewire.wallet-tables', [
             'wallet'        => ViewModelFactory::make(Wallets::findByAddress($this->address)),
-            'transactions'  => ViewModelFactory::paginate($items),
+            'transactions'  => ViewModelFactory::paginate($this->transactions),
         ]);
     }
 
@@ -94,6 +84,23 @@ final class WalletTables extends Component
     public function getIsAllSelectedProperty(): bool
     {
         return ! collect($this->filter)->contains(false);
+    }
+
+    public function getNoResultsMessageProperty(): null|string
+    {
+        if (! $this->hasFilters()) {
+            return trans('tables.transactions.no_results.no_addressing_filters');
+        }
+
+        if (! $this->hasTransactionTypeFilters()) {
+            return trans('tables.transactions.no_results.no_type_filters');
+        }
+
+        if ($this->transactions->total() === 0) {
+            return trans('tables.transactions.no_results.no_results');
+        }
+
+        return null;
     }
 
     public function updatedSelectAllFilters(bool $value): void
@@ -117,6 +124,35 @@ final class WalletTables extends Component
         }
 
         return $this->filter['outgoing'];
+    }
+
+    private function hasTransactionTypeFilters(): bool
+    {
+        if ($this->filter['transfers'] === true) {
+            return true;
+        }
+
+        if ($this->filter['votes'] === true) {
+            return true;
+        }
+
+        if ($this->filter['multipayments'] === true) {
+            return true;
+        }
+
+        return $this->filter['others'];
+    }
+
+    // TODO: add block and voter table handling
+    public function getTransactionsProperty(): LengthAwarePaginator
+    {
+        if ($this->hasFilters() && $this->hasTransactionTypeFilters()) {
+            return $this->getTransactionsQuery()
+                ->withScope(OrderByTimestampScope::class)
+                ->paginate($this->perPage);
+        }
+
+        return new LengthAwarePaginator([], 0, $this->perPage);
     }
 
     private function getTransactionsQuery(): Builder

@@ -2,9 +2,13 @@
     'transactions',
     'wallet' => null,
     'state' => [],
+    'noResultsMessage' => null,
 ])
 
-<x-tables.mobile.includes.encapsulated wire:key="{{ Helpers::generateId('transactions-mobile', ...$state) }}">
+<x-tables.mobile.includes.encapsulated
+    wire:key="{{ Helpers::generateId('transactions-mobile', ...$state) }}"
+    :no-results-message="$noResultsMessage"
+>
     @foreach ($transactions as $transaction)
         <x-tables.rows.mobile>
             <x-slot name="header">
