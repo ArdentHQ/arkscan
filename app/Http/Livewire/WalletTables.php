@@ -103,10 +103,14 @@ final class WalletTables extends Component
     {
         return Transaction::query()
             ->where(function ($query) {
-                $query->when($this->showTransferTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::TRANSFER))
-                    ->when($this->showVoteTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::VOTE))
-                    ->when($this->showMultipaymentTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT));
-                // ->when($this->showOtherTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT))
+                $query->where(fn ($query) => $query->when($this->showTransferTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::TRANSFER)))
+                    ->orWhere(fn ($query) => $query->when($this->showVoteTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::VOTE)))
+                    ->orWhere(fn ($query) => $query->when($this->showMultipaymentTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT)))
+                    ->orWhere(fn ($query) => $query->when($this->showOtherTransactions() === true, fn ($query) => $query->whereNotIn('type', [
+                        CoreTransactionTypeEnum::TRANSFER,
+                        CoreTransactionTypeEnum::VOTE,
+                        CoreTransactionTypeEnum::MULTI_PAYMENT,
+                    ])));
             })
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->showOutgoing(), fn ($query) => $query->where('sender_public_key', $this->publicKey)))
