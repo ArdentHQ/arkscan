@@ -120,6 +120,18 @@ final class WalletTables extends Component
         $this->setPage(1);
     }
 
+    // TODO: add block and voter table handling
+    public function getTransactionsProperty(): LengthAwarePaginator
+    {
+        if ($this->hasFilters() && $this->hasTransactionTypeFilters()) {
+            return $this->getTransactionsQuery()
+                ->withScope(OrderByTimestampScope::class)
+                ->paginate($this->perPage);
+        }
+
+        return new LengthAwarePaginator([], 0, $this->perPage);
+    }
+
     private function hasFilters(): bool
     {
         if ($this->filter['incoming'] === true) {
@@ -146,18 +158,6 @@ final class WalletTables extends Component
         return $this->filter['others'];
     }
 
-    // TODO: add block and voter table handling
-    public function getTransactionsProperty(): LengthAwarePaginator
-    {
-        if ($this->hasFilters() && $this->hasTransactionTypeFilters()) {
-            return $this->getTransactionsQuery()
-                ->withScope(OrderByTimestampScope::class)
-                ->paginate($this->perPage);
-        }
-
-        return new LengthAwarePaginator([], 0, $this->perPage);
-    }
-
     private function getTransactionsQuery(): Builder
     {
         return Transaction::query()
@@ -167,8 +167,8 @@ final class WalletTables extends Component
                     ->orWhere(fn ($query) => $query->when($this->filter['multipayments'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT)))
                     ->orWhere(fn ($query) => $query->when($this->filter['others'] === true, fn ($query) => $query
                         ->where('type_group', TransactionTypeGroupEnum::MAGISTRATE)
-                        ->orWhere(fn ($query) =>
-                            $query
+                        ->orWhere(
+                            fn ($query) => $query
                                 ->where('type_group', TransactionTypeGroupEnum::CORE)
                                 ->whereNotIn('type', [
                                     CoreTransactionTypeEnum::TRANSFER,

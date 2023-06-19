@@ -16,7 +16,7 @@
     </table>
 
     @if ($noResultsMessage)
-        <div class="text-center py-4 px-6">
+        <div class="py-4 px-6 text-center">
             {{ $noResultsMessage }}
         </div>
     @endif
