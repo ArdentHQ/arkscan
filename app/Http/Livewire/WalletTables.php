@@ -18,7 +18,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
-/** @property bool $isAllSelected */
+/**
+ * @property bool $isAllSelected
+ * @property LengthAwarePaginator $transactions
+ * */
 final class WalletTables extends Component
 {
     use HasTablePagination;
