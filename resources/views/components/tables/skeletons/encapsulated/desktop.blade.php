@@ -1,5 +1,6 @@
 <x-tables.encapsulated-table
     :class="Arr::toCssClasses(['hidden w-full md:block', $class])"
+    :rounded="$rounded ?? true"
     sticky
 >
     <thead class="dark:bg-black bg-theme-secondary-100">
@@ -8,6 +9,7 @@
                 <x-dynamic-component
                     :component="$header['component']"
                     :name="$name"
+                    :name-properties="Arr::get($header, 'nameProperties', null)"
                     :responsive="Arr::get($header, 'responsive', false)"
                     :breakpoint="Arr::get($header, 'breakpoint', 'lg')"
                     :first-on="Arr::get($header, 'firstOn', null)"

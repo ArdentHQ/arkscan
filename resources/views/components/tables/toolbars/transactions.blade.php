@@ -1,6 +1,6 @@
 @props(['transactions'])
 
-<x-tables.toolbars.toolbar :result-count="$transactions->count()">
+<x-tables.toolbars.toolbar :result-count="$transactions->total()">
     <div class="flex space-x-3">
         <div class="flex-1 sm:flex-none">
             <button
