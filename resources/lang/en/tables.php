@@ -16,6 +16,11 @@ return [
         'multiple'   => 'Multiple',
     ],
 
+    'exchanges' => [
+        'price'  => 'Price (:currency)',
+        'volume' => 'Volume (:currency)',
+    ],
+
     'filters' => [
         'transactions' => [
             'addressing'    => 'Addressing',
