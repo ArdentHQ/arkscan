@@ -502,7 +502,7 @@ it('should filter by transfer transactions', function () {
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
         ->set('state.view', 'transactions')
         ->set('filter', [
-            'outgoing'      => false,
+            'outgoing'      => true,
             'incoming'      => false,
             'transfers'     => true,
             'votes'         => false,
@@ -525,7 +525,7 @@ it('should filter by vote transactions', function () {
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
         ->set('state.view', 'transactions')
         ->set('filter', [
-            'outgoing'      => false,
+            'outgoing'      => true,
             'incoming'      => false,
             'transfers'     => false,
             'votes'         => true,
@@ -548,7 +548,7 @@ it('should filter by multipayment transactions', function () {
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
         ->set('state.view', 'transactions')
         ->set('filter', [
-            'outgoing'      => false,
+            'outgoing'      => true,
             'incoming'      => false,
             'transfers'     => false,
             'votes'         => false,
@@ -575,7 +575,7 @@ it('should filter by other transactions', function () {
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
         ->set('state.view', 'transactions')
         ->set('filter', [
-            'outgoing'      => false,
+            'outgoing'      => true,
             'incoming'      => false,
             'transfers'     => false,
             'votes'         => false,
@@ -585,6 +585,62 @@ it('should filter by other transactions', function () {
         ->assertSee($delegateRegistration->id)
         ->assertSee($entityRegistration->id)
         ->assertDontSee($transfer->id);
+});
+
+it('should show no transactions if no filters', function () {
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    $delegateRegistration = Transaction::factory()->delegateRegistration()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    $entityRegistration = Transaction::factory()->entityRegistration()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->set('state.view', 'transactions')
+        ->set('filter', [
+            'outgoing'      => false,
+            'incoming'      => false,
+            'transfers'     => false,
+            'votes'         => false,
+            'multipayments' => false,
+            'others'        => false,
+        ])
+        ->assertDontSee($transfer->id)
+        ->assertDontSee($delegateRegistration->id)
+        ->assertDontSee($entityRegistration->id);
+});
+
+it('should show no transactions if no addressing filter', function () {
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    $delegateRegistration = Transaction::factory()->delegateRegistration()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    $entityRegistration = Transaction::factory()->entityRegistration()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->set('state.view', 'transactions')
+        ->set('filter', [
+            'outgoing'      => false,
+            'incoming'      => false,
+            'transfers'     => true,
+            'votes'         => true,
+            'multipayments' => true,
+            'others'        => true,
+        ])
+        ->assertDontSee($transfer->id)
+        ->assertDontSee($delegateRegistration->id)
+        ->assertDontSee($entityRegistration->id);
 });
 
 it('should reset pagination when filtering', function () {
