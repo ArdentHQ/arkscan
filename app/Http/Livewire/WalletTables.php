@@ -103,131 +103,21 @@ final class WalletTables extends Component
     {
         return Transaction::query()
             ->where(function ($query) {
-                $query->where(fn ($query) => $query->when($this->showTransferTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::TRANSFER)))
-                    ->orWhere(fn ($query) => $query->when($this->showVoteTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::VOTE)))
-                    ->orWhere(fn ($query) => $query->when($this->showMultipaymentTransactions() === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT)))
-                    ->orWhere(fn ($query) => $query->when($this->showOtherTransactions() === true, fn ($query) => $query->whereNotIn('type', [
+                $query->where(fn ($query) => $query->when($this->filter['transfers'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::TRANSFER)))
+                    ->orWhere(fn ($query) => $query->when($this->filter['votes'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::VOTE)))
+                    ->orWhere(fn ($query) => $query->when($this->filter['multipayments'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT)))
+                    ->orWhere(fn ($query) => $query->when($this->filter['others'] === true, fn ($query) => $query->whereNotIn('type', [
                         CoreTransactionTypeEnum::TRANSFER,
                         CoreTransactionTypeEnum::VOTE,
                         CoreTransactionTypeEnum::MULTI_PAYMENT,
                     ])));
             })
             ->where(function ($query) {
-                $query->where(fn ($query) => $query->when($this->showOutgoing(), fn ($query) => $query->where('sender_public_key', $this->publicKey)))
-                    ->orWhere(fn ($query) => $query->when($this->showIncoming(), fn ($query) => $query->where('recipient_id', $this->address)))
-                    ->orWhere(fn ($query) => $query->when($this->showIncoming(), fn ($query) => $query
+                $query->where(fn ($query) => $query->when($this->filter['outgoing'], fn ($query) => $query->where('sender_public_key', $this->publicKey)))
+                    ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query->where('recipient_id', $this->address)))
+                    ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query
                         ->where('type', Types::MULTI_PAYMENT)
                         ->whereJsonContains('asset->payments', [['recipientId' => $this->address]])));
             });
-    }
-
-    private function showOutgoing(): bool
-    {
-        if ($this->filter['outgoing']) {
-            return true;
-        }
-
-        if ($this->filter['incoming']) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private function showIncoming(): bool
-    {
-        if ($this->filter['incoming']) {
-            return true;
-        }
-
-        if ($this->filter['outgoing']) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private function showTransferTransactions(): ?bool
-    {
-        if ($this->filter['transfers']) {
-            return true;
-        }
-
-        if ($this->filter['votes']) {
-            return false;
-        }
-
-        if ($this->filter['multipayments']) {
-            return false;
-        }
-
-        if ($this->filter['others']) {
-            return false;
-        }
-
-        return null;
-    }
-
-    private function showVoteTransactions(): ?bool
-    {
-        if ($this->filter['votes']) {
-            return true;
-        }
-
-        if ($this->filter['transfers']) {
-            return false;
-        }
-
-        if ($this->filter['multipayments']) {
-            return false;
-        }
-
-        if ($this->filter['others']) {
-            return false;
-        }
-
-        return null;
-    }
-
-    private function showMultipaymentTransactions(): ?bool
-    {
-        if ($this->filter['multipayments']) {
-            return true;
-        }
-
-        if ($this->filter['transfers']) {
-            return false;
-        }
-
-        if ($this->filter['votes']) {
-            return false;
-        }
-
-        if ($this->filter['others']) {
-            return false;
-        }
-
-        return null;
-    }
-
-    private function showOtherTransactions(): ?bool
-    {
-        if ($this->filter['others']) {
-            return true;
-        }
-
-        if ($this->filter['transfers']) {
-            return false;
-        }
-
-        if ($this->filter['votes']) {
-            return false;
-        }
-
-        if ($this->filter['multipayments']) {
-            return false;
-        }
-
-        return null;
     }
 }
