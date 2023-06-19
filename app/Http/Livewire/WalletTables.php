@@ -34,15 +34,15 @@ final class WalletTables extends Component
     ];
 
     public array $filter = [
-        'outgoing'      => false,
-        'incoming'      => false,
-        'transfers'     => false,
-        'votes'         => false,
-        'multipayments' => false,
-        'others'        => false,
+        'outgoing'      => true,
+        'incoming'      => true,
+        'transfers'     => true,
+        'votes'         => true,
+        'multipayments' => true,
+        'others'        => true,
     ];
 
-    public bool $selectAllFilters = false;
+    public bool $selectAllFilters = true;
 
     /** @var mixed */
     protected $listeners = [
