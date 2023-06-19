@@ -34,7 +34,7 @@
                 <x-general.search.search-input />
 
                 <div x-ref="searchResults" class="flex flex-col space-y-1 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
-                    @if ($hasResults && $results !== null)
+                    @if ($hasResults && $showResults)
                         @foreach ($results as $result)
                             <div wire:key="{{ $result->id() }}" class="pt-1">
                                 @if (is_a($result->model(), \App\Models\Wallet::class))
@@ -49,10 +49,23 @@
                     @else
                         <div class="text-center whitespace-normal mt-[0.625rem] dark:text-theme-secondary-500">
                             @if($showResults)
-                                <p x-show="query">@lang('general.navbar.no_results')</p>
-                                <p x-show="!query">@lang('general.search.results_will_show_up')</p>
+                                <p
+                                    x-show="query"
+                                    wire:key="search:results:no_results"
+                                >
+                                    @lang('general.navbar.no_results')
+                                </p>
+
+                                <p
+                                    x-show="!query"
+                                    wire:key="search:results:show_placeholder"
+                                >
+                                    @lang('general.search.results_will_show_up')
+                                </p>
                             @else
-                                <p>@lang('general.search.results_will_show_up')</p>
+                                <p wire:key="search:results:placeholder">
+                                    @lang('general.search.results_will_show_up')
+                                </p>
                             @endif
                         </div>
                     @endif
