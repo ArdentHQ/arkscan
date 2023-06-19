@@ -97,6 +97,8 @@ final class WalletTables extends Component
     public function updatedFilter(): void
     {
         $this->selectAllFilters = $this->isAllSelected;
+
+        $this->setPage(1);
     }
 
     private function getTransactionsQuery(): Builder
