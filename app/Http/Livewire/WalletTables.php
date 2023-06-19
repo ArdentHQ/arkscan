@@ -15,6 +15,7 @@ use App\ViewModels\WalletViewModel;
 use ArkEcosystem\Crypto\Enums\Types;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
 /** @property bool $isAllSelected */
@@ -64,8 +65,15 @@ final class WalletTables extends Component
 
     public function render(): View
     {
-        // TODO: add block and voter table handling
-        $items = $this->getTransactionsQuery()->withScope(OrderByTimestampScope::class)->paginate($this->perPage);
+        $items = null;
+        if ($this->hasFilters()) {
+            // TODO: add block and voter table handling
+            $items = $this->getTransactionsQuery()->withScope(OrderByTimestampScope::class)->paginate($this->perPage);
+        }
+
+        if ($items === null) {
+            $items = new LengthAwarePaginator([], 0, $this->perPage);
+        }
 
         return view('livewire.wallet-tables', [
             'wallet'        => ViewModelFactory::make(Wallets::findByAddress($this->address)),
@@ -100,6 +108,15 @@ final class WalletTables extends Component
         $this->selectAllFilters = $this->isAllSelected;
 
         $this->setPage(1);
+    }
+
+    private function hasFilters(): bool
+    {
+        if ($this->filter['incoming'] === true) {
+            return true;
+        }
+
+        return $this->filter['outgoing'];
     }
 
     private function getTransactionsQuery(): Builder
