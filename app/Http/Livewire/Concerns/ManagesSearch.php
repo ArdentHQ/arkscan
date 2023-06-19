@@ -25,7 +25,7 @@ trait ManagesSearch
 
     protected array $rules = [
         'query' => [
-            'required', 'string', 'max:66',
+            'required', 'string', 'min:3', 'max:66',
         ],
     ];
 
@@ -34,14 +34,14 @@ trait ManagesSearch
         $this->query = null;
     }
 
-    public function results(): Collection
+    public function results(): ?Collection
     {
         $validator = Validator::make([
             'query' => $this->query,
         ], $this->rules);
 
         if ($validator->fails()) {
-            return new Collection();
+            return null;
         }
 
         $data = $validator->validate();

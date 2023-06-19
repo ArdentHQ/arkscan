@@ -16,6 +16,7 @@
             wire:model.debounce.500ms="query"
             wire:keydown.enter="goToFirstResult"
             placeholder="@lang('general.navbar.search_placeholder')"
+            maxlength="66"
         />
     </div>
 

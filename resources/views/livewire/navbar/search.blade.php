@@ -24,6 +24,7 @@
         wire:keydown.escape="clear"
         x-on:blur="blurHandler"
         autocomplete="off"
+        maxlength="66"
     >
         <div
             class="flex items-center mr-4 space-x-4"
@@ -51,41 +52,43 @@
             />
         </div>
 
-        <x-ark-dropdown
-            :init-alpine="false"
-            :close-on-blur="false"
-            dropdown-classes="w-[561px] top-9"
-            dropdown-content-classes="bg-white rounded-xl shadow-lg dark:bg-theme-secondary-900 dark:text-theme-secondary-200 border border-transparent dark:border-theme-secondary-800"
-            without-button
-        >
-            <div
-                x-show="query"
-                class="flex overflow-y-auto flex-col py-3 px-6 space-y-1 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 custom-scroll max-h-[410px] dark:divide-theme-secondary-800"
+        @if ($showResults)
+            <x-ark-dropdown
+                :init-alpine="false"
+                :close-on-blur="false"
+                dropdown-classes="w-[561px] top-9"
+                dropdown-content-classes="bg-white rounded-xl shadow-lg dark:bg-theme-secondary-900 dark:text-theme-secondary-200 border border-transparent dark:border-theme-secondary-800"
+                without-button
             >
-                @if ($hasResults)
-                    @foreach ($results as $result)
-                        <div
-                            wire:key="{{ $result->id() }}"
-                            @class([
-                                'select-none',
-                                'pt-1' => $loop->index > 0,
-                            ])
-                        >
-                            @if (is_a($result->model(), \App\Models\Wallet::class))
-                                <x-search.results.wallet :wallet="$result" />
-                            @elseif (is_a($result->model(), \App\Models\Block::class))
-                                <x-search.results.block :block="$result" />
-                            @elseif (is_a($result->model(), \App\Models\Transaction::class))
-                                <x-search.results.transaction :transaction="$result" />
-                            @endif
-                        </div>
-                    @endforeach
-                @else
-                    <p class="text-center dark:text-theme-secondary-500">
-                        @lang('general.navbar.no_results')
-                    </p>
-                @endif
-            </div>
-        </x-ark-dropdown>
+                <div
+                    x-show="query"
+                    class="flex overflow-y-auto flex-col py-3 px-6 space-y-1 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 custom-scroll max-h-[410px] dark:divide-theme-secondary-800"
+                >
+                    @if ($hasResults)
+                        @foreach ($results as $result)
+                            <div
+                                wire:key="{{ $result->id() }}"
+                                @class([
+                                    'select-none',
+                                    'pt-1' => $loop->index > 0,
+                                ])
+                            >
+                                @if (is_a($result->model(), \App\Models\Wallet::class))
+                                    <x-search.results.wallet :wallet="$result" />
+                                @elseif (is_a($result->model(), \App\Models\Block::class))
+                                    <x-search.results.block :block="$result" />
+                                @elseif (is_a($result->model(), \App\Models\Transaction::class))
+                                    <x-search.results.transaction :transaction="$result" />
+                                @endif
+                            </div>
+                        @endforeach
+                    @else
+                        <p class="text-center dark:text-theme-secondary-500">
+                            @lang('general.navbar.no_results')
+                        </p>
+                    @endif
+                </div>
+            </x-ark-dropdown>
+        @endif
     </x-ark-input-with-prefix>
 </div>
