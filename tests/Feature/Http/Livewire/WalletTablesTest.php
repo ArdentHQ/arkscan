@@ -429,11 +429,11 @@ it('should show multipayments when filtered by incoming transactions', function 
     ]);
 
     $multiPaymentSender = Wallet::factory()->create();
-    $recipient2 = Wallet::factory()->create();
-    $recipient3 = Wallet::factory()->create();
-    $received = Transaction::factory()->multiPayment()->create([
+    $recipient2         = Wallet::factory()->create();
+    $recipient3         = Wallet::factory()->create();
+    $received           = Transaction::factory()->multiPayment()->create([
         'sender_public_key' => $multiPaymentSender->public_key,
-        'recipient_id' => $multiPaymentSender->address,
+        'recipient_id'      => $multiPaymentSender->address,
 
         'asset' => [
             'payments' => [
