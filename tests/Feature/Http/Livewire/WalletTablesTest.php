@@ -391,7 +391,7 @@ it('should filter by outgoing transactions', function () {
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => false,
-            'transfers'     => false,
+            'transfers'     => true,
             'votes'         => false,
             'multipayments' => false,
             'others'        => false,
@@ -414,7 +414,7 @@ it('should filter by incoming transactions', function () {
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => true,
-            'transfers'     => false,
+            'transfers'     => true,
             'votes'         => false,
             'multipayments' => false,
             'others'        => false,
@@ -458,9 +458,9 @@ it('should show multipayments when filtered by incoming transactions', function 
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => true,
-            'transfers'     => false,
+            'transfers'     => true,
             'votes'         => false,
-            'multipayments' => false,
+            'multipayments' => true,
             'others'        => false,
         ])
         ->assertSee($received->id)
@@ -481,7 +481,7 @@ it('should filter by incoming and outgoing transactions', function () {
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => true,
-            'transfers'     => false,
+            'transfers'     => true,
             'votes'         => false,
             'multipayments' => false,
             'others'        => false,
@@ -612,7 +612,8 @@ it('should show no transactions if no filters', function () {
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($delegateRegistration->id)
-        ->assertDontSee($entityRegistration->id);
+        ->assertDontSee($entityRegistration->id)
+        ->assertSee(trans('tables.transactions.no_results.no_addressing_filters'));
 });
 
 it('should show no transactions if no addressing filter', function () {
@@ -640,7 +641,43 @@ it('should show no transactions if no addressing filter', function () {
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($delegateRegistration->id)
-        ->assertDontSee($entityRegistration->id);
+        ->assertDontSee($entityRegistration->id)
+        ->assertSee(trans('tables.transactions.no_results.no_addressing_filters'));
+});
+
+it('should show no transactions if no type filter', function () {
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    $delegateRegistration = Transaction::factory()->delegateRegistration()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    $entityRegistration = Transaction::factory()->entityRegistration()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->set('state.view', 'transactions')
+        ->set('filter', [
+            'outgoing'      => true,
+            'incoming'      => true,
+            'transfers'     => false,
+            'votes'         => false,
+            'multipayments' => false,
+            'others'        => false,
+        ])
+        ->assertDontSee($transfer->id)
+        ->assertDontSee($delegateRegistration->id)
+        ->assertDontSee($entityRegistration->id)
+        ->assertSee(trans('tables.transactions.no_results.no_type_filters'));
+});
+
+it('should show no results message if no transactions matching filter', function () {
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->set('state.view', 'transactions')
+        ->assertSee(trans('tables.transactions.no_results.no_results'));
 });
 
 it('should reset pagination when filtering', function () {
