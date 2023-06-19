@@ -108,7 +108,10 @@
                     :state="$this->state()"
                 />
 
-                <x-general.pagination :results="$transactions" class="mt-8" />
+                <x-general.pagination.table
+                    :results="$transactions"
+                    class="mt-4 md:mt-0"
+                />
             @endif
 
             <x-script.onload-scroll-to-query selector="#transaction-list" />

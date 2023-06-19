@@ -8,6 +8,7 @@
     wire:key="{{ Helpers::generateId('transactions', ...$state) }}"
     class="hidden w-full rounded-t-none md:block"
     :rounded="false"
+    :paginator="$transactions"
     sticky
 >
     <thead>

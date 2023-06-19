@@ -64,6 +64,10 @@ return [
         'warning' => env('ARKSCAN_PRODUCTIVITY_WARNING', 99.8),
     ],
 
+    'pagination' => [
+        'min_items' => env('ARKSCAN_PAGINATION_MIN_ITEMS', 10),
+    ],
+
     'statistics'                        => [
 
         /*

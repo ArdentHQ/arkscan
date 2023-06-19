@@ -6,11 +6,12 @@ namespace App\Http\Livewire;
 
 use App\Enums\CoreTransactionTypeEnum;
 use App\Facades\Wallets;
+use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
-use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
+use ArkEcosystem\Crypto\Enums\Types;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
@@ -18,7 +19,9 @@ use Livewire\Component;
 /** @property bool $isAllSelected */
 final class WalletTables extends Component
 {
-    use HasPagination;
+    use HasTablePagination;
+
+    public const PER_PAGE = 10;
 
     public string $address;
 
@@ -61,7 +64,7 @@ final class WalletTables extends Component
     public function render(): View
     {
         // TODO: add block and voter table handling
-        $items = $this->getTransactionsQuery()->withScope(OrderByTimestampScope::class)->paginate();
+        $items = $this->getTransactionsQuery()->withScope(OrderByTimestampScope::class)->paginate($this->perPage);
 
         return view('livewire.wallet-tables', [
             'wallet'        => ViewModelFactory::make(Wallets::findByAddress($this->address)),
@@ -108,7 +111,9 @@ final class WalletTables extends Component
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->showOutgoing(), fn ($query) => $query->where('sender_public_key', $this->publicKey)))
                     ->orWhere(fn ($query) => $query->when($this->showIncoming(), fn ($query) => $query->where('recipient_id', $this->address)))
-                    ->orWhere(fn ($query) => $query->when($this->showIncoming(), fn ($query) => $query->whereJsonContains('asset->payments', [['recipientId' => $this->address]])));
+                    ->orWhere(fn ($query) => $query->when($this->showIncoming(), fn ($query) => $query
+                        ->where('type', Types::MULTI_PAYMENT)
+                        ->whereJsonContains('asset->payments', [['recipientId' => $this->address]])));
             });
     }
 
