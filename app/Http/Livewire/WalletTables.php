@@ -15,6 +15,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 
+/** @property bool $isAllSelected */
 final class WalletTables extends Component
 {
     use HasTablePagination;
@@ -30,6 +31,17 @@ final class WalletTables extends Component
     public array $state = [
         'view' => 'transactions',
     ];
+
+    public array $filter = [
+        'outgoing'      => false,
+        'incoming'      => false,
+        'transfers'     => false,
+        'votes'         => false,
+        'multipayments' => false,
+        'others'        => false,
+    ];
+
+    public bool $selectAllFilters = false;
 
     /** @var mixed */
     protected $listeners = [
@@ -67,6 +79,23 @@ final class WalletTables extends Component
             'publicKey' => $this->publicKey,
             'isCold'    => $this->isCold,
         ];
+    }
+
+    public function getIsAllSelectedProperty(): bool
+    {
+        return ! collect($this->filter)->contains(false);
+    }
+
+    public function updatedSelectAllFilters(bool $value): void
+    {
+        foreach ($this->filter as &$filter) {
+            $filter = $value;
+        }
+    }
+
+    public function updatedFilter(): void
+    {
+        $this->selectAllFilters = $this->isAllSelected;
     }
 
     private function getTransactionsQuery(): Builder

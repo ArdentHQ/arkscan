@@ -1,0 +1,25 @@
+<x-general.dropdown.dropdown
+    placement="right-start"
+    :placement-fallbacks="['bottom', 'bottom-end', 'left-start']"
+    dropdown-class="px-6 w-full md:px-8 table-filter md:w-[284px]"
+    :close-on-click="false"
+    class="flex-1"
+    dropdown-wrapper-class="w-full"
+    dropdown-background="bg-white dark:bg-theme-secondary-900 dark:border dark:border-theme-secondary-800"
+    dropdown-padding="py-1"
+>
+    <x-slot name="button" class="w-full rounded">
+        <div class="flex flex-1 justify-center items-center sm:flex-none sm:py-1.5 sm:px-4 md:p-2 button-secondary">
+            <x-ark-icon
+                name="filter"
+                size="sm"
+            />
+
+            <div class="ml-2 md:hidden">
+                @lang('actions.filter')
+            </div>
+        </div>
+    </x-slot>
+
+    {{ $slot }}
+</x-general.dropdown.dropdown>

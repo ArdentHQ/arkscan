@@ -66,25 +66,20 @@
                 </div>
             </x-slot>
 
-            <x-slot
-                name="content"
-                class="right-0 top-full"
-            >
-                @foreach (config('currencies') as $currency)
-                    <x-general.dropdown.list-item
-                        :is-active="$currency['currency'] === $to"
-                        wire:click="setCurrency('{{ $currency['currency'] }}')"
-                    >
-                        {{ $currency['currency'] }}
+            @foreach (config('currencies') as $currency)
+                <x-general.dropdown.list-item
+                    :is-active="$currency['currency'] === $to"
+                    wire:click="setCurrency('{{ $currency['currency'] }}')"
+                >
+                    {{ $currency['currency'] }}
 
-                        @if ($currency['symbol'] !== null)
-                            <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
-                                ({{ $currency['symbol'] }})
-                            </span>
-                        @endif
-                    </x-general.dropdown.list-item>
-                @endforeach
-            </x-slot>
+                    @if ($currency['symbol'] !== null)
+                        <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
+                            ({{ $currency['symbol'] }})
+                        </span>
+                    @endif
+                </x-general.dropdown.list-item>
+            @endforeach
         </x-general.dropdown>
     </div>
 </div>
