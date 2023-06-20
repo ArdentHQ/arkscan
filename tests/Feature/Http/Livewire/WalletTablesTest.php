@@ -28,7 +28,7 @@ it('should list all transactions', function () {
     ]);
 
     $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'transactions');
+    $component->set('view', 'transactions');
 
     $sentTransaction = ViewModelFactory::make($sent);
 
@@ -77,7 +77,7 @@ it('should list all transactions for cold wallet', function () {
     ]);
 
     $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'transactions');
+    $component->set('view', 'transactions');
 
     $transaction = ViewModelFactory::make($received);
 
@@ -128,7 +128,7 @@ it('should show sent multipayment', function () {
     ]);
 
     $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'transactions');
+    $component->set('view', 'transactions');
 
     $transaction = ViewModelFactory::make($sent);
 
@@ -175,7 +175,7 @@ it('should show received multipayment', function () {
     ]);
 
     $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'transactions');
+    $component->set('view', 'transactions');
 
     $transaction = ViewModelFactory::make($received);
 
@@ -221,7 +221,7 @@ it('should show multipayment without amount sent to self', function () {
     ]);
 
     $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'transactions');
+    $component->set('view', 'transactions');
 
     $transaction = ViewModelFactory::make($sent);
 
@@ -247,7 +247,7 @@ it('should show transfer without amount sent to self', function () {
     ]);
 
     $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'transactions');
+    $component->set('view', 'transactions');
 
     $transaction = ViewModelFactory::make($sent);
 
@@ -275,7 +275,7 @@ it('should list blocks', function () {
     ]);
 
     $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'blocks');
+    $component->set('view', 'blocks');
 
     foreach (ViewModelFactory::collection(collect([$received])) as $transaction) {
         $component->assertSee($transaction->id());
@@ -301,7 +301,7 @@ it('should list voters', function () {
     ]);
 
     $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('state.view', 'sent');
+    $component->set('view', 'sent');
 
     foreach (ViewModelFactory::collection(collect([$sent])) as $transaction) {
         $component->assertSee($transaction->id());
@@ -317,12 +317,12 @@ it('should list voters', function () {
     }
 })->skip('not implemented');
 
-it('should reset the pagination when state changes', function () {
+it('should reset the pagination when view changes', function () {
     $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
 
     $component->set('page', 3);
     $component->assertSet('page', 3);
 
-    $component->set('state.view', 'blocks');
+    $component->set('view', 'blocks');
     $component->assertSet('page', 1);
 });
