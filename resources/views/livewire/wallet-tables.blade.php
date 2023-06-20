@@ -2,6 +2,13 @@
     tab: @entangle('view'),
 }">
     <x-tabs.inline-wrapper
+        x-data="{
+            init: function () {
+                this.$watch('tab', () => {
+                    this.selected = this.tab;
+                });
+            },
+        }"
         class="hidden mb-3 md:inline-flex"
         :default-selected="$this->view"
         on-selected="function (value) {
@@ -93,12 +100,16 @@
         </x-ark-dropdown>
     </div>
 
-    <x-wallet.tables.transactions
-        :transactions="$transactions"
-        :wallet="$wallet"
-    />
+    <div id="wallet-table-list">
+        <x-wallet.tables.transactions
+            :transactions="$transactions"
+            :wallet="$wallet"
+        />
 
-    @if($wallet->isDelegate())
-        <x-wallet.tables.voters :wallet="$wallet" />
-    @endif
+        @if($wallet->isDelegate())
+            <x-wallet.tables.voters :wallet="$wallet" />
+        @endif
+
+        <x-script.onload-scroll-to-query selector="#wallet-table-list" />
+    </div>
 </div>
