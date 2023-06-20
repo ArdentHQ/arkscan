@@ -34,24 +34,19 @@
         @endif
     </x-slot>
 
-    <x-slot
-        name="content"
-        class="right-0 top-full"
+    <x-general.dropdown.list-item
+        :url="Network::mainnetExplorerUrl()"
+        :is-active="$isProduction"
     >
-        <x-general.dropdown.list-item
-            :url="Network::mainnetExplorerUrl()"
-            :is-active="$isProduction"
-        >
-            <span class="md:hidden">@lang('general.navbar.live')</span>
-            <span class="hidden md:block">@lang('general.navbar.live_network')</span>
-        </x-general.dropdown.list-item>
+        <span class="md:hidden">@lang('general.navbar.live')</span>
+        <span class="hidden md:block">@lang('general.navbar.live_network')</span>
+    </x-general.dropdown.list-item>
 
-        <x-general.dropdown.list-item
-            :url="Network::testnetExplorerUrl()"
-            :is-active="! $isProduction"
-        >
-            <span class="md:hidden">@lang('general.navbar.test')</span>
-            <span class="hidden md:block">@lang('general.navbar.test_network')</span>
-        </x-general.dropdown.list-item>
-    </x-slot>
+    <x-general.dropdown.list-item
+        :url="Network::testnetExplorerUrl()"
+        :is-active="! $isProduction"
+    >
+        <span class="md:hidden">@lang('general.navbar.test')</span>
+        <span class="hidden md:block">@lang('general.navbar.test_network')</span>
+    </x-general.dropdown.list-item>
 </x-general.dropdown>

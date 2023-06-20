@@ -326,3 +326,60 @@ it('should reset the pagination when view changes', function () {
     $component->set('view', 'blocks');
     $component->assertSet('page', 1);
 });
+
+it('should toggle all filters when "select all" is selected', function () {
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->assertSet('filter', [
+            'outgoing'      => false,
+            'incoming'      => false,
+            'transfers'     => false,
+            'votes'         => false,
+            'multipayments' => false,
+            'others'        => false,
+        ])
+        ->assertSet('selectAllFilters', false)
+        ->set('filter.outgoing', true)
+        ->assertSet('selectAllFilters', false)
+        ->set('selectAllFilters', true)
+        ->assertSet('filter', [
+            'outgoing'      => true,
+            'incoming'      => true,
+            'transfers'     => true,
+            'votes'         => true,
+            'multipayments' => true,
+            'others'        => true,
+        ])
+        ->set('selectAllFilters', false)
+        ->assertSet('filter', [
+            'outgoing'      => false,
+            'incoming'      => false,
+            'transfers'     => false,
+            'votes'         => false,
+            'multipayments' => false,
+            'others'        => false,
+        ]);
+});
+
+it('should toggle "select all" when all filters are selected', function () {
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->assertSet('filter', [
+            'outgoing'      => false,
+            'incoming'      => false,
+            'transfers'     => false,
+            'votes'         => false,
+            'multipayments' => false,
+            'others'        => false,
+        ])
+        ->assertSet('selectAllFilters', false)
+        ->set('filter', [
+            'outgoing'      => true,
+            'incoming'      => true,
+            'transfers'     => true,
+            'votes'         => true,
+            'multipayments' => true,
+            'others'        => true,
+        ])
+        ->assertSet('selectAllFilters', true)
+        ->set('filter.outgoing', false)
+        ->assertSet('selectAllFilters', false);
+});
