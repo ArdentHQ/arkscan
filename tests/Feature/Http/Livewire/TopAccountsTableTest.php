@@ -7,7 +7,6 @@ use App\Http\Livewire\TopAccountsTable;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
-use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
 
