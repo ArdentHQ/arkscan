@@ -22,6 +22,15 @@ return [
         ],
     ],
 
+    'blocks' => [
+        'height' => 'Block Height',
+        'age' => 'Age',
+        'transactions' => 'Transactions',
+        'volume' => 'Volume (:currency)',
+        'total_reward' => 'Total Reward (:currency)',
+        'value' => 'Value (:currency)',
+    ],
+
     'wallets' => [
         'balance_currency' => 'Balance (:currency)',
         'no_results'       => 'This delegate does not currently have any voters.',
