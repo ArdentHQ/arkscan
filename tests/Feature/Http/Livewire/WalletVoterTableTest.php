@@ -32,7 +32,7 @@ it('should list all blocks for the given public key', function () {
         $component->assertSee($voter->address());
         $component->assertSeeInOrder([
             Network::currency(),
-            $voter->balance(),
+            number_format($voter->balance()),
         ]);
         $component->assertSee(NumberFormatter::percentage($voter->votePercentage()));
     }

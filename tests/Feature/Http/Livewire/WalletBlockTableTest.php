@@ -31,11 +31,11 @@ it('should list all blocks for the given public key', function () {
         $component->assertSee(NumberFormatter::number($block->transactionCount()));
         $component->assertSeeInOrder([
             Network::currency(),
-            $block->amount(),
+            number_format($block->amount()),
         ]);
         $component->assertSeeInOrder([
             Network::currency(),
-            $block->fee(),
+            number_format($block->fee()),
         ]);
     }
 });
