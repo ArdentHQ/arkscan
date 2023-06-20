@@ -14,6 +14,12 @@ return [
         'from'       => 'From',
         'contract'   => 'Contract',
         'multiple'   => 'Multiple',
+
+        'no_results' => [
+            'no_filters'            => 'All filtering options have been deselected. Please select one or more options to display transactions.',
+            'no_addressing_filters' => 'Addressing options are currently unselected. Please choose at least one option to display outgoing and/or incoming transactions.',
+            'no_results'            => 'No transactions matching the selected types could be found.',
+        ],
     ],
 
     'exchanges' => [
