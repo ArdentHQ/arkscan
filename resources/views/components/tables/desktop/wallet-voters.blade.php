@@ -5,6 +5,7 @@
 
 <x-tables.encapsulated-table
     class="hidden w-full md:block"
+    :rounded="false"
     :paginator="$wallets"
     :no-results-message="$noResultsMessage"
     sticky

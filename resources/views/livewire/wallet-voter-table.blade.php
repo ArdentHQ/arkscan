@@ -1,4 +1,6 @@
 <div class="w-full">
+    <x-tables.toolbars.toolbar :result-count="$wallets->total()" />
+
     <x-skeletons.wallet-voters>
         <x-tables.desktop.wallet-voters
             :wallets="$wallets"
