@@ -35,7 +35,11 @@ it('should list all blocks for the given public key', function () {
         ]);
         $component->assertSeeInOrder([
             Network::currency(),
-            number_format($block->fee()),
+            number_format($block->totalReward()),
+        ]);
+        $component->assertSeeInOrder([
+            Network::currency(),
+            $block->totalRewardFiat(),
         ]);
     }
 });
