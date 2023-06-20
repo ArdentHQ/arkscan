@@ -1,6 +1,12 @@
-@props(['wallets'])
+@props([
+    'wallets',
+    'noResultsMessage' => null,
+])
 
-<x-tables.mobile.includes.encapsulated wire:key="{{ Helpers::generateId('voters-mobile') }}">
+<x-tables.mobile.includes.encapsulated
+    wire:key="{{ Helpers::generateId('voters-mobile') }}"
+    :no-results-message="$noResultsMessage"
+>
     @foreach ($wallets as $wallet)
         <x-tables.rows.mobile>
             <x-slot name="header">

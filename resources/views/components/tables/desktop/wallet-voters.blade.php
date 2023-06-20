@@ -1,8 +1,12 @@
-@props(['wallets'])
+@props([
+    'wallets',
+    'noResultsMessage' => null,
+])
 
 <x-tables.encapsulated-table
     class="hidden w-full md:block"
     :paginator="$wallets"
+    :no-results-message="$noResultsMessage"
     sticky
 >
     <thead class="dark:bg-black bg-theme-secondary-100">

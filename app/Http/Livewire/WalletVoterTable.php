@@ -8,6 +8,7 @@ use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
 use App\ViewModels\ViewModelFactory;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -33,9 +34,23 @@ final class WalletVoterTable extends Component
     public function render(): View
     {
         return view('livewire.wallet-voter-table', [
-            'wallets' => ViewModelFactory::paginate(Wallet::where('attributes->vote', $this->publicKey)
-                ->withScope(OrderByBalanceScope::class)
-                ->paginate($this->perPage)),
+            'wallets' => ViewModelFactory::paginate($this->wallets),
         ]);
+    }
+
+    public function getNoResultsMessageProperty(): ?string
+    {
+        if ($this->wallets->total() === 0) {
+            return trans('tables.wallets.no_results');
+        }
+
+        return null;
+    }
+
+    public function getWalletsProperty(): LengthAwarePaginator
+    {
+        return Wallet::where('attributes->vote', $this->publicKey)
+            ->withScope(OrderByBalanceScope::class)
+            ->paginate($this->perPage);
     }
 }

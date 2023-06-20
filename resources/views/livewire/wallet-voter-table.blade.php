@@ -2,10 +2,14 @@
     <x-skeletons.wallet-voters>
         <x-tables.desktop.wallet-voters
             :wallets="$wallets"
+            :no-results-message="$this->noResultsMessage"
             without-truncate
         />
 
-        <x-tables.mobile.wallet-voters :wallets="$wallets" />
+        <x-tables.mobile.wallet-voters
+            :wallets="$wallets"
+            :no-results-message="$this->noResultsMessage"
+        />
 
         <x-general.pagination.table
             :results="$wallets"
