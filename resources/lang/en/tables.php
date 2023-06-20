@@ -23,12 +23,12 @@ return [
     ],
 
     'blocks' => [
-        'height' => 'Block Height',
-        'age' => 'Age',
+        'height'       => 'Block Height',
+        'age'          => 'Age',
         'transactions' => 'Transactions',
-        'volume' => 'Volume (:currency)',
+        'volume'       => 'Volume (:currency)',
         'total_reward' => 'Total Reward (:currency)',
-        'value' => 'Value (:currency)',
+        'value'        => 'Value (:currency)',
     ],
 
     'wallets' => [
