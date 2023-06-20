@@ -16,6 +16,11 @@
         class="flex absolute left-0 z-10 space-x-2 w-full h-full bg-white dark:bg-theme-secondary-900"
         x-transition.opacity
         x-cloak
+        x-on:submit="(e) => {
+            e.preventDefault();
+            $wire.setPage($refs.search.value);
+            search = false;
+        }"
     >
         <div class="flex overflow-hidden flex-1 items-center px-2 bg-white rounded outline outline-2 outline-theme-primary-600 dark:bg-theme-secondary-900">
             <x-ark-icon
