@@ -18,7 +18,10 @@
                 :name-properties="['currency' => Network::currency()]"
             />
             <x-tables.headers.desktop.number name="general.wallet.percentage" class="text-right">
-                <x-ark-info :tooltip="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])" type="info" />
+                <x-ark-info
+                    :tooltip="trans('pages.wallets.percentage_tooltip')"
+                    type="info"
+                />
             </x-tables.headers.desktop.number>
         </tr>
     </thead>
