@@ -230,10 +230,10 @@ body.table-compact-until-lg .arrow-direction {
     @apply w-5 h-5 cursor-pointer dark:border-theme-secondary-600;
 }
 .table-filter-item__checkbox input[type="checkbox"]:checked {
-    @apply bg-theme-primary-600 border-theme-primary-600;
+    @apply bg-theme-primary-600 border-theme-primary-600 dark:bg-theme-dark-blue-500 dark:border-theme-dark-blue-500;
 }
 .table-filter-item__checkbox:hover input[type="checkbox"]:checked {
-    @apply border-theme-primary-600 bg-theme-primary-700;
+    @apply border-theme-primary-600 bg-theme-primary-700 dark:bg-theme-dark-blue-600 dark:border-theme-dark-blue-600;
 }
 
 .table-filter-item__checkbox > div {
