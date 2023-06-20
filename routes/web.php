@@ -39,7 +39,7 @@ Route::get('/transactions/{transaction}', ShowTransactionController::class)->nam
 Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
 Route::get('/addresses/{wallet}', ShowWalletController::class)->name('wallet');
 Route::get('/addresses/{wallet}?view=voters', ShowWalletController::class)->name('wallet.voters');
-Route::get('/addresses/{wallet}/blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
+Route::get('/addresses/{wallet}?view=blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
 
 Route::get('/wallets/{wallet}', function (Wallet $wallet) {
     return redirect()->route('wallet', $wallet);
