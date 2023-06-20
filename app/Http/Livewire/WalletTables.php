@@ -50,6 +50,7 @@ final class WalletTables extends Component
     /** @var mixed */
     protected $listeners = [
         'currencyChanged' => '$refresh',
+        'showWalletView',
     ];
 
     public function getQueryString(): array
@@ -69,7 +70,7 @@ final class WalletTables extends Component
 
     public function updatedView(): void
     {
-        $this->gotoPage(1);
+        $this->gotoPage(1, false);
     }
 
     public function render(): View
@@ -136,6 +137,11 @@ final class WalletTables extends Component
         }
 
         return new LengthAwarePaginator([], 0, $this->perPage);
+    }
+
+    public function showWalletView(string $view): void
+    {
+        $this->view = $view;
     }
 
     private function hasAddressingFilters(): bool
