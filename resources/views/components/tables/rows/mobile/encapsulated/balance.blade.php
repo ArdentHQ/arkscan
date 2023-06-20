@@ -5,7 +5,7 @@
         @lang('tables.wallets.balance_currency', ['currency' => Network::currency()])
     </div>
 
-    <div class="text-theme-secondary-900 dark:text-theme-secondary-50 font-semibold inline-block">
+    <div class="inline-block font-semibold text-theme-secondary-900 dark:text-theme-secondary-50">
         <x-tables.rows.desktop.encapsulated.balance :model="$model" />
     </div>
 </div>
