@@ -1,19 +1,17 @@
-<div id="block-list" class="w-full">
-    @if($wallets->isNotEmpty())
-        <div class="flex relative justify-between items-center">
-            <h3>@lang('pages.voters_by_wallet.subtitle')</h3>
-        </div>
+<div class="w-full">
+    <x-skeletons.wallet-voters>
+        <x-tables.desktop.wallet-voters
+            :wallets="$wallets"
+            without-truncate
+        />
 
-        <x-skeletons.wallets>
-            <x-tables.desktop.wallets :wallets="$wallets" without-truncate use-vote-weight />
+        <x-tables.mobile.wallet-voters :wallets="$wallets" />
 
-            <x-tables.mobile.wallets :wallets="$wallets" use-vote-weight />
+        <x-general.pagination.table
+            :results="$wallets"
+            class="mt-4 md:mt-0"
+        />
 
-            <x-general.pagination :results="$wallets" class="mt-8" />
-
-            <x-script.onload-scroll-to-query selector="#block-list" />
-        </x-skeletons.wallets>
-    @else
-        <x-general.no-results :text="trans('pages.voters_by_wallet.no_results', [$username])" />
-    @endif
+        <x-script.onload-scroll-to-query selector="#voters-list" />
+    </x-skeletons.wallet-voters>
 </div>

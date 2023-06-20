@@ -27,14 +27,20 @@ final class WalletTables extends Component
 
     public bool $isCold = false;
 
-    public array $state = [
-        'view' => 'transactions',
-    ];
+    public string $view = 'transactions';
 
     /** @var mixed */
     protected $listeners = [
         'currencyChanged' => '$refresh',
     ];
+
+    public function getQueryString(): array
+    {
+        return [
+            'perPage' => ['except' => $this->getDefault()],
+            'view'    => ['except' => 'transactions'],
+        ];
+    }
 
     public function mount(WalletViewModel $wallet): void
     {
@@ -62,7 +68,7 @@ final class WalletTables extends Component
     public function state(): array
     {
         return [
-            ...$this->state,
+            'view'      => $this->view,
             'address'   => $this->address,
             'publicKey' => $this->publicKey,
             'isCold'    => $this->isCold,

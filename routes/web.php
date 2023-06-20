@@ -44,7 +44,10 @@ Route::get('/wallets/{wallet}', function (Wallet $wallet) {
     return redirect()->route('wallet', $wallet);
 });
 Route::get('/wallets/{wallet}/voters', function (Wallet $wallet) {
-    return redirect()->route('wallet.voters', $wallet);
+    return redirect()->route('wallet', [
+        'wallet' => $wallet,
+        'view' => 'voters',
+    ]);
 });
 Route::get('/wallets/{wallet}/blocks', function (Wallet $wallet) {
     return redirect()->route('wallet.blocks', $wallet);

@@ -2,6 +2,7 @@
     'model',
     'withoutTruncate' => false,
     'withoutUsername' => false,
+    'withoutClipboard' => false,
 ])
 
 <span class="flex justify-between w-full text-sm leading-[17px]">
@@ -23,5 +24,7 @@
         </x-general.identity>
     </span>
 
-    <x-ark-clipboard :value="$model->address()" class="mr-3 transition text-theme-primary-400 dark:text-theme-secondary-600 hover:text-theme-primary-700" no-styling />
+    @unless ($withoutClipboard)
+        <x-ark-clipboard :value="$model->address()" class="mr-3 transition text-theme-primary-400 dark:text-theme-secondary-600 hover:text-theme-primary-700" no-styling />
+    @endunless
 </span>
