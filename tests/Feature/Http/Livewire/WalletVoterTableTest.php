@@ -31,8 +31,10 @@ it('should list all blocks for the given public key', function () {
 
     foreach (ViewModelFactory::collection($voters) as $voter) {
         $component->assertSee($voter->address());
-        $component->assertSee(ARKEcosystemNumberFormatter::new()->formatWithCurrencyCustom($voter->balance(), Network::currency(), 0));
-        $component->assertSee(NumberFormatter::currency($voter->balance(), Network::currency()));
+        $component->assertSeeInOrder([
+            Network::currency(),
+            $voter->balance(),
+        ]);
         $component->assertSee(NumberFormatter::percentage($voter->votePercentage()));
     }
 });
