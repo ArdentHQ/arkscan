@@ -145,7 +145,7 @@ return [
                 'searchableAttributes'=> ['address', 'username'],
                 'sortableAttributes'  => ['timestamp'],
                 'typoTolerance'       => [
-                    'disableOnWords' => ['address'],
+                    'enabled' => false,
                 ],
                 'rankingRules' => [
                     'typo',
@@ -161,7 +161,7 @@ return [
                 'searchableAttributes'=> ['id'],
                 'sortableAttributes'  => ['timestamp'],
                 'typoTolerance'       => [
-                    'disableOnWords' => ['id'],
+                    'enabled' => false,
                 ],
                 'rankingRules' => [
                     'typo',
@@ -176,7 +176,7 @@ return [
                 'searchableAttributes'=> ['id'],
                 'sortableAttributes'  => ['timestamp'],
                 'typoTolerance'       => [
-                    'disableOnWords' => ['id'],
+                    'enabled' => false,
                 ],
                 'rankingRules' => [
                     'typo',
