@@ -29,7 +29,13 @@ it('should list all blocks for the given public key', function () {
         $component->assertSee($block->timestamp());
         $component->assertSee(NumberFormatter::number($block->height()));
         $component->assertSee(NumberFormatter::number($block->transactionCount()));
-        $component->assertSee(NumberFormatter::currency($block->amount(), Network::currency()));
-        $component->assertSee(NumberFormatter::currency($block->fee(), Network::currency()));
+        $component->assertSeeInOrder([
+            Network::currency(),
+            $block->amount(),
+        ]);
+        $component->assertSeeInOrder([
+            Network::currency(),
+            $block->fee(),
+        ]);
     }
 });
