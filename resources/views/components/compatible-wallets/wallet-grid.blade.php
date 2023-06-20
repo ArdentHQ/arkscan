@@ -11,7 +11,7 @@
             </div>
 
             <div class="mx-6 mt-3 mb-6">
-                <span class="inline font-semibold break-words transition text-theme-primary-600 dark:text-theme-dark-blue-500 group-hover:text-theme-primary-700 dark:group-hover:text-theme-dark-blue-500">
+                <span class="inline font-semibold break-words transition text-theme-primary-600 dark:text-theme-dark-blue-500 dark:group-hover:text-theme-dark-blue-500 group-hover:text-theme-primary-700">
                     <span>{{ $wallet['title'] }}</span>
                     <x-ark-icon
                         name="arrows.arrow-external"
