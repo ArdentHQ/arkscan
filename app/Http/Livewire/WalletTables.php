@@ -67,7 +67,7 @@ final class WalletTables extends Component
         $this->isCold    = $wallet->isCold();
     }
 
-    public function updatedState(): void
+    public function updatedView(): void
     {
         $this->gotoPage(1);
     }

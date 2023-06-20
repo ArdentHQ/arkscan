@@ -699,3 +699,16 @@ it('should reset pagination when filtering', function () {
         ->assertSet('page', 1)
         ->assertSee($vote->id);
 });
+
+it('should reset pagination when changing view', function () {
+    Transaction::factory(15)->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->set('view', 'transactions')
+        ->call('setPage', 2)
+        ->set('view', 'voters')
+        ->set('view', 'transactions')
+        ->assertSet('page', 1);
+});
