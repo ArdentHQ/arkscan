@@ -8,7 +8,6 @@ use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
-use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as ARKEcosystemNumberFormatter;
 use Livewire\Livewire;
 use function Tests\fakeCryptoCompare;
 
