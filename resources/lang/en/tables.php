@@ -24,7 +24,7 @@ return [
 
     'wallets' => [
         'balance_currency' => 'Balance (:currency)',
-        'no_results' => 'This delegate does not currently have any voters.',
+        'no_results'       => 'This delegate does not currently have any voters.',
     ],
 
     'exchanges' => [
