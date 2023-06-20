@@ -17,6 +17,7 @@
 
 /* Custom Overrides Dark Theme */
 .dark {
+    /* Dark Color */
     --theme-color-dark-50: #e3e8ea;
     --theme-color-dark-100: #cad2d7;
     --theme-color-dark-200: #a4b1bc;
@@ -29,6 +30,7 @@
     --theme-color-dark-900: #23272d;
     --theme-color-dark-950: #191d22;
 
+    /* Dark Blue Color */
     --theme-color-dark-blue-50: #eff6ff;
     --theme-color-dark-blue-100: #dceafd;
     --theme-color-dark-blue-200: #c1dbfc;
@@ -41,8 +43,11 @@
     --theme-color-dark-blue-900: #213b87;
     --theme-color-dark-blue-950: #192652;
 
+    /* Existing color overrides */
     --theme-color-success-500: #42b263;
     --theme-color-success-700: #307845;
+
+    --theme-color-primary-600: var(--theme-color-dark-blue-400);
 
     /* Secondary Overrides */
     --theme-color-secondary-200: var(--theme-color-dark-50);
@@ -56,6 +61,26 @@
 
 .dark .link {
     @apply text-theme-dark-blue-400;
+}
+
+.dark .link:hover {
+    @apply text-theme-dark-blue-500;
+}
+
+.dark .button-primary {
+    @apply bg-theme-dark-blue-500;
+}
+
+.dark .button-primary:hover {
+    @apply bg-theme-dark-blue-600;
+}
+
+.dark .button-secondary {
+    @apply bg-theme-dark-600;
+}
+
+.dark .button-secondary:hover {
+    @apply bg-theme-dark-blue-600;
 }
 
 :root {
