@@ -1,5 +1,5 @@
 @props(['model'])
 
-<div>
+<div {{ $attributes }}>
     <x-tables.rows.desktop.encapsulated.block-height :model="$model" />
 </div>

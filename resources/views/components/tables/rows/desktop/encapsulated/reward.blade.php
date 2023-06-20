@@ -5,8 +5,8 @@
 ])
 
 <x-general.encapsulated.amount-fiat-tooltip
-    :amount="$model->reward()"
-    :fiat="$model->rewardFiat(true)"
+    :amount="$model->totalReward()"
+    :fiat="$model->totalRewardFiat(true)"
     :class="$class"
     :without-styling="$withoutStyling"
 />

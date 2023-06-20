@@ -10,21 +10,42 @@
     @foreach ($blocks as $block)
         <x-tables.rows.mobile>
             <x-slot name="header">
-                <x-tables.headers.mobile.encapsulated.block-height :model="$block" />
+                <x-tables.headers.mobile.encapsulated.block-height
+                    :model="$block"
+                    class="sm:flex-1"
+                />
+
+                <x-tables.rows.mobile.encapsulated.transaction-count
+                    :model="$block"
+                    class="hidden sm:w-[142px] sm:justify-end leading-[17px]"
+                    flex-direction="sm:flex-row-reverse"
+                    value-class="sm:mr-1"
+                />
 
                 <x-tables.rows.mobile.encapsulated.age
                     :model="$block"
-                    class="leading-[17px]"
+                    class="leading-[17px] sm:flex-1 sm:text-right"
                 />
             </x-slot>
 
-            <x-tables.rows.mobile.encapsulated.transaction-count :model="$block" />
+            <x-tables.rows.mobile.encapsulated.transaction-count
+                :model="$block"
+                class="sm:hidden"
+            />
 
-            <x-tables.rows.mobile.encapsulated.volume :model="$block" />
+            <x-tables.rows.mobile.encapsulated.volume
+                :model="$block"
+                class="sm:flex-1"
+            />
 
-            <x-tables.rows.mobile.encapsulated.reward :model="$block" />
+            <x-tables.rows.mobile.encapsulated.reward
+                :model="$block"
+                class="sm:w-[142px]"
+            />
 
-            <x-tables.rows.mobile.encapsulated.value :model="$block" />
+            <div class="sm:flex sm:justify-end sm:flex-1">
+                <x-tables.rows.mobile.encapsulated.value :model="$block" />
+            </div>
         </x-tables.rows.mobile>
     @endforeach
 </x-tables.mobile.includes.encapsulated>

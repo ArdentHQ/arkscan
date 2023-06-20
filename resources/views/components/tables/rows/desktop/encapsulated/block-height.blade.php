@@ -3,7 +3,7 @@
 <div class="flex flex-col md:space-y-1 xl:space-y-0">
     <a
         href="{{ $model->url() }}"
-        class="mx-auto text-sm font-semibold whitespace-nowrap link leading-[17px]"
+        class="text-sm font-semibold whitespace-nowrap link leading-[17px]"
     >
         {{ number_format($model->height(), 0) }}
     </a>
