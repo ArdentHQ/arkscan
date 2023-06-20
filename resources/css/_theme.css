@@ -76,7 +76,8 @@
 }
 
 .dark .button-secondary {
-    @apply bg-theme-dark-600;
+    @apply bg-theme-dark-800;
+    box-shadow: 0 0 1px 1px var(--theme-color-dark-600) inset;
 }
 
 .dark .button-secondary:hover {
