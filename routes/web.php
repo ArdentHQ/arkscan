@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ListBlocksByWalletController;
 use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\ShowWalletController;
@@ -39,7 +38,7 @@ Route::get('/transactions/{transaction}', ShowTransactionController::class)->nam
 Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
 Route::get('/addresses/{wallet}', ShowWalletController::class)->name('wallet');
 Route::get('/addresses/{wallet}?view=voters', ShowWalletController::class)->name('wallet.voters');
-Route::get('/addresses/{wallet}?view=blocks', ListBlocksByWalletController::class)->name('wallet.blocks');
+Route::get('/addresses/{wallet}?view=blocks', ShowWalletController::class)->name('wallet.blocks');
 
 Route::get('/wallets/{wallet}', function (Wallet $wallet) {
     return redirect()->route('wallet', $wallet);
