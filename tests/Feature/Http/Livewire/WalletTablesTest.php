@@ -712,3 +712,14 @@ it('should reset pagination when changing view', function () {
         ->set('view', 'transactions')
         ->assertSet('page', 1);
 });
+
+it('should change view with event', function () {
+    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+        ->assertSet('view', 'transactions')
+        ->emit('showWalletView', 'voters')
+        ->assertSet('view', 'voters')
+        ->emit('showWalletView', 'blocks')
+        ->assertSet('view', 'blocks')
+        ->emit('showWalletView', 'transactions')
+        ->assertSet('view', 'transactions');
+});
