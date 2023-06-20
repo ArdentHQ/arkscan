@@ -25,7 +25,7 @@
                     class="mb-4 sm:mb-0"
                 />
 
-                <div class="sm:flex sm:justify-end sm:flex-1">
+                <div class="sm:flex sm:flex-1 sm:justify-end">
                     <x-tables.rows.mobile.encapsulated.balance-percentage :model="$wallet" />
                 </div>
             </div>

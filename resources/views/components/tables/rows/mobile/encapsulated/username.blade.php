@@ -6,7 +6,7 @@
     </div>
 
     @if ($model->username())
-        <div class="text-theme-secondary-900 dark:text-theme-secondary-50 inline-block">
+        <div class="inline-block text-theme-secondary-900 dark:text-theme-secondary-50">
             {{ $model->username() }}
         </div>
     @else
