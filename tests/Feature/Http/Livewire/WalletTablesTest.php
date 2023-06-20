@@ -387,7 +387,7 @@ it('should filter by outgoing transactions', function () {
     ]);
 
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('state.view', 'transactions')
+        ->set('view', 'transactions')
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => false,
@@ -410,7 +410,7 @@ it('should filter by incoming transactions', function () {
     ]);
 
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('state.view', 'transactions')
+        ->set('view', 'transactions')
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => true,
@@ -454,7 +454,7 @@ it('should show multipayments when filtered by incoming transactions', function 
     ]);
 
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('state.view', 'transactions')
+        ->set('view', 'transactions')
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => true,
@@ -477,7 +477,7 @@ it('should filter by incoming and outgoing transactions', function () {
     ]);
 
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('state.view', 'transactions')
+        ->set('view', 'transactions')
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => true,
@@ -500,7 +500,7 @@ it('should filter by transfer transactions', function () {
     ]);
 
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('state.view', 'transactions')
+        ->set('view', 'transactions')
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => false,
@@ -523,7 +523,7 @@ it('should filter by vote transactions', function () {
     ]);
 
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('state.view', 'transactions')
+        ->set('view', 'transactions')
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => false,
@@ -546,7 +546,7 @@ it('should filter by multipayment transactions', function () {
     ]);
 
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('state.view', 'transactions')
+        ->set('view', 'transactions')
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => false,
@@ -573,7 +573,7 @@ it('should filter by other transactions', function () {
     ]);
 
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('state.view', 'transactions')
+        ->set('view', 'transactions')
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => false,
@@ -601,7 +601,7 @@ it('should show no transactions if no filters', function () {
     ]);
 
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('state.view', 'transactions')
+        ->set('view', 'transactions')
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => false,
@@ -630,7 +630,7 @@ it('should show no transactions if no addressing filter', function () {
     ]);
 
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('state.view', 'transactions')
+        ->set('view', 'transactions')
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => false,
@@ -659,7 +659,7 @@ it('should show no transactions if no type filter', function () {
     ]);
 
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('state.view', 'transactions')
+        ->set('view', 'transactions')
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => true,
@@ -676,7 +676,7 @@ it('should show no transactions if no type filter', function () {
 
 it('should show no results message if no transactions matching filter', function () {
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('state.view', 'transactions')
+        ->set('view', 'transactions')
         ->assertSee(trans('tables.transactions.no_results.no_results'));
 });
 
@@ -691,7 +691,7 @@ it('should reset pagination when filtering', function () {
     ]);
 
     Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('state.view', 'transactions')
+        ->set('view', 'transactions')
         ->assertDontSee($vote->id)
         ->call('setPage', 2)
         ->assertSee($vote->id)
