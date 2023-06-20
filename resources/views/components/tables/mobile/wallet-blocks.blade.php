@@ -17,14 +17,14 @@
 
                 <x-tables.rows.mobile.encapsulated.transaction-count
                     :model="$block"
-                    class="hidden sm:w-[142px] sm:justify-end leading-[17px]"
+                    class="hidden sm:justify-end leading-[17px] sm:w-[142px]"
                     flex-direction="sm:flex-row-reverse"
                     value-class="sm:mr-1"
                 />
 
                 <x-tables.rows.mobile.encapsulated.age
                     :model="$block"
-                    class="leading-[17px] sm:flex-1 sm:text-right"
+                    class="sm:flex-1 sm:text-right leading-[17px]"
                 />
             </x-slot>
 
@@ -43,7 +43,7 @@
                 class="sm:w-[142px]"
             />
 
-            <div class="sm:flex sm:justify-end sm:flex-1">
+            <div class="sm:flex sm:flex-1 sm:justify-end">
                 <x-tables.rows.mobile.encapsulated.value :model="$block" />
             </div>
         </x-tables.rows.mobile>
