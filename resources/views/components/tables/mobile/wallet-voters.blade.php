@@ -1,15 +1,15 @@
-<div class="divide-y table-list-mobile table-list-encapsulated">
+@props(['wallets'])
+
+<x-tables.mobile.includes.encapsulated wire:key="{{ Helpers::generateId('voters-mobile') }}">
     @foreach ($wallets as $wallet)
-        <div class="table-list-mobile-row">
-            <x-tables.rows.mobile.encapsulated.address :model="$wallet" />
+        <x-tables.rows.mobile>
+            <x-slot name="header">
+                <x-tables.headers.mobile.encapsulated.address :model="$wallet" />
+            </x-slot>
 
-            <x-tables.rows.mobile.encapsulated.balance :model="$wallet" />
+            <x-tables.rows.mobile.encapsulated.balance :model="$wallet" class="sm:flex-1" />
 
-            @isset($useVoteWeight)
-                <x-tables.rows.mobile.encapsulated.vote-percentage :model="$wallet" />
-            @else
-                <x-tables.rows.mobile.encapsulated.balance-percentage :model="$wallet" />
-            @endif
-        </div>
+            <x-tables.rows.mobile.encapsulated.vote-percentage :model="$wallet" />
+        </x-tables.rows.mobile>
     @endforeach
-</div>
+</x-tables.mobile.includes.encapsulated>

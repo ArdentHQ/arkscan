@@ -98,5 +98,7 @@
         :wallet="$wallet"
     />
 
-    <x-wallet.tables.voters :wallet="$wallet" />
+    @if($wallet->isDelegate())
+        <x-wallet.tables.voters :wallet="$wallet" />
+    @endif
 </div>

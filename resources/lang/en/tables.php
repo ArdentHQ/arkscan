@@ -16,6 +16,10 @@ return [
         'multiple'   => 'Multiple',
     ],
 
+    'wallets' => [
+        'balance_currency' => 'Balance (:currency)',
+    ],
+
     'exchanges' => [
         'price'  => 'Price (:currency)',
         'volume' => 'Volume (:currency)',

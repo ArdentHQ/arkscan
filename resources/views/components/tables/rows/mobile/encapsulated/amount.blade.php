@@ -1,8 +1,6 @@
 @props([
     'model',
     'wallet' => null,
-    'isSent' => null,
-    'isReceived' => null,
 ])
 
 <div {{ $attributes->class('space-y-2 sm:flex sm:flex-col sm:justify-center') }}>

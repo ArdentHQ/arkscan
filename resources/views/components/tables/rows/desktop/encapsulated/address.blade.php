@@ -14,12 +14,18 @@
             without-icon
         >
             <x-slot name="address">
-                <span class="xl:hidden">
-                    <x-truncate-middle>{{ $model->address() }}</x-truncate-middle>
-                </span>
-                <span class="hidden xl:inline">
-                    {{ $model->address() }}
-                </span>
+                @unless ($withoutTruncate)
+                    <span class="xl:hidden">
+                        <x-truncate-middle>{{ $model->address() }}</x-truncate-middle>
+                    </span>
+                    <span class="hidden xl:inline">
+                        {{ $model->address() }}
+                    </span>
+                @else
+                    <span class="inline">
+                        {{ $model->address() }}
+                    </span>
+                @endif
             </x-slot>
         </x-general.identity>
     </span>
