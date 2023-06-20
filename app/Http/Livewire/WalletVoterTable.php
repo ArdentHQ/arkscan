@@ -12,6 +12,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
 use Livewire\Component;
 
+/** @property LengthAwarePaginator $wallets */
 final class WalletVoterTable extends Component
 {
     use HasTablePagination;
