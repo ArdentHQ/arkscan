@@ -29,7 +29,5 @@
             :results="$transactions"
             class="mt-4 md:mt-0"
         />
-
-        <x-script.onload-scroll-to-query selector="#transaction-list" />
     </x-skeletons.transactions>
 </div>
