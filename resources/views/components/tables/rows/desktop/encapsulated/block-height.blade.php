@@ -10,6 +10,6 @@
 
     <x-tables.rows.desktop.encapsulated.age
         :model="$model"
-        class="hidden text-xs md:block md-lg:hidden leading-[15px]"
+        class="hidden text-xs md:block leading-[15px] md-lg:hidden"
     />
 </div>
