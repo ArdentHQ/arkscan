@@ -8,6 +8,7 @@ use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
+use App\ViewModels\WalletViewModel;
 use Livewire\Livewire;
 use function Tests\fakeCryptoCompare;
 
@@ -26,7 +27,7 @@ it('should list all voters for the given public key', function () {
 
     (new NetworkCache())->setSupply(fn () => '1000000000');
 
-    $component = Livewire::test(WalletVoterTable::class, [$this->subject->public_key, 'username']);
+    $component = Livewire::test(WalletVoterTable::class, [new WalletViewModel($this->subject)]);
 
     foreach (ViewModelFactory::collection($voters) as $voter) {
         $component->assertSee($voter->address());
@@ -36,4 +37,9 @@ it('should list all voters for the given public key', function () {
         ]);
         $component->assertSee(NumberFormatter::percentage($voter->votePercentage()));
     }
+});
+
+it('should handle cold wallets without a public key', function () {
+    Livewire::test(WalletVoterTable::class, [new WalletViewModel($this->subject)])
+        ->assertSee(trans('tables.wallets.no_results'));
 });

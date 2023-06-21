@@ -20,7 +20,7 @@ final class WalletVoterTable extends Component
 
     public const PER_PAGE = 10;
 
-    public string $publicKey;
+    public ?string $publicKey;
 
     /** @var mixed */
     protected $listeners = ['currencyChanged' => '$refresh'];
@@ -48,6 +48,10 @@ final class WalletVoterTable extends Component
 
     public function getWalletsProperty(): LengthAwarePaginator
     {
+        if (! $this->publicKey) {
+            return new LengthAwarePaginator([], 0, $this->perPage);
+        }
+
         return Wallet::where('attributes->vote', $this->publicKey)
             ->withScope(OrderByBalanceScope::class)
             ->paginate($this->perPage);
