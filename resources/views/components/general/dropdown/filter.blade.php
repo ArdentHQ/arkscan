@@ -7,9 +7,11 @@
     dropdown-wrapper-class="w-full"
     dropdown-background="bg-white dark:bg-theme-secondary-900 dark:border dark:border-theme-secondary-800"
     dropdown-padding="py-1"
+    button-class="flex flex-1 justify-center items-center sm:flex-none sm:py-1.5 sm:px-4 md:p-2 button-secondary w-full rounded"
+    active-button-class=""
 >
-    <x-slot name="button" class="w-full rounded">
-        <div class="flex flex-1 justify-center items-center sm:flex-none sm:py-1.5 sm:px-4 md:p-2 button-secondary">
+    <x-slot name="button">
+        <div>
             <x-ark-icon
                 name="filter"
                 size="sm"
