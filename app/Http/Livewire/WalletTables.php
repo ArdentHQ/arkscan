@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
-use App\Http\Livewire\Concerns\HasTablePagination;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Contracts\View\View;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
 final class WalletTables extends Component
