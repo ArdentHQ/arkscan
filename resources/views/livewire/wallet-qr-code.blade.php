@@ -4,17 +4,17 @@
 >
     <x-general.dropdown.dropdown
         width="max-w-[320px] px-4"
-        active-button-class="button button-secondary button-icon"
+        active-button-class=""
         dropdown-padding=""
         dropdown-wrapper-class="w-full"
         dropdown-background="bg-white dark:bg-theme-secondary-900"
         :close-on-click="false"
         on-close="() => showOptions = false"
+        buttonClass="p-2 w-full focus-visible:ring-inset button button-secondary button-icon"
     >
         <x-slot
             name="button"
             wire:click="toggleQrCode"
-            class="p-2 w-full"
         >
             <div>
                 <x-ark-icon name="qr-code" size="sm" />
