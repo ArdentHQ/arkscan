@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Livewire\WalletTables;
+use App\Http\Livewire\WalletTransactionTable;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\ViewModels\ViewModelFactory;
@@ -25,8 +25,7 @@ it('should list all transactions', function () {
         'recipient_id' => $this->subject->address,
     ]);
 
-    $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('view', 'transactions');
+    $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)]);
 
     $sentTransaction = ViewModelFactory::make($sent);
 
@@ -74,8 +73,7 @@ it('should list all transactions for cold wallet', function () {
         'recipient_id' => $this->subject->address,
     ]);
 
-    $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('view', 'transactions');
+    $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)]);
 
     $transaction = ViewModelFactory::make($received);
 
@@ -125,8 +123,7 @@ it('should show sent multipayment', function () {
         ],
     ]);
 
-    $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('view', 'transactions');
+    $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)]);
 
     $transaction = ViewModelFactory::make($sent);
 
@@ -172,8 +169,7 @@ it('should show received multipayment', function () {
         ],
     ]);
 
-    $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('view', 'transactions');
+    $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)]);
 
     $transaction = ViewModelFactory::make($received);
 
@@ -218,8 +214,7 @@ it('should show multipayment without amount sent to self', function () {
         ],
     ]);
 
-    $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('view', 'transactions');
+    $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)]);
 
     $transaction = ViewModelFactory::make($sent);
 
@@ -244,8 +239,7 @@ it('should show transfer without amount sent to self', function () {
         'recipient_id'      => $this->subject->address,
     ]);
 
-    $component = Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)]);
-    $component->set('view', 'transactions');
+    $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)]);
 
     $transaction = ViewModelFactory::make($sent);
 
@@ -264,7 +258,7 @@ it('should show transfer without amount sent to self', function () {
 });
 
 it('should toggle all filters when "select all" is selected', function () {
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->assertSet('filter', [
             'outgoing'      => true,
             'incoming'      => true,
@@ -297,7 +291,7 @@ it('should toggle all filters when "select all" is selected', function () {
 });
 
 it('should toggle "select all" when all filters are selected', function () {
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->assertSet('filter', [
             'outgoing'      => true,
             'incoming'      => true,
@@ -322,8 +316,7 @@ it('should filter by outgoing transactions', function () {
         'recipient_id' => $this->subject->address,
     ]);
 
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('view', 'transactions')
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => false,
@@ -345,8 +338,7 @@ it('should filter by incoming transactions', function () {
         'recipient_id' => $this->subject->address,
     ]);
 
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('view', 'transactions')
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => true,
@@ -389,8 +381,7 @@ it('should show multipayments when filtered by incoming transactions', function 
         ],
     ]);
 
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('view', 'transactions')
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => true,
@@ -412,8 +403,7 @@ it('should filter by incoming and outgoing transactions', function () {
         'recipient_id' => $this->subject->address,
     ]);
 
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('view', 'transactions')
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => true,
@@ -435,8 +425,7 @@ it('should filter by transfer transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('view', 'transactions')
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => false,
@@ -458,8 +447,7 @@ it('should filter by vote transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('view', 'transactions')
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => false,
@@ -481,8 +469,7 @@ it('should filter by multipayment transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('view', 'transactions')
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => false,
@@ -508,8 +495,7 @@ it('should filter by other transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('view', 'transactions')
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => false,
@@ -536,8 +522,7 @@ it('should show no transactions if no filters', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('view', 'transactions')
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => false,
@@ -565,8 +550,7 @@ it('should show no transactions if no addressing filter', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('view', 'transactions')
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->set('filter', [
             'outgoing'      => false,
             'incoming'      => false,
@@ -594,8 +578,7 @@ it('should show no transactions if no type filter', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('view', 'transactions')
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->set('filter', [
             'outgoing'      => true,
             'incoming'      => true,
@@ -611,8 +594,7 @@ it('should show no transactions if no type filter', function () {
 });
 
 it('should show no results message if no transactions matching filter', function () {
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('view', 'transactions')
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->assertSee(trans('tables.transactions.no_results.no_results'));
 });
 
@@ -626,25 +608,11 @@ it('should reset pagination when filtering', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('view', 'transactions')
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->assertDontSee($vote->id)
         ->call('setPage', 2)
         ->assertSee($vote->id)
         ->set('filter.transfers', false)
         ->assertSet('page', 1)
         ->assertSee($vote->id);
-});
-
-it('should reset pagination when changing view', function () {
-    Transaction::factory(15)->transfer()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
-
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->set('view', 'transactions')
-        ->call('setPage', 2)
-        ->set('view', 'voters')
-        ->set('view', 'transactions')
-        ->assertSet('page', 1);
 });
