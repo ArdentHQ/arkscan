@@ -27,7 +27,7 @@
         :dropdown-content-classes="Arr::toCssClasses(['rounded-xl shadow-lg', $dropdownBackground, $dropdownPadding])"
         :disabled="$disabled"
         z-index="z-20"
-        button-class="w-full focus-visible:ring-1 focus-visible:ring-theme-primary-500 focus-visible:dark:ring-theme-primary-300"
+        button-class="w-full focus-visible:ring-2 focus-visible:ring-theme-primary-500 focus-visible:dark:ring-theme-primary-300"
         :close-on-click="$closeOnClick"
         :on-close="$onClose"
         :placement-fallbacks="$placementFallbacks"
