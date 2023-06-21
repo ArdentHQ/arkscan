@@ -37,14 +37,3 @@ it('should change view with event', function () {
         ->emit('showWalletView', 'transactions')
         ->assertSet('view', 'transactions');
 });
-
-it('should change view with event', function () {
-    Livewire::test(WalletTables::class, [new WalletViewModel($this->subject)])
-        ->assertSet('view', 'transactions')
-        ->emit('showWalletView', 'voters')
-        ->assertSet('view', 'voters')
-        ->emit('showWalletView', 'blocks')
-        ->assertSet('view', 'blocks')
-        ->emit('showWalletView', 'transactions')
-        ->assertSet('view', 'transactions');
-});
