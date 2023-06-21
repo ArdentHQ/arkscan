@@ -44,6 +44,6 @@ trait HasTablePagination
             }
         }
 
-        return config('arkscan.pagination.per_page');
+        return intval(config('arkscan.pagination.per_page'));
     }
 }
