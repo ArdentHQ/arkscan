@@ -41,7 +41,7 @@
                                     >
                                         <a
                                             href="javascript:void(0)"
-                                            class="inline-flex relative justify-center items-center px-1 pt-px mr-6 h-full font-semibold leading-5 border-b-2 border-transparent transition duration-150 ease-in-out focus:outline-none focus:ring-inset text-theme-secondary-700 dark:text-theme-secondary-400 hover:text-theme-secondary-800"
+                                            class="inline-flex relative justify-center items-center px-1 pt-px mr-6 h-full font-semibold leading-5 border-b-2 border-transparent transition duration-150 ease-in-out focus:ring-inset focus:outline-none text-theme-secondary-700 dark:text-theme-secondary-400 hover:text-theme-secondary-800"
                                             :class="openDropdown === '{{ $navItem['label'] }}' ? '!border-theme-primary-600' : 'dark:hover:border-theme-secondary-600 hover:border-theme-primary-300'"
                                             @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
                                         >
@@ -120,7 +120,7 @@
                                 <div class="relative h-full dark:bg-theme-secondary-800">
                                     <a
                                         href="#"
-                                        class="inline-flex relative justify-between items-center py-3 px-6 w-full h-full font-semibold leading-5 focus:outline-none focus:ring-inset text-theme-secondary-700 dark:text-theme-secondary-200 hover:text-theme-secondary-800"
+                                        class="inline-flex relative justify-between items-center py-3 px-6 w-full h-full font-semibold leading-5 focus:ring-inset focus:outline-none text-theme-secondary-700 dark:text-theme-secondary-200 hover:text-theme-secondary-800"
                                         @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
                                     >
                                         <span :class="{ 'text-theme-secondary-700 dark:text-theme-secondary-200': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
