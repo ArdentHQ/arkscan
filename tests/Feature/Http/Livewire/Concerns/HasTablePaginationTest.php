@@ -5,6 +5,9 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Config;
 use Tests\Feature\Http\Livewire\__stubs\TablePaginationComponentStub;
 
+/**
+ * @coversNothing
+ */
 class HasTablePaginationTest extends TablePaginationComponentStub
 {
     public const PER_PAGE = 50;
