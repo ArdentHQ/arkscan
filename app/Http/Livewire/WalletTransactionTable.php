@@ -50,10 +50,34 @@ final class WalletTransactionTable extends Component
         'currencyChanged' => '$refresh',
     ];
 
-    public function mount(WalletViewModel $wallet): void
+    public function queryString(): array
+    {
+        return [
+            'outgoing'      => ['except' => true],
+            'incoming'      => ['except' => true],
+            'transfers'     => ['except' => true],
+            'votes'         => ['except' => true],
+            'multipayments' => ['except' => true],
+            'others'        => ['except' => true],
+        ];
+    }
+
+    public function mount(WalletViewModel $wallet, bool $deferLoading = true): void
     {
         $this->address   = $wallet->address();
         $this->publicKey = $wallet->publicKey();
+
+        foreach ($this->filter as &$filter) {
+            if (in_array($filter, ['1', 'true', true])) {
+                $filter = true;
+            } else if (in_array($filter, ['0', 'false', false])) {
+                $filter = false;
+            }
+        }
+
+        if (! $deferLoading) {
+            $this->setIsReady();
+        }
     }
 
     public function render(): View
@@ -128,13 +152,29 @@ final class WalletTransactionTable extends Component
         ];
     }
 
+    public function __get($property): mixed
+    {
+        if (isset($this->filter[$property])) {
+            return $this->filter[$property];
+        }
+
+        return parent::__get($property);
+    }
+
+    public function __set($property, $value): void
+    {
+        if (isset($this->filter[$property])) {
+            $this->filter[$property] = $value;
+        }
+    }
+
     private function hasAddressingFilters(): bool
     {
         if ($this->filter['incoming'] === true) {
             return true;
         }
 
-        return $this->filter['outgoing'];
+        return $this->filter['outgoing'] === true;
     }
 
     private function hasTransactionTypeFilters(): bool
@@ -151,7 +191,7 @@ final class WalletTransactionTable extends Component
             return true;
         }
 
-        return $this->filter['others'];
+        return $this->filter['others'] === true;
     }
 
     private function getTransactionsQuery(): Builder

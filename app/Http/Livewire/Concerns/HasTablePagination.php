@@ -17,7 +17,7 @@ trait HasTablePagination
         $this->perPage = $this->getDefault();
     }
 
-    public function getQueryString(): array
+    public function queryStringHasTablePagination(): array
     {
         return [
             'perPage' => ['except' => $this->getDefault()],
