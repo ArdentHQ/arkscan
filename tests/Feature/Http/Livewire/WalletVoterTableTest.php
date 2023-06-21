@@ -15,19 +15,20 @@ use function Tests\fakeCryptoCompare;
 beforeEach(function () {
     fakeCryptoCompare();
 
-    $this->subject = Wallet::factory()->create();
 });
 
 it('should list all voters for the given public key', function () {
+    $wallet = Wallet::factory()->create();
+
     $voters = Wallet::factory(10)->create([
         'attributes' => [
-            'vote' => $this->subject->public_key,
+            'vote' => $wallet->public_key,
         ],
     ]);
 
     (new NetworkCache())->setSupply(fn () => '1000000000');
 
-    $component = Livewire::test(WalletVoterTable::class, [new WalletViewModel($this->subject)]);
+    $component = Livewire::test(WalletVoterTable::class, [new WalletViewModel($wallet)]);
 
     foreach (ViewModelFactory::collection($voters) as $voter) {
         $component->assertSee($voter->address());
@@ -40,6 +41,10 @@ it('should list all voters for the given public key', function () {
 });
 
 it('should handle cold wallets without a public key', function () {
-    Livewire::test(WalletVoterTable::class, [new WalletViewModel($this->subject)])
+    $wallet = Wallet::factory()->create([
+        'public_key' => null,
+    ]);
+
+    Livewire::test(WalletVoterTable::class, [new WalletViewModel($wallet)])
         ->assertSee(trans('tables.wallets.no_results'));
 });
