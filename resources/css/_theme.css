@@ -82,7 +82,7 @@
 }
 
 .dark .button-secondary:focus {
-    @apply outline-none ring-theme-primary-300 ring-1;
+    @apply outline-none ring-theme-primary-300 ring-2;
 }
 
 .dark .button-secondary:hover {
