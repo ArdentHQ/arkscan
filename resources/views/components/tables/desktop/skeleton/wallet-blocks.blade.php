@@ -9,7 +9,7 @@
         'tables.blocks.age'          => [
             'type'       => 'text',
             'responsive' => true,
-            'breakpoint' => 'xl',
+            'breakpoint' => 'md-lg',
         ],
         'tables.blocks.transactions' => 'number',
         'tables.blocks.volume'       => [

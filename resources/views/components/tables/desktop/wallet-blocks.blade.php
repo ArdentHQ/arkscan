@@ -21,7 +21,7 @@
             />
             <x-tables.headers.desktop.text
                 name="tables.blocks.age"
-                breakpoint="xl"
+                breakpoint="md-lg"
                 responsive
             />
             <x-tables.headers.desktop.number name="tables.blocks.transactions" />
