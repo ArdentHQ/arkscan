@@ -107,7 +107,7 @@ return [
         'blocks' => [
             'volume_tooltip' => 'A sum of transactions value in the block.',
             'total_reward_tooltip' => 'A sum of the block reward and transaction fees.',
-            'value_tooltip' => 'Value of rewards in user-set currency.',
+            'value_tooltip' => 'Value of rewards in user defined currency.',
         ],
     ],
 
