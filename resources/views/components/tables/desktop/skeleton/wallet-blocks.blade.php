@@ -5,18 +5,18 @@
 <x-table-skeleton
     device="desktop"
     :items="[
-        'tables.blocks.height'         => 'text',
-        'tables.blocks.age'        => [
+        'tables.blocks.height'       => 'text',
+        'tables.blocks.age'          => [
             'type'       => 'text',
             'responsive' => true,
             'breakpoint' => 'xl',
         ],
         'tables.blocks.transactions' => 'number',
-        'tables.blocks.volume'     => [
+        'tables.blocks.volume'       => [
             'type' => 'number',
             'nameProperties' => ['currency' => Network::currency()],
         ],
-        'tables.blocks.total_reward'     => [
+        'tables.blocks.total_reward' => [
             'type' => 'number',
             'lastOn' => 'md-lg',
             'nameProperties' => ['currency' => Network::currency()],
