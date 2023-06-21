@@ -76,3 +76,15 @@ it('should not per page if not a valid option', function () {
         $component->assertDontSee($wallet->address);
     }
 });
+
+it('should go to page 1 when changing per page', function () {
+    (new NetworkCache())->setSupply(fn () => strval(10e8));
+
+    Wallet::factory(100)->create();
+
+    $component = Livewire::test(TopAccountsTable::class)
+        ->call('gotoPage', 2)
+        ->assertSet('page', 2)
+        ->call('setPerPage', 25)
+        ->assertSet('page', 1);
+});

@@ -31,6 +31,8 @@ trait HasTablePagination
         }
 
         $this->perPage = $perPage;
+
+        $this->gotoPage(1);
     }
 
     private function getDefault(): int
