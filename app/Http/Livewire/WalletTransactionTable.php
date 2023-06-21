@@ -50,6 +50,22 @@ final class WalletTransactionTable extends Component
         'currencyChanged' => '$refresh',
     ];
 
+    public function __get($property): mixed
+    {
+        if (isset($this->filter[$property])) {
+            return $this->filter[$property];
+        }
+
+        return parent::__get($property);
+    }
+
+    public function __set($property, $value): void
+    {
+        if (isset($this->filter[$property])) {
+            $this->filter[$property] = $value;
+        }
+    }
+
     public function queryString(): array
     {
         return [
@@ -68,9 +84,9 @@ final class WalletTransactionTable extends Component
         $this->publicKey = $wallet->publicKey();
 
         foreach ($this->filter as &$filter) {
-            if (in_array($filter, ['1', 'true', true])) {
+            if (in_array($filter, ['1', 'true', true], true)) {
                 $filter = true;
-            } else if (in_array($filter, ['0', 'false', false])) {
+            } elseif (in_array($filter, ['0', 'false', false], true)) {
                 $filter = false;
             }
         }
@@ -150,22 +166,6 @@ final class WalletTransactionTable extends Component
             'address'   => $this->address,
             'publicKey' => $this->publicKey,
         ];
-    }
-
-    public function __get($property): mixed
-    {
-        if (isset($this->filter[$property])) {
-            return $this->filter[$property];
-        }
-
-        return parent::__get($property);
-    }
-
-    public function __set($property, $value): void
-    {
-        if (isset($this->filter[$property])) {
-            $this->filter[$property] = $value;
-        }
     }
 
     private function hasAddressingFilters(): bool
