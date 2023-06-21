@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
@@ -16,6 +17,7 @@ use Livewire\Component;
 /** @property LengthAwarePaginator $wallets */
 final class WalletVoterTable extends Component
 {
+    use DeferLoading;
     use HasTablePagination;
 
     public const PER_PAGE = 10;
@@ -48,8 +50,13 @@ final class WalletVoterTable extends Component
 
     public function getWalletsProperty(): LengthAwarePaginator
     {
+        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage);
+        if (! $this->isReady) {
+            return $emptyResults;
+        }
+
         if ($this->publicKey === null) {
-            return new LengthAwarePaginator([], 0, $this->perPage);
+            return $emptyResults;
         }
 
         return Wallet::where('attributes->vote', $this->publicKey)

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
@@ -16,6 +17,7 @@ use Livewire\Component;
 /** @property LengthAwarePaginator $blocks */
 final class WalletBlockTable extends Component
 {
+    use DeferLoading;
     use HasTablePagination;
 
     public const PER_PAGE = 10;
@@ -48,6 +50,10 @@ final class WalletBlockTable extends Component
 
     public function getBlocksProperty(): LengthAwarePaginator
     {
+        if (! $this->isReady) {
+            return new LengthAwarePaginator([], 0, $this->perPage);
+        }
+
         return Block::where('generator_public_key', $this->publicKey)
             ->withScope(OrderByHeightScope::class)
             ->paginate($this->perPage);

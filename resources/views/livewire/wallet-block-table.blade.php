@@ -1,4 +1,7 @@
-<div class="w-full">
+<div
+    wire:init="setIsReady"
+    class="w-full"
+>
     <x-tables.toolbars.blocks :blocks="$blocks" />
 
     <x-skeletons.wallet-blocks :row-count="$this->perPage">
