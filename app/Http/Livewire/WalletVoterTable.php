@@ -20,8 +20,6 @@ final class WalletVoterTable extends Component
     use DeferLoading;
     use HasTablePagination;
 
-    public const PER_PAGE = 10;
-
     public string $publicKey;
 
     /** @var mixed */
