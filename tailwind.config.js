@@ -27,6 +27,8 @@ module.exports = {
                 "theme-dark-800": "var(--theme-color-dark-800)",
                 "theme-dark-900": "var(--theme-color-dark-900)",
                 "theme-dark-950": "var(--theme-color-dark-950)",
+
+                black: "var(--theme-color-dark-950)",
             },
 
             borderWidth: {

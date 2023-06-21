@@ -5,7 +5,7 @@
         {{ $label }}
     </div>
 
-    <div class="flex flex-col space-y-2">
+    <div class="flex flex-col">
         {{ $slot }}
     </div>
 </div>

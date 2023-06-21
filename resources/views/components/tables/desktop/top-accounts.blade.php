@@ -26,7 +26,9 @@
                 breakpoint="md-lg"
                 responsive
             >
-                <x-ark-info :tooltip="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])" type="info" />
+                <div class="ark-info-element h-5">
+                    <x-ark-info :tooltip="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])" type="info" />
+                </div>
             </x-tables.headers.desktop.number>
         </tr>
     </thead>
