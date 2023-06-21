@@ -1,3 +1,7 @@
+@props([
+    'rowCount' => 10,
+])
+
 <x-table-skeleton
     device="desktop"
     :items="[
@@ -26,5 +30,6 @@
         ],
     ]"
     :component-properties="['rounded' => false]"
+    :row-count="$rowCount"
     encapsulated
 />

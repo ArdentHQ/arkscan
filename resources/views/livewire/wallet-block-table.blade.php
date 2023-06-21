@@ -1,7 +1,7 @@
 <div class="w-full">
     <x-tables.toolbars.blocks :blocks="$blocks" />
 
-    <x-skeletons.wallet-blocks>
+    <x-skeletons.wallet-blocks :row-count="$this->perPage">
         <x-tables.desktop.wallet-blocks
             :blocks="$blocks"
             :no-results-message="$this->noResultsMessage"
