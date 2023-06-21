@@ -27,7 +27,8 @@ it('should list all voters for the given public key', function () {
 
     (new NetworkCache())->setSupply(fn () => '1000000000');
 
-    $component = Livewire::test(WalletVoterTable::class, [new WalletViewModel($wallet)]);
+    $component = Livewire::test(WalletVoterTable::class, [new WalletViewModel($wallet)])
+        ->call('setIsReady');
 
     foreach (ViewModelFactory::collection($voters) as $voter) {
         $component->assertSee($voter->address());
