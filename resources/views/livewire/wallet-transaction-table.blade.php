@@ -1,7 +1,7 @@
 <div class="w-full">
     <x-tables.toolbars.transactions :transactions="$transactions" />
 
-    <x-skeletons.wallet-transactions>
+    <x-skeletons.wallet-transactions :row-count="$this->perPage">
         <x-tables.desktop.wallet-transactions
             :transactions="$transactions"
             :wallet="$wallet"
