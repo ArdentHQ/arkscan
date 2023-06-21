@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Config;
 use Tests\Feature\Http\Livewire\__stubs\TablePaginationComponentStub;
 
-class TablePaginationComponentStubWithConstant extends TablePaginationComponentStub
+class HasTablePaginationTest extends TablePaginationComponentStub
 {
-    const PER_PAGE = 50;
+    public const PER_PAGE = 50;
 }
 
 it('should use PER_PAGE constant if exists', function () {
