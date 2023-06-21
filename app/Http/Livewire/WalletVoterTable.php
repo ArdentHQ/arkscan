@@ -22,14 +22,17 @@ final class WalletVoterTable extends Component
 
     public const PER_PAGE = 10;
 
-    public ?string $publicKey;
+    public string $publicKey;
 
     /** @var mixed */
     protected $listeners = ['currencyChanged' => '$refresh'];
 
     public function mount(WalletViewModel $wallet): void
     {
-        $this->publicKey = $wallet->publicKey();
+        /** @var string $publicKey */
+        $publicKey = $wallet->publicKey();
+
+        $this->publicKey = $publicKey;
     }
 
     public function render(): View
@@ -50,13 +53,8 @@ final class WalletVoterTable extends Component
 
     public function getWalletsProperty(): LengthAwarePaginator
     {
-        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage);
         if (! $this->isReady) {
-            return $emptyResults;
-        }
-
-        if ($this->publicKey === null) {
-            return $emptyResults;
+            return new LengthAwarePaginator([], 0, $this->perPage);
         }
 
         return Wallet::where('attributes->vote', $this->publicKey)

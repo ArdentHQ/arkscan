@@ -29,7 +29,10 @@ final class WalletBlockTable extends Component
 
     public function mount(WalletViewModel $wallet): void
     {
-        $this->publicKey = $wallet->publicKey();
+        /** @var string $publicKey */
+        $publicKey = $wallet->publicKey();
+
+        $this->publicKey = $publicKey;
     }
 
     public function render(): View

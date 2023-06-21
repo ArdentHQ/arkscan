@@ -38,12 +38,3 @@ it('should list all voters for the given public key', function () {
         $component->assertSee(NumberFormatter::percentage($voter->votePercentage()));
     }
 });
-
-it('should handle cold wallets without a public key', function () {
-    $wallet = Wallet::factory()->create([
-        'public_key' => null,
-    ]);
-
-    Livewire::test(WalletVoterTable::class, [new WalletViewModel($wallet)])
-        ->assertSee(trans('tables.wallets.no_results'));
-});
