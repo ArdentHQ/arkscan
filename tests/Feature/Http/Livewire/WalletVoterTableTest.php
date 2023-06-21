@@ -14,7 +14,6 @@ use function Tests\fakeCryptoCompare;
 
 beforeEach(function () {
     fakeCryptoCompare();
-
 });
 
 it('should list all voters for the given public key', function () {
