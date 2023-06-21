@@ -5,8 +5,5 @@
     id="voters-list"
     class="w-full"
 >
-    <livewire:wallet-voter-table
-        :public-key="$wallet->publicKey()"
-        :username="$wallet->username()"
-    />
+    <livewire:wallet-voter-table :wallet="$wallet" />
 </div>

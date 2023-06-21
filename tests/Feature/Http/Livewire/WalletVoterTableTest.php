@@ -17,7 +17,7 @@ beforeEach(function () {
     $this->subject = Wallet::factory()->create();
 });
 
-it('should list all blocks for the given public key', function () {
+it('should list all voters for the given public key', function () {
     $voters = Wallet::factory(10)->create([
         'attributes' => [
             'vote' => $this->subject->public_key,
