@@ -1,7 +1,7 @@
 <div class="w-full">
     <x-tables.toolbars.toolbar :result-count="$wallets->total()" />
 
-    <x-skeletons.wallet-voters>
+    <x-skeletons.wallet-voters :row-count="$this->perPage">
         <x-tables.desktop.wallet-voters
             :wallets="$wallets"
             :no-results-message="$this->noResultsMessage"
