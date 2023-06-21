@@ -18,11 +18,6 @@ final class WalletTables extends Component
 
     public ?string $previousView = null;
 
-    /** @var mixed */
-    protected $listeners = [
-        'showWalletView',
-    ];
-
     public array $tabQueryData = [
         'transactions' => [
             'page'          => 1,
@@ -35,6 +30,24 @@ final class WalletTables extends Component
             'others'        => true,
         ],
     ];
+
+    /** @var mixed */
+    protected $listeners = [
+        'showWalletView',
+    ];
+
+    public function __get($property): mixed
+    {
+        if (isset($this->tabQueryData[$this->view][$property])) {
+            return $this->tabQueryData[$this->view][$property];
+        }
+
+        if (isset($this->tabQueryData[$this->previousView][$property])) {
+            return $this->tabQueryData[$this->previousView][$property];
+        }
+
+        return parent::__get($property);
+    }
 
     // public array $savedQueryData = [];
 
@@ -51,19 +64,6 @@ final class WalletTables extends Component
             'multipayments' => ['except' => true],
             'others'        => ['except' => true],
         ];
-    }
-
-    public function __get($property): mixed
-    {
-        if (isset($this->tabQueryData[$this->view][$property])) {
-            return $this->tabQueryData[$this->view][$property];
-        }
-
-        if (isset($this->tabQueryData[$this->previousView][$property])) {
-            return $this->tabQueryData[$this->previousView][$property];
-        }
-
-        return parent::__get($property);
     }
 
     // public function __set($property, $value): void
