@@ -105,6 +105,8 @@
 
         @if($wallet->isDelegate())
             <x-wallet.tables.voters :wallet="$wallet" />
+
+            <x-wallet.tables.blocks :wallet="$wallet" />
         @endif
 
         <x-script.onload-scroll-to-query selector="#wallet-table-list" />

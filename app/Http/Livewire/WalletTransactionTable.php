@@ -7,6 +7,7 @@ namespace App\Http\Livewire;
 use App\Enums\CoreTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Facades\Wallets;
+use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
@@ -24,6 +25,7 @@ use Livewire\Component;
  * */
 final class WalletTransactionTable extends Component
 {
+    use DeferLoading;
     use HasTablePagination;
 
     public const PER_PAGE = 10;
@@ -100,13 +102,22 @@ final class WalletTransactionTable extends Component
 
     public function getTransactionsProperty(): LengthAwarePaginator
     {
-        if ($this->hasAddressingFilters() && $this->hasTransactionTypeFilters()) {
-            return $this->getTransactionsQuery()
-                ->withScope(OrderByTimestampScope::class)
-                ->paginate($this->perPage);
+        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage);
+        if (! $this->isReady) {
+            return $emptyResults;
         }
 
-        return new LengthAwarePaginator([], 0, $this->perPage);
+        if (! $this->hasAddressingFilters()) {
+            return $emptyResults;
+        }
+
+        if (! $this->hasTransactionTypeFilters()) {
+            return $emptyResults;
+        }
+
+        return $this->getTransactionsQuery()
+            ->withScope(OrderByTimestampScope::class)
+            ->paginate($this->perPage);
     }
 
     public function state(): array

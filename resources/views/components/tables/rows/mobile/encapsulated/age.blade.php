@@ -2,5 +2,8 @@
 
 <x-tables.rows.desktop.encapsulated.age
     :model="$model"
-    class="text-theme-secondary-700 dark:text-theme-secondary-500"
+    :class="Arr::toCssClasses([
+        'text-theme-secondary-700 dark:text-theme-secondary-500',
+        $attributes->get('class'),
+    ])"
 />
