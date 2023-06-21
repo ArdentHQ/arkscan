@@ -29,6 +29,7 @@ return [
         'volume'       => 'Volume (:currency)',
         'total_reward' => 'Total Reward (:currency)',
         'value'        => 'Value (:currency)',
+        'no_results'   => 'This delegate has not yet validated a block.',
     ],
 
     'wallets' => [
