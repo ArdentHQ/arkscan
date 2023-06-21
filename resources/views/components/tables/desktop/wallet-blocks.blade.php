@@ -28,19 +28,25 @@
             <x-tables.headers.desktop.number
                 name="tables.blocks.volume"
                 :name-properties="['currency' => Network::currency()]"
-            />
+            >
+                <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.volume_tooltip')" />
+            </x-tables.headers.desktop.number>
             <x-tables.headers.desktop.number
                 name="tables.blocks.total_reward"
                 :name-properties="['currency' => Network::currency()]"
                 last-on="md-lg"
                 class="last-until-md-lg"
-            />
+            >
+                <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.total_reward_tooltip')" />
+            </x-tables.headers.desktop.number>
             <x-tables.headers.desktop.number
                 name="tables.blocks.value"
                 :name-properties="['currency' => Settings::currency()]"
                 breakpoint="md-lg"
                 responsive
-            />
+            >
+                <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.value_tooltip')" />
+            </x-tables.headers.desktop.number>
         </tr>
     </thead>
     <tbody>
