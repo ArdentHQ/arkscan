@@ -23,5 +23,10 @@
         </x-general.identity>
     </span>
 
-    <x-ark-clipboard :value="$model->address()" class="mr-3 transition text-theme-primary-400 dark:text-theme-secondary-600 hover:text-theme-primary-700" no-styling />
+    <x-ark-clipboard
+        :value="$model->address()"
+        :tooltip-content="trans('pages.wallet.address_copied')"
+        class="mr-3 transition text-theme-primary-400 dark:text-theme-secondary-600 hover:text-theme-primary-700"
+        no-styling
+    />
 </span>
