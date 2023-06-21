@@ -48,7 +48,7 @@ final class WalletVoterTable extends Component
 
     public function getWalletsProperty(): LengthAwarePaginator
     {
-        if (! $this->publicKey) {
+        if ($this->publicKey === null) {
             return new LengthAwarePaginator([], 0, $this->perPage);
         }
 
