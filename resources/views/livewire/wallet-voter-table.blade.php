@@ -17,7 +17,5 @@
             :results="$wallets"
             class="mt-4 md:mt-0"
         />
-
-        <x-script.onload-scroll-to-query selector="#voters-list" />
     </x-skeletons.wallet-voters>
 </div>

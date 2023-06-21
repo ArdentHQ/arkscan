@@ -8,6 +8,7 @@ use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
 use App\ViewModels\ViewModelFactory;
+use App\ViewModels\WalletViewModel;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -19,17 +20,14 @@ final class WalletVoterTable extends Component
 
     public const PER_PAGE = 10;
 
-    public string $publicKey;
-
-    public string $username;
+    public ?string $publicKey;
 
     /** @var mixed */
     protected $listeners = ['currencyChanged' => '$refresh'];
 
-    public function mount(string $publicKey, string $username): void
+    public function mount(WalletViewModel $wallet): void
     {
-        $this->publicKey = $publicKey;
-        $this->username  = $username;
+        $this->publicKey = $wallet->publicKey();
     }
 
     public function render(): View
@@ -50,6 +48,10 @@ final class WalletVoterTable extends Component
 
     public function getWalletsProperty(): LengthAwarePaginator
     {
+        if ($this->publicKey === null) {
+            return new LengthAwarePaginator([], 0, $this->perPage);
+        }
+
         return Wallet::where('attributes->vote', $this->publicKey)
             ->withScope(OrderByBalanceScope::class)
             ->paginate($this->perPage);

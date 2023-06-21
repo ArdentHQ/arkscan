@@ -12,7 +12,7 @@
                 <x-slot name="label">
                     <span>@lang('tables.filters.transactions.outgoing')</span>
 
-                    <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
+                    <span class="text-theme-secondary-500 dark:text-theme-secondary-500">
                         (@lang('tables.filters.transactions.to'))
                     </span>
                 </x-slot>
@@ -22,7 +22,7 @@
                 <x-slot name="label">
                     <span>@lang('tables.filters.transactions.incoming')</span>
 
-                    <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
+                    <span class="text-theme-secondary-500 dark:text-theme-secondary-500">
                         (@lang('tables.filters.transactions.from'))
                     </span>
                 </x-slot>

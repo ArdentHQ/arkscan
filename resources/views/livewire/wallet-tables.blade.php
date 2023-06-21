@@ -101,10 +101,7 @@
     </div>
 
     <div id="wallet-table-list">
-        <x-wallet.tables.transactions
-            :transactions="$transactions"
-            :wallet="$wallet"
-        />
+        <x-wallet.tables.transactions :wallet="$wallet" />
 
         @if($wallet->isDelegate())
             <x-wallet.tables.voters :wallet="$wallet" />

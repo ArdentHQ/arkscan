@@ -20,7 +20,7 @@
                 @lang('pages.delegates.standby')
             </span>
         @else
-            <span class="text-theme-success-700">
+            <span class="text-theme-success-500">
                 @lang('pages.delegates.active')
             </span>
         @endif

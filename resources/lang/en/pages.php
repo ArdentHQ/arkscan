@@ -127,7 +127,7 @@ return [
         'delegate_info'         => 'Delegate Info',
         'name'                  => 'Name',
         'value'                 => 'Value',
-        'copied_public_key'     => 'Copied Public Key',
+        'copied_public_key'     => 'Public Key Copied',
         'address_copied'        => 'Address Copied',
 
         'qrcode'                => [
