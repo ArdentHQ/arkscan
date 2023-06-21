@@ -16,17 +16,62 @@ final class WalletTables extends Component
 
     public string $view = 'transactions';
 
+    public ?string $previousView = null;
+
     /** @var mixed */
     protected $listeners = [
         'showWalletView',
     ];
 
-    public function getQueryString(): array
+    public array $tabQueryData = [
+        'transactions' => [
+            'page'          => 1,
+            'perPage'       => WalletTransactionTable::PER_PAGE,
+            'outgoing'      => true,
+            'incoming'      => true,
+            'transfers'     => true,
+            'votes'         => true,
+            'multipayments' => true,
+            'others'        => true,
+        ],
+    ];
+
+    // public array $savedQueryData = [];
+
+    public function queryString(): array
     {
         return [
-            'view' => ['except' => 'transactions'],
+            'view'          => ['except' => 'transactions'],
+
+            // Transaction Filters
+            'outgoing'      => ['except' => true],
+            'incoming'      => ['except' => true],
+            'transfers'     => ['except' => true],
+            'votes'         => ['except' => true],
+            'multipayments' => ['except' => true],
+            'others'        => ['except' => true],
         ];
     }
+
+    public function __get($property): mixed
+    {
+        if (isset($this->tabQueryData[$this->view][$property])) {
+            return $this->tabQueryData[$this->view][$property];
+        }
+
+        if (isset($this->tabQueryData[$this->previousView][$property])) {
+            return $this->tabQueryData[$this->previousView][$property];
+        }
+
+        return parent::__get($property);
+    }
+
+    // public function __set($property, $value): void
+    // {
+    //     if (isset($this->tabQueryData[$this->view][$property])) {
+    //         $this->tabQueryData[$this->view][$property] = $value;
+    //     }
+    // }
 
     public function mount(WalletViewModel $wallet): void
     {
@@ -43,5 +88,37 @@ final class WalletTables extends Component
     public function showWalletView(string $view): void
     {
         $this->view = $view;
+    }
+
+    public function updatingView(string $newView): void
+    {
+        if ($newView === $this->view) {
+            return;
+        }
+
+        $this->previousView = $this->view;
+
+        if (! array_key_exists($this->view, $this->tabQueryData)) {
+            return;
+        }
+
+        $queryStringData = $this->queryString();
+
+        // $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
+        foreach ($this->tabQueryData[$this->view] as $key => &$value) {
+            if (! array_key_exists($key, $queryStringData)) {
+                continue;
+            }
+
+            if (! array_key_exists('except', $queryStringData[$key])) {
+                continue;
+            }
+
+            $value = $queryStringData[$key]['except'];
+        }
+
+        // if (isset($this->savedQueryData[$newView])) {
+        //     $this->tabQueryData[$newView] = $this->savedQueryData[$newView];
+        // }
     }
 }
