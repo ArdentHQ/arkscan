@@ -11,8 +11,8 @@
 .dark .encapsulated-table-header-gradient {
     background: linear-gradient(
         to bottom,
-        #121213,
-        #121213 44px,
+        var(--theme-color-dark-950),
+        var(--theme-color-dark-950) 44px,
         var(--theme-color-secondary-900) 44px,
         var(--theme-color-secondary-900) 100%
     );
