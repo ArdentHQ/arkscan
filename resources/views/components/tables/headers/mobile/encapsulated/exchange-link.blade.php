@@ -2,7 +2,7 @@
 
 <a
     href="{{ $exchange->url }}"
-    class="flex justify-between items-center flex-1 py-3 px-4"
+    class="flex flex-1 justify-between items-center py-3 px-4"
     target="_blank"
     rel="noopener nofollow noreferrer"
 >
