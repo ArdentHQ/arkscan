@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
@@ -16,18 +17,22 @@ use Livewire\Component;
 /** @property LengthAwarePaginator $wallets */
 final class WalletVoterTable extends Component
 {
+    use DeferLoading;
     use HasTablePagination;
 
     public const PER_PAGE = 10;
 
-    public ?string $publicKey;
+    public string $publicKey;
 
     /** @var mixed */
     protected $listeners = ['currencyChanged' => '$refresh'];
 
     public function mount(WalletViewModel $wallet): void
     {
-        $this->publicKey = $wallet->publicKey();
+        /** @var string $publicKey */
+        $publicKey = $wallet->publicKey();
+
+        $this->publicKey = $publicKey;
     }
 
     public function render(): View
@@ -48,7 +53,7 @@ final class WalletVoterTable extends Component
 
     public function getWalletsProperty(): LengthAwarePaginator
     {
-        if ($this->publicKey === null) {
+        if (! $this->isReady) {
             return new LengthAwarePaginator([], 0, $this->perPage);
         }
 

@@ -103,6 +103,12 @@ return [
         'subtitle'           => 'A list of the largest ARK addresses by token holdings.',
         'supply_tooltip'     => 'Percentage of the total :symbol supply',
         'percentage_tooltip' => 'Percentage of votes in relation to the delegate total.',
+
+        'blocks' => [
+            'volume_tooltip'       => 'A sum of transactions value in the block.',
+            'total_reward_tooltip' => 'A sum of the block reward and transaction fees.',
+            'value_tooltip'        => 'Value of rewards in user defined currency.',
+        ],
     ],
 
     'wallet'           => [

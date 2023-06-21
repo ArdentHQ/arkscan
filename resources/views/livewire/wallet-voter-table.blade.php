@@ -1,4 +1,7 @@
-<div class="w-full">
+<div
+    wire:init="setIsReady"
+    class="w-full"
+>
     <x-tables.toolbars.toolbar :result-count="$wallets->total()" />
 
     <x-skeletons.wallet-voters :row-count="$this->perPage">

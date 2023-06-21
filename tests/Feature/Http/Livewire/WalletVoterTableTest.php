@@ -27,23 +27,30 @@ it('should list all voters for the given public key', function () {
 
     (new NetworkCache())->setSupply(fn () => '1000000000');
 
-    $component = Livewire::test(WalletVoterTable::class, [new WalletViewModel($wallet)]);
+    $component = Livewire::test(WalletVoterTable::class, [new WalletViewModel($wallet)])
+        ->call('setIsReady');
 
     foreach (ViewModelFactory::collection($voters) as $voter) {
         $component->assertSee($voter->address());
         $component->assertSeeInOrder([
             Network::currency(),
-            $voter->balance(),
+            number_format($voter->balance()),
         ]);
         $component->assertSee(NumberFormatter::percentage($voter->votePercentage()));
     }
 });
 
-it('should handle cold wallets without a public key', function () {
-    $wallet = Wallet::factory()->create([
-        'public_key' => null,
+it('should show no data if not ready', function () {
+    $wallet = Wallet::factory()->create();
+
+    $voter = Wallet::factory()->create([
+        'attributes' => [
+            'vote' => $wallet->public_key,
+        ],
     ]);
 
-    Livewire::test(WalletVoterTable::class, [new WalletViewModel($wallet)])
-        ->assertSee(trans('tables.wallets.no_results'));
+    Livewire::test(WalletVoterTable::class, [ViewModelFactory::make($wallet)])
+        ->assertDontSee($voter->address)
+        ->call('setIsReady')
+        ->assertSee($voter->address);
 });

@@ -17,6 +17,7 @@
             'width' => '119',
         ],
     ]"
+    :component-properties="['rounded' => false]"
     :row-count="$rowCount"
     encapsulated
 />
