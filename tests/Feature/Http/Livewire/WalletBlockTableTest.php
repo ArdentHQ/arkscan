@@ -44,3 +44,14 @@ it('should list all blocks for the given public key', function () {
         ]);
     }
 });
+
+it('should show no data if not ready', function () {
+    $block = Block::factory()->create([
+        'generator_public_key' => $this->subject->public_key,
+    ]);
+
+    Livewire::test(WalletBlockTable::class, [ViewModelFactory::make($this->subject)])
+        ->assertDontSee($block->id)
+        ->call('setIsReady')
+        ->assertSee($block->id);
+});

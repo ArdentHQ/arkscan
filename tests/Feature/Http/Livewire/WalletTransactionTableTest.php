@@ -637,3 +637,14 @@ it('should reset pagination when filtering', function () {
         ->assertSet('page', 1)
         ->assertSee($vote->id);
 });
+
+it('should show no data if not ready', function () {
+    $transaction = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    Livewire::test(WalletTransactionTable::class, [ViewModelFactory::make($this->subject)])
+        ->assertDontSee($transaction->id)
+        ->call('setIsReady')
+        ->assertSee($transaction->id);
+});

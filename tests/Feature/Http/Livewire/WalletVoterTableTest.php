@@ -39,3 +39,18 @@ it('should list all voters for the given public key', function () {
         $component->assertSee(NumberFormatter::percentage($voter->votePercentage()));
     }
 });
+
+it('should show no data if not ready', function () {
+    $wallet = Wallet::factory()->create();
+
+    $voter = Wallet::factory()->create([
+        'attributes' => [
+            'vote' => $wallet->public_key,
+        ],
+    ]);
+
+    Livewire::test(WalletVoterTable::class, [ViewModelFactory::make($wallet)])
+        ->assertDontSee($voter->address)
+        ->call('setIsReady')
+        ->assertSee($voter->address);
+});
