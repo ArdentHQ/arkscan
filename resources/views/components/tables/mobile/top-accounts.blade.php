@@ -1,21 +1,34 @@
-<div class="divide-y table-list-mobile table-list-encapsulated">
+@props(['wallets'])
+
+<x-tables.mobile.includes.encapsulated wire:key="{{ Helpers::generateId('top-accounts-mobile') }}">
     @foreach ($wallets as $wallet)
-        <div class="table-list-mobile-row">
-            <x-tables.rows.mobile.encapsulated.rank :results="$wallets" :index="$loop->index + 1" />
+        <x-tables.rows.mobile>
+            <x-slot name="header">
+                <div class="flex items-center space-x-3">
+                    <x-tables.headers.mobile.encapsulated.rank :results="$wallets" :index="$loop->index + 1" />
 
-            <x-tables.rows.mobile.encapsulated.address :model="$wallet" />
+                    <x-tables.headers.mobile.encapsulated.address :model="$wallet" />
+                </div>
+            </x-slot>
 
-            @if ($wallet->username())
-                <x-tables.rows.mobile.encapsulated.username :model="$wallet" />
-            @endif
+            <div class="flex flex-col sm:flex-row sm:flex-1">
+                <x-tables.rows.mobile.encapsulated.username
+                    :model="$wallet"
+                    :class="Arr::toCssClasses([
+                        'sm:flex-1 mb-4 sm:mb-0' => $wallet->username(),
+                        'sm:flex-1 hidden sm:block' => ! $wallet->username(),
+                    ])"
+                />
 
-            <x-tables.rows.mobile.encapsulated.balance :model="$wallet" />
+                <x-tables.rows.mobile.encapsulated.balance
+                    :model="$wallet"
+                    class="mb-4 sm:mb-0"
+                />
 
-            @isset($useVoteWeight)
-                <x-tables.rows.mobile.encapsulated.vote-percentage :model="$wallet" />
-            @else
-                <x-tables.rows.mobile.encapsulated.balance-percentage :model="$wallet" />
-            @endif
-        </div>
+                <div class="sm:flex sm:flex-1 sm:justify-end">
+                    <x-tables.rows.mobile.encapsulated.balance-percentage :model="$wallet" />
+                </div>
+            </div>
+        </x-tables.rows.mobile>
     @endforeach
-</div>
+</x-tables.mobile.includes.encapsulated>

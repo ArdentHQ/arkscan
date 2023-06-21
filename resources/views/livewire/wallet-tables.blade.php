@@ -1,9 +1,20 @@
-<div x-data="{ tab: 'transactions' }">
+<div x-data="{
+    tab: @entangle('view'),
+}">
     <x-tabs.inline-wrapper
+        x-data="{
+            init: function () {
+                this.$watch('tab', () => {
+                    this.selected = this.tab;
+                });
+            },
+        }"
         class="hidden mb-3 md:inline-flex"
-        default-selected="transactions"
+        :default-selected="$this->view"
         on-selected="function (value) {
-            this.$wire.set('state.view', value);
+            this.$wire.set('view', value);
+
+            this.tab = value;
         }"
     >
         <x-tabs.inline-tab
@@ -61,26 +72,26 @@
 
             <div class="block justify-center items-center py-3 mt-1">
                 <a
-                    wire:click="$set('state.view', 'transactions');"
+                    wire:click="$set('view', 'transactions');"
                     @click="view = 'transactions'; tab = 'transactions';"
-                    class="dropdown-entry @if($state['view'] === 'transactions') dropdown-entry-selected @endif"
+                    class="dropdown-entry @if($this->view === 'transactions') dropdown-entry-selected @endif"
                 >
                     @lang('pages.wallet.transactions')
                 </a>
 
                 @if($wallet->isDelegate())
                     <a
-                        wire:click="$set('state.view', 'blocks');"
+                        wire:click="$set('view', 'blocks');"
                         @click="view = 'blocks'; tab = 'blocks';"
-                        class="dropdown-entry @if($state['view'] === 'blocks') dropdown-entry-selected @endif"
+                        class="dropdown-entry @if($this->view === 'blocks') dropdown-entry-selected @endif"
                     >
                         <span>@lang('pages.wallet.delegate.validated_blocks')</span>
                     </a>
 
                     <a
-                        wire:click="$set('state.view', 'voters');"
+                        wire:click="$set('view', 'voters');"
                         @click="view = 'voters'; tab = 'voters';"
-                        class="dropdown-entry @if($state['view'] === 'voters') dropdown-entry-selected @endif"
+                        class="dropdown-entry @if($this->view === 'voters') dropdown-entry-selected @endif"
                     >
                         <span>@lang('pages.wallet.delegate.voters')</span>
                     </a>
@@ -89,30 +100,13 @@
         </x-ark-dropdown>
     </div>
 
-    <div id="transaction-list" class="w-full">
-        <x-tables.toolbars.transactions :transactions="$transactions" />
+    <div id="wallet-table-list">
+        <x-wallet.tables.transactions :wallet="$wallet" />
 
-        <x-skeletons.wallet-transactions>
-            <x-tables.desktop.wallet-transactions
-                :transactions="$transactions"
-                :wallet="$wallet"
-                :state="$this->state()"
-                :no-results-message="$this->noResultsMessage"
-            />
+        @if($wallet->isDelegate())
+            <x-wallet.tables.voters :wallet="$wallet" />
+        @endif
 
-            <x-tables.mobile.wallet-transactions
-                :transactions="$transactions"
-                :wallet="$wallet"
-                :state="$this->state()"
-                :no-results-message="$this->noResultsMessage"
-            />
-
-            <x-general.pagination.table
-                :results="$transactions"
-                class="mt-4 md:mt-0"
-            />
-
-            <x-script.onload-scroll-to-query selector="#transaction-list" />
-        </x-skeletons.transactions>
+        <x-script.onload-scroll-to-query selector="#wallet-table-list" />
     </div>
 </div>

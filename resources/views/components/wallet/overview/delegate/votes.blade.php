@@ -13,8 +13,13 @@
                 />
             </span>
 
-            <a
-                href="{{ route('wallet.voters', $wallet->model()) }}"
+            <button
+                x-data="{}"
+                type="button"
+                x-on:click="() => {
+                    Livewire.emit('showWalletView', 'voters');
+                    scrollToQuery('#wallet-table-list');
+                }"
                 class="link"
             >
                 @lang('general.view')

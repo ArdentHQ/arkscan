@@ -1,3 +1,5 @@
+@props(['model'])
+
 <div>
     <span class="font-semibold">
         @lang('labels.address')

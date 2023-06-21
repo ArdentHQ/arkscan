@@ -99,9 +99,10 @@ return [
     ],
 
     'wallets'          => [
-        'title'          => 'Top Accounts',
-        'subtitle'       => 'A list of the largest ARK addresses by token holdings.',
-        'supply_tooltip' => 'Percentage of the total :symbol supply',
+        'title'              => 'Top Accounts',
+        'subtitle'           => 'A list of the largest ARK addresses by token holdings.',
+        'supply_tooltip'     => 'Percentage of the total :symbol supply',
+        'percentage_tooltip' => 'Percentage of votes in relation to the delegate total.',
     ],
 
     'wallet'           => [

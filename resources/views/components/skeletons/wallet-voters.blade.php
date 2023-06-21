@@ -3,9 +3,9 @@
 ])
 
 <x-loading.visible display-type="block">
-    <x-tables.desktop.skeleton.wallet-transactions :row-count="$rowCount" />
+    <x-tables.desktop.skeleton.wallet-voters :row-count="$rowCount" />
 
-    <x-tables.mobile.skeleton.wallet-transactions />
+    <x-tables.mobile.skeleton.wallet-voters />
 </x-loading.visible>
 
 <x-loading.hidden>

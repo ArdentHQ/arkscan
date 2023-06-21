@@ -8,31 +8,42 @@ use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
-use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as ARKEcosystemNumberFormatter;
+use App\ViewModels\WalletViewModel;
 use Livewire\Livewire;
 use function Tests\fakeCryptoCompare;
 
 beforeEach(function () {
     fakeCryptoCompare();
-
-    $this->subject = Wallet::factory()->create();
 });
 
-it('should list all blocks for the given public key', function () {
+it('should list all voters for the given public key', function () {
+    $wallet = Wallet::factory()->create();
+
     $voters = Wallet::factory(10)->create([
         'attributes' => [
-            'vote' => $this->subject->public_key,
+            'vote' => $wallet->public_key,
         ],
     ]);
 
     (new NetworkCache())->setSupply(fn () => '1000000000');
 
-    $component = Livewire::test(WalletVoterTable::class, [$this->subject->public_key, 'username']);
+    $component = Livewire::test(WalletVoterTable::class, [new WalletViewModel($wallet)]);
 
     foreach (ViewModelFactory::collection($voters) as $voter) {
         $component->assertSee($voter->address());
-        $component->assertSee(ARKEcosystemNumberFormatter::new()->formatWithCurrencyCustom($voter->balance(), Network::currency(), 0));
-        $component->assertSee(NumberFormatter::currency($voter->balance(), Network::currency()));
+        $component->assertSeeInOrder([
+            Network::currency(),
+            $voter->balance(),
+        ]);
         $component->assertSee(NumberFormatter::percentage($voter->votePercentage()));
     }
+});
+
+it('should handle cold wallets without a public key', function () {
+    $wallet = Wallet::factory()->create([
+        'public_key' => null,
+    ]);
+
+    Livewire::test(WalletVoterTable::class, [new WalletViewModel($wallet)])
+        ->assertSee(trans('tables.wallets.no_results'));
 });
