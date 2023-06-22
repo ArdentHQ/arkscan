@@ -11,7 +11,7 @@
     active-button-class=""
 >
     <x-slot name="button">
-        <div>
+        <div class="inline-flex whitespace-nowrap">
             <x-ark-icon
                 name="filter"
                 size="sm"
