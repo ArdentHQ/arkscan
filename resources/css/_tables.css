@@ -218,11 +218,11 @@ body.table-compact-until-lg .arrow-direction {
     > td.hoverable-cell:last-child
     > div.table-cell-bg:before,
 .table-encapsulated
-        table
-        > tbody
-        > tr:hover
-        > td.hoverable-cell.last-cell
-        > div.table-cell-bg:before {
+    table
+    > tbody
+    > tr:hover
+    > td.hoverable-cell.last-cell
+    > div.table-cell-bg:before {
     @apply bg-theme-secondary-200 dark:bg-black !important;
 }
 
