@@ -11,6 +11,7 @@
             without-reverse
             without-reverse-class="space-x-2"
             without-link
+            without-icon
             :without-truncate="! $truncate"
             :truncate-length="$truncateLength"
             address-visible
@@ -18,16 +19,7 @@
             content-class="truncate"
             container-class="min-w-0"
             link-class="link group-hover/result:no-underline hover:text-theme-primary-600"
-        >
-            <x-slot name="icon">
-                <div class="w-5 h-5">
-                    <x-general.avatar-small
-                        :identifier="$wallet->address()"
-                        size="w-5 h-5"
-                    />
-                </div>
-            </x-slot>
-        </x-general.identity>
+        />
     </div>
 
     <div class="flex items-center space-x-1 text-xs">
