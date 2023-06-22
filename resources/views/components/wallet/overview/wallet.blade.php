@@ -16,7 +16,9 @@
         <x-slot name="value">
             <span>{{ $wallet->balanceFiat() }}</span>
 
-            <span>{{ Settings::currency() }}</span>
+            @if (ExplorerNumberFormatter::isFiat(Settings::currency()))
+                <span>{{ Settings::currency() }}</span>
+            @endif
         </x-slot>
     </x-wallet.overview.item-entry>
 
