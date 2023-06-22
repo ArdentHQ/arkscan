@@ -20,7 +20,7 @@
             link-class="link group-hover/result:no-underline hover:text-theme-primary-600"
         >
             <x-slot name="icon">
-                <div class="w-5 h-5">
+                <div class="w-5 h-5 isolate">
                     <x-general.avatar-small
                         :identifier="$wallet->address()"
                         size="w-5 h-5"
