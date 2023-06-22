@@ -226,6 +226,14 @@ body.table-compact-until-lg .arrow-direction {
     @apply bg-theme-secondary-200 dark:bg-black !important;
 }
 
+.table-encapsulated
+    table
+    > tbody
+    > tr
+    > td.hoverable-cell {
+    @apply align-top;
+}
+
 /* Filter */
 
 .table-filter-item__checkbox:hover input[type="checkbox"] {
