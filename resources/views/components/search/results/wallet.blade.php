@@ -1,7 +1,7 @@
 @props(['wallet', 'truncate' => false, 'truncateLength' => null])
 
 <x-search.results.result :model="$wallet">
-    <div class="flex overflow-auto items-center space-x-2">
+    <div class="flex overflow-auto items-center space-x-2 isolate">
         <div class="dark:text-theme-secondary-500">
             @lang('general.search.address')
         </div>
@@ -20,7 +20,7 @@
             link-class="link group-hover/result:no-underline hover:text-theme-primary-600"
         >
             <x-slot name="icon">
-                <div class="w-5 h-5 isolate">
+                <div class="w-5 h-5">
                     <x-general.avatar-small
                         :identifier="$wallet->address()"
                         size="w-5 h-5"
