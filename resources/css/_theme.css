@@ -81,7 +81,7 @@
     box-shadow: 0 0 1px 1px var(--theme-color-dark-600) inset;
 }
 
-.dark .button-secondary:focus {
+.dark .button-secondary:focus-visible {
     @apply outline-none ring-theme-primary-300 ring-2;
 }
 
