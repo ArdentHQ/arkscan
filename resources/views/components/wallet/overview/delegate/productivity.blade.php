@@ -17,7 +17,7 @@
             'text-theme-secondary-500 dark:text-theme-secondary-700' => ! $wallet->isActive(),
             'text-theme-danger-700 dark:text-theme-danger-400' => $isLow,
             'text-theme-warning-700' => $isMedium,
-            'text-theme-success-500' => $isHigh,
+            'text-theme-success-700 dark:text-theme-success-500' => $isHigh,
         ])>
             <div>
                 <x-percentage>
