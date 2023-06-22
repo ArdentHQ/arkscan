@@ -62,22 +62,22 @@ it('ignores an invalid filter', function () {
 
 it('sort by volume descending by default', function () {
     Exchange::factory()->create([
-        'name' => 'Exchange 1',
+        'name'   => 'Exchange 1',
         'volume' => '23',
     ]);
 
     Exchange::factory()->create([
-        'name' => 'Exchange 2',
+        'name'   => 'Exchange 2',
         'volume' => '45123.01231',
     ]);
 
     Exchange::factory()->create([
-        'name' => 'Exchange 3',
+        'name'   => 'Exchange 3',
         'volume' => '1000000.01',
     ]);
 
     Exchange::factory()->create([
-        'name' => 'Exchange 4',
+        'name'   => 'Exchange 4',
         'volume' => null,
     ]);
 
