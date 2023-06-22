@@ -65,7 +65,7 @@ return [
     ],
 
     'pagination' => [
-        'min_items' => env('ARKSCAN_PAGINATION_MIN_ITEMS', 10),
+        'per_page' => env('ARKSCAN_PAGINATION_PER_PAGE', 25),
     ],
 
     'statistics'                        => [

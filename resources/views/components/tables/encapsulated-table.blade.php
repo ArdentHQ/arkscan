@@ -4,7 +4,7 @@
     'noResultsMessage' => null,
 ])
 
-@php ($paginatorIsEmpty = $paginator !== null && $paginator->total() < config('arkscan.pagination.min_items'))
+@php ($paginatorIsEmpty = $paginator !== null && $paginator->total() < config('arkscan.pagination.per_page'))
 
 <div {{ $attributes->class([
     'border border-theme-secondary-300 dark:border-theme-secondary-800 overflow-hidden table-container px-6 table-encapsulated encapsulated-table-header-gradient',

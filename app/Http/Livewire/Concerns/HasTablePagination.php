@@ -44,8 +44,6 @@ trait HasTablePagination
             }
         }
 
-        // @codeCoverageIgnoreStart
-        return 10; // we don't have any usage where it falls back to default yet
-        // @codeCoverageIgnoreEnd
+        return intval(config('arkscan.pagination.per_page'));
     }
 }
