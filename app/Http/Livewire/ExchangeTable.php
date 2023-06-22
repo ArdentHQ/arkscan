@@ -43,7 +43,17 @@ final class ExchangeTable extends Component
         return Exchange::filterByType($this->type)
             ->filterByPair($this->pair)
             ->get()
-            ->sort(fn ($a, $b) => $b->volume - $a->volume);
+            ->sort(function ($a, $b) {
+                if ($b->volume === null) {
+                    return -1;
+                }
+
+                if ($a->volume === null) {
+                    return 1;
+                }
+
+                return intval($b->volume) - intval($a->volume);
+            });
     }
 
     public function setFilter(string $param, string $value): void
