@@ -9,6 +9,9 @@ use App\Services\ArkVaultUrlBuilder;
 use App\ViewModels\ViewModelFactory;
 use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasModal;
 use ARKEcosystem\Foundation\UserInterface\Support\QRCode;
+use BaconQrCode\Renderer\Color\Alpha;
+use BaconQrCode\Renderer\Color\Gray;
+use BaconQrCode\Renderer\RendererStyle\Fill;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
@@ -19,11 +22,20 @@ final class WalletQrCode extends Component
 {
     use HasModal;
 
+    public const QR_CODE_SIZE = 224;
+
     public string $address;
 
     public ?string $amount = null;
 
     public ?string $smartbridge = null;
+
+    public ?string $class = null;
+
+    public function mount(?string $class = null): void
+    {
+        $this->class = $class;
+    }
 
     public function render(): View
     {
@@ -75,6 +87,10 @@ final class WalletQrCode extends Component
 
     public function getCodeProperty(): string
     {
-        return QRCode::generate($this->walletUri);
+        return QRCode::generate(
+            $this->walletUri,
+            self::QR_CODE_SIZE,
+            Fill::uniformColor(new Alpha(0, new Gray(0)), new Gray(0)),
+        );
     }
 }

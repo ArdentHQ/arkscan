@@ -1,3 +1,8 @@
+@props([
+    'index',
+    'results',
+])
+
 <div>
     <span class="font-semibold">
         @lang('labels.rank')
@@ -7,5 +12,3 @@
         {{ $index + ($results->currentPage() - 1) * $results->perPage()  }}
     </span>
 </div>
-
-

@@ -131,7 +131,7 @@ final class CryptoCompare extends AbstractMarketDataProvider
         return $this->isAcceptableResponse(
             $data,
             'cryptocompare_response_error',
-            (int) config('explorer.cryptocompare_exception_frequency', 60),
+            (int) config('arkscan.cryptocompare_exception_frequency', 60),
             'Too many empty CryptoCompare responses',
             $errorCheck,
         );
@@ -147,7 +147,7 @@ final class CryptoCompare extends AbstractMarketDataProvider
         return $this->isAcceptableResponse(
             $data,
             'cryptocompare_response_throttled',
-            (int) config('explorer.cryptocompare_exception_frequency', 60),
+            (int) config('arkscan.cryptocompare_exception_frequency', 60),
             'CryptoCompare requests are being throttled',
             $errorCheck,
         );

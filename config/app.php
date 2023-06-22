@@ -176,7 +176,7 @@ return [
         App\Providers\EloquentServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
-        App\Providers\ExplorerServiceProvider::class,
+        App\Providers\ArkscanServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\DevelopmentServiceProvider::class,
         App\Providers\LivewireServiceProvider::class,

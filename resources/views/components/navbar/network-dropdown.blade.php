@@ -1,16 +1,12 @@
 @php
-    $isProduction = config('explorer.network') === 'production';
-
-    $itemClass = 'border-l-4 pl-5 pr-6 py-3 font-semibold hover:text-theme-secondary-900 hover:bg-theme-secondary-200 dark:hover:bg-theme-secondary-900 dark:text-theme-secondary-200 transition-default';
-    $inactiveClass = 'border-transparent';
-    $activeClass = 'border-theme-primary-600 bg-theme-primary-50 dark:bg-theme-secondary-900 text-theme-secondary-900 dark:text-white';
+    $isProduction = config('arkscan.network') === 'production';
 @endphp
 
-<x-general.dropdown.dropdown>
-    <x-slot
-        name="button"
-        class="justify-center p-2 space-x-1.5 h-8 text-sm font-semibold rounded md:w-8 md:border md:hover:text-theme-secondary-700 md:border-theme-secondary-300 md:dark:border-theme-secondary-800"
-    >
+<x-general.dropdown.dropdown
+    active-button-class="space-x-1.5"
+    buttonClass="justify-center p-2 space-x-1.5 h-8 text-sm font-semibold rounded md:w-8 md:border md:hover:text-theme-secondary-700 md:border-theme-secondary-300 md:dark:border-theme-secondary-800 bg-theme-secondary-200 dark:bg-theme-secondary-800 md:bg-white md:dark:bg-theme-secondary-900 hover:bg-theme-secondary-200 dark:hover:bg-theme-secondary-800 md:dark:text-theme-secondary-600 md:hover:text-theme-secondary-900 text-theme-secondary-700 dark:text-theme-secondary-200"
+>
+    <x-slot name="button">
         @if (strlen($slot) > 0)
             <span>{{ $slot }}</span>
         @else
@@ -34,24 +30,19 @@
         @endif
     </x-slot>
 
-    <x-slot
-        name="content"
-        class="right-0 top-full"
+    <x-general.dropdown.list-item
+        :url="Network::mainnetExplorerUrl()"
+        :is-active="$isProduction"
     >
-        <x-general.dropdown.list-item
-            :url="Network::mainnetExplorerUrl()"
-            :is-active="$isProduction"
-        >
-            <span class="md:hidden">@lang('general.navbar.live')</span>
-            <span class="hidden md:block">@lang('general.navbar.live_network')</span>
-        </x-general.dropdown.list-item>
+        <span class="md:hidden">@lang('general.navbar.live')</span>
+        <span class="hidden md:block">@lang('general.navbar.live_network')</span>
+    </x-general.dropdown.list-item>
 
-        <x-general.dropdown.list-item
-            :url="Network::testnetExplorerUrl()"
-            :is-active="! $isProduction"
-        >
-            <span class="md:hidden">@lang('general.navbar.test')</span>
-            <span class="hidden md:block">@lang('general.navbar.test_network')</span>
-        </x-general.dropdown.list-item>
-    </x-slot>
+    <x-general.dropdown.list-item
+        :url="Network::testnetExplorerUrl()"
+        :is-active="! $isProduction"
+    >
+        <span class="md:hidden">@lang('general.navbar.test')</span>
+        <span class="hidden md:block">@lang('general.navbar.test_network')</span>
+    </x-general.dropdown.list-item>
 </x-general.dropdown>

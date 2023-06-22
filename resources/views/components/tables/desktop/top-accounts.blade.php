@@ -4,10 +4,14 @@
     'useVoteWeight' => false,
 ])
 
-<x-tables.encapsulated-table sticky class="hidden w-full md:block">
+<x-tables.encapsulated-table
+    class="hidden w-full md:block"
+    :paginator="$wallets"
+    sticky
+>
     <thead class="dark:bg-black bg-theme-secondary-100">
         <tr class="border-b-none">
-            <x-tables.headers.desktop.number name="general.wallet.rank" />
+            <x-tables.headers.desktop.text name="general.wallet.rank" class="text-left" />
             <x-tables.headers.desktop.address name="general.wallet.address" />
             <x-tables.headers.desktop.text name="general.wallet.name" />
             <x-tables.headers.desktop.icon name="general.wallet.type" class="text-center" responsive breakpoint="md-lg" />
@@ -22,7 +26,7 @@
                 breakpoint="md-lg"
                 responsive
             >
-                <x-ark-info :tooltip="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])" type="info" />
+                <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])" />
             </x-tables.headers.desktop.number>
         </tr>
     </thead>

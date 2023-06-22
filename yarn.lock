@@ -1469,10 +1469,10 @@ ajv@^8.0.0, ajv@^8.8.0:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-alpinejs@^3.12.1:
-  version "3.12.1"
-  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-3.12.1.tgz#97c1b975e68fb7c5dcd601cb58130ce163c5fc5d"
-  integrity sha512-GjEmZscHuCPv/XRbzabQLFH3I1+M3TbZqEsLDuYai/Yw+pE1IL7DK4ejRfqBSaysi4wWZ1k5IqVG2aefhWWqsQ==
+alpinejs@^3.12.2:
+  version "3.12.2"
+  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-3.12.2.tgz#e76ffd00a4858623acf84112c27a4eecbee9ac74"
+  integrity sha512-wrUZULm9w6DYwWcUtB/anFLgRaF4riSuPgIJ3gcPUS8st9luAJnAxoIgro/Al97d2McSSz/JypWg/NlmKFIJJA==
   dependencies:
     "@vue/reactivity" "~3.1.1"
 
@@ -2322,10 +2322,10 @@ date-fns@^2.30.0:
   dependencies:
     "@babel/runtime" "^7.21.0"
 
-dayjs@^1.11.7:
-  version "1.11.7"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.7.tgz#4b296922642f70999544d1144a2c25730fce63e2"
-  integrity sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==
+dayjs@^1.11.8:
+  version "1.11.8"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.8.tgz#4282f139c8c19dd6d0c7bd571e30c2d0ba7698ea"
+  integrity sha512-LcgxzFoWMEPO7ggRv1Y2N31hUf2R0Vj7fuy/m+Bg1K8rr+KAs1AEy4y9jd5DXe8pbHgX+srkHNS7TH6Q6ZhYeQ==
 
 debug@2.6.9:
   version "2.6.9"
@@ -4463,6 +4463,15 @@ postcss@^8.4.23:
   version "8.4.23"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.23.tgz#df0aee9ac7c5e53e1075c24a3613496f9e6552ab"
   integrity sha512-bQ3qMcpF6A/YjR55xtoTr0jGOlnPOKAIMdOWiv0EIT6HVPEaJiJB4NLljSbiHoC2RX7DN5Uvjtpbg1NPdwv1oA==
+  dependencies:
+    nanoid "^3.3.6"
+    picocolors "^1.0.0"
+    source-map-js "^1.0.2"
+
+postcss@^8.4.24:
+  version "8.4.24"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.24.tgz#f714dba9b2284be3cc07dbd2fc57ee4dc972d2df"
+  integrity sha512-M0RzbcI0sO/XJNucsGjvWU9ERWxb/ytp1w6dKtxTKgixdtQDq4rmx/g8W1hnaheq9jgwL/oyEdH5Bc4WwJKMqg==
   dependencies:
     nanoid "^3.3.6"
     picocolors "^1.0.0"

@@ -22,14 +22,36 @@ it('should list all blocks for the given public key', function () {
         'generator_public_key' => $this->subject->public_key,
     ]);
 
-    $component = Livewire::test(WalletBlockTable::class, [$this->subject->public_key, 'username']);
+    $component = Livewire::test(WalletBlockTable::class, [ViewModelFactory::make($this->subject)])
+        ->call('setIsReady');
 
     foreach (ViewModelFactory::collection($blocks) as $block) {
         $component->assertSee($block->id());
         $component->assertSee($block->timestamp());
         $component->assertSee(NumberFormatter::number($block->height()));
         $component->assertSee(NumberFormatter::number($block->transactionCount()));
-        $component->assertSee(NumberFormatter::currency($block->amount(), Network::currency()));
-        $component->assertSee(NumberFormatter::currency($block->fee(), Network::currency()));
+        $component->assertSeeInOrder([
+            Network::currency(),
+            number_format($block->amount()),
+        ]);
+        $component->assertSeeInOrder([
+            Network::currency(),
+            number_format($block->totalReward()),
+        ]);
+        $component->assertSeeInOrder([
+            Network::currency(),
+            $block->totalRewardFiat(),
+        ]);
     }
+});
+
+it('should show no data if not ready', function () {
+    $block = Block::factory()->create([
+        'generator_public_key' => $this->subject->public_key,
+    ]);
+
+    Livewire::test(WalletBlockTable::class, [ViewModelFactory::make($this->subject)])
+        ->assertDontSee($block->id)
+        ->call('setIsReady')
+        ->assertSee($block->id);
 });

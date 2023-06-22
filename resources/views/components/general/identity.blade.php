@@ -15,6 +15,7 @@
     'contentClass'    => null,
     'withoutLink'     => false,
     'linkClass'       => null,
+    'withoutIcon'     => false,
 ])
 
 <div @class($containerClass)>
@@ -23,14 +24,17 @@
         $withoutReverseClass => $withoutReverse,
         'flex-row-reverse md:space-x-4' => ! $withoutReverse,
     ]) }}>
-        @unless ($icon)
-            <x-general.avatar :identifier="$model->address()" />
-        @else
-            {{ $icon }}
+        @unless ($withoutIcon)
+            @unless ($icon)
+                <x-general.avatar :identifier="$model->address()" />
+            @else
+                {{ $icon }}
+            @endunless
         @endunless
 
         <div @class([
-            'flex items-center mr-4 md:mr-0',
+            'flex items-center md:mr-0',
+            'mr-4' => ! $withoutIcon,
             $contentClass,
         ])>
             @if ($prefix)
