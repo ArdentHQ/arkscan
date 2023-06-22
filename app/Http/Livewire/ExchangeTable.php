@@ -40,10 +40,10 @@ final class ExchangeTable extends Component
 
     public function getExchanges(): Collection
     {
-        return Exchange::orderBy('name')
-            ->filterByType($this->type)
+        return Exchange::filterByType($this->type)
             ->filterByPair($this->pair)
-            ->get();
+            ->get()
+            ->sort(fn ($a, $b) => $b->volume - $a->volume);
     }
 
     public function setFilter(string $param, string $value): void
