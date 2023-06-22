@@ -103,6 +103,15 @@
     box-shadow: unset;
 }
 
+/* Tippy Overwrite Theme */
+.dark .tippy-box[data-theme~="ark"] {
+    @apply bg-theme-dark-700 text-theme-dark-50;
+}
+
+.dark .tippy-box[data-theme~="ark"] .tippy-arrow {
+    @apply text-theme-dark-700;
+}
+
 :root {
     --theme-orange-dark: #a56d4c;
     --theme-orange-light: #fbeed6;
