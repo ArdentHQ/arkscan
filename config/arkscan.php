@@ -59,6 +59,15 @@ return [
         ],
     ],
 
+    'productivity' => [
+        'danger'  => env('ARKSCAN_PRODUCTIVITY_DANGER', 97),
+        'warning' => env('ARKSCAN_PRODUCTIVITY_WARNING', 99.8),
+    ],
+
+    'pagination' => [
+        'per_page' => env('ARKSCAN_PAGINATION_PER_PAGE', 25),
+    ],
+
     'statistics'                        => [
 
         /*

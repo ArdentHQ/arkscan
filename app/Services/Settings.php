@@ -76,7 +76,7 @@ class Settings
 
     public function usesPriceChart(): bool
     {
-        if (config('explorer.network') !== 'production') {
+        if (config('arkscan.network') !== 'production') {
             return false;
         }
 

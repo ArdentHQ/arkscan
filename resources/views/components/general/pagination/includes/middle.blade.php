@@ -16,6 +16,11 @@
         class="flex absolute left-0 z-10 space-x-2 w-full h-full bg-white dark:bg-theme-secondary-900"
         x-transition.opacity
         x-cloak
+        x-on:submit="(e) => {
+            e.preventDefault();
+            $wire.setPage($refs.search.value);
+            search = false;
+        }"
     >
         <div class="flex overflow-hidden flex-1 items-center px-2 bg-white rounded outline outline-2 outline-theme-primary-600 dark:bg-theme-secondary-900">
             <x-ark-icon
@@ -65,26 +70,24 @@
     <button
         x-on:click="toggleSearch"
         type="button"
-        class="inline-flex justify-center items-center p-0 w-full leading-5 button-secondary"
+        class="inline-flex relative justify-center items-center p-0 w-full leading-5 button-secondary group focus:ring-theme-primary-500 focus:dark:ring-theme-primary-300"
         :class="{ 'opacity-0': search }"
         @unless ($paginator->hasPages())
             disabled
         @endunless
     >
-        <div class="py-1.5 px-2 sm:px-3 md:px-4">
-            <span class="sm:hidden md:inline">
-                @lang('ui::generic.pagination.current_to', [
-                    'currentPage' => number_format($paginator->currentPage(), 0),
-                    'lastPage' => number_format($paginator->lastPage(), 0),
-                ])
-            </span>
+        <div class="py-1.5 px-2 sm:px-3 md:px-4 group-hover:text-transparent">
+            @lang('ui::generic.pagination.current_to', [
+                'currentPage' => number_format($paginator->currentPage(), 0),
+                'lastPage' => number_format($paginator->lastPage(), 0),
+            ])
+        </div>
 
-            <span class="hidden sm:block md:hidden">
-                @lang('ui::generic.pagination.current_to_short', [
-                    'currentPage' => number_format($paginator->currentPage(), 0),
-                    'lastPage' => number_format($paginator->lastPage(), 0),
-                ])
-            </span>
+        <div class="absolute m-auto text-transparent group-hover:text-white">
+            <x-ark-icon
+                name="magnifying-glass-small"
+                size="sm"
+            />
         </div>
     </button>
 </div>

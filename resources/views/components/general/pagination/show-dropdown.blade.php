@@ -1,5 +1,8 @@
-<x-general.dropdown.dropdown>
-    <x-slot name="button" class="bg-white rounded border border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800">
+<x-general.dropdown.dropdown
+    active-button-class=""
+    button-class="bg-white rounded border border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
+>
+    <x-slot name="button">
         <div class="flex justify-center items-center py-2 px-3 space-x-2 text-sm font-semibold leading-4 transition-default dark:text-theme-secondary-200">
             <span>{{ $this->perPage }}</span>
 
@@ -15,17 +18,12 @@
         </div>
     </x-slot>
 
-    <x-slot
-        name="content"
-        class="right-0 top-full"
-    >
-        @foreach (trans('pagination.per_page_options') as $perPage)
-            <x-general.dropdown.list-item
-                :is-active="$perPage === $this->perPage"
-                wire:click="setPerPage({{ $perPage }})"
-            >
-                {{ $perPage }}
-            </x-general.dropdown.list-item>
-        @endforeach
-    </x-slot>
+    @foreach (trans('pagination.per_page_options') as $perPage)
+        <x-general.dropdown.list-item
+            :is-active="$perPage === $this->perPage"
+            wire:click="setPerPage({{ $perPage }})"
+        >
+            {{ $perPage }}
+        </x-general.dropdown.list-item>
+    @endforeach
 </x-general.dropdown.dropdown>

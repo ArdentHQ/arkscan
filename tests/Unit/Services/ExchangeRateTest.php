@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Facades\Settings;
 use App\Services\Cache\CryptoDataCache;
+use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
 use App\Services\Timestamp;
@@ -29,4 +31,33 @@ it('should convert with the current rate', function () {
     ]));
 
     expect(ExchangeRate::now())->toBe(10.0);
+});
+
+it('should convert one currency to another', function () {
+    Settings::shouldReceive('currency')
+        ->andReturn('GBP');
+
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 1);
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'GBP', 2);
+
+    expect(ExchangeRate::convertFiatToCurrency(4, 'USD', 'GBP'))->toBe('£8.00');
+});
+
+it('should convert one currency to crypto', function () {
+    Settings::shouldReceive('currency')
+        ->andReturn('BTC');
+
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 1);
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'BTC', 0.00002);
+
+    expect(ExchangeRate::convertFiatToCurrency(4, 'USD', 'BTC'))->toBe('0.00008 BTC');
+});
+
+it('should return null if a currency value is missing', function () {
+    Settings::shouldReceive('currency')
+        ->andReturn('GBP');
+
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 1);
+
+    expect(ExchangeRate::convertFiatToCurrency(4, 'USD', 'GBP'))->toBeNull();
 });

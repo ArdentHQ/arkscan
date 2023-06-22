@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
 it('should render with price', function () {
-    Config::set('explorer.network', 'production');
+    Config::set('arkscan.network', 'production');
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 1.606);
     (new NetworkStatusBlockCache())->setHistoricalHourly('ARK', 'USD', collect());

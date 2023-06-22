@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Cookie;
 use Livewire\Livewire;
 
 it('should render with the source currency, target currency and exchange rate', function () {
-    Config::set('explorer.network', 'production');
-    Config::set('explorer.networks.production.canBeExchanged', true);
+    Config::set('arkscan.network', 'production');
+    Config::set('arkscan.networks.production.canBeExchanged', true);
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 0.2907);
 
@@ -27,15 +27,15 @@ it('should render n/a if no price set', function () {
 });
 
 it('should render n/a if development environment', function () {
-    Config::set('explorer.network', 'development');
+    Config::set('arkscan.network', 'development');
 
     Livewire::test(PriceTicker::class)
         ->assertSee('N/A');
 });
 
 it('should update the price if the currency changes', function () {
-    Config::set('explorer.network', 'production');
-    Config::set('explorer.networks.production.canBeExchanged', true);
+    Config::set('arkscan.network', 'production');
+    Config::set('arkscan.networks.production.canBeExchanged', true);
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 0.2907);
     (new NetworkStatusBlockCache())->setPrice('ARK', 'MXN', 0.22907);

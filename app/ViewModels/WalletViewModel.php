@@ -83,4 +83,18 @@ final class WalletViewModel implements ViewModel
 
         return ArkVaultUrlBuilder::get()->generateVote($subject);
     }
+
+    public function name(): ?string
+    {
+        if ($this->isDelegate()) {
+            return $this->delegateUsername();
+        }
+
+        $knownWallet = $this->findWalletByKnown();
+        if ($knownWallet !== null) {
+            return $knownWallet['name'];
+        }
+
+        return null;
+    }
 }

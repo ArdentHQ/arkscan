@@ -11,7 +11,7 @@
     href="{{ $route ? route($route, $params) : $url }}"
     target="{{ $route ? '_self' : '_blank'}}"
     @class([
-        'px-6 py-3 inline-flex font-semibold leading-5 group focus:outline-none transition-default h-full relative rounded dark:hover:bg-black hover:bg-theme-secondary-200',
+        'px-6 py-3 inline-flex font-semibold leading-5 group focus:outline-none focus:ring-inset transition-default h-full relative rounded dark:hover:bg-black hover:bg-theme-secondary-200',
         'text-theme-secondary-900 dark:text-theme-secondary-400' => $currentRoute === $route,
         'text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-secondary-500 dark:hover:text-theme-secondary-400' => $currentRoute !== $route,
     ])

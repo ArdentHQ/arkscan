@@ -20,6 +20,24 @@ trait CanBeDelegate
         return Arr::has($this->wallet, 'attributes.delegate.resigned');
     }
 
+    public function isStandby(): bool
+    {
+        return $this->rank() > Network::delegateCount();
+    }
+
+    public function isActive(): bool
+    {
+        if (! $this->isDelegate()) {
+            return false;
+        }
+
+        if ($this->isResigned()) {
+            return false;
+        }
+
+        return ! $this->isStandby();
+    }
+
     public function resignationId(): ?string
     {
         if (is_null($this->wallet->public_key)) {
@@ -49,9 +67,6 @@ trait CanBeDelegate
         return $this->delegateUsername();
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function rank(): ?int
     {
         return Arr::get($this->wallet, 'attributes.delegate.rank', 0);

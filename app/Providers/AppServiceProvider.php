@@ -30,7 +30,7 @@ final class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             MarketDataProvider::class,
-            fn () => new (Config::get('explorer.market_data_provider_service'))
+            fn () => new (Config::get('arkscan.market_data_provider_service'))
         );
     }
 
@@ -115,7 +115,7 @@ final class AppServiceProvider extends ServiceProvider
             $navigationEntries[2]['children'][] = ['route' => 'exchanges',  'label' => trans('menus.exchanges')];
         }
 
-        if (config('explorer.support.enabled') === true) {
+        if (config('arkscan.support.enabled') === true) {
             $navigationEntries[3]['children'][] = ['route' => 'contact', 'label' => trans('menus.contact')];
         }
 

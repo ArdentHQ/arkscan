@@ -15,12 +15,13 @@ return [
     |
     */
 
-    'previous' => '&laquo; Previous',
-    'next'     => 'Next &raquo;',
-    'show'     => 'Show',
-    'records'  => 'Records',
-    'first'    => 'First',
-    'last'     => 'Last',
+    'previous'          => '&laquo; Previous',
+    'next'              => 'Next &raquo;',
+    'show'              => 'Show',
+    'records'           => 'Records',
+    'first'             => 'First',
+    'last'              => 'Last',
+    'showing_x_results' => 'Showing :count results',
 
     'per_page_options' => [
         10,
