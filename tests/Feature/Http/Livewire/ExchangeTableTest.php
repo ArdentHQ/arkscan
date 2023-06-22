@@ -59,3 +59,33 @@ it('ignores an invalid filter', function () {
         ->assertSet('pair', 'all')
         ->assertSet('type', 'all');
 });
+
+it('sort by volume descending by default', function () {
+    Exchange::factory()->create([
+        'name' => 'Exchange 1',
+        'volume' => '23',
+    ]);
+
+    Exchange::factory()->create([
+        'name' => 'Exchange 2',
+        'volume' => '45123.01231',
+    ]);
+
+    Exchange::factory()->create([
+        'name' => 'Exchange 3',
+        'volume' => '1000000.01',
+    ]);
+
+    Exchange::factory()->create([
+        'name' => 'Exchange 4',
+        'volume' => null,
+    ]);
+
+    Livewire::test(ExchangeTable::class)
+        ->assertSeeInOrder([
+            'Exchange 3',
+            'Exchange 2',
+            'Exchange 1',
+            'Exchange 4',
+        ]);
+});
