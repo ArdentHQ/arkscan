@@ -44,7 +44,7 @@ final class NetworkStatusBlockPrice extends Component
         if (NumberFormatter::isFiat($currency)) {
             return BetterNumberFormatter::new()
                 ->withLocale(Settings::locale())
-                ->formatWithCurrencyAccounting($price);
+                ->formatCurrency($price, Settings::currency());
         }
 
         return BetterNumberFormatter::new()

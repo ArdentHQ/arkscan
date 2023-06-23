@@ -78,7 +78,7 @@ final class Chart extends Component
             return BetterNumberFormatter::new()
                 ->withLocale(Settings::locale())
                 ->withFractionDigits(2)
-                ->formatWithCurrencyAccounting($price);
+                ->formatCurrency($price, Settings::currency());
         }
 
         return BetterNumberFormatter::new()

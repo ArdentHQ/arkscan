@@ -34,7 +34,7 @@ final class MarketCap
             return BetterNumberFormatter::new()
                 ->withLocale(Settings::locale())
                 ->withFractionDigits(0)
-                ->formatWithCurrencyAccounting($marketcap);
+                ->formatCurrency($marketcap, Settings::currency());
         }
 
         return BetterNumberFormatter::new()
