@@ -148,7 +148,6 @@ return [
                     'enabled' => false,
                 ],
                 'rankingRules' => [
-                    'typo',
                     'words',
                     'proximity',
                     'attribute',
@@ -164,7 +163,6 @@ return [
                     'enabled' => false,
                 ],
                 'rankingRules' => [
-                    'typo',
                     'words',
                     'proximity',
                     'attribute',
@@ -179,7 +177,6 @@ return [
                     'enabled' => false,
                 ],
                 'rankingRules' => [
-                    'typo',
                     'words',
                     'proximity',
                     'attribute',
