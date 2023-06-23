@@ -81,11 +81,17 @@ it('sort by volume descending by default', function () {
         'volume' => null,
     ]);
 
+    Exchange::factory()->create([
+        'name'   => 'Exchange 5',
+        'volume' => null,
+    ]);
+
     Livewire::test(ExchangeTable::class)
         ->assertSeeInOrder([
             'Exchange 3',
             'Exchange 2',
             'Exchange 1',
             'Exchange 4',
+            'Exchange 5',
         ]);
 });
