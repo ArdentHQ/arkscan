@@ -10,6 +10,27 @@ module.exports = {
         extend: {
             ...defaultConfig.theme.extend,
 
+            colors: {
+                ...defaultConfig.theme.extend.colors,
+
+                "theme-orange-dark": "var(--theme-orange-dark)",
+                "theme-orange-light": "var(--theme-orange-light)",
+
+                "theme-dark-50": "var(--theme-color-dark-50)",
+                "theme-dark-100": "var(--theme-color-dark-100)",
+                "theme-dark-200": "var(--theme-color-dark-200)",
+                "theme-dark-300": "var(--theme-color-dark-300)",
+                "theme-dark-400": "var(--theme-color-dark-400)",
+                "theme-dark-500": "var(--theme-color-dark-500)",
+                "theme-dark-600": "var(--theme-color-dark-600)",
+                "theme-dark-700": "var(--theme-color-dark-700)",
+                "theme-dark-800": "var(--theme-color-dark-800)",
+                "theme-dark-900": "var(--theme-color-dark-900)",
+                "theme-dark-950": "var(--theme-color-dark-950)",
+
+                black: "var(--theme-color-dark-950)",
+            },
+
             borderWidth: {
                 3: "3px",
                 20: "20px",

@@ -12,7 +12,7 @@
     </div>
 
     <div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-y-0 md:space-x-4">
-        <div class="flex items-center space-x-2 text-xs">
+        <div class="flex items-center space-x-2 text-xs isolate">
             <div class="text-theme-secondary-500 dark:text-theme-secondary-700">
                 @lang('general.search.generated_by')
             </div>

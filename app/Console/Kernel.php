@@ -87,7 +87,7 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(FetchExchangesDetails::class)->hourly();
 
-        if (config('explorer.scout.run_jobs', false) === true) {
+        if (config('arkscan.scout.run_jobs', false) === true) {
             $schedule->command(ScoutIndexModels::class)->everyMinute();
         }
     }

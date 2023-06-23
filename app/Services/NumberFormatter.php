@@ -13,7 +13,11 @@ final class NumberFormatter
 {
     public const CRYPTO_DECIMALS = 8;
 
+    public const CRYPTO_DECIMALS_SMALL = 8;
+
     public const FIAT_DECIMALS = 2;
+
+    public const FIAT_DECIMALS_SMALL = 4;
 
     /**
      * @param string|int|float $value
@@ -42,30 +46,50 @@ final class NumberFormatter
     /**
      * @param string|int|float $value
      */
-    public static function currency($value, string $currency): string
+    public static function currency($value, string $currency, bool $showSmallAmounts = false): string
     {
+        $isSmallAmount = $value < 1;
+
         if (! static::isFiat($currency)) {
             return BetterNumberFormatter::new()
-                ->formatWithCurrencyCustom($value, $currency, static::decimalsFor($currency));
+                ->formatWithCurrencyCustom($value, $currency, static::decimalsFor($currency, $showSmallAmounts && $isSmallAmount));
         }
 
         return BetterNumberFormatter::new()
             ->withLocale('en-US')
-            ->withFractionDigits(static::decimalsFor($currency))
+            ->withFractionDigits(static::decimalsFor($currency, $showSmallAmounts && $isSmallAmount))
             ->formatCurrency((float) $value, $currency);
     }
 
     /**
      * @param string|int|float $value
      */
-    public static function usdWithDecimals($value, ?int $decimals = 4): string
+    public static function currencyWithDecimals($value, string $currency, ?int $decimals = 4): string
+    {
+        $formatter = BetterNumberFormatter::new()
+            ->withLocale('en-US')
+            ->withFractionDigits($decimals ?? 4)
+            ->withMinFractionDigits(2);
+
+        if (self::isFiat($currency)) {
+            // Workaround to fix 5 rounding down (e.g. 1.00005 > 1 instead of 1.0001)
+            return $formatter->formatCurrency(floatval(number_format((float) $value, $decimals ?? 4, '.', '')), $currency);
+        }
+
+        return $formatter->formatWithCurrencyCustom($value, $currency, $decimals ?? 8);
+    }
+
+    /**
+     * @param string|int|float $value
+     */
+    public static function networkCurrency($value, int $decimals = 8): string
     {
         return BetterNumberFormatter::new()
             ->withLocale('en-US')
-            ->withFractionDigits($decimals ?? 4)
+            ->withFractionDigits($decimals)
             ->withMinFractionDigits(2)
             // Workaround to fix 5 rounding down (e.g. 1.00005 > 1 instead of 1.0001)
-            ->formatCurrency(floatval(number_format((float) $value, $decimals ?? 4, '.', '')), 'USD');
+            ->formatWithDecimal(floatval(number_format((float) $value, $decimals, '.', '')));
     }
 
     /**
@@ -117,12 +141,12 @@ final class NumberFormatter
         return ! in_array($currency, $cryptoCurrencies, true);
     }
 
-    public static function decimalsFor(string $currency): int
+    public static function decimalsFor(string $currency, bool $isSmallValue = false): int
     {
         if (static::isFiat($currency)) {
-            return self::FIAT_DECIMALS;
+            return $isSmallValue ? self::FIAT_DECIMALS_SMALL : self::FIAT_DECIMALS;
         }
 
-        return self::CRYPTO_DECIMALS;
+        return $isSmallValue ? self::CRYPTO_DECIMALS_SMALL : self::CRYPTO_DECIMALS;
     }
 }

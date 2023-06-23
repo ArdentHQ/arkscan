@@ -26,7 +26,7 @@ it('should cache the username for the public key', function () {
 it('should cache the known wallet name if defined', function () {
     $knownWalletsUrl = 'https://knownwallets.com/known-wallets.json';
 
-    Config::set('explorer.networks.development.knownWallets', $knownWalletsUrl);
+    Config::set('arkscan.networks.development.knownWallets', $knownWalletsUrl);
 
     Http::fake(Http::response([
         [
@@ -53,7 +53,7 @@ it('should cache the known wallet name if defined', function () {
 it('should cache the known wallet name if doesnt have delegate name', function () {
     $knownWalletsUrl = 'https://knownwallets.com/known-wallets.json';
 
-    Config::set('explorer.networks.development.knownWallets', $knownWalletsUrl);
+    Config::set('arkscan.networks.development.knownWallets', $knownWalletsUrl);
 
     Http::fake(Http::response([
         [

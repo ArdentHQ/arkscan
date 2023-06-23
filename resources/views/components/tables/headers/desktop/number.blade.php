@@ -5,6 +5,7 @@
     'lastOn' => null,
     'class' => '',
     'name' => '',
+    'nameProperties' => [],
     'sortingId' => null,
     'initialSort' => 'asc',
 ])
@@ -33,7 +34,7 @@
                 :initial-direction="$initialSort"
             />
 
-            <div>@lang($name)</div>
+            <div>@lang($name, $nameProperties)</div>
 
             {{ $slot }}
         </div>
@@ -43,6 +44,6 @@
             :initial-direction="$initialSort"
         />
 
-        <span>@lang($name)</span>
+        <span>@lang($name, $nameProperties)</span>
     @endisset
 </x-ark-tables.header>

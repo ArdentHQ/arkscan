@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Config;
 const EVERY_MINUTE = '* * * * *';
 
 it('schedules the `scout:index-models` command correctly if enabled', function () {
-    Config::set('explorer.scout.run_jobs', true);
+    Config::set('arkscan.scout.run_jobs', true);
 
     $schedule = app()->make(Schedule::class);
 
@@ -27,7 +27,7 @@ it('schedules the `scout:index-models` command correctly if enabled', function (
 });
 
 it('does not schedule the `scout:index-models` command if disabled', function () {
-    Config::set('explorer.scout.run_jobs', false);
+    Config::set('arkscan.scout.run_jobs', false);
 
     $schedule = app()->make(Schedule::class);
 

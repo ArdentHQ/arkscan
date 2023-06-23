@@ -4,129 +4,179 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Enums\CoreTransactionTypeEnum;
+use App\Enums\TransactionTypeGroupEnum;
 use App\Facades\Wallets;
+use App\Http\Livewire\Concerns\DeferLoading;
+use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
-use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
+use App\ViewModels\WalletViewModel;
+use ArkEcosystem\Crypto\Enums\Types;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
+/**
+ * @property bool $isAllSelected
+ * @property LengthAwarePaginator $transactions
+ * */
 final class WalletTransactionTable extends Component
 {
-    use HasPagination;
+    use DeferLoading;
+    use HasTablePagination;
 
-    public array $state = [
-        'address'   => null,
-        'publicKey' => null,
-        'isCold'    => null,
-        'type'      => 'all',
-        'direction' => 'all',
+    public string $address;
+
+    public ?string $publicKey = null;
+
+    public array $filter = [
+        'outgoing'      => true,
+        'incoming'      => true,
+        'transfers'     => true,
+        'votes'         => true,
+        'multipayments' => true,
+        'others'        => true,
     ];
+
+    public bool $selectAllFilters = true;
 
     /** @var mixed */
     protected $listeners = [
-        'filterTransactionsByDirection',
         'currencyChanged' => '$refresh',
     ];
 
-    public function mount(string $address, bool $isCold, ?string $publicKey): void
+    public function mount(WalletViewModel $wallet): void
     {
-        $this->state['address']   = $address;
-        $this->state['publicKey'] = $publicKey;
-        $this->state['isCold']    = $isCold;
-    }
-
-    public function filterTransactionsByDirection(string $value): void
-    {
-        $this->state['direction'] = $value;
-    }
-
-    public function updatedState(): void
-    {
-        $this->gotoPage(1);
+        $this->address   = $wallet->address();
+        $this->publicKey = $wallet->publicKey();
     }
 
     public function render(): View
     {
-        if ($this->state['direction'] === 'received') {
-            $items         = $this->getReceivedQuery()->withScope(OrderByTimestampScope::class)->paginate();
-            $receivedCount = $items->total();
-            $sentCount     = $this->getSentQuery()->count();
-        } elseif ($this->state['direction'] === 'sent') {
-            $items         = $this->getSentQuery()->withScope(OrderByTimestampScope::class)->paginate();
-            $receivedCount = $this->getReceivedQuery()->count();
-            $sentCount     = $items->total();
-        } else {
-            $items         = $this->getAllQuery()->withScope(OrderByTimestampScope::class)->paginate();
-            $receivedCount = $this->getReceivedQuery()->count();
-            $sentCount     = $this->getSentQuery()->count();
-        }
-
         return view('livewire.wallet-transaction-table', [
-            'wallet'        => ViewModelFactory::make(Wallets::findByAddress($this->state['address'])),
-            'transactions'  => ViewModelFactory::paginate($items),
-            'countReceived' => $receivedCount,
-            'countSent'     => $sentCount,
+            'wallet'        => ViewModelFactory::make(Wallets::findByAddress($this->address)),
+            'transactions'  => ViewModelFactory::paginate($this->transactions),
         ]);
     }
 
-    private function getAllQuery(): Builder
+    public function getIsAllSelectedProperty(): bool
     {
-        $query = Transaction::query();
-
-        $query->where(function ($query): void {
-            $query->where('sender_public_key', $this->state['publicKey']);
-
-            $this->applyTypeScope($query);
-        });
-
-        $query->orWhere(function ($query): void {
-            $query->where('recipient_id', $this->state['address']);
-
-            $this->applyTypeScope($query);
-        });
-
-        $query->orWhere(function ($query): void {
-            $query->whereJsonContains('asset->payments', [['recipientId' => $this->state['address']]]);
-
-            $this->applyTypeScope($query);
-        });
-
-        return $query;
+        return ! collect($this->filter)->contains(false);
     }
 
-    private function getReceivedQuery(): Builder
+    public function getNoResultsMessageProperty(): null|string
     {
-        $query = Transaction::query();
-
-        $query->where(function ($query): void {
-            $query->where('recipient_id', $this->state['address']);
-
-            $this->applyTypeScope($query);
-        });
-
-        $query->orWhere(function ($query): void {
-            $query->whereJsonContains('asset->payments', [['recipientId' => $this->state['address']]]);
-
-            $this->applyTypeScope($query);
-        });
-
-        return $query;
-    }
-
-    private function getSentQuery(): Builder
-    {
-        return $this->applyTypeScope(Transaction::where('sender_public_key', $this->state['publicKey']));
-    }
-
-    private function applyTypeScope(Builder $query): Builder
-    {
-        if ($this->state['type'] !== 'all') {
-            return $query->withScope(Transaction::TYPE_SCOPES[$this->state['type']]);
+        if (! $this->hasAddressingFilters() && ! $this->hasTransactionTypeFilters()) {
+            return trans('tables.transactions.no_results.no_filters');
         }
 
-        return $query;
+        if (! $this->hasAddressingFilters()) {
+            return trans('tables.transactions.no_results.no_addressing_filters');
+        }
+
+        if ($this->transactions->total() === 0) {
+            return trans('tables.transactions.no_results.no_results');
+        }
+
+        return null;
+    }
+
+    public function updatedSelectAllFilters(bool $value): void
+    {
+        foreach ($this->filter as &$filter) {
+            $filter = $value;
+        }
+    }
+
+    public function updatedFilter(): void
+    {
+        $this->selectAllFilters = $this->isAllSelected;
+
+        $this->setPage(1);
+    }
+
+    public function getTransactionsProperty(): LengthAwarePaginator
+    {
+        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage);
+        if (! $this->isReady) {
+            return $emptyResults;
+        }
+
+        if (! $this->hasAddressingFilters()) {
+            return $emptyResults;
+        }
+
+        if (! $this->hasTransactionTypeFilters()) {
+            return $emptyResults;
+        }
+
+        return $this->getTransactionsQuery()
+            ->withScope(OrderByTimestampScope::class)
+            ->paginate($this->perPage);
+    }
+
+    public function state(): array
+    {
+        return [
+            'address'   => $this->address,
+            'publicKey' => $this->publicKey,
+        ];
+    }
+
+    private function hasAddressingFilters(): bool
+    {
+        if ($this->filter['incoming'] === true) {
+            return true;
+        }
+
+        return $this->filter['outgoing'];
+    }
+
+    private function hasTransactionTypeFilters(): bool
+    {
+        if ($this->filter['transfers'] === true) {
+            return true;
+        }
+
+        if ($this->filter['votes'] === true) {
+            return true;
+        }
+
+        if ($this->filter['multipayments'] === true) {
+            return true;
+        }
+
+        return $this->filter['others'];
+    }
+
+    private function getTransactionsQuery(): Builder
+    {
+        return Transaction::query()
+            ->where(function ($query) {
+                $query->where(fn ($query) => $query->when($this->filter['transfers'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::TRANSFER)))
+                    ->orWhere(fn ($query) => $query->when($this->filter['votes'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::VOTE)))
+                    ->orWhere(fn ($query) => $query->when($this->filter['multipayments'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT)))
+                    ->orWhere(fn ($query) => $query->when($this->filter['others'] === true, fn ($query) => $query
+                        ->where('type_group', TransactionTypeGroupEnum::MAGISTRATE)
+                        ->orWhere(
+                            fn ($query) => $query
+                                ->where('type_group', TransactionTypeGroupEnum::CORE)
+                                ->whereNotIn('type', [
+                                    CoreTransactionTypeEnum::TRANSFER,
+                                    CoreTransactionTypeEnum::VOTE,
+                                    CoreTransactionTypeEnum::MULTI_PAYMENT,
+                                ])
+                        )));
+            })
+            ->where(function ($query) {
+                $query->where(fn ($query) => $query->when($this->filter['outgoing'], fn ($query) => $query->where('sender_public_key', $this->publicKey)))
+                    ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query->where('recipient_id', $this->address)))
+                    ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query
+                        ->where('type', Types::MULTI_PAYMENT)
+                        ->whereJsonContains('asset->payments', [['recipientId' => $this->address]])));
+            });
     }
 }

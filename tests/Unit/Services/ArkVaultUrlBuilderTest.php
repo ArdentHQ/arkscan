@@ -11,7 +11,7 @@ it('creates an instance of the url builder', function () {
 });
 
 it('uses devnet network if explorer is set to development', function () {
-    Config::set('explorer.network', 'development');
+    Config::set('arkscan.network', 'development');
 
     $builder = ArkVaultUrlBuilder::get();
 
@@ -19,7 +19,7 @@ it('uses devnet network if explorer is set to development', function () {
 });
 
 it('uses mainnet network if explorer is set to production', function () {
-    Config::set('explorer.network', 'production');
+    Config::set('arkscan.network', 'production');
 
     $builder = ArkVaultUrlBuilder::get();
 

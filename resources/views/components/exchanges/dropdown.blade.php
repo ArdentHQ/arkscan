@@ -33,7 +33,5 @@
         </div>
     </x-slot>
 
-    <x-slot name="content">
-        {{ $slot }}
-    </x-slot>
+    {{ $slot }}
 </x-general.dropdown.dropdown>
