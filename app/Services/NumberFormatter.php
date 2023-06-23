@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\CryptoCurrencies;
+use App\Facades\Settings;
 use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 use ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation;
 use ReflectionClass;
@@ -56,7 +57,7 @@ final class NumberFormatter
         }
 
         return BetterNumberFormatter::new()
-            ->withLocale('en-US')
+            ->withLocale(Settings::locale())
             ->withFractionDigits(static::decimalsFor($currency, $showSmallAmounts && $isSmallAmount))
             ->formatCurrency((float) $value, $currency);
     }
@@ -67,7 +68,7 @@ final class NumberFormatter
     public static function currencyWithDecimals($value, string $currency, ?int $decimals = 4): string
     {
         $formatter = BetterNumberFormatter::new()
-            ->withLocale('en-US')
+            ->withLocale(Settings::locale())
             ->withFractionDigits($decimals ?? 4)
             ->withMinFractionDigits(2);
 
