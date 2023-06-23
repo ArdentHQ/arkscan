@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'aud' => [
         'currency' => 'AUD',
-        'locale'   => 'en_AU',
+        'locale'   => 'en_US',
         'symbol'   => '$',
     ],
     'brl' => [
@@ -20,7 +20,7 @@ return [
     ],
     'cad' => [
         'currency' => 'CAD',
-        'locale'   => 'en_CA',
+        'locale'   => 'en_US',
         'symbol'   => '$',
     ],
     'chf' => [
@@ -65,7 +65,7 @@ return [
     ],
     'nzd' => [
         'currency' => 'NZD',
-        'locale'   => 'en_NZ',
+        'locale'   => 'en_US',
         'symbol'   => '$',
     ],
     'rub' => [
