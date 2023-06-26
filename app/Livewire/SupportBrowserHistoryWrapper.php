@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
-use Livewire\Features\SupportBrowserHistory;
 use Illuminate\Contracts\Support\Arrayable;
+use Livewire\Features\SupportBrowserHistory;
 
 final class SupportBrowserHistoryWrapper extends SupportBrowserHistory
 {
