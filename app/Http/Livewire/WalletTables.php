@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
+use App\Livewire\SupportBrowserHistoryWrapper;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
 use Livewire\Component;
+use Livewire\Features\SupportBrowserHistory;
 
 final class WalletTables extends Component
 {
@@ -16,20 +19,9 @@ final class WalletTables extends Component
 
     public string $view = 'transactions';
 
-    public ?string $previousView = null;
+    public ?string $previousView = 'transactions';
 
-    public array $tabQueryData = [
-        'transactions' => [
-            'page'          => 1,
-            'perPage'       => WalletTransactionTable::PER_PAGE,
-            'outgoing'      => true,
-            'incoming'      => true,
-            'transfers'     => true,
-            'votes'         => true,
-            'multipayments' => true,
-            'others'        => true,
-        ],
-    ];
+    public array $tabQueryData;
 
     /** @var mixed */
     protected $listeners = [
@@ -38,40 +30,84 @@ final class WalletTables extends Component
 
     public function __get($property): mixed
     {
-        if (isset($this->tabQueryData[$this->view][$property])) {
-            return $this->tabQueryData[$this->view][$property];
+        $value = Arr::get($this->tabQueryData[$this->view], $property);
+        if ($value !== null) {
+            return $value;
         }
 
-        if (isset($this->tabQueryData[$this->previousView][$property])) {
-            return $this->tabQueryData[$this->previousView][$property];
+        $value = Arr::get($this->tabQueryData[$this->previousView], $property);
+        if ($value !== null) {
+            return $value;
         }
 
         return parent::__get($property);
     }
 
-    // public array $savedQueryData = [];
-
-    public function queryString(): array
+    public function __set($property, $value): void
     {
-        return [
-            'view'          => ['except' => 'transactions'],
+        if (Arr::has($this->tabQueryData[$this->view], $property)) {
+            $this->tabQueryData[$this->view][$property] = $value;
+        }
 
-            // Transaction Filters
-            'outgoing'      => ['except' => true],
-            'incoming'      => ['except' => true],
-            'transfers'     => ['except' => true],
-            'votes'         => ['except' => true],
-            'multipayments' => ['except' => true],
-            'others'        => ['except' => true],
-        ];
+        if (Arr::has($this->tabQueryData[$this->previousView], $property)) {
+            $this->tabQueryData[$this->previousView][$property] = $value;
+        }
     }
 
-    // public function __set($property, $value): void
-    // {
-    //     if (isset($this->tabQueryData[$this->view][$property])) {
-    //         $this->tabQueryData[$this->view][$property] = $value;
-    //     }
-    // }
+    public array $savedQueryData = [];
+
+    public function queryString(?string $view = null): array
+    {
+        $params = [
+            'view'    => ['except' => 'transactions'],
+            'page'    => ['except' => 1],
+            'perPage' => ['except' => intval(config('arkscan.pagination.per_page'))],
+        ];
+
+        if ($view === 'transactions' || ($view === null && $this->view === 'transactions')) {
+            $params = [
+                ...$params,
+
+                // Transaction Filters
+                'outgoing'      => ['except' => true],
+                'incoming'      => ['except' => true],
+                'transfers'     => ['except' => true],
+                'votes'         => ['except' => true],
+                'multipayments' => ['except' => true],
+                'others'        => ['except' => true],
+            ];
+        }
+
+        return $params;
+    }
+
+    public function boot(): void
+    {
+        if (! isset($this->tabQueryData)) {
+            $this->tabQueryData = [
+                'transactions' => [
+                    'page'          => 1,
+                    'perPage'       => WalletTransactionTable::defaultPerPage(),
+                    'outgoing'      => true,
+                    'incoming'      => true,
+                    'transfers'     => true,
+                    'votes'         => true,
+                    'multipayments' => true,
+                    'others'        => true,
+                ],
+
+                'blocks' => [
+                    'page'    => 1,
+                    'perPage' => WalletBlockTable::defaultPerPage(),
+                ],
+
+                'voters' => [
+                    'page'    => 1,
+                    'perPage' => WalletVoterTable::defaultPerPage(),
+                ],
+            ];
+        }
+    }
 
     public function mount(WalletViewModel $wallet): void
     {
@@ -102,9 +138,11 @@ final class WalletTables extends Component
             return;
         }
 
-        $queryStringData = $this->queryString();
+        SupportBrowserHistoryWrapper::init()->mergeQueryStringWithComponent($this);
 
-        // $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
+        $queryStringData = $this->queryString($newView);
+
+        $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
         foreach ($this->tabQueryData[$this->view] as $key => &$value) {
             if (! array_key_exists($key, $queryStringData)) {
                 continue;
@@ -116,9 +154,14 @@ final class WalletTables extends Component
 
             $value = $queryStringData[$key]['except'];
         }
+    }
 
-        // if (isset($this->savedQueryData[$newView])) {
-        //     $this->tabQueryData[$newView] = $this->savedQueryData[$newView];
-        // }
+    public function updatedView(): void
+    {
+        if (isset($this->savedQueryData[$this->view])) {
+            foreach ($this->savedQueryData[$this->view] as $key => $value) {
+                $this->{$key} = $value;
+            }
+        }
     }
 }
