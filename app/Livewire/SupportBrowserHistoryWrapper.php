@@ -9,7 +9,7 @@ use Livewire\Features\SupportBrowserHistory;
 class SupportBrowserHistoryWrapper extends SupportBrowserHistory
 {
     /**
-     * Merges Query String from livewire requests
+     * Merges Query String from livewire requests.
      *
      * Based on SupportBrowserHistory#mergeComponentPropertiesWithExistingQueryParamsFromOtherComponentsAndTheRequest
      *
