@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
-use Illuminate\Support\Collection;
 use Livewire\Features\SupportBrowserHistory;
 
 class SupportBrowserHistoryWrapper extends SupportBrowserHistory
@@ -25,9 +26,9 @@ class SupportBrowserHistoryWrapper extends SupportBrowserHistory
             ->each(function ($property, $key) use ($component): void {
                 $component->{$key} = $property;
             });
-            // ->map(function ($property) {
+        // ->map(function ($property) {
             //     return is_bool($property) ? json_encode($property) : $property;
-            // });
+        // });
 
         // return $this->mergedQueryParamsFromDehydratedComponents;
 
