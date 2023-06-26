@@ -14,18 +14,17 @@
 
     <x-wallet.overview.item-entry :title="trans('pages.wallet.value')">
         <x-slot name="value">
-            <span>{{ $wallet->balanceFiat() }}</span>
+            @if (Network::canBeExchanged())
+                <span>{{ $wallet->balanceFiat() }}</span>
 
-            @if (ExplorerNumberFormatter::isFiat(Settings::currency()))
-                <span>{{ Settings::currency() }}</span>
+                @if (ExplorerNumberFormatter::isFiat(Settings::currency()))
+                    <span>{{ Settings::currency() }}</span>
+                @endif
             @endif
         </x-slot>
     </x-wallet.overview.item-entry>
 
-    <x-wallet.overview.item-entry
-        :title="trans('pages.wallet.voting_for')"
-        :has-empty-value="$wallet->vote() === null"
-    >
+    <x-wallet.overview.item-entry :title="trans('pages.wallet.voting_for')">
         <x-slot name="value">
             @if ($wallet->vote())
                 <x-general.identity-iconless :model="$wallet->vote()" />

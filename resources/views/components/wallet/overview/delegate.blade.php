@@ -48,6 +48,7 @@
     <x-wallet.overview.item
         :title="trans('pages.wallet.delegate_info')"
         :masked-message="trans('pages.wallet.delegate.not_registered_text')"
+        class="hidden md-lg:block"
     >
         <x-wallet.overview.item-entry
             :title="trans('pages.wallet.delegate.rank')"
