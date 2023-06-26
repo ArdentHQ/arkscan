@@ -48,18 +48,18 @@ final class WalletTransactionTable extends Component
         'currencyChanged' => '$refresh',
     ];
 
-    public function __get($property): mixed
+    public function __get(mixed $property): mixed
     {
-        if (isset($this->filter[$property])) {
+        if (array_key_exists($property, $this->filter)) {
             return $this->filter[$property];
         }
 
         return parent::__get($property);
     }
 
-    public function __set($property, $value): void
+    public function __set(string $property, mixed $value): void
     {
-        if (isset($this->filter[$property])) {
+        if (array_key_exists($property, $this->filter)) {
             $this->filter[$property] = $value;
         }
     }

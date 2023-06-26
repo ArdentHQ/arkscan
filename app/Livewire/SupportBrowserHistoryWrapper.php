@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use Livewire\Features\SupportBrowserHistory;
+use Illuminate\Contracts\Support\Arrayable;
 
-class SupportBrowserHistoryWrapper extends SupportBrowserHistory
+final class SupportBrowserHistoryWrapper extends SupportBrowserHistory
 {
     /**
      * Merges Query String from livewire requests
@@ -19,18 +20,23 @@ class SupportBrowserHistoryWrapper extends SupportBrowserHistory
     public function mergeRequestQueryStringWithComponent(mixed $component): void
     {
         if (! $this->mergedQueryParamsFromDehydratedComponents) {
+            // @phpstan-ignore-next-line
             $this->mergedQueryParamsFromDehydratedComponents = collect($this->getExistingQueryParams());
         }
 
         $excepts = $this->getExceptsFromComponent($component);
 
-        $this->mergedQueryParamsFromDehydratedComponents = collect(request()->query())
+        /** @var Arrayable<(int|string), mixed>|iterable<(int|string), mixed>|null $requestQuery */
+        $requestQuery = request()->query();
+
+        $this->mergedQueryParamsFromDehydratedComponents = collect($requestQuery)
             ->merge($this->getQueryParamsFromComponentProperties($component))
             ->merge($this->mergedQueryParamsFromDehydratedComponents)
             ->reject(function ($value, $key) use ($excepts) {
-                return isset($excepts[$key]) && $excepts[$key] === $value;
+                return array_key_exists($key, $excepts->toArray()) && $excepts[$key] === $value;
             })
             ->each(function ($property, $key) use ($component): void {
+                // @phpstan-ignore-next-line
                 $component->{$key} = $property;
             });
     }

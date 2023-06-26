@@ -20,7 +20,7 @@ final class WalletTables extends Component
 
     public ?string $previousView = 'transactions';
 
-    public array $tabQueryData;
+    public array $tabQueryData = [];
 
     public array $savedQueryData = [];
 
@@ -29,7 +29,7 @@ final class WalletTables extends Component
         'showWalletView',
     ];
 
-    public function __get($property): mixed
+    public function __get(mixed $property): mixed
     {
         $value = Arr::get($this->tabQueryData[$this->view], $property);
         if ($value !== null) {
@@ -44,7 +44,7 @@ final class WalletTables extends Component
         return parent::__get($property);
     }
 
-    public function __set($property, $value): void
+    public function __set(string $property, mixed $value): void
     {
         if (Arr::has($this->tabQueryData[$this->view], $property)) {
             $this->tabQueryData[$this->view][$property] = $value;
@@ -83,7 +83,7 @@ final class WalletTables extends Component
 
     public function boot(): void
     {
-        if (! isset($this->tabQueryData)) {
+        if ($this->tabQueryData === []) {
             $this->tabQueryData = [
                 'transactions' => [
                     'page'          => 1,
@@ -153,6 +153,7 @@ final class WalletTables extends Component
                 continue;
             }
 
+            // @phpstan-ignore-next-line
             $this->{$key} = $queryStringData[$key]['except'];
         }
     }
@@ -164,8 +165,9 @@ final class WalletTables extends Component
      */
     public function updatedView(): void
     {
-        if (isset($this->savedQueryData[$this->view])) {
+        if (array_key_exists($this->view, $this->savedQueryData)) {
             foreach ($this->savedQueryData[$this->view] as $key => $value) {
+                // @phpstan-ignore-next-line
                 $this->{$key} = $value;
             }
         }

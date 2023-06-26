@@ -14,13 +14,13 @@ trait HasTablePagination
 
     public function bootHasTablePagination(): void
     {
-        $this->perPage = $this->defaultPerPage();
+        $this->perPage = static::defaultPerPage();
     }
 
     public function queryStringHasTablePagination(): array
     {
         return [
-            'perPage' => ['except' => $this->defaultPerPage()],
+            'perPage' => ['except' => static::defaultPerPage()],
         ];
     }
 
