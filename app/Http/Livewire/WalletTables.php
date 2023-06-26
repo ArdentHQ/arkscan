@@ -139,7 +139,7 @@ final class WalletTables extends Component
             return;
         }
 
-        SupportBrowserHistoryWrapper::init()->mergeQueryStringWithComponent($this);
+        SupportBrowserHistoryWrapper::init()->mergeRequestQueryStringWithComponent($this);
 
         $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
 
