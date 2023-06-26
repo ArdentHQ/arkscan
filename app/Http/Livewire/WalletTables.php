@@ -11,7 +11,6 @@ use App\ViewModels\WalletViewModel;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Livewire\Component;
-use Livewire\Features\SupportBrowserHistory;
 
 final class WalletTables extends Component
 {
@@ -22,6 +21,8 @@ final class WalletTables extends Component
     public ?string $previousView = 'transactions';
 
     public array $tabQueryData;
+
+    public array $savedQueryData = [];
 
     /** @var mixed */
     protected $listeners = [
@@ -53,8 +54,6 @@ final class WalletTables extends Component
             $this->tabQueryData[$this->previousView][$property] = $value;
         }
     }
-
-    public array $savedQueryData = [];
 
     public function queryString(?string $view = null): array
     {
@@ -159,7 +158,7 @@ final class WalletTables extends Component
     }
 
     /**
-     * Apply existing view data to query string
+     * Apply existing view data to query string.
      *
      * @return void
      */

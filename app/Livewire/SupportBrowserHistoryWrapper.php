@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
-use Illuminate\Support\Collection;
 use Livewire\Features\SupportBrowserHistory;
 
 class SupportBrowserHistoryWrapper extends SupportBrowserHistory
