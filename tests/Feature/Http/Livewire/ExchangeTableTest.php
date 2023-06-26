@@ -112,4 +112,4 @@ it('sort handle empty volumes while sorting ', function () {
             'Exchange 4',
             'Exchange 5',
         ]);
-})->only();
+});
