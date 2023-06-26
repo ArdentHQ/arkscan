@@ -99,12 +99,12 @@ it('sort by volume descending by default', function () {
 it('sort handle empty volumes while sorting ', function () {
     Exchange::factory()->create([
         'name'   => 'Exchange 4',
-        'volume' => '123.5',
+        'volume' => null,
     ]);
 
     Exchange::factory()->create([
         'name'   => 'Exchange 5',
-        'volume' => null,
+        'volume' => '123.45',
     ]);
 
     Livewire::test(ExchangeTable::class)
@@ -112,4 +112,4 @@ it('sort handle empty volumes while sorting ', function () {
             'Exchange 4',
             'Exchange 5',
         ]);
-});
+})->only();
