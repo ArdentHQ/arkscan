@@ -99,7 +99,7 @@ it('sort by volume descending by default', function () {
 it('sort handle empty volumes while sorting ', function () {
     Exchange::factory()->create([
         'name'   => 'Exchange 4',
-        'volume' => null,
+        'volume' => '123.5',
     ]);
 
     Exchange::factory()->create([
