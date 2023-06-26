@@ -6,6 +6,7 @@ use App\Facades\Settings;
 use App\Models\Wallet;
 use App\Services\Cache\DelegateCache;
 use App\Services\Cache\NetworkCache;
+use Illuminate\Support\Facades\Config;
 
 it('should render the page without any errors', function () {
     $this->withoutExceptionHandling();
@@ -45,6 +46,8 @@ it('can lookup wallets by the username', function () {
 });
 
 it('should not double up currency for crypto', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
     Settings::shouldReceive('currency')
         ->andReturn('BTC')
         ->shouldReceive('get')
@@ -54,7 +57,8 @@ it('should not double up currency for crypto', function () {
 
     $response = $this
         ->get(route('wallet', $wallet))
-        ->assertSee($wallet->username);
+        ->assertSee($wallet->username)
+        ->assertSee('0 BTC');
 
     $content = preg_replace('/\s+/', ' ', str_replace("\n", '', strip_tags($response->getContent())));
 
@@ -62,6 +66,8 @@ it('should not double up currency for crypto', function () {
 });
 
 it('should show currency symbol and code for crypto', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
     Settings::shouldReceive('currency')
         ->andReturn('GBP')
         ->shouldReceive('get')
@@ -76,4 +82,24 @@ it('should show currency symbol and code for crypto', function () {
     $content = preg_replace('/\s+/', ' ', str_replace("\n", '', strip_tags($response->getContent())));
 
     expect($content)->toContain('£0.00 GBP Voting For');
+});
+
+it('should not show overview value if cannot be exchanged', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', false);
+
+    Settings::shouldReceive('currency')
+        ->andReturn('GBP')
+        ->shouldReceive('get')
+        ->andReturnNull();
+
+    $wallet = Wallet::factory()->create();
+
+    $this
+        ->get(route('wallet', $wallet))
+        ->assertSee($wallet->username)
+        ->assertSeeInOrder([
+            'Value',
+            'N/A',
+            'Voting For',
+        ]);
 });
