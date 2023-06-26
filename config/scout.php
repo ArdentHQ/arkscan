@@ -157,6 +157,7 @@ return [
             ],
             Transaction::class => [
                 'filterableAttributes'=> ['id', 'recipient_id'],
+                'searchableAttributes'=> [],
                 'sortableAttributes'  => ['timestamp'],
                 'typoTolerance'       => [
                     'enabled' => false,
@@ -171,6 +172,7 @@ return [
             ],
             Block::class => [
                 'filterableAttributes'=> ['id'],
+                'searchableAttributes'=> [],
                 'sortableAttributes'  => ['timestamp'],
                 'typoTolerance'       => [
                     'enabled' => false,
