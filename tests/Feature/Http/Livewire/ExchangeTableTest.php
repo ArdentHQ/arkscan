@@ -95,3 +95,21 @@ it('sort by volume descending by default', function () {
             'Exchange 5',
         ]);
 });
+
+it('sort handle empty volumes while sorting ', function () {
+    Exchange::factory()->create([
+        'name'   => 'Exchange 4',
+        'volume' => null,
+    ]);
+
+    Exchange::factory()->create([
+        'name'   => 'Exchange 5',
+        'volume' => null,
+    ]);
+
+    Livewire::test(ExchangeTable::class)
+        ->assertSeeInOrder([
+            'Exchange 4',
+            'Exchange 5',
+        ]);
+});
