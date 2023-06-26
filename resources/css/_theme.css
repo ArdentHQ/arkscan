@@ -81,8 +81,8 @@
     box-shadow: 0 0 1px 1px var(--theme-color-dark-600) inset;
 }
 
-.dark .button-secondary:focus {
-    @apply outline-none ring-theme-primary-300 ring-1;
+.dark .button-secondary:focus-visible {
+    @apply outline-none ring-theme-primary-300 ring-2;
 }
 
 .dark .button-secondary:hover {
@@ -101,6 +101,15 @@
 .dark .ark-info-element > div:hover {
     @apply bg-theme-dark-blue-600 text-theme-dark-50;
     box-shadow: unset;
+}
+
+/* Tippy Overwrite Theme */
+.dark .tippy-box[data-theme~="ark"] {
+    @apply bg-theme-dark-700 text-theme-dark-50;
+}
+
+.dark .tippy-box[data-theme~="ark"] .tippy-arrow {
+    @apply text-theme-dark-700;
 }
 
 :root {

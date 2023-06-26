@@ -28,8 +28,6 @@ final class WalletTransactionTable extends Component
     use DeferLoading;
     use HasTablePagination;
 
-    public const PER_PAGE = 10;
-
     public string $address;
 
     public ?string $publicKey = null;

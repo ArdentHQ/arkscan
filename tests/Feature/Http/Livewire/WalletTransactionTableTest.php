@@ -624,7 +624,7 @@ it('should reset pagination when filtering', function () {
         'timestamp'         => 102982050, // oldest transaction
     ]);
 
-    Transaction::factory(15)->transfer()->create([
+    Transaction::factory(30)->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 

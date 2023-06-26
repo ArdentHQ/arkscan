@@ -1,5 +1,6 @@
 @props([
     'button',
+    'buttonClass' => "w-full focus-visible:ring-2 focus-visible:ring-theme-primary-500 focus-visible:dark:ring-theme-primary-300 focus-visible:ring-inset",
     'dropdownWrapperClass' => null,
     'dropdownClass' => null,
     'dropdownPadding' => 'py-2',
@@ -27,7 +28,7 @@
         :dropdown-content-classes="Arr::toCssClasses(['rounded-xl shadow-lg', $dropdownBackground, $dropdownPadding])"
         :disabled="$disabled"
         z-index="z-20"
-        button-class="w-full focus:ring-theme-primary-300"
+        :button-class="$buttonClass"
         :close-on-click="$closeOnClick"
         :on-close="$onClose"
         :placement-fallbacks="$placementFallbacks"

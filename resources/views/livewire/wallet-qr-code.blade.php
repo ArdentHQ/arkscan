@@ -3,18 +3,18 @@
     @class($class)
 >
     <x-general.dropdown.dropdown
-        width="max-w-[320px] px-4"
-        active-button-class="button button-secondary button-icon"
+        width="w-full sm:max-w-[320px] px-4"
+        active-button-class=""
         dropdown-padding=""
         dropdown-wrapper-class="w-full"
-        dropdown-background="bg-white dark:bg-theme-secondary-900"
+        dropdown-background="bg-white border border-transparent dark:shadow-lg-dark dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
         :close-on-click="false"
         on-close="() => showOptions = false"
+        buttonClass="p-2 w-full focus-visible:ring-inset button button-secondary button-icon"
     >
         <x-slot
             name="button"
             wire:click="toggleQrCode"
-            class="p-2 w-full"
         >
             <div>
                 <x-ark-icon name="qr-code" size="sm" />
@@ -76,8 +76,8 @@
                 />
             </div>
 
-            <div>
-                <div class="p-2 rounded-lg border border-theme-secondary-300 dark:border-theme-secondary-300 dark:bg-theme-secondary-300">
+            <div class="flex flex-col items-center">
+                <div class="inline-block p-2 rounded-lg border sm:block border-theme-secondary-300 dark:border-theme-secondary-300 dark:bg-theme-secondary-300">
                     {!! $this->code !!}
                 </div>
 
