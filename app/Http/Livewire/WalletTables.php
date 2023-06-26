@@ -64,21 +64,22 @@ final class WalletTables extends Component
             'perPage' => ['except' => intval(config('arkscan.pagination.per_page'))],
         ];
 
-        if ($view === 'transactions' || ($view === null && $this->view === 'transactions')) {
-            $params = [
-                ...$params,
-
-                // Transaction Filters
-                'outgoing'      => ['except' => true],
-                'incoming'      => ['except' => true],
-                'transfers'     => ['except' => true],
-                'votes'         => ['except' => true],
-                'multipayments' => ['except' => true],
-                'others'        => ['except' => true],
-            ];
+        // We need to pass in the transaction filters for previous view so we can hide it from the URL
+        if ($this->view !== 'transactions' && $this->previousView !== 'transactions') {
+            return $params;
         }
 
-        return $params;
+        return [
+            ...$params,
+
+            // Transaction Filters
+            'outgoing'      => ['except' => true],
+            'incoming'      => ['except' => true],
+            'transfers'     => ['except' => true],
+            'votes'         => ['except' => true],
+            'multipayments' => ['except' => true],
+            'others'        => ['except' => true],
+        ];
     }
 
     public function boot(): void
@@ -140,10 +141,11 @@ final class WalletTables extends Component
 
         SupportBrowserHistoryWrapper::init()->mergeQueryStringWithComponent($this);
 
-        $queryStringData = $this->queryString($newView);
-
         $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
-        foreach ($this->tabQueryData[$this->view] as $key => &$value) {
+
+        // Reset the querystring data on view change to clear the URL
+        $queryStringData = $this->queryString();
+        foreach ($this->tabQueryData[$this->view] as $key => $value) {
             if (! array_key_exists($key, $queryStringData)) {
                 continue;
             }
@@ -152,10 +154,15 @@ final class WalletTables extends Component
                 continue;
             }
 
-            $value = $queryStringData[$key]['except'];
+            $this->{$key} = $queryStringData[$key]['except'];
         }
     }
 
+    /**
+     * Apply existing view data to query string
+     *
+     * @return void
+     */
     public function updatedView(): void
     {
         if (isset($this->savedQueryData[$this->view])) {
