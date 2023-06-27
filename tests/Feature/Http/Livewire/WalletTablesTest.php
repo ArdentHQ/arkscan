@@ -86,7 +86,18 @@ it('should track querystring between tabs', function () {
         ->set('tabQueryData.voters.page', 4)
         ->assertSet('page', 4)
 
+        ->assertSet('savedQueryData.transactions.outgoing', false)
+        ->assertSet('outgoing', null)
+
         ->set('view', 'transactions')
         ->assertSet('tabQueryData.transactions.page', 2)
         ->assertSet('page', 2);
+});
+
+it('should try to get property if not part of the querystring properties', function () {
+    $wallet = Wallet::factory()->activeDelegate()->create();
+
+    Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
+        ->set('view', 'transactions')
+        ->assertSet('testProperty', null);
 });
