@@ -156,7 +156,7 @@ return [
                 ],
             ],
             Transaction::class => [
-                'filterableAttributes'=> ['id', 'recipient_id'],
+                'filterableAttributes'=> ['id'],
                 'searchableAttributes'=> [],
                 'sortableAttributes'  => ['timestamp'],
                 'typoTolerance'       => [
