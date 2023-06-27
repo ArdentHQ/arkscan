@@ -141,10 +141,6 @@ final class WalletTables extends Component
         // Reset the querystring data on view change to clear the URL
         $queryStringData = $this->queryString();
         foreach ($this->tabQueryData[$this->view] as $key => $value) {
-            if (! array_key_exists($key, $queryStringData)) {
-                continue;
-            }
-
             // @phpstan-ignore-next-line
             $this->{$key} = $queryStringData[$key]['except'];
         }
