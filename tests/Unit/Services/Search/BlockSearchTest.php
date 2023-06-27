@@ -61,3 +61,19 @@ it('should map meilisearch results array', function () {
 
     expect($result->first()->id)->toBe($block->id);
 });
+
+it('should produce the right meilisearch query when possibly address', function () {
+    $query = BlockSearch::buildSearchQueryForIndex('D6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax', 5);
+
+    expect($query)->toBeNull();
+});
+
+it('should produce the right meilisearch query when possibly transaction id', function () {
+    $query = BlockSearch::buildSearchQueryForIndex('13114381566690093367', 5);
+
+    expect($query->toArray())->toMatchArray([
+        'indexUid' => 'blocks',
+        'filter' => ['id = "13114381566690093367"'],
+        'limit' => 5
+    ]);
+});
