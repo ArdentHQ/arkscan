@@ -94,6 +94,24 @@ it('should track querystring between tabs', function () {
         ->assertSet('page', 2);
 });
 
+it('should be able to get the property of the previous view', function () {
+    $wallet = Wallet::factory()->activeDelegate()->create();
+
+    $instance = Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
+        ->instance();
+
+    $instance->outgoing = false;
+
+    expect($instance->tabQueryData['transactions']['outgoing'])->toBeFalse();
+
+    $instance->updatingView('voters');
+    $instance->showWalletView('voters');
+    $instance->updatedView();
+
+    expect($instance->outgoing)->toBeTrue();
+    expect($instance->tabQueryData['transactions']['outgoing'])->toBeTrue();
+});
+
 it('should try to get property if not part of the querystring properties', function () {
     $wallet = Wallet::factory()->activeDelegate()->create();
 
