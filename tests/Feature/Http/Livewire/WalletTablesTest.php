@@ -80,6 +80,12 @@ it('should track querystring between tabs', function () {
         ->set('tabQueryData.blocks.page', 3)
         ->assertSet('page', 3)
 
+        ->set('view', 'voters')
+        ->assertSet('tabQueryData.voters.page', 1)
+        ->assertSet('page', 1)
+        ->set('tabQueryData.voters.page', 4)
+        ->assertSet('page', 4)
+
         ->set('view', 'transactions')
         ->assertSet('tabQueryData.transactions.page', 2)
         ->assertSet('page', 2);

@@ -55,7 +55,7 @@ final class WalletTables extends Component
         }
     }
 
-    public function queryString(?string $view = null): array
+    public function queryString(): array
     {
         $params = [
             'view'    => ['except' => 'transactions'],
@@ -134,10 +134,6 @@ final class WalletTables extends Component
 
         $this->previousView = $this->view;
 
-        if (! array_key_exists($this->view, $this->tabQueryData)) {
-            return;
-        }
-
         SupportBrowserHistoryWrapper::init()->mergeRequestQueryStringWithComponent($this);
 
         $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
@@ -146,10 +142,6 @@ final class WalletTables extends Component
         $queryStringData = $this->queryString();
         foreach ($this->tabQueryData[$this->view] as $key => $value) {
             if (! array_key_exists($key, $queryStringData)) {
-                continue;
-            }
-
-            if (! array_key_exists('except', $queryStringData[$key])) {
                 continue;
             }
 
