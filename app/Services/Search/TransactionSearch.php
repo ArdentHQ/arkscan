@@ -45,7 +45,7 @@ final class TransactionSearch implements Search
         }
 
         return (new SearchQuery())
-            ->setFilter(['id = '. $query])
+            ->setFilter(['id = '.$query])
             ->setIndexUid('transactions')
             ->setLimit($limit);
     }
