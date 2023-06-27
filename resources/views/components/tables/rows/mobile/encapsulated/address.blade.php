@@ -1,3 +1,5 @@
+@props(['model'])
+
 <div>
     <span class="font-semibold">
         @lang('labels.address')
@@ -13,6 +15,7 @@
 
         <x-ark-clipboard
             :value="$model->address()"
+            :tooltip-content="trans('pages.wallet.address_copied')"
             class="transition text-theme-primary-400 dark:text-theme-secondary-600 hover:text-theme-primary-700"
             no-styling
         />

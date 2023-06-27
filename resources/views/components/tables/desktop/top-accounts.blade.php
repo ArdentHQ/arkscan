@@ -26,7 +26,7 @@
                 breakpoint="md-lg"
                 responsive
             >
-                <x-ark-info :tooltip="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])" type="info" />
+                <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])" />
             </x-tables.headers.desktop.number>
         </tr>
     </thead>
@@ -63,7 +63,7 @@
                     <div class="flex flex-col font-semibold text-theme-secondary-900 dark:text-theme-secondary-200">
                         <x-tables.rows.desktop.encapsulated.balance :model="$wallet" />
 
-                        <span class="mt-1 text-xs font-semibold lg:hidden text-theme-secondary-500">
+                        <span class="mt-1 text-xs font-semibold text-theme-secondary-500 md-lg:hidden">
                             @if($useVoteWeight)
                                 <x-tables.rows.desktop.vote-percentage :model="$wallet" />
                             @else

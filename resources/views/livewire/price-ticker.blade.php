@@ -26,6 +26,8 @@
         </div>
 
         <x-general.dropdown.dropdown
+            active-button-class=""
+            button-class="rounded-r rounded-l md:bg-white md:rounded-l-none bg-theme-secondary-200 text-theme-secondary-700 md:dark:bg-theme-secondary-900 md:dark:text-theme-secondary-600 md:hover:text-theme-secondary-900 dark:bg-theme-secondary-800 dark:hover:bg-theme-secondary-800 dark:text-theme-secondary-200 hover:bg-theme-secondary-200"
             dropdownClass="right-0 min-w-[125px]"
             scroll-class="max-h-[246px] md:max-h-[332px]"
             :disabled="$isDisabled"
@@ -66,25 +68,20 @@
                 </div>
             </x-slot>
 
-            <x-slot
-                name="content"
-                class="right-0 top-full"
-            >
-                @foreach (config('currencies') as $currency)
-                    <x-general.dropdown.list-item
-                        :is-active="$currency['currency'] === $to"
-                        wire:click="setCurrency('{{ $currency['currency'] }}')"
-                    >
-                        {{ $currency['currency'] }}
+            @foreach (config('currencies') as $currency)
+                <x-general.dropdown.list-item
+                    :is-active="$currency['currency'] === $to"
+                    wire:click="setCurrency('{{ $currency['currency'] }}')"
+                >
+                    {{ $currency['currency'] }}
 
-                        @if ($currency['symbol'] !== null)
-                            <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
-                                ({{ $currency['symbol'] }})
-                            </span>
-                        @endif
-                    </x-general.dropdown.list-item>
-                @endforeach
-            </x-slot>
+                    @if ($currency['symbol'] !== null)
+                        <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
+                            ({{ $currency['symbol'] }})
+                        </span>
+                    @endif
+                </x-general.dropdown.list-item>
+            @endforeach
         </x-general.dropdown>
     </div>
 </div>

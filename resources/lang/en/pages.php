@@ -99,9 +99,16 @@ return [
     ],
 
     'wallets'          => [
-        'title'          => 'Top Accounts',
-        'subtitle'       => 'A list of the largest ARK addresses by token holdings.',
-        'supply_tooltip' => 'Percentage of the total :symbol supply',
+        'title'              => 'Top Accounts',
+        'subtitle'           => 'A list of the largest ARK addresses by token holdings.',
+        'supply_tooltip'     => 'Percentage of the total :symbol supply',
+        'percentage_tooltip' => 'Percentage of votes in relation to the delegate total.',
+
+        'blocks' => [
+            'volume_tooltip'       => 'A sum of transactions value in the block.',
+            'total_reward_tooltip' => 'A sum of the block reward and transaction fees.',
+            'value_tooltip'        => 'Value of rewards in user defined currency.',
+        ],
     ],
 
     'wallet'           => [
@@ -126,7 +133,7 @@ return [
         'delegate_info'         => 'Delegate Info',
         'name'                  => 'Name',
         'value'                 => 'Value',
-        'copied_public_key'     => 'Copied Public Key',
+        'copied_public_key'     => 'Public Key Copied',
         'address_copied'        => 'Address Copied',
 
         'qrcode'                => [

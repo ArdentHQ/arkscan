@@ -1,5 +1,10 @@
-<div class="rounded border border-theme-secondary-300 dark:border-theme-secondary-800">
-    <div class="flex justify-between items-center py-3 px-4 rounded-t dark:rounded-t-sm bg-theme-secondary-100 dark:bg-theme-secondary-800">
+@props(['header'])
+
+<div {{ $attributes->class('text-sm rounded border border-theme-secondary-300 dark:border-theme-dark-700') }}>
+    <div {{ $header->attributes->class([
+        'flex justify-between items-center rounded-t bg-theme-secondary-100 dark:bg-theme-dark-950',
+        $header->attributes->get('padding', 'py-3 px-4')
+    ]) }}>
         {{ $header }}
     </div>
 
