@@ -73,7 +73,7 @@ it('should produce the right meilisearch query when possibly transaction id', fu
 
     expect($query->toArray())->toMatchArray([
         'indexUid' => 'blocks',
-        'filter' => ['id = "13114381566690093367"'],
-        'limit' => 5
+        'filter'   => ['id = "13114381566690093367"'],
+        'limit'    => 5,
     ]);
 });

@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Models\Transaction;
 use App\Services\Search\TransactionSearch;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 
 it('should search for a transaction by id', function (?string $modifier) {
     $transaction = Transaction::factory(10)->create()[0];
@@ -74,7 +73,7 @@ it('should produce the right meilisearch query when possibly transaction id', fu
 
     expect($query->toArray())->toMatchArray([
         'indexUid' => 'transactions',
-        'filter' => ['id = "75604d72872f730d7c38b9d73c916e4a532408ea0074850a581f4b28bd62acdf"'],
-        'limit' => 5
+        'filter'   => ['id = "75604d72872f730d7c38b9d73c916e4a532408ea0074850a581f4b28bd62acdf"'],
+        'limit'    => 5,
     ]);
 });
