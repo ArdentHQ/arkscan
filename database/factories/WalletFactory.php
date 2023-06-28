@@ -30,6 +30,7 @@ final class WalletFactory extends Factory
                     'missedBlocks'   => $this->faker->numberBetween(1, 1000),
                 ],
             ],
+            'updated_at'       => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 
