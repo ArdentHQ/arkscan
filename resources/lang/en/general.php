@@ -78,6 +78,9 @@ return [
         'ipfs-hash'               => 'IPFS Hash',
         'well-confirmed'          => 'Well Confirmed',
         'delegate'                => 'Delegate',
+        'vote_delegate'           => '<span class="font-semibold text-theme-secondary-500">Vote: <span class="text-white">:delegate</span></span>',
+        'unvote_delegate'         => '<span class="font-semibold text-theme-secondary-500">Unvote: <span class="text-white">:delegate</span></span>',
+        'vote_swap_delegate'      => '<span class="font-semibold text-theme-secondary-500">Unvote: <span class="text-white">:delegate_unvote</span> | Vote: <span class="text-white">:delegate_vote</span></span>',
 
         'types'                   => [
             'delegate-registration'               => 'Registration',
