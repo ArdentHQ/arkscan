@@ -18,9 +18,9 @@ import Pikaday from "pikaday";
 import PriceChart from "./price-chart";
 import ReadMore from "@ui/js/read-more.js";
 import RichSelect from "./rich-select.js";
+import Search from "./search";
 import TableSorting from "./table-sorting.js";
 import Tabs from "./tabs";
-import Search from "./search";
 import makeBlockie from "ethereum-blockies-base64";
 
 window.makeBlockie = makeBlockie;

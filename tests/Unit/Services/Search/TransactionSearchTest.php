@@ -61,3 +61,19 @@ it('should map meilisearch results array', function () {
 
     expect($result->first()->id)->toBe($transaction->id);
 });
+
+it('should produce the right meilisearch query when possibly address', function () {
+    $query = TransactionSearch::buildSearchQueryForIndex('D6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax', 5);
+
+    expect($query)->toBeNull();
+});
+
+it('should produce the right meilisearch query when possibly transaction id', function () {
+    $query = TransactionSearch::buildSearchQueryForIndex('75604d72872f730d7c38b9d73c916e4a532408ea0074850a581f4b28bd62acdf', 5);
+
+    expect($query->toArray())->toMatchArray([
+        'indexUid' => 'transactions',
+        'filter'   => ['id = "75604d72872f730d7c38b9d73c916e4a532408ea0074850a581f4b28bd62acdf"'],
+        'limit'    => 5,
+    ]);
+});

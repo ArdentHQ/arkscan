@@ -11,16 +11,6 @@ use Laravel\Scout\Console\ImportCommand as LaravelScoutImportCommand;
 final class ImportCommand extends LaravelScoutImportCommand
 {
     /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'scout:import
-            {model : Class name of model to bulk import}
-            {--c|chunk= : The number of records to import at a time (Defaults to configuration value: `scout.chunk.searchable`)}
-            {--no-pause : Do not pause indexing while this command is running}';
-
-    /**
      * Execute the console command.
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
@@ -39,22 +29,17 @@ final class ImportCommand extends LaravelScoutImportCommand
         $this->newLine();
 
         $class = $this->argument('model');
-        $pause = ! $this->option('no-pause');
 
         $model = new $class();
 
-        if ($pause) {
-            Artisan::call('scout:pause-indexing', [
-                'model' => $model::class,
-            ]);
-        }
+        Artisan::call('scout:pause-indexing', [
+            'model' => $model::class,
+        ]);
 
         parent::handle($events);
 
-        if ($pause) {
-            Artisan::call('scout:resume-indexing', [
-                'model' => $model::class,
-            ]);
-        }
+        Artisan::call('scout:resume-indexing', [
+            'model' => $model::class,
+        ]);
     }
 }

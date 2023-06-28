@@ -22,10 +22,8 @@ use App\Console\Commands\CachePrices;
 use App\Console\Commands\CacheTransactions;
 use App\Console\Commands\FetchExchangesDetails;
 use App\Console\Commands\GenerateVoteReport;
-use App\Console\Commands\ImportCommand;
 use App\Console\Commands\LoadExchanges;
 use App\Console\Commands\ScoutIndexModels;
-use App\Models\Wallet;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -91,11 +89,6 @@ final class Kernel extends ConsoleKernel
 
         if (config('arkscan.scout.run_jobs', false) === true) {
             $schedule->command(ScoutIndexModels::class)->everyMinute();
-
-            $schedule->command(ImportCommand::class, [
-                Wallet::class,
-                '--no-pause',
-            ])->withoutOverlapping()->everyMinute();
         }
     }
 

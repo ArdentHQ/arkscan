@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
-abstract class IndexModel implements ShouldQueue
+abstract class IndexModel implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -40,11 +42,53 @@ abstract class IndexModel implements ShouldQueue
 
         $query = $this->elementsToIndexQuery($latestIndexedTimestamp);
 
+        if ($query->doesntExist()) {
+            return;
+        }
+
         // @phpstan-ignore-next-line
         $query->searchable();
+
+        /** @var mixed */
+        $latestItem      = $query->orderBy('timestamp', 'desc')->first();
+        $latestTimestamp = $latestItem->timestamp;
+
+        $this->updateLatestIndexedTimestamp($indexName, $latestTimestamp);
     }
 
-    private function getLatestIndexedTimestamp(string $indexName): int|null
+    final protected function getLatestIndexedTimestamp(string $indexName): int|null
+    {
+        $timestamp = $this->getLatestIndexedTimestampFromCache($indexName);
+
+        if ($timestamp !== null) {
+            return $timestamp;
+        }
+
+        return $this->getLatestIndexedTimestampFromMeilisearch($indexName);
+    }
+
+    private function getCacheKey(string $indexName): string
+    {
+        return sprintf('latest-indexed-timestamp:%s', $indexName);
+    }
+
+    private function updateLatestIndexedTimestamp(string $indexName, int $latestTimestamp): void
+    {
+        Cache::put($this->getCacheKey($indexName), $latestTimestamp);
+    }
+
+    private function getLatestIndexedTimestampFromCache(string $indexName): int|null
+    {
+        $timestamp = Cache::get($this->getCacheKey($indexName));
+
+        if ($timestamp === null) {
+            return null;
+        }
+
+        return (int) $timestamp;
+    }
+
+    private function getLatestIndexedTimestampFromMeilisearch(string $indexName): int|null
     {
         $url = sprintf(
             '%s/indexes/%s/search',
