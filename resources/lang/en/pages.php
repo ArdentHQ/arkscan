@@ -173,7 +173,7 @@ return [
         ],
 
         'export-transactions-modal' => [
-            'title' => 'Export Table',
+            'title'       => 'Export Table',
             'description' => 'Select the data below that you want to export.',
 
             'date_range'          => 'Date Range',
@@ -220,15 +220,15 @@ return [
             ],
 
             'columns-options' => [
-                'id' => 'Transaction ID',
-                'timestamp' => 'Timestamp',
-                'sender' => 'Sender',
-                'recipient' => 'Recipient',
-                'amount' => 'Value [:networkCurrency]',
+                'id'         => 'Transaction ID',
+                'timestamp'  => 'Timestamp',
+                'sender'     => 'Sender',
+                'recipient'  => 'Recipient',
+                'amount'     => 'Value [:networkCurrency]',
                 'amountFiat' => 'Value [:userCurrency]',
-                'fee' => 'Fee [:networkCurrency]',
-                'feeFiat' => 'Fee [:userCurrency]',
-                'rate' => 'Rate [:userCurrency]',
+                'fee'        => 'Fee [:networkCurrency]',
+                'feeFiat'    => 'Fee [:userCurrency]',
+                'rate'       => 'Rate [:userCurrency]',
             ],
         ],
     ],
