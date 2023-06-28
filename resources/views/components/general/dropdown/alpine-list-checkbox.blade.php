@@ -12,7 +12,7 @@
         // 'text-theme-secondary-900 dark:text-theme-secondary-200' => ! $isSelected,
         // 'text-theme-primary-600 font-semibold dark:group-hover:text-theme-dark-blue-600 transition-default' => $isSelected,
     ])"
-    class="border-l-4 pl-5 pr-6 py-3 hover:text-theme-secondary-900 hover:bg-theme-secondary-200 dark:hover:bg-theme-secondary-900 dark:text-theme-secondary-200 transition-default cursor-pointer leading-5"
+    class="py-3 pr-6 pl-5 leading-5 border-l-4 cursor-pointer transition-default dark:hover:bg-theme-secondary-900 dark:text-theme-secondary-200 hover:text-theme-secondary-900 hover:bg-theme-secondary-200"
     wrapper-class="flex-1"
     no-livewire
 >

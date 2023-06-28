@@ -22,7 +22,7 @@
     {{ $attributes->class('space-y-3') }}
 >
     <label
-        class="font-semibold text-theme-secondary-900 text-lg"
+        class="text-lg font-semibold text-theme-secondary-900"
         @click="function (e) {
             e.preventDefault();
 
@@ -35,13 +35,13 @@
     </label>
 
     <x-general.dropdown.dropdown
-        dropdown-wrapper-class="w-full flex flex-col relative"
+        dropdown-wrapper-class="flex relative flex-col w-full"
         :width="$dropdownWidth"
         scroll-class="space-y-2"
     >
         <x-slot
             name="button"
-            class="border border-theme-secondary-400 dark:border-theme-secondary-700 rounded px-4 py-3.5 w-full leading-[17px] h-11 flex justify-between"
+            class="flex justify-between py-3.5 px-4 w-full h-11 rounded border border-theme-secondary-400 leading-[17px] dark:border-theme-secondary-700"
         >
             <span
                 x-text="$refs[{{ $id }}]?.innerText ?? '{{ $placeholder }}'"

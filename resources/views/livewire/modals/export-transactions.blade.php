@@ -25,25 +25,25 @@
 
     @if($this->modalShown)
         <x-ark-modal
-            title-class="text-lg text-left font-semibold dark:text-theme-secondary-200 mb-6"
+            title-class="mb-6 text-lg font-semibold text-left dark:text-theme-secondary-200"
             padding-class="p-6"
             wire-close="cancel"
-            close-button-class="absolute top-0 right-0 p-0 mt-0 mr-0 w-8 h-8 rounded-none sm:mt-6 sm:mr-6 sm:rounded button button-secondary text-theme-secondary-700 bg-transparent"
+            close-button-class="absolute top-0 right-0 p-0 mt-0 mr-0 w-8 h-8 bg-transparent rounded-none sm:mt-6 sm:mr-6 sm:rounded button button-secondary text-theme-secondary-700"
             buttons-style="flex flex-col sm:flex-row sm:justify-end !mt-6 sm:space-x-3 space-y-3 sm:space-y-0"
             breakpoint="sm"
             wrapper-class="max-w-full sm:max-w-[448px]"
-            content-class="relative bg-white sm:mx-auto sm:shadow-2xl sm:rounded-xl dark:bg-theme-secondary-900"
+            content-class="relative bg-white sm:mx-auto sm:rounded-xl sm:shadow-2xl dark:bg-theme-secondary-900"
         >
             <x-slot name="title">
                 <div>@lang('pages.wallet.export-transactions-modal.title')</div>
 
-                <div class="font-normal text-sm text-theme-secondary-700 mt-1">
+                <div class="mt-1 text-sm font-normal text-theme-secondary-700">
                     @lang('pages.wallet.export-transactions-modal.description')
                 </div>
             </x-slot>
 
             <x-slot name="description">
-                <div class="flex flex-col pt-6 space-y-5 -mx-6 px-6 border-t border-theme-secondary-300">
+                <div class="flex flex-col px-6 pt-6 -mx-6 space-y-5 border-t border-theme-secondary-300">
                     <x-input.select
                         id="dateRange"
                         :label="trans('pages.wallet.export-transactions-modal.date_range')"
