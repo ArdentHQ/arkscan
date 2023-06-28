@@ -137,7 +137,8 @@ trait ManagesSearch
 
         return $knownWallets
             ->filter(fn ($wallet) => str_contains(strtolower($wallet['name']), strtolower($query)))
-            ->map(fn ($wallet) => $wallet['address']);
+            ->map(fn ($wallet) => $wallet['address'])
+            ->take(RESULT_LIMIT_PER_TYPE);
     }
 
     private function buildSearchQueryForIndex(string $query, string $indexUid): ?SearchQuery

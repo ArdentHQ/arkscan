@@ -23,16 +23,10 @@
                 without-truncate
                 without-reverse-class="space-x-2"
                 without-link
+                without-icon
                 :link-wallet="false"
                 class="text-theme-secondary-700 dark:text-theme-secondary-500"
-            >
-                <x-slot name="icon">
-                    <x-general.avatar-small
-                        :identifier="$block->address()"
-                        size="w-5 h-5"
-                    />
-                </x-slot>
-            </x-general.identity>
+            />
         </div>
 
         <div class="flex items-center space-x-1 text-xs">
