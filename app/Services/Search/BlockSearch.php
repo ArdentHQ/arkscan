@@ -45,7 +45,7 @@ final class BlockSearch implements Search
         }
 
         return (new SearchQuery())
-            ->setQuery($query)
+            ->setFilter(['id = '.$query])
             ->setIndexUid('blocks')
             ->setLimit($limit);
     }
