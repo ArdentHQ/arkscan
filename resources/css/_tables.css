@@ -226,6 +226,16 @@ body.table-compact-until-lg .arrow-direction {
     @apply bg-theme-secondary-200 dark:bg-black !important;
 }
 
+.table-encapsulated
+    table
+    > tbody
+    > tr:hover
+    > td.hoverable-cell
+    > .table-cell-content
+    > .encapsulated-transaction-type {
+    @apply bg-theme-secondary-300 dark:bg-theme-dark-700 transition-default;
+}
+
 .table-container
     table
     > tbody
