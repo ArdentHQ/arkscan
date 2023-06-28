@@ -15,8 +15,20 @@
     ]);
 @endphp
 
+@php
+    $isVoteType = in_array($transaction->typeName(), [
+        'vote',
+        'unvote',
+        'vote-combination',
+    ]);
+@endphp
+
 @unless ($isLegacy)
-    @lang('general.transaction.types.'.$transaction->typeName())
+    @if ($isVoteType)
+        <x-general.encapsulated.vote-type :transaction="$transaction" />
+    @else
+        @lang('general.transaction.types.'.$transaction->typeName())
+    @endif
 @else
     @lang('general.transaction.types.legacy')
 @endunless
