@@ -2,8 +2,8 @@
     dateRange: 'current_month',
     delimiter: 'comma',
     includeHeaderRow: false,
-    types: [],
-    columns: [],
+    types: {{ json_encode(array_map(fn ($item) => true, trans('pages.wallet.export-transactions-modal.types-options'))) }},
+    columns: {{ json_encode(array_map(fn ($item) => true, trans('pages.wallet.export-transactions-modal.columns-options'))) }},
 }">
     <div
         class="flex-1 sm:flex-none"
@@ -61,14 +61,16 @@
 
                         <x-ark-checkbox
                             name="include_header_row"
-                            alpine="(e) => {console.log(e); includeHeaderRow = e.target.checked}"
+                            x-model="includeHeaderRow"
                             :label="trans('pages.wallet.export-transactions-modal.include_header_row')"
                             :label-classes="Arr::toCssClasses([
                                 'text-base',
-                                // 'text-theme-secondary-900 dark:text-theme-secondary-200' => ! $isSelected,
-                                // 'text-theme-primary-600 font-semibold dark:group-hover:text-theme-dark-blue-600 transition-default' => $isSelected,
                             ])"
                             class=""
+                            alpine-label-class="{
+                                'text-theme-secondary-900 dark:text-theme-secondary-200': includeHeaderRow === false,
+                                'text-theme-primary-600 font-semibold dark:group-hover:text-theme-dark-blue-600 transition-default': includeHeaderRow === true,
+                            }"
                             wrapper-class="flex-1"
                             no-livewire
                         />
@@ -80,6 +82,7 @@
                         dropdown-width="w-[400px]"
                         :items="trans('pages.wallet.export-transactions-modal.types-options')"
                         :placeholder="trans('pages.wallet.export-transactions-modal.types_placeholder')"
+                        :selected-pluralized-langs="trans('pages.wallet.export-transactions-modal.types_x_selected')"
                         multiple
                     />
 
@@ -93,6 +96,7 @@
                             'userCurrency' => Settings::currency(),
                         ]"
                         :placeholder="trans('pages.wallet.export-transactions-modal.columns_placeholder')"
+                        :selected-pluralized-langs="trans('pages.wallet.export-transactions-modal.columns_x_selected')"
                         multiple
                     />
                 </div>
@@ -109,12 +113,17 @@
 
                 <button
                     type="button"
-                    class="button-primary"
+                    class="flex justify-center items-center space-x-2 sm:py-1.5 sm:px-4 button-primary"
                     @if ($this->canSubmit)
                         disabled
                     @endif
                 >
-                    @lang('actions.export')
+                    <x-ark-icon
+                        name="arrows.underline-arrow-down"
+                        size="sm"
+                    />
+
+                    <span>@lang('actions.export')</span>
                 </button>
             </x-slot>
         </x-ark-modal>

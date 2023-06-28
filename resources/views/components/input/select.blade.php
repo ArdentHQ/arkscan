@@ -6,6 +6,7 @@
     'placeholder'   => null,
     'multiple'      => false,
     'itemLangProperties' => [],
+    'selectedPluralizedLangs' => null,
 ])
 
 @php
@@ -17,12 +18,18 @@
 @endphp
 
 <div
-    x-data="{}"
+    x-data="{
+        @if ($multiple)
+            get selectedItemCount() {
+                return Object.entries({{ $id }}).map((enabled) => enabled).length;
+            }
+        @endif
+    }"
     x-ref="input-select"
-    {{ $attributes->class('space-y-3') }}
+    {{ $attributes->class('space-y-3 group') }}
 >
     <label
-        class="font-semibold text-theme-secondary-900 text-lg"
+        class="font-semibold text-theme-secondary-900 text-lg group-hover:text-theme-primary-600 transition-default"
         @click="function (e) {
             e.preventDefault();
 
@@ -43,12 +50,33 @@
             name="button"
             class="border border-theme-secondary-400 dark:border-theme-secondary-700 rounded px-4 py-3.5 w-full leading-[17px] h-11 flex justify-between"
         >
-            <span
-                x-text="$refs[{{ $id }}]?.innerText ?? '{{ $placeholder }}'"
-                :class="{
-                    'text-theme-secondary-900': (! Array.isArray({{ $id }}) && {{ $id }} !== null) || (Array.isArray({{ $id }}) && {{ $id }}.length > 0),
-                }"
-            ></span>
+            @if ($multiple)
+                <span x-show="selectedItemCount === 0">
+                    {{ $placeholder }}
+                </span>
+
+                <div
+                    x-show="selectedItemCount > 0"
+                    class="text-theme-secondary-900"
+                >
+                    <span x-text="'(' + selectedItemCount + ')'"></span>
+
+                    <span x-show="selectedItemCount === 1">
+                        {{ $selectedPluralizedLangs['singular'] }}
+                    </span>
+
+                    <span x-show="selectedItemCount > 1">
+                        {{ $selectedPluralizedLangs['plural'] }}
+                    </span>
+                </div>
+            @else
+                <span
+                    x-text="$refs[{{ $id }}]?.innerText ?? '{{ $placeholder }}'"
+                    :class="{
+                        'text-theme-secondary-900': (! Array.isArray({{ $id }}) && {{ $id }} !== null) || (Array.isArray({{ $id }}) && {{ $id }}.length > 0),
+                    }"
+                ></span>
+            @endif
 
             <span
                 class="transition-default"

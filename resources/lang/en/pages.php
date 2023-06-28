@@ -186,6 +186,16 @@ return [
             'types_placeholder'   => 'Select Types',
             'columns_placeholder' => 'Select Columns',
 
+            'types_x_selected' => [
+                'singular' => 'Type Selected',
+                'plural'   => 'Types Selected',
+            ],
+
+            'columns_x_selected' => [
+                'singular' => 'Column Selected',
+                'plural'   => 'Columns Selected',
+            ],
+
             'date-options' => [
                 'current_month' => 'Current Month',
                 'last_month'    => 'Last Month',

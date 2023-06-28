@@ -10,6 +10,7 @@
     'disabled' => false,
     'closeOnClick' => true,
     'onClose' => null,
+    'buttonExtra' => null,
     'placement' => 'bottom',
     'placementFallbacks' => null,
     'disabledButtonClass' => 'text-theme-secondary-500 dark:text-theme-secondary-700 bg-theme-secondary-200 dark:bg-theme-secondary-800',
@@ -34,12 +35,19 @@
         :placement-fallbacks="$placementFallbacks"
     >
         <x-slot name="button">
-            <div {{ $button->attributes->class([
-                'inline-flex items-center transition-default',
-                $disabledButtonClass => $disabled,
-                $activeButtonClass => ! $disabled,
-            ]) }}>
-                {{ $button }}
+            <div @class([
+                'w-full',
+                'flex flex-col space-y-3' => $buttonExtra !== null,
+            ])>
+                <div {{ $button->attributes->class([
+                    'inline-flex items-center transition-default',
+                    $disabledButtonClass => $disabled,
+                    $activeButtonClass => ! $disabled,
+                ]) }}>
+                    {{ $button }}
+                </div>
+
+                {{ $buttonExtra }}
             </div>
         </x-slot>
 
