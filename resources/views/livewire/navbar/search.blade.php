@@ -29,6 +29,7 @@
             class="flex items-center mr-4 space-x-4"
             x-show="query !== null && query !== ''"
             x-transition
+            x-cloak
         >
             <button
                 type="button"

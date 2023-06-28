@@ -3,7 +3,7 @@
 @php ($isVote = $transaction->isVote())
 @php ($delegate = $isVote ? $transaction->voted() : $transaction->unvoted())
 
-<div class="flex items-center space-x-2 text-xs">
+<div class="flex items-center space-x-2 text-xs isolate">
     <div class="text-theme-secondary-500 dark:text-theme-secondary-700">
         @if ($isVote)
             @lang('general.search.vote')

@@ -145,10 +145,9 @@ return [
                 'searchableAttributes'=> ['address', 'username'],
                 'sortableAttributes'  => ['timestamp'],
                 'typoTolerance'       => [
-                    'disableOnWords' => ['address'],
+                    'enabled' => false,
                 ],
                 'rankingRules' => [
-                    'typo',
                     'words',
                     'proximity',
                     'attribute',
@@ -157,14 +156,13 @@ return [
                 ],
             ],
             Transaction::class => [
-                'filterableAttributes'=> ['id', 'recipient_id'],
-                'searchableAttributes'=> ['id'],
+                'filterableAttributes'=> ['id'],
+                'searchableAttributes'=> [],
                 'sortableAttributes'  => ['timestamp'],
                 'typoTolerance'       => [
-                    'disableOnWords' => ['id'],
+                    'enabled' => false,
                 ],
                 'rankingRules' => [
-                    'typo',
                     'words',
                     'proximity',
                     'attribute',
@@ -173,13 +171,13 @@ return [
                 ],
             ],
             Block::class => [
-                'searchableAttributes'=> ['id'],
+                'filterableAttributes'=> ['id'],
+                'searchableAttributes'=> [],
                 'sortableAttributes'  => ['timestamp'],
                 'typoTolerance'       => [
-                    'disableOnWords' => ['id'],
+                    'enabled' => false,
                 ],
                 'rankingRules' => [
-                    'typo',
                     'words',
                     'proximity',
                     'attribute',

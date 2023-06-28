@@ -1,7 +1,7 @@
 @props(['wallet', 'truncate' => false, 'truncateLength' => null])
 
 <x-search.results.result :model="$wallet">
-    <div class="flex overflow-auto items-center space-x-2">
+    <div class="flex overflow-auto items-center space-x-2 isolate">
         <div class="dark:text-theme-secondary-500">
             @lang('general.search.address')
         </div>
