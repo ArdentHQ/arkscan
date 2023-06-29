@@ -7,14 +7,17 @@
     name="{{ $id }}"
     x-ref="{{ $id }}"
     x-model="{{ $variableName }}.{{ $id }}"
-    class="dropdown__checkbox border-l-4 pl-3"
+    class="dropdown__checkbox pl-4 transition-default"
 
     ::class="{
-        'border-theme-primary-600 bg-theme-primary-50 dark:bg-theme-secondary-900 text-theme-primary-600 dark:text-white font-semibold': {{ $variableName }}.{{ $id }} === true,
-        'border-transparent text-theme-secondary-900': {{ $variableName }}.{{ $id }} === false,
+        'bg-theme-primary-50 dark:bg-theme-dark-900': {{ $variableName }}.{{ $id }} === true,
     }"
 
-    label-classes="w-full block py-3 group-hover:text-theme-secondary-900 group-hover:bg-theme-secondary-200 dark:group-hover:bg-theme-secondary-900 dark:text-theme-secondary-200 transition-default cursor-pointer"
+    label-classes="w-full text-base block py-3  cursor-pointer"
+    alpine-label-class="{
+        'text-theme-primary-600 dark:text-theme-dark-blue-500 font-semibold': {{ $variableName }}.{{ $id }} === true,
+        'text-theme-secondary-900 dark:text-theme-dark-50': {{ $variableName }}.{{ $id }} === false,
+    }"
 
     wrapper-class="flex-1"
     no-livewire

@@ -28,10 +28,10 @@
 
     @if($this->modalShown)
         <x-ark-modal
-            title-class="mb-6 text-lg font-semibold text-left dark:text-theme-secondary-200"
+            title-class="mb-6 text-lg font-semibold text-left dark:text-theme-dark-50"
             padding-class="p-6"
             wire-close="cancel"
-            close-button-class="absolute top-0 right-0 p-0 mt-0 mr-0 w-8 h-8 bg-transparent rounded-none sm:mt-6 sm:mr-6 sm:rounded button button-secondary text-theme-secondary-700"
+            close-button-class="absolute top-0 right-0 p-0 mt-0 mr-0 w-8 h-8 bg-transparent rounded-none sm:mt-6 sm:mr-6 sm:rounded button button-secondary text-theme-secondary-700 dark:bg-transparent dark:shadow-none dark:text-theme-dark-200 hover:dark:text-theme-dark-50 hover:dark:bg-theme-dark-blue-600"
             buttons-style="flex flex-col sm:flex-row sm:justify-end !mt-6 sm:space-x-3 space-y-3 sm:space-y-0"
             breakpoint="sm"
             wrapper-class="max-w-full sm:max-w-[448px]"
@@ -40,13 +40,13 @@
             <x-slot name="title">
                 <div>@lang('pages.wallet.export-transactions-modal.title')</div>
 
-                <div class="mt-1 text-sm font-normal text-theme-secondary-700">
+                <div class="mt-1 text-sm font-normal text-theme-secondary-700 dark:text-theme-dark-200">
                     @lang('pages.wallet.export-transactions-modal.description')
                 </div>
             </x-slot>
 
             <x-slot name="description">
-                <div class="flex flex-col px-6 pt-6 -mx-6 space-y-5 border-t border-theme-secondary-300">
+                <div class="flex flex-col px-6 pt-6 -mx-6 space-y-5 border-t border-theme-secondary-300 dark:border-theme-dark-700">
                     <x-input.select
                         id="dateRange"
                         :label="trans('pages.wallet.export-transactions-modal.date_range')"
@@ -66,14 +66,8 @@
                             name="include_header_row"
                             x-model="includeHeaderRow"
                             :label="trans('pages.wallet.export-transactions-modal.include_header_row')"
-                            :label-classes="Arr::toCssClasses([
-                                'text-base',
-                            ])"
+                            label-classes="text-base transition-default"
                             class="export-modal__checkbox"
-                            alpine-label-class="{
-                                'text-theme-secondary-900 dark:text-theme-secondary-200': includeHeaderRow === false,
-                                'text-theme-primary-600 font-semibold dark:group-hover:text-theme-dark-blue-600 transition-default': includeHeaderRow === true,
-                            }"
                             wrapper-class="flex-1"
                             no-livewire
                         />

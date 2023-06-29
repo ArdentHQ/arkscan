@@ -8,6 +8,7 @@
     'width' => 'min-w-40',
     'scrollClass' => null,
     'disabled' => false,
+    'initApine' => true,
     'closeOnClick' => true,
     'onClose' => null,
     'buttonExtra' => null,
@@ -19,7 +20,9 @@
 
 <div
     {{ $attributes->class('relative') }}
-    x-data="{ dropdownOpen: false }"
+    @if ($initApine)
+        x-data="{ dropdownOpen: false }"
+    @endif
 >
     <x-ark-dropdown
         :wrapper-class="Arr::toCssClasses(['inline-block', $dropdownWrapperClass])"
