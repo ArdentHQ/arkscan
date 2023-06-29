@@ -14,7 +14,7 @@
             return Object.values(this.columns).filter(enabled => enabled).length === 0;
         },
     }"
-    class="flex-1 export-modal h-8"
+    class="flex-1 h-8 export-modal"
 >
     <div data-tippy-content="@lang('general.coming_soon')">
         <button
@@ -34,7 +34,7 @@
     @if($this->modalShown)
         <x-ark-modal
             title-class="mb-6 text-lg font-semibold text-left dark:text-theme-dark-50"
-            padding-class="py-4 p-6 sm:py-6"
+            padding-class="p-6 py-4 sm:py-6"
             wire-close="closeModal"
             close-button-class="absolute top-0 right-0 p-0 mt-4 mr-6 w-8 h-8 bg-transparent rounded-none sm:mt-6 sm:rounded dark:bg-transparent dark:shadow-none button button-secondary text-theme-secondary-700 dark:text-theme-dark-200 hover:dark:text-theme-dark-50 hover:dark:bg-theme-dark-blue-600"
             buttons-style="flex flex-col sm:flex-row sm:justify-end !mt-4 sm:!mt-6 sm:space-x-3 space-y-3 sm:space-y-0"
@@ -51,7 +51,7 @@
             </x-slot>
 
             <x-slot name="description">
-                <div class="flex flex-col px-6 py-4 sm:py-6 -mx-6 space-y-5 border-y border-theme-secondary-300 dark:border-theme-dark-700">
+                <div class="flex flex-col py-4 px-6 -mx-6 space-y-5 sm:py-6 border-y border-theme-secondary-300 dark:border-theme-dark-700">
                     <x-input.js-select
                         id="dateRange"
                         :label="trans('pages.wallet.export-transactions-modal.date_range')"
