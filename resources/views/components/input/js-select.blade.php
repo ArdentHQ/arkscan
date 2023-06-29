@@ -50,7 +50,7 @@
     {{ $attributes->class('group/label') }}
 >
     <label
-        class="text-lg font-semibold text-theme-secondary-900 dark:text-theme-dark-50 transition-default group-hover/label:text-theme-primary-600 group-hover/label:dark:text-theme-dark-blue-500 block pb-3"
+        class="block pb-3 text-lg font-semibold text-theme-secondary-900 transition-default dark:text-theme-dark-50 group-hover/label:text-theme-primary-600 group-hover/label:dark:text-theme-dark-blue-500"
         @click="function (e) {
             e.preventDefault();
 
@@ -64,7 +64,7 @@
 
     <x-general.dropdown.dropdown
         dropdown-wrapper-class="flex relative flex-col w-full"
-        dropdown-class="dark:bg-theme-secondary-800 rounded"
+        dropdown-class="rounded dark:bg-theme-secondary-800"
         :width="$dropdownWidth"
         :close-on-click="! $multiple"
         :init-alpine="false"
@@ -167,12 +167,12 @@
     @if ($multiple)
         <div
             x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count > 0"
-            class="flex flex-wrap items-center gap-3 mt-3"
+            class="flex flex-wrap gap-3 items-center mt-3"
         >
             @foreach ($items as $key => $text)
                 <div
                     x-show="{{ $id }}.{{ $key }} === true"
-                    class="border border-transparent dark:border-theme-dark-600 inline-flex cursor-pointer items-center space-x-2 bg-theme-primary-100 dark:bg-theme-dark-800 text-theme-primary-600 dark:text-white p-2.5 rounded font-semibold hover:bg-theme-primary-700 hover:dark:bg-theme-primary-700 hover:dark:border-theme-primary-700 hover:text-white transition-default group text-sm"
+                    class="inline-flex items-center p-2.5 space-x-2 text-sm font-semibold rounded border border-transparent cursor-pointer dark:text-white hover:text-white bg-theme-primary-100 text-theme-primary-600 transition-default group dark:border-theme-dark-600 dark:bg-theme-dark-800 hover:bg-theme-primary-700 hover:dark:bg-theme-primary-700 hover:dark:border-theme-primary-700"
                     @click="{{ $id }}.{{ $key }} = false"
                 >
                     <div>
@@ -185,7 +185,7 @@
 
                     <button
                         type="button"
-                        class="p-1 text-theme-secondary-700 dark:text-theme-dark-200 group-hover:text-white group-hover:dark:text-white"
+                        class="p-1 group-hover:text-white text-theme-secondary-700 dark:text-theme-dark-200 group-hover:dark:text-white"
                     >
                         <x-ark-icon
                             name="cross-small"
