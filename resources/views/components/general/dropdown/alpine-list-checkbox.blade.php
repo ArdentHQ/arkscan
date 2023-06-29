@@ -7,7 +7,7 @@
     name="{{ $id }}"
     x-ref="{{ $id }}"
     x-model="{{ $variableName }}.{{ $id }}"
-    class="dropdown__checkbox pl-4 transition-default"
+    :attributes="$attributes->class('dropdown__checkbox pl-4 transition-default select-none')"
 
     ::class="{
         'bg-theme-primary-50 dark:bg-theme-dark-900': {{ $variableName }}.{{ $id }} === true,

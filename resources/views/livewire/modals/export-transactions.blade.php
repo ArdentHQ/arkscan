@@ -5,6 +5,14 @@
         includeHeaderRow: false,
         types: {{ json_encode(array_map(fn ($item) => true, trans('pages.wallet.export-transactions-modal.types-options'))) }},
         columns: {{ json_encode(array_map(fn ($item) => true, trans('pages.wallet.export-transactions-modal.columns-options'))) }},
+
+        canExport() {
+            if (Object.values(this.types).filter(enabled => enabled).length === 0) {
+                return false;
+            }
+
+            return Object.values(this.columns).filter(enabled => enabled).length === 0;
+        },
     }"
     class="export-modal"
 >
@@ -47,7 +55,7 @@
 
             <x-slot name="description">
                 <div class="flex flex-col px-6 pt-6 -mx-6 space-y-5 border-t border-theme-secondary-300 dark:border-theme-dark-700">
-                    <x-input.select
+                    <x-input.js-select
                         id="dateRange"
                         :label="trans('pages.wallet.export-transactions-modal.date_range')"
                         dropdown-width="w-full px-6 sm:w-[400px] sm:px-0"
@@ -55,7 +63,7 @@
                     />
 
                     <div class="flex flex-col space-y-3">
-                        <x-input.select
+                        <x-input.js-select
                             id="delimiter"
                             :label="trans('pages.wallet.export-transactions-modal.delimiter')"
                             dropdown-width="w-full px-6 sm:w-[400px] sm:px-0"
@@ -73,7 +81,7 @@
                         />
                     </div>
 
-                    <x-input.select
+                    <x-input.js-select
                         id="types"
                         :label="trans('pages.wallet.export-transactions-modal.types')"
                         dropdown-width="w-full px-6 sm:w-[400px] sm:px-0"
@@ -83,7 +91,7 @@
                         multiple
                     />
 
-                    <x-input.select
+                    <x-input.js-select
                         id="columns"
                         :label="trans('pages.wallet.export-transactions-modal.columns')"
                         dropdown-width="w-full px-6 sm:w-[400px] sm:px-0"
@@ -111,9 +119,7 @@
                 <button
                     type="button"
                     class="flex justify-center items-center space-x-2 sm:py-1.5 sm:px-4 button-primary"
-                    @if ($this->canSubmit)
-                        disabled
-                    @endif
+                    x-bind:disabled="canExport"
                 >
                     <x-ark-icon
                         name="arrows.underline-arrow-down"

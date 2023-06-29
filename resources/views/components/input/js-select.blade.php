@@ -27,11 +27,16 @@
         x-data="{
             dropdownOpen: false,
             updateSelectedCount() {
-                $store.selectField{{ Str::studly($id) }}.selectedItems.count = Object.values({{ $id }}).filter(enabled => enabled).length;
+                const enabledCount = Object.values({{ $id }}).filter(enabled => enabled).length;
+
+                $store['selectField{{ Str::studly($id) }}'].selectedItems.count = enabledCount;
+                $store['selectField{{ Str::studly($id) }}'].selectAll = enabledCount === Object.values({{ $id }}).length;
+
             },
         }"
         x-init="() => {
             Alpine.store('selectField{{ Str::studly($id) }}', {
+                selectAll: false,
                 selectedItems: {
                     count: 0,
                 },
@@ -61,7 +66,6 @@
         dropdown-wrapper-class="flex relative flex-col w-full"
         dropdown-class="dark:bg-theme-secondary-800 rounded"
         :width="$dropdownWidth"
-        {{-- scroll-class="" --}}
         :close-on-click="! $multiple"
         :init-alpine="false"
     >
@@ -70,25 +74,25 @@
             class="flex justify-between py-3.5 px-4 w-full h-11 rounded border border-theme-secondary-400 leading-[17px] dark:border-theme-dark-500 dark:text-theme-dark-200"
         >
             @if ($multiple)
-                <span x-show="$store.selectField{{ Str::studly($id) }}.selectedItems.count === 0">
+                <span x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count === 0">
                     {{ $placeholder }}
                 </span>
 
                 <div
-                    x-show="$store.selectField{{ Str::studly($id) }}.selectedItems.count > 0"
+                    x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count > 0"
                     class="text-theme-secondary-900 dark:text-theme-dark-50"
                 >
-                    <span x-text="`(${$store.selectField{{ Str::studly($id) }}.selectedItems.count})`"></span>
+                    <span x-text="`(${$store['selectField{{ Str::studly($id) }}'].selectedItems.count})`"></span>
 
-                    <span x-show="$store.selectField{{ Str::studly($id) }}.selectedItems.count === Object.values({{ $id }}).length">
+                    <span x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count === Object.values({{ $id }}).length">
                         @lang('general.all')
                     </span>
 
-                    <span x-show="$store.selectField{{ Str::studly($id) }}.selectedItems.count === 1">
+                    <span x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count === 1">
                         {{ $selectedPluralizedLangs['singular'] }}
                     </span>
 
-                    <span x-show="$store.selectField{{ Str::studly($id) }}.selectedItems.count > 1">
+                    <span x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count > 1">
                         {{ $selectedPluralizedLangs['plural'] }}
                     </span>
                 </div>
@@ -131,6 +135,20 @@
                 </x-general.dropdown.alpine-list-item>
             @endforeach
         @else
+            <x-general.dropdown.alpine-list-checkbox
+                id="selectField{{ Str::studly($id) }}.selectAll"
+                variable-name="$store"
+                x-on:click="(e) => {
+                    for (const key of Object.keys({{ $id }})) {
+                        {{ $id }}[key] = e.target.checked;
+                    }
+                }"
+            >
+                <span>@lang('general.select_all')</span>
+
+                <span>{{ $label }}</span>
+            </x-general.dropdown.alpine-list-checkbox>
+
             @foreach ($items as $key => $text)
                 <x-general.dropdown.alpine-list-checkbox
                     :id="$key"
@@ -148,7 +166,7 @@
 
     @if ($multiple)
         <div
-            x-show="$store.selectField{{ Str::studly($id) }}.selectedItems.count > 0"
+            x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count > 0"
             class="flex flex-wrap items-center gap-3 mt-3"
         >
             @foreach ($items as $key => $text)

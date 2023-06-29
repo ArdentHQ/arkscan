@@ -35,6 +35,7 @@ return [
     'overview'                => 'Overview',
     'view'                    => 'View',
     'coming_soon'             => 'Coming Soon',
+    'select_all'              => 'Select All',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
