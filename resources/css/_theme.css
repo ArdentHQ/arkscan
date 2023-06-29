@@ -112,6 +112,10 @@
     @apply text-theme-dark-700;
 }
 
+.tippy-box[data-theme~="ark"] {
+    @apply text-xs;
+}
+
 :root {
     --theme-orange-dark: #a56d4c;
     --theme-orange-light: #fbeed6;
