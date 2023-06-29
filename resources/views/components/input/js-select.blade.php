@@ -98,7 +98,7 @@
                 </div>
             @else
                 <span
-                    x-text="$refs[{{ $id }}]?.innerText ?? '{{ $placeholder }}'"
+                    x-html="$refs[{{ $id }}]?.innerHTML ?? '{{ $placeholder }}'"
                     :class="{
                         'text-theme-secondary-900 dark:text-theme-dark-50': (! Array.isArray({{ $id }}) && {{ $id }} !== null) || (Array.isArray({{ $id }}) && {{ $id }}.length > 0),
                     }"
@@ -122,16 +122,18 @@
         </x-slot>
 
         @unless ($multiple)
-            @foreach ($items as $key => $text)
+            @foreach ($items as $key => $item)
                 <x-general.dropdown.alpine-list-item
                     :id="$key"
                     :variable-name="$id"
                 >
-                    @if ($translationKey)
-                        @lang($translationKey.'.'.$key, $itemLangProperties)
-                    @else
-                        {{ $text }}
-                    @endif
+                    <x-input.includes.item-text
+                        :id="$id"
+                        :item="$item"
+                        :key="$key"
+                        :translation-key="$translationKey"
+                        :item-lang-properties="$itemLangProperties"
+                    />
                 </x-general.dropdown.alpine-list-item>
             @endforeach
         @else
@@ -149,16 +151,18 @@
                 <span>{{ $label }}</span>
             </x-general.dropdown.alpine-list-checkbox>
 
-            @foreach ($items as $key => $text)
+            @foreach ($items as $key => $item)
                 <x-general.dropdown.alpine-list-checkbox
                     :id="$key"
                     :variable-name="$id"
                 >
-                    @if ($translationKey)
-                        @lang($translationKey.'.'.$key, $itemLangProperties)
-                    @else
-                        {{ $text }}
-                    @endif
+                    <x-input.includes.item-text
+                        :id="$id"
+                        :item="$item"
+                        :key="$key"
+                        :translation-key="$translationKey"
+                        :item-lang-properties="$itemLangProperties"
+                    />
                 </x-general.dropdown.alpine-list-checkbox>
             @endforeach
         @endunless
@@ -169,18 +173,20 @@
             x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count > 0"
             class="flex flex-wrap gap-3 items-center mt-3"
         >
-            @foreach ($items as $key => $text)
+            @foreach ($items as $key => $item)
                 <div
                     x-show="{{ $id }}.{{ $key }} === true"
                     class="inline-flex items-center p-2.5 space-x-2 text-sm font-semibold rounded border border-transparent cursor-pointer dark:text-white hover:text-white bg-theme-primary-100 text-theme-primary-600 transition-default group dark:border-theme-dark-600 dark:bg-theme-dark-800 hover:bg-theme-primary-700 hover:dark:bg-theme-primary-700 hover:dark:border-theme-primary-700"
                     @click="{{ $id }}.{{ $key }} = false"
                 >
                     <div>
-                        @if ($translationKey)
-                            @lang($translationKey.'.'.$key, $itemLangProperties)
-                        @else
-                            {{ $text }}
-                        @endif
+                        <x-input.includes.item-text
+                            :id="$id"
+                            :item="$item"
+                            :key="$key"
+                            :translation-key="$translationKey"
+                            :item-lang-properties="$itemLangProperties"
+                        />
                     </div>
 
                     <button

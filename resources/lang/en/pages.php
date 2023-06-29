@@ -206,10 +206,22 @@ return [
             ],
 
             'delimiter-options' => [
-                'comma'     => 'Comma',
-                'semicolon' => 'Semicolon',
-                'tab'       => 'Tab',
-                'pipe'      => 'Pipe',
+                'comma'     => [
+                    'text'  => 'Comma',
+                    'value' => ',',
+                ],
+                'semicolon' => [
+                    'text'  => 'Semicolon',
+                    'value' => ';',
+                ],
+                'tab'       => [
+                    'text'  => 'Tab',
+                    'value' => '\\t',
+                ],
+                'pipe'      => [
+                    'text'  => 'Pipe',
+                    'value' => '|',
+                ],
             ],
 
             'types-options' => [
