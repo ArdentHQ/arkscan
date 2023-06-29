@@ -1,6 +1,7 @@
 @props([
     'button',
     'buttonClass' => "w-full focus-visible:ring-2 focus-visible:ring-theme-primary-500 focus-visible:dark:ring-theme-primary-300 focus-visible:ring-inset",
+    'buttonWrapperClass' => null,
     'dropdownWrapperClass' => null,
     'dropdownClass' => null,
     'dropdownPadding' => 'py-2',
@@ -41,6 +42,7 @@
             <div @class([
                 'w-full',
                 'flex flex-col space-y-3' => $buttonExtra !== null,
+                $buttonWrapperClass,
             ])>
                 <div {{ $button->attributes->class([
                     'inline-flex items-center transition-default',

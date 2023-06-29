@@ -14,12 +14,9 @@
             return Object.values(this.columns).filter(enabled => enabled).length === 0;
         },
     }"
-    class="export-modal"
+    class="flex-1 export-modal h-8"
 >
-    <div
-        class="flex-1 sm:flex-none"
-        data-tippy-content="@lang('general.coming_soon')"
-    >
+    <div data-tippy-content="@lang('general.coming_soon')">
         <button
             type="button"
             class="flex justify-center items-center space-x-2 w-full sm:py-1.5 sm:px-4 button-secondary"
