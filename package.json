@@ -39,5 +39,8 @@
     },
     "resolutions": {
         "autoprefixer": "10.4.5"
+    },
+    "dependencies": {
+        "axios": "^1.4.0"
     }
 }
