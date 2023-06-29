@@ -7,7 +7,7 @@
     name="{{ $id }}"
     x-ref="{{ $id }}"
     x-model="{{ $variableName }}.{{ $id }}"
-    class="dropdown__checkbox border-l-4 pl-3"
+    class="pl-3 border-l-4 dropdown__checkbox"
 
     ::class="{
         'border-theme-primary-600 bg-theme-primary-50 dark:bg-theme-secondary-900 text-theme-primary-600 dark:text-white font-semibold': {{ $variableName }}.{{ $id }} === true,
