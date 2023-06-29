@@ -111,7 +111,7 @@
                 <button
                     type="button"
                     class="button-secondary"
-                    wire:click="cancel"
+                    wire:click="closeModal"
                 >
                     @lang('actions.cancel')
                 </button>
