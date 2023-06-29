@@ -7,9 +7,15 @@ export class TransactionsApi {
         });
 
         return response.data;
-	}
+    }
 
-    static async fetchAll({ cursor = 1, host, query, limit = 100, transactions = [] }) {
+    static async fetchAll({
+        cursor = 1,
+        host,
+        query,
+        limit = 100,
+        transactions = [],
+    }) {
         const page = await this.fetch(host, {
             page: cursor,
             limit,
@@ -27,6 +33,12 @@ export class TransactionsApi {
             return transactions;
         }
 
-        return await this.fetchAll({ cursor, host, query, limit, transactions });
-	}
+        return await this.fetchAll({
+            cursor,
+            host,
+            query,
+            limit,
+            transactions,
+        });
+    }
 }

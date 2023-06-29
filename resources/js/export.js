@@ -21,7 +21,8 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
     };
 
     const columnMapping = {
-        timestamp: (transaction) => dayjs(transaction.timestamp.human).format("L LTS"),
+        timestamp: (transaction) =>
+            dayjs(transaction.timestamp.human).format("L LTS"),
         amount: (transaction) => transaction.amount / 1e8,
         fee: (transaction) => transaction.fee / 1e8,
         amountFiat: (transaction) => (transaction.amount / 1e8) * rate,
@@ -97,7 +98,9 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
 
             (async () => {
                 try {
-                    const transactions = await this.fetch({ query: this.requestData() });
+                    const transactions = await this.fetch({
+                        query: this.requestData(),
+                    });
 
                     if (transactions.length === 0) {
                         this.hasFinishedExport = true;
@@ -107,7 +110,8 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
 
                     this.downloadCsv(transactions);
                 } catch (e) {
-                    this.errorMessage = "There was a problem fetching transactions.";
+                    this.errorMessage =
+                        "There was a problem fetching transactions.";
                 }
             })();
         },
@@ -121,7 +125,7 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
             for (const transaction of transactions) {
                 const data = [];
                 for (const [column, enabled] of Object.entries(this.columns)) {
-                    if (! enabled) {
+                    if (!enabled) {
                         continue;
                     }
 
@@ -135,7 +139,9 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
                 csvRows.push(data);
             }
 
-            const csvContent = "data:text/csv;charset=utf-8," + csvRows.map(row => row.join(this.getDelimiter())).join("\n");
+            const csvContent =
+                "data:text/csv;charset=utf-8," +
+                csvRows.map((row) => row.join(this.getDelimiter())).join("\n");
 
             this.successMessage = `A total of ${transactions.length} transactions have been retrieved and are ready for download.`;
             this.hasFinishedExport = true;
@@ -156,7 +162,7 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
 
             const data = {
                 address,
-                type: []
+                type: [],
             };
 
             if (dateFrom) {
@@ -206,11 +212,17 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
         },
 
         canExport() {
-            if (Object.values(this.types).filter(enabled => enabled).length === 0) {
+            if (
+                Object.values(this.types).filter((enabled) => enabled)
+                    .length === 0
+            ) {
                 return false;
             }
 
-            return Object.values(this.columns).filter(enabled => enabled).length !== 0;
+            return (
+                Object.values(this.columns).filter((enabled) => enabled)
+                    .length !== 0
+            );
         },
 
         get exportStatus() {
@@ -240,10 +252,7 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
             this.hasFinishedExport = false;
         },
 
-        async fetch({
-            query,
-            limit = 100,
-        }) {
+        async fetch({ query, limit = 100 }) {
             return TransactionsApi.fetchAll({
                 host: network.api,
                 limit,
