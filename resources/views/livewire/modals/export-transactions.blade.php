@@ -39,7 +39,7 @@
             title-class="mb-6 text-lg font-semibold text-left dark:text-theme-dark-50"
             padding-class="p-6"
             wire-close="cancel"
-            close-button-class="absolute top-0 right-0 p-0 mt-0 mr-0 w-8 h-8 bg-transparent rounded-none sm:mt-6 sm:mr-6 sm:rounded button button-secondary text-theme-secondary-700 dark:bg-transparent dark:shadow-none dark:text-theme-dark-200 hover:dark:text-theme-dark-50 hover:dark:bg-theme-dark-blue-600"
+            close-button-class="absolute top-0 right-0 p-0 mt-0 mr-0 w-8 h-8 bg-transparent rounded-none sm:mt-6 sm:mr-6 sm:rounded dark:bg-transparent dark:shadow-none button button-secondary text-theme-secondary-700 dark:text-theme-dark-200 hover:dark:text-theme-dark-50 hover:dark:bg-theme-dark-blue-600"
             buttons-style="flex flex-col sm:flex-row sm:justify-end !mt-6 sm:space-x-3 space-y-3 sm:space-y-0"
             breakpoint="sm"
             wrapper-class="max-w-full sm:max-w-[448px]"
