@@ -29,7 +29,7 @@
     {{ $attributes->class('space-y-3 group') }}
 >
     <label
-        class="font-semibold text-theme-secondary-900 text-lg group-hover:text-theme-primary-600 transition-default"
+        class="text-lg font-semibold text-theme-secondary-900 transition-default group-hover:text-theme-primary-600"
         @click="function (e) {
             e.preventDefault();
 
