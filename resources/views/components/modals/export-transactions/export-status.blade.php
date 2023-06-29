@@ -56,8 +56,8 @@
         </div>
     </div>
 
-    <div class="border border-theme-secondary-300 dark:border-theme-dark-500 px-4 rounded flex justify-between items-center">
-        <div class="flex items-center space-x-2 text-theme-secondary-900 dark:text-theme-dark-50 font-semibold h-12 min-w-0">
+    <div class="flex justify-between items-center px-4 rounded border border-theme-secondary-300 dark:border-theme-dark-500">
+        <div class="flex items-center space-x-2 min-w-0 h-12 font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
             <x-ark-icon
                 name="app-csv"
                 class="fill-theme-primary-600 dark:fill-theme-dark-blue-500"
