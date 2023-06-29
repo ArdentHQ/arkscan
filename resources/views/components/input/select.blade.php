@@ -45,6 +45,7 @@
         dropdown-wrapper-class="flex relative flex-col w-full"
         :width="$dropdownWidth"
         scroll-class="space-y-2"
+        :close-on-click="false"
     >
         <x-slot
             name="button"

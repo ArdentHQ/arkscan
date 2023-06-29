@@ -1,10 +1,13 @@
-<div x-data="{
-    dateRange: 'current_month',
-    delimiter: 'comma',
-    includeHeaderRow: false,
-    types: {{ json_encode(array_map(fn ($item) => true, trans('pages.wallet.export-transactions-modal.types-options'))) }},
-    columns: {{ json_encode(array_map(fn ($item) => true, trans('pages.wallet.export-transactions-modal.columns-options'))) }},
-}">
+<div
+    x-data="{
+        dateRange: 'current_month',
+        delimiter: 'comma',
+        includeHeaderRow: false,
+        types: {{ json_encode(array_map(fn ($item) => true, trans('pages.wallet.export-transactions-modal.types-options'))) }},
+        columns: {{ json_encode(array_map(fn ($item) => true, trans('pages.wallet.export-transactions-modal.columns-options'))) }},
+    }"
+    class="export-modal"
+>
     <div
         class="flex-1 sm:flex-none"
         data-tippy-content="@lang('general.coming_soon')"
@@ -47,7 +50,7 @@
                     <x-input.select
                         id="dateRange"
                         :label="trans('pages.wallet.export-transactions-modal.date_range')"
-                        dropdown-width="w-[400px]"
+                        dropdown-width="w-full px-6 sm:w-[400px] sm:px-0"
                         :items="trans('pages.wallet.export-transactions-modal.date-options')"
                     />
 
@@ -55,7 +58,7 @@
                         <x-input.select
                             id="delimiter"
                             :label="trans('pages.wallet.export-transactions-modal.delimiter')"
-                            dropdown-width="w-[400px]"
+                            dropdown-width="w-full px-6 sm:w-[400px] sm:px-0"
                             :items="trans('pages.wallet.export-transactions-modal.delimiter-options')"
                         />
 
@@ -66,7 +69,7 @@
                             :label-classes="Arr::toCssClasses([
                                 'text-base',
                             ])"
-                            class=""
+                            class="export-modal__checkbox"
                             alpine-label-class="{
                                 'text-theme-secondary-900 dark:text-theme-secondary-200': includeHeaderRow === false,
                                 'text-theme-primary-600 font-semibold dark:group-hover:text-theme-dark-blue-600 transition-default': includeHeaderRow === true,
@@ -79,7 +82,7 @@
                     <x-input.select
                         id="types"
                         :label="trans('pages.wallet.export-transactions-modal.types')"
-                        dropdown-width="w-[400px]"
+                        dropdown-width="w-full px-6 sm:w-[400px] sm:px-0"
                         :items="trans('pages.wallet.export-transactions-modal.types-options')"
                         :placeholder="trans('pages.wallet.export-transactions-modal.types_placeholder')"
                         :selected-pluralized-langs="trans('pages.wallet.export-transactions-modal.types_x_selected')"
@@ -89,7 +92,7 @@
                     <x-input.select
                         id="columns"
                         :label="trans('pages.wallet.export-transactions-modal.columns')"
-                        dropdown-width="w-[400px]"
+                        dropdown-width="w-full px-6 sm:w-[400px] sm:px-0"
                         items="pages.wallet.export-transactions-modal.columns-options"
                         :item-lang-properties="[
                             'networkCurrency' => Network::currency(),
