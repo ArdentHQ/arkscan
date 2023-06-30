@@ -100,6 +100,7 @@
                             disabled: dataUri === null
                         }"
                         x-bind:download="`${address}.csv`"
+                        x-on:click="Livewire.emit('toastMessage', ['@lang('pages.wallet.export-transactions-modal.success_toast', ['address' => $this->address])', 'success'])"
                     >
                         <div class="flex justify-center items-center space-x-2 h-full">
                             <x-ark-icon
