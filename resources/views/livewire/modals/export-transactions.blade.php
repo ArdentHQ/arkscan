@@ -3,8 +3,8 @@
         dateRange: 'current_month',
         delimiter: 'comma',
         includeHeaderRow: false,
-        types: {{ json_encode(array_map(fn ($item) => true, trans('pages.wallet.export-transactions-modal.types-options'))) }},
-        columns: {{ json_encode(array_map(fn ($item) => true, trans('pages.wallet.export-transactions-modal.columns-options'))) }},
+        types: {{ json_encode(array_map(fn ($item) => false, trans('pages.wallet.export-transactions-modal.types-options'))) }},
+        columns: {{ json_encode(array_map(fn ($item) => false, trans('pages.wallet.export-transactions-modal.columns-options'))) }},
 
         canExport() {
             if (Object.values(this.types).filter(enabled => enabled).length === 0) {
