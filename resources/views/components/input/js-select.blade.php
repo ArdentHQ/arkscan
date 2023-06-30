@@ -49,25 +49,19 @@
     @endunless
     {{ $attributes->class('group/label') }}
 >
-    <label
-        class="block pb-3 text-lg font-semibold text-theme-secondary-900 transition-default dark:text-theme-dark-50 group-hover/label:text-theme-primary-600 group-hover/label:dark:text-theme-dark-blue-500"
-        @click="function (e) {
-            e.preventDefault();
-
-            $nextTick(function () {
-                $refs['selectField{{ Str::studly($id) }}'].querySelector('button').click();
-            });
-        }"
-    >
+    <label class="block pb-3 text-lg font-semibold text-theme-secondary-900 transition-default dark:text-theme-dark-50 group-hover/label:text-theme-primary-600 group-hover/label:dark:text-theme-dark-blue-500">
         {{ $label }}
     </label>
 
     <x-general.dropdown.dropdown
         dropdown-wrapper-class="flex relative flex-col w-full"
-        dropdown-class="rounded dark:bg-theme-secondary-800"
+        dropdown-class="rounded"
+        dropdown-rounding="rounded"
+        dropdown-padding="py-1 mx-6 sm:mx-0"
         :width="$dropdownWidth"
         :close-on-click="! $multiple"
         :init-alpine="false"
+        active-button-class="bg-white dark:text-theme-secondary-600 dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800 hover:text-theme-secondary-900 hover:bg-theme-secondary-200"
     >
         <x-slot
             name="button"
@@ -98,7 +92,7 @@
                 </div>
             @else
                 <span
-                    x-text="$refs[{{ $id }}]?.innerText ?? '{{ $placeholder }}'"
+                    x-html="$refs[{{ $id }}]?.innerHTML ?? '{{ $placeholder }}'"
                     :class="{
                         'text-theme-secondary-900 dark:text-theme-dark-50': (! Array.isArray({{ $id }}) && {{ $id }} !== null) || (Array.isArray({{ $id }}) && {{ $id }}.length > 0),
                     }"
@@ -122,16 +116,18 @@
         </x-slot>
 
         @unless ($multiple)
-            @foreach ($items as $key => $text)
+            @foreach ($items as $key => $item)
                 <x-general.dropdown.alpine-list-item
                     :id="$key"
                     :variable-name="$id"
                 >
-                    @if ($translationKey)
-                        @lang($translationKey.'.'.$key, $itemLangProperties)
-                    @else
-                        {{ $text }}
-                    @endif
+                    <x-input.includes.item-text
+                        :id="$id"
+                        :item="$item"
+                        :key="$key"
+                        :translation-key="$translationKey"
+                        :item-lang-properties="$itemLangProperties"
+                    />
                 </x-general.dropdown.alpine-list-item>
             @endforeach
         @else
@@ -149,16 +145,18 @@
                 <span>{{ $label }}</span>
             </x-general.dropdown.alpine-list-checkbox>
 
-            @foreach ($items as $key => $text)
+            @foreach ($items as $key => $item)
                 <x-general.dropdown.alpine-list-checkbox
                     :id="$key"
                     :variable-name="$id"
                 >
-                    @if ($translationKey)
-                        @lang($translationKey.'.'.$key, $itemLangProperties)
-                    @else
-                        {{ $text }}
-                    @endif
+                    <x-input.includes.item-text
+                        :id="$id"
+                        :item="$item"
+                        :key="$key"
+                        :translation-key="$translationKey"
+                        :item-lang-properties="$itemLangProperties"
+                    />
                 </x-general.dropdown.alpine-list-checkbox>
             @endforeach
         @endunless
@@ -166,21 +164,23 @@
 
     @if ($multiple)
         <div
-            x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count > 0"
+            x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count > 0 && $store['selectField{{ Str::studly($id) }}'].selectedItems.count < Object.values({{ $id }}).length"
             class="flex flex-wrap gap-3 items-center mt-3"
         >
-            @foreach ($items as $key => $text)
+            @foreach ($items as $key => $item)
                 <div
                     x-show="{{ $id }}.{{ $key }} === true"
                     class="inline-flex items-center p-2.5 space-x-2 text-sm font-semibold rounded border border-transparent cursor-pointer dark:text-white hover:text-white bg-theme-primary-100 text-theme-primary-600 transition-default group dark:border-theme-dark-600 dark:bg-theme-dark-800 hover:bg-theme-primary-700 hover:dark:bg-theme-primary-700 hover:dark:border-theme-primary-700"
                     @click="{{ $id }}.{{ $key }} = false"
                 >
                     <div>
-                        @if ($translationKey)
-                            @lang($translationKey.'.'.$key, $itemLangProperties)
-                        @else
-                            {{ $text }}
-                        @endif
+                        <x-input.includes.item-text
+                            :id="$id"
+                            :item="$item"
+                            :key="$key"
+                            :translation-key="$translationKey"
+                            :item-lang-properties="$itemLangProperties"
+                        />
                     </div>
 
                     <button

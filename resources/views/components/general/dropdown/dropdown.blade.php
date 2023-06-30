@@ -1,6 +1,7 @@
 @props([
     'button',
     'buttonClass' => "w-full focus-visible:ring-2 focus-visible:ring-theme-primary-500 focus-visible:dark:ring-theme-primary-300 focus-visible:ring-inset",
+    'buttonWrapperClass' => null,
     'dropdownWrapperClass' => null,
     'dropdownClass' => null,
     'dropdownPadding' => 'py-2',
@@ -14,6 +15,7 @@
     'buttonExtra' => null,
     'placement' => 'bottom',
     'placementFallbacks' => null,
+    'dropdownRounding' => 'rounded-xl',
     'disabledButtonClass' => 'text-theme-secondary-500 dark:text-theme-secondary-700 bg-theme-secondary-200 dark:bg-theme-secondary-800',
     'activeButtonClass' => 'bg-theme-secondary-200 dark:bg-theme-secondary-800 md:bg-white md:dark:text-theme-secondary-600 md:hover:text-theme-secondary-900 md:hover:bg-theme-secondary-200 md:dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800 text-theme-secondary-700 dark:text-theme-secondary-200',
 ])
@@ -29,7 +31,7 @@
         :init-alpine="false"
         :with-placement="$placement"
         :dropdown-classes="Arr::toCssClasses(['transition-opacity', $width, $dropdownClass])"
-        :dropdown-content-classes="Arr::toCssClasses(['rounded-xl shadow-lg', $dropdownBackground, $dropdownPadding])"
+        :dropdown-content-classes="Arr::toCssClasses(['shadow-lg', $dropdownRounding, $dropdownBackground, $dropdownPadding])"
         :disabled="$disabled"
         z-index="z-20"
         :button-class="$buttonClass"
@@ -41,6 +43,7 @@
             <div @class([
                 'w-full',
                 'flex flex-col space-y-3' => $buttonExtra !== null,
+                $buttonWrapperClass,
             ])>
                 <div {{ $button->attributes->class([
                     'inline-flex items-center transition-default',

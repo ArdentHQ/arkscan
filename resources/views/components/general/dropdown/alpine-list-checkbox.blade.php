@@ -4,14 +4,10 @@
 ])
 
 <x-ark-checkbox
-    name="{{ $id }}"
+    name="checkbox-{{ $id }}"
     x-ref="{{ $id }}"
     x-model="{{ $variableName }}.{{ $id }}"
     :attributes="$attributes->class('dropdown__checkbox pl-4 transition-default select-none')"
-
-    ::class="{
-        'bg-theme-primary-50 dark:bg-theme-dark-900': {{ $variableName }}.{{ $id }} === true,
-    }"
 
     label-classes="w-full text-base block py-3  cursor-pointer"
     alpine-label-class="{
