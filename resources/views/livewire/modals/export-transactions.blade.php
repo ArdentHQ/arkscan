@@ -115,7 +115,7 @@
 
                 <button
                     type="button"
-                    class="flex justify-center items-center space-x-2 sm:py-1.5 sm:px-4 button-primary mb-3 sm:mb-0"
+                    class="flex justify-center items-center mb-3 space-x-2 sm:py-1.5 sm:px-4 sm:mb-0 button-primary"
                     x-bind:disabled="canExport"
                 >
                     <x-ark-icon
