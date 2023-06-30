@@ -233,9 +233,9 @@ return [
 
             'columns-options' => [
                 'id'         => 'Transaction ID',
-                'timestamp'  => 'Timestamp',
-                'sender'     => 'Sender',
-                'recipient'  => 'Recipient',
+                'timestamp'  => 'Transaction Date',
+                'sender'     => 'Addressing (From)',
+                'recipient'  => 'Addressing (To)',
                 'amount'     => 'Value [:networkCurrency]',
                 'amountFiat' => 'Value [:userCurrency]',
                 'fee'        => 'Fee [:networkCurrency]',
