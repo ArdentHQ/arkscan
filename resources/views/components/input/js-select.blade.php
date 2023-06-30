@@ -164,7 +164,7 @@
 
     @if ($multiple)
         <div
-            x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count > 0"
+            x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count > 0 && $store['selectField{{ Str::studly($id) }}'].selectedItems.count < Object.values({{ $id }}).length"
             class="flex flex-wrap gap-3 items-center mt-3"
         >
             @foreach ($items as $key => $item)
