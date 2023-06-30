@@ -109,7 +109,7 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
                                     ...this.requestData(true),
                                     typeGroup: 2,
                                 },
-                            })),
+                            }))
                         );
                     }
 
