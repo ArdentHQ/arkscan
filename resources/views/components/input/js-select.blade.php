@@ -49,16 +49,7 @@
     @endunless
     {{ $attributes->class('group/label') }}
 >
-    <label
-        class="block pb-3 text-lg font-semibold text-theme-secondary-900 transition-default dark:text-theme-dark-50 group-hover/label:text-theme-primary-600 group-hover/label:dark:text-theme-dark-blue-500"
-        @click="function (e) {
-            e.preventDefault();
-
-            $nextTick(function () {
-                $refs['selectField{{ Str::studly($id) }}'].querySelector('button').click();
-            });
-        }"
-    >
+    <label class="block pb-3 text-lg font-semibold text-theme-secondary-900 transition-default dark:text-theme-dark-50 group-hover/label:text-theme-primary-600 group-hover/label:dark:text-theme-dark-blue-500">
         {{ $label }}
     </label>
 
