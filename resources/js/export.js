@@ -73,22 +73,22 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
         successMessage: null,
 
         types: {
-            transfers: true,
-            votes: true,
-            multipayments: true,
-            others: true,
+            transfers: false,
+            votes: false,
+            multipayments: false,
+            others: false,
         },
 
         columns: {
-            id: true,
-            timestamp: true,
-            sender: true,
-            recipient: true,
-            amount: true,
-            amountFiat: true,
-            fee: true,
-            feeFiat: true,
-            rate: true,
+            id: false,
+            timestamp: false,
+            sender: false,
+            recipient: false,
+            amount: false,
+            amountFiat: false,
+            fee: false,
+            feeFiat: false,
+            rate: false,
         },
 
         exportTransactions() {
