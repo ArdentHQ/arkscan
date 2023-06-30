@@ -171,6 +171,78 @@ return [
             'vote'                => 'Vote',
             'vote_for_delegate'   => 'Vote for Delegate',
         ],
+
+        'export-transactions-modal' => [
+            'title'       => 'Export Table',
+            'description' => 'Select the data below that you want to export.',
+
+            'date_range'          => 'Date Range',
+            'date_from'           => 'Date From',
+            'date_to'             => 'Date To',
+            'delimiter'           => 'Delimiter',
+            'types'               => 'Types',
+            'columns'             => 'Columns',
+            'include_header_row'  => 'Include Header Row',
+            'types_placeholder'   => 'Select Types',
+            'columns_placeholder' => 'Select Columns',
+
+            'types_x_selected' => [
+                'singular' => 'Type Selected',
+                'plural'   => 'Types Selected',
+            ],
+
+            'columns_x_selected' => [
+                'singular' => 'Column Selected',
+                'plural'   => 'Columns Selected',
+            ],
+
+            'date-options' => [
+                'current_month' => 'Current Month',
+                'last_month'    => 'Last Month',
+                'last_quarter'  => 'Last Quarter',
+                'current_year'  => 'Current Year',
+                'last_year'     => 'Last Year',
+                'all'           => 'All',
+            ],
+
+            'delimiter-options' => [
+                'comma'     => [
+                    'text'  => 'Comma',
+                    'value' => ',',
+                ],
+                'semicolon' => [
+                    'text'  => 'Semicolon',
+                    'value' => ';',
+                ],
+                'tab'       => [
+                    'text'  => 'Tab',
+                    'value' => '\\t',
+                ],
+                'pipe'      => [
+                    'text'  => 'Pipe',
+                    'value' => '|',
+                ],
+            ],
+
+            'types-options' => [
+                'transfers'     => 'Transfers',
+                'votes'         => 'Votes',
+                'multipayments' => 'Multipayments',
+                'others'        => 'Others',
+            ],
+
+            'columns-options' => [
+                'id'         => 'Transaction ID',
+                'timestamp'  => 'Transaction Date',
+                'sender'     => 'Addressing (From)',
+                'recipient'  => 'Addressing (To)',
+                'amount'     => 'Value [:networkCurrency]',
+                'amountFiat' => 'Value [:userCurrency]',
+                'fee'        => 'Fee [:networkCurrency]',
+                'feeFiat'    => 'Fee [:userCurrency]',
+                'rate'       => 'Rate [:userCurrency]',
+            ],
+        ],
     ],
 
     'delegates'        => [
