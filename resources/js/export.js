@@ -102,6 +102,17 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
                         query: this.requestData(),
                     });
 
+                    if (this.types.others) {
+                        transactions.push(
+                            ...(await this.fetch({
+                                query: {
+                                    ...this.requestData(true),
+                                    typeGroup: 2,
+                                },
+                            })),
+                        );
+                    }
+
                     if (transactions.length === 0) {
                         this.hasFinishedExport = true;
 
@@ -149,7 +160,7 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
             this.dataUri = encodeURI(csvContent);
         },
 
-        requestData() {
+        requestData(withoutTransactionTypes = false) {
             let dateFrom = dateFilters[this.dateRange];
             let dateTo = null;
             if (dateFrom !== null) {
@@ -170,23 +181,27 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
                 data["timestamp.to"] = this.timeSinceEpoch(dateTo);
             }
 
-            if (this.types.transfers) {
-                data.type.push(0);
-            }
+            if (withoutTransactionTypes === false) {
+                data.typeGroup = 1;
 
-            if (this.types.votes) {
-                data.type.push(3);
-            }
+                if (this.types.transfers) {
+                    data.type.push(0);
+                }
 
-            if (this.types.multipayments) {
-                data.type.push(6);
-            }
+                if (this.types.votes) {
+                    data.type.push(3);
+                }
 
-            if (this.types.others) {
-                data.type.push(1, 2, 4, 5, 7, 8, 9, 10);
-            }
+                if (this.types.multipayments) {
+                    data.type.push(6);
+                }
 
-            data.type = data.type.join(",");
+                if (this.types.others) {
+                    data.type.push(1, 2, 4, 5, 7, 8, 9, 10);
+                }
+
+                data.type = data.type.join(",");
+            }
 
             return data;
         },
