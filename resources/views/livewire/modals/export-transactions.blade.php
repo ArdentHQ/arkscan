@@ -37,7 +37,7 @@
             padding-class="p-6 py-4 sm:py-6"
             wire-close="closeModal"
             close-button-class="absolute top-0 right-0 p-0 mt-4 mr-6 w-8 h-8 bg-transparent rounded-none sm:mt-6 sm:rounded dark:bg-transparent dark:shadow-none button button-secondary text-theme-secondary-700 dark:text-theme-dark-200 hover:dark:text-theme-dark-50 hover:dark:bg-theme-dark-blue-600"
-            buttons-style="flex flex-col sm:flex-row sm:justify-end !mt-4 sm:!mt-6 sm:space-x-3 space-y-3 sm:space-y-0"
+            buttons-style="flex flex-col-reverse sm:flex-row sm:justify-end !mt-4 sm:!mt-6 sm:space-x-3"
             breakpoint="sm"
             wrapper-class="max-w-full sm:max-w-[448px]"
             content-class="relative bg-white sm:mx-auto sm:rounded-xl sm:shadow-2xl dark:bg-theme-secondary-900"
@@ -115,7 +115,7 @@
 
                 <button
                     type="button"
-                    class="flex justify-center items-center space-x-2 sm:py-1.5 sm:px-4 button-primary"
+                    class="flex justify-center items-center space-x-2 sm:py-1.5 sm:px-4 button-primary mb-3 sm:mb-0"
                     x-bind:disabled="canExport"
                 >
                     <x-ark-icon
