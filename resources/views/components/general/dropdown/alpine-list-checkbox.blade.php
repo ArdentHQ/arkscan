@@ -4,7 +4,7 @@
 ])
 
 <x-ark-checkbox
-    name="{{ $id }}"
+    name="checkbox-{{ $id }}"
     x-ref="{{ $id }}"
     x-model="{{ $variableName }}.{{ $id }}"
     :attributes="$attributes->class('dropdown__checkbox pl-4 transition-default select-none')"
