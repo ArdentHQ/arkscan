@@ -56,8 +56,8 @@
     <x-general.dropdown.dropdown
         dropdown-wrapper-class="flex relative flex-col w-full"
         dropdown-class="rounded"
-        dropdown-padding="py-2 mx-6 sm:mx-0"
         dropdown-rounding="rounded"
+        dropdown-padding="py-1 mx-6 sm:mx-0"
         :width="$dropdownWidth"
         :close-on-click="! $multiple"
         :init-alpine="false"
