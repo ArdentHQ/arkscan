@@ -212,6 +212,8 @@ const TransactionsExport = ({ address, userCurrency, rate, network, canBeExchang
                 } catch (e) {
                     this.errorMessage =
                         "There was a problem fetching transactions.";
+
+                    console.log(this.errorMessage, e);
                 }
             })();
         },
