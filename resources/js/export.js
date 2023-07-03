@@ -7,7 +7,13 @@ import { TransactionsApi } from "./transactions-api";
 dayjs.extend(dayjsQuarterOfYear);
 dayjs.extend(dayjsLocalizedFormat);
 
-const TransactionsExport = ({ address, userCurrency, rate, network, canBeExchanged }) => {
+const TransactionsExport = ({
+    address,
+    userCurrency,
+    rate,
+    network,
+    canBeExchanged,
+}) => {
     const csvColumns = {
         id: "TXID",
         timestamp: "Timestamp",
@@ -83,19 +89,19 @@ const TransactionsExport = ({ address, userCurrency, rate, network, canBeExchang
         total: (transaction) => {
             const amount = getTransactionAmount(transaction);
             if (transaction.sender === address) {
-                return amount - (transaction.fee / 1e8);
+                return amount - transaction.fee / 1e8;
             }
 
             return amount;
         },
         amountFiat: function (transaction) {
-            return this.amount(transaction) * rate
+            return this.amount(transaction) * rate;
         },
         feeFiat: function (transaction) {
-            return this.fee(transaction) * rate
+            return this.fee(transaction) * rate;
         },
         totalFiat: function (transaction) {
-            return this.total(transaction) * rate
+            return this.total(transaction) * rate;
         },
         rate: () => rate,
     };
@@ -226,8 +232,10 @@ const TransactionsExport = ({ address, userCurrency, rate, network, canBeExchang
 
             for (const transaction of transactions) {
                 const data = [];
-                for (const [column, enabled] of Object.entries(this.getColumns())) {
-                    if (! enabled) {
+                for (const [column, enabled] of Object.entries(
+                    this.getColumns()
+                )) {
+                    if (!enabled) {
                         continue;
                     }
 
@@ -316,7 +324,10 @@ const TransactionsExport = ({ address, userCurrency, rate, network, canBeExchang
             const csvColumnsNames = Object.keys(csvColumns);
             columns = Object.entries(columns)
                 .sort((a, b) => {
-                    return csvColumnsNames.indexOf(a[0]) - csvColumnsNames.indexOf(b[0]);
+                    return (
+                        csvColumnsNames.indexOf(a[0]) -
+                        csvColumnsNames.indexOf(b[0])
+                    );
                 })
                 .reduce((enabledColumns, [column, enabled]) => {
                     if (enabled) {
@@ -330,16 +341,15 @@ const TransactionsExport = ({ address, userCurrency, rate, network, canBeExchang
         },
 
         getColumnTitles() {
-            return Object.entries(this.getColumns())
-                .map(([column]) => {
-                    return this.translateColumnCurrency(csvColumns[column]);
-                });
+            return Object.entries(this.getColumns()).map(([column]) => {
+                return this.translateColumnCurrency(csvColumns[column]);
+            });
         },
 
         translateColumnCurrency(column) {
             return column
                 .replace(/:userCurrency/, userCurrency)
-                .replace(/:networkCurrency/, network.currency)
+                .replace(/:networkCurrency/, network.currency);
         },
 
         getDelimiter() {
