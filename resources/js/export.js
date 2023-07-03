@@ -99,13 +99,11 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
     return {
         address,
         transactions: [],
-        requestedSyncAbort: false,
         network,
         userCurrency,
         dateRange: "current_month",
         delimiter: "comma",
         includeHeaderRow: true,
-        profile: null,
 
         hasStartedExport: false,
         dataUri: null,
@@ -130,6 +128,23 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
             fee: false,
             feeFiat: false,
             rate: false,
+        },
+
+        resetForm() {
+            this.resetStatus();
+
+            this.transactions = [];
+            this.includeHeaderRow = true;
+            this.dateRange = "current_month";
+            this.delimiter = "comma";
+
+            for (const type of Object.keys(this.types)) {
+                this.types[type] = false;
+            }
+
+            for (const column of Object.keys(this.columns)) {
+                this.columns[column] = false;
+            }
         },
 
         exportTransactions() {
