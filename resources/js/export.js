@@ -20,6 +20,31 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
         rate: "Rate [:userCurrency]",
     };
 
+    const getTransactionAmount = (transaction) => {
+        let amount = transaction.amount / 1e8;
+        if (transaction.type === 6) {
+            return transaction.asset.payments.reduce((totalAmount, recipientData) => {
+                if (recipientData.recipientId === address) {
+                    if (totalAmount < 0) {
+                        totalAmount = 0;
+                    }
+
+                    totalAmount += recipientData.amount / 1e8;
+                } else if (totalAmount <= 0) {
+                    totalAmount -= recipientData.amount / 1e8;
+                }
+
+                return totalAmount;
+            }, 0);
+        }
+
+        if (transaction.sender === address) {
+            return -amount;
+        }
+
+        return amount;
+    };
+
     const columnMapping = {
         timestamp: (transaction) =>
             dayjs(transaction.timestamp.human).format("L LTS"),
@@ -38,14 +63,7 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
 
             return transaction.recipient;
         },
-        amount: (transaction) => {
-            const amount = transaction.amount / 1e8;
-            if (transaction.sender === address) {
-                return -amount;
-            }
-
-            return amount;
-        },
+        amount: getTransactionAmount,
         fee: (transaction) => {
             if (transaction.sender === address) {
                 return -transaction.fee / 1e8;
@@ -54,7 +72,7 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
             return 0;
         },
         amountFiat: (transaction) => {
-            const amount = (transaction.amount / 1e8) * rate;
+            const amount = getTransactionAmount(transaction) * rate;
             if (transaction.sender === address) {
                 return -amount;
             }
@@ -63,7 +81,7 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
         },
         feeFiat: (transaction) => {
             if (transaction.sender === address) {
-                (transaction.fee / 1e8) * rate;
+                return -(transaction.fee / 1e8) * rate;
             }
 
             return 0;
