@@ -7,16 +7,18 @@ import { TransactionsApi } from "./transactions-api";
 dayjs.extend(dayjsQuarterOfYear);
 dayjs.extend(dayjsLocalizedFormat);
 
-const TransactionsExport = ({ address, userCurrency, rate, network }) => {
+const TransactionsExport = ({ address, userCurrency, rate, network, canBeExchanged }) => {
     const csvColumns = {
         id: "TXID",
         timestamp: "Timestamp",
         sender: "Sender",
         recipient: "Recipient",
         amount: "Value [:networkCurrency]",
-        amountFiat: "Value [:userCurrency]",
         fee: "Fee [:networkCurrency]",
+        total: "Total [:networkCurrency]",
+        amountFiat: "Value [:userCurrency]",
         feeFiat: "Fee [:userCurrency]",
+        totalFiat: "Total [:userCurrency]",
         rate: "Rate [:userCurrency]",
     };
 
@@ -78,20 +80,22 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
 
             return 0;
         },
-        amountFiat: (transaction) => {
-            const amount = getTransactionAmount(transaction) * rate;
+        total: (transaction) => {
+            const amount = getTransactionAmount(transaction);
             if (transaction.sender === address) {
-                return -amount;
+                return amount - (transaction.fee / 1e8);
             }
 
             return amount;
         },
-        feeFiat: (transaction) => {
-            if (transaction.sender === address) {
-                return -(transaction.fee / 1e8) * rate;
-            }
-
-            return 0;
+        amountFiat: function (transaction) {
+            return this.amount(transaction) * rate
+        },
+        feeFiat: function (transaction) {
+            return this.fee(transaction) * rate
+        },
+        totalFiat: function (transaction) {
+            return this.total(transaction) * rate
         },
         rate: () => rate,
     };
@@ -125,6 +129,7 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
         address,
         transactions: [],
         network,
+        canBeExchanged,
         userCurrency,
         dateRange: "current_month",
         delimiter: "comma",
@@ -149,10 +154,7 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
             sender: false,
             recipient: false,
             amount: false,
-            amountFiat: false,
             fee: false,
-            feeFiat: false,
-            rate: false,
         },
 
         resetForm() {
@@ -169,6 +171,12 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
 
             for (const column of Object.keys(this.columns)) {
                 this.columns[column] = false;
+            }
+
+            if (canBeExchanged) {
+                this.columns.amountFiat = false;
+                this.columns.feeFiat = false;
+                this.columns.rate = false;
             }
         },
 
@@ -211,13 +219,13 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
         downloadCsv(transactions) {
             const csvRows = [];
             if (this.includeHeaderRow) {
-                csvRows.push(this.getColumns());
+                csvRows.push(this.getColumnTitles());
             }
 
             for (const transaction of transactions) {
                 const data = [];
-                for (const [column, enabled] of Object.entries(this.columns)) {
-                    if (!enabled) {
+                for (const [column, enabled] of Object.entries(this.getColumns())) {
+                    if (! enabled) {
                         continue;
                     }
 
@@ -294,13 +302,42 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
         },
 
         getColumns() {
-            return Object.entries(this.columns)
-                .filter(([column, enabled]) => enabled)
-                .map(([column, enabled]) => {
-                    return csvColumns[column]
-                        .replace(/:userCurrency/, userCurrency)
-                        .replace(/:networkCurrency/, network.currency);
+            let columns = this.columns;
+            if (columns.amount && columns.fee) {
+                columns.total = true;
+            }
+
+            if (columns.amountFiat && columns.feeFiat) {
+                columns.totalFiat = true;
+            }
+
+            const csvColumnsNames = Object.keys(csvColumns);
+            columns = Object.entries(columns)
+                .sort((a, b) => {
+                    return csvColumnsNames.indexOf(a[0]) - csvColumnsNames.indexOf(b[0]);
+                })
+                .reduce((enabledColumns, [column, enabled]) => {
+                    if (enabled) {
+                        enabledColumns[column] = enabled;
+                    }
+
+                    return enabledColumns;
+                }, {});
+
+            return columns;
+        },
+
+        getColumnTitles() {
+            return Object.entries(this.getColumns())
+                .map(([column]) => {
+                    return this.translateColumnCurrency(csvColumns[column]);
                 });
+        },
+
+        translateColumnCurrency(column) {
+            return column
+                .replace(/:userCurrency/, userCurrency)
+                .replace(/:networkCurrency/, network.currency)
         },
 
         getDelimiter() {

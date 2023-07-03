@@ -40,6 +40,7 @@
         :label="trans('pages.wallet.export-transactions-modal.columns')"
         dropdown-width="w-full sm:w-[400px]"
         items="pages.wallet.export-transactions-modal.columns-options"
+        :item-criteria="fn ($key) => Network::canBeExchanged() || ! in_array($key, ['amountFiat', 'feeFiat', 'rate'])"
         :item-lang-properties="[
             'networkCurrency' => Network::currency(),
             'userCurrency' => Settings::currency(),
