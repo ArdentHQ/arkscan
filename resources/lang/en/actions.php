@@ -18,4 +18,5 @@ return [
     'filter'          => 'Filter',
     'download'        => 'Download',
     'back'            => 'Back',
+    'retry'           => 'Retry',
 ];

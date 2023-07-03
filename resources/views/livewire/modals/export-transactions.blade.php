@@ -104,6 +104,7 @@
                         }"
                         x-bind:download="`${address}.csv`"
                         x-on:click="Livewire.emit('toastMessage', ['@lang('pages.wallet.export-transactions-modal.success_toast', ['address' => $this->address])', 'success'])"
+                        x-show="exportStatus !== 'ERROR'"
                     >
                         <div class="flex justify-center items-center space-x-2 h-full">
                             <x-ark-icon
@@ -112,6 +113,22 @@
                             />
 
                             <span>@lang('actions.download')</span>
+                        </div>
+                    </a>
+
+                    <button
+                        type="button"
+                        class="button-primary"
+                        x-on:click="exportTransactions"
+                        x-show="exportStatus === 'ERROR'"
+                    >
+                        <div class="flex justify-center items-center space-x-2 h-full">
+                            <x-ark-icon
+                                name="arrows.underline-arrow-down"
+                                size="sm"
+                            />
+
+                            <span>@lang('actions.retry')</span>
                         </div>
                     </a>
                 </div>
