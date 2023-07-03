@@ -53,6 +53,10 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
             dayjs(transaction.timestamp.human).format("L LTS"),
         recipient: (transaction) => {
             if (transaction.typeGroup === 2) {
+                return "Other";
+            }
+
+            if (transaction.type === 0) {
                 return transaction.recipient;
             }
 
@@ -64,7 +68,7 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
                 return `Multiple (${transaction.asset.payments.length})`;
             }
 
-            return transaction.recipient;
+            return "Other";
         },
         amount: getTransactionAmount,
         fee: (transaction) => {
