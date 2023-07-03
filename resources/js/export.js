@@ -23,10 +23,51 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
     const columnMapping = {
         timestamp: (transaction) =>
             dayjs(transaction.timestamp.human).format("L LTS"),
-        amount: (transaction) => transaction.amount / 1e8,
-        fee: (transaction) => transaction.fee / 1e8,
-        amountFiat: (transaction) => (transaction.amount / 1e8) * rate,
-        feeFiat: (transaction) => (transaction.fee / 1e8) * rate,
+        recipient: (transaction) => {
+            if (transaction.typeGroup === 2) {
+                return transaction.recipient;
+            }
+
+            if (transaction.type === 3) {
+                return "Vote Transaction";
+            }
+
+            if (transaction.type === 6) {
+                return `Multiple (${transaction.asset.payments.length})`;
+            }
+
+            return transaction.recipient;
+        },
+        amount: (transaction) => {
+            const amount = transaction.amount / 1e8;
+            if (transaction.sender === address) {
+                return -amount;
+            }
+
+            return amount;
+        },
+        fee: (transaction) => {
+            if (transaction.sender === address) {
+                return -transaction.fee / 1e8;
+            }
+
+            return 0;
+        },
+        amountFiat: (transaction) => {
+            const amount = (transaction.amount / 1e8) * rate;
+            if (transaction.sender === address) {
+                return -amount;
+            }
+
+            return amount;
+        },
+        feeFiat: (transaction) => {
+            if (transaction.sender === address) {
+                (transaction.fee / 1e8) * rate;
+            }
+
+            return 0;
+        },
         rate: () => rate,
     };
 
