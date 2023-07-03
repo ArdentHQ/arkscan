@@ -23,19 +23,22 @@ const TransactionsExport = ({ address, userCurrency, rate, network }) => {
     const getTransactionAmount = (transaction) => {
         let amount = transaction.amount / 1e8;
         if (transaction.type === 6 && transaction.typeGroup === 1) {
-            return transaction.asset.payments.reduce((totalAmount, recipientData) => {
-                if (recipientData.recipientId === address) {
-                    if (totalAmount < 0) {
-                        totalAmount = 0;
+            return transaction.asset.payments.reduce(
+                (totalAmount, recipientData) => {
+                    if (recipientData.recipientId === address) {
+                        if (totalAmount < 0) {
+                            totalAmount = 0;
+                        }
+
+                        totalAmount += recipientData.amount / 1e8;
+                    } else if (totalAmount <= 0) {
+                        totalAmount -= recipientData.amount / 1e8;
                     }
 
-                    totalAmount += recipientData.amount / 1e8;
-                } else if (totalAmount <= 0) {
-                    totalAmount -= recipientData.amount / 1e8;
-                }
-
-                return totalAmount;
-            }, 0);
+                    return totalAmount;
+                },
+                0
+            );
         }
 
         if (transaction.sender === address) {
