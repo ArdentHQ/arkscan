@@ -20,7 +20,7 @@ import ReadMore from "@ui/js/read-more.js";
 import RichSelect from "./rich-select.js";
 import Search from "./search";
 import TableSorting from "./table-sorting.js";
-import TransactionsExport from "./export.js";
+import TransactionsExport from "./transactions-export.js";
 import Tabs from "./tabs";
 import makeBlockie from "ethereum-blockies-base64";
 

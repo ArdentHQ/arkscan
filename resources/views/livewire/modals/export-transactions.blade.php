@@ -1,5 +1,5 @@
 <div
-    x-data="TransactionsExport({
+    x-data="TransactionsExport.initialize({
         address: '{{ $this->address }}',
         network: {{ json_encode(Network::toArray()) }},
         userCurrency: '{{ Settings::currency() }}',
@@ -74,7 +74,7 @@
                         type="button"
                         class="flex justify-center items-center space-x-2 sm:py-1.5 sm:px-4 sm:mb-0 button-primary"
                         x-bind:disabled="! canExport()"
-                        x-on:click="exportTransactions"
+                        x-on:click="exportData"
                     >
                         <x-ark-icon
                             name="arrows.underline-arrow-down"
