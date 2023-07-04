@@ -47,6 +47,11 @@ final class ExchangeRate
         return (float) (new CryptoDataCache())->getPrices(Settings::currency().'.day')->last();
     }
 
+    public static function currentRate(): ?float
+    {
+        return (new NetworkStatusBlockCache())->getPrice(Network::currency(), Settings::currency());
+    }
+
     private static function timestamp(int $timestamp): Carbon
     {
         return Timestamp::fromGenesis($timestamp);

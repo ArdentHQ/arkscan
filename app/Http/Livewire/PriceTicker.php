@@ -8,6 +8,7 @@ use App\Facades\Network;
 use App\Facades\Settings;
 use App\Http\Livewire\Concerns\HandlesSettings;
 use App\Services\Cache\NetworkStatusBlockCache;
+use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -64,8 +65,7 @@ final class PriceTicker extends Component
 
     private function getPriceFormatted(): string
     {
-        $price = (new NetworkStatusBlockCache())->getPrice(Network::currency(), Settings::currency());
-
+        $price = ExchangeRate::currentRate();
         if ($price === null) {
             return '';
         }

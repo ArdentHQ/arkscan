@@ -185,6 +185,7 @@ return [
             'include_header_row'  => 'Include Header Row',
             'types_placeholder'   => 'Select Types',
             'columns_placeholder' => 'Select Columns',
+            'success_toast'       => '<span class=\\\'font-semibold\\\'>:address.csv</span> has been saved successfully',
 
             'types_x_selected' => [
                 'singular' => 'Type Selected',

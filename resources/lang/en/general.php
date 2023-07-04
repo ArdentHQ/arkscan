@@ -36,6 +36,10 @@ return [
     'view'                    => 'View',
     'coming_soon'             => 'Coming Soon',
     'select_all'              => 'Select All',
+    'success'                 => 'Success',
+    'information'             => 'Information',
+    'error'                   => 'Error',
+    'warning'                 => 'Warning',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
@@ -176,5 +180,10 @@ return [
         'vote'                 => 'Vote',
         'unvote'               => 'Unvote',
         'results_will_show_up' => 'Results will show up here',
+    ],
+
+    'export' => [
+        'information_text' => 'The data is being prepared. This might take a while, please wait.',
+        'warning_text'     => 'No transactions matching the selected parameters could be found.',
     ],
 ];

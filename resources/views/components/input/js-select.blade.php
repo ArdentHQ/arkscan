@@ -2,10 +2,11 @@
     'id',
     'label',
     'items',
-    'dropdownWidth' => 'w-full',
-    'placeholder'   => null,
-    'multiple'      => false,
-    'itemLangProperties' => [],
+    'dropdownWidth'           => 'w-full',
+    'placeholder'             => null,
+    'multiple'                => false,
+    'itemLangProperties'      => [],
+    'itemCriteria'            => null,
     'selectedPluralizedLangs' => null,
 ])
 
@@ -146,6 +147,10 @@
             </x-general.dropdown.alpine-list-checkbox>
 
             @foreach ($items as $key => $item)
+                @if ($itemCriteria !== null && $itemCriteria($key) === false)
+                    @continue
+                @endif
+
                 <x-general.dropdown.alpine-list-checkbox
                     :id="$key"
                     :variable-name="$id"

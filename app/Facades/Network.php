@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static int blockReward()
  * @method static BigNumber supply()
  * @method static \ArkEcosystem\Crypto\Networks\AbstractNetwork config()
+ * @method static array toArray()
  */
 final class Network extends Facade
 {

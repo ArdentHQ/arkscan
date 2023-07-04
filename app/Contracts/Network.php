@@ -40,4 +40,6 @@ interface Network
     public function supply(): BigNumber;
 
     public function config(): \BitWasp\Bitcoin\Network\Network;
+
+    public function toArray(): array;
 }

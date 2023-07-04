@@ -5,6 +5,13 @@
  */
 
 /*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <http://feross.org>
+ * @license  MIT
+ */
+
+/*!
  * chartjs-adapter-date-fns v2.0.1
  * https://www.chartjs.org
  * (c) 2022 chartjs-adapter-date-fns Contributors
@@ -20,6 +27,8 @@
 * tabbable 5.3.3
 * @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
 */
+
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
 /**
 	 * A handy class to calculate color values.
