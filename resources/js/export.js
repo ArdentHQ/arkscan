@@ -4,6 +4,8 @@ import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
 
 import { TransactionsApi } from "./transactions-api";
 
+import { TransactionType, TransactionTypeGroup } from "./includes/enums";
+
 dayjs.extend(dayjsQuarterOfYear);
 dayjs.extend(dayjsLocalizedFormat);
 
@@ -30,7 +32,7 @@ const TransactionsExport = ({
 
     const getTransactionAmount = (transaction) => {
         let amount = transaction.amount / 1e8;
-        if (transaction.type === 6 && transaction.typeGroup === 1) {
+        if (transaction.type === TransactionType.MultiPayment && transaction.typeGroup === TransactionTypeGroup.Core) {
             return transaction.asset.payments.reduce(
                 (totalAmount, recipientData) => {
                     if (recipientData.recipientId === address) {
@@ -60,19 +62,19 @@ const TransactionsExport = ({
         timestamp: (transaction) =>
             dayjs(transaction.timestamp.human).format("L LTS"),
         recipient: (transaction) => {
-            if (transaction.typeGroup === 2) {
+            if (transaction.typeGroup !== TransactionTypeGroup.Core) {
                 return "Other";
             }
 
-            if (transaction.type === 0) {
+            if (transaction.type === TransactionType.Transfer) {
                 return transaction.recipient;
             }
 
-            if (transaction.type === 3) {
+            if (transaction.type === TransactionType.Vote) {
                 return "Vote Transaction";
             }
 
-            if (transaction.type === 6) {
+            if (transaction.type === TransactionType.MultiPayment) {
                 return `Multiple (${transaction.asset.payments.length})`;
             }
 
@@ -202,7 +204,7 @@ const TransactionsExport = ({
                             ...(await this.fetch({
                                 query: {
                                     ...this.requestData(true),
-                                    typeGroup: 2,
+                                    typeGroup: TransactionTypeGroup.Magistrate,
                                 },
                             }))
                         );
@@ -281,22 +283,31 @@ const TransactionsExport = ({
             }
 
             if (withoutTransactionTypes === false) {
-                data.typeGroup = 1;
+                data.typeGroup = TransactionTypeGroup.Core;
 
                 if (this.types.transfers) {
-                    data.type.push(0);
+                    data.type.push(TransactionType.Transfer);
                 }
 
                 if (this.types.votes) {
-                    data.type.push(3);
+                    data.type.push(TransactionType.Vote);
                 }
 
                 if (this.types.multipayments) {
-                    data.type.push(6);
+                    data.type.push(TransactionType.MultiPayment);
                 }
 
                 if (this.types.others) {
-                    data.type.push(1, 2, 4, 5, 7, 8, 9, 10);
+                    data.type.push(
+                        TransactionType.SecondSignature,
+                        TransactionType.DelegateRegistration,
+                        TransactionType.MultiSignature,
+                        TransactionType.Ipfs,
+                        TransactionType.DelegateResignation,
+                        TransactionType.HtlcLock,
+                        TransactionType.HtlcClaim,
+                        TransactionType.HtlcRefund,
+                    );
                 }
 
                 data.type = data.type.join(",");
