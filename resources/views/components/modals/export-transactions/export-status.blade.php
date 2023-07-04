@@ -1,35 +1,35 @@
 <div class="flex flex-col">
     <div class="flex justify-center mb-6">
-        <div x-show="exportStatus === 'PENDING_DOWNLOAD'">
+        <div x-show="exportStatus === ExportStatus.PendingDownload">
             <img src="{{ mix('images/modals/export/loading.svg') }}" class="dark:hidden" />
             <img src="{{ mix('images/modals/export/loading-dark.svg') }}" class="hidden dark:block" />
         </div>
 
-        <div x-show="exportStatus === 'DONE'">
+        <div x-show="exportStatus === ExportStatus.Done">
             <img src="{{ mix('images/modals/export/success.svg') }}" class="dark:hidden" />
             <img src="{{ mix('images/modals/export/success-dark.svg') }}" class="hidden dark:block" />
         </div>
 
-        <div x-show="exportStatus === 'ERROR'">
+        <div x-show="exportStatus === ExportStatus.Error">
             <img src="{{ mix('images/modals/export/error.svg') }}" class="dark:hidden" />
             <img src="{{ mix('images/modals/export/error-dark.svg') }}" class="hidden dark:block" />
         </div>
 
-        <div x-show="exportStatus === 'WARNING'">
+        <div x-show="exportStatus === ExportStatus.Warning">
             <img src="{{ mix('images/modals/export/error.svg') }}" class="dark:hidden" />
             <img src="{{ mix('images/modals/export/error-dark.svg') }}" class="hidden dark:block" />
         </div>
     </div>
 
     <div class="mb-4">
-        <div x-show="exportStatus === 'PENDING_DOWNLOAD'">
+        <div x-show="exportStatus === ExportStatus.PendingDownload">
             <x-ark-alert
                 :title="trans('general.information')"
                 :message="trans('general.export.information_text')"
             />
         </div>
 
-        <div x-show="exportStatus === 'DONE'">
+        <div x-show="exportStatus === ExportStatus.Done">
             <x-ark-alert
                 :title="trans('general.success')"
                 type="success"
@@ -38,7 +38,7 @@
             </x-ark-alert>
         </div>
 
-        <div x-show="exportStatus === 'ERROR'">
+        <div x-show="exportStatus === ExportStatus.Error">
             <x-ark-alert
                 :title="trans('general.error')"
                 type="error"
@@ -47,7 +47,7 @@
             </x-ark-alert>
         </div>
 
-        <div x-show="exportStatus === 'WARNING'">
+        <div x-show="exportStatus === ExportStatus.Warning">
             <x-ark-alert
                 :title="trans('general.warning')"
                 :message="trans('general.export.warning_text')"
@@ -71,7 +71,7 @@
 
         <div class="relative">
             <div
-                x-show="exportStatus === 'PENDING_DOWNLOAD'"
+                x-show="exportStatus === ExportStatus.PendingDownload"
                 class="w-8 h-8"
             >
                 <x-ark-loader-icon
@@ -81,14 +81,14 @@
             </div>
 
             <div
-                x-show="exportStatus !== 'PENDING_DOWNLOAD'"
+                x-show="exportStatus !== ExportStatus.PendingDownload"
                 class="flex flex-shrink-0 justify-center items-center w-6 h-6 rounded-full"
                 :class="{
-                    'bg-theme-primary-100 dark:bg-theme-dark-blue-500': ['DONE', 'WARNING'].includes(exportStatus),
-                    'bg-theme-danger-100 dark:bg-theme-danger-400': exportStatus === 'ERROR',
+                    'bg-theme-primary-100 dark:bg-theme-dark-blue-500': [ExportStatus.Done, ExportStatus.Warning].includes(exportStatus),
+                    'bg-theme-danger-100 dark:bg-theme-danger-400': exportStatus === ExportStatus.Error,
                 }"
             >
-                <div x-show="['DONE', 'WARNING'].includes(exportStatus)">
+                <div x-show="[ExportStatus.Done, ExportStatus.Warning].includes(exportStatus)">
                     <x-ark-icon
                         name="check-mark-small"
                         size="w-2.5 h-2.5"
@@ -96,7 +96,7 @@
                     />
                 </div>
 
-                <div x-show="exportStatus === 'ERROR'">
+                <div x-show="exportStatus === ExportStatus.Error">
                     <x-ark-icon
                         name="cross-small"
                         size="w-2.5 h-2.5"

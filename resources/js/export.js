@@ -4,7 +4,9 @@ import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
 
 import { TransactionsApi } from "./transactions-api";
 
-import { TransactionType, TransactionTypeGroup } from "./includes/enums";
+import { ExportStatus, TransactionType, TransactionTypeGroup } from "./includes/enums";
+
+window.ExportStatus = ExportStatus;
 
 dayjs.extend(dayjsQuarterOfYear);
 dayjs.extend(dayjsLocalizedFormat);
@@ -385,22 +387,22 @@ const TransactionsExport = ({
 
         get exportStatus() {
             if (this.hasStartedExport === false) {
-                return "PENDING_EXPORT";
+                return ExportStatus.PendingExport;
             }
 
             if (this.errorMessage !== null) {
-                return "ERROR";
+                return ExportStatus.Error;
             }
 
             if (this.hasFinishedExport === true && this.dataUri === null) {
-                return "WARNING";
+                return ExportStatus.Warning;
             }
 
             if (this.dataUri === null) {
-                return "PENDING_DOWNLOAD";
+                return ExportStatus.PendingDownload;
             }
 
-            return "DONE";
+            return ExportStatus.Done;
         },
 
         resetStatus() {
