@@ -1,3 +1,10 @@
+import * as dayjs from "dayjs";
+import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
+import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
+
+dayjs.extend(dayjsQuarterOfYear);
+dayjs.extend(dayjsLocalizedFormat);
+
 export class Export {
     dateRange = "current_month";
     delimiter = "comma";
