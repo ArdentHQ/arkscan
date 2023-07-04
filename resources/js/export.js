@@ -30,8 +30,10 @@ const TransactionsExport = ({
         rate: "Rate [:userCurrency]",
     };
 
+    const arktoshiToNumber = (value) => value / 1e8;
+
     const getTransactionAmount = (transaction) => {
-        let amount = transaction.amount / 1e8;
+        let amount = arktoshiToNumber(transaction.amount);
         if (transaction.type === TransactionType.MultiPayment && transaction.typeGroup === TransactionTypeGroup.Core) {
             return transaction.asset.payments.reduce(
                 (totalAmount, recipientData) => {
@@ -40,9 +42,9 @@ const TransactionsExport = ({
                             totalAmount = 0;
                         }
 
-                        totalAmount += recipientData.amount / 1e8;
+                        totalAmount += arktoshiToNumber(recipientData.amount);
                     } else if (totalAmount <= 0) {
-                        totalAmount -= recipientData.amount / 1e8;
+                        totalAmount -= arktoshiToNumber(recipientData.amount);
                     }
 
                     return totalAmount;
@@ -83,7 +85,7 @@ const TransactionsExport = ({
         amount: getTransactionAmount,
         fee: (transaction) => {
             if (transaction.sender === address) {
-                return -transaction.fee / 1e8;
+                return -arktoshiToNumber(transaction.fee);
             }
 
             return 0;
@@ -91,7 +93,7 @@ const TransactionsExport = ({
         total: (transaction) => {
             const amount = getTransactionAmount(transaction);
             if (transaction.sender === address) {
-                return amount - transaction.fee / 1e8;
+                return amount - arktoshiToNumber(transaction.fee);
             }
 
             return amount;
