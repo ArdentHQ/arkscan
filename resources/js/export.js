@@ -4,7 +4,11 @@ import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
 
 import { TransactionsApi } from "./transactions-api";
 
-import { ExportStatus, TransactionType, TransactionTypeGroup } from "./includes/enums";
+import {
+    ExportStatus,
+    TransactionType,
+    TransactionTypeGroup,
+} from "./includes/enums";
 
 window.ExportStatus = ExportStatus;
 
@@ -36,7 +40,10 @@ const TransactionsExport = ({
 
     const getTransactionAmount = (transaction) => {
         let amount = arktoshiToNumber(transaction.amount);
-        if (transaction.type === TransactionType.MultiPayment && transaction.typeGroup === TransactionTypeGroup.Core) {
+        if (
+            transaction.type === TransactionType.MultiPayment &&
+            transaction.typeGroup === TransactionTypeGroup.Core
+        ) {
             return transaction.asset.payments.reduce(
                 (totalAmount, recipientData) => {
                     if (recipientData.recipientId === address) {
@@ -310,7 +317,7 @@ const TransactionsExport = ({
                         TransactionType.DelegateResignation,
                         TransactionType.HtlcLock,
                         TransactionType.HtlcClaim,
-                        TransactionType.HtlcRefund,
+                        TransactionType.HtlcRefund
                     );
                 }
 

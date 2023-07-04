@@ -10,13 +10,13 @@ export const TransactionType = {
     HtlcLock: 8,
     HtlcClaim: 9,
     HtlcRefund: 10,
-}
+};
 
 export const TransactionTypeGroup = {
     Test: 0,
     Core: 1,
     Magistrate: 2,
-}
+};
 
 export const ExportStatus = {
     PendingExport: "PENDING_EXPORT",
@@ -24,4 +24,4 @@ export const ExportStatus = {
     Warning: "WARNING",
     PendingDownload: "PENDING_DOWNLOAD",
     Done: "DONE",
-}
+};
