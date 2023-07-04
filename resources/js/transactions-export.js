@@ -1,9 +1,11 @@
+import Alpine from "alpinejs";
 import * as dayjs from "dayjs";
 import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
 import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
 
 import { Export } from "./export";
 import { TransactionsApi } from "./transactions-api";
+
 
 dayjs.extend(dayjsQuarterOfYear);
 dayjs.extend(dayjsLocalizedFormat);
@@ -15,30 +17,28 @@ class TransactionsExport extends Export {
         rate,
         network,
         canBeExchanged,
-    }) {
+    }, $store) {
         return new this({
             address,
             userCurrency,
             rate,
             network,
             canBeExchanged,
-        });
-    }
-
-    types = {
-        transfers: false,
-        votes: false,
-        multipayments: false,
-        others: false,
-    }
-
-    columns = {
-        id: false,
-        timestamp: false,
-        sender: false,
-        recipient: false,
-        amount: false,
-        fee: false,
+            types: {
+                transfers: false,
+                votes: false,
+                multipayments: false,
+                others: false,
+            },
+            columns: {
+                id: false,
+                timestamp: false,
+                sender: false,
+                recipient: false,
+                amount: false,
+                fee: false,
+            },
+        }, $store);
     }
 
     csvColumns = {
@@ -79,7 +79,7 @@ class TransactionsExport extends Export {
         },
         amount: this.getTransactionAmount,
         fee: (transaction) => {
-            if (transaction.sender === address) {
+            if (transaction.sender === this.$export.address) {
                 return -this.arktoshiToFiat(transaction.fee);
             }
 
@@ -87,7 +87,7 @@ class TransactionsExport extends Export {
         },
         total: (transaction) => {
             const amount = this.getTransactionAmount(transaction);
-            if (transaction.sender === address) {
+            if (transaction.sender === this.$export.address) {
                 return amount - this.arktoshiToFiat(transaction.fee);
             }
 
@@ -107,12 +107,12 @@ class TransactionsExport extends Export {
 
     arktoshiToFiat = (value) => value / 1e8;
 
-    getTransactionAmount(transaction) {
+    getTransactionAmount = (transaction) => {
         let amount = this.arktoshiToFiat(transaction.amount);
         if (transaction.type === 6 && transaction.typeGroup === 1) {
             return transaction.asset.payments.reduce(
                 (totalAmount, recipientData) => {
-                    if (recipientData.recipientId === address) {
+                    if (recipientData.recipientId === this.$export.address) {
                         if (totalAmount < 0) {
                             totalAmount = 0;
                         }
@@ -128,33 +128,33 @@ class TransactionsExport extends Export {
             );
         }
 
-        if (transaction.sender === address) {
+        if (transaction.sender === this.$export.address) {
             return -amount;
         }
 
         return amount;
     }
 
-    resetForm() {
+    resetForm = () => {
         super.resetForm();
 
-        this.includeHeaderRow = true;
-        this.dateRange = "current_month";
-        this.delimiter = "comma";
+        this.$export.includeHeaderRow = true;
+        this.$export.dateRange = "current_month";
+        this.$export.delimiter = "comma";
 
-        for (const type of Object.keys(this.types)) {
-            this.types[type] = false;
+        for (const type of Object.keys(this.$export.types)) {
+            this.$export.types[type] = false;
         }
 
-        if (this.canBeExchanged) {
-            this.columns.amountFiat = false;
-            this.columns.feeFiat = false;
-            this.columns.rate = false;
+        if (this.$export.canBeExchanged) {
+            this.$export.columns.amountFiat = false;
+            this.$export.columns.feeFiat = false;
+            this.$export.columns.rate = false;
         }
     }
 
-    requestData(withoutTransactionTypes = false) {
-        let dateFrom = dateFilters[this.dateRange];
+    requestData = (withoutTransactionTypes = false) => {
+        let dateFrom = this.dateFilters[this.$export.dateRange];
         let dateTo = null;
         if (dateFrom !== null) {
             dateTo = dayjs();
@@ -165,7 +165,7 @@ class TransactionsExport extends Export {
         }
 
         const data = {
-            address,
+            address: this.$export.address,
             type: [],
         };
 
@@ -177,19 +177,19 @@ class TransactionsExport extends Export {
         if (withoutTransactionTypes === false) {
             data.typeGroup = 1;
 
-            if (this.types.transfers) {
+            if (this.$export.types.transfers) {
                 data.type.push(0);
             }
 
-            if (this.types.votes) {
+            if (this.$export.types.votes) {
                 data.type.push(3);
             }
 
-            if (this.types.multipayments) {
+            if (this.$export.types.multipayments) {
                 data.type.push(6);
             }
 
-            if (this.types.others) {
+            if (this.$export.types.others) {
                 data.type.push(1, 2, 4, 5, 7, 8, 9, 10);
             }
 
@@ -199,9 +199,9 @@ class TransactionsExport extends Export {
         return data;
     }
 
-    canExport() {
+    canExport = () => {
         if (
-            Object.values(this.types).filter((enabled) => enabled)
+            Object.values(this.$export.types).filter((enabled) => enabled)
                 .length === 0
         ) {
             return false;
@@ -210,12 +210,13 @@ class TransactionsExport extends Export {
         return super.canExport();
     }
 
-    async performExport() {
+    performExport = async () => {
         const transactions = await this.fetch({
             query: this.requestData(),
         });
 
-        if (this.types.others) {
+        console.log('others', this.$export.types.others);
+        if (this.$export.types.others) {
             transactions.push(
                 ...(await this.fetch({
                     query: {
@@ -229,19 +230,29 @@ class TransactionsExport extends Export {
         return transactions;
     }
 
-    async fetch({ query, limit = 100 }) {
+    fetch = async ({ query, limit = 100 }) => {
         return TransactionsApi.fetchAll({
-            host: network.api,
+            host: this.$export.network.api,
             limit,
             query,
         });
     }
 
-    generateCsv(transactions) {
+    generateCsv = (transactions) => {
         super.generateCsv(transactions);
 
-        this.successMessage = `A total of ${transactions.length} transactions have been retrieved and are ready for download.`;
+        this.$export.successMessage = `A total of ${transactions.length} transactions have been retrieved and are ready for download.`;
+    }
+
+    exportStatus = () => {
+        return super.exportStatus();
     }
 };
 
-export default TransactionsExport;
+Alpine.data('TransactionsExport', function (options) {
+    const exporter = TransactionsExport.initialize(options, this.$store);
+
+    return {
+        ...exporter,
+    };
+});

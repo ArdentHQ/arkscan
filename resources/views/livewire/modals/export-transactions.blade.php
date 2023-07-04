@@ -1,18 +1,21 @@
 <div
-    x-data="TransactionsExport.initialize({
+    x-data="TransactionsExport({
         address: '{{ $this->address }}',
         network: {{ json_encode(Network::toArray()) }},
         userCurrency: '{{ Settings::currency() }}',
         rate: {{ ExchangeRate::currentRate() ?? 0 }},
         canBeExchanged: {{ Network::canBeExchanged() ? 'true' : 'false' }},
     })"
+    x-init="function () {
+        $export = $store['exports:TransactionsExport'];
+    }"
     class="flex-1 h-8 export-modal"
 >
     <div>
         <button
             type="button"
             class="flex justify-center items-center space-x-2 w-full sm:py-1.5 sm:px-4 button-secondary"
-            x-on:click="() => {
+            x-on:click="function () {
                 resetForm();
                 $wire.openModal();
             }"
@@ -47,19 +50,19 @@
 
             <x-slot name="description">
                 <div class="px-6 pt-6 -mx-6 border-t border-theme-secondary-300 dark:border-theme-dark-700">
-                    <div x-show="! hasStartedExport">
+                    <div x-show="! $export.hasStartedExport">
                         <x-modals.export-transactions.fields />
                     </div>
 
-                    <div x-show="hasStartedExport">
+                    {{-- <div x-show="$export.hasStartedExport">
                         <x-modals.export-transactions.export-status />
-                    </div>
+                    </div> --}}
                 </div>
             </x-slot>
 
             <x-slot name="buttons">
                 <div
-                    x-show="! hasStartedExport"
+                    x-show="! $export.hasStartedExport"
                     class="flex modal-buttons"
                 >
                     <button
@@ -86,24 +89,24 @@
                 </div>
 
                 <div
-                    x-show="hasStartedExport"
+                    x-show="$export.hasStartedExport"
                     class="flex modal-buttons"
                 >
                     <button
                         type="button"
                         class="button-secondary"
-                        x-on:click="hasStartedExport = false"
+                        x-on:click="$export.hasStartedExport = false"
                     >
                         @lang('actions.back')
                     </button>
 
                     <a
-                        x-bind:href="dataUri"
+                        x-bind:href="$export.dataUri"
                         class="flex items-center sm:py-0 sm:px-4 button-primary"
                         :class="{
-                            disabled: dataUri === null
+                            disabled: $export.dataUri === null
                         }"
-                        x-bind:download="`${address}.csv`"
+                        x-bind:download="`${$export.address}.csv`"
                         x-on:click="Livewire.emit('toastMessage', ['@lang('pages.wallet.export-transactions-modal.success_toast', ['address' => $this->address])', 'success'])"
                         x-show="exportStatus !== 'ERROR'"
                     >

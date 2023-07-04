@@ -1,5 +1,6 @@
 @props([
     'id',
+    'model',
     'label',
     'items',
     'dropdownWidth'           => 'w-full',
@@ -24,18 +25,26 @@
         x-data="{
             dropdownOpen: false,
         }"
+        x-init="() => {
+            console.log('model {{$model}}', {{$model}});
+            console.log('store', $store);
+            console.log('data', $data);
+            console.log('data', Object.keys($data));
+        }"
     @else
         x-data="{
             dropdownOpen: false,
             updateSelectedCount() {
-                const enabledCount = Object.values({{ $id }}).filter(enabled => enabled).length;
+                const enabledCount = Object.values({{ $model }}).filter(enabled => enabled).length;
 
                 $store['selectField{{ Str::studly($id) }}'].selectedItems.count = enabledCount;
-                $store['selectField{{ Str::studly($id) }}'].selectAll = enabledCount === Object.values({{ $id }}).length;
+                $store['selectField{{ Str::studly($id) }}'].selectAll = enabledCount === Object.values({{ $model }}).length;
 
             },
         }"
         x-init="() => {
+            console.log({{$model}});
+            console.log($store);
             Alpine.store('selectField{{ Str::studly($id) }}', {
                 selectAll: false,
                 selectedItems: {
@@ -43,7 +52,7 @@
                 },
             });
 
-            $watch('{{ $id }}', updateSelectedCount);
+            $watch('{{ $model }}', updateSelectedCount);
 
             updateSelectedCount();
         }"
@@ -79,7 +88,7 @@
                 >
                     <span x-text="`(${$store['selectField{{ Str::studly($id) }}'].selectedItems.count})`"></span>
 
-                    <span x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count === Object.values({{ $id }}).length">
+                    <span x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count === Object.values({{ $model }}).length">
                         @lang('general.all')
                     </span>
 
@@ -93,9 +102,9 @@
                 </div>
             @else
                 <span
-                    x-html="$refs[{{ $id }}]?.innerHTML ?? '{{ $placeholder }}'"
+                    x-html="$refs[{{ $model }}]?.innerHTML ?? '{{ $placeholder }}'"
                     :class="{
-                        'text-theme-secondary-900 dark:text-theme-dark-50': (! Array.isArray({{ $id }}) && {{ $id }} !== null) || (Array.isArray({{ $id }}) && {{ $id }}.length > 0),
+                        'text-theme-secondary-900 dark:text-theme-dark-50': (! Array.isArray({{ $model }}) && {{ $model }} !== null) || (Array.isArray({{ $model }}) && {{ $model }}.length > 0),
                     }"
                 ></span>
             @endif
@@ -120,7 +129,7 @@
             @foreach ($items as $key => $item)
                 <x-general.dropdown.alpine-list-item
                     :id="$key"
-                    :variable-name="$id"
+                    :variable-name="$model"
                 >
                     <x-input.includes.item-text
                         :id="$id"
@@ -136,8 +145,8 @@
                 id="selectField{{ Str::studly($id) }}.selectAll"
                 variable-name="$store"
                 x-on:click="(e) => {
-                    for (const key of Object.keys({{ $id }})) {
-                        {{ $id }}[key] = e.target.checked;
+                    for (const key of Object.keys({{ $model }})) {
+                        {{ $model }}[key] = e.target.checked;
                     }
                 }"
             >
@@ -153,7 +162,7 @@
 
                 <x-general.dropdown.alpine-list-checkbox
                     :id="$key"
-                    :variable-name="$id"
+                    :variable-name="$model"
                 >
                     <x-input.includes.item-text
                         :id="$id"
@@ -168,7 +177,7 @@
     </x-general.dropdown.dropdown>
 
     @if ($multiple)
-        <div
+        {{-- <div
             x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count > 0 && $store['selectField{{ Str::studly($id) }}'].selectedItems.count < Object.values({{ $id }}).length"
             class="flex flex-wrap gap-3 items-center mt-3"
         >
@@ -199,6 +208,6 @@
                     </button>
                 </div>
             @endforeach
-        </div>
+        </div> --}}
     @endif
 </div>

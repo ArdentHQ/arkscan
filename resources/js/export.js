@@ -1,3 +1,4 @@
+import Alpine from "alpinejs";
 import * as dayjs from "dayjs";
 import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
 import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
@@ -6,16 +7,6 @@ dayjs.extend(dayjsQuarterOfYear);
 dayjs.extend(dayjsLocalizedFormat);
 
 export class Export {
-    dateRange = "current_month";
-    delimiter = "comma";
-    includeHeaderRow = true;
-
-    hasStartedExport = false;
-    dataUri = null;
-    hasFinishedExport = false;
-    errorMessage = null;
-    successMessage = null;
-
     dateFilters = {
         current_month: dayjs().startOf("month"),
         last_month: {
@@ -41,56 +32,68 @@ export class Export {
         pipe: "|",
     }
 
-    constructor(data) {
-        for (const [key, value] of Object.entries(data)) {
-            this[key] = value;
-        }
+    constructor(data, $store) {
+        Alpine.store(`exports:${this.constructor.name}`, {
+            ...data,
+
+            dateRange: "current_month",
+            delimiter: "comma",
+            includeHeaderRow: true,
+
+            hasStartedExport: false,
+            dataUri: null,
+            hasFinishedExport: false,
+            errorMessage: null,
+            successMessage: null,
+        });
+
+        this.$export = $store[`exports:${this.constructor.name}`];
     }
 
     resetForm() {
         this.resetStatus();
 
-        for (const column of Object.keys(this.columns)) {
-            this.columns[column] = false;
+        for (const column of Object.keys(this.$export.columns)) {
+            this.$export.columns[column] = false;
         }
     }
 
     get exportStatus() {
-        if (this.hasStartedExport === false) {
+        if (this.$export.hasStartedExport === false) {
             return "PENDING_EXPORT";
         }
 
-        if (this.errorMessage !== null) {
+        if (this.$export.errorMessage !== null) {
             return "ERROR";
         }
 
-        if (this.hasFinishedExport === true && this.dataUri === null) {
+        if (this.$export.hasFinishedExport === true && this.$export.dataUri === null) {
             return "WARNING";
         }
 
-        if (this.dataUri === null) {
+        if (this.$export.dataUri === null) {
             return "PENDING_DOWNLOAD";
         }
 
         return "DONE";
     }
 
-    exportData() {
-        this.hasStartedExport = true;
+    exportData = () => {
+        this.$export.hasStartedExport = true;
 
         this.resetStatus();
 
         (async () => {
             try {
-                data = await this.performExport();
+                const data = await this.performExport();
 
                 if (data.length === 0) {
-                    this.hasFinishedExport = true;
+                    this.$export.hasFinishedExport = true;
 
                     return;
                 }
 
-                this.downloadCsv(data);
+                this.generateCsv(data);
             } catch (e) {
                 this.errorMessage =
                     "There was a problem exporting.";
@@ -102,7 +105,7 @@ export class Export {
 
     generateCsv(entryItems) {
         const csvRows = [];
-        if (this.includeHeaderRow) {
+        if (this.$export.includeHeaderRow) {
             csvRows.push(this.getColumnTitles());
         }
 
@@ -115,8 +118,8 @@ export class Export {
                     continue;
                 }
 
-                if (columnMapping[column] !== undefined) {
-                    data.push(columnMapping[column](item));
+                if (this.columnMapping[column] !== undefined) {
+                    data.push(this.columnMapping[column](item));
                 } else {
                     data.push(item[column]);
                 }
@@ -125,28 +128,29 @@ export class Export {
             csvRows.push(data);
         }
 
-        this.hasFinishedExport = true;
-        this.dataUri = encodeURI(
+        this.$export.hasFinishedExport = true;
+        this.$export.dataUri = encodeURI(
             "data:text/csv;charset=utf-8," +
                 csvRows.map((row) => row.join(this.getDelimiter())).join("\n")
         );
     }
 
     canExport() {
+        console.log('canExport');
         return (
-            Object.values(this.types).filter((enabled) => enabled)
+            Object.values(this.$export.columns).filter((enabled) => enabled)
                 .length !== 0
         );
     }
 
-    timeSinceEpoch(date) {
-        const epoch = dayjs(this.network.epoch);
+    timeSinceEpoch = (date) => {
+        const epoch = dayjs(this.$export.network.epoch);
 
         return date.unix() - epoch.unix();
     }
 
-    getColumns() {
-        let columns = this.columns;
+    getColumns = () => {
+        let columns = this.$export.columns;
         if (columns.amount && columns.fee) {
             columns.total = true;
         }
@@ -155,7 +159,7 @@ export class Export {
             columns.totalFiat = true;
         }
 
-        const csvColumnsNames = Object.keys(csvColumns);
+        const csvColumnsNames = Object.keys(this.csvColumns);
         columns = Object.entries(columns)
             .sort((a, b) => {
                 return (
@@ -174,34 +178,34 @@ export class Export {
         return columns;
     }
 
-    getColumnTitles() {
+    getColumnTitles = () => {
         return Object.entries(this.getColumns()).map(([column]) => {
-            return this.translateColumnCurrency(csvColumns[column]);
+            return this.translateColumnCurrency(this.csvColumns[column]);
         });
     }
 
-    translateColumnCurrency(column) {
+    translateColumnCurrency = (column) => {
         return column
-            .replace(/:userCurrency/, userCurrency)
-            .replace(/:networkCurrency/, network.currency);
+            .replace(/:userCurrency/, this.userCurrency)
+            .replace(/:networkCurrency/, this.$export.network.currency);
     }
 
-    getDelimiter() {
-        return delimiterMapping[this.delimiter] || ",";
+    getDelimiter = () => {
+        return this.delimiterMapping[this.$export.delimiter] || ",";
     }
 
-    resetStatus() {
-        this.dataUri = null;
-        this.errorMessage = null;
-        this.successMessage = null;
-        this.hasFinishedExport = false;
+    resetStatus = () => {
+        this.$export.dataUri = null;
+        this.$export.errorMessage = null;
+        this.$export.successMessage = null;
+        this.$export.hasFinishedExport = false;
     }
 
-    performExport() {
+    performExport = () => {
         throw new Error('[Method not implemented]');
     }
 
-    requestData() {
+    requestData = () => {
         throw new Error('[Method not implemented]');
     }
 };
