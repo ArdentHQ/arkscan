@@ -420,11 +420,14 @@ const TransactionsExport = ({
         },
 
         async fetch({ query, limit = 100 }) {
-            return TransactionsApi.fetchAll({
-                host: network.api,
-                limit,
-                query,
-            }, this);
+            return TransactionsApi.fetchAll(
+                {
+                    host: network.api,
+                    limit,
+                    query,
+                },
+                this
+            );
         },
 
         hasAborted() {
@@ -433,7 +436,7 @@ const TransactionsExport = ({
             }
 
             return this.$refs.modal === undefined;
-        }
+        },
     };
 };
 
