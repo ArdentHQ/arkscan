@@ -13,7 +13,7 @@ final class ExportBlocks extends Component
 {
     use HasModal;
 
-    public string $publicKey;
+    public ?string $publicKey;
 
     public ?string $username = null;
 
