@@ -62,11 +62,13 @@
         :width="$dropdownWidth"
         :close-on-click="! $multiple"
         :init-alpine="false"
-        active-button-class="bg-white dark:text-theme-secondary-600 dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800 hover:text-theme-secondary-900 hover:bg-theme-secondary-200"
+        button-class="w-full"
+        button-wrapper-class="rounded-md border border-transparent hover:border-theme-primary-400 hover:dark:border-theme-dark-blue-600 transition-default"
+        active-button-class="bg-white dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
     >
         <x-slot
             name="button"
-            class="flex justify-between py-3.5 px-4 w-full h-11 rounded border border-theme-secondary-400 leading-[17px] dark:border-theme-dark-500 dark:text-theme-dark-200"
+            class="flex justify-between py-3.5 px-4 w-full h-11 rounded border border-theme-secondary-400 leading-[17px] dark:border-theme-dark-500 dark:text-theme-dark-200 hover:border-theme-primary-400 hover:dark:border-theme-dark-blue-600"
         >
             @if ($multiple)
                 <span
