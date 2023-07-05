@@ -117,7 +117,9 @@ const TransactionsExport = ({
             return this.total(transaction) * this.rate(transaction);
         },
         rate: (transaction) => {
-            const date = dayjs(transaction.timestamp.human).format("YYYY-MM-DD");
+            const date = dayjs(transaction.timestamp.human).format(
+                "YYYY-MM-DD"
+            );
 
             return rates[date] ?? 0;
         },
