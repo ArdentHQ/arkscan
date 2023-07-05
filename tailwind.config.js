@@ -94,4 +94,10 @@ module.exports = {
             },
         },
     },
+
+    content: [
+        ...defaultConfig.content,
+
+        "./resources/icons/**/*.svg",
+    ]
 };
