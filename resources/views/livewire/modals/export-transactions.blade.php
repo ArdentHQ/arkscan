@@ -86,15 +86,25 @@
                 </div>
 
                 <div
-                    x-show="hasStartedExport"
+                    x-show="hasStartedExport && exportStatus !== ExportStatus.Error"
                     class="flex modal-buttons"
                 >
                     <button
                         type="button"
                         class="button-secondary"
                         x-on:click="hasStartedExport = false"
+                        x-show="dataUri === null"
                     >
                         @lang('actions.back')
+                    </button>
+
+                    <button
+                        type="button"
+                        class="button-secondary"
+                        wire:click="closeModal"
+                        x-show="dataUri !== null"
+                    >
+                        @lang('actions.close')
                     </button>
 
                     <a
@@ -105,7 +115,6 @@
                         }"
                         x-bind:download="`${address}.csv`"
                         x-on:click="Livewire.emit('toastMessage', ['@lang('pages.wallet.export-transactions-modal.success_toast', ['address' => $this->address])', 'success'])"
-                        x-show="exportStatus !== ExportStatus.Error"
                     >
                         <div class="flex justify-center items-center space-x-2 h-full">
                             <x-ark-icon
@@ -116,12 +125,24 @@
                             <span>@lang('actions.download')</span>
                         </div>
                     </a>
+                </div>
+
+                <div
+                    x-show="hasStartedExport && exportStatus === ExportStatus.Error"
+                    class="flex modal-buttons"
+                >
+                    <button
+                        type="button"
+                        class="button-secondary"
+                        x-on:click="hasStartedExport = false"
+                    >
+                        @lang('actions.back')
+                    </button>
 
                     <button
                         type="button"
                         class="button-primary"
                         x-on:click="exportTransactions"
-                        x-show="exportStatus === ExportStatus.Error"
                     >
                         <div class="flex justify-center items-center space-x-2 h-full">
                             <x-ark-icon
@@ -131,7 +152,7 @@
 
                             <span>@lang('actions.retry')</span>
                         </div>
-                    </a>
+                    </button>
                 </div>
             </x-slot>
         </x-ark-modal>

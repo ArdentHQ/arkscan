@@ -19,4 +19,5 @@ return [
     'download'        => 'Download',
     'back'            => 'Back',
     'retry'           => 'Retry',
+    'close'           => 'Close',
 ];
