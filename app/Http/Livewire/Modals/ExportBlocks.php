@@ -24,7 +24,6 @@ final class ExportBlocks extends Component
         if ($wallet->isDelegate()) {
             $this->username = $wallet->username();
         }
-
     }
 
     public function render(): View
