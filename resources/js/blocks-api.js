@@ -20,7 +20,7 @@ export class BlocksApi {
         limit = 100,
         blocks = [],
         orderBy = "height:desc",
-    }) {
+    }, instance) {
         const page = await this.request(
             host,
             {
@@ -31,6 +31,10 @@ export class BlocksApi {
             },
             publicKey
         );
+
+        if (instance?.hasAborted()) {
+            return [];
+        }
 
         blocks.push(...page.data);
         cursor = cursor + 1;
@@ -46,7 +50,7 @@ export class BlocksApi {
             limit,
             blocks,
             publicKey,
-        });
+        }, instance);
     }
 
     static async fetch({ host, query, publicKey, orderBy }) {

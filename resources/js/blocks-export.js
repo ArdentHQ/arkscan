@@ -318,7 +318,15 @@ const BlocksExport = ({
                 limit,
                 query,
                 publicKey,
-            });
+            }, this);
+        },
+
+        hasAborted() {
+            if (this.hasStartedExport === false) {
+                return true;
+            }
+
+            return this.$refs.modal === undefined;
         },
     };
 };
