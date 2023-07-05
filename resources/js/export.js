@@ -183,6 +183,7 @@ const TransactionsExport = ({
             this.includeHeaderRow = true;
             this.dateRange = "current_month";
             this.delimiter = "comma";
+            this.hasStartedExport = false;
 
             for (const type of Object.keys(this.types)) {
                 this.types[type] = false;
