@@ -8,6 +8,7 @@ import * as dayjsRelativeTime from "dayjs/plugin/relativeTime";
 
 // @see https://laravel-mix.com/docs/6.0/upgrade#unused-library-extraction
 import Alpine from "alpinejs";
+import BlocksExport from "./blocks-export.js";
 import { Chart } from "chart.js";
 import CustomChart from "@ui/js/chart.js";
 import Dropdown from "@ui/js/dropdown.js";
@@ -20,12 +21,13 @@ import ReadMore from "@ui/js/read-more.js";
 import RichSelect from "./rich-select.js";
 import Search from "./search";
 import TableSorting from "./table-sorting.js";
-import TransactionsExport from "./export.js";
+import TransactionsExport from "./transactions-export.js";
 import Tabs from "./tabs";
 import makeBlockie from "ethereum-blockies-base64";
 
 window.makeBlockie = makeBlockie;
 window.Alpine = Alpine;
+window.BlocksExport = BlocksExport;
 window.Chart = Chart;
 window.Dropdown = Dropdown;
 window.dayjs = dayjs;

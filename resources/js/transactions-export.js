@@ -1,7 +1,7 @@
 import * as dayjs from "dayjs";
 import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
 import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
-
+import { arktoshiToNumber } from "./includes/helpers";
 import { TransactionsApi } from "./transactions-api";
 
 import {
@@ -9,6 +9,7 @@ import {
     TransactionType,
     TransactionTypeGroup,
 } from "./includes/enums";
+
 
 window.ExportStatus = ExportStatus;
 
@@ -35,8 +36,6 @@ const TransactionsExport = ({
         totalFiat: "Total [:userCurrency]",
         rate: "Rate [:userCurrency]",
     };
-
-    const arktoshiToNumber = (value) => value / 1e8;
 
     const getTransactionAmount = (transaction) => {
         let amount = arktoshiToNumber(transaction.amount);
@@ -146,7 +145,6 @@ const TransactionsExport = ({
 
     return {
         address,
-        transactions: [],
         network,
         canBeExchanged,
         userCurrency,
@@ -179,7 +177,6 @@ const TransactionsExport = ({
         resetForm() {
             this.resetStatus();
 
-            this.transactions = [];
             this.includeHeaderRow = true;
             this.dateRange = "current_month";
             this.delimiter = "comma";

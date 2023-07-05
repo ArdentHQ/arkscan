@@ -1,6 +1,6 @@
 <div
-    x-data="TransactionsExport({
-        address: '{{ $this->address }}',
+    x-data="BlocksExport({
+        publicKey: '{{ $this->publicKey }}',
         network: {{ json_encode(Network::toArray()) }},
         userCurrency: '{{ Settings::currency() }}',
         rate: {{ ExchangeRate::currentRate() ?? 0 }},
@@ -38,21 +38,23 @@
             content-class="relative bg-white sm:mx-auto sm:rounded-xl sm:shadow-2xl dark:bg-theme-secondary-900"
         >
             <x-slot name="title">
-                <div>@lang('pages.wallet.export-transactions-modal.title')</div>
+                <div>@lang('pages.wallet.export-blocks-modal.title')</div>
 
                 <div class="mt-1 text-sm font-normal text-theme-secondary-700 dark:text-theme-dark-200">
-                    @lang('pages.wallet.export-transactions-modal.description')
+                    @lang('pages.wallet.export-blocks-modal.description')
                 </div>
             </x-slot>
 
             <x-slot name="description">
                 <div class="px-6 pt-6 -mx-6 border-t border-theme-secondary-300 dark:border-theme-dark-700">
                     <div x-show="! hasStartedExport">
-                        <x-modals.export-transactions.fields />
+                        <x-modals.export-blocks.fields />
                     </div>
 
                     <div x-show="hasStartedExport">
-                        <x-modals.export.status />
+                        <x-modals.export.status
+                            :filename="$this->username"
+                        />
                     </div>
                 </div>
             </x-slot>
@@ -74,7 +76,7 @@
                         type="button"
                         class="flex justify-center items-center space-x-2 sm:py-1.5 sm:px-4 sm:mb-0 button-primary"
                         x-bind:disabled="! canExport()"
-                        x-on:click="exportTransactions"
+                        x-on:click="exportBlocks"
                     >
                         <x-ark-icon
                             name="arrows.underline-arrow-down"
@@ -103,8 +105,8 @@
                         :class="{
                             disabled: dataUri === null
                         }"
-                        x-bind:download="`${address}.csv`"
-                        x-on:click="Livewire.emit('toastMessage', ['@lang('pages.wallet.export-transactions-modal.success_toast', ['address' => $this->address])', 'success'])"
+                        download="{{ $this->username }}.csv"
+                        x-on:click="Livewire.emit('toastMessage', ['@lang('pages.wallet.export-blocks-modal.success_toast', ['username' => $this->username])', 'success'])"
                         x-show="exportStatus !== ExportStatus.Error"
                     >
                         <div class="flex justify-center items-center space-x-2 h-full">
