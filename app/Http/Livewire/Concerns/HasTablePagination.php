@@ -39,6 +39,7 @@ trait HasTablePagination
     {
         if (defined(static::class.'::PER_PAGE')) {
             $const = constant(static::class.'::PER_PAGE');
+            // @phpstan-ignore-next-line
             if (is_int($const)) {
                 return $const;
             }
