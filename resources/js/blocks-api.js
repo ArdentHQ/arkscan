@@ -2,9 +2,12 @@ import axios from "axios";
 
 export class BlocksApi {
     static async request(host, query, publicKey) {
-        const response = await axios.get(`${host}/delegates/${publicKey}/blocks`, {
-            params: query,
-        });
+        const response = await axios.get(
+            `${host}/delegates/${publicKey}/blocks`,
+            {
+                params: query,
+            }
+        );
 
         return response.data;
     }
@@ -18,12 +21,16 @@ export class BlocksApi {
         blocks = [],
         orderBy = "height:desc",
     }) {
-        const page = await this.request(host, {
-            page: cursor,
-            limit,
-            orderBy,
-            ...query,
-        }, publicKey);
+        const page = await this.request(
+            host,
+            {
+                page: cursor,
+                limit,
+                orderBy,
+                ...query,
+            },
+            publicKey
+        );
 
         blocks.push(...page.data);
         cursor = cursor + 1;
@@ -42,17 +49,16 @@ export class BlocksApi {
         });
     }
 
-    static async fetch({
-        host,
-        query,
-        publicKey,
-        orderBy,
-    }) {
-        const page = await this.request(host, {
-            limit: 1,
-            orderBy,
-            ...query,
-        }, publicKey);
+    static async fetch({ host, query, publicKey, orderBy }) {
+        const page = await this.request(
+            host,
+            {
+                limit: 1,
+                orderBy,
+                ...query,
+            },
+            publicKey
+        );
 
         return page.data.pop();
     }

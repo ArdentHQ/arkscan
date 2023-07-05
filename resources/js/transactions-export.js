@@ -10,7 +10,6 @@ import {
     TransactionTypeGroup,
 } from "./includes/enums";
 
-
 window.ExportStatus = ExportStatus;
 
 dayjs.extend(dayjsQuarterOfYear);

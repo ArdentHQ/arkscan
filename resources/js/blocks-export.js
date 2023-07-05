@@ -2,7 +2,11 @@ import * as dayjs from "dayjs";
 import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
 import { BlocksApi } from "./blocks-api";
 import { ExportStatus } from "./includes/enums";
-import { arktoshiToNumber, getDelimiter, DateFilters } from "./includes/helpers";
+import {
+    arktoshiToNumber,
+    getDelimiter,
+    DateFilters,
+} from "./includes/helpers";
 
 window.ExportStatus = ExportStatus;
 
@@ -27,8 +31,7 @@ const BlocksExport = ({
     canBeExchanged,
 }) => {
     const columnMapping = {
-        timestamp: (block) =>
-            dayjs(block.timestamp.human).format("L LTS"),
+        timestamp: (block) => dayjs(block.timestamp.human).format("L LTS"),
         volume: (block) => arktoshiToNumber(block.forged.amount),
         volumeFiat: function (block) {
             return this.volume(block) * rate;
@@ -124,8 +127,7 @@ const BlocksExport = ({
 
                     this.downloadCsv(blocks);
                 } catch (e) {
-                    this.errorMessage =
-                        "There was a problem fetching blocks.";
+                    this.errorMessage = "There was a problem fetching blocks.";
 
                     console.log(this.errorMessage, e);
                 }
@@ -159,7 +161,9 @@ const BlocksExport = ({
 
             const csvContent =
                 "data:text/csv;charset=utf-8," +
-                csvRows.map((row) => row.join(getDelimiter(this.delimiter))).join("\n");
+                csvRows
+                    .map((row) => row.join(getDelimiter(this.delimiter)))
+                    .join("\n");
 
             this.successMessage = `A total of ${blocks.length} blocks have been retrieved and are ready for download.`;
             this.hasFinishedExport = true;
@@ -187,8 +191,12 @@ const BlocksExport = ({
             const data = {};
 
             if (dateFrom) {
-                data["height.from"] = await this.getFirstBlockHeightAfterEpoch(this.timeSinceEpoch(dateFrom));
-                data["height.to"]   = await this.getFirstBlockHeightBeforeEpoch(this.timeSinceEpoch(dateTo));
+                data["height.from"] = await this.getFirstBlockHeightAfterEpoch(
+                    this.timeSinceEpoch(dateFrom)
+                );
+                data["height.to"] = await this.getFirstBlockHeightBeforeEpoch(
+                    this.timeSinceEpoch(dateTo)
+                );
             }
 
             return data;
