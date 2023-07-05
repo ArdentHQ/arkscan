@@ -335,13 +335,9 @@ const TransactionsExport = ({
 
         getColumns() {
             let columns = this.columns;
-            if (columns.amount && columns.fee) {
-                columns.total = true;
-            }
 
-            if (columns.amountFiat && columns.feeFiat) {
-                columns.totalFiat = true;
-            }
+            columns.total = columns.amount && columns.fee;
+            columns.totalFiat = columns.amountFiat && columns.feeFiat;
 
             const csvColumnsNames = Object.keys(csvColumns);
             columns = Object.entries(columns)
