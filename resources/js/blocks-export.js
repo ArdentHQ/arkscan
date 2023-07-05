@@ -89,6 +89,12 @@ const BlocksExport = ({
             (async () => {
                 try {
                     const query = await this.requestData();
+                    if (query['height.from'] === 0 || query['height.to'] === 0) {
+                        this.hasFinishedExport = true;
+
+                        return;
+                    }
+
                     let blocks = await this.fetch({
                         query,
                         publicKey,
@@ -186,12 +192,14 @@ const BlocksExport = ({
             });
         },
 
+        // The API options "timestamp:desc" & "timestamp.to" can cause 500 errors.
+        // We do it this way and attempt to get the first block after (the epoch - 1 round) instead.
         async getFirstBlockHeightBeforeEpoch(epoch) {
             return await this.getBlockHeight({
                 query: {
-                    "timestamp.to": epoch,
+                    "timestamp.from": epoch - (this.network.blockTime * this.network.delegateCount),
                 },
-                orderBy: "timestamp:desc",
+                orderBy: "timestamp:asc",
             });
         },
 
@@ -203,7 +211,7 @@ const BlocksExport = ({
                 publicKey,
             });
 
-            return block.height;
+            return block?.height ?? 0;
         },
 
         getColumns() {
