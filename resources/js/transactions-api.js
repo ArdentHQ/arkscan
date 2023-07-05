@@ -10,32 +10,33 @@ export class TransactionsApi {
     }
 
     static async fetchAll({
-        cursor = 1,
         host,
         query,
         limit = 100,
         transactions = [],
+        timestamp = null,
     }) {
         const page = await this.fetch(host, {
-            page: cursor,
             limit,
-            orderBy: "timestamp:desc",
+            orderBy: "timestamp:desc,sequence:desc",
             ...query,
+            "timestamp.to": timestamp,
         });
 
         transactions.push(...page.data);
-        cursor = cursor + 1;
 
         if (page.meta.count < limit) {
             return transactions;
         }
 
+        timestamp = page.data[page.data.length - 1]["timestamp"]["epoch"] - 1;
+
         return await this.fetchAll({
-            cursor,
             host,
             query,
             limit,
             transactions,
+            timestamp,
         });
     }
 }
