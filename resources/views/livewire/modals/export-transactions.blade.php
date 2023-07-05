@@ -142,16 +142,7 @@
                             class="button-primary"
                             x-on:click="exportTransactions"
                         >
-                            <button
-                                type="button"
-                                class="button-secondary"
-                                x-on:click="hasStartedExport = false"
-                            >
-                                @lang('actions.back')
-                            </button>
-
-                                <span>@lang('actions.retry')</span>
-                            </div>
+                            <span>@lang('actions.retry')</span>
                         </button>
                     </div>
                 </x-slot>
