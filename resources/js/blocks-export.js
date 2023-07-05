@@ -42,9 +42,7 @@ const BlocksExport = ({
             return this.total(block) * this.rate(block);
         },
         rate: (block) => {
-            const date = dayjs(block.timestamp.human).format(
-                "YYYY-MM-DD"
-            );
+            const date = dayjs(block.timestamp.human).format("YYYY-MM-DD");
 
             return rates[date] ?? 0;
         },
@@ -89,7 +87,10 @@ const BlocksExport = ({
             (async () => {
                 try {
                     const query = await this.requestData();
-                    if (query['height.from'] === 0 || query['height.to'] === 0) {
+                    if (
+                        query["height.from"] === 0 ||
+                        query["height.to"] === 0
+                    ) {
                         this.hasFinishedExport = true;
 
                         return;
@@ -197,7 +198,9 @@ const BlocksExport = ({
         async getFirstBlockHeightBeforeEpoch(epoch) {
             return await this.getBlockHeight({
                 query: {
-                    "timestamp.from": epoch - (this.network.blockTime * this.network.delegateCount),
+                    "timestamp.from":
+                        epoch -
+                        this.network.blockTime * this.network.delegateCount,
                 },
                 orderBy: "timestamp:asc",
             });
@@ -290,12 +293,15 @@ const BlocksExport = ({
         },
 
         async fetch({ query, publicKey, limit = 100 }) {
-            return BlocksApi.fetchAll({
-                host: network.api,
-                limit,
-                query,
-                publicKey,
-            }, this);
+            return BlocksApi.fetchAll(
+                {
+                    host: network.api,
+                    limit,
+                    query,
+                    publicKey,
+                },
+                this
+            );
         },
 
         hasAborted() {

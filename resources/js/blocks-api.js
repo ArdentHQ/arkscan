@@ -12,15 +12,18 @@ export class BlocksApi {
         return response.data;
     }
 
-    static async fetchAll({
-        cursor = 1,
-        host,
-        query,
-        publicKey,
-        limit = 100,
-        blocks = [],
-        orderBy = "height:desc",
-    }, instance) {
+    static async fetchAll(
+        {
+            cursor = 1,
+            host,
+            query,
+            publicKey,
+            limit = 100,
+            blocks = [],
+            orderBy = "height:desc",
+        },
+        instance
+    ) {
         const page = await this.request(
             host,
             {
@@ -43,14 +46,17 @@ export class BlocksApi {
             return blocks;
         }
 
-        return await this.fetchAll({
-            cursor,
-            host,
-            query,
-            limit,
-            blocks,
-            publicKey,
-        }, instance);
+        return await this.fetchAll(
+            {
+                cursor,
+                host,
+                query,
+                limit,
+                blocks,
+                publicKey,
+            },
+            instance
+        );
     }
 
     static async fetch({ host, query, publicKey, orderBy }) {

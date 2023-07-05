@@ -1,6 +1,11 @@
 import * as dayjs from "dayjs";
 import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
-import { arktoshiToNumber, getDelimiter, DateFilters, timeSinceEpoch } from "./includes/helpers";
+import {
+    arktoshiToNumber,
+    getDelimiter,
+    DateFilters,
+    timeSinceEpoch,
+} from "./includes/helpers";
 import { TransactionsApi } from "./transactions-api";
 import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
 
@@ -245,7 +250,9 @@ const TransactionsExport = ({
 
             const csvContent =
                 "data:text/csv;charset=utf-8," +
-                csvRows.map((row) => row.join(getDelimiter(this.delimiter))).join("\n");
+                csvRows
+                    .map((row) => row.join(getDelimiter(this.delimiter)))
+                    .join("\n");
 
             this.successMessage = `A total of ${transactions.length} transactions have been retrieved and are ready for download.`;
             this.hasFinishedExport = true;
@@ -393,7 +400,8 @@ const TransactionsExport = ({
                     limit,
                     query,
                     timestamp:
-                        query["timestamp.to"] ?? timeSinceEpoch(dayjs(), this.network),
+                        query["timestamp.to"] ??
+                        timeSinceEpoch(dayjs(), this.network),
                 },
                 this
             );
