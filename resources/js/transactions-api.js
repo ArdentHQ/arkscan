@@ -15,13 +15,17 @@ export class TransactionsApi {
         query,
         limit = 100,
         transactions = [],
-    }) {
+    }, instance) {
         const page = await this.fetch(host, {
             page: cursor,
             limit,
             orderBy: "timestamp:desc",
             ...query,
         });
+
+        if (instance?.hasAborted()) {
+            return [];
+        }
 
         transactions.push(...page.data);
         cursor = cursor + 1;
@@ -36,6 +40,6 @@ export class TransactionsApi {
             query,
             limit,
             transactions,
-        });
+        }, instance);
     }
 }

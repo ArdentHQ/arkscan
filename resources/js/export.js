@@ -210,6 +210,10 @@ const TransactionsExport = ({
                         query: this.requestData(),
                     });
 
+                    if (this.hasAborted()) {
+                        return;
+                    }
+
                     if (this.types.others) {
                         transactions.push(
                             ...(await this.fetch({
@@ -420,8 +424,16 @@ const TransactionsExport = ({
                 host: network.api,
                 limit,
                 query,
-            });
+            }, this);
         },
+
+        hasAborted() {
+            if (this.hasStartedExport === false) {
+                return true;
+            }
+
+            return this.$refs.modal === undefined;
+        }
     };
 };
 
