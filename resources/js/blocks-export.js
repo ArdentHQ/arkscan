@@ -100,28 +100,6 @@ const BlocksExport = ({
                         return;
                     }
 
-                    // if (query['height.from'] !== undefined) {
-                    //     const filteredBlocks = [];
-                    //     const [dateFrom, dateTo] = this.getDateRange();
-                    //     for (const block of blocks) {
-                    //         if (block.timestamp.unix < dateFrom.unix()) {
-                    //             continue;
-                    //         }
-
-                    //         if (block.timestamp.unix > dateTo.unix()) {
-                    //             continue;
-                    //         }
-
-                    //         console.log(block.timestamp.unix, dateFrom.unix(), dateTo.unix(), dateFrom, dateTo);
-
-                    //         filteredBlocks.push(block);
-                    //     }
-
-                    //     console.log(filteredBlocks);
-                    //     console.log(blocks.length, filteredBlocks.length);
-                    //     blocks = filteredBlocks;
-                    // }
-
                     this.downloadCsv(blocks);
                 } catch (e) {
                     this.errorMessage = "There was a problem fetching blocks.";
