@@ -177,21 +177,6 @@ const TransactionsExport = ({
         },
 
         resetForm() {
-            this.resetStatus();
-
-            this.transactions = [];
-            this.includeHeaderRow = true;
-            this.dateRange = "current_month";
-            this.delimiter = "comma";
-
-            for (const type of Object.keys(this.types)) {
-                this.types[type] = false;
-            }
-
-            for (const column of Object.keys(this.columns)) {
-                this.columns[column] = false;
-            }
-
             if (canBeExchanged) {
                 this.columns.amountFiat = false;
                 this.columns.feeFiat = false;
