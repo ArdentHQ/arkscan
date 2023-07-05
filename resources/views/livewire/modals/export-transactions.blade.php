@@ -3,7 +3,7 @@
         address: '{{ $this->address }}',
         network: {{ json_encode(Network::toArray()) }},
         userCurrency: '{{ Settings::currency() }}',
-        rate: {{ ExchangeRate::currentRate() ?? 0 }},
+        rates: {{ ExchangeRate::rates() ?? '{}' }},
         canBeExchanged: {{ Network::canBeExchanged() ? 'true' : 'false' }},
     })"
     class="flex-1 h-8 export-modal"

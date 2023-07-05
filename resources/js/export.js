@@ -18,7 +18,7 @@ dayjs.extend(dayjsLocalizedFormat);
 const TransactionsExport = ({
     address,
     userCurrency,
-    rate,
+    rates,
     network,
     canBeExchanged,
 }) => {
@@ -108,15 +108,19 @@ const TransactionsExport = ({
             return amount;
         },
         amountFiat: function (transaction) {
-            return this.amount(transaction) * rate;
+            return this.amount(transaction) * this.rate(transaction);
         },
         feeFiat: function (transaction) {
-            return this.fee(transaction) * rate;
+            return this.fee(transaction) * this.rate(transaction);
         },
         totalFiat: function (transaction) {
-            return this.total(transaction) * rate;
+            return this.total(transaction) * this.rate(transaction);
         },
-        rate: () => rate,
+        rate: (transaction) => {
+            const date = dayjs(transaction.timestamp.human).format("YYYY-MM-DD");
+
+            return rates[date] ?? 0;
+        },
     };
 
     const delimiterMapping = {
