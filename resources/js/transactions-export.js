@@ -1,6 +1,6 @@
 import * as dayjs from "dayjs";
 import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
-import { arktoshiToNumber } from "./includes/helpers";
+import { arktoshiToNumber, getDelimiter, DateFilters, timeSinceEpoch } from "./includes/helpers";
 import { TransactionsApi } from "./transactions-api";
 import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
 
@@ -121,31 +121,6 @@ const TransactionsExport = ({
 
             return rates[date] ?? 0;
         },
-    };
-
-    const delimiterMapping = {
-        comma: ",",
-        semicolon: ";",
-        tab: "\t",
-        pipe: "|",
-    };
-
-    const dateFilters = {
-        current_month: dayjs().startOf("month"),
-        last_month: {
-            from: dayjs().subtract(1, "month").startOf("month"),
-            to: dayjs().subtract(1, "month").endOf("month"),
-        },
-        last_quarter: {
-            from: dayjs().subtract(1, "quarter").startOf("quarter"),
-            to: dayjs().subtract(1, "quarter").endOf("quarter"),
-        },
-        current_year: dayjs().startOf("year"),
-        last_year: {
-            from: dayjs().subtract(1, "year").startOf("year"),
-            to: dayjs().subtract(1, "year").endOf("year"),
-        },
-        all: null,
     };
 
     return {
@@ -270,7 +245,7 @@ const TransactionsExport = ({
 
             const csvContent =
                 "data:text/csv;charset=utf-8," +
-                csvRows.map((row) => row.join(this.getDelimiter())).join("\n");
+                csvRows.map((row) => row.join(getDelimiter(this.delimiter))).join("\n");
 
             this.successMessage = `A total of ${transactions.length} transactions have been retrieved and are ready for download.`;
             this.hasFinishedExport = true;
@@ -279,7 +254,7 @@ const TransactionsExport = ({
         },
 
         requestData(withoutTransactionTypes = false) {
-            let dateFrom = dateFilters[this.dateRange];
+            let dateFrom = DateFilters[this.dateRange];
             let dateTo = null;
             if (dateFrom !== null) {
                 dateTo = dayjs();
@@ -295,8 +270,8 @@ const TransactionsExport = ({
             };
 
             if (dateFrom) {
-                data["timestamp.from"] = this.timeSinceEpoch(dateFrom);
-                data["timestamp.to"] = this.timeSinceEpoch(dateTo);
+                data["timestamp.from"] = timeSinceEpoch(dateFrom, this.network);
+                data["timestamp.to"] = timeSinceEpoch(dateTo, this.network);
             }
 
             if (withoutTransactionTypes === false) {
@@ -331,12 +306,6 @@ const TransactionsExport = ({
             }
 
             return data;
-        },
-
-        timeSinceEpoch(date) {
-            const epoch = dayjs(this.network.epoch);
-
-            return date.unix() - epoch.unix();
         },
 
         getColumns() {
@@ -374,10 +343,6 @@ const TransactionsExport = ({
             return column
                 .replace(/:userCurrency/, userCurrency)
                 .replace(/:networkCurrency/, network.currency);
-        },
-
-        getDelimiter() {
-            return delimiterMapping[this.delimiter] || ",";
         },
 
         canExport() {
@@ -428,7 +393,7 @@ const TransactionsExport = ({
                     limit,
                     query,
                     timestamp:
-                        query["timestamp.to"] ?? this.timeSinceEpoch(dayjs()),
+                        query["timestamp.to"] ?? timeSinceEpoch(dayjs(), this.network),
                 },
                 this
             );

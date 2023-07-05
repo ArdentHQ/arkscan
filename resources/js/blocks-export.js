@@ -6,6 +6,7 @@ import {
     arktoshiToNumber,
     getDelimiter,
     DateFilters,
+    timeSinceEpoch,
 } from "./includes/helpers";
 
 window.ExportStatus = ExportStatus;
@@ -192,10 +193,10 @@ const BlocksExport = ({
 
             if (dateFrom) {
                 data["height.from"] = await this.getFirstBlockHeightAfterEpoch(
-                    this.timeSinceEpoch(dateFrom)
+                    timeSinceEpoch(dateFrom, this.network)
                 );
                 data["height.to"] = await this.getFirstBlockHeightBeforeEpoch(
-                    this.timeSinceEpoch(dateTo)
+                    timeSinceEpoch(dateTo, this.network)
                 );
             }
 
@@ -229,12 +230,6 @@ const BlocksExport = ({
             });
 
             return block.height;
-        },
-
-        timeSinceEpoch(date) {
-            const epoch = dayjs(this.network.epoch);
-
-            return date.unix() - epoch.unix();
         },
 
         getColumns() {

@@ -16,6 +16,12 @@ export const getDelimiter = (delimiter) => {
     return delimiters[delimiter] || ",";
 };
 
+export const timeSinceEpoch = (date, network) => {
+    const epoch = dayjs(network.epoch);
+
+    return date.unix() - epoch.unix();
+};
+
 export const DateFilters = {
     current_month: dayjs().startOf("month"),
     last_month: {
