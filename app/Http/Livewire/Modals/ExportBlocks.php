@@ -15,12 +15,16 @@ final class ExportBlocks extends Component
 
     public string $publicKey;
 
-    public string $username;
+    public ?string $username = null;
 
     public function mount(WalletViewModel $wallet): void
     {
         $this->publicKey = $wallet->publicKey();
-        $this->username  = $wallet->username();
+
+        if ($wallet->isDelegate()) {
+            $this->username = $wallet->username();
+        }
+
     }
 
     public function render(): View
