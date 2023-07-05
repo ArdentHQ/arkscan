@@ -63,7 +63,7 @@
         :close-on-click="! $multiple"
         :init-alpine="false"
         button-class="w-full"
-        button-wrapper-class="w-full rounded-md border border-transparent hover:border-theme-primary-400 hover:dark:border-theme-dark-blue-600 transition-default"
+        button-wrapper-class="w-full rounded-md border border-transparent transition-default hover:border-theme-primary-400 hover:dark:border-theme-dark-blue-600"
         active-button-class="bg-white dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
     >
         <x-slot
