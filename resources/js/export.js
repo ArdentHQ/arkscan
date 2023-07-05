@@ -210,6 +210,10 @@ const TransactionsExport = ({
                         query: this.requestData(),
                     });
 
+                    if (this.hasAborted()) {
+                        return;
+                    }
+
                     if (this.types.others) {
                         transactions.push(
                             ...(await this.fetch({
@@ -416,13 +420,24 @@ const TransactionsExport = ({
         },
 
         async fetch({ query, limit = 100 }) {
-            return TransactionsApi.fetchAll({
-                host: network.api,
-                limit,
-                query,
-                timestamp:
-                    query["timestamp.to"] ?? this.timeSinceEpoch(dayjs()),
-            });
+            return TransactionsApi.fetchAll(
+                {
+                    host: network.api,
+                    limit,
+                    query,
+                    timestamp:
+                        query["timestamp.to"] ?? this.timeSinceEpoch(dayjs()),
+                },
+                this
+            );
+        },
+
+        hasAborted() {
+            if (this.hasStartedExport === false) {
+                return true;
+            }
+
+            return this.$refs.modal === undefined;
         },
     };
 };
