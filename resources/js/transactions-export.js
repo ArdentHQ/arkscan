@@ -176,7 +176,7 @@ const TransactionsExport = ({
             }
         },
 
-        exportTransactions() {
+        exportData() {
             this.hasStartedExport = true;
 
             this.resetStatus();

@@ -27,7 +27,7 @@ const csvColumns = {
 const BlocksExport = ({
     publicKey,
     userCurrency,
-    rate,
+    rates,
     network,
     canBeExchanged,
 }) => {
@@ -35,13 +35,19 @@ const BlocksExport = ({
         timestamp: (block) => dayjs(block.timestamp.human).format("L LTS"),
         volume: (block) => arktoshiToNumber(block.forged.amount),
         volumeFiat: function (block) {
-            return this.volume(block) * rate;
+            return this.volume(block) * this.rate(block);
         },
         total: (block) => arktoshiToNumber(block.forged.reward),
         totalFiat: function (block) {
-            return this.total(block) * rate;
+            return this.total(block) * this.rate(block);
         },
-        rate: () => rate,
+        rate: (block) => {
+            const date = dayjs(block.timestamp.human).format(
+                "YYYY-MM-DD"
+            );
+
+            return rates[date] ?? 0;
+        },
     };
 
     return {
@@ -68,16 +74,6 @@ const BlocksExport = ({
         },
 
         resetForm() {
-            this.resetStatus();
-
-            this.includeHeaderRow = true;
-            this.dateRange = "current_month";
-            this.delimiter = "comma";
-
-            for (const column of Object.keys(this.columns)) {
-                this.columns[column] = false;
-            }
-
             if (canBeExchanged) {
                 this.columns.volumeFiat = false;
                 this.columns.totalFiat = false;
@@ -85,7 +81,7 @@ const BlocksExport = ({
             }
         },
 
-        exportBlocks() {
+        exportData() {
             this.hasStartedExport = true;
 
             this.resetStatus();

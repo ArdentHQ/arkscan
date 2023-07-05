@@ -59,102 +59,10 @@
             </x-slot>
 
             <x-slot name="buttons">
-                <div
-                    x-show="! hasStartedExport"
-                    class="flex modal-buttons"
-                >
-                    <button
-                        type="button"
-                        class="button-secondary"
-                        wire:click="closeModal"
-                    >
-                        @lang('actions.cancel')
-                    </button>
-
-                    <button
-                        type="button"
-                        class="flex justify-center items-center space-x-2 sm:py-1.5 sm:px-4 sm:mb-0 button-primary"
-                        x-bind:disabled="! canExport()"
-                        x-on:click="exportTransactions"
-                    >
-                        <x-ark-icon
-                            name="arrows.underline-arrow-down"
-                            size="sm"
-                        />
-
-                        <span>@lang('actions.export')</span>
-                    </button>
-                </div>
-
-                <div
-                    x-show="hasStartedExport && exportStatus !== ExportStatus.Error"
-                    class="flex modal-buttons"
-                >
-                    <button
-                        type="button"
-                        class="button-secondary"
-                        x-on:click="hasStartedExport = false"
-                        x-show="dataUri === null"
-                    >
-                        @lang('actions.back')
-                    </button>
-
-                    <button
-                        type="button"
-                        class="button-secondary"
-                        wire:click="closeModal"
-                        x-show="dataUri !== null"
-                    >
-                        @lang('actions.close')
-                    </button>
-
-                    <a
-                        x-bind:href="dataUri"
-                        class="flex items-center sm:py-0 sm:px-4 button-primary"
-                        :class="{
-                            disabled: dataUri === null
-                        }"
-                        x-bind:download="`${address}.csv`"
-                        x-on:click="Livewire.emit('toastMessage', ['@lang('pages.wallet.export-transactions-modal.success_toast', ['address' => $this->address])', 'success'])"
-                    >
-                        <div class="flex justify-center items-center space-x-2 h-full">
-                            <x-ark-icon
-                                name="arrows.underline-arrow-down"
-                                size="sm"
-                            />
-
-                            <span>@lang('actions.download')</span>
-                        </div>
-                    </a>
-                </div>
-
-                <div
-                    x-show="hasStartedExport && exportStatus === ExportStatus.Error"
-                    class="flex modal-buttons"
-                >
-                    <button
-                        type="button"
-                        class="button-secondary"
-                        x-on:click="hasStartedExport = false"
-                    >
-                        @lang('actions.back')
-                    </button>
-
-                    <button
-                        type="button"
-                        class="button-primary"
-                        x-on:click="exportTransactions"
-                    >
-                        <div class="flex justify-center items-center space-x-2 h-full">
-                            <x-ark-icon
-                                name="arrows.underline-arrow-down"
-                                size="sm"
-                            />
-
-                            <span>@lang('actions.retry')</span>
-                        </div>
-                    </button>
-                </div>
+                <x-modals.export.buttons
+                    :filename="$this->address"
+                    :success-toast="trans('pages.wallet.export-transactions-modal.success_toast', ['address' => $this->address])"
+                />
             </x-slot>
         </x-ark-modal>
     @endif
