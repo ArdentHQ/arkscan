@@ -69,7 +69,10 @@
             class="flex justify-between py-3.5 px-4 w-full h-11 rounded border border-theme-secondary-400 leading-[17px] dark:border-theme-dark-500 dark:text-theme-dark-200"
         >
             @if ($multiple)
-                <span x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count === 0">
+                <span
+                    x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count === 0"
+                    class="dark:text-theme-dark-200"
+                >
                     {{ $placeholder }}
                 </span>
 
