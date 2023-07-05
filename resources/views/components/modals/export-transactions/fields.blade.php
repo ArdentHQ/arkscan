@@ -18,7 +18,7 @@
             name="include_header_row"
             x-model="includeHeaderRow"
             :label="trans('pages.wallet.export-transactions-modal.include_header_row')"
-            label-classes="text-base transition-default"
+            label-classes="text-sm transition-default"
             class="export-modal__checkbox"
             wrapper-class="flex-1"
             no-livewire

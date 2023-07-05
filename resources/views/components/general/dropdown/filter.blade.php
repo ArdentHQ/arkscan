@@ -9,7 +9,7 @@
     dropdown-padding="py-1"
     button-class="flex flex-1 justify-center items-center w-full rounded sm:flex-none sm:py-1.5 sm:px-4 md:p-2 button-secondary"
     active-button-class=""
-    button-wrapper-class="h-5 md:h-4"
+    button-wrapper-class="w-full h-5 md:h-4"
 >
     <x-slot name="button">
         <div class="inline-flex items-center whitespace-nowrap">

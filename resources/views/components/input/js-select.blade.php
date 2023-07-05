@@ -48,9 +48,9 @@
             updateSelectedCount();
         }"
     @endunless
-    {{ $attributes->class('group/label') }}
+    {{ $attributes }}
 >
-    <label class="block pb-3 text-lg font-semibold text-theme-secondary-900 transition-default dark:text-theme-dark-50 group-hover/label:text-theme-primary-600 group-hover/label:dark:text-theme-dark-blue-500">
+    <label class="block pb-3 text-lg font-semibold text-theme-secondary-900 transition-default dark:text-theme-dark-50">
         {{ $label }}
     </label>
 
@@ -62,6 +62,7 @@
         :width="$dropdownWidth"
         :close-on-click="! $multiple"
         :init-alpine="false"
+        button-class="w-full"
         active-button-class="bg-white dark:text-theme-secondary-600 dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800 hover:text-theme-secondary-900 hover:bg-theme-secondary-200"
     >
         <x-slot
@@ -69,7 +70,10 @@
             class="flex justify-between py-3.5 px-4 w-full h-11 rounded border border-theme-secondary-400 leading-[17px] dark:border-theme-dark-500 dark:text-theme-dark-200"
         >
             @if ($multiple)
-                <span x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count === 0">
+                <span
+                    x-show="$store['selectField{{ Str::studly($id) }}'].selectedItems.count === 0"
+                    class="dark:text-theme-dark-200"
+                >
                     {{ $placeholder }}
                 </span>
 

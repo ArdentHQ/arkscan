@@ -20,8 +20,8 @@
         </div>
 
         <div x-show="exportStatus === ExportStatus.Warning">
-            <img src="{{ mix('images/modals/export/error.svg') }}" class="dark:hidden" />
-            <img src="{{ mix('images/modals/export/error-dark.svg') }}" class="hidden dark:block" />
+            <img src="{{ mix('images/modals/export/warning.svg') }}" class="dark:hidden" />
+            <img src="{{ mix('images/modals/export/warning-dark.svg') }}" class="hidden dark:block" />
         </div>
     </div>
 

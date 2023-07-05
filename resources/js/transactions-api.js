@@ -9,33 +9,38 @@ export class TransactionsApi {
         return response.data;
     }
 
-    static async fetchAll({
-        cursor = 1,
-        host,
-        query,
-        limit = 100,
-        transactions = [],
-    }) {
+    static async fetchAll(
+        { host, query, limit = 100, transactions = [], timestamp },
+        instance
+    ) {
         const page = await this.fetch(host, {
-            page: cursor,
             limit,
-            orderBy: "timestamp:desc",
+            orderBy: "timestamp:desc,sequence:desc",
             ...query,
+            "timestamp.to": timestamp,
         });
 
+        if (instance?.hasAborted()) {
+            return [];
+        }
+
         transactions.push(...page.data);
-        cursor = cursor + 1;
 
         if (page.meta.count < limit) {
             return transactions;
         }
 
-        return await this.fetchAll({
-            cursor,
-            host,
-            query,
-            limit,
-            transactions,
-        });
+        timestamp = page.data[page.data.length - 1]["timestamp"]["epoch"] - 1;
+
+        return await this.fetchAll(
+            {
+                host,
+                query,
+                limit,
+                transactions,
+                timestamp,
+            },
+            instance
+        );
     }
 }

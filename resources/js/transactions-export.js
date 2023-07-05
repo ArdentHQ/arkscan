@@ -1,8 +1,8 @@
 import * as dayjs from "dayjs";
-import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
 import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
 import { arktoshiToNumber } from "./includes/helpers";
 import { TransactionsApi } from "./transactions-api";
+import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
 
 import {
     ExportStatus,
@@ -18,7 +18,7 @@ dayjs.extend(dayjsLocalizedFormat);
 const TransactionsExport = ({
     address,
     userCurrency,
-    rate,
+    rates,
     network,
     canBeExchanged,
 }) => {
@@ -106,15 +106,21 @@ const TransactionsExport = ({
             return amount;
         },
         amountFiat: function (transaction) {
-            return this.amount(transaction) * rate;
+            return this.amount(transaction) * this.rate(transaction);
         },
         feeFiat: function (transaction) {
-            return this.fee(transaction) * rate;
+            return this.fee(transaction) * this.rate(transaction);
         },
         totalFiat: function (transaction) {
-            return this.total(transaction) * rate;
+            return this.total(transaction) * this.rate(transaction);
         },
-        rate: () => rate,
+        rate: (transaction) => {
+            const date = dayjs(transaction.timestamp.human).format(
+                "YYYY-MM-DD"
+            );
+
+            return rates[date] ?? 0;
+        },
     };
 
     const delimiterMapping = {
@@ -205,6 +211,10 @@ const TransactionsExport = ({
                     const transactions = await this.fetch({
                         query: this.requestData(),
                     });
+
+                    if (this.hasAborted()) {
+                        return;
+                    }
 
                     if (this.types.others) {
                         transactions.push(
@@ -331,13 +341,9 @@ const TransactionsExport = ({
 
         getColumns() {
             let columns = this.columns;
-            if (columns.amount && columns.fee) {
-                columns.total = true;
-            }
 
-            if (columns.amountFiat && columns.feeFiat) {
-                columns.totalFiat = true;
-            }
+            columns.total = columns.amount && columns.fee;
+            columns.totalFiat = columns.amountFiat && columns.feeFiat;
 
             const csvColumnsNames = Object.keys(csvColumns);
             columns = Object.entries(columns)
@@ -416,11 +422,24 @@ const TransactionsExport = ({
         },
 
         async fetch({ query, limit = 100 }) {
-            return TransactionsApi.fetchAll({
-                host: network.api,
-                limit,
-                query,
-            });
+            return TransactionsApi.fetchAll(
+                {
+                    host: network.api,
+                    limit,
+                    query,
+                    timestamp:
+                        query["timestamp.to"] ?? this.timeSinceEpoch(dayjs()),
+                },
+                this
+            );
+        },
+
+        hasAborted() {
+            if (this.hasStartedExport === false) {
+                return true;
+            }
+
+            return this.$refs.modal === undefined;
         },
     };
 };
