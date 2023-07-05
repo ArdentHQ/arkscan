@@ -425,7 +425,8 @@ const TransactionsExport = ({
                     host: network.api,
                     limit,
                     query,
-                    timestamp: query["timestamp.to"] ?? this.timeSinceEpoch(dayjs()),
+                    timestamp:
+                        query["timestamp.to"] ?? this.timeSinceEpoch(dayjs()),
                 },
                 this
             );
