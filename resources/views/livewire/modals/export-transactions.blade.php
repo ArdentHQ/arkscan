@@ -20,7 +20,7 @@
                 address: '{{ $this->address }}',
                 network: {{ json_encode(Network::toArray()) }},
                 userCurrency: '{{ Settings::currency() }}',
-                rate: {{ ExchangeRate::currentRate() ?? 0 }},
+                rates: {{ ExchangeRate::rates() ?? '{}' }},
                 canBeExchanged: {{ Network::canBeExchanged() ? 'true' : 'false' }},
             })"
             x-init="resetForm"
@@ -34,6 +34,7 @@
                 breakpoint="sm"
                 wrapper-class="max-w-full sm:max-w-[448px]"
                 content-class="relative bg-white sm:mx-auto sm:rounded-xl sm:shadow-2xl dark:bg-theme-secondary-900"
+                disable-overlay-close
             >
                 <x-slot name="title">
                     <div>@lang('pages.wallet.export-transactions-modal.title')</div>

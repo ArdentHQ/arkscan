@@ -10,6 +10,7 @@ use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 final class ExchangeRate
 {
@@ -50,6 +51,11 @@ final class ExchangeRate
     public static function currentRate(): ?float
     {
         return (new NetworkStatusBlockCache())->getPrice(Network::currency(), Settings::currency());
+    }
+
+    public static function rates(): Collection
+    {
+        return (new CryptoDataCache())->getPrices(Settings::currency().'.week');
     }
 
     private static function timestamp(int $timestamp): Carbon

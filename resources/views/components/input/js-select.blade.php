@@ -62,6 +62,7 @@
         :width="$dropdownWidth"
         :close-on-click="! $multiple"
         :init-alpine="false"
+        button-class="w-full"
         active-button-class="bg-white dark:text-theme-secondary-600 dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800 hover:text-theme-secondary-900 hover:bg-theme-secondary-200"
     >
         <x-slot
