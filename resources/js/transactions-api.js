@@ -14,7 +14,7 @@ export class TransactionsApi {
         query,
         limit = 100,
         transactions = [],
-        timestamp = null,
+        timestamp,
     }) {
         const page = await this.fetch(host, {
             limit,
