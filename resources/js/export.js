@@ -1,14 +1,14 @@
 import * as dayjs from "dayjs";
-import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
 import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
-
-import { TransactionsApi } from "./transactions-api";
+import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
 
 import {
     ExportStatus,
     TransactionType,
     TransactionTypeGroup,
 } from "./includes/enums";
+
+import { TransactionsApi } from "./transactions-api";
 
 window.ExportStatus = ExportStatus;
 
@@ -425,6 +425,7 @@ const TransactionsExport = ({
                     host: network.api,
                     limit,
                     query,
+                    timestamp: query["timestamp.to"] ?? this.timeSinceEpoch(dayjs()),
                 },
                 this
             );
