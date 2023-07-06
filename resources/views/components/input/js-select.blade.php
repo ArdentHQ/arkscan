@@ -8,6 +8,7 @@
     'itemLangProperties'      => [],
     'itemCriteria'            => null,
     'selectedPluralizedLangs' => null,
+    'extraItems'              => [],
 ])
 
 @php
@@ -136,6 +137,23 @@
                     />
                 </x-general.dropdown.alpine-list-item>
             @endforeach
+
+            @if (count($extraItems) > 0)
+                <div class="flex flex-col border-t border-theme-secondary-300 dark:border-theme-dark-500">
+                    @foreach ($extraItems as $item)
+                        <x-general.dropdown.alpine-list-item
+                            :id="$item['value']"
+                            :variable-name="$id"
+                        >
+                            <x-input.includes.item-text
+                                :id="$id"
+                                :item="$item['text']"
+                                :key="$item['value']"
+                            />
+                        </x-general.dropdown.alpine-list-item>
+                    @endforeach
+                </div>
+            @endif
         @else
             <x-general.dropdown.alpine-list-checkbox
                 id="selectField{{ Str::studly($id) }}.selectAll"
