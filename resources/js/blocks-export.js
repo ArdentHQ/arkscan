@@ -2,8 +2,8 @@ import * as dayjs from "dayjs";
 import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
 
 import {
-    DateFilters,
     arktoshiToNumber,
+    getDateRange,
     getDelimiter,
     timeSinceEpoch,
 } from "./includes/helpers";
@@ -56,6 +56,8 @@ const BlocksExport = ({
         canBeExchanged,
         userCurrency,
         dateRange: "current_month",
+        dateFrom: null,
+        dateTo: null,
         delimiter: "comma",
         includeHeaderRow: true,
 
@@ -156,17 +158,18 @@ const BlocksExport = ({
         },
 
         getDateRange() {
-            let dateFrom = DateFilters[this.dateRange];
-            let dateTo = null;
-            if (dateFrom !== null) {
-                dateTo = dayjs();
-                if (typeof dateFrom.from === "object") {
-                    dateTo = dateFrom.to;
-                    dateFrom = dateFrom.from;
-                }
+            if (this.dateRange === 'custom') {
+                return this.getCustomDateRange();
             }
 
-            return [dateFrom, dateTo];
+            return getDateRange[this.dateRange];
+        },
+
+        getCustomDateRange() {
+            return [
+                this.dateFrom ? dayjs(this.dateFrom) : null,
+                this.dateTo ? dayjs(this.dateTo) : null,
+            ];
         },
 
         async requestData() {
@@ -261,6 +264,14 @@ const BlocksExport = ({
         },
 
         canExport() {
+            if (this.dateRange === 'custom') {
+                const [dateFrom, dateTo] = this.getCustomDateRange();
+
+                if (dateFrom === null || dateTo === null) {
+                    return false;
+                }
+            }
+
             return (
                 Object.values(this.columns).filter((enabled) => enabled)
                     .length !== 0

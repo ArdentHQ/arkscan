@@ -3,8 +3,8 @@ import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
 import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
 
 import {
-    DateFilters,
     arktoshiToNumber,
+    getDateRange,
     getDelimiter,
     timeSinceEpoch,
 } from "./includes/helpers";
@@ -135,6 +135,8 @@ const TransactionsExport = ({
         canBeExchanged,
         userCurrency,
         dateRange: "current_month",
+        dateFrom: null,
+        dateTo: null,
         delimiter: "comma",
         includeHeaderRow: true,
 
@@ -261,16 +263,23 @@ const TransactionsExport = ({
             this.dataUri = encodeURI(csvContent);
         },
 
-        requestData(withoutTransactionTypes = false) {
-            let dateFrom = DateFilters[this.dateRange];
-            let dateTo = null;
-            if (dateFrom !== null) {
-                dateTo = dayjs();
-                if (typeof dateFrom.from === "object") {
-                    dateTo = dateFrom.to;
-                    dateFrom = dateFrom.from;
-                }
+        getDateRange() {
+            if (this.dateRange === 'custom') {
+                return this.getCustomDateRange();
             }
+
+            return getDateRange(this.dateRange);
+        },
+
+        getCustomDateRange() {
+            return [
+                this.dateFrom ? dayjs(this.dateFrom) : null,
+                this.dateTo ? dayjs(this.dateTo) : null,
+            ];
+        },
+
+        requestData(withoutTransactionTypes = false) {
+            const [dateFrom, dateTo] = this.getDateRange();
 
             const data = {
                 address,
@@ -354,6 +363,14 @@ const TransactionsExport = ({
         },
 
         canExport() {
+            if (this.dateRange === 'custom') {
+                const [dateFrom, dateTo] = this.getCustomDateRange();
+
+                if (dateFrom === null || dateTo === null) {
+                    return false;
+                }
+            }
+
             if (
                 Object.values(this.types).filter((enabled) => enabled)
                     .length === 0

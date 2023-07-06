@@ -22,6 +22,20 @@ export const timeSinceEpoch = (date, network) => {
     return date.unix() - epoch.unix();
 };
 
+export const getDateRange = (dateRange) => {
+    let dateFrom = DateFilters[dateRange];
+    let dateTo = null;
+    if (dateFrom !== null) {
+        dateTo = dayjs();
+        if (typeof dateFrom.from === "object") {
+            dateTo = dateFrom.to;
+            dateFrom = dateFrom.from;
+        }
+    }
+
+    return [dateFrom, dateTo];
+}
+
 export const DateFilters = {
     current_month: dayjs().startOf("month"),
     last_month: {
