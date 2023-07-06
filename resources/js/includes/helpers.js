@@ -34,7 +34,7 @@ export const getDateRange = (dateRange) => {
     }
 
     return [dateFrom, dateTo];
-}
+};
 
 export const DateFilters = {
     current_month: dayjs().startOf("month"),
