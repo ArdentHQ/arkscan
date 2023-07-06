@@ -226,6 +226,16 @@ body.table-compact-until-lg .arrow-direction {
     @apply bg-theme-secondary-200 dark:bg-black !important;
 }
 
+.table-encapsulated
+    table
+    > tbody
+    > tr:hover
+    > td.hoverable-cell
+    > .table-cell-content
+    > .encapsulated-transaction-type {
+    @apply bg-theme-secondary-300 dark:bg-theme-dark-700 transition-default;
+}
+
 .table-container
     table
     > tbody
@@ -245,34 +255,4 @@ body.table-compact-until-lg .arrow-direction {
     .table-encapsulated table > tbody > tr > td.hoverable-cell {
         @apply align-middle;
     }
-}
-
-/* Filter */
-
-.table-filter-item__checkbox:hover input[type="checkbox"] {
-    @apply border-theme-primary-600 dark:border-theme-primary-600;
-}
-
-.table-filter-item__checkbox input[type="checkbox"] {
-    @apply w-5 h-5 cursor-pointer dark:border-theme-secondary-600;
-}
-.table-filter-item__checkbox input[type="checkbox"]:checked {
-    @apply bg-theme-primary-600 border-theme-primary-600 dark:bg-theme-dark-blue-500 dark:border-theme-dark-blue-500;
-}
-.table-filter-item__checkbox:hover input[type="checkbox"]:checked {
-    @apply border-theme-primary-600 bg-theme-primary-700 dark:bg-theme-dark-blue-600 dark:border-theme-dark-blue-600;
-}
-
-.table-filter-item__checkbox > div {
-    @apply flex-1 flex flex-col;
-}
-.table-filter-item__checkbox > div > div {
-    @apply flex-1;
-}
-.table-filter-item__checkbox > div > div > div:nth-child(2) {
-    @apply flex items-center flex-1;
-}
-
-.table-filter-item__checkbox label {
-    @apply cursor-pointer flex-1 leading-5;
 }

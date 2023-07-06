@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Models\Transaction;
 use App\Models\Wallet;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
@@ -12,6 +12,7 @@ use Meilisearch\Endpoints\Indexes;
 
 beforeEach(function () {
     $this->subject = Wallet::factory()->create([
+        'updated_at' => Carbon::createFromTimestamp(123456789),
         'balance'    => '100000000000',
         'attributes' => [
             'delegate' => [
@@ -45,22 +46,7 @@ it('has custom scout key name', function () {
     expect($this->subject->getScoutKeyName())->toBe('address');
 });
 
-it('adds the transaction timestamp and username when making searchable', function () {
-    Transaction::factory()->create([
-        'recipient_id'      => $this->subject->address,
-        'timestamp'         => 123456789,
-    ]);
-
-    Transaction::factory()->create([
-        'recipient_id'      => $this->subject->address,
-        'timestamp'         => 123,
-    ]);
-
-    Transaction::factory()->create([
-        'recipient_id'      => $this->subject->address,
-        'timestamp'         => 12345,
-    ]);
-
+it('adds the timestamp from the updated_t column and username when making searchable', function () {
     $mock    = $this->mock(MeilisearchClient::class);
     $indexes = $this->mock(Indexes::class);
 
@@ -74,7 +60,7 @@ it('adds the transaction timestamp and username when making searchable', functio
 
             return $document['username'] === 'test'
                 && $document['address'] === $this->subject->address
-                && $document['timestamp'] === 123;
+                && $document['timestamp'] === 123456789;
         });
 
     // Default value, overriden in phpunit.xml for the tests

@@ -35,6 +35,11 @@ return [
     'overview'                => 'Overview',
     'view'                    => 'View',
     'coming_soon'             => 'Coming Soon',
+    'select_all'              => 'Select All',
+    'success'                 => 'Success',
+    'information'             => 'Information',
+    'error'                   => 'Error',
+    'warning'                 => 'Warning',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
@@ -78,6 +83,9 @@ return [
         'ipfs-hash'               => 'IPFS Hash',
         'well-confirmed'          => 'Well Confirmed',
         'delegate'                => 'Delegate',
+        'vote_delegate'           => '<span class="font-semibold text-theme-secondary-500">Vote: <span class="text-white">:delegate</span></span>',
+        'unvote_delegate'         => '<span class="font-semibold text-theme-secondary-500">Unvote: <span class="text-white">:delegate</span></span>',
+        'vote_swap_delegate'      => '<span class="font-semibold text-theme-secondary-500">Unvote: <span class="text-white">:delegate_unvote</span> | Vote: <span class="text-white">:delegate_vote</span></span>',
 
         'types'                   => [
             'delegate-registration'               => 'Registration',
@@ -172,5 +180,10 @@ return [
         'vote'                 => 'Vote',
         'unvote'               => 'Unvote',
         'results_will_show_up' => 'Results will show up here',
+    ],
+
+    'export' => [
+        'information_text' => 'The data is being prepared. This might take a while, please wait.',
+        'warning_text'     => 'No :type matching the selected parameters could be found.',
     ],
 ];

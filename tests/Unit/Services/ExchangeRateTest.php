@@ -61,3 +61,24 @@ it('should return null if a currency value is missing', function () {
 
     expect(ExchangeRate::convertFiatToCurrency(4, 'USD', 'GBP'))->toBeNull();
 });
+
+it('should list all rates', function () {
+    Settings::shouldReceive('currency')
+        ->andReturn('USD');
+
+    $this->travelTo(Carbon::parse('2023-07-05'));
+
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::now()->subDays(3)->format('Y-m-d') => 1,
+        Carbon::now()->subDays(2)->format('Y-m-d') => 2,
+        Carbon::now()->subDays(1)->format('Y-m-d') => 3,
+        Carbon::now()->format('Y-m-d')             => 10,
+    ]));
+
+    expect(ExchangeRate::rates())->toEqual(collect([
+        '2023-07-02' => 1,
+        '2023-07-03' => 2,
+        '2023-07-04' => 3,
+        '2023-07-05' => 10,
+    ]));
+});

@@ -86,7 +86,7 @@ final class Wallet extends Model
             'address'   => $this->address,
             'username'  => $this->delegate_username,
             'balance'   => $this->balance->__toString(),
-            'timestamp' => $this->timestamp ?? 0,
+            'timestamp' => $this->timestamp,
         ];
     }
 
@@ -103,7 +103,7 @@ final class Wallet extends Model
                 'wallets.address',
                 'wallets.attributes',
                 'wallets.balance',
-                DB::raw('(SELECT MIN(transactions.timestamp) FROM transactions WHERE transactions.recipient_id = wallets.address) as timestamp'),
+                DB::raw('CAST(EXTRACT(epoch from wallets.updated_at) as integer) as timestamp'),
             ])
             ->when(true, function ($query) use ($self) {
                 $self->makeAllSearchableUsing($query);

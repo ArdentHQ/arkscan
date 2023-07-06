@@ -14,13 +14,13 @@ trait HasTablePagination
 
     public function bootHasTablePagination(): void
     {
-        $this->perPage = $this->getDefault();
+        $this->perPage = static::defaultPerPage();
     }
 
-    public function getQueryString(): array
+    public function queryStringHasTablePagination(): array
     {
         return [
-            'perPage' => ['except' => $this->getDefault()],
+            'perPage' => ['except' => static::defaultPerPage()],
         ];
     }
 
@@ -35,10 +35,11 @@ trait HasTablePagination
         $this->gotoPage(1);
     }
 
-    private function getDefault(): int
+    public static function defaultPerPage(): int
     {
         if (defined(static::class.'::PER_PAGE')) {
             $const = constant(static::class.'::PER_PAGE');
+            // @phpstan-ignore-next-line
             if (is_int($const)) {
                 return $const;
             }
