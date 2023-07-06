@@ -42,7 +42,7 @@
 
                 <x-ark-tables.cell class="text-right">
                     <span class="font-semibold">
-                        <x-tables.rows.desktop.vote-percentage :model="$wallet" />
+                        <x-tables.rows.desktop.encapsulated.vote-percentage :model="$wallet" />
                     </span>
                 </x-ark-tables.cell>
             </x-ark-tables.row>
