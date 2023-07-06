@@ -14,23 +14,23 @@ export class BlocksApi {
 
     static async fetchAll(
         {
-            cursor = 1,
             host,
             query,
             publicKey,
             limit = 100,
             blocks = [],
             orderBy = "height:desc",
+            height,
         },
         instance
     ) {
         const page = await this.request(
             host,
             {
-                page: cursor,
                 limit,
                 orderBy,
                 ...query,
+                "height.to": height,
             },
             publicKey
         );
@@ -40,7 +40,8 @@ export class BlocksApi {
         }
 
         blocks.push(...page.data);
-        cursor = cursor + 1;
+
+        height = page.data[page.data.length - 1]["height"] - 1;
 
         if (page.meta.count < limit) {
             return blocks;
@@ -48,12 +49,12 @@ export class BlocksApi {
 
         return await this.fetchAll(
             {
-                cursor,
                 host,
                 query,
                 limit,
                 blocks,
                 publicKey,
+                height,
             },
             instance
         );
