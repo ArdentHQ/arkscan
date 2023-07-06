@@ -10,6 +10,7 @@
         dropdown-background="bg-white border border-transparent dark:shadow-lg-dark dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
         :close-on-click="false"
         on-close="() => showOptions = false"
+        button-wrapper-class=""
         button-class="p-2 w-full focus-visible:ring-inset button button-secondary button-icon"
     >
         <x-slot
