@@ -16,4 +16,8 @@ return [
     'cancel'          => 'Cancel',
     'export'          => 'Export',
     'filter'          => 'Filter',
+    'download'        => 'Download',
+    'back'            => 'Back',
+    'retry'           => 'Retry',
+    'close'           => 'Close',
 ];

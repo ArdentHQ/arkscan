@@ -2,7 +2,10 @@
     wire:init="setIsReady"
     class="w-full"
 >
-    <x-tables.toolbars.transactions :transactions="$transactions" />
+    <x-tables.toolbars.transactions
+        :transactions="$transactions"
+        :wallet="$wallet"
+    />
 
     <x-skeletons.wallet-transactions :row-count="$this->perPage">
         <x-tables.desktop.wallet-transactions

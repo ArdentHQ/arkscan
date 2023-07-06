@@ -290,3 +290,107 @@ it('should search for known wallets addresses with meilisearch', function () {
         ->assertSee('AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk')
         ->assertDontSee('Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d');
 });
+
+it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisearch', function () {
+    // Default value, overriden in phpunit.xml for the tests
+    Config::set('scout.driver', 'meilisearch');
+
+    // Mock the Meilisearch client and indexes
+    $mock    = $this->mock(MeilisearchClient::class);
+    $indexes = $this->mock(Indexes::class);
+    $mock->shouldReceive('index')->andReturn($indexes);
+    $indexes->shouldReceive('addDocuments');
+
+    $knownWalletsUrl = 'https://knownwallets.com/known-wallets.json';
+
+    Config::set('arkscan.networks.development.knownWallets', $knownWalletsUrl);
+
+    Http::fake(Http::response([
+        [
+            'type'    => 'team',
+            'name'    => 'a1',
+            'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
+        ],
+        [
+            'type'    => 'team',
+            'name'    => 'a2',
+            'address' => 'Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d',
+        ],
+        [
+            'type'    => 'team',
+            'name'    => 'a3',
+            'address' => 'AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk',
+        ],
+        [
+            'type'    => 'team',
+            'name'    => 'a4',
+            'address' => 'AZiS7KXBJ8o8JgdhPo2m4t8MGpGt1Ucxe7',
+        ],
+        [
+            'type'    => 'team',
+            'name'    => 'a5',
+            'address' => 'AdS7WvzqusoP759qRo6HDmUz2L34u4fMHz',
+        ],
+        [
+            'type'    => 'team',
+            'name'    => 'a6',
+            'address' => 'AKT8ji4purNoocKybdb3aHZYiVkaFimho9',
+        ],
+    ], 200));
+
+    $knownWallet = Wallet::factory()->create([
+        'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
+    ]);
+    $knownWallet2 = Wallet::factory()->create([
+        'address' => 'Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d',
+    ]);
+    $knownWallet3 = Wallet::factory()->create([
+        'address' => 'AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk',
+    ]);
+    $knownWallet4 = Wallet::factory()->create([
+        'address' => 'AZiS7KXBJ8o8JgdhPo2m4t8MGpGt1Ucxe7',
+    ]);
+    $knownWallet5 = Wallet::factory()->create([
+        'address' => 'AdS7WvzqusoP759qRo6HDmUz2L34u4fMHz',
+    ]);
+    $knownWallet6 = Wallet::factory()->create([
+        'address' => 'AKT8ji4purNoocKybdb3aHZYiVkaFimho9',
+    ]);
+
+    $this->mock(MeilisearchEngine::class)
+        ->shouldReceive('multiSearch')
+        ->withArgs(function ($params) {
+            // 3 for all index types + 5 for found known wallets
+            return count($params) === 8 &&
+                collect($params)->every(fn ($param) => $param instanceof SearchQuery);
+        })
+        ->once()
+        ->andReturn([
+            'results' => [
+                [
+                    'indexUid' => 'wallets',
+                    'hits'     => [
+                        $knownWallet->toSearchableArray(),
+                        $knownWallet2->toSearchableArray(),
+                        $knownWallet3->toSearchableArray(),
+                        $knownWallet4->toSearchableArray(),
+                        $knownWallet5->toSearchableArray(),
+                    ],
+                ],
+                [
+                    'indexUid' => 'transactions',
+                    'hits'     => [],
+                ],
+                [
+                    'indexUid' => 'blocks',
+                    'hits'     => [],
+                ],
+            ],
+        ]);
+
+    Livewire::test(Search::class)
+        ->set('query', 'a')
+        ->assertSee('AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67')
+        ->assertSee('AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk')
+        ->assertDontSee('AKT8ji4purNoocKybdb3aHZYiVkaFimho9');
+});

@@ -117,4 +117,9 @@ final class Network implements Contract
     {
         return new CustomNetwork($this->config);
     }
+
+    public function toArray(): array
+    {
+        return $this->config;
+    }
 }

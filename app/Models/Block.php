@@ -73,7 +73,6 @@ final class Block extends Model
         // for the search results.
         return [
             'id'     => $this->id,
-            'height' => $this->height,
             // used to get the delegate
             'generator_public_key' => $this->generator_public_key,
             // shown on the results
@@ -93,7 +92,6 @@ final class Block extends Model
         return $self->newQuery()
             ->select([
                 'id',
-                'height',
                 'generator_public_key',
                 'number_of_transactions',
                 'timestamp',

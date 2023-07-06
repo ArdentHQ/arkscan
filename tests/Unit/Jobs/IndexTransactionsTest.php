@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Jobs\IndexTransactions;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
@@ -24,6 +25,13 @@ beforeEach(function () {
 
 it('should index new Transactions', function () {
     Event::fake();
+
+    Cache::shouldReceive('get')
+        ->with('latest-indexed-timestamp:transactions')
+        ->andReturn(null)
+        ->shouldReceive('put')
+        ->with('latest-indexed-timestamp:transactions', 10)
+        ->once();
 
     $lastIndexedTransaction = Transaction::factory()->create([
         'timestamp' => 5,
@@ -56,6 +64,52 @@ it('should index new Transactions', function () {
     Event::assertDispatched(ModelsImported::class, function ($event) use ($newTransaction) {
         return $event->models->count() === 1
             && $event->models->first()->is($newTransaction);
+    });
+});
+
+it('should not store any value on cache if no new transactions', function () {
+    Event::fake();
+
+    Cache::shouldReceive('get')
+        ->with('latest-indexed-timestamp:transactions')
+        ->andReturn(6);
+
+    Transaction::factory()->create([
+        'timestamp' => 5,
+    ]);
+
+    IndexTransactions::dispatch();
+
+    Event::assertNotDispatched(ModelsImported::class);
+});
+
+it('should index new transactions using the timestamp from cache', function () {
+    Event::fake();
+
+    Cache::shouldReceive('get')
+        ->with('latest-indexed-timestamp:transactions')
+        ->andReturn(2) // so new ones are the one with timestamp 5 and 10
+        ->shouldReceive('put')
+        ->with('latest-indexed-timestamp:transactions', 10)
+        ->once();
+
+    Transaction::factory()->create([
+        'timestamp' => 10,
+    ]);
+
+    Transaction::factory()->create([
+        'timestamp' => 5,
+    ]);
+
+    Transaction::factory()->create([
+        'timestamp' => 1,
+    ]);
+
+    IndexTransactions::dispatch();
+
+    Event::assertDispatched(ModelsImported::class, function ($event) {
+        return $event->models->count() === 2 &&
+            $event->models->pluck('timestamp')->sort()->values()->toArray() === [5, 10];
     });
 });
 
