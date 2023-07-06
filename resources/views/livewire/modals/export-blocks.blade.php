@@ -53,6 +53,7 @@
                         <div x-show="hasStartedExport">
                             <x-modals.export.status
                                 :filename="$this->username"
+                                type="blocks"
                             />
                         </div>
                     </div>

@@ -184,6 +184,6 @@ return [
 
     'export' => [
         'information_text' => 'The data is being prepared. This might take a while, please wait.',
-        'warning_text'     => 'No transactions matching the selected parameters could be found.',
+        'warning_text'     => 'No :type matching the selected parameters could be found.',
     ],
 ];

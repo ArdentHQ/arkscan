@@ -1,5 +1,6 @@
 @props([
     'filename' => null,
+    'type'     => 'transactions',
 ])
 
 <div class="flex flex-col">
@@ -54,7 +55,7 @@
         <div x-show="exportStatus === ExportStatus.Warning">
             <x-ark-alert
                 :title="trans('general.warning')"
-                :message="trans('general.export.warning_text')"
+                :message="trans('general.export.warning_text', ['type' => $type])"
                 type="warning"
             />
         </div>
