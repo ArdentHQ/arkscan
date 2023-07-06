@@ -2,7 +2,10 @@
     wire:init="setIsReady"
     class="w-full"
 >
-    <x-tables.toolbars.blocks :blocks="$blocks" />
+    <x-tables.toolbars.blocks
+        :blocks="$blocks"
+        :wallet="$wallet"
+    />
 
     <x-skeletons.wallet-blocks :row-count="$this->perPage">
         <x-tables.desktop.wallet-blocks

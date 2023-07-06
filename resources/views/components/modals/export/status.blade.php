@@ -1,3 +1,8 @@
+@props([
+    'filename' => null,
+    'type'     => 'transactions',
+])
+
 <div class="flex flex-col">
     <div class="flex justify-center mb-6">
         <div x-show="exportStatus === ExportStatus.PendingDownload">
@@ -50,7 +55,7 @@
         <div x-show="exportStatus === ExportStatus.Warning">
             <x-ark-alert
                 :title="trans('general.warning')"
-                :message="trans('general.export.warning_text')"
+                :message="trans('general.export.warning_text', ['type' => $type])"
                 type="warning"
             />
         </div>
@@ -63,10 +68,16 @@
                 class="fill-theme-primary-600 dark:fill-theme-dark-blue-500"
             />
 
-            <div
-                x-text="`${address.substr(0, 5)}...${address.substr(-5)}.csv`"
-                class="truncate"
-            ></div>
+            @unless ($filename)
+                <div
+                    x-text="`${address.substr(0, 5)}...${address.substr(-5)}.csv`"
+                    class="truncate"
+                ></div>
+            @else
+                <div class="truncate">
+                    {{ $filename }}.csv
+                </div>
+            @endif
         </div>
 
         <div class="relative">

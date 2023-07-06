@@ -244,6 +244,66 @@ return [
                 'rate'       => 'Rate [:userCurrency]',
             ],
         ],
+
+        'export-blocks-modal' => [
+            'title'       => 'Export Table',
+            'description' => 'Select the data below that you want to export.',
+
+            'date_range'          => 'Date Range',
+            'date_from'           => 'Date From',
+            'date_to'             => 'Date To',
+            'delimiter'           => 'Delimiter',
+            'types'               => 'Types',
+            'columns'             => 'Columns',
+            'include_header_row'  => 'Include Header Row',
+            'types_placeholder'   => 'Select Types',
+            'columns_placeholder' => 'Select Columns',
+            'success_toast'       => '<span class=\\\'font-semibold\\\'>:username.csv</span> has been saved successfully',
+
+            'columns_x_selected' => [
+                'singular' => 'Column Selected',
+                'plural'   => 'Columns Selected',
+            ],
+
+            'date-options' => [
+                'current_month' => 'Current Month',
+                'last_month'    => 'Last Month',
+                'last_quarter'  => 'Last Quarter',
+                'current_year'  => 'Current Year',
+                'last_year'     => 'Last Year',
+                'all'           => 'All',
+            ],
+
+            'delimiter-options' => [
+                'comma'     => [
+                    'text'  => 'Comma',
+                    'value' => ',',
+                ],
+                'semicolon' => [
+                    'text'  => 'Semicolon',
+                    'value' => ';',
+                ],
+                'tab'       => [
+                    'text'  => 'Tab',
+                    'value' => '\\t',
+                ],
+                'pipe'      => [
+                    'text'  => 'Pipe',
+                    'value' => '|',
+                ],
+            ],
+
+            'columns-options' => [
+                'id'           => 'Block ID',
+                'timestamp'    => 'Block Date',
+                'transactions' => 'Transactions',
+                'volume'       => 'Volume [:networkCurrency]',
+                'volumeFiat'   => 'Volume [:userCurrency]',
+                'total'        => 'Total Rewards [:networkCurrency]',
+                'totalFiat'    => 'Total Rewards [:userCurrency]',
+                'rate'         => 'Rate [:userCurrency]',
+            ],
+        ],
     ],
 
     'delegates'        => [

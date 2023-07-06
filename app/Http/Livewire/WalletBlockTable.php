@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Facades\Wallets;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Block;
@@ -36,6 +37,7 @@ final class WalletBlockTable extends Component
     public function render(): View
     {
         return view('livewire.wallet-block-table', [
+            'wallet' => ViewModelFactory::make(Wallets::findByPublicKey($this->publicKey)),
             'blocks' => ViewModelFactory::paginate($this->blocks),
         ]);
     }

@@ -16,8 +16,8 @@
 
     @if($this->modalShown)
         <div
-            x-data="TransactionsExport({
-                address: '{{ $this->address }}',
+            x-data="BlocksExport({
+                publicKey: '{{ $this->publicKey }}',
                 network: {{ json_encode(Network::toArray()) }},
                 userCurrency: '{{ Settings::currency() }}',
                 rates: {{ ExchangeRate::rates() ?? '{}' }},
@@ -37,29 +37,32 @@
                 disable-overlay-close
             >
                 <x-slot name="title">
-                    <div>@lang('pages.wallet.export-transactions-modal.title')</div>
+                    <div>@lang('pages.wallet.export-blocks-modal.title')</div>
 
                     <div class="mt-1 text-sm font-normal text-theme-secondary-700 dark:text-theme-dark-200">
-                        @lang('pages.wallet.export-transactions-modal.description')
+                        @lang('pages.wallet.export-blocks-modal.description')
                     </div>
                 </x-slot>
 
                 <x-slot name="description">
                     <div class="px-6 pt-6 -mx-6 border-t border-theme-secondary-300 dark:border-theme-dark-700">
                         <div x-show="! hasStartedExport">
-                            <x-modals.export-transactions.fields />
+                            <x-modals.export-blocks.fields />
                         </div>
 
                         <div x-show="hasStartedExport">
-                            <x-modals.export.status />
+                            <x-modals.export.status
+                                :filename="$this->username"
+                                type="blocks"
+                            />
                         </div>
                     </div>
                 </x-slot>
 
                 <x-slot name="buttons">
                     <x-modals.export.buttons
-                        :filename="$this->address"
-                        :success-toast="trans('pages.wallet.export-transactions-modal.success_toast', ['address' => $this->address])"
+                        :filename="$this->username"
+                        :success-toast="trans('pages.wallet.export-blocks-modal.success_toast', ['username' => $this->username])"
                     />
                 </x-slot>
             </x-ark-modal>
