@@ -1,13 +1,15 @@
 import * as dayjs from "dayjs";
 import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
-import { BlocksApi } from "./blocks-api";
-import { ExportStatus } from "./includes/enums";
+
 import {
+    DateFilters,
     arktoshiToNumber,
     getDelimiter,
-    DateFilters,
     timeSinceEpoch,
 } from "./includes/helpers";
+
+import { BlocksApi } from "./blocks-api";
+import { ExportStatus } from "./includes/enums";
 
 window.ExportStatus = ExportStatus;
 
@@ -37,7 +39,7 @@ const BlocksExport = ({
         volumeFiat: function (block) {
             return this.volume(block) * this.rate(block);
         },
-        total: (block) => arktoshiToNumber(block.forged.reward),
+        total: (block) => arktoshiToNumber(block.forged.total),
         totalFiat: function (block) {
             return this.total(block) * this.rate(block);
         },
