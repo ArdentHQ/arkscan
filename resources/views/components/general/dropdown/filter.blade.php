@@ -12,7 +12,7 @@
     button-wrapper-class="w-full h-5 md:h-4"
 >
     <x-slot name="button">
-        <div class="inline-flex items-center whitespace-nowrap mx-auto">
+        <div class="inline-flex items-center mx-auto whitespace-nowrap">
             <x-ark-icon
                 name="filter"
                 size="sm"
