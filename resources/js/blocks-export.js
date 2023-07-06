@@ -301,6 +301,7 @@ const BlocksExport = ({
                     limit,
                     query,
                     publicKey,
+                    height: query["height.to"],
                 },
                 this
             );
