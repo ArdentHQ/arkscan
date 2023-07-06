@@ -13,7 +13,7 @@
         </label>
     @endif
 
-    <div class="flex flex-1 items-center pr-4 space-x-2 justify-between bg-white dark:bg-theme-dark-900 rounded border border-theme-secondary-400 dark:border-theme-dark-500">
+    <div class="flex flex-1 justify-between items-center pr-4 space-x-2 bg-white rounded border border-theme-secondary-400 dark:bg-theme-dark-900 dark:border-theme-dark-500">
         <div class="grid grid-cols-1">
             <input
                 x-data
@@ -33,7 +33,7 @@
                 type="text"
                 onchange="this.dispatchEvent(new InputEvent('input'))"
                 width="100%"
-                class="pl-4 py-3 rounded dark:bg-theme-dark-900 dark:text-theme-dark-50"
+                class="py-3 pl-4 rounded dark:bg-theme-dark-900 dark:text-theme-dark-50"
                 placeholder="{{ $format }}"
             />
         </div>
