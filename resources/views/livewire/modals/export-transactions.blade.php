@@ -44,18 +44,25 @@
                     </div>
                 </x-slot>
 
-                    <div x-show="hasStartedExport">
-                        <x-modals.export.status />
-                    </div>
-                </div>
-            </x-slot>
+                <x-slot name="description">
+                    <div class="px-6 pt-6 -mx-6 border-t border-theme-secondary-300 dark:border-theme-dark-700">
+                        <div x-show="! hasStartedExport">
+                            <x-modals.export-transactions.fields />
+                        </div>
 
-            <x-slot name="buttons">
-                <x-modals.export.buttons
-                    :filename="$this->address"
-                    :success-toast="trans('pages.wallet.export-transactions-modal.success_toast', ['address' => $this->address])"
-                />
-            </x-slot>
-        </x-ark-modal>
+                        <div x-show="hasStartedExport">
+                            <x-modals.export.status />
+                        </div>
+                    </div>
+                </x-slot>
+
+                <x-slot name="buttons">
+                    <x-modals.export.buttons
+                        :filename="$this->address"
+                        :success-toast="trans('pages.wallet.export-transactions-modal.success_toast', ['address' => $this->address])"
+                    />
+                </x-slot>
+            </x-ark-modal>
+        </div>
     @endif
 </div>
