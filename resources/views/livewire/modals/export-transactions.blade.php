@@ -1,4 +1,4 @@
-<div class="flex-1 h-8 export-modal">
+<div class="flex-1 sm:h-8 export-modal">
     <div>
         <button
             type="button"
