@@ -59,6 +59,11 @@
                 width="100%"
                 class="py-3 pl-4 rounded placeholder:dark:text-theme-dark-200 dark:bg-theme-dark-900 dark:text-theme-dark-50"
                 placeholder="{{ $format }}"
+                x-on:keydown.backspace="(e) => {
+                    e.stopImmediatePropagation();
+
+                    return true;
+                }"
             />
         </div>
 
