@@ -4,6 +4,9 @@
             type="button"
             class="flex justify-center items-center space-x-2 w-full sm:py-1.5 sm:px-4 button-secondary"
             wire:click="openModal"
+            @if(!$hasForgedBlocks)
+                disabled
+            @endif
         >
             <x-ark-icon
                 name="arrows.underline-arrow-down"

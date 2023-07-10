@@ -17,12 +17,15 @@ final class ExportBlocks extends Component
 
     public ?string $username = null;
 
+    public bool $hasForgedBlocks = false;
+
     public function mount(WalletViewModel $wallet): void
     {
         $this->publicKey = $wallet->publicKey();
 
         if ($wallet->isDelegate()) {
             $this->username = $wallet->username();
+            $this->hasForgedBlocks = $wallet->blocksCount() > 0;
         }
     }
 
