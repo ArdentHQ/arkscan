@@ -18,6 +18,24 @@
     />
 
     <div
+        x-data="{
+            dateToPicker: null,
+            dateFromPicker: null,
+
+            setDateToInstance(instance) {
+                this.dateToPicker = instance;
+            },
+            setDateFromInstance(instance) {
+                this.dateFromPicker = instance;
+            },
+
+            setDateTo(date) {
+                this.dateToPicker.setMinDate(date);
+            },
+            setDateFrom(date) {
+                this.dateFromPicker.setMaxDate(date);
+            },
+        }"
         x-show="dateRange === 'custom'"
         class="flex py-4 px-6 -mx-6 mt-4 space-x-3 bg-theme-primary-50 dark:bg-theme-dark-950"
     >
@@ -28,6 +46,8 @@
             locale=""
             class="flex-1"
             x-model="dateFrom"
+            x-on-change="setDateTo"
+            x-init="setDateFromInstance"
         />
 
         <x-input.date-picker
@@ -37,6 +57,8 @@
             locale=""
             class="flex-1"
             x-model="dateTo"
+            x-on-change="setDateFrom"
+            x-init="setDateToInstance"
         />
     </div>
 </div>
