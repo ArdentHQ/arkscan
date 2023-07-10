@@ -1,5 +1,5 @@
 <div class="flex-1 sm:h-8 export-modal">
-    <div>
+    <div @class(['cursor-not-allowed' => !$hasForgedBlocks])>
         <button
             type="button"
             class="flex justify-center items-center space-x-2 w-full sm:py-1.5 sm:px-4 button-secondary"
