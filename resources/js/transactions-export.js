@@ -272,10 +272,14 @@ const TransactionsExport = ({
         },
 
         getCustomDateRange() {
-            return [
-                this.dateFrom ? dayjs(this.dateFrom) : null,
-                this.dateTo ? dayjs(this.dateTo) : null,
-            ];
+            let dateFrom = this.dateFrom ? dayjs(this.dateFrom) : null;
+            let dateTo = this.dateTo ? dayjs(this.dateTo) : null;
+
+            if (dateFrom !== null && dateTo !== null && dateFrom > dateTo) {
+                [dateFrom, dateTo] = [dateTo, dateFrom];
+            }
+
+            return [dateFrom, dateTo];
         },
 
         requestData(withoutTransactionTypes = false) {
