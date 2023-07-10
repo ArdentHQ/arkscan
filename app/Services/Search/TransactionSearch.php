@@ -41,7 +41,7 @@ final class TransactionSearch implements Search
         }
 
         return (new SearchQuery())
-            ->setFilter(['id = '.sprintf('"%s"', $query)])
+            ->setFilter(['id = '.sprintf('"%s"', addslashes($query))])
             ->setIndexUid('transactions')
             ->setLimit($limit);
     }
