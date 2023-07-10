@@ -185,25 +185,29 @@ const BlocksExport = ({
             const data = {};
 
             if (dateFrom) {
+                const dateFromEpoch = timeSinceEpoch(dateFrom, this.network)
+                const dateToEpoch = timeSinceEpoch(dateTo, this.network)
                 // Check if delegate's last forged block is not older than the range
                 // This is to handle cases of old delegates where it's expensive
                 // to request their block height
-                const lastForgedBlockEpoch =
-                    await this.getLastForgedBlockEpoch();
+                const lastForgedBlockEpoch = await this.getLastForgedBlockEpoch();
+
                 if (
                     lastForgedBlockEpoch === 0 ||
-                    lastForgedBlockEpoch <
-                        timeSinceEpoch(dateFrom, this.network)
+                    lastForgedBlockEpoch < dateFromEpoch
                 ) {
                     return { "height.from": 0, "height.to": 0 };
                 }
 
-                data["height.from"] = await this.getFirstBlockHeightAfterEpoch(
-                    timeSinceEpoch(dateFrom, this.network)
-                );
-                data["height.to"] = await this.getFirstBlockHeightBeforeEpoch(
-                    timeSinceEpoch(dateTo, this.network)
-                );
+                if (lastForgedBlockEpoch < dateToEpoch) {
+                    return {
+                        "height.from": await this.getFirstBlockHeightAfterEpoch(dateFromEpoch),
+                        "height.to": await this.getFirstBlockHeightBeforeEpoch(lastForgedBlockEpoch),
+                    };
+                }
+
+                data["height.from"] = await this.getFirstBlockHeightAfterEpoch(dateFromEpoch);
+                data["height.to"] = await this.getFirstBlockHeightBeforeEpoch(dateToEpoch);
             }
 
             return data;
