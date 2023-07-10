@@ -154,7 +154,9 @@ const BlocksExport = ({
                     .map((row) => row.join(getDelimiter(this.delimiter)))
                     .join("\n");
 
-            this.successMessage = `A total of ${formatNumber(blocks.length)} blocks have been retrieved and are ready for download.`;
+            this.successMessage = `A total of ${formatNumber(
+                blocks.length
+            )} blocks have been retrieved and are ready for download.`;
             this.hasFinishedExport = true;
 
             this.dataUri = encodeURI(csvContent);
@@ -185,12 +187,13 @@ const BlocksExport = ({
             const data = {};
 
             if (dateFrom) {
-                const dateFromEpoch = timeSinceEpoch(dateFrom, this.network)
-                const dateToEpoch = timeSinceEpoch(dateTo, this.network)
+                const dateFromEpoch = timeSinceEpoch(dateFrom, this.network);
+                const dateToEpoch = timeSinceEpoch(dateTo, this.network);
                 // Check if delegate's last forged block is not older than the range
                 // This is to handle cases of old delegates where it's expensive
                 // to request their block height
-                const lastForgedBlockEpoch = await this.getLastForgedBlockEpoch();
+                const lastForgedBlockEpoch =
+                    await this.getLastForgedBlockEpoch();
 
                 if (
                     lastForgedBlockEpoch === 0 ||
@@ -201,13 +204,21 @@ const BlocksExport = ({
 
                 if (lastForgedBlockEpoch < dateToEpoch) {
                     return {
-                        "height.from": await this.getFirstBlockHeightAfterEpoch(dateFromEpoch),
-                        "height.to": await this.getFirstBlockHeightBeforeEpoch(lastForgedBlockEpoch),
+                        "height.from": await this.getFirstBlockHeightAfterEpoch(
+                            dateFromEpoch
+                        ),
+                        "height.to": await this.getFirstBlockHeightBeforeEpoch(
+                            lastForgedBlockEpoch
+                        ),
                     };
                 }
 
-                data["height.from"] = await this.getFirstBlockHeightAfterEpoch(dateFromEpoch);
-                data["height.to"] = await this.getFirstBlockHeightBeforeEpoch(dateToEpoch);
+                data["height.from"] = await this.getFirstBlockHeightAfterEpoch(
+                    dateFromEpoch
+                );
+                data["height.to"] = await this.getFirstBlockHeightBeforeEpoch(
+                    dateToEpoch
+                );
             }
 
             return data;
@@ -232,8 +243,7 @@ const BlocksExport = ({
 
             return await this.getBlockHeight({
                 query: {
-                    "timestamp.from":
-                        epoch,
+                    "timestamp.from": epoch,
                 },
                 orderBy: "timestamp:asc",
             });
