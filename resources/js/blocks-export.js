@@ -225,11 +225,15 @@ const BlocksExport = ({
         // The API options "timestamp:desc" & "timestamp.to" can cause 500 errors.
         // We do it this way and attempt to get the first block after (the epoch - 1 round) instead.
         async getFirstBlockHeightBeforeEpoch(epoch) {
+            epoch -= this.network.blockTime * this.network.delegateCount;
+            if (epoch < 0) {
+                return 0;
+            }
+
             return await this.getBlockHeight({
                 query: {
                     "timestamp.from":
-                        epoch -
-                        this.network.blockTime * this.network.delegateCount,
+                        epoch,
                 },
                 orderBy: "timestamp:asc",
             });

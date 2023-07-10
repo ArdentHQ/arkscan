@@ -19,7 +19,12 @@ export const getDelimiter = (delimiter) => {
 export const timeSinceEpoch = (date, network) => {
     const epoch = dayjs(network.epoch);
 
-    return date.unix() - epoch.unix();
+    let duration = date.unix() - epoch.unix();
+    if (duration < 0) {
+        return 0;
+    }
+
+    return duration;
 };
 
 export const getDateRange = (dateRange) => {
