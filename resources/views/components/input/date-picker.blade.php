@@ -44,13 +44,13 @@
                 type="text"
                 onchange="this.dispatchEvent(new InputEvent('input'))"
                 width="100%"
-                class="pl-4 py-3 rounded dark:bg-theme-dark-900 dark:text-theme-dark-50 placeholder:dark:text-theme-dark-200"
+                class="py-3 pl-4 rounded placeholder:dark:text-theme-dark-200 dark:bg-theme-dark-900 dark:text-theme-dark-50"
                 placeholder="{{ $format }}"
             />
         </div>
 
         <div
-            class="cursor-pointer h-full flex items-center pr-4 pl-2"
+            class="flex items-center pr-4 pl-2 h-full cursor-pointer"
             x-on:click="$refs['{{ $name }}'].click()"
         >
             <x-ark-icon
