@@ -26,6 +26,15 @@
                     onSelect(date) {
                         {{ $xModel }} = date;
                     },
+                    onClose(date) {
+                        if (this.getDate() === null) {
+                            this.clear();
+                            {{ $xModel }} = null;
+                        } else {
+                            this.setDate(this.getDate());
+                            {{ $xModel }} = this.getDate();
+                        }
+                    },
                     toString(date, format) {
                         return date.toLocaleDateString(navigator.language, { year: 'numeric', month: '2-digit', day: '2-digit' });
                     },
