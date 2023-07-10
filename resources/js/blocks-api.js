@@ -41,11 +41,11 @@ export class BlocksApi {
 
         blocks.push(...page.data);
 
-        height = page.data[page.data.length - 1]["height"] - 1;
-
         if (page.meta.count < limit) {
             return blocks;
         }
+
+        height = page.data[page.data.length - 1]["height"] - 1;
 
         return await this.fetchAll(
             {
