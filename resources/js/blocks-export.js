@@ -164,7 +164,7 @@ const BlocksExport = ({
                 return this.getCustomDateRange();
             }
 
-            return getDateRange[this.dateRange];
+            return getDateRange(this.dateRange);
         },
 
         getCustomDateRange() {
