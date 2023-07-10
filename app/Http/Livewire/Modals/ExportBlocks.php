@@ -24,7 +24,7 @@ final class ExportBlocks extends Component
         $this->publicKey = $wallet->publicKey();
 
         if ($wallet->isDelegate()) {
-            $this->username = $wallet->username();
+            $this->username        = $wallet->username();
             $this->hasForgedBlocks = $wallet->blocksCount() > 0;
         }
     }
