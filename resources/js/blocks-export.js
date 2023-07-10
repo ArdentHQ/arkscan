@@ -158,7 +158,7 @@ const BlocksExport = ({
         },
 
         getDateRange() {
-            if (this.dateRange === 'custom') {
+            if (this.dateRange === "custom") {
                 return this.getCustomDateRange();
             }
 
@@ -264,7 +264,7 @@ const BlocksExport = ({
         },
 
         canExport() {
-            if (this.dateRange === 'custom') {
+            if (this.dateRange === "custom") {
                 const [dateFrom, dateTo] = this.getCustomDateRange();
 
                 if (dateFrom === null || dateTo === null) {
