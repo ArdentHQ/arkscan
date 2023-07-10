@@ -24,7 +24,7 @@
         <x-input.date-picker
             name="exportDateFrom"
             :label="trans('general.export.date_from')"
-            min-date="{{ Network::epoch()->timestamp }}"
+            min-date="new Date({{ Network::epoch()->timestamp }}000)"
             locale=""
             class="flex-1"
             x-model="dateFrom"
@@ -33,7 +33,7 @@
         <x-input.date-picker
             name="exportDateTo"
             :label="trans('general.export.date_to')"
-            min-date="{{ Network::epoch()->timestamp }}"
+            min-date="new Date({{ Network::epoch()->timestamp }}000)"
             locale=""
             class="flex-1"
             x-model="dateTo"

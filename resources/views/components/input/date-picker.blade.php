@@ -13,10 +13,12 @@
         </label>
     @endif
 
-    <div class="flex flex-1 justify-between items-center pr-4 space-x-2 bg-white rounded border border-theme-secondary-400 dark:bg-theme-dark-900 dark:border-theme-dark-500">
+    <div
+        x-data
+        class="flex flex-1 justify-between items-center bg-white rounded border border-theme-secondary-400 dark:bg-theme-dark-900 dark:border-theme-dark-500"
+    >
         <div class="grid grid-cols-1">
             <input
-                x-data
                 x-ref="{{ $name }}"
                 x-init="new Pikaday({
                     field: $refs['{{ $name }}'],
@@ -47,7 +49,10 @@
             />
         </div>
 
-        <div>
+        <div
+            class="cursor-pointer h-full flex items-center pr-4 pl-2"
+            x-on:click="$refs['{{ $name }}'].click()"
+        >
             <x-ark-icon
                 name="calendar-without-dots"
                 class="text-theme-primary-600 dark:text-theme-dark-300"
