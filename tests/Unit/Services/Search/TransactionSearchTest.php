@@ -77,3 +77,23 @@ it('should produce the right meilisearch query when possibly transaction id', fu
         'limit'    => 5,
     ]);
 });
+
+it('should handle spaces in search query', function () {
+    $query = TransactionSearch::buildSearchQueryForIndex('a b', 5);
+
+    expect($query->toArray())->toMatchArray([
+        'indexUid' => 'transactions',
+        'filter'   => ['id = "a b"'],
+        'limit'    => 5,
+    ]);
+});
+
+it('should handle special characters in search query', function () {
+    $query = TransactionSearch::buildSearchQueryForIndex('a b \ ( "', 5);
+
+    expect($query->toArray())->toMatchArray([
+        'indexUid' => 'transactions',
+        'filter'   => ['id = "a b \\\\ ( \""'],
+        'limit'    => 5,
+    ]);
+});

@@ -9,6 +9,7 @@ import {
 } from "./includes/helpers";
 
 import { BlocksApi } from "./blocks-api";
+import { DelegatesApi } from "./delegates-api";
 import { ExportStatus } from "./includes/enums";
 
 window.ExportStatus = ExportStatus;
@@ -90,6 +91,7 @@ const BlocksExport = ({
                 try {
                     const query = await this.requestData();
                     if (
+                        query === {} ||
                         query["height.from"] === 0 ||
                         query["height.to"] === 0
                     ) {
@@ -124,7 +126,7 @@ const BlocksExport = ({
                 csvRows.push(this.getColumnTitles());
             }
 
-            for (const transaction of blocks) {
+            for (const block of blocks) {
                 const data = [];
                 for (const [column, enabled] of Object.entries(
                     this.getColumns()
@@ -134,9 +136,9 @@ const BlocksExport = ({
                     }
 
                     if (columnMapping[column] !== undefined) {
-                        data.push(columnMapping[column](transaction));
+                        data.push(columnMapping[column](block));
                     } else {
-                        data.push(transaction[column]);
+                        data.push(block[column]);
                     }
                 }
 
@@ -175,6 +177,19 @@ const BlocksExport = ({
             const data = {};
 
             if (dateFrom) {
+                // Check if delegate's last forged block is not older than the range
+                // This is to handle cases of old delegates where it's expensive
+                // to request their block height
+                const lastForgedBlockEpoch =
+                    await this.getLastForgedBlockEpoch();
+                if (
+                    lastForgedBlockEpoch === 0 ||
+                    lastForgedBlockEpoch <
+                        timeSinceEpoch(dateFrom, this.network)
+                ) {
+                    return { "height.from": 0, "height.to": 0 };
+                }
+
                 data["height.from"] = await this.getFirstBlockHeightAfterEpoch(
                     timeSinceEpoch(dateFrom, this.network)
                 );
@@ -217,6 +232,15 @@ const BlocksExport = ({
             });
 
             return block?.height ?? 0;
+        },
+
+        async getLastForgedBlockEpoch() {
+            const delegate = await DelegatesApi.fetch({
+                host: network.api,
+                publicKey,
+            });
+
+            return delegate?.blocks?.last?.timestamp?.epoch ?? 0;
         },
 
         getColumns() {
