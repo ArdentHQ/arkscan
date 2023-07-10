@@ -8,7 +8,7 @@
 
 <div {{ $attributes->class('flex flex-col space-y-2 flex-1') }}>
     @if ($label)
-        <label class="dark:text-theme-dark-50">
+        <label class="dark:text-theme-dark-200">
             {{ $label }}
         </label>
     @endif
@@ -33,7 +33,7 @@
                 type="text"
                 onchange="this.dispatchEvent(new InputEvent('input'))"
                 width="100%"
-                class="pl-4 py-3 rounded dark:bg-theme-dark-900 dark:text-theme-dark-50"
+                class="pl-4 py-3 rounded dark:bg-theme-dark-900 dark:text-theme-dark-50 placeholder:dark:text-theme-dark-200"
                 placeholder="{{ $format }}"
             />
         </div>
@@ -41,7 +41,7 @@
         <div>
             <x-ark-icon
                 name="calendar-without-dots"
-                class="text-theme-primary-600 dark:text-theme-dark-blue-400"
+                class="text-theme-primary-600 dark:text-theme-dark-300"
             />
         </div>
     </div>

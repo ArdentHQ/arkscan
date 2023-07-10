@@ -19,7 +19,7 @@
 
     <div
         x-show="dateRange === 'custom'"
-        class="flex space-x-3 -mx-6 px-6 bg-theme-primary-50 dark:bg-black py-4 mt-4"
+        class="flex space-x-3 -mx-6 px-6 bg-theme-primary-50 dark:bg-theme-dark-950 py-4 mt-4"
     >
         <x-input.date-picker
             name="exportDateFrom"
