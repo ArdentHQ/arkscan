@@ -3,6 +3,7 @@ import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
 
 import {
     arktoshiToNumber,
+    formatNumber,
     getDateRange,
     getDelimiter,
     timeSinceEpoch,
@@ -153,7 +154,7 @@ const BlocksExport = ({
                     .map((row) => row.join(getDelimiter(this.delimiter)))
                     .join("\n");
 
-            this.successMessage = `A total of ${blocks.length} blocks have been retrieved and are ready for download.`;
+            this.successMessage = `A total of ${formatNumber(blocks.length)} blocks have been retrieved and are ready for download.`;
             this.hasFinishedExport = true;
 
             this.dataUri = encodeURI(csvContent);

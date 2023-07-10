@@ -36,6 +36,10 @@ export const getDateRange = (dateRange) => {
     return [dateFrom, dateTo];
 };
 
+export const formatNumber = (value) => {
+    return new Intl.NumberFormat(navigator.language).format(value);
+}
+
 export const DateFilters = {
     current_month: dayjs().startOf("month"),
     last_month: {

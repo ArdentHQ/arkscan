@@ -4,6 +4,7 @@ import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
 
 import {
     arktoshiToNumber,
+    formatNumber,
     getDateRange,
     getDelimiter,
     timeSinceEpoch,
@@ -257,7 +258,7 @@ const TransactionsExport = ({
                     .map((row) => row.join(getDelimiter(this.delimiter)))
                     .join("\n");
 
-            this.successMessage = `A total of ${transactions.length} transactions have been retrieved and are ready for download.`;
+            this.successMessage = `A total of ${formatNumber(transactions.length)} transactions have been retrieved and are ready for download.`;
             this.hasFinishedExport = true;
 
             this.dataUri = encodeURI(csvContent);
