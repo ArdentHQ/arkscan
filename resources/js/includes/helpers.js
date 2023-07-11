@@ -19,7 +19,30 @@ export const getDelimiter = (delimiter) => {
 export const timeSinceEpoch = (date, network) => {
     const epoch = dayjs(network.epoch);
 
-    return date.unix() - epoch.unix();
+    let duration = date.unix() - epoch.unix();
+    if (duration < 0) {
+        return 0;
+    }
+
+    return duration;
+};
+
+export const getDateRange = (dateRange) => {
+    let dateFrom = DateFilters[dateRange];
+    let dateTo = null;
+    if (dateFrom !== null) {
+        dateTo = dayjs();
+        if (typeof dateFrom.from === "object") {
+            dateTo = dateFrom.to;
+            dateFrom = dateFrom.from;
+        }
+    }
+
+    return [dateFrom, dateTo];
+};
+
+export const formatNumber = (value) => {
+    return new Intl.NumberFormat(navigator.language).format(value);
 };
 
 export const DateFilters = {

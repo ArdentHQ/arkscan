@@ -8,6 +8,7 @@
     'itemLangProperties'      => [],
     'itemCriteria'            => null,
     'selectedPluralizedLangs' => null,
+    'extraItems'              => [],
 ])
 
 @php
@@ -63,12 +64,12 @@
         :close-on-click="! $multiple"
         :init-alpine="false"
         button-class="w-full"
-        button-wrapper-class="w-full rounded-md border border-transparent transition-default hover:border-theme-primary-400 hover:dark:border-theme-dark-blue-600"
+        button-wrapper-class="w-full rounded-md"
         active-button-class="bg-white dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
     >
         <x-slot
             name="button"
-            class="flex justify-between py-3.5 px-4 w-full h-11 rounded border border-theme-secondary-400 leading-[17px] dark:border-theme-dark-500 dark:text-theme-dark-200 hover:border-theme-primary-400 hover:dark:border-theme-dark-blue-600"
+            class="flex justify-between py-3.5 px-4 w-full h-11 rounded border border-theme-secondary-400 leading-[17px] outline outline-1 outline-transparent dark:border-theme-dark-500 dark:text-theme-dark-200 hover:border-theme-primary-400 hover:dark:border-theme-dark-blue-600 hover:outline-theme-primary-400 hover:dark:outline-theme-dark-blue-600"
         >
             @if ($multiple)
                 <span
@@ -136,6 +137,23 @@
                     />
                 </x-general.dropdown.alpine-list-item>
             @endforeach
+
+            @if (count($extraItems) > 0)
+                <div class="flex flex-col border-t border-theme-secondary-300 dark:border-theme-dark-500">
+                    @foreach ($extraItems as $item)
+                        <x-general.dropdown.alpine-list-item
+                            :id="$item['value']"
+                            :variable-name="$id"
+                        >
+                            <x-input.includes.item-text
+                                :id="$id"
+                                :item="$item['text']"
+                                :key="$item['value']"
+                            />
+                        </x-general.dropdown.alpine-list-item>
+                    @endforeach
+                </div>
+            @endif
         @else
             <x-general.dropdown.alpine-list-checkbox
                 id="selectField{{ Str::studly($id) }}.selectAll"

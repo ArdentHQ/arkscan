@@ -177,15 +177,13 @@ return [
             'description' => 'Select the data below that you want to export.',
 
             'date_range'          => 'Date Range',
-            'date_from'           => 'Date From',
-            'date_to'             => 'Date To',
             'delimiter'           => 'Delimiter',
             'types'               => 'Types',
             'columns'             => 'Columns',
             'include_header_row'  => 'Include Header Row',
             'types_placeholder'   => 'Select Types',
             'columns_placeholder' => 'Select Columns',
-            'success_toast'       => '<span class=\\\'font-semibold\\\'>:address.csv</span> has been saved successfully',
+            'success_toast'       => '<span class="font-semibold" style="word-break: break-word;">:address.csv</span> has been saved successfully',
 
             'types_x_selected' => [
                 'singular' => 'Type Selected',
@@ -250,8 +248,6 @@ return [
             'description' => 'Select the data below that you want to export.',
 
             'date_range'          => 'Date Range',
-            'date_from'           => 'Date From',
-            'date_to'             => 'Date To',
             'delimiter'           => 'Delimiter',
             'types'               => 'Types',
             'columns'             => 'Columns',
