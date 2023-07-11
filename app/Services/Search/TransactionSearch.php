@@ -40,12 +40,8 @@ final class TransactionSearch implements Search
             return null;
         }
 
-        if ((new self())->couldBeTransactionID($query)) {
-            $query = sprintf('"%s"', $query);
-        }
-
         return (new SearchQuery())
-            ->setFilter(['id = '.$query])
+            ->setFilter(['id = '.sprintf('"%s"', addslashes($query))])
             ->setIndexUid('transactions')
             ->setLimit($limit);
     }

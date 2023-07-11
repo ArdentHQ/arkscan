@@ -1,0 +1,63 @@
+/* Container */
+.pika-single {
+    @apply rounded mt-2 border-0;
+}
+.dark .pika-single {
+    @apply bg-theme-dark-950;
+}
+
+html:not(.dark) .pika-single .pika-prev {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23666666'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 19l-7-7 7-7'%3E%3C/path%3E%3C/svg%3E");
+}
+html:not(.dark) .pika-single .pika-next {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23666666'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5l7 7-7 7'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.dark .pika-single .pika-prev {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a4b1bc'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 19l-7-7 7-7'%3E%3C/path%3E%3C/svg%3E");
+}
+.dark .pika-single .pika-next {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a4b1bc'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5l7 7-7 7'%3E%3C/path%3E%3C/svg%3E");
+}
+
+/* Month and Year */
+.dark .pika-single .pika-label {
+    @apply text-theme-dark-50 bg-theme-dark-950;
+}
+
+/* Day of Week */
+.pika-single table thead abbr {
+    @apply no-underline cursor-default bg-theme-dark-950;
+}
+.dark .pika-single table thead abbr {
+    @apply text-theme-dark-200;
+}
+
+/* Today */
+.dark .pika-single table td.is-today button {
+    @apply bg-theme-dark-500;
+}
+
+/* Disabled Date */
+.dark .pika-single table td.is-disabled button {
+    @apply !bg-transparent text-theme-dark-300;
+}
+
+/* Selected Date */
+.dark .pika-single table td.is-selected button {
+    @apply !bg-theme-dark-400 text-theme-dark-blue-200 shadow-none;
+}
+.dark .pika-single table td.is-selected button:hover {
+    @apply text-theme-dark-50;
+}
+
+/* Available Date */
+.pika-single table td button {
+    @apply !rounded-none transition-default;
+}
+.dark .pika-single table td button {
+    @apply bg-theme-dark-600 text-theme-dark-50;
+}
+.dark .pika-single table td button:hover {
+    @apply text-theme-dark-50 bg-theme-dark-blue-400;
+}

@@ -2,13 +2,15 @@ import * as dayjs from "dayjs";
 import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
 
 import {
-    DateFilters,
     arktoshiToNumber,
+    formatNumber,
+    getDateRange,
     getDelimiter,
     timeSinceEpoch,
 } from "./includes/helpers";
 
 import { BlocksApi } from "./blocks-api";
+import { DelegatesApi } from "./delegates-api";
 import { ExportStatus } from "./includes/enums";
 
 window.ExportStatus = ExportStatus;
@@ -56,6 +58,8 @@ const BlocksExport = ({
         canBeExchanged,
         userCurrency,
         dateRange: "current_month",
+        dateFrom: null,
+        dateTo: null,
         delimiter: "comma",
         includeHeaderRow: true,
 
@@ -90,6 +94,7 @@ const BlocksExport = ({
                 try {
                     const query = await this.requestData();
                     if (
+                        query === {} ||
                         query["height.from"] === 0 ||
                         query["height.to"] === 0
                     ) {
@@ -124,7 +129,7 @@ const BlocksExport = ({
                 csvRows.push(this.getColumnTitles());
             }
 
-            for (const transaction of blocks) {
+            for (const block of blocks) {
                 const data = [];
                 for (const [column, enabled] of Object.entries(
                     this.getColumns()
@@ -134,9 +139,9 @@ const BlocksExport = ({
                     }
 
                     if (columnMapping[column] !== undefined) {
-                        data.push(columnMapping[column](transaction));
+                        data.push(columnMapping[column](block));
                     } else {
-                        data.push(transaction[column]);
+                        data.push(block[column]);
                     }
                 }
 
@@ -149,21 +154,28 @@ const BlocksExport = ({
                     .map((row) => row.join(getDelimiter(this.delimiter)))
                     .join("\n");
 
-            this.successMessage = `A total of ${blocks.length} blocks have been retrieved and are ready for download.`;
+            this.successMessage = `A total of ${formatNumber(
+                blocks.length
+            )} blocks have been retrieved and are ready for download.`;
             this.hasFinishedExport = true;
 
             this.dataUri = encodeURI(csvContent);
         },
 
         getDateRange() {
-            let dateFrom = DateFilters[this.dateRange];
-            let dateTo = null;
-            if (dateFrom !== null) {
-                dateTo = dayjs();
-                if (typeof dateFrom.from === "object") {
-                    dateTo = dateFrom.to;
-                    dateFrom = dateFrom.from;
-                }
+            if (this.dateRange === "custom") {
+                return this.getCustomDateRange();
+            }
+
+            return getDateRange(this.dateRange);
+        },
+
+        getCustomDateRange() {
+            let dateFrom = this.dateFrom ? dayjs(this.dateFrom) : null;
+            let dateTo = this.dateTo ? dayjs(this.dateTo) : null;
+
+            if (dateFrom !== null && dateTo !== null && dateFrom > dateTo) {
+                [dateFrom, dateTo] = [dateTo, dateFrom];
             }
 
             return [dateFrom, dateTo];
@@ -175,11 +187,37 @@ const BlocksExport = ({
             const data = {};
 
             if (dateFrom) {
+                const dateFromEpoch = timeSinceEpoch(dateFrom, this.network);
+                const dateToEpoch = timeSinceEpoch(dateTo, this.network);
+                // Check if delegate's last forged block is not older than the range
+                // This is to handle cases of old delegates where it's expensive
+                // to request their block height
+                const lastForgedBlockEpoch =
+                    await this.getLastForgedBlockEpoch();
+
+                if (
+                    lastForgedBlockEpoch === 0 ||
+                    lastForgedBlockEpoch < dateFromEpoch
+                ) {
+                    return { "height.from": 0, "height.to": 0 };
+                }
+
+                if (lastForgedBlockEpoch < dateToEpoch) {
+                    return {
+                        "height.from": await this.getFirstBlockHeightAfterEpoch(
+                            dateFromEpoch
+                        ),
+                        "height.to": await this.getFirstBlockHeightBeforeEpoch(
+                            lastForgedBlockEpoch
+                        ),
+                    };
+                }
+
                 data["height.from"] = await this.getFirstBlockHeightAfterEpoch(
-                    timeSinceEpoch(dateFrom, this.network)
+                    dateFromEpoch
                 );
                 data["height.to"] = await this.getFirstBlockHeightBeforeEpoch(
-                    timeSinceEpoch(dateTo, this.network)
+                    dateToEpoch
                 );
             }
 
@@ -198,11 +236,14 @@ const BlocksExport = ({
         // The API options "timestamp:desc" & "timestamp.to" can cause 500 errors.
         // We do it this way and attempt to get the first block after (the epoch - 1 round) instead.
         async getFirstBlockHeightBeforeEpoch(epoch) {
+            epoch -= this.network.blockTime * this.network.delegateCount;
+            if (epoch < 0) {
+                return 0;
+            }
+
             return await this.getBlockHeight({
                 query: {
-                    "timestamp.from":
-                        epoch -
-                        this.network.blockTime * this.network.delegateCount,
+                    "timestamp.from": epoch,
                 },
                 orderBy: "timestamp:asc",
             });
@@ -217,6 +258,15 @@ const BlocksExport = ({
             });
 
             return block?.height ?? 0;
+        },
+
+        async getLastForgedBlockEpoch() {
+            const delegate = await DelegatesApi.fetch({
+                host: network.api,
+                publicKey,
+            });
+
+            return delegate?.blocks?.last?.timestamp?.epoch ?? 0;
         },
 
         getColumns() {
@@ -261,6 +311,14 @@ const BlocksExport = ({
         },
 
         canExport() {
+            if (this.dateRange === "custom") {
+                const [dateFrom, dateTo] = this.getCustomDateRange();
+
+                if (dateFrom === null || dateTo === null) {
+                    return false;
+                }
+            }
+
             return (
                 Object.values(this.columns).filter((enabled) => enabled)
                     .length !== 0

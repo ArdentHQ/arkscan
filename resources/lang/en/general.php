@@ -40,6 +40,7 @@ return [
     'information'             => 'Information',
     'error'                   => 'Error',
     'warning'                 => 'Warning',
+    'custom'                  => 'Custom',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
@@ -185,5 +186,7 @@ return [
     'export' => [
         'information_text' => 'The data is being prepared. This might take a while, please wait.',
         'warning_text'     => 'No :type matching the selected parameters could be found.',
+        'date_from'        => 'Date From',
+        'date_to'          => 'Date To',
     ],
 ];
