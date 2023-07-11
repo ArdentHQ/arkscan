@@ -1,7 +1,4 @@
-<div
-    wire:init="setIsReady"
-    class="w-full"
->
+<div class="w-full">
     <x-tables.toolbars.blocks
         :blocks="$blocks"
         :wallet="$wallet"
