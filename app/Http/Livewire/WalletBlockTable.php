@@ -26,7 +26,7 @@ final class WalletBlockTable extends Component
     /** @var mixed */
     protected $listeners = [
         'setBlocksReady'  => 'setIsReady',
-        'currencyChanged' => '$refresh'
+        'currencyChanged' => '$refresh',
     ];
 
     public function mount(WalletViewModel $wallet): void
