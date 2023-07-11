@@ -177,8 +177,6 @@ return [
             'description' => 'Select the data below that you want to export.',
 
             'date_range'          => 'Date Range',
-            'date_from'           => 'Date From',
-            'date_to'             => 'Date To',
             'delimiter'           => 'Delimiter',
             'types'               => 'Types',
             'columns'             => 'Columns',
@@ -250,8 +248,6 @@ return [
             'description' => 'Select the data below that you want to export.',
 
             'date_range'          => 'Date Range',
-            'date_from'           => 'Date From',
-            'date_to'             => 'Date To',
             'delimiter'           => 'Delimiter',
             'types'               => 'Types',
             'columns'             => 'Columns',

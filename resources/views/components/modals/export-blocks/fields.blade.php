@@ -1,8 +1,6 @@
 <div class="flex flex-col space-y-5">
-    <x-input.js-select
-        id="dateRange"
+    <x-modals.export.date-range
         :label="trans('pages.wallet.export-blocks-modal.date_range')"
-        dropdown-width="w-full sm:w-[400px]"
         :items="trans('pages.wallet.export-blocks-modal.date-options')"
     />
 
