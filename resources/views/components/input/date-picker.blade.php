@@ -32,6 +32,9 @@
                         onSelect(date) {
                             {{ $xModel }} = date;
                         },
+                        onOpen() {
+                            $dispatch('pauseFocusTrap');
+                        },
                         onClose(date) {
                             if (this.getDate() === null) {
                                 this.clear();
@@ -44,6 +47,8 @@
                                     {{ $xOnChange }}(this.getDate());
                                 @endif
                             }
+
+                            $dispatch('resumeFocusTrap');
                         },
                         toString(date, format) {
                             return date.toLocaleDateString(navigator.language, { year: 'numeric', month: '2-digit', day: '2-digit' });
