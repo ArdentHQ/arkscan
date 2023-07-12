@@ -2,11 +2,22 @@
     'rowCount' => 10,
 ])
 
-<x-loading.visible display-type="block">
-    <x-tables.desktop.skeleton.wallet-transactions :row-count="$rowCount" />
+@if (! $this->isReady)
+    <div wire:key="skeleton:transactions:not-ready">
+        <x-tables.desktop.skeleton.wallet-transactions :row-count="$rowCount" />
 
-    <x-tables.mobile.skeleton.wallet-transactions />
-</x-loading.visible>
+        <x-tables.mobile.skeleton.wallet-transactions />
+    </div>
+@else
+    <x-loading.visible
+        wire:key="skeleton:transactions:ready"
+        display-type="block"
+    >
+        <x-tables.desktop.skeleton.wallet-transactions :row-count="$rowCount" />
+
+        <x-tables.mobile.skeleton.wallet-transactions />
+    </x-loading.visible>
+@endif
 
 <x-loading.hidden>
     {{ $slot }}
