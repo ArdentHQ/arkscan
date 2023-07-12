@@ -8,6 +8,7 @@ use App\Http\Livewire\BlockTable;
 use App\Models\Block;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\TransactionViewModel;
@@ -100,4 +101,27 @@ it('should update the records fiat tooltip when currency changed', function () {
 
     $expectedUsd = NumberFormatter::currency($amount * $usdExchangeRate, 'USD');
     $expectedBtc = NumberFormatter::currency($amount * $btcExchangeRate, 'BTC');
+});
+
+it('should handle a lot of blocks', function () {
+    $this->travelTo(Carbon::parse('2023-07-12 00:00:00'));
+
+    $wallet = Wallet::factory()->create();
+
+    foreach (range(1, 4000) as $index) {
+        $this->travel(8)->seconds();
+
+        Block::factory()->create([
+            'generator_public_key' => $wallet->public_key,
+            'timestamp' => Carbon::now()->timestamp,
+            'height'    => $index,
+        ]);
+    }
+
+    expect(Block::count())->toBe(4000);
+
+    Livewire::test(BlockTable::class)
+        ->assertSee(266) // 4000 / 15 per page
+        ->call('gotoPage', 265)
+        ->assertSee(266);
 });
