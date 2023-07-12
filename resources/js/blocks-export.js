@@ -128,10 +128,11 @@ const BlocksExport = ({
                             this.getColumnTitles(),
                             columnMapping,
                             this.delimiter,
-                            this.includeHeaderRow,
+                            this.includeHeaderRow
                         );
                     } else {
-                        this.errorMessage = "There was a problem fetching blocks.";
+                        this.errorMessage =
+                            "There was a problem fetching blocks.";
                     }
 
                     console.log(this.errorMessage, e);
@@ -151,7 +152,7 @@ const BlocksExport = ({
                 this.getColumnTitles(),
                 columnMapping,
                 this.delimiter,
-                this.includeHeaderRow,
+                this.includeHeaderRow
             );
         },
 

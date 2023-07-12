@@ -231,10 +231,11 @@ const TransactionsExport = ({
                             this.getColumnTitles(),
                             columnMapping,
                             this.delimiter,
-                            this.includeHeaderRow,
+                            this.includeHeaderRow
                         );
                     } else {
-                        this.errorMessage = "There was a problem fetching transactions.";
+                        this.errorMessage =
+                            "There was a problem fetching transactions.";
                     }
 
                     console.log(this.errorMessage, e);
@@ -254,7 +255,7 @@ const TransactionsExport = ({
                 this.getColumnTitles(),
                 columnMapping,
                 this.delimiter,
-                this.includeHeaderRow,
+                this.includeHeaderRow
             );
         },
 

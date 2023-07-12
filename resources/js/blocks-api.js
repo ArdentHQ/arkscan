@@ -49,7 +49,10 @@ export class BlocksApi {
 
             height = page.data[page.data.length - 1]["height"] - 1;
         } catch (e) {
-            throw new FailedExportRequest('There was a problem fetching blocks.', blocks);
+            throw new FailedExportRequest(
+                "There was a problem fetching blocks.",
+                blocks
+            );
         }
 
         return await this.fetchAll(

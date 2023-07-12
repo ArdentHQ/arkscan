@@ -32,9 +32,13 @@ export class TransactionsApi {
                 return transactions;
             }
 
-            timestamp = page.data[page.data.length - 1]["timestamp"]["epoch"] - 1;
+            timestamp =
+                page.data[page.data.length - 1]["timestamp"]["epoch"] - 1;
         } catch (e) {
-            throw new FailedExportRequest('There was a problem fetching transactions.', transactions);
+            throw new FailedExportRequest(
+                "There was a problem fetching transactions.",
+                transactions
+            );
         }
 
         return await this.fetchAll(
