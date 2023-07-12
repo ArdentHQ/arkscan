@@ -119,7 +119,10 @@ const BlocksExport = ({
 
                     this.downloadCsv(blocks);
                 } catch (e) {
-                    if (e instanceof FailedExportRequest && e.partialRequestData.length > 0) {
+                    if (
+                        e instanceof FailedExportRequest &&
+                        e.partialRequestData.length > 0
+                    ) {
                         this.errorMessage = e.message;
 
                         this.partialDataUri = generateCsv(
