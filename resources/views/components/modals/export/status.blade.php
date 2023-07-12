@@ -60,7 +60,7 @@
 
                         <a
                             x-bind:href="partialDataUri"
-                            class="link inline"
+                            class="inline link"
                             @unless ($filename)
                                 x-bind:download="`${address}-partial.csv`"
                             @else
