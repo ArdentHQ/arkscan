@@ -23,6 +23,7 @@ final class BlockTable extends Component
 
     public function render(): View
     {
+        /** @var Block $lastBlock */
         $lastBlock = Block::withScope(OrderByTimestampScope::class)->first();
 
         $lastBlockHeight = $lastBlock->height->toNumber();
