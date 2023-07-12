@@ -16,7 +16,7 @@ final class BlockTable extends Component
 {
     use HasPagination;
 
-    const PER_PAGE = 15;
+    public const PER_PAGE = 15;
 
     /** @var mixed */
     protected $listeners = ['currencyChanged' => '$refresh'];
