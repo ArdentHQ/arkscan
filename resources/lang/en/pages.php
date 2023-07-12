@@ -92,6 +92,9 @@ return [
         'product-entity-registration'     => 'Registration (Product)',
         'product-entity-resignation'      => 'Resignation (Product)',
         'product-entity-update'           => 'Update (Product)',
+
+        'transaction_id'        => 'Transaction ID',
+        'transaction_id_copied' => 'Transaction ID Copied',
     ],
 
     'transactions'     => [
