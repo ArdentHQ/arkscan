@@ -16,7 +16,7 @@ final class BlockTable extends Component
 {
     use HasPagination;
 
-    const PER_PAGE = 15;
+    public const PER_PAGE = 15;
 
     /** @var mixed */
     protected $listeners = ['currencyChanged' => '$refresh'];
@@ -26,8 +26,8 @@ final class BlockTable extends Component
         $lastBlock = Block::withScope(OrderByTimestampScope::class)->first();
 
         $lastBlockHeight = $lastBlock->height;
-        $heightTo   = $lastBlockHeight->minus(self::PER_PAGE * ($this->page - 1))->toNumber();
-        $heightFrom = $lastBlockHeight->minus(self::PER_PAGE)->toNumber();
+        $heightTo        = $lastBlockHeight->minus(self::PER_PAGE * ($this->page - 1))->toNumber();
+        $heightFrom      = $lastBlockHeight->minus(self::PER_PAGE)->toNumber();
 
         $blocks = Block::withScope(OrderByTimestampScope::class)
             ->where('height', '<=', $heightTo)
