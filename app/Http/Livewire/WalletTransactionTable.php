@@ -45,7 +45,8 @@ final class WalletTransactionTable extends Component
 
     /** @var mixed */
     protected $listeners = [
-        'currencyChanged' => '$refresh',
+        'setTransactionsReady' => 'setIsReady',
+        'currencyChanged'      => '$refresh',
     ];
 
     public function __get(mixed $property): mixed
