@@ -6,7 +6,7 @@ use App\Facades\Network;
 use App\Facades\Settings;
 use App\Http\Livewire\BlockTable;
 use App\Models\Block;
-use App\Models\Scopes\OrderByHeightScope;
+use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
@@ -17,11 +17,20 @@ use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
 it('should list the first page of records', function () {
-    Block::factory(30)->create();
+    $this->travelTo(Carbon::parse('2023-07-12 00:00:00'));
+
+    foreach (range(0, 40) as $index) {
+        $this->travel(8)->seconds();
+
+        Block::factory()->create([
+            'timestamp' => Carbon::now()->timestamp,
+            'height'    => $index + 1,
+        ]);
+    }
 
     $component = Livewire::test(BlockTable::class);
 
-    foreach (ViewModelFactory::paginate(Block::withScope(OrderByHeightScope::class)->paginate())->items() as $block) {
+    foreach (ViewModelFactory::paginate(Block::withScope(OrderByTimestampScope::class)->paginate())->items() as $block) {
         $component->assertSee($block->id());
         $component->assertSee($block->timestamp());
         $component->assertSee($block->username());
