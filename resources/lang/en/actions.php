@@ -20,4 +20,5 @@ return [
     'back'            => 'Back',
     'retry'           => 'Retry',
     'close'           => 'Close',
+    'copy'            => 'Copy',
 ];
