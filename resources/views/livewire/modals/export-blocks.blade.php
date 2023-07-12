@@ -57,6 +57,7 @@
                             <x-modals.export.status
                                 :filename="$this->username"
                                 type="blocks"
+                                :partial-download-toast="trans('pages.wallet.export-blocks-modal.success_toast', ['username' => $this->username.'-partial'])"
                             />
                         </div>
                     </div>

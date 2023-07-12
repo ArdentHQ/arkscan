@@ -188,5 +188,11 @@ return [
         'warning_text'     => 'No :type matching the selected parameters could be found.',
         'date_from'        => 'Date From',
         'date_to'          => 'Date To',
+
+        'partial' => [
+            'click'       => 'Click',
+            'here'        => 'here',
+            'to_download' => 'to download a partial export.',
+        ],
     ],
 ];

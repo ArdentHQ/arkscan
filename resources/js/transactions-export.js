@@ -3,8 +3,10 @@ import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
 import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
 
 import {
+    FailedExportRequest,
     arktoshiToNumber,
     formatNumber,
+    generateCsv,
     getDateRange,
     getDelimiter,
     timeSinceEpoch,
@@ -143,6 +145,7 @@ const TransactionsExport = ({
 
         hasStartedExport: false,
         dataUri: null,
+        partialDataUri: null,
         hasFinishedExport: false,
         errorMessage: null,
         successMessage: null,
@@ -219,8 +222,24 @@ const TransactionsExport = ({
 
                     this.downloadCsv(transactions);
                 } catch (e) {
-                    this.errorMessage =
-                        "There was a problem fetching transactions.";
+                    if (
+                        e instanceof FailedExportRequest &&
+                        e.partialRequestData.length > 0
+                    ) {
+                        this.errorMessage = e.message;
+
+                        this.partialDataUri = generateCsv(
+                            e.partialRequestData,
+                            this.getColumns(),
+                            this.getColumnTitles(),
+                            columnMapping,
+                            this.delimiter,
+                            this.includeHeaderRow
+                        );
+                    } else {
+                        this.errorMessage =
+                            "There was a problem fetching transactions.";
+                    }
 
                     console.log(this.errorMessage, e);
                 }
@@ -228,42 +247,19 @@ const TransactionsExport = ({
         },
 
         downloadCsv(transactions) {
-            const csvRows = [];
-            if (this.includeHeaderRow) {
-                csvRows.push(this.getColumnTitles());
-            }
-
-            for (const transaction of transactions) {
-                const data = [];
-                for (const [column, enabled] of Object.entries(
-                    this.getColumns()
-                )) {
-                    if (!enabled) {
-                        continue;
-                    }
-
-                    if (columnMapping[column] !== undefined) {
-                        data.push(columnMapping[column](transaction));
-                    } else {
-                        data.push(transaction[column]);
-                    }
-                }
-
-                csvRows.push(data);
-            }
-
-            const csvContent =
-                "data:text/csv;charset=utf-8," +
-                csvRows
-                    .map((row) => row.join(getDelimiter(this.delimiter)))
-                    .join("\n");
-
             this.successMessage = `A total of ${formatNumber(
                 transactions.length
             )} transactions have been retrieved and are ready for download.`;
             this.hasFinishedExport = true;
 
-            this.dataUri = encodeURI(csvContent);
+            this.dataUri = generateCsv(
+                transactions,
+                this.getColumns(),
+                this.getColumnTitles(),
+                columnMapping,
+                this.delimiter,
+                this.includeHeaderRow
+            );
         },
 
         getDateRange() {
@@ -413,6 +409,7 @@ const TransactionsExport = ({
 
         resetStatus() {
             this.dataUri = null;
+            this.partialDataUri = null;
             this.errorMessage = null;
             this.successMessage = null;
             this.hasFinishedExport = false;

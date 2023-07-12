@@ -51,7 +51,9 @@
                         </div>
 
                         <div x-show="hasStartedExport">
-                            <x-modals.export.status />
+                            <x-modals.export.status
+                                :partial-download-toast="trans('pages.wallet.export-transactions-modal.success_toast', ['address' => $this->address.'-partial'])"
+                            />
                         </div>
                     </div>
                 </x-slot>
