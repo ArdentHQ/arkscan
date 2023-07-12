@@ -2,8 +2,10 @@ import * as dayjs from "dayjs";
 import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
 
 import {
+    FailedExportRequest,
     arktoshiToNumber,
     formatNumber,
+    generateCsv,
     getDateRange,
     getDelimiter,
     timeSinceEpoch,
@@ -64,6 +66,7 @@ const BlocksExport = ({
         includeHeaderRow: true,
 
         hasStartedExport: false,
+        partialDataUri: null,
         dataUri: null,
         hasFinishedExport: false,
         errorMessage: null,
@@ -116,7 +119,20 @@ const BlocksExport = ({
 
                     this.downloadCsv(blocks);
                 } catch (e) {
-                    this.errorMessage = "There was a problem fetching blocks.";
+                    if (e instanceof FailedExportRequest) {
+                        this.errorMessage = e.message;
+
+                        this.partialDataUri = generateCsv(
+                            e.partialRequestData,
+                            this.getColumns(),
+                            this.getColumnTitles(),
+                            columnMapping,
+                            this.delimiter,
+                            this.includeHeaderRow,
+                        );
+                    } else {
+                        this.errorMessage = "There was a problem fetching blocks.";
+                    }
 
                     console.log(this.errorMessage, e);
                 }
@@ -124,42 +140,19 @@ const BlocksExport = ({
         },
 
         downloadCsv(blocks) {
-            const csvRows = [];
-            if (this.includeHeaderRow) {
-                csvRows.push(this.getColumnTitles());
-            }
-
-            for (const block of blocks) {
-                const data = [];
-                for (const [column, enabled] of Object.entries(
-                    this.getColumns()
-                )) {
-                    if (!enabled) {
-                        continue;
-                    }
-
-                    if (columnMapping[column] !== undefined) {
-                        data.push(columnMapping[column](block));
-                    } else {
-                        data.push(block[column]);
-                    }
-                }
-
-                csvRows.push(data);
-            }
-
-            const csvContent =
-                "data:text/csv;charset=utf-8," +
-                csvRows
-                    .map((row) => row.join(getDelimiter(this.delimiter)))
-                    .join("\n");
-
             this.successMessage = `A total of ${formatNumber(
                 blocks.length
             )} blocks have been retrieved and are ready for download.`;
             this.hasFinishedExport = true;
 
-            this.dataUri = encodeURI(csvContent);
+            this.dataUri = generateCsv(
+                blocks,
+                this.getColumns(),
+                this.getColumnTitles(),
+                columnMapping,
+                this.delimiter,
+                this.includeHeaderRow,
+            );
         },
 
         getDateRange() {
@@ -347,6 +340,7 @@ const BlocksExport = ({
 
         resetStatus() {
             this.dataUri = null;
+            this.partialDataUri = null;
             this.errorMessage = null;
             this.successMessage = null;
             this.hasFinishedExport = false;

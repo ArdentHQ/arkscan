@@ -62,3 +62,46 @@ export const DateFilters = {
     },
     all: null,
 };
+
+export const generateCsv = (data, columns, columnTitles, columnMapping, delimiter, includeHeaderRow) => {
+    const csvRows = [];
+    if (includeHeaderRow) {
+        csvRows.push(columnTitles);
+    }
+
+    for (const entry of data) {
+        const data = [];
+        for (const [column, enabled] of Object.entries(columns)) {
+            if (!enabled) {
+                continue;
+            }
+
+            if (columnMapping[column] !== undefined) {
+                data.push(columnMapping[column](entry));
+            } else {
+                data.push(entry[column]);
+            }
+        }
+
+        csvRows.push(data);
+    }
+
+    return encodeURI(
+        "data:text/csv;charset=utf-8," +
+        csvRows
+            .map((row) => row.join(getDelimiter(delimiter)))
+            .join("\n")
+    );
+};
+
+export class FailedExportRequest extends Error {
+    constructor(message, partialRequestData) {
+        super(message);
+
+        this._partialRequestData = partialRequestData;
+    }
+
+    get partialRequestData() {
+        return this._partialRequestData;
+    }
+}
