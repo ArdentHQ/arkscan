@@ -16,7 +16,7 @@
     ][$breakpoint] ?? 'md:flex-row md:items-center md:space-y-0 md:space-x-3';
 
     $labelBreakpointClass = [
-        'sm' => 'sm:px-4 sm:py-[14.5px] sm:bg-theme-secondary-200 sm:dark:bg-black sm:text-lg sm:!leading-[21px]',
+        'sm' => 'sm:px-4 sm:py-[14.5px] sm:bg-theme-secondary-200 sm:dark:bg-black sm:text-base md:text-lg sm:!leading-[21px]',
         'md' => 'md:px-4 md:py-[14.5px] md:bg-theme-secondary-200 md:dark:bg-black md:text-lg md:!leading-[21px]',
     ][$breakpoint] ?? 'md:px-4 md:py-[14.5px] md:bg-theme-secondary-200 md:dark:bg-black md:text-lg md:!leading-[21px]';
 @endphp
