@@ -1,6 +1,9 @@
 @props(['transaction'])
 
-<x-page-headers.container :label="trans('pages.transaction.transaction_id')">
+<x-page-headers.container
+    :label="trans('pages.transaction.transaction_id')"
+    breakpoint="sm"
+>
     <div class="min-w-0">
         <x-truncate-dynamic>{{ $transaction->id() }}</x-truncate-dynamic>
     </div>
@@ -13,6 +16,10 @@
             :tooltip-content="trans('pages.transaction.transaction_id_copied')"
             with-checkmarks
             checkmarks-class="group-hover:text-white text-theme-primary-900 dark:text-theme-secondary-200"
-        />
+        >
+            <div class="sm:hidden ml-2">
+                @lang('actions.copy')
+            </div>
+        </x-ark-clipboard>
     </x-slot>
 </x-page-headers.container>
