@@ -17,7 +17,7 @@
             with-checkmarks
             checkmarks-class="group-hover:text-white text-theme-primary-900 dark:text-theme-secondary-200"
         >
-            <div class="sm:hidden ml-2">
+            <div class="ml-2 sm:hidden">
                 @lang('actions.copy')
             </div>
         </x-ark-clipboard>
