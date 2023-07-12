@@ -40,7 +40,7 @@
                 {{ $label }}
             </div>
 
-            <div class="leading-5 text-theme-secondary-900 md:leading-[21px] dark:text-theme-secondary-200 min-w-0">
+            <div class="min-w-0 leading-5 text-theme-secondary-900 md:leading-[21px] dark:text-theme-secondary-200">
                 {{ $slot }}
             </div>
         </div>
