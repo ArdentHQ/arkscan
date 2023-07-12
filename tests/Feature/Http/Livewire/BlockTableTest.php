@@ -113,8 +113,8 @@ it('should handle a lot of blocks', function () {
 
         Block::factory()->create([
             'generator_public_key' => $wallet->public_key,
-            'timestamp' => Carbon::now()->timestamp,
-            'height'    => $index,
+            'timestamp'            => Carbon::now()->timestamp,
+            'height'               => $index,
         ]);
     }
 

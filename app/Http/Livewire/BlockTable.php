@@ -26,8 +26,8 @@ final class BlockTable extends Component
         $lastBlock = Block::withScope(OrderByTimestampScope::class)->first();
 
         $lastBlockHeight = $lastBlock->height->toNumber();
-        $heightTo   = $lastBlockHeight - (self::PER_PAGE * ($this->page - 1));
-        $heightFrom = $heightTo - self::PER_PAGE;
+        $heightTo        = $lastBlockHeight - (self::PER_PAGE * ($this->page - 1));
+        $heightFrom      = $heightTo - self::PER_PAGE;
 
         $blocks = Block::withScope(OrderByTimestampScope::class)
             ->where('height', '<=', $heightTo)
