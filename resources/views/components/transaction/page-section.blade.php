@@ -4,7 +4,7 @@
 ])
 
 <div {{ $attributes->class('flex sm:space-x-3 px-6 md:px-10 md:mx-auto md:max-w-7xl group') }}>
-    <div class="hidden flex-col ml-3 sm:flex w-[26px]">
+    <div class="hidden flex-col ml-3 sm:flex w-[1.625rem]">
         <div class="hidden -mt-2 border-l-2 sm:block group-first:sm:block w-full border-theme-secondary-300 h-[9px]"></div>
 
         <div class="hidden rounded-bl-xl border-b-2 border-l-2 sm:block w-full border-theme-secondary-300 min-h-[12px]"></div>
