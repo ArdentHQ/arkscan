@@ -1,4 +1,5 @@
 @props([
+    'partialDownloadToast',
     'filename' => null,
     'type'     => 'transactions',
 ])
@@ -48,7 +49,31 @@
                 :title="trans('general.error')"
                 type="error"
             >
-                <span x-text="errorMessage"></span>
+                <div class="flex flex-col space-y-2">
+                    <div x-text="errorMessage"></div>
+
+                    <div
+                        class="flex space-x-1"
+                        x-show="partialDataUri !== null"
+                    >
+                        <span>@lang('general.export.partial.click')</span>
+
+                        <a
+                            x-bind:href="partialDataUri"
+                            class="inline link"
+                            @unless ($filename)
+                                x-bind:download="`${address}-partial.csv`"
+                            @else
+                                download="{{ $filename }}-partial.csv"
+                            @endunless
+                            x-on:click="Livewire.emit('toastMessage', ['{{ $partialDownloadToast }}', 'success'])"
+                        >
+                            @lang('general.export.partial.here')
+                        </a>
+
+                        <span>@lang('general.export.partial.to_download')</span>
+                    </div>
+                </div>
             </x-ark-alert>
         </div>
 
