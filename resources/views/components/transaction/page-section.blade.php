@@ -5,11 +5,11 @@
 
 <div {{ $attributes->class('flex sm:space-x-3 px-6 md:px-10 md:mx-auto md:max-w-7xl group') }}>
     <div class="hidden flex-col ml-3 sm:flex w-[26px]">
-        <div class="hidden -mt-2 border-l-2 sm:block group-first:sm:block w-[26px] border-theme-secondary-300 h-[9px]"></div>
+        <div class="hidden -mt-2 border-l-2 sm:block group-first:sm:block w-full border-theme-secondary-300 h-[9px]"></div>
 
-        <div class="hidden rounded-bl-xl border-b-2 border-l-2 sm:block w-[26px] border-theme-secondary-300 min-h-[12px]"></div>
+        <div class="hidden rounded-bl-xl border-b-2 border-l-2 sm:block w-full border-theme-secondary-300 min-h-[12px]"></div>
 
-        <div class="hidden flex-1 border-l-2 sm:block group-last:hidden w-[26px] border-theme-secondary-300 min-h-[12px]"></div>
+        <div class="hidden flex-1 border-l-2 sm:block group-last:hidden w-full border-theme-secondary-300 min-h-[12px]"></div>
     </div>
 
     <div class="flex flex-col flex-1 space-y-3 font-semibold sm:pb-4 sm:space-y-2">
