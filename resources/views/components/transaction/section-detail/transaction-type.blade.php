@@ -54,6 +54,14 @@
             $transaction->multiSignatureMinimum(),
             $transaction->multiSignatureParticipantCount(),
         ]);
+    } elseif ($transaction->isIpfs()) {
+        $items[trans('pages.transaction.header.hash')] = [
+            'component' => '<x-transaction.section-detail.ipfs-link :hash="$hash" />',
+
+            'data' => [
+                'hash' => $transaction->ipfsHash(),
+            ],
+        ];
     }
 @endphp
 

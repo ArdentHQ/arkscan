@@ -107,6 +107,7 @@ return [
             'new_delegate' => 'New Delegate',
             'address'      => 'Address',
             'signatures'   => 'Signatures',
+            'hash'         => 'Hash',
         ],
     ],
 
