@@ -3,7 +3,7 @@
     'items',
 ])
 
-<div {{ $attributes->class('flex sm:space-x-3 px-6 md:px-10 md:mx-auto md:max-w-7xl group dark:text-theme-secondary-200') }}>
+<div {{ $attributes->class('flex sm:space-x-3 px-6 md:px-10 md:mx-auto md:max-w-7xl group dark:text-theme-dark-200') }}>
     <div class="hidden flex-col ml-3 sm:flex w-[1.625rem]">
         <div class="hidden -mt-2 w-full border-l-2 sm:block group-first:sm:block border-theme-secondary-300 h-[9px] dark:border-theme-dark-700"></div>
 
