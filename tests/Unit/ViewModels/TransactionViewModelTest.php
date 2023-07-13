@@ -978,20 +978,6 @@ it('should fail to get the multi signature wallet if the transaction is not a mu
     expect($this->subject->multiSignatureWallet())->toBeEmpty();
 });
 
-it('should get the type component', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
-
-    expect($this->subject->typeComponent())->toBe('transaction.details.transfer');
-
-    $this->subject = new TransactionViewModel(Transaction::factory()->timelock()->create());
-
-    expect($this->subject->typeComponent())->toBe('transaction.details.fallback');
-});
-
-it('should get the extra component', function () {
-    expect($this->subject->extensionComponent())->toBeString();
-});
-
 it('should determine if the transaction has extra data', function (bool $outcome, string $type) {
     $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());
 

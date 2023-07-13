@@ -17,16 +17,6 @@ trait InteractsWithTypeData
         return trans('general.transaction.types.'.$this->iconType());
     }
 
-    public function typeComponent(): string
-    {
-        return (new TransactionTypeComponent($this->transaction))->details();
-    }
-
-    public function extensionComponent(): string
-    {
-        return (new TransactionTypeComponent($this->transaction))->extension();
-    }
-
     public function isLegacyType(): bool
     {
         if ($this->isLegacyBusinessRegistration()) {
