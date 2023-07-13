@@ -17,11 +17,6 @@ trait InteractsWithTypeData
         return trans('general.transaction.types.'.$this->iconType());
     }
 
-    public function headerComponent(): string
-    {
-        return (new TransactionTypeComponent($this->transaction))->header();
-    }
-
     public function typeComponent(): string
     {
         return (new TransactionTypeComponent($this->transaction))->details();

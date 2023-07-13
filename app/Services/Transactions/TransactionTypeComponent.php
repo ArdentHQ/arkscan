@@ -16,11 +16,6 @@ final class TransactionTypeComponent
         $this->slug = new TransactionTypeSlug($transaction);
     }
 
-    public function header(): string
-    {
-        return $this->getView('page-headers', 'transaction');
-    }
-
     public function details(): string
     {
         return $this->getView('transaction', 'details');
