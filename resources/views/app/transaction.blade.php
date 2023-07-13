@@ -12,6 +12,8 @@
             $width = 'w-[87px]';
             if ($transaction->isVoteCombination()) {
                 $width = 'w-[109px]';
+            } elseif ($transaction->isLegacy()) {
+                $width = 'w-[110px]';
             }
         @endphp
 

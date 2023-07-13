@@ -108,6 +108,7 @@ return [
             'address'      => 'Address',
             'signatures'   => 'Signatures',
             'hash'         => 'Hash',
+            'sub_category' => 'Sub-Category',
         ],
     ],
 

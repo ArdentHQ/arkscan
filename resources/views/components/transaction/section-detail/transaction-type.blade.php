@@ -64,6 +64,8 @@
         ];
     } elseif ($transaction->isDelegateRegistration() || $transaction->isDelegateResignation()) {
         $items[trans('pages.transaction.header.delegate')] = $transaction->delegateUsername();
+    } elseif ($transaction->isLegacy()) {
+        $items[trans('pages.transaction.header.sub_category')] = $transaction->typeLabel();
     }
 @endphp
 
