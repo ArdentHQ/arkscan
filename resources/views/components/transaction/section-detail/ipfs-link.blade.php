@@ -2,9 +2,9 @@
     'hash',
 ])
 
-<span class="flex items-center">
+<span class="inline-flex items-center">
     <x-ark-external-link
-        class="flex space-x-2 items-end"
+        class="flex space-x-2 items-end link"
         :url="trans('urls.ipfs', ['hash' => $hash])"
     >
         <x-slot name="text">
