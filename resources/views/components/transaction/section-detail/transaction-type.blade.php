@@ -62,6 +62,8 @@
                 'hash' => $transaction->ipfsHash(),
             ],
         ];
+    } elseif ($transaction->isDelegateRegistration() || $transaction->isDelegateResignation()) {
+        $items[trans('pages.transaction.header.delegate')] = $transaction->delegateUsername();
     }
 @endphp
 
