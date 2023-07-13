@@ -121,6 +121,11 @@ it('should get the block ID', function () {
     expect($this->subject->blockId())->toBe($this->block->id);
 });
 
+it('should get the block height', function () {
+    expect($this->subject->blockHeight())->toBeInt();
+    expect($this->subject->blockHeight())->toBe($this->block->height->toNumber());
+});
+
 it('should get the fee', function () {
     expect($this->subject->fee())->toBeFloat();
 
