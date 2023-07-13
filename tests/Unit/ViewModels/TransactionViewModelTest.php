@@ -121,6 +121,11 @@ it('should get the block ID', function () {
     expect($this->subject->blockId())->toBe($this->block->id);
 });
 
+it('should get the block height', function () {
+    expect($this->subject->blockHeight())->toBeInt();
+    expect($this->subject->blockHeight())->toBe($this->block->height->toNumber());
+});
+
 it('should get the fee', function () {
     expect($this->subject->fee())->toBeFloat();
 
@@ -976,20 +981,6 @@ it('should fail to get the multi signature wallet if the transaction is not a mu
     $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
 
     expect($this->subject->multiSignatureWallet())->toBeEmpty();
-});
-
-it('should get the type component', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
-
-    expect($this->subject->typeComponent())->toBe('transaction.details.transfer');
-
-    $this->subject = new TransactionViewModel(Transaction::factory()->timelock()->create());
-
-    expect($this->subject->typeComponent())->toBe('transaction.details.fallback');
-});
-
-it('should get the extra component', function () {
-    expect($this->subject->extensionComponent())->toBeString();
 });
 
 it('should determine if the transaction has extra data', function (bool $outcome, string $type) {

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use App\Services\Transactions\TransactionTypeComponent;
-
 trait InteractsWithTypeData
 {
     public function typeLabel(): string
@@ -15,16 +13,6 @@ trait InteractsWithTypeData
         }
 
         return trans('general.transaction.types.'.$this->iconType());
-    }
-
-    public function typeComponent(): string
-    {
-        return (new TransactionTypeComponent($this->transaction))->details();
-    }
-
-    public function extensionComponent(): string
-    {
-        return (new TransactionTypeComponent($this->transaction))->extension();
     }
 
     public function isLegacyType(): bool
