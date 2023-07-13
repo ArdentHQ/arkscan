@@ -19,7 +19,7 @@
                 {{ $title }}
             </div>
 
-            <div class="flex space-x-4 text-sm px-3 sm:py-4 sm:px-6 sm:text-base sm:leading-5 sm:rounded-xl sm:border leading-[17px] sm:border-theme-secondary-300 dark:border-theme-dark-700">
+            <div class="flex px-3 space-x-4 text-sm sm:py-4 sm:px-6 sm:text-base sm:leading-5 sm:rounded-xl sm:border leading-[17px] sm:border-theme-secondary-300 dark:border-theme-dark-700">
                 @if (is_array($items))
                     <div @class([
                         'flex flex-col space-y-3 whitespace-nowrap',

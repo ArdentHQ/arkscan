@@ -4,7 +4,7 @@
 
 <span class="inline-flex items-center">
     <x-ark-external-link
-        class="flex space-x-2 items-end link"
+        class="flex items-end space-x-2 link"
         :url="trans('urls.ipfs', ['hash' => $hash])"
     >
         <x-slot name="text">
