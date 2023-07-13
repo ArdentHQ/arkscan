@@ -4,7 +4,7 @@
 
 <span>
     <a
-        href="{{ route('wallet', $delegate->address())}}"
+        href="{{ route('wallet', $delegate->address()) }}"
         class="link"
     >
         {{ $delegate->username() }}
