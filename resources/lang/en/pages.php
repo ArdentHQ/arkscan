@@ -105,6 +105,8 @@ return [
             'delegate'     => 'Delegate',
             'old_delegate' => 'Old Delegate',
             'new_delegate' => 'New Delegate',
+            'address'      => 'Address',
+            'signatures'   => 'Signatures',
         ],
     ],
 

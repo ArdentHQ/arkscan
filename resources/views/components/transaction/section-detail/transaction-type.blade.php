@@ -41,6 +41,19 @@
                 'delegate' => $transaction->isVote() ? $transaction->voted() : $transaction->unvoted(),
             ],
         ];
+    } elseif ($transaction->isMultisignature()) {
+        $items[trans('pages.transaction.header.address')] = [
+            'component' => '<x-transaction.section-detail.address :address="$address" />',
+
+            'data' => [
+                'address' => $transaction->multiSignatureWallet()->address(),
+            ],
+        ];
+
+        $items[trans('pages.transaction.header.signatures')] = trans('general.x_of_y', [
+            $transaction->multiSignatureMinimum(),
+            $transaction->multiSignatureParticipantCount(),
+        ]);
     }
 @endphp
 

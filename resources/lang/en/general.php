@@ -41,6 +41,7 @@ return [
     'error'                   => 'Error',
     'warning'                 => 'Warning',
     'custom'                  => 'Custom',
+    'x_of_y'                  => ':0 of :1',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
