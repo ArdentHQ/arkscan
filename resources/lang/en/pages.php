@@ -95,6 +95,13 @@ return [
 
         'transaction_id'        => 'Transaction ID',
         'transaction_id_copied' => 'Transaction ID Copied',
+        'transaction_details'   => 'Transaction Details',
+
+        'header' => [
+            'timestamp' => 'Timestamp',
+            'block'     => 'Block',
+            'nonce'     => 'Nonce',
+        ],
     ],
 
     'transactions'     => [

@@ -8,12 +8,24 @@
     @section('content')
         <x-page-headers.transaction :transaction="$transaction" />
 
-        <x-details.grid>
-            <x-dynamic-component :component="$transaction->typeComponent()" :transaction="$transaction" />
-        </x-details.grid>
+        <x-transaction.page-section
+            class="sm:-mt-2"
+            :title="trans('pages.transaction.transaction_details')"
+            :items="[
+                trans('pages.transaction.header.timestamp') => $transaction->timestamp(),
+                trans('pages.transaction.header.block')     => [
+                    'component' => '<x-transaction.section-detail.block-height-link
+                        :id=\'$id\'
+                        :height=\'$height\'
+                    />',
 
-        @if($transaction->hasExtraData())
-            <x-dynamic-component :component="$transaction->extensionComponent()" :transaction="$transaction" />
-        @endif
+                    'data' => [
+                        'id'     => $transaction->blockId(),
+                        'height' => $transaction->blockHeight(),
+                    ],
+                ],
+                trans('pages.transaction.header.nonce')     => $transaction->nonce(),
+            ]"
+        />
     @endsection
 @endcomponent
