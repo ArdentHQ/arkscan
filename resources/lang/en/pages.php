@@ -101,6 +101,7 @@ return [
             'timestamp' => 'Timestamp',
             'block'     => 'Block',
             'nonce'     => 'Nonce',
+            'category'  => 'Category',
         ],
     ],
 
