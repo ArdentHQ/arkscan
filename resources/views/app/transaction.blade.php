@@ -8,8 +8,16 @@
     @section('content')
         <x-page-headers.transaction :transaction="$transaction" />
 
+        @php
+            $width = 'w-[87px]';
+            if ($transaction->isVoteCombination()) {
+                $width = 'w-[109px]';
+            }
+        @endphp
+
         <div>
             <x-transaction.page-section
+                :width="$width"
                 :title="trans('pages.transaction.transaction_details')"
                 :items="[
                     trans('pages.transaction.header.timestamp') => $transaction->timestamp(),
@@ -28,20 +36,9 @@
                 ]"
             />
 
-            <x-transaction.page-section
-                :title="trans('pages.transaction.transaction_type')"
-                :items="[
-                    trans('pages.transaction.header.category') => [
-                        'component' => '<x-general.encapsulated.transaction-type-badge
-                            :transaction=\'$transaction\'
-                            class=\'inline-block\'
-                        />',
-
-                        'data' => [
-                            'transaction' => $transaction,
-                        ],
-                    ],
-                ]"
+            <x-transaction.section-detail.transaction-type
+                :width="$width"
+                :transaction="$transaction"
             />
         </div>
     @endsection

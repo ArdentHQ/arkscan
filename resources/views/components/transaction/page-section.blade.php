@@ -1,6 +1,7 @@
 @props([
     'title',
     'items',
+    'width' => 'w-[87px]',
 ])
 
 <div {{ $attributes->class('px-3 sm:px-6 md:px-10 md:mx-auto md:max-w-7xl group last:mb-8 dark:text-theme-dark-200') }}>
@@ -20,7 +21,10 @@
 
             <div class="flex space-x-4 text-sm sm:py-4 sm:px-6 sm:text-base sm:leading-5 sm:rounded-xl sm:border leading-[17px] sm:border-theme-secondary-300 dark:border-theme-dark-700">
                 @if (is_array($items))
-                    <div class="flex flex-col space-y-3 whitespace-nowrap w-[87px]">
+                    <div @class([
+                        'flex flex-col space-y-3 whitespace-nowrap',
+                        $width,
+                    ])>
                         @foreach (array_keys($items) as $dataTitle)
                             <span>{{ $dataTitle }}</span>
                         @endforeach
