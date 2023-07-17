@@ -96,12 +96,19 @@ return [
         'transaction_id'        => 'Transaction ID',
         'transaction_id_copied' => 'Transaction ID Copied',
         'transaction_details'   => 'Transaction Details',
+        'addressing'            => 'Addressing',
 
         'header' => [
             'timestamp' => 'Timestamp',
             'block'     => 'Block',
             'nonce'     => 'Nonce',
             'category'  => 'Category',
+            'from'      => 'From',
+            'to'        => 'To',
+        ],
+
+        'value' => [
+            'multiple_x' => 'Multiple (<a href="#recipient-list" class="link">:count</a>)'
         ],
     ],
 
