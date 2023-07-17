@@ -42,7 +42,7 @@
                                 </span>
                             @elseif (is_array($dataContent) && array_key_exists('content', $dataContent))
                                 <span @class($dataContent['class'] ?? null)>
-                                    {{ $dataContent }}
+                                    {{ $dataContent['content'] }}
                                 </span>
                             @elseif (array_key_exists('component', $dataContent))
                                 <span @class($dataContent['class'] ?? null)>
