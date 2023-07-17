@@ -24,7 +24,7 @@
 >
     <x-slot name="text">
         @if($transaction->entityHash())
-            <x-ark-external-link url="https://cloudflare-ipfs.com/ipfs/{{ $transaction->entityHash() }}">
+            <x-ark-external-link :url="trans('urls.ipfs', ['hash' => $transaction->entityHash()])">
                 <x-slot name="text">
                     <x-truncate-middle>
                         {{ $transaction->entityHash() }}

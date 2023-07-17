@@ -1,7 +1,4 @@
-@props([
-    'title',
-    'items',
-])
+@props(['title'])
 
 <div {{ $attributes->class('px-3 sm:px-6 md:px-10 md:mx-auto md:max-w-7xl group last:mb-8 dark:text-theme-dark-200') }}>
     <div class="flex mt-6 sm:mt-0 sm:space-x-3 group-first:mt-0 group-first:sm:-mt-2">
@@ -18,34 +15,10 @@
                 {{ $title }}
             </div>
 
-            <div class="flex space-x-4 text-sm sm:py-4 sm:px-6 sm:text-base sm:leading-5 sm:rounded-xl sm:border leading-[17px] sm:border-theme-secondary-300 dark:border-theme-dark-700">
-                @if (is_array($items))
-                    <div class="flex flex-col space-y-3 whitespace-nowrap w-[87px]">
-                        @foreach (array_keys($items) as $dataTitle)
-                            <span>{{ $dataTitle }}</span>
-                        @endforeach
-                    </div>
-
-                    <div class="flex flex-col flex-1 space-y-3 text-right sm:text-left text-theme-secondary-900 dark:text-theme-dark-50">
-                        @foreach ($items as $dataContent)
-                            @if (empty($dataContent))
-                                <span class="font-base">
-                                    @lang('general.na')
-                                </span>
-                            @elseif (! is_array($dataContent))
-                                <span>
-                                    {{ $dataContent }}
-                                </span>
-                            @elseif (array_key_exists('component', $dataContent))
-                                <span>
-                                    {!! Blade::render($dataContent['component'], $dataContent['data'] ?? []) !!}
-                                </span>
-                            @endif
-                        @endforeach
-                    </div>
-                @else
-                    <span>{{ $items }}</span>
-                @endif
+            <div class="flex px-3 space-x-4 text-sm sm:py-4 sm:px-6 sm:text-base sm:leading-5 sm:rounded-xl sm:border leading-[17px] sm:border-theme-secondary-300 dark:border-theme-dark-700">
+                <div class="flex flex-col flex-1 space-y-3 whitespace-nowrap">
+                    {{ $slot }}
+                </div>
             </div>
         </div>
     </div>

@@ -98,10 +98,17 @@ return [
         'transaction_details'   => 'Transaction Details',
 
         'header' => [
-            'timestamp' => 'Timestamp',
-            'block'     => 'Block',
-            'nonce'     => 'Nonce',
-            'category'  => 'Category',
+            'timestamp'    => 'Timestamp',
+            'block'        => 'Block',
+            'nonce'        => 'Nonce',
+            'category'     => 'Category',
+            'delegate'     => 'Delegate',
+            'old_delegate' => 'Old Delegate',
+            'new_delegate' => 'New Delegate',
+            'address'      => 'Address',
+            'signatures'   => 'Signatures',
+            'hash'         => 'Hash',
+            'sub_category' => 'Sub-Category',
         ],
     ],
 

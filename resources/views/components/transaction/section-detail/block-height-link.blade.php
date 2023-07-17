@@ -5,7 +5,7 @@
 
 <span>
     <a
-        href="{{ route('block', $id)}}"
+        href="{{ route('block', $id) }}"
         class="link"
     >
         <x-number>{{ $height }}</x-number>

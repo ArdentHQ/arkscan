@@ -1225,3 +1225,54 @@ it('should get the minimum for legacy multi signature transactions', function ()
 
     expect($this->subject->multiSignatureMinimum())->toBe(3);
 });
+
+it('should determine a non-legacy transaction', function ($transaction) {
+    $transaction = new TransactionViewModel(Transaction::factory()->{$transaction}()->create());
+
+    expect($transaction->isLegacy())->toBeFalse();
+})->with([
+    'transfer',
+    'delegateRegistration',
+    'delegateResignation',
+    'multisignature',
+    'ipfs',
+    'multiPayment',
+    'voteCombination',
+    'vote',
+    'unvote',
+    'secondSignature',
+]);
+
+it('should determine a legacy transaction', function ($transaction) {
+    $transaction = new TransactionViewModel(Transaction::factory()->{$transaction}()->create());
+
+    expect($transaction->isLegacy())->toBeTrue();
+})->with([
+    'timelock',
+    'timelockClaim',
+    'timelockRefund',
+    'entityRegistration',
+    'entityResignation',
+    'entityUpdate',
+    'businessEntityRegistration',
+    'businessEntityResignation',
+    'businessEntityUpdate',
+    'productEntityRegistration',
+    'productEntityResignation',
+    'productEntityUpdate',
+    'pluginEntityRegistration',
+    'pluginEntityResignation',
+    'pluginEntityUpdate',
+    'moduleEntityRegistration',
+    'moduleEntityResignation',
+    'moduleEntityUpdate',
+    'delegateEntityRegistration',
+    'delegateEntityResignation',
+    'delegateEntityUpdate',
+    'legacyBusinessRegistration',
+    'legacyBusinessResignation',
+    'legacyBusinessUpdate',
+    'legacyBridgechainRegistration',
+    'legacyBridgechainResignation',
+    'legacyBridgechainUpdate',
+]);
