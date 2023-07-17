@@ -43,6 +43,10 @@
                     ],
                 ]"
             />
+
+            <x-transaction.section-detail.addressing-section
+                :transaction="$transaction"
+            />
         </div>
     @endsection
 @endcomponent
