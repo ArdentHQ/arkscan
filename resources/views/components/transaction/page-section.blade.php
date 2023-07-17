@@ -40,8 +40,12 @@
                                 <span>
                                     {{ $dataContent }}
                                 </span>
+                            @elseif (is_array($dataContent) && array_key_exists('content', $dataContent))
+                                <span @class($dataContent['class'] ?? null)>
+                                    {{ $dataContent }}
+                                </span>
                             @elseif (array_key_exists('component', $dataContent))
-                                <span>
+                                <span @class($dataContent['class'] ?? null)>
                                     {!! Blade::render($dataContent['component'], $dataContent['data'] ?? []) !!}
                                 </span>
                             @endif

@@ -19,6 +19,7 @@
 
     if ($transaction->isVoteCombination()) {
         $items[trans('pages.transaction.header.old_delegate')] = [
+            'class' => '!mt-2',
             'component' => '<x-transaction.section-detail.delegate :delegate="$delegate" />',
 
             'data' => [
@@ -35,6 +36,7 @@
         ];
     } elseif ($transaction->isVote() || $transaction->isUnvote()) {
         $items[trans('pages.transaction.header.delegate')] = [
+            'class' => '!mt-2',
             'component' => '<x-transaction.section-detail.delegate :delegate="$delegate" />',
 
             'data' => [
@@ -43,6 +45,7 @@
         ];
     } elseif ($transaction->isMultisignature()) {
         $items[trans('pages.transaction.header.address')] = [
+            'class' => '!mt-2',
             'component' => '<x-transaction.section-detail.address :address="$address" />',
 
             'data' => [
@@ -56,6 +59,7 @@
         ]);
     } elseif ($transaction->isIpfs()) {
         $items[trans('pages.transaction.header.hash')] = [
+            'class' => '!mt-2',
             'component' => '<x-transaction.section-detail.ipfs-link :hash="$hash" />',
 
             'data' => [
@@ -63,9 +67,15 @@
             ],
         ];
     } elseif ($transaction->isDelegateRegistration() || $transaction->isDelegateResignation()) {
-        $items[trans('pages.transaction.header.delegate')] = $transaction->delegateUsername();
+        $items[trans('pages.transaction.header.delegate')] = [
+            'content' => $transaction->delegateUsername(),
+            'class' => '!mt-2',
+        ];
     } elseif ($transaction->isLegacy()) {
-        $items[trans('pages.transaction.header.sub_category')] = $transaction->typeLabel();
+        $items[trans('pages.transaction.header.sub_category')] = [
+            'content' => $transaction->typeLabel(),
+            'class' => '!mt-2',
+        ];
     }
 @endphp
 
