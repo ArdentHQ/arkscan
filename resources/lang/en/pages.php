@@ -108,7 +108,7 @@ return [
         ],
 
         'value' => [
-            'multiple_x' => 'Multiple (<a href="#recipient-list" class="link">:count</a>)'
+            'multiple_x' => 'Multiple (<a href="#recipient-list" class="link">:count</a>)',
         ],
     ],
 
