@@ -16,7 +16,7 @@
             </div>
 
             <div class="flex px-3 space-x-4 text-sm sm:py-4 sm:px-6 sm:text-base sm:leading-5 sm:rounded-xl sm:border leading-[17px] sm:border-theme-secondary-300 dark:border-theme-dark-700">
-                <div class="flex flex-1 flex-col space-y-3 whitespace-nowrap">
+                <div class="flex flex-col flex-1 space-y-3 whitespace-nowrap">
                     {{ $slot }}
                 </div>
             </div>
