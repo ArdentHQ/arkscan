@@ -9,44 +9,33 @@
         <x-page-headers.transaction :transaction="$transaction" />
 
         <div>
-            <x-transaction.page-section
-                :title="trans('pages.transaction.transaction_details')"
-                :items="[
-                    trans('pages.transaction.header.timestamp') => $transaction->timestamp(),
-                    trans('pages.transaction.header.block')     => [
-                        'component' => '<x-transaction.section-detail.block-height-link
-                            :id=\'$id\'
-                            :height=\'$height\'
-                        />',
+            <x-transaction.page-section :title="trans('pages.transaction.transaction_details')">
+                <x-transaction.section-detail.row
+                    :title="trans('pages.transaction.header.timestamp')"
+                    :value="$transaction->timestamp()"
+                    :transaction="$transaction"
+                />
 
-                        'data' => [
-                            'id'     => $transaction->blockId(),
-                            'height' => $transaction->blockHeight(),
-                        ],
-                    ],
-                    trans('pages.transaction.header.nonce')     => $transaction->nonce(),
-                ]"
-            />
+                <x-transaction.section-detail.row
+                    :title="trans('pages.transaction.header.block')"
+                    :transaction="$transaction"
+                >
+                    <x-transaction.section-detail.block-height-link
+                        :id="$transaction->blockId()"
+                        :height="$transaction->blockHeight()"
+                    />
+                </x-transaction.section-detail.row>
 
-            <x-transaction.page-section
-                :title="trans('pages.transaction.transaction_type')"
-                :items="[
-                    trans('pages.transaction.header.category') => [
-                        'component' => '<x-general.encapsulated.transaction-type-badge
-                            :transaction=\'$transaction\'
-                            class=\'inline-block\'
-                        />',
+                <x-transaction.section-detail.row
+                    :title="trans('pages.transaction.header.nonce')"
+                    :value="$transaction->nonce()"
+                    :transaction="$transaction"
+                />
+            </x-transaction.page-section>
 
-                        'data' => [
-                            'transaction' => $transaction,
-                        ],
-                    ],
-                ]"
-            />
+            <x-transaction.section-detail.transaction-type :transaction="$transaction" />
 
-            <x-transaction.section-detail.addressing-section
-                :transaction="$transaction"
-            />
+            <x-transaction.section-detail.addressing-section :transaction="$transaction" />
         </div>
     @endsection
 @endcomponent

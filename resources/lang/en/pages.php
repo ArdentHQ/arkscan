@@ -99,12 +99,19 @@ return [
         'addressing'            => 'Addressing',
 
         'header' => [
-            'timestamp' => 'Timestamp',
-            'block'     => 'Block',
-            'nonce'     => 'Nonce',
-            'category'  => 'Category',
-            'from'      => 'From',
-            'to'        => 'To',
+            'timestamp'    => 'Timestamp',
+            'block'        => 'Block',
+            'nonce'        => 'Nonce',
+            'category'     => 'Category',
+            'delegate'     => 'Delegate',
+            'old_delegate' => 'Old Delegate',
+            'new_delegate' => 'New Delegate',
+            'address'      => 'Address',
+            'signatures'   => 'Signatures',
+            'hash'         => 'Hash',
+            'sub_category' => 'Sub-Category',
+            'from'         => 'From',
+            'to'           => 'To',
         ],
 
         'value' => [
