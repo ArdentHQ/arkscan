@@ -5,7 +5,7 @@
 
 <x-tables.mobile.includes.encapsulated
     wire:key="{{ Helpers::generateId('transaction-recipients-mobile') }}"
-    class="sm:hidden px-3"
+    class="px-3 sm:hidden"
 >
     @foreach ($transaction->payments(true) as $payment)
         <x-tables.rows.mobile>

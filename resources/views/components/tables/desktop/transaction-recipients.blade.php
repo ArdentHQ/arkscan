@@ -5,7 +5,7 @@
 
 <x-tables.encapsulated-table
     wire:key="{{ Helpers::generateId('transaction-recipients') }}"
-    class="hidden w-full sm:block rounded-b-xl"
+    class="hidden w-full rounded-b-xl sm:block"
     sticky
 >
     <thead>
