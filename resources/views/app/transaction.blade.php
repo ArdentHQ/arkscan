@@ -28,9 +28,10 @@
 
                 <x-transaction.section-detail.row
                     :title="trans('pages.transaction.header.nonce')"
-                    :value="$transaction->nonce()"
                     :transaction="$transaction"
-                />
+                >
+                    <x-number>{{ $transaction->nonce() }}</x-number>
+                </x-transaction.section-detail.row>
             </x-transaction.page-section>
 
             <x-transaction.section-detail.transaction-type :transaction="$transaction" />
