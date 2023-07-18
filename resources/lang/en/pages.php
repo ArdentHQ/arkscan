@@ -97,6 +97,7 @@ return [
         'transaction_id_copied' => 'Transaction ID Copied',
         'transaction_details'   => 'Transaction Details',
         'addressing'            => 'Addressing',
+        'memo'                  => 'Memo (SmartBridge)',
 
         'header' => [
             'timestamp'    => 'Timestamp',

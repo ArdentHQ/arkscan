@@ -37,6 +37,10 @@
             <x-transaction.section-detail.transaction-type :transaction="$transaction" />
 
             <x-transaction.section-detail.addressing-section :transaction="$transaction" />
+
+            @if ($transaction->isTransfer() || $transaction->isMultiPayment())
+                <x-transaction.section-detail.memo-section :transaction="$transaction" />
+            @endif
         </div>
     @endsection
 @endcomponent
