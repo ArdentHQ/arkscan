@@ -70,28 +70,6 @@ return [
         'category'                        => 'Category',
         'ipfs_hash'                       => 'IPFS Hash',
         'delegate_username'               => 'Delegate Name',
-        // Type Labels (Different than in other places :facepalm:)
-        'business-entity-registration'    => 'Registration (Business)',
-        'business-entity-resignation'     => 'Resignation (Business)',
-        'business-entity-update'          => 'Update (Business)',
-        'delegate-entity-registration'    => 'Registration (Delegate)',
-        'delegate-entity-resignation'     => 'Resignation (Delegate)',
-        'delegate-entity-update'          => 'Update (Delegate)',
-        'legacy-bridgechain-registration' => 'Registration (Legacy Bridgechain)',
-        'legacy-bridgechain-resignation'  => 'Resignation (Legacy Bridgechain)',
-        'legacy-bridgechain-update'       => 'Update (Legacy Bridgechain)',
-        'legacy-business-registration'    => 'Registration (Legacy Business)',
-        'legacy-business-resignation'     => 'Resignation (Legacy Business)',
-        'legacy-business-update'          => 'Update (Legacy Business)',
-        'module-entity-registration'      => 'Registration (Module)',
-        'module-entity-resignation'       => 'Resignation (Module)',
-        'module-entity-update'            => 'Update (Module)',
-        'plugin-entity-registration'      => 'Registration (Plugin)',
-        'plugin-entity-resignation'       => 'Resignation (Plugin)',
-        'plugin-entity-update'            => 'Update (Plugin)',
-        'product-entity-registration'     => 'Registration (Product)',
-        'product-entity-resignation'      => 'Resignation (Product)',
-        'product-entity-update'           => 'Update (Product)',
 
         'transaction_id'        => 'Transaction ID',
         'transaction_id_copied' => 'Transaction ID Copied',
@@ -116,6 +94,14 @@ return [
 
         'value' => [
             'multiple_x' => 'Multiple (<a href="#recipient-list" class="link">:count</a>)',
+        ],
+
+        'types' => [
+            ...trans('general.transaction.types'),
+
+            'legacy-business-registration'        => 'Business Registration',
+            'legacy-business-resignation'         => 'Business Resignation',
+            'legacy-business-update'              => 'Business Update',
         ],
     ],
 
