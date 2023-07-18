@@ -98,6 +98,7 @@ return [
         'transaction_details'   => 'Transaction Details',
         'addressing'            => 'Addressing',
         'recipients_list'       => 'Recipients List',
+        'confirmations'         => 'Confirmations',
 
         'header' => [
             'timestamp'    => 'Timestamp',
