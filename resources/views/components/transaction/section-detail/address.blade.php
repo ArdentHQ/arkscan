@@ -21,6 +21,5 @@
     <x-clipboard
         :value="$address"
         :tooltip="trans('pages.wallet.address_copied')"
-        colors="text-theme-primary-400 dark:text-theme-dark-300"
     />
 </span>
