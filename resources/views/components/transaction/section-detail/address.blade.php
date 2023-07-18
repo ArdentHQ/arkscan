@@ -20,7 +20,7 @@
 
     <x-clipboard
         :value="$address"
-        :tooltip-content="trans('pages.wallet.address_copied')"
-        colors="text-theme-secondary-600 hover:text-theme-secondary-400"
+        :tooltip="trans('pages.wallet.address_copied')"
+        colors="text-theme-primary-400 dark:text-theme-dark-300"
     />
 </span>
