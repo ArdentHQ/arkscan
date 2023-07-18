@@ -3,9 +3,22 @@
     'withoutTruncate' => false,
     'withoutUsername' => false,
     'withoutClipboard' => false,
+    'truncateBreakpoint' => 'xl',
 ])
 
-<span class="flex justify-between w-full text-sm leading-[17px]">
+@php
+    $truncateHiddenBreakpoint = [
+        'sm' => 'sm:hidden',
+        'xl' => 'xl:hidden',
+    ][$truncateBreakpoint];
+
+    $truncateShowBreakpoint = [
+        'sm' => 'hidden sm:inline',
+        'xl' => 'hidden xl:inline',
+    ][$truncateBreakpoint];
+@endphp
+
+<span {{ $attributes->class('flex justify-between w-full text-sm leading-[17px]') }}>
     <span>
         <x-general.identity
             :model="$model"
@@ -15,10 +28,10 @@
         >
             <x-slot name="address">
                 @unless ($withoutTruncate)
-                    <span class="xl:hidden">
+                    <span @class($truncateHiddenBreakpoint)>
                         <x-truncate-middle>{{ $model->address() }}</x-truncate-middle>
                     </span>
-                    <span class="hidden xl:inline">
+                    <span @class($truncateShowBreakpoint)>
                         {{ $model->address() }}
                     </span>
                 @else

@@ -3,6 +3,8 @@ import "@ui/js/tippy.js";
 import "@ui/js/page-scroll";
 import "@ui/js/reposition-dropdown";
 
+import "./includes/page-scroll-handler";
+
 import * as dayjs from "dayjs";
 import * as dayjsRelativeTime from "dayjs/plugin/relativeTime";
 

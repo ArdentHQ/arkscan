@@ -25,7 +25,7 @@ return [
     'fiat_excluding_itself'   => 'Excluding :amount sent to itself',
     'more_details'            => 'For more :transactionType details',
     'learn_more'              => 'Learn more',
-    'confirmations'           => ':count confirmation|:count confirmations',
+    'confirmations'           => ':count Confirmation|:count Confirmations',
     'market_data_by'          => 'Market Data by',
     'arkvault'                => 'ARKVault',
     'select_theme'            => 'Select Theme',
