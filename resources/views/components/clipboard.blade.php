@@ -10,6 +10,7 @@
     :class="Arr::toCssClasses([
         'flex items-center w-auto h-auto ml-2 transition-default',
         $colors,
+        $attributes->get('class'),
     ])"
     no-styling
 />
