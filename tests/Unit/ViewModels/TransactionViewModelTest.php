@@ -825,29 +825,95 @@ it('should get the payments', function () {
 
     $this->subject = new TransactionViewModel($model);
 
-    expect($this->subject->payments()[0])->toEqual(new Payment((int) $model->timestamp, [
+    $payments = $this->subject->payments();
+    expect($payments[0])->toEqual(new Payment((int) $model->timestamp, [
         'amount'      => '1000000000',
         'recipientId' => $A->address,
     ]));
 
-    expect($this->subject->payments()[1])->toEqual(new Payment((int) $model->timestamp, [
+    expect($payments[1])->toEqual(new Payment((int) $model->timestamp, [
         'amount'      => '2000000000',
         'recipientId' => $B->address,
     ]));
 
-    expect($this->subject->payments()[2])->toEqual(new Payment((int) $model->timestamp, [
+    expect($payments[2])->toEqual(new Payment((int) $model->timestamp, [
         'amount'      => '3000000000',
         'recipientId' => $C->address,
     ]));
 
-    expect($this->subject->payments()[3])->toEqual(new Payment((int) $model->timestamp, [
+    expect($payments[3])->toEqual(new Payment((int) $model->timestamp, [
         'amount'      => '4000000000',
         'recipientId' => $D->address,
     ]));
 
-    expect($this->subject->payments()[4])->toEqual(new Payment((int) $model->timestamp, [
+    expect($payments[4])->toEqual(new Payment((int) $model->timestamp, [
         'amount'      => '5000000000',
         'recipientId' => $E->address,
+    ]));
+});
+
+it('should get the payments in descending order', function () {
+    $this->subject = new TransactionViewModel(Transaction::factory()
+        ->multiPayment()
+        ->create(['asset' => null]));
+
+    expect($this->subject->payments())->toBeEmpty();
+
+    $A = Wallet::factory()->create();
+    $B = Wallet::factory()->create();
+    $C = Wallet::factory()->create();
+    $D = Wallet::factory()->create();
+    $E = Wallet::factory()->create();
+
+    $model = Transaction::factory()->multiPayment()->create([
+        'asset' => [
+            'payments' => [
+                [
+                    'amount'      => '1000000000',
+                    'recipientId' => $A->address,
+                ], [
+                    'amount'      => '2000000000',
+                    'recipientId' => $B->address,
+                ], [
+                    'amount'      => '3000000000',
+                    'recipientId' => $C->address,
+                ], [
+                    'amount'      => '4000000000',
+                    'recipientId' => $D->address,
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => $E->address,
+                ],
+            ],
+        ],
+    ]);
+
+    $this->subject = new TransactionViewModel($model);
+
+    $payments = array_values($this->subject->payments(true));
+    expect($payments[0])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '5000000000',
+        'recipientId' => $E->address,
+    ]));
+
+    expect($payments[1])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '4000000000',
+        'recipientId' => $D->address,
+    ]));
+
+    expect($payments[2])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '3000000000',
+        'recipientId' => $C->address,
+    ]));
+
+    expect($payments[3])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '2000000000',
+        'recipientId' => $B->address,
+    ]));
+
+    expect($payments[4])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '1000000000',
+        'recipientId' => $A->address,
     ]));
 });
 

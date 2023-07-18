@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
 
 trait InteractsWithMultiPayment
 {
-    public function payments(): array
+    public function payments(bool $sortAmountDescending = false): array
     {
         if (! $this->isMultiPayment()) {
             return [];
@@ -24,6 +24,9 @@ trait InteractsWithMultiPayment
 
         return collect($payments)
             ->map(fn ($payment) => new Payment($this->transaction->timestamp, $payment))
+            ->when($sortAmountDescending, fn ($collection) => $collection->sort(function ($a, $b) {
+                return $b->amount() <=> $a->amount();
+            }))
             ->toArray();
     }
 

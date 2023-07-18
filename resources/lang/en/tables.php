@@ -14,6 +14,9 @@ return [
         'from'       => 'From',
         'contract'   => 'Contract',
         'multiple'   => 'Multiple',
+        'address'    => 'Address',
+
+        'amount_no_currency' => 'Amount',
 
         'no_results' => [
             'no_filters'            => 'All filtering options have been deselected. Please select one or more options to display transactions.',

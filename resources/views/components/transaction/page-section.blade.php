@@ -1,4 +1,10 @@
-@props(['title'])
+@props([
+    'title',
+    'noBorder' => false,
+    'wrapperContainerClass' => null,
+    'wrapperClass' => 'flex flex-col flex-1 space-y-3 whitespace-nowrap',
+    'borderClass' => 'sm:border-theme-secondary-300 dark:border-theme-dark-700',
+])
 
 <div {{ $attributes->class('px-3 sm:px-6 md:px-10 md:mx-auto md:max-w-7xl group last:mb-8 dark:text-theme-dark-200') }}>
     <div class="flex mt-6 sm:mt-0 sm:space-x-3 group-first:mt-0 group-first:sm:-mt-2">
@@ -15,8 +21,13 @@
                 {{ $title }}
             </div>
 
-            <div class="flex px-3 space-x-4 text-sm sm:py-4 sm:px-6 sm:text-base sm:leading-5 sm:rounded-xl sm:border leading-[17px] sm:border-theme-secondary-300 dark:border-theme-dark-700">
-                <div class="flex flex-col flex-1 space-y-3 whitespace-nowrap">
+            <div @class([
+                'flex space-x-4 text-sm sm:text-base sm:leading-5 sm:rounded-xl leading-[17px]',
+                'sm:border px-3 sm:py-4 sm:px-6' => ! $noBorder,
+                $borderClass => ! $noBorder,
+                $wrapperContainerClass,
+            ])>
+                <div @class($wrapperClass)>
                     {{ $slot }}
                 </div>
             </div>
