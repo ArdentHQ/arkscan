@@ -1,7 +1,7 @@
 @props([
     'value',
     'tooltip' => null,
-    'colors' => 'text-theme-primary-400 dark:text-theme-dark-300 hover:text-theme-primary-700 dark:hover:text-theme-dark-100',
+    'colors' => 'text-theme-primary-400 dark:text-theme-dark-300 hover:text-theme-primary-700 dark:hover:text-theme-dark-blue-500',
 ])
 
 <x-ark-clipboard
