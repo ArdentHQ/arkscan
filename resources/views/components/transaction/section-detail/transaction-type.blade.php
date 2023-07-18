@@ -8,7 +8,7 @@
     >
         <x-general.encapsulated.transaction-type-badge
             :transaction="$transaction"
-            class="inline"
+            class="inline text-theme-secondary-700 dark:text-theme-dark-200"
         />
     </x-transaction.section-detail.row>
 
