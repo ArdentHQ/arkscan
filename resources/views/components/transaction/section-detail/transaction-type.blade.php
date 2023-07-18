@@ -59,7 +59,7 @@
     @elseif ($transaction->isDelegateRegistration() || $transaction->isDelegateResignation())
         <x-transaction.section-detail.row
             :title="trans('pages.transaction.header.delegate')"
-            :value="$transaction->delegateUsername()"
+            :value="$transaction->sender()->username()"
             :transaction="$transaction"
         />
     @elseif ($transaction->isLegacy())
