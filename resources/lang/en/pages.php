@@ -96,6 +96,7 @@ return [
         'transaction_id'        => 'Transaction ID',
         'transaction_id_copied' => 'Transaction ID Copied',
         'transaction_details'   => 'Transaction Details',
+        'addressing'            => 'Addressing',
 
         'header' => [
             'timestamp'    => 'Timestamp',
@@ -109,6 +110,12 @@ return [
             'signatures'   => 'Signatures',
             'hash'         => 'Hash',
             'sub_category' => 'Sub-Category',
+            'from'         => 'From',
+            'to'           => 'To',
+        ],
+
+        'value' => [
+            'multiple_x' => 'Multiple (<a href="#recipient-list" class="link">:count</a>)',
         ],
     ],
 

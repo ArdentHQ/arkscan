@@ -34,6 +34,8 @@
             </x-transaction.page-section>
 
             <x-transaction.section-detail.transaction-type :transaction="$transaction" />
+
+            <x-transaction.section-detail.addressing-section :transaction="$transaction" />
         </div>
     @endsection
 @endcomponent
