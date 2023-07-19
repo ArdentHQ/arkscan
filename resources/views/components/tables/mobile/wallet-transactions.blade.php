@@ -16,7 +16,7 @@
 
                 <x-tables.rows.mobile.encapsulated.age
                     :model="$transaction"
-                    class="leading-[17px]"
+                    class="leading-4.25"
                 />
             </x-slot>
 
