@@ -46,6 +46,8 @@
 
             @if ($transaction->isMultiPayment())
                 <x-transaction.section-detail.recipient-list-section :transaction="$transaction" />
+            @elseif ($transaction->isMultisignature())
+                <x-transaction.section-detail.participant-list-section :transaction="$transaction" />
             @endif
         </div>
     @endsection
