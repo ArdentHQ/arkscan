@@ -4,14 +4,14 @@
     @if ($transaction->isTransfer() || $transaction->isMultiPayment())
         <x-transaction.section-detail.row
             :title="trans('pages.transaction.header.amount')"
-            :value="ExplorerNumberFormatter::currency($transaction->amount(), Network::currency())"
+            :value="ExplorerNumberFormatter::networkCurrency($transaction->amount(), withSuffix: true)"
             :transaction="$transaction"
         />
     @endif
 
     <x-transaction.section-detail.row
         :title="trans('pages.transaction.header.fee')"
-        :value="ExplorerNumberFormatter::currency($transaction->fee(), Network::currency())"
+        :value="ExplorerNumberFormatter::networkCurrency($transaction->fee(), withSuffix: true)"
         :transaction="$transaction"
     />
 
