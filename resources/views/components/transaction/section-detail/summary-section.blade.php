@@ -18,7 +18,7 @@
     @if (Network::canBeExchanged())
         <x-transaction.section-detail.row
             :title="trans('pages.transaction.header.value')"
-            :value="ExplorerNumberFormatter::currency($transaction->totalFiat(), Network::currency())"
+            :value="$transaction->totalFiat()"
             :transaction="$transaction"
         />
     @endif
