@@ -13,11 +13,9 @@
             without-icon
         />
 
-        <x-ark-clipboard
+        <x-clipboard
             :value="$model->address()"
-            :tooltip-content="trans('pages.wallet.address_copied')"
-            class="transition text-theme-primary-400 dark:text-theme-secondary-600 hover:text-theme-primary-700"
-            no-styling
+            :tooltip="trans('pages.wallet.address_copied')"
         />
     </span>
 </div>
