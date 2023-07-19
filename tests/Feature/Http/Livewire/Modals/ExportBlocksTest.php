@@ -65,3 +65,12 @@ it('should not be enabled if not ready', function () {
         ->call('setIsReady')
         ->assertSet('hasForgedBlocks', true);
 });
+
+it('should not be enabled if no blocks', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->activeDelegate()->create());
+
+    Livewire::test(ExportBlocks::class, [$wallet])
+        ->assertSet('hasForgedBlocks', false)
+        ->call('setIsReady')
+        ->assertSet('hasForgedBlocks', false);
+});

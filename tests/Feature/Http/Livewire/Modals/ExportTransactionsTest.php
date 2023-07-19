@@ -51,4 +51,24 @@ it('should not be enabled if not ready', function () {
         ->assertSet('hasTransactions', false)
         ->call('setIsReady')
         ->assertSet('hasTransactions', true);
+
+    $wallet = new WalletViewModel(Wallet::factory()->activeDelegate()->create());
+
+    Transaction::factory()->create([
+        'recipient_id' => $wallet->address(),
+    ]);
+
+    Livewire::test(ExportTransactions::class, [$wallet])
+        ->assertSet('hasTransactions', false)
+        ->call('setIsReady')
+        ->assertSet('hasTransactions', true);
+});
+
+it('should not be enabled if no transactions', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->activeDelegate()->create());
+
+    Livewire::test(ExportTransactions::class, [$wallet])
+        ->assertSet('hasTransactions', false)
+        ->call('setIsReady')
+        ->assertSet('hasTransactions', false);
 });
