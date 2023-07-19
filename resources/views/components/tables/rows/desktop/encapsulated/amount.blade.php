@@ -1,6 +1,8 @@
 @props([
     'model',
     'wallet' => null,
+    'withoutFee' => false,
+    'withNetworkCurrency' => false,
 ])
 
 @php
@@ -29,11 +31,19 @@
             :is-received="$isReceived"
             :is-sent="$isSent"
         />
+
+        @if ($withNetworkCurrency)
+            <span class="text-sm font-semibold leading-[17px] text-theme-secondary-900 dark:text-theme-secondary-200">
+                {{ Network::currency() }}
+            </span>
+        @endif
     </div>
 
-    <x-tables.rows.desktop.encapsulated.fee
-        :model="$model"
-        class="hidden text-xs md:block text-theme-secondary-700 md-lg:hidden"
-        without-styling
-    />
+    @unless ($withoutFee)
+        <x-tables.rows.desktop.encapsulated.fee
+            :model="$model"
+            class="hidden text-xs md:block text-theme-secondary-700 md-lg:hidden"
+            without-styling
+        />
+    @endunless
 </div>

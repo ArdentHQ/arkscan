@@ -9,7 +9,7 @@ trait InteractsWithTypeData
     public function typeLabel(): string
     {
         if ($this->isLegacyType()) {
-            return trans('general.transaction.types.'.$this->typeName());
+            return trans('pages.transaction.types.'.$this->typeName());
         }
 
         return trans('general.transaction.types.'.$this->iconType());
