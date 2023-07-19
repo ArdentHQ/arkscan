@@ -7,8 +7,12 @@
     wrapper-class="font-normal leading-7"
 >
     @if (! $vendorField)
-        @lang('general.na')
+        <span class="text-theme-secondary-500 dark:text-theme-dark-500 font-semibold sm:font-normal text-sm">
+            @lang('general.na')
+        </span>
     @else
-        {{ $vendorField }}
+        <span class="text-theme-secondary-900 dark:text-theme-dark-50">
+            {{ $vendorField }}
+        </span>
     @endif
 </x-transaction.page-section>
