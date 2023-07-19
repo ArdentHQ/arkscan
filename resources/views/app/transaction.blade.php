@@ -38,6 +38,8 @@
 
             <x-transaction.section-detail.addressing-section :transaction="$transaction" />
 
+            <x-transaction.section-detail.confirmations-section :transaction="$transaction" />
+
             @if ($transaction->isMultiPayment())
                 <x-transaction.section-detail.recipient-list-section :transaction="$transaction" />
             @endif

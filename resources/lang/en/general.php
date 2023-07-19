@@ -26,6 +26,7 @@ return [
     'more_details'            => 'For more :transactionType details',
     'learn_more'              => 'Learn more',
     'confirmations'           => ':count Confirmation|:count Confirmations',
+    'confirmations_only'      => 'Confirmations',
     'market_data_by'          => 'Market Data by',
     'arkvault'                => 'ARKVault',
     'select_theme'            => 'Select Theme',
