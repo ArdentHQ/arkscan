@@ -39,11 +39,6 @@ trait HasTransactions
         return ExchangeRate::convert($this->block->total_fee->toFloat(), $this->block->timestamp);
     }
 
-    public function totalFiat(): string
-    {
-        return ExchangeRate::convert($this->fee() + $this->amount(), $this->block->timestamp);
-    }
-
     public function totalReward(): float
     {
         return  $this->block->reward->plus($this->block->total_fee->valueOf())->toFloat();
