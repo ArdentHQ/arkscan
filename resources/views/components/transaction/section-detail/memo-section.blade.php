@@ -7,7 +7,7 @@
     wrapper-class="font-normal leading-7"
 >
     @if (! $vendorField)
-        <span class="text-theme-secondary-500 dark:text-theme-dark-500 font-semibold sm:font-normal text-sm">
+        <span class="text-sm font-semibold sm:font-normal text-theme-secondary-500 dark:text-theme-dark-500">
             @lang('general.na')
         </span>
     @else
