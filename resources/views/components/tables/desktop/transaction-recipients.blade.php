@@ -1,7 +1,4 @@
-@props([
-    'transaction',
-    'wallet' => null,
-])
+@props(['transaction'])
 
 <x-tables.encapsulated-table
     wire:key="{{ Helpers::generateId('transaction-recipients') }}"
@@ -28,7 +25,6 @@
                 <x-ark-tables.cell class="text-right">
                     <x-tables.rows.desktop.encapsulated.amount
                         :model="$payment"
-                        :wallet="$wallet"
                         without-fee
                         with-network-currency
                     />
