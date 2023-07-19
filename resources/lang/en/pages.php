@@ -59,6 +59,7 @@ return [
         'transaction_id_copied' => 'Transaction ID Copied',
         'transaction_details'   => 'Transaction Details',
         'addressing'            => 'Addressing',
+        'memo'                  => 'Memo (SmartBridge)',
         'recipients_list'       => 'Recipients List',
         'confirmations'         => 'Confirmations',
 
