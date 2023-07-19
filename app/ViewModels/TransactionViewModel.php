@@ -189,6 +189,11 @@ final class TransactionViewModel implements ViewModel
         return ExchangeRate::convert($this->amountReceived($wallet), $this->transaction->timestamp);
     }
 
+    public function totalFiat(): string
+    {
+        return ExchangeRate::convert($this->amountWithFee(), $this->transaction->timestamp);
+    }
+
     public function confirmations(): int
     {
         return abs(CacheNetworkHeight::execute() - $this->transaction->block_height);

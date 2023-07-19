@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\CryptoCurrencies;
+use App\Facades\Network;
 use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 use ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation;
 use ReflectionClass;
@@ -82,14 +83,20 @@ final class NumberFormatter
     /**
      * @param string|int|float $value
      */
-    public static function networkCurrency($value, int $decimals = 8): string
+    public static function networkCurrency($value, int $decimals = 8, bool $withSuffix = false): string
     {
-        return BetterNumberFormatter::new()
+        $value = BetterNumberFormatter::new()
             ->withLocale('en-US')
             ->withFractionDigits($decimals)
             ->withMinFractionDigits(2)
             // Workaround to fix 5 rounding down (e.g. 1.00005 > 1 instead of 1.0001)
             ->formatWithDecimal(floatval(number_format((float) $value, $decimals, '.', '')));
+
+        if ($withSuffix) {
+            return $value.' '.Network::currency();
+        }
+
+        return $value;
     }
 
     /**
