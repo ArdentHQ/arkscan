@@ -1,6 +1,8 @@
 @props([
     'model',
     'wallet' => null,
+    'withoutFee' => false,
+    'withNetworkCurrency' => false,
 ])
 
 <div {{ $attributes->class('space-y-2 sm:flex sm:flex-col sm:justify-center') }}>
@@ -12,6 +14,8 @@
         <x-tables.rows.desktop.encapsulated.amount
             :model="$model"
             :wallet="$wallet"
+            :without-fee="$withoutFee"
+            :with-network-currency="$withNetworkCurrency"
         />
     </div>
 </div>

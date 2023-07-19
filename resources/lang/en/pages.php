@@ -59,6 +59,8 @@ return [
         'transaction_id_copied' => 'Transaction ID Copied',
         'transaction_details'   => 'Transaction Details',
         'addressing'            => 'Addressing',
+        'recipients_list'       => 'Recipients List',
+        'confirmations'         => 'Confirmations',
 
         'header' => [
             'timestamp'    => 'Timestamp',
@@ -77,7 +79,7 @@ return [
         ],
 
         'value' => [
-            'multiple_x' => 'Multiple (<a href="#recipient-list" class="link">:count</a>)',
+            'multiple_x' => 'Multiple (<button type="link" data-link-scroll-to="#recipients-list" class="link">:count</button>)',
         ],
 
         'types' => [
