@@ -4,7 +4,7 @@
     'withoutLink' => false,
 ])
 
-@php ($isSent = $wallet && $model->isSent($wallet->address()))
+@php ($isSent = $wallet && $model->isSent($wallet->address()) && ! $model->isSentToSelf($wallet->address()))
 
 <div class="flex items-center space-x-2 text-sm font-semibold">
     <div @class([
