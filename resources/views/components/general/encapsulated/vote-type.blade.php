@@ -1,4 +1,3 @@
-
 @props(['transaction'])
 
 @if($transaction->isVoteCombination())

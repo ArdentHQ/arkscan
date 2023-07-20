@@ -12,7 +12,8 @@
 @endphp
 
 <div
-    class="w-full"
+    {{ $attributes->class('w-full') }}
+
     @if ($displayType)
         wire:loading.{{ $displayType }}
     @else

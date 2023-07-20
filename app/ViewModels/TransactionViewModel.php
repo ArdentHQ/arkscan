@@ -75,6 +75,11 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction->block_id;
     }
 
+    public function blockHeight(): int
+    {
+        return $this->transaction->block_height;
+    }
+
     public function timestamp(bool $short = false): string
     {
         return Timestamp::fromGenesisHuman($this->transaction->timestamp, $short);
@@ -182,6 +187,11 @@ final class TransactionViewModel implements ViewModel
     public function amountReceivedFiat(?string $wallet = null): string
     {
         return ExchangeRate::convert($this->amountReceived($wallet), $this->transaction->timestamp);
+    }
+
+    public function totalFiat(): string
+    {
+        return ExchangeRate::convert($this->amountWithFee(), $this->transaction->timestamp);
     }
 
     public function confirmations(): int

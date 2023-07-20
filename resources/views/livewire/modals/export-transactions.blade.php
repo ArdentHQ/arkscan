@@ -1,9 +1,15 @@
-<div class="flex-1 sm:h-8 export-modal">
+<div
+    wire:init="setIsReady"
+    class="flex-1 sm:h-8 export-modal"
+>
     <div>
         <button
             type="button"
             class="flex justify-center items-center space-x-2 w-full sm:py-1.5 sm:px-4 button-secondary"
             wire:click="openModal"
+            @if(!$hasTransactions)
+                disabled
+            @endif
         >
             <x-ark-icon
                 name="arrows.underline-arrow-down"
@@ -51,7 +57,9 @@
                         </div>
 
                         <div x-show="hasStartedExport">
-                            <x-modals.export.status />
+                            <x-modals.export.status
+                                :partial-download-toast="trans('pages.wallet.export-transactions-modal.success_toast', ['address' => $this->address.'-partial'])"
+                            />
                         </div>
                     </div>
                 </x-slot>

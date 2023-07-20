@@ -1,6 +1,7 @@
-<div x-data="{
-    tab: @entangle('view'),
-}">
+<div
+    x-data="{ tab: @entangle('view') }"
+    wire:init="triggerViewIsReady"
+>
     <x-tabs.inline-wrapper
         x-data="{
             init: function () {

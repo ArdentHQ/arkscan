@@ -1,4 +1,7 @@
-<div class="flex-1 sm:h-8 export-modal">
+<div
+    wire:init="setIsReady"
+    class="flex-1 sm:h-8 export-modal"
+>
     <div @class(['cursor-not-allowed' => !$hasForgedBlocks])>
         <button
             type="button"
@@ -57,6 +60,7 @@
                             <x-modals.export.status
                                 :filename="$this->username"
                                 type="blocks"
+                                :partial-download-toast="trans('pages.wallet.export-blocks-modal.success_toast', ['username' => $this->username.'-partial'])"
                             />
                         </div>
                     </div>

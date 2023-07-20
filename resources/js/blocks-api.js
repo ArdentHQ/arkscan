@@ -1,4 +1,5 @@
 import axios from "axios";
+import { FailedExportRequest } from "./includes/helpers";
 
 export class BlocksApi {
     static async request(host, query, publicKey) {
@@ -24,28 +25,35 @@ export class BlocksApi {
         },
         instance
     ) {
-        const page = await this.request(
-            host,
-            {
-                limit,
-                orderBy,
-                ...query,
-                "height.to": height,
-            },
-            publicKey
-        );
+        try {
+            const page = await this.request(
+                host,
+                {
+                    limit,
+                    orderBy,
+                    ...query,
+                    "height.to": height,
+                },
+                publicKey
+            );
 
-        if (instance?.hasAborted()) {
-            return [];
+            if (instance?.hasAborted()) {
+                return [];
+            }
+
+            blocks.push(...page.data);
+
+            if (page.meta.count < limit) {
+                return blocks;
+            }
+
+            height = page.data[page.data.length - 1]["height"] - 1;
+        } catch (e) {
+            throw new FailedExportRequest(
+                "There was a problem fetching blocks.",
+                blocks
+            );
         }
-
-        blocks.push(...page.data);
-
-        if (page.meta.count < limit) {
-            return blocks;
-        }
-
-        height = page.data[page.data.length - 1]["height"] - 1;
 
         return await this.fetchAll(
             {

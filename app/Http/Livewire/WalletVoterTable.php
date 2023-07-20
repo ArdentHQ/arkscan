@@ -23,7 +23,10 @@ final class WalletVoterTable extends Component
     public string $publicKey;
 
     /** @var mixed */
-    protected $listeners = ['currencyChanged' => '$refresh'];
+    protected $listeners = [
+        'setVotersReady'  => 'setIsReady',
+        'currencyChanged' => '$refresh',
+    ];
 
     public function mount(WalletViewModel $wallet): void
     {

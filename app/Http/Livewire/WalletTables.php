@@ -24,6 +24,12 @@ final class WalletTables extends Component
 
     public array $savedQueryData = [];
 
+    public array $alreadyLoadedViews = [
+        'transactions' => false,
+        'blocks'       => false,
+        'voters'       => false,
+    ];
+
     /** @var mixed */
     protected $listeners = [
         'showWalletView',
@@ -126,6 +132,25 @@ final class WalletTables extends Component
         $this->view = $view;
     }
 
+    public function triggerViewIsReady(?string $view = null): void
+    {
+        if ($view === null) {
+            $view = $this->view;
+        }
+
+        if (! array_key_exists($view, $this->alreadyLoadedViews)) {
+            return;
+        }
+
+        if ($this->alreadyLoadedViews[$view] === true) {
+            return;
+        }
+
+        $this->emit('set'.ucfirst($view).'Ready');
+
+        $this->alreadyLoadedViews[$view] = true;
+    }
+
     public function updatingView(string $newView): void
     {
         if ($newView === $this->view) {
@@ -144,6 +169,8 @@ final class WalletTables extends Component
             // @phpstan-ignore-next-line
             $this->{$key} = $queryStringData[$key]['except'];
         }
+
+        $this->triggerViewIsReady($newView);
     }
 
     /**
