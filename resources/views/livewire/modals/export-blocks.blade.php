@@ -1,4 +1,7 @@
-<div class="flex-1 sm:h-8 export-modal">
+<div
+    wire:init="setIsReady"
+    class="flex-1 sm:h-8 export-modal"
+>
     <div @class(['cursor-not-allowed' => !$hasForgedBlocks])>
         <button
             type="button"
