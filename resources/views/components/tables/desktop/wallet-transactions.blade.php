@@ -59,6 +59,7 @@
                     <x-tables.rows.desktop.encapsulated.addressing
                         :model="$transaction"
                         :wallet="$wallet"
+                        :without-link="$transaction->isSentToSelf($wallet->address())"
                     />
                 </x-ark-tables.cell>
 

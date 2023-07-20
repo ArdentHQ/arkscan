@@ -1,9 +1,10 @@
 @props([
     'model',
     'wallet' => null,
+    'withoutLink' => false,
 ])
 
-@php ($isSent = $wallet && $model->isSent($wallet->address()))
+@php ($isSent = $wallet && $model->isSent($wallet->address()) && ! $model->isSentToSelf($wallet->address()))
 
 <div class="flex items-center space-x-2 text-sm font-semibold">
     <div @class([
@@ -20,32 +21,34 @@
 
     <div>
         @if ($model->isTransfer())
+            @php ($transactionWallet = $model->sender())
             @if ($isSent)
+                @php ($transactionWallet = $model->recipient())
+            @endif
+
+            @unless ($withoutLink)
                 <a
                     class="link"
-                    href="{{ route('wallet', $model->recipient()->address()) }}"
+                    href="{{ route('wallet', $transactionWallet->address()) }}"
                 >
-                    @if ($model->recipient()->isDelegate())
-                        {{ $model->recipient()->username() }}
+                    @if ($transactionWallet->isDelegate())
+                        {{ $transactionWallet->username() }}
                     @else
-                        <x-truncate-middle>{{ $model->recipient()->address }}</x-truncate-middle>
+                        <x-truncate-middle>{{ $transactionWallet->address }}</x-truncate-middle>
                     @endif
                 </a>
             @else
-                <a
-                    class="link"
-                    href="{{ route('wallet', $model->sender()->address()) }}"
-                >
-                    @if ($model->sender()->isDelegate())
-                        {{ $model->sender()->username() }}
+                <span class="text-theme-secondary-900 dark:text-theme-dark-50">
+                    @if ($transactionWallet->isDelegate())
+                        {{ $transactionWallet->username() }}
                     @else
-                        <x-truncate-middle>{{ $model->sender()->address }}</x-truncate-middle>
+                        <x-truncate-middle>{{ $transactionWallet->address }}</x-truncate-middle>
                     @endif
-                </a>
-            @endif
+                </span>
+            @endunless
         @elseif ($model->isMultiPayment())
             @if ($isSent)
-                <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
+                <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                     @lang('tables.transactions.multiple')
 
                     ({{ count($model->payments()) }})
@@ -63,7 +66,7 @@
                 </a>
             @endif
         @else
-            <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
+            <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                 @lang('tables.transactions.contract')
             </span>
         @endif

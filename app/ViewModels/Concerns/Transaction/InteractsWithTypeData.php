@@ -4,32 +4,15 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use App\Services\Transactions\TransactionTypeComponent;
-
 trait InteractsWithTypeData
 {
     public function typeLabel(): string
     {
         if ($this->isLegacyType()) {
-            return trans('general.transaction.types.'.$this->typeName());
+            return trans('pages.transaction.types.'.$this->typeName());
         }
 
         return trans('general.transaction.types.'.$this->iconType());
-    }
-
-    public function headerComponent(): string
-    {
-        return (new TransactionTypeComponent($this->transaction))->header();
-    }
-
-    public function typeComponent(): string
-    {
-        return (new TransactionTypeComponent($this->transaction))->details();
-    }
-
-    public function extensionComponent(): string
-    {
-        return (new TransactionTypeComponent($this->transaction))->extension();
     }
 
     public function isLegacyType(): bool

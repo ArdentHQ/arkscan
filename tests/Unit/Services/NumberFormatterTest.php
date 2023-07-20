@@ -117,3 +117,16 @@ it('should format other currencies', function ($currency, $expectation) {
     'ETH' => ['ETH', '1.0005 ETH'],
     'BTC' => ['BTC', '1.0005 BTC'],
 ]);
+
+it('should format with network currency', function () {
+    expect(NumberFormatter::networkCurrency(1.0005))->toBe('1.0005');
+});
+
+it('should format with network currency and suffix', function () {
+    expect(NumberFormatter::networkCurrency(1.0005, 8, true))->toBe('1.0005 DARK');
+});
+
+it('should format with network currency with different decimal places', function () {
+    expect(NumberFormatter::networkCurrency(1.0005, 2, true))->toBe('1.00 DARK');
+    expect(NumberFormatter::networkCurrency(1.0095, 2, true))->toBe('1.01 DARK');
+});
