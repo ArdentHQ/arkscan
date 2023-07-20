@@ -16,10 +16,15 @@ final class ExchangeRate
 {
     public static function convert(float $amount, int $timestamp, bool $showSmallAmounts = false): string
     {
+        return NumberFormatter::currency(self::convertNumerical($amount, $timestamp), Settings::currency(), $showSmallAmounts);
+    }
+
+    public static function convertNumerical(float $amount, int $timestamp): float
+    {
         $prices       = (new CryptoDataCache())->getPrices(Settings::currency().'.week');
         $exchangeRate = Arr::get($prices, Carbon::parse(static::timestamp($timestamp))->format('Y-m-d'), 0);
 
-        return NumberFormatter::currency($amount * $exchangeRate, Settings::currency(), $showSmallAmounts);
+        return $amount * $exchangeRate;
     }
 
     public static function convertFiatToCurrency(float $amount, string $from, string $to, int $decimals = 4): ?string
