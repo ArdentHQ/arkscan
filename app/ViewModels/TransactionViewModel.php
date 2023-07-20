@@ -189,9 +189,9 @@ final class TransactionViewModel implements ViewModel
         return ExchangeRate::convert($this->amountReceived($wallet), $this->transaction->timestamp);
     }
 
-    public function totalFiat(): string
+    public function totalFiat(bool $showSmallAmounts = false): string
     {
-        return ExchangeRate::convert($this->amountWithFee(), $this->transaction->timestamp);
+        return ExchangeRate::convert($this->amountWithFee(), $this->transaction->timestamp, $showSmallAmounts);
     }
 
     public function confirmations(): int

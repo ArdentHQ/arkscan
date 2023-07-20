@@ -3,6 +3,7 @@
     'title',
     'value' => null,
     'valueClass' => null,
+    'tooltip' => null,
 ])
 
 @php
@@ -26,10 +27,18 @@
         'flex-1 space-y-3 text-right sm:text-left text-theme-secondary-900 dark:text-theme-dark-50',
         $valueClass,
     ])>
-        @if ($value)
-            {{ $value }}
-        @elseif (strlen($slot) > 0)
-            {{ $slot }}
+        @if ($value || strlen($slot) > 0)
+            <span
+                @if ($tooltip)
+                    data-tippy-content="{{ $tooltip }}"
+                @endif
+            >
+                @if ($value)
+                    {{ $value }}
+                @else
+                    {{ $slot }}
+                @endif
+            </span>
         @else
             @lang('general.na')
         @endif
