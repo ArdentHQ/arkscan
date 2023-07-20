@@ -97,9 +97,4 @@ trait CanBeDelegate
 
         return 'text-theme-success-600 border-theme-success-600';
     }
-
-    public function blocksCount(): int
-    {
-        return $this->wallet->blocks()->count();
-    }
 }
