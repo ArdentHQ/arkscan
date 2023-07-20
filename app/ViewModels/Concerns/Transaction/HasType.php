@@ -198,6 +198,51 @@ trait HasType
         return $this->type->isLegacyBridgechainUpdate();
     }
 
+    public function isLegacy(): bool
+    {
+        if ($this->isDelegateRegistration()) {
+            return false;
+        }
+
+        if ($this->isDelegateResignation()) {
+            return false;
+        }
+
+        if ($this->isIpfs()) {
+            return false;
+        }
+
+        if ($this->isMultiPayment()) {
+            return false;
+        }
+
+        if ($this->isVoteCombination()) {
+            return false;
+        }
+
+        if ($this->isVote()) {
+            return false;
+        }
+
+        if ($this->isUnvote()) {
+            return false;
+        }
+
+        if ($this->isSecondSignature()) {
+            return false;
+        }
+
+        if ($this->isTransfer()) {
+            return false;
+        }
+
+        if ($this->isMultiSignature()) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function isUnknown(): bool
     {
         return $this->type->isUnknown();

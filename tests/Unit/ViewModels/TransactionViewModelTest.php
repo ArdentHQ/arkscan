@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\DTO\Payment;
+use App\Facades\Settings;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -119,6 +120,11 @@ it('should get the dateTime', function () {
 it('should get the block ID', function () {
     expect($this->subject->blockId())->toBeString();
     expect($this->subject->blockId())->toBe($this->block->id);
+});
+
+it('should get the block height', function () {
+    expect($this->subject->blockHeight())->toBeInt();
+    expect($this->subject->blockHeight())->toBe($this->block->height->toNumber());
 });
 
 it('should get the fee', function () {
@@ -408,6 +414,25 @@ it('should get the specific multi payment fiat amount for a wallet recipient', f
     ]));
 
     assertMatchesSnapshot($this->subject->amountReceivedFiat('B'));
+});
+
+it('should get the total as fiat', function () {
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+    ]));
+
+    expect($this->subject->totalFiat())->toBe('$0.87');
+});
+
+it('should get the total as cryptocurrency', function () {
+    Settings::shouldReceive('currency')
+        ->andReturn('BTC');
+
+    (new CryptoDataCache())->setPrices('BTC.week', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.000001,
+    ]));
+
+    expect($this->subject->totalFiat())->toBe('0.000003 BTC');
 });
 
 it('should get the confirmations', function () {
@@ -820,29 +845,95 @@ it('should get the payments', function () {
 
     $this->subject = new TransactionViewModel($model);
 
-    expect($this->subject->payments()[0])->toEqual(new Payment((int) $model->timestamp, [
+    $payments = $this->subject->payments();
+    expect($payments[0])->toEqual(new Payment((int) $model->timestamp, [
         'amount'      => '1000000000',
         'recipientId' => $A->address,
     ]));
 
-    expect($this->subject->payments()[1])->toEqual(new Payment((int) $model->timestamp, [
+    expect($payments[1])->toEqual(new Payment((int) $model->timestamp, [
         'amount'      => '2000000000',
         'recipientId' => $B->address,
     ]));
 
-    expect($this->subject->payments()[2])->toEqual(new Payment((int) $model->timestamp, [
+    expect($payments[2])->toEqual(new Payment((int) $model->timestamp, [
         'amount'      => '3000000000',
         'recipientId' => $C->address,
     ]));
 
-    expect($this->subject->payments()[3])->toEqual(new Payment((int) $model->timestamp, [
+    expect($payments[3])->toEqual(new Payment((int) $model->timestamp, [
         'amount'      => '4000000000',
         'recipientId' => $D->address,
     ]));
 
-    expect($this->subject->payments()[4])->toEqual(new Payment((int) $model->timestamp, [
+    expect($payments[4])->toEqual(new Payment((int) $model->timestamp, [
         'amount'      => '5000000000',
         'recipientId' => $E->address,
+    ]));
+});
+
+it('should get the payments in descending order', function () {
+    $this->subject = new TransactionViewModel(Transaction::factory()
+        ->multiPayment()
+        ->create(['asset' => null]));
+
+    expect($this->subject->payments())->toBeEmpty();
+
+    $A = Wallet::factory()->create();
+    $B = Wallet::factory()->create();
+    $C = Wallet::factory()->create();
+    $D = Wallet::factory()->create();
+    $E = Wallet::factory()->create();
+
+    $model = Transaction::factory()->multiPayment()->create([
+        'asset' => [
+            'payments' => [
+                [
+                    'amount'      => '1000000000',
+                    'recipientId' => $A->address,
+                ], [
+                    'amount'      => '2000000000',
+                    'recipientId' => $B->address,
+                ], [
+                    'amount'      => '3000000000',
+                    'recipientId' => $C->address,
+                ], [
+                    'amount'      => '4000000000',
+                    'recipientId' => $D->address,
+                ], [
+                    'amount'      => '5000000000',
+                    'recipientId' => $E->address,
+                ],
+            ],
+        ],
+    ]);
+
+    $this->subject = new TransactionViewModel($model);
+
+    $payments = array_values($this->subject->payments(true));
+    expect($payments[0])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '5000000000',
+        'recipientId' => $E->address,
+    ]));
+
+    expect($payments[1])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '4000000000',
+        'recipientId' => $D->address,
+    ]));
+
+    expect($payments[2])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '3000000000',
+        'recipientId' => $C->address,
+    ]));
+
+    expect($payments[3])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '2000000000',
+        'recipientId' => $B->address,
+    ]));
+
+    expect($payments[4])->toEqual(new Payment((int) $model->timestamp, [
+        'amount'      => '1000000000',
+        'recipientId' => $A->address,
     ]));
 });
 
@@ -976,20 +1067,6 @@ it('should fail to get the multi signature wallet if the transaction is not a mu
     $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
 
     expect($this->subject->multiSignatureWallet())->toBeEmpty();
-});
-
-it('should get the type component', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
-
-    expect($this->subject->typeComponent())->toBe('transaction.details.transfer');
-
-    $this->subject = new TransactionViewModel(Transaction::factory()->timelock()->create());
-
-    expect($this->subject->typeComponent())->toBe('transaction.details.fallback');
-});
-
-it('should get the extra component', function () {
-    expect($this->subject->extensionComponent())->toBeString();
 });
 
 it('should determine if the transaction has extra data', function (bool $outcome, string $type) {
@@ -1234,3 +1311,54 @@ it('should get the minimum for legacy multi signature transactions', function ()
 
     expect($this->subject->multiSignatureMinimum())->toBe(3);
 });
+
+it('should determine a non-legacy transaction', function ($transaction) {
+    $transaction = new TransactionViewModel(Transaction::factory()->{$transaction}()->create());
+
+    expect($transaction->isLegacy())->toBeFalse();
+})->with([
+    'transfer',
+    'delegateRegistration',
+    'delegateResignation',
+    'multisignature',
+    'ipfs',
+    'multiPayment',
+    'voteCombination',
+    'vote',
+    'unvote',
+    'secondSignature',
+]);
+
+it('should determine a legacy transaction', function ($transaction) {
+    $transaction = new TransactionViewModel(Transaction::factory()->{$transaction}()->create());
+
+    expect($transaction->isLegacy())->toBeTrue();
+})->with([
+    'timelock',
+    'timelockClaim',
+    'timelockRefund',
+    'entityRegistration',
+    'entityResignation',
+    'entityUpdate',
+    'businessEntityRegistration',
+    'businessEntityResignation',
+    'businessEntityUpdate',
+    'productEntityRegistration',
+    'productEntityResignation',
+    'productEntityUpdate',
+    'pluginEntityRegistration',
+    'pluginEntityResignation',
+    'pluginEntityUpdate',
+    'moduleEntityRegistration',
+    'moduleEntityResignation',
+    'moduleEntityUpdate',
+    'delegateEntityRegistration',
+    'delegateEntityResignation',
+    'delegateEntityUpdate',
+    'legacyBusinessRegistration',
+    'legacyBusinessResignation',
+    'legacyBusinessUpdate',
+    'legacyBridgechainRegistration',
+    'legacyBridgechainResignation',
+    'legacyBridgechainUpdate',
+]);
