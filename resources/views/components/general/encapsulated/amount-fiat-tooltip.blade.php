@@ -1,4 +1,6 @@
 @props([
+    'transaction' => null,
+    'wallet' => null,
     'isSent' => false,
     'isReceived' => false,
     'fiat' => null,
@@ -11,7 +13,11 @@
 @php
     $class = ['font-semibold', $class];
 
+    $isSentToSelf = false;
     if (! $withoutStyling) {
+        if ($transaction && $wallet) {
+            $isSentToSelf = $transaction->isSentToSelf($wallet->address());
+        }
         if(! $isSent && ! $isReceived) {
             $class[] = 'text-theme-secondary-900 dark:text-theme-secondary-200';
         }
@@ -20,11 +26,11 @@
             $class[] = 'flex px-1.5 py-0.5 whitespace-nowrap rounded border';
         }
 
-        if($isSent) {
+        if($isSent && ! $isSentToSelf) {
             $class[] = 'fiat-tooltip-sent text-theme-orange-dark bg-theme-orange-light border-theme-orange-light dark:bg-transparent dark:border-[#AA6868] dark:text-[#F39B9B]';
         }
 
-        if($isReceived) {
+        if($isReceived || $isSentToSelf) {
             $class[] = 'fiat-tooltip-received text-theme-success-700 bg-theme-success-100 border-theme-success-100 dark:bg-transparent dark:border-theme-success-700 dark:text-theme-success-500';
         }
     }
@@ -50,7 +56,7 @@
             data-tippy-content="{{ $fiat }}"
         @endif
     >
-        {{ $isSent ? '-' : ($isReceived ? '+' : '')}}
+        {{ $isSent && ! $isSentToSelf ? '-' : ($isReceived || $isSentToSelf ? '+' : '')}}
 
         @if (is_numeric($amount))
             {{ ExplorerNumberFormatter::networkCurrency($amount) }}
