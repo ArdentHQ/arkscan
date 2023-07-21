@@ -1,12 +1,11 @@
 @props([
     'transactions',
     'wallet' => null,
-    'state' => [],
     'noResultsMessage' => null,
 ])
 
 <x-tables.mobile.includes.encapsulated
-    wire:key="{{ Helpers::generateId('transactions-mobile', ...$state) }}"
+    wire:key="{{ Helpers::generateId('transactions-mobile') }}"
     :no-results-message="$noResultsMessage"
 >
     @foreach ($transactions as $transaction)

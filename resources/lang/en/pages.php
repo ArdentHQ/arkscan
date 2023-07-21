@@ -61,7 +61,9 @@ return [
         'addressing'            => 'Addressing',
         'memo'                  => 'Memo (SmartBridge)',
         'recipients_list'       => 'Recipients List',
+        'participants'          => 'Participants',
         'confirmations'         => 'Confirmations',
+        'transaction_summary'   => 'Transaction Summary',
 
         'header' => [
             'timestamp'    => 'Timestamp',
@@ -77,6 +79,9 @@ return [
             'sub_category' => 'Sub-Category',
             'from'         => 'From',
             'to'           => 'To',
+            'amount'       => 'Amount',
+            'fee'          => 'Fee',
+            'value'        => 'Value',
         ],
 
         'value' => [

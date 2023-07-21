@@ -11,5 +11,6 @@
     <x-tables.rows.desktop.encapsulated.addressing
         :model="$model"
         :wallet="$wallet"
+        :without-link="$model->isSentToSelf($wallet->address())"
     />
 </div>

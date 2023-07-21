@@ -1,7 +1,4 @@
-@props([
-    'transaction',
-    'wallet' => null,
-])
+@props(['transaction'])
 
 <x-tables.mobile.includes.encapsulated
     wire:key="{{ Helpers::generateId('transaction-recipients-mobile') }}"
@@ -20,7 +17,6 @@
 
             <x-tables.rows.mobile.encapsulated.amount
                 :model="$payment"
-                :wallet="$wallet"
                 without-fee
                 with-network-currency
             />

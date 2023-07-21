@@ -12,14 +12,9 @@
     $amount = $model->amount();
     $amountFiat = $model->amountFiat(true);
 
-    if ($wallet) {
-        if ($isReceived) {
-            $amount = $model->amountReceived($wallet?->address());
-            $amountFiat = $model->amountReceivedFiat($wallet?->address());
-        } else if ($wallet && $model->isSentToSelf($wallet->address())) {
-            $amount = $model->amountExcludingItself();
-            $amountFiat = $model->amountFiatExcludingItself();
-        }
+    if ($wallet && ($isReceived || $model->isSentToSelf($wallet->address()))) {
+        $amount = $model->amountReceived($wallet?->address());
+        $amountFiat = $model->amountReceivedFiat($wallet?->address());
     }
 @endphp
 
@@ -30,6 +25,8 @@
             :fiat="$amountFiat"
             :is-received="$isReceived"
             :is-sent="$isSent"
+            :transaction="$model"
+            :wallet="$wallet"
         />
 
         @if ($withNetworkCurrency)

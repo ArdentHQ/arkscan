@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Livewire\Modals\ExportTransactions;
+use App\Models\Transaction;
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
 use Livewire\Livewire;
@@ -37,4 +38,37 @@ it('should close modal', function () {
         ->assertSee(trans('pages.wallet.export-transactions-modal.title'))
         ->call('closeModal')
         ->assertDontSee(trans('pages.wallet.export-transactions-modal.title'));
+});
+
+it('should not be enabled if not ready', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->activeDelegate()->create());
+
+    Transaction::factory()->create([
+        'sender_public_key' => $wallet->publicKey(),
+    ]);
+
+    Livewire::test(ExportTransactions::class, [$wallet])
+        ->assertSet('hasTransactions', false)
+        ->call('setIsReady')
+        ->assertSet('hasTransactions', true);
+
+    $wallet = new WalletViewModel(Wallet::factory()->activeDelegate()->create());
+
+    Transaction::factory()->create([
+        'recipient_id' => $wallet->address(),
+    ]);
+
+    Livewire::test(ExportTransactions::class, [$wallet])
+        ->assertSet('hasTransactions', false)
+        ->call('setIsReady')
+        ->assertSet('hasTransactions', true);
+});
+
+it('should not be enabled if no transactions', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->activeDelegate()->create());
+
+    Livewire::test(ExportTransactions::class, [$wallet])
+        ->assertSet('hasTransactions', false)
+        ->call('setIsReady')
+        ->assertSet('hasTransactions', false);
 });

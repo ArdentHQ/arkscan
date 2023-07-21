@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\DTO\Payment;
+use App\Facades\Settings;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -413,6 +414,33 @@ it('should get the specific multi payment fiat amount for a wallet recipient', f
     ]));
 
     assertMatchesSnapshot($this->subject->amountReceivedFiat('B'));
+});
+
+it('should get the total as fiat', function () {
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+    ]));
+
+    expect($this->subject->totalFiat())->toBe('$0.87');
+});
+
+it('should get small total values as fiat', function () {
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+    ]));
+
+    expect($this->subject->totalFiat(true))->toBe('$0.8721');
+});
+
+it('should get the total as cryptocurrency', function () {
+    Settings::shouldReceive('currency')
+        ->andReturn('BTC');
+
+    (new CryptoDataCache())->setPrices('BTC.week', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.000001,
+    ]));
+
+    expect($this->subject->totalFiat())->toBe('0.000003 BTC');
 });
 
 it('should get the confirmations', function () {
