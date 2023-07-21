@@ -12,10 +12,6 @@ const delimiters = {
 
 export const arktoshiToNumber = (value) => value / 1e8;
 
-export const getDelimiter = (delimiter) => {
-    return delimiters[delimiter] || ",";
-};
-
 export const timeSinceEpoch = (date, network) => {
     const epoch = dayjs(network.epoch);
 
@@ -36,6 +32,21 @@ export const getDateRange = (dateRange) => {
             dateTo = dateFrom.to;
             dateFrom = dateFrom.from;
         }
+    }
+
+    return [dateFrom, dateTo];
+};
+
+export const getCustomDateRange = (dateFrom = null, dateTo = null) => {
+    dateFrom = dateFrom ? dayjs(dateFrom) : null;
+    dateTo = dateTo ? dayjs(dateTo) : null;
+
+    if (dateFrom !== null && dateTo !== null && dateFrom > dateTo) {
+        [dateFrom, dateTo] = [dateTo, dateFrom];
+    }
+
+    if (dateTo) {
+        dateTo = dateTo.add(1, "day").subtract(1, "second");
     }
 
     return [dateFrom, dateTo];
@@ -95,7 +106,9 @@ export const generateCsv = (
 
     return encodeURI(
         "data:text/csv;charset=utf-8," +
-            csvRows.map((row) => row.join(getDelimiter(delimiter))).join("\n")
+            csvRows
+                .map((row) => row.join(delimiters[delimiter] || ","))
+                .join("\n")
     );
 };
 
