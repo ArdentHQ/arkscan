@@ -18,7 +18,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
