@@ -17,7 +17,6 @@ use ArkEcosystem\Crypto\Identities\Address;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
@@ -558,29 +557,6 @@ it('should determine the state icon', function () {
 it('should determine the type icon', function () {
     expect($this->subject->iconType())->toBeString();
 });
-
-it('should determine the type label', function (string $type, string $expectedSubCategory, string $expectedGeneralName) {
-    $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());
-
-    expect($subject->typeLabel())->toBe($expectedSubCategory);
-    expect(trans('general.transaction.types.'.Str::kebab($type)))->toBe($expectedGeneralName);
-})->with([
-    'secondSignature' => [
-        'secondSignature',
-        '2nd Signature',
-        '2nd Signature',
-    ],
-    'businessEntityRegistration' => [
-        'businessEntityRegistration',
-        'Business Registration',
-        'Business Registration',
-    ],
-    'legacyBusinessRegistration' => [
-        'legacyBusinessRegistration',
-        'Business Registration',
-        'Legacy Business Registration',
-    ],
-]);
 
 it('should determine transactions that doesnt have amount', function (string $type) {
     $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());

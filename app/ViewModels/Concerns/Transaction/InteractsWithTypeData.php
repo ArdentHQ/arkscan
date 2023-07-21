@@ -8,15 +8,6 @@ use Illuminate\Contracts\Translation\Translator;
 
 trait InteractsWithTypeData
 {
-    public function typeLabel(): string
-    {
-        if (app(Translator::class)->has('pages.transaction.types.'.$this->typeName())) {
-            return trans('pages.transaction.types.'.$this->typeName());
-        }
-
-        return trans('general.transaction.types.'.$this->iconType());
-    }
-
     public function hasExtraData(): bool
     {
         if ($this->isMultiSignature()) {
