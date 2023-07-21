@@ -159,14 +159,6 @@ final class WalletTransactionTable extends Component
             ->paginate($this->perPage);
     }
 
-    public function state(): array
-    {
-        return [
-            'address'   => $this->address,
-            'publicKey' => $this->publicKey,
-        ];
-    }
-
     private function hasAddressingFilters(): bool
     {
         if ($this->filter['incoming'] === true) {
