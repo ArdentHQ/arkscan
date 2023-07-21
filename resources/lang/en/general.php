@@ -119,13 +119,6 @@ return [
             'vote'                                => 'Vote',
             'unknown'                             => 'Unknown',
             'legacy'                              => 'Legacy',
-
-            // TODO: remove once legacy magistrate shows proper type texts
-            'business'                            => 'Business',
-            'bridgechain'                         => 'Bridgechain',
-            'module'                              => 'Module',
-            'product'                             => 'Product',
-            'plugin'                              => 'Plugin',
         ],
     ],
 
