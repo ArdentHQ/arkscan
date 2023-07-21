@@ -16,17 +16,21 @@
 <x-tables.filters.includes.item
     :attributes="$attributes->class('table-filter-item__checkbox')"
     :is-selected="$isSelected"
+    x-data="{
+        selected: {{ $isSelected ? 'true' : 'false' }},
+    }"
 >
     <x-ark-checkbox
         :name="$name"
         :model="$model ?? 'filter.'.$name"
         :label="$label"
-        :label-classes="Arr::toCssClasses([
-            'text-base',
-            'text-theme-secondary-900 dark:text-theme-secondary-200' => ! $isSelected,
-            'text-theme-primary-600 font-semibold dark:group-hover:text-theme-dark-blue-600 transition-default' => $isSelected,
-        ])"
+        label-classes="text-base"
+        alpine-label-class="{
+            'text-theme-secondary-900 dark:text-theme-secondary-200': ! selected,
+            'text-theme-primary-600 font-semibold dark:group-hover:text-theme-dark-blue-600 transition-default': selected,
+        }"
         class=""
+        x-model="selected"
         wrapper-class="flex-1"
     />
 </x-tables.filters.includes.item>
