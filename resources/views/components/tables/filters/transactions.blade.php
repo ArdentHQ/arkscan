@@ -1,4 +1,8 @@
-<x-general.dropdown.filter>
+@props([
+    'mobile' => false,
+])
+
+<x-general.dropdown.filter :mobile="$mobile">
     <div>
         <x-tables.filters.includes.checkbox
             name="select-all"
