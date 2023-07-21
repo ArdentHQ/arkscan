@@ -45,7 +45,7 @@ export const getCustomDateRange = (dateFrom = null, dateTo = null) => {
         [dateFrom, dateTo] = [dateTo, dateFrom];
     }
 
-    dateTo.add('day', 1).subtract('second', 1);
+    dateTo.add("day", 1).subtract("second", 1);
 
     return [dateFrom, dateTo];
 };
@@ -104,7 +104,9 @@ export const generateCsv = (
 
     return encodeURI(
         "data:text/csv;charset=utf-8," +
-            csvRows.map((row) => row.join(delimiters[delimiter] || ",")).join("\n")
+            csvRows
+                .map((row) => row.join(delimiters[delimiter] || ","))
+                .join("\n")
     );
 };
 

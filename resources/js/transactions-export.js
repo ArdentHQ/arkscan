@@ -356,7 +356,10 @@ const TransactionsExport = ({
 
         canExport() {
             if (this.dateRange === "custom") {
-                const [dateFrom, dateTo] = getCustomDateRange(this.dateFrom, this.dateTo);
+                const [dateFrom, dateTo] = getCustomDateRange(
+                    this.dateFrom,
+                    this.dateTo
+                );
 
                 if (dateFrom === null || dateTo === null) {
                     return false;
