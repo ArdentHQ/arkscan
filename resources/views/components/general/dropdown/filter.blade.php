@@ -5,7 +5,11 @@
 <x-general.dropdown.dropdown
     :placement="$mobile ? 'bottom' : 'right-start'"
     :placement-fallbacks="['bottom', 'bottom-end', 'left-start']"
-    dropdown-class="px-6 w-full md:px-8 table-filter md:w-[284px]"
+    :dropdown-class="Arr::toCssClasses([
+        'px-6 w-full md:px-8 table-filter',
+        'sm:max-w-[268px]' => $mobile,
+        'md:w-[284px]' => ! $mobile,
+    ])"
     :close-on-click="false"
     class=""
     :dropdown-wrapper-class="Arr::toCssClasses([
