@@ -41,6 +41,19 @@ export const getDateRange = (dateRange) => {
     return [dateFrom, dateTo];
 };
 
+export const getCustomDateRange = (dateFrom = null, dateTo = null) => {
+    dateFrom = dateFrom ? dayjs(dateFrom) : null;
+    dateTo = dateTo ? dayjs(dateTo) : null;
+
+    if (dateFrom !== null && dateTo !== null && dateFrom > dateTo) {
+        [dateFrom, dateTo] = [dateTo, dateFrom];
+    }
+
+    dateTo.add('day', 1).subtract('second', 1);
+
+    return [dateFrom, dateTo];
+};
+
 export const formatNumber = (value) => {
     return new Intl.NumberFormat(navigator.language).format(value);
 };
