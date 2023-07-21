@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use Illuminate\Contracts\Translation\Translator;
-
 trait InteractsWithTypeData
 {
     public function hasExtraData(): bool
