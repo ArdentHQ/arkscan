@@ -1,12 +1,10 @@
 @props([
     'blocks',
     'wallet' => null,
-    'state' => [],
     'noResultsMessage' => null,
 ])
 
 <x-tables.encapsulated-table
-    wire:key="{{ Helpers::generateId('blocks', ...$state) }}"
     class="hidden w-full rounded-t-none md:block"
     :rounded="false"
     :paginator="$blocks"
@@ -51,7 +49,7 @@
     </thead>
     <tbody>
         @foreach($blocks as $block)
-            <x-ark-tables.row wire:key="{{ Helpers::generateId('block-item', $block->id(), ...$state) }}">
+            <x-ark-tables.row wire:key="block-{{ $block->id() }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.block-height :model="$block" />
                 </x-ark-tables.cell>

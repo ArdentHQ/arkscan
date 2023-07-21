@@ -24,7 +24,7 @@
     </thead>
     <tbody>
         @foreach($wallets as $wallet)
-            <x-ark-tables.row  wire:key="wallet-{{ $wallet->address() }}">
+            <x-ark-tables.row wire:key="wallet-{{ $wallet->address() }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.address
                         :model="$wallet"

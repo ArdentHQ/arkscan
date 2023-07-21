@@ -1,12 +1,10 @@
 @props([
     'transactions',
     'wallet' => null,
-    'state' => [],
     'noResultsMessage' => null,
 ])
 
 <x-tables.encapsulated-table
-    wire:key="{{ Helpers::generateId('transactions', ...$state) }}"
     class="hidden w-full rounded-t-none md:block"
     :rounded="false"
     :paginator="$transactions"
@@ -42,7 +40,7 @@
     </thead>
     <tbody>
         @foreach($transactions as $transaction)
-            <x-ark-tables.row wire:key="{{ Helpers::generateId('transaction-item', $transaction->id(), ...$state) }}">
+            <x-ark-tables.row wire:key="transaction-{{ $transaction->id() }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.transaction-id :model="$transaction" />
                 </x-ark-tables.cell>
