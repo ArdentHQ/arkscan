@@ -19,6 +19,8 @@
     </x-loading.visible>
 @endif
 
-<x-loading.hidden>
-    {{ $slot }}
-</x-loading.hidden>
+<div wire:key="skeleton:voters:hidden">
+    <x-loading.hidden>
+        {{ $slot }}
+    </x-loading.hidden>
+</div>
