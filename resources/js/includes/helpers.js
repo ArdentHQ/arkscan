@@ -45,7 +45,9 @@ export const getCustomDateRange = (dateFrom = null, dateTo = null) => {
         [dateFrom, dateTo] = [dateTo, dateFrom];
     }
 
-    dateTo.add("day", 1).subtract("second", 1);
+    if (dateTo) {
+        dateTo = dateTo.add(1, 'day').subtract(1, 'second');
+    }
 
     return [dateFrom, dateTo];
 };
