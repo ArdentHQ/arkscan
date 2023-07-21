@@ -8,14 +8,12 @@
         <x-tables.desktop.wallet-transactions
             :transactions="$transactions"
             :wallet="$wallet"
-            :state="$this->state()"
             :no-results-message="$this->noResultsMessage"
         />
 
         <x-tables.mobile.wallet-transactions
             :transactions="$transactions"
             :wallet="$wallet"
-            :state="$this->state()"
             :no-results-message="$this->noResultsMessage"
         />
 
