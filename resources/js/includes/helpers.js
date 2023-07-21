@@ -12,10 +12,6 @@ const delimiters = {
 
 export const arktoshiToNumber = (value) => value / 1e8;
 
-export const getDelimiter = (delimiter) => {
-    return delimiters[delimiter] || ",";
-};
-
 export const timeSinceEpoch = (date, network) => {
     const epoch = dayjs(network.epoch);
 
@@ -108,7 +104,7 @@ export const generateCsv = (
 
     return encodeURI(
         "data:text/csv;charset=utf-8," +
-            csvRows.map((row) => row.join(getDelimiter(delimiter))).join("\n")
+            csvRows.map((row) => row.join(delimiters[delimiter] || ",")).join("\n")
     );
 };
 
