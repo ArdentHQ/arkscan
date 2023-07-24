@@ -63,7 +63,7 @@ it('should determine if transfer transaction is sent to self', function () {
     expect($transaction->isSentToSelf('recipient'))->toBeFalse();
 });
 
-it('should determine if multipayment transaction is sent to self', function () {
+it('should determine if multipayment transaction is sent to self when sender is part of recipients', function () {
     $transaction = new TransactionViewModel(Transaction::factory()
         ->multiPayment()
         ->create([
@@ -78,7 +78,7 @@ it('should determine if multipayment transaction is sent to self', function () {
             ],
         ]));
 
-    expect($transaction->isSentToSelf($this->sender->address))->toBeTrue();
+    expect($transaction->isSentToSelf($this->sender->address))->toBeFalse();
     expect($transaction->isSentToSelf('recipient-3'))->toBeFalse();
 });
 
@@ -422,6 +422,14 @@ it('should get the total as fiat', function () {
     ]));
 
     expect($this->subject->totalFiat())->toBe('$0.87');
+});
+
+it('should get small total values as fiat', function () {
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+    ]));
+
+    expect($this->subject->totalFiat(true))->toBe('$0.8721');
 });
 
 it('should get the total as cryptocurrency', function () {
