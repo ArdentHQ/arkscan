@@ -27,7 +27,7 @@ trait HasDirection
             return true;
         }
 
-        if ($this->isMultipayment() && $this->sender() !== null && $address === $this->sender()->address) {
+        if ($this->isMultiPayment() && $this->sender() !== null && $address === $this->sender()->address) {
             return false;
         }
 
