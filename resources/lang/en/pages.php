@@ -13,6 +13,14 @@ return [
         'total_rewards'         => 'Total Rewards',
         'total_rewards_tooltip' => 'Includes :0 Block Reward',
         'block_id_copied'       => 'Block ID Copied',
+
+        'block_details' => 'Block Details',
+
+        'header' => [
+            'timestamp'    => 'Timestamp',
+            'height'       => 'Height',
+            'transactions' => 'Transactions',
+        ],
     ],
 
     'home'             => [
