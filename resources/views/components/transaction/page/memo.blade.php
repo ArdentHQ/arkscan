@@ -2,7 +2,7 @@
 
 @php ($vendorField = $transaction->vendorField())
 
-<x-transaction.page-section
+<x-general.page-section.container
     :title="trans('pages.transaction.memo')"
     wrapper-class="font-normal leading-7"
 >
@@ -15,4 +15,4 @@
             {{ $vendorField }}
         </span>
     @endif
-</x-transaction.page-section>
+</x-general.page-section.container>

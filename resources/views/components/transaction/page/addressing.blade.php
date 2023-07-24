@@ -1,35 +1,35 @@
 @props(['transaction'])
 
-<x-transaction.page-section :title="trans('pages.transaction.addressing')">
-    <x-transaction.section-detail.row
+<x-general.page-section.container :title="trans('pages.transaction.addressing')">
+    <x-general.page-section.row
         :title="trans('pages.transaction.header.from')"
         :transaction="$transaction"
     >
-        <x-transaction.section-detail.address
+        <x-transaction.page.section-detail.address
             :address="$transaction->sender()->address()"
             class="inline-block"
         />
-    </x-transaction.section-detail.row>
+    </x-general.page-section.row>
 
     @if ($transaction->isTransfer())
-        <x-transaction.section-detail.row
+        <x-general.page-section.row
             :title="trans('pages.transaction.header.to')"
             :transaction="$transaction"
         >
-            <x-transaction.section-detail.address
+            <x-transaction.page.section-detail.address
                 :address="$transaction->recipient()->address()"
                 class="inline-block"
             />
-        </x-transaction.section-detail.row>
+        </x-general.page-section.row>
     @elseif ($transaction->isMultiPayment())
-        <x-transaction.section-detail.row
+        <x-general.page-section.row
             :title="trans('pages.transaction.header.to')"
             :transaction="$transaction"
         >
-            <x-transaction.section-detail.recipients
+            <x-transaction.page.section-detail.recipients
                 :transaction="$transaction"
                 class="inline-block"
             />
-        </x-transaction.section-detail.row>
+        </x-general.page-section.row>
     @endif
-</x-transaction.page-section>
+</x-general.page-section.container>
