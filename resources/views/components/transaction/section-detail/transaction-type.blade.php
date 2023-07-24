@@ -65,7 +65,7 @@
     @elseif ($transaction->isLegacy())
         <x-transaction.section-detail.row
             :title="trans('pages.transaction.header.sub_category')"
-            :value="$transaction->typeLabel()"
+            :value="trans('pages.transaction.types.'.$transaction->typeName())"
             :transaction="$transaction"
         />
     @endif
