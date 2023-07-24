@@ -7,8 +7,8 @@ import {
     arktoshiToNumber,
     formatNumber,
     generateCsv,
+    getCustomDateRange,
     getDateRange,
-    getDelimiter,
     timeSinceEpoch,
 } from "./includes/helpers";
 import {
@@ -264,21 +264,10 @@ const TransactionsExport = ({
 
         getDateRange() {
             if (this.dateRange === "custom") {
-                return this.getCustomDateRange();
+                return getCustomDateRange(this.dateFrom, this.dateTo);
             }
 
             return getDateRange(this.dateRange);
-        },
-
-        getCustomDateRange() {
-            let dateFrom = this.dateFrom ? dayjs(this.dateFrom) : null;
-            let dateTo = this.dateTo ? dayjs(this.dateTo) : null;
-
-            if (dateFrom !== null && dateTo !== null && dateFrom > dateTo) {
-                [dateFrom, dateTo] = [dateTo, dateFrom];
-            }
-
-            return [dateFrom, dateTo];
         },
 
         requestData(withoutTransactionTypes = false) {
@@ -367,7 +356,10 @@ const TransactionsExport = ({
 
         canExport() {
             if (this.dateRange === "custom") {
-                const [dateFrom, dateTo] = this.getCustomDateRange();
+                const [dateFrom, dateTo] = getCustomDateRange(
+                    this.dateFrom,
+                    this.dateTo
+                );
 
                 if (dateFrom === null || dateTo === null) {
                     return false;
