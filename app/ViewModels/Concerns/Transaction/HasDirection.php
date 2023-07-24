@@ -27,17 +27,7 @@ trait HasDirection
             return true;
         }
 
-        if ($this->isMultiPayment() && $this->sender() !== null && $address === $this->sender()->address) {
-            return false;
-        }
-
-        /** @var array<int, array<string, string>> */
-        $payments = Arr::get($this->transaction, 'asset.payments', []);
-
-        return collect($payments)->some(function ($payment) use ($address) {
-            /** @var array $payment */
-            return $address === $payment['recipientId'];
-        });
+        return false;
     }
 
     public function isReceived(string $address): bool
