@@ -12,6 +12,7 @@ return [
         'transactions'          => 'Transactions',
         'total_rewards'         => 'Total Rewards',
         'total_rewards_tooltip' => 'Includes :0 Block Reward',
+        'block_id_copied'       => 'Block ID Copied',
     ],
 
     'home'             => [
