@@ -1,7 +1,7 @@
 @props(['transaction'])
 
 <x-general.page-section.container :title="trans('pages.transaction.addressing')">
-    <x-general.page-section.row
+    <x-transaction.page.section-detail.row
         :title="trans('pages.transaction.header.from')"
         :transaction="$transaction"
     >
@@ -9,10 +9,10 @@
             :address="$transaction->sender()->address()"
             class="inline-block"
         />
-    </x-general.page-section.row>
+    </x-transaction.page.section-detail.row>
 
     @if ($transaction->isTransfer())
-        <x-general.page-section.row
+        <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.to')"
             :transaction="$transaction"
         >
@@ -20,9 +20,9 @@
                 :address="$transaction->recipient()->address()"
                 class="inline-block"
             />
-        </x-general.page-section.row>
+        </x-transaction.page.section-detail.row>
     @elseif ($transaction->isMultiPayment())
-        <x-general.page-section.row
+        <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.to')"
             :transaction="$transaction"
         >
@@ -30,6 +30,6 @@
                 :transaction="$transaction"
                 class="inline-block"
             />
-        </x-general.page-section.row>
+        </x-transaction.page.section-detail.row>
     @endif
 </x-general.page-section.container>
