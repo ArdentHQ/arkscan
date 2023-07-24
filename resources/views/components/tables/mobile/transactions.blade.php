@@ -9,7 +9,7 @@
     'state' => [],
 ])
 
-<div class="divide-y table-list-mobile" wire:key="{{ Helpers::generateId('transactions-mobile', ...$state) }}">
+<div class="divide-y table-list-mobile" wire:key="{{ Helpers::generateId('transactions-mobile') }}">
     @foreach ($transactions as $transaction)
         <div class="table-list-mobile-row">
             <x-tables.rows.mobile.transaction-id :model="$transaction" />
