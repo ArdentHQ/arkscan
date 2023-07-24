@@ -53,7 +53,7 @@ it('should render the page without any errors', function ($type) {
 it('should render the page for a vote/unvote transaction without any errors', function ($type) {
     $this->withoutExceptionHandling();
 
-    $delegate = Wallet::factory()->activeDelegate()->create();
+    $delegate    = Wallet::factory()->activeDelegate()->create();
     $transaction = Transaction::factory()->{$type}()->create([
         'asset' => [
             'votes' => ['+'.$delegate->public_key],
