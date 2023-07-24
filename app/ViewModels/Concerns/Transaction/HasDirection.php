@@ -27,6 +27,10 @@ trait HasDirection
             return true;
         }
 
+        if ($this->isMultipayment() && $this->sender() !== null && $address === $this->sender()->address) {
+            return false;
+        }
+
         /** @var array<int, array<string, string>> */
         $payments = Arr::get($this->transaction, 'asset.payments', []);
 

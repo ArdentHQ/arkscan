@@ -63,7 +63,7 @@ it('should determine if transfer transaction is sent to self', function () {
     expect($transaction->isSentToSelf('recipient'))->toBeFalse();
 });
 
-it('should determine if multipayment transaction is sent to self', function () {
+it('should determine if multipayment transaction is sent to self when sender is part of recipients', function () {
     $transaction = new TransactionViewModel(Transaction::factory()
         ->multiPayment()
         ->create([
@@ -78,7 +78,7 @@ it('should determine if multipayment transaction is sent to self', function () {
             ],
         ]));
 
-    expect($transaction->isSentToSelf($this->sender->address))->toBeTrue();
+    expect($transaction->isSentToSelf($this->sender->address))->toBeFalse();
     expect($transaction->isSentToSelf('recipient-3'))->toBeFalse();
 });
 
