@@ -10,6 +10,8 @@
 
         <div>
             <x-block.page.details :block="$block" />
+
+            <x-block.page.summary :block="$block" />
         </div>
     @endsection
 @endcomponent

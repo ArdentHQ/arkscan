@@ -15,11 +15,15 @@ return [
         'block_id_copied'       => 'Block ID Copied',
 
         'block_details' => 'Block Details',
+        'block_summary' => 'Block Summary',
 
         'header' => [
             'timestamp'    => 'Timestamp',
             'height'       => 'Height',
             'transactions' => 'Transactions',
+            'volume'       => 'Volume',
+            'block_reward' => 'Block Reward',
+            'total_fees'   => 'Total Fees',
         ],
     ],
 
