@@ -16,7 +16,7 @@
     />
 
     @if (Network::canBeExchanged())
-        @if (ExchangeRate::convertNumerical($transaction->amountWithFee(), $transaction->model()->timestamp) < 0.01)
+        @if (ExplorerNumberFormatter::isFiat(Settings::currency()) && ExchangeRate::convertNumerical($transaction->amountWithFee(), $transaction->model()->timestamp) < 0.01)
             <x-transaction.section-detail.row
                 :title="trans('pages.transaction.header.value')"
                 :value="'<'.ExplorerNumberFormatter::currency(0.01, Settings::currency())"
