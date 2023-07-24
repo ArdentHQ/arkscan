@@ -21,7 +21,7 @@
                 <x-transaction.page.memo :transaction="$transaction" />
             @endif
 
-            <x-transaction.page.confirmations :transaction="$transaction" />
+            <x-general.page-section.confirmations :model="$transaction" />
 
             @if ($transaction->isMultiPayment())
                 <x-transaction.page.recipient-list :transaction="$transaction" />
