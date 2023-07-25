@@ -10,6 +10,8 @@
 
         <div>
             <x-block.page.details :block="$block" />
+
+            <x-block.page.generated-by :block="$block" />
         </div>
     @endsection
 @endcomponent

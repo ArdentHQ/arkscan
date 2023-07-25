@@ -17,21 +17,21 @@
             :title="trans('pages.transaction.header.old_delegate')"
             :transaction="$transaction"
         >
-            <x-transaction.page.section-detail.delegate :delegate="$transaction->unvoted()" />
+            <x-general.page-section.data.delegate :delegate="$transaction->unvoted()" />
         </x-transaction.page.section-detail.row>
 
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.new_delegate')"
             :transaction="$transaction"
         >
-            <x-transaction.page.section-detail.delegate :delegate="$transaction->voted()" />
+            <x-general.page-section.data.delegate :delegate="$transaction->voted()" />
         </x-transaction.page.section-detail.row>
     @elseif ($transaction->isVote() || $transaction->isUnvote())
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.delegate')"
             :transaction="$transaction"
         >
-            <x-transaction.page.section-detail.delegate :delegate="$transaction->isVote() ? $transaction->voted() : $transaction->unvoted()" />
+            <x-general.page-section.data.delegate :delegate="$transaction->isVote() ? $transaction->voted() : $transaction->unvoted()" />
         </x-transaction.page.section-detail.row>
     @elseif ($transaction->isMultisignature())
         <x-transaction.page.section-detail.row
