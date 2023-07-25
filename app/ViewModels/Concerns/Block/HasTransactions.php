@@ -6,19 +6,12 @@ namespace App\ViewModels\Concerns\Block;
 
 use App\Services\ExchangeRate;
 use App\ViewModels\TransactionViewModel;
-use Illuminate\Support\Collection;
 
 trait HasTransactions
 {
     public function transactionCount(): int
     {
         return $this->block->number_of_transactions;
-    }
-
-    public function transactions(): Collection
-    {
-        return $this->block->transactions
-            ->map(fn ($transaction) => new TransactionViewModel($transaction));
     }
 
     public function amount(): float

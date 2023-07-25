@@ -1,4 +1,7 @@
-@props(['block'])
+@props([
+    'transactions',
+    'withLazyLoading' => false,
+])
 
 <x-tables.encapsulated-table
     wire:key="{{ Helpers::generateId('block-transactions') }}"
@@ -30,7 +33,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($block->transactions() as $transaction)
+        @foreach($transactions as $transaction)
             <x-ark-tables.row wire:key="{{ Helpers::generateId('transaction-item', $transaction->id()) }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.transaction-id
@@ -63,5 +66,22 @@
                 </x-ark-tables.cell>
             </x-ark-tables.row>
         @endforeach
+
+        @if ($withLazyLoading && ! $this->isOnLastPage())
+            <tr
+                class="hidden"
+                wire:loading.class.remove="hidden"
+            >
+                <td colspan="5">
+                    <div class="flex items-center justify-center">
+                        <x-ark-loader-icon
+                            class="w-8 h-8"
+                            path-class="fill-theme-primary-600 dark:fill-theme-dark-blue-400"
+                            circle-class="stroke-theme-primary-100 dark:stroke-theme-dark-700"
+                        />
+                    </div>
+                </td>
+            </tr>
+        @endif
     </tbody>
 </x-tables.encapsulated-table>
