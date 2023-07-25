@@ -10,6 +10,8 @@
 
         <div>
             <x-block.page.details :block="$block" />
+
+            <x-block.page.transaction-list :block="$block" />
         </div>
     @endsection
 @endcomponent

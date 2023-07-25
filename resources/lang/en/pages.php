@@ -15,6 +15,7 @@ return [
         'block_id_copied'       => 'Block ID Copied',
 
         'block_details' => 'Block Details',
+        'transactions'  => 'Transactions',
 
         'header' => [
             'timestamp'    => 'Timestamp',
