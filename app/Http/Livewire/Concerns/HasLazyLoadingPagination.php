@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\Concerns;
+declare(strict_types=1);
 
-use Illuminate\Support\Collection;
+namespace App\Http\Livewire\Concerns;
 
 trait HasLazyLoadingPagination
 {
