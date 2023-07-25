@@ -15,14 +15,14 @@ trait HasLazyLoadingPagination
         return [];
     }
 
-    public function isOnLastPage($pageName = 'page'): bool
+    public function isOnLastPage(string $pageName = 'page'): bool
     {
         $nextPage = $this->paginators[$pageName] + 1;
 
         return $nextPage > ceil($this->totalCount / $this->perPage);
     }
 
-    public function nextPage($pageName = 'page'): void
+    public function nextPage(string $pageName = 'page'): void
     {
         if ($this->isOnLastPage($pageName)) {
             return;
