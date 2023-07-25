@@ -9,7 +9,7 @@
     @if (! $this->isOnLastPage())
         <div class="md:hidden">
             <div
-                class="items-center justify-center mt-3"
+                class="justify-center items-center mt-3"
                 wire:loading.flex
             >
                 <x-ark-loader-icon
