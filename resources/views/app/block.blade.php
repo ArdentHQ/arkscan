@@ -11,6 +11,8 @@
         <div>
             <x-block.page.details :block="$block" />
 
+            <x-block.page.generated-by :block="$block" />
+
             <x-general.page-section.confirmations :model="$block" />
         </div>
     @endsection
