@@ -73,7 +73,7 @@
                 wire:loading.class.remove="hidden"
             >
                 <td colspan="5">
-                    <div class="flex items-center justify-center">
+                    <div class="flex justify-center items-center">
                         <x-ark-loader-icon
                             class="w-8 h-8"
                             path-class="fill-theme-primary-600 dark:fill-theme-dark-blue-400"
