@@ -1,4 +1,7 @@
-@props(['model'])
+@props([
+    'model',
+    'withoutAge' => false,
+])
 
 <div class="flex flex-col md:space-y-1 xl:space-y-0">
     <a
@@ -8,8 +11,10 @@
         <x-truncate-middle>{{ $model->id() }}</x-truncate-middle>
     </a>
 
-    <x-tables.rows.desktop.encapsulated.age
-        :model="$model"
-        class="hidden text-xs md:block xl:hidden leading-[15px]"
-    />
+    @unless ($withoutAge)
+        <x-tables.rows.desktop.encapsulated.age
+            :model="$model"
+            class="hidden text-xs md:block xl:hidden leading-[15px]"
+        />
+    @endunless
 </div>

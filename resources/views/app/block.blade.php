@@ -16,6 +16,10 @@
             <x-block.page.summary :block="$block" />
 
             <x-general.page-section.confirmations :model="$block" />
+
+            @if ($block->transactionCount() > 0)
+                <x-block.page.transaction-list :block="$block" />
+            @endif
         </div>
     @endsection
 @endcomponent
