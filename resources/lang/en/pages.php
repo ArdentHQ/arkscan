@@ -77,7 +77,6 @@ return [
         'memo'                  => 'Memo (SmartBridge)',
         'recipients_list'       => 'Recipients List',
         'participants'          => 'Participants',
-        'confirmations'         => 'Confirmations',
         'transaction_summary'   => 'Transaction Summary',
 
         'header' => [
