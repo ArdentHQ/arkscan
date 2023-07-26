@@ -15,8 +15,7 @@ it('should list the first transactions for the giving block id', function () {
     $block = Block::factory()->create();
     Transaction::factory(25)->transfer()->create(['block_id' => $block->id]);
 
-    $component = Livewire::test(BlockTransactionsTable::class, ['block' => new BlockViewModel($block)])
-        ->call('setIsReady');
+    $component = Livewire::test(BlockTransactionsTable::class, ['block' => new BlockViewModel($block)]);
 
     foreach (ViewModelFactory::paginate($block->transactions()->paginate(25))->items() as $transaction) {
         $component->assertSee($transaction->id());
@@ -45,7 +44,6 @@ it('should load the next batch of transactions', function () {
     ]);
 
     $component = Livewire::test(BlockTransactionsTable::class, ['block' => new BlockViewModel($block)])
-        ->call('setIsReady')
         ->assertCount('lazyLoadedData', 25);
 
     foreach ($visibleTransactions as $transaction) {
@@ -90,7 +88,6 @@ it('should not go past the last page', function () {
     ]);
 
     Livewire::test(BlockTransactionsTable::class, ['block' => new BlockViewModel($block)])
-        ->call('setIsReady')
         ->assertSet('page', 1)
         ->assertCount('lazyLoadedData', 25)
         ->call('nextPage')
