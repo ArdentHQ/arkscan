@@ -35,7 +35,7 @@
 
         <div>
             @if ($model->isTransfer())
-                @php ($recipient = $model->sender())
+                @php ($recipient = $model->recipient())
 
                 <a
                     class="link"

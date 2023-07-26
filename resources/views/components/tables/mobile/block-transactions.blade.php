@@ -1,9 +1,7 @@
-@props([
-    'block',
-])
+@props(['transactions'])
 
 <x-tables.mobile.includes.encapsulated wire:key="{{ Helpers::generateId('block-transactions-mobile') }}">
-    @foreach ($block->transactions() as $transaction)
+    @foreach ($transactions as $transaction)
         <x-tables.rows.mobile>
             <x-slot name="header">
                 <x-tables.rows.mobile.encapsulated.transaction-id
