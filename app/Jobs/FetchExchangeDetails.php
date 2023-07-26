@@ -27,7 +27,7 @@ final class FetchExchangeDetails implements ShouldQueue
      *
      * @var int
      */
-    public $tries = 5;
+    public $tries = 10;
 
     /**
      * Create a new job instance.
@@ -58,9 +58,12 @@ final class FetchExchangeDetails implements ShouldQueue
     {
         try {
             $result = app(MarketDataProvider::class)->exchangeDetails($this->exchange);
-        } catch (CoinGeckoThrottledException $e) {
-            // Release back to the queue
-            $this->release(60); // 60 seconds = 1 minute
+        } catch (CoinGeckoThrottledException) {
+            if ($this->attempts() === $this->tries) {
+                $this->delete();
+            } else {
+                $this->release(60); // 60 seconds = 1 minute
+            }
 
             return;
         }
