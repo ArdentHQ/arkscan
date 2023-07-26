@@ -14,5 +14,6 @@
     <x-block.page.section-detail.row
         :title="trans('pages.block.header.transactions')"
         :value="$block->transactionCount()"
+        allow-empty
     />
 </x-general.page-section.container>
