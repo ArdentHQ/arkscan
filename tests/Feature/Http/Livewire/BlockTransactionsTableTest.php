@@ -75,3 +75,31 @@ it('should load the next batch of transactions', function () {
         $component->assertDontSee($transaction->id);
     }
 });
+
+it('should not go past the last page', function () {
+    $block = Block::factory()->create([
+        'number_of_transactions' => 27,
+    ]);
+    Transaction::factory(2)->transfer()->create([
+        'block_id'  => $block->id,
+        'timestamp' => Timestamp::now()->sub(1, 'day')->timestamp,
+    ]);
+    Transaction::factory(25)->transfer()->create([
+        'block_id'  => $block->id,
+        'timestamp' => Timestamp::now()->timestamp,
+    ]);
+
+    Livewire::test(BlockTransactionsTable::class, ['block' => new BlockViewModel($block)])
+        ->call('setIsReady')
+        ->assertSet('page', 1)
+        ->assertCount('lazyLoadedData', 25)
+        ->call('nextPage')
+        ->assertSet('page', 2)
+        ->assertCount('lazyLoadedData', 27)
+        ->call('nextPage')
+        ->assertSet('page', 2)
+        ->assertCount('lazyLoadedData', 27)
+        ->call('nextPage')
+        ->assertSet('page', 2)
+        ->assertCount('lazyLoadedData', 27);
+});
