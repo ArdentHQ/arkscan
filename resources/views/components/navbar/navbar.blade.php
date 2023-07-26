@@ -85,6 +85,7 @@
                             <x-navbar.button
                                 @click="Livewire.emit('openSearchModal')"
                                 dusk="navigation-search-modal-trigger"
+                                :disabled="app()->isDownForMaintenance()"
                             >
                                 <x-ark-icon name="magnifying-glass" />
 

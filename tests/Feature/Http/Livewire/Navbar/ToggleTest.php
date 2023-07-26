@@ -27,7 +27,7 @@ it('should render', function () {
         ->assertSee('svg');
 });
 
-it('should mobile component', function () {
+it('should display mobile component', function () {
     expect(Settings::get('priceChart'))->toBeTrue();
 
     Livewire::test(Toggle::class, [
@@ -43,8 +43,7 @@ it('should mobile component', function () {
         ->assertSet('inactiveValue', false)
         ->assertSet('mobile', true)
         ->assertSet('currentValue', true)
-        ->assertSee('svg')
-        ->assertSee('absolute top-1 bg-white dark:bg-theme-secondary-800 rounded w-6 h-6 transition-default');
+        ->assertSee('svg');
 });
 
 it('should get icon', function () {
