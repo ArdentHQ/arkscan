@@ -16,9 +16,14 @@
     ][$breakpoint] ?? 'md:flex-row md:items-center md:space-y-0 md:space-x-3';
 
     $labelBreakpointClass = [
-        'sm' => 'sm:px-4 sm:py-[14.5px] sm:bg-theme-secondary-200 sm:dark:bg-black sm:text-base md:text-lg sm:!leading-[21px]',
+        'sm' => 'sm:px-4 sm:py-[14.5px] sm:bg-theme-secondary-200 sm:dark:bg-black sm:text-base sm:text-lg sm:!leading-[21px]',
         'md' => 'md:px-4 md:py-[14.5px] md:bg-theme-secondary-200 md:dark:bg-black md:text-lg md:!leading-[21px]',
     ][$breakpoint] ?? 'md:px-4 md:py-[14.5px] md:bg-theme-secondary-200 md:dark:bg-black md:text-lg md:!leading-[21px]';
+
+    $contentBreakpointClass = [
+        'sm' => 'sm:leading-[21px] sm:text-lg',
+        'md' => 'md:leading-[21px] md:text-lg',
+    ][$breakpoint] ?? 'md:leading-[21px] md:text-lg';
 @endphp
 
 <div
@@ -40,7 +45,10 @@
                 {{ $label }}
             </div>
 
-            <div class="min-w-0 leading-5 text-theme-secondary-900 md:leading-[21px] dark:text-theme-secondary-200">
+            <div @class([
+                'min-w-0 leading-5 text-theme-secondary-900 dark:text-theme-secondary-200',
+                $contentBreakpointClass,
+            ])>
                 {{ $slot }}
             </div>
         </div>
