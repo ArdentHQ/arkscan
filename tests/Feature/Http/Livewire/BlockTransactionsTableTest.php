@@ -2,67 +2,104 @@
 
 declare(strict_types=1);
 
-use App\Facades\Network;
-use App\Facades\Settings;
 use App\Http\Livewire\BlockTransactionsTable;
 use App\Models\Block;
 use App\Models\Transaction;
-use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
+use App\Services\Timestamp;
+use App\ViewModels\BlockViewModel;
 use App\ViewModels\ViewModelFactory;
-use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
 it('should list the first transactions for the giving block id', function () {
     $block = Block::factory()->create();
     Transaction::factory(25)->transfer()->create(['block_id' => $block->id]);
 
-    $component = Livewire::test(BlockTransactionsTable::class, ['blockId' => $block->id]);
+    $component = Livewire::test(BlockTransactionsTable::class, ['block' => new BlockViewModel($block)])
+        ->call('setIsReady');
 
     foreach (ViewModelFactory::paginate($block->transactions()->paginate(25))->items() as $transaction) {
         $component->assertSee($transaction->id());
-        $component->assertSee($transaction->timestamp());
         $component->assertSee($transaction->sender()->address());
         $component->assertSee($transaction->recipient()->address());
-        $component->assertSee(NumberFormatter::currency($transaction->amount(), Network::currency()));
-        $component->assertSee(NumberFormatter::currency($transaction->fee(), Network::currency()));
+        $component->assertSee(NumberFormatter::networkCurrency($transaction->amount()));
+        $component->assertSee(NumberFormatter::networkCurrency($transaction->fee()));
     }
 });
 
-it('should update the records fiat tooltip when currency changed', function () {
-    Config::set('arkscan.networks.development.canBeExchanged', true);
-
-    (new CryptoDataCache())->setPrices('USD.week', collect([
-        '2020-10-19' => 24210,
-    ]));
-
-    (new CryptoDataCache())->setPrices('BTC.week', collect([
-        '2020-10-19' => 0.1234567,
-    ]));
-
-    $block = Block::factory()->create();
-
-    Transaction::factory()->create([
-        'block_id'          => $block->id,
-        'timestamp'         => 112982056,
-        'amount'            => 499 * 1e8,
+it('should load the next batch of transactions', function () {
+    $block = Block::factory()->create([
+        'number_of_transactions' => 54,
+    ]);
+    $thirdPageTransactions = Transaction::factory(4)->transfer()->create([
+        'block_id'  => $block->id,
+        'timestamp' => Timestamp::now()->sub(2, 'days')->timestamp,
+    ]);
+    $secondPageTransactions = Transaction::factory(25)->transfer()->create([
+        'block_id'  => $block->id,
+        'timestamp' => Timestamp::now()->sub(1, 'day')->timestamp,
+    ]);
+    $visibleTransactions = Transaction::factory(25)->transfer()->create([
+        'block_id'  => $block->id,
+        'timestamp' => Timestamp::now()->timestamp,
     ]);
 
-    $component = Livewire::test(BlockTransactionsTable::class, ['blockId' => $block->id]);
+    $component = Livewire::test(BlockTransactionsTable::class, ['block' => new BlockViewModel($block)])
+        ->call('setIsReady')
+        ->assertCount('lazyLoadedData', 25);
 
-    $expectedValue = NumberFormatter::currency(12080790, 'USD');
+    foreach ($visibleTransactions as $transaction) {
+        $component->assertSee($transaction->id);
+    }
 
-    $component->assertSeeHtml('data-tippy-content="'.$expectedValue.'"');
-    $component->assertDontSeeHtml('data-tippy-content="61.6048933 BTC"');
+    foreach ($secondPageTransactions as $transaction) {
+        $component->assertDontSee($transaction->id);
+    }
 
-    $settings             = Settings::all();
-    $settings['currency'] = 'BTC';
+    foreach ($thirdPageTransactions as $transaction) {
+        $component->assertDontSee($transaction->id);
+    }
 
-    Settings::shouldReceive('all')->andReturn($settings);
-    Settings::shouldReceive('currency')->andReturn('BTC');
+    $component->call('nextPage')
+        ->assertCount('lazyLoadedData', 50);
 
-    $component->emit('currencyChanged', 'BTC');
+    foreach ($visibleTransactions as $transaction) {
+        $component->assertSee($transaction->id);
+    }
 
-    $component->assertDontSeeHtml('data-tippy-content="'.$expectedValue.'"');
-    $component->assertSeeHtml('data-tippy-content="61.6048933 BTC"');
+    foreach ($secondPageTransactions as $transaction) {
+        $component->assertSee($transaction->id);
+    }
+
+    foreach ($thirdPageTransactions as $transaction) {
+        $component->assertDontSee($transaction->id);
+    }
+});
+
+it('should not go past the last page', function () {
+    $block = Block::factory()->create([
+        'number_of_transactions' => 27,
+    ]);
+    Transaction::factory(2)->transfer()->create([
+        'block_id'  => $block->id,
+        'timestamp' => Timestamp::now()->sub(1, 'day')->timestamp,
+    ]);
+    Transaction::factory(25)->transfer()->create([
+        'block_id'  => $block->id,
+        'timestamp' => Timestamp::now()->timestamp,
+    ]);
+
+    Livewire::test(BlockTransactionsTable::class, ['block' => new BlockViewModel($block)])
+        ->call('setIsReady')
+        ->assertSet('page', 1)
+        ->assertCount('lazyLoadedData', 25)
+        ->call('nextPage')
+        ->assertSet('page', 2)
+        ->assertCount('lazyLoadedData', 27)
+        ->call('nextPage')
+        ->assertSet('page', 2)
+        ->assertCount('lazyLoadedData', 27)
+        ->call('nextPage')
+        ->assertSet('page', 2)
+        ->assertCount('lazyLoadedData', 27);
 });

@@ -8,26 +8,18 @@
     @section('content')
         <x-page-headers.block :block="$block" />
 
-        <x-details.grid>
-            <x-grid.height :model="$block" />
+        <div>
+            <x-block.page.details :block="$block" />
 
-            <x-grid.timestamp :model="$block" />
+            <x-block.page.generated-by :block="$block" />
 
-            <x-grid.fee :model="$block" />
+            <x-block.page.summary :block="$block" />
 
-            <x-grid.confirmations :model="$block" />
-        </x-details.grid>
+            <x-general.page-section.confirmations :model="$block" />
 
-        @if($hasTransactions)
-            <x-ark-container class="border-t border-theme-secondary-300 dark:border-theme-secondary-800">
-                <div id="transaction-list" class="w-full">
-                    <div class="flex relative justify-between items-end mb-3">
-                        <h3>@lang('pages.block.transactions')</h3>
-                    </div>
-
-                    <livewire:block-transactions-table :block-id="$block->id()" />
-                </div>
-            </x-ark-container>
-        @endif
+            @if ($block->transactionCount() > 0)
+                <x-block.page.transaction-list :block="$block" />
+            @endif
+        </div>
     @endsection
 @endcomponent

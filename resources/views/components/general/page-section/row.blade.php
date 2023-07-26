@@ -1,19 +1,10 @@
 @props([
-    'transaction',
     'title',
+    'headerWidth' => 'w-[87px]',
     'value' => null,
     'valueClass' => null,
     'tooltip' => null,
 ])
-
-@php
-    $headerWidth = 'w-[87px]';
-    if ($transaction->isVoteCombination()) {
-        $headerWidth = 'w-[109px]';
-    } elseif ($transaction->isLegacy()) {
-        $headerWidth = 'w-[110px]';
-    }
-@endphp
 
 <div {{ $attributes->class('flex items-center space-x-4') }}>
     <div @class([
