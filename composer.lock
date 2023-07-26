@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2aa6328af913f9f7d658c5610736158",
+    "content-hash": "983051beb87a2ee693f070bf13778d81",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -120,16 +120,16 @@
         },
         {
             "name": "arkecosystem/foundation",
-            "version": "13.13.0",
+            "version": "13.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-foundation.git",
-                "reference": "b5ee57639a4760614daa789aeae136ac092ac820"
+                "reference": "e988952a7dd15d5d7573ac92f3788e770d3410ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/b5ee57639a4760614daa789aeae136ac092ac820",
-                "reference": "b5ee57639a4760614daa789aeae136ac092ac820",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/e988952a7dd15d5d7573ac92f3788e770d3410ef",
+                "reference": "e988952a7dd15d5d7573ac92f3788e770d3410ef",
                 "shasum": ""
             },
             "require": {
@@ -227,9 +227,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by Tailwind CSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-foundation/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/13.13.0"
+                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/13.14.0"
             },
-            "time": "2023-07-12T17:21:18+00:00"
+            "time": "2023-07-26T11:30:29+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -4005,16 +4005,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v9.52.10",
+            "version": "v9.52.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "858add225ce88a76c43aec0e7866288321ee0ee9"
+                "reference": "4b8fd76b4329fa706f1f9469406fba19822f7558"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/858add225ce88a76c43aec0e7866288321ee0ee9",
-                "reference": "858add225ce88a76c43aec0e7866288321ee0ee9",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/4b8fd76b4329fa706f1f9469406fba19822f7558",
+                "reference": "4b8fd76b4329fa706f1f9469406fba19822f7558",
                 "shasum": ""
             },
             "require": {
@@ -4199,7 +4199,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2023-06-27T13:25:54+00:00"
+            "time": "2023-07-25T14:31:07+00:00"
         },
         {
             "name": "laravel/horizon",
@@ -4356,16 +4356,16 @@
         },
         {
             "name": "laravel/serializable-closure",
-            "version": "v1.3.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/serializable-closure.git",
-                "reference": "f23fe9d4e95255dacee1bf3525e0810d1a1b0f37"
+                "reference": "e5a3057a5591e1cfe8183034b0203921abe2c902"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/f23fe9d4e95255dacee1bf3525e0810d1a1b0f37",
-                "reference": "f23fe9d4e95255dacee1bf3525e0810d1a1b0f37",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/e5a3057a5591e1cfe8183034b0203921abe2c902",
+                "reference": "e5a3057a5591e1cfe8183034b0203921abe2c902",
                 "shasum": ""
             },
             "require": {
@@ -4412,7 +4412,7 @@
                 "issues": "https://github.com/laravel/serializable-closure/issues",
                 "source": "https://github.com/laravel/serializable-closure"
             },
-            "time": "2023-01-30T18:31:20+00:00"
+            "time": "2023-07-14T13:56:28+00:00"
         },
         {
             "name": "laravel/telescope",
@@ -8035,16 +8035,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.22.1",
+            "version": "1.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "65c39594fbd8c67abfc68bb323f86447bab79cc0"
+                "reference": "a2b24135c35852b348894320d47b3902a94bc494"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/65c39594fbd8c67abfc68bb323f86447bab79cc0",
-                "reference": "65c39594fbd8c67abfc68bb323f86447bab79cc0",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/a2b24135c35852b348894320d47b3902a94bc494",
+                "reference": "a2b24135c35852b348894320d47b3902a94bc494",
                 "shasum": ""
             },
             "require": {
@@ -8076,9 +8076,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.22.1"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.23.0"
             },
-            "time": "2023-06-29T20:46:06+00:00"
+            "time": "2023-07-23T22:17:56+00:00"
         },
         {
             "name": "phpstan/phpstan",
@@ -9671,21 +9671,21 @@
         },
         {
             "name": "rector/rector",
-            "version": "0.17.6",
+            "version": "0.17.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "ec40080b9bdaf39eb0c0a9276cd7b4a778c03f21"
+                "reference": "0e76101aa329911b7fec43106aac5843a978b209"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/ec40080b9bdaf39eb0c0a9276cd7b4a778c03f21",
-                "reference": "ec40080b9bdaf39eb0c0a9276cd7b4a778c03f21",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/0e76101aa329911b7fec43106aac5843a978b209",
+                "reference": "0e76101aa329911b7fec43106aac5843a978b209",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2|^8.0",
-                "phpstan/phpstan": "^1.10.20"
+                "phpstan/phpstan": "^1.10.26"
             },
             "conflict": {
                 "rector/rector-doctrine": "*",
@@ -9720,7 +9720,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/0.17.6"
+                "source": "https://github.com/rectorphp/rector/tree/0.17.7"
             },
             "funding": [
                 {
@@ -9728,7 +9728,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-07-14T09:54:15+00:00"
+            "time": "2023-07-23T20:44:23+00:00"
         },
         {
             "name": "ruafozy/mersenne-twister",
@@ -11250,16 +11250,16 @@
         },
         {
             "name": "spatie/image",
-            "version": "2.2.6",
+            "version": "2.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/image.git",
-                "reference": "f72ca52acd77ca03b7843a0f86e2411ce90aecfc"
+                "reference": "2f802853aab017aa615224daae1588054b5ab20e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/image/zipball/f72ca52acd77ca03b7843a0f86e2411ce90aecfc",
-                "reference": "f72ca52acd77ca03b7843a0f86e2411ce90aecfc",
+                "url": "https://api.github.com/repos/spatie/image/zipball/2f802853aab017aa615224daae1588054b5ab20e",
+                "reference": "2f802853aab017aa615224daae1588054b5ab20e",
                 "shasum": ""
             },
             "require": {
@@ -11268,7 +11268,7 @@
                 "ext-mbstring": "*",
                 "league/glide": "^2.2.2",
                 "php": "^8.0",
-                "spatie/image-optimizer": "^1.1",
+                "spatie/image-optimizer": "^1.7",
                 "spatie/temporary-directory": "^1.0|^2.0",
                 "symfony/process": "^3.0|^4.0|^5.0|^6.0"
             },
@@ -11303,7 +11303,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/image/tree/2.2.6"
+                "source": "https://github.com/spatie/image/tree/2.2.7"
             },
             "funding": [
                 {
@@ -11315,7 +11315,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-05-06T10:20:33+00:00"
+            "time": "2023-07-24T13:54:13+00:00"
         },
         {
             "name": "spatie/image-optimizer",
@@ -11511,16 +11511,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "10.10.1",
+            "version": "10.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "84f7bb253bc7b9498ff2cd0d74f82e88d299c517"
+                "reference": "6ef22a3a0df6ca0cfc59fe48fde42d30e2e90d81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/84f7bb253bc7b9498ff2cd0d74f82e88d299c517",
-                "reference": "84f7bb253bc7b9498ff2cd0d74f82e88d299c517",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/6ef22a3a0df6ca0cfc59fe48fde42d30e2e90d81",
+                "reference": "6ef22a3a0df6ca0cfc59fe48fde42d30e2e90d81",
                 "shasum": ""
             },
             "require": {
@@ -11536,7 +11536,7 @@
                 "intervention/image": "^2.7",
                 "maennchen/zipstream-php": "^2.0|^3.0",
                 "php": "^8.0",
-                "spatie/image": "^2.2.2",
+                "spatie/image": "^2.2.7",
                 "spatie/temporary-directory": "^2.0",
                 "symfony/console": "^6.0"
             },
@@ -11604,7 +11604,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-medialibrary/issues",
-                "source": "https://github.com/spatie/laravel-medialibrary/tree/10.10.1"
+                "source": "https://github.com/spatie/laravel-medialibrary/tree/10.11.1"
             },
             "funding": [
                 {
@@ -11616,7 +11616,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-06-29T07:18:20+00:00"
+            "time": "2023-07-25T08:42:59+00:00"
         },
         {
             "name": "spatie/laravel-newsletter",
