@@ -1,4 +1,4 @@
-<div wire:init="setIsReady">
+<div>
     <x-tables.desktop.block-transactions
         :transactions="$transactions"
         with-lazy-loading

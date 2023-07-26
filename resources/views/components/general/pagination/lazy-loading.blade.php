@@ -1,5 +1,5 @@
 <div>
-    @if ($this->isReady && ! $this->isOnLastPage())
+    @if (! $this->isOnLastPage())
         <div
             wire:poll.100ms.visible="nextPage"
             wire:loading.remove

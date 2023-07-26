@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasLazyLoadingPagination;
 use App\Models\Block;
 use App\Models\Scopes\OrderByTimestampScope;
@@ -17,7 +16,6 @@ use Livewire\Component;
 /** @property Collection $lazyLoadedData */
 final class BlockTransactionsTable extends Component
 {
-    use DeferLoading;
     use HasLazyLoadingPagination;
 
     public string $blockId;
@@ -45,10 +43,6 @@ final class BlockTransactionsTable extends Component
 
     public function getLazyLoadedDataProperty(): Collection
     {
-        if (! $this->isReady) {
-            return new Collection();
-        }
-
         return $this->getBlock()
             ->transactions()
             ->withScope(OrderByTimestampScope::class)
