@@ -4,6 +4,7 @@
     'value' => null,
     'valueClass' => null,
     'tooltip' => null,
+    'allowEmpty' => false,
 ])
 
 @php
@@ -21,6 +22,7 @@
     :value="$value"
     :value-class="$valueClass"
     :tooltip="$tooltip"
+    :allow-empty="$allowEmpty"
 >
     {{ $slot }}
 </x-general.page-section.row>
