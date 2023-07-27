@@ -1,6 +1,6 @@
 <div
     wire:init="setIsReady"
-    class="md:hidden flex-1 sm:h-8"
+    class="flex-1 sm:h-8 md:hidden"
 >
     <div>
         <button
@@ -22,7 +22,7 @@
     @if($this->modalShown)
         <div>
             <x-ark-modal
-                title-class="mb-3 sm:mb-4 text-lg font-semibold text-left dark:text-theme-dark-50"
+                title-class="mb-3 text-lg font-semibold text-left sm:mb-4 dark:text-theme-dark-50"
                 padding-class="p-6 py-4 sm:py-6"
                 wire-close="closeModal"
                 close-button-class="absolute top-0 right-0 p-0 mt-3 mr-6 w-8 h-8 bg-transparent rounded-none sm:mt-5 sm:rounded dark:bg-transparent dark:shadow-none button button-secondary text-theme-secondary-700 dark:text-theme-dark-200 hover:dark:text-theme-dark-50 hover:dark:bg-theme-dark-blue-600"
