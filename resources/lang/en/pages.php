@@ -190,6 +190,10 @@ return [
             'vote_for_delegate'   => 'Vote for Delegate',
         ],
 
+        'filter-transactions-modal' => [
+            'title' => 'Filter',
+        ],
+
         'export-transactions-modal' => [
             'title'       => 'Export Table',
             'description' => 'Select the data below that you want to export.',
