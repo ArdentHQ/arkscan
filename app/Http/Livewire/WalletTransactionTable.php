@@ -9,6 +9,7 @@ use App\Enums\TransactionTypeGroupEnum;
 use App\Facades\Wallets;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTablePagination;
+use App\Http\Livewire\Concerns\LivewireLengthAwarePaginator;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
@@ -22,7 +23,6 @@ use Livewire\Component;
 
 /**
  * @property bool $isAllSelected
- * @property LengthAwarePaginator $transactions
  * */
 final class WalletTransactionTable extends Component
 {
@@ -33,6 +33,8 @@ final class WalletTransactionTable extends Component
     public string $address;
 
     public ?string $publicKey = null;
+
+    public LivewireLengthAwarePaginator $transactionValues;
 
     public array $filter = [
         'outgoing'      => true,
@@ -95,13 +97,15 @@ final class WalletTransactionTable extends Component
         if (! $deferLoading) {
             $this->setIsReady();
         }
+
+        $this->updateTransactions();
     }
 
     public function render(): View
     {
         return view('livewire.wallet-transaction-table', [
             'wallet'        => ViewModelFactory::make(Wallets::findByAddress($this->address)),
-            'transactions'  => ViewModelFactory::paginate($this->transactions),
+            'transactions'  => ViewModelFactory::paginate($this->transactionValues->paginator),
         ]);
     }
 
@@ -120,7 +124,7 @@ final class WalletTransactionTable extends Component
             return trans('tables.transactions.no_results.no_addressing_filters');
         }
 
-        if ($this->transactions->total() === 0) {
+        if ($this->transactionValues->total() === 0) {
             return trans('tables.transactions.no_results.no_results');
         }
 
@@ -141,24 +145,46 @@ final class WalletTransactionTable extends Component
         $this->setPage(1);
     }
 
-    public function getTransactionsProperty(): LengthAwarePaginator
+    public function setIsReady(): void
     {
-        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage);
+        $this->isReady = true;
+        $this->updateTransactions();
+    }
+
+    public function updatedPage(): void
+    {
+        $this->updateTransactions();
+    }
+
+    public function updatedPerPage(): void
+    {
+        $this->updateTransactions();
+    }
+
+    public function updateTransactions(): void
+    {
+        $this->transactionValues = new LivewireLengthAwarePaginator(
+            new LengthAwarePaginator([], 0, $this->perPage),
+            Transaction::class,
+        );
         if (! $this->isReady) {
-            return $emptyResults;
+            return;
         }
 
         if (! $this->hasAddressingFilters()) {
-            return $emptyResults;
+            return;
         }
 
         if (! $this->hasTransactionTypeFilters()) {
-            return $emptyResults;
+            return;
         }
 
-        return $this->getTransactionsQuery()
-            ->withScope(OrderByTimestampScope::class)
-            ->paginate($this->perPage);
+        $this->transactionValues = new LivewireLengthAwarePaginator(
+            $this->getTransactionsQuery()
+                ->withScope(OrderByTimestampScope::class)
+                ->paginate($this->perPage),
+                Transaction::class,
+        );
     }
 
     private function hasAddressingFilters(): bool

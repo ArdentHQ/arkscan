@@ -1,5 +1,6 @@
 @props([
     'displayType' => null,
+    'targets'     => null,
 ])
 
 @php
@@ -18,6 +19,10 @@
         wire:loading.{{ $displayType }}
     @else
         wire:loading
+    @endif
+
+    @if ($targets)
+        wire:target="{{ implode(',', $targets) }}"
     @endif
 >
     {{ $slot }}

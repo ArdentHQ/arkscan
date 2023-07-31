@@ -112,6 +112,24 @@ final class Transaction extends Model
 
     private bool|string|null $vendorFieldContent = false;
 
+    public function toArray(): array
+    {
+        return [
+            'id'                => $this->id,
+            'block_id'          => $this->block_id,
+            'block_height'      => $this->block_height,
+            'type'              => $this->type,
+            'type_group'        => $this->type_group,
+            'sender_public_key' => $this->sender_public_key,
+            'recipient_id'      => $this->recipient_id,
+            'timestamp'         => $this->timestamp,
+            'fee'               => $this->fee->__toString(),
+            'amount'            => $this->amount->__toString(),
+            'nonce'             => $this->nonce,
+            'asset'             => $this->asset,
+        ];
+    }
+
     /**
      * Get the indexable data array for the model.
      *
