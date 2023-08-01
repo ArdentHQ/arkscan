@@ -5,7 +5,7 @@
 @php ($missedBlocks = Arr::get($statistics, 'performances.missed'))
 
 <x-page-headers.delegates.header-item
-    title="Missed Blocks (30 Days)"
+    :title="trans('pages.delegates.missed-blocks.title')"
     :attributes="$attributes"
 >
     <div class="flex space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">

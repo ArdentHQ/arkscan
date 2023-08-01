@@ -326,6 +326,10 @@ return [
         'x_delegates'        => ':count Delegates',
         'voting_x_addresses' => 'Voting (:count Addresses)',
 
+        'missed-blocks' => [
+            'title' => 'Missed Blocks (30 Days)',
+        ],
+
         'explore' => [
             'title'    => 'How can I become a delegate?',
             'subtitle' => 'Step-by-step guide on how to register as a delegate',
