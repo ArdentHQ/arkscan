@@ -14,6 +14,7 @@
     <div @class([
         'relative flex flex-col rounded-xl px-4 sm:px-6 py-4 leading-5',
         'ring-1 ring-inset ring-theme-secondary-300 dark:ring-theme-dark-700' => $background === null,
+        'h-full' => $background !== null,
         'space-y-2' => $title !== null,
         $contentClass,
     ])>

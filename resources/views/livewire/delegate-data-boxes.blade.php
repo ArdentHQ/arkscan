@@ -1,1 +1,3 @@
-<x-page-headers.delegates />
+<div>
+    <x-page-headers.delegates :statistics="$statistics" />
+</div>

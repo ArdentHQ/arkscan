@@ -1,14 +1,16 @@
 <x-page-headers.delegates.header-item
-    title="Voting (X Addresses)"
+    :title="trans('pages.delegates.voting_x_addresses', ['count' => 123])"
     :attributes="$attributes"
 >
     <div class="flex items-center space-x-2">
         <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-            19,097,151 ARK
+            <x-currency :currency="Network::currency()">
+                {{ 10003 }}
+            </x-currency>
         </span>
 
         <x-general.badge class="py-px">
-            37.06%
+            <x-percentage>123</x-percentage>
         </x-general.badge>
     </div>
 </x-delegates.header-item>
