@@ -28,11 +28,11 @@
 
     <div class="relative flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:justify-between items-center flex-1 z-30">
         <div class="flex flex-col space-y-1.5 w-full">
-            <div class="text-sm sm:text-lg text-theme-primary-900 dark:text-theme-dark-50 sm:leading-5.25">
+            <div class="text-sm md:text-lg text-theme-primary-900 dark:text-theme-dark-50 leading-4.25 md:leading-5.25">
                 @lang('pages.delegates.explore.title')
             </div>
 
-            <div class="text-xs leading-3.75 dark:text-theme-dark-200">
+            <div class="text-xs leading-5 sm:leading-3.75 dark:text-theme-dark-200">
                 @lang('pages.delegates.explore.subtitle')
             </div>
         </div>
