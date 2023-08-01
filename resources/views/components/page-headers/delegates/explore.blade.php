@@ -40,7 +40,7 @@
         <div class="w-full sm:w-auto">
             <x-ark-external-link
                 class="!flex items-center space-x-2 button-primary py-1.5 px-4 justify-center"
-                url="#"
+                :url="trans('urls.docs.validator')"
                 title="Explore"
                 inner-class="leading-5"
                 icon-class="inline relative flex-shrink-0 text-white"
