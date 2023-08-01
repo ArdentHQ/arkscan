@@ -322,6 +322,14 @@ return [
 
     'delegates'        => [
         'title'      => 'Delegates',
+        'subtitle'   => 'List of delegates registered on the network.',
+
+        'explore' => [
+            'title'    => 'How can I become a delegate?',
+            'subtitle' => 'Step-by-step guide on how to register as a delegate',
+            'action'   => 'Explore',
+        ],
+
         'active'     => 'Active',
         'standby'    => 'Standby',
         'resigned'   => 'Resigned',
