@@ -321,9 +321,9 @@ return [
     ],
 
     'delegates'        => [
-        'title'      => 'Delegates',
-        'subtitle'   => 'List of delegates registered on the network.',
-        'x_delegates' => ':count Delegates',
+        'title'              => 'Delegates',
+        'subtitle'           => 'List of delegates registered on the network.',
+        'x_delegates'        => ':count Delegates',
         'voting_x_addresses' => 'Voting (:count Addresses)',
 
         'explore' => [

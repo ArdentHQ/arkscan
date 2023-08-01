@@ -1,6 +1,6 @@
 @props(['statistics'])
 
-<div class="flex flex-col space-y-6 font-semibold px-6 pt-8 pb-6 md:px-10 md:mx-auto md:max-w-7xl">
+<div class="flex flex-col px-6 pt-8 pb-6 space-y-6 font-semibold md:px-10 md:mx-auto md:max-w-7xl">
     <div class="flex flex-col space-y-1.5">
         <h1 class="text-lg md:text-2xl mb-0 leading-5.25 md:leading-[1.8125rem]">
             @lang('pages.delegates.title')
