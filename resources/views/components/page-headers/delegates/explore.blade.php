@@ -2,33 +2,33 @@
     :attributes="$attributes"
     class="flex-none xl:flex-1 bg-theme-primary-100 dark:bg-theme-dark-800"
 >
-    <x-slot name="background" class="right-auto left-0 sm:right-0 sm:left-auto">
+    <x-slot name="background" class="left-0 right-auto sm:right-0 sm:left-auto">
         <img
             src="{{ mix('images/delegates/header-bg.svg') }}"
-            class="hidden sm:block dark:hidden max-w-none"
+            class="hidden max-w-none sm:block dark:hidden"
         />
 
         <img
             src="{{ mix('images/delegates/header-bg-mobile.svg') }}"
-            class="sm:hidden dark:hidden max-w-none"
+            class="max-w-none sm:hidden dark:hidden"
         />
 
         <img
             src="{{ mix('images/delegates/header-bg-dark.svg') }}"
-            class="hidden dark:sm:block max-w-none"
+            class="hidden max-w-none dark:sm:block"
         />
 
         <img
             src="{{ mix('images/delegates/header-bg-mobile-dark.svg') }}"
-            class="hidden dark:block dark:sm:hidden max-w-none"
+            class="hidden max-w-none dark:block dark:sm:hidden"
         />
     </x-slot>
 
-    <div class="absolute right-0 w-full sm:w-[400px] top-0 h-full bg-gradient-to-t sm:bg-gradient-to-r from-theme-primary-100 to-theme-primary-200 dark:from-theme-dark-800 dark:to-theme-dark-700 z-10"></div>
+    <div class="absolute top-0 right-0 z-10 w-full h-full bg-gradient-to-t sm:bg-gradient-to-r from-theme-primary-100 to-theme-primary-200 sm:w-[400px] dark:from-theme-dark-800 dark:to-theme-dark-700"></div>
 
-    <div class="relative flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:justify-between items-center flex-1 z-30">
+    <div class="flex relative z-30 flex-col flex-1 items-center space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
         <div class="flex flex-col space-y-1.5 w-full">
-            <div class="text-sm sm:text-lg text-theme-primary-900 dark:text-theme-dark-50 sm:leading-5.25">
+            <div class="text-sm sm:text-lg text-theme-primary-900 sm:leading-5.25 dark:text-theme-dark-50">
                 @lang('pages.delegates.explore.title')
             </div>
 
