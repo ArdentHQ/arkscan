@@ -2,6 +2,7 @@
     'statistics',
 ])
 
+{{-- TODO: missed blocks for 30 days --}}
 @php ($missedBlocks = Arr::get($statistics, 'performances.missed'))
 
 <x-page-headers.delegates.header-item
