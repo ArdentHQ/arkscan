@@ -8,7 +8,7 @@
         <x-input.js-select
             id="delimiter"
             :label="trans('pages.wallet.export-blocks-modal.delimiter')"
-            dropdown-width="w-full sm:w-[400px]"
+            dropdown-width="w-full sm:w-100"
             :items="trans('pages.wallet.export-blocks-modal.delimiter-options')"
         />
 
@@ -26,7 +26,7 @@
     <x-input.js-select
         id="columns"
         :label="trans('pages.wallet.export-blocks-modal.columns')"
-        dropdown-width="w-full sm:w-[400px]"
+        dropdown-width="w-full sm:w-100"
         items="pages.wallet.export-blocks-modal.columns-options"
         :item-criteria="fn ($key) => Network::canBeExchanged() || ! in_array($key, ['volumeFiat', 'totalFiat', 'rate'])"
         :item-lang-properties="[
