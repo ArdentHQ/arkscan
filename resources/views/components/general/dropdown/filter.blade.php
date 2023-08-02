@@ -4,7 +4,7 @@
 
 @if ($mobile)
     <div
-        x-data="Modal.alpine({ shown: false }, 'filter-modal')"
+        x-data="Modal.alpine({ shown: false })"
         class="md:hidden"
     >
         <x-ark-js-modal
