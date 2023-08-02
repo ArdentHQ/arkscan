@@ -9,47 +9,24 @@
         <x-page-headers.transaction :transaction="$transaction" />
 
         <div>
-            <x-transaction.page-section :title="trans('pages.transaction.transaction_details')">
-                <x-transaction.section-detail.row
-                    :title="trans('pages.transaction.header.timestamp')"
-                    :value="$transaction->timestamp()"
-                    :transaction="$transaction"
-                />
+            <x-transaction.page.details :transaction="$transaction" />
 
-                <x-transaction.section-detail.row
-                    :title="trans('pages.transaction.header.block')"
-                    :transaction="$transaction"
-                >
-                    <x-transaction.section-detail.block-height-link
-                        :id="$transaction->blockId()"
-                        :height="$transaction->blockHeight()"
-                    />
-                </x-transaction.section-detail.row>
+            <x-transaction.page.transaction-type :transaction="$transaction" />
 
-                <x-transaction.section-detail.row
-                    :title="trans('pages.transaction.header.nonce')"
-                    :transaction="$transaction"
-                >
-                    <x-number>{{ $transaction->nonce() }}</x-number>
-                </x-transaction.section-detail.row>
-            </x-transaction.page-section>
+            <x-transaction.page.addressing :transaction="$transaction" />
 
-            <x-transaction.section-detail.transaction-type :transaction="$transaction" />
-
-            <x-transaction.section-detail.addressing-section :transaction="$transaction" />
-
-            <x-transaction.section-detail.summary-section :transaction="$transaction" />
+            <x-transaction.page.summary :transaction="$transaction" />
 
             @if ($transaction->isTransfer() || $transaction->isMultiPayment())
-                <x-transaction.section-detail.memo-section :transaction="$transaction" />
+                <x-transaction.page.memo :transaction="$transaction" />
             @endif
 
-            <x-transaction.section-detail.confirmations-section :transaction="$transaction" />
+            <x-general.page-section.confirmations :model="$transaction" />
 
             @if ($transaction->isMultiPayment())
-                <x-transaction.section-detail.recipient-list-section :transaction="$transaction" />
+                <x-transaction.page.recipient-list :transaction="$transaction" />
             @elseif ($transaction->isMultisignature())
-                <x-transaction.section-detail.participant-list-section :transaction="$transaction" />
+                <x-transaction.page.participant-list :transaction="$transaction" />
             @endif
         </div>
     @endsection

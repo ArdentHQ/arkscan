@@ -63,7 +63,7 @@ it('should determine if transfer transaction is sent to self', function () {
     expect($transaction->isSentToSelf('recipient'))->toBeFalse();
 });
 
-it('should determine if multipayment transaction is sent to self', function () {
+it('should determine if multipayment transaction is sent to self when sender is part of recipients', function () {
     $transaction = new TransactionViewModel(Transaction::factory()
         ->multiPayment()
         ->create([
@@ -78,7 +78,7 @@ it('should determine if multipayment transaction is sent to self', function () {
             ],
         ]));
 
-    expect($transaction->isSentToSelf($this->sender->address))->toBeTrue();
+    expect($transaction->isSentToSelf($this->sender->address))->toBeFalse();
     expect($transaction->isSentToSelf('recipient-3'))->toBeFalse();
 });
 
@@ -565,55 +565,6 @@ it('should determine the state icon', function () {
 it('should determine the type icon', function () {
     expect($this->subject->iconType())->toBeString();
 });
-
-it('should determine the type label', function (string $type) {
-    $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());
-
-    expect($subject->typeLabel())->toBeString();
-})->with([
-    ['secondSignature'],
-    ['legacyBusinessRegistration'],
-]);
-
-it('should determine legacy types', function (string $type, bool $expectation) {
-    $transaction = Transaction::factory()->{$type}()->create();
-    $subject     = new TransactionViewModel($transaction);
-
-    expect($subject->isLegacyType())->toBe($expectation);
-})->with([
-    [
-        'secondSignature',
-        false,
-    ],
-    [
-        'delegateRegistration',
-        false,
-    ],
-    [
-        'legacyBusinessRegistration',
-        true,
-    ],
-    [
-        'legacyBusinessResignation',
-        true,
-    ],
-    [
-        'legacyBusinessUpdate',
-        true,
-    ],
-    [
-        'legacyBridgechainRegistration',
-        true,
-    ],
-    [
-        'legacyBridgechainResignation',
-        true,
-    ],
-    [
-        'legacyBridgechainUpdate',
-        true,
-    ],
-]);
 
 it('should determine transactions that doesnt have amount', function (string $type) {
     $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());

@@ -1,6 +1,4 @@
-@props([
-    'delegate',
-])
+@props(['delegate'])
 
 <span>
     <a

@@ -7,6 +7,7 @@ use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\CryptoDataCache;
+use App\Services\Cache\NetworkCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\BlockViewModel;
 use App\ViewModels\TransactionViewModel;
@@ -199,4 +200,10 @@ it('should fail to get the next block url', function () {
     ]));
 
     expect($subject->nextBlockUrl())->toBeNull();
+});
+
+it('should get the confirmations', function () {
+    (new NetworkCache())->setHeight(fn (): int => 500);
+
+    expect($this->subject->confirmations())->toBe(10000 - 500);
 });

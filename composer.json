@@ -12,15 +12,15 @@
         "ext-gmp": "*",
         "ardenthq/arkvault-url": "^1.1",
         "arkecosystem/crypto": "^1.8",
-        "arkecosystem/foundation": "^13.13",
+        "arkecosystem/foundation": "^13.16",
         "blade-ui-kit/blade-icons": "^1.5",
         "brick/math": "^0.11",
         "doctrine/dbal": "^3.0",
         "fruitcake/laravel-cors": "^2.0",
         "http-interop/http-factory-guzzle": "^1.2",
         "huddledigital/zendesk-laravel": "^3.8",
-        "laravel/framework": "^9.15",
-        "laravel/horizon": "^5.18",
+        "laravel/framework": "^9.16",
+        "laravel/horizon": "^5.19",
         "laravel/scout": "^10.2",
         "laravel/tinker": "^2.8",
         "leigh/mt-rand": "^0.1",
@@ -29,13 +29,13 @@
         "nyholm/psr7": "^1.8",
         "savvot/random": "^0.3",
         "sentry/sentry-laravel": "^2.6",
-        "symfony/psr-http-message-bridge": "^2.2"
+        "symfony/psr-http-message-bridge": "^2.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8",
         "spatie/laravel-ignition": "^1.2",
         "furqansiddiqui/bip39-mnemonic-php": "^0.1",
-        "laravel/dusk": "^6.8",
+        "laravel/dusk": "^6.9",
         "wnx/laravel-stats": "^2.11"
     },
     "config": {
