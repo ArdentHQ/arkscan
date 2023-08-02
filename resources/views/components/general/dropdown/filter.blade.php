@@ -16,7 +16,7 @@
             content-class="sm:rounded-2.5xl"
         >
             <x-slot name="title">
-                Filters
+                @lang('general.filters')
             </x-slot>
 
             <x-slot name="description">
