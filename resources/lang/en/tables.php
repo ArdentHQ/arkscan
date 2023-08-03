@@ -45,6 +45,32 @@ return [
         'volume' => 'Volume (:currency)',
     ],
 
+    'delegates' => [
+        'rank'          => 'Rank',
+        'delegate'      => 'Delegate',
+        'status'        => 'Status',
+        'no_of_voters'  => '# of Voters',
+        'votes'         => 'Votes (:currency)',
+        'percentage'    => 'Percentage',
+        'missed_blocks' => 'Missed Blocks (30d)',
+
+        'delegate_per_page_options' => [
+            10,
+            25,
+            51,
+            100,
+        ],
+
+        'info' => [
+            'percentage' => 'Percentage of votes in relation to the delegate total.',
+        ],
+
+        'no_results' => [
+            'no_filters' => 'All filtering options have been deselected. Please select one or more options to display transactions.',
+            'no_results' => 'No delegates matching the selected types could be found.',
+        ],
+    ],
+
     'filters' => [
         'transactions' => [
             'addressing'    => 'Addressing',

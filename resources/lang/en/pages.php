@@ -321,6 +321,12 @@ return [
     ],
 
     'delegates'        => [
+        'tabs' => [
+            'delegates'     => 'Delegates',
+            'missed-blocks' => 'Missed Blocks',
+            'recent-votes'  => 'Recent Votes',
+        ],
+
         'title'      => 'Delegates',
         'active'     => 'Active',
         'standby'    => 'Standby',
