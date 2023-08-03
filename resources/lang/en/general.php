@@ -43,6 +43,7 @@ return [
     'warning'                 => 'Warning',
     'custom'                  => 'Custom',
     'x_of_y'                  => ':0 of :1',
+    'filters'                 => 'Filters',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
@@ -119,13 +120,6 @@ return [
             'vote'                                => 'Vote',
             'unknown'                             => 'Unknown',
             'legacy'                              => 'Legacy',
-
-            // TODO: remove once legacy magistrate shows proper type texts
-            'business'                            => 'Business',
-            'bridgechain'                         => 'Bridgechain',
-            'module'                              => 'Module',
-            'product'                             => 'Product',
-            'plugin'                              => 'Plugin',
         ],
     ],
 

@@ -7,7 +7,7 @@
     <x-input.js-select
         id="dateRange"
         :label="$label"
-        dropdown-width="w-full sm:w-[400px]"
+        dropdown-width="w-full sm:w-100"
         :items="$items"
         :extra-items="[
             [
