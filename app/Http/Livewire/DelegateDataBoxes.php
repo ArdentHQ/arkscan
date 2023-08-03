@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Actions\CacheNetworkSupply;
 use App\DTO\Slot;
 use App\Enums\DelegateForgingStatus;
 use App\Facades\Network;
 use App\Http\Livewire\Concerns\DelegateData;
 use App\Models\Block;
 use App\Models\Wallet;
+use App\Services\Cache\DelegateCache;
 use App\Services\Cache\MonitorCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\Monitor;
@@ -28,10 +30,14 @@ final class DelegateDataBoxes extends Component
 
     public function render(): View
     {
+        $delegateCache = new DelegateCache();
         $this->delegates = $this->fetchDelegates();
 
         return view('livewire.delegate-data-boxes', [
-            'statistics' => $this->statistics,
+            'statistics'    => $this->statistics,
+            'voterCount'    => $delegateCache->getVoterCount(),
+            'totalVoted'    => $delegateCache->getTotalVoted(),
+            'currentSupply' => CacheNetworkSupply::execute() / 1e8,
         ]);
     }
 
