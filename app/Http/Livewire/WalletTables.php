@@ -6,11 +6,9 @@ namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
 use App\Http\Livewire\Concerns\HasTabs;
-use App\Livewire\SupportBrowserHistoryWrapper;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Arr;
 use Livewire\Component;
 
 final class WalletTables extends Component

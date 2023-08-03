@@ -1,7 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Livewire\Delegates\Tabs;
-use App\Models\Wallet;
 use Livewire\Livewire;
 
 it('should render', function () {
