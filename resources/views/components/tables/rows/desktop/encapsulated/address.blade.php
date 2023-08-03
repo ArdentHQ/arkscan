@@ -18,7 +18,7 @@
     ][$truncateBreakpoint];
 @endphp
 
-<span {{ $attributes->class('flex justify-between w-full text-sm leading-[17px]') }}>
+<span {{ $attributes->class('flex justify-between w-full text-sm leading-4.25') }}>
     <span>
         <x-general.identity
             :model="$model"

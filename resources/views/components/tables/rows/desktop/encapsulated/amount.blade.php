@@ -3,6 +3,7 @@
     'wallet' => null,
     'withoutFee' => false,
     'withNetworkCurrency' => false,
+    'breakpoint' => 'md-lg',
 ])
 
 @php
@@ -16,9 +17,22 @@
         $amount = $model->amountReceived($wallet?->address());
         $amountFiat = $model->amountReceivedFiat($wallet?->address());
     }
+
+    $feeBreakpointClass = [
+        'md-lg' => 'md-lg:hidden',
+        'xl' => 'xl:hidden',
+    ][$breakpoint] ?? 'md-lg:hidden';
+
+    $containerBreakpointClass = [
+        'md-lg' => 'md-lg:space-y-0',
+        'xl' => 'xl:space-y-0',
+    ][$breakpoint] ?? 'md-lg:space-y-0';
 @endphp
 
-<div class="md:space-y-1 md-lg:space-y-0">
+<div @class([
+    'md:space-y-1',
+    $containerBreakpointClass,
+])>
     <div class="inline-block">
         <x-general.encapsulated.amount-fiat-tooltip
             :amount="$amount"
@@ -30,7 +44,7 @@
         />
 
         @if ($withNetworkCurrency)
-            <span class="text-sm font-semibold leading-[17px] text-theme-secondary-900 dark:text-theme-secondary-200">
+            <span class="text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-secondary-200">
                 {{ Network::currency() }}
             </span>
         @endif
@@ -39,7 +53,10 @@
     @unless ($withoutFee)
         <x-tables.rows.desktop.encapsulated.fee
             :model="$model"
-            class="hidden text-xs md:block text-theme-secondary-700 md-lg:hidden"
+            :class="Arr::toCssClasses([
+                'hidden text-xs md:block text-theme-secondary-700 dark:text-theme-dark-200',
+                $feeBreakpointClass,
+            ])"
             without-styling
         />
     @endunless

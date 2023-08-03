@@ -1,6 +1,6 @@
 @props(['transaction'])
 
-<x-transaction.page-section
+<x-general.page-section.container
     :title="trans('pages.transaction.confirmations')"
     border-class="border-theme-success-200 dark:border-theme-success-500"
     wrapper-container-class="py-2 mx-2 rounded-lg border sm:mx-0 bg-theme-success-100 dark:bg-theme-success-900"
@@ -23,4 +23,4 @@
             @endif
         </div>
     </div>
-</x-transaction.page-section>
+</x-general.page-section.container>

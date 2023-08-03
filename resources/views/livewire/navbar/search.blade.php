@@ -1,3 +1,5 @@
+@php ($isDisabled = app()->isDownForMaintenance())
+
 <div
     x-ref="search"
     x-data="Search.setup({
@@ -12,11 +14,23 @@
         id="search"
         name="search"
         model="query"
-        class="rounded-md border border-transparent focus-within:bg-white hover:bg-white w-[340px] bg-theme-secondary-200 group transition-default dark:bg-theme-secondary-900 focus-within:border-theme-primary-600 focus-within:dark:border-theme-secondary-700 hover:border-theme-primary-600 hover:dark:border-theme-secondary-700"
+        :class="Arr::toCssClasses([
+            'rounded-md border border-transparent w-[340px] group transition-default bg-theme-secondary-200',
+            'dark:bg-theme-secondary-800 cursor-not-allowed' => $isDisabled,
+            'focus-within:bg-white hover:bg-white dark:bg-theme-secondary-900 focus-within:border-theme-primary-600 focus-within:dark:border-theme-secondary-700 hover:border-theme-primary-600 hover:dark:border-theme-secondary-700' => ! $isDisabled,
+        ])"
         :placeholder="trans('general.navbar.search_placeholder')"
-        container-class="flex pl-1 border border-transparent dark:border-theme-secondary-800 group-hover:dark:border-theme-secondary-700 focus-within:border-theme-primary-600 focus-within:dark:border-theme-secondary-700 hover:border-theme-primary-600"
+        :container-class="Arr::toCssClasses([
+            'flex pl-1 border border-transparent dark:border-theme-secondary-800',
+            'cursor-not-allowed' => $isDisabled,
+            'group-hover:dark:border-theme-secondary-700 focus-within:border-theme-primary-600 focus-within:dark:border-theme-secondary-700 hover:border-theme-primary-600' => ! $isDisabled,
+        ])"
         wrapper-class-override="relative rounded"
-        field-class-override="block w-full border-0 rounded outline-none appearance-none px-2 py-[7px] text-sm leading-4 placeholder:text-theme-secondary-700 text-theme-secondary-900 dark:text-theme-secondary-400 bg-transparent"
+        :field-class-override="Arr::toCssClasses([
+            'block w-full border-0 rounded outline-none appearance-none px-2 py-[7px] text-sm leading-4 bg-transparent',
+            'placeholder:text-theme-secondary-500 text-theme-secondary-500 dark:placeholder:text-theme-secondary-700 cursor-not-allowed' => $isDisabled,
+            'placeholder:text-theme-secondary-700 text-theme-secondary-900 dark:text-theme-secondary-400' => ! $isDisabled,
+        ])"
         hide-label
         disable-dirty-styling
         icon-size="sm"
@@ -24,6 +38,7 @@
         wire:keydown.escape="clear"
         x-on:blur="blurHandler"
         autocomplete="off"
+        :disabled="$isDisabled"
     >
         <div
             class="flex items-center mr-4 space-x-4"

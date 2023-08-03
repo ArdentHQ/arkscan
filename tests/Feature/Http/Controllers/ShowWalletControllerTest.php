@@ -81,11 +81,13 @@ it('should show currency symbol and code for crypto', function () {
 
     $response = $this
         ->get(route('wallet', $wallet))
-        ->assertSee($wallet->username);
-
-    $content = preg_replace('/\s+/', ' ', str_replace("\n", '', strip_tags($response->getContent())));
-
-    expect($content)->toContain('£0.00 GBP Voting For');
+        ->assertSee($wallet->username)
+        ->assertSeeInOrder([
+            $wallet->balance->toFloat(),
+            '£0.00',
+            'GBP',
+            'Voting For',
+        ]);
 });
 
 it('should not show overview value if cannot be exchanged', function () {
