@@ -31,21 +31,12 @@ final class Tabs extends Component
             $perPage = Delegates::defaultPerPage();
         }
 
-        $params = [
+        // TODO: Handle filters - https://app.clickup.com/t/861n4ydmh - see WalletTables
+
+        return [
             'view'    => ['except' => 'delegates'],
             'page'    => ['except' => 1],
             'perPage' => ['except' => $perPage],
-        ];
-
-        // We need to pass in the filters for previous view so we can hide it from the URL
-        if ($this->view !== 'delegates' && $this->previousView !== 'delegates') {
-            return $params;
-        }
-
-        return [
-            ...$params,
-
-            // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTables
         ];
     }
 
