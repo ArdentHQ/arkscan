@@ -1,7 +1,5 @@
-@props([
-    'model',
-])
+@props(['model'])
 
 <x-tables.rows.desktop.encapsulated.cell>
-    {{ $model->transactionCount() }}
+    {{ $model->rank() }}
 </x-tables.rows.desktop.encapsulated.cell>

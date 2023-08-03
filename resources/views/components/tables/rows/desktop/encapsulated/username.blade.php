@@ -1,7 +1,7 @@
-@props([
-    'model'
-])
+@props(['model'])
 
 @if ($model->username())
-    <span class="text-sm font-semibold leading-[17px]">{{ $model->username() }}</span>
+    <x-tables.rows.desktop.encapsulated.cell>
+        {{ $model->username() }}
+    </x-tables.rows.desktop.encapsulated.cell>
 @endif
