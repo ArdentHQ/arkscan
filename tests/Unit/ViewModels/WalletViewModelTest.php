@@ -743,3 +743,18 @@ it('should get missed block count for delegate', function () {
 
     expect($this->subject->missedBlocks())->toBe(12345);
 });
+
+it('should return zero if delegate has no public key', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->create([
+        'public_key'   => null,
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'producedBlocks' => 54321,
+            ],
+        ],
+    ]));
+
+    expect($wallet->missedBlocks())->toBe(0);
+});
