@@ -723,3 +723,23 @@ it('should get no name if a standard wallet', function () {
 
     expect($this->subject->name())->toBeNull();
 });
+
+it('should get forged block count for delegate', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->create([
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'producedBlocks' => 54321,
+            ],
+        ],
+    ]));
+
+    expect($wallet->forgedBlocks())->toBe(54321);
+});
+
+it('should get missed block count for delegate', function () {
+    (new WalletCache())->setMissedBlocks($this->subject->publicKey(), 12345);
+
+    expect($this->subject->missedBlocks())->toBe(12345);
+});
