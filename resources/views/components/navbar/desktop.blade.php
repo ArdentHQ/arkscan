@@ -6,7 +6,7 @@
     })"
     @theme-changed.window="dark = $event.detail.theme === 'dark'"
     x-ref="nav"
-    class="hidden relative z-40 bg-white md:flex md:flex-col dark:bg-theme-secondary-900 border-b border-theme-secondary-300 dark:border-theme-secondary-800"
+    class="hidden relative z-40 bg-white border-b md:flex md:flex-col border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
 >
     <div
         class="flex justify-between items-center w-full content-container"
@@ -23,7 +23,7 @@
             <div class="flex justify-end">
                 <div class="flex flex-1 justify-end items-center sm:justify-between sm:items-stretch">
                     {{-- Desktop Navbar Items --}}
-                    <div class="hidden items-center -mx-4 md:flex sm:h-16 h-[3.25rem]">
+                    <div class="hidden items-center -mx-4 sm:h-16 md:flex h-[3.25rem]">
                         @foreach ($navigation as $navItem)
                             @if (Arr::exists($navItem, 'children'))
                                 <div
@@ -78,5 +78,5 @@
         </div>
     </div>
 
-    {{-- <div class="absolute bottom-0 w-full border-b border-theme-secondary-300 dark:border-theme-secondary-800 -mb-px"></div> --}}
+    {{-- <div class="absolute bottom-0 -mb-px w-full border-b border-theme-secondary-300 dark:border-theme-secondary-800"></div> --}}
 </div>

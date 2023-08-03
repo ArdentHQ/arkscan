@@ -1,7 +1,7 @@
-<header class="md:hidden flex flex-col">
+<header class="flex flex-col md:hidden">
     <div
         id="navbar"
-        class=" fixed z-20 w-full md:relative"
+        class="fixed z-20 w-full md:relative"
         x-data="Navbar.dropdown({
             dark: window.getThemeMode() === 'dark',
             open: false,
