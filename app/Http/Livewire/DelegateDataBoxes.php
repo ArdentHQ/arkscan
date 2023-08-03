@@ -30,7 +30,7 @@ final class DelegateDataBoxes extends Component
 
     public function render(): View
     {
-        $delegateCache = new DelegateCache();
+        $delegateCache   = new DelegateCache();
         $this->delegates = $this->fetchDelegates();
 
         return view('livewire.delegate-data-boxes', [
