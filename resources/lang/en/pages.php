@@ -321,7 +321,21 @@ return [
     ],
 
     'delegates'        => [
-        'title'      => 'Delegates',
+        'title'              => 'Delegates',
+        'subtitle'           => 'List of delegates registered on the network.',
+        'x_delegates'        => ':count Delegates',
+        'voting_x_addresses' => 'Voting (:count Addresses)',
+
+        'missed-blocks' => [
+            'title' => 'Missed Blocks (30 Days)',
+        ],
+
+        'explore' => [
+            'title'    => 'How can I become a delegate?',
+            'subtitle' => 'Step-by-step guide on how to register as a delegate',
+            'action'   => 'Explore',
+        ],
+
         'active'     => 'Active',
         'standby'    => 'Standby',
         'resigned'   => 'Resigned',

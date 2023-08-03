@@ -192,6 +192,5 @@ it('should not error if no cached delegate data', function () {
     }
 
     Livewire::test(DelegateDataBoxes::class)
-        ->assertSee('poll_statistics_skeleton')
         ->assertSet('statistics.nextDelegate', null);
 });

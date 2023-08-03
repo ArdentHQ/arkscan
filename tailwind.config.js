@@ -92,6 +92,14 @@ module.exports = {
                 ...defaultConfig.theme.extend.zIndex,
                 15: 15,
             },
+
+            lineHeight: {
+                ...defaultConfig.theme.extend.lineHeight,
+
+                3.75: '0.9375rem', // 15px
+                4.25: '1.0625rem', // 17px
+                5.25: '1.3125rem', // 21px
+            }
         },
     },
 };
