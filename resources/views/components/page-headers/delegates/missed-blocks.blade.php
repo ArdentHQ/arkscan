@@ -2,7 +2,7 @@
     'statistics',
 ])
 
-{{-- TODO: missed blocks for 30 days --}}
+{{-- TODO: missed blocks for 30 days - https://app.clickup.com/t/862k7j3m7 --}}
 @php ($missedBlocks = Arr::get($statistics, 'performances.missed'))
 
 <x-page-headers.delegates.header-item
