@@ -20,7 +20,7 @@
             </x-slot>
 
             <x-slot name="description">
-                <div class="-mx-8 sm:mx-10">
+                <div class="-mx-8 sm:-mx-10">
                     {{ $slot }}
                 </div>
             </x-slot>
