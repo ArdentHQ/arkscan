@@ -13,6 +13,7 @@
         'tables.delegates.no_of_voters' => [
             'type'       => 'number',
             'responsive' => true,
+            'breakpoint' => 'md',
         ],
         'tables.delegates.votes' => [
             'type'       => 'number',
@@ -22,16 +23,12 @@
         'tables.delegates.percentage' => [
             'type'       => 'number',
             'responsive' => true,
-            'breakpoint' => 'md',
+            'breakpoint' => 'lg',
         ],
     ];
 
     if ($this->showMissedBlocks) {
-        $items['tables.delegates.missed_blocks'] = [
-            'type'       => 'number',
-            'responsive' => true,
-            'breakpoint' => 'md',
-        ];
+        $items['tables.delegates.missed_blocks'] = 'number';
     }
 
     $items[''] = [
