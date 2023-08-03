@@ -50,7 +50,7 @@ final class CacheDelegateVoterCounts extends Command
                 'wallets.public_key',
                 (string) DB::raw('voters.attributes->vote')
             )
-            ->groupBy('wallets.public_key', 'wallets.address')
+            ->groupBy('wallets.public_key', 'wallets.balance')
             ->get();
 
         $results->each(fn ($wallet) => $walletCache->setVoterCount($wallet['public_key'], $wallet['total']));
