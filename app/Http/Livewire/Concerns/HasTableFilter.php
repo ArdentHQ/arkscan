@@ -1,10 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Livewire\Concerns;
 
 trait HasTableFilter
 {
     public bool $selectAllFilters = true;
+
+    public function __get(mixed $property): mixed
+    {
+        if (array_key_exists($property, $this->filter)) {
+            return $this->filter[$property];
+        }
+
+        return parent::__get($property);
+    }
+
+    public function __set(string $property, mixed $value): void
+    {
+        if (array_key_exists($property, $this->filter)) {
+            $this->filter[$property] = $value;
+        }
+    }
 
     abstract public function getNoResultsMessageProperty(): null|string;
 
@@ -36,21 +54,5 @@ trait HasTableFilter
         $this->selectAllFilters = $this->isAllSelected;
 
         $this->setPage(1);
-    }
-
-    public function __get(mixed $property): mixed
-    {
-        if (array_key_exists($property, $this->filter)) {
-            return $this->filter[$property];
-        }
-
-        return parent::__get($property);
-    }
-
-    public function __set(string $property, mixed $value): void
-    {
-        if (array_key_exists($property, $this->filter)) {
-            $this->filter[$property] = $value;
-        }
     }
 }

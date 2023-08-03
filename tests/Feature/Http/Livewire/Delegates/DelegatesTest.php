@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Livewire\Delegates\Delegates;
 use App\Models\Wallet;
 use Livewire\Livewire;
