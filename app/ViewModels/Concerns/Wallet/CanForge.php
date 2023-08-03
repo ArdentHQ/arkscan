@@ -82,4 +82,14 @@ trait CanForge
     {
         return array_slice(array_reverse($this->performance()), 0, 2) === [false, false];
     }
+
+    public function forgedBlocks(): int
+    {
+        return Arr::get($this->wallet->attributes, 'delegate.producedBlocks');
+    }
+
+    public function missedBlocks(): ?int
+    {
+        return (new WalletCache())->getMissedBlocks($this->wallet->public_key);
+    }
 }
