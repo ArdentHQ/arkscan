@@ -29,7 +29,7 @@
         {{ $header }}
 
         @if ($expandable)
-            <div class="pl-4 h-[17px] flex items-center sm:hidden">
+            <div class="flex items-center pl-4 sm:hidden h-[17px]">
                 <x-general.dropdown.arrow
                     key="isExpanded"
                     x-on:click="isExpanded = ! isExpanded"
@@ -48,7 +48,7 @@
                 x-cloak
             @endif
 
-            class="flex flex-col px-4 pt-3 pb-4 space-y-4 sm:flex-row sm:space-y-0 sm:flex-1 sm:justify-between"
+            class="flex flex-col px-4 pt-3 pb-4 space-y-4 sm:flex-row sm:flex-1 sm:justify-between sm:space-y-0"
         >
             {{ $slot }}
         </div>

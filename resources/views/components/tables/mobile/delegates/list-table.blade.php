@@ -16,7 +16,7 @@
                         class="min-w-[32px]"
                     />
 
-                    <div class="flex items-center justify-between pl-3 flex-1">
+                    <div class="flex flex-1 justify-between items-center pl-3">
                         <x-tables.rows.mobile.encapsulated.delegates.address
                             :model="$delegate"
                             without-clipboard
