@@ -9,18 +9,18 @@
     >
         <x-ark-js-modal
             :init="false"
-            padding="p-6 sm:p-10 sm:pb-6"
+            padding="p-6 sm:p-8 sm:pb-6"
             title-class="text-lg sm:text-2xl"
             width-class="max-w-full sm:max-w-[430px]"
             breakpoint="sm"
             content-class="sm:rounded-2.5xl"
         >
             <x-slot name="title">
-                @lang('general.filters')
+                @lang('general.filter')
             </x-slot>
 
             <x-slot name="description">
-                <div class="-mx-8 sm:mx-10">
+                <div class="-mx-8">
                     {{ $slot }}
                 </div>
             </x-slot>
