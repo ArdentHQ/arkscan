@@ -23,6 +23,8 @@ final class Delegates extends Component
     use DeferLoading;
     use HasTablePagination;
 
+    const PER_PAGE = 51;
+
     // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable
     public array $filter = [];
 
