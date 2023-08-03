@@ -43,7 +43,6 @@
                                 </span>
                             </x-navbar.button>
 
-                            {{-- Mobile Hamburger icon --}}
                             <x-navbar.button @click="toggle">
                                 <span :class="{'hidden': open, 'inline-flex': !open }">
                                     <x-ark-icon name="menu" />

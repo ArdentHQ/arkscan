@@ -22,7 +22,6 @@
         <div class="flex items-center space-x-3" @click.outside="open = false">
             <div class="flex justify-end">
                 <div class="flex flex-1 justify-end items-center sm:justify-between sm:items-stretch">
-                    {{-- Desktop Navbar Items --}}
                     <div class="hidden items-center -mx-4 sm:h-16 md:flex h-[3.25rem]">
                         @foreach ($navigation as $navItem)
                             @if (Arr::exists($navItem, 'children'))
@@ -77,6 +76,4 @@
             </div>
         </div>
     </div>
-
-    {{-- <div class="absolute bottom-0 -mb-px w-full border-b border-theme-secondary-300 dark:border-theme-secondary-800"></div> --}}
 </div>
