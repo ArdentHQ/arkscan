@@ -6,16 +6,12 @@ namespace App\Http\Livewire\Delegates;
 
 use App\Enums\CoreTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
-use App\Facades\Network;
-use App\Facades\Wallets;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByBalanceScope;
-use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\ViewModels\ViewModelFactory;
-use App\ViewModels\WalletViewModel;
 use ArkEcosystem\Crypto\Enums\Types;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
