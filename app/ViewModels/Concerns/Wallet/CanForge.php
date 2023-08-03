@@ -88,8 +88,14 @@ trait CanForge
         return Arr::get($this->wallet->attributes, 'delegate.producedBlocks');
     }
 
-    public function missedBlocks(): ?int
+    public function missedBlocks(): int
     {
-        return (new WalletCache())->getMissedBlocks($this->wallet->public_key);
+        $publicKey = $this->publicKey();
+
+        if (is_null($publicKey)) {
+            return 0;
+        }
+
+        return (new WalletCache())->getMissedBlocks($publicKey);
     }
 }

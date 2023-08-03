@@ -140,46 +140,10 @@ final class Delegates extends Component
     }
 
     // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable
-    private function hasAddressingFilters(): bool
-    {
-        return false;
-    }
-
-    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable
-    private function hasTransactionTypeFilters(): bool
-    {
-        return false;
-    }
-
-    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable
     private function getDelegatesQuery(): Builder
     {
         return Wallet::query()
             ->whereNotNull('attributes->delegate->username')
             ->orderByRaw("(\"attributes\"->'delegate'->>'rank')::numeric ASC");
-        // return Transaction::query()
-        //     ->where(function ($query) {
-        //         $query->where(fn ($query) => $query->when($this->filter['transfers'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::TRANSFER)))
-        //             ->orWhere(fn ($query) => $query->when($this->filter['votes'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::VOTE)))
-        //             ->orWhere(fn ($query) => $query->when($this->filter['multipayments'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT)))
-        //             ->orWhere(fn ($query) => $query->when($this->filter['others'] === true, fn ($query) => $query
-        //                 ->where('type_group', TransactionTypeGroupEnum::MAGISTRATE)
-        //                 ->orWhere(
-        //                     fn ($query) => $query
-        //                         ->where('type_group', TransactionTypeGroupEnum::CORE)
-        //                         ->whereNotIn('type', [
-        //                             CoreTransactionTypeEnum::TRANSFER,
-        //                             CoreTransactionTypeEnum::VOTE,
-        //                             CoreTransactionTypeEnum::MULTI_PAYMENT,
-        //                         ])
-        //                 )));
-        //     })
-        //     ->where(function ($query) {
-        //         $query->where(fn ($query) => $query->when($this->filter['outgoing'], fn ($query) => $query->where('sender_public_key', $this->publicKey)))
-        //             ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query->where('recipient_id', $this->address)))
-        //             ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query
-        //                 ->where('type', Types::MULTI_PAYMENT)
-        //                 ->whereJsonContains('asset->payments', [['recipientId' => $this->address]])));
-        //     });
     }
 }
