@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Actions\CacheNetworkSupply;
-use App\Http\Livewire\Concerns\DelegateData;
 use App\Models\ForgingStats;
 use App\Services\Cache\DelegateCache;
 use Illuminate\View\View;
@@ -13,16 +12,9 @@ use Livewire\Component;
 
 final class DelegateDataBoxes extends Component
 {
-    use DelegateData;
-
-    private array $delegates = [];
-
-    private array $statistics = [];
-
     public function render(): View
     {
-        $delegateCache   = new DelegateCache();
-        $this->delegates = $this->fetchDelegates();
+        $delegateCache = new DelegateCache();
 
         [$missedBlockCount, $delegatesMissed] = $delegateCache->setMissedBlocks(function () {
             $stats = ForgingStats::where('forged', false)->get();
