@@ -2,6 +2,6 @@
     'model',
 ])
 
-<span class="text-sm font-semibold leading-[17px]">
+<x-tables.rows.desktop.encapsulated.cell>
     {{ $model->transactionCount() }}
-</span>
+</x-tables.rows.desktop.encapsulated.cell>

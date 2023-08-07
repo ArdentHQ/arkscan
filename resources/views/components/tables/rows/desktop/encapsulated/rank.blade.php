@@ -3,6 +3,6 @@
     'results'
 ])
 
-<span class="text-sm font-semibold leading-[17px]">
+<x-tables.rows.desktop.encapsulated.cell>
     {{ $index + ($results->currentPage() - 1) * $results->perPage() }}
-</span>
+</x-tables.rows.desktop.encapsulated.cell>

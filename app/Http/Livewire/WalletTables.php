@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
-use App\Livewire\SupportBrowserHistoryWrapper;
+use App\Http\Livewire\Concerns\HasTabs;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Arr;
 use Livewire\Component;
 
 final class WalletTables extends Component
 {
+    use HasTabs;
+
     public string $address;
 
     public string $view = 'transactions';
@@ -34,32 +35,6 @@ final class WalletTables extends Component
     protected $listeners = [
         'showWalletView',
     ];
-
-    public function __get(mixed $property): mixed
-    {
-        $value = Arr::get($this->tabQueryData[$this->view], $property);
-        if ($value !== null) {
-            return $value;
-        }
-
-        $value = Arr::get($this->tabQueryData[$this->previousView], $property);
-        if ($value !== null) {
-            return $value;
-        }
-
-        return parent::__get($property);
-    }
-
-    public function __set(string $property, mixed $value): void
-    {
-        if (Arr::has($this->tabQueryData[$this->view], $property)) {
-            $this->tabQueryData[$this->view][$property] = $value;
-        }
-
-        if (Arr::has($this->tabQueryData[$this->previousView], $property)) {
-            $this->tabQueryData[$this->previousView][$property] = $value;
-        }
-    }
 
     public function queryString(): array
     {
@@ -130,61 +105,5 @@ final class WalletTables extends Component
     public function showWalletView(string $view): void
     {
         $this->view = $view;
-    }
-
-    public function triggerViewIsReady(?string $view = null): void
-    {
-        if ($view === null) {
-            $view = $this->view;
-        }
-
-        if (! array_key_exists($view, $this->alreadyLoadedViews)) {
-            return;
-        }
-
-        if ($this->alreadyLoadedViews[$view] === true) {
-            return;
-        }
-
-        $this->emit('set'.ucfirst($view).'Ready');
-
-        $this->alreadyLoadedViews[$view] = true;
-    }
-
-    public function updatingView(string $newView): void
-    {
-        if ($newView === $this->view) {
-            return;
-        }
-
-        $this->previousView = $this->view;
-
-        SupportBrowserHistoryWrapper::init()->mergeRequestQueryStringWithComponent($this);
-
-        $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
-
-        // Reset the querystring data on view change to clear the URL
-        $queryStringData = $this->queryString();
-        foreach ($this->tabQueryData[$this->view] as $key => $value) {
-            // @phpstan-ignore-next-line
-            $this->{$key} = $queryStringData[$key]['except'];
-        }
-
-        $this->triggerViewIsReady($newView);
-    }
-
-    /**
-     * Apply existing view data to query string.
-     *
-     * @return void
-     */
-    public function updatedView(): void
-    {
-        if (array_key_exists($this->view, $this->savedQueryData)) {
-            foreach ($this->savedQueryData[$this->view] as $key => $value) {
-                // @phpstan-ignore-next-line
-                $this->{$key} = $value;
-            }
-        }
     }
 }

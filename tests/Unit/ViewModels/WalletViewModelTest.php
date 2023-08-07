@@ -576,61 +576,6 @@ it('should determine if the wallet has a multi signature', function () {
     expect($this->subject->hasMultiSignature())->toBeBool();
 });
 
-it('can determine the colors for icons based on the status of a delegate', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'balance'      => '100000000000',
-        'nonce'        => 1000,
-        'attributes'   => [
-            'delegate' => [
-                'resigned' => true,
-            ],
-        ],
-    ]));
-
-    // Resigned colors
-    expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800');
-    expect($this->subject->delegateStatusStyling())->toBe('text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800');
-
-    // Standby colors
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'attributes'   => [
-            'delegate' => [
-                'username' => 'John',
-                'rank'     => 52,
-            ],
-        ],
-    ]));
-
-    expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-900 border-theme-secondary-900');
-    expect($this->subject->delegateStatusStyling())->toBe('text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800');
-
-    // Pending colors
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'attributes'   => [
-            'delegate' => [
-                'username' => 'John',
-                'rank'     => 0,
-            ],
-        ],
-    ]));
-
-    expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-900 border-theme-secondary-900');
-    expect($this->subject->delegateStatusStyling())->toBe('text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800');
-
-    // Active colors
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'attributes'   => [
-            'delegate' => [
-                'username' => 'John',
-                'rank'     => 1,
-            ],
-        ],
-    ]));
-
-    expect($this->subject->delegateRankStyling())->toBe('text-theme-secondary-900 border-theme-secondary-900');
-    expect($this->subject->delegateStatusStyling())->toBe('text-theme-success-600 border-theme-success-600');
-});
-
 it('should get the delegate user name', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
@@ -777,4 +722,39 @@ it('should get no name if a standard wallet', function () {
     ]));
 
     expect($this->subject->name())->toBeNull();
+});
+
+it('should get forged block count for delegate', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->create([
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'producedBlocks' => 54321,
+            ],
+        ],
+    ]));
+
+    expect($wallet->forgedBlocks())->toBe(54321);
+});
+
+it('should get missed block count for delegate', function () {
+    (new WalletCache())->setMissedBlocks($this->subject->publicKey(), 12345);
+
+    expect($this->subject->missedBlocks())->toBe(12345);
+});
+
+it('should return zero if delegate has no public key', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->create([
+        'public_key'   => null,
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'producedBlocks' => 54321,
+            ],
+        ],
+    ]));
+
+    expect($wallet->missedBlocks())->toBe(0);
 });
