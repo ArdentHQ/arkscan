@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Http\Livewire\DelegateDataBoxes;
-use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
@@ -35,10 +34,10 @@ it('should not error if no delegate data', function () {
 
     Livewire::test(DelegateDataBoxes::class)
         ->assertViewHasAll([
-            'voterCount' => 0,
-            'totalVoted' => 0,
-            'currentSupply' => 0,
-            'missedBlocks' => 0,
+            'voterCount'      => 0,
+            'totalVoted'      => 0,
+            'currentSupply'   => 0,
+            'missedBlocks'    => 0,
             'delegatesMissed' => 0,
         ]);
 });
