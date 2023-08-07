@@ -62,7 +62,7 @@ return [
         ],
 
         'info' => [
-            'percentage' => 'Percentage of votes in relation to the delegate total.',
+            'percentage' => 'Percentage of votes in relation to the total supply.',
         ],
 
         'no_results' => [
