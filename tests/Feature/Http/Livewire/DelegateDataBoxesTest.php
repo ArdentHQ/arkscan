@@ -45,7 +45,7 @@ it('should not error if no delegate data', function () {
 it('should show the correct number of votes', function () {
     Wallet::factory(20)
         ->create([
-            'balance' => '1000000000',
+            'balance'    => '1000000000',
             'attributes' => [
                 'vote' => 'publickey',
             ],
@@ -53,7 +53,7 @@ it('should show the correct number of votes', function () {
 
     Wallet::factory(5)
         ->create([
-            'balance' => '0',
+            'balance'    => '0',
             'attributes' => [
                 'vote' => 'publickey',
             ],
@@ -61,7 +61,7 @@ it('should show the correct number of votes', function () {
 
     Wallet::factory(5)
         ->create([
-            'balance' => '1000000000',
+            'balance'    => '1000000000',
             'attributes' => [],
         ]);
 

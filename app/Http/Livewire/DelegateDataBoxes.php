@@ -19,7 +19,7 @@ final class DelegateDataBoxes extends Component
         $delegateCache = new DelegateCache();
 
         [$missedBlockCount, $delegatesMissed] = $this->missedBlocks($delegateCache);
-        [$voterCount, $totalVoted] = $this->voted($delegateCache);
+        [$voterCount, $totalVoted]            = $this->voted($delegateCache);
 
         return view('livewire.delegate-data-boxes', [
             'voterCount'      => $voterCount,
