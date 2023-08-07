@@ -54,14 +54,9 @@ final class DelegateCache implements Contract
         return $this->remember('total_rewards', now()->addHour(), $callback);
     }
 
-    public function getTotalVoted(): float
+    public function setTotalVoted(Closure $callback): array
     {
-        return floatval($this->get('total_voted', []));
-    }
-
-    public function setTotalVoted(Closure $callback): float
-    {
-        return floatval($this->remember('total_voted', now()->addHour(), $callback));
+        return $this->remember('total_voted', now()->addHour(), $callback);
     }
 
     public function getVoterCount(): int

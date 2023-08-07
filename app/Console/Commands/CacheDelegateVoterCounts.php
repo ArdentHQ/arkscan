@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Facades\Wallets;
-use App\Services\BigNumber;
-use App\Services\Cache\DelegateCache;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -34,12 +32,10 @@ final class CacheDelegateVoterCounts extends Command
      */
     public function handle(): void
     {
-        $walletCache   = new WalletCache();
-        $delegateCache = new DelegateCache();
+        $walletCache = new WalletCache();
 
         $select = [
             'wallets.public_key',
-            'wallets.balance',
             'COUNT(voters.public_key) total',
         ];
 
@@ -50,20 +46,9 @@ final class CacheDelegateVoterCounts extends Command
                 'wallets.public_key',
                 (string) DB::raw('voters.attributes->vote')
             )
-            ->groupBy('wallets.public_key', 'wallets.balance')
-            ->get();
+            ->groupBy('wallets.public_key')
+            ->pluck('total', 'public_key');
 
-        $results->each(fn ($wallet) => $walletCache->setVoterCount($wallet['public_key'], $wallet['total']));
-
-        $voterCount = 0;
-        $totalVoted = BigNumber::new(0);
-        foreach ($results as $wallet) {
-            $voterCount += $wallet['total'];
-
-            $totalVoted->plus($wallet['balance']->valueOf());
-        }
-
-        $delegateCache->setVoterCount(fn () => $voterCount);
-        $delegateCache->setTotalVoted(fn () => $totalVoted->toFloat());
+        $results->each(fn ($total, $publicKey) => $walletCache->setVoterCount($publicKey, $total));
     }
 }
