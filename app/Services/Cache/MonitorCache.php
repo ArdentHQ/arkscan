@@ -12,6 +12,9 @@ use Closure;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class MonitorCache implements Contract
 {
     use ManagesCache;
