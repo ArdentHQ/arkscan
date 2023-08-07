@@ -80,7 +80,7 @@
                     responsive
                     breakpoint="lg"
                 >
-                    <x-tables.rows.desktop.encapsulated.vote-percentage :model="$delegate" />
+                    <x-tables.rows.desktop.encapsulated.delegates.votes-percentage :model="$delegate" />
                 </x-ark-tables.cell>
 
                 @if ($this->showMissedBlocks)
