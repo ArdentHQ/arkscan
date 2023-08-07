@@ -17,7 +17,7 @@
 @endphp
 
 <x-general.badge
-    class="min-w-[30px] text-center"
+    class="text-center min-w-[30px]"
     :colors="Arr::toCssClasses([
         'bg-theme-success-100 border-theme-success-100 text-theme-success-700 dark:border-theme-success-700 dark:text-theme-success-500' => $state === 'success',
         'bg-theme-orange-light border-theme-orange-light text-theme-orange-dark dark:border-theme-orange-dark dark:text-theme-warning-400' => $state === 'warning',
