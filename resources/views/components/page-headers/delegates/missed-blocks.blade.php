@@ -1,9 +1,7 @@
 @props([
-    'statistics',
+    'missedBlocks',
+    'delegatesMissed',
 ])
-
-{{-- TODO: missed blocks for 30 days - https://app.clickup.com/t/862k7j3m7 --}}
-@php ($missedBlocks = Arr::get($statistics, 'performances.missed'))
 
 <x-page-headers.delegates.header-item
     :title="trans('pages.delegates.missed-blocks.title')"
@@ -13,14 +11,14 @@
         <div class="flex items-center space-x-2">
             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                 @if ($missedBlocks)
-                    {{ $missedBlocks }}
+                    <x-number>{{ $missedBlocks }}</x-number>
                 @else
                     -
                 @endif
             </span>
 
             <x-general.badge class="py-px">
-                @lang('pages.delegates.x_delegates', ['count' => $missedBlocks])
+                @lang('pages.delegates.x_delegates', ['count' => $delegatesMissed])
             </x-general.badge>
         </div>
 
