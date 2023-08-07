@@ -41,3 +41,31 @@ it('should not error if no delegate data', function () {
             'delegatesMissed' => 0,
         ]);
 });
+
+it('should show the correct number of votes', function () {
+    Wallet::factory(20)
+        ->create([
+            'balance' => '1000000000',
+            'attributes' => [
+                'vote' => 'publickey',
+            ],
+        ]);
+
+    Wallet::factory(5)
+        ->create([
+            'balance' => '0',
+            'attributes' => [
+                'vote' => 'publickey',
+            ],
+        ]);
+
+    Wallet::factory(5)
+        ->create([
+            'balance' => '1000000000',
+            'attributes' => [],
+        ]);
+
+    Livewire::test(DelegateDataBoxes::class)
+        ->assertViewHas('voterCount', 25)
+        ->assertViewHas('totalVoted', 200);
+});
