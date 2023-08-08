@@ -132,7 +132,11 @@ it('should store the height for missed blocks', function () {
             ],
         ]);
 
-    Artisan::call('explorer:forging-stats:build');
+    Artisan::call('explorer:forging-stats:build', ['--height' => 20]);
 
-    expect(ForgingStats::where('forged', false)->count())->toBe(2);
+    $forgingStats = ForgingStats::where('forged', false)->get();
+
+    expect($forgingStats->count())->toBe(2);
+    expect($forgingStats->get(0)->missed_height)->toBe(21);
+    expect($forgingStats->get(1)->missed_height)->toBe(21);
 });
