@@ -7,6 +7,7 @@ namespace App\Jobs;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\ForgingStats;
+use App\Models\Scopes\OrderByTimestampScope;
 use App\Services\Monitor\MissedBlocksCalculator;
 use App\Services\Timestamp;
 use Illuminate\Bus\Queueable;
@@ -27,25 +28,52 @@ final class BuildForgingStats implements ShouldQueue
     {
     }
 
+    private function getStartHeight(int $height, int $timeRangeInSeconds)
+    {
+        $heightTimestamp = Block::where('height', $height)
+            ->firstOrFail()
+            ->timestamp;
+
+        return Block::where('timestamp', '<=', $heightTimestamp - $timeRangeInSeconds)
+            ->orderBy('height', 'desc')
+            ->limit(1)
+            ->firstOrFail()
+            ->height
+            ->toNumber();
+    }
+
     public function handle(): void
     {
         $height    = $this->getHeight();
         $timeRange = $this->getTimeRange($height);
+        $startHeight = $this->getStartHeight($height, $timeRange);
 
-        $forgingStats = MissedBlocksCalculator::calculateFromHeightGoingBack($height, $timeRange);
+        $timestampHeights = Block::select('timestamp', 'height')
+            ->withCasts(['height' => 'int'])
+            ->withScope(OrderByTimestampScope::class)
+            ->where('height', '>=', $startHeight - 1 - Network::delegateCount())
+            ->where('height', '<=', $height + 1)
+            ->get()
+            ->sortByDesc('height');
+
+        $forgingStats = MissedBlocksCalculator::calculateFromHeightGoingBack($startHeight, $height);
+
+        $data = [];
         foreach ($forgingStats as $timestamp => $statsForTimestamp) {
-            DB::transaction(function () use ($timestamp, $statsForTimestamp) {
-                ForgingStats::updateOrCreate(
-                    [
-                        'timestamp' => $timestamp,
-                    ],
-                    [
-                        'public_key' => $statsForTimestamp['publicKey'],
-                        'forged'     => $statsForTimestamp['forged'],
-                    ],
-                );
-            }, attempts: 2);
+            $missedHeight = null;
+            if ($statsForTimestamp['forged'] === false) {
+                $missedHeight = $timestampHeights->firstWhere('timestamp', '<=', $timestamp)['height'] + 1;
+            }
+
+            $data[] = [
+                'missed_height' => $missedHeight,
+                'timestamp'     => $timestamp,
+                'public_key'    => $statsForTimestamp['publicKey'],
+                'forged'        => $statsForTimestamp['forged'],
+            ];
         }
+
+        DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp'], ['public_key', 'forged']), attempts: 2);
 
         // clean up old stats entries
         $this->deleteMoreThan30DaysOldStats($this->getTimestampForHeight($height));
@@ -100,5 +128,15 @@ final class BuildForgingStats implements ShouldQueue
     private function getTimestampForHeight(int $height): int
     {
         return Block::where('height', $height)->limit(1)->firstOrFail()->timestamp;
+    }
+
+    private function getHeightForTimestamp(int $timestamp): int
+    {
+        return Block::where('timestamp', '<=', $timestamp)
+            ->withScope(OrderByTimestampScope::class)
+            ->limit(1)
+            ->firstOrFail()
+            ->height
+            ->toNumber();
     }
 }
