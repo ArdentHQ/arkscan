@@ -96,3 +96,17 @@ it('should execute the command - without parameter', function () {
     // because of how test data is generated (see beforeEach), the last round contains
     // 50 blocks, hence 50 entries in forging stats
 });
+
+it('should not add multiple multiple records to database', function () {
+    $args = [
+        '--height' => 6970364, '--days' => 0.01,
+    ];
+
+    Artisan::call('explorer:forging-stats:build', $args);
+    Artisan::call('explorer:forging-stats:build', $args);
+    Artisan::call('explorer:forging-stats:build', $args);
+    Artisan::call('explorer:forging-stats:build', $args);
+    Artisan::call('explorer:forging-stats:build', $args);
+
+    $this->assertEquals(ForgingStats::all()->count(), 153);
+});
