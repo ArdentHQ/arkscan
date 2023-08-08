@@ -1,4 +1,10 @@
-@props(['statistics'])
+@props([
+    'voterCount',
+    'totalVoted',
+    'currentSupply',
+    'missedBlocks',
+    'delegatesMissed',
+])
 
 <div class="flex flex-col px-6 pt-8 pb-6 space-y-6 font-semibold md:px-10 md:mx-auto md:max-w-7xl">
     <div class="flex flex-col space-y-1.5">
@@ -13,8 +19,15 @@
 
     <div class="flex flex-col space-y-2 sm:space-y-3 xl:flex-row xl:space-y-0 xl:space-x-3">
         <div class="flex flex-col flex-1 space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 md:space-x-3">
-            <x-page-headers.delegates.missed-blocks :statistics="$statistics" />
-            <x-page-headers.delegates.voting />
+            <x-page-headers.delegates.missed-blocks
+                :missed-blocks="$missedBlocks"
+                :delegates-missed="$delegatesMissed"
+            />
+            <x-page-headers.delegates.voting
+                :voter-count="$voterCount"
+                :total-voted="$totalVoted"
+                :current-supply="$currentSupply"
+            />
         </div>
 
         <x-page-headers.delegates.explore />

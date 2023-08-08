@@ -130,3 +130,10 @@ it('should format with network currency with different decimal places', function
     expect(NumberFormatter::networkCurrency(1.0005, 2, true))->toBe('1.00 DARK');
     expect(NumberFormatter::networkCurrency(1.0095, 2, true))->toBe('1.01 DARK');
 });
+
+it('should handle network currency with less than 2 decimal places', function () {
+    expect(NumberFormatter::networkCurrency(1.0005, 1, true))->toBe('1.0 DARK');
+    expect(NumberFormatter::networkCurrency(1.0095, 1, true))->toBe('1.0 DARK');
+    expect(NumberFormatter::networkCurrency(1.0005, 0, true))->toBe('1 DARK');
+    expect(NumberFormatter::networkCurrency(1.9095, 0, true))->toBe('2 DARK');
+});

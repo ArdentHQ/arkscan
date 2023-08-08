@@ -54,6 +54,16 @@ final class DelegateCache implements Contract
         return $this->remember('total_rewards', now()->addHour(), $callback);
     }
 
+    public function setTotalVoted(Closure $callback): array
+    {
+        return $this->remember('total_voted', now()->addHour(), $callback);
+    }
+
+    public function setMissedBlocks(Closure $callback): array
+    {
+        return $this->remember('missed_blocks', now()->addHour(), $callback);
+    }
+
     public function getCache(): TaggedCache
     {
         return Cache::tags('delegate');
