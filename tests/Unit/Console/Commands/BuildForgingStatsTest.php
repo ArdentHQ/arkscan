@@ -5,6 +5,8 @@ declare(strict_types=1);
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Round;
+use App\Models\Wallet;
+use App\Services\Monitor\MissedBlocksCalculator;
 use Illuminate\Support\Facades\Artisan;
 
 beforeEach(function () {
@@ -109,4 +111,29 @@ it('should not add multiple multiple records to database', function () {
     Artisan::call('explorer:forging-stats:build', $args);
 
     $this->assertEquals(ForgingStats::all()->count(), 153);
+});
+
+it('should store the height for missed blocks', function () {
+    Block::factory()->create([
+        'timestamp' => 45000,
+        'height'    => 20,
+    ]);
+
+    $this->mock('alias:'.MissedBlocksCalculator::class)
+        ->shouldReceive('calculateFromHeightGoingBack')
+        ->once()
+        ->andReturn([
+            50000 => [
+                'publicKey' => 'test-public-key',
+                'forged'    => false,
+            ],
+            50001 => [
+                'publicKey' => 'test-public-key-2',
+                'forged'    => false,
+            ],
+        ]);
+
+    Artisan::call('explorer:forging-stats:build');
+
+    expect(ForgingStats::where('forged', false)->count())->toBe(2);
 });

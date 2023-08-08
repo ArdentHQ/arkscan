@@ -9,7 +9,8 @@ use App\Models\Block;
 use App\Models\Round;
 use App\Services\Monitor\Actions\ShuffleDelegates;
 
-final class MissedBlocksCalculator
+/* @phpstan-ignore-next-line */
+class MissedBlocksCalculator
 {
     public static function calculateFromHeightGoingBack(int $heightFrom, int $heightTo): array
     {
