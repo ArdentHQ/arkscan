@@ -28,24 +28,10 @@ final class BuildForgingStats implements ShouldQueue
     {
     }
 
-    private function getStartHeight(int $height, int $timeRangeInSeconds): int
-    {
-        $heightTimestamp = Block::where('height', $height)
-            ->firstOrFail()
-            ->timestamp;
-
-        return Block::where('timestamp', '<=', $heightTimestamp - $timeRangeInSeconds)
-            ->orderBy('height', 'desc')
-            ->limit(1)
-            ->firstOrFail()
-            ->height
-            ->toNumber();
-    }
-
     public function handle(): void
     {
-        $height    = $this->getHeight();
-        $timeRange = $this->getTimeRange($height);
+        $height      = $this->getHeight();
+        $timeRange   = $this->getTimeRange($height);
         $startHeight = $this->getStartHeight($height, $timeRange);
 
         $timestampHeights = Block::select('timestamp', 'height')
@@ -63,7 +49,7 @@ final class BuildForgingStats implements ShouldQueue
             $missedHeight = null;
             if ($statsForTimestamp['forged'] === false) {
                 /** @var array $missedBlock */
-                $missedBlock = $timestampHeights->firstWhere('timestamp', '<=', $timestamp);
+                $missedBlock  = $timestampHeights->firstWhere('timestamp', '<=', $timestamp);
                 $missedHeight = $missedBlock['height'] + 1;
             }
 
@@ -79,6 +65,20 @@ final class BuildForgingStats implements ShouldQueue
 
         // clean up old stats entries
         $this->deleteMoreThan30DaysOldStats($this->getTimestampForHeight($height));
+    }
+
+    private function getStartHeight(int $height, int $timeRangeInSeconds): int
+    {
+        $heightTimestamp = Block::where('height', $height)
+            ->firstOrFail()
+            ->timestamp;
+
+        return Block::where('timestamp', '<=', $heightTimestamp - $timeRangeInSeconds)
+            ->orderBy('height', 'desc')
+            ->limit(1)
+            ->firstOrFail()
+            ->height
+            ->toNumber();
     }
 
     private function getHeight(): int
