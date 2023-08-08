@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Round;
-use App\Models\Wallet;
 use App\Services\Monitor\MissedBlocksCalculator;
 use Illuminate\Support\Facades\Artisan;
 
