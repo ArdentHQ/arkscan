@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Facades\Services\Monitor\MissedBlocksCalculator;
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Round;
-use App\Facades\Services\Monitor\MissedBlocksCalculator;
 use Illuminate\Support\Facades\Artisan;
 
 beforeEach(function () {

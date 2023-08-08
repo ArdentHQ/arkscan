@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Facades\Network;
+use App\Facades\Services\Monitor\MissedBlocksCalculator;
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Scopes\OrderByTimestampScope;
-use App\Facades\Services\Monitor\MissedBlocksCalculator;
 use App\Services\Timestamp;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
