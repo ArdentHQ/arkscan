@@ -28,7 +28,7 @@ final class BuildForgingStats implements ShouldQueue
     {
     }
 
-    private function getStartHeight(int $height, int $timeRangeInSeconds)
+    private function getStartHeight(int $height, int $timeRangeInSeconds): int
     {
         $heightTimestamp = Block::where('height', $height)
             ->firstOrFail()
@@ -62,7 +62,9 @@ final class BuildForgingStats implements ShouldQueue
         foreach ($forgingStats as $timestamp => $statsForTimestamp) {
             $missedHeight = null;
             if ($statsForTimestamp['forged'] === false) {
-                $missedHeight = $timestampHeights->firstWhere('timestamp', '<=', $timestamp)['height'] + 1;
+                /** @var array $missedBlock */
+                $missedBlock = $timestampHeights->firstWhere('timestamp', '<=', $timestamp);
+                $missedHeight = $missedBlock['height'] + 1;
             }
 
             $data[] = [
@@ -128,15 +130,5 @@ final class BuildForgingStats implements ShouldQueue
     private function getTimestampForHeight(int $height): int
     {
         return Block::where('height', $height)->limit(1)->firstOrFail()->timestamp;
-    }
-
-    private function getHeightForTimestamp(int $timestamp): int
-    {
-        return Block::where('timestamp', '<=', $timestamp)
-            ->withScope(OrderByTimestampScope::class)
-            ->limit(1)
-            ->firstOrFail()
-            ->height
-            ->toNumber();
     }
 }
