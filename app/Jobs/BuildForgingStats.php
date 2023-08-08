@@ -8,7 +8,7 @@ use App\Facades\Network;
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Scopes\OrderByTimestampScope;
-use App\Services\Monitor\MissedBlocksCalculator;
+use App\Facades\Services\Monitor\MissedBlocksCalculator;
 use App\Services\Timestamp;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

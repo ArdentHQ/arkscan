@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Contracts\MarketDataProvider;
+use App\Contracts\Services\Monitor\MissedBlocksCalculator as MissedBlocksCalculatorContract;
 use App\Facades\Network;
 use App\Services\BigNumber;
+use App\Services\Monitor\MissedBlocksCalculator;
 use ARKEcosystem\Foundation\DataBags\DataBag;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
@@ -31,6 +33,11 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             MarketDataProvider::class,
             fn () => new (Config::get('arkscan.market_data_provider_service'))
+        );
+
+        $this->app->singleton(
+            MissedBlocksCalculatorContract::class,
+            fn () => new (MissedBlocksCalculator::class)()
         );
     }
 

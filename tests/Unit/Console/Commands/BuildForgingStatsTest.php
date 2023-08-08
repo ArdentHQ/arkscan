@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Round;
-use App\Services\Monitor\MissedBlocksCalculator;
+use App\Facades\Services\Monitor\MissedBlocksCalculator;
 use Illuminate\Support\Facades\Artisan;
 
 beforeEach(function () {
@@ -118,8 +118,7 @@ it('should store the height for missed blocks', function () {
         'height'    => 20,
     ]);
 
-    $this->mock('alias:'.MissedBlocksCalculator::class)
-        ->shouldReceive('calculateFromHeightGoingBack')
+    MissedBlocksCalculator::shouldReceive('calculateFromHeightGoingBack')
         ->once()
         ->andReturn([
             50000 => [
