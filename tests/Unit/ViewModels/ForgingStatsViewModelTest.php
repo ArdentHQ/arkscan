@@ -41,6 +41,14 @@ it('should get the delegate address', function () {
     expect($this->subject->delegate()->address())->toBe($wallet->address);
 });
 
+it('should handle no delegate', function () {
+    $this->subject = new ForgingStatsViewModel(ForgingStats::factory()->create([
+        'public_key' => 'key-to-missing-delegate',
+    ]));
+
+    expect($this->subject->delegate())->toBeNull();
+});
+
 it('should get the delegate username', function () {
     $wallet = Wallet::factory()->activeDelegate()->create(['attributes' => [
         'delegate' => [

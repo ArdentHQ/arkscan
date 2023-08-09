@@ -15,11 +15,6 @@ final class ForgingStatsViewModel implements ViewModel
     {
     }
 
-    public function model(): ForgingStats
-    {
-        return $this->forgingStats;
-    }
-
     public function delegate(): ?WalletViewModel
     {
         if ($this->forgingStats->delegate === null) {
