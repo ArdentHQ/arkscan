@@ -51,6 +51,6 @@ final class ForgingStatsViewModel implements ViewModel
 
     public function height(): int
     {
-        return $this->forgingStats->missed_height->toNumber();
+        return $this->forgingStats->missed_height;
     }
 }

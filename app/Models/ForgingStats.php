@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Models\Casts\BigInteger;
 use App\Models\Concerns\SearchesCaseInsensitive;
-use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property BigNumber $missed_height
+ * @property int $missed_height
  * @property int $timestamp
  * @property string $public_key
  * @property bool $forged
@@ -49,7 +47,7 @@ final class ForgingStats extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'missed_height' => BigInteger::class,
+        'missed_height' => 'int',
         'timestamp'     => 'int',
         'public_key'    => 'string',
         'forged'        => 'bool',
