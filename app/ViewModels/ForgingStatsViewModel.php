@@ -7,7 +7,6 @@ namespace App\ViewModels;
 use App\Contracts\ViewModel;
 use App\Models\ForgingStats;
 use App\Services\Timestamp;
-use App\ViewModels\Concerns\Block\HasDelegate;
 use Carbon\Carbon;
 
 final class ForgingStatsViewModel implements ViewModel
