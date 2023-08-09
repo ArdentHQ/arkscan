@@ -17,6 +17,11 @@ it('should set initial data', function () {
                 'page'    => 1,
                 'perPage' => 51,
             ],
+
+            'missed-blocks' => [
+                'page'    => 1,
+                'perPage' => 25,
+            ],
         ]);
 });
 
