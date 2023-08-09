@@ -15,7 +15,7 @@
         $nextTick(() => tippy($el, tooltipSettings));
         setInterval(() => output = dayjs().to(datetime), 1000);
     "
-    @class(['text-sm font-semibold', $class])
+    @class(['text-sm font-semibold leading-4.25', $class])
     :data-tippy-content="tooltip"
     x-text="output"
 ></span>
