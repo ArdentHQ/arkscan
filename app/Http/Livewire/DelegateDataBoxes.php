@@ -4,60 +4,102 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use App\Actions\CacheNetworkSupply;
-use App\Models\ForgingStats;
+use App\DTO\Slot;
+use App\Enums\DelegateForgingStatus;
+use App\Facades\Network;
+use App\Http\Livewire\Concerns\DelegateData;
+use App\Models\Block;
 use App\Models\Wallet;
-use App\Services\BigNumber;
-use App\Services\Cache\DelegateCache;
+use App\Services\Cache\MonitorCache;
+use App\Services\Cache\WalletCache;
+use App\Services\Monitor\Monitor;
+use App\ViewModels\ViewModelFactory;
+use App\ViewModels\WalletViewModel;
 use Illuminate\View\View;
 use Livewire\Component;
 
 final class DelegateDataBoxes extends Component
 {
+    use DelegateData;
+
+    private array $delegates = [];
+
+    private array $statistics = [];
+
     public function render(): View
     {
-        $delegateCache = new DelegateCache();
-
-        [$missedBlockCount, $delegatesMissed] = $this->missedBlocks($delegateCache);
-        [$voterCount, $totalVoted]            = $this->voted($delegateCache);
+        $this->delegates = $this->fetchDelegates();
 
         return view('livewire.delegate-data-boxes', [
-            'voterCount'      => $voterCount,
-            'totalVoted'      => $totalVoted,
-            'currentSupply'   => CacheNetworkSupply::execute() / 1e8,
-            'missedBlocks'    => $missedBlockCount,
-            'delegatesMissed' => $delegatesMissed,
+            'statistics' => $this->statistics,
         ]);
     }
 
-    private function missedBlocks(DelegateCache $delegateCache): array
+    public function pollStatistics(): void
     {
-        return $delegateCache->setMissedBlocks(function () {
-            $stats = ForgingStats::where('forged', false)->get();
+        $this->statistics = [
+            'blockCount'   => $this->getBlockCount(),
+            'nextDelegate' => $this->getNextDelegate(),
+            'performances' => $this->getDelegatesPerformance(),
+        ];
+    }
 
-            return [
-                $stats->count(),
-                $stats->unique('public_key')->count(),
-            ];
+    public function getDelegatesPerformance(): array
+    {
+        $performances = [];
+
+        foreach ($this->delegates as $delegate) {
+            $publicKey                = $delegate->wallet()->model()->public_key;
+            $performances[$publicKey] = $this->getDelegatePerformance($publicKey);
+        }
+
+        $parsedPerformances = array_count_values($performances);
+
+        return [
+            'forging' => $parsedPerformances[DelegateForgingStatus::forging] ?? 0,
+            'missed'  => $parsedPerformances[DelegateForgingStatus::missed] ?? 0,
+            'missing' => $parsedPerformances[DelegateForgingStatus::missing] ?? 0,
+        ];
+    }
+
+    public function getDelegatePerformance(string $publicKey): string
+    {
+        /** @var Wallet $delegateWallet */
+        $delegateWallet = (new WalletCache())->getDelegate($publicKey);
+
+        /** @var WalletViewModel $delegate */
+        $delegate = ViewModelFactory::make($delegateWallet);
+
+        if ($delegate->hasForged()) {
+            return DelegateForgingStatus::forging;
+        } elseif ($delegate->keepsMissing()) {
+            return DelegateForgingStatus::missing;
+        }
+
+        return DelegateForgingStatus::missed;
+    }
+
+    public function getBlockCount(): string
+    {
+        return (new MonitorCache())->setBlockCount(function (): string {
+            return trans('pages.delegates.statistics.blocks_generated', [
+                'forged' => Network::delegateCount() - (Monitor::heightRangeByRound(Monitor::roundNumber())[1] - Block::max('height')),
+                'total'  => Network::delegateCount(),
+            ]);
         });
     }
 
-    private function voted(DelegateCache $delegateCache): array
+    public function getNextDelegate(): ? WalletViewModel
     {
-        return $delegateCache->setTotalVoted(function () {
-            $wallets = Wallet::select('balance')
-                ->whereRaw("\"attributes\"->>'vote' is not null")
-                ->get();
+        $this->delegates = $this->fetchDelegates();
 
-            $totalVoted = BigNumber::new(0);
-            foreach ($wallets as $wallet) {
-                $totalVoted->plus($wallet['balance']->valueOf());
-            }
+        return (new MonitorCache())->setNextDelegate(fn () => optional($this->getSlotsByStatus($this->delegates, 'pending'))->wallet());
+    }
 
-            return [
-                $wallets->count(),
-                $totalVoted->toFloat(),
-            ];
-        });
+    private function getSlotsByStatus(array $slots, string $status): ?Slot
+    {
+        return collect($slots)
+            ->filter(fn ($slot) => $slot->status() === $status)
+            ->first();
     }
 }
