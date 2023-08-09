@@ -1,5 +1,6 @@
 @props([
     'key' => 'dropdownOpen',
+    'color' => 'text-theme-secondary-700 dark:text-theme-secondary-200',
 ])
 
 <div
@@ -9,6 +10,6 @@
     <x-ark-icon
         name="arrows.chevron-down-small"
         size="w-3 h-3"
-        class="text-theme-secondary-700 dark:text-theme-secondary-200"
+        :class="$color"
     />
 </div>
