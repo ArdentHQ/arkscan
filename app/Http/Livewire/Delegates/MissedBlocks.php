@@ -15,8 +15,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
 /**
- * @property bool $isAllSelected
- * @property LengthAwarePaginator $delegates
+ * @property LengthAwarePaginator $missedBlocks
  * */
 final class MissedBlocks extends Component
 {

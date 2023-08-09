@@ -6,10 +6,12 @@ namespace App\Models;
 
 use App\Models\Casts\BigInteger;
 use App\Models\Concerns\SearchesCaseInsensitive;
+use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * @property BigNumber $missed_height
  * @property int $timestamp
  * @property string $public_key
  * @property bool $forged

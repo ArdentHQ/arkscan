@@ -17,8 +17,6 @@ use Carbon\Carbon;
 
 final class ForgingStatsViewModel implements ViewModel
 {
-    use HasDelegate;
-
     public function __construct(private ForgingStats $forgingStats)
     {
     }
@@ -28,9 +26,23 @@ final class ForgingStatsViewModel implements ViewModel
         return $this->forgingStats;
     }
 
-    public function delegate(): WalletViewModel
+    public function delegate(): ?WalletViewModel
     {
+        if ($this->forgingStats->delegate === null) {
+            return null;
+        }
+
         return new WalletViewModel($this->forgingStats->delegate);
+    }
+
+    public function address(): string
+    {
+        return $this->delegate()?->address() ?? 'Genesis';
+    }
+
+    public function username(): string
+    {
+        return $this->delegate()?->username() ?? 'Genesis';
     }
 
     public function timestamp(): string
