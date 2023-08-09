@@ -73,7 +73,7 @@ return [
 
     'missed-blocks' => [
         'height'        => 'Block Height',
-        'age'          => 'Age',
+        'age'           => 'Age',
         'delegate'      => 'Delegate',
         'no_of_voters'  => '# of Voters',
         'votes'         => 'Votes (:currency)',

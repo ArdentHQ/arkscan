@@ -7,7 +7,6 @@ namespace App\Http\Livewire\Delegates;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\ForgingStats;
-use App\Models\Scopes\OrderByHeightScope;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
