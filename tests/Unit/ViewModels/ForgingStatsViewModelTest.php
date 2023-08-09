@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\DTO\MemoryWallet;
 use App\Models\ForgingStats;
 use App\Models\Wallet;
 use App\ViewModels\ForgingStatsViewModel;
