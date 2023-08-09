@@ -378,6 +378,11 @@ return [
         ],
     ],
 
+    'delegate-monitor' => [
+        'title'    => 'Delegate Monitor',
+        'subtitle' => 'Delegate block production observer tool.',
+    ],
+
     'blocks_by_wallet' => [
         'title'       => 'Generated Blocks',
         'table_title' => 'Block History',
