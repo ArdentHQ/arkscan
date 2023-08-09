@@ -51,7 +51,6 @@ final class ForgingStats extends Model
     protected $casts = [
         'missed_height' => BigInteger::class,
         'timestamp'     => 'int',
-        'missed_height' => 'int',
         'public_key'    => 'string',
         'forged'        => 'bool',
     ];
