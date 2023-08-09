@@ -338,8 +338,8 @@ return [
 
         'tabs'               => [
             'delegates'     => 'Delegates',
-            'missed-blocks' => 'Missed Blocks',
-            'recent-votes'  => 'Recent Votes',
+            'missed_blocks' => 'Missed Blocks',
+            'recent_votes'  => 'Recent Votes',
         ],
 
         'active'     => 'Active',

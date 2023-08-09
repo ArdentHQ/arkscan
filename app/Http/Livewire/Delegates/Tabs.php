@@ -21,7 +21,8 @@ final class Tabs extends Component
     public array $savedQueryData = [];
 
     public array $alreadyLoadedViews = [
-        'delegates' => false,
+        'delegates'     => false,
+        'missed-blocks' => false,
     ];
 
     public function queryString(): array
@@ -49,6 +50,11 @@ final class Tabs extends Component
                     'perPage' => Delegates::defaultPerPage(),
 
                     // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTables
+                ],
+
+                'missed-blocks' => [
+                    'page'    => 1,
+                    'perPage' => MissedBlocks::defaultPerPage(),
                 ],
             ];
         }

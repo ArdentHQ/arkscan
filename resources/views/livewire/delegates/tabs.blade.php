@@ -26,11 +26,11 @@
         </x-tabs.inline-tab>
 
         <x-tabs.inline-tab name="missed-blocks">
-            <span>@lang('pages.delegates.tabs.missed-blocks')</span>
+            <span>@lang('pages.delegates.tabs.missed_blocks')</span>
         </x-tabs.inline-tab>
 
         <x-tabs.inline-tab name="recent-votes">
-            <span>@lang('pages.delegates.tabs.recent-votes')</span>
+            <span>@lang('pages.delegates.tabs.recent_votes')</span>
         </x-tabs.inline-tab>
     </x-tabs.wrapper>
 
@@ -50,6 +50,10 @@
                 >
                     <div x-show="tab === 'delegates'">
                         @lang('pages.delegates.tabs.delegates')
+                    </div>
+
+                    <div x-show="tab === 'missed-blocks'">
+                        @lang('pages.delegates.tabs.missed_blocks')
                     </div>
                 </div>
 
@@ -76,12 +80,25 @@
                 >
                     @lang('pages.delegates.tabs.delegates')
                 </a>
+
+                <a
+                    wire:click="$set('view', 'missed-blocks');"
+                    @click="view = 'missed-blocks'; tab = 'missed-blocks';"
+                    @class([
+                        'dropdown-entry',
+                        'dropdown-entry-selected' => $this->view === 'missed-blocks',
+                    ])
+                >
+                    @lang('pages.delegates.tabs.missed_blocks')
+                </a>
             </div>
         </x-ark-dropdown>
     </div>
 
     <div id="delegate-table-list">
         <x-delegates.tables.delegates />
+
+        <x-delegates.tables.missed-blocks />
 
         <x-script.onload-scroll-to-query selector="#delegate-table-list" />
     </div>

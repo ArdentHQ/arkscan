@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Casts\BigInteger;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $timestamp
@@ -43,8 +45,19 @@ final class ForgingStats extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'missed_height' => BigInteger::class,
         'timestamp'     => 'int',
         'public_key'    => 'string',
         'forged'        => 'bool',
     ];
+
+    /**
+     * A round slot belongs to a delegate.
+     *
+     * @return BelongsTo
+     */
+    public function delegate(): BelongsTo
+    {
+        return $this->belongsTo(Wallet::class, 'public_key', 'public_key');
+    }
 }
