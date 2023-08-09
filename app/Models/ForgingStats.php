@@ -44,6 +44,7 @@ final class ForgingStats extends Model
      */
     protected $casts = [
         'timestamp'     => 'int',
+        'missed_height' => 'int',
         'public_key'    => 'string',
         'forged'        => 'bool',
     ];
