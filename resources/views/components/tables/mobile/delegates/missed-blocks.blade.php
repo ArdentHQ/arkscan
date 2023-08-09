@@ -25,7 +25,7 @@
 
                     <x-tables.rows.mobile.encapsulated.age
                         :model="$block"
-                        class="sm:flex-1 sm:text-right leading-[17px]"
+                        class="sm:flex-1 sm:text-right leading-4.25"
                     />
                 </div>
             </x-slot>

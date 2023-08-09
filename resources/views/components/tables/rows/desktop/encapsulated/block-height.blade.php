@@ -3,7 +3,7 @@
     'withoutLink' => false,
 ])
 
-<div {{ $attributes->class('text-sm font-semibold flex flex-col md:space-y-1 xl:space-y-0 whitespace-nowrap leading-[17px] text-theme-secondary-900 dark:text-theme-secondary-200') }}>
+<div {{ $attributes->class('text-sm font-semibold flex flex-col md:space-y-1 xl:space-y-0 whitespace-nowrap leading-4.25 text-theme-secondary-900 dark:text-theme-secondary-200') }}>
     @unless ($withoutLink)
         <a
             href="{{ $model->url() }}"
@@ -17,6 +17,6 @@
 
     <x-tables.rows.desktop.encapsulated.age
         :model="$model"
-        class="hidden text-xs md:block leading-[15px] md-lg:hidden"
+        class="hidden text-xs md:block leading-3.75 md-lg:hidden"
     />
 </div>
