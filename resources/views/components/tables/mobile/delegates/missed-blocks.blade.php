@@ -13,7 +13,7 @@
                 <div class="flex flex-1 justify-between">
                     <x-tables.headers.mobile.encapsulated.block-height
                         :model="$block"
-                        class="sm:flex-1 font-semibold text-theme-secondary-900 dark:text-theme-dark-50"
+                        class="font-semibold sm:flex-1 text-theme-secondary-900 dark:text-theme-dark-50"
                         without-link
                     />
 
