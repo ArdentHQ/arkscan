@@ -4,7 +4,7 @@
 ])
 
 <x-tables.encapsulated-table
-    wire:key="{{ Helpers::generateId('transactions') }}"
+    wire:key="{{ Helpers::generateId('delegates') }}"
     class="hidden w-full rounded-t-none md:block"
     :rounded="false"
     :paginator="$delegates"
