@@ -6,7 +6,6 @@ use App\Facades\Services\Monitor\MissedBlocksCalculator;
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Round;
-use App\Services\Cache\DelegateCache;
 use Illuminate\Support\Facades\Artisan;
 
 beforeEach(function () {
@@ -139,32 +138,4 @@ it('should store the height for missed blocks', function () {
     expect($forgingStats->count())->toBe(2);
     expect($forgingStats->get(0)->missed_height)->toBe(21);
     expect($forgingStats->get(1)->missed_height)->toBe(21);
-});
-
-it('should cache missed block counts', function () {
-    Block::factory()->create([
-        'timestamp' => 45000,
-        'height'    => 20,
-    ]);
-
-    MissedBlocksCalculator::shouldReceive('calculateFromHeightGoingBack')
-        ->once()
-        ->andReturn([
-            50000 => [
-                'publicKey' => 'test-public-key',
-                'forged'    => false,
-            ],
-            50001 => [
-                'publicKey' => 'test-public-key-2',
-                'forged'    => false,
-            ],
-        ]);
-
-    $delegateCache = new DelegateCache();
-
-    expect($delegateCache->getMissedBlocks())->toBe([0, 0]);
-
-    Artisan::call('explorer:forging-stats:build', ['--height' => 20]);
-
-    expect($delegateCache->getMissedBlocks())->toBe([2, 2]);
 });

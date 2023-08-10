@@ -29,4 +29,14 @@ final class HeaderStats extends Component
             'delegatesMissed' => $delegatesMissed,
         ]);
     }
+
+    public function missedBlocks(): array
+    {
+        $stats = ForgingStats::where('forged', false)->get();
+
+        return [
+            $stats->count(),
+            $stats->unique('public_key')->count(),
+        ];
+    }
 }

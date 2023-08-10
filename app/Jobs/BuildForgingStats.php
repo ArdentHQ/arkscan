@@ -9,7 +9,6 @@ use App\Facades\Services\Monitor\MissedBlocksCalculator;
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Scopes\OrderByTimestampScope;
-use App\Services\Cache\DelegateCache;
 use App\Services\Timestamp;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -66,15 +65,6 @@ final class BuildForgingStats implements ShouldQueue
 
         // clean up old stats entries
         $this->deleteMoreThan30DaysOldStats($this->getTimestampForHeight($height));
-
-        (new DelegateCache())->setMissedBlocks(function () {
-            $stats = ForgingStats::where('forged', false)->get();
-
-            return [
-                $stats->count(),
-                $stats->unique('public_key')->count(),
-            ];
-        });
     }
 
     private function getStartHeight(int $height, int $timeRangeInSeconds): int
