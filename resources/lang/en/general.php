@@ -43,6 +43,7 @@ return [
     'warning'                 => 'Warning',
     'custom'                  => 'Custom',
     'x_of_y'                  => ':0 of :1',
+    'filter'                  => 'Filter',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',

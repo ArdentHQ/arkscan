@@ -9,17 +9,13 @@ use App\Models\Block;
 use App\Models\Round;
 use App\Services\Monitor\Actions\ShuffleDelegates;
 
-final class MissedBlocksCalculator
+/* @phpstan-ignore-next-line */
+class MissedBlocksCalculator
 {
-    public static function calculateFromHeightGoingBack(int $height, int $timeRangeInSeconds): array
+    public static function calculateFromHeightGoingBack(int $heightFrom, int $heightTo): array
     {
-        $heightTimestamp     = Block::where('height', $height)->firstOrFail()->timestamp;
-        $startHeight         = Block::where('timestamp', '>=', $heightTimestamp - $timeRangeInSeconds)
-            ->orderBy('height')
-            ->firstOrFail()->height->toNumber();
-
         $forgingStats = [];
-        for ($h = $startHeight; $h <= $height; $h += Network::delegateCount()) {
+        for ($h = $heightFrom; $h <= $heightTo; $h += Network::delegateCount()) {
             $forgingStats = $forgingStats + self::calculateForRound($h);
         }
 
