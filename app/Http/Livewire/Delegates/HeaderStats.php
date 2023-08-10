@@ -18,8 +18,8 @@ final class HeaderStats extends Component
     {
         $delegateCache = new DelegateCache();
 
-        [$missedBlockCount, $delegatesMissed] = $this->missedBlocks($delegateCache);
-        [$voterCount, $totalVoted]            = $this->voted($delegateCache);
+        [$missedBlockCount, $delegatesMissed] = $delegateCache->getMissedBlocks();
+        [$voterCount, $totalVoted]            = $delegateCache->getTotalVoted();
 
         return view('livewire.delegates.header-stats', [
             'voterCount'      => $voterCount,
@@ -28,36 +28,5 @@ final class HeaderStats extends Component
             'missedBlocks'    => $missedBlockCount,
             'delegatesMissed' => $delegatesMissed,
         ]);
-    }
-
-    private function missedBlocks(DelegateCache $delegateCache): array
-    {
-        return $delegateCache->setMissedBlocks(function () {
-            $stats = ForgingStats::where('forged', false)->get();
-
-            return [
-                $stats->count(),
-                $stats->unique('public_key')->count(),
-            ];
-        });
-    }
-
-    private function voted(DelegateCache $delegateCache): array
-    {
-        return $delegateCache->setTotalVoted(function () {
-            $wallets = Wallet::select('balance')
-                ->whereRaw("\"attributes\"->>'vote' is not null")
-                ->get();
-
-            $totalVoted = BigNumber::new(0);
-            foreach ($wallets as $wallet) {
-                $totalVoted->plus($wallet['balance']->valueOf());
-            }
-
-            return [
-                $wallets->count(),
-                $totalVoted->toFloat(),
-            ];
-        });
     }
 }
