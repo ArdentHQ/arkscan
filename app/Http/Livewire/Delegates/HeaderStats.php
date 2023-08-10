@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Delegates;
 
 use App\Actions\CacheNetworkSupply;
-use App\Models\ForgingStats;
-use App\Models\Wallet;
-use App\Services\BigNumber;
 use App\Services\Cache\DelegateCache;
 use Illuminate\View\View;
 use Livewire\Component;
