@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Livewire\Delegates\HeaderStats;
 use App\Models\Round;
 use App\Models\Wallet;
+use App\Services\Cache\DelegateCache;
 use App\Services\Cache\WalletCache;
 use Livewire\Livewire;
 
@@ -43,27 +44,7 @@ it('should not error if no delegate data', function () {
 });
 
 it('should show the correct number of votes', function () {
-    Wallet::factory(20)
-        ->create([
-            'balance'    => '1000000000',
-            'attributes' => [
-                'vote' => 'publickey',
-            ],
-        ]);
-
-    Wallet::factory(5)
-        ->create([
-            'balance'    => '0',
-            'attributes' => [
-                'vote' => 'publickey',
-            ],
-        ]);
-
-    Wallet::factory(5)
-        ->create([
-            'balance'    => '1000000000',
-            'attributes' => [],
-        ]);
+    (new DelegateCache())->setTotalVoted(fn () => [25, 200]);
 
     Livewire::test(HeaderStats::class)
         ->assertViewHas('voterCount', 25)
