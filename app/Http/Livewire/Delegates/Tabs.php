@@ -25,6 +25,11 @@ final class Tabs extends Component
         'missed-blocks' => false,
     ];
 
+    /** @var mixed */
+    protected $listeners = [
+        'showDelegatesView',
+    ];
+
     public function queryString(): array
     {
         $perPage = intval(config('arkscan.pagination.per_page'));
@@ -63,5 +68,10 @@ final class Tabs extends Component
     public function render(): View
     {
         return view('livewire.delegates.tabs');
+    }
+
+    public function showDelegatesView(string $view): void
+    {
+        $this->syncInput('view', $view);
     }
 }

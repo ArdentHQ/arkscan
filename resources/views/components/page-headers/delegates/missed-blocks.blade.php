@@ -22,11 +22,16 @@
             </x-general.badge>
         </div>
 
-        <a
+        <button
+            x-data
+            type="link"
             class="pl-3 link text-sm md:text-base !leading-5"
-            href="#"
+            x-on:click="() => {
+                Livewire.emit('showDelegatesView', 'missed-blocks');
+                scrollToQuery('#missed-blocks-list');
+            }"
         >
             @lang('actions.view')
-        </a>
+        </button>
     </div>
 </x-delegates.header-item>
