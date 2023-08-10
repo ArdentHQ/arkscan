@@ -71,6 +71,21 @@ return [
         ],
     ],
 
+    'missed-blocks' => [
+        'height'        => 'Block Height',
+        'age'           => 'Age',
+        'delegate'      => 'Delegate',
+        'no_of_voters'  => '# of Voters',
+        'votes'         => 'Votes (:currency)',
+        'percentage'    => 'Percentage',
+
+        'info' => [
+            'percentage' => 'Percentage of votes in relation to the total supply.',
+        ],
+
+        'no_results' => 'There have been no missed blocks within the past 30 days.',
+    ],
+
     'filters' => [
         'transactions' => [
             'addressing'    => 'Addressing',

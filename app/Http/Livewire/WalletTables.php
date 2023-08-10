@@ -104,6 +104,6 @@ final class WalletTables extends Component
 
     public function showWalletView(string $view): void
     {
-        $this->view = $view;
+        $this->syncInput('view', $view);
     }
 }

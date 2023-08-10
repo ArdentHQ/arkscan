@@ -21,7 +21,13 @@ final class Tabs extends Component
     public array $savedQueryData = [];
 
     public array $alreadyLoadedViews = [
-        'delegates' => false,
+        'delegates'     => false,
+        'missed-blocks' => false,
+    ];
+
+    /** @var mixed */
+    protected $listeners = [
+        'showDelegatesView',
     ];
 
     public function queryString(): array
@@ -50,6 +56,11 @@ final class Tabs extends Component
 
                     // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTables
                 ],
+
+                'missed-blocks' => [
+                    'page'    => 1,
+                    'perPage' => MissedBlocks::defaultPerPage(),
+                ],
             ];
         }
     }
@@ -57,5 +68,10 @@ final class Tabs extends Component
     public function render(): View
     {
         return view('livewire.delegates.tabs');
+    }
+
+    public function showDelegatesView(string $view): void
+    {
+        $this->syncInput('view', $view);
     }
 }

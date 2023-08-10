@@ -33,6 +33,7 @@
                 <x-general.dropdown.arrow
                     key="isExpanded"
                     x-on:click="isExpanded = ! isExpanded"
+                    color="text-theme-secondary-700 dark:text-theme-dark-200"
                 />
             </div>
         @endif

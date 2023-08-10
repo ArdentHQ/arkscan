@@ -6,8 +6,6 @@ namespace App\Http\Livewire\Delegates;
 
 use App\Actions\CacheNetworkSupply;
 use App\Models\ForgingStats;
-use App\Models\Wallet;
-use App\Services\BigNumber;
 use App\Services\Cache\DelegateCache;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -16,10 +14,8 @@ final class HeaderStats extends Component
 {
     public function render(): View
     {
-        $delegateCache = new DelegateCache();
-
-        [$missedBlockCount, $delegatesMissed] = $this->missedBlocks($delegateCache);
-        [$voterCount, $totalVoted]            = $this->voted($delegateCache);
+        [$missedBlockCount, $delegatesMissed] = $this->missedBlocks();
+        [$voterCount, $totalVoted]            = (new DelegateCache())->getTotalVoted();
 
         return view('livewire.delegates.header-stats', [
             'voterCount'      => $voterCount,
@@ -30,34 +26,13 @@ final class HeaderStats extends Component
         ]);
     }
 
-    private function missedBlocks(DelegateCache $delegateCache): array
+    public function missedBlocks(): array
     {
-        return $delegateCache->setMissedBlocks(function () {
-            $stats = ForgingStats::where('forged', false)->get();
+        $stats = ForgingStats::where('forged', false)->get();
 
-            return [
-                $stats->count(),
-                $stats->unique('public_key')->count(),
-            ];
-        });
-    }
-
-    private function voted(DelegateCache $delegateCache): array
-    {
-        return $delegateCache->setTotalVoted(function () {
-            $wallets = Wallet::select('balance')
-                ->whereRaw("\"attributes\"->>'vote' is not null")
-                ->get();
-
-            $totalVoted = BigNumber::new(0);
-            foreach ($wallets as $wallet) {
-                $totalVoted->plus($wallet['balance']->valueOf());
-            }
-
-            return [
-                $wallets->count(),
-                $totalVoted->toFloat(),
-            ];
-        });
+        return [
+            $stats->count(),
+            $stats->unique('public_key')->count(),
+        ];
     }
 }

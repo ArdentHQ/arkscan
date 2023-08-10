@@ -1,6 +1,15 @@
-@props(['model'])
+@props([
+    'model',
+    'withoutLabel' => false,
+])
 
-<x-tables.rows.desktop.encapsulated.address
-    :model="$model"
-    without-clipboard
-/>
+<x-tables.rows.mobile.encapsulated.cell
+    :label="$withoutLabel ? null : trans('tables.delegates.delegate')"
+    :attributes="$attributes"
+>
+    <x-general.identity
+        :model="$model"
+        without-reverse
+        without-icon
+    />
+</x-tables.rows.mobile.encapsulated.cell>
