@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Delegates;
 
 use App\Actions\CacheNetworkSupply;
+use App\Models\ForgingStats;
 use App\Services\Cache\DelegateCache;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -13,10 +14,8 @@ final class HeaderStats extends Component
 {
     public function render(): View
     {
-        $delegateCache = new DelegateCache();
-
-        [$missedBlockCount, $delegatesMissed] = $delegateCache->getMissedBlocks();
-        [$voterCount, $totalVoted]            = $delegateCache->getTotalVoted();
+        [$missedBlockCount, $delegatesMissed] = $this->missedBlocks();
+        [$voterCount, $totalVoted]            = (new DelegateCache())->getTotalVoted();
 
         return view('livewire.delegates.header-stats', [
             'voterCount'      => $voterCount,
