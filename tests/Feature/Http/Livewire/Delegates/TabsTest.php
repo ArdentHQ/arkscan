@@ -47,3 +47,12 @@ it('should change querystring if different view', function () {
         'perPage' => ['except' => 25],
     ]);
 });
+
+it('should change view with event', function () {
+    Livewire::test(Tabs::class)
+        ->assertSet('view', 'delegates')
+        ->emit('showDelegatesView', 'missed-blocks')
+        ->assertSet('view', 'missed-blocks')
+        ->emit('showDelegatesView', 'delegates')
+        ->assertSet('view', 'delegates');
+});
