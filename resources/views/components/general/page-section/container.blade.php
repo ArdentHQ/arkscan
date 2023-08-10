@@ -22,7 +22,7 @@
             </div>
 
             <div @class([
-                'flex space-x-4 text-sm sm:text-base sm:leading-5 sm:rounded-xl leading-[17px]',
+                'flex space-x-4 text-sm sm:text-base sm:leading-5 sm:rounded-xl leading-4.25',
                 'sm:border px-3 sm:py-4 sm:px-6' => ! $noBorder,
                 $borderClass => ! $noBorder,
                 $wrapperContainerClass,

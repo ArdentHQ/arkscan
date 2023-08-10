@@ -3,7 +3,7 @@
 ])
 
 <div {{ $attributes->class([
-    'text-xs font-semibold rounded border dark:bg-transparent px-[3px] py-[2px] leading-[15px]',
+    'text-xs font-semibold rounded border dark:bg-transparent px-[3px] py-[2px] leading-3.75',
     $colors,
 ]) }}>
     {{ $slot }}

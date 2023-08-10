@@ -76,6 +76,7 @@ module.exports = {
                 84: "21rem",
                 116: "29rem",
                 164: "41rem",
+                100: "25rem",
             },
 
             padding: {
