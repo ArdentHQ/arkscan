@@ -28,12 +28,14 @@ trait HasTableFilter
 
     public function mountHasTableFilter(): void
     {
-        foreach ($this->filter as &$filter) {
+        foreach ($this->filter as $key => $filter) {
             if (in_array($filter, ['1', 'true', true], true)) {
                 $filter = true;
-            } elseif (in_array($filter, ['0', 'false', false], true)) {
+            } else {
                 $filter = false;
             }
+
+            $this->syncInput('filter.'.$key, $filter);
         }
     }
 
