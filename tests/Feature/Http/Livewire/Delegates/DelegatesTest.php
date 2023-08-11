@@ -143,3 +143,20 @@ it('should filter resigned delegates', function () {
         ->assertDontSee($active->address)
         ->assertDontSee($standby->address);
 });
+
+it('should show correct message when no filters are selected', function () {
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'active'   => false,
+            'standby'  => false,
+            'resigned' => false,
+        ])
+        ->assertSee(trans('tables.delegates.no_results.no_filters'));
+});
+
+it('should show correct message when there are no results', function () {
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->assertSee(trans('tables.delegates.no_results.no_results'));
+});

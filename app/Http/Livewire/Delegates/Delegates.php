@@ -62,15 +62,14 @@ final class Delegates extends Component
         ]);
     }
 
-    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable#getNoResultsMessageProperty
     public function getNoResultsMessageProperty(): null|string
     {
-        if ($this->delegates->total() === 0) {
-            return trans('tables.delegates.no_results.no_results');
+        if (! $this->hasFilters()) {
+            return trans('tables.delegates.no_results.no_filters');
         }
 
-        if (! $this->hasFilters()) {
-            return trans('tables.transactions.no_results.no_addressing_filters');
+        if ($this->delegates->total() === 0) {
+            return trans('tables.delegates.no_results.no_results');
         }
 
         return null;
