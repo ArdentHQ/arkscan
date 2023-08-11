@@ -28,7 +28,11 @@
         </x-ark-js-modal>
 
         <button
-            class="flex flex-1 justify-center items-center w-full rounded sm:flex-none sm:py-1.5 sm:px-4 md:p-2 button-secondary"
+            @class([
+                'flex flex-1 justify-center items-center rounded sm:flex-none button-secondary',
+                'h-8 w-8 p-0' => $withoutText,
+                'w-full sm:py-1.5 sm:px-4 md:p-2' => ! $withoutText,
+            ])
             @click="shown = true"
         >
             <div class="inline-flex items-center mx-auto whitespace-nowrap">
@@ -37,9 +41,11 @@
                     size="sm"
                 />
 
-                <div class="ml-2 md:hidden">
-                    @lang('actions.filter')
-                </div>
+                @unless ($withoutText)
+                    <div class="ml-2 md:hidden">
+                        @lang('actions.filter')
+                    </div>
+                @endunless
             </div>
         </button>
     </div>

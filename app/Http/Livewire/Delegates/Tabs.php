@@ -23,6 +23,7 @@ final class Tabs extends Component
     public array $alreadyLoadedViews = [
         'delegates'     => false,
         'missed-blocks' => false,
+        'recent-votes'  => false,
     ];
 
     /** @var mixed */
@@ -60,6 +61,13 @@ final class Tabs extends Component
                 'missed-blocks' => [
                     'page'    => 1,
                     'perPage' => MissedBlocks::defaultPerPage(),
+                ],
+
+                'recent-votes' => [
+                    'page'    => 1,
+                    'perPage' => RecentVotes::defaultPerPage(),
+
+                    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTables
                 ],
             ];
         }
