@@ -92,19 +92,6 @@ final class Delegates extends Component
             ->paginate($this->perPage);
     }
 
-    private function hasFilters(): bool
-    {
-        if ($this->filter['active'] === true) {
-            return true;
-        }
-
-        if ($this->filter['standby'] === true) {
-            return true;
-        }
-
-        return $this->filter['resigned'] === true;
-    }
-
     public function getShowMissedBlocksProperty(): bool
     {
         if ($this->page > 1) {
@@ -121,6 +108,19 @@ final class Delegates extends Component
     public function perPageOptions(): array
     {
         return trans('tables.delegates.delegate_per_page_options');
+    }
+
+    private function hasFilters(): bool
+    {
+        if ($this->filter['active'] === true) {
+            return true;
+        }
+
+        if ($this->filter['standby'] === true) {
+            return true;
+        }
+
+        return $this->filter['resigned'] === true;
     }
 
     private function getDelegatesQuery(): Builder
