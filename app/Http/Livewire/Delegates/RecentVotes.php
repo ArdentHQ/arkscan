@@ -21,7 +21,7 @@ use Livewire\Component;
 
 /**
  * @property bool $isAllSelected
- * @property LengthAwarePaginator $delegates
+ * @property LengthAwarePaginator $recentVotes
  * */
 final class RecentVotes extends Component
 {
@@ -86,6 +86,6 @@ final class RecentVotes extends Component
         return Transaction::query()
             ->withScope(OrderByTimestampScope::class)
             ->where('type', 3)
-            ->where('timestamp', '>=', Timestamp::now()->sub(30, 'days')->unix());
+            ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix());
     }
 }
