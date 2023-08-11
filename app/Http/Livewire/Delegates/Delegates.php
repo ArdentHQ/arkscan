@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Delegates;
 
+use App\Facades\Network;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTablePagination;
@@ -122,11 +123,21 @@ final class Delegates extends Component
         return trans('tables.delegates.delegate_per_page_options');
     }
 
-    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable
     private function getDelegatesQuery(): Builder
     {
         return Wallet::query()
             ->whereNotNull('attributes->delegate->username')
+            ->where(fn ($query) => $query->when($this->hasFilters(), function ($query) {
+                $query->where(fn ($query) => $query->when($this->filter['active'] === true, fn ($query) =>
+                        $query->where('attributes->delegate->resigned', null)
+                            ->whereRaw('(attributes->\'delegate\'->>\'rank\')::int <= ?', Network::delegateCount())))
+                    ->orWhere(fn ($query) => $query->when($this->filter['standby'] === true, fn ($query) =>
+                        $query->where('attributes->delegate->resigned', null)
+                            ->where(function ($query) {
+                                $query->whereRaw('(attributes->\'delegate\'->>\'rank\')::int > ?', Network::delegateCount());
+                            })))
+                    ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->delegate->resigned', true)));
+            }))
             ->orderByRaw("(\"attributes\"->'delegate'->>'rank')::numeric ASC");
     }
 }
