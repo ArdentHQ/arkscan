@@ -115,32 +115,32 @@ it('should toggle "select all" when all filters are selected', function () {
 });
 
 it('should filter vote transactions', function () {
-    $sender   = Wallet::factory()->create();
-    $delegate = Wallet::factory()->activeDelegate(false)->create();
+    $sender        = Wallet::factory()->create();
+    $delegate      = Wallet::factory()->activeDelegate(false)->create();
     $otherDelegate = Wallet::factory()->activeDelegate(false)->create();
 
     $vote = Transaction::factory()->vote()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp' => Timestamp::now()->subMinute(1)->unix(),
-        'asset'     => [
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
             'votes' => ['+'.$delegate->public_key],
-        ]
+        ],
     ]);
 
     $unvote = Transaction::factory()->unvote()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp' => Timestamp::now()->subMinute(1)->unix(),
-        'asset'     => [
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
             'votes' => ['-'.$delegate->public_key],
-        ]
+        ],
     ]);
 
     $voteSwap = Transaction::factory()->voteCombination()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp' => Timestamp::now()->subMinute(1)->unix(),
-        'asset'     => [
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
             'votes' => ['-'.$delegate->public_key, '+'.$otherDelegate->public_key],
-        ]
+        ],
     ]);
 
     Livewire::test(RecentVotes::class)
@@ -156,32 +156,32 @@ it('should filter vote transactions', function () {
 });
 
 it('should filter unvote transactions', function () {
-    $sender   = Wallet::factory()->create();
-    $delegate = Wallet::factory()->activeDelegate(false)->create();
+    $sender        = Wallet::factory()->create();
+    $delegate      = Wallet::factory()->activeDelegate(false)->create();
     $otherDelegate = Wallet::factory()->activeDelegate(false)->create();
 
     $vote = Transaction::factory()->vote()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp' => Timestamp::now()->subMinute(1)->unix(),
-        'asset'     => [
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
             'votes' => ['+'.$delegate->public_key],
-        ]
+        ],
     ]);
 
     $unvote = Transaction::factory()->unvote()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp' => Timestamp::now()->subMinute(1)->unix(),
-        'asset'     => [
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
             'votes' => ['-'.$delegate->public_key],
-        ]
+        ],
     ]);
 
     $voteSwap = Transaction::factory()->voteCombination()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp' => Timestamp::now()->subMinute(1)->unix(),
-        'asset'     => [
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
             'votes' => ['-'.$delegate->public_key, '+'.$otherDelegate->public_key],
-        ]
+        ],
     ]);
 
     Livewire::test(RecentVotes::class)
@@ -197,32 +197,32 @@ it('should filter unvote transactions', function () {
 });
 
 it('should filter vote swap transactions', function () {
-    $sender   = Wallet::factory()->create();
-    $delegate = Wallet::factory()->activeDelegate(false)->create();
+    $sender        = Wallet::factory()->create();
+    $delegate      = Wallet::factory()->activeDelegate(false)->create();
     $otherDelegate = Wallet::factory()->activeDelegate(false)->create();
 
     $vote = Transaction::factory()->vote()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp' => Timestamp::now()->subMinute(1)->unix(),
-        'asset'     => [
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
             'votes' => ['+'.$delegate->public_key],
-        ]
+        ],
     ]);
 
     $unvote = Transaction::factory()->unvote()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp' => Timestamp::now()->subMinute(1)->unix(),
-        'asset'     => [
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
             'votes' => ['-'.$delegate->public_key],
-        ]
+        ],
     ]);
 
     $voteSwap = Transaction::factory()->voteCombination()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp' => Timestamp::now()->subMinute(1)->unix(),
-        'asset'     => [
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
             'votes' => ['-'.$delegate->public_key, '+'.$otherDelegate->public_key],
-        ]
+        ],
     ]);
 
     Livewire::test(RecentVotes::class)
