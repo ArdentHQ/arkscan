@@ -31,7 +31,7 @@ trait HasTableFilter
         foreach ($this->filter as $key => $filter) {
             if (in_array($filter, ['1', 'true', true], true)) {
                 $filter = true;
-            } else {
+            } elseif (in_array($filter, ['0', 'false', false], true)) {
                 $filter = false;
             }
 
