@@ -26,8 +26,11 @@ final class RecentVotes extends Component
     use HasTableFilter;
     use HasTablePagination;
 
-    // TODO: Filters - https://app.clickup.com/t/861n4ye5w - see WalletTransactionTable
-    public array $filter = [];
+    public array $filter = [
+        'vote'      => true,
+        'unvote'    => true,
+        'vote-swap' => true,
+    ];
 
     /** @var mixed */
     protected $listeners = [
@@ -36,8 +39,11 @@ final class RecentVotes extends Component
 
     public function queryString(): array
     {
-        // TODO: Filters - https://app.clickup.com/t/861n4ye5w - see WalletTransactionTable
-        return [];
+        return [
+            'vote'      => ['except' => true],
+            'unvote'    => ['except' => true],
+            'vote-swap' => ['except' => true],
+        ];
     }
 
     public function mount(bool $deferLoading = true): void
@@ -54,9 +60,12 @@ final class RecentVotes extends Component
         ]);
     }
 
-    // TODO: Filters - https://app.clickup.com/t/861n4ye5w - see WalletTransactionTable#getNoResultsMessageProperty
     public function getNoResultsMessageProperty(): null|string
     {
+        if (! $this->hasFilters()) {
+            return trans('tables.recent-votes.no_results.no_filters');
+        }
+
         if ($this->recentVotes->total() === 0) {
             return trans('tables.recent-votes.no_results.no_results');
         }
@@ -71,18 +80,41 @@ final class RecentVotes extends Component
             return $emptyResults;
         }
 
-        // TODO: Filters - https://app.clickup.com/t/861n4ye5w - see WalletTransactionTable#getTransactionsProperty
+        if (! $this->hasFilters()) {
+            return $emptyResults;
+        }
 
         return $this->getRecentVotesQuery()
             ->paginate($this->perPage);
     }
 
-    // TODO: Filters - https://app.clickup.com/t/861n4ye5w - see WalletTransactionTable
+    private function hasFilters(): bool
+    {
+        if ($this->filter['vote'] === true) {
+            return true;
+        }
+
+        if ($this->filter['unvote'] === true) {
+            return true;
+        }
+
+        return $this->filter['vote-swap'] === true;
+    }
+
     private function getRecentVotesQuery(): Builder
     {
         return Transaction::query()
             ->withScope(OrderByTimestampScope::class)
             ->where('type', 3)
-            ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix());
+            ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix())
+            ->where(function ($query) {
+                $query->where(fn ($query) => $query->when($this->filter['vote'], function ($query) {
+                    $query->whereRaw('jsonb_array_length(asset->\'votes\') = 1')
+                        ->whereRaw('LEFT(asset->\'votes\'->>0, 1) = \'+\'');
+                }))->orWhere(fn ($query) => $query->when($this->filter['unvote'], function ($query) {
+                    $query->whereRaw('jsonb_array_length(asset->\'votes\') = 1')
+                        ->whereRaw('LEFT(asset->\'votes\'->>0, 1) = \'-\'');
+                }))->orWhere(fn ($query) => $query->when($this->filter['vote-swap'], fn ($query) => $query->whereRaw('jsonb_array_length(asset->\'votes\') = 2')));
+            });
     }
 }
