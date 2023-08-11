@@ -115,5 +115,12 @@ return [
             'multipayments' => 'Multipayments',
             'others'        => 'Others',
         ],
+
+        'recent-votes' => [
+            'select_all' => 'Select All',
+            'vote'       => 'Vote',
+            'unvote'     => 'Unvote',
+            'vote_swap'  => 'Vote Swap',
+        ],
     ],
 ];

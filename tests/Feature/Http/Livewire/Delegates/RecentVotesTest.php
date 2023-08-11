@@ -73,3 +73,183 @@ it('should show no results message if no votes', function () {
     Livewire::test(RecentVotes::class, ['deferLoading' => false])
         ->assertSee(trans('tables.recent-votes.no_results.no_results'));
 });
+
+it('should toggle all filters when "select all" is selected', function () {
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->assertSet('filter', [
+            'vote'      => true,
+            'unvote'    => true,
+            'vote-swap' => true,
+        ])
+        ->assertSet('selectAllFilters', true)
+        ->set('filter.vote', true)
+        ->assertSet('selectAllFilters', true)
+        ->set('selectAllFilters', false)
+        ->assertSet('filter', [
+            'vote'      => false,
+            'unvote'    => false,
+            'vote-swap' => false,
+        ])
+        ->set('selectAllFilters', true)
+        ->assertSet('filter', [
+            'vote'      => true,
+            'unvote'    => true,
+            'vote-swap' => true,
+        ]);
+});
+
+it('should toggle "select all" when all filters are selected', function () {
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->assertSet('filter', [
+            'vote'      => true,
+            'unvote'    => true,
+            'vote-swap' => true,
+        ])
+        ->assertSet('selectAllFilters', true)
+        ->set('filter.vote', false)
+        ->assertSet('selectAllFilters', false)
+        ->set('filter.vote', true)
+        ->assertSet('selectAllFilters', true);
+});
+
+it('should filter vote transactions', function () {
+    $sender        = Wallet::factory()->create();
+    $delegate      = Wallet::factory()->activeDelegate(false)->create();
+    $otherDelegate = Wallet::factory()->activeDelegate(false)->create();
+
+    $vote = Transaction::factory()->vote()->create([
+        'sender_public_key' => $sender->public_key,
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
+            'votes' => ['+'.$delegate->public_key],
+        ],
+    ]);
+
+    $unvote = Transaction::factory()->unvote()->create([
+        'sender_public_key' => $sender->public_key,
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
+            'votes' => ['-'.$delegate->public_key],
+        ],
+    ]);
+
+    $voteSwap = Transaction::factory()->voteCombination()->create([
+        'sender_public_key' => $sender->public_key,
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
+            'votes' => ['-'.$delegate->public_key, '+'.$otherDelegate->public_key],
+        ],
+    ]);
+
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'vote'      => true,
+            'unvote'    => false,
+            'vote-swap' => false,
+        ])
+        ->assertSee($vote->id)
+        ->assertDontSee($unvote->id)
+        ->assertDontSee($voteSwap->id);
+});
+
+it('should filter unvote transactions', function () {
+    $sender        = Wallet::factory()->create();
+    $delegate      = Wallet::factory()->activeDelegate(false)->create();
+    $otherDelegate = Wallet::factory()->activeDelegate(false)->create();
+
+    $vote = Transaction::factory()->vote()->create([
+        'sender_public_key' => $sender->public_key,
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
+            'votes' => ['+'.$delegate->public_key],
+        ],
+    ]);
+
+    $unvote = Transaction::factory()->unvote()->create([
+        'sender_public_key' => $sender->public_key,
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
+            'votes' => ['-'.$delegate->public_key],
+        ],
+    ]);
+
+    $voteSwap = Transaction::factory()->voteCombination()->create([
+        'sender_public_key' => $sender->public_key,
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
+            'votes' => ['-'.$delegate->public_key, '+'.$otherDelegate->public_key],
+        ],
+    ]);
+
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'vote'      => false,
+            'unvote'    => true,
+            'vote-swap' => false,
+        ])
+        ->assertSee($unvote->id)
+        ->assertDontSee($vote->id)
+        ->assertDontSee($voteSwap->id);
+});
+
+it('should filter vote swap transactions', function () {
+    $sender        = Wallet::factory()->create();
+    $delegate      = Wallet::factory()->activeDelegate(false)->create();
+    $otherDelegate = Wallet::factory()->activeDelegate(false)->create();
+
+    $vote = Transaction::factory()->vote()->create([
+        'sender_public_key' => $sender->public_key,
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
+            'votes' => ['+'.$delegate->public_key],
+        ],
+    ]);
+
+    $unvote = Transaction::factory()->unvote()->create([
+        'sender_public_key' => $sender->public_key,
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
+            'votes' => ['-'.$delegate->public_key],
+        ],
+    ]);
+
+    $voteSwap = Transaction::factory()->voteCombination()->create([
+        'sender_public_key' => $sender->public_key,
+        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'asset'             => [
+            'votes' => ['-'.$delegate->public_key, '+'.$otherDelegate->public_key],
+        ],
+    ]);
+
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'vote'      => false,
+            'unvote'    => false,
+            'vote-swap' => true,
+        ])
+        ->assertSee($voteSwap->id)
+        ->assertDontSee($vote->id)
+        ->assertDontSee($unvote->id);
+});
+
+it('should show correct message when no filters are selected', function () {
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'vote'      => false,
+            'unvote'    => false,
+            'vote-swap' => false,
+        ])
+        ->assertSee(trans('tables.recent-votes.no_results.no_filters'));
+});
+
+it('should show correct message when there are no results', function () {
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->assertSee(trans('tables.recent-votes.no_results.no_results'));
+});
