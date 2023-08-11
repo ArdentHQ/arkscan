@@ -106,6 +106,6 @@ return [
             'active'     => 'Active',
             'standby'    => 'Standby',
             'resigned'   => 'Resigned',
-        ]
+        ],
     ],
 ];
