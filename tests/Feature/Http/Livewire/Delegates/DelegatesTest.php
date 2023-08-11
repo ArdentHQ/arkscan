@@ -52,3 +52,94 @@ it('should have slightly different per-page options', function () {
         100,
     ]);
 });
+
+it('should toggle all filters when "select all" is selected', function () {
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->assertSet('filter', [
+            'active'   => true,
+            'standby'  => true,
+            'resigned' => true,
+        ])
+        ->assertSet('selectAllFilters', true)
+        ->set('filter.active', true)
+        ->assertSet('selectAllFilters', true)
+        ->set('selectAllFilters', false)
+        ->assertSet('filter', [
+            'active'   => false,
+            'standby'  => false,
+            'resigned' => false,
+        ])
+        ->set('selectAllFilters', true)
+        ->assertSet('filter', [
+            'active'   => true,
+            'standby'  => true,
+            'resigned' => true,
+        ]);
+});
+
+it('should toggle "select all" when all filters are selected', function () {
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->assertSet('filter', [
+            'active'   => true,
+            'standby'  => true,
+            'resigned' => true,
+        ])
+        ->assertSet('selectAllFilters', true)
+        ->set('filter.outgoing', false)
+        ->assertSet('selectAllFilters', false)
+        ->set('filter.outgoing', true)
+        ->assertSet('selectAllFilters', true);
+});
+
+it('should filter active delegates', function () {
+    $active = Wallet::factory()->activeDelegate()->create();
+    $standby = Wallet::factory()->standbyDelegate(false)->create();
+    $resigned = Wallet::factory()->standbyDelegate()->create();
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'active'   => true,
+            'standby'  => false,
+            'resigned' => false,
+        ])
+        ->assertSee($active->address)
+        ->assertDontSee($standby->address)
+        ->assertDontSee($resigned->address);
+});
+
+it('should filter standby delegates', function () {
+    $active = Wallet::factory()->activeDelegate()->create();
+    $standby = Wallet::factory()->standbyDelegate(false)->create();
+    $resigned = Wallet::factory()->standbyDelegate()->create();
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'active'   => false,
+            'standby'  => true,
+            'resigned' => false,
+        ])
+        ->assertSee($standby->address)
+        ->assertDontSee($active->address)
+        ->assertDontSee($resigned->address);
+});
+
+it('should filter resigned delegates', function () {
+    $active = Wallet::factory()->activeDelegate()->create();
+    $standby = Wallet::factory()->standbyDelegate(false)->create();
+    $resigned = Wallet::factory()->standbyDelegate()->create();
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'active'   => false,
+            'standby'  => false,
+            'resigned' => true,
+        ])
+        ->assertSee($resigned->address)
+        ->assertDontSee($active->address)
+        ->assertDontSee($standby->address);
+});
