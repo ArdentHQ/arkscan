@@ -22,6 +22,11 @@ it('should set initial data', function () {
                 'page'    => 1,
                 'perPage' => 25,
             ],
+
+            'recent-votes' => [
+                'page'    => 1,
+                'perPage' => 25,
+            ],
         ]);
 });
 

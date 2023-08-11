@@ -78,12 +78,27 @@ return [
         'no_of_voters'  => '# of Voters',
         'votes'         => 'Votes (:currency)',
         'percentage'    => 'Percentage',
+        'addressing'    => 'Addressing',
 
         'info' => [
             'percentage' => 'Percentage of votes in relation to the total supply.',
         ],
 
         'no_results' => 'There have been no missed blocks within the past 30 days.',
+    ],
+
+    'recent-votes' => [
+        'id'         => 'Tx ID',
+        'age'        => 'Age',
+        'type'       => 'Type',
+        'addressing' => 'Addressing',
+        'from'       => 'From',
+        'delegate'   => 'Delegate',
+
+        'no_results' => [
+            'no_filters' => 'All filtering options have been deselected. Please select one or more options to display recent votes.',
+            'no_results' => 'No matches for the selected type could be found.',
+        ],
     ],
 
     'filters' => [

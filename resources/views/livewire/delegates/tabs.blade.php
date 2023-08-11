@@ -55,6 +55,10 @@
                     <div x-show="tab === 'missed-blocks'">
                         @lang('pages.delegates.tabs.missed_blocks')
                     </div>
+
+                    <div x-show="tab === 'recent-votes'">
+                        @lang('pages.delegates.tabs.recent_votes')
+                    </div>
                 </div>
 
                 <span
@@ -91,6 +95,17 @@
                 >
                     @lang('pages.delegates.tabs.missed_blocks')
                 </a>
+
+                <a
+                    wire:click="$set('view', 'recent-votes');"
+                    @click="view = 'recent-votes'; tab = 'recent-votes';"
+                    @class([
+                        'dropdown-entry',
+                        'dropdown-entry-selected' => $this->view === 'recent-votes',
+                    ])
+                >
+                    @lang('pages.delegates.tabs.recent_votes')
+                </a>
             </div>
         </x-ark-dropdown>
     </div>
@@ -99,6 +114,8 @@
         <x-delegates.tables.delegates />
 
         <x-delegates.tables.missed-blocks />
+
+        <x-delegates.tables.recent-votes />
 
         <x-script.onload-scroll-to-query selector="#delegate-table-list" />
     </div>
