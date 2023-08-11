@@ -8,7 +8,10 @@
     :no-results-message="$noResultsMessage"
 >
     @foreach ($blocks as $block)
-        <x-tables.rows.mobile expandable>
+        <x-tables.rows.mobile
+            wire:key="{{ Helpers::generateId('block-mobile', $block->timestamp()) }}"
+            expandable
+        >
             <x-slot name="header">
                 <div class="flex flex-1 justify-between">
                     <x-tables.headers.mobile.encapsulated.block-height
