@@ -34,14 +34,6 @@ final class BuildForgingStats implements ShouldQueue
         $timeRange   = $this->getTimeRange($height);
         $startHeight = $this->getStartHeight($height, $timeRange);
 
-        $timestampHeights = Block::select('timestamp', 'height')
-            ->withCasts(['height' => 'int'])
-            ->withScope(OrderByTimestampScope::class)
-            ->where('height', '>=', $startHeight - 1 - Network::delegateCount())
-            ->where('height', '<=', $height + 1)
-            ->get()
-            ->sortByDesc('height');
-
         $forgingStats = MissedBlocksCalculator::calculateFromHeightGoingBack($startHeight, $height);
 
         $data = [];
@@ -49,7 +41,13 @@ final class BuildForgingStats implements ShouldQueue
             $missedHeight = null;
             if ($statsForTimestamp['forged'] === false) {
                 /** @var array $missedBlock */
-                $missedBlock  = $timestampHeights->firstWhere('timestamp', '<=', $timestamp);
+                $missedBlock = Block::select('height')
+                    ->withCasts(['height' => 'int'])
+                    ->withScope(OrderByTimestampScope::class)
+                    ->where('timestamp', '<=', $timestamp)
+                    ->limit(1)
+                    ->first();
+
                 $missedHeight = $missedBlock['height'] + 1;
             }
 
@@ -59,9 +57,17 @@ final class BuildForgingStats implements ShouldQueue
                 'public_key'    => $statsForTimestamp['publicKey'],
                 'forged'        => $statsForTimestamp['forged'],
             ];
+
+            if (count($data) > 1000) {
+                DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp'], ['public_key', 'forged']), attempts: 2);
+
+                $data = [];
+            }
         }
 
-        DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp'], ['public_key', 'forged']), attempts: 2);
+        if (count($data) > 0) {
+            DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp'], ['public_key', 'forged']), attempts: 2);
+        }
 
         // clean up old stats entries
         $this->deleteMoreThan30DaysOldStats($this->getTimestampForHeight($height));
