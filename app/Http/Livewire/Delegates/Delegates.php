@@ -129,15 +129,15 @@ final class Delegates extends Component
             ->whereNotNull('attributes->delegate->username')
             ->where(fn ($query) => $query->when($this->hasFilters(), function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['active'] === true, fn ($query) => $query->where(function ($query) {
-                            $query->where('attributes->delegate->resigned', null)
-                                ->orWhere('attributes->delegate->resigned', false);
-                        })->whereRaw('(attributes->\'delegate\'->>\'rank\')::int <= ?', Network::delegateCount())))
+                    $query->where('attributes->delegate->resigned', null)
+                        ->orWhere('attributes->delegate->resigned', false);
+                })->whereRaw('(attributes->\'delegate\'->>\'rank\')::int <= ?', Network::delegateCount())))
                     ->orWhere(fn ($query) => $query->when($this->filter['standby'] === true, fn ($query) => $query->where(function ($query) {
-                            $query->where('attributes->delegate->resigned', null)
-                                ->orWhere('attributes->delegate->resigned', false);
-                        })->where(function ($query) {
-                            $query->whereRaw('(attributes->\'delegate\'->>\'rank\')::int > ?', Network::delegateCount());
-                        })))
+                        $query->where('attributes->delegate->resigned', null)
+                            ->orWhere('attributes->delegate->resigned', false);
+                    })->where(function ($query) {
+                        $query->whereRaw('(attributes->\'delegate\'->>\'rank\')::int > ?', Network::delegateCount());
+                    })))
                     ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->delegate->resigned', true)));
             }))
             ->orderByRaw("(\"attributes\"->'delegate'->>'rank')::numeric ASC");
