@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Delegates;
 
+use App\Facades\Network;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTablePagination;
@@ -27,8 +28,11 @@ final class Delegates extends Component
 
     public const PER_PAGE = 51;
 
-    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable
-    public array $filter = [];
+    public array $filter = [
+        'active'   => true,
+        'standby'  => true,
+        'resigned' => true,
+    ];
 
     /** @var mixed */
     protected $listeners = [
@@ -37,8 +41,11 @@ final class Delegates extends Component
 
     public function queryString(): array
     {
-        // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable
-        return [];
+        return [
+            'active'   => ['except' => true],
+            'standby'  => ['except' => true],
+            'resigned' => ['except' => true],
+        ];
     }
 
     public function mount(bool $deferLoading = true): void
@@ -55,9 +62,12 @@ final class Delegates extends Component
         ]);
     }
 
-    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable#getNoResultsMessageProperty
     public function getNoResultsMessageProperty(): null|string
     {
+        if (! $this->hasFilters()) {
+            return trans('tables.delegates.no_results.no_filters');
+        }
+
         if ($this->delegates->total() === 0) {
             return trans('tables.delegates.no_results.no_results');
         }
@@ -72,17 +82,22 @@ final class Delegates extends Component
             return $emptyResults;
         }
 
-        // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable#getTransactionsProperty
+        if (! $this->hasFilters()) {
+            return $emptyResults;
+        }
 
         return $this->getDelegatesQuery()
             ->withScope(OrderByBalanceScope::class)
             ->paginate($this->perPage);
     }
 
-    // TODO: return false if "active" filter is not selected - https://app.clickup.com/t/861n4ydmh
     public function getShowMissedBlocksProperty(): bool
     {
         if ($this->page > 1) {
+            return false;
+        }
+
+        if ($this->filter['active'] === false) {
             return false;
         }
 
@@ -94,11 +109,36 @@ final class Delegates extends Component
         return trans('tables.delegates.delegate_per_page_options');
     }
 
-    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable
+    private function hasFilters(): bool
+    {
+        if ($this->filter['active'] === true) {
+            return true;
+        }
+
+        if ($this->filter['standby'] === true) {
+            return true;
+        }
+
+        return $this->filter['resigned'] === true;
+    }
+
     private function getDelegatesQuery(): Builder
     {
         return Wallet::query()
             ->whereNotNull('attributes->delegate->username')
+            ->where(fn ($query) => $query->when($this->hasFilters(), function ($query) {
+                $query->where(fn ($query) => $query->when($this->filter['active'] === true, fn ($query) => $query->where(function ($query) {
+                    $query->where('attributes->delegate->resigned', null)
+                        ->orWhere('attributes->delegate->resigned', false);
+                })->whereRaw('(attributes->\'delegate\'->>\'rank\')::int <= ?', Network::delegateCount())))
+                    ->orWhere(fn ($query) => $query->when($this->filter['standby'] === true, fn ($query) => $query->where(function ($query) {
+                        $query->where('attributes->delegate->resigned', null)
+                            ->orWhere('attributes->delegate->resigned', false);
+                    })->where(function ($query) {
+                        $query->whereRaw('(attributes->\'delegate\'->>\'rank\')::int > ?', Network::delegateCount());
+                    })))
+                    ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->delegate->resigned', true)));
+            }))
             ->orderByRaw("(\"attributes\"->'delegate'->>'rank')::numeric ASC");
     }
 }

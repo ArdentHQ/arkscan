@@ -116,6 +116,13 @@ return [
             'others'        => 'Others',
         ],
 
+        'delegates' => [
+            'select_all' => 'Select All',
+            'active'     => 'Active',
+            'standby'    => 'Standby',
+            'resigned'   => 'Resigned',
+        ],
+
         'recent-votes' => [
             'select_all' => 'Select All',
             'vote'       => 'Vote',
