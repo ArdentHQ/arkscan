@@ -29,7 +29,7 @@ final class RecentVotes extends Component
     use HasTableFilter;
     use HasTablePagination;
 
-    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable
+    // TODO: Filters - https://app.clickup.com/t/861n4ye5w - see WalletTransactionTable
     public array $filter = [];
 
     /** @var mixed */
@@ -39,7 +39,7 @@ final class RecentVotes extends Component
 
     public function queryString(): array
     {
-        // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable
+        // TODO: Filters - https://app.clickup.com/t/861n4ye5w - see WalletTransactionTable
         return [];
     }
 
@@ -57,7 +57,7 @@ final class RecentVotes extends Component
         ]);
     }
 
-    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable#getNoResultsMessageProperty
+    // TODO: Filters - https://app.clickup.com/t/861n4ye5w - see WalletTransactionTable#getNoResultsMessageProperty
     public function getNoResultsMessageProperty(): null|string
     {
         if ($this->recentVotes->total() === 0) {
@@ -74,13 +74,13 @@ final class RecentVotes extends Component
             return $emptyResults;
         }
 
-        // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable#getTransactionsProperty
+        // TODO: Filters - https://app.clickup.com/t/861n4ye5w - see WalletTransactionTable#getTransactionsProperty
 
         return $this->getRecentVotesQuery()
             ->paginate($this->perPage);
     }
 
-    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable
+    // TODO: Filters - https://app.clickup.com/t/861n4ye5w - see WalletTransactionTable
     private function getRecentVotesQuery(): Builder
     {
         return Transaction::query()
