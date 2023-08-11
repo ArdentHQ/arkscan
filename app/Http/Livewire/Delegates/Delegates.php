@@ -27,8 +27,11 @@ final class Delegates extends Component
 
     public const PER_PAGE = 51;
 
-    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable
-    public array $filter = [];
+    public array $filter = [
+        'active'   => true,
+        'standby'  => true,
+        'resigned' => true,
+    ];
 
     /** @var mixed */
     protected $listeners = [
@@ -37,8 +40,11 @@ final class Delegates extends Component
 
     public function queryString(): array
     {
-        // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable
-        return [];
+        return [
+            'active'   => ['except' => true],
+            'standby'  => ['except' => true],
+            'resigned' => ['except' => true],
+        ];
     }
 
     public function mount(bool $deferLoading = true): void
@@ -62,6 +68,10 @@ final class Delegates extends Component
             return trans('tables.delegates.no_results.no_results');
         }
 
+        if (! $this->hasFilters()) {
+            return trans('tables.transactions.no_results.no_addressing_filters');
+        }
+
         return null;
     }
 
@@ -72,17 +82,35 @@ final class Delegates extends Component
             return $emptyResults;
         }
 
-        // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTransactionTable#getTransactionsProperty
+        if (! $this->hasFilters()) {
+            return $emptyResults;
+        }
 
         return $this->getDelegatesQuery()
             ->withScope(OrderByBalanceScope::class)
             ->paginate($this->perPage);
     }
 
-    // TODO: return false if "active" filter is not selected - https://app.clickup.com/t/861n4ydmh
+    private function hasFilters(): bool
+    {
+        if ($this->filter['active'] === true) {
+            return true;
+        }
+
+        if ($this->filter['standby'] === true) {
+            return true;
+        }
+
+        return $this->filter['resigned'] === true;
+    }
+
     public function getShowMissedBlocksProperty(): bool
     {
         if ($this->page > 1) {
+            return false;
+        }
+
+        if ($this->filter['active'] === false) {
             return false;
         }
 
