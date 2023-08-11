@@ -18,13 +18,13 @@ it('should render', function () {
 it('should render with votes', function () {
     $this->travelTo(Carbon::parse('2020-03-21 18:42:00'));
 
-    $wallet = Wallet::factory()->create();
+    $wallet   = Wallet::factory()->create();
     $delegate = Wallet::factory()->activeDelegate()->create();
 
     Transaction::factory(27)->vote()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2020-03-21 14:12:00')->unix())->unix(),
+        'timestamp'         => Timestamp::fromUnix(Carbon::parse('2020-03-21 14:12:00')->unix())->unix(),
         'sender_public_key' => $wallet->public_key,
-        'asset' => [
+        'asset'             => [
             'votes' => ['+'.$delegate->public_key],
         ],
     ]);
@@ -38,21 +38,21 @@ it('should render with votes', function () {
 it('should not render votes older than 30 days', function () {
     $this->travelTo(Carbon::parse('2020-04-21 18:42:00'));
 
-    $wallet = Wallet::factory()->create();
+    $wallet   = Wallet::factory()->create();
     $delegate = Wallet::factory()->activeDelegate()->create();
 
     Transaction::factory(27)->vote()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2020-03-21 14:12:00')->unix())->unix(),
+        'timestamp'         => Timestamp::fromUnix(Carbon::parse('2020-03-21 14:12:00')->unix())->unix(),
         'sender_public_key' => $wallet->public_key,
-        'asset' => [
+        'asset'             => [
             'votes' => ['+'.$delegate->public_key],
         ],
     ]);
 
     Transaction::factory(4)->vote()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2020-04-20 14:12:00')->unix())->unix(),
+        'timestamp'         => Timestamp::fromUnix(Carbon::parse('2020-04-20 14:12:00')->unix())->unix(),
         'sender_public_key' => $wallet->public_key,
-        'asset' => [
+        'asset'             => [
             'votes' => ['+'.$delegate->public_key],
         ],
     ]);
