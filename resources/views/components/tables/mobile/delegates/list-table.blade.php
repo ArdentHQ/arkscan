@@ -8,7 +8,10 @@
     :no-results-message="$noResultsMessage"
 >
     @foreach ($delegates as $delegate)
-        <x-tables.rows.mobile expandable>
+        <x-tables.rows.mobile
+            wire:key="{{ Helpers::generateId('delegate-mobile', $delegate->address()) }}"
+            expandable
+        >
             <x-slot name="header">
                 <div class="flex flex-1 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
                     <x-tables.rows.mobile.encapsulated.delegates.rank

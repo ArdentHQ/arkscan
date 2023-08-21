@@ -8,7 +8,10 @@
     :no-results-message="$noResultsMessage"
 >
     @foreach ($votes as $vote)
-        <x-tables.rows.mobile expandable>
+        <x-tables.rows.mobile
+            wire:key="{{ Helpers::generateId('vote-mobile', $vote->id()) }}"
+            expandable
+        >
             <x-slot name="header">
                 <div class="flex flex-1 justify-between">
                     <x-tables.rows.mobile.encapsulated.transaction-id :model="$vote" />
