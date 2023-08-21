@@ -329,6 +329,11 @@ return [
 
         'missed-blocks'      => [
             'title' => 'Missed Blocks (30 Days)',
+            'results_suffix' => '(30 Days)',
+        ],
+
+        'recent-votes'      => [
+            'results_suffix' => '(30 Days)',
         ],
 
         'explore'            => [

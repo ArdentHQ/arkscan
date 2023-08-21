@@ -2,6 +2,7 @@
 
 <x-tables.toolbars.toolbar
     :result-count="$votes->total()"
+    :result-suffix="trans('pages.delegates.recent-votes.results_suffix')"
     :breakpoint="false"
 >
     <div class="flex space-x-3">

@@ -1,5 +1,6 @@
 @props([
     'resultCount',
+    'resultSuffix' => null,
     'breakpoint' => 'sm',
 ])
 
@@ -25,7 +26,11 @@
     $breakpointClass,
 ])>
     <div class="font-semibold dark:text-theme-secondary-500">
-        @lang('pagination.showing_x_results', ['count' => number_format($resultCount, 0)])
+        <span>@lang('pagination.showing_x_results', ['count' => number_format($resultCount, 0)])</span>
+
+        @if ($resultSuffix)
+            {{ $resultSuffix }}
+        @endif
     </div>
 
     <div>
