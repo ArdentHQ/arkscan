@@ -39,7 +39,10 @@
             </x-tables.headers.desktop.number>
 
             @if ($this->showMissedBlocks)
-                <x-tables.headers.desktop.number name="tables.delegates.missed_blocks" />
+                <x-tables.headers.desktop.number
+                    name="tables.delegates.missed_blocks"
+                    class="whitespace-nowrap"
+                />
             @endif
 
             <x-tables.headers.desktop.text width="70" />
