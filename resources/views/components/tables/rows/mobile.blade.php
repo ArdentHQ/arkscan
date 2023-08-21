@@ -1,6 +1,7 @@
 @props([
     'header',
     'expandable' => false,
+    'expandClass' => 'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700',
 ])
 
 <div
@@ -17,7 +18,8 @@
             'flex justify-between items-center rounded-t bg-theme-secondary-100 dark:bg-theme-dark-950',
             $header->attributes->get('padding', 'py-3 px-4'),
             'rounded-b' => strlen($slot) === 0 && ! $expandable,
-            'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700 sm:rounded-b-none' => $expandable,
+            'sm:rounded-b-none' => $expandable,
+            $expandClass => $expandable,
         ]) }}
 
         @if (strlen($slot) > 0 && $expandable)

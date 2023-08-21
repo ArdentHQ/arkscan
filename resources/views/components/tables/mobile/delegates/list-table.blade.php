@@ -10,18 +10,25 @@
     @foreach ($delegates as $delegate)
         <x-tables.rows.mobile
             wire:key="{{ Helpers::generateId('delegate-mobile', $delegate->address()) }}"
+            :expand-class="Arr::toCssClasses([
+                'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700' => ! $delegate->isResigned(),
+            ])"
             expandable
         >
             <x-slot name="header">
-                <div class="flex flex-1 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
+                <div class="flex flex-1 min-w-0 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
                     <x-tables.rows.mobile.encapsulated.delegates.rank
                         :model="$delegate"
                         class="min-w-[32px]"
                     />
 
-                    <div class="flex flex-1 justify-between items-center pl-3">
+                    <div class="flex flex-1 justify-between items-center pl-3 min-w-0">
                         <x-tables.rows.mobile.encapsulated.delegates.address
                             :model="$delegate"
+                            class="min-w-0"
+                            identity-class="min-w-0"
+                            identity-content-class="min-w-0"
+                            identity-link-class="pr-2 min-w-0"
                             without-clipboard
                             without-label
                         />
