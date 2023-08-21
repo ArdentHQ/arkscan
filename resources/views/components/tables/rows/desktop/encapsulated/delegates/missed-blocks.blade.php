@@ -2,17 +2,13 @@
 
 @php
     $missedBlocks = $model->missedBlocks();
+    $missedPercentage = $model->productivity();
 
     $state = 'success';
-    if ($missedBlocks > 0) {
-        $forgedBlocks = $model->forgedBlocks();
-        $missedPercentage = (($forgedBlocks - $missedBlocks) / $forgedBlocks) * 100;
-
-        if ($missedPercentage < config('arkscan.productivity.danger')) {
-            $state = 'danger';
-        } elseif ($missedPercentage < config('arkscan.productivity.warning')) {
-            $state = 'warning';
-        }
+    if ($missedPercentage < config('arkscan.productivity.danger')) {
+        $state = 'danger';
+    } elseif ($missedPercentage < config('arkscan.productivity.warning')) {
+        $state = 'warning';
     }
 @endphp
 
