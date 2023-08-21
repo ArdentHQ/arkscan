@@ -16,15 +16,19 @@
             expandable
         >
             <x-slot name="header">
-                <div class="flex flex-1 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
+                <div class="flex flex-1 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700 min-w-0">
                     <x-tables.rows.mobile.encapsulated.delegates.rank
                         :model="$delegate"
                         class="min-w-[32px]"
                     />
 
-                    <div class="flex flex-1 justify-between items-center pl-3">
+                    <div class="flex flex-1 justify-between items-center pl-3 min-w-0">
                         <x-tables.rows.mobile.encapsulated.delegates.address
                             :model="$delegate"
+                            class="min-w-0"
+                            identity-class="min-w-0"
+                            identity-content-class="min-w-0"
+                            identity-link-class="min-w-0 pr-2"
                             without-clipboard
                             without-label
                         />
