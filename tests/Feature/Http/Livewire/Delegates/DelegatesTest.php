@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Livewire\Delegates\Delegates;
 use App\Models\Wallet;
+use App\Services\Cache\WalletCache;
 use Livewire\Livewire;
 
 it('should render', function () {
@@ -159,4 +160,67 @@ it('should show correct message when there are no results', function () {
     Livewire::test(Delegates::class)
         ->call('setIsReady')
         ->assertSee(trans('tables.delegates.no_results.no_results'));
+});
+
+it('should show the correct styling for "success" on missed blocks', function () {
+    $wallet = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    (new WalletCache())->setProductivity($wallet->public_key, (1 - (1 / 1001)) * 100);
+    (new WalletCache())->setMissedBlocks($wallet->public_key, 1);
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->assertSee($wallet->address)
+        ->assertSee('bg-theme-success-100 border-theme-success-100 text-theme-success-700 dark:border-theme-success-700 dark:text-theme-success-500');
+});
+
+it('should show the correct styling for "warning" on missed blocks', function () {
+    $wallet = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    (new WalletCache())->setProductivity($wallet->public_key, (1 - (10 / 1001)) * 100);
+    (new WalletCache())->setMissedBlocks($wallet->public_key, 10);
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->assertSee($wallet->address)
+        ->assertSee('bg-theme-orange-light border-theme-orange-light text-theme-orange-dark dark:border-theme-orange-dark dark:text-theme-warning-400');
+});
+
+it('should show the correct styling for "danger" on missed blocks', function () {
+    $wallet = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    (new WalletCache())->setProductivity($wallet->public_key, (1 - (50 / 1001)) * 100);
+    (new WalletCache())->setMissedBlocks($wallet->public_key, 50);
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->assertSee($wallet->address)
+        ->assertSee('bg-theme-danger-100 border-theme-danger-100 text-theme-danger-700 dark:border-[#AA6868] dark:text-[#F39B9B]');
 });
