@@ -19,7 +19,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "http-interop/http-factory-guzzle": "^1.2",
         "huddledigital/zendesk-laravel": "^3.8",
-        "laravel/framework": "^9.17",
+        "laravel/framework": "^9.19",
         "laravel/horizon": "^5.19",
         "laravel/scout": "^10.2",
         "laravel/tinker": "^2.8",
