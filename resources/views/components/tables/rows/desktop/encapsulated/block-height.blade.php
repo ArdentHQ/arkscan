@@ -17,6 +17,6 @@
 
     <x-tables.rows.desktop.encapsulated.age
         :model="$model"
-        class="hidden text-xs md:block leading-3.75 md-lg:hidden"
+        class="hidden text-xs md:block leading-3.75 text-theme-secondary-700 md-lg:hidden dark:text-theme-dark-200"
     />
 </div>
