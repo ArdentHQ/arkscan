@@ -26,10 +26,16 @@
     $breakpointClass,
 ])>
     <div class="font-semibold dark:text-theme-secondary-500">
-        <span>@lang('pagination.showing_x_results', ['count' => number_format($resultCount, 0)])</span>
+        <span class="hidden sm:inline">
+            @lang('pagination.showing_x_results', ['count' => number_format($resultCount, 0)])
+        </span>
+
+        <span class="sm:hidden">
+            @lang('pagination.x_results', ['count' => number_format($resultCount, 0)])
+        </span>
 
         @if ($resultSuffix)
-            {{ $resultSuffix }}
+            <span>{{ $resultSuffix }}</span>
         @endif
     </div>
 
