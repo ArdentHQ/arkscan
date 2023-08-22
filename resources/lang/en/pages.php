@@ -328,7 +328,12 @@ return [
         'voting_x_addresses' => 'Voting (:count Addresses)',
 
         'missed-blocks'      => [
-            'title' => 'Missed Blocks (30 Days)',
+            'title'          => 'Missed Blocks (30 Days)',
+            'results_suffix' => '(30 Days)',
+        ],
+
+        'recent-votes'      => [
+            'results_suffix' => '(30 Days)',
         ],
 
         'explore'            => [
