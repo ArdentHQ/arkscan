@@ -18,6 +18,9 @@ final class Tables extends Component
         'blocks'       => false,
     ];
 
+    /**
+     * @var mixed
+     */
     protected $queryString = [
         'view' => ['except' => 'transactions'],
     ];
