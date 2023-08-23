@@ -14,7 +14,7 @@
 
         <div>
             <a
-                class="link whitespace-nowrap"
+                class="whitespace-nowrap link"
                 href="{{ route('wallet', $transactionWallet->address()) }}"
             >
                 @if ($transactionWallet->isDelegate())
@@ -38,7 +38,7 @@
                 @php ($recipient = $model->recipient())
 
                 <a
-                    class="link whitespace-nowrap"
+                    class="whitespace-nowrap link"
                     href="{{ route('wallet', $recipient->address()) }}"
                 >
                     @if ($recipient->isDelegate())
