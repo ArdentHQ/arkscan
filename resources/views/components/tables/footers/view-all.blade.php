@@ -15,7 +15,7 @@
     <div class="flex w-full sm:w-auto">
         <a
             href="{{ route('transactions') }}"
-            class="button-secondary h-8 py-1.5 w-full"
+            class="py-1.5 w-full h-8 button-secondary"
         >
             @lang('pagination.view_all')
         </a>
