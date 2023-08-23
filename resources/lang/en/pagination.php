@@ -22,6 +22,7 @@ return [
     'first'             => 'First',
     'last'              => 'Last',
     'showing_x_results' => 'Showing :count results',
+    'x_results'         => ':count Results',
 
     'per_page_options' => [
         10,

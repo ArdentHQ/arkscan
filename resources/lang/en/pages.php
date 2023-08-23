@@ -169,25 +169,26 @@ return [
         ],
 
         'delegate'              => [
-            'title'               => 'Delegate :0',
-            'rank'                => 'Rank',
-            'status'              => 'Status',
-            'commission'          => 'Commission',
-            'payout_frequency'    => 'Payout Frequency',
-            'payout_minimum'      => 'Payout Minimum',
-            'forged_total'        => 'Total Forged',
-            'votes'               => 'Votes (:0)',
-            'votes_percentage'    => 'Votes (:0%)',
-            'forged_blocks'       => 'Forged Blocks',
-            'productivity'        => 'Productivity (30 Days)',
-            'voters'              => 'Voters',
-            'resigned'            => 'Resigned',
-            'validated_blocks'    => 'Validated Blocks',
-            'votes_title'         => 'Votes',
-            'productivity_title'  => 'Productivity',
-            'not_registered_text' => 'This address is not a registered delegate',
-            'vote'                => 'Vote',
-            'vote_for_delegate'   => 'Vote for Delegate',
+            'title'                 => 'Delegate :0',
+            'rank'                  => 'Rank',
+            'status'                => 'Status',
+            'commission'            => 'Commission',
+            'payout_frequency'      => 'Payout Frequency',
+            'payout_minimum'        => 'Payout Minimum',
+            'forged_total'          => 'Total Forged',
+            'votes'                 => 'Votes (:0)',
+            'votes_percentage'      => 'Votes (:0%)',
+            'forged_blocks'         => 'Forged Blocks',
+            'productivity'          => 'Productivity (30 Days)',
+            'voters'                => 'Voters',
+            'resigned'              => 'Resigned',
+            'validated_blocks'      => 'Validated Blocks',
+            'votes_title'           => 'Votes',
+            'productivity_title'    => 'Productivity',
+            'not_registered_text'   => 'This address is not a registered delegate',
+            'vote'                  => 'Vote',
+            'vote_for_delegate'     => 'Vote for Delegate',
+            'resigned_vote_tooltip' => 'Cannot vote for resigned delegates.',
         ],
 
         'export-transactions-modal' => [
@@ -321,7 +322,32 @@ return [
     ],
 
     'delegates'        => [
-        'title'      => 'Delegates',
+        'title'              => 'Delegates',
+        'subtitle'           => 'List of delegates registered on the network.',
+        'x_delegates'        => ':count Delegates',
+        'voting_x_addresses' => 'Voting (:count Addresses)',
+
+        'missed-blocks'      => [
+            'title'          => 'Missed Blocks (30 Days)',
+            'results_suffix' => '(30 Days)',
+        ],
+
+        'recent-votes'      => [
+            'results_suffix' => '(30 Days)',
+        ],
+
+        'explore'            => [
+            'title'    => 'How can I become a delegate?',
+            'subtitle' => 'Step-by-step guide on how to register as a delegate',
+            'action'   => 'Explore',
+        ],
+
+        'tabs'               => [
+            'delegates'     => 'Delegates',
+            'missed_blocks' => 'Missed Blocks',
+            'recent_votes'  => 'Recent Votes',
+        ],
+
         'active'     => 'Active',
         'standby'    => 'Standby',
         'resigned'   => 'Resigned',
@@ -356,6 +382,11 @@ return [
             'status'       => 'View the status of the last 5 blocks for a delegate. Latest blocks are displayed from right to left.',
             'productivity' => 'The productivity statistic is calculated over the previous 30 day period.',
         ],
+    ],
+
+    'delegate-monitor' => [
+        'title'    => 'Delegate Monitor',
+        'subtitle' => 'Delegate block production observer tool.',
     ],
 
     'blocks_by_wallet' => [

@@ -18,7 +18,7 @@
         </div>
     </x-slot>
 
-    @foreach (trans('pagination.per_page_options') as $perPage)
+    @foreach ($this->perPageOptions() as $perPage)
         <x-general.dropdown.list-item
             :is-active="$perPage === $this->perPage"
             wire:click="setPerPage({{ $perPage }})"
