@@ -1,43 +1,36 @@
 @props([
     'transactions',
-    'wallet' => null,
-    'useDirection' => false,
-    'excludeItself' => false,
-    'useConfirmations' => false,
-    'isSent' => null,
-    'isReceived' => null,
-    'state' => [],
+    'noResultsMessage' => null,
 ])
 
-<div class="divide-y table-list-mobile" wire:key="{{ Helpers::generateId('transactions-mobile') }}">
+<x-tables.mobile.includes.encapsulated
+    wire:key="{{ Helpers::generateId('transactions-mobile') }}"
+    :no-results-message="$noResultsMessage"
+>
     @foreach ($transactions as $transaction)
-        <div class="table-list-mobile-row">
-            <x-tables.rows.mobile.transaction-id :model="$transaction" />
+        <x-tables.rows.mobile>
+            <x-slot name="header">
+                <x-tables.rows.mobile.encapsulated.transaction-id :model="$transaction" />
 
-            <x-tables.rows.mobile.timestamp :model="$transaction" />
+                <x-tables.rows.mobile.encapsulated.age
+                    :model="$transaction"
+                    class="leading-4.25"
+                />
+            </x-slot>
 
-            <x-tables.rows.mobile.sender :model="$transaction" />
+            <x-tables.rows.mobile.encapsulated.transaction-generic
+                :model="$transaction"
+                class="sm:flex-1"
+            />
 
-            <x-tables.rows.mobile.recipient :model="$transaction" />
+            <div class="flex flex-col space-y-4 sm:flex-row sm:items-start sm:space-y-0 sm:w-1/2">
+                <x-tables.rows.mobile.encapsulated.amount
+                    :model="$transaction"
+                    class="sm:flex-1"
+                />
 
-            @if($useDirection)
-                @if(($transaction->isSent($wallet->address()) || $isSent === true) && $isReceived !== true)
-                    <x-tables.rows.mobile.amount-sent :model="$transaction" :exclude-itself="$excludeItself" />
-                @else
-                    <x-tables.rows.mobile.amount-received
-                        :model="$transaction"
-                        :wallet="$wallet"
-                    />
-                @endif
-            @else
-                <x-tables.rows.mobile.amount :model="$transaction" />
-            @endif
-
-            <x-tables.rows.mobile.fee :model="$transaction" />
-
-            @if($useConfirmations)
-                <x-tables.rows.mobile.confirmations :model="$transaction" />
-            @endif
-        </div>
+                <x-tables.rows.mobile.encapsulated.fee :model="$transaction" />
+            </div>
+        </x-tables.rows.mobile>
     @endforeach
-</div>
+</x-tables.mobile.includes.encapsulated>

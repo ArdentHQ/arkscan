@@ -20,11 +20,13 @@
 
     $feeBreakpointClass = [
         'md-lg' => 'md-lg:hidden',
+        'lg' => 'lg:hidden',
         'xl' => 'xl:hidden',
     ][$breakpoint] ?? 'md-lg:hidden';
 
     $containerBreakpointClass = [
         'md-lg' => 'md-lg:space-y-0',
+        'lg' => 'lg:space-y-0',
         'xl' => 'xl:space-y-0',
     ][$breakpoint] ?? 'md-lg:space-y-0';
 @endphp
