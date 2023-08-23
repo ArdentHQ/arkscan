@@ -3,10 +3,6 @@
     container-class="pt-6 md:pt-0"
 >
     <div
-        x-data="{
-            dropdownOpen: false,
-            direction: 'all',
-        }"
         class="w-full"
         x-cloak
     >

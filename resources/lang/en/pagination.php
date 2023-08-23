@@ -22,6 +22,7 @@ return [
     'first'             => 'First',
     'last'              => 'Last',
     'showing_x_results' => 'Showing :count results',
+    'view_all'          => 'View All',
 
     'per_page_options' => [
         10,

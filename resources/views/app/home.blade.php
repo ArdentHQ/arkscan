@@ -5,7 +5,7 @@
         <livewire:network-status-block />
 
         <x-ark-container>
-            <livewire:latest-records />
+            <livewire:home.tables />
         </x-ark-container>
     @endsection
 @endcomponent

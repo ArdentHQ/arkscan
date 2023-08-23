@@ -1,0 +1,23 @@
+@props([
+    'results',
+    'countSuffix',
+])
+
+<x-tables.footers.footer>
+    <div class="font-semibold sm:mr-8 dark:text-theme-secondary-500">
+        <span>
+            <x-number>{{ $results->total() }}</x-number>
+        </span>
+
+        <span>{{ $countSuffix }}</span>
+    </div>
+
+    <div class="flex w-full sm:w-auto">
+        <a
+            href="{{ route('transactions') }}"
+            class="button-secondary h-8 py-1.5 w-full"
+        >
+            @lang('pagination.view_all')
+        </a>
+    </div>
+</x-tables.footers.footer>
