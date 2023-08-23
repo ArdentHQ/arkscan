@@ -22,6 +22,12 @@ return [
         'image'       => asset('images/metadata/delegates.png'),
     ],
 
+    'delegate-monitor' => [
+        'title'       => 'Delegate Monitor | :name Blockchain Explorer',
+        'description' => 'Delegate Monitor allows real-time observation of block production and delegates\' participation in each round.',
+        'image'       => asset('images/metadata/delegates.png'),
+    ],
+
     'transactions'  => [
         'title'       => 'Transactions | :name Blockchain Explorer',
         'description' => 'View transaction details from the :name Blockchain.',

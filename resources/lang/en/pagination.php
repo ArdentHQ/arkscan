@@ -23,6 +23,7 @@ return [
     'last'              => 'Last',
     'showing_x_results' => 'Showing :count results',
     'view_all'          => 'View All',
+    'x_results'         => ':count Results',
 
     'per_page_options' => [
         10,

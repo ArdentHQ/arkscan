@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 use App\Models\Block;
+use App\Models\ForgingStats;
 use App\Models\Round;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\ViewModels\BlockViewModel;
+use App\ViewModels\ForgingStatsViewModel;
 use App\ViewModels\RoundViewModel;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\ViewModelFactory;
@@ -21,6 +23,7 @@ it('should make a view model', function ($modelClass, $viewModel) {
     [Round::class, RoundViewModel::class],
     [Transaction::class, TransactionViewModel::class],
     [Wallet::class, WalletViewModel::class],
+    [ForgingStats::class, ForgingStatsViewModel::class],
 ]);
 
 it('should make a view model collection', function ($modelClass, $viewModel) {
@@ -36,6 +39,7 @@ it('should make a view model collection', function ($modelClass, $viewModel) {
     [Round::class, RoundViewModel::class],
     [Transaction::class, TransactionViewModel::class],
     [Wallet::class, WalletViewModel::class],
+    [ForgingStats::class, ForgingStatsViewModel::class],
 ]);
 
 it('cannot make an invalid view model', function () {

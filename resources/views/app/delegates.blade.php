@@ -2,71 +2,10 @@
     <x-metadata page="delegates" />
 
     @section('content')
-        <x-general.header class="overflow-auto">
-            <div class="px-8 md:px-10 md:w-full">
-                <livewire:delegate-data-boxes />
-            </div>
-        </x-general.header>
+        <livewire:delegates.header-stats />
 
-        <x-ark-container>
-            <div
-                x-data="function() {
-                    const initialSelected = window.location.search.split('tab=')[1] || 'active';
-                    const initialComponent = initialSelected === 'monitor' ? 'monitor' : 'table';
-
-                    const extraData = {
-                        dropdownOpen: false,
-                        component: initialComponent,
-                        filter(selected) {
-                            Livewire.emit('tabFiltered', selected);
-                        },
-                        init() {
-                            if (initialComponent === 'table') {
-                                this.filter(initialSelected);
-                            }
-                        }
-                    };
-
-                    function onSelected (selected) {
-                        {{-- Push the tab to the search query parameters --}}
-                        const { protocol, host, pathname } = window.location;
-                        const newUrl = `${protocol}//${host}${pathname}?tab=${selected}`;
-                        window.history.pushState({ path: newUrl },'',newUrl);
-
-                        this.component = selected === 'monitor' ? 'monitor' : 'table';
-
-                        if (this.component === 'table') {
-                            this.filter(selected);
-                        }
-                    }
-
-                    return Tabs(
-                        initialSelected,
-                        extraData,
-                        onSelected
-                    );
-                }()"
-                x-cloak
-                class="w-full"
-            >
-                <livewire:delegate-tabs />
-
-                <div x-show="component === 'monitor'">
-                    <livewire:delegate-monitor />
-                </div>
-
-                <div x-show="component === 'table'">
-                    <div x-show="selected === 'active'">
-                        <livewire:delegate-active-table />
-                    </div>
-                    <div x-show="selected === 'standby'">
-                        <livewire:delegate-standby-table />
-                    </div>
-                    <div x-show="selected === 'resigned'">
-                        <livewire:delegate-resigned-table />
-                    </div>
-                </div>
-            </div>
-        </x-ark-container>
+        <div class="px-6 pt-6 pb-8 border-t-4 md:px-10 md:pt-0 md:pb-6 md:mx-auto md:max-w-7xl md:border-0 border-theme-secondary-200 dark:border-theme-dark-950">
+            <livewire:delegates.tabs />
+        </div>
     @endsection
 @endcomponent

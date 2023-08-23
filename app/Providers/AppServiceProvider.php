@@ -103,13 +103,14 @@ final class AppServiceProvider extends ServiceProvider
         $navigationEntries = [
             ['route' => 'home', 'label' => trans('menus.home')],
             ['label' => trans('menus.blockchain'), 'children' => [
-                ['route' => 'blocks',  'label' => trans('menus.blocks')],
-                ['route' => 'transactions', 'label' => trans('menus.transactions')],
-                ['route' => 'delegates',    'label' => trans('menus.delegates')],
-                ['route' => 'top-accounts', 'label' => trans('menus.top_accounts')],
-                ['route' => 'statistics',   'label' => trans('menus.statistics')],
+                ['route' => 'blocks',           'label' => trans('menus.blocks')],
+                ['route' => 'transactions',     'label' => trans('menus.transactions')],
+                ['route' => 'delegates',        'label' => trans('menus.delegates')],
+                ['route' => 'top-accounts',     'label' => trans('menus.top_accounts')],
+                ['route' => 'statistics',       'label' => trans('menus.statistics')],
             ]],
             ['label' => trans('menus.resources'), 'children' => [
+                ['route' => 'delegate-monitor', 'label' => trans('menus.delegate_monitor')],
                 ['route' => 'compatible-wallets',  'label' => trans('menus.wallets')],
             ]],
             ['label' => trans('menus.developers'), 'children' => [

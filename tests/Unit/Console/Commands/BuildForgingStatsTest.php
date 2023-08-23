@@ -139,3 +139,28 @@ it('should store the height for missed blocks', function () {
     expect($forgingStats->get(0)->missed_height)->toBe(21);
     expect($forgingStats->get(1)->missed_height)->toBe(21);
 });
+
+it('should batch upsert every 1000 records', function () {
+    Block::factory()->create([
+        'timestamp' => 45000,
+        'height'    => 20,
+    ]);
+
+    $calculations = [];
+    foreach (range(50001, 60000) as $index => $height) {
+        $calculations[$height] = [
+            'publicKey' => 'test-public-key-'.$index,
+            'forged'    => false,
+        ];
+    }
+
+    MissedBlocksCalculator::shouldReceive('calculateFromHeightGoingBack')
+        ->once()
+        ->andReturn($calculations);
+
+    Artisan::call('explorer:forging-stats:build', ['--height' => 20]);
+
+    $forgingStats = ForgingStats::where('forged', false)->get();
+
+    expect($forgingStats->count())->toBe(10000);
+});
