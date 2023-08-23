@@ -113,7 +113,7 @@ return [
     ],
 
     'transactions'     => [
-        'title' => 'Transactions',
+        'title'    => 'Transactions',
         'subtitle' => 'List of transactions on the main ARK network',
     ],
 

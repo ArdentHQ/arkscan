@@ -19,7 +19,7 @@ use Ramsey\Uuid\Uuid;
 it('should list the first page of records', function () {
     Transaction::factory(30)->transfer()->create([
         'amount' => 481 * 1e8,
-        'fee' => 0.481 * 1e8,
+        'fee'    => 0.481 * 1e8,
     ]);
 
     $component = Livewire::test(TransactionTable::class)

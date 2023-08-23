@@ -51,5 +51,4 @@ final class TransactionTable extends Component
             ->withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage);
     }
-
 }
