@@ -9,7 +9,7 @@
             <span data-tippy-content="<x-general.network-currency :value="$wallet->votes()" />">
                 <x-general.network-currency
                     :value="$wallet->votes()"
-                    decimals="0"
+                    :decimals="0"
                 />
             </span>
 
