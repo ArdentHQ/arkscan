@@ -4,18 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Home;
 
-use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\TransactionTypeGroupEnum;
-use App\Facades\Wallets;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
-use App\ViewModels\WalletViewModel;
-use ArkEcosystem\Crypto\Enums\Types;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
@@ -30,7 +24,7 @@ final class Transactions extends Component
     /** @var mixed */
     protected $listeners = [
         'setTransactionsReady' => 'setIsReady',
-        'currencyChanged' => '$refresh',
+        'currencyChanged'      => '$refresh',
     ];
 
     public function render(): View
