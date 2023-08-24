@@ -1,4 +1,4 @@
-<x-page-headers.delegates.header-item
+<x-page-headers.header-item
     :attributes="$attributes"
     class="flex-none xl:flex-1 bg-theme-primary-100 dark:bg-theme-dark-800"
 >
@@ -50,4 +50,4 @@
             </x-ark-external-link>
         </div>
     </div>
-</x-delegates.header-item>
+</x-page-headers.header-item>

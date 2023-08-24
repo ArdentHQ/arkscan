@@ -3,7 +3,7 @@
     'delegatesMissed',
 ])
 
-<x-page-headers.delegates.header-item
+<x-page-headers.header-item
     :title="trans('pages.delegates.missed-blocks.title')"
     :attributes="$attributes"
 >
@@ -34,4 +34,4 @@
             @lang('actions.view')
         </button>
     </div>
-</x-delegates.header-item>
+</x-page-headers.header-item>

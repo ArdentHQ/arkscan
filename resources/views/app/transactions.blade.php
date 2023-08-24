@@ -2,9 +2,11 @@
     <x-metadata page="transactions" />
 
     @section('content')
-        <x-page-headers.generic
-            :title="trans('pages.transactions.title')"
-            :subtitle="trans('pages.transactions.subtitle')"
+        <x-page-headers.transactions
+            :transaction-count="$transactionCount"
+            :volume="$volume"
+            :total-fees="$totalFees"
+            :average-fee="$averageFee"
         />
 
         <x-ark-container>
