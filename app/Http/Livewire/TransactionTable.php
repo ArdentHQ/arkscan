@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Http\Livewire\Concerns\DeferLoading;
+use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
@@ -17,12 +19,30 @@ use Livewire\Component;
 final class TransactionTable extends Component
 {
     use DeferLoading;
+    use HasTableFilter;
     use HasTablePagination;
+
+    public array $filter = [
+        'transfers'     => true,
+        'votes'         => true,
+        'multipayments' => true,
+        'others'        => true,
+    ];
 
     /** @var mixed */
     protected $listeners = [
         'currencyChanged' => '$refresh',
     ];
+
+    public function queryString(): array
+    {
+        return [
+            'transfers'     => ['except' => true],
+            'votes'         => ['except' => true],
+            'multipayments' => ['except' => true],
+            'others'        => ['except' => true],
+        ];
+    }
 
     public function render(): View
     {
@@ -33,6 +53,10 @@ final class TransactionTable extends Component
 
     public function getNoResultsMessageProperty(): null|string
     {
+        if (! $this->hasTransactionTypeFilters()) {
+            return trans('tables.transactions.no_results.no_filters');
+        }
+
         if ($this->transactions->total() === 0) {
             return trans('tables.transactions.no_results.no_results');
         }
@@ -47,8 +71,29 @@ final class TransactionTable extends Component
             return $emptyResults;
         }
 
-        return Transaction::query()
+        if (! $this->hasTransactionTypeFilters()) {
+            return $emptyResults;
+        }
+
+        return Transaction::withTypeFilter($this->filter)
             ->withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage);
+    }
+
+    private function hasTransactionTypeFilters(): bool
+    {
+        if ($this->filter['transfers'] === true) {
+            return true;
+        }
+
+        if ($this->filter['votes'] === true) {
+            return true;
+        }
+
+        if ($this->filter['multipayments'] === true) {
+            return true;
+        }
+
+        return $this->filter['others'] === true;
     }
 }
