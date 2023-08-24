@@ -9,7 +9,7 @@
 >
     @foreach ($blocks as $block)
         <x-tables.rows.mobile
-            wire:key="{{ Helpers::generateId('block-mobile', $block->timestamp()) }}"
+            wire:key="{{ Helpers::generateId('block-mobile', $block->address(), $block->timestamp()) }}"
             expandable
         >
             <x-slot name="header">
