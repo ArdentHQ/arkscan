@@ -8,6 +8,7 @@ use App\Enums\CoreTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Facades\Wallets;
 use App\Http\Livewire\Concerns\DeferLoading;
+use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
@@ -26,6 +27,7 @@ use Livewire\Component;
 final class WalletTransactionTable extends Component
 {
     use DeferLoading;
+    use HasTableFilter;
     use HasTablePagination;
 
     public string $address;
@@ -41,29 +43,11 @@ final class WalletTransactionTable extends Component
         'others'        => true,
     ];
 
-    public bool $selectAllFilters = true;
-
     /** @var mixed */
     protected $listeners = [
         'setTransactionsReady' => 'setIsReady',
         'currencyChanged'      => '$refresh',
     ];
-
-    public function __get(mixed $property): mixed
-    {
-        if (array_key_exists($property, $this->filter)) {
-            return $this->filter[$property];
-        }
-
-        return parent::__get($property);
-    }
-
-    public function __set(string $property, mixed $value): void
-    {
-        if (array_key_exists($property, $this->filter)) {
-            $this->filter[$property] = $value;
-        }
-    }
 
     public function queryString(): array
     {
@@ -82,14 +66,6 @@ final class WalletTransactionTable extends Component
         $this->address   = $wallet->address();
         $this->publicKey = $wallet->publicKey();
 
-        foreach ($this->filter as &$filter) {
-            if (in_array($filter, ['1', 'true', true], true)) {
-                $filter = true;
-            } elseif (in_array($filter, ['0', 'false', false], true)) {
-                $filter = false;
-            }
-        }
-
         if (! $deferLoading) {
             $this->setIsReady();
         }
@@ -101,11 +77,6 @@ final class WalletTransactionTable extends Component
             'wallet'        => ViewModelFactory::make(Wallets::findByAddress($this->address)),
             'transactions'  => ViewModelFactory::paginate($this->transactions),
         ]);
-    }
-
-    public function getIsAllSelectedProperty(): bool
-    {
-        return ! collect($this->filter)->contains(false);
     }
 
     public function getNoResultsMessageProperty(): null|string
@@ -123,20 +94,6 @@ final class WalletTransactionTable extends Component
         }
 
         return null;
-    }
-
-    public function updatedSelectAllFilters(bool $value): void
-    {
-        foreach ($this->filter as &$filter) {
-            $filter = $value;
-        }
-    }
-
-    public function updatedFilter(): void
-    {
-        $this->selectAllFilters = $this->isAllSelected;
-
-        $this->setPage(1);
     }
 
     public function getTransactionsProperty(): LengthAwarePaginator

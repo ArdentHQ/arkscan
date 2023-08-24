@@ -26,13 +26,18 @@ trait HasTablePagination
 
     public function setPerPage(int $perPage): void
     {
-        if (! in_array($perPage, trans('pagination.per_page_options'), true)) {
+        if (! in_array($perPage, $this->perPageOptions(), true)) {
             return;
         }
 
         $this->perPage = $perPage;
 
         $this->gotoPage(1);
+    }
+
+    public function perPageOptions(): array
+    {
+        return trans('pagination.per_page_options');
     }
 
     public static function defaultPerPage(): int

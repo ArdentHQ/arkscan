@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
+use App\Facades\Services\Monitor\MissedBlocksCalculator;
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Round;
 use Illuminate\Support\Facades\Artisan;
 
 beforeEach(function () {
+    ForgingStats::truncate();
+
     $delegatePublicKeysBalanceDesc = [
         '027716e659220085e41389efc7cf6a05f7f7c659cf3db9126caabce6cda9156582',
         '03d3c6889608074b44155ad2e6577c3368e27e6e129c457418eb3e5ed029544e8d',
@@ -93,4 +96,71 @@ it('should execute the command - without parameter', function () {
     $this->assertEquals(ForgingStats::all()->count(), 50);
     // because of how test data is generated (see beforeEach), the last round contains
     // 50 blocks, hence 50 entries in forging stats
+});
+
+it('should not add multiple multiple records to database', function () {
+    $args = [
+        '--height' => 6970364, '--days' => 0.01,
+    ];
+
+    Artisan::call('explorer:forging-stats:build', $args);
+    Artisan::call('explorer:forging-stats:build', $args);
+    Artisan::call('explorer:forging-stats:build', $args);
+    Artisan::call('explorer:forging-stats:build', $args);
+    Artisan::call('explorer:forging-stats:build', $args);
+
+    $this->assertEquals(ForgingStats::all()->count(), 153);
+});
+
+it('should store the height for missed blocks', function () {
+    Block::factory()->create([
+        'timestamp' => 45000,
+        'height'    => 20,
+    ]);
+
+    MissedBlocksCalculator::shouldReceive('calculateFromHeightGoingBack')
+        ->once()
+        ->andReturn([
+            50000 => [
+                'publicKey' => 'test-public-key',
+                'forged'    => false,
+            ],
+            50001 => [
+                'publicKey' => 'test-public-key-2',
+                'forged'    => false,
+            ],
+        ]);
+
+    Artisan::call('explorer:forging-stats:build', ['--height' => 20]);
+
+    $forgingStats = ForgingStats::where('forged', false)->get();
+
+    expect($forgingStats->count())->toBe(2);
+    expect($forgingStats->get(0)->missed_height)->toBe(21);
+    expect($forgingStats->get(1)->missed_height)->toBe(21);
+});
+
+it('should batch upsert every 1000 records', function () {
+    Block::factory()->create([
+        'timestamp' => 45000,
+        'height'    => 20,
+    ]);
+
+    $calculations = [];
+    foreach (range(50001, 60000) as $index => $height) {
+        $calculations[$height] = [
+            'publicKey' => 'test-public-key-'.$index,
+            'forged'    => false,
+        ];
+    }
+
+    MissedBlocksCalculator::shouldReceive('calculateFromHeightGoingBack')
+        ->once()
+        ->andReturn($calculations);
+
+    Artisan::call('explorer:forging-stats:build', ['--height' => 20]);
+
+    $forgingStats = ForgingStats::where('forged', false)->get();
+
+    expect($forgingStats->count())->toBe(10000);
 });
