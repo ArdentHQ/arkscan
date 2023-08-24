@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Facades\Network;
 use App\Facades\Settings;
 use App\Http\Livewire\TransactionTable;
-use App\Models\Block;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -14,7 +12,6 @@ use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
-use Ramsey\Uuid\Uuid;
 
 it('should list the first page of records', function () {
     Transaction::factory(30)->transfer()->create([
@@ -119,7 +116,7 @@ it('should filter by transfer transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
     $wallet = Wallet::factory()->activeDelegate()->create();
-    $vote = Transaction::factory()->vote()->create([
+    $vote   = Transaction::factory()->vote()->create([
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
             'votes' => ['+'.$wallet->public_key],
@@ -142,7 +139,7 @@ it('should filter by vote transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
     $wallet = Wallet::factory()->activeDelegate()->create();
-    $vote = Transaction::factory()->vote()->create([
+    $vote   = Transaction::factory()->vote()->create([
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
             'votes' => ['+'.$wallet->public_key],
