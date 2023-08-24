@@ -14,7 +14,10 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
-/** @property LengthAwarePaginator $transactions */
+/**
+ * @property bool $isAllSelected
+ * @property LengthAwarePaginator $transactions
+ * */
 final class TransactionTable extends Component
 {
     use DeferLoading;
