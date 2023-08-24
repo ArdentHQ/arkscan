@@ -144,6 +144,12 @@ return [
         'profile'      => 'Profile',
         'commission'   => 'Commission',
         'productivity' => 'Productivity',
+
+        'forging-status' => [
+            'active'   => 'Active',
+            'standby'  => 'Standby',
+            'resigned' => 'Resigned',
+        ],
     ],
 
     'exchange'                  => [

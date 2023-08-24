@@ -2,11 +2,13 @@
     'model',
     'wallet' => null,
     'withoutLink' => false,
+    'alwaysShowAddress' => false,
+    'withoutTruncate' => false,
 ])
 
 @php ($isSent = $wallet && $model->isSent($wallet->address()) && ! $model->isSentToSelf($wallet->address()))
 
-<div class="flex items-center space-x-2 text-sm font-semibold">
+<div {{ $attributes->class('flex items-center space-x-2 text-sm font-semibold') }}>
     <div @class([
         'w-[39px] h-[21px] rounded border text-center leading-5 text-xs',
         'text-theme-success-700 border-theme-success-100 dark:border-theme-success-700 dark:text-theme-success-500 bg-theme-success-100 dark:bg-transparent' => ! $isSent,
@@ -20,7 +22,7 @@
     </div>
 
     <div>
-        @if ($model->isTransfer())
+        @if ($model->isTransfer() || $alwaysShowAddress)
             @php ($transactionWallet = $model->sender())
             @if ($isSent)
                 @php ($transactionWallet = $model->recipient())
@@ -33,6 +35,8 @@
                 >
                     @if ($transactionWallet->isDelegate())
                         {{ $transactionWallet->username() }}
+                    @elseif ($withoutTruncate)
+                        {{ $transactionWallet->address }}
                     @else
                         <x-truncate-middle>{{ $transactionWallet->address }}</x-truncate-middle>
                     @endif
@@ -41,6 +45,8 @@
                 <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                     @if ($transactionWallet->isDelegate())
                         {{ $transactionWallet->username() }}
+                    @elseif ($withoutTruncate)
+                        {{ $transactionWallet->address }}
                     @else
                         <x-truncate-middle>{{ $transactionWallet->address }}</x-truncate-middle>
                     @endif
@@ -60,6 +66,8 @@
                 >
                     @if ($model->sender()->isDelegate())
                         {{ $model->sender()->username() }}
+                    @elseif ($withoutTruncate)
+                        {{ $model->sender()->address }}
                     @else
                         <x-truncate-middle>{{ $model->sender()->address }}</x-truncate-middle>
                     @endif

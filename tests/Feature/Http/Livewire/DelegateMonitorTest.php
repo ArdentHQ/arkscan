@@ -138,6 +138,20 @@ it('should get the last blocks from the last 2 rounds and beyond', function () {
     }
 });
 
+it('should do nothing if no rounds', function () {
+    Wallet::factory(51)->create()->each(function ($wallet) {
+        Round::factory()->create([
+            'round'      => '1',
+            'public_key' => $wallet->public_key,
+        ]);
+    });
+
+    Livewire::test(DelegateMonitor::class)
+        ->assertViewHas('delegates', [])
+        ->call('pollDelegates')
+        ->assertViewHas('delegates', []);
+});
+
 it('should correctly show the block is missed', function () {
     // Force round time
     $this->travelTo(new Carbon('2021-01-01 00:04:00'));

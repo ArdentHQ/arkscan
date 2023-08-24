@@ -137,3 +137,29 @@ it('should filter transactions in url', function () {
         ->get('/test-transactions/'.$wallet->address.'?outgoing=1')
         ->assertSee($transaction->id);
 });
+
+it('should not trim 0 at the end of votes or total forged', function () {
+    $wallet = Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => [
+                'voteBalance'    => 1234037456742,
+                'producedBlocks' => 12340,
+            ],
+        ],
+    ]);
+
+    (new DelegateCache())->setTotalFees(fn () => [$wallet->public_key => 234037456741]);
+    (new DelegateCache())->setTotalRewards(fn () => [$wallet->public_key => 1000000000001]);
+
+    $this
+        ->get(route('wallet', $wallet))
+        ->assertSee($wallet->username)
+        ->assertSeeInOrder([
+            '12,340 DARK',
+            'Vote',
+        ])
+        ->assertSeeInOrder([
+            'Total Forged',
+            '12,340 DARK',
+        ]);
+});
