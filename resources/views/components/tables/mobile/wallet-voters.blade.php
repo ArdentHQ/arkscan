@@ -10,7 +10,10 @@
     @foreach ($wallets as $wallet)
         <x-tables.rows.mobile>
             <x-slot name="header">
-                <x-tables.headers.mobile.encapsulated.address :model="$wallet" />
+                <x-tables.headers.mobile.encapsulated.address
+                    :model="$wallet"
+                    with-username
+                />
             </x-slot>
 
             <x-tables.rows.mobile.encapsulated.balance :model="$wallet" class="sm:flex-1" />
