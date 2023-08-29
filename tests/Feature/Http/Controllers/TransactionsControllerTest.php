@@ -13,7 +13,7 @@ it('should render the page without any errors', function () {
         ->assertOk();
 });
 
-it('should get the transction stats for the last 24 hours', function () {
+it('should get the transaction stats for the last 24 hours', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
     Transaction::factory(148)->create([
@@ -118,3 +118,51 @@ it('should show the correct decimal places for the stats', function ($decimalPla
     3 => [3, 919123.489, 0.479],
     2 => [2, 919123.48, 0.99],
 ]);
+
+it('should cache the transaction stats for 5 minutes', function () {
+    $this->travelTo('2021-04-14 16:02:04');
+
+    Transaction::factory(148)->create([
+        'timestamp' => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
+        'amount'    => 123 * 1e8,
+        'fee'       => 0.99 * 1e8,
+    ]);
+
+    $this
+        ->get(route('transactions'))
+        ->assertOk()
+        ->assertViewHas([
+            'transactionCount' => 148,
+            'volume'           => 18204,
+            'totalFees'        => 146.52,
+            'averageFee'       => 0.99,
+        ]);
+
+    Transaction::factory(12)->create([
+        'timestamp' => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:03:04')->unix())->unix(),
+        'amount'    => 123 * 1e8,
+        'fee'       => 0.99 * 1e8,
+    ]);
+
+    $this
+        ->get(route('transactions'))
+        ->assertOk()
+        ->assertViewHas([
+            'transactionCount' => 148,
+            'volume'           => 18204,
+            'totalFees'        => 146.52,
+            'averageFee'       => 0.99,
+        ]);
+
+    $this->travelTo('2021-04-14 16:09:04');
+
+    $this
+        ->get(route('transactions'))
+        ->assertOk()
+        ->assertViewHas([
+            'transactionCount' => 160,
+            'volume'           => 19680,
+            'totalFees'        => 158.4,
+            'averageFee'       => 0.99,
+        ]);
+});
