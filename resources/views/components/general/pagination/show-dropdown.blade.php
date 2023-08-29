@@ -1,7 +1,7 @@
 <x-general.dropdown.dropdown
     active-button-class=""
     button-class="bg-white rounded border border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
-    disabled-button-class="text-theme-secondary-500 dark:text-theme-dark-500 bg-theme-secondary-200 dark:bg-theme-dark-800 dark:border-theme-dark-700"
+    disabled-button-class="text-theme-secondary-500 bg-theme-secondary-200 dark:text-theme-dark-500 dark:bg-theme-dark-800 dark:border-theme-dark-700"
     :attributes="$attributes"
 >
     <x-slot name="button">
