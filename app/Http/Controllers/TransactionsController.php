@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 final class TransactionsController
 {
-    const STATS_TTL = 300;
+    public const STATS_TTL = 300;
 
     public function __invoke(): View
     {
