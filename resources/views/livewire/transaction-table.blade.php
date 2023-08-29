@@ -1,4 +1,5 @@
 <div
+    id="transactions-list"
     class="w-full"
     wire:init="setIsReady"
 >
@@ -19,5 +20,7 @@
             :results="$transactions"
             class="mt-4 md:mt-0"
         />
+
+        <x-script.onload-scroll-to-query selector="#transactions-list" />
     </x-skeletons.transactions>
 </div>

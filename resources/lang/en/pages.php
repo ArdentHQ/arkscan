@@ -113,9 +113,8 @@ return [
     ],
 
     'transactions'     => [
-        'title'    => 'Transactions',
-        'subtitle' => 'List of transactions on the main ARK network',
-
+        'title'            => 'Transactions',
+        'subtitle'         => 'List of transactions on the :network',
         'transactions_24h' => 'Transactions (24h)',
         'volume_24h'       => 'Volume (24h)',
         'total_fees_24h'   => 'Total Fees (24h)',
