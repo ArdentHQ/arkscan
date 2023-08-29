@@ -41,7 +41,7 @@
             <x-ark-external-link
                 class="!flex items-center space-x-2 button-primary py-1.5 px-4 justify-center"
                 :url="trans('urls.docs.validator')"
-                title="Explore"
+                :title="trans('actions.explore')"
                 inner-class="leading-5"
                 icon-class="inline relative flex-shrink-0 text-white"
                 icon-size="sm"
