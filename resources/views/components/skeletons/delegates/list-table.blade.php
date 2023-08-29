@@ -17,10 +17,10 @@
 
         <x-tables.mobile.skeleton.delegates.list-table />
     </x-loading.visible>
-@endif
 
-<div wire:key="skeleton:delegates:hidden">
-    <x-loading.hidden>
-        {{ $slot }}
-    </x-loading.hidden>
-</div>
+    <div wire:key="skeleton:delegates:hidden">
+        <x-loading.hidden>
+            {{ $slot }}
+        </x-loading.hidden>
+    </div>
+@endif
