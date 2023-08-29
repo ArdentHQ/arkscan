@@ -4,7 +4,7 @@
     @section('content')
         <x-page-headers.generic
             :title="trans('pages.transactions.title')"
-            :subtitle="trans('pages.transactions.subtitle')"
+            :subtitle="trans('pages.transactions.subtitle', ['network' => Network::name()])"
         />
 
         <x-ark-container>
