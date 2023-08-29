@@ -32,10 +32,10 @@
 @endphp
 
 <div @class([
-    'md:space-y-1',
+    'flex flex-col md:space-y-1',
     $containerBreakpointClass,
 ])>
-    <div class="inline-block">
+    <div class="inline-block leading-4.25">
         <x-general.encapsulated.amount-fiat-tooltip
             :amount="$amount"
             :fiat="$amountFiat"
