@@ -15,7 +15,7 @@
             </x-currency>
         </span>
 
-        <x-general.badge class="py-px">
+        <x-general.badge class="py-px text-theme-secondary-700">
             <x-percentage>{{ ($totalVoted / $currentSupply) * 100 }}</x-percentage>
         </x-general.badge>
     </div>

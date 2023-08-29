@@ -17,7 +17,7 @@
                 @endif
             </span>
 
-            <x-general.badge class="py-px">
+            <x-general.badge class="py-px text-theme-secondary-700">
                 @lang('pages.delegates.x_delegates', ['count' => $delegatesMissed])
             </x-general.badge>
         </div>

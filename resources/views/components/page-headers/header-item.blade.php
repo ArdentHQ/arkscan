@@ -24,6 +24,8 @@
             </div>
         @endif
 
-        {{ $slot }}
+        <div class="text-theme-secondary-900 dark:text-theme-dark-50">
+            {{ $slot }}
+        </div>
     </div>
 </div>
