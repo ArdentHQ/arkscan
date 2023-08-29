@@ -8,6 +8,7 @@
 <x-page-headers.generic
     :title="trans('pages.transactions.title')"
     :subtitle="trans('pages.transactions.subtitle', ['network' => Network::name()])"
+    class="md:pb-3"
 >
     <div class="grid flex-1 grid-cols-1 gap-2 w-full sm:grid-cols-2 md:gap-3 xl:grid-cols-4">
         <x-page-headers.transactions.transaction-count :count="$transactionCount" />
