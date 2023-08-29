@@ -14,7 +14,7 @@ final class TransactionsController
     {
         $type = $request->input('state.type', 'all');
 
-        return view('transactions', [
+        return view('app.transactions', [
             'transactionTypeFilter' => $type,
         ]);
     }
