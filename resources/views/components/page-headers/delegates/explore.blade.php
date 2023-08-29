@@ -32,7 +32,7 @@
                 @lang('pages.delegates.explore.title')
             </div>
 
-            <div class="text-xs leading-5 sm:leading-3.75 text-theme-secondary-700 dark:text-theme-dark-200">
+            <div class="text-xs leading-5 text-theme-secondary-700 sm:leading-3.75 dark:text-theme-dark-200">
                 @lang('pages.delegates.explore.subtitle')
             </div>
         </div>
