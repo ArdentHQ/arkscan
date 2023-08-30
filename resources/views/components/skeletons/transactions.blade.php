@@ -1,9 +1,26 @@
-<x-loading.visible>
-    <x-tables.desktop.skeleton.transactions />
+@props([
+    'rowCount' => 10,
+])
 
-    <x-tables.mobile.skeleton.transactions />
-</x-loading.visible>
+@if (! $this->isReady)
+    <div wire:key="skeleton:transactions:not-ready">
+        <x-tables.desktop.skeleton.transactions :row-count="$rowCount" />
 
-<x-loading.hidden>
-    {{ $slot }}
-</x-loading.hidden>
+        <x-tables.mobile.skeleton.transactions />
+    </div>
+@else
+    <x-loading.visible
+        wire:key="skeleton:transactions:ready"
+        display-type="block"
+    >
+        <x-tables.desktop.skeleton.transactions :row-count="$rowCount" />
+
+        <x-tables.mobile.skeleton.transactions />
+    </x-loading.visible>
+
+    <div wire:key="skeleton:transactions:hidden">
+        <x-loading.hidden>
+            {{ $slot }}
+        </x-loading.hidden>
+    </div>
+@endif
