@@ -6,9 +6,9 @@
 >
     <div class="flex space-x-3">
         <div class="flex-1">
-            {{-- <x-tables.filters.transactions />
+            <x-tables.filters.transactions-generic />
 
-            <x-tables.filters.transactions mobile /> --}}
+            <x-tables.filters.transactions-generic mobile />
         </div>
     </div>
 </x-general.encapsulated.table-header>
