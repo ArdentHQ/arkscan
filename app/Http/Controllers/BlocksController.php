@@ -30,7 +30,7 @@ final class BlocksController
 
     private function blockData(): array
     {
-        // return Cache::remember('blocks:stats', self::STATS_TTL, function () {
+        return Cache::remember('blocks:stats', self::STATS_TTL, function () {
             $timestamp = Timestamp::fromUnix(Carbon::now()->subDays(1)->unix())->unix();
             $data = (array) DB::connection('explorer')
                 ->table('blocks')
@@ -46,6 +46,6 @@ final class BlocksController
                 'total_rewards'  => $data['total_rewards'] ?? 0,
                 'largest_amount' => $data['largest_amount'] ?? 0,
             ];
-        // });
+        });
     }
 }
