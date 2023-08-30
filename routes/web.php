@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\BlocksController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
@@ -30,7 +31,7 @@ Route::get('/', HomeController::class)->name('home');
 Route::view('/delegates', 'app.delegates')->name('delegates');
 Route::view('/delegate-monitor', 'app.delegate-monitor')->name('delegate-monitor');
 
-Route::view('/blocks', 'blocks')->name('blocks');
+Route::get('/blocks', BlocksController::class)->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
 
 Route::get('/transactions', TransactionsController::class)->name('transactions');

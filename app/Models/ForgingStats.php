@@ -8,6 +8,7 @@ use App\Models\Concerns\SearchesCaseInsensitive;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property int $missed_height
@@ -61,5 +62,15 @@ final class ForgingStats extends Model
     public function delegate(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'public_key', 'public_key');
+    }
+
+    /**
+     * A round slot belongs to a delegate.
+     *
+     * @return BelongsTo
+     */
+    public function scopeMissed(Builder $query): Builder
+    {
+        return $query->where('missed_height', null);
     }
 }
