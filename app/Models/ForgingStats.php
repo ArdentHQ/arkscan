@@ -65,9 +65,9 @@ final class ForgingStats extends Model
     }
 
     /**
-     * A round slot belongs to a delegate.
+     * Get all missed forging stats
      *
-     * @return BelongsTo
+     * @return Builder
      */
     public function scopeMissed(Builder $query): Builder
     {
