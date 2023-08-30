@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\TransactionTypeGroupEnum;
 use App\Facades\Wallets;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
@@ -145,22 +143,7 @@ final class WalletTransactionTable extends Component
     private function getTransactionsQuery(): Builder
     {
         return Transaction::query()
-            ->where(function ($query) {
-                $query->where(fn ($query) => $query->when($this->filter['transfers'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::TRANSFER)))
-                    ->orWhere(fn ($query) => $query->when($this->filter['votes'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::VOTE)))
-                    ->orWhere(fn ($query) => $query->when($this->filter['multipayments'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT)))
-                    ->orWhere(fn ($query) => $query->when($this->filter['others'] === true, fn ($query) => $query
-                        ->where('type_group', TransactionTypeGroupEnum::MAGISTRATE)
-                        ->orWhere(
-                            fn ($query) => $query
-                                ->where('type_group', TransactionTypeGroupEnum::CORE)
-                                ->whereNotIn('type', [
-                                    CoreTransactionTypeEnum::TRANSFER,
-                                    CoreTransactionTypeEnum::VOTE,
-                                    CoreTransactionTypeEnum::MULTI_PAYMENT,
-                                ])
-                        )));
-            })
+            ->withTypeFilter($this->filter)
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['outgoing'], fn ($query) => $query->where('sender_public_key', $this->publicKey)))
                     ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query->where('recipient_id', $this->address)))

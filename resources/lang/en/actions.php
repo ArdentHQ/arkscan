@@ -22,4 +22,5 @@ return [
     'close'           => 'Close',
     'copy'            => 'Copy',
     'view'            => 'View',
+    'explore'         => 'Explore',
 ];

@@ -4,49 +4,98 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Http\Livewire\Concerns\DeferLoading;
+use App\Http\Livewire\Concerns\HasTableFilter;
+use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
-use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
 use Illuminate\Contracts\View\View;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
+/**
+ * @property bool $isAllSelected
+ * @property LengthAwarePaginator $transactions
+ * */
 final class TransactionTable extends Component
 {
-    use HasPagination;
+    use DeferLoading;
+    use HasTableFilter;
+    use HasTablePagination;
 
-    public array $state = [
-        'type' => 'all',
+    public array $filter = [
+        'transfers'     => true,
+        'votes'         => true,
+        'multipayments' => true,
+        'others'        => true,
     ];
 
     /** @var mixed */
-    protected $listeners = ['currencyChanged' => '$refresh'];
+    protected $listeners = [
+        'currencyChanged' => '$refresh',
+    ];
 
-    public function updatedStateType(): void
+    public function queryString(): array
     {
-        $this->gotoPage(1);
-    }
-
-    public function mount(): void
-    {
-        $this->state = array_merge([
-            'type'        => 'all',
-        ], request('state', []));
+        return [
+            'transfers'     => ['except' => true],
+            'votes'         => ['except' => true],
+            'multipayments' => ['except' => true],
+            'others'        => ['except' => true],
+        ];
     }
 
     public function render(): View
     {
-        $query = Transaction::withScope(OrderByTimestampScope::class);
+        return view('livewire.transaction-table', [
+            'transactions'  => ViewModelFactory::paginate($this->transactions),
+        ]);
+    }
 
-        if ($this->state['type'] !== 'all') {
-            $scopeClass = Transaction::TYPE_SCOPES[$this->state['type']];
-
-            $query = $query->withScope($scopeClass);
+    public function getNoResultsMessageProperty(): null|string
+    {
+        if (! $this->hasTransactionTypeFilters()) {
+            return trans('tables.transactions.no_results.no_filters');
         }
 
-        return view('livewire.transaction-table', [
-            'showTitle'    => true,
-            'transactions' => ViewModelFactory::paginate($query->paginate()),
-        ]);
+        if ($this->transactions->total() === 0) {
+            return trans('tables.transactions.no_results.no_results');
+        }
+
+        return null;
+    }
+
+    public function getTransactionsProperty(): LengthAwarePaginator
+    {
+        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage);
+        if (! $this->isReady) {
+            return $emptyResults;
+        }
+
+        if (! $this->hasTransactionTypeFilters()) {
+            return $emptyResults;
+        }
+
+        return Transaction::withTypeFilter($this->filter)
+            ->withScope(OrderByTimestampScope::class)
+            ->paginate($this->perPage);
+    }
+
+    private function hasTransactionTypeFilters(): bool
+    {
+        if ($this->filter['transfers'] === true) {
+            return true;
+        }
+
+        if ($this->filter['votes'] === true) {
+            return true;
+        }
+
+        if ($this->filter['multipayments'] === true) {
+            return true;
+        }
+
+        return $this->filter['others'] === true;
     }
 }

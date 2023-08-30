@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\CoreTransactionTypeEnum;
+use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Casts\BigInteger;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
@@ -212,6 +214,27 @@ final class Transaction extends Model
     public function recipient(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'recipient_id', 'address');
+    }
+
+    public function scopeWithTypeFilter(Builder $query, array $filter): Builder
+    {
+        return $query
+            ->where(function ($query) use ($filter) {
+                $query->where(fn ($query) => $query->when($filter['transfers'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::TRANSFER)))
+                    ->orWhere(fn ($query) => $query->when($filter['votes'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::VOTE)))
+                    ->orWhere(fn ($query) => $query->when($filter['multipayments'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT)))
+                    ->orWhere(fn ($query) => $query->when($filter['others'] === true, fn ($query) => $query
+                        ->where('type_group', TransactionTypeGroupEnum::MAGISTRATE)
+                        ->orWhere(
+                            fn ($query) => $query
+                                ->where('type_group', TransactionTypeGroupEnum::CORE)
+                                ->whereNotIn('type', [
+                                    CoreTransactionTypeEnum::TRANSFER,
+                                    CoreTransactionTypeEnum::VOTE,
+                                    CoreTransactionTypeEnum::MULTI_PAYMENT,
+                                ])
+                        )));
+            });
     }
 
     public function vendorField(): string|null
