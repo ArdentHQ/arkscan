@@ -113,7 +113,12 @@ return [
     ],
 
     'transactions'     => [
-        'title' => 'Transactions',
+        'title'            => 'Transactions',
+        'subtitle'         => 'List of transactions on the :network',
+        'transactions_24h' => 'Transactions (24h)',
+        'volume_24h'       => 'Volume (24h)',
+        'total_fees_24h'   => 'Total Fees (24h)',
+        'average_fee_24h'  => 'Average Fee (24h)',
     ],
 
     'wallets'          => [

@@ -36,16 +36,16 @@
                     </div>
                 @else
                     <div wire:init="pollTransactions" wire:key="poll_transactions_skeleton">
-                        <x-tables.desktop.skeleton.transactions />
+                        <x-tables.desktop.skeleton.home-transactions />
 
-                        <x-tables.mobile.skeleton.transactions />
+                        <x-tables.mobile.skeleton.home-transactions />
                     </div>
                 @endif
             @else
                 <div wire:poll.{{ Network::blockTime() }}s="pollTransactions" wire:key="poll_transactions_real">
-                    <x-tables.desktop.transactions :transactions="$transactions" />
+                    <x-tables.desktop.home-transactions :transactions="$transactions" />
 
-                    <x-tables.mobile.transactions :transactions="$transactions" :state="[$state['type']]" />
+                    <x-tables.mobile.home-transactions :transactions="$transactions" :state="[$state['type']]" />
 
                     @if(count($transactions) === 15)
                         <a href="{{ route('transactions', ['page' => 2, 'state[type]' => $state['type']]) }}" class="mt-4 w-full button-secondary">@lang('actions.view_all')</a>
