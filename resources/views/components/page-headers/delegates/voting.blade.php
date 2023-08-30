@@ -4,7 +4,7 @@
     'currentSupply',
 ])
 
-<x-page-headers.delegates.header-item
+<x-page-headers.header-item
     :title="trans('pages.delegates.voting_x_addresses', ['count' => number_format($voterCount)])"
     :attributes="$attributes"
 >
@@ -15,8 +15,8 @@
             </x-currency>
         </span>
 
-        <x-general.badge class="py-px">
+        <x-general.badge class="py-px text-theme-secondary-700">
             <x-percentage>{{ ($totalVoted / $currentSupply) * 100 }}</x-percentage>
         </x-general.badge>
     </div>
-</x-delegates.header-item>
+</x-page-headers.header-item>
