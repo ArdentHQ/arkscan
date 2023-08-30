@@ -65,7 +65,7 @@ final class ForgingStats extends Model
     }
 
     /**
-     * Get all missed forging stats
+     * Get all missed forging stats.
      *
      * @return Builder
      */
