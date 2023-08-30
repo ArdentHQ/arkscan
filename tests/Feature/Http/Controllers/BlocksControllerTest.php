@@ -26,7 +26,7 @@ it('should get the block stats for the last 24 hours', function () {
 
     foreach (range(1, 19) as $seconds) {
         ForgingStats::factory()->create([
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->subSecond($seconds)->unix())->unix(),
+            'timestamp'     => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->subSecond($seconds)->unix())->unix(),
             'missed_height' => 1,
         ]);
     }
@@ -153,7 +153,7 @@ it('should cache the transaction stats for 5 minutes', function () {
 
     foreach (range(1, 19) as $seconds) {
         ForgingStats::factory()->create([
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->subSecond($seconds)->unix())->unix(),
+            'timestamp'     => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->subSecond($seconds)->unix())->unix(),
             'missed_height' => 1,
         ]);
     }
@@ -176,7 +176,7 @@ it('should cache the transaction stats for 5 minutes', function () {
 
     foreach (range(1, 2) as $seconds) {
         ForgingStats::factory()->create([
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:03:04')->subSecond($seconds)->unix())->unix(),
+            'timestamp'     => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:03:04')->subSecond($seconds)->unix())->unix(),
             'missed_height' => 1,
         ]);
     }
