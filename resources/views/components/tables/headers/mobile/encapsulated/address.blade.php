@@ -1,12 +1,12 @@
 @props([
     'model',
-    'withUsername' => false,
+    'withoutUsername' => true,
 ])
 
 <div class="flex justify-center items-center space-x-2">
     <x-general.identity
         :model="$model"
-        :without-username="! $withUsername"
+        :without-username="$withoutUsername"
         without-reverse
         without-icon
     />

@@ -12,7 +12,7 @@
             <x-slot name="header">
                 <x-tables.headers.mobile.encapsulated.address
                     :model="$wallet"
-                    with-username
+                    :without-username="false"
                 />
             </x-slot>
 
