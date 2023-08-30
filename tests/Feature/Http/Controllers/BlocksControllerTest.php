@@ -76,6 +76,7 @@ it('should get the block stats for the last 24 hours', function () {
         ->assertSeeInOrder([
             'Largest Block (24h)',
             '904 DARK',
+            // TODO: uncomment when table is ready
             // 'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
         ]);
 
@@ -128,6 +129,7 @@ it('should show the correct decimal places for the stats', function ($decimalPla
         ->assertSeeInOrder([
             'Largest Block (24h)',
             number_format($largestAmount, $decimalPlaces).' DARK',
+            // TODO: uncomment when table is ready
             // 'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
         ]);
 })->with([
