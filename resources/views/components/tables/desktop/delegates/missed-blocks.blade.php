@@ -42,7 +42,7 @@
 
     <tbody>
         @foreach($blocks as $block)
-            <x-ark-tables.row wire:key="block-{{ $block->address() }}">
+            <x-ark-tables.row wire:key="{{ Helpers::generateId('block', $block->timestamp()) }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.block-height
                         :model="$block"
