@@ -71,6 +71,6 @@ final class ForgingStats extends Model
      */
     public function scopeMissed(Builder $query): Builder
     {
-        return $query->where('missed_height', null);
+        return $query->whereNot('missed_height', null);
     }
 }
