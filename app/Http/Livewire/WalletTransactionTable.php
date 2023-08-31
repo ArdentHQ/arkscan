@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
+use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTablePagination;
@@ -22,11 +23,10 @@ use Livewire\Component;
  * @property bool $isAllSelected
  * @property LengthAwarePaginator $transactions
  * */
-final class WalletTransactionTable extends Component
+final class WalletTransactionTable extends TabbedTableComponent
 {
     use DeferLoading;
     use HasTableFilter;
-    use HasTablePagination;
 
     public string $address;
 
@@ -46,6 +46,16 @@ final class WalletTransactionTable extends Component
         'setTransactionsReady' => 'setIsReady',
         'currencyChanged'      => '$refresh',
     ];
+
+    protected function view(): string
+    {
+        return 'transactions';
+    }
+
+    protected function isDefaultView(): bool
+    {
+        return true;
+    }
 
     public function queryString(): array
     {

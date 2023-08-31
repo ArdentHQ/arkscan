@@ -10,6 +10,10 @@ use Illuminate\Support\Str;
 
 trait HasTabs
 {
+    public array $tabQueryData = [];
+
+    public array $savedQueryData = [];
+
     public function __get(mixed $property): mixed
     {
         $value = Arr::get($this->tabQueryData[$this->view], $property);
@@ -38,6 +42,10 @@ trait HasTabs
 
     public function triggerViewIsReady(?string $view = null): void
     {
+        if (! array_key_exists($this->view, $this->savedQueryData)) {
+            $this->saveViewData();
+        }
+
         if ($view === null) {
             $view = $this->view;
         }
@@ -63,9 +71,18 @@ trait HasTabs
 
         $this->previousView = $this->view;
 
+        $this->saveViewData($newView);
+    }
+
+    protected function saveViewData(?string $newView = null): void
+    {
         SupportBrowserHistoryWrapper::init()->mergeRequestQueryStringWithComponent($this);
 
         $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
+
+        if ($newView === null) {
+            return;
+        }
 
         // Reset the querystring data on view change to clear the URL
         $queryStringData = $this->queryString();

@@ -21,10 +21,6 @@ final class WalletTables extends Component
 
     public ?string $previousView = 'transactions';
 
-    public array $tabQueryData = [];
-
-    public array $savedQueryData = [];
-
     public array $alreadyLoadedViews = [
         'transactions' => false,
         'blocks'       => false,

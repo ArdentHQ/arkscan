@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
+use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Block;
@@ -16,10 +17,9 @@ use Illuminate\View\View;
 use Livewire\Component;
 
 /** @property LengthAwarePaginator $blocks */
-final class WalletBlockTable extends Component
+final class WalletBlockTable extends TabbedTableComponent
 {
     use DeferLoading;
-    use HasTablePagination;
 
     public string $publicKey;
 
@@ -28,6 +28,11 @@ final class WalletBlockTable extends Component
         'setBlocksReady'  => 'setIsReady',
         'currencyChanged' => '$refresh',
     ];
+
+    protected function view(): string
+    {
+        return 'blocks';
+    }
 
     public function mount(WalletViewModel $wallet): void
     {
