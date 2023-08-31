@@ -31,6 +31,10 @@ mix.webpackConfig({
     // Extract node_modules
     .extract(['alpinejs', 'chart.js']);
 
+if (process.env.MIX_DISABLE_NOTIFICATIONS === 'true') {
+    mix.disableSuccessNotifications();
+}
+
 if (mix.inProduction()) {
     mix.version();
 }
