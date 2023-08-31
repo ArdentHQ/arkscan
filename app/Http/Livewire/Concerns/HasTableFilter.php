@@ -30,13 +30,13 @@ trait HasTableFilter
     {
         foreach ($this->filter as $key => $filter) {
             if (in_array($filter, ['1', 'true', true], true)) {
-                $filter = true;
+                $this->filter[$key] = true;
             } elseif (in_array($filter, ['0', 'false', false], true)) {
-                $filter = false;
+                $this->filter[$key] = false;
             }
-
-            $this->syncInput('filter.'.$key, $filter);
         }
+
+        $this->selectAllFilters = $this->getIsAllSelectedProperty();
     }
 
     public function getIsAllSelectedProperty(): bool
