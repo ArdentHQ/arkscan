@@ -6,7 +6,7 @@
 
 <div class="flex flex-col space-y-2 text-sm font-semibold sm:space-y-1 md:space-y-2 md-lg:items-center md-lg:flex-row md-lg:space-y-0 md-lg:space-x-9">
     <div class="flex items-center space-x-2 md-lg:w-[156px]">
-        <x-general.badge class="encapsulated-badge w-[39px] text-center">
+        <x-general.badge class="text-center encapsulated-badge w-[39px]">
             @lang('tables.transactions.from')
         </x-general.badge>
 
@@ -25,7 +25,7 @@
     </div>
 
     <div class="flex items-center space-x-2">
-        <x-general.badge class="encapsulated-badge w-[39px] text-center">
+        <x-general.badge class="text-center encapsulated-badge w-[39px]">
             @lang('tables.transactions.to')
         </x-general.badge>
 
