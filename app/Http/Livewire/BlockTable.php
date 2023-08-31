@@ -9,7 +9,6 @@ use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Block;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\ViewModels\ViewModelFactory;
-use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
 use Livewire\Component;
