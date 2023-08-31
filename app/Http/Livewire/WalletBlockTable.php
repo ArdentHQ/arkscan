@@ -7,14 +7,12 @@ namespace App\Http\Livewire;
 use App\Facades\Wallets;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
-use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
-use Livewire\Component;
 
 /** @property LengthAwarePaginator $blocks */
 final class WalletBlockTable extends TabbedTableComponent
@@ -28,11 +26,6 @@ final class WalletBlockTable extends TabbedTableComponent
         'setBlocksReady'  => 'setIsReady',
         'currencyChanged' => '$refresh',
     ];
-
-    protected function view(): string
-    {
-        return 'blocks';
-    }
 
     public function mount(WalletViewModel $wallet): void
     {
@@ -68,5 +61,10 @@ final class WalletBlockTable extends TabbedTableComponent
         return Block::where('generator_public_key', $this->publicKey)
             ->withScope(OrderByHeightScope::class)
             ->paginate($this->perPage);
+    }
+
+    protected function view(): string
+    {
+        return 'blocks';
     }
 }

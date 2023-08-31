@@ -8,7 +8,6 @@ use App\Facades\Wallets;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
-use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
@@ -17,7 +16,6 @@ use ArkEcosystem\Crypto\Enums\Types;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Livewire\Component;
 
 /**
  * @property bool $isAllSelected
@@ -46,16 +44,6 @@ final class WalletTransactionTable extends TabbedTableComponent
         'setTransactionsReady' => 'setIsReady',
         'currencyChanged'      => '$refresh',
     ];
-
-    protected function view(): string
-    {
-        return 'transactions';
-    }
-
-    protected function isDefaultView(): bool
-    {
-        return true;
-    }
 
     public function queryString(): array
     {
@@ -122,6 +110,16 @@ final class WalletTransactionTable extends TabbedTableComponent
         return $this->getTransactionsQuery()
             ->withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage);
+    }
+
+    protected function view(): string
+    {
+        return 'transactions';
+    }
+
+    protected function isDefaultView(): bool
+    {
+        return true;
     }
 
     private function hasAddressingFilters(): bool

@@ -12,7 +12,6 @@ use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
-use Livewire\Component;
 
 /** @property LengthAwarePaginator $wallets */
 final class WalletVoterTable extends TabbedTableComponent
@@ -26,11 +25,6 @@ final class WalletVoterTable extends TabbedTableComponent
         'setVotersReady'  => 'setIsReady',
         'currencyChanged' => '$refresh',
     ];
-
-    protected function view(): string
-    {
-        return 'voters';
-    }
 
     public function mount(WalletViewModel $wallet): void
     {
@@ -65,5 +59,10 @@ final class WalletVoterTable extends TabbedTableComponent
         return Wallet::where('attributes->vote', $this->publicKey)
             ->withScope(OrderByBalanceScope::class)
             ->paginate($this->perPage);
+    }
+
+    protected function view(): string
+    {
+        return 'voters';
     }
 }

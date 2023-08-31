@@ -74,6 +74,21 @@ trait HasTabs
         $this->saveViewData($newView);
     }
 
+    /**
+     * Apply existing view data to query string.
+     *
+     * @return void
+     */
+    public function updatedView(): void
+    {
+        if (array_key_exists($this->view, $this->savedQueryData)) {
+            foreach ($this->savedQueryData[$this->view] as $key => $value) {
+                // @phpstan-ignore-next-line
+                $this->{$key} = $value;
+            }
+        }
+    }
+
     protected function saveViewData(?string $newView = null): void
     {
         SupportBrowserHistoryWrapper::init()->mergeRequestQueryStringWithComponent($this);
@@ -92,20 +107,5 @@ trait HasTabs
         }
 
         $this->triggerViewIsReady($newView);
-    }
-
-    /**
-     * Apply existing view data to query string.
-     *
-     * @return void
-     */
-    public function updatedView(): void
-    {
-        if (array_key_exists($this->view, $this->savedQueryData)) {
-            foreach ($this->savedQueryData[$this->view] as $key => $value) {
-                // @phpstan-ignore-next-line
-                $this->{$key} = $value;
-            }
-        }
     }
 }
