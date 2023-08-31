@@ -6,11 +6,9 @@
 
 <div class="flex flex-col space-y-2 text-sm font-semibold sm:space-y-1 md:space-y-2 md-lg:items-center md-lg:flex-row md-lg:space-y-0 md-lg:space-x-9">
     <div class="flex items-center space-x-2 md-lg:w-[156px]">
-        <div @class([
-            'w-[39px] h-[21px] rounded border border-transparent dark:border-theme-secondary-800 bg-theme-secondary-200 dark:bg-transparent text-center leading-5 text-xs',
-        ])>
+        <x-general.badge class="encapsulated-badge w-[39px] text-center">
             @lang('tables.transactions.from')
-        </div>
+        </x-general.badge>
 
         <div>
             <a
@@ -27,11 +25,9 @@
     </div>
 
     <div class="flex items-center space-x-2">
-        <div @class([
-            'w-[39px] h-[21px] rounded border border-transparent dark:border-theme-secondary-800 bg-theme-secondary-200 dark:bg-transparent text-center leading-5 text-xs',
-        ])>
+        <x-general.badge class="encapsulated-badge w-[39px] text-center">
             @lang('tables.transactions.to')
-        </div>
+        </x-general.badge>
 
         <div>
             @if ($model->isTransfer())
