@@ -1,11 +1,26 @@
-<div id="block-list" class="w-full">
-    <x-skeletons.blocks>
-        <x-tables.desktop.blocks :blocks="$blocks" />
+<div
+    id="blocks-list"
+    class="w-full"
+    wire:init="setIsReady"
+>
+    <x-tables.toolbars.toolbar :result-count="$blocks->total()" />
 
-        <x-tables.mobile.blocks :blocks="$blocks" />
+    <x-skeletons.blocks :row-count="$this->perPage">
+        <x-tables.desktop.blocks
+            :blocks="$blocks"
+            :no-results-message="$this->noResultsMessage"
+        />
 
-        <x-general.pagination :results="$blocks" class="mt-8" />
-
-        <x-script.onload-scroll-to-query selector="#block-list" />
+        <x-tables.mobile.blocks
+            :blocks="$blocks"
+            :no-results-message="$this->noResultsMessage"
+        />
     </x-skeletons.blocks>
+
+    <x-general.pagination.table
+        :results="$blocks"
+        class="mt-4 md:mt-0"
+    />
+
+    <x-script.onload-scroll-to-query selector="#blocks-list" />
 </div>
