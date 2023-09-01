@@ -17,10 +17,10 @@
 
         <x-tables.mobile.skeleton.delegates.recent-votes />
     </x-loading.visible>
-@endif
 
-<div wire:key="skeleton:recent-votes:hidden">
-    <x-loading.hidden>
-        {{ $slot }}
-    </x-loading.hidden>
-</div>
+    <div wire:key="skeleton:recent-votes:hidden">
+        <x-loading.hidden>
+            {{ $slot }}
+        </x-loading.hidden>
+    </div>
+@endif

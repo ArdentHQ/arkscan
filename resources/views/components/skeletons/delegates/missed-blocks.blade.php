@@ -17,10 +17,10 @@
 
         <x-tables.mobile.skeleton.delegates.missed-blocks />
     </x-loading.visible>
-@endif
 
-<div wire:key="skeleton:missed-blocks:hidden">
-    <x-loading.hidden>
-        {{ $slot }}
-    </x-loading.hidden>
-</div>
+    <div wire:key="skeleton:missed-blocks:hidden">
+        <x-loading.hidden>
+            {{ $slot }}
+        </x-loading.hidden>
+    </div>
+@endif
