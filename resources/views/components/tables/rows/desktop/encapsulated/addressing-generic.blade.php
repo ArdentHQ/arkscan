@@ -51,7 +51,7 @@
                 <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                     @lang('tables.transactions.multiple')
 
-                    ({{ count($model->payments()) }})
+                    ({{ $model->recipientsCount() }})
                 </span>
             @else
                 <span class="text-theme-secondary-900 dark:text-theme-dark-50">
