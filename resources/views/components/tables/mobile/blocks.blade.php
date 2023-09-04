@@ -44,10 +44,12 @@
                 class="sm:col-span-2 sm:w-[142px]"
             />
 
-            <x-tables.rows.mobile.encapsulated.value
-                :model="$block"
-                class="sm:col-span-2"
-            />
+            @if (Network::canBeExchanged())
+                <x-tables.rows.mobile.encapsulated.value
+                    :model="$block"
+                    class="sm:col-span-2"
+                />
+            @endif
         </x-tables.rows.mobile>
     @endforeach
 </x-tables.mobile.includes.encapsulated>

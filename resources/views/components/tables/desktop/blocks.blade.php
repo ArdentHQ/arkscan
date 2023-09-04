@@ -40,23 +40,32 @@
                 <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.volume_tooltip')" />
             </x-tables.headers.desktop.number>
 
-            <x-tables.headers.desktop.number
-                name="tables.blocks.total_reward"
-                :name-properties="['currency' => Network::currency()]"
-                last-on="md-lg"
-                class="last-until-md-lg"
-            >
-                <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.total_reward_tooltip')" />
-            </x-tables.headers.desktop.number>
+            @if (Network::canBeExchanged())
+                <x-tables.headers.desktop.number
+                    name="tables.blocks.total_reward"
+                    :name-properties="['currency' => Network::currency()]"
+                    last-on="md-lg"
+                    class="last-until-md-lg"
+                >
+                    <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.total_reward_tooltip')" />
+                </x-tables.headers.desktop.number>
 
-            <x-tables.headers.desktop.number
-                name="tables.blocks.value"
-                :name-properties="['currency' => Settings::currency()]"
-                breakpoint="md-lg"
-                responsive
-            >
-                <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.value_tooltip')" />
-            </x-tables.headers.desktop.number>
+                <x-tables.headers.desktop.number
+                    name="tables.blocks.value"
+                    :name-properties="['currency' => Settings::currency()]"
+                    breakpoint="md-lg"
+                    responsive
+                >
+                    <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.value_tooltip')" />
+                </x-tables.headers.desktop.number>
+            @else
+                <x-tables.headers.desktop.number
+                    name="tables.blocks.total_reward"
+                    :name-properties="['currency' => Network::currency()]"
+                >
+                    <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.total_reward_tooltip')" />
+                </x-tables.headers.desktop.number>
+            @endif
         </tr>
     </thead>
     <tbody>
@@ -82,20 +91,26 @@
                     <x-tables.rows.desktop.encapsulated.volume :model="$block" />
                 </x-ark-tables.cell>
 
-                <x-ark-tables.cell
-                    class="text-right"
-                    last-on="md-lg"
-                >
-                    <x-tables.rows.desktop.encapsulated.reward :model="$block" />
-                </x-ark-tables.cell>
+                @if (Network::canBeExchanged())
+                    <x-ark-tables.cell
+                        class="text-right"
+                        last-on="md-lg"
+                    >
+                        <x-tables.rows.desktop.encapsulated.reward :model="$block" />
+                    </x-ark-tables.cell>
 
-                <x-ark-tables.cell
-                    class="text-right"
-                    responsive
-                    breakpoint="md-lg"
-                >
-                    <x-tables.rows.desktop.encapsulated.value :model="$block" />
-                </x-ark-tables.cell>
+                    <x-ark-tables.cell
+                        class="text-right"
+                        responsive
+                        breakpoint="md-lg"
+                    >
+                        <x-tables.rows.desktop.encapsulated.value :model="$block" />
+                    </x-ark-tables.cell>
+                @else
+                    <x-ark-tables.cell class="text-right">
+                        <x-tables.rows.desktop.encapsulated.reward :model="$block" />
+                    </x-ark-tables.cell>
+                @endif
             </x-ark-tables.row>
         @endforeach
     </tbody>
