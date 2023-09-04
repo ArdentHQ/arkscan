@@ -122,18 +122,36 @@ it('should show the correct decimal places for the stats', function ($decimalPla
 it('should cache the transaction stats for 5 minutes', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
-    Transaction::factory(148)->create([
+    Transaction::factory(146)->create([
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
         'amount'    => 123 * 1e8,
         'fee'       => 0.99 * 1e8,
     ]);
+
+    Transaction::factory(2)->multiPayment()->create([
+        'timestamp' => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
+        'amount'    => 0,
+        'fee'       => 0.99 * 1e8,
+        'asset' => [
+            'payments' => [
+                [
+                    'amount' => 432 * 1e8,
+                ],
+                [
+                    'amount' => 42 * 1e8,
+                ],
+            ],
+        ],
+    ]);
+
+    $volume = (123 * 146) + ((432 + 42) * 2);
 
     $this
         ->get(route('transactions'))
         ->assertOk()
         ->assertViewHas([
             'transactionCount' => 148,
-            'volume'           => 18204,
+            'volume'           => $volume,
             'totalFees'        => 146.52,
             'averageFee'       => 0.99,
         ]);
@@ -149,19 +167,21 @@ it('should cache the transaction stats for 5 minutes', function () {
         ->assertOk()
         ->assertViewHas([
             'transactionCount' => 148,
-            'volume'           => 18204,
+            'volume'           => $volume,
             'totalFees'        => 146.52,
             'averageFee'       => 0.99,
         ]);
 
     $this->travelTo('2021-04-14 16:09:04');
 
+    $volume += 123 * 12;
+
     $this
         ->get(route('transactions'))
         ->assertOk()
         ->assertViewHas([
             'transactionCount' => 160,
-            'volume'           => 19680,
+            'volume'           => $volume,
             'totalFees'        => 158.4,
             'averageFee'       => 0.99,
         ]);
