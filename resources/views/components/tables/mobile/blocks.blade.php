@@ -1,21 +1,55 @@
-<div class="divide-y table-list-mobile">
+@props([
+    'blocks',
+    'noResultsMessage' => null,
+])
+
+<x-tables.mobile.includes.encapsulated
+    wire:key="{{ Helpers::generateId('blocks-mobile') }}"
+    :no-results-message="$noResultsMessage"
+>
     @foreach ($blocks as $block)
-        <div class="table-list-mobile-row" wire:key="{{ Helpers::generateId('mobile', $block->id(), Settings::currency()) }}">
-            <x-tables.rows.mobile.block-id :model="$block" />
+        <x-tables.rows.mobile
+            wire:key="{{ Helpers::generateId('blocks-mobile-row', $block->id()) }}"
+            content-class="sm:grid sm:grid-cols-5 sm:gap-6"
+        >
+            <x-slot name="header">
+                <x-tables.headers.mobile.encapsulated.block-height
+                    :model="$block"
+                    class="sm:flex-1"
+                />
 
-            <x-tables.rows.mobile.timestamp :model="$block" />
+                <x-tables.rows.mobile.encapsulated.age
+                    :model="$block"
+                    class="sm:flex-1 sm:text-right leading-4.25"
+                />
+            </x-slot>
 
-            @if(! isset($withoutGenerator))
-                <x-tables.rows.mobile.block-forger :model="$block" />
+            <x-tables.rows.mobile.encapsulated.generated-by
+                :model="$block"
+                class="sm:col-span-2"
+            />
+
+            <x-tables.rows.mobile.encapsulated.transaction-count
+                :model="$block"
+                class="sm:col-span-2 leading-4.25"
+            />
+
+            <x-tables.rows.mobile.encapsulated.volume
+                :model="$block"
+                class="sm:flex-1"
+            />
+
+            <x-tables.rows.mobile.encapsulated.reward
+                :model="$block"
+                class="sm:col-span-2 sm:w-[142px]"
+            />
+
+            @if (Network::canBeExchanged())
+                <x-tables.rows.mobile.encapsulated.value
+                    :model="$block"
+                    class="sm:col-span-2"
+                />
             @endif
-
-            <x-tables.rows.mobile.block-height :model="$block" />
-
-            <x-tables.rows.mobile.transaction-count :model="$block" />
-
-            <x-tables.rows.mobile.amount :model="$block" />
-
-            <x-tables.rows.mobile.fee :model="$block" />
-        </div>
+        </x-tables.rows.mobile>
     @endforeach
-</div>
+</x-tables.mobile.includes.encapsulated>

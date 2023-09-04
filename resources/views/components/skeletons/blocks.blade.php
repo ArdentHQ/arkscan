@@ -1,15 +1,26 @@
-<x-loading.visible>
-    @isset($withoutGenerator)
-        <x-tables.desktop.skeleton.blocks without-generator />
+@props([
+    'rowCount' => 10,
+])
 
-        <x-tables.mobile.skeleton.blocks without-generator />
-    @else
-        <x-tables.desktop.skeleton.blocks />
+@if (! $this->isReady)
+    <div wire:key="skeleton:blocks:not-ready">
+        <x-tables.desktop.skeleton.blocks :row-count="$rowCount" />
 
         <x-tables.mobile.skeleton.blocks />
-    @endif
-</x-loading.visible>
+    </div>
+@else
+    <x-loading.visible
+        wire:key="skeleton:blocks:ready"
+        display-type="block"
+    >
+        <x-tables.desktop.skeleton.blocks :row-count="$rowCount" />
 
-<x-loading.hidden>
-    {{ $slot }}
-</x-loading.hidden>
+        <x-tables.mobile.skeleton.blocks />
+    </x-loading.visible>
+
+    <div wire:key="skeleton:blocks:hidden">
+        <x-loading.hidden>
+            {{ $slot }}
+        </x-loading.hidden>
+    </div>
+@endif
