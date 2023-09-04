@@ -48,8 +48,8 @@
                 <x-tables.headers.desktop.number
                     name="tables.blocks.total_reward"
                     :name-properties="['currency' => Network::currency()]"
-                    last-on="lg"
-                    class="whitespace-nowrap last-until-lg"
+                    last-on="xl"
+                    class="whitespace-nowrap last-until-xl"
                 >
                     <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.total_reward_tooltip')" />
                 </x-tables.headers.desktop.number>
@@ -103,7 +103,7 @@
                 @if (Network::canBeExchanged())
                     <x-ark-tables.cell
                         class="text-right"
-                        last-on="lg"
+                        last-on="xl"
                     >
                         <x-tables.rows.desktop.encapsulated.reward
                             :model="$block"

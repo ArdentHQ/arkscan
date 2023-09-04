@@ -30,8 +30,8 @@
         $items['tables.blocks.total_reward'] = [
             ...$items['tables.blocks.total_reward'],
 
-            'lastOn' => 'lg',
-            'class' => 'last-until-lg',
+            'lastOn' => 'xl',
+            'class' => 'last-until-xl',
         ];
 
         $items['tables.blocks.value'] = [
