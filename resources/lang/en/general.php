@@ -43,7 +43,7 @@ return [
     'warning'                 => 'Warning',
     'custom'                  => 'Custom',
     'x_of_y'                  => ':0 of :1',
-    'filters'                 => 'Filters',
+    'filter'                  => 'Filter',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
@@ -144,6 +144,12 @@ return [
         'profile'      => 'Profile',
         'commission'   => 'Commission',
         'productivity' => 'Productivity',
+
+        'forging-status' => [
+            'active'   => 'Active',
+            'standby'  => 'Standby',
+            'resigned' => 'Resigned',
+        ],
     ],
 
     'exchange'                  => [

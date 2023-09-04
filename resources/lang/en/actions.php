@@ -21,4 +21,6 @@ return [
     'retry'           => 'Retry',
     'close'           => 'Close',
     'copy'            => 'Copy',
+    'view'            => 'View',
+    'explore'         => 'Explore',
 ];

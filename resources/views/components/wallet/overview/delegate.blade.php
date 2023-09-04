@@ -32,7 +32,7 @@
                 @if ($wallet->isDelegate())
                     <x-general.network-currency
                         :value="$wallet->totalForged()"
-                        decimals="0"
+                        :decimals="0"
                     />
                 @endif
             </x-slot>

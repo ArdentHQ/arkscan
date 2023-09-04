@@ -45,6 +45,62 @@ return [
         'volume' => 'Volume (:currency)',
     ],
 
+    'delegates' => [
+        'rank'          => 'Rank',
+        'delegate'      => 'Delegate',
+        'status'        => 'Status',
+        'no_of_voters'  => '# of Voters',
+        'votes'         => 'Votes (:currency)',
+        'percentage'    => 'Percentage',
+        'missed_blocks' => 'Missed Blocks (30d)',
+
+        'delegate_per_page_options' => [
+            10,
+            25,
+            51,
+            100,
+        ],
+
+        'info' => [
+            'percentage' => 'Percentage of votes in relation to the total supply.',
+        ],
+
+        'no_results' => [
+            'no_filters' => 'All filtering options have been deselected. Please select one or more options to display transactions.',
+            'no_results' => 'No delegates matching the selected types could be found.',
+        ],
+    ],
+
+    'missed-blocks' => [
+        'height'        => 'Block Height',
+        'age'           => 'Age',
+        'delegate'      => 'Delegate',
+        'no_of_voters'  => '# of Voters',
+        'votes'         => 'Votes (:currency)',
+        'percentage'    => 'Percentage',
+        'addressing'    => 'Addressing',
+
+        'info' => [
+            'percentage' => 'Percentage of votes in relation to the total supply.',
+        ],
+
+        'no_results' => 'There have been no missed blocks within the past 30 days.',
+    ],
+
+    'recent-votes' => [
+        'id'         => 'Tx ID',
+        'age'        => 'Age',
+        'type'       => 'Type',
+        'addressing' => 'Addressing',
+        'from'       => 'From',
+        'delegate'   => 'Delegate',
+
+        'no_results' => [
+            'no_filters' => 'All filtering options have been deselected. Please select one or more options to display recent votes.',
+            'no_results' => 'No matches for the selected type could be found.',
+        ],
+    ],
+
     'filters' => [
         'transactions' => [
             'addressing'    => 'Addressing',
@@ -58,6 +114,20 @@ return [
             'votes'         => 'Votes',
             'multipayments' => 'Multipayments',
             'others'        => 'Others',
+        ],
+
+        'delegates' => [
+            'select_all' => 'Select All',
+            'active'     => 'Active',
+            'standby'    => 'Standby',
+            'resigned'   => 'Resigned',
+        ],
+
+        'recent-votes' => [
+            'select_all' => 'Select All',
+            'vote'       => 'Vote',
+            'unvote'     => 'Unvote',
+            'vote_swap'  => 'Vote Swap',
         ],
     ],
 ];

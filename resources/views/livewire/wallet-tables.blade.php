@@ -44,7 +44,6 @@
             wrapper-class="relative w-full rounded border md:w-1/2 border-theme-secondary-300 dark:border-theme-secondary-800"
             button-class="justify-between py-3 px-4 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
             dropdown-classes="left-0 w-full z-20"
-            :init-alpine="false"
         >
             <x-slot name="button">
                 <div
@@ -75,7 +74,10 @@
                 <a
                     wire:click="$set('view', 'transactions');"
                     @click="view = 'transactions'; tab = 'transactions';"
-                    class="dropdown-entry @if($this->view === 'transactions') dropdown-entry-selected @endif"
+                    @class([
+                        'dropdown-entry',
+                        'dropdown-entry-selected' => $this->view === 'transactions',
+                    ])
                 >
                     @lang('pages.wallet.transactions')
                 </a>
@@ -84,7 +86,10 @@
                     <a
                         wire:click="$set('view', 'blocks');"
                         @click="view = 'blocks'; tab = 'blocks';"
-                        class="dropdown-entry @if($this->view === 'blocks') dropdown-entry-selected @endif"
+                        @class([
+                            'dropdown-entry',
+                            'dropdown-entry-selected' => $this->view === 'blocks',
+                        ])
                     >
                         <span>@lang('pages.wallet.delegate.validated_blocks')</span>
                     </a>
@@ -92,7 +97,10 @@
                     <a
                         wire:click="$set('view', 'voters');"
                         @click="view = 'voters'; tab = 'voters';"
-                        class="dropdown-entry @if($this->view === 'voters') dropdown-entry-selected @endif"
+                        @class([
+                            'dropdown-entry',
+                            'dropdown-entry-selected' => $this->view === 'voters',
+                        ])
                     >
                         <span>@lang('pages.wallet.delegate.voters')</span>
                     </a>
@@ -105,9 +113,9 @@
         <x-wallet.tables.transactions :wallet="$wallet" />
 
         @if($wallet->isDelegate())
-            <x-wallet.tables.voters :wallet="$wallet" />
+            <x-wallet.tables.voters :wallet="$wallet" x-cloak />
 
-            <x-wallet.tables.blocks :wallet="$wallet" />
+            <x-wallet.tables.blocks :wallet="$wallet" x-cloak />
         @endif
 
         <x-script.onload-scroll-to-query selector="#wallet-table-list" />

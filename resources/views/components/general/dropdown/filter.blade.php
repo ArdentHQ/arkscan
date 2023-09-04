@@ -1,5 +1,6 @@
 @props([
     'mobile' => false,
+    'withoutText' => false,
 ])
 
 @if ($mobile)
@@ -9,25 +10,29 @@
     >
         <x-ark-js-modal
             :init="false"
-            padding="p-6 sm:p-10 sm:pb-6"
+            padding="p-6 sm:p-8 sm:pb-6"
             title-class="text-lg sm:text-2xl"
             width-class="max-w-full sm:max-w-[430px]"
             breakpoint="sm"
             content-class="sm:rounded-2.5xl"
         >
             <x-slot name="title">
-                @lang('general.filters')
+                @lang('general.filter')
             </x-slot>
 
             <x-slot name="description">
-                <div class="-mx-8 sm:mx-10">
+                <div class="-mx-8">
                     {{ $slot }}
                 </div>
             </x-slot>
         </x-ark-js-modal>
 
         <button
-            class="flex flex-1 justify-center items-center w-full rounded sm:flex-none sm:py-1.5 sm:px-4 md:p-2 button-secondary"
+            @class([
+                'flex flex-1 justify-center items-center rounded sm:flex-none button-secondary',
+                'h-8 w-8 p-0' => $withoutText,
+                'w-full sm:py-1.5 sm:px-4 md:p-2' => ! $withoutText,
+            ])
             @click="shown = true"
         >
             <div class="inline-flex items-center mx-auto whitespace-nowrap">
@@ -36,9 +41,11 @@
                     size="sm"
                 />
 
-                <div class="ml-2 md:hidden">
-                    @lang('actions.filter')
-                </div>
+                @unless ($withoutText)
+                    <div class="ml-2 md:hidden">
+                        @lang('actions.filter')
+                    </div>
+                @endunless
             </div>
         </button>
     </div>
@@ -55,10 +62,16 @@
         ])"
         dropdown-background="bg-white dark:bg-theme-secondary-900 dark:border dark:border-theme-secondary-800"
         dropdown-padding="py-1"
-        button-class="flex flex-1 justify-center items-center w-full rounded sm:flex-none sm:py-1.5 sm:px-4 md:p-2 button-secondary"
+        :button-class="Arr::toCssClasses([
+            'flex flex-1 justify-center items-center rounded sm:flex-none button-secondary',
+            'h-8 w-8 p-0' => $withoutText,
+            'w-full sm:py-1.5 sm:px-4 md:p-2' => ! $withoutText,
+        ])"
         active-button-class=""
-        button-wrapper-class="w-full h-5 md:h-4"
-    >
+        :button-wrapper-class="Arr::toCssClasses([
+            'w-full h-5 md:h-4' => ! $withoutText,
+        ])"
+        >
         <x-slot name="button">
             <div class="inline-flex items-center mx-auto whitespace-nowrap">
                 <x-ark-icon
@@ -66,9 +79,11 @@
                     size="sm"
                 />
 
-                <div class="ml-2 md:hidden">
-                    @lang('actions.filter')
-                </div>
+                @unless ($withoutText)
+                    <div class="ml-2 md:hidden">
+                        @lang('actions.filter')
+                    </div>
+                @endunless
             </div>
         </x-slot>
 

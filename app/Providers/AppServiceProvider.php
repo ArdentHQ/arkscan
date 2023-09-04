@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Contracts\MarketDataProvider;
+use App\Contracts\Services\Monitor\MissedBlocksCalculator as MissedBlocksCalculatorContract;
 use App\Facades\Network;
 use App\Services\BigNumber;
+use App\Services\Monitor\MissedBlocksCalculator;
 use ARKEcosystem\Foundation\DataBags\DataBag;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
@@ -31,6 +33,11 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             MarketDataProvider::class,
             fn () => new (Config::get('arkscan.market_data_provider_service'))
+        );
+
+        $this->app->singleton(
+            MissedBlocksCalculatorContract::class,
+            fn () => new (MissedBlocksCalculator::class)()
         );
     }
 
@@ -96,13 +103,14 @@ final class AppServiceProvider extends ServiceProvider
         $navigationEntries = [
             ['route' => 'home', 'label' => trans('menus.home')],
             ['label' => trans('menus.blockchain'), 'children' => [
-                ['route' => 'blocks',  'label' => trans('menus.blocks')],
-                ['route' => 'transactions', 'label' => trans('menus.transactions')],
-                ['route' => 'delegates',    'label' => trans('menus.delegates')],
-                ['route' => 'top-accounts', 'label' => trans('menus.top_accounts')],
-                ['route' => 'statistics',   'label' => trans('menus.statistics')],
+                ['route' => 'blocks',           'label' => trans('menus.blocks')],
+                ['route' => 'transactions',     'label' => trans('menus.transactions')],
+                ['route' => 'delegates',        'label' => trans('menus.delegates')],
+                ['route' => 'top-accounts',     'label' => trans('menus.top_accounts')],
+                ['route' => 'statistics',       'label' => trans('menus.statistics')],
             ]],
             ['label' => trans('menus.resources'), 'children' => [
+                ['route' => 'delegate-monitor', 'label' => trans('menus.delegate_monitor')],
                 ['route' => 'compatible-wallets',  'label' => trans('menus.wallets')],
             ]],
             ['label' => trans('menus.developers'), 'children' => [

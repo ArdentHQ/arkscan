@@ -71,30 +71,4 @@ trait CanBeDelegate
     {
         return Arr::get($this->wallet, 'attributes.delegate.rank', 0);
     }
-
-    public function delegateRankStyling(): string
-    {
-        if ($this->isResigned()) {
-            return 'text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800';
-        }
-
-        if ($this->rank() > Network::delegateCount()) {
-            return 'text-theme-secondary-900 border-theme-secondary-900';
-        }
-
-        return 'text-theme-secondary-900 border-theme-secondary-900';
-    }
-
-    public function delegateStatusStyling(): string
-    {
-        if ($this->rank() === 0 || $this->isResigned()) {
-            return 'text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800';
-        }
-
-        if ($this->rank() > Network::delegateCount()) {
-            return 'text-theme-secondary-500 border-theme-secondary-500 dark:text-theme-secondary-800 dark:border-theme-secondary-800';
-        }
-
-        return 'text-theme-success-600 border-theme-success-600';
-    }
 }

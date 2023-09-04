@@ -29,7 +29,6 @@
                     <x-tables.rows.desktop.encapsulated.address
                         :model="$wallet"
                         without-clipboard
-                        without-username
                         without-truncate
                     />
                 </x-ark-tables.cell>
