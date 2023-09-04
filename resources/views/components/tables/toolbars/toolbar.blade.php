@@ -39,7 +39,9 @@
         @endif
     </div>
 
-    <div>
-        {{ $slot }}
-    </div>
+    @if ($slot->isNotEmpty())
+        <div>
+            {{ $slot }}
+        </div>
+    @endif
 </div>
