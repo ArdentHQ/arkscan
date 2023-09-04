@@ -2,7 +2,10 @@
     'mobile' => false,
 ])
 
-<x-general.dropdown.filter :mobile="$mobile">
+<x-general.dropdown.filter
+    :mobile="$mobile"
+    without-text
+>
     <div>
         <x-tables.filters.includes.checkbox
             name="select-all"
