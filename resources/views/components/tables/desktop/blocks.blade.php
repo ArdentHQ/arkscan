@@ -49,7 +49,7 @@
                     name="tables.blocks.total_reward"
                     :name-properties="['currency' => Network::currency()]"
                     last-on="lg"
-                    class="last-until-lg whitespace-nowrap"
+                    class="whitespace-nowrap last-until-lg"
                 >
                     <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.total_reward_tooltip')" />
                 </x-tables.headers.desktop.number>

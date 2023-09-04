@@ -55,7 +55,7 @@
     </span>
 
     @unless ($withoutTransactionCount)
-        <div class="md-lg:hidden text-xs font-semibold mt-1 leading-4.25">
+        <div class="mt-1 text-xs font-semibold leading-4.25 md-lg:hidden">
             <span class="text-theme-secondary-900 dark:text-theme-dark-200">
                 {{ $model->transactionCount() }}
             </span>

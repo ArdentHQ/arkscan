@@ -14,7 +14,7 @@
     />
 
     @unless ($withoutValue)
-        <div class="xl:hidden text-xs font-semibold mt-1 leading-4.25">
+        <div class="mt-1 text-xs font-semibold xl:hidden leading-4.25">
             {{ $model->rewardFiat() }}
         </div>
     @endunless
