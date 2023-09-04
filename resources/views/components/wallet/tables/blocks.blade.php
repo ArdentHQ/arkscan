@@ -3,7 +3,7 @@
 <div
     x-show="tab === 'blocks'"
     id="blocks-list"
-    class="w-full"
+    {{ $attributes->class('w-full') }}
 >
     <livewire:wallet-block-table :wallet="$wallet" />
 </div>

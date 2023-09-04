@@ -1,5 +1,6 @@
 @props([
     'class' => null,
+    'disabled' => false,
 ])
 
 @php
@@ -13,6 +14,7 @@
     <x-general.pagination.includes.middle
         class="flex relative mb-2 w-full sm:hidden"
         :paginator="$paginator"
+        :disabled="$disabled"
     />
 
     <div class="flex space-x-2 w-full sm:w-auto">
@@ -20,32 +22,33 @@
             :page="1"
             icon="arrows.double-chevron-left-small"
             :text="trans('pagination.first')"
-            :disabled="$paginator->onFirstPage()"
+            :disabled="$disabled || $paginator->onFirstPage()"
         />
 
         <x-general.pagination.includes.arrow
             :page="$paginator->currentPage() - 1"
             icon="arrows.chevron-left-small"
-            :disabled="$paginator->onFirstPage()"
+            :disabled="$disabled || $paginator->onFirstPage()"
         />
 
         <x-general.pagination.includes.middle
             class="hidden sm:block"
             ::class="{ 'w-full max-w-[346px]': search }"
             :paginator="$paginator"
+            :disabled="$disabled"
         />
 
         <x-general.pagination.includes.arrow
             :page="$paginator->currentPage() + 1"
             icon="arrows.chevron-right-small"
-            :disabled="$paginator->currentPage() === $paginator->lastPage()"
+            :disabled="$disabled || $paginator->currentPage() === $paginator->lastPage()"
         />
 
         <x-general.pagination.includes.arrow
             :page="$paginator->lastPage()"
             icon="arrows.double-chevron-right-small"
             :text="trans('pagination.last')"
-            :disabled="$paginator->currentPage() === $paginator->lastPage()"
+            :disabled="$disabled || $paginator->currentPage() === $paginator->lastPage()"
         />
     </div>
 </div>

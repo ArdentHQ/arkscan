@@ -11,10 +11,10 @@
             :votes="$votes"
             :no-results-message="$this->noResultsMessage"
         />
-
-        <x-general.pagination.table
-            :results="$votes"
-            class="mt-4 md:mt-0"
-        />
     </x-skeletons.delegates.recent-votes>
+
+    <x-general.pagination.table
+        :results="$votes"
+        class="mt-4 md:mt-0"
+    />
 </div>

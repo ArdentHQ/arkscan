@@ -113,9 +113,9 @@
         <x-wallet.tables.transactions :wallet="$wallet" />
 
         @if($wallet->isDelegate())
-            <x-wallet.tables.voters :wallet="$wallet" />
+            <x-wallet.tables.voters :wallet="$wallet" x-cloak />
 
-            <x-wallet.tables.blocks :wallet="$wallet" />
+            <x-wallet.tables.blocks :wallet="$wallet" x-cloak />
         @endif
 
         <x-script.onload-scroll-to-query selector="#wallet-table-list" />
