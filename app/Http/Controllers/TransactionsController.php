@@ -54,7 +54,7 @@ final class TransactionsController
 
             return [
                 'transaction_count' => $data['transaction_count'],
-                'volume'            => $data['volume'] + $data['multipayment_volume'] ?? 0,
+                'volume'            => ($data['volume'] ?? 0) + ($data['multipayment_volume'] ?? 0),
                 'total_fees'        => $data['total_fees'] ?? 0,
                 'average_fee'       => $data['average_fee'] ?? 0,
             ];
