@@ -27,15 +27,19 @@
 
             <x-tables.headers.desktop.text
                 name="tables.blocks.generated_by"
+                class="whitespace-nowrap"
+            />
+
+            <x-tables.headers.desktop.number
+                name="tables.blocks.transactions"
                 breakpoint="md-lg"
                 responsive
             />
 
-            <x-tables.headers.desktop.number name="tables.blocks.transactions" />
-
             <x-tables.headers.desktop.number
                 name="tables.blocks.volume"
                 :name-properties="['currency' => Network::currency()]"
+                class="whitespace-nowrap"
             >
                 <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.volume_tooltip')" />
             </x-tables.headers.desktop.number>
@@ -44,8 +48,8 @@
                 <x-tables.headers.desktop.number
                     name="tables.blocks.total_reward"
                     :name-properties="['currency' => Network::currency()]"
-                    last-on="md-lg"
-                    class="last-until-md-lg"
+                    last-on="lg"
+                    class="last-until-lg whitespace-nowrap"
                 >
                     <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.total_reward_tooltip')" />
                 </x-tables.headers.desktop.number>
@@ -53,8 +57,9 @@
                 <x-tables.headers.desktop.number
                     name="tables.blocks.value"
                     :name-properties="['currency' => Settings::currency()]"
-                    breakpoint="md-lg"
+                    breakpoint="xl"
                     responsive
+                    class="whitespace-nowrap"
                 >
                     <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.value_tooltip')" />
                 </x-tables.headers.desktop.number>
@@ -79,11 +84,15 @@
                     <x-tables.rows.desktop.encapsulated.age :model="$block" />
                 </x-ark-tables.cell>
 
-                <x-ark-tables.cell responsive breakpoint="md-lg">
-                    <x-tables.rows.desktop.encapsulated.address :model="$block" without-clipboard />
+                <x-ark-tables.cell>
+                    <x-tables.rows.desktop.encapsulated.address
+                        :model="$block"
+                        without-clipboard
+                        :without-transaction-count="false"
+                    />
                 </x-ark-tables.cell>
 
-                <x-ark-tables.cell class="text-right">
+                <x-ark-tables.cell class="text-right" responsive breakpoint="md-lg">
                     <x-tables.rows.desktop.encapsulated.transaction-count :model="$block" />
                 </x-ark-tables.cell>
 
@@ -94,15 +103,18 @@
                 @if (Network::canBeExchanged())
                     <x-ark-tables.cell
                         class="text-right"
-                        last-on="md-lg"
+                        last-on="lg"
                     >
-                        <x-tables.rows.desktop.encapsulated.reward :model="$block" />
+                        <x-tables.rows.desktop.encapsulated.reward
+                            :model="$block"
+                            :without-value="false"
+                        />
                     </x-ark-tables.cell>
 
                     <x-ark-tables.cell
                         class="text-right"
                         responsive
-                        breakpoint="md-lg"
+                        breakpoint="xl"
                     >
                         <x-tables.rows.desktop.encapsulated.value :model="$block" />
                     </x-ark-tables.cell>

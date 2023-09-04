@@ -11,7 +11,11 @@
             'breakpoint' => 'md-lg',
         ],
         'tables.blocks.generated_by' => 'text',
-        'tables.blocks.transactions' => 'number',
+        'tables.blocks.transactions' => [
+            'type' => 'number',
+            'responsive' => true,
+            'breakpoint' => 'md-lg',
+        ],
         'tables.blocks.volume'       => [
             'type' => 'number',
             'nameProperties' => ['currency' => Network::currency()],
@@ -26,14 +30,14 @@
         $items['tables.blocks.total_reward'] = [
             ...$items['tables.blocks.total_reward'],
 
-            'lastOn' => 'md-lg',
-            'class' => 'last-until-md-lg',
+            'lastOn' => 'lg',
+            'class' => 'last-until-lg',
         ];
 
         $items['tables.blocks.value'] = [
             'type' => 'number',
             'responsive' => true,
-            'breakpoint' => 'md-lg',
+            'breakpoint' => 'xl',
             'nameProperties' => ['currency' => Settings::currency()],
         ];
     }

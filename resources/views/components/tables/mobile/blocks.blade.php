@@ -31,7 +31,7 @@
 
             <x-tables.rows.mobile.encapsulated.transaction-count
                 :model="$block"
-                class="hidden sm:block sm:col-span-2 leading-4.25"
+                class="sm:col-span-2 leading-4.25"
             />
 
             <x-tables.rows.mobile.encapsulated.volume
