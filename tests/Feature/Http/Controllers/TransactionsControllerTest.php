@@ -132,7 +132,7 @@ it('should cache the transaction stats for 5 minutes', function () {
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
         'amount'    => 0,
         'fee'       => 0.99 * 1e8,
-        'asset' => [
+        'asset'     => [
             'payments' => [
                 [
                     'amount' => 432 * 1e8,

@@ -31,7 +31,7 @@ final class TransactionsController
     {
         return Cache::remember('transactions:stats', self::STATS_TTL, function () {
             $timestamp = Timestamp::fromUnix(Carbon::now()->subDays(1)->unix())->unix();
-            $data = (array) DB::connection('explorer')
+            $data      = (array) DB::connection('explorer')
                 ->table('transactions')
                 ->select([
                     'multipayment_volume' => function ($query) use ($timestamp) {
@@ -42,7 +42,7 @@ final class TransactionsController
                                     ->where('type', 6)
                                     ->where('timestamp', '>', $timestamp);
                             }, 'b');
-                    }
+                    },
                 ])
                 ->selectRaw('COUNT(*) as transaction_count')
                 ->selectRaw('SUM(amount) as volume')
