@@ -34,7 +34,7 @@
                 class="leading-4.25"
             />
 
-            <div class="sm:col-span-2 sm:flex sm:flex-1 sm:justify-end">
+            <div class="sm:flex sm:flex-1 sm:col-span-2 sm:justify-end">
                 <x-tables.rows.mobile.encapsulated.volume :model="$block" />
             </div>
 
