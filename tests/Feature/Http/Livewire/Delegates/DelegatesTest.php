@@ -47,9 +47,9 @@ it('should not show missed blocks if no active delegates', function ($perPage, $
     $component->call('gotoPage', $lastPageWithActive + 1)
         ->assertDontSee(trans('tables.delegates.missed_blocks'));
 })->with([
-    10 => [10, 6],
-    25 => [25, 3],
-    51 => [51, 1],
+    10  => [10, 6],
+    25  => [25, 3],
+    51  => [51, 1],
     100 => [100, 1],
 ]);
 
