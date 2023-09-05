@@ -33,14 +33,25 @@ it('should show no results message if no delegates', function () {
         ->assertSee(trans('tables.delegates.no_results.no_results'));
 });
 
-it('should not show missed blocks on page 2', function () {
-    Wallet::factory(102)->activeDelegate()->create();
+it('should not show missed blocks if no active delegates', function ($perPage, $lastPageWithActive) {
+    Wallet::factory(400)->activeDelegate()->create();
 
-    Livewire::test(Delegates::class, ['deferLoading' => false])
-        ->assertSee(trans('tables.delegates.missed_blocks'))
-        ->call('gotoPage', 2)
+    $component = Livewire::test(Delegates::class, ['deferLoading' => false])
+        ->call('setPerPage', $perPage);
+
+    for ($page = 1; $page <= $lastPageWithActive; $page++) {
+        $component->call('gotoPage', $page)
+            ->assertSee(trans('tables.delegates.missed_blocks'));
+    }
+
+    $component->call('gotoPage', $lastPageWithActive + 1)
         ->assertDontSee(trans('tables.delegates.missed_blocks'));
-});
+})->with([
+    10 => [10, 6],
+    25 => [25, 3],
+    51 => [51, 1],
+    100 => [100, 1],
+]);
 
 it('should have slightly different per-page options', function () {
     $instance = Livewire::test(Delegates::class, ['deferLoading' => false])
