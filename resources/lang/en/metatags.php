@@ -25,7 +25,7 @@ return [
     'delegate-monitor' => [
         'title'       => 'Delegate Monitor | :name Blockchain Explorer',
         'description' => 'Delegate Monitor allows real-time observation of block production and delegates\' participation in each round.',
-        'image'       => asset('images/metadata/delegates.png'),
+        'image'       => asset('images/metadata/delegate-monitor.png'),
     ],
 
     'transactions'  => [
@@ -37,7 +37,7 @@ return [
     'transaction'   => [
         'title'       => 'Transaction :txid Details | :name Blockchain Explorer',
         'description' => 'View information and details for transaction with ID :txid on the :name Blockchain.',
-        'image'       => asset('images/metadata/transactions.png'),
+        'image'       => asset('images/metadata/transaction.png'),
     ],
 
     'blocks'        => [
@@ -49,13 +49,13 @@ return [
     'block'         => [
         'title'       => 'Block :blockid Details | :name Blockchain Explorer',
         'description' => 'View information and details for block with ID :blockid on the :name Blockchain.',
-        'image'       => asset('images/metadata/blocks.png'),
+        'image'       => asset('images/metadata/block.png'),
     ],
 
     'top-accounts'  => [
         'title'       => 'Top Accounts | :name Blockchain Explorer',
         'description' => 'View wallet address details on the :name Blockchain.',
-        'image'       => asset('images/metadata/wallets.png'),
+        'image'       => asset('images/metadata/top-accounts.png'),
     ],
 
     'exchanges'  => [
@@ -86,12 +86,6 @@ return [
         'title'       => 'Blocks Validated by :delegate | :name Blockchain Explorer',
         'description' => 'View blocks validated by :delegate on the :name Blockchain.',
         'image'       => asset('images/metadata/wallets.png'),
-    ],
-
-    'search'        => [
-        'title'       => 'Search Results for :searchTerm | :name Blockchain Explorer',
-        'description' => 'View search results for :searchTerm on the :name Blockchain.',
-        'image'       => asset('images/metadata/search.png'),
     ],
 
     '404'           => [
