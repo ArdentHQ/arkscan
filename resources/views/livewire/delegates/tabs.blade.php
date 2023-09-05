@@ -52,11 +52,17 @@
                         @lang('pages.delegates.tabs.delegates')
                     </div>
 
-                    <div x-show="tab === 'missed-blocks'">
+                    <div
+                        x-show="tab === 'missed-blocks'"
+                        x-cloak
+                    >
                         @lang('pages.delegates.tabs.missed_blocks')
                     </div>
 
-                    <div x-show="tab === 'recent-votes'">
+                    <div
+                        x-show="tab === 'recent-votes'"
+                        x-cloak
+                    >
                         @lang('pages.delegates.tabs.recent_votes')
                     </div>
                 </div>
