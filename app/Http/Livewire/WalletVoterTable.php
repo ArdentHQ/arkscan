@@ -60,9 +60,4 @@ final class WalletVoterTable extends TabbedTableComponent
             ->withScope(OrderByBalanceScope::class)
             ->paginate($this->perPage);
     }
-
-    protected function view(): string
-    {
-        return 'voters';
-    }
 }

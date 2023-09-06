@@ -112,16 +112,6 @@ final class WalletTransactionTable extends TabbedTableComponent
             ->paginate($this->perPage);
     }
 
-    protected function view(): string
-    {
-        return 'transactions';
-    }
-
-    protected function isDefaultView(): bool
-    {
-        return true;
-    }
-
     private function hasAddressingFilters(): bool
     {
         if ($this->filter['incoming'] === true) {

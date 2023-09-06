@@ -9,34 +9,28 @@ use Livewire\Component;
 
 abstract class TabbedTableComponent extends Component
 {
-    use HasTablePagination {
-        HasTablePagination::resolvePage as baseResolvePage;
+    use HasTablePagination;
+
+    final public function resolvePage(): int
+    {
+        return (int) $this->query('page', $this->page);
     }
 
-    public function resolvePage()
+    final public function resolvePerPage(): int
     {
-        if ($this->query('view') === $this->view() || ($this->query('view') === null && $this->isDefaultView())) {
-            return $this->baseResolvePage();
-        }
-
-        return $this->page;
-    }
-
-    abstract protected function view(): string;
-
-    protected function isDefaultView(): bool
-    {
-        return false;
+        return (int) $this->query('perPage', static::defaultPerPage());
     }
 
     private function query(string $key, mixed $default = null): mixed
     {
-        if (request()->exists($key)) {
-            return request()->query($key);
+        /** @var string|null $referer */
+        $referer = request()->header('Referer');
+
+        if ($referer === null) {
+            return $default;
         }
 
-        $referer = request()->header('Referer');
-        if (empty($array)) {
+        if (strlen($referer) === 0) {
             return $default;
         }
 

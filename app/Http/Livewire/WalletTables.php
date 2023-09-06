@@ -11,6 +11,10 @@ use App\ViewModels\WalletViewModel;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
+/**
+ * @property int $page
+ * @property int $perPage
+ */
 final class WalletTables extends Component
 {
     use HasTabs;
@@ -19,7 +23,7 @@ final class WalletTables extends Component
 
     public string $view = 'transactions';
 
-    public ?string $previousView = 'transactions';
+    public string $previousView = 'transactions';
 
     public array $alreadyLoadedViews = [
         'transactions' => false,
@@ -83,6 +87,15 @@ final class WalletTables extends Component
                     'perPage' => WalletVoterTable::defaultPerPage(),
                 ],
             ];
+
+            $view = $this->resolveView();
+            if (! array_key_exists($view, $this->tabQueryData)) {
+                return;
+            }
+
+            $this->tabQueryData[$view]['page'] = $this->resolvePage();
+
+            $this->tabQueryData[$view]['perPage'] = $this->resolvePerPage();
         }
     }
 
@@ -101,5 +114,14 @@ final class WalletTables extends Component
     public function showWalletView(string $view): void
     {
         $this->syncInput('view', $view);
+    }
+
+    private function tabbedComponent(): string
+    {
+        return [
+            'transactions' => WalletTransactionTable::class,
+            'blocks' => WalletBlockTable::class,
+            'voters' => WalletVoterTable::class,
+        ][$this->view];
     }
 }

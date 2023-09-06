@@ -8,6 +8,10 @@ use App\Http\Livewire\Concerns\HasTabs;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
+/**
+ * @property int $page
+ * @property int $perPage
+ */
 final class Tabs extends Component
 {
     use HasTabs;
@@ -81,5 +85,14 @@ final class Tabs extends Component
     public function showDelegatesView(string $view): void
     {
         $this->syncInput('view', $view);
+    }
+
+    private function tabbedComponent(): string
+    {
+        return [
+            'delegates' => Delegates::class,
+            'missed-blocks' => MissedBlocks::class,
+            'recent-votes' => RecentVotes::class,
+        ][$this->view];
     }
 }

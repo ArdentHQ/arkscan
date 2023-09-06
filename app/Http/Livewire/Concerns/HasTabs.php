@@ -14,6 +14,8 @@ trait HasTabs
 
     public array $savedQueryData = [];
 
+    abstract private function tabbedComponent();
+
     public function __get(mixed $property): mixed
     {
         $value = Arr::get($this->tabQueryData[$this->view], $property);
@@ -34,10 +36,6 @@ trait HasTabs
         if (Arr::has($this->tabQueryData[$this->view], $property)) {
             $this->tabQueryData[$this->view][$property] = $value;
         }
-
-        if (Arr::has($this->tabQueryData[$this->previousView], $property)) {
-            $this->tabQueryData[$this->previousView][$property] = $value;
-        }
     }
 
     public function triggerViewIsReady(?string $view = null): void
@@ -56,6 +54,15 @@ trait HasTabs
 
         if ($this->alreadyLoadedViews[$view] === true) {
             return;
+        }
+
+        if (array_key_exists('perPage', $this->tabQueryData[$this->view])) {
+            $component = $this->tabbedComponent();
+
+            $perPage = $this->tabQueryData[$this->view]['perPage'];
+            if (! in_array($perPage, $component::perPageOptions(), true)) {
+                $this->tabQueryData[$this->view]['perPage'] = $component::defaultPerPage();
+            }
         }
 
         $this->emit('set'.Str::studly($view).'Ready');
@@ -89,7 +96,7 @@ trait HasTabs
         }
     }
 
-    protected function saveViewData(?string $newView = null): void
+    private function saveViewData(?string $newView = null): void
     {
         SupportBrowserHistoryWrapper::init()->mergeRequestQueryStringWithComponent($this);
 
@@ -107,5 +114,20 @@ trait HasTabs
         }
 
         $this->triggerViewIsReady($newView);
+    }
+
+    private function resolveView(): string
+    {
+        return request()->get('view', $this->view);
+    }
+
+    private function resolvePage(): int
+    {
+        return (int) request()->get('page', $this->page);
+    }
+
+    private function resolvePerPage(): int
+    {
+        return (int) request()->get('perPage', $this->perPage);
     }
 }

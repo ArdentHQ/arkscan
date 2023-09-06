@@ -62,9 +62,4 @@ final class WalletBlockTable extends TabbedTableComponent
             ->withScope(OrderByHeightScope::class)
             ->paginate($this->perPage);
     }
-
-    protected function view(): string
-    {
-        return 'blocks';
-    }
 }

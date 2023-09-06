@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Delegates;
 
+use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
-use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Services\Timestamp;
@@ -14,17 +14,15 @@ use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Livewire\Component;
 
 /**
  * @property bool $isAllSelected
  * @property LengthAwarePaginator $recentVotes
  * */
-final class RecentVotes extends Component
+final class RecentVotes extends TabbedTableComponent
 {
     use DeferLoading;
     use HasTableFilter;
-    use HasTablePagination;
 
     public array $filter = [
         'vote'      => true,
