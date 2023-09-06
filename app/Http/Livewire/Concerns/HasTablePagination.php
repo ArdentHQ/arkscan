@@ -6,6 +6,7 @@ namespace App\Http\Livewire\Concerns;
 
 use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
 
+/** @property int $perPage */
 trait HasTablePagination
 {
     use HasPagination;
