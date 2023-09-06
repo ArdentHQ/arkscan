@@ -10,12 +10,15 @@ trait HasTablePagination
 {
     use HasPagination;
 
-    // Set 25 as a hard default and to make sure the property is assigned
-    public int $perPage = 25;
+    public ?int $perPage = null;
 
     final public function bootHasTablePagination(): void
     {
-        $this->perPage = $this->resolvePerPage();
+        if ($this->perPage === null) {
+            $this->perPage = static::defaultPerPage();
+        } else {
+            $this->perPage = $this->resolvePerPage();
+        }
     }
 
     final public function queryStringHasTablePagination(): array
