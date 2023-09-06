@@ -15,12 +15,12 @@
             :transactions="$transactions"
             :no-results-message="$this->noResultsMessage"
         />
-
-        <x-general.pagination.table
-            :results="$transactions"
-            class="mt-4 md:mt-0"
-        />
-
-        <x-script.onload-scroll-to-query selector="#transactions-list" />
     </x-skeletons.transactions>
+
+    <x-general.pagination.table
+        :results="$transactions"
+        class="mt-4 md:mt-0"
+    />
+
+    <x-script.onload-scroll-to-query selector="#transactions-list" />
 </div>

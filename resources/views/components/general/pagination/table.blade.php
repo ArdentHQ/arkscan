@@ -7,13 +7,29 @@
         <div class="flex items-center space-x-2 text-sm font-semibold sm:mr-8 dark:text-theme-secondary-500">
             <span>@lang('pagination.show')</span>
 
-            <x-general.pagination.show-dropdown />
+            <div wire:loading.remove>
+                <x-general.pagination.show-dropdown />
+            </div>
+
+            <div wire:loading>
+                <x-general.pagination.show-dropdown disabled />
+            </div>
 
             <span>@lang('pagination.records')</span>
         </div>
 
-        <div class="flex w-full sm:w-auto">
+        <div
+            class="flex w-full sm:w-auto"
+            wire:loading.remove
+        >
             {{ $results->links('components.general.pagination.includes.simple') }}
+        </div>
+
+        <div
+            class="flex w-full sm:w-auto"
+            wire:loading
+        >
+            {{ $results->links('components.general.pagination.includes.simple', ['disabled' => true]) }}
         </div>
     </div>
 @endif

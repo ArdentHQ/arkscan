@@ -91,15 +91,11 @@ final class Delegates extends TabbedTableComponent
 
     public function getShowMissedBlocksProperty(): bool
     {
-        if ($this->page > 1) {
-            return false;
-        }
-
         if ($this->filter['active'] === false) {
             return false;
         }
 
-        return true;
+        return ($this->page - 1) * $this->perPage < Network::delegateCount();
     }
 
     public static function perPageOptions(): array

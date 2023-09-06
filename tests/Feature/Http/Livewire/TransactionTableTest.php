@@ -161,7 +161,11 @@ it('should filter by vote transactions', function () {
 it('should filter by multipayment transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $multipayment = Transaction::factory()->multiPayment()->create();
+    $multipayment = Transaction::factory()->multiPayment()->create([
+        'asset' => [
+            'payments' => [],
+        ],
+    ]);
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')

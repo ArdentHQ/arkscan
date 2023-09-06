@@ -29,7 +29,8 @@ it('should list the first page of records', function () {
         ]);
     }
 
-    $component = Livewire::test(BlockTable::class);
+    $component = Livewire::test(BlockTable::class)
+        ->call('setIsReady');
 
     foreach (ViewModelFactory::paginate(Block::withScope(OrderByTimestampScope::class)->paginate())->items() as $block) {
         $component->assertSee($block->id());
@@ -37,8 +38,18 @@ it('should list the first page of records', function () {
         $component->assertSee($block->username());
         $component->assertSee(NumberFormatter::number($block->height()));
         $component->assertSee(NumberFormatter::number($block->transactionCount()));
-        $component->assertSee(NumberFormatter::currency($block->amount(), Network::currency()));
-        $component->assertSee(NumberFormatter::currency($block->fee(), Network::currency()));
+        $component->assertSeeInOrder([
+            Network::currency(),
+            number_format($block->amount()),
+        ]);
+        $component->assertSeeInOrder([
+            Network::currency(),
+            number_format($block->totalReward()),
+        ]);
+        $component->assertSeeInOrder([
+            Network::currency(),
+            $block->totalRewardFiat(),
+        ]);
     }
 });
 
@@ -83,7 +94,8 @@ it('should update the records fiat tooltip when currency changed', function () {
         $amount += (new TransactionViewModel($transaction))->amount();
     }
 
-    $component = Livewire::test(BlockTable::class);
+    $component = Livewire::test(BlockTable::class)
+        ->call('setIsReady');
 
     $expectedUsd = NumberFormatter::currency($amount * $usdExchangeRate, 'USD');
     $expectedBtc = NumberFormatter::currency($amount * $btcExchangeRate, 'BTC');
@@ -121,7 +133,8 @@ it('should handle a lot of blocks', function () {
     expect(Block::count())->toBe(4000);
 
     Livewire::test(BlockTable::class)
-        ->assertSee(266) // 4000 / 15 per page
-        ->call('gotoPage', 265)
-        ->assertSee(266);
+        ->call('setIsReady')
+        ->assertSee(160) // 4000 / 25 per page
+        ->call('gotoPage', 159)
+        ->assertSee(160);
 });

@@ -1,5 +1,6 @@
 @props([
     'paginator',
+    'disabled' => false,
 ])
 
 @php
@@ -72,9 +73,9 @@
         type="button"
         class="inline-flex relative justify-center items-center p-0 w-full leading-5 button-secondary group focus:ring-theme-primary-500 focus:dark:ring-theme-primary-300"
         :class="{ 'opacity-0': search }"
-        @unless ($paginator->hasPages())
+        @if ($disabled || ! $paginator->hasPages())
             disabled
-        @endunless
+        @endif
     >
         <div class="py-1.5 px-2 sm:px-3 md:px-4 group-hover:text-transparent">
             @lang('ui::generic.pagination.current_to', [
