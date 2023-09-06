@@ -93,15 +93,11 @@ final class Delegates extends Component
 
     public function getShowMissedBlocksProperty(): bool
     {
-        if ($this->page > 1) {
-            return false;
-        }
-
         if ($this->filter['active'] === false) {
             return false;
         }
 
-        return true;
+        return ($this->page - 1) * $this->perPage < Network::delegateCount();
     }
 
     public function perPageOptions(): array
