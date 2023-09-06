@@ -90,9 +90,9 @@ final class Tabs extends Component
     private function tabbedComponent(): string
     {
         return [
-            'delegates' => Delegates::class,
+            'delegates'     => Delegates::class,
             'missed-blocks' => MissedBlocks::class,
-            'recent-votes' => RecentVotes::class,
+            'recent-votes'  => RecentVotes::class,
         ][$this->view];
     }
 }

@@ -14,8 +14,6 @@ trait HasTabs
 
     public array $savedQueryData = [];
 
-    abstract private function tabbedComponent();
-
     public function __get(mixed $property): mixed
     {
         $value = Arr::get($this->tabQueryData[$this->view], $property);
@@ -95,6 +93,8 @@ trait HasTabs
             }
         }
     }
+
+    abstract private function tabbedComponent();
 
     private function saveViewData(?string $newView = null): void
     {

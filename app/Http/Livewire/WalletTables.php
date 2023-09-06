@@ -120,8 +120,8 @@ final class WalletTables extends Component
     {
         return [
             'transactions' => WalletTransactionTable::class,
-            'blocks' => WalletBlockTable::class,
-            'voters' => WalletVoterTable::class,
+            'blocks'       => WalletBlockTable::class,
+            'voters'       => WalletVoterTable::class,
         ][$this->view];
     }
 }
