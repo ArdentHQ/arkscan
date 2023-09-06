@@ -56,6 +56,6 @@ trait HasTablePagination
 
     private function resolvePerPage(): int
     {
-        return static::defaultPerPage();
+        return $this->perPage;
     }
 }

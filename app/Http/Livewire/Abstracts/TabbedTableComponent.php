@@ -6,6 +6,7 @@ namespace App\Http\Livewire\Abstracts;
 
 use App\Http\Livewire\Concerns\HasTablePagination;
 use Livewire\Component;
+use Livewire\Livewire;
 
 abstract class TabbedTableComponent extends Component
 {
@@ -13,6 +14,10 @@ abstract class TabbedTableComponent extends Component
 
     final public function resolvePage(): int
     {
+        if (! Livewire::isDefinitelyLivewireRequest()) {
+            return $this->page;
+        }
+
         return (int) $this->query('page', $this->page);
     }
 
