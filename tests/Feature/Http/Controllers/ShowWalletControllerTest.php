@@ -154,6 +154,22 @@ it('should get query data from referer', function () {
         ->assertSee($wallet->address);
 });
 
+it('should handle referer without a query string', function () {
+    $wallet = Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => [
+                'voteBalance'    => 1234037456742,
+                'producedBlocks' => 12340,
+            ],
+        ],
+    ]);
+
+    $this
+        ->withHeaders(['Referer' => 'https://explorer.url'])
+        ->get(route('wallet', $wallet))
+        ->assertSee($wallet->address);
+});
+
 it('should handle no referer', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
