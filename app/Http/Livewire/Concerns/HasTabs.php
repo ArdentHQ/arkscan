@@ -57,7 +57,7 @@ trait HasTabs
         if (array_key_exists('perPage', $this->tabQueryData[$this->view])) {
             $component = $this->tabbedComponent();
 
-            $perPage = $this->tabQueryData[$this->view]['perPage'];
+            $perPage = (int) $this->tabQueryData[$this->view]['perPage'];
             if (! in_array($perPage, $component::perPageOptions(), true)) {
                 $this->tabQueryData[$this->view]['perPage'] = $component::defaultPerPage();
             }
