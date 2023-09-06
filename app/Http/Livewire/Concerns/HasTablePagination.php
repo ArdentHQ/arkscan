@@ -10,6 +10,7 @@ trait HasTablePagination
 {
     use HasPagination;
 
+    // Set 25 as a hard default and to make sure the property is assigned
     public int $perPage = 25;
 
     final public function initializeHasTablePagination(): void
