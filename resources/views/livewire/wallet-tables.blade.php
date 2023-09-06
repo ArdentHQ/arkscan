@@ -53,8 +53,19 @@
                     <div x-show="tab === 'transactions'">@lang('pages.wallet.transactions')</div>
 
                     @if($wallet->isDelegate())
-                        <div x-show="tab === 'blocks'">@lang('pages.wallet.delegate.validated_blocks')</div>
-                        <div x-show="tab === 'voters'">@lang('pages.wallet.delegate.voters')</div>
+                        <div
+                            x-show="tab === 'blocks'"
+                            x-cloak
+                        >
+                            @lang('pages.wallet.delegate.validated_blocks')
+                        </div>
+
+                        <div
+                            x-show="tab === 'voters'"
+                            x-cloak
+                        >
+                            @lang('pages.wallet.delegate.voters')
+                        </div>
                     @endif
                 </div>
 

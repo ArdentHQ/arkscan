@@ -35,7 +35,7 @@
                 responsive
                 breakpoint="lg"
             >
-                <x-ark-info :tooltip="trans('tables.delegates.info.percentage')" type="info" />
+                <x-tables.headers.desktop.includes.tooltip :text="trans('tables.delegates.info.percentage')" />
             </x-tables.headers.desktop.number>
 
             @if ($this->showMissedBlocks)
