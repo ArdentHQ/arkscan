@@ -1,6 +1,6 @@
 @props(['model'])
 
-<x-general.badge>
+<x-general.badge :attributes="$attributes->class('encapsulated-badge')">
     @if ($model->isActive())
         @lang('general.delegates.forging-status.active')
     @elseif ($model->isStandby())
