@@ -233,7 +233,7 @@ body.table-compact-until-lg .arrow-direction {
     > td.hoverable-cell
     > .table-cell-content
     .encapsulated-badge {
-    @apply bg-theme-secondary-300 dark:bg-theme-dark-700 transition-default;
+    @apply bg-theme-secondary-300 dark:bg-theme-dark-700;
 }
 
 .table-container
