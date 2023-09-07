@@ -52,11 +52,17 @@
                         @lang('pages.delegates.tabs.delegates')
                     </div>
 
-                    <div x-show="tab === 'missed-blocks'">
+                    <div
+                        x-show="tab === 'missed-blocks'"
+                        x-cloak
+                    >
                         @lang('pages.delegates.tabs.missed_blocks')
                     </div>
 
-                    <div x-show="tab === 'recent-votes'">
+                    <div
+                        x-show="tab === 'recent-votes'"
+                        x-cloak
+                    >
                         @lang('pages.delegates.tabs.recent_votes')
                     </div>
                 </div>
@@ -113,9 +119,9 @@
     <div id="delegate-table-list">
         <x-delegates.tables.delegates />
 
-        <x-delegates.tables.missed-blocks />
+        <x-delegates.tables.missed-blocks x-cloak />
 
-        <x-delegates.tables.recent-votes />
+        <x-delegates.tables.recent-votes x-cloak />
 
         <x-script.onload-scroll-to-query selector="#delegate-table-list" />
     </div>
