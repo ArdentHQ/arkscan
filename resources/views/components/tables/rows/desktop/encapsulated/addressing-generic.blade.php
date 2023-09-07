@@ -10,7 +10,7 @@
             @lang('tables.transactions.from')
         </x-general.badge>
 
-        <div>
+        <div class="min-w-0 truncate">
             <a
                 class="whitespace-nowrap link"
                 href="{{ route('wallet', $transactionWallet->address()) }}"
