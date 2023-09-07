@@ -5,7 +5,7 @@
 
 <div {{ $attributes->class('flex flex-col px-6 pt-8 pb-6 space-y-6 font-semibold md:px-10 md:mx-auto md:max-w-7xl') }}>
     <div class="flex flex-col space-y-1.5">
-        <h1 class="mb-0 font-semibold text-lg md:text-2xl leading-5.25 md:leading-[1.8125rem]">
+        <h1 class="mb-0 text-lg font-semibold md:text-2xl leading-5.25 md:leading-[1.8125rem]">
             {{ $title }}
         </h1>
 
