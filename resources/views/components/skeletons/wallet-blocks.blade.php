@@ -17,10 +17,10 @@
 
         <x-tables.mobile.skeleton.wallet-blocks />
     </x-loading.visible>
-@endif
 
-<div wire:key="skeleton:blocks:hidden">
-    <x-loading.hidden>
-        {{ $slot }}
-    </x-loading.hidden>
-</div>
+    <div wire:key="skeleton:blocks:hidden">
+        <x-loading.hidden>
+            {{ $slot }}
+        </x-loading.hidden>
+    </div>
+@endif

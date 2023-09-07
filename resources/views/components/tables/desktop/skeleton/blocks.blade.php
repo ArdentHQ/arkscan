@@ -1,44 +1,52 @@
-@isset($withoutGenerator)
-    <x-table-skeleton
-        device="desktop"
-        :items="[
-            'general.block.id'           => 'icon',
-            'general.block.timestamp' => [
-                'type' => 'text',
-                'responsive' => true,
-            ],
-            'general.block.height'       => 'number',
-            'general.block.transactions' => 'number',
-            'general.block.amount' => [
-                'type' => 'number',
-                'lastOn' => 'lg',
-            ],
-            'general.block.fee'  => [
-                'type' => 'number',
-                'responsive' => true,
-            ],
-        ]"
-    />
-@else
-    <x-table-skeleton
-        device="desktop"
-        :items="[
-            'general.block.id'           => 'icon',
-            'general.block.timestamp' => [
-                'type' => 'text',
-                'responsive' => true,
-            ],
-            'general.block.generated_by' => 'address',
-            'general.block.height'       => 'number',
-            'general.block.transactions' => 'number',
-            'general.block.amount' => [
-                'type' => 'number',
-                'lastOn' => 'lg',
-            ],
-            'general.block.fee'  => [
-                'type' => 'number',
-                'responsive' => true,
-            ],
-        ]"
-    />
-@endif
+@props([
+    'rowCount' => 10,
+])
+
+@php
+    $items = [
+        'tables.blocks.height'       => 'text',
+        'tables.blocks.age'          => [
+            'type'       => 'text',
+            'responsive' => true,
+            'breakpoint' => 'md-lg',
+        ],
+        'tables.blocks.generated_by' => 'text',
+        'tables.blocks.transactions' => [
+            'type' => 'number',
+            'responsive' => true,
+            'breakpoint' => 'md-lg',
+        ],
+        'tables.blocks.volume'       => [
+            'type' => 'number',
+            'nameProperties' => ['currency' => Network::currency()],
+        ],
+        'tables.blocks.total_reward' => [
+            'type' => 'number',
+            'nameProperties' => ['currency' => Network::currency()],
+        ],
+    ];
+
+    if (Network::canBeExchanged()) {
+        $items['tables.blocks.total_reward'] = [
+            ...$items['tables.blocks.total_reward'],
+
+            'lastOn' => 'xl',
+            'class' => 'last-until-xl',
+        ];
+
+        $items['tables.blocks.value'] = [
+            'type' => 'number',
+            'responsive' => true,
+            'breakpoint' => 'xl',
+            'nameProperties' => ['currency' => Settings::currency()],
+        ];
+    }
+@endphp
+
+<x-table-skeleton
+    device="desktop"
+    :items="$items"
+    :component-properties="['rounded' => false]"
+    :row-count="$rowCount"
+    encapsulated
+/>

@@ -3,7 +3,7 @@
     'delegatesMissed',
 ])
 
-<x-page-headers.delegates.header-item
+<x-page-headers.header-item
     :title="trans('pages.delegates.missed-blocks.title')"
     :attributes="$attributes"
 >
@@ -17,7 +17,7 @@
                 @endif
             </span>
 
-            <x-general.badge class="py-px">
+            <x-general.badge class="py-px text-theme-secondary-700">
                 @lang('pages.delegates.x_delegates', ['count' => $delegatesMissed])
             </x-general.badge>
         </div>
@@ -34,4 +34,4 @@
             @lang('actions.view')
         </button>
     </div>
-</x-delegates.header-item>
+</x-page-headers.header-item>

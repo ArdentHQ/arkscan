@@ -6,15 +6,13 @@
 
 <div class="flex flex-col space-y-2 text-sm font-semibold sm:space-y-1 md:space-y-2 md-lg:items-center md-lg:flex-row md-lg:space-y-0 md-lg:space-x-9">
     <div class="flex items-center space-x-2 md-lg:w-[156px]">
-        <div @class([
-            'w-[39px] h-[21px] rounded border border-transparent dark:border-theme-secondary-800 bg-theme-secondary-200 dark:bg-transparent text-center leading-5 text-xs',
-        ])>
+        <x-general.badge class="text-center encapsulated-badge w-[39px]">
             @lang('tables.transactions.from')
-        </div>
+        </x-general.badge>
 
-        <div>
+        <div class="min-w-0 truncate">
             <a
-                class="link"
+                class="whitespace-nowrap link"
                 href="{{ route('wallet', $transactionWallet->address()) }}"
             >
                 @if ($transactionWallet->isDelegate())
@@ -27,18 +25,16 @@
     </div>
 
     <div class="flex items-center space-x-2">
-        <div @class([
-            'w-[39px] h-[21px] rounded border border-transparent dark:border-theme-secondary-800 bg-theme-secondary-200 dark:bg-transparent text-center leading-5 text-xs',
-        ])>
+        <x-general.badge class="text-center encapsulated-badge w-[39px]">
             @lang('tables.transactions.to')
-        </div>
+        </x-general.badge>
 
         <div>
             @if ($model->isTransfer())
                 @php ($recipient = $model->recipient())
 
                 <a
-                    class="link"
+                    class="whitespace-nowrap link"
                     href="{{ route('wallet', $recipient->address()) }}"
                 >
                     @if ($recipient->isDelegate())
@@ -51,7 +47,7 @@
                 <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                     @lang('tables.transactions.multiple')
 
-                    ({{ count($model->payments()) }})
+                    ({{ $model->recipientsCount() }})
                 </span>
             @else
                 <span class="text-theme-secondary-900 dark:text-theme-dark-50">

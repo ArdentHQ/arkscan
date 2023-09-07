@@ -35,7 +35,7 @@
             />
 
             <x-tables.headers.desktop.number name="tables.missed-blocks.percentage">
-                <x-ark-info :tooltip="trans('tables.missed-blocks.info.percentage')" type="info" />
+                <x-tables.headers.desktop.includes.tooltip :text="trans('tables.missed-blocks.info.percentage')" />
             </x-tables.headers.desktop.number>
         </tr>
     </thead>

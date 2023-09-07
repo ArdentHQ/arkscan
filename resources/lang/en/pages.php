@@ -113,7 +113,12 @@ return [
     ],
 
     'transactions'     => [
-        'title' => 'Transactions',
+        'title'            => 'Transactions',
+        'subtitle'         => 'List of transactions on the :network',
+        'transactions_24h' => 'Transactions (24h)',
+        'volume_24h'       => 'Volume (24h)',
+        'total_fees_24h'   => 'Total Fees (24h)',
+        'average_fee_24h'  => 'Average Fee (24h)',
     ],
 
     'wallets'          => [
@@ -402,7 +407,12 @@ return [
     ],
 
     'blocks'           => [
-        'title' => 'Blocks',
+        'title'               => 'Blocks',
+        'subtitle'            => 'List of blocks on the :network',
+        'blocks_produced_24h' => 'Blocks Produced (24h)',
+        'missed_blocks_24h'   => 'Missed Blocks (24h)',
+        'block_rewards_24h'   => 'Block Rewards (24h)',
+        'largest_block_24h'   => 'Largest Block (24h)',
     ],
 
     'statistics'       => [
