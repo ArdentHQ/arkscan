@@ -23,6 +23,6 @@
 
 @isset(trans('metatags.'.$page)['image'])
     @section('meta-image')
-        @lang("metatags.{$page}.image", $detail)
+        {{ mix(trans("metatags.{$page}.image", $detail)) }}
     @endsection
 @endisset
