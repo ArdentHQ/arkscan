@@ -5,7 +5,7 @@
         <x-page-headers.generic
             :title="trans('pages.exchanges.title')"
             :subtitle="trans('pages.exchanges.subtitle')"
-            class="md:justify-between sm:space-y-4 md-lg:flex-row md-lg:items-center md-lg:space-y-0"
+            class="sm:space-y-4 md:justify-between md-lg:flex-row md-lg:items-center md-lg:space-y-0"
         >
             <livewire:exchange-table-filter />
         </x-page-headers.generic>
