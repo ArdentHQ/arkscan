@@ -91,15 +91,6 @@ final class Delegates extends Component
             ->paginate($this->perPage);
     }
 
-    public function getShowMissedBlocksProperty(): bool
-    {
-        if ($this->filter['active'] === false) {
-            return false;
-        }
-
-        return ($this->page - 1) * $this->perPage < Network::delegateCount();
-    }
-
     public function perPageOptions(): array
     {
         return trans('tables.delegates.delegate_per_page_options');

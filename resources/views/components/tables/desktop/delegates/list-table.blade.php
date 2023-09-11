@@ -38,12 +38,10 @@
                 <x-tables.headers.desktop.includes.tooltip :text="trans('tables.delegates.info.percentage')" />
             </x-tables.headers.desktop.number>
 
-            @if ($this->showMissedBlocks)
-                <x-tables.headers.desktop.number
-                    name="tables.delegates.missed_blocks"
-                    class="whitespace-nowrap"
-                />
-            @endif
+            <x-tables.headers.desktop.number
+                name="tables.delegates.missed_blocks"
+                class="whitespace-nowrap"
+            />
 
             <x-tables.headers.desktop.text width="70" />
         </tr>
@@ -86,11 +84,9 @@
                     <x-tables.rows.desktop.encapsulated.delegates.votes-percentage :model="$delegate" />
                 </x-ark-tables.cell>
 
-                @if ($this->showMissedBlocks)
-                    <x-ark-tables.cell class="text-right">
-                        <x-tables.rows.desktop.encapsulated.delegates.missed-blocks :model="$delegate" />
-                    </x-ark-tables.cell>
-                @endif
+                <x-ark-tables.cell class="text-right">
+                    <x-tables.rows.desktop.encapsulated.delegates.missed-blocks :model="$delegate" />
+                </x-ark-tables.cell>
 
                 <x-ark-tables.cell class="text-right">
                     <x-tables.rows.desktop.encapsulated.delegates.vote-link :model="$delegate" />

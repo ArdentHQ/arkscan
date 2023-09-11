@@ -2,8 +2,9 @@
     'rowCount' => 10,
 ])
 
-@php
-    $items = [
+<x-table-skeleton
+    device="desktop"
+    :items="[
         'tables.delegates.rank' => [
             'type' => 'rank',
             'width' => '70',
@@ -25,21 +26,12 @@
             'responsive' => true,
             'breakpoint' => 'lg',
         ],
-    ];
-
-    if ($this->showMissedBlocks) {
-        $items['tables.delegates.missed_blocks'] = 'number';
-    }
-
-    $items[''] = [
-        'type'  => 'text',
-        'width' => '70',
-    ];
-@endphp
-
-<x-table-skeleton
-    device="desktop"
-    :items="$items"
+        'tables.delegates.missed_blocks' => 'number',
+        '' => [
+            'type'  => 'text',
+            'width' => '70',
+        ],
+    ]"
     :component-properties="['rounded' => false]"
     :row-count="$rowCount"
     encapsulated
