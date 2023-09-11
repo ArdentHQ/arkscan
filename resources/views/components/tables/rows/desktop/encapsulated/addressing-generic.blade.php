@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <div class="flex items-center space-x-2 md-lg:w-41">
+    <div class="flex items-center space-x-2">
         <x-general.badge class="text-center encapsulated-badge w-[39px]">
             @lang('tables.transactions.to')
         </x-general.badge>
