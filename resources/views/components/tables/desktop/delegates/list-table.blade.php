@@ -16,24 +16,39 @@
             <x-tables.headers.desktop.text
                 name="tables.delegates.rank"
                 width="70"
+                sorting-id="rank"
+                livewire-sort
             />
 
-            <x-tables.headers.desktop.address name="tables.delegates.delegate" />
+            <x-tables.headers.desktop.address
+                name="tables.delegates.delegate"
+                sorting-id="name"
+                livewire-sort
+            />
 
             <x-tables.headers.desktop.status name="tables.delegates.status" />
 
-            <x-tables.headers.desktop.number name="tables.delegates.no_of_voters" />
+            <x-tables.headers.desktop.number
+                name="tables.delegates.no_of_voters"
+                sorting-id="no_of_voters"
+                livewire-sort
+            />
 
             <x-tables.headers.desktop.number
                 name="tables.delegates.votes"
                 :name-properties="['currency' => Network::currency()]"
                 responsive
+                sorting-id="votes"
+                livewire-sort
             />
 
             <x-tables.headers.desktop.number
                 name="tables.delegates.percentage"
                 responsive
                 breakpoint="lg"
+                sorting-id="productivity"
+                livewire-sort
+                class="!py-2.5"
             >
                 <x-tables.headers.desktop.includes.tooltip :text="trans('tables.delegates.info.percentage')" />
             </x-tables.headers.desktop.number>
@@ -41,6 +56,8 @@
             <x-tables.headers.desktop.number
                 name="tables.delegates.missed_blocks"
                 class="whitespace-nowrap"
+                sorting-id="missed_blocks"
+                livewire-sort
             />
 
             <x-tables.headers.desktop.text width="70" />
