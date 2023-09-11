@@ -36,6 +36,7 @@ final class CacheDelegateVoterCounts extends Command
     public function handle(): void
     {
         $walletCache = new WalletCache();
+        $delegateCache = new DelegateCache();
 
         $select = [
             'wallets.public_key',
@@ -54,7 +55,8 @@ final class CacheDelegateVoterCounts extends Command
 
         $results->each(fn ($total, $publicKey) => $walletCache->setVoterCount($publicKey, $total));
 
-        (new DelegateCache())->setTotalVoted(function () {
+        $delegateCache->setAllVoterCounts($results->toArray());
+        $delegateCache->setTotalVoted(function () {
             $wallets = Wallet::select('balance')
                 ->whereRaw("\"attributes\"->>'vote' is not null")
                 ->get();
