@@ -5,14 +5,13 @@
         <x-page-headers.generic
             :title="trans('pages.exchanges.title')"
             :subtitle="trans('pages.exchanges.subtitle')"
+            class="md:justify-between sm:space-y-4 md-lg:flex-row md-lg:items-center md-lg:space-y-0"
         >
             <livewire:exchange-table-filter />
         </x-page-headers.generic>
 
-        <div class="flex flex-col px-6 pt-6 pb-8 border-t-4 md:px-10 md:pt-0 md:pb-6 md:mx-auto md:max-w-7xl md:border-0 border-theme-secondary-200 dark:border-theme-dark-950">
-            <div class="mt-6">
-                <livewire:exchange-table />
-            </div>
+        <div class="flex flex-col px-6 pb-8 md:px-10 md:pb-6 md:mx-auto md:max-w-7xl">
+            <livewire:exchange-table />
 
             <x-information-pages.cta
                 :text="trans('pages.exchanges.get_listed')"

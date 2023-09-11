@@ -1,4 +1,4 @@
-<div class="flex-col rounded-xl md:mt-6 md:border border-theme-secondary-300 dark:border-theme-secondary-800">
+<div class="flex-col rounded-xl md:border border-theme-secondary-300 dark:border-theme-secondary-800">
     <x-compatible-wallets.disclaimer
         class="inline-flex pb-6 w-full md:px-8 md:pt-6 xl:hidden"
         inner-class="w-full"
