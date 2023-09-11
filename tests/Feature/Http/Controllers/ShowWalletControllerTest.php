@@ -138,6 +138,54 @@ it('should filter transactions in url', function () {
         ->assertSee($transaction->id);
 });
 
+it('should get query data from referer', function () {
+    $wallet = Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => [
+                'voteBalance'    => 1234037456742,
+                'producedBlocks' => 12340,
+            ],
+        ],
+    ]);
+
+    $this
+        ->withHeaders(['Referer' => 'https://explorer.url?page=5&perPage=10'])
+        ->get(route('wallet', $wallet))
+        ->assertSee($wallet->address);
+});
+
+it('should handle referer without a query string', function () {
+    $wallet = Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => [
+                'voteBalance'    => 1234037456742,
+                'producedBlocks' => 12340,
+            ],
+        ],
+    ]);
+
+    $this
+        ->withHeaders(['Referer' => 'https://explorer.url'])
+        ->get(route('wallet', $wallet))
+        ->assertSee($wallet->address);
+});
+
+it('should handle no referer', function () {
+    $wallet = Wallet::factory()->create([
+        'attributes' => [
+            'delegate' => [
+                'voteBalance'    => 1234037456742,
+                'producedBlocks' => 12340,
+            ],
+        ],
+    ]);
+
+    $this
+        ->withHeaders(['Referer' => ''])
+        ->get(route('wallet', $wallet))
+        ->assertSee($wallet->address);
+});
+
 it('should not trim 0 at the end of votes or total forged', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
