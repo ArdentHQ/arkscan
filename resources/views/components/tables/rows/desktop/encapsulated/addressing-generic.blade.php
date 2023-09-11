@@ -5,7 +5,7 @@
 @php ($transactionWallet = $model->sender())
 
 <div class="flex flex-col space-y-2 text-sm font-semibold sm:space-y-1 md:space-y-2 md-lg:items-center md-lg:flex-row md-lg:space-y-0 md-lg:space-x-9">
-    <div class="flex items-center space-x-2 md-lg:w-[156px]">
+    <div class="flex items-center space-x-2 md-lg:w-41">
         <x-general.badge class="text-center encapsulated-badge w-[39px]">
             @lang('tables.transactions.from')
         </x-general.badge>
@@ -24,12 +24,12 @@
         </div>
     </div>
 
-    <div class="flex items-center space-x-2">
+    <div class="flex items-center space-x-2 md-lg:w-41">
         <x-general.badge class="text-center encapsulated-badge w-[39px]">
             @lang('tables.transactions.to')
         </x-general.badge>
 
-        <div>
+        <div class="min-w-0 truncate">
             @if ($model->isTransfer())
                 @php ($recipient = $model->recipient())
 
