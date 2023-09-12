@@ -582,3 +582,49 @@ it('should sort missed blocks in descending order', function () {
             $wallet1->address,
         ]);
 });
+
+it('should alternate sorting direction', function () {
+    $delegateCache = new DelegateCache();
+    $delegateCache->setAllVoterCounts(
+        Wallet::factory(51)
+            ->activeDelegate()
+            ->create()
+            ->mapWithKeys(fn ($delegate) => [$delegate->public_key => 1])
+            ->toArray()
+    );
+
+    $component = Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->assertSet('sortKey', 'rank')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->call('sortBy', 'rank')
+        ->assertSet('sortKey', 'rank')
+        ->assertSet('sortDirection', SortDirection::DESC);
+
+    foreach (['name', 'no_of_voters', 'votes', 'percentage_votes', 'missed_blocks'] as $column) {
+        $component->call('sortBy', $column)
+            ->assertSet('sortKey', $column)
+            ->assertSet('sortDirection', SortDirection::ASC)
+            ->call('sortBy', $column)
+            ->assertSet('sortKey', $column)
+            ->assertSet('sortDirection', SortDirection::DESC);
+    }
+});
+
+it('should reset page on sorting change', function () {
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->assertSet('page', 1)
+        ->assertSet('sortKey', 'rank')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->set('page', 12)
+        ->call('sortBy', 'rank')
+        ->assertSet('page', 1)
+        ->assertSet('sortKey', 'rank')
+        ->assertSet('sortDirection', SortDirection::DESC)
+        ->set('page', 12)
+        ->call('sortBy', 'rank')
+        ->assertSet('page', 1)
+        ->assertSet('sortKey', 'rank')
+        ->assertSet('sortDirection', SortDirection::ASC);
+});
