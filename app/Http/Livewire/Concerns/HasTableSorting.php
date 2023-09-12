@@ -16,6 +16,14 @@ trait HasTableSorting
         $this->sortDirection = static::defaultSortDirection();
     }
 
+    public function queryStringHasTableSorting(): array
+    {
+        return [
+            'sortKey' => ['except' => static::defaultSortKey()],
+            'sortDirection' => ['except' => static::defaultSortDirection()],
+        ];
+    }
+
     public function sortBy(string $key): void
     {
         if ($this->sortKey === $key) {
