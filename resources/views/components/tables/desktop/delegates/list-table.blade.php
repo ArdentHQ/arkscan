@@ -46,7 +46,7 @@
                 name="tables.delegates.percentage"
                 responsive
                 breakpoint="lg"
-                sorting-id="productivity"
+                sorting-id="percentage_votes"
                 livewire-sort
                 class="!py-2.5"
             >
