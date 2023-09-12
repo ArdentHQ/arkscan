@@ -17,7 +17,7 @@ trait HasTableSorting
         $this->sortKey = static::defaultSortKey();
 
         if (request()->has('sort-direction')) {
-            $sortDirection = static::defaultSortDirection();
+            $sortDirection = request()->get('sort-direction');
             if ($sortDirection === SortDirection::DESC->value) {
                 $this->sortDirection = SortDirection::DESC;
             } else {
