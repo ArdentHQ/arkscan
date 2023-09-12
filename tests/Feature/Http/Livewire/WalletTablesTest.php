@@ -161,3 +161,46 @@ it('should not trigger is ready event more than once', function () {
         ->set('view', 'transactions')
         ->assertNotEmitted('setTransactionsReady');
 });
+
+it('should not allow invalid per page value', function () {
+    $wallet = Wallet::factory()->activeDelegate()->create();
+
+    Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
+        ->set('tabQueryData.transactions.perPage', 1234)
+        ->call('triggerViewIsReady')
+        ->assertSet('tabQueryData.transactions.perPage', 25);
+});
+
+it('should not update initial page if view does not exist', function () {
+    $wallet = Wallet::factory()->activeDelegate()->create();
+
+    $instance = Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
+        ->set('view', 'testing')
+        ->set('tabQueryData', [])
+        ->instance();
+
+    $instance->boot();
+
+    expect($instance->tabQueryData)->toBe([
+        'transactions' => [
+            'page'          => 1,
+            'perPage'       => WalletTransactionTable::defaultPerPage(),
+            'outgoing'      => true,
+            'incoming'      => true,
+            'transfers'     => true,
+            'votes'         => true,
+            'multipayments' => true,
+            'others'        => true,
+        ],
+
+        'blocks' => [
+            'page'    => 1,
+            'perPage' => WalletBlockTable::defaultPerPage(),
+        ],
+
+        'voters' => [
+            'page'    => 1,
+            'perPage' => WalletVoterTable::defaultPerPage(),
+        ],
+    ]);
+});

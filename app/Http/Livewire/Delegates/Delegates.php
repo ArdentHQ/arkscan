@@ -5,26 +5,24 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Delegates;
 
 use App\Facades\Network;
+use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
-use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Livewire\Component;
 
 /**
  * @property bool $isAllSelected
  * @property LengthAwarePaginator $delegates
  * */
-final class Delegates extends Component
+final class Delegates extends TabbedTableComponent
 {
     use DeferLoading;
     use HasTableFilter;
-    use HasTablePagination;
 
     public const PER_PAGE = 51;
 
@@ -100,7 +98,7 @@ final class Delegates extends Component
         return ($this->page - 1) * $this->perPage < Network::delegateCount();
     }
 
-    public function perPageOptions(): array
+    public static function perPageOptions(): array
     {
         return trans('tables.delegates.delegate_per_page_options');
     }
