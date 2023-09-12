@@ -62,7 +62,7 @@ trait HasTableSorting
         return constant(static::class.'::INITIAL_SORT_DIRECTION');
     }
 
-    public function getSortDirectionQueryProperty()
+    public function getSortDirectionQueryProperty(): string
     {
         return $this->sortDirection->value;
     }
