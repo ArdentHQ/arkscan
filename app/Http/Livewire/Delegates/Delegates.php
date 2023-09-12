@@ -14,6 +14,7 @@ use App\Models\ForgingStats;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
 use App\Services\Cache\DelegateCache;
+use App\Services\Cache\WalletCache;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
@@ -143,9 +144,15 @@ final class Delegates extends Component
             }))
             ->when($this->sortKey === 'rank', fn ($query) => $query->orderByRaw("(\"attributes\"->'delegate'->>'rank')::numeric ".$sortDirection->value))
             ->when($this->sortKey === 'name', fn ($query) => $query->orderByRaw("(\"attributes\"->'delegate'->>'username')::text ".$sortDirection->value))
-            ->when($this->sortKey === 'votes', fn ($query) => $query->orderByRaw("(\"attributes\"->'delegate'->>'voteBalance')::numeric ".$sortDirection->value))
+            ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', function ($query) use ($sortDirection) {
+                $query->selectRaw('("attributes"->\'delegate\'->>\'voteBalance\')::numeric AS vote_count')
+                    ->selectRaw('wallets.*')
+                    ->orderByRaw(sprintf(
+                        'CASE WHEN NULLIF(("attributes"->\'delegate\'->>\'voteBalance\')::numeric, 0) IS NULL THEN 1 ELSE 0 END ASC, ("attributes"->\'delegate\'->>\'voteBalance\')::numeric %s', $sortDirection->value
+                    ));
+            })
             ->when($this->sortKey === 'no_of_voters', function ($query) use ($sortDirection) {
-                $query->selectRaw('coalesce(voting_stats.count, 0) AS no_of_voters')
+                $query->selectRaw('voting_stats.count AS no_of_voters')
                     ->selectRaw('wallets.*')
                     ->join(DB::raw(sprintf(
                         '(values %s) as voting_stats (public_key, count)',
@@ -153,10 +160,10 @@ final class Delegates extends Component
                             ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
                             ->join(','),
                     )), 'wallets.public_key', '=', 'voting_stats.public_key', 'left outer')
-                    ->orderBy('no_of_voters', $sortDirection->value);
+                    ->orderByRaw(sprintf('no_of_voters %s NULLS LAST', $sortDirection->value));
             })
             ->when($this->sortKey === 'missed_blocks', function ($query) use ($sortDirection) {
-                $query->selectRaw('coalesce(forging_stats.count, 0) AS missed_blocks')
+                $query->selectRaw('forging_stats.count AS missed_blocks')
                     ->selectRaw('wallets.*')
                     ->join(DB::raw(sprintf(
                         '(values %s) as forging_stats (public_key, count)',
@@ -167,7 +174,7 @@ final class Delegates extends Component
                             ->map(fn ($forgingStat) => sprintf('(\'%s\',%d)', $forgingStat->public_key, $forgingStat->count))
                             ->join(','),
                     )), 'wallets.public_key', '=', 'forging_stats.public_key', 'left outer')
-                    ->orderBy('missed_blocks', $sortDirection->value);
+                    ->orderByRaw(sprintf('missed_blocks %s NULLS LAST', $sortDirection->value));
             });
     }
 }
