@@ -16,7 +16,7 @@ class HasTablePaginationTest extends TablePaginationComponentStub
 it('should use PER_PAGE constant if exists', function () {
     $instance = new HasTablePaginationTest();
 
-    expect(isset($instance->perPage))->toBeFalse();
+    expect($instance->perPage)->toBeNull();
 
     $instance->bootHasTablePagination();
 
@@ -28,7 +28,7 @@ it('should use config if constant does not exist', function () {
 
     $instance = new TablePaginationComponentStub();
 
-    expect(isset($instance->perPage))->toBeFalse();
+    expect($instance->perPage)->toBeNull();
 
     $instance->bootHasTablePagination();
 

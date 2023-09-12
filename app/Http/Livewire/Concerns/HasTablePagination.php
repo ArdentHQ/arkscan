@@ -6,27 +6,32 @@ namespace App\Http\Livewire\Concerns;
 
 use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
 
+/** @property int $perPage */
 trait HasTablePagination
 {
     use HasPagination;
 
-    public int $perPage;
+    public ?int $perPage = null;
 
-    public function bootHasTablePagination(): void
+    final public function bootHasTablePagination(): void
     {
-        $this->perPage = static::defaultPerPage();
+        if ($this->perPage === null) {
+            $this->perPage = static::defaultPerPage();
+        } else {
+            $this->perPage = $this->resolvePerPage();
+        }
     }
 
-    public function queryStringHasTablePagination(): array
+    final public function queryStringHasTablePagination(): array
     {
         return [
             'perPage' => ['except' => static::defaultPerPage()],
         ];
     }
 
-    public function setPerPage(int $perPage): void
+    final public function setPerPage(int $perPage): void
     {
-        if (! in_array($perPage, $this->perPageOptions(), true)) {
+        if (! in_array($perPage, static::perPageOptions(), true)) {
             return;
         }
 
@@ -35,12 +40,13 @@ trait HasTablePagination
         $this->gotoPage(1);
     }
 
-    public function perPageOptions(): array
+    // @phpstan-ignore-next-line
+    public static function perPageOptions(): array
     {
         return trans('pagination.per_page_options');
     }
 
-    public static function defaultPerPage(): int
+    final public static function defaultPerPage(): int
     {
         if (defined(static::class.'::PER_PAGE')) {
             $const = constant(static::class.'::PER_PAGE');
@@ -51,5 +57,10 @@ trait HasTablePagination
         }
 
         return intval(config('arkscan.pagination.per_page'));
+    }
+
+    private function resolvePerPage(): int
+    {
+        return $this->perPage;
     }
 }
