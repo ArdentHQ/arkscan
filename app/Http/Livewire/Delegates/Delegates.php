@@ -11,14 +11,11 @@ use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTableSorting;
 use App\Models\ForgingStats;
-use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
 use App\Services\Cache\DelegateCache;
-use App\Services\Cache\WalletCache;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\JoinClause;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
@@ -121,7 +118,7 @@ final class Delegates extends TabbedTableComponent
     private function getDelegatesQuery(): Builder
     {
         $sortDirection = SortDirection::ASC;
-        if ($this->sortDirection == SortDirection::DESC) {
+        if ($this->sortDirection === SortDirection::DESC) {
             $sortDirection = SortDirection::DESC;
         }
 
@@ -146,7 +143,8 @@ final class Delegates extends TabbedTableComponent
                 $query->selectRaw('("attributes"->\'delegate\'->>\'voteBalance\')::numeric AS vote_count')
                     ->selectRaw('wallets.*')
                     ->orderByRaw(sprintf(
-                        'CASE WHEN NULLIF(("attributes"->\'delegate\'->>\'voteBalance\')::numeric, 0) IS NULL THEN 1 ELSE 0 END ASC, ("attributes"->\'delegate\'->>\'voteBalance\')::numeric %s', $sortDirection->value
+                        'CASE WHEN NULLIF(("attributes"->\'delegate\'->>\'voteBalance\')::numeric, 0) IS NULL THEN 1 ELSE 0 END ASC, ("attributes"->\'delegate\'->>\'voteBalance\')::numeric %s',
+                        $sortDirection->value
                     ));
             })
             ->when($this->sortKey === 'no_of_voters', function ($query) use ($sortDirection) {
@@ -154,7 +152,7 @@ final class Delegates extends TabbedTableComponent
                     ->selectRaw('wallets.*')
                     ->join(DB::raw(sprintf(
                         '(values %s) as voting_stats (public_key, count)',
-                        collect((new DelegateCache)->getAllVoterCounts())
+                        collect((new DelegateCache())->getAllVoterCounts())
                             ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
                             ->join(','),
                     )), 'wallets.public_key', '=', 'voting_stats.public_key', 'left outer')
