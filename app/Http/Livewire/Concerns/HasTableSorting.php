@@ -18,10 +18,10 @@ trait HasTableSorting
 
         if (request()->has('sort-direction')) {
             $sortDirection = static::defaultSortDirection();
-            if ($sortDirection === SortDirection::ASC->value) {
-                $this->sortDirection = SortDirection::ASC;
-            } else {
+            if ($sortDirection === SortDirection::DESC->value) {
                 $this->sortDirection = SortDirection::DESC;
+            } else {
+                $this->sortDirection = SortDirection::ASC;
             }
         } else {
             $this->sortDirection = static::defaultSortDirection();
