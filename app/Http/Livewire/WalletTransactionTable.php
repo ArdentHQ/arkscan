@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
+use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
-use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
@@ -16,17 +16,15 @@ use ArkEcosystem\Crypto\Enums\Types;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Livewire\Component;
 
 /**
  * @property bool $isAllSelected
  * @property LengthAwarePaginator $transactions
  * */
-final class WalletTransactionTable extends Component
+final class WalletTransactionTable extends TabbedTableComponent
 {
     use DeferLoading;
     use HasTableFilter;
-    use HasTablePagination;
 
     public string $address;
 

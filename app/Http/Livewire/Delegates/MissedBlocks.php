@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Delegates;
 
+use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
-use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\ForgingStats;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Livewire\Component;
 
 /**
  * @property LengthAwarePaginator $missedBlocks
  * */
-final class MissedBlocks extends Component
+final class MissedBlocks extends TabbedTableComponent
 {
     use DeferLoading;
-    use HasTablePagination;
 
     /** @var mixed */
     protected $listeners = [

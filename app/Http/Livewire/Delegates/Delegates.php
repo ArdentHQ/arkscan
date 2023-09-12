@@ -6,9 +6,9 @@ namespace App\Http\Livewire\Delegates;
 
 use App\Enums\SortDirection;
 use App\Facades\Network;
+use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
-use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Http\Livewire\Concerns\HasTableSorting;
 use App\Models\ForgingStats;
 use App\Models\Scopes\OrderByBalanceScope;
@@ -21,17 +21,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
-use Livewire\Component;
 
 /**
  * @property bool $isAllSelected
  * @property LengthAwarePaginator $delegates
  * */
-final class Delegates extends Component
+final class Delegates extends TabbedTableComponent
 {
     use DeferLoading;
     use HasTableFilter;
-    use HasTablePagination;
     use HasTableSorting;
 
     public const PER_PAGE = 51;
@@ -102,7 +100,7 @@ final class Delegates extends Component
             ->paginate($this->perPage);
     }
 
-    public function perPageOptions(): array
+    public static function perPageOptions(): array
     {
         return trans('tables.delegates.delegate_per_page_options');
     }
