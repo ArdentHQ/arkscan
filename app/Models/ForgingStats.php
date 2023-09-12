@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $timestamp
  * @property string $public_key
  * @property bool $forged
+ * @property int $count (only available when sorting delegates by missed blocks)
  */
 final class ForgingStats extends Model
 {

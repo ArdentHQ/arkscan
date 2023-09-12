@@ -90,7 +90,7 @@ trait CanForge
 
     public function missedBlocks(): int
     {
-        if (isset($this->wallet->missed_blocks)) {
+        if ($this->wallet->missed_blocks !== null) {
             return $this->wallet->missed_blocks;
         }
 
