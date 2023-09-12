@@ -8,6 +8,8 @@ use App\Models\ForgingStats;
 use App\Models\Wallet;
 use App\Services\Cache\DelegateCache;
 use App\Services\Cache\WalletCache;
+use Illuminate\Support\Facades\Route;
+use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 
 it('should render', function () {
@@ -627,4 +629,84 @@ it('should reset page on sorting change', function () {
         ->assertSet('page', 1)
         ->assertSet('sortKey', 'rank')
         ->assertSet('sortDirection', SortDirection::ASC);
+});
+
+it('should parse sorting direction from query string', function () {
+    Route::get('/test-delegates', function () {
+        return BladeCompiler::render('<livewire:delegates.delegates :defer-loading="false" />');
+    });
+
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 2,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-2',
+                'voteBalance'    => 4000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $this->get('/test-delegates?sort=name&sort-direction=asc')
+        ->assertSeeInOrder([
+            $wallet1->address,
+            $wallet2->address,
+        ]);
+
+    $this->get('/test-delegates?sort=name&sort-direction=desc')
+        ->assertSeeInOrder([
+            $wallet2->address,
+            $wallet1->address,
+        ]);
+});
+
+it('should force ascending if invalid query string value', function () {
+    Route::get('/test-delegates', function () {
+        return BladeCompiler::render('<livewire:delegates.delegates :defer-loading="false" />');
+    });
+
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 2,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-2',
+                'voteBalance'    => 4000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $this->get('/test-delegates?sort=name&sort-direction=desc')
+        ->assertSeeInOrder([
+            $wallet2->address,
+            $wallet1->address,
+        ]);
+
+    $this->get('/test-delegates?sort=name&sort-direction=testing')
+        ->assertSeeInOrder([
+            $wallet1->address,
+            $wallet2->address,
+        ]);
 });
