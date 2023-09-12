@@ -15,14 +15,24 @@ trait HasTableSorting
     public function bootHasTableSorting(): void
     {
         $this->sortKey = static::defaultSortKey();
-        $this->sortDirection = static::defaultSortDirection();
+
+        if (request()->has('sort-direction')) {
+            $sortDirection = static::defaultSortDirection();
+            if ($sortDirection === SortDirection::ASC->value) {
+                $this->sortDirection = SortDirection::ASC;
+            } else {
+                $this->sortDirection = SortDirection::DESC;
+            }
+        } else {
+            $this->sortDirection = static::defaultSortDirection();
+        }
     }
 
     public function queryStringHasTableSorting(): array
     {
         return [
-            'sortKey' => ['except' => static::defaultSortKey()],
-            'sortDirection' => ['except' => static::defaultSortDirection()],
+            'sortKey' => ['as' => 'sort', 'except' => static::defaultSortKey()],
+            'sortDirectionQuery' => ['as' => 'sort-direction', 'except' => static::defaultSortDirection()->value],
         ];
     }
 
@@ -50,5 +60,10 @@ trait HasTableSorting
     public static function defaultSortDirection(): SortDirection
     {
         return constant(static::class.'::INITIAL_SORT_DIRECTION');
+    }
+
+    public function getSortDirectionQueryProperty()
+    {
+        return $this->sortDirection->value;
     }
 }
