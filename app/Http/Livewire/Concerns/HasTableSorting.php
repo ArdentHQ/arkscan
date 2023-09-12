@@ -36,6 +36,8 @@ trait HasTableSorting
             $this->sortKey = $key;
             $this->sortDirection = SortDirection::ASC;
         }
+
+        $this->gotoPage(1);
     }
 
     public static function defaultSortKey(): string
