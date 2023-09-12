@@ -31,7 +31,7 @@ trait HasTableSorting
     public function queryStringHasTableSorting(): array
     {
         return [
-            'sortKey' => ['as' => 'sort', 'except' => static::defaultSortKey()],
+            'sortKey'            => ['as' => 'sort', 'except' => static::defaultSortKey()],
             'sortDirectionQuery' => ['as' => 'sort-direction', 'except' => static::defaultSortDirection()->value],
         ];
     }
@@ -45,7 +45,7 @@ trait HasTableSorting
                 $this->sortDirection = SortDirection::ASC;
             }
         } else {
-            $this->sortKey = $key;
+            $this->sortKey       = $key;
             $this->sortDirection = SortDirection::ASC;
         }
 

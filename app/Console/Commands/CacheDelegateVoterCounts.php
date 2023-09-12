@@ -35,7 +35,7 @@ final class CacheDelegateVoterCounts extends Command
      */
     public function handle(): void
     {
-        $walletCache = new WalletCache();
+        $walletCache   = new WalletCache();
         $delegateCache = new DelegateCache();
 
         $select = [
