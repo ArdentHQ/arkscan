@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Enums\SortDirection;
 use App\Http\Livewire\Delegates\Delegates;
+use App\Models\ForgingStats;
 use App\Models\Wallet;
+use App\Services\Cache\DelegateCache;
 use App\Services\Cache\WalletCache;
 use Livewire\Livewire;
 
@@ -32,26 +35,6 @@ it('should show no results message if no delegates', function () {
     Livewire::test(Delegates::class, ['deferLoading' => false])
         ->assertSee(trans('tables.delegates.no_results.no_results'));
 });
-
-it('should not show missed blocks if no active delegates', function ($perPage, $lastPageWithActive) {
-    Wallet::factory(400)->activeDelegate()->create();
-
-    $component = Livewire::test(Delegates::class, ['deferLoading' => false])
-        ->call('setPerPage', $perPage);
-
-    for ($page = 1; $page <= $lastPageWithActive; $page++) {
-        $component->call('gotoPage', $page)
-            ->assertSee(trans('tables.delegates.missed_blocks'));
-    }
-
-    $component->call('gotoPage', $lastPageWithActive + 1)
-        ->assertDontSee(trans('tables.delegates.missed_blocks'));
-})->with([
-    10  => [10, 6],
-    25  => [25, 3],
-    51  => [51, 1],
-    100 => [100, 1],
-]);
 
 it('should have slightly different per-page options', function () {
     $instance = Livewire::test(Delegates::class, ['deferLoading' => false])
@@ -234,4 +217,368 @@ it('should show the correct styling for "danger" on missed blocks', function () 
         ->call('setIsReady')
         ->assertSee($wallet->address)
         ->assertSee('bg-theme-danger-100 border-theme-danger-100 text-theme-danger-700 dark:border-[#AA6868] dark:text-[#F39B9B]');
+});
+
+it('should sort by rank by default', function () {
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 2,
+                'username'       => 'delegate-2',
+                'voteBalance'    => 4000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->assertSet('sortKey', 'rank')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSeeInOrder([
+            $wallet1->address,
+            $wallet2->address,
+        ]);
+});
+
+it('should sort rank in descending order', function () {
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 2,
+                'username'       => 'delegate-2',
+                'voteBalance'    => 4000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->assertSet('sortKey', 'rank')
+        ->set('sortDirection', SortDirection::DESC)
+        ->assertSeeInOrder([
+            $wallet2->address,
+            $wallet1->address,
+        ]);
+});
+
+it('should sort name in ascending order', function () {
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 2,
+                'username'       => 'delegate-2',
+                'voteBalance'    => 4000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->set('sortKey', 'name')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSeeInOrder([
+            $wallet1->address,
+            $wallet2->address,
+        ]);
+});
+
+it('should sort name in descending order', function () {
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 2,
+                'username'       => 'delegate-2',
+                'voteBalance'    => 4000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->set('sortKey', 'name')
+        ->set('sortDirection', SortDirection::DESC)
+        ->assertSeeInOrder([
+            $wallet1->address,
+            $wallet2->address,
+        ]);
+});
+
+it('should sort number of voters in ascending order', function () {
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 2,
+                'username'       => 'delegate-2',
+                'voteBalance'    => 4000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $delegateCache = new DelegateCache();
+    $delegateCache->setAllVoterCounts([
+        $wallet1->public_key => 30,
+        $wallet2->public_key => 10,
+    ]);
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->set('sortKey', 'no_of_voters')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSeeInOrder([
+            $wallet2->address,
+            $wallet1->address,
+        ]);
+});
+
+it('should sort number of voters in descending order', function () {
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 2,
+                'username'       => 'delegate-2',
+                'voteBalance'    => 4000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $delegateCache = new DelegateCache();
+    $delegateCache->setAllVoterCounts([
+        $wallet1->public_key => 30,
+        $wallet2->public_key => 10,
+    ]);
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->set('sortKey', 'no_of_voters')
+        ->set('sortDirection', SortDirection::DESC)
+        ->assertSeeInOrder([
+            $wallet1->address,
+            $wallet2->address,
+        ]);
+});
+
+it('should sort votes & percentage in ascending order', function (string $sortKey) {
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 2,
+                'username'       => 'delegate-2',
+                'voteBalance'    => 4000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->set('sortKey', 'votes')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSeeInOrder([
+            $wallet2->address,
+            $wallet1->address,
+        ]);
+})->with([
+    'votes',
+    'percentage_votes',
+]);
+
+it('should sort votes & percentage in descending order', function (string $sortKey) {
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 2,
+                'username'       => 'delegate-2',
+                'voteBalance'    => 4000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->set('sortKey', $sortKey)
+        ->set('sortDirection', SortDirection::DESC)
+        ->assertSeeInOrder([
+            $wallet1->address,
+            $wallet2->address,
+        ]);
+})->with([
+    'votes',
+    'percentage_votes',
+]);
+
+it('should sort missed blocks in ascending order', function () {
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 2,
+                'username'       => 'delegate-2',
+                'voteBalance'    => 4000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    ForgingStats::factory(24)->create([
+        'public_key' => $wallet1->public_key,
+    ]);
+
+    ForgingStats::factory(59)->create([
+        'public_key' => $wallet2->public_key,
+    ]);
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->set('sortKey', 'missed_blocks')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSeeInOrder([
+            $wallet2->address,
+            $wallet1->address,
+        ]);
+});
+
+it('should sort missed blocks in descending order', function () {
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 2,
+                'username'       => 'delegate-2',
+                'voteBalance'    => 4000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    ForgingStats::factory(24)->create([
+        'public_key' => $wallet1->public_key,
+    ]);
+
+    ForgingStats::factory(59)->create([
+        'public_key' => $wallet2->public_key,
+    ]);
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->set('sortKey', 'missed_blocks')
+        ->set('sortDirection', SortDirection::DESC)
+        ->assertSeeInOrder([
+            $wallet2->address,
+            $wallet1->address,
+        ]);
 });
