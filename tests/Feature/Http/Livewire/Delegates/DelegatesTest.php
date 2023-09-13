@@ -595,6 +595,8 @@ it('should alternate sorting direction', function () {
             ->toArray()
     );
 
+    ForgingStats::factory(24)->create();
+
     $component = Livewire::test(Delegates::class)
         ->call('setIsReady')
         ->assertSet('sortKey', 'rank')
