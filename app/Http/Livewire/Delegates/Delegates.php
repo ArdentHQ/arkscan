@@ -138,12 +138,12 @@ final class Delegates extends TabbedTableComponent
                     ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->delegate->resigned', true)));
             }))
             ->when($this->sortKey === 'rank', fn ($query) => $query->orderByRaw("(\"attributes\"->'delegate'->>'rank')::numeric ".$sortDirection->value))
-            ->when($this->sortKey === 'name', fn ($query) => $query->orderByRaw("(\"attributes\"->'delegate'->>'username')::text ".$sortDirection->value))
+            ->when($this->sortKey === 'name', fn ($query) => $query->orderByRaw("(\"attributes\"->'delegate'->>'username')::text ".$sortDirection->value.', ("attributes"->\'delegate\'->>\'rank\')::numeric ASC'))
             ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', function ($query) use ($sortDirection) {
                 $query->selectRaw('("attributes"->\'delegate\'->>\'voteBalance\')::numeric AS vote_count')
                     ->selectRaw('wallets.*')
                     ->orderByRaw(sprintf(
-                        'CASE WHEN NULLIF(("attributes"->\'delegate\'->>\'voteBalance\')::numeric, 0) IS NULL THEN 1 ELSE 0 END ASC, ("attributes"->\'delegate\'->>\'voteBalance\')::numeric %s',
+                        'CASE WHEN NULLIF(("attributes"->\'delegate\'->>\'voteBalance\')::numeric, 0) IS NULL THEN 1 ELSE 0 END ASC, ("attributes"->\'delegate\'->>\'voteBalance\')::numeric %s, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC',
                         $sortDirection->value
                     ));
             })
@@ -156,7 +156,7 @@ final class Delegates extends TabbedTableComponent
                             ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
                             ->join(','),
                     )), 'wallets.public_key', '=', 'voting_stats.public_key', 'left outer')
-                    ->orderByRaw(sprintf('no_of_voters %s NULLS LAST', $sortDirection->value));
+                    ->orderByRaw(sprintf('no_of_voters %s, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC NULLS LAST', $sortDirection->value));
             })
             ->when($this->sortKey === 'missed_blocks', function ($query) use ($sortDirection) {
                 $query->selectRaw('forging_stats.count AS missed_blocks')
@@ -170,7 +170,7 @@ final class Delegates extends TabbedTableComponent
                             ->map(fn ($forgingStat) => sprintf('(\'%s\',%d)', $forgingStat->public_key, $forgingStat->count))
                             ->join(','),
                     )), 'wallets.public_key', '=', 'forging_stats.public_key', 'left outer')
-                    ->orderByRaw(sprintf('missed_blocks %s NULLS LAST', $sortDirection->value));
+                    ->orderByRaw(sprintf('missed_blocks %s, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC NULLS LAST', $sortDirection->value));
             });
     }
 }
