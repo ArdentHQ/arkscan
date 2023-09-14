@@ -75,8 +75,8 @@ final class MissedBlocks extends TabbedTableComponent
         }
 
         return ForgingStats::query()
-            ->when($this->sortKey === 'height', fn ($query) => $query->orderByRaw('missed_height '. $sortDirection->value.', timestamp DESC'))
-            ->when($this->sortKey === 'age', fn ($query) => $query->orderByRaw('timestamp '. $sortDirection->value.', timestamp DESC'))
+            ->when($this->sortKey === 'height', fn ($query) => $query->orderByRaw('missed_height '.$sortDirection->value.', timestamp DESC'))
+            ->when($this->sortKey === 'age', fn ($query) => $query->orderByRaw('timestamp '.$sortDirection->value.', timestamp DESC'))
             ->when($this->sortKey === 'name', function ($query) use ($sortDirection) {
                 $missedBlockPublicKeys = ForgingStats::groupBy('public_key')->pluck('public_key');
 
@@ -91,7 +91,7 @@ final class MissedBlocks extends TabbedTableComponent
                         $delegateNames->map(fn ($name, $publicKey) => sprintf('(\'%s\',\'%s\')', $publicKey, $name))
                             ->join(','),
                     )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
-                    ->orderByRaw("delegate_name ".$sortDirection->value.', timestamp DESC');
+                    ->orderByRaw('delegate_name '.$sortDirection->value.', timestamp DESC');
             })
             ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', function ($query) use ($sortDirection) {
                 $missedBlockPublicKeys = ForgingStats::groupBy('public_key')->pluck('public_key');
@@ -107,7 +107,7 @@ final class MissedBlocks extends TabbedTableComponent
                         $delegateVotes->map(fn ($votes, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $votes))
                             ->join(','),
                     )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
-                    ->orderByRaw("votes ".$sortDirection->value.' NULLS LAST, timestamp DESC');
+                    ->orderByRaw('votes '.$sortDirection->value.' NULLS LAST, timestamp DESC');
             })
             ->when($this->sortKey === 'no_of_voters', function ($query) use ($sortDirection) {
                 $query->selectRaw('voting_stats.count AS no_of_voters')
