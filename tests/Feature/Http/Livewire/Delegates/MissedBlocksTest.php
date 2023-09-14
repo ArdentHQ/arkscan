@@ -39,25 +39,6 @@ it('should show no results message if no missed blocks', function () {
         ->assertSee(trans('tables.missed-blocks.no_results'));
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 it('should sort height in ascending order', function () {
     $wallet1 = Wallet::factory()->activeDelegate()->create([
         'attributes' => [
@@ -78,12 +59,12 @@ it('should sort height in ascending order', function () {
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'public_key'    => $wallet1->public_key,
         'missed_height' => 100,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet2->public_key,
+        'public_key'    => $wallet2->public_key,
         'missed_height' => 134,
     ]);
 
@@ -117,12 +98,12 @@ it('should sort height in descending order', function () {
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'public_key'    => $wallet1->public_key,
         'missed_height' => 100,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet2->public_key,
+        'public_key'    => $wallet2->public_key,
         'missed_height' => 134,
     ]);
 
