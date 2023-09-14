@@ -156,7 +156,7 @@ final class Delegates extends TabbedTableComponent
                             ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
                             ->join(','),
                     )), 'wallets.public_key', '=', 'voting_stats.public_key', 'left outer')
-                    ->orderByRaw(sprintf('no_of_voters %s, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC NULLS LAST', $sortDirection->value));
+                    ->orderByRaw(sprintf('no_of_voters %s NULLS LAST, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC', $sortDirection->value));
             })
             ->when($this->sortKey === 'missed_blocks', function ($query) use ($sortDirection) {
                 $query->selectRaw('forging_stats.count AS missed_blocks')
@@ -170,7 +170,7 @@ final class Delegates extends TabbedTableComponent
                             ->map(fn ($forgingStat) => sprintf('(\'%s\',%d)', $forgingStat->public_key, $forgingStat->count))
                             ->join(','),
                     )), 'wallets.public_key', '=', 'forging_stats.public_key', 'left outer')
-                    ->orderByRaw(sprintf('missed_blocks %s, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC NULLS LAST', $sortDirection->value));
+                    ->orderByRaw(sprintf('missed_blocks %s NULLS LAST, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC', $sortDirection->value));
             });
     }
 }
