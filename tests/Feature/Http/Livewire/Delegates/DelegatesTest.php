@@ -222,7 +222,7 @@ it('should show the correct styling for "danger" on missed blocks', function () 
 });
 
 it('should sort by rank by default', function () {
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 2,
@@ -233,7 +233,7 @@ it('should sort by rank by default', function () {
         ],
     ]);
 
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 1,
@@ -249,13 +249,13 @@ it('should sort by rank by default', function () {
         ->assertSet('sortKey', 'rank')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            $wallet1->address,
-            $wallet2->address,
+            'delegate-1',
+            'delegate-2',
         ]);
 });
 
 it('should sort rank in descending order', function () {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 1,
@@ -266,7 +266,7 @@ it('should sort rank in descending order', function () {
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 2,
@@ -282,13 +282,13 @@ it('should sort rank in descending order', function () {
         ->assertSet('sortKey', 'rank')
         ->set('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            $wallet2->address,
-            $wallet1->address,
+            'delegate-2',
+            'delegate-1',
         ]);
 });
 
 it('should sort name in ascending order', function () {
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 2,
@@ -299,7 +299,7 @@ it('should sort name in ascending order', function () {
         ],
     ]);
 
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 1,
@@ -315,13 +315,13 @@ it('should sort name in ascending order', function () {
         ->set('sortKey', 'name')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            $wallet1->address,
-            $wallet2->address,
+            'delegate-1',
+            'delegate-2',
         ]);
 });
 
 it('should sort name in descending order', function () {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 1,
@@ -332,7 +332,7 @@ it('should sort name in descending order', function () {
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 2,
@@ -348,8 +348,8 @@ it('should sort name in descending order', function () {
         ->set('sortKey', 'name')
         ->set('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            $wallet1->address,
-            $wallet2->address,
+            'delegate-1',
+            'delegate-2',
         ]);
 });
 
@@ -376,8 +376,7 @@ it('should sort number of voters in ascending order', function () {
         ],
     ]);
 
-    $delegateCache = new DelegateCache();
-    $delegateCache->setAllVoterCounts([
+    (new DelegateCache())->setAllVoterCounts([
         $wallet1->public_key => 30,
         $wallet2->public_key => 10,
     ]);
@@ -387,8 +386,8 @@ it('should sort number of voters in ascending order', function () {
         ->set('sortKey', 'no_of_voters')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            $wallet2->address,
-            $wallet1->address,
+            'delegate-2',
+            'delegate-1',
         ]);
 });
 
@@ -415,8 +414,7 @@ it('should sort number of voters in descending order', function () {
         ],
     ]);
 
-    $delegateCache = new DelegateCache();
-    $delegateCache->setAllVoterCounts([
+    (new DelegateCache())->setAllVoterCounts([
         $wallet1->public_key => 30,
         $wallet2->public_key => 10,
     ]);
@@ -426,13 +424,13 @@ it('should sort number of voters in descending order', function () {
         ->set('sortKey', 'no_of_voters')
         ->set('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            $wallet1->address,
-            $wallet2->address,
+            'delegate-1',
+            'delegate-2',
         ]);
 });
 
 it('should sort votes & percentage in ascending order', function (string $sortKey) {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 1,
@@ -443,7 +441,7 @@ it('should sort votes & percentage in ascending order', function (string $sortKe
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 2,
@@ -456,11 +454,11 @@ it('should sort votes & percentage in ascending order', function (string $sortKe
 
     Livewire::test(Delegates::class)
         ->call('setIsReady')
-        ->set('sortKey', 'votes')
+        ->set('sortKey', $sortKey)
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            $wallet2->address,
-            $wallet1->address,
+            'delegate-2',
+            'delegate-1',
         ]);
 })->with([
     'votes',
@@ -468,7 +466,7 @@ it('should sort votes & percentage in ascending order', function (string $sortKe
 ]);
 
 it('should sort votes & percentage in descending order', function (string $sortKey) {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 1,
@@ -479,7 +477,7 @@ it('should sort votes & percentage in descending order', function (string $sortK
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 2,
@@ -495,8 +493,8 @@ it('should sort votes & percentage in descending order', function (string $sortK
         ->set('sortKey', $sortKey)
         ->set('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            $wallet1->address,
-            $wallet2->address,
+            'delegate-1',
+            'delegate-2',
         ]);
 })->with([
     'votes',
@@ -539,8 +537,8 @@ it('should sort missed blocks in ascending order', function () {
         ->set('sortKey', 'missed_blocks')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            $wallet2->address,
-            $wallet1->address,
+            'delegate-2',
+            'delegate-1',
         ]);
 });
 
@@ -580,14 +578,13 @@ it('should sort missed blocks in descending order', function () {
         ->set('sortKey', 'missed_blocks')
         ->set('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            $wallet2->address,
-            $wallet1->address,
+            'delegate-2',
+            'delegate-1',
         ]);
 });
 
 it('should alternate sorting direction', function () {
-    $delegateCache = new DelegateCache();
-    $delegateCache->setAllVoterCounts(
+    (new DelegateCache())->setAllVoterCounts(
         Wallet::factory(51)
             ->activeDelegate()
             ->create()
@@ -638,7 +635,7 @@ it('should parse sorting direction from query string', function () {
         return BladeCompiler::render('<livewire:delegates.delegates :defer-loading="false" />');
     });
 
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 2,
@@ -649,7 +646,7 @@ it('should parse sorting direction from query string', function () {
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 1,
@@ -662,14 +659,14 @@ it('should parse sorting direction from query string', function () {
 
     $this->get('/test-delegates?sort=name&sort-direction=asc')
         ->assertSeeInOrder([
-            $wallet1->address,
-            $wallet2->address,
+            'delegate-1',
+            'delegate-2',
         ]);
 
     $this->get('/test-delegates?sort=name&sort-direction=desc')
         ->assertSeeInOrder([
-            $wallet2->address,
-            $wallet1->address,
+            'delegate-2',
+            'delegate-1',
         ]);
 });
 
@@ -678,7 +675,7 @@ it('should force ascending if invalid query string value', function () {
         return BladeCompiler::render('<livewire:delegates.delegates :defer-loading="false" />');
     });
 
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 2,
@@ -689,7 +686,7 @@ it('should force ascending if invalid query string value', function () {
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
                 'rank'           => 1,
@@ -702,13 +699,13 @@ it('should force ascending if invalid query string value', function () {
 
     $this->get('/test-delegates?sort=name&sort-direction=desc')
         ->assertSeeInOrder([
-            $wallet2->address,
-            $wallet1->address,
+            'delegate-2',
+            'delegate-1',
         ]);
 
     $this->get('/test-delegates?sort=name&sort-direction=testing')
         ->assertSeeInOrder([
-            $wallet1->address,
-            $wallet2->address,
+            'delegate-1',
+            'delegate-2',
         ]);
 });
