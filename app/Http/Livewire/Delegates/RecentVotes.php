@@ -9,7 +9,6 @@ use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTableSorting;
-use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Services\Timestamp;
 use App\ViewModels\ViewModelFactory;
