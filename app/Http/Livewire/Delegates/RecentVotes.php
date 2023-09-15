@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Delegates;
 
+use App\Enums\SortDirection;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
+use App\Http\Livewire\Concerns\HasTableSorting;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Services\Timestamp;
@@ -14,6 +16,7 @@ use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property bool $isAllSelected
@@ -23,6 +26,11 @@ final class RecentVotes extends TabbedTableComponent
 {
     use DeferLoading;
     use HasTableFilter;
+    use HasTableSorting;
+
+    public const INITIAL_SORT_KEY = 'age';
+
+    public const INITIAL_SORT_DIRECTION = SortDirection::DESC;
 
     public array $filter = [
         'vote'      => true,
@@ -101,8 +109,12 @@ final class RecentVotes extends TabbedTableComponent
 
     private function getRecentVotesQuery(): Builder
     {
+        $sortDirection = SortDirection::ASC;
+        if ($this->sortDirection === SortDirection::DESC) {
+            $sortDirection = SortDirection::DESC;
+        }
+
         return Transaction::query()
-            ->withScope(OrderByTimestampScope::class)
             ->where('type', 3)
             ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix())
             ->where(function ($query) {
@@ -113,6 +125,31 @@ final class RecentVotes extends TabbedTableComponent
                     $query->whereRaw('jsonb_array_length(asset->\'votes\') = 1')
                         ->whereRaw('LEFT(asset->\'votes\'->>0, 1) = \'-\'');
                 }))->orWhere(fn ($query) => $query->when($this->filter['vote-swap'], fn ($query) => $query->whereRaw('jsonb_array_length(asset->\'votes\') = 2')));
+            })
+            ->when($this->sortKey === 'age', fn ($query) => $query->orderBy('timestamp', $sortDirection->value))
+            ->when($this->sortKey === 'address', function ($query) use ($sortDirection) {
+                $query->join('wallets', 'wallets.public_key', '=', 'transactions.sender_public_key')
+                    ->orderBy('wallets.address', $sortDirection->value);
+            })
+            ->when($this->sortKey === 'type', function ($query) use ($sortDirection) {
+                // @TODO: sort by type alphanumeric
+            })
+            ->when($this->sortKey === 'name', function ($query) use ($sortDirection) {
+                $query->select([
+                    'delegate_name' => fn ($query) => $query
+                        ->selectRaw('wallets.attributes->\'delegate\'->\'username\'')
+                        ->from(function ($query) {
+                            $query
+                                ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'-\') IS null) then substring(asset->\'votes\'->>0, 2) end as unvote')
+                                ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'+\') IS null) then substring(asset->\'votes\'->>0, 2) end as vote')
+                                ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'-\') IS null and asset->\'votes\'->>1 is not null and NULLIF(LEFT(asset->\'votes\'->>1, 1), \'+\') IS null) then substring(asset->\'votes\'->>1, 2) end as votecombination')
+                                ->whereColumn('transactions.id', 'delegate_transaction.id')
+                                ->from('transactions', 'delegate_transaction');
+                        }, 'delegate_vote')
+                        ->join('wallets', 'wallets.public_key', '=', DB::raw('coalesce(delegate_vote.votecombination, delegate_vote.vote, delegate_vote.unvote)')),
+                ])
+                ->selectRaw('transactions.*')
+                ->orderBy('delegate_name', $sortDirection->value);
             });
     }
 }

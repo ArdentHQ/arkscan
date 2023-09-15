@@ -18,14 +18,30 @@
                 class="whitespace-nowrap"
                 width="200"
             />
+
             <x-tables.headers.desktop.text
                 name="tables.recent-votes.age"
                 breakpoint="xl"
                 responsive
+                sorting-id="age"
+                livewire-sort
             />
-            <x-tables.headers.desktop.text name="tables.recent-votes.addressing" />
-            <x-tables.headers.desktop.text name="tables.recent-votes.type" />
-            <x-tables.headers.desktop.text name="tables.recent-votes.delegate" />
+
+            <x-tables.headers.desktop.text
+                name="tables.recent-votes.addressing"
+                sorting-id="address"
+                livewire-sort
+            />
+            <x-tables.headers.desktop.text
+                name="tables.recent-votes.type"
+                sorting-id="type"
+                livewire-sort
+            />
+            <x-tables.headers.desktop.text
+                name="tables.recent-votes.delegate"
+                sorting-id="name"
+                livewire-sort
+            />
         </tr>
     </thead>
     <tbody>
