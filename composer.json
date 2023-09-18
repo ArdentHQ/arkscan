@@ -19,7 +19,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "http-interop/http-factory-guzzle": "^1.2",
         "huddledigital/zendesk-laravel": "^3.8",
-        "laravel/framework": "^9.22",
+        "laravel/framework": "^9.23",
         "laravel/horizon": "^5.20",
         "laravel/scout": "^10.3",
         "laravel/tinker": "^2.8",
@@ -35,7 +35,7 @@
         "barryvdh/laravel-debugbar": "^3.9",
         "spatie/laravel-ignition": "^1.3",
         "furqansiddiqui/bip39-mnemonic-php": "^0.1",
-        "laravel/dusk": "^6.10",
+        "laravel/dusk": "^6.11",
         "wnx/laravel-stats": "^2.11"
     },
     "config": {
