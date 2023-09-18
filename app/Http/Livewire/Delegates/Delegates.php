@@ -149,7 +149,7 @@ final class Delegates extends TabbedTableComponent
             })
             ->when($this->sortKey === 'no_of_voters', function ($query) use ($sortDirection) {
                 $voterCounts = (new DelegateCache())->getAllVoterCounts();
-                if (empty($voterCounts)) {
+                if (count($voterCounts) === 0) {
                     $query->selectRaw('0 AS no_of_voters')
                         ->selectRaw('wallets.*');
                 } else {
