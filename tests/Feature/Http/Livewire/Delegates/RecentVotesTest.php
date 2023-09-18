@@ -288,35 +288,34 @@ function generateTransactions(): array
 
     $voteTransaction = Transaction::factory()->vote()->create([
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 03:41:04')->unix())->unix(),
-        'asset' => [
+        'asset'     => [
             'vote' => ['+'.$delegate1->public_key],
-        ]
+        ],
     ]);
 
     $unvoteTransaction = Transaction::factory()->unvote()->create([
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 04:41:04')->unix())->unix(),
-        'asset' => [
+        'asset'     => [
             'vote' => ['-'.$delegate2->public_key],
-        ]
+        ],
     ]);
 
     $voteSwapTransaction = Transaction::factory()->voteCombination()->create([
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 05:41:04')->unix())->unix(),
-        'asset' => [
+        'asset'     => [
             'vote' => ['-'.$delegate1->public_key, '+'.$delegate3->public_key],
-        ]
+        ],
     ]);
 
     return [
-        'delegate1' => $delegate1,
-        'delegate2' => $delegate2,
-        'delegate3' => $delegate3,
-        'voteTransaction' => $voteTransaction,
-        'unvoteTransaction' => $unvoteTransaction,
+        'delegate1'           => $delegate1,
+        'delegate2'           => $delegate2,
+        'delegate3'           => $delegate3,
+        'voteTransaction'     => $voteTransaction,
+        'unvoteTransaction'   => $unvoteTransaction,
         'voteSwapTransaction' => $voteSwapTransaction,
     ];
 };
-
 
 it('should sort by age descending by default', function () {
     $data = generateTransactions();
