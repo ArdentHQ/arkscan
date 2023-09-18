@@ -7,6 +7,8 @@ use App\Http\Livewire\Delegates\MissedBlocks;
 use App\Models\ForgingStats;
 use App\Models\Wallet;
 use App\Services\Cache\DelegateCache;
+use Illuminate\Support\Facades\Route;
+use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 
 beforeEach(function () {
@@ -538,4 +540,104 @@ it('should reset page on sorting change', function () {
         ->assertSet('page', 1)
         ->assertSet('sortKey', 'age')
         ->assertSet('sortDirection', SortDirection::DESC);
+});
+
+it('should parse sorting direction from query string', function () {
+    Route::get('/test-delegates', function () {
+        return BladeCompiler::render('<livewire:delegates.missed-blocks :defer-loading="false" />');
+    });
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-2',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
+    ]);
+
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-1',
+                'voteBalance' => 10000 * 1e8,
+            ],
+        ],
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $wallet1->public_key,
+        'timestamp'  => 100,
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $wallet2->public_key,
+        'timestamp'  => 134,
+    ]);
+
+    $this->get('/test-delegates?sort=name&sort-direction=asc')
+        ->assertSeeInOrder([
+            $wallet1->address,
+            $wallet2->address,
+            $wallet1->address,
+            $wallet2->address,
+        ]);
+
+    $this->get('/test-delegates?sort=name&sort-direction=desc')
+        ->assertSeeInOrder([
+            $wallet2->address,
+            $wallet1->address,
+            $wallet2->address,
+            $wallet1->address,
+        ]);
+});
+
+it('should force ascending if invalid query string value', function () {
+    Route::get('/test-delegates', function () {
+        return BladeCompiler::render('<livewire:delegates.missed-blocks :defer-loading="false" />');
+    });
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-2',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
+    ]);
+
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-1',
+                'voteBalance' => 10000 * 1e8,
+            ],
+        ],
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $wallet1->public_key,
+        'timestamp'  => 100,
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $wallet2->public_key,
+        'timestamp'  => 134,
+    ]);
+
+    $this->get('/test-delegates?sort=name&sort-direction=desc')
+        ->assertSeeInOrder([
+            $wallet2->address,
+            $wallet1->address,
+            $wallet2->address,
+            $wallet1->address,
+        ]);
+
+    $this->get('/test-delegates?sort=name&sort-direction=testing')
+        ->assertSeeInOrder([
+            $wallet1->address,
+            $wallet2->address,
+            $wallet1->address,
+            $wallet2->address,
+        ]);
 });
