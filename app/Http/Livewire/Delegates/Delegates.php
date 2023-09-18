@@ -148,15 +148,21 @@ final class Delegates extends TabbedTableComponent
                     ));
             })
             ->when($this->sortKey === 'no_of_voters', function ($query) use ($sortDirection) {
-                $query->selectRaw('voting_stats.count AS no_of_voters')
-                    ->selectRaw('wallets.*')
-                    ->join(DB::raw(sprintf(
-                        '(values %s) as voting_stats (public_key, count)',
-                        collect((new DelegateCache())->getAllVoterCounts())
-                            ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
-                            ->join(','),
-                    )), 'wallets.public_key', '=', 'voting_stats.public_key', 'left outer')
-                    ->orderByRaw(sprintf('no_of_voters %s, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC NULLS LAST', $sortDirection->value));
+                $voterCounts = (new DelegateCache())->getAllVoterCounts();
+                if (empty($voterCounts)) {
+                    $query->selectRaw('0 AS no_of_voters')
+                        ->selectRaw('wallets.*');
+                } else {
+                    $query->selectRaw('voting_stats.count AS no_of_voters')
+                        ->selectRaw('wallets.*')
+                        ->join(DB::raw(sprintf(
+                            '(values %s) as voting_stats (public_key, count)',
+                            collect($voterCounts)
+                                ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
+                                ->join(','),
+                        )), 'wallets.public_key', '=', 'voting_stats.public_key', 'left outer')
+                        ->orderByRaw(sprintf('no_of_voters %s, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC NULLS LAST', $sortDirection->value));
+                }
             })
             ->when($this->sortKey === 'missed_blocks', function ($query) use ($sortDirection) {
                 $query->selectRaw('forging_stats.count AS missed_blocks')
