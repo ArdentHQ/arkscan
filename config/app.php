@@ -243,6 +243,7 @@ return [
         'Helpers'                 => App\Services\Helpers::class,
         'Forms'                   => App\Services\Forms::class,
         'Zendesk'                 => Huddle\Zendesk\Facades\Zendesk::class,
+        'SortDirection'           => App\Enums\SortDirection::class,
     ],
 
 ];

@@ -6,8 +6,9 @@
     'class' => '',
     'name' => '',
     'width' => null,
-    'initialSort' => 'asc',
     'sortingId' => null,
+    'initialSort' => 'asc',
+    'livewireSort' => false,
 ])
 
 <x-ark-tables.header
@@ -15,17 +16,17 @@
     :breakpoint="$breakpoint"
     :first-on="$firstOn"
     :last-on="$lastOn"
-    :class="$class"
     :width="$width"
-    :attributes="$attributes"
     :class="Arr::toCssClasses([
         'group/header cursor-pointer' => $sortingId !== null,
+        'flex-row-reverse space-x-0' => $livewireSort && $sortingId !== null,
         $class,
     ])"
     :attributes="$attributes->merge([
-        'x-ref' => $sortingId,
-        'x-on:click' => $sortingId !== null ? 'sortByColumn' : null,
-        'data-initial-sort' => $sortingId !== null ? $initialSort : null,
+        'x-ref' => ! $livewireSort && $sortingId,
+        'x-on:click' => ! $livewireSort && $sortingId !== null ? 'sortByColumn' : null,
+        'data-initial-sort' => ! $livewireSort && $sortingId !== null ? $initialSort : null,
+        'wire:click' => $livewireSort && $sortingId !== null ? 'sortBy(\''.$sortingId.'\')' : null,
     ])"
 >
     <div @class([
@@ -33,9 +34,13 @@
     ])>
         <span>@lang($name)</span>
 
-        <x-tables.headers.desktop.includes.sort-icon
-            :id="$sortingId"
-            :initial-direction="$initialSort"
-        />
+        @if ($livewireSort)
+            <x-tables.headers.desktop.includes.livewire-sort-icon :id="$sortingId" />
+        @else
+            <x-tables.headers.desktop.includes.sort-icon
+                :id="$sortingId"
+                :initial-direction="$initialSort"
+            />
+        @endif
     </div>
 </x-ark-tables.header>

@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Delegates;
 
+use App\Enums\SortDirection;
 use App\Facades\Network;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
-use App\Models\Scopes\OrderByBalanceScope;
+use App\Http\Livewire\Concerns\HasTableSorting;
+use App\Models\ForgingStats;
 use App\Models\Wallet;
+use App\Services\Cache\DelegateCache;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property bool $isAllSelected
@@ -23,8 +27,13 @@ final class Delegates extends TabbedTableComponent
 {
     use DeferLoading;
     use HasTableFilter;
+    use HasTableSorting;
 
     public const PER_PAGE = 51;
+
+    public const INITIAL_SORT_KEY = 'rank';
+
+    public const INITIAL_SORT_DIRECTION = SortDirection::ASC;
 
     public array $filter = [
         'active'   => true,
@@ -85,17 +94,7 @@ final class Delegates extends TabbedTableComponent
         }
 
         return $this->getDelegatesQuery()
-            ->withScope(OrderByBalanceScope::class)
             ->paginate($this->perPage);
-    }
-
-    public function getShowMissedBlocksProperty(): bool
-    {
-        if ($this->filter['active'] === false) {
-            return false;
-        }
-
-        return ($this->page - 1) * $this->perPage < Network::delegateCount();
     }
 
     public static function perPageOptions(): array
@@ -118,6 +117,11 @@ final class Delegates extends TabbedTableComponent
 
     private function getDelegatesQuery(): Builder
     {
+        $sortDirection = SortDirection::ASC;
+        if ($this->sortDirection === SortDirection::DESC) {
+            $sortDirection = SortDirection::DESC;
+        }
+
         return Wallet::query()
             ->whereNotNull('attributes->delegate->username')
             ->where(fn ($query) => $query->when($this->hasFilters(), function ($query) {
@@ -133,6 +137,46 @@ final class Delegates extends TabbedTableComponent
                     })))
                     ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->delegate->resigned', true)));
             }))
-            ->orderByRaw("(\"attributes\"->'delegate'->>'rank')::numeric ASC");
+            ->when($this->sortKey === 'rank', fn ($query) => $query->orderByRaw("(\"attributes\"->'delegate'->>'rank')::numeric ".$sortDirection->value))
+            ->when($this->sortKey === 'name', fn ($query) => $query->orderByRaw("(\"attributes\"->'delegate'->>'username')::text ".$sortDirection->value.', ("attributes"->\'delegate\'->>\'rank\')::numeric ASC'))
+            ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', function ($query) use ($sortDirection) {
+                $query->selectRaw('("attributes"->\'delegate\'->>\'voteBalance\')::numeric AS vote_count')
+                    ->selectRaw('wallets.*')
+                    ->orderByRaw(sprintf(
+                        'CASE WHEN NULLIF(("attributes"->\'delegate\'->>\'voteBalance\')::numeric, 0) IS NULL THEN 1 ELSE 0 END ASC, ("attributes"->\'delegate\'->>\'voteBalance\')::numeric %s, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC',
+                        $sortDirection->value
+                    ));
+            })
+            ->when($this->sortKey === 'no_of_voters', function ($query) use ($sortDirection) {
+                $voterCounts = (new DelegateCache())->getAllVoterCounts();
+                if (count($voterCounts) === 0) {
+                    $query->selectRaw('0 AS no_of_voters')
+                        ->selectRaw('wallets.*');
+                } else {
+                    $query->selectRaw('voting_stats.count AS no_of_voters')
+                        ->selectRaw('wallets.*')
+                        ->join(DB::raw(sprintf(
+                            '(values %s) as voting_stats (public_key, count)',
+                            collect($voterCounts)
+                                ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
+                                ->join(','),
+                        )), 'wallets.public_key', '=', 'voting_stats.public_key', 'left outer')
+                        ->orderByRaw(sprintf('no_of_voters %s NULLS LAST, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC', $sortDirection->value));
+                }
+            })
+            ->when($this->sortKey === 'missed_blocks', function ($query) use ($sortDirection) {
+                $query->selectRaw('forging_stats.count AS missed_blocks')
+                    ->selectRaw('wallets.*')
+                    ->join(DB::raw(sprintf(
+                        '(values %s) as forging_stats (public_key, count)',
+                        ForgingStats::selectRaw('public_key, COUNT(*) as count')
+                            ->groupBy('public_key')
+                            ->whereNot('missed_height', null)
+                            ->get()
+                            ->map(fn ($forgingStat) => sprintf('(\'%s\',%d)', $forgingStat->public_key, $forgingStat->count))
+                            ->join(','),
+                    )), 'wallets.public_key', '=', 'forging_stats.public_key', 'left outer')
+                    ->orderByRaw(sprintf('missed_blocks %s NULLS LAST, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC', $sortDirection->value));
+            });
     }
 }
