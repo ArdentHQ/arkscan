@@ -251,6 +251,8 @@ it('should sort by rank by default', function () {
         ->assertSeeInOrder([
             $wallet1->address,
             $wallet2->address,
+            $wallet1->address,
+            $wallet2->address,
         ]);
 });
 
@@ -282,6 +284,8 @@ it('should sort rank in descending order', function () {
         ->assertSet('sortKey', 'rank')
         ->set('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
+            $wallet2->address,
+            $wallet1->address,
             $wallet2->address,
             $wallet1->address,
         ]);
@@ -317,6 +321,8 @@ it('should sort name in ascending order', function () {
         ->assertSeeInOrder([
             $wallet1->address,
             $wallet2->address,
+            $wallet1->address,
+            $wallet2->address,
         ]);
 });
 
@@ -348,8 +354,10 @@ it('should sort name in descending order', function () {
         ->set('sortKey', 'name')
         ->set('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
+            $wallet2->address,
             $wallet1->address,
             $wallet2->address,
+            $wallet1->address,
         ]);
 });
 
@@ -376,6 +384,17 @@ it('should sort number of voters in ascending order', function () {
         ],
     ]);
 
+    $walletWithoutVotes = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 3,
+                'username'       => 'delegate-3',
+                'voteBalance'    => 0,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
     $delegateCache = new DelegateCache();
     $delegateCache->setAllVoterCounts([
         $wallet1->public_key => 30,
@@ -389,6 +408,10 @@ it('should sort number of voters in ascending order', function () {
         ->assertSeeInOrder([
             $wallet2->address,
             $wallet1->address,
+            $walletWithoutVotes->address,
+            $wallet2->address,
+            $wallet1->address,
+            $walletWithoutVotes->address,
         ]);
 });
 
@@ -415,6 +438,17 @@ it('should sort number of voters in descending order', function () {
         ],
     ]);
 
+    $walletWithoutVotes = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 3,
+                'username'       => 'delegate-3',
+                'voteBalance'    => 0,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
     $delegateCache = new DelegateCache();
     $delegateCache->setAllVoterCounts([
         $wallet1->public_key => 30,
@@ -428,6 +462,10 @@ it('should sort number of voters in descending order', function () {
         ->assertSeeInOrder([
             $wallet1->address,
             $wallet2->address,
+            $walletWithoutVotes->address,
+            $wallet1->address,
+            $wallet2->address,
+            $walletWithoutVotes->address,
         ]);
 });
 
@@ -459,6 +497,8 @@ it('should sort votes & percentage in ascending order', function (string $sortKe
         ->set('sortKey', 'votes')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
+            $wallet2->address,
+            $wallet1->address,
             $wallet2->address,
             $wallet1->address,
         ]);
@@ -497,6 +537,8 @@ it('should sort votes & percentage in descending order', function (string $sortK
         ->assertSeeInOrder([
             $wallet1->address,
             $wallet2->address,
+            $wallet1->address,
+            $wallet2->address,
         ]);
 })->with([
     'votes',
@@ -526,6 +568,17 @@ it('should sort missed blocks in ascending order', function () {
         ],
     ]);
 
+    $walletWithoutMissedBlocks = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 3,
+                'username'       => 'delegate-3',
+                'voteBalance'    => 0,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
     ForgingStats::factory(24)->create([
         'public_key' => $wallet1->public_key,
     ]);
@@ -539,8 +592,12 @@ it('should sort missed blocks in ascending order', function () {
         ->set('sortKey', 'missed_blocks')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            $wallet2->address,
             $wallet1->address,
+            $wallet2->address,
+            $walletWithoutMissedBlocks->address,
+            $wallet1->address,
+            $wallet2->address,
+            $walletWithoutMissedBlocks->address,
         ]);
 });
 
@@ -567,6 +624,17 @@ it('should sort missed blocks in descending order', function () {
         ],
     ]);
 
+    $walletWithoutMissedBlocks = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 3,
+                'username'       => 'delegate-3',
+                'voteBalance'    => 0,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
     ForgingStats::factory(24)->create([
         'public_key' => $wallet1->public_key,
     ]);
@@ -582,6 +650,10 @@ it('should sort missed blocks in descending order', function () {
         ->assertSeeInOrder([
             $wallet2->address,
             $wallet1->address,
+            $walletWithoutMissedBlocks->address,
+            $wallet2->address,
+            $wallet1->address,
+            $walletWithoutMissedBlocks->address,
         ]);
 });
 
