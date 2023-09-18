@@ -469,6 +469,54 @@ it('should sort number of voters in descending order', function () {
         ]);
 });
 
+it('should handle no cached votes when sorting by number of voters', function () {
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 1,
+                'username'       => 'delegate-1',
+                'voteBalance'    => 10000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 2,
+                'username'       => 'delegate-2',
+                'voteBalance'    => 4000 * 1e8,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    $walletWithoutVotes = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'rank'           => 3,
+                'username'       => 'delegate-3',
+                'voteBalance'    => 0,
+                'producedBlocks' => 1000,
+            ],
+        ],
+    ]);
+
+    Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->set('sortKey', 'no_of_voters')
+        ->set('sortDirection', SortDirection::DESC)
+        ->assertSeeInOrder([
+            $wallet1->address,
+            $wallet2->address,
+            $walletWithoutVotes->address,
+            $wallet1->address,
+            $wallet2->address,
+            $walletWithoutVotes->address,
+        ]);
+});
+
 it('should sort votes & percentage in ascending order', function (string $sortKey) {
     $wallet1 = Wallet::factory()->activeDelegate()->create([
         'attributes' => [
