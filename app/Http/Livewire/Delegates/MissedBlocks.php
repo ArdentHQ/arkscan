@@ -107,7 +107,7 @@ final class MissedBlocks extends TabbedTableComponent
                         $delegateVotes->map(fn ($votes, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $votes))
                             ->join(','),
                     )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
-                    ->orderByRaw('votes '.$sortDirection->value.' NULLS LAST, timestamp DESC');
+                    ->orderByRaw('votes '.$sortDirection->value.', timestamp DESC');
             })
             ->when($this->sortKey === 'no_of_voters', function ($query) use ($sortDirection) {
                 $query->selectRaw('voting_stats.count AS no_of_voters')
