@@ -75,6 +75,8 @@ it('should sort height in ascending order', function () {
         ->assertSeeInOrder([
             'delegate-1',
             'delegate-2',
+            'delegate-1',
+            'delegate-2',
         ]);
 });
 
@@ -113,6 +115,8 @@ it('should sort height in descending order', function () {
         ->call('sortBy', 'height')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
+            'delegate-2',
+            'delegate-1',
             'delegate-2',
             'delegate-1',
         ]);
@@ -154,10 +158,12 @@ it('should sort by age by default', function () {
         ->assertSeeInOrder([
             'delegate-2',
             'delegate-1',
+            'delegate-2',
+            'delegate-1',
         ]);
 });
 
-it('should sort age in descending order', function () {
+it('should sort age in ascending order', function () {
     $wallet1 = Wallet::factory()->activeDelegate()->create([
         'attributes' => [
             'delegate' => [
@@ -192,6 +198,8 @@ it('should sort age in descending order', function () {
         ->call('sortBy', 'age')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
+            'delegate-1',
+            'delegate-2',
             'delegate-1',
             'delegate-2',
         ]);
@@ -231,6 +239,8 @@ it('should sort name in ascending order', function () {
         ->assertSeeInOrder([
             'delegate-1',
             'delegate-2',
+            'delegate-1',
+            'delegate-2',
         ]);
 });
 
@@ -268,6 +278,8 @@ it('should sort name in descending order', function () {
         ->assertSeeInOrder([
             'delegate-2',
             'delegate-1',
+            'delegate-2',
+            'delegate-1',
         ]);
 });
 
@@ -290,12 +302,25 @@ it('should sort number of voters in ascending order', function () {
         ],
     ]);
 
+    $walletWithoutVoters = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-3',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
+    ]);
+
     ForgingStats::factory()->create([
         'public_key' => $wallet1->public_key,
     ]);
 
     ForgingStats::factory()->create([
         'public_key' => $wallet2->public_key,
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $walletWithoutVoters->public_key,
     ]);
 
     (new DelegateCache())->setAllVoterCounts([
@@ -310,6 +335,10 @@ it('should sort number of voters in ascending order', function () {
         ->assertSeeInOrder([
             'delegate-2',
             'delegate-1',
+            'delegate-3',
+            'delegate-2',
+            'delegate-1',
+            'delegate-3',
         ]);
 });
 
@@ -332,12 +361,25 @@ it('should sort number of voters in descending order', function () {
         ],
     ]);
 
+    $walletWithoutVoters = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-3',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
+    ]);
+
     ForgingStats::factory()->create([
         'public_key' => $wallet1->public_key,
     ]);
 
     ForgingStats::factory()->create([
         'public_key' => $wallet2->public_key,
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $walletWithoutVoters->public_key,
     ]);
 
     (new DelegateCache())->setAllVoterCounts([
@@ -353,6 +395,10 @@ it('should sort number of voters in descending order', function () {
         ->assertSeeInOrder([
             'delegate-1',
             'delegate-2',
+            'delegate-3',
+            'delegate-1',
+            'delegate-2',
+            'delegate-3',
         ]);
 });
 
@@ -388,6 +434,8 @@ it('should sort votes & percentage in ascending order', function (string $sortKe
         ->call('sortBy', $sortKey)
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
+            'delegate-2',
+            'delegate-1',
             'delegate-2',
             'delegate-1',
         ]);
@@ -428,6 +476,8 @@ it('should sort votes & percentage in descending order', function (string $sortK
         ->call('sortBy', $sortKey)
         ->set('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
+            'delegate-1',
+            'delegate-2',
             'delegate-1',
             'delegate-2',
         ]);
