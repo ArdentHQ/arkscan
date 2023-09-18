@@ -131,7 +131,20 @@ final class RecentVotes extends TabbedTableComponent
                     ->orderBy('wallets.address', $sortDirection->value);
             })
             ->when($this->sortKey === 'type', function ($query) use ($sortDirection) {
-                // @TODO: sort by type alphanumeric
+                $query->select([
+                    'transaction_type' => fn ($query) => $query
+                        ->selectRaw('coalesce(delegate_vote.votecombination, delegate_vote.vote, delegate_vote.unvote)')
+                        ->from(function ($query) {
+                            $query
+                                ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'-\') IS null) then 0 end as unvote')
+                                ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'+\') IS null) then 1 end as vote')
+                                ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'-\') IS null and asset->\'votes\'->>1 is not null and NULLIF(LEFT(asset->\'votes\'->>1, 1), \'+\') IS null) then 2 end as votecombination')
+                                ->whereColumn('transactions.id', 'delegate_transaction.id')
+                                ->from('transactions', 'delegate_transaction');
+                        }, 'delegate_vote'),
+                ])
+                ->selectRaw('transactions.*')
+                ->orderBy('transaction_type', $sortDirection->value);
             })
             ->when($this->sortKey === 'name', function ($query) use ($sortDirection) {
                 $query->select([
