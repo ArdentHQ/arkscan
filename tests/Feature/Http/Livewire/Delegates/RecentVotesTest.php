@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Enums\SortDirection;
 use App\Http\Livewire\Delegates\RecentVotes;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Timestamp;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Route;
+use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 
 it('should render', function () {
@@ -252,4 +255,297 @@ it('should show correct message when there are no results', function () {
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
         ->assertSee(trans('tables.recent-votes.no_results.no_results'));
+});
+
+function generateTransactions(): array
+{
+    $delegate1 = Wallet::factory()->activeDelegate()->create([
+        'address'    => 'delegate-address-c',
+        'attributes' => [
+            'delegate' => [
+                'username' => 'delegate-1',
+            ],
+        ],
+    ]);
+
+    $delegate2 = Wallet::factory()->activeDelegate()->create([
+        'address'    => 'delegate-address-b',
+        'attributes' => [
+            'delegate' => [
+                'username' => 'delegate-2',
+            ],
+        ],
+    ]);
+
+    $delegate3 = Wallet::factory()->activeDelegate()->create([
+        'address'    => 'delegate-address-a',
+        'attributes' => [
+            'delegate' => [
+                'username' => 'delegate-3',
+            ],
+        ],
+    ]);
+
+    $voteTransaction = Transaction::factory()->vote()->create([
+        'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 03:41:04')->unix())->unix(),
+        'asset' => [
+            'vote' => ['+'.$delegate1->public_key],
+        ]
+    ]);
+
+    $unvoteTransaction = Transaction::factory()->unvote()->create([
+        'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 04:41:04')->unix())->unix(),
+        'asset' => [
+            'vote' => ['-'.$delegate2->public_key],
+        ]
+    ]);
+
+    $voteSwapTransaction = Transaction::factory()->voteCombination()->create([
+        'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 05:41:04')->unix())->unix(),
+        'asset' => [
+            'vote' => ['-'.$delegate1->public_key, '+'.$delegate3->public_key],
+        ]
+    ]);
+
+    return [
+        'delegate1' => $delegate1,
+        'delegate2' => $delegate2,
+        'delegate3' => $delegate3,
+        'voteTransaction' => $voteTransaction,
+        'unvoteTransaction' => $unvoteTransaction,
+        'voteSwapTransaction' => $voteSwapTransaction,
+    ];
+};
+
+
+it('should sort by age descending by default', function () {
+    $data = generateTransactions();
+
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->assertSet('sortKey', 'age')
+        ->assertSet('sortDirection', SortDirection::DESC)
+        ->assertSeeInOrder([
+            $data['voteSwapTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteTransaction']->address,
+        ]);
+});
+
+it('should sort age in ascending order', function () {
+    $data = generateTransactions();
+
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->call('sortBy', 'age')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSeeInOrder([
+            $data['voteTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+        ]);
+});
+
+it('should sort name in ascending order', function () {
+    $data = generateTransactions();
+
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->call('sortBy', 'name')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSeeInOrder([
+            $data['voteTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+        ]);
+});
+
+it('should sort name in descending order', function () {
+    $data = generateTransactions();
+
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->call('sortBy', 'name')
+        ->call('sortBy', 'name')
+        ->assertSet('sortDirection', SortDirection::DESC)
+        ->assertSeeInOrder([
+            $data['voteSwapTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteTransaction']->address,
+        ]);
+});
+
+it('should sort address in ascending order', function () {
+    $data = generateTransactions();
+
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->call('sortBy', 'address')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSeeInOrder([
+            $data['voteSwapTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteTransaction']->address,
+        ]);
+});
+
+it('should sort address in descending order', function () {
+    $data = generateTransactions();
+
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->call('sortBy', 'address')
+        ->call('sortBy', 'address')
+        ->assertSet('sortDirection', SortDirection::DESC)
+        ->assertSeeInOrder([
+            $data['voteTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+        ]);
+});
+
+it('should sort type in ascending order', function () {
+    $data = generateTransactions();
+
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->call('sortBy', 'type')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSeeInOrder([
+            $data['unvoteTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+        ]);
+});
+
+it('should sort type in descending order', function () {
+    $data = generateTransactions();
+
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->call('sortBy', 'type')
+        ->call('sortBy', 'type')
+        ->assertSet('sortDirection', SortDirection::DESC)
+        ->assertSeeInOrder([
+            $data['voteSwapTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['unvoteTransaction']->address,
+        ]);
+});
+
+it('should alternate sorting direction', function () {
+    $component = Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->assertSet('sortKey', 'age')
+        ->assertSet('sortDirection', SortDirection::DESC)
+        ->call('sortBy', 'age')
+        ->assertSet('sortKey', 'age')
+        ->assertSet('sortDirection', SortDirection::ASC);
+
+    foreach (['name', 'address', 'type'] as $column) {
+        $component->call('sortBy', $column)
+            ->assertSet('sortKey', $column)
+            ->assertSet('sortDirection', SortDirection::ASC)
+            ->call('sortBy', $column)
+            ->assertSet('sortKey', $column)
+            ->assertSet('sortDirection', SortDirection::DESC);
+    }
+});
+
+it('should reset page on sorting change', function () {
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->assertSet('page', 1)
+        ->assertSet('sortKey', 'age')
+        ->assertSet('sortDirection', SortDirection::DESC)
+        ->set('page', 12)
+        ->call('sortBy', 'age')
+        ->assertSet('page', 1)
+        ->assertSet('sortKey', 'age')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->set('page', 12)
+        ->call('sortBy', 'age')
+        ->assertSet('page', 1)
+        ->assertSet('sortKey', 'age')
+        ->assertSet('sortDirection', SortDirection::DESC);
+});
+
+it('should parse sorting direction from query string', function () {
+    Route::get('/test-delegates', function () {
+        return BladeCompiler::render('<livewire:delegates.recent-votes :defer-loading="false" />');
+    });
+
+    $data = generateTransactions();
+
+    $this->get('/test-delegates?sort=type&sort-direction=asc')
+        ->assertSeeInOrder([
+            $data['unvoteTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+        ]);
+
+    $this->get('/test-delegates?sort=type&sort-direction=desc')
+        ->assertSeeInOrder([
+            $data['voteSwapTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['unvoteTransaction']->address,
+        ]);
+});
+
+it('should force default sort direction if invalid query string value', function () {
+    Route::get('/test-delegates', function () {
+        return BladeCompiler::render('<livewire:delegates.recent-votes :defer-loading="false" />');
+    });
+
+    $data = generateTransactions();
+
+    $this->get('/test-delegates?sort=type&sort-direction=desc')
+        ->assertSeeInOrder([
+            $data['voteSwapTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['unvoteTransaction']->address,
+        ]);
+
+    $this->get('/test-delegates?sort=type&sort-direction=testing')
+        ->assertSeeInOrder([
+            $data['unvoteTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+            $data['unvoteTransaction']->address,
+            $data['voteTransaction']->address,
+            $data['voteSwapTransaction']->address,
+        ]);
 });
