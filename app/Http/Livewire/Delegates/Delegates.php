@@ -152,28 +152,38 @@ final class Delegates extends TabbedTableComponent
                 if (count($voterCounts) === 0) {
                     $query->selectRaw('0 AS no_of_voters')
                         ->selectRaw('wallets.*');
-                } else {
-                    $query->selectRaw('voting_stats.count AS no_of_voters')
-                        ->selectRaw('wallets.*')
-                        ->join(DB::raw(sprintf(
-                            '(values %s) as voting_stats (public_key, count)',
-                            collect($voterCounts)
-                                ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
-                                ->join(','),
-                        )), 'wallets.public_key', '=', 'voting_stats.public_key', 'left outer')
-                        ->orderByRaw(sprintf('no_of_voters %s NULLS LAST, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC', $sortDirection->value));
+
+                    return;
                 }
+
+                $query->selectRaw('voting_stats.count AS no_of_voters')
+                    ->selectRaw('wallets.*')
+                    ->join(DB::raw(sprintf(
+                        '(values %s) as voting_stats (public_key, count)',
+                        collect($voterCounts)
+                            ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
+                            ->join(','),
+                    )), 'wallets.public_key', '=', 'voting_stats.public_key', 'left outer')
+                    ->orderByRaw(sprintf('no_of_voters %s NULLS LAST, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC', $sortDirection->value));
             })
             ->when($this->sortKey === 'missed_blocks', function ($query) use ($sortDirection) {
+                $missedBlocks = ForgingStats::selectRaw('public_key, COUNT(*) as count')
+                    ->groupBy('public_key')
+                    ->whereNot('missed_height', null)
+                    ->get();
+
+                if (count($missedBlocks) === 0) {
+                    $query->selectRaw('0 AS missed_blocks')
+                        ->selectRaw('wallets.*');
+
+                    return;
+                }
+
                 $query->selectRaw('forging_stats.count AS missed_blocks')
                     ->selectRaw('wallets.*')
                     ->join(DB::raw(sprintf(
                         '(values %s) as forging_stats (public_key, count)',
-                        ForgingStats::selectRaw('public_key, COUNT(*) as count')
-                            ->groupBy('public_key')
-                            ->whereNot('missed_height', null)
-                            ->get()
-                            ->map(fn ($forgingStat) => sprintf('(\'%s\',%d)', $forgingStat->public_key, $forgingStat->count))
+                        $missedBlocks->map(fn ($forgingStat) => sprintf('(\'%s\',%d)', $forgingStat->public_key, $forgingStat->count))
                             ->join(','),
                     )), 'wallets.public_key', '=', 'forging_stats.public_key', 'left outer')
                     ->orderByRaw(sprintf('missed_blocks %s NULLS LAST, ("attributes"->\'delegate\'->>\'rank\')::numeric ASC', $sortDirection->value));
