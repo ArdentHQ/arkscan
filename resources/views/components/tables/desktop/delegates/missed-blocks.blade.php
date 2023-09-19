@@ -17,24 +17,42 @@
                 name="tables.blocks.height"
                 class="whitespace-nowrap"
                 width="200"
+                sorting-id="height"
+                livewire-sort
             />
 
             <x-tables.headers.desktop.text
                 name="tables.blocks.age"
                 breakpoint="md-lg"
                 responsive
+                sorting-id="age"
+                livewire-sort
             />
 
-            <x-tables.headers.desktop.address name="tables.missed-blocks.delegate" />
+            <x-tables.headers.desktop.address
+                name="tables.missed-blocks.delegate"
+                sorting-id="name"
+                livewire-sort
+            />
 
-            <x-tables.headers.desktop.number name="tables.missed-blocks.no_of_voters" />
+            <x-tables.headers.desktop.number
+                name="tables.missed-blocks.no_of_voters"
+                sorting-id="no_of_voters"
+                livewire-sort
+            />
 
             <x-tables.headers.desktop.number
                 name="tables.missed-blocks.votes"
                 :name-properties="['currency' => Network::currency()]"
+                sorting-id="votes"
+                livewire-sort
             />
 
-            <x-tables.headers.desktop.number name="tables.missed-blocks.percentage">
+            <x-tables.headers.desktop.number
+                name="tables.missed-blocks.percentage"
+                sorting-id="percentage_votes"
+                livewire-sort
+            >
                 <x-tables.headers.desktop.includes.tooltip :text="trans('tables.missed-blocks.info.percentage')" />
             </x-tables.headers.desktop.number>
         </tr>
