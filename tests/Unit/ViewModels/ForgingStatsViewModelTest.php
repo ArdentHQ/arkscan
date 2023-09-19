@@ -64,13 +64,12 @@ it('should get the delegate username', function () {
     expect($this->subject->username())->toBe('joe.blogs');
 });
 
-it('should fail to get the delegate username', function () {
+it('should handle no delegate username', function () {
     $wallet = Wallet::factory()->activeDelegate()->create(['attributes' => []]);
 
     $this->subject = new ForgingStatsViewModel(ForgingStats::factory()->create([
         'public_key' => $wallet->public_key,
     ]));
 
-    expect($this->subject->username())->toBeString();
-    expect($this->subject->username())->toBe('Genesis');
+    expect($this->subject->username())->toBeNull();
 });
