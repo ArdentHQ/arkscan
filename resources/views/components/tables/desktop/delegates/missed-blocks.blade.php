@@ -60,6 +60,7 @@
 
     <tbody>
         @foreach($blocks as $block)
+            @php ($delegate = $block->delegate())
             <x-ark-tables.row wire:key="{{ Helpers::generateId('block', $block->timestamp()) }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.block-height
@@ -74,25 +75,29 @@
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>
-                    <x-tables.rows.desktop.encapsulated.address
-                        :model="$block"
-                        without-clipboard
-                    />
+                    @if ($delegate)
+                        <x-tables.rows.desktop.encapsulated.address
+                            :model="$block"
+                            without-clipboard
+                        />
+                    @else
+                        <span>-</span>
+                    @endif
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell class="text-right">
                     <x-tables.rows.desktop.encapsulated.delegates.number-of-voters
-                        :model="$block->delegate()"
+                        :model="$delegate"
                         without-breakdown
                     />
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell class="text-right">
-                    <x-tables.rows.desktop.encapsulated.delegates.votes :model="$block->delegate()" />
+                    <x-tables.rows.desktop.encapsulated.delegates.votes :model="$delegate" />
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell class="text-right">
-                    <x-tables.rows.desktop.encapsulated.delegates.votes-percentage :model="$block->delegate()" />
+                    <x-tables.rows.desktop.encapsulated.delegates.votes-percentage :model="$delegate" />
                 </x-ark-tables.cell>
             </x-ark-tables.row>
         @endforeach
