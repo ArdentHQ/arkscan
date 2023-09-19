@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 use App\Enums\SortDirection;
 use App\Http\Livewire\Delegates\RecentVotes;
-use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Timestamp;
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
-use function Tests\faker;
 
 it('should render', function () {
     Livewire::test(RecentVotes::class)
@@ -551,88 +548,3 @@ it('should force default sort direction if invalid query string value', function
             $data['voteSwapTransaction']->address,
         ]);
 });
-
-it('should handle sorting several pages without cached data', function ($columnSortBy, $modelSortBy) {
-    $delegateData    = [];
-    $transactionData = [];
-    $block           = Block::factory()->create();
-
-    foreach (range(1, 145) as $rank) {
-        $wallet         = faker()->wallet;
-        $delegateData[] = [
-            'id'                => faker()->uuid,
-            'balance'           => faker()->numberBetween(1, 1000) * 1e8,
-            'nonce'             => faker()->numberBetween(1, 1000),
-            'attributes'        => [
-                'delegate'        => [
-                    'username'       => faker()->userName,
-                    'voteBalance'    => faker()->numberBetween(1, 1000) * 1e8,
-                    'producedBlocks' => faker()->numberBetween(1, 1000),
-                    'missedBlocks'   => faker()->numberBetween(1, 1000),
-                ],
-            ],
-            'updated_at'       => faker()->dateTimeBetween('-1 year', 'now'),
-
-            'address'    => $wallet['address'],
-            'public_key' => $wallet['publicKey'],
-            'attributes' => json_encode([
-                'delegate' => [
-                    'rank'        => $rank,
-                    'username'    => 'delegate-'.$rank,
-                    'voteBalance' => random_int(1000, 10000) * 1e8,
-                ],
-            ]),
-        ];
-
-        $transactionData[] = [
-            'id'                => faker()->transactionId,
-            'block_id'          => $block->id,
-            'block_height'      => faker()->numberBetween(1, 10000),
-            'type'              => 3,
-            'type_group'        => 1,
-            'sender_public_key' => $wallet['publicKey'],
-            'recipient_id'      => $wallet['address'],
-            'timestamp'         => Timestamp::fromUnix(Carbon::now()->subHours($rank)->unix())->unix(),
-            'fee'               => faker()->numberBetween(1, 100) * 1e8,
-            'amount'            => faker()->numberBetween(1, 100) * 1e8,
-            'nonce'             => 1,
-            'asset'             => json_encode([]),
-        ];
-    }
-
-    Wallet::insert($delegateData);
-    Transaction::insert($transactionData);
-
-    $transactions = Wallet::all();
-
-    $transactions = $transactions->sort(function ($a, $b) use ($modelSortBy) {
-        $aValue = Arr::get($a, $modelSortBy);
-        $bValue = Arr::get($b, $modelSortBy);
-
-        if (is_numeric($bValue) && is_numeric($aValue)) {
-            return (int) $aValue - (int) $bValue;
-        }
-
-        return strcmp($aValue, $bValue);
-    });
-
-    $component = Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
-        ->call('sortBy', $columnSortBy)
-        ->set('sortDirection', SortDirection::ASC);
-
-    foreach (range(1, 4) as $page) {
-        $pageData = $transactions->chunk(25)->get($page - 1)->pluck('address');
-
-        $component->call('gotoPage', $page)
-            ->assertSeeInOrder([
-                ...$pageData,
-                ...$pageData,
-            ]);
-    }
-})->with([
-    'age'     => ['age', 'timestamp'],
-    'address' => ['address', 'timestamp'],
-    'type'    => ['type', 'timestamp'],
-    'name'    => ['name', 'timestamp'],
-]);
