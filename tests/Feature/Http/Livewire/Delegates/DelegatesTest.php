@@ -8,9 +8,18 @@ use App\Models\ForgingStats;
 use App\Models\Wallet;
 use App\Services\Cache\DelegateCache;
 use App\Services\Cache\WalletCache;
+use App\Services\Timestamp;
+use Carbon\Carbon;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
+use function Tests\faker;
+
+beforeEach(function () {
+    ForgingStats::truncate();
+});
 
 it('should render', function () {
     Livewire::test(Delegates::class)
@@ -735,6 +744,36 @@ it('should alternate sorting direction', function () {
     }
 });
 
+it('should handle sorting an empty table', function () {
+    $delegateCache = new DelegateCache();
+    $delegateCache->setAllVoterCounts(
+        Wallet::factory(51)
+            ->activeDelegate()
+            ->create()
+            ->mapWithKeys(fn ($delegate) => [$delegate->public_key => 1])
+            ->toArray()
+    );
+
+    ForgingStats::factory(24)->create();
+
+    $component = Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->assertSet('sortKey', 'rank')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->call('sortBy', 'rank')
+        ->assertSet('sortKey', 'rank')
+        ->assertSet('sortDirection', SortDirection::DESC);
+
+    foreach (['name', 'no_of_voters', 'votes', 'percentage_votes', 'missed_blocks'] as $column) {
+        $component->call('sortBy', $column)
+            ->assertSet('sortKey', $column)
+            ->assertSet('sortDirection', SortDirection::ASC)
+            ->call('sortBy', $column)
+            ->assertSet('sortKey', $column)
+            ->assertSet('sortDirection', SortDirection::DESC);
+    }
+});
+
 it('should reset page on sorting change', function () {
     Livewire::test(Delegates::class)
         ->call('setIsReady')
@@ -832,3 +871,174 @@ it('should force ascending if invalid query string value', function () {
             $wallet2->address,
         ]);
 });
+
+it('should handle sorting several pages of delegates without cached data', function ($columnSortBy, $modelSortBy) {
+    $delegateData = [];
+    foreach (range(1, 145) as $rank) {
+        $wallet = faker()->wallet;
+        $delegateData[] = [
+            'id'                => faker()->uuid,
+            'balance'           => faker()->numberBetween(1, 1000) * 1e8,
+            'nonce'             => faker()->numberBetween(1, 1000),
+            'attributes'        => [
+                'delegate'        => [
+                    'username'       => faker()->userName,
+                    'voteBalance'    => faker()->numberBetween(1, 1000) * 1e8,
+                    'producedBlocks' => faker()->numberBetween(1, 1000),
+                    'missedBlocks'   => faker()->numberBetween(1, 1000),
+                ],
+            ],
+            'updated_at'       => faker()->dateTimeBetween('-1 year', 'now'),
+
+            'address'    => $wallet['address'],
+            'public_key' => $wallet['publicKey'],
+            'attributes' => json_encode([
+                'delegate' => [
+                    'rank'        => $rank,
+                    'username'    => 'delegate-'.$rank,
+                    'voteBalance' => random_int(1000, 10000) * 1e8,
+                ],
+            ]),
+        ];
+    }
+
+    Wallet::insert($delegateData);
+
+    $delegates = Wallet::all()->sort(function ($a, $b) use ($modelSortBy) {
+        $bValue = Arr::get($b, $modelSortBy);
+        $aValue = Arr::get($a, $modelSortBy);
+
+        if (is_numeric($bValue) && is_numeric($aValue)) {
+            return (int) $aValue - (int) $bValue;
+        }
+
+        return strcmp($aValue, $bValue);
+    });
+
+    $component = Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->call('sortBy', $columnSortBy)
+        ->set('sortDirection', SortDirection::ASC);
+
+    foreach (range(1, 3) as $page) {
+        $pageDelegates = $delegates->chunk(51)->get($page - 1)->pluck('address');
+
+        $component->call('gotoPage', $page)
+            ->assertSeeInOrder([
+                ...$pageDelegates,
+                ...$pageDelegates,
+            ]);
+    }
+})->with([
+    'rank' => ['rank', 'attributes.delegate.rank'],
+    'name' => ['name', 'attributes.delegate.username'],
+    'no_of_voters' => ['no_of_voters', 'attributes.delegate.rank'],
+    'votes' => ['votes', 'attributes.delegate.voteBalance'],
+    'percentage_votes' => ['percentage_votes', 'attributes.delegate.voteBalance'],
+    'missed_blocks' => ['missed_blocks', 'attributes.delegate.rank'],
+]);
+
+it('should handle sorting several pages of delegates with cached data', function ($columnSortBy, $modelSortBy) {
+    $delegateData = [];
+    foreach (range(1, 145) as $rank) {
+        $wallet = faker()->wallet;
+        $delegateData[] = [
+            'id'                => faker()->uuid,
+            'balance'           => faker()->numberBetween(1, 1000) * 1e8,
+            'nonce'             => faker()->numberBetween(1, 1000),
+            'attributes'        => [
+                'delegate'        => [
+                    'username'       => faker()->userName,
+                    'voteBalance'    => faker()->numberBetween(1, 1000) * 1e8,
+                    'producedBlocks' => faker()->numberBetween(1, 1000),
+                    'missedBlocks'   => faker()->numberBetween(1, 1000),
+                ],
+            ],
+            'updated_at'       => faker()->dateTimeBetween('-1 year', 'now'),
+
+            'address'    => $wallet['address'],
+            'public_key' => $wallet['publicKey'],
+            'attributes' => json_encode([
+                'delegate' => [
+                    'rank'        => $rank,
+                    'username'    => 'delegate-'.$rank,
+                    'voteBalance' => random_int(1000, 10000) * 1e8,
+                ],
+            ]),
+        ];
+    }
+
+    Wallet::insert($delegateData);
+
+    $delegates = Wallet::all();
+
+    $voterCounts  = [];
+    $missedBlocks = [];
+    $missedBlockCounter = 0;
+
+    $missedBlocksData = [];
+
+    foreach ($delegates as $delegate) {
+        $missedBlockCount = random_int(2, 4);
+        foreach (range(1, $missedBlockCount) as $_) {
+            $missedBlocksData[] = [
+                'timestamp'  => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
+                'public_key' => $delegate->public_key,
+                'forged'        => faker()->boolean(),
+                'missed_height' => faker()->numberBetween(1, 10000),
+            ];
+
+            $missedBlockCounter++;
+        }
+
+        $voterCounts[$delegate->public_key] = random_int(10, 100);
+    }
+
+    ForgingStats::insert($missedBlocksData);
+
+    $missedBlocks = ForgingStats::all()->groupBy('public_key');
+
+    $delegateCache = new DelegateCache();
+    $delegateCache->setAllVoterCounts($voterCounts);
+
+    $delegates = $delegates->sort(function ($a, $b) use ($modelSortBy, $missedBlocks, $voterCounts) {
+        if ($modelSortBy === 'missed_blocks') {
+            $aValue = count($missedBlocks[$a->public_key]);
+            $bValue = count($missedBlocks[$b->public_key]);
+        } else if ($modelSortBy === 'no_of_voters') {
+            $aValue = $voterCounts[$a->public_key];
+            $bValue = $voterCounts[$b->public_key];
+        } else {
+            $aValue = Arr::get($a, $modelSortBy);
+            $bValue = Arr::get($b, $modelSortBy);
+        }
+
+        if (is_numeric($bValue) && is_numeric($aValue)) {
+            return (int) $aValue - (int) $bValue;
+        }
+
+        return strcmp($aValue, $bValue);
+    });
+
+    $component = Livewire::test(Delegates::class)
+        ->call('setIsReady')
+        ->call('sortBy', $columnSortBy)
+        ->set('sortDirection', SortDirection::ASC);
+
+    foreach (range(1, 3) as $page) {
+        $pageDelegates = $delegates->chunk(51)->get($page - 1)->pluck('address');
+
+        $component->call('gotoPage', $page)
+            ->assertSeeInOrder([
+                ...$pageDelegates,
+                ...$pageDelegates,
+            ]);
+    }
+})->with([
+    'rank' => ['rank', 'attributes.delegate.rank'],
+    'name' => ['name', 'attributes.delegate.username'],
+    'no_of_voters' => ['no_of_voters', 'no_of_voters'],
+    'votes' => ['votes', 'attributes.delegate.voteBalance'],
+    'percentage_votes' => ['percentage_votes', 'attributes.delegate.voteBalance'],
+    'missed_blocks' => ['missed_blocks', 'missed_blocks'],
+]);

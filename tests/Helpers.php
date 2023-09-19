@@ -8,6 +8,13 @@ use ArkEcosystem\Crypto\Identities\PublicKey;
 use FurqanSiddiqui\BIP39\BIP39;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Faker\Factory;
+use Faker\Generator;
+
+function faker(): Generator
+{
+    return app(Generator::class);
+}
 
 function fakeKnownWallets(): void
 {
