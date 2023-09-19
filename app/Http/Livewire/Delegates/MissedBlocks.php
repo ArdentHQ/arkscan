@@ -84,6 +84,13 @@ final class MissedBlocks extends TabbedTableComponent
                     ->get()
                     ->pluck('attributes.delegate.username', 'public_key');
 
+                if (count($delegateNames) === 0) {
+                    $query->selectRaw('NULL AS delegate_name')
+                        ->selectRaw('forging_stats.*');
+
+                    return;
+                }
+
                 $query->selectRaw('wallets.name AS delegate_name')
                     ->selectRaw('forging_stats.*')
                     ->join(DB::raw(sprintf(
@@ -100,6 +107,13 @@ final class MissedBlocks extends TabbedTableComponent
                     ->get()
                     ->pluck('attributes.delegate.voteBalance', 'public_key');
 
+                if (count($delegateVotes) === 0) {
+                    $query->selectRaw('0 AS votes')
+                        ->selectRaw('forging_stats.*');
+
+                    return;
+                }
+
                 $query->selectRaw('wallets.votes AS votes')
                     ->selectRaw('forging_stats.*')
                     ->join(DB::raw(sprintf(
@@ -110,11 +124,19 @@ final class MissedBlocks extends TabbedTableComponent
                     ->orderByRaw('votes '.$sortDirection->value.', timestamp DESC');
             })
             ->when($this->sortKey === 'no_of_voters', function ($query) use ($sortDirection) {
+                $voterCounts = (new DelegateCache())->getAllVoterCounts();
+                if (count($voterCounts) === 0) {
+                    $query->selectRaw('0 AS no_of_voters')
+                        ->selectRaw('forging_stats.*');
+
+                    return;
+                }
+
                 $query->selectRaw('voting_stats.count AS no_of_voters')
                     ->selectRaw('forging_stats.*')
                     ->join(DB::raw(sprintf(
                         '(values %s) as voting_stats (public_key, count)',
-                        collect((new DelegateCache())->getAllVoterCounts())
+                        collect($voterCounts)
                             ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
                             ->join(','),
                     )), 'forging_stats.public_key', '=', 'voting_stats.public_key', 'left outer')
