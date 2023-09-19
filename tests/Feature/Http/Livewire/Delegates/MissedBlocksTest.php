@@ -722,7 +722,7 @@ it('should force ascending if invalid query string value', function () {
 it('should handle sorting several pages without cached data', function ($columnSortBy, $modelSortBy) {
     $delegateData = [];
     foreach (range(1, 145) as $rank) {
-        $wallet = faker()->wallet;
+        $wallet         = faker()->wallet;
         $delegateData[] = [
             'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e8,
@@ -751,7 +751,7 @@ it('should handle sorting several pages without cached data', function ($columnS
 
     Wallet::insert($delegateData);
 
-    $missedBlocks = [];
+    $missedBlocks       = [];
     $missedBlockCounter = 0;
 
     $missedBlocksData = [];
@@ -762,8 +762,8 @@ it('should handle sorting several pages without cached data', function ($columnS
         $missedBlockCount = random_int(2, 4);
         foreach (range(1, $missedBlockCount) as $_) {
             $missedBlocksData[] = [
-                'timestamp'  => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
-                'public_key' => $delegate->public_key,
+                'timestamp'     => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
+                'public_key'    => $delegate->public_key,
                 'forged'        => faker()->boolean(),
                 'missed_height' => faker()->numberBetween(1, 10000),
             ];
@@ -804,18 +804,18 @@ it('should handle sorting several pages without cached data', function ($columnS
             ]);
     }
 })->with([
-    'height' => ['height', 'missed_height'],
-    'age' => ['age', 'timestamp'],
-    'name' => ['name', 'timestamp'],
-    'no_of_voters' => ['no_of_voters', 'timestamp'],
-    'votes' => ['votes', 'timestamp'],
+    'height'           => ['height', 'missed_height'],
+    'age'              => ['age', 'timestamp'],
+    'name'             => ['name', 'timestamp'],
+    'no_of_voters'     => ['no_of_voters', 'timestamp'],
+    'votes'            => ['votes', 'timestamp'],
     'percentage_votes' => ['percentage_votes', 'timestamp'],
 ]);
 
 it('should handle sorting several pages with cached data', function ($columnSortBy, $modelSortBy) {
     $delegateData = [];
     foreach (range(1, 145) as $rank) {
-        $wallet = faker()->wallet;
+        $wallet         = faker()->wallet;
         $delegateData[] = [
             'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e8,
@@ -844,8 +844,8 @@ it('should handle sorting several pages with cached data', function ($columnSort
 
     Wallet::insert($delegateData);
 
-    $voterCounts = [];
-    $missedBlocks = [];
+    $voterCounts        = [];
+    $missedBlocks       = [];
     $missedBlockCounter = 0;
 
     $missedBlocksData = [];
@@ -856,8 +856,8 @@ it('should handle sorting several pages with cached data', function ($columnSort
         $missedBlockCount = random_int(2, 4);
         foreach (range(1, $missedBlockCount) as $_) {
             $missedBlocksData[] = [
-                'timestamp'  => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
-                'public_key' => $delegate->public_key,
+                'timestamp'     => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
+                'public_key'    => $delegate->public_key,
                 'forged'        => faker()->boolean(),
                 'missed_height' => faker()->numberBetween(1, 10000),
             ];
@@ -879,10 +879,10 @@ it('should handle sorting several pages with cached data', function ($columnSort
         if ($modelSortBy === 'no_of_voters') {
             $aValue = $voterCounts[$a->public_key];
             $bValue = $voterCounts[$b->public_key];
-        } else if ($modelSortBy === 'votes' || $modelSortBy === 'percentage_votes') {
+        } elseif ($modelSortBy === 'votes' || $modelSortBy === 'percentage_votes') {
             $aValue = Arr::get($delegates[$a->public_key], 'attributes.delegate.voteBalance');
             $bValue = Arr::get($delegates[$b->public_key], 'attributes.delegate.voteBalance');
-        } else if ($modelSortBy === 'name') {
+        } elseif ($modelSortBy === 'name') {
             $aValue = Arr::get($delegates[$a->public_key], 'attributes.delegate.username');
             $bValue = Arr::get($delegates[$b->public_key], 'attributes.delegate.username');
         } else {
@@ -912,10 +912,10 @@ it('should handle sorting several pages with cached data', function ($columnSort
             ]);
     }
 })->with([
-    'height' => ['height', 'missed_height'],
-    'age' => ['age', 'timestamp'],
-    'name' => ['name', 'name'],
-    'no_of_voters' => ['no_of_voters', 'no_of_voters'],
-    'votes' => ['votes', 'votes'],
+    'height'           => ['height', 'missed_height'],
+    'age'              => ['age', 'timestamp'],
+    'name'             => ['name', 'name'],
+    'no_of_voters'     => ['no_of_voters', 'no_of_voters'],
+    'votes'            => ['votes', 'votes'],
     'percentage_votes' => ['percentage_votes', 'percentage_votes'],
 ]);

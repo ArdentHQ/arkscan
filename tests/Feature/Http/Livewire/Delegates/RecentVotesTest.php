@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Enums\SortDirection;
 use App\Http\Livewire\Delegates\RecentVotes;
 use App\Models\Block;
-use App\Models\ForgingStats;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Timestamp;
@@ -554,12 +553,12 @@ it('should force default sort direction if invalid query string value', function
 });
 
 it('should handle sorting several pages without cached data', function ($columnSortBy, $modelSortBy) {
-    $delegateData = [];
+    $delegateData    = [];
     $transactionData = [];
-    $block = Block::factory()->create();
+    $block           = Block::factory()->create();
 
     foreach (range(1, 145) as $rank) {
-        $wallet = faker()->wallet;
+        $wallet         = faker()->wallet;
         $delegateData[] = [
             'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e8,
@@ -632,8 +631,8 @@ it('should handle sorting several pages without cached data', function ($columnS
             ]);
     }
 })->with([
-    'age' => ['age', 'timestamp'],
+    'age'     => ['age', 'timestamp'],
     'address' => ['address', 'timestamp'],
-    'type' => ['type', 'timestamp'],
-    'name' => ['name', 'timestamp'],
+    'type'    => ['type', 'timestamp'],
+    'name'    => ['name', 'timestamp'],
 ]);

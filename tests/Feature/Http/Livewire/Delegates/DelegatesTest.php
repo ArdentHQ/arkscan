@@ -11,7 +11,6 @@ use App\Services\Cache\WalletCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
@@ -875,7 +874,7 @@ it('should force ascending if invalid query string value', function () {
 it('should handle sorting several pages of delegates without cached data', function ($columnSortBy, $modelSortBy) {
     $delegateData = [];
     foreach (range(1, 145) as $rank) {
-        $wallet = faker()->wallet;
+        $wallet         = faker()->wallet;
         $delegateData[] = [
             'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e8,
@@ -930,18 +929,18 @@ it('should handle sorting several pages of delegates without cached data', funct
             ]);
     }
 })->with([
-    'rank' => ['rank', 'attributes.delegate.rank'],
-    'name' => ['name', 'attributes.delegate.username'],
-    'no_of_voters' => ['no_of_voters', 'attributes.delegate.rank'],
-    'votes' => ['votes', 'attributes.delegate.voteBalance'],
+    'rank'             => ['rank', 'attributes.delegate.rank'],
+    'name'             => ['name', 'attributes.delegate.username'],
+    'no_of_voters'     => ['no_of_voters', 'attributes.delegate.rank'],
+    'votes'            => ['votes', 'attributes.delegate.voteBalance'],
     'percentage_votes' => ['percentage_votes', 'attributes.delegate.voteBalance'],
-    'missed_blocks' => ['missed_blocks', 'attributes.delegate.rank'],
+    'missed_blocks'    => ['missed_blocks', 'attributes.delegate.rank'],
 ]);
 
 it('should handle sorting several pages of delegates with cached data', function ($columnSortBy, $modelSortBy) {
     $delegateData = [];
     foreach (range(1, 145) as $rank) {
-        $wallet = faker()->wallet;
+        $wallet         = faker()->wallet;
         $delegateData[] = [
             'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e8,
@@ -972,8 +971,8 @@ it('should handle sorting several pages of delegates with cached data', function
 
     $delegates = Wallet::all();
 
-    $voterCounts  = [];
-    $missedBlocks = [];
+    $voterCounts        = [];
+    $missedBlocks       = [];
     $missedBlockCounter = 0;
 
     $missedBlocksData = [];
@@ -982,8 +981,8 @@ it('should handle sorting several pages of delegates with cached data', function
         $missedBlockCount = random_int(2, 4);
         foreach (range(1, $missedBlockCount) as $_) {
             $missedBlocksData[] = [
-                'timestamp'  => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
-                'public_key' => $delegate->public_key,
+                'timestamp'     => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
+                'public_key'    => $delegate->public_key,
                 'forged'        => faker()->boolean(),
                 'missed_height' => faker()->numberBetween(1, 10000),
             ];
@@ -1005,7 +1004,7 @@ it('should handle sorting several pages of delegates with cached data', function
         if ($modelSortBy === 'missed_blocks') {
             $aValue = count($missedBlocks[$a->public_key]);
             $bValue = count($missedBlocks[$b->public_key]);
-        } else if ($modelSortBy === 'no_of_voters') {
+        } elseif ($modelSortBy === 'no_of_voters') {
             $aValue = $voterCounts[$a->public_key];
             $bValue = $voterCounts[$b->public_key];
         } else {
@@ -1035,10 +1034,10 @@ it('should handle sorting several pages of delegates with cached data', function
             ]);
     }
 })->with([
-    'rank' => ['rank', 'attributes.delegate.rank'],
-    'name' => ['name', 'attributes.delegate.username'],
-    'no_of_voters' => ['no_of_voters', 'no_of_voters'],
-    'votes' => ['votes', 'attributes.delegate.voteBalance'],
+    'rank'             => ['rank', 'attributes.delegate.rank'],
+    'name'             => ['name', 'attributes.delegate.username'],
+    'no_of_voters'     => ['no_of_voters', 'no_of_voters'],
+    'votes'            => ['votes', 'attributes.delegate.voteBalance'],
     'percentage_votes' => ['percentage_votes', 'attributes.delegate.voteBalance'],
-    'missed_blocks' => ['missed_blocks', 'missed_blocks'],
+    'missed_blocks'    => ['missed_blocks', 'missed_blocks'],
 ]);
