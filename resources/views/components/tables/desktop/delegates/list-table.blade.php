@@ -31,6 +31,7 @@
             <x-tables.headers.desktop.number
                 name="tables.delegates.no_of_voters"
                 sorting-id="no_of_voters"
+                class="whitespace-nowrap"
                 livewire-sort
             />
 

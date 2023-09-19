@@ -38,6 +38,7 @@
             <x-tables.headers.desktop.number
                 name="tables.missed-blocks.no_of_voters"
                 sorting-id="no_of_voters"
+                class="whitespace-nowrap"
                 livewire-sort
             />
 
@@ -45,6 +46,7 @@
                 name="tables.missed-blocks.votes"
                 :name-properties="['currency' => Network::currency()]"
                 sorting-id="votes"
+                class="whitespace-nowrap"
                 livewire-sort
             />
 
