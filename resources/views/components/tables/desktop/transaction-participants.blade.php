@@ -8,6 +8,8 @@
     <thead>
         <tr>
             <x-tables.headers.desktop.address name="tables.transactions.address" />
+
+            <x-tables.headers.desktop.text />
         </tr>
     </thead>
     <tbody>
@@ -20,6 +22,8 @@
                         without-truncate
                     />
                 </x-ark-tables.cell>
+
+                <x-ark-tables.cell />
             </x-ark-tables.row>
         @endforeach
     </tbody>
