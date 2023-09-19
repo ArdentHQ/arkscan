@@ -404,6 +404,60 @@ it('should sort number of voters in descending order', function () {
         ]);
 });
 
+it('should handle no cached votes when sorting by number of voters', function () {
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-1',
+                'voteBalance' => 10000 * 1e8,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-2',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
+    ]);
+
+    $walletWithoutVoters = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-3',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $wallet1->public_key,
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $wallet2->public_key,
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $walletWithoutVoters->public_key,
+    ]);
+
+    Livewire::test(MissedBlocks::class)
+        ->call('setIsReady')
+        ->call('sortBy', 'no_of_voters')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSeeInOrder([
+            'delegate-1',
+            'delegate-2',
+            'delegate-3',
+            'delegate-1',
+            'delegate-2',
+            'delegate-3',
+        ]);
+});
+
 it('should sort votes & percentage in ascending order', function (string $sortKey) {
     $wallet1 = Wallet::factory()->activeDelegate()->create([
         'attributes' => [
@@ -506,6 +560,25 @@ it('should alternate sorting direction', function () {
         $wallet1->public_key => 30,
     ]);
 
+    $component = Livewire::test(MissedBlocks::class)
+        ->call('setIsReady')
+        ->assertSet('sortKey', 'age')
+        ->assertSet('sortDirection', SortDirection::DESC)
+        ->call('sortBy', 'age')
+        ->assertSet('sortKey', 'age')
+        ->assertSet('sortDirection', SortDirection::ASC);
+
+    foreach (['name', 'no_of_voters', 'votes', 'percentage_votes', 'missed_blocks'] as $column) {
+        $component->call('sortBy', $column)
+            ->assertSet('sortKey', $column)
+            ->assertSet('sortDirection', SortDirection::ASC)
+            ->call('sortBy', $column)
+            ->assertSet('sortKey', $column)
+            ->assertSet('sortDirection', SortDirection::DESC);
+    }
+});
+
+it('should handle empty table', function () {
     $component = Livewire::test(MissedBlocks::class)
         ->call('setIsReady')
         ->assertSet('sortKey', 'age')
