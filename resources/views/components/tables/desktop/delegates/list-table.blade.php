@@ -75,6 +75,7 @@
                     <x-tables.rows.desktop.encapsulated.address
                         :model="$delegate"
                         without-clipboard
+                        delegate-name-class="md:w-[100px] md-lg:w-auto"
                     />
                 </x-ark-tables.cell>
 
