@@ -10,7 +10,12 @@
             @lang('tables.transactions.from')
         </x-general.badge>
 
-        <div class="min-w-0 truncate">
+        <div
+            class="min-w-0 truncate"
+            @if ($transactionWallet->isDelegate())
+                data-tippy-content="{{ $transactionWallet->username() }}"
+            @endif
+        >
             <a
                 class="whitespace-nowrap link"
                 href="{{ route('wallet', $transactionWallet->address()) }}"
@@ -29,10 +34,15 @@
             @lang('tables.transactions.to')
         </x-general.badge>
 
-        <div class="min-w-0 truncate">
-            @if ($model->isTransfer())
-                @php ($recipient = $model->recipient())
+        @php ($recipient = $model->recipient())
 
+        <div
+            class="min-w-0 truncate"
+            @if ($model->isTransfer() && $recipient->isDelegate())
+                data-tippy-content="{{ $recipient->username() }}"
+            @endif
+        >
+            @if ($model->isTransfer())
                 <a
                     class="whitespace-nowrap link"
                     href="{{ route('wallet', $recipient->address()) }}"
