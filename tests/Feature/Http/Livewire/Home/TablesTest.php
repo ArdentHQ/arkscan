@@ -55,3 +55,11 @@ it('should not trigger is ready event more than once', function () {
         ->set('view', 'transactions')
         ->assertNotEmitted('setTransactionsReady');
 });
+
+it('should not trigger is ready if same view is loaded', function () {
+    Livewire::test(Tables::class)
+        ->set('view', 'blocks')
+        ->assertEmitted('setBlocksReady')
+        ->set('view', 'blocks')
+        ->assertNotEmitted('setBlocksReady');
+});
