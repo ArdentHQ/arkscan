@@ -31,6 +31,7 @@
             <x-tables.headers.desktop.number
                 name="tables.delegates.no_of_voters"
                 sorting-id="no_of_voters"
+                class="whitespace-nowrap"
                 livewire-sort
             />
 
@@ -75,6 +76,7 @@
                     <x-tables.rows.desktop.encapsulated.address
                         :model="$delegate"
                         without-clipboard
+                        delegate-name-class="md:w-[100px] md-lg:w-auto"
                     />
                 </x-ark-tables.cell>
 

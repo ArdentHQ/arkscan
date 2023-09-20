@@ -16,6 +16,7 @@
     'withoutLink'     => false,
     'linkClass'       => null,
     'withoutIcon'     => false,
+    'delegateNameClass' => null,
 ])
 
 <div @class($containerClass)>
@@ -51,11 +52,20 @@
             @endif
                 @if ($model->username() && !$withoutUsername)
                     @if ($prefix)
-                        <div class="delegate-name-truncate-prefix">
+                        <div @class([
+                            'delegate-name-truncate-prefix',
+                            $delegateNameClass,
+                        ])>
                     @elseif ($isListing)
-                        <div class="delegate-name-truncate-listing">
+                        <div @class([
+                            'delegate-name-truncate-listing',
+                            $delegateNameClass,
+                        ])>
                     @else
-                        <div class="delegate-name-truncate">
+                        <div @class([
+                            'delegate-name-truncate',
+                            $delegateNameClass,
+                        ])>
                     @endif
                         {{ $model->username() }}
                     </div>

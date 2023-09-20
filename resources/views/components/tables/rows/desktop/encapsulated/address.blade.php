@@ -5,6 +5,7 @@
     'withoutClipboard' => false,
     'truncateBreakpoint' => 'xl',
     'withoutTransactionCount' => true,
+    'delegateNameClass' => null,
 ])
 
 @php
@@ -26,6 +27,7 @@
                 :model="$model"
                 :without-truncate="$withoutTruncate"
                 :without-username="$withoutUsername"
+                :delegate-name-class="$delegateNameClass"
                 without-icon
             >
                 <x-slot name="address">
