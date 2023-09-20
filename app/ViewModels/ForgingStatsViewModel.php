@@ -24,14 +24,14 @@ final class ForgingStatsViewModel implements ViewModel
         return new WalletViewModel($this->forgingStats->delegate);
     }
 
-    public function address(): string
+    public function address(): ?string
     {
-        return $this->delegate()?->address() ?? 'Genesis';
+        return $this->delegate()?->address();
     }
 
-    public function username(): string
+    public function username(): ?string
     {
-        return $this->delegate()?->username() ?? 'Genesis';
+        return $this->delegate()?->username();
     }
 
     public function timestamp(): string

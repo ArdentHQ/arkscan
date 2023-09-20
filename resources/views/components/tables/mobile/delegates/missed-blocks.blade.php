@@ -8,9 +8,11 @@
     :no-results-message="$noResultsMessage"
 >
     @foreach ($blocks as $block)
+        @php ($delegate = $block->delegate())
+
         <x-tables.rows.mobile
             wire:key="{{ Helpers::generateId('block-mobile', $block->timestamp()) }}"
-            expandable
+            :expandable="$delegate !== null"
         >
             <x-slot name="header">
                 <div class="flex flex-1 justify-between">
@@ -20,11 +22,13 @@
                         without-link
                     />
 
-                    <x-tables.rows.mobile.encapsulated.delegates.address
-                        :model="$block->delegate()"
-                        class="hidden sm:block sm:flex-1"
-                        without-label
-                    />
+                    @if ($delegate)
+                        <x-tables.rows.mobile.encapsulated.delegates.address
+                            :model="$delegate"
+                            class="hidden sm:block sm:flex-1"
+                            without-label
+                        />
+                    @endif
 
                     <x-tables.rows.mobile.encapsulated.age
                         :model="$block"
@@ -33,23 +37,25 @@
                 </div>
             </x-slot>
 
-            <x-tables.rows.mobile.encapsulated.delegates.address
-                :model="$block->delegate()"
-                class="sm:hidden"
-            />
+            @if ($delegate)
+                <x-tables.rows.mobile.encapsulated.delegates.address
+                    :model="$delegate"
+                    class="sm:hidden"
+                />
 
-            <x-tables.rows.mobile.encapsulated.delegates.number-of-voters
-                :model="$block->delegate()"
-                class="sm:flex-1"
-            />
+                <x-tables.rows.mobile.encapsulated.delegates.number-of-voters
+                    :model="$delegate"
+                    class="sm:flex-1"
+                />
 
-            <div class="sm:flex-1">
-                <x-tables.rows.mobile.encapsulated.delegates.votes :model="$block->delegate()" />
-            </div>
+                <div class="sm:flex-1">
+                    <x-tables.rows.mobile.encapsulated.delegates.votes :model="$delegate" />
+                </div>
 
-            <div class="sm:flex sm:justify-end sm:min-w-[110px]">
-                <x-tables.rows.mobile.encapsulated.delegates.votes-percentage :model="$block->delegate()" />
-            </div>
+                <div class="sm:flex sm:justify-end sm:min-w-[110px]">
+                    <x-tables.rows.mobile.encapsulated.delegates.votes-percentage :model="$delegate" />
+                </div>
+            @endif
         </x-tables.rows.mobile>
     @endforeach
 </x-tables.mobile.includes.encapsulated>
