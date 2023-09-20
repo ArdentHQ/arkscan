@@ -2,6 +2,7 @@
     'header',
     'expandable' => false,
     'expandClass' => 'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700',
+    'contentClass' => null,
 ])
 
 <div
@@ -51,7 +52,10 @@
                 x-cloak
             @endif
 
-            class="flex flex-col px-4 pt-3 pb-4 space-y-4 sm:flex-row sm:flex-1 sm:justify-between sm:space-y-0"
+            @class([
+                'flex flex-col px-4 pt-3 pb-4 space-y-4 sm:flex-row sm:flex-1 sm:justify-between sm:space-y-0',
+                $contentClass,
+            ])
         >
             {{ $slot }}
         </div>

@@ -60,9 +60,7 @@
 
             <x-tables.rows.mobile.encapsulated.delegates.votes-percentage :model="$delegate" />
 
-            @if ($this->showMissedBlocks)
-                <x-tables.rows.mobile.encapsulated.delegates.missed-blocks :model="$delegate" />
-            @endif
+            <x-tables.rows.mobile.encapsulated.delegates.missed-blocks :model="$delegate" />
         </x-tables.rows.mobile>
     @endforeach
 </x-tables.mobile.includes.encapsulated>

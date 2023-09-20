@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\TransactionTypeGroupEnum;
 use App\Facades\Wallets;
+use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
-use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
@@ -18,17 +16,15 @@ use ArkEcosystem\Crypto\Enums\Types;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Livewire\Component;
 
 /**
  * @property bool $isAllSelected
  * @property LengthAwarePaginator $transactions
  * */
-final class WalletTransactionTable extends Component
+final class WalletTransactionTable extends TabbedTableComponent
 {
     use DeferLoading;
     use HasTableFilter;
-    use HasTablePagination;
 
     public string $address;
 
@@ -145,22 +141,7 @@ final class WalletTransactionTable extends Component
     private function getTransactionsQuery(): Builder
     {
         return Transaction::query()
-            ->where(function ($query) {
-                $query->where(fn ($query) => $query->when($this->filter['transfers'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::TRANSFER)))
-                    ->orWhere(fn ($query) => $query->when($this->filter['votes'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::VOTE)))
-                    ->orWhere(fn ($query) => $query->when($this->filter['multipayments'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT)))
-                    ->orWhere(fn ($query) => $query->when($this->filter['others'] === true, fn ($query) => $query
-                        ->where('type_group', TransactionTypeGroupEnum::MAGISTRATE)
-                        ->orWhere(
-                            fn ($query) => $query
-                                ->where('type_group', TransactionTypeGroupEnum::CORE)
-                                ->whereNotIn('type', [
-                                    CoreTransactionTypeEnum::TRANSFER,
-                                    CoreTransactionTypeEnum::VOTE,
-                                    CoreTransactionTypeEnum::MULTI_PAYMENT,
-                                ])
-                        )));
-            })
+            ->withTypeFilter($this->filter)
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['outgoing'], fn ($query) => $query->where('sender_public_key', $this->publicKey)))
                     ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query->where('recipient_id', $this->address)))

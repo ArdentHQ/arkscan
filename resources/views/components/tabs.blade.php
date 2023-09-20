@@ -45,7 +45,10 @@
                     wire:ignore
                 >
                     @foreach ($options as $name => $text)
-                        <div x-show="tab === '{{ $name }}'">
+                        <div
+                            x-show="tab === '{{ $name }}'"
+                            x-cloak
+                        >
                             {{ $text }}
                         </div>
                     @endforeach
@@ -68,7 +71,10 @@
                     <a
                         wire:click="$set('view', '{{ $name }}');"
                         @click="view = '{{ $name }}'; tab = '{{ $name }}';"
-                        class="dropdown-entry @if($this->view === '{{ $name }}') dropdown-entry-selected @endif"
+                        @class([
+                            'dropdown-entry',
+                            'dropdown-entry-selected' => $this->view === '{{ $name }}',
+                        ])
                     >
                         {{ $text }}
                     </a>

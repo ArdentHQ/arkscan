@@ -43,8 +43,13 @@
                 class="sm:w-[142px]"
             />
 
-            <div class="sm:flex sm:flex-1 sm:justify-end">
-                <x-tables.rows.mobile.encapsulated.value :model="$block" />
+            <div @class([
+                'sm:flex sm:flex-1 sm:justify-end',
+                'hidden sm:flex' => ! Network::canBeExchanged(),
+            ])>
+                @if (Network::canBeExchanged())
+                    <x-tables.rows.mobile.encapsulated.value :model="$block" />
+                @endif
             </div>
         </x-tables.rows.mobile>
     @endforeach

@@ -3,5 +3,5 @@
     id="blocks-list"
     class="w-full"
 >
-    {{-- <livewire:wallet-block-table :wallet="$wallet" /> --}}
+    <livewire:home.blocks />
 </div>

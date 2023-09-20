@@ -232,8 +232,8 @@ body.table-compact-until-lg .arrow-direction {
     > tr:hover
     > td.hoverable-cell
     > .table-cell-content
-    > .encapsulated-transaction-type {
-    @apply bg-theme-secondary-300 dark:bg-theme-dark-700 transition-default;
+    .encapsulated-badge {
+    @apply bg-theme-secondary-300 dark:bg-theme-dark-700;
 }
 
 .table-container

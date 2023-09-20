@@ -90,6 +90,10 @@ trait CanForge
 
     public function missedBlocks(): int
     {
+        if ($this->wallet->missed_blocks !== null) {
+            return $this->wallet->missed_blocks;
+        }
+
         $publicKey = $this->publicKey();
 
         if (is_null($publicKey)) {

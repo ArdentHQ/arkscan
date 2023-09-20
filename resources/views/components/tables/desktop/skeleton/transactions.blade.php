@@ -1,50 +1,32 @@
-@isset($useConfirmations)
-    <x-table-skeleton
-        device="desktop"
-        :items="[
-            'general.transaction.id'            => 'icon',
-            'general.block.timestamp' => [
-                'type' => 'text',
-                'responsive' => true,
-            ],
-            'general.transaction.sender'        => 'address',
-            'general.transaction.recipient'     => 'address',
-            'general.transaction.amount'        => [
-                'type' => 'number',
-                'lastOn' => 'xl',
-            ],
-            'general.transaction.fee' => [
-                'type' => 'number',
-                'responsive' => true,
-                'breakpoint' => 'xl',
-            ],
-            'general.transaction.confirmations' => [
-                'type' => 'number',
-                'responsive' => true,
-                'breakpoint' => 'xl',
-            ]
-        ]"
-    />
-@else
-    <x-table-skeleton
-        device="desktop"
-        :items="[
-            'general.transaction.id'            => 'icon',
-            'general.block.timestamp' => [
-                'type' => 'text',
-                'responsive' => true,
-            ],
-            'general.transaction.sender'        => 'address',
-            'general.transaction.recipient'     => 'address',
-            'general.transaction.amount'        => [
-                'type' => 'number',
-                'lastOn' => 'xl',
-            ],
-            'general.transaction.fee' => [
-                'type' => 'number',
-                'responsive' => true,
-                'breakpoint' => 'xl',
-            ],
-        ]"
-    />
-@endif
+@props([
+    'rowCount' => 10,
+])
+
+<x-table-skeleton
+    device="desktop"
+    :items="[
+        'tables.transactions.id'         => 'text',
+        'tables.transactions.age'        => [
+            'type'       => 'text',
+            'responsive' => true,
+            'breakpoint' => 'xl',
+        ],
+        'tables.transactions.type'       => 'text',
+        'tables.transactions.addressing' => 'text',
+        'tables.transactions.amount'     => [
+            'type' => 'number',
+            'lastOn' => 'lg',
+            'nameProperties' => ['currency' => Network::currency()],
+            'class' => 'last-until-lg',
+        ],
+        'tables.transactions.fee'        => [
+            'type' => 'number',
+            'responsive' => true,
+            'breakpoint' => 'lg',
+            'nameProperties' => ['currency' => Network::currency()],
+        ],
+    ]"
+    :component-properties="['rounded' => false]"
+    :row-count="$rowCount"
+    encapsulated
+/>

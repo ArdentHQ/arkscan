@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Concerns\SearchesCaseInsensitive;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $timestamp
  * @property string $public_key
  * @property bool $forged
+ * @property int $count (only available when sorting delegates by missed blocks)
  */
 final class ForgingStats extends Model
 {
@@ -61,5 +63,15 @@ final class ForgingStats extends Model
     public function delegate(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'public_key', 'public_key');
+    }
+
+    /**
+     * Get all missed forging stats.
+     *
+     * @return Builder
+     */
+    public function scopeMissed(Builder $query): Builder
+    {
+        return $query->whereNot('missed_height', null);
     }
 }

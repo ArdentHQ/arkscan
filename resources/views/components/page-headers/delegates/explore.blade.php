@@ -1,4 +1,4 @@
-<x-page-headers.delegates.header-item
+<x-page-headers.header-item
     :attributes="$attributes"
     class="flex-none xl:flex-1 bg-theme-primary-100 dark:bg-theme-dark-800"
 >
@@ -32,7 +32,7 @@
                 @lang('pages.delegates.explore.title')
             </div>
 
-            <div class="text-xs leading-5 sm:leading-3.75 dark:text-theme-dark-200">
+            <div class="text-xs leading-5 text-theme-secondary-700 sm:leading-3.75 dark:text-theme-dark-200">
                 @lang('pages.delegates.explore.subtitle')
             </div>
         </div>
@@ -41,7 +41,7 @@
             <x-ark-external-link
                 class="!flex items-center space-x-2 button-primary py-1.5 px-4 justify-center"
                 :url="trans('urls.docs.validator')"
-                title="Explore"
+                :title="trans('actions.explore')"
                 inner-class="leading-5"
                 icon-class="inline relative flex-shrink-0 text-white"
                 icon-size="sm"
@@ -50,4 +50,4 @@
             </x-ark-external-link>
         </div>
     </div>
-</x-delegates.header-item>
+</x-page-headers.header-item>

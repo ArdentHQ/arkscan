@@ -8,14 +8,7 @@
     />
 
     <x-ark-pages-includes-layout-body class="table-compact">
-        <div class="z-30 md:sticky md:top-0">
-            <x-navbar.top />
-            <x-navbar.navbar :navigation="$navigationEntries ?? []">
-                <x-slot name="logo">
-                    <x-navbar.logo />
-                </x-slot>
-            </x-navbar.navbar>
-        </div>
+        <x-navbar.navbar :navigation="$navigationEntries" />
 
         <x-slot name="footer">
             <x-ark-footer

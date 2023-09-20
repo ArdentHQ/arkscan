@@ -17,32 +17,53 @@
                 name="tables.blocks.height"
                 class="whitespace-nowrap"
                 width="200"
+                sorting-id="height"
+                livewire-sort
             />
 
             <x-tables.headers.desktop.text
                 name="tables.blocks.age"
                 breakpoint="md-lg"
                 responsive
+                sorting-id="age"
+                livewire-sort
             />
 
-            <x-tables.headers.desktop.address name="tables.missed-blocks.delegate" />
+            <x-tables.headers.desktop.address
+                name="tables.missed-blocks.delegate"
+                sorting-id="name"
+                livewire-sort
+            />
 
-            <x-tables.headers.desktop.number name="tables.missed-blocks.no_of_voters" />
+            <x-tables.headers.desktop.number
+                name="tables.missed-blocks.no_of_voters"
+                sorting-id="no_of_voters"
+                class="whitespace-nowrap"
+                livewire-sort
+            />
 
             <x-tables.headers.desktop.number
                 name="tables.missed-blocks.votes"
                 :name-properties="['currency' => Network::currency()]"
+                sorting-id="votes"
+                class="whitespace-nowrap"
+                livewire-sort
             />
 
-            <x-tables.headers.desktop.number name="tables.missed-blocks.percentage">
-                <x-ark-info :tooltip="trans('tables.missed-blocks.info.percentage')" type="info" />
+            <x-tables.headers.desktop.number
+                name="tables.missed-blocks.percentage"
+                sorting-id="percentage_votes"
+                livewire-sort
+            >
+                <x-tables.headers.desktop.includes.tooltip :text="trans('tables.missed-blocks.info.percentage')" />
             </x-tables.headers.desktop.number>
         </tr>
     </thead>
 
     <tbody>
         @foreach($blocks as $block)
-            <x-ark-tables.row wire:key="block-{{ $block->address() }}">
+            @php ($delegate = $block->delegate())
+            <x-ark-tables.row wire:key="{{ Helpers::generateId('block', $block->timestamp()) }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.block-height
                         :model="$block"
@@ -56,25 +77,29 @@
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>
-                    <x-tables.rows.desktop.encapsulated.address
-                        :model="$block"
-                        without-clipboard
-                    />
+                    @if ($delegate)
+                        <x-tables.rows.desktop.encapsulated.address
+                            :model="$block"
+                            without-clipboard
+                        />
+                    @else
+                        <span>-</span>
+                    @endif
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell class="text-right">
                     <x-tables.rows.desktop.encapsulated.delegates.number-of-voters
-                        :model="$block->delegate()"
+                        :model="$delegate"
                         without-breakdown
                     />
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell class="text-right">
-                    <x-tables.rows.desktop.encapsulated.delegates.votes :model="$block->delegate()" />
+                    <x-tables.rows.desktop.encapsulated.delegates.votes :model="$delegate" />
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell class="text-right">
-                    <x-tables.rows.desktop.encapsulated.delegates.votes-percentage :model="$block->delegate()" />
+                    <x-tables.rows.desktop.encapsulated.delegates.votes-percentage :model="$delegate" />
                 </x-ark-tables.cell>
             </x-ark-tables.row>
         @endforeach

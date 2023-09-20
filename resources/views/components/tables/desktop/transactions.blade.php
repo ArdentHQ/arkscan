@@ -1,82 +1,80 @@
 @props([
     'transactions',
-    'wallet',
-    'useDirection' => false,
-    'excludeItself' => false,
-    'useConfirmations' => false,
-    'isSent' => null,
-    'isReceived' => null,
-    'state' => [],
+    'noResultsMessage' => null,
 ])
 
-<x-ark-tables.table sticky class="hidden md:block" wire:key="{{ Helpers::generateId('transactions', ...$state) }}">
+<x-tables.encapsulated-table
+    wire:key="{{ Helpers::generateId('transactions') }}"
+    class="hidden w-full rounded-t-none md:block"
+    :rounded="false"
+    :paginator="$transactions"
+    :no-results-message="$noResultsMessage"
+    sticky
+>
     <thead>
         <tr>
-            <x-tables.headers.desktop.id name="general.transaction.id" />
-            <x-tables.headers.desktop.text name="general.transaction.timestamp" responsive />
-            <x-tables.headers.desktop.address name="general.transaction.sender" icon />
-            <x-tables.headers.desktop.address name="general.transaction.recipient" />
-            <x-tables.headers.desktop.number name="general.transaction.amount" last-on="xl" />
-            <x-tables.headers.desktop.number name="general.transaction.fee" responsive breakpoint="xl" />
-            @if($useConfirmations)
-                <x-tables.headers.desktop.number
-                    name="general.transaction.confirmations"
-                    responsive
-                    breakpoint="xl"
-                />
-            @endisset
+            <x-tables.headers.desktop.id
+                name="tables.transactions.id"
+                class="whitespace-nowrap"
+            />
+            <x-tables.headers.desktop.text
+                name="tables.transactions.age"
+                breakpoint="xl"
+                responsive
+            />
+            <x-tables.headers.desktop.text name="tables.transactions.type" />
+            <x-tables.headers.desktop.text name="tables.transactions.addressing" />
+            <x-tables.headers.desktop.number
+                name="tables.transactions.amount"
+                :name-properties="['currency' => Network::currency()]"
+                last-on="lg"
+                class="last-until-lg"
+            />
+            <x-tables.headers.desktop.number
+                name="tables.transactions.fee"
+                :name-properties="['currency' => Network::currency()]"
+                responsive
+                breakpoint="lg"
+            />
         </tr>
     </thead>
     <tbody>
         @foreach($transactions as $transaction)
-            <x-ark-tables.row wire:key="{{ Helpers::generateId('transaction-item', $transaction->id(), ...$state) }}">
+            <x-ark-tables.row wire:key="{{ Helpers::generateId('transaction-item', $transaction->id()) }}">
                 <x-ark-tables.cell>
-                    <x-tables.rows.desktop.transaction-id :model="$transaction" />
+                    <x-tables.rows.desktop.encapsulated.transaction-id :model="$transaction" />
                 </x-ark-tables.cell>
-                <x-ark-tables.cell responsive>
-                    <x-tables.rows.desktop.timestamp :model="$transaction" shortened />
+
+                <x-ark-tables.cell responsive breakpoint="xl">
+                    <x-tables.rows.desktop.encapsulated.age :model="$transaction" />
                 </x-ark-tables.cell>
+
                 <x-ark-tables.cell>
-                    @if($useDirection)
-                        <x-tables.rows.desktop.sender-with-direction :model="$transaction" :wallet="$wallet" />
-                    @else
-                        <x-tables.rows.desktop.sender :model="$transaction" />
-                    @endif
+                    <x-tables.rows.desktop.encapsulated.transaction-type :model="$transaction" />
                 </x-ark-tables.cell>
+
                 <x-ark-tables.cell>
-                    <x-tables.rows.desktop.recipient :model="$transaction" />
+                    <x-tables.rows.desktop.encapsulated.addressing-generic :model="$transaction" />
                 </x-ark-tables.cell>
+
                 <x-ark-tables.cell
                     class="text-right"
-                    last-on="xl"
+                    last-on="lg"
                 >
-                    @if($useDirection)
-                        @if(($transaction->isSent($wallet->address()) || $isSent === true) && $isReceived !== true)
-                            <x-tables.rows.desktop.amount-sent :model="$transaction" :exclude-itself="$excludeItself" />
-                        @else
-                            <x-tables.rows.desktop.amount-received :model="$transaction" :wallet="$wallet" />
-                        @endif
-                    @else
-                        <x-tables.rows.desktop.amount :model="$transaction" />
-                    @endif
+                    <x-tables.rows.desktop.encapsulated.amount
+                        :model="$transaction"
+                        breakpoint="lg"
+                    />
                 </x-ark-tables.cell>
+
                 <x-ark-tables.cell
                     class="text-right"
                     responsive
-                    breakpoint="xl"
+                    breakpoint="lg"
                 >
-                    <x-tables.rows.desktop.fee :model="$transaction" />
+                    <x-tables.rows.desktop.encapsulated.fee :model="$transaction" />
                 </x-ark-tables.cell>
-                @if($useConfirmations)
-                    <x-ark-tables.cell
-                        class="text-right"
-                        responsive
-                        breakpoint="xl"
-                    >
-                        <x-tables.rows.desktop.confirmations :model="$transaction" />
-                    </x-ark-tables.cell>
-                @endif
             </x-ark-tables.row>
         @endforeach
     </tbody>
-</x-ark-tables.table>
+</x-tables.encapsulated-table>

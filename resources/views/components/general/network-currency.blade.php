@@ -7,6 +7,6 @@
     @if ($decimals === 0)
         {{ number_format((float) ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation::execute((float) $value), $decimals) }}
     @else
-        {{ rtrim(rtrim(number_format((float) ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation::execute((float) $value), $decimals), 0), '.') }}
+        {{ ExplorerNumberFormatter::unformattedRawValue($value, $decimals) }}
     @endif
 </x-currency>

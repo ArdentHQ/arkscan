@@ -11,10 +11,10 @@
             :blocks="$blocks"
             :no-results-message="$this->noResultsMessage"
         />
-
-        <x-general.pagination.table
-            :results="$blocks"
-            class="mt-4 md:mt-0"
-        />
     </x-skeletons.delegates.missed-blocks>
+
+    <x-general.pagination.table
+        :results="$blocks"
+        class="mt-4 md:mt-0"
+    />
 </div>

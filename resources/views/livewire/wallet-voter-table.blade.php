@@ -12,10 +12,10 @@
             :wallets="$wallets"
             :no-results-message="$this->noResultsMessage"
         />
-
-        <x-general.pagination.table
-            :results="$wallets"
-            class="mt-4 md:mt-0"
-        />
     </x-skeletons.wallet-voters>
+
+    <x-general.pagination.table
+        :results="$wallets"
+        class="mt-4 md:mt-0"
+    />
 </div>

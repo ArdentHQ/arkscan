@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
-use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
-use Livewire\Component;
 
 /** @property LengthAwarePaginator $wallets */
-final class WalletVoterTable extends Component
+final class WalletVoterTable extends TabbedTableComponent
 {
     use DeferLoading;
-    use HasTablePagination;
 
     public string $publicKey;
 
