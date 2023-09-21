@@ -5,9 +5,15 @@ declare(strict_types=1);
 namespace Tests;
 
 use ArkEcosystem\Crypto\Identities\PublicKey;
+use Faker\Generator;
 use FurqanSiddiqui\BIP39\BIP39;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+
+function faker(): Generator
+{
+    return app(Generator::class);
+}
 
 function fakeKnownWallets(): void
 {
