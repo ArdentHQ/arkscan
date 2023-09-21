@@ -604,7 +604,7 @@ it('should sort votes & percentage in descending order', function (string $sortK
 
 it('should sort missed blocks in ascending order grouped by rank', function () {
     $wallet1 = Wallet::factory()->activeDelegate()->create([
-        'address' => 'wallet-1',
+        'address'    => 'wallet-1',
         'attributes' => [
             'delegate' => [
                 'rank'        => 1,
@@ -615,7 +615,7 @@ it('should sort missed blocks in ascending order grouped by rank', function () {
     ]);
 
     $wallet2 = Wallet::factory()->activeDelegate()->create([
-        'address' => 'wallet-2',
+        'address'    => 'wallet-2',
         'attributes' => [
             'delegate' => [
                 'rank'        => 2,
@@ -626,7 +626,7 @@ it('should sort missed blocks in ascending order grouped by rank', function () {
     ]);
 
     $wallet3 = Wallet::factory()->activeDelegate()->create([
-        'address' => 'wallet-3',
+        'address'    => 'wallet-3',
         'attributes' => [
             'delegate' => [
                 'rank'        => 3,
@@ -650,7 +650,7 @@ it('should sort missed blocks in ascending order grouped by rank', function () {
     }
 
     $walletWithoutMissedBlocks = Wallet::factory()->activeDelegate()->create([
-        'address' => 'wallet-4',
+        'address'    => 'wallet-4',
         'attributes' => [
             'delegate' => [
                 'rank'        => 4,
@@ -661,7 +661,7 @@ it('should sort missed blocks in ascending order grouped by rank', function () {
     ]);
 
     $wallet51 = Wallet::factory()->activeDelegate()->create([
-        'address' => 'wallet-51',
+        'address'    => 'wallet-51',
         'attributes' => [
             'delegate' => [
                 'rank'        => 51,
@@ -701,7 +701,7 @@ it('should sort missed blocks in ascending order grouped by rank', function () {
 
 it('should sort missed blocks in descending order grouped by rank', function () {
     $wallet1 = Wallet::factory()->activeDelegate()->create([
-        'address' => 'wallet-1',
+        'address'    => 'wallet-1',
         'attributes' => [
             'delegate' => [
                 'rank'        => 1,
@@ -712,7 +712,7 @@ it('should sort missed blocks in descending order grouped by rank', function () 
     ]);
 
     $wallet2 = Wallet::factory()->activeDelegate()->create([
-        'address' => 'wallet-2',
+        'address'    => 'wallet-2',
         'attributes' => [
             'delegate' => [
                 'rank'        => 2,
@@ -723,7 +723,7 @@ it('should sort missed blocks in descending order grouped by rank', function () 
     ]);
 
     $wallet3 = Wallet::factory()->activeDelegate()->create([
-        'address' => 'wallet-3',
+        'address'    => 'wallet-3',
         'attributes' => [
             'delegate' => [
                 'rank'        => 3,
@@ -747,7 +747,7 @@ it('should sort missed blocks in descending order grouped by rank', function () 
     }
 
     $walletWithoutMissedBlocks = Wallet::factory()->activeDelegate()->create([
-        'address' => 'wallet-4',
+        'address'    => 'wallet-4',
         'attributes' => [
             'delegate' => [
                 'rank'        => 4,
@@ -758,7 +758,7 @@ it('should sort missed blocks in descending order grouped by rank', function () 
     ]);
 
     $wallet51 = Wallet::factory()->activeDelegate()->create([
-        'address' => 'wallet-51',
+        'address'    => 'wallet-51',
         'attributes' => [
             'delegate' => [
                 'rank'        => 51,
@@ -1089,7 +1089,7 @@ it('should handle sorting several pages of delegates with cached data', function
             $bRank = Arr::get($b, 'attributes.delegate.rank');
             if ($aRank <= Network::delegateCount() && $bRank > Network::delegateCount()) {
                 return -1;
-            } else if ($aRank > Network::delegateCount() && $bRank <= Network::delegateCount()) {
+            } elseif ($aRank > Network::delegateCount() && $bRank <= Network::delegateCount()) {
                 return 1;
             }
 
