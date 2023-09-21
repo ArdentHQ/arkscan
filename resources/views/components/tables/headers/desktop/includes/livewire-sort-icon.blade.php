@@ -6,7 +6,8 @@
             name="arrows.caret-up"
             size="w-2 h-2"
             :class="Arr::toCssClasses([
-                'text-theme-primary-600 dark:text-theme-dark-blue-400' => $this->sortKey === $id && $this->sortDirection === SortDirection::ASC,
+                'text-theme-secondary-300 dark:text-theme-dark-300' => ! $this->isReady,
+                'text-theme-primary-600 dark:text-theme-dark-blue-400' => $this->isReady && $this->sortKey === $id && $this->sortDirection === SortDirection::ASC,
             ])"
         />
 
@@ -14,8 +15,9 @@
             name="arrows.caret-down"
             size="w-2 h-2"
             :class="Arr::toCssClasses([
-                'text-theme-primary-600 dark:text-theme-dark-blue-400' => $this->sortKey === $id && $this->sortDirection === SortDirection::DESC,
-                'text-theme-secondary-500 dark:text-theme-dark-500' => $this->sortKey !== $id
+                'text-theme-secondary-300 dark:text-theme-dark-300' => ! $this->isReady,
+                'text-theme-primary-600 dark:text-theme-dark-blue-400' => $this->isReady && $this->sortKey === $id && $this->sortDirection === SortDirection::DESC,
+                'text-theme-secondary-500 dark:text-theme-dark-500' => $this->isReady && $this->sortKey !== $id,
             ])"
         />
     </div>
