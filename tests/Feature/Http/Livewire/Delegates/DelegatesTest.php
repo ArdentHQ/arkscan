@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\SortDirection;
+use App\Facades\Network;
 use App\Http\Livewire\Delegates\Delegates;
 use App\Models\ForgingStats;
 use App\Models\Wallet;
@@ -601,46 +602,81 @@ it('should sort votes & percentage in descending order', function (string $sortK
     'percentage_votes',
 ]);
 
-it('should sort missed blocks in ascending order', function () {
+it('should sort missed blocks in ascending order grouped by rank', function () {
     $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'address' => 'wallet-1',
         'attributes' => [
             'delegate' => [
-                'rank'           => 1,
-                'username'       => 'delegate-1',
-                'voteBalance'    => 10000 * 1e8,
-                'producedBlocks' => 1000,
+                'rank'        => 1,
+                'username'    => 'delegate-1',
+                'voteBalance' => 10000 * 1e8,
             ],
         ],
     ]);
 
     $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'address' => 'wallet-2',
         'attributes' => [
             'delegate' => [
-                'rank'           => 2,
-                'username'       => 'delegate-2',
-                'voteBalance'    => 4000 * 1e8,
-                'producedBlocks' => 1000,
+                'rank'        => 2,
+                'username'    => 'delegate-2',
+                'voteBalance' => 10000 * 1e8,
             ],
         ],
     ]);
+
+    $wallet3 = Wallet::factory()->activeDelegate()->create([
+        'address' => 'wallet-3',
+        'attributes' => [
+            'delegate' => [
+                'rank'        => 3,
+                'username'    => 'delegate-3',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
+    ]);
+
+    $inactiveWallets = collect();
+    foreach (range(60, 72) as $rank) {
+        $inactiveWallets[] = Wallet::factory()->activeDelegate()->create([
+            'attributes' => [
+                'delegate' => [
+                    'rank'        => $rank,
+                    'username'    => 'delegate-'.$rank,
+                    'voteBalance' => 0,
+                ],
+            ],
+        ]);
+    }
 
     $walletWithoutMissedBlocks = Wallet::factory()->activeDelegate()->create([
+        'address' => 'wallet-4',
         'attributes' => [
             'delegate' => [
-                'rank'           => 3,
-                'username'       => 'delegate-3',
-                'voteBalance'    => 0,
-                'producedBlocks' => 1000,
+                'rank'        => 4,
+                'username'    => 'delegate-4',
+                'voteBalance' => 0,
             ],
         ],
     ]);
 
-    ForgingStats::factory(24)->create([
-        'public_key' => $wallet1->public_key,
+    $wallet51 = Wallet::factory()->activeDelegate()->create([
+        'address' => 'wallet-51',
+        'attributes' => [
+            'delegate' => [
+                'rank'        => 51,
+                'username'    => 'delegate-51',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
     ]);
 
-    ForgingStats::factory(59)->create([
+    ForgingStats::factory(2)->create([
         'public_key' => $wallet2->public_key,
+    ]);
+
+    ForgingStats::factory(5)->create([
+        'public_key' => $wallet3->public_key,
     ]);
 
     Livewire::test(Delegates::class)
@@ -649,54 +685,95 @@ it('should sort missed blocks in ascending order', function () {
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
             $wallet1->address,
-            $wallet2->address,
             $walletWithoutMissedBlocks->address,
+            $wallet51->address,
+            $wallet2->address,
+            $wallet3->address,
+            ...$inactiveWallets->pluck('address'),
             $wallet1->address,
-            $wallet2->address,
             $walletWithoutMissedBlocks->address,
+            $wallet51->address,
+            $wallet2->address,
+            $wallet3->address,
+            ...$inactiveWallets->pluck('address'),
         ]);
 });
 
-it('should sort missed blocks in descending order', function () {
+it('should sort missed blocks in descending order grouped by rank', function () {
     $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'address' => 'wallet-1',
         'attributes' => [
             'delegate' => [
-                'rank'           => 1,
-                'username'       => 'delegate-1',
-                'voteBalance'    => 10000 * 1e8,
-                'producedBlocks' => 1000,
+                'rank'        => 1,
+                'username'    => 'delegate-1',
+                'voteBalance' => 10000 * 1e8,
             ],
         ],
     ]);
 
     $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'address' => 'wallet-2',
         'attributes' => [
             'delegate' => [
-                'rank'           => 2,
-                'username'       => 'delegate-2',
-                'voteBalance'    => 4000 * 1e8,
-                'producedBlocks' => 1000,
+                'rank'        => 2,
+                'username'    => 'delegate-2',
+                'voteBalance' => 10000 * 1e8,
             ],
         ],
     ]);
+
+    $wallet3 = Wallet::factory()->activeDelegate()->create([
+        'address' => 'wallet-3',
+        'attributes' => [
+            'delegate' => [
+                'rank'        => 3,
+                'username'    => 'delegate-3',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
+    ]);
+
+    $inactiveWallets = collect();
+    foreach (range(60, 72) as $rank) {
+        $inactiveWallets[] = Wallet::factory()->activeDelegate()->create([
+            'attributes' => [
+                'delegate' => [
+                    'rank'        => $rank,
+                    'username'    => 'delegate-'.$rank,
+                    'voteBalance' => 0,
+                ],
+            ],
+        ]);
+    }
 
     $walletWithoutMissedBlocks = Wallet::factory()->activeDelegate()->create([
+        'address' => 'wallet-4',
         'attributes' => [
             'delegate' => [
-                'rank'           => 3,
-                'username'       => 'delegate-3',
-                'voteBalance'    => 0,
-                'producedBlocks' => 1000,
+                'rank'        => 4,
+                'username'    => 'delegate-4',
+                'voteBalance' => 0,
             ],
         ],
     ]);
 
-    ForgingStats::factory(24)->create([
-        'public_key' => $wallet1->public_key,
+    $wallet51 = Wallet::factory()->activeDelegate()->create([
+        'address' => 'wallet-51',
+        'attributes' => [
+            'delegate' => [
+                'rank'        => 51,
+                'username'    => 'delegate-51',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
     ]);
 
-    ForgingStats::factory(59)->create([
+    ForgingStats::factory(2)->create([
         'public_key' => $wallet2->public_key,
+    ]);
+
+    ForgingStats::factory(5)->create([
+        'public_key' => $wallet3->public_key,
     ]);
 
     Livewire::test(Delegates::class)
@@ -704,12 +781,18 @@ it('should sort missed blocks in descending order', function () {
         ->set('sortKey', 'missed_blocks')
         ->set('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
+            $wallet3->address,
             $wallet2->address,
             $wallet1->address,
             $walletWithoutMissedBlocks->address,
+            $wallet51->address,
+            ...$inactiveWallets->pluck('address'),
+            $wallet3->address,
             $wallet2->address,
             $wallet1->address,
             $walletWithoutMissedBlocks->address,
+            $wallet51->address,
+            ...$inactiveWallets->pluck('address'),
         ]);
 });
 
@@ -955,7 +1038,7 @@ it('should handle sorting several pages of delegates with cached data', function
             ],
             'updated_at'       => faker()->dateTimeBetween('-1 year', 'now'),
 
-            'address'    => $wallet['address'],
+            'address'    => 'wallet-'.$rank,
             'public_key' => $wallet['publicKey'],
             'attributes' => json_encode([
                 'delegate' => [
@@ -1002,8 +1085,20 @@ it('should handle sorting several pages of delegates with cached data', function
 
     $delegates = $delegates->sort(function ($a, $b) use ($modelSortBy, $missedBlocks, $voterCounts) {
         if ($modelSortBy === 'missed_blocks') {
+            $aRank = Arr::get($a, 'attributes.delegate.rank');
+            $bRank = Arr::get($b, 'attributes.delegate.rank');
+            if ($aRank <= Network::delegateCount() && $bRank > Network::delegateCount()) {
+                return -1;
+            } else if ($aRank > Network::delegateCount() && $bRank <= Network::delegateCount()) {
+                return 1;
+            }
+
             $aValue = count($missedBlocks[$a->public_key]);
             $bValue = count($missedBlocks[$b->public_key]);
+
+            if ($aValue === $bValue) {
+                return $aRank - $bRank;
+            }
         } elseif ($modelSortBy === 'no_of_voters') {
             $aValue = $voterCounts[$a->public_key];
             $bValue = $voterCounts[$b->public_key];
