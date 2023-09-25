@@ -1,5 +1,9 @@
 @props(['model'])
 
 <x-tables.rows.desktop.encapsulated.cell class="text-theme-secondary-900 dark:text-theme-secondary-200">
-    <x-percentage>{{ $model->votesPercentage() }}</x-percentage>
+    @if ($model)
+        <x-percentage>{{ $model->votesPercentage() }}</x-percentage>
+    @else
+        <span>-</span>
+    @endif
 </x-tables.rows.desktop.encapsulated.cell>

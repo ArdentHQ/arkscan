@@ -8,42 +8,48 @@
     'nameProperties' => [],
     'sortingId' => null,
     'initialSort' => 'asc',
+    'livewireSort' => false,
 ])
 
-<x-ark-tables.header
-    :responsive="$responsive"
-    :breakpoint="$breakpoint"
-    :first-on="$firstOn"
-    :last-on="$lastOn"
-    :class="Arr::toCssClasses([
-        'text-right' => ! $sortingId !== null,
-        'flex items-center justify-end space-x-2 group/header cursor-pointer' => $sortingId !== null,
-        $class,
-    ])"
-    :attributes="$attributes->merge([
-        'x-ref' => $sortingId,
-        'x-on:click' => $sortingId !== null ? 'sortByColumn' : null,
-        'data-initial-sort' => $sortingId !== null ? $initialSort : null,
-    ])"
->
-    @isset ($slot)
-        <div class="inline-flex items-center space-x-2">
-            <x-tables.headers.desktop.includes.sort-icon
-                :id="$sortingId"
-                :enabled="$sortingId !== null"
-                :initial-direction="$initialSort"
-            />
+@if ($sortingId)
+    <x-tables.headers.desktop.sortable-header
+        :responsive="$responsive"
+        :breakpoint="$breakpoint"
+        :first-on="$firstOn"
+        :last-on="$lastOn"
+        :name="$name"
+        :name-properties="$nameProperties"
+        :livewire-sort="$livewireSort"
+        :sorting-id="$sortingId"
+        :initial-sort="$initialSort"
+        sort-icon-alignment="left"
+        :class="Arr::toCssClasses([
+            'leading-4.25 items-center',
+            'text-right' => $livewireSort || $sortingId === null,
+            $class,
+        ])"
+    >
+        {{ $slot }}
+    </x-tables.headers.desktop.sortable-header>
+@else
+    <x-ark-tables.header
+        :responsive="$responsive"
+        :breakpoint="$breakpoint"
+        :first-on="$firstOn"
+        :last-on="$lastOn"
+        :class="Arr::toCssClasses([
+            'text-right',
+            $class,
+        ])"
+    >
+        @isset ($slot)
+            <div class="inline-flex items-center space-x-2">
+                <div>@lang($name, $nameProperties)</div>
 
-            <div>@lang($name, $nameProperties)</div>
-
-            {{ $slot }}
-        </div>
-    @else
-        <x-tables.headers.desktop.includes.sort-icon
-            :id="$sortingId"
-            :initial-direction="$initialSort"
-        />
-
-        <span>@lang($name, $nameProperties)</span>
-    @endisset
-</x-ark-tables.header>
+                {{ $slot }}
+            </div>
+        @else
+            <span>@lang($name, $nameProperties)</span>
+        @endif
+    </x-ark-tables.header>
+@endif
