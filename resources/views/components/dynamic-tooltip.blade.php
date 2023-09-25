@@ -2,7 +2,8 @@
     'tooltip',
 ])
 
-<div class="min-w-0"
+<div 
+    class="min-w-0"
     @if ($tooltip !== null && $tooltip !== '')
         x-data="{
             init() {
