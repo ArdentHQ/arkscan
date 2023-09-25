@@ -11,15 +11,27 @@
     'livewireSort' => false,
 ])
 
-<x-tables.headers.desktop.sortable-header
-    :responsive="$responsive"
-    :breakpoint="$breakpoint"
-    :first-on="$firstOn"
-    :last-on="$lastOn"
-    :width="$width"
-    :class="$class"
-    :name="$name"
-    :livewire-sort="$livewireSort"
-    :sorting-id="$sortingId"
-    :initial-sort="$initialSort"
-/>
+@if ($sortingId)
+    <x-tables.headers.desktop.sortable-header
+        :responsive="$responsive"
+        :breakpoint="$breakpoint"
+        :first-on="$firstOn"
+        :last-on="$lastOn"
+        :width="$width"
+        :class="$class"
+        :name="$name"
+        :livewire-sort="$livewireSort"
+        :sorting-id="$sortingId"
+        :initial-sort="$initialSort"
+    />
+@else
+    <x-ark-tables.header
+        :responsive="$responsive"
+        :breakpoint="$breakpoint"
+        :first-on="$firstOn"
+        :last-on="$lastOn"
+        :width="$width"
+        :class="$class"
+        :name="$name"
+    />
+@endif
