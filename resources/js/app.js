@@ -61,3 +61,13 @@ window.onpageshow = function (event) {
         window.location.reload();
     }
 };
+
+window.hideTableTooltipsOnLivewireEvent = (regex) => {
+    Livewire.hook('message.processed', (message, component) => {
+        if (! regex.test(component.name)) {
+            return;
+        }
+
+        window.hideAllTooltips();
+    });
+}
