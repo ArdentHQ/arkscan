@@ -16,6 +16,8 @@
                     :last-on="Arr::get($header, 'lastOn', null)"
                     :class="Arr::get($header, 'class', null)"
                     :width="Arr::get($header, 'width', null)"
+                    :sorting-id="Arr::get($header, 'sortingId', null)"
+                    :livewire-sort="Arr::get($header, 'livewireSort', null)"
                 />
             @endforeach
         </tr>
