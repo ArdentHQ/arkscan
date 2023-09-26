@@ -14,7 +14,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
 /**
- * @property Blocks $blocks
+ * @property LengthAwarePaginator $blocks
  * */
 final class Blocks extends Component
 {
