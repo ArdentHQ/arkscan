@@ -1,4 +1,9 @@
-<div class="w-full">
+<div
+    class="w-full"
+    @if ($this->isReady)
+        wire:poll.8s
+    @endif
+>
     <x-skeletons.home.blocks :row-count="$this->perPage">
         <x-tables.desktop.home.blocks
             :blocks="$blocks"
