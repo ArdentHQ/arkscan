@@ -4,46 +4,52 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Home;
 
-use App\Http\Livewire\Concerns\ManagesLatestBlocks;
+use App\Http\Livewire\Concerns\DeferLoading;
+use App\Http\Livewire\Concerns\HasTablePagination;
+use App\Models\Block;
+use App\Models\Scopes\OrderByHeightScope;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
+/**
+ * @property Blocks $blocks
+ * */
 final class Blocks extends Component
 {
-    use ManagesLatestBlocks;
+    use DeferLoading;
+    use HasTablePagination;
 
-    public array $state = [
-        'selected' => 'blocks',
-        'type'     => 'all',
+    /** @var mixed */
+    protected $listeners = [
+        'setBlocksReady'  => 'setIsReady',
+        'currencyChanged' => '$refresh',
     ];
-
-    /** @phpstan-ignore-next-line */
-    protected $listeners = ['currencyChanged'];
-
-    private ?Collection $blocks = null;
 
     public function render(): View
     {
-        return $this->renderBlocks();
+        return view('livewire.home.blocks', [
+            'blocks' => ViewModelFactory::paginate($this->blocks),
+        ]);
     }
 
-    public function currencyChanged(): void
+    public function getNoResultsMessageProperty(): ?string
     {
-        $this->pollBlocks();
-    }
-
-    private function renderBlocks(): View
-    {
-        if (is_null($this->blocks)) {
-            $this->blocks = new Collection();
+        if ($this->blocks->total() === 0) {
+            return trans('tables.blocks.no_results');
         }
 
-        $this->state['type'] = 'all';
+        return null;
+    }
 
-        return view('livewire.home.blocks', [
-            'blocks' => ViewModelFactory::collection($this->blocks),
-        ]);
+    public function getBlocksProperty(): LengthAwarePaginator
+    {
+        if (! $this->isReady) {
+            return new LengthAwarePaginator([], 0, $this->perPage);
+        }
+
+        return Block::withScope(OrderByHeightScope::class)
+            ->paginate($this->perPage);
     }
 }

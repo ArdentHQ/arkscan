@@ -60,8 +60,8 @@ return [
 
         'no_transaction_results'  => 'No :0 transactions could be found.',
         'transactions_and_blocks' => 'Transaction & Blocks',
-        'latest_transactions'     => 'Latest Transactions',
-        'latest_blocks'           => 'Latest Blocks',
+        'transactions'            => 'Transactions',
+        'blocks'                  => 'Blocks',
     ],
 
     'search_results'   => [

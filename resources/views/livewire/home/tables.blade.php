@@ -5,8 +5,8 @@
     <x-tabs
         :default="$this->view"
         :options="[
-            'transactions' => trans('pages.wallet.transactions'),
-            'blocks'       => trans('pages.wallet.delegate.validated_blocks'),
+            'transactions' => trans('pages.home.transactions'),
+            'blocks'       => trans('pages.home.blocks'),
         ]"
     />
 
