@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'home' => [
         'transactions' => 'Transactions',
-        'blocks' => 'Blocks',
+        'blocks'       => 'Blocks',
     ],
 
     'transactions' => [
