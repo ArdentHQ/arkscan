@@ -1,7 +1,7 @@
 <div
     class="w-full"
     @if ($this->isReady)
-        wire:poll.8s
+        wire:poll.10s
     @endif
 >
     <x-skeletons.home.blocks :row-count="$this->perPage">

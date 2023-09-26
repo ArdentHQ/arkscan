@@ -9,18 +9,6 @@
         <x-tables.mobile.skeleton.home.transactions />
     </div>
 @else
-    <x-loading.visible
-        wire:key="skeleton:transactions:ready"
-        display-type="block"
-    >
-        <x-tables.desktop.skeleton.home.transactions :row-count="$rowCount" />
-
-        <x-tables.mobile.skeleton.home.transactions />
-    </x-loading.visible>
-
-    <div wire:key="skeleton:transactions:hidden">
-        <x-loading.hidden>
-            {{ $slot }}
-        </x-loading.hidden>
-    </div>
+    {{-- No loading state as it shows every 8-10 seconds --}}
+    {{ $slot }}
 @endif
