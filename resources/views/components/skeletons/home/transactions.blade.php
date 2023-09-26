@@ -17,10 +17,10 @@
 
         <x-tables.mobile.skeleton.home.transactions />
     </x-loading.visible>
-@endif
 
-<div wire:key="skeleton:transactions:hidden">
-    <x-loading.hidden>
-        {{ $slot }}
-    </x-loading.hidden>
-</div>
+    <div wire:key="skeleton:transactions:hidden">
+        <x-loading.hidden>
+            {{ $slot }}
+        </x-loading.hidden>
+    </div>
+@endif
