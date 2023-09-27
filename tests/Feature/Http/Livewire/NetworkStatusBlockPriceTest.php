@@ -15,3 +15,23 @@ it('should render with price', function () {
 
     Livewire::test(NetworkStatusBlockPrice::class)->assertSee('1.61');
 });
+
+it('should render the price change', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
+    (new NetworkStatusBlockCache())->setPriceChange('DARK', 'USD', 0.137);
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 1);
+    (new NetworkStatusBlockCache())->setHistoricalHourly('DARK', 'USD', collect());
+
+    Livewire::test(NetworkStatusBlockPrice::class)->assertSee('13.70%');
+});
+
+it('handle price change when price is zero', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
+    (new NetworkStatusBlockCache())->setPriceChange('DARK', 'USD', 0);
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 1);
+    (new NetworkStatusBlockCache())->setHistoricalHourly('DARK', 'USD', collect());
+
+    Livewire::test(NetworkStatusBlockPrice::class)->assertSee('0.00%');
+});
