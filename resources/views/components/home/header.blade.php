@@ -24,7 +24,7 @@
             <livewire:home.statistics />
         </div>
 
-        <div class="flex-1 rounded-b-xl bg-theme-secondary-100 md-lg:rounded-r-xl dark:bg-theme-dark-950">
+        <div class="flex-1 rounded-b-xl bg-theme-secondary-100 md-lg:rounded-r-xl md-lg:rounded-bl-none dark:bg-theme-dark-950 py-3 px-4 sm:px-6 md:py-6">
             {{-- @TODO: Update Chart --}}
             <livewire:network-status-block-price />
         </div>
