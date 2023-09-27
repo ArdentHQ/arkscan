@@ -8,7 +8,7 @@
     :no-results-message="$noResultsMessage"
 >
     @foreach ($transactions as $transaction)
-        <x-tables.rows.mobile>
+        <x-tables.rows.mobile wire:key="{{ Helpers::generateId('transactions-mobile-row', $transaction->id()) }}">
             <x-slot name="header">
                 <x-tables.rows.mobile.encapsulated.transaction-id :model="$transaction" />
 
@@ -18,7 +18,7 @@
                 />
             </x-slot>
 
-            <x-tables.rows.mobile.encapsulated.transaction
+            <x-tables.rows.mobile.encapsulated.transaction-generic
                 :model="$transaction"
                 class="sm:flex-1"
             />

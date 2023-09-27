@@ -53,7 +53,7 @@
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>
-                    <x-tables.rows.desktop.encapsulated.addressing :model="$transaction" />
+                    <x-tables.rows.desktop.encapsulated.addressing-generic :model="$transaction" />
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell
