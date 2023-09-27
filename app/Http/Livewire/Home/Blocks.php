@@ -19,7 +19,7 @@ final class Blocks extends Component
         'type'     => 'all',
     ];
 
-    /** @phpstan-ignore-next-line */
+    /** @var mixed */
     protected $listeners = ['currencyChanged'];
 
     private ?Collection $blocks = null;
