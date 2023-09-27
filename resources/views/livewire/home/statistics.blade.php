@@ -21,7 +21,7 @@
             :title="trans('pages.home.statistics.volume')"
             :disabled="! Network::canBeExchanged() || $volume === null"
         >
-            {{ ExplorerNumberFormatter::currency($volume, Network::currency()) }}
+            {{ ExplorerNumberFormatter::currencyWithDecimals($volume, Network::currency(), 2) }}
         </x-home.stat>
 
         <x-home.stat
