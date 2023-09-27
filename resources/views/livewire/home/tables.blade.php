@@ -12,7 +12,7 @@
 
     <div id="table-list">
         <x-home.tables.transactions />
-        <x-home.tables.blocks />
+        <x-home.tables.blocks x-cloak />
 
         <x-script.onload-scroll-to-query selector="#table-list" />
     </div>
