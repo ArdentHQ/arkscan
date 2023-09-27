@@ -31,6 +31,14 @@ return [
     ],
 
     'home'             => [
+        'statistics' => [
+            'title'          => 'Statistics',
+            'current_supply' => 'Current Supply',
+            'volume'         => 'Volume (24h)',
+            'market_cap'     => 'Market Cap',
+            'block_height'   => 'Block Height',
+        ],
+
         'charts'                  => [
             'price'     => 'Price',
             'min_price' => 'Min Price',

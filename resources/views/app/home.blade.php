@@ -2,7 +2,7 @@
     <x-metadata page="home" />
 
     @section('content')
-        <livewire:network-status-block />
+        <x-home.header />
 
         <x-ark-container>
             <livewire:home.tables />
