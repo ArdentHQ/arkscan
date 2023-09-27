@@ -18,6 +18,7 @@
         <x-tables.footers.view-all
             :results="$blocks"
             :count-suffix="trans('tables.home.blocks')"
+            :route="route('blocks', ['page' => 2])"
             class="mt-4 md:mt-0"
         />
     </x-skeletons.home.blocks>

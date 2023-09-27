@@ -1,6 +1,7 @@
 @props([
     'results',
     'countSuffix',
+    'route',
 ])
 
 <x-tables.footers.footer>
@@ -14,7 +15,7 @@
 
     <div class="flex w-full sm:w-auto">
         <a
-            href="{{ route('transactions') }}"
+            href="{{ $route }}"
             class="py-1.5 w-full h-8 button-secondary"
         >
             @lang('pagination.view_all')
