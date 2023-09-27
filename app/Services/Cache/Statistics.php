@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Cache;
 
 use App\Services\Timestamp;
@@ -7,7 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-class Statistics
+final class Statistics
 {
     public const STATS_TTL = 300;
 
