@@ -32,11 +32,11 @@ return [
 
     'home'             => [
         'statistics' => [
-            'title' => 'Statistics',
+            'title'          => 'Statistics',
             'current_supply' => 'Current Supply',
-            'volume' => 'Volume (24h)',
-            'market_cap' => 'Market Cap',
-            'block_height' => 'Block Height',
+            'volume'         => 'Volume (24h)',
+            'market_cap'     => 'Market Cap',
+            'block_height'   => 'Block Height',
         ],
 
         'charts'                  => [
