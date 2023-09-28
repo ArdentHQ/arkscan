@@ -98,12 +98,6 @@ final class Chart extends Component
         return (new NetworkStatusBlockCache())->getPriceChange(Network::currency(), Settings::currency());
     }
 
-    private function getHistoricalHourly(string $target): Collection
-    {
-        /** @var Collection<int, mixed> */
-        return (new NetworkStatusBlockCache())->getHistoricalHourly(Network::currency(), $target) ?? collect([]);
-    }
-
     private function availablePeriods(): array
     {
         return [
