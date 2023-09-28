@@ -125,14 +125,12 @@ const PriceChart = (values, labels, isPlaceholder, darkMode, isPositive) => {
                 },
             };
 
-            const config = {
-                type: "line",
-                data,
-                options,
-            };
-
             if (!this.chart) {
-                this.chart = new Chart(ctx, config);
+                this.chart = new Chart(ctx, {
+                    type: "line",
+                    data,
+                    options,
+                });
             } else {
                 this.chart.options = options;
                 this.chart.data = data;
