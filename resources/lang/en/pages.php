@@ -37,6 +37,7 @@ return [
             'volume'         => 'Volume (24h)',
             'market_cap'     => 'Market Cap',
             'block_height'   => 'Block Height',
+            'currency_price' => ':currency Price',
         ],
 
         'charts'                  => [
@@ -51,6 +52,7 @@ return [
             'avg_fees'  => 'Avg Fees',
 
             'periods'   => [
+                'all'       => 'All Time',
                 'day'       => 'Day',
                 'week'      => 'Week',
                 'month'     => 'Month',
