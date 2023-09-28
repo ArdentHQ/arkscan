@@ -61,7 +61,7 @@ final class Chart extends Component
 
     public function setPeriod(string $period): void
     {
-        if (! in_array($period, array_keys(trans('pages.home.charts.periods')))) {
+        if (! in_array($period, array_keys(trans('pages.home.charts.periods')), true)) {
             return;
         }
 
