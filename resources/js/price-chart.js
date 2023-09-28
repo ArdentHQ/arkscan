@@ -22,7 +22,7 @@ const PriceChart = (values, labels, isPlaceholder, darkMode, isPositive) => {
 
             const gradient = ctx.createLinearGradient(0, 0, 0, 40);
 
-            window.addEventListener('resize', () => {
+            window.addEventListener("resize", () => {
                 try {
                     this.chart.resize();
                 } catch {
