@@ -68,11 +68,6 @@ final class Chart extends Component
         $this->period = $period;
     }
 
-    public function updatedPeriod(): void
-    {
-        // $this->dispatchBrowserEvent('stats-period-updated', []);
-    }
-
     private function mainValueBTC(): string
     {
         return ServiceNumberFormatter::currency($this->getPrice(CryptoCurrencies::BTC), CryptoCurrencies::BTC);
