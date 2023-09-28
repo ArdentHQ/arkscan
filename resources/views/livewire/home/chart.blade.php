@@ -38,7 +38,7 @@
                 </span>
             </x-slot>
 
-            @foreach (trans('pages.home.charts.periods') as $period => $lang)
+            @foreach ($options as $period => $lang)
                 <x-general.dropdown.list-item
                     :is-active="$period === $this->period"
                     wire:click="setPeriod('{{ $period }}')"
