@@ -49,12 +49,12 @@
         </x-general.dropdown.dropdown>
     </div>
 
-    <div class="flex flex-1 justify-end min-w-0">
+    <div class="flex flex-1 justify-end md:items-end min-w-0">
         <div class="flex w-full md:hidden max-h-[39px] max-w-[258px]">
             <livewire:price-stats />
         </div>
 
-        <div class="hidden w-full md:flex md:mt-4 h-[109px]">
+        <div class="hidden w-full md:flex md:mt-4 h-[112px]">
             <x-ark-chart
                 class="w-full h-auto"
                 canvas-class="max-w-full"
