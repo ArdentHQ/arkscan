@@ -1,7 +1,7 @@
 window.chartTooltip = (context) => {
-    console.log(context)
+    console.log(context);
     const { chart, tooltip } = context;
-    let tooltipEl = chart.canvas.parentNode.querySelector('div');
+    let tooltipEl = chart.canvas.parentNode.querySelector("div");
 
     const getCurrencyValue = (value) => {
         return new Intl.NumberFormat("en-US", {
@@ -10,27 +10,27 @@ window.chartTooltip = (context) => {
         }).format(value);
     };
 
-    if (! tooltipEl) {
-        tooltipEl = document.createElement('div');
+    if (!tooltipEl) {
+        tooltipEl = document.createElement("div");
         tooltipEl.classList.add(
-            'bg-theme-secondary-900',
-            'dark:bg-theme-dark-800',
-            'rounded',
-            'absolute',
-            'text-white',
-            'leading-3.75',
-            'text-left',
-            'p-2',
+            "bg-theme-secondary-900",
+            "dark:bg-theme-dark-800",
+            "rounded",
+            "absolute",
+            "text-white",
+            "leading-3.75",
+            "text-left",
+            "p-2"
         );
 
         tooltipEl.style.opacity = 1;
-        tooltipEl.style.pointerEvents = 'none';
-        tooltipEl.style.position = 'absolute';
-        tooltipEl.style.transform = 'translate(-50%, 0)';
-        tooltipEl.style.transition = 'all .1s ease';
+        tooltipEl.style.pointerEvents = "none";
+        tooltipEl.style.position = "absolute";
+        tooltipEl.style.transform = "translate(-50%, 0)";
+        tooltipEl.style.transition = "all .1s ease";
 
-        const table = document.createElement('table');
-        table.style.margin = '0px';
+        const table = document.createElement("table");
+        table.style.margin = "0px";
 
         tooltipEl.appendChild(table);
         chart.canvas.parentNode.appendChild(tooltipEl);
@@ -44,33 +44,33 @@ window.chartTooltip = (context) => {
     // Set Text
     if (tooltip.body) {
         const titleLines = tooltip.title || [];
-        const bodyLines = tooltip.body.map(b => b.lines);
+        const bodyLines = tooltip.body.map((b) => b.lines);
 
-        const tableHead = document.createElement('thead');
+        const tableHead = document.createElement("thead");
         bodyLines.forEach((body, i) => {
-            const heading = document.createElement('span');
-            heading.innerHTML = 'Price:';
+            const heading = document.createElement("span");
+            heading.innerHTML = "Price:";
             heading.classList.add(
-                'mr-1',
-                'font-semibold',
-                'text-theme-secondary-500',
-                'dark:text-theme-dark-200',
-                'text-xs',
+                "mr-1",
+                "font-semibold",
+                "text-theme-secondary-500",
+                "dark:text-theme-dark-200",
+                "text-xs"
             );
 
-            const tr = document.createElement('tr');
-            tr.style.backgroundColor = 'inherit';
+            const tr = document.createElement("tr");
+            tr.style.backgroundColor = "inherit";
             tr.style.borderWidth = 0;
 
-            const th = document.createElement('th');
+            const th = document.createElement("th");
             th.style.borderWidth = 0;
 
-            const text = document.createElement('span');
+            const text = document.createElement("span");
             text.innerHTML = getCurrencyValue(body);
             text.classList.add(
-                'font-semibold',
-                'text-xs',
-                'dark:text-theme-dark-50',
+                "font-semibold",
+                "text-xs",
+                "dark:text-theme-dark-50"
             );
 
             th.appendChild(heading);
@@ -79,25 +79,25 @@ window.chartTooltip = (context) => {
             tableHead.appendChild(tr);
         });
 
-        const tableBody = document.createElement('tbody');
+        const tableBody = document.createElement("tbody");
 
-        titleLines.forEach(timestamp => {
-            const tr = document.createElement('tr');
+        titleLines.forEach((timestamp) => {
+            const tr = document.createElement("tr");
             tr.style.borderWidth = 0;
 
-            const td = document.createElement('td');
+            const td = document.createElement("td");
             td.style.borderWidth = 0;
-            td.classList.add('pt-1.5');
+            td.classList.add("pt-1.5");
 
             const date = dayjs(timestamp * 1000);
-            const text = document.createElement('span');
-            text.innerHTML = date.format('D MMM YYYY HH:mm:ss');
+            const text = document.createElement("span");
+            text.innerHTML = date.format("D MMM YYYY HH:mm:ss");
             text.classList.add(
-                'font-semibold',
-                'text-theme-secondary-500',
-                'dark:text-theme-dark-200',
-                'text-xs',
-                'whitespace-nowrap',
+                "font-semibold",
+                "text-theme-secondary-500",
+                "dark:text-theme-dark-200",
+                "text-xs",
+                "whitespace-nowrap"
             );
 
             td.appendChild(text);
@@ -105,7 +105,7 @@ window.chartTooltip = (context) => {
             tableBody.appendChild(tr);
         });
 
-        const tableRoot = tooltipEl.querySelector('table');
+        const tableRoot = tooltipEl.querySelector("table");
 
         // Remove old children
         while (tableRoot.firstChild) {
@@ -117,10 +117,10 @@ window.chartTooltip = (context) => {
         tableRoot.appendChild(tableBody);
     }
 
-    const {offsetLeft: positionX, offsetTop: positionY} = chart.canvas;
+    const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
 
     // Display, position, and set styles for font
     tooltipEl.style.opacity = 1;
-    tooltipEl.style.left = positionX + tooltip.caretX + 'px';
-    tooltipEl.style.top = positionY + tooltip.caretY + 'px';
+    tooltipEl.style.left = positionX + tooltip.caretX + "px";
+    tooltipEl.style.top = positionY + tooltip.caretY + "px";
 };
