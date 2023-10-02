@@ -64,7 +64,12 @@
                 :theme="$chartTheme"
                 height="109"
                 :width="null"
-                tooltips
+                tooltip-handler="chartTooltip"
+                ticks-callback="function (value) {
+                    value = this.getLabelForValue(value);
+
+                    return dayjs(value * 1000).format('{{ $this->dateFormat }}');
+                }"
                 grid
                 :currency="Settings::currency()"
                 :y-padding="10"
@@ -74,3 +79,7 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+    <script src="{{ mix('js/chart-tooltip.js')}}"></script>
+@endpush
