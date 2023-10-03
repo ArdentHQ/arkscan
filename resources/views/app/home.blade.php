@@ -6,6 +6,8 @@
 
         <x-ark-container>
             <livewire:home.tables />
+
+            <x-home.footer />
         </x-ark-container>
     @endsection
 @endcomponent
