@@ -40,7 +40,7 @@ return [
         ],
 
         'footer' => [
-            'title' => 'Manage Your $ARK',
+            'title'    => 'Manage Your $ARK',
             'subtitle' => 'Available on Desktop & Mobile',
         ],
 
