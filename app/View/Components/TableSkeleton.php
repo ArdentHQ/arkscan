@@ -46,7 +46,7 @@ final class TableSkeleton extends Component
             });
             $rows    = $this->items->values()->map(function ($item): array {
                 return array_merge(
-                    ['component' => "tables.rows.desktop.skeletons.".$this->getType($item)],
+                    ['component' => 'tables.rows.desktop.skeletons.'.$this->getType($item)],
                     $this->getOptions($item)
                 );
             });
