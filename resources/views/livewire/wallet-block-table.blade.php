@@ -17,8 +17,5 @@
         />
     </x-skeletons.wallet-blocks>
 
-    <x-general.pagination.table
-        :results="$blocks"
-        class="mt-4 md:mt-0"
-    />
+    <x-general.pagination.table :results="$blocks" />
 </div>
