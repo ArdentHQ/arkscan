@@ -2,6 +2,7 @@
     'header',
     'expandable' => false,
     'expandClass' => 'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700',
+    'expandDisabled' => false,
     'contentClass' => null,
 ])
 
@@ -35,7 +36,7 @@
             <div class="flex items-center pl-4 sm:hidden h-[17px]">
                 <x-general.dropdown.arrow
                     key="isExpanded"
-                    x-on:click="isExpanded = ! isExpanded"
+                    x-on:click="{{ $expandDisabled ? '' : 'isExpanded = ! isExpanded' }}"
                     color="text-theme-secondary-700 dark:text-theme-dark-200"
                 />
             </div>

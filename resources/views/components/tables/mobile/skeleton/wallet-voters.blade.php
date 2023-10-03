@@ -1,4 +1,4 @@
 <x-table-skeleton
-    device="mobile"
-    :items="['address', 'number', 'number']"
+    device="mobile.wallet-voters"
+    :encapsulated="true"
 />

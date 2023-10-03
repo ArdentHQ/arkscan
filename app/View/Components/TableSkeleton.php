@@ -18,7 +18,7 @@ final class TableSkeleton extends Component
 
     public function __construct(
         private string $device,
-        array $items,
+        array $items = [],
         string $class = 'hidden md:block',
         private ?int $rowCount = null,
         private bool $encapsulated = false,
