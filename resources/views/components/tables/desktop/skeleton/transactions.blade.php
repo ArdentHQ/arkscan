@@ -12,7 +12,11 @@
             'breakpoint' => 'xl',
         ],
         'tables.transactions.type'       => 'text',
-        'tables.transactions.addressing' => 'text',
+        'tables.transactions.addressing' => [
+            'type' => 'encapsulated.addressing',
+            'header' => 'address',
+            'generic' => true,
+        ],
         'tables.transactions.amount'     => [
             'type' => 'number',
             'lastOn' => 'lg',

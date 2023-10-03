@@ -14,7 +14,8 @@
             'livewireSort' => true,
         ],
         'tables.recent-votes.addressing' => [
-            'type' => 'text',
+            'type' => 'encapsulated.addressing',
+            'header' => 'address',
             'sortingId' => 'address',
             'livewireSort' => true,
         ],

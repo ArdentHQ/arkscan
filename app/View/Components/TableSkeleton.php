@@ -32,14 +32,21 @@ final class TableSkeleton extends Component
     {
         if ($this->device === 'desktop') {
             $headers = $this->items->map(function ($item): array {
+                $component = 'tables.headers.desktop.'.$this->getType($item);
+
+                $header = Arr::get($item, 'header');
+                if (Arr::get($item, 'header')) {
+                    $component = 'tables.headers.desktop.'.$header;
+                }
+
                 return array_merge(
-                    ['component' => "tables.headers.{$this->device}.".$this->getType($item)],
+                    ['component' => $component],
                     $this->getOptions($item)
                 );
             });
             $rows    = $this->items->values()->map(function ($item): array {
                 return array_merge(
-                    ['component' => "tables.rows.{$this->device}.skeletons.".$this->getType($item)],
+                    ['component' => "tables.rows.desktop.skeletons.".$this->getType($item)],
                     $this->getOptions($item)
                 );
             });
