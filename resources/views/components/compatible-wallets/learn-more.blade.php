@@ -28,7 +28,7 @@
             />
         </div>
 
-        <div class="flex space-y-2 flex-col ml-3 h-[58px] justify-center">
+        <div class="flex flex-col justify-center ml-3 space-y-2 h-[58px]">
             <span @class([
                 'text-lg leading-5.25 font-semibold',
                 $titleColor,
@@ -50,7 +50,7 @@
             href="@lang('pages.compatible-wallets.arkvault.url')"
             target="_blank"
             rel="noopener nofollow noreferrer"
-            class="rounded-lg flex items-center w-full h-full sm:mt-0 sm:w-auto md:mt-0 md:w-full lg:w-auto button-primary"
+            class="flex items-center w-full h-full rounded-lg sm:mt-0 sm:w-auto md:mt-0 md:w-full lg:w-auto button-primary"
         >
             <div class="flex justify-center items-center h-full">
                 <span>
