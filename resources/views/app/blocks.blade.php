@@ -13,4 +13,12 @@
             <livewire:block-table />
         </div>
     @endsection
+
+    @push('scripts')
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                hideTableTooltipsOnLivewireEvent(/^block-table$/);
+            });
+        </script>
+    @endpush
 @endcomponent

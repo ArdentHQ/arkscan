@@ -42,6 +42,7 @@
             'breakpoint' => 'lg',
             'sortingId' => 'percentage_votes',
             'livewireSort' => true,
+            'tooltip' => trans('tables.missed-blocks.info.percentage'),
         ],
     ]"
     :component-properties="['rounded' => false]"
