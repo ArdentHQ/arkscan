@@ -31,6 +31,19 @@ return [
     ],
 
     'home'             => [
+        'statistics' => [
+            'title'          => 'Statistics',
+            'current_supply' => 'Current Supply',
+            'volume'         => 'Volume (24h)',
+            'market_cap'     => 'Market Cap',
+            'block_height'   => 'Block Height',
+        ],
+
+        'footer' => [
+            'title'    => 'Manage Your $ARK',
+            'subtitle' => 'Available on Desktop & Mobile',
+        ],
+
         'charts'                  => [
             'price'     => 'Price',
             'min_price' => 'Min Price',
@@ -60,8 +73,8 @@ return [
 
         'no_transaction_results'  => 'No :0 transactions could be found.',
         'transactions_and_blocks' => 'Transaction & Blocks',
-        'latest_transactions'     => 'Latest Transactions',
-        'latest_blocks'           => 'Latest Blocks',
+        'transactions'            => 'Transactions',
+        'blocks'                  => 'Blocks',
     ],
 
     'search_results'   => [

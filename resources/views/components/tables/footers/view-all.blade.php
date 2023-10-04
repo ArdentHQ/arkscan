@@ -1,0 +1,24 @@
+@props([
+    'results',
+    'countSuffix',
+    'route',
+])
+
+<x-tables.footers.footer>
+    <div class="font-semibold sm:mr-8 dark:text-theme-secondary-500">
+        <span>
+            <x-number>{{ $results->total() }}</x-number>
+        </span>
+
+        <span>{{ $countSuffix }}</span>
+    </div>
+
+    <div class="flex w-full sm:w-auto">
+        <a
+            href="{{ $route }}"
+            class="py-1.5 w-full h-8 button-secondary"
+        >
+            @lang('pagination.view_all')
+        </a>
+    </div>
+</x-tables.footers.footer>

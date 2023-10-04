@@ -14,8 +14,5 @@
         />
     </x-skeletons.wallet-voters>
 
-    <x-general.pagination.table
-        :results="$wallets"
-        class="mt-4 md:mt-0"
-    />
+    <x-general.pagination.table :results="$wallets" />
 </div>
