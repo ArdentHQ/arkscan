@@ -50,9 +50,8 @@
                 sorting-id="percentage_votes"
                 livewire-sort
                 class="!py-2.5"
-            >
-                <x-tables.headers.desktop.includes.tooltip :text="trans('tables.delegates.info.percentage')" />
-            </x-tables.headers.desktop.number>
+                :tooltip="trans('tables.delegates.info.percentage')"
+            />
 
             <x-tables.headers.desktop.number
                 name="tables.delegates.missed_blocks"

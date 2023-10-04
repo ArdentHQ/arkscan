@@ -9,6 +9,7 @@
     'sortingId' => null,
     'initialSort' => 'asc',
     'livewireSort' => false,
+    'tooltip' => null,
 ])
 
 @if ($sortingId)
@@ -29,6 +30,10 @@
             $class,
         ])"
     >
+        @if ($tooltip)
+            <x-tables.headers.desktop.includes.tooltip :text="$tooltip" />
+        @endif
+
         {{ $slot }}
     </x-tables.headers.desktop.sortable-header>
 @else
@@ -42,9 +47,13 @@
             $class,
         ])"
     >
-        @isset ($slot)
+        @if ($slot->isNotEmpty() || $tooltip !== null)
             <div class="inline-flex items-center space-x-2">
                 <div>@lang($name, $nameProperties)</div>
+
+                @if ($tooltip)
+                    <x-tables.headers.desktop.includes.tooltip :text="$tooltip" />
+                @endif
 
                 {{ $slot }}
             </div>
