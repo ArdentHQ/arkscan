@@ -9,9 +9,11 @@
 
             <x-tables.rows.mobile.skeletons.encapsulated.addressing generic />
 
-            <x-tables.rows.mobile.skeletons.encapsulated.text />
+            <div class="flex flex-col space-y-4 sm:flex-row sm:items-start sm:space-y-0 sm:w-1/2">
+                <x-tables.rows.mobile.skeletons.encapsulated.text />
 
-            <x-tables.rows.mobile.skeletons.encapsulated.text />
+                <x-tables.rows.mobile.skeletons.encapsulated.text />
+            </div>
         </x-tables.rows.mobile>
     </x-skeleton>
 </x-tables.mobile.includes.encapsulated>
