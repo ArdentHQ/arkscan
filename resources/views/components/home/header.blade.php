@@ -2,7 +2,7 @@
     <div class="flex flex-col rounded-xl border border-theme-secondary-300 md-lg:flex-row dark:border-theme-dark-700">
         <div class="flex flex-col flex-1 py-3 px-4 sm:px-6 md:py-6">
             <div class="flex justify-between items-center mb-3 md:mb-5">
-                <h2 class="mb-0 text-xl md:text-2xl font-semibold">
+                <h2 class="mb-0 text-xl font-semibold md:text-2xl">
                     @lang('pages.home.statistics.title')
                 </h2>
 
