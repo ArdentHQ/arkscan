@@ -16,12 +16,12 @@ trait AvailablePeriods
     private function availablePeriods(): array
     {
         return [
-            StatsPeriods::DAY      => trans('forms.statistics.periods.day'),
-            StatsPeriods::WEEK     => trans('forms.statistics.periods.week'),
-            StatsPeriods::MONTH    => trans('forms.statistics.periods.month'),
-            StatsPeriods::QUARTER  => trans('forms.statistics.periods.quarter'),
-            StatsPeriods::YEAR     => trans('forms.statistics.periods.year'),
-            StatsPeriods::ALL      => trans('forms.statistics.periods.all'),
+            StatsPeriods::DAY     => trans('forms.statistics.periods.day'),
+            StatsPeriods::WEEK    => trans('forms.statistics.periods.week'),
+            StatsPeriods::MONTH   => trans('forms.statistics.periods.month'),
+            StatsPeriods::QUARTER => trans('forms.statistics.periods.quarter'),
+            StatsPeriods::YEAR    => trans('forms.statistics.periods.year'),
+            StatsPeriods::ALL     => trans('forms.statistics.periods.all'),
         ];
     }
 }

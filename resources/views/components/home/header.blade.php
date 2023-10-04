@@ -25,8 +25,7 @@
         </div>
 
         <div class="flex-1 py-3 px-4 rounded-b-xl sm:px-6 md:py-6 bg-theme-secondary-100 md-lg:rounded-r-xl md-lg:rounded-bl-none dark:bg-theme-dark-950">
-            {{-- @TODO: Update Chart --}}
-            <livewire:network-status-block-price />
+            <livewire:home.chart />
         </div>
     </div>
 </div>
