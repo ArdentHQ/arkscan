@@ -34,6 +34,7 @@
                         :first-on="Arr::get($row, 'firstOn', null)"
                         :last-on="Arr::get($row, 'lastOn', null)"
                         :generic="Arr::get($row, 'generic', null)"
+                        :nested-data-breakpoint="Arr::get($row, 'nestedDataBreakpoint', null)"
                     />
                 @endforeach
             </x-ark-tables.row>

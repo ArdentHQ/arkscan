@@ -5,7 +5,13 @@
 <x-table-skeleton
     device="desktop"
     :items="[
-        'tables.transactions.id'         => 'text',
+        'tables.transactions.id'         => [
+            'type' => 'text',
+            'nestedDataBreakpoint' => [
+                'from' => 'md',
+                'to' => 'xl',
+            ],
+        ],
         'tables.transactions.age'        => [
             'type'       => 'text',
             'responsive' => true,
@@ -22,6 +28,10 @@
             'lastOn' => 'lg',
             'nameProperties' => ['currency' => Network::currency()],
             'class' => 'last-until-lg',
+            'nestedDataBreakpoint' => [
+                'from' => 'md',
+                'to' => 'lg',
+            ],
         ],
         'tables.transactions.fee'        => [
             'type' => 'number',
