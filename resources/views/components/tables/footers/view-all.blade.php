@@ -18,7 +18,7 @@
             href="{{ $route }}"
             class="py-1.5 w-full h-8 button-secondary"
         >
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center justify-center space-x-2">
                 <span>@lang('pagination.view_all')</span>
 
                 <x-ark-icon
