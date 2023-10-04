@@ -30,11 +30,11 @@
 
         <div class="flex flex-col flex-1 w-full sm:ml-6 sm:w-auto md:ml-2 lg:ml-6 md-lg:pl-8">
             <div class="hidden md-lg:block">
-                <div class="text-2xl font-semibold lg:font-bold lg:text-3xl leading-[29px] lg:leading-10 text-theme-primary-900 dark:text-theme-dark-50">
+                <div class="text-2xl font-semibold lg:text-3xl lg:font-bold lg:leading-10 leading-[29px] text-theme-primary-900 dark:text-theme-dark-50">
                     @lang('pages.home.footer.title')
                 </div>
 
-                <div class="mt-2 text-sm font-semibold lg:text-base leading-4.25 lg:leading-5 text-theme-secondary-800 dark:text-theme-dark-200">
+                <div class="mt-2 text-sm font-semibold lg:text-base lg:leading-5 leading-4.25 text-theme-secondary-800 dark:text-theme-dark-200">
                     @lang('pages.home.footer.subtitle')
                 </div>
             </div>
