@@ -17,10 +17,7 @@
         />
     </x-skeletons.blocks>
 
-    <x-general.pagination.table
-        :results="$blocks"
-        class="mt-4 md:mt-0"
-    />
+    <x-general.pagination.table :results="$blocks" />
 
     <x-script.onload-scroll-to-query selector="#blocks-list" />
 </div>
