@@ -35,7 +35,7 @@ final class TableSkeleton extends Component
                 $component = 'tables.headers.desktop.'.$this->getType($item);
 
                 $header = Arr::get($item, 'header');
-                if (Arr::get($item, 'header')) {
+                if (Arr::get($item, 'header') !== null) {
                     $component = 'tables.headers.desktop.'.$header;
                 }
 
