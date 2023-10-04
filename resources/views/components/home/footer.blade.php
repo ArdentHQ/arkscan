@@ -30,11 +30,11 @@
 
         <div class="flex flex-col flex-1 w-full sm:ml-6 sm:w-auto md:ml-2 lg:ml-6 md-lg:pl-8">
             <div class="hidden md-lg:block">
-                <div class="text-2xl font-bold text-theme-primary-900 dark:text-theme-dark-50">
+                <div class="text-2xl lg:text-3xl font-bold text-theme-primary-900 dark:text-theme-dark-50">
                     @lang('pages.home.footer.title')
                 </div>
 
-                <div class="mt-2 font-semibold text-theme-secondary-800 dark:text-theme-dark-200">
+                <div class="text-sm lg:text-base mt-2 font-semibold text-theme-secondary-800 dark:text-theme-dark-200">
                     @lang('pages.home.footer.subtitle')
                 </div>
             </div>
@@ -42,7 +42,7 @@
             <x-compatible-wallets.learn-more
                 background-color="bg-[#F5FAFF]/30 dark:bg-[#505D6A]/30 backdrop-blur"
                 class="border border-theme-primary-300 dark:border-theme-dark-500"
-                padding="py-3 px-3 md:pl-6 mt-0 md-lg:mt-5 md:py-2"
+                padding="p-6 sm:p-3 lg:px-6 md-lg:mt-5"
                 title-color="text-theme-primary-900 dark:text-theme-dark-50"
                 subtitle-color="text-theme-secondary-800 dark:text-theme-dark-200 text-xs"
                 icon-size="w-11 h-11"
