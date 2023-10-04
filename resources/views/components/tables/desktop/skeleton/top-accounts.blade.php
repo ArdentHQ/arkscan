@@ -19,6 +19,7 @@
             'responsive' => true,
             'breakpoint' => 'md-lg',
             'width' => '119',
+            'tooltip' => trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()]),
         ],
     ]"
     :row-count="$rowCount"

@@ -120,16 +120,16 @@
         },
         {
             "name": "arkecosystem/foundation",
-            "version": "13.19.0",
+            "version": "13.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-foundation.git",
-                "reference": "6b81035c5079874802faa15f3e3030017fb60c9a"
+                "reference": "1ab186789a23f7834f36b051dcbcfda671981a9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/6b81035c5079874802faa15f3e3030017fb60c9a",
-                "reference": "6b81035c5079874802faa15f3e3030017fb60c9a",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/1ab186789a23f7834f36b051dcbcfda671981a9c",
+                "reference": "1ab186789a23f7834f36b051dcbcfda671981a9c",
                 "shasum": ""
             },
             "require": {
@@ -227,9 +227,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by Tailwind CSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-foundation/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/13.19.0"
+                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/13.20.0"
             },
-            "time": "2023-08-03T13:35:10+00:00"
+            "time": "2023-09-25T12:29:22+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -6408,16 +6408,16 @@
         },
         {
             "name": "orchestra/canvas",
-            "version": "v7.11.0",
+            "version": "v7.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/canvas.git",
-                "reference": "30ee96760fd10e4e0aea84f08910176c152f6b84"
+                "reference": "ccfbf44bfd2b959fa05b6ad5c770c89641991edc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/canvas/zipball/30ee96760fd10e4e0aea84f08910176c152f6b84",
-                "reference": "30ee96760fd10e4e0aea84f08910176c152f6b84",
+                "url": "https://api.github.com/repos/orchestral/canvas/zipball/ccfbf44bfd2b959fa05b6ad5c770c89641991edc",
+                "reference": "ccfbf44bfd2b959fa05b6ad5c770c89641991edc",
                 "shasum": ""
             },
             "require": {
@@ -6472,9 +6472,9 @@
             "description": "Code Generators for Laravel Applications and Packages",
             "support": {
                 "issues": "https://github.com/orchestral/canvas/issues",
-                "source": "https://github.com/orchestral/canvas/tree/v7.11.0"
+                "source": "https://github.com/orchestral/canvas/tree/v7.11.1"
             },
-            "time": "2023-09-20T14:43:36+00:00"
+            "time": "2023-09-25T08:18:28+00:00"
         },
         {
             "name": "orchestra/canvas-core",
@@ -6609,16 +6609,16 @@
         },
         {
             "name": "orchestra/testbench-core",
-            "version": "v7.31.2",
+            "version": "v7.31.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench-core.git",
-                "reference": "4edd3e0fae0ec93ae37d6c3b36b433431211f7b2"
+                "reference": "f39b69a106cf69dc012064e608468b982f25e255"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/4edd3e0fae0ec93ae37d6c3b36b433431211f7b2",
-                "reference": "4edd3e0fae0ec93ae37d6c3b36b433431211f7b2",
+                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/f39b69a106cf69dc012064e608468b982f25e255",
+                "reference": "f39b69a106cf69dc012064e608468b982f25e255",
                 "shasum": ""
             },
             "require": {
@@ -6690,7 +6690,7 @@
                 "issues": "https://github.com/orchestral/testbench/issues",
                 "source": "https://github.com/orchestral/testbench-core"
             },
-            "time": "2023-09-21T02:44:14+00:00"
+            "time": "2023-09-25T01:54:45+00:00"
         },
         {
             "name": "orchestra/workbench",
@@ -12634,16 +12634,16 @@
         },
         {
             "name": "spatie/temporary-directory",
-            "version": "2.1.2",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/temporary-directory.git",
-                "reference": "0c804873f6b4042aa8836839dca683c7d0f71831"
+                "reference": "efc258c9f4da28f0c7661765b8393e4ccee3d19c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/temporary-directory/zipball/0c804873f6b4042aa8836839dca683c7d0f71831",
-                "reference": "0c804873f6b4042aa8836839dca683c7d0f71831",
+                "url": "https://api.github.com/repos/spatie/temporary-directory/zipball/efc258c9f4da28f0c7661765b8393e4ccee3d19c",
+                "reference": "efc258c9f4da28f0c7661765b8393e4ccee3d19c",
                 "shasum": ""
             },
             "require": {
@@ -12679,7 +12679,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/temporary-directory/issues",
-                "source": "https://github.com/spatie/temporary-directory/tree/2.1.2"
+                "source": "https://github.com/spatie/temporary-directory/tree/2.2.0"
             },
             "funding": [
                 {
@@ -12691,7 +12691,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-04-28T07:47:42+00:00"
+            "time": "2023-09-25T07:13:36+00:00"
         },
         {
             "name": "spatie/yaml-front-matter",
@@ -17333,5 +17333,5 @@
         "ext-gmp": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

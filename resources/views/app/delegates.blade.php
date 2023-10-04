@@ -8,4 +8,12 @@
             <livewire:delegates.tabs />
         </div>
     @endsection
+
+    @push('scripts')
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                hideTableTooltipsOnLivewireEvent(/^delegates\./);
+            });
+        </script>
+    @endpush
 @endcomponent

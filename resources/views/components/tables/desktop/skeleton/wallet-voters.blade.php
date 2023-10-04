@@ -15,6 +15,7 @@
             'responsive' => true,
             'breakpoint' => 'md-lg',
             'width' => '119',
+            'tooltip' => trans('pages.wallets.percentage_tooltip'),
         ],
     ]"
     :component-properties="['rounded' => false]"

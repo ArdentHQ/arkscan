@@ -15,4 +15,12 @@
             <livewire:top-accounts-table />
         </div>
     @endsection
+
+    @push('scripts')
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                hideTableTooltipsOnLivewireEvent(/^top-accounts-table$/);
+            });
+        </script>
+    @endpush
 @endcomponent

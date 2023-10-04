@@ -54,9 +54,8 @@
                 name="tables.missed-blocks.percentage"
                 sorting-id="percentage_votes"
                 livewire-sort
-            >
-                <x-tables.headers.desktop.includes.tooltip :text="trans('tables.missed-blocks.info.percentage')" />
-            </x-tables.headers.desktop.number>
+                :tooltip="trans('tables.missed-blocks.info.percentage')"
+            />
         </tr>
     </thead>
 
