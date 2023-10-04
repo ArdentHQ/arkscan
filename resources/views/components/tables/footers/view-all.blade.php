@@ -18,7 +18,14 @@
             href="{{ $route }}"
             class="py-1.5 w-full h-8 button-secondary"
         >
-            @lang('pagination.view_all')
+            <div class="flex justify-center items-center space-x-2">
+                <span>@lang('pagination.view_all')</span>
+
+                <x-ark-icon
+                    name="arrows.chevron-right-small"
+                    size="xs"
+                />
+            </div>
         </a>
     </div>
 </x-tables.footers.footer>
