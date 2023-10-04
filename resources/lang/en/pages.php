@@ -40,6 +40,11 @@ return [
             'currency_price' => ':currency Price',
         ],
 
+        'footer' => [
+            'title'    => 'Manage Your $ARK',
+            'subtitle' => 'Available on Desktop & Mobile',
+        ],
+
         'charts'                  => [
             'price'     => 'Price',
             'min_price' => 'Min Price',

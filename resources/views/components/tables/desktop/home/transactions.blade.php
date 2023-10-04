@@ -26,14 +26,14 @@
             <x-tables.headers.desktop.number
                 name="tables.transactions.amount"
                 :name-properties="['currency' => Network::currency()]"
-                last-on="md-lg"
-                class="last-until-md-lg"
+                last-on="lg"
+                class="last-until-lg"
             />
             <x-tables.headers.desktop.number
                 name="tables.transactions.fee"
                 :name-properties="['currency' => Network::currency()]"
                 responsive
-                breakpoint="md-lg"
+                breakpoint="lg"
             />
         </tr>
     </thead>
@@ -58,15 +58,18 @@
 
                 <x-ark-tables.cell
                     class="text-right"
-                    last-on="md-lg"
+                    last-on="lg"
                 >
-                    <x-tables.rows.desktop.encapsulated.amount :model="$transaction" />
+                    <x-tables.rows.desktop.encapsulated.amount
+                        :model="$transaction"
+                        breakpoint="lg"
+                    />
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell
                     class="text-right"
                     responsive
-                    breakpoint="md-lg"
+                    breakpoint="lg"
                 >
                     <x-tables.rows.desktop.encapsulated.fee :model="$transaction" />
                 </x-ark-tables.cell>

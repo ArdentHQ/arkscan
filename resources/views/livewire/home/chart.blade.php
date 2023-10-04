@@ -11,7 +11,7 @@
         </x-home.stat>
 
         <p class="hidden items-center space-x-2 sm:space-x-3 md:inline-flex">
-            <span class="text-sm font-bold sm:text-3xl md:text-lg text-theme-secondary-900 dark:text-theme-secondary-200">
+            <span class="text-sm font-semibold sm:text-3xl md:text-2xl text-theme-secondary-900 dark:text-theme-secondary-200">
                 <span>{{ $mainValueFiat }} {{ Settings::currency() }}</span>
             </span>
         </p>
@@ -23,7 +23,7 @@
         >
             <x-slot
                 name="button"
-                class="justify-between py-1.5 px-3 button-secondary w-[116px] shadow-px shadow-theme-secondary-300"
+                class="justify-between py-1.5 px-3 text-sm button-secondary w-[116px] shadow-px shadow-theme-secondary-300"
             >
                 <span>@lang('pages.home.charts.periods.'.$this->period)</span>
 
@@ -70,6 +70,7 @@
 
                     return dayjs(value * 1000).format('{{ $this->dateFormat }}');
                 }"
+                tooltips
                 grid
                 :currency="Settings::currency()"
                 :y-padding="10"

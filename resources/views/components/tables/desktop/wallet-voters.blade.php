@@ -17,9 +17,11 @@
                 name="tables.wallets.balance_currency"
                 :name-properties="['currency' => Network::currency()]"
             />
-            <x-tables.headers.desktop.number name="general.wallet.percentage" class="text-right">
-                <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.percentage_tooltip')" />
-            </x-tables.headers.desktop.number>
+            <x-tables.headers.desktop.number
+                name="general.wallet.percentage"
+                class="text-right"
+                :tooltip="trans('pages.wallets.percentage_tooltip')"
+            />
         </tr>
     </thead>
     <tbody>

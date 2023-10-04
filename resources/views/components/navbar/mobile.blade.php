@@ -5,7 +5,27 @@
         x-data="Navbar.dropdown({
             dark: window.getThemeMode() === 'dark',
             open: false,
-            showSettings: false
+            showSettings: false,
+
+            lockBody() {
+                return ! this.isIOSSafari() && window.innerWidth <= this.lockBodyBreakpoint;
+            },
+
+            isIOSSafari() {
+                if (! /(Macintosh)|(Mac OS)|(iPad)|(iPod)|(iPhone)/.test(window.navigator.userAgent)) {
+                    return false;
+                }
+
+                if (! /(Safari)/.test(window.navigator.userAgent)) {
+                    return false;
+                }
+
+                if (! /(AppleWebKit)/.test(window.navigator.userAgent)) {
+                    return false;
+                }
+
+                return ('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+            },
         })"
         @theme-changed.window="dark = $event.detail.theme === 'dark'"
     >
