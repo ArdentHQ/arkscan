@@ -27,9 +27,8 @@
             <x-tables.headers.desktop.number
                 name="tables.blocks.volume"
                 :name-properties="['currency' => Network::currency()]"
-            >
-                <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.volume_tooltip')" />
-            </x-tables.headers.desktop.number>
+                :tooltip="trans('pages.wallets.blocks.volume_tooltip')"
+            />
 
             @if (Network::canBeExchanged())
                 <x-tables.headers.desktop.number
@@ -37,9 +36,8 @@
                     :name-properties="['currency' => Network::currency()]"
                     last-on="lg"
                     class="whitespace-nowrap last-until-lg"
-                >
-                    <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.total_reward_tooltip')" />
-                </x-tables.headers.desktop.number>
+                    :tooltip="trans('pages.wallets.blocks.total_reward_tooltip')"
+                />
 
                 <x-tables.headers.desktop.number
                     name="tables.blocks.value"
@@ -47,16 +45,14 @@
                     breakpoint="lg"
                     responsive
                     class="whitespace-nowrap"
-                >
-                    <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.value_tooltip')" />
-                </x-tables.headers.desktop.number>
+                    :tooltip="trans('pages.wallets.blocks.value_tooltip')"
+                />
             @else
                 <x-tables.headers.desktop.number
                     name="tables.blocks.total_reward"
                     :name-properties="['currency' => Network::currency()]"
-                >
-                    <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.blocks.total_reward_tooltip')" />
-                </x-tables.headers.desktop.number>
+                    :tooltip="trans('pages.wallets.blocks.total_reward_tooltip')"
+                />
             @endif
         </tr>
     </thead>

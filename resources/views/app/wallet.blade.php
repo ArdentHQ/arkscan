@@ -12,4 +12,12 @@
 
         <x-wallet.transactions :wallet="$wallet" />
     @endsection
+
+    @push('scripts')
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                hideTableTooltipsOnLivewireEvent(/^wallet-((tables)|((block|voter)-table))$/);
+            });
+        </script>
+    @endpush
 @endcomponent

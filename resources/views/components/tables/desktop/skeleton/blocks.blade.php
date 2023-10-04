@@ -19,10 +19,12 @@
         'tables.blocks.volume'       => [
             'type' => 'number',
             'nameProperties' => ['currency' => Network::currency()],
+            'tooltip' => trans('pages.wallets.blocks.volume_tooltip'),
         ],
         'tables.blocks.total_reward' => [
             'type' => 'number',
             'nameProperties' => ['currency' => Network::currency()],
+            'tooltip' => trans('pages.wallets.blocks.total_reward_tooltip'),
         ],
     ];
 
@@ -39,6 +41,7 @@
             'responsive' => true,
             'breakpoint' => 'xl',
             'nameProperties' => ['currency' => Settings::currency()],
+            'tooltip' => trans('pages.wallets.blocks.value_tooltip'),
         ];
     }
 @endphp
