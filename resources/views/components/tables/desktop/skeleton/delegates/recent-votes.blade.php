@@ -10,10 +10,24 @@
             'type'       => 'text',
             'responsive' => true,
             'breakpoint' => 'xl',
+            'sortingId' => 'age',
+            'livewireSort' => true,
         ],
-        'tables.recent-votes.addressing' => 'text',
-        'tables.recent-votes.type'       => 'text',
-        'tables.recent-votes.delegate'   => 'text',
+        'tables.recent-votes.addressing' => [
+            'type' => 'text',
+            'sortingId' => 'address',
+            'livewireSort' => true,
+        ],
+        'tables.recent-votes.type'       => [
+            'type' => 'text',
+            'sortingId' => 'type',
+            'livewireSort' => true,
+        ],
+        'tables.recent-votes.delegate'   => [
+            'type' => 'text',
+            'sortingId' => 'name',
+            'livewireSort' => true,
+        ],
     ]"
     :component-properties="['rounded' => false]"
     :row-count="$rowCount"
