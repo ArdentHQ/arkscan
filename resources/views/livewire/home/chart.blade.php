@@ -23,7 +23,7 @@
         >
             <x-slot
                 name="button"
-                class="justify-between py-1.5 px-3 button-secondary w-[116px] shadow-px shadow-theme-secondary-300"
+                class="justify-between py-1.5 px-3 button-secondary w-[116px] shadow-px shadow-theme-secondary-300 text-sm"
             >
                 <span>@lang('pages.home.charts.periods.'.$this->period)</span>
 
