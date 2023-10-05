@@ -8,18 +8,14 @@
     :no-results-message="$noResultsMessage"
 >
     @foreach ($blocks as $block)
-        <x-tables.rows.mobile>
+        <x-tables.rows.mobile
+            wire:key="{{ Helpers::generateId('blocks-mobile-row', $block->id()) }}"
+            content-class="sm:grid sm:grid-cols-5 sm:gap-6"
+        >
             <x-slot name="header">
                 <x-tables.headers.mobile.encapsulated.block-height
                     :model="$block"
                     class="sm:flex-1"
-                />
-
-                <x-tables.rows.mobile.encapsulated.transaction-count
-                    :model="$block"
-                    class="hidden sm:justify-end leading-4.25 sm:w-[142px]"
-                    flex-direction="sm:flex-row-reverse"
-                    value-class="sm:mr-1"
                 />
 
                 <x-tables.rows.mobile.encapsulated.age
@@ -28,29 +24,31 @@
                 />
             </x-slot>
 
-            <x-tables.rows.mobile.encapsulated.transaction-count
+            <x-tables.rows.mobile.encapsulated.generated-by
                 :model="$block"
-                class="sm:hidden"
+                class="sm:col-span-2"
             />
 
-            <x-tables.rows.mobile.encapsulated.volume
+            <x-tables.rows.mobile.encapsulated.transaction-count
                 :model="$block"
-                class="sm:flex-1"
+                class="leading-4.25"
             />
+
+            <div class="sm:flex sm:flex-1 sm:col-span-2 sm:justify-end">
+                <x-tables.rows.mobile.encapsulated.volume :model="$block" />
+            </div>
 
             <x-tables.rows.mobile.encapsulated.reward
                 :model="$block"
-                class="sm:w-[142px]"
+                class="sm:col-span-2 sm:w-[142px]"
             />
 
-            <div @class([
-                'sm:flex sm:flex-1 sm:justify-end',
-                'hidden sm:flex' => ! Network::canBeExchanged(),
-            ])>
-                @if (Network::canBeExchanged())
-                    <x-tables.rows.mobile.encapsulated.value :model="$block" />
-                @endif
-            </div>
+            @if (Network::canBeExchanged())
+                <x-tables.rows.mobile.encapsulated.value
+                    :model="$block"
+                    class="sm:col-span-2"
+                />
+            @endif
         </x-tables.rows.mobile>
     @endforeach
 </x-tables.mobile.includes.encapsulated>
