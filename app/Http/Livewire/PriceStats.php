@@ -52,10 +52,10 @@ final class PriceStats extends Component
 
     private function getHistoricalData(): ?Collection
     {
-        /** @var array<int, float> $historicalData */
+        /** @var ?array<int, float> $historicalData */
         $historicalData = collect((new PriceChartCache())->getHistorical(Settings::currency(), StatsPeriods::DAY))->get('datasets');
 
-        if (count($historicalData) === 0) {
+        if ($historicalData === null || count($historicalData) === 0) {
             return null;
         }
 
