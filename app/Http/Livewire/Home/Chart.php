@@ -44,11 +44,23 @@ final class Chart extends Component
     {
         return view('livewire.home.chart', [
             'mainValueFiat'       => $this->mainValueFiat(),
-            'chart'               => $this->chartHistoricalPrice($this->period),
+            'chart'               => $this->chartHistoricalPrice($this->period, true),
             'chartTheme'          => $this->chartTheme($this->mainValueVariation() === 'up' ? 'green' : 'red'),
             'options'             => $this->availablePeriods(),
             'refreshInterval'     => $this->refreshInterval,
         ]);
+    }
+
+    public function getDateFormatProperty(): string
+    {
+        return match ($this->period) {
+            'day'     => 'HH:mm',
+            'week'    => 'DD.MM',
+            'month'   => 'DD.MM',
+            'quarter' => 'DD.MM',
+            'year'    => 'DD.MM',
+            default   => 'MM.YY',
+        };
     }
 
     public function setPeriod(string $period): void
