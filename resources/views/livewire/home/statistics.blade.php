@@ -14,7 +14,7 @@
         >
             {{ $marketCap }}
 
-            @if (ExplorerNumberFormatter::isFiat(Settings::currency()))
+            @if (ExplorerNumberFormatter::hasSymbol(Settings::currency()))
                 {{ Settings::currency() }}
             @endif
         </x-home.stat>
