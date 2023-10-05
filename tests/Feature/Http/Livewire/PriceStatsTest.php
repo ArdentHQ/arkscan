@@ -3,11 +3,9 @@
 declare(strict_types=1);
 
 use App\Http\Livewire\PriceStats;
-use App\Services\Cache\NetworkStatusBlockCache;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
-
 use function Tests\fakeCryptoCompare;
 
 it('should render the values', function () {
