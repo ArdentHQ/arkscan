@@ -2,7 +2,7 @@
     class="flex flex-row justify-between space-x-4 h-full md:flex-col md:space-x-0"
     wire:poll.{{ $refreshInterval }}s
 >
-    <div class="flex justify-between items-center whitespace-nowrap">
+    <div class="flex sm:flex-1 justify-between items-center whitespace-nowrap">
         <x-home.stat
             :title="trans('pages.home.statistics.currency_price', ['currency' => Network::currency()])"
             class="md:hidden"
@@ -50,7 +50,7 @@
     </div>
 
     <div class="flex flex-1 justify-end min-w-0 md:items-end">
-        <div class="flex w-full md:hidden max-h-[39px] max-w-[258px]">
+        <div class="flex w-full md:hidden max-h-[39px] sm:max-w-[258px]">
             <livewire:price-stats />
         </div>
 
