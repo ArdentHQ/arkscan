@@ -10,6 +10,7 @@ use App\Facades\Settings;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\PriceChartCache;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -31,12 +32,6 @@ final class PriceStats extends Component
         ]);
     }
 
-    private function isAvailable(): bool
-    {
-        return Network::canBeExchanged()
-            && (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency());
-    }
-
     private function isPositivePriceChange(Collection $dataset): bool
     {
         $initialValue = $dataset->first();
@@ -49,21 +44,28 @@ final class PriceStats extends Component
     {
         $historicalData = $this->getHistoricalData();
 
-        if (! $this->isAvailable() || $historicalData === null) {
+        if (! Network::canBeExchanged() || $historicalData === null) {
             return collect([4, 5, 2, 2, 2, 3, 5, 1, 4, 5, 6, 5, 3, 3, 4, 5, 6, 4, 4, 4, 5, 8, 8, 10]);
         }
 
         return $historicalData;
     }
 
-    private function getHistoricalData(): ? Collection
+    private function getHistoricalData(): ?Collection
     {
-        return collect(collect((new PriceChartCache())->getHistorical(Settings::currency(), StatsPeriods::DAY))->get('datasets'));
+        /** @var array<int, float> $historicalData */
+        $historicalData = collect((new PriceChartCache())->getHistorical(Settings::currency(), StatsPeriods::DAY))->get('datasets');
+
+        if (count($historicalData) === 0) {
+            return null;
+        }
+
+        return collect($historicalData);
     }
 
     private function shouldUsePlaceholder(): bool
     {
-        if (! $this->isAvailable()) {
+        if (! Network::canBeExchanged()) {
             return true;
         }
 
