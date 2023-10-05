@@ -79,19 +79,7 @@ final class Chart extends Component
         $currency = Settings::currency();
         $price    = $this->getPrice($currency);
 
-        if (ServiceNumberFormatter::isFiat($currency)) {
-            return BetterNumberFormatter::new()
-                ->withLocale(Settings::locale())
-                ->withFractionDigits(2)
-                ->formatWithCurrencyAccounting($price);
-        }
-
-        return BetterNumberFormatter::new()
-                ->formatWithCurrencyCustom(
-                    $price,
-                    $currency,
-                    ServiceNumberFormatter::CRYPTO_DECIMALS
-                );
+        return ServiceNumberFormatter::currency($price, $currency);
     }
 
     private function getPrice(string $currency): float

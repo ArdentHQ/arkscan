@@ -56,10 +56,17 @@ final class NumberFormatter
                 ->formatWithCurrencyCustom($value, $currency, static::decimalsFor($currency, $showSmallAmounts && $isSmallAmount));
         }
 
-        return BetterNumberFormatter::new()
+        $formattedValue = BetterNumberFormatter::new()
             ->withLocale('en-US')
             ->withFractionDigits(static::decimalsFor($currency, $showSmallAmounts && $isSmallAmount))
             ->formatCurrency((float) $value, $currency);
+
+        $symbol = config('currencies.'.strtolower($currency).'.symbol');
+        if (str_starts_with($formattedValue, $currency) && $symbol !== null) {
+            $formattedValue = $symbol.preg_replace('/[^0-9.,-]+/', '', $formattedValue);
+        }
+
+        return $formattedValue;
     }
 
     /**
