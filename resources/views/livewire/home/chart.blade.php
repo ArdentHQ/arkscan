@@ -1,8 +1,8 @@
 <div
     @class([
         "flex-row justify-between space-x-4 h-full md:flex-col md:space-x-0",
-        "hidden md-lg:flex" => !Network::canBeExchanged(),
-        "flex" => Network::canbeExchanged(),
+        "hidden md-lg:flex" => ! Network::canBeExchanged(),
+        "flex" => Network::canBeExchanged(),
     ])
     wire:poll.{{ $refreshInterval }}s
 >
