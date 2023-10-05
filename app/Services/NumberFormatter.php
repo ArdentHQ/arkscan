@@ -56,17 +56,10 @@ final class NumberFormatter
                 ->formatWithCurrencyCustom($value, $currency, static::decimalsFor($currency, $showSmallAmounts && $isSmallAmount));
         }
 
-        $formattedValue = BetterNumberFormatter::new()
+        return BetterNumberFormatter::new()
             ->withLocale('en-US')
             ->withFractionDigits(static::decimalsFor($currency, $showSmallAmounts && $isSmallAmount))
             ->formatCurrency((float) $value, $currency);
-
-        $symbol = config('currencies.'.strtolower($currency).'.symbol');
-        if (str_starts_with($formattedValue, $currency) && $symbol !== null) {
-            $formattedValue = $symbol.preg_replace('/[^0-9.,-]+/', '', $formattedValue);
-        }
-
-        return $formattedValue;
     }
 
     /**
@@ -167,5 +160,14 @@ final class NumberFormatter
     public static function unformattedRawValue(float $value, int $decimals = 8): string
     {
         return rtrim(rtrim(number_format((float) ResolveScientificNotation::execute($value), $decimals), '0'), '.');
+    }
+
+    public static function hasSymbol(string $currency): bool
+    {
+        if (! self::isFiat($currency)) {
+            return false;
+        }
+
+        return config('currencies.'.strtolower($currency).'.symbol') !== null;
     }
 }

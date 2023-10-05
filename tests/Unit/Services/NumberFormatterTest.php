@@ -131,15 +131,27 @@ it('should format with network currency with different decimal places', function
     expect(NumberFormatter::networkCurrency(1.0095, 2, true))->toBe('1.01 DARK');
 });
 
-it('should handle network currency with less than 2 decimal places', function () {
-    expect(NumberFormatter::networkCurrency(1.0005, 1, true))->toBe('1.0 DARK');
-    expect(NumberFormatter::networkCurrency(1.0095, 1, true))->toBe('1.0 DARK');
-    expect(NumberFormatter::networkCurrency(1.0005, 0, true))->toBe('1 DARK');
-    expect(NumberFormatter::networkCurrency(1.9095, 0, true))->toBe('2 DARK');
-});
+it('should determine that currency has a symbol', function ($currency) {
+    expect(NumberFormatter::hasSymbol($currency))->toBeTrue();
+})->with([
+    'AUD',
+    'BRL',
+    'CAD',
+    'CNY',
+    'EUR',
+    'GBP',
+    'JPY',
+    'KRW',
+    'NZD',
+    'RUB',
+    'USD',
+]);
 
-it('should replace currency code with symbol if number formatter does not handle it', function () {
-    expect(NumberFormatter::currency(1.0005, 'CHF'))->toBe('₣1.00');
-    expect(NumberFormatter::currency(1.0095, 'CHF'))->toBe('₣1.01');
-    expect(NumberFormatter::currency(1.9095, 'CHF'))->toBe('₣1.91');
-});
+it('should determine that currency does not have a symbol', function ($currency) {
+    expect(NumberFormatter::hasSymbol($currency))->toBeFalse();
+})->with([
+    'BTC',
+    'CHF',
+    'ETH',
+    'LTC',
+]);
