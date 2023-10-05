@@ -1,5 +1,9 @@
 <div
-    class="flex flex-row justify-between space-x-4 h-full md:flex-col md:space-x-0"
+    @class([
+        "flex-row justify-between space-x-4 h-full md:flex-col md:space-x-0",
+        "hidden md-lg:flex" => !Network::canBeExchanged(),
+        "flex" => Network::canbeExchanged(),
+    ])
     wire:poll.{{ $refreshInterval }}s
 >
     <div class="flex justify-between items-center whitespace-nowrap sm:flex-1">
@@ -60,7 +64,7 @@
     </div>
 
     <div class="flex flex-1 justify-end min-w-0 md:items-end">
-        <div class="flex w-full md:hidden max-h-[39px] sm:max-w-[258px]">
+        <div class="flex w-full sm:max-w-full md:hidden max-h-[39px] max-w-[258px]">
             <livewire:price-stats />
         </div>
 
