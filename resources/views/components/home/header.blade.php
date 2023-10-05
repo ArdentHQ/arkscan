@@ -29,7 +29,15 @@
             "py-3 px-4 rounded-b-xl md-lg:rounded-bl-none md-lg:rounded-r-xl sm:px-6 md:py-6" => Network::canbeExchanged(),
             "md-lg:rounded-r-xl md-lg:rounded-tl-xl md-lg:px-6 md-lg:py-6" => !Network::canbeExchanged(),
         ])>
-            <livewire:home.chart />
+            <div class="relative w-full h-full">
+                @if(!Network::canBeExchanged())
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-sm text-theme-secondary-500 dark:text-theme-dark-400 whitespace-nowrap">Not supported on development networks</div>
+                @endif
+
+                <div @class(["blur-md" => !Network::canBeExchanged()])>
+                    <livewire:home.chart />
+                </div>
+            </div>
         </div>
     </div>
 </div>
