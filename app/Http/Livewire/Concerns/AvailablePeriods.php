@@ -10,7 +10,7 @@ trait AvailablePeriods
 {
     private function defaultPeriod(): string
     {
-        return StatsPeriods::WEEK;
+        return StatsPeriods::DAY;
     }
 
     private function availablePeriods(): array
