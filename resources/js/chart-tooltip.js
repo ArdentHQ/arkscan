@@ -122,5 +122,6 @@ window.chartTooltip = (context) => {
     // Display, position, and set styles for font
     tooltipEl.style.opacity = 1;
     tooltipEl.style.left = positionX + tooltip.caretX + "px";
-    tooltipEl.style.top = positionY + tooltip.caretY - tooltipEl.clientHeight - 16 + "px";
+    tooltipEl.style.top =
+        positionY + tooltip.caretY - tooltipEl.clientHeight - 16 + "px";
 };
