@@ -24,7 +24,11 @@
             <livewire:home.statistics />
         </div>
 
-        <div class="flex-1 py-3 px-4 rounded-b-xl sm:px-6 md:py-6 bg-theme-secondary-100 md-lg:rounded-r-xl md-lg:rounded-bl-none dark:bg-theme-dark-950">
+        <div @class([
+            "flex-1 bg-theme-secondary-100 dark:bg-theme-dark-950",
+            "py-3 px-4 rounded-b-xl md-lg:rounded-bl-none md-lg:rounded-r-xl sm:px-6 md:py-6" => Network::canbeExchanged(),
+            "md-lg:rounded-r-xl md-lg:rounded-tl-xl md-lg:px-6 md-lg:py-6" => !Network::canbeExchanged(),
+        ])>
             <livewire:home.chart />
         </div>
     </div>
