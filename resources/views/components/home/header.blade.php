@@ -29,7 +29,7 @@
             "py-3 px-4 rounded-b-xl md-lg:rounded-bl-none md-lg:rounded-r-xl sm:px-6 md:py-6" => Network::canbeExchanged(),
             "md-lg:rounded-r-xl md-lg:rounded-tl-xl md-lg:px-6 md-lg:py-6" => !Network::canbeExchanged(),
         ])>
-            <div class="w-full h-full hidden relative md-lg:block">
+            <div class="hidden relative w-full h-full md-lg:block">
                 @if(!Network::canBeExchanged())
                     <div class="absolute top-1/2 left-1/2 text-sm font-semibold whitespace-nowrap -translate-x-1/2 -translate-y-1/2 text-theme-secondary-500 dark:text-theme-dark-400">Not supported on development networks</div>
                 @endif
