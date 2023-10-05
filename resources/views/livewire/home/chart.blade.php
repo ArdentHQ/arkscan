@@ -50,7 +50,7 @@
     </div>
 
     <div class="flex flex-1 justify-end min-w-0 md:items-end">
-        <div class="flex w-full md:hidden max-h-[39px] max-w-[258px] sm:max-w-full">
+        <div class="flex w-full sm:max-w-full md:hidden max-h-[39px] max-w-[258px]">
             <livewire:price-stats />
         </div>
 
