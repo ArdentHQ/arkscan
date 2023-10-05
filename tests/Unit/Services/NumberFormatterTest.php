@@ -137,3 +137,9 @@ it('should handle network currency with less than 2 decimal places', function ()
     expect(NumberFormatter::networkCurrency(1.0005, 0, true))->toBe('1 DARK');
     expect(NumberFormatter::networkCurrency(1.9095, 0, true))->toBe('2 DARK');
 });
+
+it('should replace currency code with symbol if number formatter does not handle it', function () {
+    expect(NumberFormatter::currency(1.0005, 'CHF'))->toBe('₣1.00');
+    expect(NumberFormatter::currency(1.0095, 'CHF'))->toBe('₣1.01');
+    expect(NumberFormatter::currency(1.9095, 'CHF'))->toBe('₣1.91');
+});
