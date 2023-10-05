@@ -42,10 +42,12 @@ final class Chart extends Component
 
     public function render(): View
     {
+        $chartData = $this->chartHistoricalPrice($this->period, true);
+
         return view('livewire.home.chart', [
             'mainValueFiat'       => $this->mainValueFiat(),
-            'chart'               => $this->chartHistoricalPrice($this->period, true),
-            'chartTheme'          => $this->chartTheme($this->mainValueVariation() === 'up' ? 'green' : 'red'),
+            'chart'               => $chartData,
+            'chartTheme'          => $this->chartTheme($this->mainValueVariation($chartData->get('datasets', [])) === 'up' ? 'green' : 'red'),
             'options'             => $this->availablePeriods(),
             'refreshInterval'     => $this->refreshInterval,
         ]);
@@ -97,14 +99,13 @@ final class Chart extends Component
         return (new NetworkStatusBlockCache())->getPrice(Network::currency(), $currency) ?? 0.0;
     }
 
-    private function mainValueVariation(): string
+    private function mainValueVariation(array $dataset): string
     {
-        return $this->getPriceChange() < 0 ? 'down' : 'up';
-    }
+        // Determine difference based on first datapoint
+        $initialValue = collect($dataset)->first();
+        $currentValue = $this->getPrice(Settings::currency());
 
-    private function getPriceChange(): ?float
-    {
-        return (new NetworkStatusBlockCache())->getPriceChange(Network::currency(), Settings::currency());
+        return $initialValue > $currentValue ? 'down' : 'up';
     }
 
     private function availablePeriods(): array
