@@ -31,7 +31,7 @@
         ])>
             <div class="relative w-full h-full">
                 @if(!Network::canBeExchanged())
-                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-sm text-theme-secondary-500 dark:text-theme-dark-400 whitespace-nowrap">Not supported on development networks</div>
+                    <div class="absolute top-1/2 left-1/2 text-sm font-semibold whitespace-nowrap -translate-x-1/2 -translate-y-1/2 text-theme-secondary-500 dark:text-theme-dark-400">Not supported on development networks</div>
                 @endif
 
                 <div @class(["blur-md" => !Network::canBeExchanged()])>
