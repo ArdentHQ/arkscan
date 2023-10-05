@@ -10,14 +10,21 @@
             'responsive' => true,
             'breakpoint' => 'md-lg',
         ],
-        'tables.blocks.transactions' => 'number',
+        'tables.blocks.generated_by' => 'text',
+        'tables.blocks.transactions' => [
+            'type' => 'number',
+            'responsive' => true,
+            'breakpoint' => 'md-lg',
+        ],
         'tables.blocks.volume'       => [
             'type' => 'number',
             'nameProperties' => ['currency' => Network::currency()],
+            'tooltip' => trans('pages.wallets.blocks.volume_tooltip'),
         ],
         'tables.blocks.total_reward' => [
             'type' => 'number',
             'nameProperties' => ['currency' => Network::currency()],
+            'tooltip' => trans('pages.wallets.blocks.total_reward_tooltip'),
         ],
     ];
 
@@ -34,6 +41,7 @@
             'responsive' => true,
             'breakpoint' => 'lg',
             'nameProperties' => ['currency' => Settings::currency()],
+            'tooltip' => trans('pages.wallets.blocks.value_tooltip'),
         ];
     }
 @endphp
