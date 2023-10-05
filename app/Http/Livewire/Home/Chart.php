@@ -13,6 +13,7 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\NumberFormatter as ServiceNumberFormatter;
 use Illuminate\View\View;
 use Livewire\Component;
+use Illuminate\Support\Collection;
 
 final class Chart extends Component
 {
@@ -43,10 +44,16 @@ final class Chart extends Component
     {
         $chartData = $this->chartHistoricalPrice($this->period, true);
 
+        /** @var array<float> $datasets */
+        $datasets = $chartData->get('datasets');
+
+        /** @var array<int> $labels */
+        $labels = $chartData->get('labels');
+
         return view('livewire.home.chart', [
             'mainValueFiat'       => $this->mainValueFiat(),
-            'datasets'            => collect($chartData->get('datasets')),
-            'labels'              => collect($chartData->get('labels')),
+            'datasets'            => collect($datasets),
+            'labels'              => collect($labels),
             'chartTheme'          => $this->chartTheme($this->mainValueVariation($chartData->get('datasets', [])) === 'up' ? 'green' : 'red'),
             'options'             => $this->availablePeriods(),
             'refreshInterval'     => $this->refreshInterval,
