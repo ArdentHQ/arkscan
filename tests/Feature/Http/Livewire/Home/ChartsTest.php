@@ -29,8 +29,14 @@ it('should render the component with fiat value', function () {
 
     Livewire::test(Chart::class)
         ->set('period', 'day')
-        ->assertSee('$1.22 USD')
-        ->assertSee('[1.898,1.904,1.967,1.941,2.013,2.213,2.414,2.369,2.469,2.374,2.228,2.211,2.266,2.364,2.341,2.269,1.981,1.889,1.275,1.471,1.498,1.518,1.61,1.638]');
+        ->assertSeeInOrder([
+            'ARK Price',
+            '$1.22',
+            'USD',
+            '$1.22',
+            'USD',
+            '[1.898,1.904,1.967,1.941,2.013,2.213,2.414,2.369,2.469,2.374,2.228,2.211,2.266,2.364,2.341,2.269,1.981,1.889,1.275,1.471,1.498,1.518,1.61,1.638]',
+        ]);
 });
 
 it('should render the component with non fiat value', function () {
