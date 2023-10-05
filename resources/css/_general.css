@@ -322,3 +322,13 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 .no-contextual {
     font-variant-ligatures: no-contextual;
 }
+
+.chart-custom-tooltip:after {
+	border: solid transparent;
+	content: "";
+	border-color: rgba(0, 0, 0, 0);
+	border-width: 7px;
+	margin-left: -7px;
+
+    @apply pointer-events-none h-0 w-0 top-full left-1/2 absolute border-t-theme-secondary-900 dark:border-t-theme-dark-800;
+}

@@ -12,6 +12,7 @@ window.chartTooltip = (context) => {
     if (!tooltipEl) {
         tooltipEl = document.createElement("div");
         tooltipEl.classList.add(
+            "chart-custom-tooltip",
             "bg-theme-secondary-900",
             "dark:bg-theme-dark-800",
             "rounded",
@@ -121,5 +122,5 @@ window.chartTooltip = (context) => {
     // Display, position, and set styles for font
     tooltipEl.style.opacity = 1;
     tooltipEl.style.left = positionX + tooltip.caretX + "px";
-    tooltipEl.style.top = positionY + tooltip.caretY + "px";
+    tooltipEl.style.top = positionY + tooltip.caretY - tooltipEl.clientHeight - 16 + "px";
 };
