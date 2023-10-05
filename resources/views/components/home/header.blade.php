@@ -26,12 +26,17 @@
 
         <div @class([
             "flex-1 bg-theme-secondary-100 dark:bg-theme-dark-950",
-            "py-3 px-4 rounded-b-xl md-lg:rounded-bl-none md-lg:rounded-r-xl sm:px-6 md:py-6" => Network::canbeExchanged(),
-            "md-lg:rounded-r-xl md-lg:rounded-tl-xl md-lg:px-6 md-lg:py-6" => !Network::canbeExchanged(),
+            "py-3 px-4 rounded-b-xl md-lg:rounded-bl-none md-lg:rounded-r-xl sm:px-6 md:py-6" => Network::canBeExchanged(),
+            "md-lg:rounded-r-xl md-lg:rounded-tl-xl md-lg:px-6 md-lg:py-6" => ! Network::canBeExchanged(),
         ])>
-            <div class="hidden relative w-full h-full md-lg:block">
-                @if(!Network::canBeExchanged())
-                    <div class="absolute top-1/2 left-1/2 text-sm font-semibold whitespace-nowrap -translate-x-1/2 -translate-y-1/2 text-theme-secondary-500 dark:text-theme-dark-400">@lang('pages.home.statistics.chart_not_supported')</div>
+            <div @class([
+                'relative w-full h-full',
+                'hidden md-lg:block' => ! Network::canBeExchanged(),
+            ])>
+                @if(! Network::canBeExchanged())
+                    <div class="absolute top-1/2 left-1/2 text-sm font-semibold whitespace-nowrap -translate-x-1/2 -translate-y-1/2 text-theme-secondary-500 dark:text-theme-dark-400">
+                        @lang('pages.home.statistics.chart_not_supported')
+                    </div>
                 @endif
 
                 <div @class(["blur-md pointer-events-none" => !Network::canBeExchanged()])>
