@@ -13,7 +13,6 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\NumberFormatter as ServiceNumberFormatter;
 use Illuminate\View\View;
 use Livewire\Component;
-use Illuminate\Support\Collection;
 
 final class Chart extends Component
 {
