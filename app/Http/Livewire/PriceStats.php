@@ -10,7 +10,6 @@ use App\Facades\Settings;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\PriceChartCache;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Livewire\Component;
 
