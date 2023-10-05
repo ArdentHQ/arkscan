@@ -2,7 +2,7 @@
     class="flex flex-row justify-between space-x-4 h-full md:flex-col md:space-x-0"
     wire:poll.{{ $refreshInterval }}s
 >
-    <div class="flex sm:flex-1 justify-between items-center whitespace-nowrap">
+    <div class="flex justify-between items-center whitespace-nowrap sm:flex-1">
         <x-home.stat
             :title="trans('pages.home.statistics.currency_price', ['currency' => Network::currency()])"
             class="md:hidden"
