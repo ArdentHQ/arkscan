@@ -10,7 +10,12 @@
             'responsive' => true,
             'breakpoint' => 'md-lg',
         ],
-        'tables.blocks.transactions' => 'number',
+        'tables.blocks.generated_by' => 'text',
+        'tables.blocks.transactions' => [
+            'type' => 'number',
+            'responsive' => true,
+            'breakpoint' => 'md-lg',
+        ],
         'tables.blocks.volume'       => [
             'type' => 'number',
             'nameProperties' => ['currency' => Network::currency()],
