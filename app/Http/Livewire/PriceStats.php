@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Enums\StatsPeriods;
 use App\Facades\Network;
 use App\Facades\Settings;
 use App\Services\Cache\NetworkStatusBlockCache;
+use App\Services\Cache\PriceChartCache;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -18,11 +20,12 @@ final class PriceStats extends Component
 
     public function render(): View
     {
+        $chartData = $this->getHistorical();
         return view('livewire.price-stats', [
             'from'           => Network::currency(),
             'to'             => Settings::currency(),
-            'historical'     => $this->getHistorical(),
-            'isPositive'     => $this->getPriceChange() >= 0,
+            'historical'     => $chartData,
+            'isPositive'     => $this->isPositivePriceChange($chartData->values()),
             'usePlaceholder' => $this->shouldUsePlaceholder(),
         ]);
     }
@@ -33,9 +36,12 @@ final class PriceStats extends Component
             && (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency());
     }
 
-    private function getPriceChange(): ?float
+    private function isPositivePriceChange(Collection $dataset): bool
     {
-        return (new NetworkStatusBlockCache())->getPriceChange(Network::currency(), Settings::currency());
+        $initialValue = $dataset->first();
+        $currentValue = (new NetworkStatusBlockCache())->getPrice(Network::currency(), Settings::currency()) ?? 0.0;
+
+        return $initialValue < $currentValue;
     }
 
     private function getHistorical(): Collection
@@ -51,7 +57,7 @@ final class PriceStats extends Component
 
     private function getHistoricalData(): ? Collection
     {
-        return (new NetworkStatusBlockCache())->getHistoricalHourly(Network::currency(), Settings::currency());
+        return collect(collect((new PriceChartCache())->getHistorical(Settings::currency(), StatsPeriods::DAY))->get('datasets'));
     }
 
     private function shouldUsePlaceholder(): bool
