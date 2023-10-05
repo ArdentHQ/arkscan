@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Actions\CacheNetworkSupply;
-use App\Facades\Settings;
 use App\Services\Cache\NetworkStatusBlockCache;
-use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 
 final class MarketCap
 {
