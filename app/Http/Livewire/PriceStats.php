@@ -21,6 +21,7 @@ final class PriceStats extends Component
     public function render(): View
     {
         $chartData = $this->getHistorical();
+
         return view('livewire.price-stats', [
             'from'           => Network::currency(),
             'to'             => Settings::currency(),
