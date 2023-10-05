@@ -13,6 +13,10 @@
             class="pt-3"
         >
             {{ $marketCap }}
+
+            @if (ExplorerNumberFormatter::isFiat(Settings::currency()))
+                {{ Settings::currency() }}
+            @endif
         </x-home.stat>
     </div>
 

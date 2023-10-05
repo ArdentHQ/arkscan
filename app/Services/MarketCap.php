@@ -30,19 +30,7 @@ final class MarketCap
             return null;
         }
 
-        if (NumberFormatter::isFiat($target)) {
-            return BetterNumberFormatter::new()
-                ->withLocale(Settings::locale())
-                ->withFractionDigits(0)
-                ->formatWithCurrencyAccounting($marketcap);
-        }
-
-        return BetterNumberFormatter::new()
-            ->formatWithCurrencyCustom(
-                $marketcap,
-                $target,
-                NumberFormatter::CRYPTO_DECIMALS
-            );
+        return NumberFormatter::currency($marketcap, $target);
     }
 
     private static function getSupply(): float
