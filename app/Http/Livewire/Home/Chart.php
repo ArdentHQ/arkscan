@@ -11,7 +11,6 @@ use App\Http\Livewire\Concerns\AvailablePeriods;
 use App\Http\Livewire\Concerns\StatisticsChart;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\NumberFormatter as ServiceNumberFormatter;
-use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 use Illuminate\View\View;
 use Livewire\Component;
 
