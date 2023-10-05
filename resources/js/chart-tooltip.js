@@ -1,5 +1,4 @@
 window.chartTooltip = (context) => {
-    console.log(context);
     const { chart, tooltip } = context;
     let tooltipEl = chart.canvas.parentNode.querySelector("div");
 
