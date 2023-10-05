@@ -45,7 +45,8 @@ final class Chart extends Component
 
         return view('livewire.home.chart', [
             'mainValueFiat'       => $this->mainValueFiat(),
-            'chart'               => $chartData,
+            'datasets'            => collect($chartData->get('datasets')),
+            'labels'              => collect($chartData->get('labels')),
             'chartTheme'          => $this->chartTheme($this->mainValueVariation($chartData->get('datasets', [])) === 'up' ? 'green' : 'red'),
             'options'             => $this->availablePeriods(),
             'refreshInterval'     => $this->refreshInterval,
