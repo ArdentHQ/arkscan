@@ -1,5 +1,9 @@
 <div
-    class="flex flex-row justify-between space-x-4 h-full md:flex-col md:space-x-0"
+    @class([
+        "flex-row justify-between space-x-4 h-full md:flex-col md:space-x-0",
+        "hidden md-lg:flex" => ! Network::canBeExchanged(),
+        "flex" => Network::canBeExchanged(),
+    ])
     wire:poll.{{ $refreshInterval }}s
 >
     <div class="flex justify-between items-center whitespace-nowrap sm:flex-1">
@@ -7,12 +11,22 @@
             :title="trans('pages.home.statistics.currency_price', ['currency' => Network::currency()])"
             class="md:hidden"
         >
-            {{ $mainValueFiat }} {{ Settings::currency() }}
+            {{ $mainValueFiat }}
+
+            @if (ExplorerNumberFormatter::hasSymbol(Settings::currency()))
+                {{ Settings::currency() }}
+            @endif
         </x-home.stat>
 
         <p class="hidden items-center space-x-2 sm:space-x-3 md:inline-flex">
             <span class="text-sm font-semibold sm:text-3xl md:text-2xl text-theme-secondary-900 dark:text-theme-secondary-200">
-                <span>{{ $mainValueFiat }} {{ Settings::currency() }}</span>
+                <span>
+                    {{ $mainValueFiat }}
+
+                    @if (ExplorerNumberFormatter::hasSymbol(Settings::currency()))
+                        {{ Settings::currency() }}
+                    @endif
+                </span>
             </span>
         </p>
 

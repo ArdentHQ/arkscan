@@ -161,4 +161,13 @@ final class NumberFormatter
     {
         return rtrim(rtrim(number_format((float) ResolveScientificNotation::execute($value), $decimals), '0'), '.');
     }
+
+    public static function hasSymbol(string $currency): bool
+    {
+        if (! self::isFiat($currency)) {
+            return false;
+        }
+
+        return config('currencies.'.strtolower($currency).'.symbol') !== null;
+    }
 }
