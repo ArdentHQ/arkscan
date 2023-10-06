@@ -59,18 +59,6 @@ final class Chart extends Component
         ]);
     }
 
-    public function getDateFormatProperty(): string
-    {
-        return match ($this->period) {
-            'day'     => 'HH:mm',
-            'week'    => 'DD.MM',
-            'month'   => 'DD.MM',
-            'quarter' => 'DD.MM',
-            'year'    => 'DD.MM',
-            default   => 'MM.YY',
-        };
-    }
-
     public function setPeriod(string $period): void
     {
         if (! in_array($period, array_keys($this->availablePeriods()), true)) {
