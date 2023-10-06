@@ -13,8 +13,5 @@
         />
     </x-skeletons.delegates.list-table>
 
-    <x-general.pagination.table
-        :results="$delegates"
-        class="mt-4 md:mt-0"
-    />
+    <x-general.pagination.table :results="$delegates" />
 </div>

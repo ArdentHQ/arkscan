@@ -2,10 +2,12 @@
     <x-metadata page="home" />
 
     @section('content')
-        <livewire:network-status-block />
+        <x-home.header />
 
         <x-ark-container>
-            <livewire:latest-records />
+            <livewire:home.tables />
+
+            <x-home.footer />
         </x-ark-container>
     @endsection
 @endcomponent

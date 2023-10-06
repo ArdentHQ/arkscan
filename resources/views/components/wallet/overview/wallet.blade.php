@@ -17,7 +17,7 @@
             @if (Network::canBeExchanged())
                 <span>{{ $wallet->balanceFiat() }}</span>
 
-                @if (ExplorerNumberFormatter::isFiat(Settings::currency()))
+                @if (ExplorerNumberFormatter::hasSymbol(Settings::currency()))
                     <span>{{ Settings::currency() }}</span>
                 @endif
             @endif

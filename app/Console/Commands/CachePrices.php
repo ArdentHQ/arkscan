@@ -58,6 +58,7 @@ final class CachePrices extends Command
                 if (! $prices->isEmpty()) {
                     $crypto->setPrices($currency.'.'.$period, $prices);
                     $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $prices));
+                    $cache->setHistoricalRaw($currency, $period, $this->statsByPeriodRaw($period, $prices));
                 }
             });
         });
@@ -73,6 +74,20 @@ final class CachePrices extends Command
             'year'    => $this->groupByDate($datasets->take(-365), 'd.m'),
             default   => $this->groupByDate($datasets, 'm.Y'),
         };
+    }
+
+    private function statsByPeriodRaw(string $period, Collection $datasets): Collection
+    {
+        $data = match ($period) {
+            'day'     => $datasets->take(-24),
+            'week'    => $datasets->take(-7),
+            'month'   => $datasets->take(-30),
+            'quarter' => $datasets->take(-120),
+            'year'    => $datasets->take(-365),
+            default   => $datasets,
+        };
+
+        return $this->groupByDate($data, 'U');
     }
 
     private function groupByDate(Collection $datasets, string $format): Collection

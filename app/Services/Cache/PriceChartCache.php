@@ -26,6 +26,16 @@ final class PriceChartCache implements Contract
         $this->put(sprintf('historical/%s/%s', $currency, $period), $this->chartjs($data));
     }
 
+    public function getHistoricalRaw(string $currency, string $period): array
+    {
+        return $this->get(sprintf('historical/raw/%s/%s', $currency, $period), []);
+    }
+
+    public function setHistoricalRaw(string $currency, string $period, Collection $data): void
+    {
+        $this->put(sprintf('historical/raw/%s/%s', $currency, $period), $this->chartjs($data));
+    }
+
     public function getCache(): TaggedCache
     {
         return Cache::tags('price_chart');
