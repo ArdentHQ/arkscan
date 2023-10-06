@@ -94,7 +94,10 @@ window.chartTooltip = (context) => {
             td.style.borderWidth = 0;
             td.classList.add("pt-1.5");
 
-            const date = dayjs(dateString.replace('p.m.', 'pm'), 'MMM D, YYYY, H:mm:ss a');
+            const date = dayjs(
+                dateString.replace("p.m.", "pm"),
+                "MMM D, YYYY, H:mm:ss a"
+            );
             const text = document.createElement("span");
             text.innerHTML = date.format("D MMM YYYY HH:mm:ss");
             text.classList.add(
