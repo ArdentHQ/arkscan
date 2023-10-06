@@ -14,13 +14,15 @@
     $backgroundColor,
 ]) }}>
     <div @class([
-        'flex flex-1 items-center bg-no-repeat bg-right md-lg:bg-none mr-2',
-        "sm:dark:bg-[url('/images/wallets/arrows-dark.svg')] sm:bg-[url('/images/wallets/arrows.svg')] lg:dark:bg-[url('/images/wallets/arrows-dark.svg')] lg:bg-[url('/images/wallets/arrows.svg')]" => $arrowsBreakpoint === null && ! $home,
+        'flex flex-1 items-center bg-no-repeat bg-right mx-auto sm:ml-0 sm:mr-2 md-lg:bg-none md-lg:dark:bg-none',
+
+        "sm:dark:bg-[url('/images/wallets/arrows-dark.svg')] sm:bg-[url('/images/wallets/arrows.svg')] xl:dark:bg-[url('/images/wallets/arrows-dark.svg')] xl:bg-[url('/images/wallets/arrows.svg')]" => $arrowsBreakpoint === null && ! $home,
+        "sm:dark:bg-[url('/images/home/arrows-dark.svg')] sm:bg-[url('/images/home/arrows.svg')] xl:dark:bg-[url('/images/home/arrows-dark.svg')] xl:bg-[url('/images/home/arrows.svg')]" => $arrowsBreakpoint === null && $home,
+
         "xl:dark:bg-[url('/images/wallets/arrows-dark.svg')] xl:bg-[url('/images/wallets/arrows.svg')]" => $arrowsBreakpoint === 'xl' && ! $home,
-        "sm:dark:bg-[url('/images/home/arrows-dark.svg')] sm:bg-[url('/images/home/arrows.svg')] lg:dark:bg-[url('/images/home/arrows-dark.svg')] lg:bg-[url('/images/home/arrows.svg')]" => $arrowsBreakpoint === null && $home,
         "xl:dark:bg-[url('/images/home/arrows-dark.svg')] xl:bg-[url('/images/home/arrows.svg')]" => $arrowsBreakpoint === 'xl' && $home,
     ])>
-        <div class="px-3 sm:px-0">
+        <div>
             <x-ark-icon
                 name="app-wallets.arkvault"
                 :size="$iconSize"
