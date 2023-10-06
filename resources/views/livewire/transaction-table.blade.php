@@ -17,10 +17,7 @@
         />
     </x-skeletons.transactions>
 
-    <x-general.pagination.table
-        :results="$transactions"
-        class="mt-4 md:mt-0"
-    />
+    <x-general.pagination.table :results="$transactions" />
 
     <x-script.onload-scroll-to-query selector="#transactions-list" />
 </div>

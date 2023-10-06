@@ -36,7 +36,7 @@ final class BlockTable extends Component
     public function getNoResultsMessageProperty(): null|string
     {
         if ($this->blocks->total() === 0) {
-            return trans('tables.blocks.no_results.no_results');
+            return trans('tables.blocks.no_results');
         }
 
         return null;

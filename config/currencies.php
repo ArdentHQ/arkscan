@@ -26,7 +26,7 @@ return [
     'chf' => [
         'currency' => 'CHF',
         'locale'   => 'fr_CH',
-        'symbol'   => '₣',
+        'symbol'   => null,
     ],
     'cny' => [
         'currency' => 'CNY',
