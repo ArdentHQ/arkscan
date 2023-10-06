@@ -73,17 +73,13 @@
                 class="w-full h-auto"
                 canvas-class="max-w-full"
                 id="price-chart"
-                :data="collect($chart->get('datasets'))->toJson()"
-                :labels="collect($chart->get('labels'))->toJson()"
+                :data="$datasets->toJson()"
+                labels="[{{ $labels->map(fn ($l) => 'dayjs('.$l.' * 1000).toDate()')->join(',') }}]"
                 :theme="$chartTheme"
                 height="109"
                 :width="null"
                 tooltip-handler="chartTooltip"
-                ticks-callback="function (value) {
-                    value = this.getLabelForValue(value);
-
-                    return dayjs(value * 1000).format('{{ $this->dateFormat }}');
-                }"
+                has-date-time-labels
                 tooltips
                 grid
                 :currency="Settings::currency()"

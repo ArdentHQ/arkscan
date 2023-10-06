@@ -1,3 +1,8 @@
+import * as dayjs from "dayjs";
+import * as customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(customParseFormat);
+
 window.chartTooltip = (context) => {
     const { chart, tooltip } = context;
     let tooltipEl = chart.canvas.parentNode.querySelector("div");
@@ -81,7 +86,7 @@ window.chartTooltip = (context) => {
 
         const tableBody = document.createElement("tbody");
 
-        titleLines.forEach((timestamp) => {
+        titleLines.forEach((dateString) => {
             const tr = document.createElement("tr");
             tr.style.borderWidth = 0;
 
@@ -89,7 +94,10 @@ window.chartTooltip = (context) => {
             td.style.borderWidth = 0;
             td.classList.add("pt-1.5");
 
-            const date = dayjs(timestamp * 1000);
+            const date = dayjs(
+                dateString.replace("p.m.", "pm"),
+                "MMM D, YYYY, H:mm:ss a"
+            );
             const text = document.createElement("span");
             text.innerHTML = date.format("D MMM YYYY HH:mm:ss");
             text.classList.add(
