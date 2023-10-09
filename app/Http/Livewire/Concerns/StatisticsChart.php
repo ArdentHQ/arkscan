@@ -18,8 +18,12 @@ trait StatisticsChart
         return collect(['name' => $color, 'mode' => Settings::theme()]);
     }
 
-    private function chartHistoricalPrice(string $period): Collection
+    private function chartHistoricalPrice(string $period, bool $rawDates = false): Collection
     {
+        if ($rawDates) {
+            return collect((new PriceChartCache())->getHistoricalRaw(Settings::currency(), $period));
+        }
+
         return collect((new PriceChartCache())->getHistorical(Settings::currency(), $period));
     }
 
