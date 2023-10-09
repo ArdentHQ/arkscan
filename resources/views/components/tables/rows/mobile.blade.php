@@ -37,7 +37,10 @@
                 <x-general.dropdown.arrow
                     key="isExpanded"
                     x-on:click="{{ $expandDisabled ? '' : 'isExpanded = ! isExpanded' }}"
-                    color="text-theme-secondary-700 dark:text-theme-dark-200"
+                    :color="Arr::toCssClasses([
+                        'text-theme-secondary-700 dark:text-theme-dark-200' => ! $expandDisabled,
+                        'text-theme-secondary-300 dark:text-theme-dark-800' => $expandDisabled,
+                    ])"
                 />
             </div>
         @endif

@@ -1,1 +1,1 @@
-<x-loading.text class="w-[20px]" />
+<x-loading.text width="w-[20px]" />
