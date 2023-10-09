@@ -7,10 +7,10 @@
                 <x-tables.rows.mobile.skeletons.text />
             </x-slot>
 
-            <x-tables.rows.mobile.skeletons.encapsulated.addressing generic />
+            <x-tables.rows.mobile.skeletons.encapsulated.addressing class="sm:flex-1" generic />
 
             <div class="flex flex-col space-y-4 sm:flex-row sm:items-start sm:space-y-0 sm:w-1/2">
-                <x-tables.rows.mobile.skeletons.encapsulated.text />
+                <x-tables.rows.mobile.skeletons.encapsulated.text class="sm:flex-1" />
 
                 <x-tables.rows.mobile.skeletons.encapsulated.text />
             </div>
