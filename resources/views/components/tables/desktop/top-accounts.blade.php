@@ -25,9 +25,8 @@
                 class="text-right"
                 breakpoint="md-lg"
                 responsive
-            >
-                <x-tables.headers.desktop.includes.tooltip :text="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])" />
-            </x-tables.headers.desktop.number>
+                :tooltip="trans('pages.wallets.supply_tooltip', ['symbol' => Network::currency()])"
+            />
         </tr>
     </thead>
     <tbody>

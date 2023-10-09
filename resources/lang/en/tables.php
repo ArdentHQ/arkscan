@@ -3,6 +3,11 @@
 declare(strict_types=1);
 
 return [
+    'home' => [
+        'transactions' => 'Transactions',
+        'blocks'       => 'Blocks',
+    ],
+
     'transactions' => [
         'id'         => 'Tx ID',
         'age'        => 'Age',
@@ -33,7 +38,13 @@ return [
         'volume'       => 'Volume (:currency)',
         'total_reward' => 'Total Reward (:currency)',
         'value'        => 'Value (:currency)',
-        'no_results'   => 'This delegate has not yet validated a block.',
+        'no_results'   => 'There are currently no blocks.',
+    ],
+
+    'wallet' => [
+        'blocks' => [
+            'no_results' => 'This delegate has not yet validated a block.',
+        ],
     ],
 
     'wallets' => [

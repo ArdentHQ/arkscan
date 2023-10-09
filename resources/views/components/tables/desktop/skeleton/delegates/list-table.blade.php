@@ -37,6 +37,7 @@
             'breakpoint' => 'lg',
             'sortingId' => 'percentage_votes',
             'livewireSort' => true,
+            'tooltip' => trans('tables.delegates.info.percentage'),
         ],
         'tables.delegates.missed_blocks' => [
             'type' => 'number',

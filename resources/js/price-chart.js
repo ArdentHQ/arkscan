@@ -12,6 +12,7 @@ const PriceChart = (values, labels, isPlaceholder, darkMode, isPositive) => {
 
     return {
         darkMode: darkMode,
+        chart: null,
         toggleDarkMode() {
             this.darkMode = !this.darkMode;
             this.updateChart();
@@ -19,11 +20,15 @@ const PriceChart = (values, labels, isPlaceholder, darkMode, isPositive) => {
         init() {
             const ctx = this.$refs.chart.getContext("2d");
 
-            const chart = Object.values(Chart.instances).find(
-                (i) => i.ctx === ctx
-            );
-
             const gradient = ctx.createLinearGradient(0, 0, 0, 40);
+
+            window.addEventListener("resize", () => {
+                try {
+                    this.chart.resize();
+                } catch {
+                    // Hide resize errors - they don't seem to cause any issues
+                }
+            });
 
             let border;
 
@@ -71,6 +76,9 @@ const PriceChart = (values, labels, isPlaceholder, darkMode, isPositive) => {
             };
 
             const options = {
+                responsive: true,
+                maintainAspectRatio: false,
+
                 animations: {
                     tension: {
                         duration: 500,
@@ -117,18 +125,16 @@ const PriceChart = (values, labels, isPlaceholder, darkMode, isPositive) => {
                 },
             };
 
-            const config = {
-                type: "line",
-                data,
-                options,
-            };
-
-            if (!chart) {
-                new Chart(ctx, config);
+            if (!this.chart) {
+                this.chart = new Chart(ctx, {
+                    type: "line",
+                    data,
+                    options,
+                });
             } else {
-                chart.options = options;
-                chart.data = data;
-                chart.update();
+                this.chart.options = options;
+                this.chart.data = data;
+                this.chart.update();
             }
         },
     };
