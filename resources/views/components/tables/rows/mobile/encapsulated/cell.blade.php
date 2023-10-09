@@ -2,7 +2,7 @@
     'label' => null,
 ])
 
-<div {{ $attributes->class('flex flex-col space-y-2 font-semibold') }}>
+<div {{ $attributes->class('flex flex-col space-y-2 font-semibold leading-4.25') }}>
     @if ($label)
         <span class="dark:text-theme-dark-200">
             {{ $label }}

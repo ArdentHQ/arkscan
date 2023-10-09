@@ -46,14 +46,16 @@
     :last-on="$lastOn"
     :attributes="$attributes"
 >
-    <div class="flex flex-col space-y-1">
+    <div class="flex flex-col space-y-1 leading-4.25">
         <x-loading.text />
 
         @if ($nestedDataBreakpoint)
-            <x-loading.text :class="Arr::toCssClasses([
+            <div @class([
                 $fromBreakpoint,
                 $toBreakpoint,
-            ])" />
+            ])>
+                <x-loading.text />
+            </div>
         @endif
     </div>
 </x-ark-tables.cell>

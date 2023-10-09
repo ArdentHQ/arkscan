@@ -2,7 +2,7 @@
     'generic' => false,
 ])
 
-<div class="space-y-2">
+<div {{ $attributes->class('space-y-2') }}>
     <x-loading.text />
 
     <div class="space-y-2 sm:space-y-1">
