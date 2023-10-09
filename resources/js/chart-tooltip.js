@@ -47,7 +47,8 @@ window.chartTooltip = (context) => {
     }
 
     const titleLines = tooltip.title || [];
-    const dataValue = tooltip.dataPoints[0].dataset.data[tooltip.dataPoints[0].dataIndex];
+    const dataValue =
+        tooltip.dataPoints[0].dataset.data[tooltip.dataPoints[0].dataIndex];
 
     const tableHead = document.createElement("thead");
     const heading = document.createElement("span");
@@ -69,11 +70,7 @@ window.chartTooltip = (context) => {
 
     const text = document.createElement("span");
     text.innerHTML = getCurrencyValue(dataValue);
-    text.classList.add(
-        "font-semibold",
-        "text-xs",
-        "dark:text-theme-dark-50"
-    );
+    text.classList.add("font-semibold", "text-xs", "dark:text-theme-dark-50");
 
     th.appendChild(heading);
     th.appendChild(text);
