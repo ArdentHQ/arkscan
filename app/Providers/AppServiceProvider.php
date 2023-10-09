@@ -114,8 +114,8 @@ final class AppServiceProvider extends ServiceProvider
                 ['route' => 'compatible-wallets',  'label' => trans('menus.wallets')],
             ]],
             ['label' => trans('menus.developers'), 'children' => [
-                ['url' => 'https://ark.dev/',  'label' => trans('menus.docs')],
-                ['url'   => 'https://ark.dev/docs/api',  'label' => trans('menus.api')],
+                ['url' => trans('urls.docs.arkscan'),  'label' => trans('menus.docs')],
+                ['url' => trans('urls.docs.api'),  'label' => trans('menus.api')],
             ]],
         ];
 
