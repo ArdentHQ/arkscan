@@ -46,84 +46,79 @@ window.chartTooltip = (context) => {
         return;
     }
 
-    // Set Text
-    if (tooltip.body) {
-        const titleLines = tooltip.title || [];
-        const bodyLines = tooltip.body.map((b) => b.lines);
+    const titleLines = tooltip.title || [];
+    const dataValue = tooltip.dataPoints[0].dataset.data[tooltip.dataPoints[0].dataIndex];
 
-        const tableHead = document.createElement("thead");
-        bodyLines.forEach((body, i) => {
-            const heading = document.createElement("span");
-            heading.innerHTML = "Price:";
-            heading.classList.add(
-                "mr-1",
-                "font-semibold",
-                "text-theme-secondary-500",
-                "dark:text-theme-dark-200",
-                "text-xs"
-            );
+    const tableHead = document.createElement("thead");
+    const heading = document.createElement("span");
+    heading.innerHTML = "Price:";
+    heading.classList.add(
+        "mr-1",
+        "font-semibold",
+        "text-theme-secondary-500",
+        "dark:text-theme-dark-200",
+        "text-xs"
+    );
 
-            const tr = document.createElement("tr");
-            tr.style.backgroundColor = "inherit";
-            tr.style.borderWidth = 0;
+    const tr = document.createElement("tr");
+    tr.style.backgroundColor = "inherit";
+    tr.style.borderWidth = 0;
 
-            const th = document.createElement("th");
-            th.style.borderWidth = 0;
+    const th = document.createElement("th");
+    th.style.borderWidth = 0;
 
-            const text = document.createElement("span");
-            text.innerHTML = getCurrencyValue(body);
-            text.classList.add(
-                "font-semibold",
-                "text-xs",
-                "dark:text-theme-dark-50"
-            );
+    const text = document.createElement("span");
+    text.innerHTML = getCurrencyValue(dataValue);
+    text.classList.add(
+        "font-semibold",
+        "text-xs",
+        "dark:text-theme-dark-50"
+    );
 
-            th.appendChild(heading);
-            th.appendChild(text);
-            tr.appendChild(th);
-            tableHead.appendChild(tr);
-        });
+    th.appendChild(heading);
+    th.appendChild(text);
+    tr.appendChild(th);
+    tableHead.appendChild(tr);
 
-        const tableBody = document.createElement("tbody");
+    const tableBody = document.createElement("tbody");
 
-        titleLines.forEach((dateString) => {
-            const tr = document.createElement("tr");
-            tr.style.borderWidth = 0;
+    titleLines.forEach((dateString) => {
+        const tr = document.createElement("tr");
+        tr.style.borderWidth = 0;
 
-            const td = document.createElement("td");
-            td.style.borderWidth = 0;
-            td.classList.add("pt-1.5");
+        const td = document.createElement("td");
+        td.style.borderWidth = 0;
+        td.classList.add("pt-1.5");
 
-            const date = dayjs(
-                dateString.replace("p.m.", "pm"),
-                "MMM D, YYYY, H:mm:ss a"
-            );
-            const text = document.createElement("span");
-            text.innerHTML = date.format("D MMM YYYY HH:mm:ss");
-            text.classList.add(
-                "font-semibold",
-                "text-theme-secondary-500",
-                "dark:text-theme-dark-200",
-                "text-xs",
-                "whitespace-nowrap"
-            );
+        const date = dayjs(
+            dateString.replace("p.m.", "pm"),
+            "MMM D, YYYY, H:mm:ss a"
+        );
+        const text = document.createElement("span");
+        text.innerHTML = date.format("D MMM YYYY HH:mm:ss");
+        text.classList.add(
+            "font-semibold",
+            "text-theme-secondary-500",
+            "dark:text-theme-dark-200",
+            "text-xs",
+            "whitespace-nowrap"
+        );
 
-            td.appendChild(text);
-            tr.appendChild(td);
-            tableBody.appendChild(tr);
-        });
+        td.appendChild(text);
+        tr.appendChild(td);
+        tableBody.appendChild(tr);
+    });
 
-        const tableRoot = tooltipEl.querySelector("table");
+    const tableRoot = tooltipEl.querySelector("table");
 
-        // Remove old children
-        while (tableRoot.firstChild) {
-            tableRoot.firstChild.remove();
-        }
-
-        // Add new children
-        tableRoot.appendChild(tableHead);
-        tableRoot.appendChild(tableBody);
+    // Remove old children
+    while (tableRoot.firstChild) {
+        tableRoot.firstChild.remove();
     }
+
+    // Add new children
+    tableRoot.appendChild(tableHead);
+    tableRoot.appendChild(tableBody);
 
     const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
 
