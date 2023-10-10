@@ -9,7 +9,9 @@ use App\Models\Wallet;
 use App\Services\Cache\DelegateCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
@@ -919,3 +921,159 @@ it('should handle sorting several pages with cached data', function ($columnSort
     'votes'            => ['votes', 'votes'],
     'percentage_votes' => ['percentage_votes', 'percentage_votes'],
 ]);
+
+it('should sort votes & percentage on sqlite databases', function (string $sortKey) {
+    Config::set('database.default', 'sqlite');
+    Config::set('database.connections.sqlite.database', ':memory:');
+
+    $this->refreshDatabase();
+
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-1',
+                'voteBalance' => 10000 * 1e8,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-2',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $wallet1->public_key,
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $wallet2->public_key,
+    ]);
+
+    Livewire::test(MissedBlocks::class)
+        ->call('setIsReady')
+        ->call('sortBy', $sortKey)
+        ->set('sortDirection', SortDirection::DESC)
+        ->assertSeeInOrder([
+            'delegate-1',
+            'delegate-2',
+            'delegate-1',
+            'delegate-2',
+        ]);
+})->with([
+    'votes',
+    'percentage_votes',
+]);
+
+it('should sort name on sqlite databases', function () {
+    Config::set('database.default', 'sqlite');
+    Config::set('database.connections.sqlite.database', ':memory:');
+
+    $this->refreshDatabase();
+
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-1',
+                'voteBalance' => 10000 * 1e8,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-2',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $wallet1->public_key,
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $wallet2->public_key,
+    ]);
+
+    Livewire::test(MissedBlocks::class)
+        ->call('setIsReady')
+        ->call('sortBy', 'name')
+        ->set('sortDirection', SortDirection::DESC)
+        ->assertSeeInOrder([
+            'delegate-2',
+            'delegate-1',
+            'delegate-2',
+            'delegate-1',
+        ]);
+});
+
+it('should sort number of voters on sqlite databases', function () {
+    Config::set('database.default', 'sqlite');
+    Config::set('database.connections.sqlite.database', ':memory:');
+
+    $this->refreshDatabase();
+
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-1',
+                'voteBalance' => 10000 * 1e8,
+            ],
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-2',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
+    ]);
+
+    $walletWithoutVoters = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-3',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $wallet1->public_key,
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $wallet2->public_key,
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $walletWithoutVoters->public_key,
+    ]);
+
+    (new DelegateCache())->setAllVoterCounts([
+        $wallet1->public_key => 30,
+        $wallet2->public_key => 10,
+    ]);
+
+    Livewire::test(MissedBlocks::class)
+        ->call('setIsReady')
+        ->call('sortBy', 'no_of_voters')
+        ->call('sortBy', 'no_of_voters')
+        ->assertSet('sortDirection', SortDirection::DESC)
+        ->assertSeeInOrder([
+            'delegate-1',
+            'delegate-2',
+            'delegate-3',
+            'delegate-1',
+            'delegate-2',
+            'delegate-3',
+        ]);
+});
