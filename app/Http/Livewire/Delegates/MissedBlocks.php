@@ -14,8 +14,10 @@ use App\Services\Cache\DelegateCache;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 /**
  * @property LengthAwarePaginator $missedBlocks
@@ -91,14 +93,36 @@ final class MissedBlocks extends TabbedTableComponent
                     return;
                 }
 
-                $query->selectRaw('wallets.name AS delegate_name')
-                    ->selectRaw('forging_stats.*')
-                    ->join(DB::raw(sprintf(
-                        '(values %s) as wallets (public_key, name)',
-                        $delegateNames->map(fn ($name, $publicKey) => sprintf('(\'%s\',\'%s\')', $publicKey, $name))
-                            ->join(','),
-                    )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
-                    ->orderByRaw('delegate_name '.$sortDirection->value.', timestamp DESC');
+                if (config('database.default') === 'sqlite') {
+                    Schema::create('temp_delegate_names', function (Blueprint $table) {
+                        $table->temporary();
+                        $table->string('public_key');
+                        $table->string('name');
+                    });
+
+                    DB::table('temp_delegate_names')
+                        ->insert(
+                            $delegateNames->map(fn ($name, $publicKey) => [
+                                'public_key' => $publicKey,
+                                'name' => $name,
+                            ])
+                            ->toArray()
+                        );
+
+                    $query->selectRaw('wallets.name AS delegate_name')
+                        ->selectRaw('forging_stats.*')
+                        ->join('temp_delegate_names AS wallets', 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
+                        ->orderByRaw('delegate_name '.$sortDirection->value.', timestamp DESC');
+                } else {
+                    $query->selectRaw('wallets.name AS delegate_name')
+                        ->selectRaw('forging_stats.*')
+                        ->join(DB::raw(sprintf(
+                            '(values %s) as wallets (public_key, name)',
+                            $delegateNames->map(fn ($name, $publicKey) => sprintf('(\'%s\',\'%s\')', $publicKey, $name))
+                                ->join(','),
+                        )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
+                        ->orderByRaw('delegate_name '.$sortDirection->value.', timestamp DESC');
+                }
             })
             ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', function ($query) use ($sortDirection) {
                 $missedBlockPublicKeys = ForgingStats::groupBy('public_key')->pluck('public_key');
@@ -114,14 +138,36 @@ final class MissedBlocks extends TabbedTableComponent
                     return;
                 }
 
-                $query->selectRaw('wallets.votes AS votes')
-                    ->selectRaw('forging_stats.*')
-                    ->join(DB::raw(sprintf(
-                        '(values %s) as wallets (public_key, votes)',
-                        $delegateVotes->map(fn ($votes, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $votes))
-                            ->join(','),
-                    )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
-                    ->orderByRaw('votes '.$sortDirection->value.', timestamp DESC');
+                if (config('database.default') === 'sqlite') {
+                    Schema::create('temp_delegate_votes', function (Blueprint $table) {
+                        $table->temporary();
+                        $table->string('public_key');
+                        $table->integer('votes');
+                    });
+
+                    DB::table('temp_delegate_votes')
+                        ->insert(
+                            $delegateVotes->map(fn ($votes, $publicKey) => [
+                                'public_key' => $publicKey,
+                                'votes' => $votes,
+                            ])
+                            ->toArray()
+                        );
+
+                    $query->selectRaw('wallets.votes AS votes')
+                        ->selectRaw('forging_stats.*')
+                        ->join('temp_delegate_votes AS wallets', 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
+                        ->orderByRaw('votes '.$sortDirection->value.', timestamp DESC');
+                } else {
+                    $query->selectRaw('wallets.votes AS votes')
+                        ->selectRaw('forging_stats.*')
+                        ->join(DB::raw(sprintf(
+                            '(values %s) as wallets (public_key, votes)',
+                            $delegateVotes->map(fn ($votes, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $votes))
+                                ->join(','),
+                        )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
+                        ->orderByRaw('votes '.$sortDirection->value.', timestamp DESC');
+                }
             })
             ->when($this->sortKey === 'no_of_voters', function ($query) use ($sortDirection) {
                 $voterCounts = (new DelegateCache())->getAllVoterCounts();
@@ -132,15 +178,37 @@ final class MissedBlocks extends TabbedTableComponent
                     return;
                 }
 
-                $query->selectRaw('voting_stats.count AS no_of_voters')
-                    ->selectRaw('forging_stats.*')
-                    ->join(DB::raw(sprintf(
-                        '(values %s) as voting_stats (public_key, count)',
-                        collect($voterCounts)
-                            ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
-                            ->join(','),
-                    )), 'forging_stats.public_key', '=', 'voting_stats.public_key', 'left outer')
-                    ->orderByRaw(sprintf('no_of_voters %s NULLS LAST, timestamp DESC', $sortDirection->value));
+                if (config('database.default') === 'sqlite') {
+                    Schema::create('temp_voter_counts', function (Blueprint $table) {
+                        $table->temporary();
+                        $table->string('public_key');
+                        $table->integer('count');
+                    });
+
+                    DB::table('temp_voter_counts')
+                        ->insert(
+                            collect($voterCounts)->map(fn ($count, $publicKey) => [
+                                'public_key' => $publicKey,
+                                'count' => $count,
+                            ])
+                            ->toArray()
+                        );
+
+                    $query->selectRaw('voting_stats.count AS no_of_voters')
+                        ->selectRaw('forging_stats.*')
+                        ->join('temp_voter_counts AS voting_stats', 'forging_stats.public_key', '=', 'voting_stats.public_key', 'left outer')
+                        ->orderByRaw(sprintf('no_of_voters %s NULLS LAST, timestamp DESC', $sortDirection->value));
+                } else {
+                    $query->selectRaw('voting_stats.count AS no_of_voters')
+                        ->selectRaw('forging_stats.*')
+                        ->join(DB::raw(sprintf(
+                            '(values %s) as voting_stats (public_key, count)',
+                            collect($voterCounts)
+                                ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
+                                ->join(','),
+                        )), 'forging_stats.public_key', '=', 'voting_stats.public_key', 'left outer')
+                        ->orderByRaw(sprintf('no_of_voters %s NULLS LAST, timestamp DESC', $sortDirection->value));
+                }
             })
             ->whereNotNull('missed_height');
     }
