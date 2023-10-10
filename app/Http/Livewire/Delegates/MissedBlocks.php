@@ -120,7 +120,7 @@ final class MissedBlocks extends TabbedTableComponent
                         ->insert(
                             $delegateNames->map(fn ($name, $publicKey) => [
                                 'public_key' => $publicKey,
-                                'name' => $name,
+                                'name'       => $name,
                             ])
                             ->toArray()
                         );
@@ -165,7 +165,7 @@ final class MissedBlocks extends TabbedTableComponent
                         ->insert(
                             $delegateVotes->map(fn ($votes, $publicKey) => [
                                 'public_key' => $publicKey,
-                                'votes' => $votes,
+                                'votes'      => $votes,
                             ])
                             ->toArray()
                         );
@@ -205,7 +205,7 @@ final class MissedBlocks extends TabbedTableComponent
                         ->insert(
                             collect($voterCounts)->map(fn ($count, $publicKey) => [
                                 'public_key' => $publicKey,
-                                'count' => $count,
+                                'count'      => $count,
                             ])
                             ->toArray()
                         );
