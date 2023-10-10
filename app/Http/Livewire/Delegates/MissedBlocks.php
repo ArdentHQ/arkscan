@@ -72,11 +72,11 @@ final class MissedBlocks extends TabbedTableComponent
     public function dehydrate(): void
     {
         if (config('database.default') === 'sqlite') {
-            $tableName = match($this->sortKey) {
+            $tableName = match ($this->sortKey) {
                 'name' => 'temp_delegate_names',
                 'votes', 'percentage_votes' => 'temp_delegate_votes',
                 'no_of_voters' => 'temp_voter_counts',
-                default => null,
+                default        => null,
             };
 
             if ($tableName !== null) {
