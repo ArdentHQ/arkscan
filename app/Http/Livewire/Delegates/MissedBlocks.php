@@ -69,6 +69,22 @@ final class MissedBlocks extends TabbedTableComponent
             ->paginate($this->perPage);
     }
 
+    public function dehydrate(): void
+    {
+        if (config('database.default') === 'sqlite') {
+            $tableName = match($this->sortKey) {
+                'name' => 'temp_delegate_names',
+                'votes', 'percentage_votes' => 'temp_delegate_votes',
+                'no_of_voters' => 'temp_voter_counts',
+                default => null,
+            };
+
+            if ($tableName !== null) {
+                Schema::drop($tableName);
+            }
+        }
+    }
+
     private function getMissedBlocksQuery(): Builder
     {
         $sortDirection = SortDirection::ASC;
