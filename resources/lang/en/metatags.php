@@ -96,7 +96,7 @@ return [
 
     'contact'       => [
         'title'       => 'Support | :name Blockchain Explorer',
-        'description' => 'Get help with the use of the Blockchain Explorer',
+        'description' => 'Get help with the use of the :name Blockchain Explorer.',
         'image'       => '/images/metadata/support.png',
     ],
 ];
