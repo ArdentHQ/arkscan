@@ -89,14 +89,14 @@ return [
     ],
 
     '404'           => [
-        'title'       => '404 - Error | :name Blockchain Explorer',
-        'description' => '',
-        'image'       => 'images/metadata/homepage.png',
+        'title'       => '404 :error | :name Blockchain Explorer',
+        'description' => '404 :error',
+        'image'       => 'images/metadata/404.png',
     ],
 
     'contact'       => [
         'title'       => 'Support | :name Blockchain Explorer',
-        'description' => 'Get help with the use of the Blockchain Explorer',
+        'description' => 'Get help with the use of the :name Blockchain Explorer.',
         'image'       => '/images/metadata/support.png',
     ],
 ];
