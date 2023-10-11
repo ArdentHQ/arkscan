@@ -18,8 +18,5 @@
         />
     </x-skeletons.transactions>
 
-    <x-general.pagination.table
-        :results="$transactions"
-        class="mt-4 md:mt-0"
-    />
+    <x-general.pagination.table :results="$transactions" />
 </div>

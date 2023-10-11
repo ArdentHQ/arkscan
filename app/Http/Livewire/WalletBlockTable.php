@@ -46,7 +46,7 @@ final class WalletBlockTable extends TabbedTableComponent
     public function getNoResultsMessageProperty(): ?string
     {
         if ($this->blocks->total() === 0) {
-            return trans('tables.blocks.no_results');
+            return trans('tables.wallet.blocks.no_results');
         }
 
         return null;

@@ -1,10 +1,7 @@
-<div
-    wire:poll.60s
-    class="hidden flex-grow justify-end h-full lg:flex"
->
+<div wire:poll.60s class="w-full h-full">
     <div
-        wire:key="{{ Settings::currency() }}-{{ $isPositive ? 'positive' : 'negative' }}-{{ $usePlaceholder ? 'placeholder' : 'live' }}"
-        class="ml-6 h-full"
+        wire:key="{{ Settings::currency() }}-{{ $isPositive ? 'positive' : 'negative' }}-{{ $usePlaceholder ? 'placeholder' : 'live' }}-{{ time() }}"
+        class="w-full h-full"
         x-data="PriceChart(
             {{ $historical->values()->toJson() }},
             {{ $historical->keys()->toJson() }},
@@ -14,12 +11,14 @@
         )"
         @toggle-dark-mode.window="toggleDarkMode"
     >
-        <div class="block h-full" wire:ignore>
+        <div
+            class="relative w-full h-full"
+            wire:ignore
+        >
             <canvas
                 x-ref="chart"
-                class="w-full h-full"
-                width="{{ ExplorerNumberFormatter::isFiat(Settings::currency()) ? 210 : 120 }}"
-                height="44"
+                class="max-w-full"
+                height="39"
             ></canvas>
         </div>
     </div>
