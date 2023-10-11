@@ -4,11 +4,19 @@
 
 @php
     $items = [
-        'tables.blocks.height'       => 'text',
+        'tables.blocks.height'       => [
+            'type' => 'text',
+            'nestedDataBreakpoint' => [
+                'from' => 'md',
+                'to' => 'md-lg',
+            ],
+        ],
         'tables.blocks.age'          => [
             'type'       => 'text',
-            'responsive' => true,
-            'breakpoint' => 'md-lg',
+            'nestedDataBreakpoint' => [
+                'from' => 'md',
+                'to' => 'md-lg',
+            ],
         ],
         'tables.blocks.generated_by' => 'text',
         'tables.blocks.transactions' => [
@@ -25,6 +33,10 @@
             'type' => 'number',
             'nameProperties' => ['currency' => Network::currency()],
             'tooltip' => trans('pages.wallets.blocks.total_reward_tooltip'),
+            'nestedDataBreakpoint' => [
+                'from' => 'md',
+                'to' => 'xl',
+            ],
         ],
     ];
 
@@ -32,14 +44,14 @@
         $items['tables.blocks.total_reward'] = [
             ...$items['tables.blocks.total_reward'],
 
-            'lastOn' => 'lg',
-            'class' => 'last-until-lg',
+            'lastOn' => 'xl',
+            'class' => 'last-until-xl',
         ];
 
         $items['tables.blocks.value'] = [
             'type' => 'number',
             'responsive' => true,
-            'breakpoint' => 'lg',
+            'breakpoint' => 'xl',
             'nameProperties' => ['currency' => Settings::currency()],
             'tooltip' => trans('pages.wallets.blocks.value_tooltip'),
         ];
@@ -49,6 +61,7 @@
 <x-table-skeleton
     device="desktop"
     :items="$items"
+    :component-properties="['rounded' => false]"
     :row-count="$rowCount"
     encapsulated
 />
