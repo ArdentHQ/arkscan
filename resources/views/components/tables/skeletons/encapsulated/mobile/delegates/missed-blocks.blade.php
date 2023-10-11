@@ -4,8 +4,6 @@
             <x-slot name="header">
                 <x-tables.rows.mobile.skeletons.text />
 
-                <x-tables.rows.mobile.skeletons.text class="hidden sm:block" />
-
                 <x-tables.rows.mobile.skeletons.text />
             </x-slot>
         </x-tables.rows.mobile>

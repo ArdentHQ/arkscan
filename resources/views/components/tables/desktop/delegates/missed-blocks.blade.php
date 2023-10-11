@@ -82,7 +82,7 @@
                             without-clipboard
                         />
                     @else
-                        <span>-</span>
+                        <span class="leading-4.25">-</span>
                     @endif
                 </x-ark-tables.cell>
 

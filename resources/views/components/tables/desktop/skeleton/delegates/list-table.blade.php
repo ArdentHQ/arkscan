@@ -6,8 +6,8 @@
     device="desktop"
     :items="[
         'tables.delegates.rank' => [
-            'type' => 'text',
-            'width' => '70',
+            'type' => 'rank',
+            'width' => '60',
             'sortingId' => 'rank',
             'livewireSort' => true,
         ],
@@ -23,6 +23,11 @@
             'breakpoint' => 'md',
             'sortingId' => 'no_of_voters',
             'livewireSort' => true,
+            'class' => 'whitespace-nowrap',
+            'nestedDataBreakpoint' => [
+                'from' => 'md',
+                'to' => 'lg',
+            ],
         ],
         'tables.delegates.votes' => [
             'type'       => 'number',
@@ -40,13 +45,14 @@
             'tooltip' => trans('tables.delegates.info.percentage'),
         ],
         'tables.delegates.missed_blocks' => [
-            'type' => 'number',
+            'type' => 'badge',
             'sortingId' => 'missed_blocks',
             'livewireSort' => true,
+            'class' => 'whitespace-nowrap',
         ],
         '' => [
             'type'  => 'text',
-            'width' => '70',
+            'width' => '60',
         ],
     ]"
     :component-properties="['rounded' => false]"

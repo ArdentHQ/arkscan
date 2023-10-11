@@ -9,6 +9,10 @@
             'type' => 'text',
             'sortingId' => 'height',
             'livewireSort' => true,
+            'nestedDataBreakpoint' => [
+                'from' => 'md',
+                'to' => 'md-lg',
+            ],
         ],
         'tables.missed-blocks.age'          => [
             'type'       => 'text',
@@ -24,22 +28,17 @@
         ],
         'tables.missed-blocks.no_of_voters' => [
             'type'       => 'number',
-            'responsive' => true,
-            'breakpoint' => 'md',
             'sortingId' => 'no_of_voters',
             'livewireSort' => true,
         ],
         'tables.missed-blocks.votes' => [
             'type'       => 'number',
             'nameProperties' => ['currency' => Network::currency()],
-            'responsive' => true,
             'sortingId' => 'votes',
             'livewireSort' => true,
         ],
         'tables.missed-blocks.percentage' => [
             'type'       => 'number',
-            'responsive' => true,
-            'breakpoint' => 'lg',
             'sortingId' => 'percentage_votes',
             'livewireSort' => true,
             'tooltip' => trans('tables.missed-blocks.info.percentage'),

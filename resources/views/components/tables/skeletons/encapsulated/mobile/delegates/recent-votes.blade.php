@@ -11,6 +11,12 @@
                     <x-tables.rows.mobile.skeletons.text />
                 </div>
             </x-slot>
+
+            <div class="hidden sm:flex sm:justify-between sm:items-center sm:w-full">
+                <x-tables.rows.mobile.skeletons.encapsulated.addressing />
+
+                <x-tables.rows.mobile.skeletons.encapsulated.text />
+            </div>
         </x-tables.rows.mobile>
     </x-skeleton>
 </x-tables.mobile.includes.encapsulated>

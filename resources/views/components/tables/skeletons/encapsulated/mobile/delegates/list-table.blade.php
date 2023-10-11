@@ -5,7 +5,7 @@
             expand-disabled
         >
             <x-slot name="header">
-                <div class="flex items-center flex-1 min-w-0 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700 h-5">
+                <div class="flex items-center flex-1 min-w-0 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700 h-5 sm:h-[21px]">
                     <x-tables.rows.mobile.skeletons.encapsulated.number />
 
                     <div class="flex flex-1 justify-between items-center pl-3 ml-3 min-w-0">

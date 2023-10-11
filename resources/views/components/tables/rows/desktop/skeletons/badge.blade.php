@@ -10,7 +10,7 @@
     :breakpoint="$breakpoint"
     :first-on="$firstOn"
     :last-on="$lastOn"
-    class="w-12"
+    class="text-right"
 >
-    <x-loading.text width="w-8" />
+    <x-loading.text height="h-[21px]" />
 </x-ark-tables.cell>
