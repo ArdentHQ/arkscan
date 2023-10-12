@@ -2,49 +2,48 @@
     'rowCount' => 10,
 ])
 
-<x-table-skeleton
-    device="desktop"
-    :items="[
+@php
+    $canSort = config('database.default') !== 'sqlite';
+    $items = [
         'tables.missed-blocks.height'       => [
             'type' => 'text',
-            'sortingId' => 'height',
-            'livewireSort' => true,
+            'sortingId' => $canSort ? 'height' : null,
         ],
         'tables.missed-blocks.age'          => [
             'type'       => 'text',
             'responsive' => true,
             'breakpoint' => 'md-lg',
-            'sortingId' => 'age',
-            'livewireSort' => true,
+            'sortingId' => $canSort ? 'age' : null,
         ],
         'tables.missed-blocks.delegate' => [
             'type' => 'text',
-            'sortingId' => 'name',
-            'livewireSort' => true,
+            'sortingId' => $canSort ? 'name' : null,
         ],
         'tables.missed-blocks.no_of_voters' => [
             'type'       => 'number',
             'responsive' => true,
             'breakpoint' => 'md',
-            'sortingId' => 'no_of_voters',
-            'livewireSort' => true,
+            'sortingId' => $canSort ? 'no_of_voters' : null,
         ],
         'tables.missed-blocks.votes' => [
             'type'       => 'number',
             'nameProperties' => ['currency' => Network::currency()],
             'responsive' => true,
-            'sortingId' => 'votes',
-            'livewireSort' => true,
+            'sortingId' => $canSort ? 'votes' : null,
         ],
         'tables.missed-blocks.percentage' => [
             'type'       => 'number',
             'responsive' => true,
             'breakpoint' => 'lg',
-            'sortingId' => 'percentage_votes',
-            'livewireSort' => true,
             'tooltip' => trans('tables.missed-blocks.info.percentage'),
+            'sortingId' => $canSort ? 'percentage_votes' : null,
         ],
-    ]"
+    ];
+@endphp
+
+<x-table-skeleton
+    device="desktop"
+    :items="$items"
     :component-properties="['rounded' => false]"
     :row-count="$rowCount"
     encapsulated
