@@ -70,7 +70,8 @@ final class MissedBlocks extends TabbedTableComponent
     private function getMissedBlocksQuery(): Builder
     {
         if (config('database.default') === 'sqlite') {
-            return ForgingStats::orderByRaw('timestamp DESC');
+            return ForgingStats::orderByDesc('timestamp')
+                ->whereNotNull('missed_height');
         }
 
         $sortDirection = SortDirection::ASC;

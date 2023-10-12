@@ -955,6 +955,13 @@ it('should not sort for sqlite databases', function ($sortBy) {
         'timestamp'  => 134,
     ]);
 
+    // Not missed
+    ForgingStats::factory()->create([
+        'public_key'    => $wallet2->public_key,
+        'timestamp'     => 151,
+        'missed_height' => null,
+    ]);
+
     Livewire::test(MissedBlocks::class)
         ->call('setIsReady')
         ->call('sortBy', $sortBy)
