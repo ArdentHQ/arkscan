@@ -94,7 +94,7 @@ return [
         'image'       => 'images/metadata/404.png',
     ],
 
-    'contact'       => [
+    'support'       => [
         'title'       => 'Support | :name Blockchain Explorer',
         'description' => 'Get help with the use of the :name Blockchain Explorer.',
         'image'       => '/images/metadata/support.png',

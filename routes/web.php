@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\BlocksController;
-use App\Http\Controllers\ContactController;
+use App\Http\Controllers\SupportController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ShowBlockController;
@@ -53,8 +53,10 @@ Route::get('/wallets/{wallet}/blocks', function (Wallet $wallet) {
 });
 
 Route::view('/statistics', 'app.statistics')->name('statistics');
-Route::get('/support', [ContactController::class, 'index'])->name('contact');
-Route::post('support', [ContactController::class, 'handle'])
+
+// Keep the route name as contact for use with the foundation component
+Route::get('/support', [SupportController::class, 'index'])->name('contact');
+Route::post('support', [SupportController::class, 'handle'])
     ->middleware([
         ProtectAgainstSpam::class,
         'throttle:5,60',
