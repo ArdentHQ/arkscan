@@ -921,9 +921,11 @@ it('should handle sorting several pages with cached data', function ($columnSort
     'percentage_votes' => ['percentage_votes', 'percentage_votes'],
 ]);
 
-it('should not sort for sqlite databases', function ($columnSortBy) {
+it('should not sort for sqlite databases', function ($sortBy) {
     Config::set('database.default', 'sqlite');
     Config::set('database.connections.sqlite.database', ':memory:');
+
+    $this->refreshDatabase();
 
     $wallet2 = Wallet::factory()->activeDelegate()->create([
         'attributes' => [
@@ -955,7 +957,7 @@ it('should not sort for sqlite databases', function ($columnSortBy) {
 
     Livewire::test(MissedBlocks::class)
         ->call('setIsReady')
-        ->call('sortBy', $columnSortBy)
+        ->call('sortBy', $sortBy)
         ->assertSeeInOrder([
             'delegate-2',
             'delegate-1',
@@ -963,10 +965,10 @@ it('should not sort for sqlite databases', function ($columnSortBy) {
             'delegate-1',
         ]);
 })->with([
-    'height'           => ['height'],
-    'age'              => ['age'],
-    'name'             => ['name'],
-    'no_of_voters'     => ['no_of_voters'],
-    'votes'            => ['votes'],
-    'percentage_votes' => ['percentage_votes'],
+    'height',
+    'age',
+    'name',
+    'no_of_voters',
+    'votes',
+    'percentage_votes',
 ]);
