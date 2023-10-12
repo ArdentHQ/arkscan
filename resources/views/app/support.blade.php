@@ -1,6 +1,6 @@
 @component('layouts.app', ['fullWidth' => true])
 
-    <x-metadata page="contact" />
+    <x-metadata page="support" />
 
     @section('title', trans('metatags.contact.title'))
 
