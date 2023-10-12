@@ -116,6 +116,7 @@ final class AppServiceProvider extends ServiceProvider
             ['label' => trans('menus.developers'), 'children' => [
                 ['url' => trans('urls.docs.arkscan'),  'label' => trans('menus.docs')],
                 ['url' => trans('urls.docs.api'),  'label' => trans('menus.api')],
+                ['url' => trans('urls.github'),  'label' => trans('menus.github')],
             ]],
         ];
 

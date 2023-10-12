@@ -19,6 +19,7 @@ return [
     'exchanges'        => 'Exchanges',
     'docs'             => 'Docs',
     'api'              => 'API',
+    'github'           => 'GitHub',
 
     'network-select'   => [
         'main' => [
