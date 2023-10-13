@@ -9,7 +9,7 @@
             {{ $title }}
         </h1>
 
-        <span class="text-xs text-theme-secondary-500 leading-3.75 dark:text-theme-secondary-500">
+        <span class="text-xs text-theme-secondary-500 leading-5 dark:text-theme-secondary-500">
             {{ $subtitle }}
         </span>
     </div>
