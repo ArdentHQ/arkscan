@@ -23,10 +23,10 @@
 
     <x-general.mobile-divider />
 
-    <div class="flex flex-col lg:flex-row max-w-7xl mx-auto pb-8 md:px-10 dark:text-theme-secondary-500">
-        <div class="flex flex-col flex-1 justify-between rounded-xl lg:mr-1.5 lg:w-1/2 md:border border-theme-secondary-300 dark:border-theme-secondary-800">
+    <div class="flex flex-col pb-8 mx-auto max-w-7xl md:px-10 lg:flex-row dark:text-theme-secondary-500">
+        <div class="flex flex-col flex-1 justify-between rounded-xl md:border lg:mr-1.5 lg:w-1/2 border-theme-secondary-300 dark:border-theme-secondary-800">
             <div class="p-6">
-                <div class="font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-lg">{{ $helpTitle }}</div>
+                <div class="font-semibold md:text-lg text-theme-secondary-900 dark:text-theme-dark-50">{{ $helpTitle }}</div>
 
                 <div class="mt-2 paragraph-description">
                     {{ $helpDescription }}
@@ -58,7 +58,7 @@
             <hr class="mx-6 border-theme-secondary-300 dark:border-theme-secondary-800" />
 
             <div class="flex-1 p-6">
-                <div class="font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-lg">
+                <div class="font-semibold md:text-lg text-theme-secondary-900 dark:text-theme-dark-50">
                     {{ $additionalTitle }}
                 </div>
 
@@ -67,11 +67,11 @@
                 </div>
             </div>
 
-            <hr class="mx-6 border-theme-secondary-300 dark:border-theme-secondary-800 md:hidden" />
+            <hr class="mx-6 md:hidden border-theme-secondary-300 dark:border-theme-secondary-800" />
 
             @if (count($contactNetworks) > 0)
-                <div class="p-6 space-y-3 rounded-b-xl text-theme-secondary-900 dark:text-theme-secondary-200 md:bg-theme-secondary-100 dark:md:bg-theme-dark-950">
-                    <div class="font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-lg">
+                <div class="p-6 space-y-3 rounded-b-xl text-theme-secondary-900 md:bg-theme-secondary-100 dark:text-theme-secondary-200 dark:md:bg-theme-dark-950">
+                    <div class="font-semibold md:text-lg text-theme-secondary-900 dark:text-theme-dark-50">
                         @lang('ui::pages.contact.social.subtitle')
                     </div>
 
@@ -93,10 +93,10 @@
         <x-general.mobile-divider class="mb-6" />
 
         <div
-            class="flex flex-col flex-1 rounded-xl md:mt-3 lg:ml-1.5 lg:mt-0 px-6 md:py-6 md:border border-theme-secondary-300 dark:border-theme-secondary-800"
+            class="flex flex-col flex-1 px-6 rounded-xl md:py-6 md:mt-3 md:border lg:mt-0 lg:ml-1.5 border-theme-secondary-300 dark:border-theme-secondary-800"
             x-data="{ subject: '{{ old('subject', $subject) }}' }"
         >
-            <div class="font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-lg mb-2">
+            <div class="mb-2 font-semibold md:text-lg text-theme-secondary-900 dark:text-theme-dark-50">
                 {{ $formTitle }}
             </div>
 
@@ -115,8 +115,8 @@
 
                 @honeypot
 
-                <div class="flex flex-col space-y-3 md-lg:flex-row md-lg:space-y-0 md-lg:space-x-3 lg:flex-col lg:space-y-3 lg:space-x-0">
-                    <div class="flex flex-col md-lg:flex-2 space-y-3 md:flex-row md:space-y-0 md:space-x-3 lg:flex-1">
+                <div class="flex flex-col space-y-3 lg:flex-col lg:space-y-3 lg:space-x-0 md-lg:flex-row md-lg:space-y-0 md-lg:space-x-3">
+                    <div class="flex flex-col space-y-3 md:flex-row md:space-y-0 md:space-x-3 lg:flex-1 md-lg:flex-2">
                         <x-ark-input
                             name="name"
                             :label="trans('ui::forms.name')"
