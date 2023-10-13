@@ -125,7 +125,7 @@ final class AppServiceProvider extends ServiceProvider
         }
 
         if (config('arkscan.support.enabled') === true) {
-            $navigationEntries[3]['children'][] = ['route' => 'contact', 'label' => trans('menus.contact')];
+            $navigationEntries[3]['children'][] = ['route' => 'contact', 'label' => trans('menus.support')];
         }
 
         return $navigationEntries;

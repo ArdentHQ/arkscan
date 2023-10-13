@@ -13,11 +13,11 @@ use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Zendesk\API\Exceptions\ApiResponseException;
 
-final class ContactController extends Controller
+final class SupportController extends Controller
 {
     public function index(Request $request): View
     {
-        return view('app.contact');
+        return view('app.support');
     }
 
     public function handle(Request $request): RedirectResponse
