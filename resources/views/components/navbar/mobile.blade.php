@@ -1,6 +1,5 @@
 <header class="flex flex-col md:hidden">
     <div
-        id="navbar"
         class="fixed z-20 w-full md:relative"
         x-data="Navbar.dropdown({
             dark: window.getThemeMode() === 'dark',

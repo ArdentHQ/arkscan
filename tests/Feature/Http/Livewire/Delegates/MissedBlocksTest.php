@@ -10,6 +10,7 @@ use App\Services\Cache\DelegateCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
@@ -918,4 +919,63 @@ it('should handle sorting several pages with cached data', function ($columnSort
     'no_of_voters'     => ['no_of_voters', 'no_of_voters'],
     'votes'            => ['votes', 'votes'],
     'percentage_votes' => ['percentage_votes', 'percentage_votes'],
+]);
+
+it('should not sort for sqlite databases', function ($sortBy) {
+    Config::set('database.default', 'sqlite');
+    Config::set('database.connections.sqlite.database', ':memory:');
+
+    $this->refreshDatabase();
+
+    $wallet2 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-2',
+                'voteBalance' => 4000 * 1e8,
+            ],
+        ],
+    ]);
+
+    $wallet1 = Wallet::factory()->activeDelegate()->create([
+        'attributes' => [
+            'delegate' => [
+                'username'    => 'delegate-1',
+                'voteBalance' => 10000 * 1e8,
+            ],
+        ],
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $wallet1->public_key,
+        'timestamp'  => 100,
+    ]);
+
+    ForgingStats::factory()->create([
+        'public_key' => $wallet2->public_key,
+        'timestamp'  => 134,
+    ]);
+
+    // Not missed
+    ForgingStats::factory()->create([
+        'public_key'    => $wallet2->public_key,
+        'timestamp'     => 151,
+        'missed_height' => null,
+    ]);
+
+    Livewire::test(MissedBlocks::class)
+        ->call('setIsReady')
+        ->call('sortBy', $sortBy)
+        ->assertSeeInOrder([
+            'delegate-2',
+            'delegate-1',
+            'delegate-2',
+            'delegate-1',
+        ]);
+})->with([
+    'height',
+    'age',
+    'name',
+    'no_of_voters',
+    'votes',
+    'percentage_votes',
 ]);
