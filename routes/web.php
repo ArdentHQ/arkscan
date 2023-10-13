@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\BlocksController;
-use App\Http\Controllers\SupportController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\ShowWalletController;
+use App\Http\Controllers\SupportController;
 use App\Http\Controllers\TransactionsController;
 use App\Models\Block;
 use App\Models\Transaction;
