@@ -2,9 +2,11 @@
     <x-skeleton :row-count="$rowCount">
         <x-tables.rows.mobile>
             <x-slot name="header">
-                <x-tables.rows.mobile.skeletons.encapsulated.number />
+                <div class="flex items-center space-x-3 h-5">
+                    <x-tables.rows.mobile.skeletons.encapsulated.number />
 
-                <x-tables.rows.mobile.skeletons.encapsulated.address />
+                    <x-tables.rows.mobile.skeletons.encapsulated.address />
+                </div>
             </x-slot>
 
             <x-tables.rows.mobile.skeletons.encapsulated.text />
