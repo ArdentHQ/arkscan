@@ -15,10 +15,11 @@ return [
     'blocks'           => 'Blocks',
     'transactions'     => 'Transactions',
     'statistics'       => 'Statistics',
-    'contact'          => 'Support',
+    'support'          => 'Support',
     'exchanges'        => 'Exchanges',
     'docs'             => 'Docs',
     'api'              => 'API',
+    'github'           => 'GitHub',
 
     'network-select'   => [
         'main' => [
