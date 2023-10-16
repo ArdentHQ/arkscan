@@ -10,11 +10,13 @@
     if ($nestedDataBreakpoint) {
         $fromBreakpoint = null;
         $toBreakpoint = null;
+        $height = null;
 
         $from = $nestedDataBreakpoint;
         if (is_array($nestedDataBreakpoint)) {
             $from = Arr::get($nestedDataBreakpoint, 'from');
             $to = Arr::get($nestedDataBreakpoint, 'to');
+            $height = Arr::get($nestedDataBreakpoint, 'height');
         }
 
         if ($from) {
@@ -54,7 +56,7 @@
                 $fromBreakpoint,
                 $toBreakpoint,
             ])>
-                <x-loading.text />
+                <x-loading.text :height="$height" />
             </div>
         @endif
     </div>

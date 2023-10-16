@@ -27,6 +27,7 @@
             'nestedDataBreakpoint' => [
                 'from' => 'md',
                 'to' => 'lg',
+                'height' => 'h-[15px]',
             ],
         ],
         'tables.delegates.votes' => [
