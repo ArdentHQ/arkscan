@@ -87,7 +87,7 @@ it('should go to page 1 when changing per page', function () {
 
     Wallet::factory(100)->create();
 
-    $component = Livewire::test(TopAccountsTable::class)
+    Livewire::test(TopAccountsTable::class)
         ->call('setIsReady')
         ->call('gotoPage', 2)
         ->assertSet('page', 2)
@@ -100,7 +100,7 @@ it('should defer loading', function () {
 
     $wallet = Wallet::factory()->create();
 
-    $component = Livewire::test(TopAccountsTable::class)
+    Livewire::test(TopAccountsTable::class)
         ->assertDontSee($wallet->address)
         ->call('setIsReady')
         ->assertSee($wallet->address);
