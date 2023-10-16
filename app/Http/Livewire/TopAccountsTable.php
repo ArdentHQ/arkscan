@@ -13,6 +13,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
 use Livewire\Component;
 
+/**
+ * @property LengthAwarePaginator $wallets
+ * */
 final class TopAccountsTable extends Component
 {
     use DeferLoading;
