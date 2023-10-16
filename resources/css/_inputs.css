@@ -46,3 +46,43 @@
 .export-modal__checkbox label {
     @apply cursor-pointer flex-1 leading-5;
 }
+
+/* Input and Select field styling overrides */
+
+.form-select,
+.input-text {
+    @apply outline-transparent outline outline-1 hover:outline-theme-primary-400 hover:border-theme-primary-400 focus:border-transparent transition-default;
+}
+
+.form-select:focus,
+.input-text:focus {
+    @apply border-theme-primary-600 outline-offset-0 outline outline-1 outline-theme-primary-600;
+}
+
+.input-text--error {
+    @apply border-theme-danger-500 outline-offset-0 outline outline-1 outline-theme-danger-500;
+}
+.input-text::placeholder {
+    @apply text-theme-secondary-500;
+}
+.input-text--error:focus {
+    @apply !border-theme-danger-500 !outline-theme-danger-500;
+}
+.input-text--error:hover {
+    @apply border-theme-danger-700 outline-theme-danger-700;
+}
+
+.dark :not(.light).form-select,
+.dark :not(.light).input-text {
+    @apply hover:outline-theme-dark-blue-400 hover:border-theme-dark-blue-400;
+}
+
+.dark :not(.light).input-text--error {
+    @apply border-theme-danger-500 outline-theme-danger-500;
+}
+.dark :not(.light).input-text--error:focus {
+    @apply border-theme-danger-400 outline-theme-danger-400 !important;
+}
+.dark :not(.light).input-text--error:hover {
+    @apply border-theme-danger-700 outline-theme-danger-700;
+}

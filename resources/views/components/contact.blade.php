@@ -20,7 +20,6 @@
 ])
 
 <div {{ $attributes }}>
-
     <x-general.mobile-divider />
 
     <div class="flex flex-col pb-8 mx-auto max-w-7xl md:px-10 lg:flex-row dark:text-theme-secondary-500">
@@ -185,7 +184,6 @@
                             success: {{ (flash()->level === 'success') ? 'true' : 'false' }},
                             error: {{ (flash()->level === 'error') ? 'true' : 'false' }}
                         }"
-                        x-bind.transition:class="{ invisible: success || error }"
                         @if(flash()->message)
                             x-init="livewire.emit('toastMessage', ['{{ flash()->message }}', '{{ flash()->level }}'])"
                         @endif
