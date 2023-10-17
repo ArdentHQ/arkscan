@@ -432,11 +432,14 @@ return [
     ],
 
     'statistics'       => [
+        'title' => 'Statistics',
+        'subtitle' => 'Explore blockchain data and currency exchange statistics.',
+
         'highlights' => [
-            'current_supply'       => 'Current Supply',
-            'voting'               => 'Voting (:percent)',
-            'registered-delegates' => 'Registered Delegates',
-            'wallets'              => 'Wallets',
+            'total_supply' => 'Total Supply',
+            'voting'       => 'Voting (:percent)',
+            'delegates'    => 'Delegates',
+            'wallets'      => 'Wallets',
         ],
 
         'insights'   => [
