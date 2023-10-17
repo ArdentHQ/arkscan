@@ -1,4 +1,4 @@
 <x-table-skeleton
-    device="mobile"
-    :items="['text', 'number', 'number', 'number', 'text']"
+    device="mobile.delegates.list-table"
+    :encapsulated="true"
 />

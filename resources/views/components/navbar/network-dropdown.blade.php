@@ -5,7 +5,7 @@
 <x-general.dropdown.dropdown
     active-button-class="space-x-1.5"
     button-wrapper-class=""
-    button-class="justify-center p-2 space-x-1.5 h-8 text-sm font-semibold rounded md:w-8 md:bg-white md:border bg-theme-secondary-200 text-theme-secondary-700 md:hover:text-theme-secondary-700 md:border-theme-secondary-300 md:dark:border-theme-secondary-800 md:dark:bg-theme-secondary-900 md:dark:text-theme-secondary-600 md:hover:text-theme-secondary-900 dark:bg-theme-secondary-800 dark:hover:bg-theme-secondary-800 dark:text-theme-secondary-200 hover:bg-theme-secondary-200"
+    button-class="justify-center p-2 space-x-1.5 h-8 text-sm font-semibold rounded md:px-3 md:bg-white md:border bg-theme-secondary-200 text-theme-secondary-700 md:hover:text-theme-secondary-700 md:border-theme-secondary-300 md:dark:border-theme-secondary-800 md:dark:bg-theme-secondary-900 md:dark:text-theme-secondary-600 md:hover:text-theme-secondary-900 dark:bg-theme-secondary-800 dark:hover:bg-theme-secondary-800 dark:text-theme-secondary-200 hover:bg-theme-secondary-200"
 >
     <x-slot name="button">
         @if (strlen($slot) > 0)
@@ -13,9 +13,9 @@
         @else
             <span>
                 @if ($isProduction)
-                    @lang('general.navbar.live')
+                    @lang('general.navbar.mainnet')
                 @else
-                    @lang('general.navbar.test')
+                    @lang('general.navbar.testnet')
                 @endif
             </span>
 
@@ -35,15 +35,13 @@
         :url="Network::mainnetExplorerUrl()"
         :is-active="$isProduction"
     >
-        <span class="md:hidden">@lang('general.navbar.live')</span>
-        <span class="hidden md:block">@lang('general.navbar.live_network')</span>
+        @lang('general.navbar.mainnet')
     </x-general.dropdown.list-item>
 
     <x-general.dropdown.list-item
         :url="Network::testnetExplorerUrl()"
         :is-active="! $isProduction"
     >
-        <span class="md:hidden">@lang('general.navbar.test')</span>
-        <span class="hidden md:block">@lang('general.navbar.test_network')</span>
+        @lang('general.navbar.testnet')
     </x-general.dropdown.list-item>
 </x-general.dropdown>

@@ -47,10 +47,8 @@ return [
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
-        'live_network'       => 'Live Network',
-        'test_network'       => 'Test Network',
-        'live'               => 'Live',
-        'test'               => 'Test',
+        'mainnet'            => 'Mainnet',
+        'testnet'            => 'Testnet',
         'price'              => 'Price',
         'no_results'         => 'We could not find anything matching your search criteria, please try again!',
     ],

@@ -17,7 +17,7 @@
             'lastOn' => 'md',
         ],
         'pages.delegates.block_id' => [
-            'type'       => 'text',
+            'type'       => 'number',
             'responsive' => true,
             'breakpoint' => 'md',
             'class'      => 'text-right',

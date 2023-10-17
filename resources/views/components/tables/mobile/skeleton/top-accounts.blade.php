@@ -1,4 +1,4 @@
 <x-table-skeleton
-    device="mobile"
-    :items="['number', 'address', 'text', 'number', 'number']"
+    device="mobile.top-accounts"
+    :encapsulated="true"
 />
