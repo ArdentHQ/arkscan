@@ -432,7 +432,7 @@ return [
     ],
 
     'statistics'       => [
-        'title' => 'Statistics',
+        'title'    => 'Statistics',
         'subtitle' => 'Explore blockchain data and currency exchange statistics.',
 
         'highlights' => [
