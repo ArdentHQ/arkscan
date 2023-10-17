@@ -15,7 +15,7 @@
             'flex flex-col flex-grow justify-between h-full space-y-2',
             $textClass,
         ])>
-            <span class="text-sm font-semibold leading-4.25 whitespace-nowrap text-theme-secondary-700 dark:text-theme-dark-200">
+            <span class="text-sm font-semibold whitespace-nowrap leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
                 {{ $label }}
             </span>
 
@@ -24,7 +24,7 @@
                     @lang('general.not_available')
                 </span>
             @else
-                <span class="flex font-semibold leading-5 whitespace-nowrap dark:text-theme-secondary-50 text-theme-secondary-900 space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
+                <span class="flex space-x-3 font-semibold leading-5 whitespace-nowrap divide-x text-theme-secondary-900 divide-theme-secondary-300 dark:text-theme-secondary-50 dark:divide-theme-dark-700">
                     {{ $slot }}
                 </span>
             @endif

@@ -1,9 +1,9 @@
 <div class="pb-6 md:pb-0">
     <div class="content-container-full-width">
-        <div class="px-6 md:px-10 w-full">
+        <div class="px-6 w-full md:px-10">
             <div
                 wire:poll.{{ $refreshInterval }}s
-                class="grid gap-2 grid-cols-1 w-full sm:grid-cols-2 md:gap-3 xl:grid-cols-4"
+                class="grid grid-cols-1 gap-2 w-full sm:grid-cols-2 md:gap-3 xl:grid-cols-4"
             >
                 <x-stats.stat :label="trans('pages.statistics.highlights.total_supply')">
                     <x-currency :currency="Network::currency()">{{ $totalSupply }}</x-currency>
