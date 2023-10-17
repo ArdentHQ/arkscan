@@ -13,6 +13,7 @@
     'label' => null,
     'xData' => '{}',
     'height' => '320',
+    'name' => '',
 ])
 
 @php
@@ -22,20 +23,41 @@ $initialText = $grouped
 @endphp
 
 <div class="input-group {{ $class }}">
-    @if($label ?? false)
+    @if($label)
         <label
-            for="{{ $name ?? '' }}"
-            class="input-label @if ($name ?? false) @error($name) input-label--error @enderror @endif"
+            for="{{ $name }}"
+            class="input-label @if ($name) @error($name) input-label--error @enderror @endif"
         >
             {{ $label }}
         </label>
     @endif
 
     <div
-        class="relative input-rich-select {{ $wrapperClass }}"
-        x-data="RichSelect({{ $xData }}, {{ json_encode($options) }}, '{{ $initialValue }}', '{{ $initialText }}', {{ $grouped ? 'true' : 'false'}}@if($dispatchEvent), '{{ $dispatchEvent }}' @endif)"
+        @class([
+            'relative input-rich-select',
+            $wrapperClass,
+        ])
+        x-data="RichSelect(
+            {{ $xData }},
+            {{ json_encode($options) }},
+            '{{ $initialValue }}',
+            '{{ $initialText }}',
+            {{ $grouped ? 'true' : 'false'}}
+            @if($dispatchEvent)
+                , '{{ $dispatchEvent }}'
+            @endif
+        )"
     >
-        <input x-ref="input" {{ $attributes }} type="hidden" @input="onInput($dispatch, $event)" @isset($initialValue) value="{{ $initialValue }}" @endisset />
+        <input
+            x-ref="input"
+            type="hidden"
+            @input="onInput($dispatch, $event)"
+            {{ $attributes }}
+
+            @isset($initialValue)
+                value="{{ $initialValue }}"
+            @endisset
+        />
 
         <button
             x-ref="button"
@@ -46,19 +68,36 @@ $initialText = $grouped
             aria-haspopup="listbox"
             :aria-expanded="open"
             aria-labelledby="listbox-label"
-            class="relative dropdown-button focus-visible:rounded {{ $buttonClass }}"
+            @class([
+                'relative dropdown-button focus-visible:rounded',
+                $buttonClass,
+            ])
         >
             @isset($dropdownEntry)
                 {{ $dropdownEntry }}
             @else
-            <span x-show="text" x-text="text" class="block truncate dark:text-theme-secondary-300"></span>
-            <span x-show="!text" class="block truncate text-theme-secondary-500 dark:text-theme-secondary-700">@if(isset($placeholder) && $placeholder) {{ $placeholder }} @else &nbsp; @endif</span>
+                <span
+                    x-show="text"
+                    x-text="text"
+                    class="block truncate dark:text-theme-dark-200"
+                ></span>
+
+                <span
+                    x-show="!text"
+                    class="block truncate text-theme-secondary-500 dark:text-theme-secondary-700"
+                >
+                    @if(isset($placeholder) && $placeholder)
+                        {{ $placeholder }}
+                    @else
+                        &nbsp;
+                    @endif
+                </span>
             @endif
 
             <x-ark-chevron-toggle
                 is-open="open"
                 class="{{ $iconClass }} transform pointer-events-none"
-                size="2xs"
+                size="w-3 h-3"
             />
         </button>
 
@@ -136,7 +175,7 @@ $initialText = $grouped
                                 ></div>
                             </template>
 
-                            <hr x-show="index < Object.keys(options).length - 1" class="mx-8 mt-4 border-b border-dashed border-theme-secondary-300" />
+                            <hr x-show="index < Object.keys(options).length - 1" class="mx-8 mt-4 border-b border-dashed border-theme-dark-200" />
                         </div>
                     </template>
                     @endif

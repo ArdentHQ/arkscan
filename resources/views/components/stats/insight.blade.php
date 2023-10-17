@@ -14,37 +14,52 @@
     'selected',
 ])
 
-<x-general.card with-border class="flex flex-col gap-6 w-full">
-    <div class="xl:w-full">
-        <h2 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-900 dark:text-theme-secondary-200">{{ $mainTitle }}</h2>
-        <p class="mt-3 text-lg font-bold sm:text-2xl text-theme-secondary-900 dark:text-theme-secondary-200">{{ $mainValue }}</p>
+<x-general.card
+    class="flex flex-col md:flex-row xl:flex-col w-full md:pr-0 xl:pr-6"
+    with-border
+>
+    <div class="flex flex-col flex-1 space-y-2 mb-6 md:mb-0 xl:mb-6 xl:pb-6">
+        <h2 class="mb-0 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+            {{ $mainTitle }}
+        </h2>
+
+        <div class="text-lg font-bold md:text-2xl leading-5.25 md:!leading-[29px] text-theme-secondary-900 dark:text-theme-secondary-200">
+            {{ $mainValue }}
+        </div>
     </div>
 
-    <div class="pt-6 w-full border-t border-theme-secondary-300 dark:border-theme-secondary-800">
+    <div class="-mx-6 -mb-6 p-6 md:mx-0 md:-my-6 xl:-mx-6 xl:-mb-6 md:w-[24.5rem] xl:w-auto bg-theme-secondary-100 dark:bg-theme-dark-950 rounded-b md:rounded-b-none md:rounded-r-xl xl:rounded-tr-none xl:rounded-b-xl">
         <div wire:ignore>
             <x-rich-select
                 wire:model="{{ $model }}"
-                wrapper-class="relative left-0 xl:inline-block"
+                wrapper-class="relative left-0 xl:inline-block w-full"
                 dropdown-class="left-0 mt-1 origin-top-left"
-                button-class="block mr-10 text-sm font-semibold text-left bg-transparent text-theme-secondary-700 dark:text-theme-secondary-200"
-                icon-class="flex absolute inset-y-0 right-0 justify-center items-center -mr-4"
+                button-class="inline-block w-full text-left !px-3 !py-2 form-input transition-default dark:bg-theme-secondary-900 dark:border-theme-secondary-800 !text-sm font-semibold leading-4.25"
                 :initial-value="$selected"
                 :placeholder="$selected"
                 :options="$options"
             />
         </div>
 
-        <div class="flex flex-col gap-5 sm:flex-row sm:items-end xl:w-full @if($chart) sm:justify-between @endif">
-            <div class="">
-                <h3 class="mt-4 mb-0 text-sm font-semibold leading-none text-theme-secondary-500 dark:text-theme-secondary-700">{{ $secondaryTitle }}</h3>
-                <p class="mt-2 text-base font-semibold text-theme-secondary-700 dark:text-theme-secondary-200"
-                   @if($secondaryTooltip)
-                   data-tippy-content="{{ $secondaryTooltip }}"
-                   wire:key="{{ md5($secondaryTooltip) }}"
-                   @endif
+        <div @class([
+            'flex flex-col gap-5 sm:flex-row sm:items-end xl:w-full',
+            'sm:justify-between' => $chart,
+        ])>
+            <div class="mt-4">
+                <h3 class="mb-0 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                    {{ $secondaryTitle }}
+                </h3>
+
+                <div
+                    class="mt-2 text-sm leading-4.25 md:text-base md:leading-5 font-semibold text-theme-secondary-900 dark:text-theme-secondary-200"
+
+                    @if($secondaryTooltip)
+                        data-tippy-content="{{ $secondaryTooltip }}"
+                        wire:key="{{ md5($secondaryTooltip) }}"
+                    @endif
                 >
                     {{ $secondaryValue }}
-                </p>
+                </div>
             </div>
 
             @if($chart)
@@ -62,8 +77,13 @@
                 </div>
             @else
                 <div class="sm:pl-6 sm:border-l border-theme-secondary-300 dark:border-theme-secondary-800">
-                    <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-500 dark:text-theme-secondary-700">{{ $tertiaryTitle }}</h3>
-                    <p class="mt-2 text-base font-semibold text-theme-secondary-700 dark:text-theme-secondary-200">{{ $tertiaryValue }}</p>
+                    <h3 class="mb-0 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                        {{ $tertiaryTitle }}
+                    </h3>
+
+                    <div class="mt-2 text-sm leading-4.25 md:text-base md:leading-5 font-semibold text-theme-secondary-900 dark:text-theme-secondary-200">
+                        {{ $tertiaryValue }}
+                    </div>
                 </div>
             @endif
         </div>
