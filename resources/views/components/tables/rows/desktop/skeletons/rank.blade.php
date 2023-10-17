@@ -12,5 +12,5 @@
     :last-on="$lastOn"
     class="w-12"
 >
-    <x-loading.text />
+    <x-loading.text width="w-8" />
 </x-ark-tables.cell>

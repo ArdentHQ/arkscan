@@ -1,4 +1,4 @@
 <x-table-skeleton
-    device="mobile"
-    :items="['text', 'text', 'text', 'text', 'number', 'number']"
+    device="mobile.wallet-transactions"
+    :encapsulated="true"
 />

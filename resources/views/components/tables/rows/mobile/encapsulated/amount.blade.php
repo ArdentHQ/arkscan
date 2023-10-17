@@ -5,12 +5,12 @@
     'withNetworkCurrency' => false,
 ])
 
-<div {{ $attributes->class('space-y-2 sm:flex sm:flex-col sm:justify-center') }}>
+<div {{ $attributes->class('space-y-2 sm:flex sm:flex-col sm:justify-center leading-4.25') }}>
     <div class="text-sm font-semibold leading-4.25 dark:text-theme-secondary-500">
         @lang('tables.transactions.amount', ['currency' => Network::currency()])
     </div>
 
-    <div class="inline-block">
+    <div class="inline-block leading-4.25">
         <x-tables.rows.desktop.encapsulated.amount
             :model="$model"
             :wallet="$wallet"

@@ -31,6 +31,12 @@ module.exports = {
                 black: "var(--theme-color-dark-950)",
             },
 
+            borderRadius: {
+                ...defaultConfig.theme.extend.borderRadius,
+
+                "sm-md": "0.25rem",
+            },
+
             borderWidth: {
                 3: "3px",
                 20: "20px",

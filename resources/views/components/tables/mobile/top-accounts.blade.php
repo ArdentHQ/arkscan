@@ -11,7 +11,7 @@
                 </div>
             </x-slot>
 
-            <div class="flex flex-col sm:flex-row sm:flex-1">
+            <div class="flex flex-col sm:flex-row sm:flex-1 leading-4.25">
                 <x-tables.rows.mobile.encapsulated.username
                     :model="$wallet"
                     :class="Arr::toCssClasses([
