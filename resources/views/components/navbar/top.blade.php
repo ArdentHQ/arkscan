@@ -9,18 +9,13 @@
         <div class="flex items-center space-x-3">
             <livewire:navbar.search />
 
+            <x-navbar.network-dropdown/>
+
             <livewire:navbar.dark-mode-toggle
                 active-icon="underline-moon"
                 inactive-icon="underline-sun"
                 setting="darkTheme"
             />
-
-            <x-navbar.network-dropdown>
-                <x-ark-icon
-                    name="networks.ark"
-                    size="sm"
-                />
-            </x-navbar.network-dropdown>
         </div>
     </div>
 
