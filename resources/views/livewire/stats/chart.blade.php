@@ -8,7 +8,7 @@
             with-border
         >
             <div class="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
-                <div class="inline-flex items-center md:items-end space-x-2 sm:space-x-3">
+                <div class="inline-flex items-center space-x-2 sm:space-x-3 md:items-end">
                     <div class="flex flex-col">
                         <div class="mb-2 text-sm font-semibold sm:hidden leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
                             @lang('pages.statistics.chart.current_price')
