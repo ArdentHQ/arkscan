@@ -1,89 +1,196 @@
 @if($show)
-    <div class="mt-5" wire:poll.{{ $refreshInterval }}s>
-        <x-general.card with-border class="flex flex-col lg:flex-row lg:flex-wrap lg:items-end">
+    <div
+        class="mt-2 space-y-2 md:mt-6"
+        wire:poll.{{ $refreshInterval }}s
+    >
+        <x-general.card
+            class="flex flex-col"
+            with-border
+        >
+            <div class="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
+                <div class="inline-flex items-end space-x-2 sm:space-x-3">
+                    <div class="flex flex-col">
+                        <div class="mb-2 text-sm font-semibold sm:hidden leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                            @lang('pages.statistics.chart.current_price')
+                        </div>
 
-            <div>
-                <h2 class="mb-0 text-sm font-semibold leading-none sm:text-base sm:leading-none text-theme-secondary-500 dark:text-theme-secondary-700">
-                    @lang('pages.statistics.chart.price') {{ $mainValue }}
-                </h2>
+                        <span class="text-lg font-bold leading-5.25 md:!leading-[29px] sm:text-3xl text-theme-secondary-900 dark:text-theme-secondary-200">
+                            {{ $mainValueFiat }}
+                        </span>
+                    </div>
 
-                <p class="inline-flex items-center mt-3 space-x-2 sm:mt-2 sm:space-x-3">
-                    <span class="text-lg font-bold sm:text-3xl text-theme-secondary-900 dark:text-theme-secondary-200">
-                        {{ $mainValueFiat }}
-                    </span>
-                    <span class="inline-flex px-1.5 py-0.5 items-center text-xs font-semibold text-white rounded-sm
-                        @if($mainValueVariation === 'up') bg-theme-success-600
-                        @elseif($mainValueVariation === 'down') bg-theme-danger-400
-                        @endif">
-                        <x-ark-icon name="{{ $mainValueVariation === 'up' ? 'arrows.caret-up' : 'arrows.caret-down' }}" size="2xs" class="mr-1"/>
+                    <span @class([
+                        'hidden sm:inline-flex px-1 py-px items-center text-xs font-semibold rounded leading-3.75 mb-[3px]',
+                        'border border-transparent bg-theme-success-100 dark:bg-transparent dark:border-theme-success-700 text-theme-success-600 dark:text-theme-success-500' => $mainValueVariation === 'up',
+                        'border border-transparent bg-theme-danger-100 dark:bg-transparent dark:border-theme-danger-400 text-theme-danger-400 dark:text-theme-danger-300' => $mainValueVariation === 'down',
+                    ])>
+                        <span>
+                            @if ($mainValueVariation === 'up')
+                                +
+                            @else
+                                -
+                            @endif
+                        </span>
+
                         <x-percentage>{{ $mainValuePercentage }}</x-percentage>
                     </span>
-                </p>
-            </div>
-
-            <div
-                class="pt-6 mt-6 border-t sm:flex sm:pt-0 sm:border-t-0 lg:flex-1 lg:justify-end lg:mt-0 border-theme-secondary-300 dark:border-theme-secondary-800">
-                <x-stats.periods-selector wire:model="period" :selected="$period" :options="$options"
-                                          class="sm:hidden"/>
-
-                <div class="mt-3 sm:mt-0">
-                    <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-500 dark:text-theme-secondary-700">
-                        @lang('pages.statistics.chart.market-cap')
-                    </h3>
-                    <p class="mt-2 text-base font-semibold text-theme-secondary-700 dark:text-theme-secondary-200">
-                        {{ $marketCapValue }}
-                    </p>
                 </div>
 
-                <div
-                    class="mt-4 sm:pl-6 sm:mt-0 sm:ml-6 sm:border-l sm:border-theme-secondary-300 dark:border-theme-secondary-800">
-                    <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-500 dark:text-theme-secondary-700">
-                        @lang('pages.statistics.chart.min-price')
-                    </h3>
-                    <p class="mt-2 text-base font-semibold text-theme-secondary-700 dark:text-theme-secondary-200">
-                        {{ $minPriceValue }}
-                    </p>
-                </div>
+                <div class="flex flex-1 sm:block sm:flex-none">
+                    <a
+                        href="{{ route('exchanges') }}"
+                        class="py-1.5 px-4 w-full button-secondary"
+                    >
+                        <div class="flex justify-center items-center space-x-2">
+                            <span class="leading-5">@lang('pages.statistics.exchanges')</span>
 
-                <div
-                    class="mt-4 sm:pl-6 sm:mt-0 sm:ml-6 sm:border-l sm:border-theme-secondary-300 dark:border-theme-secondary-800">
-                    <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-500 dark:text-theme-secondary-700">
-                        @lang('pages.statistics.chart.max-price')
-                    </h3>
-                    <p class="mt-2 text-base font-semibold text-theme-secondary-700 dark:text-theme-secondary-200">
-                        {{ $maxPriceValue }}
-                    </p>
+                            <x-ark-icon
+                                name="arrows.chevron-right-small"
+                                size="xs"
+                            />
+                        </div>
+                    </a>
                 </div>
             </div>
 
-            <div
-                class="mt-5 sm:pt-6 sm:mt-6 sm:border-t lg:w-full border-theme-secondary-300 dark:border-theme-secondary-800">
-                <x-stats.periods-selector wire:model="period" :selected="$period" :options="$options"
-                                          class="hidden sm:block"/>
-                <div class="mt-6 sm:hidden">
-                    <x-ark-chart
-                        class="w-full h-auto"
-                        id="stats-chart-mobile"
-                        :data="collect($chart->get('datasets'))->toJson()"
-                        :labels="collect($chart->get('labels'))->toJson()"
-                        :theme="$chartTheme"
-                        height="50"
-                        :currency="Settings::currency()"
+            <div class="mt-4 sm:pt-4 sm:border-t md:pt-6 md:mt-6 lg:w-full border-theme-secondary-300 dark:border-theme-secondary-800">
+                <div class="sm:flex sm:justify-between sm:items-end lg:items-center">
+                    <div class="w-full sm:flex sm:pt-0 lg:flex-1 lg:mt-0">
+                        <div class="hidden mt-3 sm:block sm:mt-0">
+                            <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-700 dark:text-theme-dark-200">
+                                @lang('pages.statistics.chart.market-cap')
+                            </h3>
+
+                            <p class="mt-2 text-base font-semibold leading-5">
+                                @if ($marketCapValue)
+                                    <span class="leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
+                                        {{ $marketCapValue }}
+
+                                        @if (ExplorerNumberFormatter::hasSymbol(Settings::currency()))
+                                            {{ Settings::currency() }}
+                                        @endif
+                                    </span>
+                                @else
+                                    <span class="leading-5 text-theme-secondary-500 dark:text-theme-secondary-700">
+                                        @lang('general.na')
+                                    </span>
+                                @endif
+                            </p>
+                        </div>
+
+                        <div class="hidden mt-4 sm:block sm:pl-6 sm:mt-0 sm:ml-6 sm:border-l sm:border-theme-secondary-300 dark:border-theme-secondary-800">
+                            <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-700 dark:text-theme-dark-200">
+                                @lang('pages.statistics.chart.min-price')
+                            </h3>
+
+                            <p class="mt-2 text-base font-semibold leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
+                                {{ $minPriceValue }}
+                            </p>
+                        </div>
+
+                        <div class="hidden mt-4 sm:block sm:pl-6 sm:mt-0 sm:ml-6 sm:border-l sm:border-theme-secondary-300 dark:border-theme-secondary-800">
+                            <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-700 dark:text-theme-dark-200">
+                                @lang('pages.statistics.chart.max-price')
+                            </h3>
+
+                            <p class="mt-2 text-base font-semibold leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
+                                {{ $maxPriceValue }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <x-stats.periods-selector
+                        wire:model="period"
+                        :selected="$period"
+                        :options="$options"
+                        class="hidden sm:block"
                     />
                 </div>
 
-                <div class="hidden mt-6 sm:block">
+                <div class="p-4 -mx-4 -mb-4 rounded-b sm:hidden md:-mx-6 md:-mb-6 md:rounded-b-xl bg-theme-secondary-100 dark:bg-theme-dark-950">
+                    <x-stats.periods-selector
+                        wire:model="period"
+                        :selected="$period"
+                        :options="$options"
+                        class="sm:hidden"
+                    />
+
                     <x-ark-chart
-                        class="w-full h-auto"
-                        id="stats-chart"
-                        :data="collect($chart->get('datasets'))->toJson()"
-                        :labels="collect($chart->get('labels'))->toJson()"
+                        class="w-full h-[240px]"
+                        canvas-class="max-w-full"
+                        id="stats-chart-mobile"
+                        :data="$datasets->toJson()"
+                        labels="[{{ $labels->map(fn ($l) => 'dayjs('.$l.' * 1000).toDate()')->join(',') }}]"
                         :theme="$chartTheme"
-                        height="500"
+                        height="240"
+                        :width="null"
+                        tooltip-handler="chartTooltip"
+                        has-date-time-labels
                         tooltips
                         grid
                         :currency="Settings::currency()"
+                        :y-padding="10"
+                        :x-padding="0"
+                        show-crosshair
+                        :date-unit-override="$this->dateUnit"
                     />
+                </div>
+
+                <div class="hidden p-3 -mx-4 mt-6 -mb-4 rounded-b sm:block md:-mx-6 md:-mb-6 md:rounded-b-xl bg-theme-secondary-100 dark:bg-theme-dark-950">
+                    <x-ark-chart
+                        class="w-full h-auto"
+                        canvas-class="max-w-full"
+                        id="stats-chart"
+                        :data="$datasets->toJson()"
+                        labels="[{{ $labels->map(fn ($l) => 'dayjs('.$l.' * 1000).toDate()')->join(',') }}]"
+                        :theme="$chartTheme"
+                        height="288"
+                        :width="null"
+                        tooltip-handler="chartTooltip"
+                        has-date-time-labels
+                        tooltips
+                        grid
+                        :currency="Settings::currency()"
+                        :y-padding="10"
+                        :x-padding="0"
+                        show-crosshair
+                        :date-unit-override="$this->dateUnit"
+                    />
+                </div>
+            </div>
+        </x-general.card>
+
+        <x-general.card
+            class="p-4 space-y-4 divide-y sm:hidden divide-theme-secondary-300 dark:divide-theme-dark-700"
+            with-border
+        >
+            <div class="space-y-2">
+                <div class="text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                    @lang('pages.statistics.chart.market-cap')
+                </div>
+
+                <div class="text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50">
+                    {{ $marketCapValue }}
+                </div>
+            </div>
+
+            <div class="pt-4 space-y-2">
+                <div class="text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                    @lang('pages.statistics.chart.min-price')
+                </div>
+
+                <div class="text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50">
+                    {{ $minPriceValue }}
+                </div>
+            </div>
+
+            <div class="pt-4 space-y-2">
+                <div class="text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                    @lang('pages.statistics.chart.max-price')
+                </div>
+
+                <div class="text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50">
+                    {{ $maxPriceValue }}
                 </div>
             </div>
         </x-general.card>
@@ -103,4 +210,5 @@
             sessionStorage.setItem('scrollPos', window.scrollY.toString());
         });
     </script>
+    <script src="{{ mix('js/chart-tooltip.js')}}"></script>
 @endpush

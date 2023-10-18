@@ -125,3 +125,13 @@ it('should determine if visitor uses dark theme', function () {
         'darkTheme' => false,
     ]))->toBe(['light']);
 });
+
+it('should get the locale', function () {
+    expect(Settings::locale())->toBe('en_US');
+
+    getSettingsFromCookies($this, 'currency', [
+        'currency' => 'gbp',
+    ]);
+
+    expect(Settings::locale())->toBe('en_GB');
+});

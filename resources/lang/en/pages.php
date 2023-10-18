@@ -432,8 +432,9 @@ return [
     ],
 
     'statistics'       => [
-        'title'    => 'Statistics',
-        'subtitle' => 'Explore blockchain data and currency exchange statistics.',
+        'title'     => 'Statistics',
+        'subtitle'  => 'Explore blockchain data and currency exchange statistics.',
+        'exchanges' => 'Exchanges',
 
         'highlights' => [
             'total_supply' => 'Total Supply',
@@ -453,10 +454,10 @@ return [
         ],
 
         'chart'      => [
-            'price'      => 'Price:',
-            'market-cap' => 'Market Cap',
-            'min-price'  => 'Min Price',
-            'max-price'  => 'Max Price',
+            'current_price' => 'Current Price',
+            'market-cap'    => 'Market Cap',
+            'min-price'     => 'Min Price',
+            'max-price'     => 'Max Price',
         ],
     ],
 

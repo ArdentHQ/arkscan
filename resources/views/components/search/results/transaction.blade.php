@@ -2,7 +2,7 @@
 
 <x-search.results.result :model="$transaction">
     <div class="flex items-center space-x-2">
-        <div class="dark:text-theme-secondary-500">
+        <div class="dark:text-theme-dark-50">
             @lang('general.search.transaction')
         </div>
 
@@ -15,7 +15,7 @@
 
     <div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-y-0 md:space-x-4">
         <div class="flex items-center space-x-2 text-xs isolate">
-            <div class="text-theme-secondary-500 dark:text-theme-secondary-700">
+            <div class="text-theme-secondary-500 dark:text-theme-dark-200">
                 @lang('general.search.from')
             </div>
 
@@ -25,18 +25,18 @@
                 without-reverse-class="space-x-2"
                 without-link
                 without-icon
-                class="text-theme-secondary-700 dark:text-theme-secondary-500"
+                class="text-theme-secondary-700 dark:text-theme-dark-50"
             />
         </div>
 
         <x-search.results.transaction-type :transaction="$transaction" />
 
         <div class="flex items-center space-x-2 text-xs md:flex-1 md:justify-end md:space-x-0">
-            <div class="md:hidden text-theme-secondary-500 dark:text-theme-secondary-700">
+            <div class="md:hidden text-theme-secondary-500 dark:text-theme-dark-200">
                 @lang('general.search.amount')
             </div>
 
-            <div class="text-theme-secondary-700 dark:text-theme-secondary-500">
+            <div class="text-theme-secondary-700 dark:text-theme-dark-50">
                 <x-currency :currency="Network::currency()">
                     {{ ExplorerNumberFormatter::number($transaction->amountWithFee()) }}
                 </x-currency>

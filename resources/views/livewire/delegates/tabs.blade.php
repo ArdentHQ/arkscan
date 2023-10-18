@@ -32,7 +32,7 @@
         <x-tabs.inline-tab name="recent-votes">
             <span>@lang('pages.delegates.tabs.recent_votes')</span>
         </x-tabs.inline-tab>
-    </x-tabs.wrapper>
+    </x-tabs.inline-wrapper>
 
     <div
         wire:key="{{ Illuminate\Support\Str::random(20) }}"
