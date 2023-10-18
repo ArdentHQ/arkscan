@@ -15,7 +15,7 @@
 
     <div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-y-0 md:space-x-4">
         <div class="flex items-center space-x-2 text-xs isolate">
-            <div class="text-theme-secondary-500 dark:text-theme-secondary-700">
+            <div class="text-theme-secondary-500 dark:text-theme-dark-200">
                 @lang('general.search.from')
             </div>
 
@@ -32,7 +32,7 @@
         <x-search.results.transaction-type :transaction="$transaction" />
 
         <div class="flex items-center space-x-2 text-xs md:flex-1 md:justify-end md:space-x-0">
-            <div class="md:hidden text-theme-secondary-500 dark:text-theme-secondary-700">
+            <div class="md:hidden text-theme-secondary-500 dark:text-theme-dark-200">
                 @lang('general.search.amount')
             </div>
 
