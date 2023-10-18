@@ -42,8 +42,8 @@
         </div>
 
         <div @class([
-            'flex flex-col gap-5 sm:flex-row sm:items-end xl:w-full',
-            'sm:justify-between' => $chart,
+            'flex flex-row gap-5 items-end xl:w-full',
+            'justify-between' => $chart,
         ])>
             <div class="mt-4">
                 <h3 class="mb-0 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
@@ -51,7 +51,7 @@
                 </h3>
 
                 <div
-                    class="mt-2 text-sm font-semibold md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-secondary-200"
+                    class="mt-2 text-sm font-semibold md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-secondary-200 whitespace-nowrap"
 
                     @if($secondaryTooltip)
                         data-tippy-content="{{ $secondaryTooltip }}"
@@ -70,7 +70,7 @@
                         :data="collect($chart->get('datasets'))->toJson()"
                         :labels="collect($chart->get('labels'))->keys()->toJson()"
                         :theme="$chartTheme"
-                        width="200"
+                        width="75"
                         height="50"
                         :currency="Settings::currency()"
                     />
