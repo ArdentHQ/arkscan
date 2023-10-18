@@ -2,7 +2,7 @@
 
 <x-search.results.result :model="$transaction">
     <div class="flex items-center space-x-2">
-        <div class="dark:text-theme-secondary-500">
+        <div class="dark:text-theme-dark-50">
             @lang('general.search.transaction')
         </div>
 
@@ -25,7 +25,7 @@
                 without-reverse-class="space-x-2"
                 without-link
                 without-icon
-                class="text-theme-secondary-700 dark:text-theme-secondary-500"
+                class="text-theme-secondary-700 dark:text-theme-dark-50"
             />
         </div>
 
@@ -36,7 +36,7 @@
                 @lang('general.search.amount')
             </div>
 
-            <div class="text-theme-secondary-700 dark:text-theme-secondary-500">
+            <div class="text-theme-secondary-700 dark:text-theme-dark-50">
                 <x-currency :currency="Network::currency()">
                     {{ ExplorerNumberFormatter::number($transaction->amountWithFee()) }}
                 </x-currency>

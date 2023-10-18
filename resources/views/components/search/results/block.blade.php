@@ -2,7 +2,7 @@
 
 <x-search.results.result :model="$block">
     <div class="flex items-center space-x-2">
-        <div class="dark:text-theme-secondary-500">@lang('general.search.block')</div>
+        <div class="dark:text-theme-dark-50">@lang('general.search.block')</div>
 
         <div class="min-w-0 link group-hover/result:no-underline hover:text-theme-primary-600">
             <x-truncate-dynamic>
@@ -13,7 +13,7 @@
 
     <div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-y-0 md:space-x-4">
         <div class="flex items-center space-x-2 text-xs isolate">
-            <div class="text-theme-secondary-500 dark:text-theme-secondary-700">
+            <div class="text-theme-secondary-500 dark:text-theme-dark-200">
                 @lang('general.search.generated_by')
             </div>
 
@@ -25,16 +25,16 @@
                 without-link
                 without-icon
                 :link-wallet="false"
-                class="text-theme-secondary-700 dark:text-theme-secondary-500"
+                class="text-theme-secondary-700 dark:text-theme-dark-50"
             />
         </div>
 
         <div class="flex items-center space-x-1 text-xs">
-            <div class="text-theme-secondary-500 dark:text-theme-secondary-700">
+            <div class="text-theme-secondary-500 dark:text-theme-dark-200">
                 @lang('general.search.transactions')
             </div>
 
-            <div class="text-theme-secondary-700 dark:text-theme-secondary-500">
+            <div class="text-theme-secondary-700 dark:text-theme-dark-50">
                 {{ $block->transactionCount() }}
             </div>
         </div>
