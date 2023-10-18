@@ -71,7 +71,7 @@ return [
             'day'     => 'Day',
             'week'    => 'Week',
             'month'   => 'Month',
-            'quarter' => 'Quarter',
+            'quarter' => '3 Months',
             'year'    => 'Year',
             'all'     => 'All',
         ],
