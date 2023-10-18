@@ -4,7 +4,7 @@
 ])
 
 <div class="flex flex-col space-y-2 font-semibold">
-    <div class="text-sm text-theme-secondary-700 dark:text-theme-dark-200 whitespace-nowrap">
+    <div class="text-sm whitespace-nowrap text-theme-secondary-700 dark:text-theme-dark-200">
         {{ $title }}
     </div>
 
