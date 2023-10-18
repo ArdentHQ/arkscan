@@ -135,7 +135,7 @@ final class Chart extends Component
 
     private function getPriceRange(): Collection
     {
-        return $this->getHistoricalHourly(CryptoCurrencies::BTC);
+        return $this->getHistoricalHourly(Settings::currency());
     }
 
     private function minPrice(): string
