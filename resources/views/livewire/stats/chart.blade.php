@@ -11,7 +11,7 @@
                 <div class="inline-flex items-end space-x-2 sm:space-x-3">
                     <div class="flex flex-col">
                         <div class="sm:hidden mb-2 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
-                            @lang('pages.statistics.chart.market-cap')
+                            @lang('pages.statistics.chart.current_price')
                         </div>
 
                         <span class="text-lg font-bold leading-5.25 md:!leading-[29px] sm:text-3xl text-theme-secondary-900 dark:text-theme-secondary-200">

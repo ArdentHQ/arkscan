@@ -454,10 +454,10 @@ return [
         ],
 
         'chart'      => [
-            'price'      => 'Price:',
-            'market-cap' => 'Market Cap',
-            'min-price'  => 'Min Price',
-            'max-price'  => 'Max Price',
+            'current_price' => 'Current Price',
+            'market-cap'    => 'Market Cap',
+            'min-price'     => 'Min Price',
+            'max-price'     => 'Max Price',
         ],
     ],
 
