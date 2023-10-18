@@ -1,7 +1,7 @@
 @props([
     'label',
     'disabled'         => false,
-    'padding'          => 'px-6 py-4',
+    'padding'          => 'p-4 md:p-6',
     'textClass'        => null,
     'containerSpacing' => 'space-x-4',
 ])
@@ -24,7 +24,7 @@
                     @lang('general.not_available')
                 </span>
             @else
-                <span class="flex space-x-3 font-semibold leading-5 whitespace-nowrap divide-x text-theme-secondary-900 divide-theme-secondary-300 dark:text-theme-secondary-50 dark:divide-theme-dark-700">
+                <span class="flex space-x-3 text-sm font-semibold leading-5 whitespace-nowrap divide-x md:text-base text-theme-secondary-900 divide-theme-secondary-300 dark:text-theme-secondary-50 dark:divide-theme-dark-700">
                     {{ $slot }}
                 </span>
             @endif
