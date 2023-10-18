@@ -5,7 +5,10 @@
                 <div class="flex items-center space-x-3 h-5">
                     <x-tables.rows.mobile.skeletons.encapsulated.number />
 
-                    <x-tables.rows.mobile.skeletons.encapsulated.address />
+                    <div>
+                        <x-tables.rows.mobile.skeletons.text class="sm:hidden" />
+                        <x-tables.rows.mobile.skeletons.encapsulated.address class="hidden sm:block" />
+                    </div>
                 </div>
             </x-slot>
 
