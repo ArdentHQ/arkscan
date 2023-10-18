@@ -88,11 +88,11 @@
                                 <div class="relative h-full dark:bg-theme-secondary-800">
                                     <a
                                         href="#"
-                                        class="inline-flex relative justify-between items-center py-3 px-6 w-full h-full font-semibold leading-5 focus:ring-inset focus:outline-none text-theme-secondary-700 dark:text-theme-secondary-200 hover:text-theme-secondary-800"
+                                        class="inline-flex relative justify-between items-center py-3 px-6 w-full h-full font-semibold leading-5 focus:ring-inset focus:outline-none text-theme-secondary-700 dark:text-theme-dark-50 hover:text-theme-secondary-800"
                                         @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
                                     >
-                                        <span :class="{ 'text-theme-secondary-700 dark:text-theme-secondary-200': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
-                                        <span class="ml-2 text-theme-secondary-700 dark:text-theme-secondary-400" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }">
+                                        <span :class="{ 'text-theme-secondary-700 dark:text-theme-dark-50': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
+                                        <span class="ml-2 text-theme-secondary-700 dark:text-theme-dark-50" :class="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }">
                                             <x-ark-icon name="arrows.chevron-down-small" size="xs" />
                                         </span>
                                     </a>
