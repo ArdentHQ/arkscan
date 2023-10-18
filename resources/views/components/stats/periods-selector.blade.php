@@ -9,7 +9,7 @@
         <div wire:ignore>
             <x-rich-select
                 wire:model="{{ $attributes->wire('model')->value() }}"
-                wrapper-class="relative left-0 xl:inline-block w-full sm:w-[150px]"
+                wrapper-class="relative left-0 w-full xl:inline-block sm:w-[150px]"
                 dropdown-class="left-0 mt-1 origin-top-left"
                 button-class="inline-block w-full text-left !px-3 !py-2 form-input transition-default dark:bg-theme-secondary-900 dark:border-theme-secondary-800 !text-sm font-semibold leading-4.25"
                 :initial-value="$selected"

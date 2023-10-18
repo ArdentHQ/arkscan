@@ -1,16 +1,16 @@
 @if($show)
     <div
-        class="mt-2 md:mt-6 space-y-2"
+        class="mt-2 space-y-2 md:mt-6"
         wire:poll.{{ $refreshInterval }}s
     >
         <x-general.card
             class="flex flex-col"
             with-border
         >
-            <div class="flex flex-col sm:flex-row sm:justify-between space-y-3 sm:space-y-0">
+            <div class="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
                 <div class="inline-flex items-end space-x-2 sm:space-x-3">
                     <div class="flex flex-col">
-                        <div class="sm:hidden mb-2 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                        <div class="mb-2 text-sm font-semibold sm:hidden leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
                             @lang('pages.statistics.chart.current_price')
                         </div>
 
@@ -39,9 +39,9 @@
                 <div class="flex flex-1 sm:block sm:flex-none">
                     <a
                         href="{{ route('exchanges') }}"
-                        class="button-secondary px-4 py-1.5 w-full"
+                        class="py-1.5 px-4 w-full button-secondary"
                     >
-                        <div class="flex items-center space-x-2 justify-center">
+                        <div class="flex justify-center items-center space-x-2">
                             <span class="leading-5">@lang('pages.statistics.exchanges')</span>
 
                             <x-ark-icon
@@ -53,17 +53,17 @@
                 </div>
             </div>
 
-            <div class="mt-4 sm:pt-4 md:pt-6 md:mt-6 sm:border-t lg:w-full border-theme-secondary-300 dark:border-theme-secondary-800">
-                <div class="sm:flex sm:items-end lg:items-center sm:justify-between">
-                    <div class="sm:flex sm:pt-0 lg:flex-1 lg:mt-0 w-full">
-                        <div class="hidden sm:block mt-3 sm:mt-0">
+            <div class="mt-4 sm:pt-4 sm:border-t md:pt-6 md:mt-6 lg:w-full border-theme-secondary-300 dark:border-theme-secondary-800">
+                <div class="sm:flex sm:justify-between sm:items-end lg:items-center">
+                    <div class="w-full sm:flex sm:pt-0 lg:flex-1 lg:mt-0">
+                        <div class="hidden mt-3 sm:block sm:mt-0">
                             <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-700 dark:text-theme-dark-200">
                                 @lang('pages.statistics.chart.market-cap')
                             </h3>
 
                             <p class="mt-2 text-base font-semibold leading-5">
                                 @if ($marketCapValue)
-                                    <span class="text-theme-secondary-900 dark:text-theme-dark-50 leading-5">
+                                    <span class="leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
                                         {{ $marketCapValue }}
 
                                         @if (ExplorerNumberFormatter::hasSymbol(Settings::currency()))
@@ -71,29 +71,29 @@
                                         @endif
                                     </span>
                                 @else
-                                    <span class="text-theme-secondary-500 dark:text-theme-secondary-700 leading-5">
+                                    <span class="leading-5 text-theme-secondary-500 dark:text-theme-secondary-700">
                                         @lang('general.na')
                                     </span>
                                 @endif
                             </p>
                         </div>
 
-                        <div class="hidden sm:block mt-4 sm:pl-6 sm:mt-0 sm:ml-6 sm:border-l sm:border-theme-secondary-300 dark:border-theme-secondary-800">
+                        <div class="hidden mt-4 sm:block sm:pl-6 sm:mt-0 sm:ml-6 sm:border-l sm:border-theme-secondary-300 dark:border-theme-secondary-800">
                             <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-700 dark:text-theme-dark-200">
                                 @lang('pages.statistics.chart.min-price')
                             </h3>
 
-                            <p class="mt-2 text-base font-semibold text-theme-secondary-900 dark:text-theme-dark-50 leading-5">
+                            <p class="mt-2 text-base font-semibold leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
                                 {{ $minPriceValue }}
                             </p>
                         </div>
 
-                        <div class="hidden sm:block mt-4 sm:pl-6 sm:mt-0 sm:ml-6 sm:border-l sm:border-theme-secondary-300 dark:border-theme-secondary-800">
+                        <div class="hidden mt-4 sm:block sm:pl-6 sm:mt-0 sm:ml-6 sm:border-l sm:border-theme-secondary-300 dark:border-theme-secondary-800">
                             <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-700 dark:text-theme-dark-200">
                                 @lang('pages.statistics.chart.max-price')
                             </h3>
 
-                            <p class="mt-2 text-base font-semibold text-theme-secondary-900 dark:text-theme-dark-50 leading-5">
+                            <p class="mt-2 text-base font-semibold leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
                                 {{ $maxPriceValue }}
                             </p>
                         </div>
@@ -107,7 +107,7 @@
                     />
                 </div>
 
-                <div class="-mx-4 -mb-4 md:-mx-6 md:-mb-6 p-4 sm:hidden bg-theme-secondary-100 dark:bg-theme-dark-950 rounded-b md:rounded-b-xl">
+                <div class="p-4 -mx-4 -mb-4 rounded-b sm:hidden md:-mx-6 md:-mb-6 md:rounded-b-xl bg-theme-secondary-100 dark:bg-theme-dark-950">
                     <x-stats.periods-selector
                         wire:model="period"
                         :selected="$period"
@@ -136,7 +136,7 @@
                     />
                 </div>
 
-                <div class="hidden mt-6 -mx-4 -mb-4 md:-mx-6 md:-mb-6 p-3 sm:block bg-theme-secondary-100 dark:bg-theme-dark-950 rounded-b md:rounded-b-xl">
+                <div class="hidden p-3 -mx-4 mt-6 -mb-4 rounded-b sm:block md:-mx-6 md:-mb-6 md:rounded-b-xl bg-theme-secondary-100 dark:bg-theme-dark-950">
                     <x-ark-chart
                         class="w-full h-auto"
                         canvas-class="max-w-full"
@@ -161,7 +161,7 @@
         </x-general.card>
 
         <x-general.card
-            class="p-4 sm:hidden space-y-4 divide-y divide-theme-secondary-300 dark:divide-theme-dark-700"
+            class="p-4 space-y-4 divide-y sm:hidden divide-theme-secondary-300 dark:divide-theme-dark-700"
             with-border
         >
             <div class="space-y-2">
@@ -174,7 +174,7 @@
                 </div>
             </div>
 
-            <div class="space-y-2 pt-4">
+            <div class="pt-4 space-y-2">
                 <div class="text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
                     @lang('pages.statistics.chart.min-price')
                 </div>
@@ -184,7 +184,7 @@
                 </div>
             </div>
 
-            <div class="space-y-2 pt-4">
+            <div class="pt-4 space-y-2">
                 <div class="text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
                     @lang('pages.statistics.chart.max-price')
                 </div>
