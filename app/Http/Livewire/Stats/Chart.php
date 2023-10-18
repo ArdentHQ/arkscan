@@ -45,7 +45,7 @@ final class Chart extends Component
 
     public function render(): View
     {
-        $chartData = $this->chartHistoricalPrice($this->period, true);
+        $chartData = $this->chartHistoricalPrice($this->period);
 
         /** @var array<float> $datasets */
         $datasets = $chartData->get('datasets');
