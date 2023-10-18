@@ -1,7 +1,7 @@
 @props(['transaction'])
 
 <div class="flex items-center space-x-2 text-xs isolate">
-    <div class="text-theme-secondary-500 dark:text-theme-secondary-700">
+    <div class="text-theme-secondary-500 dark:text-theme-dark-200">
         @lang('general.search.to')
     </div>
 
@@ -11,6 +11,6 @@
         without-reverse-class="space-x-2"
         without-link
         without-icon
-        class="text-theme-secondary-700 dark:text-theme-secondary-500"
+        class="text-theme-secondary-700 dark:text-theme-dark-50"
     />
 </div>
