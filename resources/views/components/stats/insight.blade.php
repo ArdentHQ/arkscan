@@ -18,7 +18,7 @@
     class="flex flex-col md:flex-row xl:flex-col w-full md:pr-0 xl:pr-6"
     with-border
 >
-    <div class="flex flex-col flex-1 space-y-2 mb-6 md:mb-0 xl:mb-6 xl:pb-6">
+    <div class="flex flex-col flex-1 space-y-2 mb-4 md:mb-0 xl:mb-6 xl:pb-6">
         <h2 class="mb-0 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
             {{ $mainTitle }}
         </h2>
@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    <div class="-mx-6 -mb-6 p-6 md:mx-0 md:-my-6 xl:-mx-6 xl:-mb-6 md:w-[24.5rem] xl:w-auto bg-theme-secondary-100 dark:bg-theme-dark-950 rounded-b md:rounded-b-none md:rounded-r-xl xl:rounded-tr-none xl:rounded-b-xl">
+    <div class="-mx-4 -mb-4 p-4 md:p-6 md:mx-0 md:-my-6 xl:-mx-6 xl:-mb-6 md:w-[24.5rem] xl:w-auto bg-theme-secondary-100 dark:bg-theme-dark-950 rounded-b md:rounded-b-none md:rounded-r-xl xl:rounded-tr-none xl:rounded-b-xl">
         <div wire:ignore>
             <x-rich-select
                 wire:model="{{ $model }}"

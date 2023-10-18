@@ -1,7 +1,7 @@
 @props([
     'label',
     'disabled'         => false,
-    'padding'          => 'px-6 py-4',
+    'padding'          => 'p-4 md:p-6',
     'textClass'        => null,
     'containerSpacing' => 'space-x-4',
 ])
