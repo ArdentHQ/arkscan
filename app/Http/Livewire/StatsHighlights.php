@@ -7,6 +7,7 @@ namespace App\Http\Livewire;
 use App\Actions\CacheNetworkSupply;
 use App\Facades\Network;
 use App\Models\Wallet;
+use App\Services\Cache\DelegateCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\NumberFormatter;
 use Illuminate\View\View;
@@ -50,11 +51,9 @@ final class StatsHighlights extends Component
         return NumberFormatter::percentage($votesPercent);
     }
 
-    private function getVotingValue(): string
+    private function getVotingValue(): float
     {
-        $votesValue = (new NetworkCache())->getVotesCount();
-
-        return NumberFormatter::number($votesValue);
+        return (new DelegateCache())->getTotalVoted()[1];
     }
 
     private function getDelegates(): string
