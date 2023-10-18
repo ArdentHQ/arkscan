@@ -1,7 +1,7 @@
 @props([
     'voterCount',
     'totalVoted',
-    'currentSupply',
+    'votesPercentage',
 ])
 
 <x-page-headers.header-item
@@ -16,7 +16,7 @@
         </span>
 
         <x-general.badge class="py-px text-theme-secondary-700">
-            <x-percentage>{{ ($totalVoted / $currentSupply) * 100 }}</x-percentage>
+            <x-percentage>{{ $votesPercentage }}</x-percentage>
         </x-general.badge>
     </div>
 </x-page-headers.header-item>
