@@ -116,9 +116,9 @@
                     />
 
                     <x-ark-chart
-                        class="w-full h-auto"
+                        class="w-full h-[240px]"
                         canvas-class="max-w-full"
-                        id="stats-chart"
+                        id="stats-chart-mobile"
                         :data="$datasets->toJson()"
                         labels="[{{ $labels->map(fn ($l) => 'dayjs('.$l.' * 1000).toDate()')->join(',') }}]"
                         :theme="$chartTheme"
