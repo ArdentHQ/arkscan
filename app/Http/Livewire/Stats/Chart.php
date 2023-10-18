@@ -48,22 +48,24 @@ final class Chart extends Component
         $chartData = $this->chartHistoricalPrice($this->period);
 
         /** @var array<float> $datasets */
-        $datasets = $chartData->get('datasets');
+        $datasets = $chartData->get('datasets', []);
 
         /** @var array<int> $labels */
-        $labels = $chartData->get('labels');
+        $labels = $chartData->get('labels', []);
+
+        $variation = $this->mainValueVariation($datasets);
 
         return view('livewire.stats.chart', [
             'mainValue'           => $this->mainValueBTC(),
             'mainValueFiat'       => $this->mainValueFiat(),
             'mainValuePercentage' => $this->mainValuePercentage(),
-            'mainValueVariation'  => $this->mainValueVariation(),
+            'mainValueVariation'  => $variation,
             'marketCapValue'      => $this->marketCap(),
             'minPriceValue'       => $this->minPrice(),
             'maxPriceValue'       => $this->maxPrice(),
             'datasets'            => collect($datasets),
             'labels'              => collect($labels),
-            'chartTheme'          => $this->chartTheme($this->mainValueVariation() === 'up' ? 'green' : 'red'),
+            'chartTheme'          => $this->chartTheme($variation === 'up' ? 'green' : 'red'),
             'options'             => $this->availablePeriods(),
             'refreshInterval'     => $this->refreshInterval,
         ]);
@@ -113,9 +115,13 @@ final class Chart extends Component
         return abs((float) $this->getPriceChange()) * 100;
     }
 
-    private function mainValueVariation(): string
+    private function mainValueVariation(array $dataset): string
     {
-        return $this->getPriceChange() < 0 ? 'down' : 'up';
+        // Determine difference based on first datapoint
+        $initialValue = collect($dataset)->first();
+        $currentValue = $this->getPrice(Settings::currency());
+
+        return $initialValue > $currentValue ? 'down' : 'up';
     }
 
     private function marketCap(): ?string
