@@ -51,7 +51,7 @@
                 </h3>
 
                 <div
-                    class="mt-2 text-sm font-semibold md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-secondary-200 whitespace-nowrap"
+                    class="mt-2 text-sm font-semibold whitespace-nowrap md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-secondary-200"
 
                     @if($secondaryTooltip)
                         data-tippy-content="{{ $secondaryTooltip }}"
