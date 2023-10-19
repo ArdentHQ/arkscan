@@ -5,24 +5,38 @@
 <x-table-skeleton
     device="desktop"
     :items="[
-        'tables.transactions.id'         => 'text',
+        'tables.transactions.id'         => [
+            'type' => 'text',
+            'nestedDataBreakpoint' => [
+                'from' => 'md',
+                'to' => 'xl',
+            ],
+        ],
         'tables.transactions.age'        => [
             'type'       => 'text',
             'responsive' => true,
             'breakpoint' => 'xl',
         ],
         'tables.transactions.type'       => 'text',
-        'tables.transactions.addressing' => 'text',
+        'tables.transactions.addressing' => [
+            'type' => 'encapsulated.addressing',
+            'header' => 'address',
+            'generic' => true,
+        ],
         'tables.transactions.amount'     => [
             'type' => 'number',
-            'lastOn' => 'md-lg',
+            'lastOn' => 'lg',
             'nameProperties' => ['currency' => Network::currency()],
-            'class' => 'last-until-md-lg',
+            'class' => 'last-until-lg',
+            'nestedDataBreakpoint' => [
+                'from' => 'md',
+                'to' => 'lg',
+            ],
         ],
         'tables.transactions.fee'        => [
             'type' => 'number',
             'responsive' => true,
-            'breakpoint' => 'md-lg',
+            'breakpoint' => 'lg',
             'nameProperties' => ['currency' => Network::currency()],
         ],
     ]"

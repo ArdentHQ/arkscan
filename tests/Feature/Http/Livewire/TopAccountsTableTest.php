@@ -15,7 +15,8 @@ it('should list the first page of records', function () {
 
     Wallet::factory(25)->create();
 
-    $component = Livewire::test(TopAccountsTable::class);
+    $component = Livewire::test(TopAccountsTable::class)
+        ->call('setIsReady');
 
     foreach (ViewModelFactory::paginate(Wallet::withScope(OrderByBalanceScope::class)->paginate())->items() as $wallet) {
         $component->assertSee($wallet->address());
@@ -33,6 +34,7 @@ it('should change per page', function () {
     $notVisibleWallets = Wallet::factory(10)->create(['balance' => 10]);
 
     $component = Livewire::test(TopAccountsTable::class)
+        ->call('setIsReady')
         ->set('perPage', 50);
 
     foreach ($visibleWallets->concat($notVisibleWallets) as $wallet) {
@@ -57,6 +59,7 @@ it('should not per page if not a valid option', function () {
     $notVisibleWallets = Wallet::factory(8)->create(['balance' => 10]);
 
     $component = Livewire::test(TopAccountsTable::class)
+        ->call('setIsReady')
         ->set('perPage', 10);
 
     foreach ($visibleWallets as $wallet) {
@@ -84,9 +87,21 @@ it('should go to page 1 when changing per page', function () {
 
     Wallet::factory(100)->create();
 
-    $component = Livewire::test(TopAccountsTable::class)
+    Livewire::test(TopAccountsTable::class)
+        ->call('setIsReady')
         ->call('gotoPage', 2)
         ->assertSet('page', 2)
         ->call('setPerPage', 25)
         ->assertSet('page', 1);
+});
+
+it('should defer loading', function () {
+    (new NetworkCache())->setSupply(fn () => strval(10e8));
+
+    $wallet = Wallet::factory()->create();
+
+    Livewire::test(TopAccountsTable::class)
+        ->assertDontSee($wallet->address)
+        ->call('setIsReady')
+        ->assertSee($wallet->address);
 });

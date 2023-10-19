@@ -14,37 +14,52 @@
     'selected',
 ])
 
-<x-general.card with-border class="flex flex-col gap-6 w-full">
-    <div class="xl:w-full">
-        <h2 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-900 dark:text-theme-secondary-200">{{ $mainTitle }}</h2>
-        <p class="mt-3 text-lg font-bold sm:text-2xl text-theme-secondary-900 dark:text-theme-secondary-200">{{ $mainValue }}</p>
+<x-general.card
+    class="flex flex-col w-full md:flex-row md:pr-0 xl:flex-col xl:pr-6"
+    with-border
+>
+    <div class="flex flex-col flex-1 mb-4 space-y-2 md:mb-0 xl:pb-6 xl:mb-6">
+        <h2 class="mb-0 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+            {{ $mainTitle }}
+        </h2>
+
+        <div class="text-lg font-bold md:text-2xl leading-5.25 md:!leading-[29px] text-theme-secondary-900 dark:text-theme-secondary-200">
+            {{ $mainValue }}
+        </div>
     </div>
 
-    <div class="pt-6 w-full border-t border-theme-secondary-300 dark:border-theme-secondary-800">
+    <div class="p-4 -mx-4 -mb-4 rounded-b md:p-6 md:mx-0 md:-my-6 md:rounded-b-none md:rounded-r-xl xl:-mx-6 xl:-mb-6 xl:w-auto xl:rounded-b-xl xl:rounded-tr-none bg-theme-secondary-100 md:w-[24.5rem] dark:bg-theme-dark-950">
         <div wire:ignore>
             <x-rich-select
                 wire:model="{{ $model }}"
-                wrapper-class="relative left-0 xl:inline-block"
+                wrapper-class="relative left-0 w-full xl:inline-block"
                 dropdown-class="left-0 mt-1 origin-top-left"
-                button-class="block mr-10 text-sm font-semibold text-left bg-transparent text-theme-secondary-700 dark:text-theme-secondary-200"
-                icon-class="flex absolute inset-y-0 right-0 justify-center items-center -mr-4"
+                button-class="inline-block w-full text-left !px-3 !py-2 form-input transition-default dark:bg-theme-secondary-900 dark:border-theme-secondary-800 !text-sm font-semibold leading-4.25"
                 :initial-value="$selected"
                 :placeholder="$selected"
                 :options="$options"
             />
         </div>
 
-        <div class="flex flex-col gap-5 sm:flex-row sm:items-end xl:w-full @if($chart) sm:justify-between @endif">
-            <div class="">
-                <h3 class="mt-4 mb-0 text-sm font-semibold leading-none text-theme-secondary-500 dark:text-theme-secondary-700">{{ $secondaryTitle }}</h3>
-                <p class="mt-2 text-base font-semibold text-theme-secondary-700 dark:text-theme-secondary-200"
-                   @if($secondaryTooltip)
-                   data-tippy-content="{{ $secondaryTooltip }}"
-                   wire:key="{{ md5($secondaryTooltip) }}"
-                   @endif
+        <div @class([
+            'flex flex-row gap-5 items-end xl:w-full',
+            'justify-between' => $chart,
+        ])>
+            <div class="mt-4">
+                <h3 class="mb-0 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                    {{ $secondaryTitle }}
+                </h3>
+
+                <div
+                    class="mt-2 text-sm font-semibold whitespace-nowrap md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-secondary-200"
+
+                    @if($secondaryTooltip)
+                        data-tippy-content="{{ $secondaryTooltip }}"
+                        wire:key="{{ md5($secondaryTooltip) }}"
+                    @endif
                 >
                     {{ $secondaryValue }}
-                </p>
+                </div>
             </div>
 
             @if($chart)
@@ -55,15 +70,20 @@
                         :data="collect($chart->get('datasets'))->toJson()"
                         :labels="collect($chart->get('labels'))->keys()->toJson()"
                         :theme="$chartTheme"
-                        width="200"
+                        width="75"
                         height="50"
                         :currency="Settings::currency()"
                     />
                 </div>
             @else
                 <div class="sm:pl-6 sm:border-l border-theme-secondary-300 dark:border-theme-secondary-800">
-                    <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-500 dark:text-theme-secondary-700">{{ $tertiaryTitle }}</h3>
-                    <p class="mt-2 text-base font-semibold text-theme-secondary-700 dark:text-theme-secondary-200">{{ $tertiaryValue }}</p>
+                    <h3 class="mb-0 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                        {{ $tertiaryTitle }}
+                    </h3>
+
+                    <div class="mt-2 text-sm font-semibold md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-secondary-200">
+                        {{ $tertiaryValue }}
+                    </div>
                 </div>
             @endif
         </div>

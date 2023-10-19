@@ -37,7 +37,7 @@ it('should not error if no delegate data', function () {
         ->assertViewHasAll([
             'voterCount'      => 0,
             'totalVoted'      => 0,
-            'currentSupply'   => 0,
+            'votesPercentage' => 0,
             'missedBlocks'    => 0,
             'delegatesMissed' => 0,
         ]);

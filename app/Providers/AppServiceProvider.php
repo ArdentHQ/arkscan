@@ -116,6 +116,7 @@ final class AppServiceProvider extends ServiceProvider
             ['label' => trans('menus.developers'), 'children' => [
                 ['url' => trans('urls.docs.arkscan'),  'label' => trans('menus.docs')],
                 ['url' => trans('urls.docs.api'),  'label' => trans('menus.api')],
+                ['url' => trans('urls.github'),  'label' => trans('menus.github')],
             ]],
         ];
 
@@ -124,7 +125,7 @@ final class AppServiceProvider extends ServiceProvider
         }
 
         if (config('arkscan.support.enabled') === true) {
-            $navigationEntries[3]['children'][] = ['route' => 'contact', 'label' => trans('menus.contact')];
+            $navigationEntries[3]['children'][] = ['route' => 'contact', 'label' => trans('menus.support')];
         }
 
         return $navigationEntries;

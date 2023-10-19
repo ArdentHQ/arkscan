@@ -6,6 +6,7 @@
         query: @entangle('query'),
         dropdownOpen: @entangle('query'),
     })"
+    class="w-full"
 >
     <x-ark-input-with-prefix
         icon="magnifying-glass"
@@ -15,15 +16,15 @@
         name="search"
         model="query"
         :class="Arr::toCssClasses([
-            'rounded-md border border-transparent w-[340px] group transition-default bg-theme-secondary-200',
+            'rounded-md border border-transparent w-[340px] md:w-full md-lg:w-[340px] group transition-default bg-theme-secondary-200',
             'dark:bg-theme-secondary-800 cursor-not-allowed' => $isDisabled,
-            'focus-within:bg-white hover:bg-white dark:bg-theme-secondary-900 focus-within:border-theme-primary-600 focus-within:dark:border-theme-secondary-700 hover:border-theme-primary-600 hover:dark:border-theme-secondary-700' => ! $isDisabled,
+            'focus-within:bg-white hover:bg-white dark:bg-theme-secondary-900 focus-within:border-theme-primary-600 focus-within:dark:border-theme-primary-600 hover:[&:not(:focus-within)]:border-theme-primary-600 hover:[&:not(:focus-within)]:dark:border-theme-secondary-700' => ! $isDisabled,
         ])"
         :placeholder="trans('general.navbar.search_placeholder')"
         :container-class="Arr::toCssClasses([
             'flex pl-1 border border-transparent dark:border-theme-secondary-800',
             'cursor-not-allowed' => $isDisabled,
-            'group-hover:dark:border-theme-secondary-700 focus-within:border-theme-primary-600 focus-within:dark:border-theme-secondary-700 hover:border-theme-primary-600' => ! $isDisabled,
+            'group-hover:[&:not(:focus-within)]:dark:border-theme-secondary-700 focus-within:border-theme-primary-600 focus-within:dark:border-theme-primary-600 hover:[&:not(:focus-within)]:border-theme-primary-600' => ! $isDisabled,
         ])"
         wrapper-class-override="relative rounded"
         :field-class-override="Arr::toCssClasses([

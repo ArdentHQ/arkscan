@@ -5,7 +5,13 @@
 <x-table-skeleton
     device="desktop"
     :items="[
-        'tables.recent-votes.id'         => 'text',
+        'tables.recent-votes.id'         => [
+            'type' => 'text',
+            'nestedDataBreakpoint' => [
+                'from' => 'md',
+                'to' => 'xl',
+            ],
+        ],
         'tables.recent-votes.age'        => [
             'type'       => 'text',
             'responsive' => true,
@@ -14,7 +20,8 @@
             'livewireSort' => true,
         ],
         'tables.recent-votes.addressing' => [
-            'type' => 'text',
+            'type' => 'encapsulated.addressing',
+            'header' => 'address',
             'sortingId' => 'address',
             'livewireSort' => true,
         ],

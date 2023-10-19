@@ -1,1 +1,12 @@
-<div class="w-full h-4 rounded-md animate-pulse bg-theme-secondary-300 dark:bg-theme-secondary-800"></div>
+@props([
+    'width' => 'w-[70px]',
+    'height' => 'h-[17px]',
+])
+
+<div>
+    <div {{ $attributes->class([
+        'rounded-sm-md animate-pulse bg-theme-secondary-300 dark:bg-theme-secondary-800',
+        $width,
+        $height,
+    ]) }}></div>
+</div>

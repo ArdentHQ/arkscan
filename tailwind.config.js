@@ -31,6 +31,12 @@ module.exports = {
                 black: "var(--theme-color-dark-950)",
             },
 
+            borderRadius: {
+                ...defaultConfig.theme.extend.borderRadius,
+
+                "sm-md": "0.25rem",
+            },
+
             borderWidth: {
                 3: "3px",
                 20: "20px",
@@ -102,7 +108,11 @@ module.exports = {
                 3.75: '0.9375rem', // 15px
                 4.25: '1.0625rem', // 17px
                 5.25: '1.3125rem', // 21px
-            }
+            },
+
+            flex: {
+                2: '2 2 0%',
+            },
         },
     },
 };

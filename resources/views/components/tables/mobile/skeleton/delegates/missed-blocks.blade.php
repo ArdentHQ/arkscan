@@ -1,4 +1,4 @@
 <x-table-skeleton
-    device="mobile"
-    :items="['text', 'text', 'text', 'number', 'number', 'number']"
+    device="mobile.delegates.missed-blocks"
+    :encapsulated="true"
 />

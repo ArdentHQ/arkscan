@@ -1,1 +1,1 @@
-<x-loading.text />
+<x-loading.text :attributes="$attributes" />

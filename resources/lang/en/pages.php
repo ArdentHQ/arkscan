@@ -432,11 +432,15 @@ return [
     ],
 
     'statistics'       => [
+        'title'     => 'Statistics',
+        'subtitle'  => 'Explore blockchain data and currency exchange statistics.',
+        'exchanges' => 'Exchanges',
+
         'highlights' => [
-            'current_supply'       => 'Current Supply',
-            'voting'               => 'Voting (:percent)',
-            'registered-delegates' => 'Registered Delegates',
-            'wallets'              => 'Wallets',
+            'total_supply' => 'Total Supply',
+            'voting'       => 'Voting (:percent)',
+            'delegates'    => 'Delegates',
+            'wallets'      => 'Wallets',
         ],
 
         'insights'   => [
@@ -450,10 +454,10 @@ return [
         ],
 
         'chart'      => [
-            'price'      => 'Price:',
-            'market-cap' => 'Market Cap',
-            'min-price'  => 'Min Price',
-            'max-price'  => 'Max Price',
+            'current_price' => 'Current Price',
+            'market-cap'    => 'Market Cap',
+            'min-price'     => 'Min Price',
+            'max-price'     => 'Max Price',
         ],
     ],
 

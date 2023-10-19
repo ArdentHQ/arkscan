@@ -38,6 +38,7 @@
             <x-tables.headers.desktop.number
                 name="tables.delegates.votes"
                 :name-properties="['currency' => Network::currency()]"
+                class="whitespace-nowrap"
                 responsive
                 sorting-id="votes"
                 livewire-sort
