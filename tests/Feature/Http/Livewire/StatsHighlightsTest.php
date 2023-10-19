@@ -6,6 +6,7 @@ use App\Facades\Network;
 use App\Http\Livewire\StatsHighlights;
 use App\Models\Block;
 use App\Models\Wallet;
+use App\Services\Cache\DelegateCache;
 use App\Services\Cache\NetworkCache;
 use Livewire\Livewire;
 
@@ -17,18 +18,20 @@ it('should render the component', function (): void {
     ]);
 
     (new NetworkCache())->setDelegateRegistrationCount(1171);
-    (new NetworkCache())->setVotesCount('84235364');
     (new NetworkCache())->setVotesPercentage('74.08');
+    (new DelegateCache())->setTotalVoted(fn () => [0, 84235364]);
 
     $currency = Network::currency();
 
     Livewire::test(StatsHighlights::class)
-        ->assertSee(trans('pages.statistics.highlights.total_supply'))
-        ->assertSee('1,362,809,820 '.$currency)
-        ->assertSee(trans('pages.statistics.highlights.voting', ['percent' => '74.08%']))
-        ->assertSee('84,235,364 '.$currency)
-        ->assertSee(trans('pages.statistics.highlights.delegates'))
-        ->assertSee('1,171')
-        ->assertSee(trans('pages.statistics.highlights.wallets'))
-        ->assertSee('10');
+        ->assertSeeInOrder([
+            trans('pages.statistics.highlights.total_supply'),
+            '1,362,809,820 '.$currency,
+            trans('pages.statistics.highlights.voting', ['percent' => '74.08%']),
+            '84,235,364 '.$currency,
+            trans('pages.statistics.highlights.delegates'),
+            '1,171',
+            trans('pages.statistics.highlights.wallets'),
+            '10',
+        ]);
 });

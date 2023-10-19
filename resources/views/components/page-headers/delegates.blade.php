@@ -1,9 +1,9 @@
 @props([
     'voterCount',
     'totalVoted',
-    'currentSupply',
     'missedBlocks',
     'delegatesMissed',
+    'votesPercentage',
 ])
 
 <x-page-headers.generic
@@ -18,7 +18,7 @@
         <x-page-headers.delegates.voting
             :voter-count="$voterCount"
             :total-voted="$totalVoted"
-            :current-supply="$currentSupply"
+            :votes-percentage="$votesPercentage"
         />
     </div>
 

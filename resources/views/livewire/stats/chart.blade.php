@@ -5,27 +5,25 @@
     >
         <x-general.card class="flex flex-col">
             <div class="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
-                <div class="inline-flex items-end space-x-2 sm:space-x-3">
+                <div class="inline-flex items-center space-x-2 sm:space-x-3 md:items-end">
                     <div class="flex flex-col">
                         <div class="mb-2 text-sm font-semibold sm:hidden leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
                             @lang('pages.statistics.chart.current_price')
                         </div>
 
-                        <span class="text-lg font-bold leading-5.25 md:!leading-[29px] sm:text-3xl text-theme-secondary-900 dark:text-theme-secondary-200">
+                        <span class="text-lg font-bold leading-5.25 md:!leading-[29px] md:text-2xl text-theme-secondary-900 dark:text-theme-secondary-200">
                             {{ $mainValueFiat }}
                         </span>
                     </div>
 
                     <span @class([
-                        'hidden sm:inline-flex px-1 py-px items-center text-xs font-semibold rounded leading-3.75 mb-[3px]',
+                        'hidden sm:inline-flex px-1 py-px items-center text-xs font-semibold rounded leading-3.75 md:mb-[3px]',
                         'border border-transparent bg-theme-success-100 dark:bg-transparent dark:border-theme-success-700 text-theme-success-600 dark:text-theme-success-500' => $mainValueVariation === 'up',
                         'border border-transparent bg-theme-danger-100 dark:bg-transparent dark:border-theme-danger-400 text-theme-danger-400 dark:text-theme-danger-300' => $mainValueVariation === 'down',
                     ])>
                         <span>
-                            @if ($mainValueVariation === 'up')
+                            @if ($mainValuePercentage >= 0)
                                 +
-                            @else
-                                -
                             @endif
                         </span>
 

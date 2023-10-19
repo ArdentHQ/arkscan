@@ -14,7 +14,6 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\MarketCap;
 use App\Services\NumberFormatter as ServiceNumberFormatter;
 use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
-use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -48,22 +47,24 @@ final class Chart extends Component
         $chartData = $this->chartHistoricalPrice($this->period);
 
         /** @var array<float> $datasets */
-        $datasets = $chartData->get('datasets');
+        $datasets = $chartData->get('datasets', []);
 
         /** @var array<int> $labels */
-        $labels = $chartData->get('labels');
+        $labels = $chartData->get('labels', []);
+
+        $variation = $this->mainValueVariation($datasets);
 
         return view('livewire.stats.chart', [
             'mainValue'           => $this->mainValueBTC(),
             'mainValueFiat'       => $this->mainValueFiat(),
-            'mainValuePercentage' => $this->mainValuePercentage(),
-            'mainValueVariation'  => $this->mainValueVariation(),
+            'mainValuePercentage' => $this->mainValuePercentage($datasets),
+            'mainValueVariation'  => $variation,
             'marketCapValue'      => $this->marketCap(),
-            'minPriceValue'       => $this->minPrice(),
-            'maxPriceValue'       => $this->maxPrice(),
+            'minPriceValue'       => $this->minPrice($datasets),
+            'maxPriceValue'       => $this->maxPrice($datasets),
             'datasets'            => collect($datasets),
             'labels'              => collect($labels),
-            'chartTheme'          => $this->chartTheme($this->mainValueVariation() === 'up' ? 'green' : 'red'),
+            'chartTheme'          => $this->chartTheme($variation === 'up' ? 'green' : 'red'),
             'options'             => $this->availablePeriods(),
             'refreshInterval'     => $this->refreshInterval,
         ]);
@@ -108,14 +109,26 @@ final class Chart extends Component
                 );
     }
 
-    private function mainValuePercentage(): float
+    private function mainValuePercentage(array $dataset): float
     {
-        return abs((float) $this->getPriceChange()) * 100;
+        // Determine difference based on first datapoint
+        $initialValue = collect($dataset)->first();
+        $currentValue = $this->getPrice(Settings::currency());
+
+        if ($currentValue === 0.0) {
+            return 0;
+        }
+
+        return (1 - ($initialValue / $currentValue)) * 100;
     }
 
-    private function mainValueVariation(): string
+    private function mainValueVariation(array $dataset): string
     {
-        return $this->getPriceChange() < 0 ? 'down' : 'up';
+        // Determine difference based on first datapoint
+        $initialValue = collect($dataset)->first();
+        $currentValue = $this->getPrice(Settings::currency());
+
+        return $initialValue > $currentValue ? 'down' : 'up';
     }
 
     private function marketCap(): ?string
@@ -123,38 +136,18 @@ final class Chart extends Component
         return MarketCap::getFormatted(Network::currency(), Settings::currency());
     }
 
-    private function getPriceChange(): ?float
-    {
-        return (new NetworkStatusBlockCache())->getPriceChange(Network::currency(), Settings::currency());
-    }
-
     private function getPrice(string $currency): float
     {
         return (new NetworkStatusBlockCache())->getPrice(Network::currency(), $currency) ?? 0.0;
     }
 
-    private function getPriceRange(): Collection
+    private function minPrice(array $dataset): string
     {
-        return $this->getHistoricalHourly(CryptoCurrencies::BTC);
+        return ServiceNumberFormatter::currency((float) collect($dataset)->min(), Settings::currency());
     }
 
-    private function minPrice(): string
+    private function maxPrice(array $dataset): string
     {
-        $range = $this->getPriceRange();
-
-        return ServiceNumberFormatter::currency((float) $range->min(), Settings::currency());
-    }
-
-    private function maxPrice(): string
-    {
-        $range = $this->getPriceRange();
-
-        return ServiceNumberFormatter::currency((float) $range->max(), Settings::currency());
-    }
-
-    private function getHistoricalHourly(string $target): Collection
-    {
-        /** @var Collection<int, mixed> */
-        return (new NetworkStatusBlockCache())->getHistoricalHourly(Network::currency(), $target) ?? collect([]);
+        return ServiceNumberFormatter::currency((float) collect($dataset)->max(), Settings::currency());
     }
 }

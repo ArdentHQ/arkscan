@@ -10,7 +10,9 @@
                 </x-stats.stat>
 
                 <x-stats.stat :label="trans('pages.statistics.highlights.voting', ['percent' => $votingPercent])">
-                   <x-currency :currency="Network::currency()">{{ $votingValue }}</x-currency>
+                   <x-currency :currency="Network::currency()">
+                        {{ ExplorerNumberFormatter::networkCurrency($votingValue, 0) }}
+                    </x-currency>
                 </x-stats.stat>
 
                 <x-stats.stat :label="trans('pages.statistics.highlights.delegates')">
