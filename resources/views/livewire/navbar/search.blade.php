@@ -6,6 +6,7 @@
         query: @entangle('query'),
         dropdownOpen: @entangle('query'),
     })"
+    class="w-full"
 >
     <x-ark-input-with-prefix
         icon="magnifying-glass"
@@ -15,7 +16,7 @@
         name="search"
         model="query"
         :class="Arr::toCssClasses([
-            'rounded-md border border-transparent w-[340px] group transition-default bg-theme-secondary-200',
+            'rounded-md border border-transparent w-[340px] md:w-full md-lg:w-[340px] group transition-default bg-theme-secondary-200',
             'dark:bg-theme-secondary-800 cursor-not-allowed' => $isDisabled,
             'focus-within:bg-white hover:bg-white dark:bg-theme-secondary-900 focus-within:border-theme-primary-600 focus-within:dark:border-theme-primary-600 hover:[&:not(:focus-within)]:border-theme-primary-600 hover:[&:not(:focus-within)]:dark:border-theme-secondary-700' => ! $isDisabled,
         ])"
