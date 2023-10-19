@@ -139,11 +139,6 @@ final class Chart extends Component
         return (new NetworkStatusBlockCache())->getPrice(Network::currency(), $currency) ?? 0.0;
     }
 
-    private function getPriceRange(): Collection
-    {
-        return $this->getHistoricalHourly(Settings::currency());
-    }
-
     private function minPrice(array $dataset): string
     {
         return ServiceNumberFormatter::currency((float) collect($dataset)->min(), Settings::currency());
