@@ -4,11 +4,19 @@
 
 @php
     $items = [
-        'tables.blocks.height'       => 'text',
+        'tables.blocks.height'       => [
+            'type' => 'text',
+            'nestedDataBreakpoint' => [
+                'from' => 'md',
+                'to' => 'md-lg',
+            ],
+        ],
         'tables.blocks.age'          => [
             'type'       => 'text',
-            'responsive' => true,
-            'breakpoint' => 'md-lg',
+            'nestedDataBreakpoint' => [
+                'from' => 'md',
+                'to' => 'md-lg',
+            ],
         ],
         'tables.blocks.generated_by' => 'text',
         'tables.blocks.transactions' => [
@@ -25,6 +33,10 @@
             'type' => 'number',
             'nameProperties' => ['currency' => Network::currency()],
             'tooltip' => trans('pages.wallets.blocks.total_reward_tooltip'),
+            'nestedDataBreakpoint' => [
+                'from' => 'md',
+                'to' => 'xl',
+            ],
         ],
     ];
 

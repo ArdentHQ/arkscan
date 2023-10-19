@@ -5,8 +5,8 @@ declare(strict_types=1);
 return [
    'networks' => [
         'twitter' => [
-            'icon' => 'brands.solid.twitter',
-            'url'  => 'https://twitter.com/Ardent_HQ',
+            'icon' => 'brands.x',
+            'url'  => 'https://x.com/Ardent_HQ',
         ],
 
         'github'  => [

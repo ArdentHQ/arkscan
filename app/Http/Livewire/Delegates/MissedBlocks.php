@@ -69,6 +69,11 @@ final class MissedBlocks extends TabbedTableComponent
 
     private function getMissedBlocksQuery(): Builder
     {
+        if (config('database.default') === 'sqlite') {
+            return ForgingStats::orderByDesc('timestamp')
+                ->whereNotNull('missed_height');
+        }
+
         $sortDirection = SortDirection::ASC;
         if ($this->sortDirection === SortDirection::DESC) {
             $sortDirection = SortDirection::DESC;
@@ -76,7 +81,7 @@ final class MissedBlocks extends TabbedTableComponent
 
         return ForgingStats::query()
             ->when($this->sortKey === 'height', fn ($query) => $query->orderByRaw('missed_height '.$sortDirection->value.', timestamp DESC'))
-            ->when($this->sortKey === 'age', fn ($query) => $query->orderByRaw('timestamp '.$sortDirection->value.', timestamp DESC'))
+            ->when($this->sortKey === 'age', fn ($query) => $query->orderByRaw('timestamp '.$sortDirection->value))
             ->when($this->sortKey === 'name', function ($query) use ($sortDirection) {
                 $missedBlockPublicKeys = ForgingStats::groupBy('public_key')->pluck('public_key');
 

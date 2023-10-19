@@ -18,7 +18,7 @@ final class TableSkeleton extends Component
 
     public function __construct(
         private string $device,
-        array $items,
+        array $items = [],
         string $class = 'hidden md:block',
         private ?int $rowCount = null,
         private bool $encapsulated = false,
@@ -32,14 +32,21 @@ final class TableSkeleton extends Component
     {
         if ($this->device === 'desktop') {
             $headers = $this->items->map(function ($item): array {
+                $component = 'tables.headers.desktop.'.$this->getType($item);
+
+                $header = Arr::get($item, 'header');
+                if (Arr::get($item, 'header') !== null) {
+                    $component = 'tables.headers.desktop.'.$header;
+                }
+
                 return array_merge(
-                    ['component' => "tables.headers.{$this->device}.".$this->getType($item)],
+                    ['component' => $component],
                     $this->getOptions($item)
                 );
             });
             $rows    = $this->items->values()->map(function ($item): array {
                 return array_merge(
-                    ['component' => "tables.rows.{$this->device}.skeletons.".$this->getType($item)],
+                    ['component' => 'tables.rows.desktop.skeletons.'.$this->getType($item)],
                     $this->getOptions($item)
                 );
             });

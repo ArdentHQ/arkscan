@@ -3,6 +3,8 @@
     'noResultsMessage' => null,
 ])
 
+@php ($canSort = config('database.default') !== 'sqlite')
+
 <x-tables.encapsulated-table
     wire:key="{{ Helpers::generateId('missed-blocks') }}"
     class="hidden w-full rounded-t-none md:block"
@@ -17,44 +19,44 @@
                 name="tables.blocks.height"
                 class="whitespace-nowrap"
                 width="200"
-                sorting-id="height"
-                livewire-sort
+                :sorting-id="$canSort ? 'height' : null"
+                :livewire-sort="$canSort"
             />
 
             <x-tables.headers.desktop.text
                 name="tables.blocks.age"
                 breakpoint="md-lg"
                 responsive
-                sorting-id="age"
-                livewire-sort
+                :sorting-id="$canSort ? 'age' : null"
+                :livewire-sort="$canSort"
             />
 
             <x-tables.headers.desktop.address
                 name="tables.missed-blocks.delegate"
-                sorting-id="name"
-                livewire-sort
+                :sorting-id="$canSort ? 'name' : null"
+                :livewire-sort="$canSort"
             />
 
             <x-tables.headers.desktop.number
                 name="tables.missed-blocks.no_of_voters"
-                sorting-id="no_of_voters"
                 class="whitespace-nowrap"
-                livewire-sort
+                :sorting-id="$canSort ? 'no_of_voters' : null"
+                :livewire-sort="$canSort"
             />
 
             <x-tables.headers.desktop.number
                 name="tables.missed-blocks.votes"
                 :name-properties="['currency' => Network::currency()]"
-                sorting-id="votes"
                 class="whitespace-nowrap"
-                livewire-sort
+                :sorting-id="$canSort ? 'votes' : null"
+                :livewire-sort="$canSort"
             />
 
             <x-tables.headers.desktop.number
                 name="tables.missed-blocks.percentage"
-                sorting-id="percentage_votes"
-                livewire-sort
                 :tooltip="trans('tables.missed-blocks.info.percentage')"
+                :sorting-id="$canSort ? 'percentage_votes' : null"
+                :livewire-sort="$canSort"
             />
         </tr>
     </thead>
@@ -82,7 +84,7 @@
                             without-clipboard
                         />
                     @else
-                        <span>-</span>
+                        <span class="leading-4.25">-</span>
                     @endif
                 </x-ark-tables.cell>
 

@@ -1,4 +1,8 @@
-<div id="wallet-list" class="w-full">
+<div
+    id="wallet-list"
+    class="w-full"
+    wire:init="setIsReady"
+>
     <x-skeletons.top-accounts :row-count="$this->perPage">
         <x-tables.desktop.top-accounts :wallets="$wallets" />
 
