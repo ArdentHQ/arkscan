@@ -2,6 +2,7 @@
     'title',
     'value',
     'color',
+    'loading' => false,
 ])
 
 <x-general.detail
@@ -13,5 +14,12 @@
         $color,
     ])></div>
 
-    <span>{{ $value }}</span>
+    @if ($loading)
+        <x-loading.text
+            width="w-[17px]"
+            height="h-5"
+        />
+    @else
+        <span>{{ $value }}</span>
+    @endif
 </x-general.detail>
