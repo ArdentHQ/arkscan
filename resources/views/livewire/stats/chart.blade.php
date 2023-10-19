@@ -25,10 +25,8 @@
                         'border border-transparent bg-theme-danger-100 dark:bg-transparent dark:border-theme-danger-400 text-theme-danger-400 dark:text-theme-danger-300' => $mainValueVariation === 'down',
                     ])>
                         <span>
-                            @if ($mainValueVariation === 'up')
+                            @if ($mainValuePercentage >= 0)
                                 +
-                            @else
-                                -
                             @endif
                         </span>
 

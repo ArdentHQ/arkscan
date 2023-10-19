@@ -57,7 +57,7 @@ final class Chart extends Component
         return view('livewire.stats.chart', [
             'mainValue'           => $this->mainValueBTC(),
             'mainValueFiat'       => $this->mainValueFiat(),
-            'mainValuePercentage' => $this->mainValuePercentage(),
+            'mainValuePercentage' => $this->mainValuePercentage($datasets),
             'mainValueVariation'  => $variation,
             'marketCapValue'      => $this->marketCap(),
             'minPriceValue'       => $this->minPrice($datasets),
@@ -109,9 +109,17 @@ final class Chart extends Component
                 );
     }
 
-    private function mainValuePercentage(): float
+    private function mainValuePercentage(array $dataset): float
     {
-        return abs((float) $this->getPriceChange()) * 100;
+        // Determine difference based on first datapoint
+        $initialValue = collect($dataset)->first();
+        $currentValue = $this->getPrice(Settings::currency());
+
+        if ($currentValue === 0.0) {
+            return 0;
+        }
+
+        return (1 - ($initialValue / $currentValue)) * 100;
     }
 
     private function mainValueVariation(array $dataset): string
@@ -126,11 +134,6 @@ final class Chart extends Component
     private function marketCap(): ?string
     {
         return MarketCap::getFormatted(Network::currency(), Settings::currency());
-    }
-
-    private function getPriceChange(): ?float
-    {
-        return (new NetworkStatusBlockCache())->getPriceChange(Network::currency(), Settings::currency());
     }
 
     private function getPrice(string $currency): float
