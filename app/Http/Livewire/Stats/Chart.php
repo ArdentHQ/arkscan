@@ -148,10 +148,4 @@ final class Chart extends Component
     {
         return ServiceNumberFormatter::currency((float) collect($dataset)->max(), Settings::currency());
     }
-
-    private function getHistoricalHourly(string $target): Collection
-    {
-        /** @var Collection<int, mixed> */
-        return (new NetworkStatusBlockCache())->getHistoricalHourly(Network::currency(), $target) ?? collect([]);
-    }
 }
