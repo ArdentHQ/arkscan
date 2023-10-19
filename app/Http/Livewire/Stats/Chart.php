@@ -115,6 +115,10 @@ final class Chart extends Component
         $initialValue = collect($dataset)->first();
         $currentValue = $this->getPrice(Settings::currency());
 
+        if ($currentValue === 0.0) {
+            return 0;
+        }
+
         return (1 - ($initialValue / $currentValue)) * 100;
     }
 

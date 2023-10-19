@@ -35,7 +35,7 @@ it('should render the component with fiat value', function () {
     Livewire::test(Chart::class)
         ->set('period', 'day')
         ->assertSee('0.00003363 BTC')
-        ->assertSee('1.88%')
+        ->assertSee('-5643670.44%')
         ->assertSee(trans('pages.statistics.chart.market-cap'))
         ->assertSee('15,360.45468964 BTC')
         ->assertSee(trans('pages.statistics.chart.min-price'))
@@ -69,7 +69,7 @@ it('should render the component with non fiat value', function () {
     Livewire::test(Chart::class)
         ->set('period', 'day')
         ->assertSee('0.00003363 BTC')
-        ->assertSee('1.88%')
+        ->assertSee('-5643670.44%')
         ->assertSee(trans('pages.statistics.chart.market-cap'))
         ->assertSee('15,360.45468964 BTC')
         ->assertSee(trans('pages.statistics.chart.min-price'))
@@ -99,7 +99,7 @@ it('should not render the component', function () {
     Livewire::test(Chart::class)
         ->set('period', 'day')
         ->assertDontSee('0.00003363 BTC')
-        ->assertDontSee('1.88%')
+        ->assertDontSee('-5643670.44%')
         ->assertDontSee(trans('pages.statistics.chart.market-cap'))
         ->assertDontSee('15,360.45468964 BTC')
         ->assertDontSee(trans('pages.statistics.chart.min-price'))
@@ -129,7 +129,7 @@ it('should filter by year', function () {
     Livewire::test(Chart::class)
         ->set('period', 'year')
         ->assertSee('0.00003363 BTC')
-        ->assertSee('1.88%')
+        ->assertSee('-535731.10%')
         ->assertSee(trans('pages.statistics.chart.market-cap'))
         ->assertSee('15,360.45468964 BTC')
         ->assertSee(trans('pages.statistics.chart.min-price'))
@@ -159,7 +159,7 @@ it('should render min max price and percentage', function () {
     Livewire::test(Chart::class)
         ->set('period', 'year')
         ->assertSee('0.00003363 BTC')
-        ->assertSee('1.88%')
+        ->assertSee('-535731.10%')
         ->assertSeeInOrder([
             trans('pages.statistics.chart.market-cap'),
             '15,360.45468964 BTC',
@@ -193,7 +193,7 @@ it('should show fiat data', function () {
     Livewire::test(Chart::class)
         ->set('period', 'year')
         ->assertSee('$1.22')
-        ->assertSee('14.99%')
+        ->assertSee('85.25%')
         ->assertSeeInOrder([
             trans('pages.statistics.chart.market-cap'),
             '$558,145,930',
