@@ -50,7 +50,6 @@ return [
         'mainnet'            => 'Mainnet',
         'testnet'            => 'Testnet',
         'price'              => 'Price',
-        'no_results'         => 'We could not find anything matching your search criteria, please try again!',
     ],
 
     'block'                   => [
@@ -176,7 +175,11 @@ return [
         'type'                 => 'Type',
         'vote'                 => 'Vote',
         'unvote'               => 'Unvote',
-        'results_will_show_up' => 'Results will show up here',
+        'results_will_show_up' => 'Results will show up here.',
+        'contract'             => 'Contract',
+        'value_currency'       => 'Value (:currency)',
+        'balance_currency'     => 'Balance (:currency)',
+        'no_results'           => 'We could not find anything matching your search criteria, please try again!',
     ],
 
     'export' => [

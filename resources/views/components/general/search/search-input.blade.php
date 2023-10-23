@@ -2,7 +2,7 @@
 
     <div class="flex items-center pr-2 pl-4">
         <x-ark-icon
-            name="magnifying-glass"
+            name="magnifying-glass-small"
             size="sm"
             class="text-theme-secondary-500 dark:text-theme-secondary-600"
         />

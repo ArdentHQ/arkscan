@@ -334,3 +334,9 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 
     @apply pointer-events-none h-0 w-0 top-full left-1/2 absolute border-t-theme-secondary-900 dark:border-t-theme-dark-800;
 }
+
+/* Search */
+
+.search-dropdown a:hover .encapsulated-badge {
+    @apply bg-theme-secondary-300 dark:bg-theme-dark-700 transition-default;
+}
