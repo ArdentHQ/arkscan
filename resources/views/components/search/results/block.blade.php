@@ -29,7 +29,7 @@
         </div>
     </x-tables.rows.mobile>
 
-    <div class="hidden md:flex flex-col space-y-2">
+    <div class="hidden flex-col space-y-2 md:flex">
         <div class="flex items-center space-x-2">
             <div class="text-theme-secondary-900 dark:text-theme-dark-50">
                 @lang('general.search.block')

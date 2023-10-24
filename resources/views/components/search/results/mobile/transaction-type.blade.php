@@ -1,6 +1,6 @@
 @props(['transaction'])
 
-<div class="flex flex-col space-y-2 ">
+<div class="flex flex-col space-y-2">
     <div class="text-xs leading-3.75 dark:text-theme-dark-200">
         <x-general.encapsulated.transaction-type :transaction="$transaction" />
     </div>

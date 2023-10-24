@@ -17,13 +17,13 @@
         </x-search.results.mobile.detail>
     </x-tables.rows.mobile>
 
-    <div class="hidden md:flex flex-col space-y-2">
+    <div class="hidden flex-col space-y-2 md:flex">
         <div class="flex items-center space-x-2">
             <x-general.encapsulated.transaction-direction-badge width="w-[92px]">
                 <x-general.encapsulated.transaction-type :transaction="$transaction" />
             </x-general.encapsulated.transaction-direction-badge>
 
-            <div class="min-w-0 flex-1 link group-hover/result:no-underline hover:text-theme-primary-600 leading-4.25">
+            <div class="flex-1 min-w-0 link leading-4.25 group-hover/result:no-underline hover:text-theme-primary-600">
                 <x-truncate-middle :length="20">
                     {{ $transaction->id() }}
                 </x-truncate-middle>

@@ -28,7 +28,7 @@
         </x-search.results.mobile.detail>
     </x-tables.rows.mobile>
 
-    <div class="hidden md:flex flex-col space-y-2">
+    <div class="hidden flex-col space-y-2 md:flex">
         <div class="flex overflow-auto items-center space-x-2 isolate">
             <div class="text-theme-secondary-900 dark:text-theme-dark-50">
                 @lang('general.search.address')
