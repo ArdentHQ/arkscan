@@ -3,7 +3,7 @@
 ])
 
 <span
-    class="text-sm leading-4.25"
+    {{ $attributes->class('text-sm leading-4.25') }}
     @if(Network::canBeExchanged())
         data-tippy-content="{{ $model->balanceFiat() }}"
     @endif

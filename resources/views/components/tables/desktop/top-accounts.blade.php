@@ -91,11 +91,14 @@
                     <div class="flex flex-col font-semibold text-theme-secondary-900 dark:text-theme-secondary-200">
                         <x-tables.rows.desktop.encapsulated.balance :model="$wallet" />
 
-                        <span class="mt-1 text-xs font-semibold text-theme-secondary-500 md-lg:hidden">
+                        <span class="mt-1 !leading-3.75 !text-xs font-semibold text-theme-secondary-500 md-lg:hidden">
                             @if($useVoteWeight)
                                 <x-tables.rows.desktop.vote-percentage :model="$wallet" />
                             @else
-                                <x-tables.rows.desktop.balance-percentage :model="$wallet" />
+                                <x-tables.rows.desktop.balance-percentage
+                                    :model="$wallet"
+                                    class="text-xs !leading-3.75"
+                                />
                             @endif
                         </span>
                     </div>
@@ -105,7 +108,7 @@
                     breakpoint="md-lg"
                     responsive
                 >
-                    <span class="font-semibold">
+                    <span class="font-semibold leading-4.25">
                         @if($useVoteWeight)
                             <x-tables.rows.desktop.vote-percentage :model="$wallet" />
                         @else

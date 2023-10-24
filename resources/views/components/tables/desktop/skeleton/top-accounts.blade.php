@@ -26,6 +26,11 @@
             'nameProperties' => ['currency' => Network::currency()],
             'lastOn' => 'lg',
             'class' => 'last-until-lg',
+            'nestedDataBreakpoint' => [
+                'from' => 'md',
+                'to' => 'md-lg',
+                'height' => 'h-[15px]',
+            ],
         ],
         'general.wallet.percentage' => [
             'type' => 'number',
