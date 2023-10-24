@@ -337,6 +337,9 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 
 /* Search */
 
+.search-dropdown a .encapsulated-badge {
+    @apply transition-default;
+}
 .search-dropdown a:hover .encapsulated-badge {
     @apply bg-theme-secondary-200;
 }
