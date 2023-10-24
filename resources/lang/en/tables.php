@@ -53,8 +53,12 @@ return [
     ],
 
     'exchanges' => [
-        'price'  => 'Price (:currency)',
-        'volume' => 'Volume (:currency)',
+        'name'            => 'Name',
+        'top_pairs'       => 'Top Pairs',
+        'price'           => 'Price',
+        'volume'          => 'Volume',
+        'price_currency'  => 'Price (:currency)',
+        'volume_currency' => 'Volume (:currency)',
     ],
 
     'delegates' => [

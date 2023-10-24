@@ -1,4 +1,4 @@
 <x-table-skeleton
-    device="mobile"
-    :items="['text', 'text', 'number', 'number']"
+    device="mobile.exchanges"
+    :encapsulated="true"
 />

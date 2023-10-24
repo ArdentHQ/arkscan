@@ -11,9 +11,22 @@
             'class' => 'md:w-[220px] xl:w-[490px]',
         ],
         'general.wallet.name'       => 'text',
-        'general.wallet.type'       => 'icon',
-        'general.wallet.voting'     => 'icon',
-        'general.wallet.balance'    => 'number',
+        'general.wallet.type'       => [
+            'type' => 'icon',
+            'responsive' => true,
+            'breakpoint' => 'md-lg',
+        ],
+        'general.wallet.voting'     => [
+            'type' => 'icon',
+            'responsive' => true,
+            'breakpoint' => 'lg',
+        ],
+        'general.wallet.balance_currency'    => [
+            'type' => 'number',
+            'nameProperties' => ['currency' => Network::currency()],
+            'lastOn' => 'lg',
+            'class' => 'last-until-lg',
+        ],
         'general.wallet.percentage' => [
             'type' => 'number',
             'responsive' => true,
