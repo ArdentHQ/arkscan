@@ -150,7 +150,7 @@ it('should determine the icon that matches the type', function (string $type, st
 
 it('should determine the icon of unknown type', function () {
     $transaction = Transaction::factory()->create([
-        'type' => 0,
+        'type'       => 0,
         'type_group' => 0,
     ]);
 
