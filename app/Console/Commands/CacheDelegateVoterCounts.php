@@ -56,20 +56,23 @@ final class CacheDelegateVoterCounts extends Command
         $results->each(fn ($total, $publicKey) => $walletCache->setVoterCount($publicKey, $total));
 
         $delegateCache->setAllVoterCounts($results->toArray());
-        $delegateCache->setTotalVoted(function () {
-            $wallets = Wallet::select('balance')
-                ->whereRaw("\"attributes\"->>'vote' is not null")
-                ->get();
 
-            $totalVoted = BigNumber::new(0);
-            foreach ($wallets as $wallet) {
-                $totalVoted->plus($wallet['balance']->valueOf());
-            }
+        $wallets = Wallet::select('balance')
+            ->whereRaw("\"attributes\"->>'vote' is not null")
+            ->get();
 
-            return [
-                $wallets->count(),
-                $totalVoted->toFloat(),
-            ];
-        });
+        if ($wallets->count() === 0) {
+            return;
+        }
+
+        $totalVoted = BigNumber::new(0);
+        foreach ($wallets as $wallet) {
+            $totalVoted->plus($wallet['balance']->valueOf());
+        }
+
+        $delegateCache->setTotalVoted([
+            $wallets->count(),
+            $totalVoted->toFloat(),
+        ]);
     }
 }
