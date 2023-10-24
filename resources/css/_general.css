@@ -338,5 +338,8 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 /* Search */
 
 .search-dropdown a:hover .encapsulated-badge {
-    @apply bg-theme-secondary-300 dark:bg-theme-dark-700 transition-default;
+    @apply bg-theme-secondary-200;
+}
+.search-dropdown a:hover .encapsulated-badge {
+    @apply bg-theme-secondary-300 dark:bg-theme-dark-700;
 }
