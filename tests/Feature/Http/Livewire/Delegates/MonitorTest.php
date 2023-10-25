@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
 
 beforeEach(function () {
-    $this->activeDelegates = require dirname(dirname(dirname(__DIR__))).'/fixtures/forgers.php';
+    $this->activeDelegates = require dirname(dirname(dirname(dirname(__DIR__)))).'/fixtures/forgers.php';
 });
 
 function createRoundWithDelegates(): void
@@ -69,7 +69,8 @@ it('should render without errors', function () {
     createRoundWithDelegates();
 
     $component = Livewire::test(Monitor::class)
-        ->assertSeeHtml('<div wire:poll="pollDelegates" wire:key="poll_delegates_skeleton">');
+        ->call('setIsReady')
+        ->assertSeeHtml('pollDelegates');
 });
 
 it('should throw an exception after 3 tries', function () {
@@ -84,6 +85,7 @@ it('should throw an exception after 3 tries', function () {
         ->andReturn(1, 2, 3);
 
     Livewire::test(Monitor::class)
+        ->call('setIsReady')
         ->call('pollDelegates');
 });
 
@@ -92,7 +94,8 @@ it('shouldnt throw an exception if only fails 2 times', function () {
 
     $taggedCache = Cache::tags('tags');
 
-    $component = Livewire::test(Monitor::class);
+    $component = Livewire::test(Monitor::class)
+        ->call('setIsReady');
 
     Cache::shouldReceive('tags')
         ->with('rounds')
@@ -129,7 +132,8 @@ it('should get the last blocks from the last 2 rounds and beyond', function () {
 
     $wallets->first()->blocks()->delete();
 
-    Livewire::test(Monitor::class)->call('pollDelegates');
+    Livewire::test(Monitor::class)
+        ->call('setIsReady')->call('pollDelegates');
 
     expect((new WalletCache())->getLastBlock($wallets->first()->public_key))->toBe([]);
 
@@ -147,6 +151,7 @@ it('should do nothing if no rounds', function () {
     });
 
     Livewire::test(Monitor::class)
+        ->call('setIsReady')
         ->assertViewHas('delegates', [])
         ->call('pollDelegates')
         ->assertViewHas('delegates', []);
@@ -203,6 +208,11 @@ it('should correctly show the block is missed', function () {
     $delegateProperty->setAccessible(true);
 
     $component = Livewire::test(Monitor::class);
+
+    expect($delegateProperty->getValue($component->instance()))->toBe([]);
+
+    $component->call('setIsReady');
+
     $instance  = $component->instance();
     $instance->pollDelegates();
 
