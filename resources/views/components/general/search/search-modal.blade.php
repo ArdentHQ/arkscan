@@ -47,7 +47,7 @@
                             </div>
                         @endforeach
                     @else
-                        <div class="text-center whitespace-normal mt-[0.625rem] dark:text-theme-secondary-500">
+                        <div class="mt-4 text-center whitespace-normal dark:text-theme-secondary-500">
                             <p x-show="query">@lang('general.navbar.no_results')</p>
                             <p x-show="!query">@lang('general.search.results_will_show_up')</p>
                         </div>

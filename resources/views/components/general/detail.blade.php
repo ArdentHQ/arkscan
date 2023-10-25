@@ -1,11 +1,15 @@
 @props([
     'title',
+    'titleClass' => null,
     'value' => null,
     'loading' => false,
 ])
 
 <div class="flex flex-col space-y-2 font-semibold">
-    <div class="text-sm whitespace-nowrap text-theme-secondary-700 leading-4.25 dark:text-theme-dark-200">
+    <div @class([
+        'text-sm whitespace-nowrap text-theme-secondary-700 leading-4.25 dark:text-theme-dark-200',
+        $titleClass,
+    ])>
         {{ $title }}
     </div>
 

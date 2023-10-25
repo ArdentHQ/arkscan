@@ -20,7 +20,7 @@
             {{ $mainTitle }}
         </h2>
 
-        <div class="text-lg font-semibold md:text-2xl leading-5.25 md:!leading-[29px] text-theme-secondary-900 dark:text-theme-secondary-200">
+        <div class="text-lg font-semibold md-lg:text-2xl leading-5.25 md:!leading-[29px] text-theme-secondary-900 dark:text-theme-secondary-200">
             {{ $mainValue }}
         </div>
     </div>

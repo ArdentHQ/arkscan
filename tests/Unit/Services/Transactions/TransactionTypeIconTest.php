@@ -147,3 +147,12 @@ it('should determine the icon that matches the type', function (string $type, st
         'bridgechain',
     ],
 ]);
+
+it('should determine the icon of unknown type', function () {
+    $transaction = Transaction::factory()->create([
+        'type'       => 0,
+        'type_group' => 0,
+    ]);
+
+    expect((new TransactionTypeIcon($transaction))->name())->toBe('unknown');
+});

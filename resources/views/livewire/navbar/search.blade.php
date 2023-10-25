@@ -9,14 +9,14 @@
     class="w-full"
 >
     <x-ark-input-with-prefix
-        icon="magnifying-glass"
+        icon="magnifying-glass-small"
         icon-class="text-theme-secondary-500 dark:text-theme-secondary-700"
         type="text"
         id="search"
         name="search"
         model="query"
         :class="Arr::toCssClasses([
-            'rounded-md border border-transparent w-[340px] md:w-full md-lg:w-[340px] group transition-default bg-theme-secondary-200',
+            'rounded-md border border-transparent w-[340px] md:w-full md-lg:w-[340px] group transition-default bg-theme-secondary-200 search-dropdown',
             'dark:bg-theme-secondary-800 cursor-not-allowed' => $isDisabled,
             'focus-within:bg-white hover:bg-white dark:bg-theme-secondary-900 focus-within:border-theme-primary-600 focus-within:dark:border-theme-primary-600 hover:[&:not(:focus-within)]:border-theme-primary-600 hover:[&:not(:focus-within)]:dark:border-theme-secondary-700' => ! $isDisabled,
         ])"
@@ -71,7 +71,11 @@
         <x-ark-dropdown
             :init-alpine="false"
             :close-on-blur="false"
-            dropdown-classes="w-[561px] top-9"
+            :dropdown-classes="Arr::toCssClasses([
+                'top-9',
+                'w-[628px]' => $hasResults,
+                'w-[560px]' => ! $hasResults,
+            ])"
             dropdown-content-classes="bg-white rounded-xl shadow-lg dark:bg-theme-secondary-900 dark:text-theme-secondary-200 border border-transparent dark:border-theme-secondary-800"
             without-button
         >
@@ -99,7 +103,7 @@
                     @endforeach
                 @else
                     <p class="text-center dark:text-theme-secondary-500">
-                        @lang('general.navbar.no_results')
+                        @lang('general.search.no_results')
                     </p>
                 @endif
             </div>
