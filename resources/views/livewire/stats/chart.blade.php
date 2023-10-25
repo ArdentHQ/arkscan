@@ -3,10 +3,7 @@
         class="mt-2 space-y-2 md:mt-6"
         wire:poll.{{ $refreshInterval }}s
     >
-        <x-general.card
-            class="flex flex-col"
-            with-border
-        >
+        <x-general.card class="flex flex-col">
             <div class="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
                 <div class="inline-flex items-center space-x-2 sm:space-x-3 md:items-end">
                     <div class="flex flex-col">
@@ -158,10 +155,7 @@
             </div>
         </x-general.card>
 
-        <x-general.card
-            class="p-4 space-y-4 divide-y sm:hidden divide-theme-secondary-300 dark:divide-theme-dark-700"
-            with-border
-        >
+        <x-general.card class="p-4 space-y-4 divide-y sm:hidden divide-theme-secondary-300 dark:divide-theme-dark-700">
             <div class="space-y-2">
                 <div class="text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
                     @lang('pages.statistics.chart.market-cap')
