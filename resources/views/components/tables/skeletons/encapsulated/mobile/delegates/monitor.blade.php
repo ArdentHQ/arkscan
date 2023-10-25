@@ -21,7 +21,7 @@
                             <x-loading.text
                                 width="w-3"
                                 height="h-3"
-                                class="sm:ml-3 sm:hidden"
+                                class="sm:hidden sm:ml-3"
                             />
                         </div>
                     </div>

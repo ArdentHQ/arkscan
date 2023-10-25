@@ -1,6 +1,6 @@
 @props(['model'])
 
-<div class="font-semibold text-sm leading-4.25">
+<div class="text-sm font-semibold leading-4.25">
     @if ($model->hasForged())
         <a
             href="{{ route('block', $model->lastBlock()['id']) }}"
