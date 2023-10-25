@@ -84,21 +84,21 @@ return [
     ],
 
     'delegate-monitor' => [
-        'order' => 'Order',
-        'delegate' => 'Delegate',
-        'status' => 'Status',
-        'time_to_forge' => 'Time to Forge',
+        'order'                => 'Order',
+        'delegate'             => 'Delegate',
+        'status'               => 'Status',
+        'time_to_forge'        => 'Time to Forge',
         'status_time_to_forge' => 'Status / Time to Forge',
-        'block_height' => 'Block Height',
-        'completed' => 'Completed',
-        'tbd' => 'TBD',
-        'favorite' => 'Favorite',
+        'block_height'         => 'Block Height',
+        'completed'            => 'Completed',
+        'tbd'                  => 'TBD',
+        'favorite'             => 'Favorite',
 
         'forging-status' => [
             'block_generated' => 'Block Generated',
-            'generating' => 'Generating ...',
-            'pending' => 'Pending',
-            'blocks_missed' => ':count Blocks Missed',
+            'generating'      => 'Generating ...',
+            'pending'         => 'Pending',
+            'blocks_missed'   => ':count Blocks Missed',
         ],
     ],
 
