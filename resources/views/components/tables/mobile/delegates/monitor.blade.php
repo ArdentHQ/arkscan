@@ -23,7 +23,7 @@
                             class="hidden pr-3 sm:block"
                         />
 
-                        <span class="font-semibold text-sm leading-4.25 min-w-[32px]">
+                        <span class="text-sm font-semibold leading-4.25 min-w-[32px]">
                             {{ $loop->index + 1 }}
                         </span>
                     </div>
@@ -69,7 +69,7 @@
 
             <x-tables.rows.mobile.encapsulated.delegates.monitor.favorite
                 :model="$delegate"
-                class="border-t border-theme-secondary-300 pt-4 mt-4 sm:hidden"
+                class="pt-4 mt-4 border-t sm:hidden border-theme-secondary-300"
             />
         </x-tables.rows.mobile>
     @endforeach

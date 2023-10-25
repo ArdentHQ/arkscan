@@ -54,7 +54,7 @@
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>
-                    <span class="font-semibold text-sm leading-4.25">
+                    <span class="text-sm font-semibold leading-4.25">
                         {{ $loop->index + 1 }}
                     </span>
                 </x-ark-tables.cell>
