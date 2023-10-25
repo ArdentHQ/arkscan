@@ -18,7 +18,7 @@
             <x-slot name="header">
                 <div class="flex flex-1 min-w-0 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
                     <div class="flex items-center">
-                        <div class="items-center pr-3 hidden sm:flex">
+                        <div class="hidden items-center pr-3 sm:flex">
                             <x-ark-icon name="star" />
                         </div>
 
