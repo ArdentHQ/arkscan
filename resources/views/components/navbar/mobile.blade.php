@@ -55,7 +55,7 @@
                                 dusk="navigation-search-modal-trigger"
                                 :disabled="app()->isDownForMaintenance()"
                             >
-                                <x-ark-icon name="magnifying-glass" />
+                                <x-ark-icon name="magnifying-glass-small" />
 
                                 <span class="sr-only">
                                     @lang('actions.search')

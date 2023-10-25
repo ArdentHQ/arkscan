@@ -23,7 +23,7 @@
             {{ $mainTitle }}
         </h2>
 
-        <div class="text-lg font-bold md:text-2xl leading-5.25 md:!leading-[29px] text-theme-secondary-900 dark:text-theme-secondary-200">
+        <div class="text-lg font-semibold md-lg:text-2xl leading-5.25 md:!leading-[29px] text-theme-secondary-900 dark:text-theme-secondary-200">
             {{ $mainValue }}
         </div>
     </div>
@@ -42,8 +42,9 @@
         </div>
 
         <div @class([
-            'flex flex-row gap-5 items-end xl:w-full',
-            'justify-between' => $chart,
+            'flex gap-4 sm:gap-6 xl:w-full',
+            'flex-col sm:flex-row sm:items-end' => ! $chart,
+            'justify-between items-end' => $chart,
         ])>
             <div class="mt-4">
                 <h3 class="mb-0 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
@@ -63,14 +64,14 @@
             </div>
 
             @if($chart)
-                <div class="w-full max-w-xs xl:w-1/3">
+                <div class="w-full max-w-xs md:w-[132px]">
                     <x-ark-chart
-                        class="w-full h-auto"
+                        class="w-full h-11"
+                        canvas-class="max-w-full"
                         id="stats-insight-{{ $id }}"
                         :data="collect($chart->get('datasets'))->toJson()"
                         :labels="collect($chart->get('labels'))->keys()->toJson()"
                         :theme="$chartTheme"
-                        width="75"
                         height="50"
                         :currency="Settings::currency()"
                     />

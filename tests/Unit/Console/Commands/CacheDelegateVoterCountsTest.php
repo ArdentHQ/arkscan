@@ -41,3 +41,21 @@ it('should cache voter counts', function () {
 
     expect($delegateCache->getTotalVoted())->toEqual([1, 123]);
 });
+
+it('should not cache voter counts if no voting wallets found', function () {
+    $delegateCache = new DelegateCache();
+
+    $delegateCache->setTotalVoted([1, 123]);
+
+    expect($delegateCache->getTotalVoted())->toBe([1, 123]);
+
+    $walletCount = Wallet::select('balance')
+        ->whereRaw("\"attributes\"->>'vote' is not null")
+        ->count();
+
+    expect($walletCount)->toBe(0);
+
+    (new CacheDelegateVoterCounts())->handle();
+
+    expect($delegateCache->getTotalVoted())->toEqual([1, 123]);
+});

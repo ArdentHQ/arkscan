@@ -44,7 +44,7 @@ it('should not error if no delegate data', function () {
 });
 
 it('should show the correct number of votes', function () {
-    (new DelegateCache())->setTotalVoted(fn () => [25, 200]);
+    (new DelegateCache())->setTotalVoted([25, 200]);
 
     Livewire::test(HeaderStats::class)
         ->assertViewHas('voterCount', 25)

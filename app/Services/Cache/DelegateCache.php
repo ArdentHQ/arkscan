@@ -59,9 +59,9 @@ final class DelegateCache implements Contract
         return $this->get('total_voted', [0, 0]);
     }
 
-    public function setTotalVoted(Closure $callback): array
+    public function setTotalVoted(array $count): void
     {
-        return $this->remember('total_voted', now()->addHour(), $callback);
+        $this->put(sprintf('total_voted'), $count);
     }
 
     public function getAllVoterCounts(): array

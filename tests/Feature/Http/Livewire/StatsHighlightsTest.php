@@ -19,7 +19,7 @@ it('should render the component', function (): void {
 
     (new NetworkCache())->setDelegateRegistrationCount(1171);
     (new NetworkCache())->setVotesPercentage('74.08');
-    (new DelegateCache())->setTotalVoted(fn () => [0, 84235364]);
+    (new DelegateCache())->setTotalVoted([0, 84235364]);
 
     $currency = Network::currency();
 
