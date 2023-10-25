@@ -18,10 +18,9 @@
             <x-slot name="header">
                 <div class="flex flex-1 min-w-0 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
                     <div class="flex items-center">
-                        <x-ark-icon
-                            name="star"
-                            class="hidden pr-3 sm:block"
-                        />
+                        <div class="items-center pr-3 hidden sm:flex">
+                            <x-ark-icon name="star" />
+                        </div>
 
                         <span class="text-sm font-semibold leading-4.25 min-w-[32px]">
                             {{ $loop->index + 1 }}
@@ -39,7 +38,7 @@
                             without-label
                         />
 
-                        <div class="flex items-center sm:space-x-3">
+                        <div class="flex items-center sm:space-x-3 h-[21px]">
                             <div class="flex items-center sm:hidden">
                                 <x-tables.rows.desktop.encapsulated.delegates.monitor.forging-status
                                     :model="$delegate"
