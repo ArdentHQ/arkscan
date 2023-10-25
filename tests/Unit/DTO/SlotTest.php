@@ -37,6 +37,7 @@ it('should make an instance that has all properties', function (string $status) 
         roundNumber: 1
     );
 
+    expect($subject->publicKey())->toBeString();
     expect($subject->order())->toBeInt();
     expect($subject->wallet())->toBeInstanceOf(WalletViewModel::class);
     expect($subject->forgingAt())->toBeInstanceOf(Carbon::class);
