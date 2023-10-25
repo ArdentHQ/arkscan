@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Facades\Rounds;
-use App\Http\Livewire\DelegateMonitor;
+use App\Http\Livewire\Delegates\Monitor;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
@@ -68,7 +68,7 @@ function forgeBlock(string $publicKey, int &$height): void
 it('should render without errors', function () {
     createRoundWithDelegates();
 
-    $component = Livewire::test(DelegateMonitor::class)
+    $component = Livewire::test(Monitor::class)
         ->assertSeeHtml('<div wire:poll="pollDelegates" wire:key="poll_delegates_skeleton">');
 });
 
@@ -83,7 +83,7 @@ it('should throw an exception after 3 tries', function () {
         ->shouldReceive('increment')
         ->andReturn(1, 2, 3);
 
-    Livewire::test(DelegateMonitor::class)
+    Livewire::test(Monitor::class)
         ->call('pollDelegates');
 });
 
@@ -92,7 +92,7 @@ it('shouldnt throw an exception if only fails 2 times', function () {
 
     $taggedCache = Cache::tags('tags');
 
-    $component = Livewire::test(DelegateMonitor::class);
+    $component = Livewire::test(Monitor::class);
 
     Cache::shouldReceive('tags')
         ->with('rounds')
@@ -129,7 +129,7 @@ it('should get the last blocks from the last 2 rounds and beyond', function () {
 
     $wallets->first()->blocks()->delete();
 
-    Livewire::test(DelegateMonitor::class)->call('pollDelegates');
+    Livewire::test(Monitor::class)->call('pollDelegates');
 
     expect((new WalletCache())->getLastBlock($wallets->first()->public_key))->toBe([]);
 
@@ -146,7 +146,7 @@ it('should do nothing if no rounds', function () {
         ]);
     });
 
-    Livewire::test(DelegateMonitor::class)
+    Livewire::test(Monitor::class)
         ->assertViewHas('delegates', [])
         ->call('pollDelegates')
         ->assertViewHas('delegates', []);
@@ -199,10 +199,10 @@ it('should correctly show the block is missed', function () {
     });
 
     // Mark component delegate property as public & update monitor data
-    $delegateProperty = new ReflectionProperty(DelegateMonitor::class, 'delegates');
+    $delegateProperty = new ReflectionProperty(Monitor::class, 'delegates');
     $delegateProperty->setAccessible(true);
 
-    $component = Livewire::test(DelegateMonitor::class);
+    $component = Livewire::test(Monitor::class);
     $instance  = $component->instance();
     $instance->pollDelegates();
 
