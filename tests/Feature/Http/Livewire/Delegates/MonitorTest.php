@@ -157,6 +157,41 @@ it('should do nothing if no rounds', function () {
         ->assertViewHas('delegates', []);
 });
 
+it('should set it ready on event', function () {
+    Wallet::factory(51)->create()->each(function ($wallet) {
+        Round::factory()->create([
+            'round'      => '1',
+            'public_key' => $wallet->public_key,
+        ]);
+    });
+
+    Livewire::test(Monitor::class)
+        ->assertSet('isReady', false)
+        ->emit('monitorIsReady')
+        ->assertSet('isReady', true);
+});
+
+it('should not poll if not ready', function () {
+    Wallet::factory(51)->create()->each(function ($wallet) {
+        Round::factory()->create([
+            'round'      => '1',
+            'public_key' => $wallet->public_key,
+        ]);
+    });
+
+    // Mark component delegate property as public & update monitor data
+    $delegateProperty = new ReflectionProperty(Monitor::class, 'delegates');
+    $delegateProperty->setAccessible(true);
+
+    $component = Livewire::test(Monitor::class);
+
+    expect($delegateProperty->getValue($component->instance()))->toBe([]);
+
+    $component->instance()->pollDelegates();
+
+    expect($delegateProperty->getValue($component->instance()))->toBe([]);
+});
+
 it('should correctly show the block is missed', function () {
     // Force round time
     $this->travelTo(new Carbon('2021-01-01 00:04:00'));
