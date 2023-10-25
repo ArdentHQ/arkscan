@@ -3,6 +3,9 @@
     'breakpoint' => 'lg',
     'firstOn' => null,
     'lastOn' => null,
+    'class' => 'w-10',
+    'badgeWidth' => null,
+    'badgeHeight' => null,
 ])
 
 <x-ark-tables.cell
@@ -10,7 +13,10 @@
     :breakpoint="$breakpoint"
     :first-on="$firstOn"
     :last-on="$lastOn"
-    class="w-10"
+    :class="$class"
 >
-    <x-loading.text />
+    <x-loading.text
+        :width="$badgeWidth"
+        :height="$badgeHeight"
+    />
 </x-ark-tables.cell>

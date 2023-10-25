@@ -1,26 +1,36 @@
+@props([
+    'rowCount' => 10,
+])
+
 <x-table-skeleton
-    class="block"
     device="desktop"
     :items="[
-        'pages.delegates.order' => [
-            'type'  => 'rank',
-            'width' => 70,
+        '' => [
+            'type' => 'icon',
+            'badgeWidth' => 'w-5',
+            'badgeHeight' => 'h-5',
+            'class' => ' ',
+            'width' => 20,
         ],
-        'pages.delegates.name' => 'address',
-        'pages.delegates.forging_at' => [
-            'type'       => 'text',
+        'tables.delegate-monitor.order' => [
+            'type' => 'rank',
+        ],
+        'tables.delegate-monitor.delegate' => 'text',
+        'tables.delegate-monitor.status' => [
+            'type' => 'badge',
+            'badgeWidth' => 'w-[8.75rem]',
+        ],
+        'tables.delegate-monitor.time_to_forge' => [
+            'type' => 'text',
             'responsive' => true,
-            'breakpoint' => 'sm',
+            'breakpoint' => 'md-lg',
+            'class' => 'whitespace-nowrap',
         ],
-        'pages.delegates.status' => [
-            'type'   => 'text',
-            'lastOn' => 'md',
+        'tables.delegate-monitor.block_height' => [
+            'type'  => 'number',
+            'class' => 'whitespace-nowrap',
         ],
-        'pages.delegates.block_id' => [
-            'type'       => 'number',
-            'responsive' => true,
-            'breakpoint' => 'md',
-            'class'      => 'text-right',
-        ]
     ]"
+    :row-count="$rowCount"
+    encapsulated
 />

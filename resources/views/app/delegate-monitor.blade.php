@@ -14,7 +14,7 @@
         </x-general.header>
 
         <x-ark-container>
-            <livewire:delegate-monitor />
+            <livewire:delegates.monitor />
         </x-ark-container>
     @endsection
 @endcomponent

@@ -34,7 +34,10 @@
                         :first-on="Arr::get($row, 'firstOn', null)"
                         :last-on="Arr::get($row, 'lastOn', null)"
                         :generic="Arr::get($row, 'generic', null)"
+                        :class="Arr::get($row, 'class', null)"
                         :nested-data-breakpoint="Arr::get($row, 'nestedDataBreakpoint', null)"
+                        :badge-width="Arr::get($row, 'badgeWidth', null)"
+                        :badge-height="Arr::get($row, 'badgeHeight', null)"
                     />
                 @endforeach
             </x-ark-tables.row>
