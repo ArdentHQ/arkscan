@@ -1,7 +1,8 @@
 @props(['model'])
 
-<div {{ $attributes->class('flex space-x-2 items-center font-semibold') }}>
-    <x-ark-icon name="star" />
-
-    <div>@lang('tables.delegate-monitor.favorite')</div>
-</div>
+<x-delegates.favorite-toggle
+    :model="$model"
+    :attributes="$attributes"
+>
+    @lang('tables.delegate-monitor.favorite')
+</x-delegates.favorite-toggle>

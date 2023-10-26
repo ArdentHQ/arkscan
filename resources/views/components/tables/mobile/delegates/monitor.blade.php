@@ -7,7 +7,7 @@
     wire:key="{{ Helpers::generateId('delegate-monitor-mobile') }}"
     :no-results-message="$noResultsMessage"
 >
-    @foreach ($this->delegates as $delegate)
+    @foreach ($delegates as $delegate)
         <x-tables.rows.mobile
             wire:key="{{ Helpers::generateId('delegate-mobile', $delegate->wallet()->address()) }}"
             :expand-class="Arr::toCssClasses([
@@ -19,11 +19,11 @@
                 <div class="flex flex-1 min-w-0 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
                     <div class="flex items-center">
                         <div class="hidden items-center pr-3 sm:flex">
-                            <x-ark-icon name="star" />
+                            <x-delegates.favorite-toggle :model="$delegate" />
                         </div>
 
                         <span class="text-sm font-semibold leading-4.25 min-w-[32px]">
-                            {{ $loop->index + 1 }}
+                            {{ $delegate->order() }}
                         </span>
                     </div>
 

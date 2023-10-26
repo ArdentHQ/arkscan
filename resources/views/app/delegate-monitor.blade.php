@@ -16,5 +16,7 @@
         <x-ark-container>
             <livewire:delegates.monitor />
         </x-ark-container>
+
+        <livewire:delegates.favorite-delegate-handler />
     @endsection
 @endcomponent

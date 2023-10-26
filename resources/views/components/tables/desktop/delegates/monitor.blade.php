@@ -47,15 +47,15 @@
     </thead>
 
     <tbody>
-        @foreach($this->delegates as $delegate)
+        @foreach($delegates as $delegate)
             <x-ark-tables.row wire:key="delegate-{{ $delegate->wallet()->address() }}">
                 <x-ark-tables.cell>
-                    <x-ark-icon name="star" />
+                    <x-delegates.favorite-toggle :model="$delegate" />
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>
                     <span class="text-sm font-semibold leading-4.25">
-                        {{ $loop->index + 1 }}
+                        {{ $delegate->order() }}
                     </span>
                 </x-ark-tables.cell>
 
