@@ -10,6 +10,7 @@
     'sortingId' => null,
     'initialSort' => 'asc',
     'livewireSort' => false,
+    'sortDisabled' => false,
     'sortIconAlignment' => 'right',
 ])
 
@@ -23,14 +24,14 @@
         'group/header' => $sortingId !== null,
         'cursor-pointer' => $sortingId !== null && (($livewireSort && $this->isReady) || ! $livewireSort),
         'flex-row-reverse space-x-0' => $livewireSort && $sortingId !== null,
-        'disabled' => $livewireSort && $sortingId !== null && ! $this->isReady,
+        'disabled' => $sortDisabled || ($livewireSort && $sortingId !== null && ! $this->isReady),
         $class,
     ])"
     :attributes="$attributes->merge([
         'x-ref' => $sortingId,
         'x-on:click' => ! $livewireSort && $sortingId !== null ? 'sortByColumn' : null,
         'data-initial-sort' => ! $livewireSort && $sortingId !== null ? $initialSort : null,
-        'wire:loading.class' => $livewireSort && $sortingId !== null ? 'disabled' : null,
+        'wire:loading.class' => $sortDisabled || ($livewireSort && $sortingId !== null) ? 'disabled' : null,
         'wire:loading.class.remove' => $livewireSort && $sortingId !== null ? 'cursor-pointer' : null,
     ])"
 >
@@ -42,19 +43,20 @@
             'justify-end' => $sortIconAlignment === 'left' && $sortingId !== null,
         ])
 
-        @if ($livewireSort && $sortingId !== null)
+        @if ($sortDisabled || ($livewireSort && $sortingId !== null))
             wire:click="sortBy('{{ $sortingId }}')"
             wire:loading.attr="disabled"
 
-            @unless ($this->isReady)
+            @if ($sortDisabled || ! $this->isReady)
                 disabled
-            @endunless
+            @endif
         @endif
     >
         @if (! $livewireSort && $sortIconAlignment === 'left')
             <x-tables.headers.desktop.includes.sort-icon
                 :id="$sortingId"
                 :initial-direction="$initialSort"
+                :disabled="$sortDisabled"
             />
         @endif
 
@@ -70,6 +72,7 @@
             <x-tables.headers.desktop.includes.sort-icon
                 :id="$sortingId"
                 :initial-direction="$initialSort"
+                :disabled="$sortDisabled"
             />
         @endif
     </button>

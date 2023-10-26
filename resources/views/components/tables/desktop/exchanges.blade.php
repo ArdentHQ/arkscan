@@ -8,23 +8,23 @@
     <thead class="dark:bg-black bg-theme-secondary-100">
         <tr class="border-b-none">
             <x-tables.headers.desktop.text
-                name="general.exchange.name"
+                name="tables.exchanges.name"
                 sorting-id="header-name"
             />
             <x-tables.headers.desktop.text
-                name="general.exchange.top_pairs"
+                name="tables.exchanges.top_pairs"
                 sorting-id="header-top_pairs"
             />
 
             <x-tables.headers.desktop.number
-                name="tables.exchanges.price"
+                name="tables.exchanges.price_currency"
                 :name-properties="['currency' => Settings::currency()]"
                 initial-sort="desc"
                 sorting-id="header-price"
             />
 
             <x-tables.headers.desktop.number
-                name="tables.exchanges.volume"
+                name="tables.exchanges.volume_currency"
                 :name-properties="['currency' => Settings::currency()]"
                 class="text-right"
                 breakpoint="md-lg"
