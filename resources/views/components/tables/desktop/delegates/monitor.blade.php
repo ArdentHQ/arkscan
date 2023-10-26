@@ -1,44 +1,99 @@
-<x-ark-tables.table sticky class="w-full">
+@props([
+    'delegates',
+    'noResultsMessage' => null,
+])
+
+<x-tables.encapsulated-table
+    wire:key="{{ Helpers::generateId('delegate-monitor') }}"
+    class="hidden w-full md:block"
+    sticky
+>
     <thead>
         <tr>
-            <x-tables.headers.desktop.text name="pages.delegates.order" width="70" />
-            <x-tables.headers.desktop.address name="pages.delegates.name" />
-            <x-tables.headers.desktop.text name="pages.delegates.forging_at" responsive breakpoint="sm" />
-            <x-tables.headers.desktop.status name="pages.delegates.status" last-on="md"  />
+            <x-tables.headers.desktop.text width="20" />
+
             <x-tables.headers.desktop.text
-                name="pages.delegates.block_id"
+                name="tables.delegate-monitor.order"
+                width="60"
+            />
+
+            <x-tables.headers.desktop.address name="tables.delegate-monitor.delegate" />
+
+            <x-tables.headers.desktop.status
+                name="tables.delegate-monitor.status"
+                breakpoint="md-lg"
                 responsive
+            />
+
+            <x-tables.headers.desktop.status
+                name="tables.delegate-monitor.status_time_to_forge"
+                class="md-lg:hidden"
                 breakpoint="md"
-                class="text-right"
+                responsive
+            />
+
+            <x-tables.headers.desktop.text
+                name="tables.delegate-monitor.time_to_forge"
+                class="whitespace-nowrap"
+                breakpoint="md-lg"
+                responsive
+            />
+
+            <x-tables.headers.desktop.number
+                name="tables.delegate-monitor.block_height"
+                class="whitespace-nowrap"
             />
         </tr>
     </thead>
+
     <tbody>
-        @foreach($delegates as $delegate)
-            <x-ark-tables.row
-                wire:key="{{ Helpers::generateId($delegate->publicKey(), $round, $delegate->status()) }}"
-                :danger="$delegate->keepsMissing()"
-                :warning="$delegate->justMissed()"
-            >
+        @foreach($this->delegates as $delegate)
+            <x-ark-tables.row wire:key="delegate-{{ $delegate->wallet()->address() }}">
                 <x-ark-tables.cell>
-                    <x-tables.rows.desktop.slot-id :model="$delegate" />
+                    <x-ark-icon name="star" />
                 </x-ark-tables.cell>
+
                 <x-ark-tables.cell>
-                    <span class="hidden md:inline">
-                        <x-tables.rows.desktop.username :model="$delegate->wallet()" />
-                    </span>
-                    <span class="md:hidden">
-                        <x-tables.rows.mobile.username-with-avatar :model="$delegate->wallet()" />
+                    <span class="text-sm font-semibold leading-4.25">
+                        {{ $loop->index + 1 }}
                     </span>
                 </x-ark-tables.cell>
-                <x-ark-tables.cell responsive breakpoint="sm">
-                    <x-tables.rows.desktop.slot-time :model="$delegate" />
+
+                <x-ark-tables.cell>
+                    <x-tables.rows.desktop.encapsulated.address
+                        :model="$delegate->wallet()"
+                        without-clipboard
+                        delegate-name-class="md:w-[100px] md-lg:w-auto"
+                    />
                 </x-ark-tables.cell>
-                <x-ark-tables.cell last-on="md">
-                    <x-tables.rows.desktop.round-status :model="$delegate" />
+
+                <x-ark-tables.cell
+                    breakpoint="md-lg"
+                    responsive
+                >
+                    <x-tables.rows.desktop.encapsulated.delegates.monitor.forging-status :model="$delegate" />
                 </x-ark-tables.cell>
-                <x-ark-tables.cell class="text-right" responsive breakpoint="md" >
-                    <x-tables.rows.desktop.wallet-last-block :model="$delegate" />
+
+                <x-ark-tables.cell
+                    class="md-lg:hidden"
+                    breakpoint="md"
+                    responsive
+                >
+                    <x-tables.rows.desktop.encapsulated.delegates.monitor.forging-status
+                        :model="$delegate"
+                        with-time
+                    />
+                </x-ark-tables.cell>
+
+                <x-ark-tables.cell
+                    breakpoint="md-lg"
+                    responsive
+                >
+                    <x-tables.rows.desktop.encapsulated.delegates.monitor.time-to-forge :model="$delegate" />
+                </x-ark-tables.cell>
+
+                <x-ark-tables.cell class="text-right">
+                    <x-tables.rows.desktop.encapsulated.delegates.monitor.block-height :model="$delegate" />
                 </x-ark-tables.cell>
             </x-ark-tables.row>
         @endforeach

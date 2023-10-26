@@ -33,7 +33,7 @@
         {{ $header }}
 
         @if ($expandable)
-            <div class="flex items-center pl-4 sm:hidden h-[17px]">
+            <div class="flex items-center pl-3 sm:hidden h-[17px]">
                 <x-general.dropdown.arrow
                     key="isExpanded"
                     x-on:click="{{ $expandDisabled ? '' : 'isExpanded = ! isExpanded' }}"
