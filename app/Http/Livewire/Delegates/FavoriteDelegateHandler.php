@@ -8,10 +8,11 @@ use App\Facades\Settings;
 use App\Http\Livewire\Concerns\HandlesSettings;
 use Livewire\Component;
 
-class FavoriteDelegateHandler extends Component
+final class FavoriteDelegateHandler extends Component
 {
     use HandlesSettings;
 
+    /** @var mixed */
     protected $listeners = [
         'setFavoriteDelegate'    => 'setDelegate',
         'removeFavoriteDelegate' => 'removeDelegate',
@@ -44,8 +45,6 @@ class FavoriteDelegateHandler extends Component
         }
 
         $delegates->filter(fn ($delegatePublicKey) => $delegatePublicKey !== $publicKey);
-
-        dd($delegates);
 
         $this->saveSetting('favoriteDelegates', $delegates->toArray());
     }

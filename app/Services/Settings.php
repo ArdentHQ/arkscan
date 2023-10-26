@@ -91,7 +91,7 @@ class Settings
 
     public function favoriteDelegates(): Collection
     {
-        return collect($this->get('favoriteDelegates', []));
+        return new Collection($this->get('favoriteDelegates', []));
     }
 
     public function hasFavoriteDelegate(string $publicKey): bool
