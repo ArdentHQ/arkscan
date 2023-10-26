@@ -13,7 +13,7 @@
 
         <x-general.mobile-divider />
 
-        <div class="px-6 pb-8 pt-6 md:px-10 md:pt-0 md:mx-auto md:max-w-7xl">
+        <div class="px-6 pt-6 pb-8 md:px-10 md:pt-0 md:mx-auto md:max-w-7xl">
             <livewire:delegates.monitor />
         </div>
 
