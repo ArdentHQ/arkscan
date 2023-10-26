@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Livewire\Delegates;
 
 use App\Facades\Settings;
@@ -11,7 +13,7 @@ class FavoriteDelegateHandler extends Component
     use HandlesSettings;
 
     protected $listeners = [
-        'setFavoriteDelegate' => 'setDelegate',
+        'setFavoriteDelegate'    => 'setDelegate',
         'removeFavoriteDelegate' => 'removeDelegate',
     ];
 
