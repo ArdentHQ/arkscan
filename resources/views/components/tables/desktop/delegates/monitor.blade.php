@@ -5,7 +5,7 @@
 
 <x-tables.encapsulated-table
     wire:key="{{ Helpers::generateId('delegate-monitor') }}"
-    class="hidden w-full md:block"
+    class="delegate-monitor hidden w-full md:block"
     sticky
 >
     <thead>
@@ -48,7 +48,12 @@
 
     <tbody>
         @foreach($delegates as $delegate)
-            <x-ark-tables.row wire:key="delegate-{{ $delegate->wallet()->address() }}">
+            <x-ark-tables.row
+                wire:key="delegate-{{ $delegate->wallet()->address() }}"
+                :class="Arr::toCssClasses([
+                    'delegate-monitor-favorite' => $delegate->isFavorite(),
+                ])"
+            >
                 <x-ark-tables.cell>
                     <x-delegates.favorite-toggle :model="$delegate" />
                 </x-ark-tables.cell>

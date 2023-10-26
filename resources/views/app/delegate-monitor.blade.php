@@ -13,9 +13,9 @@
 
         <x-general.mobile-divider />
 
-        <x-ark-container>
+        <div class="px-6 pb-8 pt-6 md:px-10 md:pt-0 md:mx-auto md:max-w-7xl">
             <livewire:delegates.monitor />
-        </x-ark-container>
+        </div>
 
         <livewire:delegates.favorite-delegate-handler />
     @endsection

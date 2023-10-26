@@ -93,6 +93,7 @@ return [
         'completed'            => 'Completed',
         'tbd'                  => 'TBD',
         'favorite'             => 'Favorite',
+        'my_favorites'         => 'My Favorites',
 
         'forging-status' => [
             'block_generated' => 'Block Generated',

@@ -27,7 +27,7 @@ final class FavoriteDelegateHandler extends Component
     {
         $delegates = Settings::favoriteDelegates();
 
-        if ($delegates->has($publicKey)) {
+        if ($delegates->contains($publicKey)) {
             return;
         }
 
@@ -40,11 +40,11 @@ final class FavoriteDelegateHandler extends Component
     {
         $delegates = Settings::favoriteDelegates();
 
-        if (! $delegates->has($publicKey)) {
+        if (! $delegates->contains($publicKey)) {
             return;
         }
 
-        $delegates->filter(fn ($delegatePublicKey) => $delegatePublicKey !== $publicKey);
+        $delegates = $delegates->filter(fn ($delegatePublicKey) => $delegatePublicKey !== $publicKey);
 
         $this->saveSetting('favoriteDelegates', $delegates->toArray());
     }
