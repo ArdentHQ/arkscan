@@ -349,22 +349,29 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 
 /* Favorite */
 
-.favorite-icon:hover {
-    --favorite-star-bg: var(--theme-color-primary-700);
-    --favorite-star-outline: var(--theme-color-primary-700);
+.favorite-icon svg path {
+    fill: transparent;
+    stroke: currentColor;
+
+    @apply transition-default;
 }
 
-.dark .favorite-icon:hover {
-    --favorite-star-bg: var(--theme-color-dark-blue-500);
-    --favorite-star-outline: var(--theme-color-dark-blue-500);
+.favorite-icon:hover svg path {
+    fill: var(--theme-color-primary-700);
+    stroke: var(--theme-color-primary-700);
 }
 
-.favorite-icon__selected {
-    --favorite-star-bg: var(--theme-color-primary-100);
-    --favorite-star-outline: var(--theme-color-primary-700);
+.dark .favorite-icon:hover svg path {
+    fill: var(--theme-color-dark-blue-500);
+    stroke: var(--theme-color-dark-blue-500);
 }
 
-.dark .favorite-icon__selected {
-    --favorite-star-bg: var(--theme-color-dark-blue-900);
-    --favorite-star-outline: var(--theme-color-dark-blue-400);
+.favorite-icon__selected svg path {
+    fill: var(--theme-color-primary-100);
+    stroke: var(--theme-color-primary-700);
+}
+
+.dark .favorite-icon__selected svg path {
+    fill: var(--theme-color-dark-blue-900);
+    stroke: var(--theme-color-dark-blue-400);
 }
