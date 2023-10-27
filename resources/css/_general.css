@@ -346,3 +346,32 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 .search-dropdown a:hover .encapsulated-badge {
     @apply bg-theme-secondary-300 dark:bg-theme-dark-700;
 }
+
+/* Favorite */
+
+.favorite-icon svg path {
+    fill: transparent;
+    stroke: currentColor;
+
+    @apply transition-default;
+}
+
+.favorite-icon:hover svg path {
+    fill: var(--theme-color-primary-700);
+    stroke: var(--theme-color-primary-700);
+}
+
+.dark .favorite-icon:hover svg path {
+    fill: var(--theme-color-dark-blue-500);
+    stroke: var(--theme-color-dark-blue-500);
+}
+
+.favorite-icon__selected svg path {
+    fill: var(--theme-color-primary-100);
+    stroke: var(--theme-color-primary-700);
+}
+
+.dark .favorite-icon__selected svg path {
+    fill: var(--theme-color-dark-blue-900);
+    stroke: var(--theme-color-dark-blue-400);
+}

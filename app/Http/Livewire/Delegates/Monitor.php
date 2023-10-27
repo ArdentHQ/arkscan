@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Delegates;
 
 use App\Facades\Rounds;
+use App\Facades\Settings;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\DelegateData;
 use Illuminate\Support\Facades\Cache;
@@ -12,6 +13,9 @@ use Illuminate\View\View;
 use Livewire\Component;
 use Throwable;
 
+/**
+ * @property bool $hasDelegates
+ */
 final class Monitor extends Component
 {
     use DeferLoading;
@@ -27,7 +31,11 @@ final class Monitor extends Component
     public function render(): View
     {
         return view('livewire.delegates.monitor', [
-            'delegates'  => $this->delegates,
+            'delegates'  => collect($this->delegates)
+                ->each(fn ($slot) => $slot->setFavorite(Settings::hasFavoriteDelegate($slot->publicKey())))
+                ->sortBy(fn ($slot) => ! $slot->isFavorite())
+                ->values(),
+
             'round'      => Rounds::current(),
         ]);
     }
@@ -37,6 +45,11 @@ final class Monitor extends Component
         $this->setIsReady();
 
         $this->pollDelegates();
+    }
+
+    public function getHasDelegatesProperty(): bool
+    {
+        return count($this->delegates) > 0;
     }
 
     public function pollDelegates(): void

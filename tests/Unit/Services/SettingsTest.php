@@ -135,3 +135,27 @@ it('should get the locale', function () {
 
     expect(Settings::locale())->toBe('en_GB');
 });
+
+it('should get favorite delegates', function () {
+    expect(Settings::favoriteDelegates())->toEqual(collect());
+
+    getSettingsFromCookies($this, 'favoriteDelegates', [
+        'favoriteDelegates' => [
+            'test-public-key',
+        ],
+    ]);
+
+    expect(Settings::favoriteDelegates())->toEqual(collect(['test-public-key']));
+});
+
+it('should determine if cookie has favorited delegates', function () {
+    expect(Settings::favoriteDelegates())->toEqual(collect());
+
+    getSettingsFromCookies($this, 'favoriteDelegates', [
+        'favoriteDelegates' => [
+            'test-public-key',
+        ],
+    ]);
+
+    expect(Settings::hasFavoriteDelegate('test-public-key'))->toBeTrue();
+});
