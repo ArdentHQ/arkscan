@@ -352,8 +352,6 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 .favorite-icon svg path {
     fill: transparent;
     stroke: currentColor;
-
-    @apply transition-default;
 }
 
 .favorite-icon:hover svg path {
