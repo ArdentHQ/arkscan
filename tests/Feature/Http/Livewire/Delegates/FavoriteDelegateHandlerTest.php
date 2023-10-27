@@ -22,6 +22,18 @@ it('should set favorite delegate', function () {
         ->call('setDelegate', 'test-public-key');
 });
 
+it('should not set favorite delegate if already set', function () {
+    Settings::shouldReceive('favoriteDelegates')
+        ->andReturn(collect(['existing-public-key']))
+        ->once();
+
+    Cookie::shouldReceive('queue')
+        ->never();
+
+    Livewire::test(FavoriteDelegateHandler::class)
+        ->call('setDelegate', 'existing-public-key');
+});
+
 it('should remove favorite delegate', function () {
     Cookie::shouldReceive('queue')
         ->with('settings', json_encode([
@@ -42,4 +54,16 @@ it('should remove favorite delegate', function () {
 
     Livewire::test(FavoriteDelegateHandler::class)
         ->call('removeDelegate', 'existing-public-key');
+});
+
+it('should do not remove favorite delegate if not set', function () {
+    Settings::shouldReceive('favoriteDelegates')
+        ->andReturn(collect(['existing-public-key']))
+        ->once();
+
+    Cookie::shouldReceive('queue')
+        ->never();
+
+    Livewire::test(FavoriteDelegateHandler::class)
+        ->call('removeDelegate', 'missing-public-key');
 });

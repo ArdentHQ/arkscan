@@ -150,11 +150,18 @@ it('should do nothing if no rounds', function () {
         ]);
     });
 
-    Livewire::test(Monitor::class)
-        ->call('setIsReady')
-        ->assertViewHas('delegates', [])
-        ->call('pollDelegates')
-        ->assertViewHas('delegates', []);
+    // Mark component delegate property as public & update monitor data
+    $delegateProperty = new ReflectionProperty(Monitor::class, 'delegates');
+    $delegateProperty->setAccessible(true);
+
+    $component = Livewire::test(Monitor::class);
+    $component->call('setIsReady');
+
+    expect($delegateProperty->getValue($component->instance()))->toBe([]);
+
+    $component->call('pollDelegates');
+
+    expect($delegateProperty->getValue($component->instance()))->toBe([]);
 });
 
 it('should set it ready on event', function () {
