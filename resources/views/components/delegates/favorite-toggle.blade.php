@@ -6,7 +6,7 @@
             isFavorite: {{ $model->isFavorite() ? 'true' : 'false' }},
         }"
         type="button"
-        class="flex items-center space-x-2 font-semibold favorite-icon transition-default"
+        class="flex items-center space-x-2 font-semibold favorite-icon"
         :class="{
             'dark:text-theme-dark-300': ! isFavorite,
             'text-theme-primary-600 favorite-icon__selected': isFavorite,
