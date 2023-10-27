@@ -5,7 +5,7 @@
 
 <x-tables.encapsulated-table
     wire:key="{{ Helpers::generateId('delegate-monitor') }}"
-    class="delegate-monitor hidden w-full md:block"
+    class="hidden w-full md:block delegate-monitor"
     sticky
 >
     <thead>

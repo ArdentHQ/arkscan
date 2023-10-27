@@ -13,7 +13,7 @@
 
         @php ($favoriteDelegates = $delegates->filter(fn ($slot) => $slot->isFavorite()))
         @if ($favoriteDelegates->isNotEmpty())
-            <div class="font-semibold text-theme-secondary-700 dark:text-theme-dark-200 md:hidden pb-3">
+            <div class="pb-3 font-semibold md:hidden text-theme-secondary-700 dark:text-theme-dark-200">
                 @lang('tables.delegate-monitor.my_favorites')
             </div>
 
