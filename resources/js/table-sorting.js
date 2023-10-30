@@ -1,5 +1,10 @@
 // Variation of https://codepen.io/ryangjchandler/pen/WNQQKeR
-const TableSorting = (sortBy = "", sortDirection = "asc", secondarySortBy = null, secondarySortDirection = "asc") => {
+const TableSorting = (
+    sortBy = "",
+    sortDirection = "asc",
+    secondarySortBy = null,
+    secondarySortDirection = "asc"
+) => {
     return {
         sortBy,
         sortAsc: sortDirection === "asc",
@@ -20,7 +25,9 @@ const TableSorting = (sortBy = "", sortDirection = "asc", secondarySortBy = null
             if (secondarySortBy) {
                 const secondaryElement = this.$refs[secondarySortBy];
 
-                this.secondarySortIndex = Array.from(secondaryElement.parentNode.children).indexOf(secondaryElement);
+                this.secondarySortIndex = Array.from(
+                    secondaryElement.parentNode.children
+                ).indexOf(secondaryElement);
             }
 
             this.getTableRows().forEach((row, index) => {
@@ -69,9 +76,20 @@ const TableSorting = (sortBy = "", sortDirection = "asc", secondarySortBy = null
 
         sortCallback(index) {
             return (row1, row2) => {
-                const sortResult = this.sortRows(row1, row2, index, this.sortAsc);
+                const sortResult = this.sortRows(
+                    row1,
+                    row2,
+                    index,
+                    this.sortAsc
+                );
                 if (sortResult === 0 && this.secondarySortIndex !== null) {
-                    return this.sortRows(row1, row2, this.secondarySortIndex, secondarySortDirection === "asc", false);
+                    return this.sortRows(
+                        row1,
+                        row2,
+                        this.secondarySortIndex,
+                        secondarySortDirection === "asc",
+                        false
+                    );
                 }
 
                 return sortResult;
@@ -83,20 +101,20 @@ const TableSorting = (sortBy = "", sortDirection = "asc", secondarySortBy = null
             const row2Value = this.getCellValue(row2, index);
 
             const isRow1Numeric =
-                row1Value !== "" &&
-                !isNaN(row1Value) &&
-                row1Value !== null;
+                row1Value !== "" && !isNaN(row1Value) && row1Value !== null;
             const isRow2Numeric =
-                row2Value !== "" &&
-                !isNaN(row2Value) &&
-                row2Value !== null;
+                row2Value !== "" && !isNaN(row2Value) && row2Value !== null;
 
             if (isNaN(row1Value) && isNaN(row2Value)) {
-                return sortAscending ? row2Value.toString().localeCompare(row1Value) : row1Value.toString().localeCompare(row2Value);
+                return sortAscending
+                    ? row2Value.toString().localeCompare(row1Value)
+                    : row1Value.toString().localeCompare(row2Value);
             }
 
             if (isRow1Numeric && isRow2Numeric) {
-                return sortAscending ? row1Value - row2Value : row2Value - row1Value;
+                return sortAscending
+                    ? row1Value - row2Value
+                    : row2Value - row1Value;
             }
 
             if (isRow1Numeric && !isRow2Numeric) {
@@ -104,11 +122,13 @@ const TableSorting = (sortBy = "", sortDirection = "asc", secondarySortBy = null
             }
 
             if (sortByRowIndex && row1Value === row2Value) {
-                return sortAscending ? row2.dataset["rowIndex"] - row1.dataset["rowIndex"] : row1.dataset["rowIndex"] - row2.dataset["rowIndex"];
+                return sortAscending
+                    ? row2.dataset["rowIndex"] - row1.dataset["rowIndex"]
+                    : row1.dataset["rowIndex"] - row2.dataset["rowIndex"];
             }
 
             return sortAscending ? 1 : -1;
-        }
+        },
     };
 };
 
