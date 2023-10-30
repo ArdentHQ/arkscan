@@ -15,7 +15,10 @@
         'tables.delegate-monitor.order' => [
             'type' => 'rank',
         ],
-        'tables.delegate-monitor.delegate' => 'text',
+        'tables.delegate-monitor.delegate' => [
+            'type' => 'text',
+            'width' => 190,
+        ],
         'tables.delegate-monitor.status' => [
             'type' => 'badge',
             'badgeWidth' => 'w-[8.75rem]',
