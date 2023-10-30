@@ -31,12 +31,9 @@ final class Monitor extends Component
     public function render(): View
     {
         return view('livewire.delegates.monitor', [
-            'delegates'  => collect($this->delegates)
-                ->each(fn ($slot) => $slot->setFavorite(Settings::hasFavoriteDelegate($slot->publicKey())))
-                ->sortBy(fn ($slot) => ! $slot->isFavorite())
+            'round'     => Rounds::current(),
+            'delegates' => collect($this->delegates)->each(fn ($slot) => $slot->setFavorite(Settings::hasFavoriteDelegate($slot->publicKey())))
                 ->values(),
-
-            'round'      => Rounds::current(),
         ]);
     }
 
