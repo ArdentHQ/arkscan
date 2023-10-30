@@ -3,7 +3,7 @@
 <div
     id="statistics-list"
     class="grid grid-cols-1 gap-2 w-full sm:grid-cols-2 md:gap-3 xl:grid-cols-4"
-    wire:poll.{{ Network::blockTime() }}s="pollStatistics"
+    wire:poll.1s="pollStatistics"
     wire:key="poll_statistics"
 >
     <x-general.card class="flex items-center space-x-6">
