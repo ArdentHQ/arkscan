@@ -356,16 +356,6 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply transition-default;
 }
 
-.favorite-icon:hover svg path {
-    fill: var(--theme-color-primary-700);
-    stroke: var(--theme-color-primary-700);
-}
-
-.dark .favorite-icon:hover svg path {
-    fill: var(--theme-color-dark-blue-500);
-    stroke: var(--theme-color-dark-blue-500);
-}
-
 .favorite-icon__selected svg path {
     fill: var(--theme-color-primary-100);
     stroke: var(--theme-color-primary-700);
@@ -374,4 +364,16 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 .dark .favorite-icon__selected svg path {
     fill: var(--theme-color-dark-blue-900);
     stroke: var(--theme-color-dark-blue-400);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .favorite-icon:hover svg path {
+        fill: var(--theme-color-primary-700);
+        stroke: var(--theme-color-primary-700);
+    }
+
+    .dark .favorite-icon:hover svg path {
+        fill: var(--theme-color-dark-blue-500);
+        stroke: var(--theme-color-dark-blue-500);
+    }
 }
