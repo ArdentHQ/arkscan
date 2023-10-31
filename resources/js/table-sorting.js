@@ -16,7 +16,7 @@ const TableSorting = (
 
             if (typeof Livewire !== "undefined") {
                 this.livewireHook = Livewire.hook("message.processed", () => {
-                    if (! this.$refs[this.sortBy]) {
+                    if (!this.$refs[this.sortBy]) {
                         if (this.livewireHook) {
                             this.livewireHook();
                         }
