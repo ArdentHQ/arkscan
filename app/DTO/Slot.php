@@ -56,6 +56,11 @@ final class Slot
         return $this->lastBlock;
     }
 
+    public function roundNumber(): int
+    {
+        return $this->roundNumber;
+    }
+
     public function hasForged(): bool
     {
         if ($this->isWaiting()) {
