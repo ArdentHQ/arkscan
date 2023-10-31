@@ -17,7 +17,10 @@
                 width="60"
             />
 
-            <x-tables.headers.desktop.address name="tables.delegate-monitor.delegate" />
+            <x-tables.headers.desktop.address
+                name="tables.delegate-monitor.delegate"
+                width="190"
+            />
 
             <x-tables.headers.desktop.status
                 name="tables.delegate-monitor.status"
@@ -68,7 +71,7 @@
                     <x-tables.rows.desktop.encapsulated.address
                         :model="$delegate->wallet()"
                         without-clipboard
-                        delegate-name-class="md:w-[100px] md-lg:w-auto"
+                        delegate-name-class="md:w-[200px] md-lg:w-auto"
                     />
                 </x-ark-tables.cell>
 
