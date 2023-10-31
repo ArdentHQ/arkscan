@@ -8,6 +8,7 @@ use App\Actions\CacheNetworkHeight;
 use App\DTO\Slot;
 use App\Enums\DelegateForgingStatus;
 use App\Facades\Network;
+use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\DelegateData;
 use App\Models\Block;
 use App\Models\Wallet;
@@ -21,6 +22,7 @@ use Livewire\Component;
 
 final class DelegateDataBoxes extends Component
 {
+    use DeferLoading;
     use DelegateData;
 
     private array $delegates = [];
@@ -39,6 +41,10 @@ final class DelegateDataBoxes extends Component
 
     public function pollStatistics(): void
     {
+        if (! $this->isReady) {
+            return;
+        }
+
         $this->statistics = [
             'blockCount'   => $this->getBlockCount(),
             'nextDelegate' => $this->getNextDelegate(),

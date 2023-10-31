@@ -1,29 +1,32 @@
-@php ($isLoading = count($statistics) === 0)
+@php ($isLoading = ! $this->isReady || count($statistics) === 0)
 
 <div
     id="statistics-list"
     class="grid grid-cols-1 gap-2 w-full sm:grid-cols-2 md:gap-3 xl:grid-cols-4"
-    wire:poll.{{ Network::blockTime() }}s="pollStatistics"
     wire:key="poll_statistics"
+    wire:init="setIsReady"
+    @if ($this->isReady)
+        wire:poll.1s="pollStatistics"
+    @endif
 >
     <x-general.card class="flex items-center space-x-6">
         <x-delegates.monitor.stat
             :title="trans('pages.delegate-monitor.stats.forging')"
-            :value="49"
+            :value="Arr::get($statistics, 'performances.forging')"
             color="bg-theme-success-700"
             :loading="$isLoading"
         />
 
         <x-delegates.monitor.stat
             :title="trans('pages.delegate-monitor.stats.missed')"
-            :value="0"
+            :value="Arr::get($statistics, 'performances.missed')"
             color="bg-theme-warning-700"
             :loading="$isLoading"
         />
 
         <x-delegates.monitor.stat
             :title="trans('pages.delegate-monitor.stats.not_forging')"
-            :value="1"
+            :value="Arr::get($statistics, 'performances.missing')"
             color="bg-theme-danger-600"
             :loading="$isLoading"
         />
