@@ -42,7 +42,7 @@ trait ManagesCache
         return $this->getCache()->put(md5($key), $value, $ttl = null);
     }
 
-    protected function blockTimeTTL(): int
+    private function blockTimeTTL(): int
     {
         return (int) ceil(Network::blockTime() / 2);
     }
