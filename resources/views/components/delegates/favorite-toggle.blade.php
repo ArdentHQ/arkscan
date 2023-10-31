@@ -1,10 +1,15 @@
-@props(['model'])
+@props([
+    'model',
+    'withoutData' => false,
+])
 
 <div {{ $attributes }}>
     <button
-        x-data="{
-            isFavorite: {{ $model->isFavorite() ? 'true' : 'false' }},
-        }"
+        @unless ($withoutData)
+            x-data="{
+                isFavorite: {{ $model->isFavorite() ? 'true' : 'false' }},
+            }"
+        @endunless
         type="button"
         class="flex items-center space-x-2 font-semibold favorite-icon"
         :class="{

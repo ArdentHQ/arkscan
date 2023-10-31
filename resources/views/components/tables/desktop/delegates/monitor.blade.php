@@ -4,20 +4,30 @@
 ])
 
 <x-tables.encapsulated-table
+    x-data="TableSorting('header-favorite', 'desc', 'header-order', 'asc')"
     wire:key="{{ Helpers::generateId('delegate-monitor') }}"
     class="hidden w-full md:block delegate-monitor"
     sticky
 >
     <thead>
         <tr>
-            <x-tables.headers.desktop.text width="20" />
+            <x-tables.headers.desktop.text
+                width="20"
+                sorting-id="header-favorite"
+                hide-sorting
+            />
 
             <x-tables.headers.desktop.text
                 name="tables.delegate-monitor.order"
                 width="60"
+                sorting-id="header-order"
+                hide-sorting
             />
 
-            <x-tables.headers.desktop.address name="tables.delegate-monitor.delegate" />
+            <x-tables.headers.desktop.address
+                name="tables.delegate-monitor.delegate"
+                width="190"
+            />
 
             <x-tables.headers.desktop.status
                 name="tables.delegate-monitor.status"
@@ -46,19 +56,28 @@
         </tr>
     </thead>
 
-    <tbody>
+    <tbody x-ref="tbody">
         @foreach($delegates as $delegate)
             <x-ark-tables.row
+                x-data="{
+                    isFavorite: {{ $delegate->isFavorite() ? 'true' : 'false' }},
+                }"
                 wire:key="delegate-{{ $delegate->wallet()->address() }}"
-                :class="Arr::toCssClasses([
-                    'delegate-monitor-favorite' => $delegate->isFavorite(),
-                ])"
+                ::class="{
+                    'delegate-monitor-favorite': isFavorite === true,
+                }"
             >
-                <x-ark-tables.cell>
-                    <x-delegates.favorite-toggle :model="$delegate" />
+                <x-ark-tables.cell
+                    ::data-value="isFavorite ? 1 : 0"
+                    :data-value="$delegate->isFavorite() ? 1 : 0"
+                >
+                    <x-delegates.favorite-toggle
+                        :model="$delegate"
+                        without-data
+                    />
                 </x-ark-tables.cell>
 
-                <x-ark-tables.cell>
+                <x-ark-tables.cell data-value="{{ $delegate->order() }}">
                     <span class="text-sm font-semibold leading-4.25">
                         {{ $delegate->order() }}
                     </span>
@@ -68,7 +87,7 @@
                     <x-tables.rows.desktop.encapsulated.address
                         :model="$delegate->wallet()"
                         without-clipboard
-                        delegate-name-class="md:w-[100px] md-lg:w-auto"
+                        delegate-name-class="md:w-[200px] md-lg:w-auto"
                     />
                 </x-ark-tables.cell>
 
