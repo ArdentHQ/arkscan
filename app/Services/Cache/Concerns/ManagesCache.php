@@ -10,6 +10,11 @@ use Closure;
 
 trait ManagesCache
 {
+    protected function blockTimeTTL(): int
+    {
+        return (int) ceil(Network::blockTime() / 2);
+    }
+
     /**
      * @param null|mixed $default
      *
@@ -40,10 +45,5 @@ trait ManagesCache
     private function put(string $key, $value, $ttl = null)
     {
         return $this->getCache()->put(md5($key), $value, $ttl = null);
-    }
-
-    protected function blockTimeTTL(): int
-    {
-        return (int) ceil(Network::blockTime() / 2);
     }
 }
