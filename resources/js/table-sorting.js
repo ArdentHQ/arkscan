@@ -9,12 +9,21 @@ const TableSorting = (
         sortBy,
         sortAsc: sortDirection === "asc",
         secondarySortIndex: null,
+        livewireHook: null,
 
         init() {
             this.update();
 
             if (typeof Livewire !== "undefined") {
-                Livewire.hook("message.processed", (message, component) => {
+                this.livewireHook = Livewire.hook("message.processed", () => {
+                    if (! this.$refs[this.sortBy]) {
+                        if (this.livewireHook) {
+                            this.livewireHook();
+                        }
+
+                        return;
+                    }
+
                     this.update();
                 });
             }
@@ -25,9 +34,11 @@ const TableSorting = (
             if (secondarySortBy) {
                 const secondaryElement = this.$refs[secondarySortBy];
 
-                this.secondarySortIndex = Array.from(
-                    secondaryElement.parentNode.children
-                ).indexOf(secondaryElement);
+                if (secondaryElement) {
+                    this.secondarySortIndex = Array.from(
+                        secondaryElement.parentNode.children
+                    ).indexOf(secondaryElement);
+                }
             }
 
             this.getTableRows().forEach((row, index) => {
