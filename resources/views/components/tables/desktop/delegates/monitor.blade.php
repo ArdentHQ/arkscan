@@ -62,7 +62,7 @@
                 x-data="{
                     isFavorite: {{ $delegate->isFavorite() ? 'true' : 'false' }},
                 }"
-                wire:key="delegate-{{ $delegate->wallet()->address() }}"
+                wire:key="delegate-{{ $delegate->order() }}-{{ $delegate->wallet()->address() }}-{{ $delegate->roundNumber() }}"
                 ::class="{
                     'delegate-monitor-favorite': isFavorite === true,
                 }"
