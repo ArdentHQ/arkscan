@@ -213,6 +213,7 @@ it('should defer loading', function () {
     (new NetworkCache())->setHeight(fn (): int => 4234212);
 
     Livewire::test(DelegateDataBoxes::class)
+        ->call('pollStatistics')
         ->assertViewHas('height', 4234212)
         ->assertViewHas('statistics', [])
         ->assertDontSee('4,234,212')
