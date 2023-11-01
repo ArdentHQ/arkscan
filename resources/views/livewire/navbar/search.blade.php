@@ -102,7 +102,7 @@
                         </div>
                     @endforeach
                 @else
-                    <p class="text-center dark:text-theme-secondary-500">
+                    <p class="text-center text-theme-secondary-900 dark:text-theme-dark-50">
                         @lang('general.search.no_results')
                     </p>
                 @endif
