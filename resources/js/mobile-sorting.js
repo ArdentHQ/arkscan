@@ -13,15 +13,6 @@ const MobileSorting = (
 
             if (typeof Livewire !== "undefined") {
                 this.livewireHook = Livewire.hook("message.processed", () => {
-                    console.log(this.$el);
-                    // if (!this.$refs[sortBy]) {
-                    //     if (this.livewireHook) {
-                    //         this.livewireHook();
-                    //     }
-
-                    //     return;
-                    // }
-
                     this.update();
                 });
             }
