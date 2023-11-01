@@ -9,6 +9,7 @@
     'sortingId' => null,
     'initialSort' => 'asc',
     'livewireSort' => false,
+    'sortDisabled' => false,
     'tooltip' => null,
 ])
 
@@ -23,6 +24,7 @@
         :livewire-sort="$livewireSort"
         :sorting-id="$sortingId"
         :initial-sort="$initialSort"
+        :sort-disabled="$sortDisabled"
         sort-icon-alignment="left"
         :class="Arr::toCssClasses([
             'leading-4.25 items-center',

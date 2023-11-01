@@ -11,16 +11,38 @@
 >
     <thead class="dark:bg-black bg-theme-secondary-100">
         <tr class="border-b-none">
-            <x-tables.headers.desktop.text name="general.wallet.rank" class="text-left" />
+            <x-tables.headers.desktop.text
+                name="general.wallet.rank"
+                class="text-left"
+            />
+
             <x-tables.headers.desktop.address name="general.wallet.address" />
+
             <x-tables.headers.desktop.text name="general.wallet.name" />
-            <x-tables.headers.desktop.icon name="general.wallet.type" class="text-center" responsive breakpoint="md-lg" />
+
+            <x-tables.headers.desktop.icon
+                name="general.wallet.type"
+                class="text-center"
+                breakpoint="md-lg"
+                responsive
+            />
+
             @unless($hideVoting)
-                <x-tables.headers.desktop.icon name="general.wallet.voting" class="text-center" responsive breakpoint="lg" />
+                <x-tables.headers.desktop.icon
+                    name="general.wallet.voting"
+                    class="text-center"
+                    breakpoint="lg"
+                    responsive
+                />
             @endunless
-            <x-tables.headers.desktop.number name="general.wallet.balance" last-on="lg">
-                <span>({{ Network::currency()}})</span>
-            </x-tables.headers.desktop.number>
+
+            <x-tables.headers.desktop.number
+                name="general.wallet.balance_currency"
+                :name-properties="['currency' => Network::currency()]"
+                last-on="lg"
+                class="last-until-lg"
+            />
+
             <x-tables.headers.desktop.number name="general.wallet.percentage"
                 class="text-right"
                 breakpoint="md-lg"
@@ -53,20 +75,30 @@
                 </x-ark-tables.cell>
 
                 @unless($hideVoting)
-                    <x-ark-tables.cell class="text-center" responsive breakpoint="lg" >
+                    <x-ark-tables.cell
+                        class="text-center"
+                        breakpoint="lg"
+                        responsive
+                    >
                         <x-tables.rows.desktop.encapsulated.voting :model="$wallet" />
                     </x-ark-tables.cell>
                 @endunless
 
-                <x-ark-tables.cell class="text-right">
+                <x-ark-tables.cell
+                    class="text-right"
+                    last-on="lg"
+                >
                     <div class="flex flex-col font-semibold text-theme-secondary-900 dark:text-theme-secondary-200">
                         <x-tables.rows.desktop.encapsulated.balance :model="$wallet" />
 
-                        <span class="mt-1 text-xs font-semibold text-theme-secondary-500 md-lg:hidden">
+                        <span class="mt-1 !leading-3.75 !text-xs font-semibold text-theme-secondary-500 md-lg:hidden">
                             @if($useVoteWeight)
                                 <x-tables.rows.desktop.vote-percentage :model="$wallet" />
                             @else
-                                <x-tables.rows.desktop.balance-percentage :model="$wallet" />
+                                <x-tables.rows.desktop.balance-percentage
+                                    :model="$wallet"
+                                    class="text-xs !leading-3.75"
+                                />
                             @endif
                         </span>
                     </div>
@@ -76,7 +108,7 @@
                     breakpoint="md-lg"
                     responsive
                 >
-                    <span class="font-semibold">
+                    <span class="font-semibold leading-4.25">
                         @if($useVoteWeight)
                             <x-tables.rows.desktop.vote-percentage :model="$wallet" />
                         @else

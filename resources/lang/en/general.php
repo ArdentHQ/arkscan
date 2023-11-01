@@ -123,15 +123,16 @@ return [
     ],
 
     'wallet'                  => [
-        'rank'       => 'Rank',
-        'address'    => 'Address',
-        'info'       => 'Info',
-        'balance'    => 'Balance',
-        'supply'     => 'Supply',
-        'name'       => 'Name',
-        'type'       => 'Type',
-        'voting'     => 'Voting',
-        'percentage' => 'Percentage',
+        'rank'             => 'Rank',
+        'address'          => 'Address',
+        'info'             => 'Info',
+        'balance'          => 'Balance',
+        'balance_currency' => 'Balance (:currency)',
+        'supply'           => 'Supply',
+        'name'             => 'Name',
+        'type'             => 'Type',
+        'voting'           => 'Voting',
+        'percentage'       => 'Percentage',
     ],
 
     'delegates'               => [

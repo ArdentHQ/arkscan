@@ -18,6 +18,7 @@
                     :width="Arr::get($header, 'width', null)"
                     :sorting-id="Arr::get($header, 'sortingId', null)"
                     :livewire-sort="Arr::get($header, 'livewireSort', null)"
+                    :sort-disabled="Arr::get($header, 'sortDisabled', false)"
                     :tooltip="Arr::get($header, 'tooltip', null)"
                 />
             @endforeach

@@ -10,6 +10,7 @@
     'initialSort' => 'asc',
     'livewireSort' => false,
     'hideSorting' => false,
+    'sortDisabled' => false,
 ])
 
 @if ($sortingId)
@@ -23,6 +24,7 @@
         :name="$name"
         :livewire-sort="$livewireSort"
         :sorting-id="$sortingId"
+        :sort-disabled="$sortDisabled"
         :initial-sort="$initialSort"
         :hide-sorting="$hideSorting"
     />
