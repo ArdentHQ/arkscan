@@ -1,6 +1,7 @@
 @props([
     'model',
     'withoutData' => false,
+    'onClick' => null,
 ])
 
 <div {{ $attributes }}>
@@ -23,6 +24,10 @@
                 Livewire.emit('setFavoriteDelegate', '{{ $model->publicKey() }}');
             }
             this.isFavorite = ! this.isFavorite;
+
+            @if ($onClick)
+                ({{ $onClick }})(this.isFavorite);
+            @endif
         }"
     >
         <x-ark-icon name="app-favorite-star" />
