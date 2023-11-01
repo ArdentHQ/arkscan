@@ -1,6 +1,11 @@
+@props([
+    'rowCount' => 15,
+])
+
 <x-tables.mobile.includes.encapsulated>
-    <x-skeleton :row-count="$rowCount">
+    @for ($i = 0; $i < $rowCount; $i++)
         <x-tables.rows.mobile
+            wire:key="skeleton-delegate-monitor-{{ $i }}"
             expandable
             expand-disabled
         >
@@ -34,5 +39,5 @@
                 <x-tables.rows.mobile.skeletons.encapsulated.text />
             </div>
         </x-tables.rows.mobile>
-    </x-skeleton>
+    @endfor
 </x-tables.mobile.includes.encapsulated>
