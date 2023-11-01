@@ -25,11 +25,7 @@
         'group/header' => ! $hideSorting && $sortingId !== null,
         'cursor-pointer' => ! $hideSorting && $sortingId !== null && (($livewireSort && $this->isReady) || ! $livewireSort),
         'flex-row-reverse space-x-0' => ! $hideSorting && $livewireSort && $sortingId !== null,
-        'disabled' => ! $hideSorting && $livewireSort && $sortingId !== null && ! $this->isReady,
-        'group/header' => $sortingId !== null,
-        'cursor-pointer' => $sortingId !== null && (($livewireSort && $this->isReady) || ! $livewireSort),
-        'flex-row-reverse space-x-0' => $livewireSort && $sortingId !== null,
-        'disabled' => $sortDisabled || ($livewireSort && $sortingId !== null && ! $this->isReady),
+        'disabled' => $sortDisabled || (! $hideSorting && $livewireSort && $sortingId !== null && ! $this->isReady),
         $class,
     ])"
     :attributes="$attributes->merge([
