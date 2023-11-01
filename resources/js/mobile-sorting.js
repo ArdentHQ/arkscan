@@ -37,9 +37,7 @@ const MobileSorting = (
 
         sort() {
             this.getRows()
-                .sort(
-                    this.sortCallback(sortBy)
-                )
+                .sort(this.sortCallback(sortBy))
                 .forEach((row) => {
                     this.$el.appendChild(row);
                 });
@@ -50,7 +48,7 @@ const MobileSorting = (
         },
 
         getValue(row, sortBy) {
-            if (! row.dataset[sortBy]) {
+            if (!row.dataset[sortBy]) {
                 return null;
             }
 
