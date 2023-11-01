@@ -14,7 +14,7 @@
     'selected',
 ])
 
-<x-general.card class="flex flex-col py-4 w-full md:flex-row md:py-6 md:pr-0 xl:flex-col xl:pr-6">
+<x-general.card class="flex flex-col py-4 w-full md:flex-row md:items-center md:py-6 md:pr-0 xl:flex-col xl:items-stretch xl:pr-6">
     <div class="flex flex-col flex-1 mb-4 space-y-2 md:mb-0 xl:pb-6 xl:mb-6">
         <h2 class="mb-0 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
             {{ $mainTitle }}
