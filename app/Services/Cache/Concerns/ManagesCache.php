@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Cache\Concerns;
 
+use App\Facades\Network;
 use Carbon\Carbon;
 use Closure;
 
@@ -39,5 +40,10 @@ trait ManagesCache
     private function put(string $key, $value, $ttl = null)
     {
         return $this->getCache()->put(md5($key), $value, $ttl = null);
+    }
+
+    private function blockTimeTTL(): int
+    {
+        return (int) ceil(Network::blockTime() / 2);
     }
 }

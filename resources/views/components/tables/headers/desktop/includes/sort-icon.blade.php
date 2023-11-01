@@ -1,12 +1,19 @@
 @props([
     'id',
     'initialDirection',
+    'disabled' => false,
 ])
 
 @if ($id !== null)
     <div
-        class="flex flex-col text-theme-secondary-500 dark:text-theme-dark-500 group-hover/header:text-theme-secondary-900 group-hover/header:dark:text-theme-dark-50"
-        x-cloak
+        @class([
+            'flex flex-col text-theme-secondary-500 dark:text-theme-dark-500',
+            'group-hover/header:text-theme-secondary-900 group-hover/header:dark:text-theme-dark-50' => ! $disabled
+        ])
+
+        @unless ($disabled)
+            x-cloak
+        @endunless
     >
         <div
             class="transition-default"
