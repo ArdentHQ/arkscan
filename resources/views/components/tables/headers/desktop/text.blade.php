@@ -9,6 +9,7 @@
     'sortingId' => null,
     'initialSort' => 'asc',
     'livewireSort' => false,
+    'hideSorting' => false,
     'sortDisabled' => false,
 ])
 
@@ -25,6 +26,7 @@
         :sorting-id="$sortingId"
         :sort-disabled="$sortDisabled"
         :initial-sort="$initialSort"
+        :hide-sorting="$hideSorting"
     />
 @else
     <x-ark-tables.header

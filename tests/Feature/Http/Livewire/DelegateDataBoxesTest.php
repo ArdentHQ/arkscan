@@ -7,6 +7,7 @@ use App\Http\Livewire\DelegateDataBoxes;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
+use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
@@ -61,7 +62,8 @@ function createRoundWithDelegatesAndPerformances(array $performances = null, boo
 it('should render without errors', function () {
     createRoundWithDelegatesAndPerformances();
 
-    $component = Livewire::test(DelegateDataBoxes::class);
+    $component = Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady');
 
     $component->call('pollStatistics');
 
@@ -72,7 +74,8 @@ it('should render without errors', function () {
 it('should handle case no block yet', function () {
     createRoundWithDelegatesAndPerformances(null, false);
 
-    $component = Livewire::test(DelegateDataBoxes::class);
+    $component = Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady');
 
     $component->call('pollStatistics');
 
@@ -84,7 +87,8 @@ it('should handle case no block yet', function () {
 it('should get the performances of active delegates and parse it into a readable array', function () {
     createRoundWithDelegatesAndPerformances();
 
-    $component = Livewire::test(DelegateDataBoxes::class);
+    $component = Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady');
 
     $component->call('pollStatistics');
 
@@ -95,7 +99,8 @@ it('should get the performances of active delegates and parse it into a readable
 it('should determine if delegates are forging based on their round history', function () {
     createRoundWithDelegatesAndPerformances([true, true, true, true, true]);
 
-    $component = Livewire::test(DelegateDataBoxes::class);
+    $component = Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady');
 
     $component->call('pollStatistics');
 
@@ -109,7 +114,8 @@ it('should determine if delegates are forging based on their round history', fun
 it('should determine if delegates are not forging based on their round history', function () {
     createRoundWithDelegatesAndPerformances([false, false, false, false, false]);
 
-    $component = Livewire::test(DelegateDataBoxes::class);
+    $component = Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady');
 
     $component->call('pollStatistics');
 
@@ -123,7 +129,8 @@ it('should determine if delegates are not forging based on their round history',
 it('should determine if delegates just missed based on their round history', function () {
     createRoundWithDelegatesAndPerformances([true, true, true, true, false]);
 
-    $component = Livewire::test(DelegateDataBoxes::class);
+    $component = Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady');
 
     $component->call('pollStatistics');
 
@@ -137,7 +144,8 @@ it('should determine if delegates just missed based on their round history', fun
 it('should determine if delegates are forging after missing 4 slots based on their round history', function () {
     createRoundWithDelegatesAndPerformances([false, false, false, false, true]);
 
-    $component = Livewire::test(DelegateDataBoxes::class);
+    $component = Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady');
 
     $component->call('pollStatistics');
 
@@ -151,7 +159,8 @@ it('should determine if delegates are forging after missing 4 slots based on the
 it('should return the block count', function () {
     createRoundWithDelegatesAndPerformances();
 
-    $component = Livewire::test(DelegateDataBoxes::class);
+    $component = Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady');
 
     expect($component->instance()->getBlockCount())->toBeString();
 });
@@ -159,7 +168,8 @@ it('should return the block count', function () {
 it('should return the next delegate', function () {
     createRoundWithDelegatesAndPerformances();
 
-    $component = Livewire::test(DelegateDataBoxes::class);
+    $component = Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady');
 
     expect($component->instance()->getNextdelegate())->toBeInstanceOf(WalletViewModel::class);
 });
@@ -192,6 +202,23 @@ it('should not error if no cached delegate data', function () {
     }
 
     Livewire::test(DelegateDataBoxes::class)
-        ->assertSee('poll_statistics_skeleton')
+        ->call('setIsReady')
+        ->assertSeeHtml('rounded-sm-md animate-pulse bg-theme-secondary-300 dark:bg-theme-secondary-800 w-[70px] h-5')
         ->assertSet('statistics.nextDelegate', null);
+});
+
+it('should defer loading', function () {
+    createRoundWithDelegatesAndPerformances();
+
+    (new NetworkCache())->setHeight(fn (): int => 4234212);
+
+    Livewire::test(DelegateDataBoxes::class)
+        ->call('pollStatistics')
+        ->assertViewHas('height', 4234212)
+        ->assertViewHas('statistics', [])
+        ->assertDontSee('4,234,212')
+        ->call('setIsReady')
+        ->assertDontSee('4,234,212')
+        ->call('pollStatistics')
+        ->assertSee('4,234,212');
 });

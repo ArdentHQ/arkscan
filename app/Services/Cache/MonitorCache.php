@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\Cache;
 
 use App\Contracts\Cache as Contract;
-use App\Facades\Network;
 use App\Services\Cache\Concerns\ManagesCache;
 use App\ViewModels\WalletViewModel;
 use Closure;
@@ -21,12 +20,12 @@ final class MonitorCache implements Contract
 
     public function setBlockCount(Closure $callback): string
     {
-        return $this->remember('block_count', Network::blockTime(), $callback);
+        return $this->remember('block_count', $this->blockTimeTTL(), $callback);
     }
 
     public function setNextDelegate(Closure $callback): ? WalletViewModel
     {
-        return $this->remember('next_delegate', Network::blockTime(), $callback);
+        return $this->remember('next_delegate', $this->blockTimeTTL(), $callback);
     }
 
     public function getCache(): TaggedCache
