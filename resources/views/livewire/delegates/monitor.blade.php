@@ -1,3 +1,5 @@
+@php ($favoriteDelegates = $delegates->filter(fn ($slot) => $slot->isFavorite()))
+
 <div
     id="delegate-monitor-list"
     class="w-full"
@@ -12,35 +14,23 @@
         <x-tables.desktop.delegates.monitor :delegates="$delegates" />
 
         <div
+            class="md:hidden"
             x-data="{
-                toggleFavorite(address, isFavorite) {
-                    if (isFavorite) {
-                        $root.querySelector(`[x-ref='favorite-delegate-${address}']`).classList.remove('hidden');
-                        $root.querySelector(`[x-ref='delegate-${address}']`).classList.add('hidden');
-                    } else {
-                        $root.querySelector(`[x-ref='favorite-delegate-${address}']`).classList.add('hidden');
-                        $root.querySelector(`[x-ref='delegate-${address}']`).classList.remove('hidden');
-                    }
+                hasFavorites: false,
+                toggleFavorites() {
+                    $nextTick(() => {
+                        this.hasFavorites = $root.querySelectorAll(`[data-favorite='1']`).length > 0;
+                    });
                 },
             }"
-            class="md:hidden"
+            x-init="toggleFavorites"
         >
-            @php ($favoriteDelegates = $delegates->filter(fn ($slot) => $slot->isFavorite()))
-            @if ($favoriteDelegates->isNotEmpty())
-                <div class="pb-3 font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
-                    @lang('tables.delegate-monitor.my_favorites')
-                </div>
-
-                <x-tables.mobile.delegates.monitor
-                    :delegates="$delegates"
-                    favorites
-                />
-
-                <x-general.mobile-divider
-                    class="my-6 -mx-6"
-                    color="bg-theme-secondary-200 dark:bg-theme-dark-700 text-theme-secondary-200 dark:text-theme-dark-700"
-                />
-            @endif
+            <div
+                x-show="hasFavorites"
+                class="pb-3 font-semibold text-theme-secondary-700 dark:text-theme-dark-200"
+            >
+                @lang('tables.delegate-monitor.my_favorites')
+            </div>
 
             <x-tables.mobile.delegates.monitor :delegates="$delegates" />
         </div>

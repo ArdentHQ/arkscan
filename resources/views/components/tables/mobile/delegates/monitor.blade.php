@@ -1,25 +1,28 @@
 @props([
     'delegates',
     'noResultsMessage' => null,
-    'favorites' => false,
 ])
 
 <x-tables.mobile.includes.encapsulated
+    x-data="MobileSorting('favorite', 'desc', 'order', 'asc')"
     wire:key="{{ Helpers::generateId('delegate-monitor-mobile') }}"
+    class="delegate-monitor-mobile"
     :no-results-message="$noResultsMessage"
-    class="!space-y-0 gap-3"
 >
     @foreach ($delegates as $delegate)
         <x-tables.rows.mobile
-            :x-ref="($favorites ? 'favorite-' : '').'delegate-'.$delegate->wallet()->address()"
-            wire:key="{{ Helpers::generateId(($favorites ? 'favorite-' : '').'delegate-mobile', $delegate->order(), $delegate->wallet()->address(), $delegate->roundNumber()) }}"
+            x-data="{ isFavorite: {{ $delegate->isFavorite() ? 'true' : 'false' }} }"
+            wire:key="{{ Helpers::generateId('delegate-mobile', $delegate->order(), $delegate->wallet()->address(), $delegate->roundNumber()) }}"
             :expand-class="Arr::toCssClasses([
                 'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700' => ! $delegate->wallet()->isResigned(),
             ])"
-            :class="Arr::toCssClasses([
-                'hidden' => ($favorites && ! $delegate->isFavorite()) || (! $favorites && $delegate->isFavorite()),
-            ])"
+            ::class="{
+                'delegate-monitor-favorite': isFavorite === true,
+            }"
             expandable
+            ::data-favorite="isFavorite ? 1 : 0"
+            :data-favorite="$delegate->isFavorite() ? 1 : 0"
+            :data-order="$delegate->order()"
         >
             <x-slot name="header">
                 <div class="flex flex-1 min-w-0 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
@@ -27,9 +30,7 @@
                         <div class="hidden items-center pr-3 sm:flex">
                             <x-delegates.favorite-toggle
                                 :model="$delegate"
-                                on-click="(isFavorite) => {
-                                    toggleFavorite('{{ $delegate->wallet()->address() }}', isFavorite);
-                                }"
+                                on-click="toggleFavorites"
                             />
                         </div>
 
@@ -80,9 +81,7 @@
             <x-tables.rows.mobile.encapsulated.delegates.monitor.favorite
                 :model="$delegate"
                 class="pt-4 mt-4 border-t sm:hidden border-theme-secondary-300"
-                on-click="(isFavorite) => {
-                    toggleFavorite('{{ $delegate->wallet()->address() }}', isFavorite);
-                }"
+                on-click="toggleFavorites"
             />
         </x-tables.rows.mobile>
     @endforeach
