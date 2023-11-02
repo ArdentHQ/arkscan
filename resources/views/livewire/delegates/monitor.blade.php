@@ -11,7 +11,10 @@
     @endif
 >
     <x-skeletons.delegates.monitor>
-        <x-tables.desktop.delegates.monitor :delegates="$delegates" />
+        <x-tables.desktop.delegates.monitor
+            :delegates="$delegates"
+            :round="$round"
+        />
 
         <div
             class="md:hidden"
@@ -32,7 +35,10 @@
                 @lang('tables.delegate-monitor.my_favorites')
             </div>
 
-            <x-tables.mobile.delegates.monitor :delegates="$delegates" />
+            <x-tables.mobile.delegates.monitor
+                :delegates="$delegates"
+                :round="$round"
+            />
         </div>
     </x-skeletons.delegates.monitor>
 </div>
