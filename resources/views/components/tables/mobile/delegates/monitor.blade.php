@@ -80,7 +80,7 @@
 
             <x-tables.rows.mobile.encapsulated.delegates.monitor.favorite
                 :model="$delegate"
-                class="pt-4 mt-4 border-t sm:hidden border-theme-secondary-300"
+                class="pt-4 mt-4 border-t sm:hidden border-theme-secondary-300 dark:border-theme-dark-700"
                 on-click="toggleFavorites"
             />
         </x-tables.rows.mobile>
