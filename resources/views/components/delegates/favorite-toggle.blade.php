@@ -1,15 +1,10 @@
 @props([
     'model',
-    'withoutData' => false,
+    'onClick' => null,
 ])
 
 <div {{ $attributes }}>
     <button
-        @unless ($withoutData)
-            x-data="{
-                isFavorite: {{ $model->isFavorite() ? 'true' : 'false' }},
-            }"
-        @endunless
         type="button"
         class="flex items-center space-x-2 font-semibold favorite-icon"
         :class="{
@@ -23,6 +18,10 @@
                 Livewire.emit('setFavoriteDelegate', '{{ $model->publicKey() }}');
             }
             this.isFavorite = ! this.isFavorite;
+
+            @if ($onClick)
+                ({{ $onClick }})(this.isFavorite);
+            @endif
         }"
     >
         <x-ark-icon name="app-favorite-star" />

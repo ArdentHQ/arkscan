@@ -4,22 +4,34 @@
 ])
 
 <x-tables.mobile.includes.encapsulated
+    x-data="MobileSorting('favorite', 'desc', 'order', 'asc')"
     wire:key="{{ Helpers::generateId('delegate-monitor-mobile') }}"
+    class="delegate-monitor-mobile"
     :no-results-message="$noResultsMessage"
 >
     @foreach ($delegates as $delegate)
         <x-tables.rows.mobile
-            wire:key="{{ Helpers::generateId('delegate-mobile', $delegate->wallet()->address()) }}"
+            x-data="{ isFavorite: {{ $delegate->isFavorite() ? 'true' : 'false' }} }"
+            wire:key="{{ Helpers::generateId('delegate-mobile', $delegate->order(), $delegate->wallet()->address(), $delegate->roundNumber()) }}"
             :expand-class="Arr::toCssClasses([
                 'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700' => ! $delegate->wallet()->isResigned(),
             ])"
+            ::class="{
+                'delegate-monitor-favorite': isFavorite === true,
+            }"
             expandable
+            ::data-favorite="isFavorite ? 1 : 0"
+            :data-favorite="$delegate->isFavorite() ? 1 : 0"
+            :data-order="$delegate->order()"
         >
             <x-slot name="header">
                 <div class="flex flex-1 min-w-0 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
                     <div class="flex items-center">
                         <div class="hidden items-center pr-3 sm:flex">
-                            <x-delegates.favorite-toggle :model="$delegate" />
+                            <x-delegates.favorite-toggle
+                                :model="$delegate"
+                                on-click="toggleFavorites"
+                            />
                         </div>
 
                         <span class="text-sm font-semibold leading-4.25 min-w-[32px]">
@@ -69,6 +81,7 @@
             <x-tables.rows.mobile.encapsulated.delegates.monitor.favorite
                 :model="$delegate"
                 class="pt-4 mt-4 border-t sm:hidden border-theme-secondary-300"
+                on-click="toggleFavorites"
             />
         </x-tables.rows.mobile>
     @endforeach

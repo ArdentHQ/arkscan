@@ -71,10 +71,7 @@
                     ::data-value="isFavorite ? 1 : 0"
                     :data-value="$delegate->isFavorite() ? 1 : 0"
                 >
-                    <x-delegates.favorite-toggle
-                        :model="$delegate"
-                        without-data
-                    />
+                    <x-delegates.favorite-toggle :model="$delegate" />
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell data-value="{{ $delegate->order() }}">
