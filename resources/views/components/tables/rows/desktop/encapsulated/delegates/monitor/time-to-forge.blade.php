@@ -1,7 +1,7 @@
 @props(['model'])
 
 <div class="font-semibold !leading-4.25 text-sm text-theme-secondary-900 dark:text-theme-dark-50">
-    @if ($model->hasForged())
+    @if ($model->hasForged() || $model->justMissed())
         <div>
             @lang('tables.delegate-monitor.completed')
         </div>

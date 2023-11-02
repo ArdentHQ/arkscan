@@ -1,6 +1,6 @@
 @props([
     'model',
-    'width' => 'w-[8.75rem]',
+    'width' => 'min-w-[8.75rem]',
     'withTime' => false,
     'withText' => true,
 ])
@@ -8,7 +8,7 @@
 <x-general.badge
     :attributes="$attributes"
     :colors="Arr::toCssClasses([
-        'inline-flex space-x-2 items-center',
+        'inline-flex space-x-2 items-center whitespace-nowrap',
         '!px-2' => $withText,
         'border-transparent bg-theme-secondary-200 dark:border-theme-dark-700 encapsulated-badge' => $withText && $model->isPending(),
         'border-transparent bg-theme-success-100 dark:border-theme-success-700' => $withText && $model->hasForged(),
