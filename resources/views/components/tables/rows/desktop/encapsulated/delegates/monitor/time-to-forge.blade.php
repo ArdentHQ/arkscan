@@ -9,6 +9,10 @@
         <div>
             @lang('general.now')
         </div>
+    @elseif ($model->justMissed())
+        <div>
+            @lang('tables.delegate-monitor.missed')
+        </div>
     @else
         <x-delegates.time-to-forge
             :model="$model"
