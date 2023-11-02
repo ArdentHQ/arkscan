@@ -1,11 +1,12 @@
 @props([
     'delegates',
+    'round',
     'noResultsMessage' => null,
 ])
 
 <x-tables.mobile.includes.encapsulated
     x-data="MobileSorting('favorite', 'desc', 'order', 'asc')"
-    wire:key="{{ Helpers::generateId('delegate-monitor-mobile') }}"
+    wire:key="{{ Helpers::generateId('delegate-monitor-mobile', $round) }}"
     class="delegate-monitor-mobile"
     :no-results-message="$noResultsMessage"
 >
