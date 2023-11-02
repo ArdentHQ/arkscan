@@ -49,7 +49,7 @@
             'type' => 'badge',
             'sortingId' => 'missed_blocks',
             'livewireSort' => true,
-            'class' => 'whitespace-nowrap',
+            'class' => 'whitespace-nowrap text-right',
         ],
         '' => [
             'type'  => 'text',

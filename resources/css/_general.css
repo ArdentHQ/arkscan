@@ -334,3 +334,46 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 
     @apply pointer-events-none h-0 w-0 top-full left-1/2 absolute border-t-theme-secondary-900 dark:border-t-theme-dark-800;
 }
+
+/* Search */
+
+.search-dropdown a .encapsulated-badge {
+    @apply transition-default;
+}
+.search-dropdown a:hover .encapsulated-badge {
+    @apply bg-theme-secondary-200;
+}
+.search-dropdown a:hover .encapsulated-badge {
+    @apply bg-theme-secondary-300 dark:bg-theme-dark-700;
+}
+
+/* Favorite */
+
+.favorite-icon svg path {
+    fill: transparent;
+    stroke: currentColor;
+
+    @apply transition-default;
+}
+
+.favorite-icon__selected svg path {
+    fill: var(--theme-color-primary-100);
+    stroke: var(--theme-color-primary-700);
+}
+
+.dark .favorite-icon__selected svg path {
+    fill: var(--theme-color-dark-blue-900);
+    stroke: var(--theme-color-dark-blue-400);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .favorite-icon:hover svg path {
+        fill: var(--theme-color-primary-700);
+        stroke: var(--theme-color-primary-700);
+    }
+
+    .dark .favorite-icon:hover svg path {
+        fill: var(--theme-color-dark-blue-500);
+        stroke: var(--theme-color-dark-blue-500);
+    }
+}

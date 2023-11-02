@@ -2,31 +2,59 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Delegates;
 
 use App\Facades\Rounds;
+use App\Facades\Settings;
+use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\DelegateData;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Component;
 use Throwable;
 
-final class DelegateMonitor extends Component
+/**
+ * @property bool $hasDelegates
+ */
+final class Monitor extends Component
 {
+    use DeferLoading;
     use DelegateData;
+
+    /** @var mixed */
+    protected $listeners = [
+        'monitorIsReady',
+    ];
 
     private array $delegates = [];
 
     public function render(): View
     {
-        return view('livewire.delegate-monitor', [
-            'delegates'  => $this->delegates,
-            'round'      => Rounds::current(),
+        return view('livewire.delegates.monitor', [
+            'round'     => Rounds::current(),
+            'delegates' => collect($this->delegates)->each(fn ($slot) => $slot->setFavorite(Settings::hasFavoriteDelegate($slot->publicKey())))
+                ->values(),
         ]);
+    }
+
+    public function monitorIsReady(): void
+    {
+        $this->setIsReady();
+
+        $this->pollDelegates();
+    }
+
+    public function getHasDelegatesProperty(): bool
+    {
+        return count($this->delegates) > 0;
     }
 
     public function pollDelegates(): void
     {
+        if (! $this->isReady) {
+            return;
+        }
+
         try {
             $this->delegates = $this->fetchDelegates();
 

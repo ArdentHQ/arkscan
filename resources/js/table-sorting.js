@@ -1,20 +1,48 @@
+import { sortRow } from "./includes/sorting";
+
 // Variation of https://codepen.io/ryangjchandler/pen/WNQQKeR
-const TableSorting = (sortBy = "", sortDirection = "asc") => {
+const TableSorting = (
+    sortBy = "",
+    sortDirection = "asc",
+    secondarySortBy = null,
+    secondarySortDirection = "asc"
+) => {
     return {
         sortBy,
         sortAsc: sortDirection === "asc",
+        secondarySortIndex: null,
+        livewireHook: null,
 
         init() {
             this.update();
 
             if (typeof Livewire !== "undefined") {
-                Livewire.hook("message.processed", (message, component) => {
+                this.livewireHook = Livewire.hook("message.processed", () => {
+                    if (!this.$refs[this.sortBy]) {
+                        if (this.livewireHook) {
+                            this.livewireHook();
+                        }
+
+                        return;
+                    }
+
                     this.update();
                 });
             }
         },
 
         update() {
+            this.secondarySortIndex = null;
+            if (secondarySortBy) {
+                const secondaryElement = this.$refs[secondarySortBy];
+
+                if (secondaryElement) {
+                    this.secondarySortIndex = Array.from(
+                        secondaryElement.parentNode.children
+                    ).indexOf(secondaryElement);
+                }
+            }
+
             this.getTableRows().forEach((row, index) => {
                 row.dataset["rowIndex"] = index;
             });
@@ -60,42 +88,36 @@ const TableSorting = (sortBy = "", sortDirection = "asc") => {
         },
 
         sortCallback(index) {
-            return (a, b) =>
-                ((row1, row2) => {
-                    const row1Value = this.getCellValue(row1, index);
-                    const row2Value = this.getCellValue(row2, index);
+            return (row1, row2) => {
+                const sortResult = this.sortRows(
+                    row1,
+                    row2,
+                    index,
+                    this.sortAsc
+                );
+                if (sortResult === 0 && this.secondarySortIndex !== null) {
+                    return this.sortRows(
+                        row1,
+                        row2,
+                        this.secondarySortIndex,
+                        secondarySortDirection === "asc",
+                        false
+                    );
+                }
 
-                    const isRow1Numeric =
-                        row1Value !== "" &&
-                        !isNaN(row1Value) &&
-                        row1Value !== null;
-                    const isRow2Numeric =
-                        row2Value !== "" &&
-                        !isNaN(row2Value) &&
-                        row2Value !== null;
+                return sortResult;
+            };
+        },
 
-                    if (isNaN(row1Value) && isNaN(row2Value)) {
-                        return row1Value.toString().localeCompare(row2Value);
-                    }
-
-                    if (isRow1Numeric && isRow2Numeric) {
-                        return row1Value - row2Value;
-                    }
-
-                    if (isRow1Numeric && !isRow2Numeric) {
-                        return 0;
-                    }
-
-                    if (row1Value === row2Value) {
-                        return this.sortAsc
-                            ? row1.dataset["rowIndex"] -
-                                  row2.dataset["rowIndex"]
-                            : row2.dataset["rowIndex"] -
-                                  row1.dataset["rowIndex"];
-                    }
-
-                    return this.sortAsc ? 1 : -1;
-                })(this.sortAsc ? a : b, this.sortAsc ? b : a);
+        sortRows(row1, row2, index, sortAscending, sortByRowIndex = true) {
+            return sortRow(
+                row1,
+                row2,
+                this.getCellValue(row1, index),
+                this.getCellValue(row2, index),
+                sortAscending,
+                sortByRowIndex
+            );
         },
     };
 };

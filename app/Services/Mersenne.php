@@ -6,6 +6,11 @@ namespace App\Services;
 
 use mersenne_twister\twister;
 
+/**
+ * @codeCoverageIgnore
+ *
+ * TODO: remove in a future PR as it's no longer used. Kept for now so as not to taint
+ */
 final class Mersenne
 {
     private twister $twister;

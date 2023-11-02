@@ -3,7 +3,6 @@
     'breakpoint' => 'lg',
     'firstOn' => null,
     'lastOn' => null,
-
 ])
 
 <x-ark-tables.cell
