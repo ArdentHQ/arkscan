@@ -146,15 +146,15 @@ final class NumberFormatter
      */
     public static function currencyForViews($value, string $currency): string
     {
-        if (NumberFormatter::isFiat($currency)) {
-            return trim(trim(NumberFormatter::currencyWithDecimals($value, $currency, 0), '0'), '.');
+        if (self::isFiat($currency)) {
+            return trim(trim(self::currencyWithDecimals($value, $currency, 0), '0'), '.');
         }
 
         return BetterNumberFormatter::new()
             ->formatWithCurrencyCustom(
                 $value,
                 $currency,
-                NumberFormatter::CRYPTO_DECIMALS
+                self::CRYPTO_DECIMALS
             );
     }
 
