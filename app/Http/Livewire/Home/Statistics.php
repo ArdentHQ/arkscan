@@ -12,9 +12,9 @@ use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\Statistics as StatisticsCache;
 use App\Services\MarketCap;
 use App\Services\NumberFormatter;
+use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 use Illuminate\View\View;
 use Livewire\Component;
-use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 
 final class Statistics extends Component
 {
@@ -35,7 +35,8 @@ final class Statistics extends Component
         ]);
     }
 
-    private function formatVolume($volume, $target) {
+    private function formatVolume($volume, $target)
+    {
         if (NumberFormatter::isFiat($volume)) {
             return trim(trim(NumberFormatter::currencyWithDecimals($volume, $target, 0), '0'), '.');
         }

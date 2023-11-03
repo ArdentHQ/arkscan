@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Contracts\MarketDataProvider;
@@ -45,7 +47,7 @@ class CacheVolume extends Command
             if (! empty($result)) {
                 collect($currencies)->values()->each(function ($currency) use ($crypto, $result): void {
                     $currency = $currency['currency'];
-                    $volume = $result[Str::lower($currency)];
+                    $volume   = $result[Str::lower($currency)];
 
                     $crypto->setVolume($currency, $volume);
                 });
