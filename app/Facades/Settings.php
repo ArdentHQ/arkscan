@@ -20,8 +20,6 @@ use Illuminate\Support\Facades\Facade;
  * @method static bool usesPriceChart()
  * @method static bool usesFeeChart()
  * @method static bool usesDarkTheme()
- * @method static Collection favoriteDelegates()
- * @method static bool hasFavoriteDelegate(string $publicKey)
  */
 final class Settings extends Facade
 {

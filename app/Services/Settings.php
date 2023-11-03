@@ -88,14 +88,4 @@ class Settings
     {
         return $this->feeChart();
     }
-
-    public function favoriteDelegates(): Collection
-    {
-        return new Collection($this->get('favoriteDelegates', []));
-    }
-
-    public function hasFavoriteDelegate(string $publicKey): bool
-    {
-        return $this->favoriteDelegates()->contains($publicKey);
-    }
 }

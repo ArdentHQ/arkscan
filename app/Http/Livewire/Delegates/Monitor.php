@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Delegates;
 
 use App\Facades\Rounds;
-use App\Facades\Settings;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\DelegateData;
 use Illuminate\Support\Facades\Cache;
@@ -32,8 +31,7 @@ final class Monitor extends Component
     {
         return view('livewire.delegates.monitor', [
             'round'     => Rounds::current(),
-            'delegates' => collect($this->delegates)->each(fn ($slot) => $slot->setFavorite(Settings::hasFavoriteDelegate($slot->publicKey())))
-                ->values(),
+            'delegates' => $this->delegates,
         ]);
     }
 
