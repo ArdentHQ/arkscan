@@ -49,7 +49,7 @@ final class CacheVolume extends Command
                     $currency = $currency['currency'];
                     $volume   = $result[Str::lower($currency)];
 
-                    $crypto->setVolume($currency, $volume);
+                    $crypto->setVolume($currency, (string) $volume);
                 });
             }
         } catch (CoinGeckoThrottledException) {
