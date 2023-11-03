@@ -2,11 +2,12 @@ class FavoriteDelegates {
     favorites = [];
 
     constructor() {
-        this.favorites = JSON.parse(localStorage.getItem('favorite-delegates')) ?? [];
+        this.favorites =
+            JSON.parse(localStorage.getItem("favorite-delegates")) ?? [];
     }
 
     toggle(publicKey, value) {
-        let isFavoriteValue = ! this.isFavorite(publicKey);
+        let isFavoriteValue = !this.isFavorite(publicKey);
         if (value !== null) {
             isFavoriteValue = value;
         }
@@ -27,7 +28,10 @@ class FavoriteDelegates {
     }
 
     save() {
-        localStorage.setItem('favorite-delegates', JSON.stringify(this.favorites));
+        localStorage.setItem(
+            "favorite-delegates",
+            JSON.stringify(this.favorites)
+        );
     }
 }
 

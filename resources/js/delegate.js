@@ -1,6 +1,6 @@
 import FavoriteDelegates from "./favorite-delegates.js";
 
-const favorites = JSON.parse(localStorage.getItem('favorite-delegates')) ?? [];
+const favorites = JSON.parse(localStorage.getItem("favorite-delegates")) ?? [];
 
 const Delegate = (publicKey, xData = {}) => {
     const isFavorite = favorites.includes(publicKey);
@@ -30,7 +30,7 @@ const Delegate = (publicKey, xData = {}) => {
             this.isFavorite = FavoriteDelegates.toggle(this.publicKey, value);
 
             this.$nextTick(() => {
-                this.$dispatch('updateTableSorting');
+                this.$dispatch("updateTableSorting");
             });
 
             // this.isFavoriteValue = ! this.isFavoriteValue;
@@ -49,6 +49,6 @@ const Delegate = (publicKey, xData = {}) => {
 
         ...xData,
     };
-}
+};
 
 export default Delegate;

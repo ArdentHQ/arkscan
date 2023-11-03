@@ -26,7 +26,10 @@ const TableSorting = (
                 Livewire.hook("message.processed", () => {
                     if (!this.$refs[this.sortBy]) {
                         if (this.windowEvent) {
-                            window.removeEventListener("updateTableSorting", this.windowEvent);
+                            window.removeEventListener(
+                                "updateTableSorting",
+                                this.windowEvent
+                            );
 
                             this.windowEvent = null;
                         }
