@@ -34,7 +34,7 @@ return [
         'statistics' => [
             'title'               => 'Statistics',
             'current_supply'      => 'Current Supply',
-            'volume'              => 'Volume (24h)',
+            'exchange_volume'              => 'Exchange Volume (24h)',
             'market_cap'          => 'Market Cap',
             'block_height'        => 'Block Height',
             'currency_price'      => ':currency Price',
