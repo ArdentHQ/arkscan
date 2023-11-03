@@ -38,7 +38,7 @@ final class Delegates extends TabbedTableComponent
     public array $filter = [
         'active'   => true,
         'standby'  => true,
-        'resigned' => true,
+        'resigned' => false,
     ];
 
     /** @var mixed */
