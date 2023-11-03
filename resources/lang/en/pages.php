@@ -32,13 +32,13 @@ return [
 
     'home'             => [
         'statistics' => [
-            'title'               => 'Statistics',
-            'current_supply'      => 'Current Supply',
+            'title'                        => 'Statistics',
+            'current_supply'               => 'Current Supply',
             'exchange_volume'              => 'Exchange Volume (24h)',
-            'market_cap'          => 'Market Cap',
-            'block_height'        => 'Block Height',
-            'currency_price'      => ':currency Price',
-            'chart_not_supported' => 'Not supported on development networks',
+            'market_cap'                   => 'Market Cap',
+            'block_height'                 => 'Block Height',
+            'currency_price'               => ':currency Price',
+            'chart_not_supported'          => 'Not supported on development networks',
         ],
 
         'footer' => [
