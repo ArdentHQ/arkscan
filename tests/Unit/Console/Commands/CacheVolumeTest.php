@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Console\Commands\CacheVolume;
-use App\Contracts\MarketDataProvider;
 use App\Contracts\Network;
 use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\CryptoDataCache;
