@@ -65,6 +65,12 @@ it('should toggle all filters when "select all" is selected', function () {
         ->assertSet('filter', [
             'active'   => true,
             'standby'  => true,
+            'resigned' => false,
+        ])
+        ->set('filter.resigned', true)
+        ->assertSet('filter', [
+            'active'   => true,
+            'standby'  => true,
             'resigned' => true,
         ])
         ->assertSet('selectAllFilters', true)
