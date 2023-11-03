@@ -11,16 +11,24 @@ const TableSorting = (
         sortBy,
         sortAsc: sortDirection === "asc",
         secondarySortIndex: null,
-        livewireHook: null,
+        windowEvent: null,
 
         init() {
-            this.update();
+            this.$nextTick(() => {
+                this.update();
+            });
+
+            this.windowEvent = this.update.bind(this);
+
+            window.addEventListener("updateTableSorting", this.windowEvent);
 
             if (typeof Livewire !== "undefined") {
-                this.livewireHook = Livewire.hook("message.processed", () => {
+                Livewire.hook("message.processed", () => {
                     if (!this.$refs[this.sortBy]) {
-                        if (this.livewireHook) {
-                            this.livewireHook();
+                        if (this.windowEvent) {
+                            window.removeEventListener("updateTableSorting", this.windowEvent);
+
+                            this.windowEvent = null;
                         }
 
                         return;

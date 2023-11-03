@@ -12,7 +12,9 @@
 >
     @foreach ($delegates as $delegate)
         <x-tables.rows.mobile
-            x-data="{ isFavorite: {{ $delegate->isFavorite() ? 'true' : 'false' }} }"
+            x-data="Delegate('{{ $delegate->publicKey() }}', {
+                isExpanded: false,
+            })"
             wire:key="{{ Helpers::generateId('delegate-mobile', $delegate->order(), $delegate->wallet()->address(), $delegate->roundNumber()) }}"
             :expand-class="Arr::toCssClasses([
                 'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700' => ! $delegate->wallet()->isResigned(),
@@ -22,7 +24,6 @@
             }"
             expandable
             ::data-favorite="isFavorite ? 1 : 0"
-            :data-favorite="$delegate->isFavorite() ? 1 : 0"
             :data-order="$delegate->order()"
         >
             <x-slot name="header">

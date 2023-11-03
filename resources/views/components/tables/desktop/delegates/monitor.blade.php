@@ -60,18 +60,13 @@
     <tbody x-ref="tbody">
         @foreach($delegates as $delegate)
             <x-ark-tables.row
-                x-data="{
-                    isFavorite: {{ $delegate->isFavorite() ? 'true' : 'false' }},
-                }"
+                x-data="Delegate('{{ $delegate->publicKey() }}')"
                 wire:key="delegate-{{ $delegate->order() }}-{{ $delegate->wallet()->address() }}-{{ $delegate->roundNumber() }}"
                 ::class="{
                     'delegate-monitor-favorite': isFavorite === true,
                 }"
             >
-                <x-ark-tables.cell
-                    ::data-value="isFavorite ? 1 : 0"
-                    :data-value="$delegate->isFavorite() ? 1 : 0"
-                >
+                <x-ark-tables.cell ::data-value="isFavorite ? 1 : 0">
                     <x-delegates.favorite-toggle :model="$delegate" />
                 </x-ark-tables.cell>
 

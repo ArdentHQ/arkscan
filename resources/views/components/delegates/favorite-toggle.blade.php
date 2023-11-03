@@ -12,15 +12,10 @@
             'text-theme-primary-600 favorite-icon__selected': isFavorite,
         }"
         @click="function () {
-            if (this.isFavorite) {
-                Livewire.emit('removeFavoriteDelegate', '{{ $model->publicKey() }}');
-            } else {
-                Livewire.emit('setFavoriteDelegate', '{{ $model->publicKey() }}');
-            }
-            this.isFavorite = ! this.isFavorite;
+            this.toggleFavorite();
 
             @if ($onClick)
-                ({{ $onClick }})(this.isFavorite);
+                ({{ $onClick }})();
             @endif
         }"
     >

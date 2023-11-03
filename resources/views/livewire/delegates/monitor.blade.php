@@ -1,5 +1,3 @@
-@php ($favoriteDelegates = $delegates->filter(fn ($slot) => $slot->isFavorite()))
-
 <div
     id="delegate-monitor-list"
     class="w-full"
