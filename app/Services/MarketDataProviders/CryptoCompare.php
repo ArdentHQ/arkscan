@@ -121,6 +121,11 @@ final class CryptoCompare extends AbstractMarketDataProvider
         throw new \Exception('Not implemented');
     }
 
+    public function volume(string $baseCurrency): array
+    {
+        throw new \Exception('Not implemented');
+    }
+
     private function isEmptyResponse(?array $data, bool $checkStatus = true): bool
     {
         $errorCheck = fn () => false;

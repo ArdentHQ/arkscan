@@ -22,4 +22,6 @@ interface MarketDataProvider
      * }
      */
     public function exchangeDetails(Exchange $exchange): array;
+
+    public function volume(string $baseCurrency): array;
 }
