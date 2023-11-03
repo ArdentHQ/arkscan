@@ -11,7 +11,7 @@ use App\Services\Cache\CryptoDataCache;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
-class CacheVolume extends Command
+final class CacheVolume extends Command
 {
     /**
      * The name and signature of the console command.
@@ -23,7 +23,7 @@ class CacheVolume extends Command
     /**
      * The console command description.
      *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Cache exchange volume for the active network currency';
 
@@ -35,7 +35,7 @@ class CacheVolume extends Command
     public function handle(CryptoDataCache $crypto, MarketDataProvider $marketDataProvider)
     {
         if (! Network::canBeExchanged()) {
-            return;
+            return Command::SUCCESS;
         }
 
         /** @var array<string, array<string, string>> */
@@ -44,7 +44,7 @@ class CacheVolume extends Command
         try {
             $result = $marketDataProvider->volume(Network::currency());
 
-            if (! empty($result)) {
+            if (count($result) > 0) {
                 collect($currencies)->values()->each(function ($currency) use ($crypto, $result): void {
                     $currency = $currency['currency'];
                     $volume   = $result[Str::lower($currency)];
