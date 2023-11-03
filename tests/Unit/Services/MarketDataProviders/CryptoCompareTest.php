@@ -118,3 +118,7 @@ it('should throw an exception if the API response indicates throttling for excha
 
     (new CryptoCompare())->exchangeDetails($exchange);
 })->throws(Exception::class, 'Not implemented');
+
+it('should throw an exception for volume', function () {
+    (new CryptoCompare())->volume('ARK');
+})->throws(Exception::class, 'Not implemented');

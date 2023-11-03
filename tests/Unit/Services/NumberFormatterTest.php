@@ -155,3 +155,12 @@ it('should determine that currency does not have a symbol', function ($currency)
     'ETH',
     'LTC',
 ]);
+
+it('should format values for views', function ($currency, $expectation) {
+    expect(NumberFormatter::currencyForViews(1.0005, $currency))->toBe($expectation);
+})->with([
+    'GBP' => ['GBP', '£1'],
+    'EUR' => ['EUR', '€1'],
+    'ETH' => ['ETH', '1.0005 ETH'],
+    'BTC' => ['BTC', '1.0005 BTC'],
+]);
