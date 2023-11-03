@@ -41,4 +41,15 @@ final class CryptoDataCache implements Contract
     {
         return Cache::tags('crypto_compare');
     }
+
+    // Add caches for volume in all currencies
+    public function getVolume(string $currency): ?string
+    {
+        return $this->get(sprintf('volume/%s', $currency), null);
+    }
+
+    public function setVolume(string $currency, string $volume): void
+    {
+        $this->put(sprintf('volume/%s', $currency), $volume);
+    }
 }
