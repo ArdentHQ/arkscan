@@ -1,11 +1,12 @@
 @props([
     'delegates',
+    'round',
     'noResultsMessage' => null,
 ])
 
 <x-tables.mobile.includes.encapsulated
     x-data="MobileSorting('favorite', 'desc', 'order', 'asc')"
-    wire:key="{{ Helpers::generateId('delegate-monitor-mobile') }}"
+    wire:key="{{ Helpers::generateId('delegate-monitor-mobile', $round) }}"
     class="delegate-monitor-mobile"
     :no-results-message="$noResultsMessage"
 >
@@ -80,7 +81,7 @@
 
             <x-tables.rows.mobile.encapsulated.delegates.monitor.favorite
                 :model="$delegate"
-                class="pt-4 mt-4 border-t sm:hidden border-theme-secondary-300"
+                class="pt-4 mt-4 border-t sm:hidden border-theme-secondary-300 dark:border-theme-dark-700"
                 on-click="toggleFavorites"
             />
         </x-tables.rows.mobile>

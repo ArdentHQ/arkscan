@@ -141,6 +141,23 @@ final class NumberFormatter
         return sprintf('%0.2f%s', number_format($value / 1000000, 6), 'M');
     }
 
+    /**
+     * @param string|int|float $value
+     */
+    public static function currencyForViews($value, string $currency): string
+    {
+        if (self::isFiat($currency)) {
+            return trim(trim(self::currencyWithDecimals($value, $currency, 0), '0'), '.');
+        }
+
+        return BetterNumberFormatter::new()
+            ->formatWithCurrencyCustom(
+                $value,
+                $currency,
+                self::CRYPTO_DECIMALS
+            );
+    }
+
     public static function isFiat(string $currency): bool
     {
         $cryptoCurrencies = (new ReflectionClass(CryptoCurrencies::class))->getConstants();

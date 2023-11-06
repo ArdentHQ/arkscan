@@ -10,7 +10,11 @@
         </a>
     @else
         <span class="text-theme-secondary-500 dark:text-theme-dark-500">
-            @lang('tables.delegate-monitor.tbd')
+            @if ($model->justMissed())
+                @lang('general.na')
+            @else
+                @lang('tables.delegate-monitor.tbd')
+            @endif
         </span>
     @endif
 </div>

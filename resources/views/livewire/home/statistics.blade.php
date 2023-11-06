@@ -3,20 +3,19 @@
     wire:poll.{{ Network::blockTime() }}s
 >
     <div class="flex flex-col flex-1 space-y-3 divide-y divide-theme-secondary-300 dark:divide-theme-dark-700">
-        <x-home.stat :title="trans('pages.home.statistics.current_supply')">
-            <x-currency :currency="Network::currency()">{{ $supply }}</x-currency>
-        </x-home.stat>
-
         <x-home.stat
             :title="trans('pages.home.statistics.market_cap')"
             :disabled="! Network::canBeExchanged() || $marketCap === null"
-            class="pt-3"
         >
             {{ $marketCap }}
 
             @if (ExplorerNumberFormatter::hasSymbol(Settings::currency()))
                 {{ Settings::currency() }}
             @endif
+        </x-home.stat>
+
+        <x-home.stat :title="trans('pages.home.statistics.current_supply')" class="pt-3">
+            <x-currency :currency="Network::currency()">{{ $supply }}</x-currency>
         </x-home.stat>
     </div>
 
@@ -25,7 +24,11 @@
             :title="trans('pages.home.statistics.volume')"
             :disabled="! Network::canBeExchanged() || $volume === null"
         >
-            {{ ExplorerNumberFormatter::currencyWithDecimals($volume, Network::currency(), 2) }}
+            {{ $volume }}
+
+            @if (ExplorerNumberFormatter::hasSymbol(Settings::currency()))
+                {{ Settings::currency() }}
+            @endif
         </x-home.stat>
 
         <x-home.stat

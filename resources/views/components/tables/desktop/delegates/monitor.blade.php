@@ -1,11 +1,12 @@
 @props([
     'delegates',
+    'round',
     'noResultsMessage' => null,
 ])
 
 <x-tables.encapsulated-table
     x-data="TableSorting('header-favorite', 'desc', 'header-order', 'asc')"
-    wire:key="{{ Helpers::generateId('delegate-monitor') }}"
+    wire:key="{{ Helpers::generateId('delegate-monitor', $round) }}"
     class="hidden w-full md:block delegate-monitor"
     sticky
 >

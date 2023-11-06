@@ -22,7 +22,11 @@ export const sortRow = (
     }
 
     if (isRow1Numeric && !isRow2Numeric) {
-        return 0;
+        return -1;
+    }
+
+    if (!isRow1Numeric && isRow2Numeric) {
+        return 1;
     }
 
     if (sortByRowIndex && row1Value === row2Value) {

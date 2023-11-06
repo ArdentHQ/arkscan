@@ -95,6 +95,7 @@ return [
         'status_time_to_forge' => 'Status / Time to Forge',
         'block_height'         => 'Block Height',
         'completed'            => 'Completed',
+        'missed'               => 'Missed',
         'tbd'                  => 'TBD',
         'favorite'             => 'Favorite',
         'my_favorites'         => 'My Favorites',

@@ -8,9 +8,9 @@ use App\Actions\CacheNetworkHeight;
 use App\Actions\CacheNetworkSupply;
 use App\Facades\Network;
 use App\Facades\Settings;
-use App\Services\BigNumber;
-use App\Services\Cache\Statistics as StatisticsCache;
+use App\Services\Cache\CryptoDataCache;
 use App\Services\MarketCap;
+use App\Services\NumberFormatter;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -23,11 +23,11 @@ final class Statistics extends Component
 
     public function render(): View
     {
-        $data = StatisticsCache::transactionData();
+        $volume = (new CryptoDataCache())->getVolume(Settings::currency());
 
         return view('livewire.home.statistics', [
             'height'    => CacheNetworkHeight::execute(),
-            'volume'    => BigNumber::new($data['volume'])->toFloat(),
+            'volume'    => NumberFormatter::currencyForViews($volume ?? 0, Settings::currency()),
             'supply'    => CacheNetworkSupply::execute() / 1e8,
             'marketCap' => MarketCap::getFormatted(Network::currency(), Settings::currency()),
         ]);
