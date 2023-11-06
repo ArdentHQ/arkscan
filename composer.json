@@ -15,7 +15,7 @@
         "arkecosystem/foundation": "^13.27",
         "blade-ui-kit/blade-icons": "^1.5",
         "brick/math": "^0.11",
-        "danharrin/livewire-rate-limiting": "^1.2",
+        "danharrin/livewire-rate-limiting": "1.1.0",
         "doctrine/dbal": "^3.0",
         "fruitcake/laravel-cors": "^2.0",
         "http-interop/http-factory-guzzle": "^1.2",
