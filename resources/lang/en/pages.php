@@ -32,13 +32,13 @@ return [
 
     'home'             => [
         'statistics' => [
-            'title'                        => 'Statistics',
-            'current_supply'               => 'Current Supply',
-            'exchange_volume'              => 'Exchange Volume (24h)',
-            'market_cap'                   => 'Market Cap',
-            'block_height'                 => 'Block Height',
-            'currency_price'               => ':currency Price',
-            'chart_not_supported'          => 'Not supported on development networks',
+            'title'               => 'Statistics',
+            'current_supply'      => 'Current Supply',
+            'volume'              => 'Volume (24h)',
+            'market_cap'          => 'Market Cap',
+            'block_height'        => 'Block Height',
+            'currency_price'      => ':currency Price',
+            'chart_not_supported' => 'Not supported on development networks',
         ],
 
         'footer' => [
@@ -132,7 +132,7 @@ return [
         'title'            => 'Transactions',
         'subtitle'         => 'List of transactions on the :network',
         'transactions_24h' => 'Transactions (24h)',
-        'volume_24h'       => 'Volume (24h)',
+        'volume_24h'       => 'Transaction Volume (24h)',
         'total_fees_24h'   => 'Total Fees (24h)',
         'average_fee_24h'  => 'Average Fee (24h)',
     ],
