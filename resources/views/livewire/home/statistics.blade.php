@@ -21,7 +21,7 @@
 
     <div class="flex flex-col flex-1 pt-3 space-y-3 divide-y sm:pt-0 divide-theme-secondary-300 dark:divide-theme-dark-700">
         <x-home.stat
-            :title="trans('pages.home.statistics.exchange_volume')"
+            :title="trans('pages.home.statistics.volume')"
             :disabled="! Network::canBeExchanged() || $volume === null"
         >
             {{ $volume }}
