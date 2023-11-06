@@ -44,13 +44,13 @@ return [
     'custom'                  => 'Custom',
     'x_of_y'                  => ':0 of :1',
     'filter'                  => 'Filter',
+    'now'                     => 'Now',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
         'mainnet'            => 'Mainnet',
         'testnet'            => 'Testnet',
         'price'              => 'Price',
-        'no_results'         => 'We could not find anything matching your search criteria, please try again!',
     ],
 
     'block'                   => [
@@ -123,15 +123,16 @@ return [
     ],
 
     'wallet'                  => [
-        'rank'       => 'Rank',
-        'address'    => 'Address',
-        'info'       => 'Info',
-        'balance'    => 'Balance',
-        'supply'     => 'Supply',
-        'name'       => 'Name',
-        'type'       => 'Type',
-        'voting'     => 'Voting',
-        'percentage' => 'Percentage',
+        'rank'             => 'Rank',
+        'address'          => 'Address',
+        'info'             => 'Info',
+        'balance'          => 'Balance',
+        'balance_currency' => 'Balance (:currency)',
+        'supply'           => 'Supply',
+        'name'             => 'Name',
+        'type'             => 'Type',
+        'voting'           => 'Voting',
+        'percentage'       => 'Percentage',
     ],
 
     'delegates'               => [
@@ -176,7 +177,11 @@ return [
         'type'                 => 'Type',
         'vote'                 => 'Vote',
         'unvote'               => 'Unvote',
-        'results_will_show_up' => 'Results will show up here',
+        'results_will_show_up' => 'Results will show up here.',
+        'contract'             => 'Contract',
+        'value_currency'       => 'Value (:currency)',
+        'balance_currency'     => 'Balance (:currency)',
+        'no_results'           => 'We could not find anything matching your search criteria, please try again!',
     ],
 
     'export' => [

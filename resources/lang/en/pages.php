@@ -132,7 +132,7 @@ return [
         'title'            => 'Transactions',
         'subtitle'         => 'List of transactions on the :network',
         'transactions_24h' => 'Transactions (24h)',
-        'volume_24h'       => 'Volume (24h)',
+        'volume_24h'       => 'Transaction Volume (24h)',
         'total_fees_24h'   => 'Total Fees (24h)',
         'average_fee_24h'  => 'Average Fee (24h)',
     ],
@@ -394,7 +394,7 @@ return [
             'current_delegate'       => 'Current',
             'next_delegate'          => 'Next',
             'next_slot'              => 'Next Slot',
-            'blocks_generated'       => ':forged/:total Blocks',
+            'blocks_generated'       => ':forged / :total Blocks',
             'forging'                => 'Forging',
             'missed'                 => 'Missed',
             'not_forging'            => 'Not Forging',
@@ -408,6 +408,15 @@ return [
     'delegate-monitor' => [
         'title'    => 'Delegate Monitor',
         'subtitle' => 'Delegate block production observer tool.',
+
+        'stats' => [
+            'forging'        => 'Forging',
+            'missed'         => 'Missed',
+            'not_forging'    => 'Not Forging',
+            'current_height' => 'Current Height',
+            'current_round'  => 'Current Round',
+            'next_slot'      => 'Next Slot',
+        ],
     ],
 
     'blocks_by_wallet' => [

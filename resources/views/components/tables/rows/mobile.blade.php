@@ -4,12 +4,16 @@
     'expandClass' => 'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700',
     'expandDisabled' => false,
     'contentClass' => null,
+    'xData' => null,
 ])
 
 <div
     @if ($expandable)
         x-data="{
             isExpanded: false,
+            @if ($xData)
+                ...{{ $xData }}
+            @endif
         }"
     @endif
 
@@ -33,7 +37,7 @@
         {{ $header }}
 
         @if ($expandable)
-            <div class="flex items-center pl-4 sm:hidden h-[17px]">
+            <div class="flex items-center pl-3 sm:hidden h-[17px]">
                 <x-general.dropdown.arrow
                     key="isExpanded"
                     x-on:click="{{ $expandDisabled ? '' : 'isExpanded = ! isExpanded' }}"

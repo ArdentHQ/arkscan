@@ -6,7 +6,6 @@ namespace App\Services;
 
 use App\Actions\CacheNetworkSupply;
 use App\Services\Cache\NetworkStatusBlockCache;
-use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 
 final class MarketCap
 {
@@ -29,16 +28,7 @@ final class MarketCap
             return null;
         }
 
-        if (NumberFormatter::isFiat($target)) {
-            return trim(trim(NumberFormatter::currencyWithDecimals($marketcap, $target, 0), '0'), '.');
-        }
-
-        return BetterNumberFormatter::new()
-            ->formatWithCurrencyCustom(
-                $marketcap,
-                $target,
-                NumberFormatter::CRYPTO_DECIMALS
-            );
+        return NumberFormatter::currencyForViews($marketcap, $target);
     }
 
     private static function getSupply(): float

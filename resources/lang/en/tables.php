@@ -53,8 +53,12 @@ return [
     ],
 
     'exchanges' => [
-        'price'  => 'Price (:currency)',
-        'volume' => 'Volume (:currency)',
+        'name'            => 'Name',
+        'top_pairs'       => 'Top Pairs',
+        'price'           => 'Price',
+        'volume'          => 'Volume',
+        'price_currency'  => 'Price (:currency)',
+        'volume_currency' => 'Volume (:currency)',
     ],
 
     'delegates' => [
@@ -80,6 +84,27 @@ return [
         'no_results' => [
             'no_filters' => 'All filtering options have been deselected. Please select one or more options to display transactions.',
             'no_results' => 'No delegates matching the selected types could be found.',
+        ],
+    ],
+
+    'delegate-monitor' => [
+        'order'                => 'Order',
+        'delegate'             => 'Delegate',
+        'status'               => 'Status',
+        'time_to_forge'        => 'Time to Forge',
+        'status_time_to_forge' => 'Status / Time to Forge',
+        'block_height'         => 'Block Height',
+        'completed'            => 'Completed',
+        'missed'               => 'Missed',
+        'tbd'                  => 'TBD',
+        'favorite'             => 'Favorite',
+        'my_favorites'         => 'My Favorites',
+
+        'forging-status' => [
+            'block_generated' => 'Block Generated',
+            'generating'      => 'Generating ...',
+            'pending'         => 'Pending',
+            'blocks_missed'   => ':count Blocks Missed',
         ],
     ],
 

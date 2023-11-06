@@ -20,6 +20,7 @@ use App\Console\Commands\CacheMultiSignatureAddresses;
 use App\Console\Commands\CacheNetworkAggregates;
 use App\Console\Commands\CachePrices;
 use App\Console\Commands\CacheTransactions;
+use App\Console\Commands\CacheVolume;
 use App\Console\Commands\FetchExchangesDetails;
 use App\Console\Commands\GenerateVoteReport;
 use App\Console\Commands\LoadExchanges;
@@ -52,6 +53,8 @@ final class Kernel extends ConsoleKernel
         $schedule->command(CacheCurrenciesData::class)->everyMinute()->withoutOverlapping();
 
         $schedule->command(CacheCurrenciesHistory::class)->hourly();
+
+        $schedule->command(CacheVolume::class)->hourly();
 
         $schedule->command(CacheDelegateWallets::class)->everyTenMinutes();
 
