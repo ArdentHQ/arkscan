@@ -2,9 +2,25 @@
     'rounded' => true,
     'paginator' => null,
     'noResultsMessage' => null,
+    'withPagination' => false,
 ])
 
-@php ($paginatorIsEmpty = $paginator === null || ($paginator !== null && $paginator->total() < config('arkscan.pagination.per_page')) || (isset($this) && property_exists($this, 'isReady') && ! $this->isReady))
+@php
+    $paginatorIsEmpty = false;
+    if (! $withPagination) {
+        if ($paginator === null) {
+            $paginatorIsEmpty = true;
+        }
+
+        if ($paginator !== null && $paginator->total() < config('arkscan.pagination.per_page')) {
+            $paginatorIsEmpty = true;
+        }
+
+        if (isset($this) && property_exists($this, 'isReady') && ! $this->isReady) {
+            $paginatorIsEmpty = true;
+        }
+    }
+@endphp
 
 <div {{ $attributes->class([
     'border border-theme-secondary-300 dark:border-theme-secondary-800 overflow-hidden table-container px-6 table-encapsulated encapsulated-table-header-gradient',
