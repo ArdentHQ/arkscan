@@ -537,9 +537,9 @@ return [
     ],
 
     'exchanges' => [
-        'title'      => 'Exchange Listings',
-        'subtitle'   => 'A listing of active exchanges and their ARK pairs.',
-        'get_listed' => "Don't see an exchange listed? <span class=\"whitespace-nowrap\">Let us know!</span>",
+        'title'            => 'Exchange Listings',
+        'subtitle'         => 'A listing of active exchanges and their ARK pairs.',
+        'get_listed'       => "Don't see an exchange listed? <span class=\"whitespace-nowrap\">Let us know!</span>",
         'live_price_chart' => 'Live Price Chart',
 
         'type' => [
