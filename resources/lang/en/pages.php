@@ -443,7 +443,6 @@ return [
     'statistics'       => [
         'title'     => 'Statistics',
         'subtitle'  => 'Explore blockchain data and currency exchange statistics.',
-        'exchanges' => 'Exchanges',
 
         'highlights' => [
             'total_supply' => 'Total Supply',
@@ -460,13 +459,6 @@ return [
             'max-fee'                 => 'Max Fee',
             'all-time-fees-collected' => 'All-Time Fees Collected',
             'fees'                    => 'Fees',
-        ],
-
-        'chart'      => [
-            'current_price' => 'Current Price',
-            'market-cap'    => 'Market Cap',
-            'min-price'     => 'Min Price',
-            'max-price'     => 'Max Price',
         ],
     ],
 
@@ -548,6 +540,7 @@ return [
         'title'      => 'Exchange Listings',
         'subtitle'   => 'A listing of active exchanges and their ARK pairs.',
         'get_listed' => "Don't see an exchange listed? <span class=\"whitespace-nowrap\">Let us know!</span>",
+        'live_price_chart' => 'Live Price Chart',
 
         'type' => [
             'title'       => 'Type',
@@ -573,6 +566,13 @@ return [
             'message'             => 'Additional Details',
             'success_toast'       => 'Thank you. Your message has been submitted.',
             'throttle_error'      => 'You have made too many requests. Please wait :time before reporting again.',
+        ],
+
+        'chart'      => [
+            'current_price' => 'Current Price',
+            'market-cap'    => 'Market Cap',
+            'min-price'     => 'Min Price',
+            'max-price'     => 'Max Price',
         ],
     ],
 ];
