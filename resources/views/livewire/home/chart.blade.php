@@ -63,14 +63,16 @@
                     @endforeach
                 </x-general.dropdown.dropdown>
 
-                <div>
-                    <a
-                        href="{{ route('exchanges') }}"
-                        class="button button-secondary px-4 py-1.5"
-                    >
-                        @lang('actions.exchanges')
-                    </a>
-                </div>
+                @if (Network::canBeExchanged())
+                    <div>
+                        <a
+                            href="{{ route('exchanges') }}"
+                            class="button button-secondary px-4 py-1.5"
+                        >
+                            @lang('actions.exchanges')
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -100,25 +102,29 @@
                 />
             </div>
 
-            <div class="hidden sm:block md:hidden">
-                <a
-                    href="{{ route('exchanges') }}"
-                    class="button button-secondary px-4 py-1.5 w-full"
-                >
-                    @lang('actions.exchanges')
-                </a>
-            </div>
+            @if (Network::canBeExchanged())
+                <div class="hidden sm:block md:hidden">
+                    <a
+                        href="{{ route('exchanges') }}"
+                        class="button button-secondary px-4 py-1.5 w-full"
+                    >
+                        @lang('actions.exchanges')
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 
-    <div class="sm:hidden mt-3">
-        <a
-            href="{{ route('exchanges') }}"
-            class="button button-secondary px-4 py-1.5 w-full"
-        >
-            @lang('actions.exchanges')
-        </a>
-    </div>
+    @if (Network::canBeExchanged())
+        <div class="sm:hidden mt-3">
+            <a
+                href="{{ route('exchanges') }}"
+                class="button button-secondary px-4 py-1.5 w-full"
+            >
+                @lang('actions.exchanges')
+            </a>
+        </div>
+    @endif
 </div>
 
 @push('scripts')
