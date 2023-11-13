@@ -3,7 +3,10 @@
     class="w-full"
     wire:init="setIsReady"
 >
-    <x-skeletons.top-accounts :row-count="$this->perPage">
+    <x-skeletons.top-accounts
+        :row-count="$this->perPage"
+        :paginator="$wallets"
+    >
         <x-tables.desktop.top-accounts :wallets="$wallets" />
 
         <x-tables.mobile.top-accounts :wallets="$wallets" />

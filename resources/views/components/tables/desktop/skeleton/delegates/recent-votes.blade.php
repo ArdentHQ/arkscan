@@ -1,5 +1,6 @@
 @props([
     'rowCount' => 10,
+    'paginator' => null,
 ])
 
 <x-table-skeleton
@@ -38,5 +39,6 @@
     ]"
     :component-properties="['rounded' => false]"
     :row-count="$rowCount"
+    :paginator="$paginator"
     encapsulated
 />
