@@ -7,7 +7,7 @@
         'hidden md-lg:flex' => ! Network::canBeExchanged(),
         'flex' => Network::canBeExchanged(),
     ])>
-        <div class="flex md:justify-between items-center whitespace-nowrap md:flex-1">
+        <div class="flex items-center whitespace-nowrap md:flex-1 md:justify-between">
             <x-home.stat
                 :title="trans('pages.home.statistics.currency_price', ['currency' => Network::currency()])"
                 class="md:hidden"
@@ -31,7 +31,7 @@
                 </span>
             </p>
 
-            <div class="items-center space-x-3 hidden md:flex">
+            <div class="hidden items-center space-x-3 md:flex">
                 <x-general.dropdown.dropdown
                     dropdown-class="w-50"
                     active-button-class="md:bg-white bg-theme-secondary-200 text-theme-secondary-700 md:dark:text-theme-secondary-50 md:hover:text-theme-secondary-700 md:hover:bg-theme-secondary-200 md:dark:bg-theme-secondary-900 dark:bg-theme-secondary-800 dark:hover:bg-theme-secondary-800 dark:text-theme-secondary-200"
@@ -67,7 +67,7 @@
                     <div>
                         <a
                             href="{{ route('exchanges') }}"
-                            class="button button-secondary px-4 py-1.5"
+                            class="py-1.5 px-4 button button-secondary"
                         >
                             @lang('actions.exchanges')
                         </a>
@@ -76,8 +76,8 @@
             </div>
         </div>
 
-        <div class="flex flex-1 justify-end sm:justify-between min-w-0 sm:items-center sm:pl-9 md:pl-0">
-            <div class="flex w-full sm:max-w-[133px] md:hidden max-h-[39px] max-w-[258px]">
+        <div class="flex flex-1 justify-end min-w-0 sm:justify-between sm:items-center sm:pl-9 md:pl-0">
+            <div class="flex w-full md:hidden max-h-[39px] max-w-[258px] sm:max-w-[133px]">
                 <livewire:price-stats />
             </div>
 
@@ -106,7 +106,7 @@
                 <div class="hidden sm:block md:hidden">
                     <a
                         href="{{ route('exchanges') }}"
-                        class="button button-secondary px-4 py-1.5 w-full"
+                        class="py-1.5 px-4 w-full button button-secondary"
                     >
                         @lang('actions.exchanges')
                     </a>
@@ -116,10 +116,10 @@
     </div>
 
     @if (Network::canBeExchanged())
-        <div class="sm:hidden mt-3">
+        <div class="mt-3 sm:hidden">
             <a
                 href="{{ route('exchanges') }}"
-                class="button button-secondary px-4 py-1.5 w-full"
+                class="py-1.5 px-4 w-full button button-secondary"
             >
                 @lang('actions.exchanges')
             </a>
