@@ -34,7 +34,7 @@
             <div class="hidden items-center space-x-3 sm:flex">
                 <x-general.dropdown.dropdown
                     dropdown-class="w-50"
-                    active-button-class="bg-white text-theme-secondary-700 dark:text-theme-secondary-50 hover:text-theme-secondary-700 hover:bg-theme-secondary-200 dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800"
+                    active-button-class="bg-white text-theme-secondary-700 dark:text-theme-secondary-50 dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800 hover:text-theme-secondary-700 hover:bg-theme-secondary-200"
                 >
                     <x-slot
                         name="button"
@@ -77,7 +77,7 @@
         </div>
 
         <div class="flex flex-1 justify-end min-w-0 sm:justify-between sm:items-center">
-            <div class="hidden w-full sm:flex sm:mt-4 lg:mt-[1.125rem] h-[140px] md:h-[116px]">
+            <div class="hidden w-full sm:flex sm:mt-4 h-[140px] md:h-[116px] lg:mt-[1.125rem]">
                 <x-ark-chart
                     class="w-full h-auto"
                     canvas-class="max-w-full"
