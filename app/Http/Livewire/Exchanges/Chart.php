@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire\Stats;
+namespace App\Http\Livewire\Exchanges;
 
 use App\Enums\CryptoCurrencies;
 use App\Enums\StatsPeriods;
@@ -54,7 +54,7 @@ final class Chart extends Component
 
         $variation = $this->mainValueVariation($datasets);
 
-        return view('livewire.stats.chart', [
+        return view('livewire.exchanges.chart', [
             'mainValue'           => $this->mainValueBTC(),
             'mainValueFiat'       => $this->mainValueFiat(),
             'mainValuePercentage' => $this->mainValuePercentage($datasets),
