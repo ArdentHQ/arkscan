@@ -59,7 +59,7 @@ final class Chart extends Component
             'mainValueFiat'       => ServiceNumberFormatter::currency($currentPrice, $currency),
             'datasets'            => collect($datasets),
             'labels'              => collect($labels),
-            'chartTheme'          => $this->chartTheme($this->mainValueVariation($chartData->get('datasets', [])) === 'up' ? 'green' : 'red'),
+            'chartTheme'          => $this->chartTheme($this->mainValueVariation($chartData->get('datasets', []))),
             'options'             => $this->availablePeriods(),
             'refreshInterval'     => $this->refreshInterval,
         ]);
@@ -85,7 +85,7 @@ final class Chart extends Component
         $initialValue = collect($dataset)->first();
         $currentValue = $this->getPrice(Settings::currency());
 
-        return $initialValue > $currentValue ? 'down' : 'up';
+        return $initialValue > $currentValue ? 'red' : 'green';
     }
 
     private function availablePeriods(): array
