@@ -3,11 +3,11 @@
     wire:poll.{{ $refreshInterval }}s
 >
     <div @class([
-        'flex-row justify-between space-x-4 h-full md:flex-col md:space-x-0',
+        'flex-row justify-between h-full sm:flex-col',
         'hidden md-lg:flex' => ! Network::canBeExchanged(),
         'flex' => Network::canBeExchanged(),
     ])>
-        <div class="flex items-center whitespace-nowrap md:flex-1 md:justify-between">
+        <div class="flex items-center whitespace-nowrap sm:flex-1 sm:justify-between">
             <x-home.stat
                 :title="trans('pages.home.statistics.currency_price', ['currency' => Network::currency()])"
                 class="md:hidden"
@@ -31,10 +31,10 @@
                 </span>
             </p>
 
-            <div class="hidden items-center space-x-3 md:flex">
+            <div class="hidden items-center space-x-3 sm:flex">
                 <x-general.dropdown.dropdown
                     dropdown-class="w-50"
-                    active-button-class="md:bg-white bg-theme-secondary-200 text-theme-secondary-700 md:dark:text-theme-secondary-50 md:hover:text-theme-secondary-700 md:hover:bg-theme-secondary-200 md:dark:bg-theme-secondary-900 dark:bg-theme-secondary-800 dark:hover:bg-theme-secondary-800 dark:text-theme-secondary-200"
+                    active-button-class="bg-white text-theme-secondary-700 dark:text-theme-secondary-50 hover:text-theme-secondary-700 hover:bg-theme-secondary-200 dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800"
                 >
                     <x-slot
                         name="button"
@@ -76,12 +76,8 @@
             </div>
         </div>
 
-        <div class="flex flex-1 justify-end min-w-0 sm:justify-between sm:items-center sm:pl-9 md:pl-0">
-            <div class="flex w-full md:hidden max-h-[39px] max-w-[258px] sm:max-w-[133px]">
-                <livewire:price-stats />
-            </div>
-
-            <div class="hidden w-full md:flex md:mt-4 h-[112px]">
+        <div class="flex flex-1 justify-end min-w-0 sm:justify-between sm:items-center">
+            <div class="hidden w-full sm:flex sm:mt-4 lg:mt-[1.125rem] h-[140px] md:h-[116px]">
                 <x-ark-chart
                     class="w-full h-auto"
                     canvas-class="max-w-full"
@@ -102,29 +98,16 @@
                 />
             </div>
 
-            @if (Network::canBeExchanged())
-                <div class="hidden sm:block md:hidden">
-                    <a
-                        href="{{ route('exchanges') }}"
-                        class="py-1.5 px-4 w-full button button-secondary"
-                    >
-                        @lang('actions.exchanges')
-                    </a>
-                </div>
-            @endif
+            <div class="flex items-center sm:hidden">
+                <a
+                    href="{{ route('exchanges') }}"
+                    class="py-1.5 px-4 button button-secondary"
+                >
+                    @lang('actions.exchanges')
+                </a>
+            </div>
         </div>
     </div>
-
-    @if (Network::canBeExchanged())
-        <div class="mt-3 sm:hidden">
-            <a
-                href="{{ route('exchanges') }}"
-                class="py-1.5 px-4 w-full button button-secondary"
-            >
-                @lang('actions.exchanges')
-            </a>
-        </div>
-    @endif
 </div>
 
 @push('scripts')
