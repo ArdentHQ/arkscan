@@ -2,7 +2,7 @@
 
 <div
     @unless ($isDisabled)
-        wire:poll.visible.60s
+        wire:poll.visible.1s
     @endunless
     class="w-full md:w-auto"
     :class="{ 'opacity-50': busy }"
