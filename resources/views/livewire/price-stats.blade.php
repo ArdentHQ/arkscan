@@ -12,13 +12,12 @@
         @toggle-dark-mode.window="toggleDarkMode"
     >
         <div
-            class="relative w-full h-full"
+            class="relative w-full h-[39px]"
             wire:ignore
         >
             <canvas
                 x-ref="chart"
                 class="max-w-full"
-                height="39"
             ></canvas>
         </div>
     </div>

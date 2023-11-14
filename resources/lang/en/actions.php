@@ -23,5 +23,6 @@ return [
     'copy'            => 'Copy',
     'view'            => 'View',
     'explore'         => 'Explore',
+    'exchanges'       => 'Exchanges',
     'statistics'      => 'Statistics',
 ];
