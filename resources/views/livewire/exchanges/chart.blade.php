@@ -8,7 +8,7 @@
                 <div class="inline-flex items-center space-x-2 sm:space-x-3 md:items-end">
                     <div class="flex flex-col">
                         <div class="mb-2 text-sm font-semibold sm:hidden leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
-                            @lang('pages.statistics.chart.current_price')
+                            @lang('pages.exchanges.chart.current_price')
                         </div>
 
                         <span class="text-lg font-semibold leading-5.25 md:!leading-[29px] md:text-2xl text-theme-secondary-900 dark:text-theme-secondary-200">
@@ -33,11 +33,13 @@
 
                 <div class="flex flex-1 sm:block sm:flex-none">
                     <a
-                        href="{{ route('exchanges') }}"
+                        href="{{ route('statistics') }}"
                         class="py-1.5 px-4 w-full button-secondary"
                     >
                         <div class="flex justify-center items-center space-x-2">
-                            <span class="leading-5">@lang('pages.statistics.exchanges')</span>
+                            <span class="leading-5">
+                                @lang('actions.statistics')
+                            </span>
 
                             <x-ark-icon
                                 name="arrows.chevron-right-small"
@@ -53,7 +55,7 @@
                     <div class="w-full sm:flex sm:pt-0 lg:flex-1 lg:mt-0">
                         <div class="hidden mt-3 sm:block sm:mt-0">
                             <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-700 dark:text-theme-dark-200">
-                                @lang('pages.statistics.chart.market-cap')
+                                @lang('pages.exchanges.chart.market-cap')
                             </h3>
 
                             <p class="mt-2 text-base font-semibold leading-5">
@@ -75,7 +77,7 @@
 
                         <div class="hidden mt-4 sm:block sm:pl-6 sm:mt-0 sm:ml-6 sm:border-l sm:border-theme-secondary-300 dark:border-theme-secondary-800">
                             <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-700 dark:text-theme-dark-200">
-                                @lang('pages.statistics.chart.min-price')
+                                @lang('pages.exchanges.chart.min-price')
                             </h3>
 
                             <p class="mt-2 text-base font-semibold leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
@@ -85,7 +87,7 @@
 
                         <div class="hidden mt-4 sm:block sm:pl-6 sm:mt-0 sm:ml-6 sm:border-l sm:border-theme-secondary-300 dark:border-theme-secondary-800">
                             <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-700 dark:text-theme-dark-200">
-                                @lang('pages.statistics.chart.max-price')
+                                @lang('pages.exchanges.chart.max-price')
                             </h3>
 
                             <p class="mt-2 text-base font-semibold leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
@@ -158,7 +160,7 @@
         <x-general.card class="py-4 space-y-4 divide-y sm:hidden divide-theme-secondary-300 dark:divide-theme-dark-700">
             <div class="space-y-2">
                 <div class="text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
-                    @lang('pages.statistics.chart.market-cap')
+                    @lang('pages.exchanges.chart.market-cap')
                 </div>
 
                 <div class="text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50">
@@ -168,7 +170,7 @@
 
             <div class="pt-4 space-y-2">
                 <div class="text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
-                    @lang('pages.statistics.chart.min-price')
+                    @lang('pages.exchanges.chart.min-price')
                 </div>
 
                 <div class="text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50">
@@ -178,7 +180,7 @@
 
             <div class="pt-4 space-y-2">
                 <div class="text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
-                    @lang('pages.statistics.chart.max-price')
+                    @lang('pages.exchanges.chart.max-price')
                 </div>
 
                 <div class="text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50">
