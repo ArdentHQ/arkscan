@@ -15,8 +15,6 @@
                 <livewire:stats.insight-current-average-fee />
                 <livewire:stats.insight-all-time-fees-collected />
             </x-stats.insights-wrapper>
-
-            <livewire:stats.chart />
         </div>
     @endsection
 @endcomponent

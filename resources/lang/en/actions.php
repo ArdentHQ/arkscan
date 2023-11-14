@@ -24,4 +24,5 @@ return [
     'view'            => 'View',
     'explore'         => 'Explore',
     'exchanges'       => 'Exchanges',
+    'statistics'      => 'Statistics',
 ];
