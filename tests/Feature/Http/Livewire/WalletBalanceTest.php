@@ -5,10 +5,8 @@ declare(strict_types=1);
 use App\Facades\Settings;
 use App\Http\Livewire\WalletBalance;
 use App\Models\Wallet;
-use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\NumberFormatter;
-use Carbon\Carbon;
 use Livewire\Livewire;
 
 it('should show the balance of the wallet', function () {
