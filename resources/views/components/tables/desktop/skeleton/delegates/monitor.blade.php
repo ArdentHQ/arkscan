@@ -21,7 +21,7 @@
         ],
         'tables.delegate-monitor.status' => [
             'type' => 'badge',
-            'badgeWidth' => 'w-[8.75rem]',
+            'badgeWidth' => 'w-[10rem]',
         ],
         'tables.delegate-monitor.time_to_forge' => [
             'type' => 'text',
