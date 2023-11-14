@@ -6,14 +6,13 @@ use App\Facades\Settings;
 use App\Http\Livewire\WalletBalance;
 use App\Models\Wallet;
 use App\Services\Cache\CryptoDataCache;
+use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\NumberFormatter;
 use Carbon\Carbon;
 use Livewire\Livewire;
 
 it('should show the balance of the wallet', function () {
-    (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::now()->format('Y-m-d') => 10,
-    ]));
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 10);
 
     $wallet = Wallet::factory()->create(['balance' => 125456]);
 
@@ -22,13 +21,9 @@ it('should show the balance of the wallet', function () {
 });
 
 it('updates the balance when currency changes', function () {
-    (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::now()->format('Y-m-d') => 10,
-    ]));
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 10);
 
-    (new CryptoDataCache())->setPrices('BTC.week', collect([
-        Carbon::now()->format('Y-m-d') => 0.1234567,
-    ]));
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'BTC', 0.1234567);
 
     $wallet = Wallet::factory()->create(['balance' => 125456]);
 
