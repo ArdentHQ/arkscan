@@ -45,7 +45,7 @@ final class Chart extends Component
         $currency = Settings::currency();
 
         $currentPrice = $this->getPrice($currency);
-        $chartData = $this->chartHistoricalPrice($this->period);
+        $chartData    = $this->chartHistoricalPrice($this->period);
 
         /** @var Collection<float> $datasets */
         $datasets = collect($chartData->get('datasets'));
