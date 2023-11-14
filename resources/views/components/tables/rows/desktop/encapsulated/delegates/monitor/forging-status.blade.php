@@ -1,6 +1,6 @@
 @props([
     'model',
-    'width' => 'min-w-[8.75rem]',
+    'width' => 'min-w-[10rem]',
     'withTime' => false,
     'withText' => true,
 ])
