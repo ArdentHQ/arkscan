@@ -1,7 +1,8 @@
 import Alpine from "alpinejs";
 
 function FavoriteDelegates() {
-    const favorites = JSON.parse(localStorage.getItem("favorite-delegates")) ?? [];
+    const favorites =
+        JSON.parse(localStorage.getItem("favorite-delegates")) ?? [];
 
     return Alpine.reactive({
         favorites,
