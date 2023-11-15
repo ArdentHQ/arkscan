@@ -34,6 +34,7 @@ final class BuildForgingStats implements ShouldQueue
         $timeRange   = $this->getTimeRange($height);
         $startHeight = $this->getStartHeight($height, $timeRange);
 
+        // TODO:
         $forgingStats = MissedBlocksCalculator::calculateFromHeightGoingBack($startHeight, $height);
 
         $data = [];

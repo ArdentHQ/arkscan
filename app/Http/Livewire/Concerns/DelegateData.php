@@ -50,7 +50,7 @@ trait DelegateData
                 (new WalletCache())->setLastBlock($delegate, [
                     'id'                   => $block->id,
                     'height'               => $block->height->toNumber(),
-                    'timestamp'            => Timestamp::fromGenesis($block->timestamp)->unix(),
+                    'timestamp'            => $block->timestamp,
                     'generator_public_key' => $block->generator_public_key,
                 ]);
             }
@@ -73,11 +73,11 @@ trait DelegateData
 
     private function fetchDelegates(): array
     {
-        $roundNumber = Rounds::current();
-        $heightRange = Monitor::heightRangeByRound($roundNumber);
-        $delegates   = Rounds::allByRound($roundNumber);
+        $currentRound = Rounds::current();
+        $heightRange = Monitor::heightRangeByRound($currentRound);
+        $delegates   = $currentRound->validators;
 
-        $this->cacheLastBlocks($delegates->pluck('public_key')->toArray());
+        $this->cacheLastBlocks($delegates);
 
         if (! Block::where('height', $heightRange[0])->exists()) {
             return [];
@@ -108,11 +108,11 @@ trait DelegateData
                 publicKey: $delegate['publicKey'],
                 order: $i + 1,
                 wallet: $walletViewModel,
-                forgingAt: Timestamp::fromGenesis($blockTimestamp)->addMilliseconds($delegate['time']),
+                forgingAt: Timestamp::fromUnix($blockTimestamp)->addMilliseconds($delegate['time']),
                 lastBlock: (new WalletCache())->getLastBlock($delegate['publicKey']),
                 status: $delegate['status'],
                 roundBlockCount: $roundBlockCount,
-                roundNumber: $roundNumber
+                roundNumber: $currentRound->round
             );
         }
 

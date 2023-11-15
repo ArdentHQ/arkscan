@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Facades\Network;
+use App\Facades\Rounds;
 use App\Models\Round;
+use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\Monitor;
 use Illuminate\Console\Command;
@@ -30,18 +32,22 @@ final class CacheDelegatePerformance extends Command
 
     public function handle(): void
     {
-        $round = Monitor::roundNumber();
+        $mostRecentRounds = Round::query()
+            ->orderBy('round', 'DESC')
+            ->limit(6)
+            ->get();
 
-        $query = Round::query()
-            ->where('round', $round)
-            ->limit(Network::delegateCount())
+        $query = Wallet::query()
             ->select([
-                'rounds.public_key',
-                DB::raw('MAX(rounds.balance) as balance'),
+                'wallets.public_key',
+                DB::raw('MAX(wallets.balance) as balance')
             ])
-            ->join('blocks', 'blocks.generator_public_key', '=', 'rounds.public_key');
+            ->whereIn('wallets.public_key', $mostRecentRounds->first()->validators)
+            ->join('blocks', 'blocks.generator_public_key', '=', 'wallets.public_key');
 
-        collect(range($round - 5, $round - 1))
+        $mostRecentRounds
+            ->slice(1)
+            ->reverse()
             ->each(function ($round, int $index) use ($query) : void {
                 [$start, $end] = Monitor::heightRangeByRound($round);
 
@@ -55,9 +61,10 @@ final class CacheDelegatePerformance extends Command
          */
         $results = $query
             ->orderBy('balance', 'desc')
-            ->orderBy('public_key', 'asc')
-            ->groupBy('rounds.public_key')
+            ->orderBy('wallets.public_key', 'asc')
+            ->groupBy('wallets.public_key')
             ->get();
+
         $results->each(function ($row) : void {
             (new WalletCache())->setPerformance($row['public_key'], [
                 $row['round_0'],

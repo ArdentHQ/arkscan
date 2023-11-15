@@ -12,12 +12,12 @@ trait CanBeDelegate
 {
     public function isDelegate(): bool
     {
-        return Arr::has($this->wallet, 'attributes.delegate');
+        return Arr::has($this->wallet, 'attributes.validatorRank');
     }
 
     public function isResigned(): bool
     {
-        return Arr::has($this->wallet, 'attributes.delegate.resigned');
+        return Arr::has($this->wallet, 'attributes.validatorResigned');
     }
 
     public function isStandby(): bool
@@ -44,7 +44,7 @@ trait CanBeDelegate
             return null;
         }
 
-        if (! Arr::has($this->wallet, 'attributes.delegate.resigned')) {
+        if (! Arr::has($this->wallet, 'attributes.validatorResigned')) {
             return null;
         }
 
@@ -53,7 +53,7 @@ trait CanBeDelegate
 
     public function delegateUsername(): ?string
     {
-        return Arr::get($this->wallet, 'attributes.delegate.username');
+        return $this->wallet->username();
     }
 
     public function username(): ?string
@@ -69,6 +69,6 @@ trait CanBeDelegate
 
     public function rank(): ?int
     {
-        return Arr::get($this->wallet, 'attributes.delegate.rank', 0);
+        return Arr::get($this->wallet, 'attributes.validatorRank', 0);
     }
 }

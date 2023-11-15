@@ -6,8 +6,6 @@ namespace App\Console\Commands;
 
 use App\Facades\Rounds;
 use App\Jobs\CacheProductivityByPublicKey;
-use App\Models\Round;
-use App\Services\Monitor\Monitor;
 use Illuminate\Console\Command;
 
 final class CacheDelegateProductivity extends Command
@@ -28,10 +26,9 @@ final class CacheDelegateProductivity extends Command
 
     public function handle(): void
     {
-        Rounds::allByRound(Monitor::roundNumber())
-            ->each(function ($round) {
-                /** @var Round $round */
-                return (bool) CacheProductivityByPublicKey::dispatch($round->public_key)->onQueue('productivity');
+        collect(Rounds::current()->validators)
+            ->each(function ($publicKey) {
+                return (bool) CacheProductivityByPublicKey::dispatch($publicKey)->onQueue('productivity');
             });
     }
 }

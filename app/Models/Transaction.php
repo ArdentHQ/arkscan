@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\CoreTransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Casts\BigInteger;
+use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Scopes\DelegateRegistrationScope;
@@ -28,6 +29,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 
 /**
@@ -106,7 +108,7 @@ final class Transaction extends Model
         'amount'       => BigInteger::class,
         'asset'        => 'array',
         'fee'          => BigInteger::class,
-        'timestamp'    => 'int',
+        'timestamp'    => UnixSeconds::class,
         'type_group'   => 'int',
         'type'         => 'int',
         'block_height' => 'int',
@@ -209,11 +211,21 @@ final class Transaction extends Model
     /**
      * A transaction belongs to a recipient.
      *
-     * @return BelongsTo
+    * @return Wallet
      */
-    public function recipient(): BelongsTo
+    public function recipient(): Wallet
     {
-        return $this->belongsTo(Wallet::class, 'recipient_id', 'address');
+        $recipientId = $this->recipient_id;
+        if (!is_null($recipientId)) {
+            return Wallet::firstWhere('address', $recipientId);
+        }
+
+        $votePublicKey = Arr::get($this, 'asset.votes.0');
+        if (is_null($votePublicKey)) {
+            $votePublicKey = Arr::get($this, 'asset.unvotes.0');
+        }
+
+        return Wallet::firstWhere('public_key', $votePublicKey);
     }
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder

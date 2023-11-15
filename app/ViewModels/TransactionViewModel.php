@@ -82,12 +82,12 @@ final class TransactionViewModel implements ViewModel
 
     public function timestamp(bool $short = false): string
     {
-        return Timestamp::fromGenesisHuman($this->transaction->timestamp, $short);
+        return Timestamp::fromUnixHuman($this->transaction->timestamp, $short);
     }
 
     public function dateTime(): Carbon
     {
-        return Timestamp::fromGenesis($this->transaction->timestamp);
+        return Timestamp::fromUnix($this->transaction->timestamp);
     }
 
     public function nonce(): int

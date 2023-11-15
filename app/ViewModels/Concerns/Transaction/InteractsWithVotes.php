@@ -21,11 +21,9 @@ trait InteractsWithVotes
         $votes = Arr::get($this->transaction->asset ?? [], 'votes');
 
         /** @var string */
-        $publicKey = collect($votes)
-            ->filter(fn ($vote) => Str::startsWith($vote, '+'))
-            ->first();
+        $publicKey = collect($votes)->firstOrFail();
 
-        return new WalletViewModel(Wallets::findByPublicKey(substr($publicKey, 1)));
+        return new WalletViewModel(Wallets::findByPublicKey($publicKey));
     }
 
     public function unvoted(): ?WalletViewModel
@@ -35,13 +33,11 @@ trait InteractsWithVotes
         }
 
         /** @var array<int, string> */
-        $votes = Arr::get($this->transaction->asset ?? [], 'votes');
+        $votes = Arr::get($this->transaction->asset ?? [], 'unvotes');
 
         /** @var string */
-        $publicKey = collect($votes)
-            ->filter(fn ($vote) => Str::startsWith($vote, '-'))
-            ->first();
+        $publicKey = collect($votes)->firstOrFail();
 
-        return new WalletViewModel(Wallets::findByPublicKey(substr($publicKey, 1)));
+        return new WalletViewModel(Wallets::findByPublicKey($publicKey));
     }
 }

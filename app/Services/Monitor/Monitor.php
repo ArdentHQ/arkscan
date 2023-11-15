@@ -6,26 +6,23 @@ namespace App\Services\Monitor;
 
 use App\Facades\Network;
 use App\Facades\Rounds;
+use App\Models\Round;
 
 final class Monitor
 {
     public static function roundNumber(): int
     {
-        return Rounds::current();
+        return Rounds::current()->round;
     }
 
-    public static function heightRangeByRound(int $round): array
+    public static function heightRangeByRound(Round $round): array
     {
         $delegateCount = Network::delegateCount();
-        $roundStart    = (int) (($round - 1) * $delegateCount) + 1;
-
-        return [$roundStart, $roundStart + ($delegateCount - 1)];
+        return [$round->round_height, $round->round_height + ($delegateCount - 1)];
     }
 
     public static function roundNumberFromHeight(int $height): int
     {
-        $delegateCount = Network::delegateCount();
-
-        return (int) ceil($height / $delegateCount);
+        return Round::where('round_height', $height)->firstOrFail()->round;
     }
 }

@@ -115,15 +115,17 @@ final class RecentVotes extends TabbedTableComponent
 
         return Transaction::query()
             ->where('type', 3)
-            ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix())
+            ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix() * 1000)
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['vote'], function ($query) {
-                    $query->whereRaw('jsonb_array_length(asset->\'votes\') = 1')
-                        ->whereRaw('LEFT(asset->\'votes\'->>0, 1) = \'+\'');
+                    $query->whereRaw('jsonb_array_length(asset->\'votes\') >= 1');
                 }))->orWhere(fn ($query) => $query->when($this->filter['unvote'], function ($query) {
-                    $query->whereRaw('jsonb_array_length(asset->\'votes\') = 1')
-                        ->whereRaw('LEFT(asset->\'votes\'->>0, 1) = \'-\'');
-                }))->orWhere(fn ($query) => $query->when($this->filter['vote-swap'], fn ($query) => $query->whereRaw('jsonb_array_length(asset->\'votes\') = 2')));
+                    $query->whereRaw('jsonb_array_length(asset->\'unvotes\') >= 1');
+                }))->orWhere(fn ($query) => $query->when($this->filter['vote-swap'], fn ($query) =>
+                    $query
+                        ->whereRaw('jsonb_array_length(asset->\'votes\') >= 1')
+                        ->whereRaw('jsonb_array_length(asset->\'unvotes\') >= 1')
+                ));
             })
             ->when($this->sortKey === 'age', fn ($query) => $query->orderBy('timestamp', $sortDirection->value))
             ->when($this->sortKey === 'address', function ($query) use ($sortDirection) {
@@ -149,7 +151,7 @@ final class RecentVotes extends TabbedTableComponent
             ->when($this->sortKey === 'name', function ($query) use ($sortDirection) {
                 $query->select([
                     'delegate_name' => fn ($query) => $query
-                        ->selectRaw('wallets.attributes->\'delegate\'->\'username\'')
+                        ->selectRaw('wallets.attributes->>\'username\'')
                         ->from(function ($query) {
                             $query
                                 ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'-\') IS null) then substring(asset->\'votes\'->>0, 2) end as unvote')

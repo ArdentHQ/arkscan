@@ -41,12 +41,12 @@ final class BlockViewModel implements ViewModel
 
     public function timestamp(): string
     {
-        return Timestamp::fromGenesisHuman($this->block->timestamp);
+        return Timestamp::fromUnixHuman($this->block->timestamp);
     }
 
     public function dateTime(): Carbon
     {
-        return Timestamp::fromGenesis($this->block->timestamp);
+        return Timestamp::fromUnix($this->block->timestamp);
     }
 
     public function height(): int

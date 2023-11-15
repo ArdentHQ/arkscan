@@ -24,7 +24,7 @@ final class Timestamp
 
     public static function fromUnix(int $seconds): Carbon
     {
-        return Carbon::createFromTimestamp($seconds)->subSeconds(Network::epoch()->unix());
+        return Carbon::createFromTimestamp($seconds);
     }
 
     public static function fromUnixHuman(int $seconds): string

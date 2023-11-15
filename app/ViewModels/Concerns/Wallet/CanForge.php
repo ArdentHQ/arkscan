@@ -85,7 +85,7 @@ trait CanForge
 
     public function forgedBlocks(): int
     {
-        return Arr::get($this->wallet->attributes, 'delegate.producedBlocks');
+        return Arr::get($this->wallet->attributes, 'validatorProducedBlocks');
     }
 
     public function missedBlocks(): int

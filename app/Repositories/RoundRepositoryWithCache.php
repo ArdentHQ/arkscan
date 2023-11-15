@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Contracts\RoundRepository;
+use App\Models\Round;
 use App\Repositories\Concerns\ManagesCache;
 use Illuminate\Cache\TaggedCache;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 
 final class RoundRepositoryWithCache implements RoundRepository
@@ -18,14 +18,14 @@ final class RoundRepositoryWithCache implements RoundRepository
     {
     }
 
-    public function allByRound(int $round): Collection
-    {
-        return $this->remember(fn () => $this->rounds->allByRound($round));
-    }
-
-    public function current(): int
+    public function current(): Round
     {
         return $this->rounds->current();
+    }
+
+    public function byRound(int $round): Round
+    {
+        return $this->remember(fn () => $this->rounds->byRound($round));
     }
 
     private function getCache(): TaggedCache

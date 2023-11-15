@@ -69,18 +69,16 @@ final class Slots
     public function getSlotInfo(?int $timestamp = null, ?int $height = null): array
     {
         if (is_null($timestamp)) {
-            $timestamp = $this->getTime();
+            $timestamp = Carbon::now()->unix();
         }
 
         $blockTime               = Network::blockTime();
-        $totalSlotsFromLastSpan  = 0;
-        $lastSpanEndTime         = 0;
 
-        $slotNumberUpUntilThisTimestamp = floor(($timestamp - $lastSpanEndTime) / $blockTime);
-        $slotNumber                     = $totalSlotsFromLastSpan + $slotNumberUpUntilThisTimestamp;
-        $startTime                      = $lastSpanEndTime + $slotNumberUpUntilThisTimestamp * $blockTime;
+        $slotNumberUpUntilThisTimestamp = floor($timestamp / $blockTime);
+        $slotNumber                     = $slotNumberUpUntilThisTimestamp;
+        $startTime                      = $slotNumberUpUntilThisTimestamp * $blockTime;
         $endTime                        = $startTime + $blockTime - 1;
-        $forgingStatus                  = $timestamp < $startTime + floor($blockTime / 2);
+        $forgingStatus                  = $timestamp < $startTime + $blockTime;
 
         return [
             'blockTime'     => (int) $blockTime,

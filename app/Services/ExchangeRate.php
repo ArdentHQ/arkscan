@@ -70,6 +70,6 @@ final class ExchangeRate
 
     private static function timestamp(int $timestamp): Carbon
     {
-        return Timestamp::fromGenesis($timestamp);
+        return Timestamp::fromUnix($timestamp);
     }
 }

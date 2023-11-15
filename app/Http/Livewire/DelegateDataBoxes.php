@@ -8,9 +8,11 @@ use App\Actions\CacheNetworkHeight;
 use App\DTO\Slot;
 use App\Enums\DelegateForgingStatus;
 use App\Facades\Network;
+use App\Facades\Rounds;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\DelegateData;
 use App\Models\Block;
+use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\MonitorCache;
 use App\Services\Cache\WalletCache;
@@ -91,7 +93,7 @@ final class DelegateDataBoxes extends Component
     {
         return (new MonitorCache())->setBlockCount(function (): string {
             return trans('pages.delegates.statistics.blocks_generated', [
-                'forged' => Network::delegateCount() - (Monitor::heightRangeByRound(Monitor::roundNumber())[1] - Block::max('height')),
+                'forged' => Network::delegateCount() - (Monitor::heightRangeByRound(Rounds::current())[1] - Block::max('height')),
                 'total'  => Network::delegateCount(),
             ]);
         });

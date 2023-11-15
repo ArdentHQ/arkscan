@@ -29,7 +29,7 @@ final class Delegates extends TabbedTableComponent
     use HasTableFilter;
     use HasTableSorting;
 
-    public const PER_PAGE = 51;
+    public const PER_PAGE = 53;
 
     public const INITIAL_SORT_KEY = 'rank';
 
@@ -123,31 +123,31 @@ final class Delegates extends TabbedTableComponent
         }
 
         return Wallet::query()
-            ->whereNotNull('attributes->delegate->username')
+            ->whereNotNull('attributes->validatorRank')
             ->where(fn ($query) => $query->when($this->hasFilters(), function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['active'] === true, fn ($query) => $query->where(function ($query) {
-                    $query->where('attributes->delegate->resigned', null)
-                        ->orWhere('attributes->delegate->resigned', false);
-                })->whereRaw('(attributes->\'delegate\'->>\'rank\')::int <= ?', Network::delegateCount())))
+                    $query->where('attributes->validatorResigned', null)
+                        ->orWhere('attributes->validatorResigned', false);
+                })->whereRaw('(attributes->>\'validatorRank\')::int <= ?', Network::delegateCount())))
                     ->orWhere(fn ($query) => $query->when($this->filter['standby'] === true, fn ($query) => $query->where(function ($query) {
-                        $query->where('attributes->delegate->resigned', null)
-                            ->orWhere('attributes->delegate->resigned', false);
+                        $query->where('attributes->validatorResigned', null)
+                            ->orWhere('attributes->validatorResigned', false);
                     })->where(function ($query) {
-                        $query->whereRaw('(attributes->\'delegate\'->>\'rank\')::int > ?', Network::delegateCount());
+                        $query->whereRaw('(attributes->>\'validatorRank\')::int > ?', Network::delegateCount());
                     })))
-                    ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->delegate->resigned', true)));
+                    ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->validatorResigned', true)));
             }))
-            ->when($this->sortKey === 'rank', fn ($query) => $query->orderByRaw("(\"attributes\"->'delegate'->>'rank')::numeric ".$sortDirection->value))
-            ->when($this->sortKey === 'name', fn ($query) => $query->orderByRaw("(\"attributes\"->'delegate'->>'username')::text ".$sortDirection->value.', ("attributes"->\'delegate\'->>\'rank\')::numeric ASC'))
+            ->when($this->sortKey === 'rank', fn ($query) => $query->orderByRaw("(\"attributes\"->>'validatorRank')::numeric ".$sortDirection->value))
+            ->when($this->sortKey === 'name', fn ($query) => $query->orderByRaw("(\"attributes\"->'delegate'->>'username')::text ".$sortDirection->value.', ("attributes"->>\'validatorRank\')::numeric ASC'))
             ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', function ($query) use ($sortDirection) {
-                $query->selectRaw('("attributes"->\'delegate\'->>\'voteBalance\')::numeric AS vote_count')
+                $query->selectRaw('("attributes"->>\'validatorVoteBalance\')::numeric AS vote_count')
                     ->selectRaw('wallets.*')
-                    ->orderByRaw('CASE WHEN NULLIF(("attributes"->\'delegate\'->>\'voteBalance\')::numeric, 0) IS NULL THEN 1 ELSE 0 END ASC')
+                    ->orderByRaw('CASE WHEN NULLIF(("attributes"->>\'validatorVoteBalance\')::numeric, 0) IS NULL THEN 1 ELSE 0 END ASC')
                     ->orderByRaw(sprintf(
-                        '("attributes"->\'delegate\'->>\'voteBalance\')::numeric %s',
+                        '("attributes"->>\'validatorVoteBalance\')::numeric %s',
                         $sortDirection->value
                     ))
-                    ->orderByRaw('("attributes"->\'delegate\'->>\'rank\')::numeric ASC');
+                    ->orderByRaw('("attributes"->>\'validatorRank\')::numeric ASC');
             })
             ->when($this->sortKey === 'no_of_voters', function ($query) use ($sortDirection) {
                 $voterCounts = (new DelegateCache())->getAllVoterCounts();
@@ -190,14 +190,14 @@ final class Delegates extends TabbedTableComponent
                             ->join(','),
                     )), 'wallets.public_key', '=', 'forging_stats.public_key', 'left outer')
                     ->when($sortDirection === SortDirection::ASC, fn ($query) => $query->orderByRaw(sprintf(
-                        'CASE WHEN ("attributes"->\'delegate\'->>\'rank\')::numeric <= %d THEN 0 ELSE 1 END ASC',
+                        'CASE WHEN ("attributes"->>\'validatorRank\')::numeric <= %d THEN 0 ELSE 1 END ASC',
                         Network::delegateCount(),
                     )))
                     ->orderByRaw(sprintf(
                         'missed_blocks %s',
                         $sortDirection->value,
                     ))
-                    ->orderByRaw('("attributes"->\'delegate\'->>\'rank\')::numeric ASC');
+                    ->orderByRaw('("attributes"->>\'validatorRank\')::numeric ASC');
             });
     }
 }

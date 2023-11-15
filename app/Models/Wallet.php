@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 
@@ -60,6 +61,12 @@ final class Wallet extends Model
         'attributes' => 'array',
     ];
 
+    // TODO: remove again, this is just for testing
+    public function username(): string {
+        $attributes = json_decode($this->attributes['attributes'], true);
+        return Arr::get($attributes, 'username', 'validator_'.$attributes['validatorRank']);
+    }
+
     /**
      * Get the value used to index the model.
      */
@@ -85,7 +92,7 @@ final class Wallet extends Model
     {
         return [
             'address'   => $this->address,
-            'username'  => $this->delegate_username,
+            'username'  => $this->username(),
             'balance'   => $this->balance->__toString(),
             'timestamp' => $this->timestamp,
         ];
@@ -100,7 +107,7 @@ final class Wallet extends Model
 
         return $self->newQuery()
             ->select([
-                DB::raw("wallets.attributes->'delegate'->>'username' AS delegate_username"),
+                DB::raw("wallets.attributes->>'username' AS delegate_username"),
                 'wallets.address',
                 'wallets.attributes',
                 'wallets.balance',

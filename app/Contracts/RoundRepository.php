@@ -9,11 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface RoundRepository
 {
-    /**
-     * @param int $round
-     * @return Collection<Round>
-     */
-    public function allByRound(int $round): Collection;
+    public function current(): Round;
 
-    public function current(): int;
+    public function byRound(int $round): Round;
 }

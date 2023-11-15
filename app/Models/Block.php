@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Casts\BigInteger;
+use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Services\BigNumber;
@@ -57,7 +58,7 @@ final class Block extends Model
         'height'                 => BigInteger::class,
         'number_of_transactions' => 'int',
         'reward'                 => BigInteger::class,
-        'timestamp'              => 'int',
+        'timestamp'              => UnixSeconds::class,
         'total_amount'           => BigInteger::class,
         'total_fee'              => BigInteger::class,
     ];

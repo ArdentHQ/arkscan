@@ -36,12 +36,12 @@ final class ForgingStatsViewModel implements ViewModel
 
     public function timestamp(): string
     {
-        return Timestamp::fromGenesisHuman($this->forgingStats->timestamp);
+        return Timestamp::fromUnixHuman($this->forgingStats->timestamp);
     }
 
     public function dateTime(): Carbon
     {
-        return Timestamp::fromGenesis($this->forgingStats->timestamp);
+        return Timestamp::fromUnix($this->forgingStats->timestamp);
     }
 
     public function height(): int

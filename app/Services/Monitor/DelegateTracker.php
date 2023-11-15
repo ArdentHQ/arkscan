@@ -12,52 +12,32 @@ use Illuminate\Support\Collection;
 
 final class DelegateTracker
 {
-    public static function execute(Collection $delegates, int $startHeight): array
+    /**
+     * @param string[] $delegates
+     * @param int $startHeight
+     * @return array
+     */
+    public static function execute(array $delegates, int $startHeight): array
     {
+        // TODO: revisit all of this for mainsail consensus
+
         // Arrange Block
         $lastBlock = Block::withScope(OrderByHeightScope::class)->firstOrFail();
         $height    = $lastBlock->height->toNumber();
 
-        // Arrange Delegates
-        $activeDelegates = self::getActiveDelegates($delegates);
-
-        // TODO: calculate this once for a given round, then cache it as it won't change until next round
-        $activeDelegates = self::shuffleDelegates($activeDelegates, $startHeight);
-
         // Act
-        $forgingInfo = ForgingInfoCalculator::calculate(null, $height);
-
-        // // Determine Next Forgers...
-        // $nextForgers = [];
-        // for ($i = 0; $i < $maxDelegates; $i++) {
-        //     $delegate = $activeDelegates[($forgingInfo['currentForger'] + $i) % $maxDelegates];
-
-        //     if ($delegate) {
-        //         $nextForgers[] = $delegate;
-        //     }
-        // }
+        $forgingInfo = ForgingInfoCalculator::calculate($delegates, $startHeight, $height);
 
         // Map Next Forgers...
         $forgingIndex = 2; // We start at 2 to skip 0 which results in 0 as time and 1 which would be the next forger.
 
-        // Get the original forging info to determine the actual first
-        $originalOrder = ForgingInfoCalculator::calculate(
-            Block::where('height', $startHeight)->firstOrFail()->timestamp,
-            $startHeight
-        );
-
         // Note: static order will be found by shifting the index based on the forging data from above
         $delegateCount    = Network::delegateCount();
-        $delegatesOrdered = self::orderDelegates(
-            $activeDelegates,
-            $originalOrder['currentForger'],
-            $delegateCount
-        );
 
-        return collect($delegatesOrdered)
-            ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $originalOrder, $delegateCount) {
+        return collect($delegates)
+            ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $delegateCount) {
                 // Determine forging order based on the original offset
-                $difference      = $forgingInfo['currentForger'] - $originalOrder['currentForger'];
+                $difference      = $forgingInfo['currentForger'];
                 $normalizedOrder = $difference >= 0 ? $difference : $delegateCount + $difference;
 
                 if ($index === $normalizedOrder) {
@@ -93,6 +73,7 @@ final class DelegateTracker
             ->toArray();
     }
 
+    // obsolete
     private static function getActiveDelegates(Collection $delegates): array
     {
         return $delegates->toBase()
@@ -100,6 +81,7 @@ final class DelegateTracker
             ->toArray();
     }
 
+    // obsolete
     private static function shuffleDelegates(array $delegates, int $height): array
     {
         return ShuffleDelegates::execute($delegates, $height);

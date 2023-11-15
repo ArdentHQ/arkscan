@@ -30,7 +30,7 @@ final class Monitor extends Component
     public function render(): View
     {
         return view('livewire.delegates.monitor', [
-            'round'     => Rounds::current(),
+            'round'     => Rounds::current()->round,
             'delegates' => $this->delegates,
         ]);
     }

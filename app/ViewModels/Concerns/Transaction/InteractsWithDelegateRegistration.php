@@ -14,6 +14,6 @@ trait InteractsWithDelegateRegistration
             return null;
         }
 
-        return Arr::get($this->transaction, 'asset.delegate.username');
+        return Arr::get($this->transaction, 'asset.username');
     }
 }

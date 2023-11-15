@@ -35,9 +35,9 @@ final class CacheDelegateUsernames extends Command
         Wallets::allWithUsername()
             ->orWhereIn('address', $knownWallets->pluck('address'))
             ->select([
-                'attributes->delegate->username as username',
                 'address',
                 'public_key',
+                'attributes'
             ])
             ->get()
             ->each(function (Model $wallet) use ($cache, $knownWallets) : void {
@@ -47,7 +47,7 @@ final class CacheDelegateUsernames extends Command
                 if (! is_null($knownWallet)) {
                     $username = $knownWallet['name'];
                 } else {
-                    $username = $wallet->username;
+                    $username = $wallet->username();
                 }
 
                 $cache->setUsernameByAddress($wallet->address, $username);

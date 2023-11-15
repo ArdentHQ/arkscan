@@ -17,7 +17,7 @@ final class WalletRepository implements Contract
 
     public function allWithUsername(): Builder
     {
-        return Wallet::whereNotNull('wallets.attributes->delegate->username');
+        return Wallet::whereNotNull('wallets.attributes->username');
     }
 
     public function allWithVote(): Builder
@@ -55,11 +55,11 @@ final class WalletRepository implements Contract
         if ($caseSensitive === false) {
             $username = substr(DB::getPdo()->quote($username), 1, -1);
 
-            return Wallet::whereRaw('lower(attributes::text)::jsonb @> lower(\'{"delegate":{"username":"'.$username.'"}}\')::jsonb')
+            return Wallet::whereRaw('lower(attributes::text)::jsonb @> lower(\'{"username":"'.$username.'"}\')::jsonb')
                 ->firstOrFail();
         }
 
-        return Wallet::where('attributes->delegate->username', $username)->firstOrFail();
+        return Wallet::where('attributes->username', $username)->firstOrFail();
     }
 
     public function findByIdentifier(string $identifier): Wallet
@@ -72,7 +72,7 @@ final class WalletRepository implements Contract
             $query->whereLower('public_key', $identifier);
         } elseif ($this->couldBeUsername($identifier)) {
             $username = substr(DB::getPdo()->quote($identifier), 1, -1);
-            $query->orWhereRaw('lower(attributes::text)::jsonb @> lower(\'{"delegate":{"username":"'.$username.'"}}\')::jsonb');
+            $query->orWhereRaw('lower(attributes::text)::jsonb @> lower(\'{"username":"'.$username.'"}\')::jsonb');
         } else {
             $query->empty();
         }
