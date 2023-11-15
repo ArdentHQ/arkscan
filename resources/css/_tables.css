@@ -236,15 +236,6 @@ body.table-compact-until-lg .arrow-direction {
     @apply bg-theme-secondary-300 dark:bg-theme-dark-700;
 }
 
-.table-container
-    table
-    > tbody
-    > tr:first-child
-    > td.hoverable-cell
-    > div.table-cell-bg {
-    @apply border-0;
-}
-
 @media (max-width: 1279px) {
     .table-encapsulated table > tbody > tr > td.hoverable-cell {
         @apply align-top;
