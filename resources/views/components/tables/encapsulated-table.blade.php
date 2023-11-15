@@ -27,7 +27,7 @@
     'rounded-t-xl' => $rounded,
     'rounded-b-xl' => $paginatorIsEmpty,
 ]) }}>
-    <div class="table-container px-6 table-encapsulated encapsulated-table-header-gradient">
+    <div class="px-6 table-container table-encapsulated encapsulated-table-header-gradient">
         <table>
             {{ $slot }}
         </table>
