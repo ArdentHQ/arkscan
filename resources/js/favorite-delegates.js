@@ -1,38 +1,36 @@
-class FavoriteDelegates {
-    favorites = [];
+import Alpine from "alpinejs";
 
-    constructor() {
-        this.favorites =
-            JSON.parse(localStorage.getItem("favorite-delegates")) ?? [];
-    }
+function FavoriteDelegates() {
+    const favorites = JSON.parse(localStorage.getItem("favorite-delegates")) ?? [];
 
-    toggle(publicKey, value) {
-        let isFavoriteValue = !this.isFavorite(publicKey);
-        if (value !== null) {
-            isFavoriteValue = value;
-        }
+    return Alpine.reactive({
+        favorites,
 
-        if (isFavoriteValue) {
-            this.favorites.push(publicKey);
-        } else {
-            this.favorites.splice(this.favorites.indexOf(publicKey), 1);
-        }
+        toggle(publicKey) {
+            let isFavoriteValue = !this.isFavorite(publicKey);
 
-        this.save();
+            if (isFavoriteValue) {
+                this.favorites.push(publicKey);
+            } else {
+                this.favorites.splice(this.favorites.indexOf(publicKey), 1);
+            }
 
-        return isFavoriteValue;
-    }
+            this.save();
 
-    isFavorite(publicKey) {
-        return this.favorites.includes(publicKey);
-    }
+            return isFavoriteValue;
+        },
 
-    save() {
-        localStorage.setItem(
-            "favorite-delegates",
-            JSON.stringify(this.favorites)
-        );
-    }
+        isFavorite(publicKey) {
+            return this.favorites.includes(publicKey);
+        },
+
+        save() {
+            localStorage.setItem(
+                "favorite-delegates",
+                JSON.stringify(this.favorites)
+            );
+        },
+    });
 }
 
-export default new FavoriteDelegates();
+export default FavoriteDelegates();
