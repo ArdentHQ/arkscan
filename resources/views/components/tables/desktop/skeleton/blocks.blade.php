@@ -1,5 +1,6 @@
 @props([
     'rowCount' => 10,
+    'paginator' => null,
 ])
 
 @php
@@ -63,5 +64,6 @@
     :items="$items"
     :component-properties="['rounded' => false]"
     :row-count="$rowCount"
+    :paginator="$paginator"
     encapsulated
 />

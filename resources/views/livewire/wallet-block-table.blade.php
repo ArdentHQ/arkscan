@@ -4,7 +4,10 @@
         :wallet="$wallet"
     />
 
-    <x-skeletons.wallet-blocks :row-count="$this->perPage">
+    <x-skeletons.wallet-blocks
+        :row-count="$this->perPage"
+        :paginator="$blocks"
+    >
         <x-tables.desktop.wallet-blocks
             :blocks="$blocks"
             :no-results-message="$this->noResultsMessage"

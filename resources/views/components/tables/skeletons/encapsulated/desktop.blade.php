@@ -1,6 +1,22 @@
+@php
+    $paginatorIsEmpty = false;
+    if ($paginator === null) {
+        $paginatorIsEmpty = true;
+    }
+
+    if ($paginator !== null && $paginator->total() < config('arkscan.pagination.per_page')) {
+        $paginatorIsEmpty = true;
+    }
+
+    if (isset($this) && property_exists($this, 'isReady') && ! $this->isReady) {
+        $paginatorIsEmpty = true;
+    }
+@endphp
+
 <x-tables.encapsulated-table
     :class="Arr::toCssClasses(['hidden w-full md:block', $class])"
     :rounded="$rounded ?? true"
+    :with-pagination="! $paginatorIsEmpty"
     sticky
 >
     <thead class="dark:bg-black bg-theme-secondary-100">
