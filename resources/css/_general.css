@@ -367,11 +367,13 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 }
 
 @media (hover: hover) and (pointer: fine) {
+    .favorite-icon__hover svg path,
     .favorite-icon:hover svg path {
         fill: var(--theme-color-primary-700);
         stroke: var(--theme-color-primary-700);
     }
 
+    .dark .favorite-icon__hover svg path,
     .dark .favorite-icon:hover svg path {
         fill: var(--theme-color-dark-blue-500);
         stroke: var(--theme-color-dark-blue-500);
