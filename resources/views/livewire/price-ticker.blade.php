@@ -7,7 +7,7 @@
         https://app.clickup.com/t/86dqjdxjm
     --}}
     @unless ($isDisabled)
-        wire:poll.visible.1s
+        wire:poll.visible.30s
     @endunless
     class="w-full md:w-auto"
     :class="{ 'opacity-50': busy }"
