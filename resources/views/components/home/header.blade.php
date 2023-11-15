@@ -1,5 +1,5 @@
 <div class="px-6 mt-8 md:px-10 md:mx-auto md:max-w-7xl md:border-0">
-    <div class="flex flex-col rounded-xl border border-theme-secondary-300 md-lg:flex-row dark:border-theme-dark-700">
+    <div class="flex flex-col rounded-xl border lg:flex-row border-theme-secondary-300 dark:border-theme-dark-700">
         <div class="flex flex-col flex-1 py-3 px-4 sm:px-6 md:py-6">
             <div class="flex justify-between items-center mb-3 md:mb-5">
                 <h2 class="mb-0 text-xl font-semibold md:text-2xl">
@@ -26,7 +26,7 @@
 
         <div @class([
             "flex-1 bg-theme-secondary-100 dark:bg-theme-dark-950",
-            "py-3 px-4 rounded-b-xl md-lg:rounded-bl-none md-lg:rounded-r-xl sm:px-6 md:py-6" => Network::canBeExchanged(),
+            "py-3 px-4 rounded-b-xl md-lg:rounded-bl-none md-lg:rounded-r-xl sm:px-6 sm:pb-4 md:py-6" => Network::canBeExchanged(),
             "md-lg:rounded-r-xl md-lg:rounded-tl-xl md-lg:px-6 md-lg:py-6" => ! Network::canBeExchanged(),
         ])>
             <div @class([

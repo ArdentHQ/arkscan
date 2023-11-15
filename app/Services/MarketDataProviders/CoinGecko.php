@@ -138,6 +138,27 @@ final class CoinGecko extends AbstractMarketDataProvider
         ];
     }
 
+    public function volume(string $baseCurrency): array
+    {
+        // Just fetch it here and return it
+        $data = null;
+
+        try {
+            $data = Http::get('https://api.coingecko.com/api/v3/coins/'.Str::lower($baseCurrency).'?tickers=false&community_data=false&developer_data=false&sparkline=false')->json();
+        } catch (\Throwable) {
+            //
+        }
+
+        if ($this->isThrottledResponse($data) || $this->isEmptyResponse($data)) {
+            throw new CoinGeckoThrottledException();
+        }
+
+        /** @var array<mixed> $volume */
+        $volume = Arr::get($data, 'market_data.total_volume', []);
+
+        return $volume;
+    }
+
     private function isEmptyResponse(?array $data): bool
     {
         return $this->isAcceptableResponse(

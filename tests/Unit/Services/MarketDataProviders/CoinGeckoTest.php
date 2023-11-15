@@ -217,3 +217,55 @@ it('should throw an exception if the API response indicates throttling for excha
 
     (new CoinGecko())->exchangeDetails($exchange);
 })->throws(CoinGeckoThrottledException::class);
+
+it('should fetch volume for the given network', function () {
+    Http::fake([
+        'api.coingecko.com/*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true), 200),
+    ]);
+
+    $volume = (new CoinGecko())->volume('ARK');
+
+    expect($volume)->toHaveLength(61);
+    expect($volume['usd'])->toEqual(16232625);
+});
+
+it('should return empty array if no volume in response', function () {
+    $response = json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true);
+    Arr::set($response, 'market_data', []);
+
+    Http::fake([
+        'api.coingecko.com/*' => Http::response($response, 200),
+    ]);
+
+    $volume = (new CoinGecko())->volume('ARK');
+
+    expect($volume)->toHaveLength(0);
+});
+
+it('should throw an exception if the API response is empty for volume', function () {
+    Http::fake([
+        'api.coingecko.com/*' => Http::response(null, 200),
+    ]);
+
+    (new CoinGecko())->volume('ARK');
+})->throws(CoinGeckoThrottledException::class);
+
+it('should throw an exception if the API response throws an exception for volume', function () {
+    Http::fake([
+        'api.coingecko.com/*' => fn () => throw new \Exception('Test'),
+    ]);
+
+    (new CoinGecko())->volume('ARK');
+})->throws(CoinGeckoThrottledException::class);
+
+it('should throw an exception if the API response indicates throttling for volume', function () {
+    Http::fake([
+        'api.coingecko.com/*' => Http::response([
+            'status' => [
+                'error_code' => 1,
+            ],
+        ], 500),
+    ]);
+
+    (new CoinGecko())->volume('ARK');
+})->throws(CoinGeckoThrottledException::class);
