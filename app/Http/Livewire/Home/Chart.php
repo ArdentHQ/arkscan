@@ -8,8 +8,8 @@ use App\Enums\StatsPeriods;
 use App\Facades\Network;
 use App\Facades\Settings;
 use App\Http\Livewire\Concerns\AvailablePeriods;
+use App\Http\Livewire\Concerns\GetsCurrentPrice;
 use App\Http\Livewire\Concerns\StatisticsChart;
-use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\NumberFormatter as ServiceNumberFormatter;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
@@ -18,6 +18,7 @@ use Livewire\Component;
 final class Chart extends Component
 {
     use AvailablePeriods;
+    use GetsCurrentPrice;
     use StatisticsChart;
 
     public bool $show = true;
@@ -71,11 +72,6 @@ final class Chart extends Component
         }
 
         $this->period = $period;
-    }
-
-    private function getPrice(string $currency): float
-    {
-        return (new NetworkStatusBlockCache())->getPrice(Network::currency(), $currency) ?? 0.0;
     }
 
     private function mainValueVariation(array $dataset): string
