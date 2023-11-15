@@ -1,7 +1,10 @@
 <div class="w-full">
     <x-tables.toolbars.delegates.recent-votes :votes="$votes" />
 
-    <x-skeletons.delegates.recent-votes :row-count="$this->perPage">
+    <x-skeletons.delegates.recent-votes
+        :row-count="$this->perPage"
+        :paginator="$votes"
+    >
         <x-tables.desktop.delegates.recent-votes
             :votes="$votes"
             :no-results-message="$this->noResultsMessage"
