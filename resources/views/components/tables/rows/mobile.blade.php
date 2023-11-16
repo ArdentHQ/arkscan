@@ -8,12 +8,11 @@
 ])
 
 <div
-    @if ($expandable)
+    @if ($xData)
+        x-data="{{ $xData }}"
+    @elseif ($expandable)
         x-data="{
             isExpanded: false,
-            @if ($xData)
-                ...{{ $xData }}
-            @endif
         }"
     @endif
 

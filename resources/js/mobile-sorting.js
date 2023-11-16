@@ -9,9 +9,16 @@ const MobileSorting = (
 ) => {
     return {
         livewireHook: null,
+        windowEvent: null,
 
         init() {
-            this.update();
+            this.$nextTick(() => {
+                this.update();
+            });
+
+            this.windowEvent = this.update.bind(this);
+
+            window.addEventListener("updateTableSorting", this.windowEvent);
 
             if (typeof Livewire !== "undefined") {
                 this.livewireHook = Livewire.hook("message.processed", () => {
