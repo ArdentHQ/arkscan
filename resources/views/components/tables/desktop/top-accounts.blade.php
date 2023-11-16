@@ -108,13 +108,13 @@
                     breakpoint="md-lg"
                     responsive
                 >
-                    <span class="font-semibold leading-4.25">
+                    <div class="flex font-semibold">
                         @if($useVoteWeight)
                             <x-tables.rows.desktop.vote-percentage :model="$wallet" />
                         @else
                             <x-tables.rows.desktop.balance-percentage :model="$wallet" />
                         @endif
-                    </span>
+                    </div>
                 </x-ark-tables.cell>
             </x-ark-tables.row>
         @endforeach
