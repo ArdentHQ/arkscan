@@ -42,7 +42,6 @@
                         without-reverse
                         without-reverse-class="space-x-2"
                         without-link
-                        without-icon
                         class="text-theme-secondary-900 dark:text-theme-dark-50"
                     />
                 @else
@@ -51,7 +50,6 @@
                         without-reverse
                         without-reverse-class="space-x-2"
                         without-link
-                        without-icon
                         class="text-theme-secondary-900 dark:text-theme-dark-50"
                     />
                 @endif
@@ -68,7 +66,6 @@
                         without-reverse
                         without-reverse-class="space-x-2"
                         without-link
-                        without-icon
                         class="text-theme-secondary-900 dark:text-theme-dark-50"
                     />
                 @elseif ($transaction->isVoteCombination())
@@ -77,7 +74,6 @@
                         without-reverse
                         without-reverse-class="space-x-2"
                         without-link
-                        without-icon
                         class="text-theme-secondary-900 dark:text-theme-dark-50"
                     />
                 @elseif ($transaction->isMultiPayment())

@@ -8,6 +8,5 @@
         :model="$model"
         :without-username="$withoutUsername"
         without-reverse
-        without-icon
     />
 </div>
