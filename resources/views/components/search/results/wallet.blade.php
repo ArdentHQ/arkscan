@@ -9,8 +9,6 @@
         <x-slot name="header" class="leading-4.25">
             <x-general.identity
                 :model="$wallet"
-                without-reverse
-                without-reverse-class="space-x-2"
                 without-link
                 :without-truncate="! $truncate"
                 :truncate-length="10"
@@ -35,8 +33,6 @@
 
             <x-general.identity
                 :model="$wallet"
-                without-reverse
-                without-reverse-class="space-x-2"
                 without-link
                 :without-truncate="! $truncate"
                 :truncate-length="$truncateLength"

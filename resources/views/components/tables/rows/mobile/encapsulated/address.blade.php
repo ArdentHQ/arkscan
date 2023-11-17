@@ -15,8 +15,6 @@
         <x-general.identity
             :model="$model"
             without-username
-            without-reverse
-            without-icon
         />
 
         @unless ($withoutClipboard)

@@ -15,6 +15,5 @@
         :class="$identityClass"
         :content-class="$identityContentClass"
         :link-class="$identityLinkClass"
-        without-reverse
     />
 </x-tables.rows.mobile.encapsulated.cell>
