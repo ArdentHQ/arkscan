@@ -17,7 +17,6 @@
                     without-reverse
                     without-reverse-class="space-x-2"
                     without-link
-                    without-icon
                     :link-wallet="false"
                     class="text-theme-secondary-900 dark:text-theme-dark-50"
                 />
@@ -53,7 +52,6 @@
                     without-reverse
                     without-reverse-class="space-x-2"
                     without-link
-                    without-icon
                     :link-wallet="false"
                     class="text-theme-secondary-900 dark:text-theme-dark-50"
                 />

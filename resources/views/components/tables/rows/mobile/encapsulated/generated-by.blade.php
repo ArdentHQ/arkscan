@@ -7,6 +7,5 @@
     <x-general.identity
         :model="$model"
         without-reverse
-        without-icon
     />
 </x-tables.rows.mobile.encapsulated.cell>

@@ -12,7 +12,6 @@
                 without-reverse
                 without-reverse-class="space-x-2"
                 without-link
-                without-icon
                 :without-truncate="! $truncate"
                 :truncate-length="10"
                 address-visible
@@ -39,7 +38,6 @@
                 without-reverse
                 without-reverse-class="space-x-2"
                 without-link
-                without-icon
                 :without-truncate="! $truncate"
                 :truncate-length="$truncateLength"
                 address-visible

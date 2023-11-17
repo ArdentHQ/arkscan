@@ -10,7 +10,6 @@
         without-reverse
         without-reverse-class="space-x-2"
         without-link
-        without-icon
         class="text-theme-secondary-700 dark:text-theme-dark-50"
     />
 </div>

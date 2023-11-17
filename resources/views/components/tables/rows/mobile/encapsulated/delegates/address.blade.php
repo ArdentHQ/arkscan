@@ -16,6 +16,5 @@
         :content-class="$identityContentClass"
         :link-class="$identityLinkClass"
         without-reverse
-        without-icon
     />
 </x-tables.rows.mobile.encapsulated.cell>

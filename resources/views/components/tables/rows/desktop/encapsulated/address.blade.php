@@ -28,7 +28,6 @@
                 :without-truncate="$withoutTruncate"
                 :without-username="$withoutUsername"
                 :delegate-name-class="$delegateNameClass"
-                without-icon
             >
                 <x-slot name="address">
                     @unless ($withoutTruncate)
