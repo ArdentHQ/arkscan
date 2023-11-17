@@ -1,1 +1,0 @@
-<th>@lang($name)</th>
