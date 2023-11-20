@@ -19,12 +19,8 @@ final class Chart extends Component
     use HandlesChart;
     use GetsCurrentPrice;
 
-    public function render(): View | string
+    public function render(): View
     {
-        if (! Network::canBeExchanged()) {
-            return '<div></div>';
-        }
-
         $currency = Settings::currency();
 
         $currentPrice = $this->getPrice($currency);
