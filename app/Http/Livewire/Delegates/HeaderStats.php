@@ -17,8 +17,8 @@ final class HeaderStats extends Component
         [$missedBlockCount, $delegatesMissed] = $this->missedBlocks();
 
         $delegateCache = new DelegateCache();
-        $voterCount = $delegateCache->getTotalWalletsVoted();
-        $totalVoted = $delegateCache->getTotalBalanceVoted();
+        $voterCount    = $delegateCache->getTotalWalletsVoted();
+        $totalVoted    = $delegateCache->getTotalBalanceVoted();
 
         return view('livewire.delegates.header-stats', [
             'voterCount'      => $voterCount,
