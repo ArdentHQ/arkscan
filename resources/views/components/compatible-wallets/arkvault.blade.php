@@ -1,4 +1,4 @@
-<div class="flex-col rounded-xl md:border border-theme-secondary-300 dark:border-theme-secondary-800">
+<div class="flex-col rounded-xl md:border border-theme-secondary-300 dark:border-theme-dark-800">
     <x-compatible-wallets.disclaimer
         class="inline-flex pb-6 w-full md:px-8 md:pt-6 xl:hidden"
         inner-class="w-full"
@@ -11,12 +11,12 @@
             <div class="xl:mt-6">
                 <h2 class="text-lg font-semibold sm:text-2xl text-theme-secondary-900">
                     <span>@lang('general.arkvault') </span>
-                    <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
+                    <span class="text-theme-secondary-500 dark:text-theme-dark-700">
                         (@lang('pages.compatible-wallets.arkvault.web_wallet'))
                     </span>
                 </h2>
 
-                <p class="mt-2 leading-7 dark:text-theme-secondary-400">
+                <p class="mt-2 leading-7 dark:text-theme-dark-400">
                     @lang('pages.compatible-wallets.arkvault.description')
                 </p>
             </div>

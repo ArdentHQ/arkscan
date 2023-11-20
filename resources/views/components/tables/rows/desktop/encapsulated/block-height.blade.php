@@ -3,7 +3,7 @@
     'withoutLink' => false,
 ])
 
-<div {{ $attributes->class('text-sm font-semibold flex flex-col md:space-y-1 xl:space-y-0 whitespace-nowrap leading-4.25 text-theme-secondary-900 dark:text-theme-secondary-200') }}>
+<div {{ $attributes->class('text-sm font-semibold flex flex-col md:space-y-1 xl:space-y-0 whitespace-nowrap leading-4.25 text-theme-secondary-900 dark:text-theme-dark-200') }}>
     @unless ($withoutLink)
         <a
             href="{{ $model->url() }}"

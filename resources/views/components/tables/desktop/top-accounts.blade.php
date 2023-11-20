@@ -88,7 +88,7 @@
                     class="text-right"
                     last-on="lg"
                 >
-                    <div class="flex flex-col font-semibold text-theme-secondary-900 dark:text-theme-secondary-200">
+                    <div class="flex flex-col font-semibold text-theme-secondary-900 dark:text-theme-dark-200">
                         <x-tables.rows.desktop.encapsulated.balance :model="$wallet" />
 
                         <span class="mt-1 !leading-3.75 !text-xs font-semibold text-theme-secondary-500 md-lg:hidden">

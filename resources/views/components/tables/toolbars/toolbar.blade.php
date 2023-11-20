@@ -20,12 +20,12 @@
 @endphp
 
 <div @class([
-    "flex pt-1 md:px-6 md:rounded-t-xl md:border md:border-b-0 md:border-theme-secondary-300 md:dark:border-theme-secondary-800",
+    "flex pt-1 md:px-6 md:rounded-t-xl md:border md:border-b-0 md:border-theme-secondary-300 md:dark:border-theme-dark-800",
     "pb-4 md:pt-4" => $slot->isNotEmpty(),
     "pb-5 md:pt-5" => !$slot->isNotEmpty(),
     $breakpointClass,
 ])>
-    <div class="font-semibold dark:text-theme-secondary-500">
+    <div class="font-semibold dark:text-theme-dark-500">
         <span class="hidden sm:inline">
             @lang('pagination.showing_x_results', ['count' => number_format($resultCount, 0)])
         </span>

@@ -5,7 +5,7 @@
 ])
 
 <div {{ $attributes->class('flex flex-col flex-1 p-6 space-y-3 border-t-4 md:p-0 md:border-0 dark:border-black border-theme-secondary-200') }}>
-    <div class="flex justify-between font-semibold dark:text-theme-secondary-500">
+    <div class="flex justify-between font-semibold dark:text-theme-dark-500">
         {{ $title }}
 
         @if ($titleExtra)
@@ -13,7 +13,7 @@
         @endif
     </div>
 
-    <div class="relative flex-1 md:rounded-xl md:border border-theme-secondary-300 dark:border-theme-secondary-800">
+    <div class="relative flex-1 md:rounded-xl md:border border-theme-secondary-300 dark:border-theme-dark-800">
         <div class="flex relative flex-col space-y-3 md:p-6">
             {{ $slot }}
         </div>

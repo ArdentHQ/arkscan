@@ -7,7 +7,7 @@
 .table-filter-item__checkbox input[type="checkbox"],
 .dropdown__checkbox input[type="checkbox"],
 .export-modal__checkbox input[type="checkbox"] {
-    @apply w-5 h-5 cursor-pointer dark:border-theme-secondary-600;
+    @apply w-5 h-5 cursor-pointer dark:border-theme-dark-600;
 }
 
 .table-filter-item__checkbox input[type="checkbox"]:checked,

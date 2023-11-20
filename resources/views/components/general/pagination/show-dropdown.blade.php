@@ -1,13 +1,13 @@
 <x-general.dropdown.dropdown
     active-button-class=""
-    button-class="bg-white rounded border border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
+    button-class="bg-white rounded border border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-800"
     disabled-button-class="text-theme-secondary-500 bg-theme-secondary-200 dark:text-theme-dark-500 dark:bg-theme-dark-800 dark:border-theme-dark-700"
     :attributes="$attributes"
 >
     <x-slot name="button">
         <div @class([
             'flex justify-center items-center py-2 px-3 space-x-2 text-sm font-semibold leading-4 transition-default',
-            'dark:text-theme-secondary-200' => $attributes->get('disabled', false) === false,
+            'dark:text-theme-dark-200' => $attributes->get('disabled', false) === false,
             'dark:bg-theme-dark-800' => $attributes->get('disabled', false) === true,
         ])>
             <span>{{ $this->perPage }}</span>

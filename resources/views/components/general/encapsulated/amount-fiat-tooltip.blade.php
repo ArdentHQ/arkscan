@@ -19,7 +19,7 @@
             $isSentToSelf = $transaction->isSentToSelf($wallet->address());
         }
         if(! $isSent && ! $isReceived) {
-            $class[] = 'text-theme-secondary-900 dark:text-theme-secondary-200';
+            $class[] = 'text-theme-secondary-900 dark:text-theme-dark-200';
         }
 
         if($isSent || $isReceived) {

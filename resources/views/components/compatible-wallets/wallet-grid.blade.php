@@ -4,7 +4,7 @@
             href="{{ $wallet['url'] }}"
             target="_blank"
             rel="nofollow noopener noreferrer"
-            class="flex flex-col bg-white rounded-xl border transition hover:cursor-pointer group border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800 dark:hover:bg-theme-secondary-800 hover:border-theme-primary-200 hover:bg-theme-primary-50"
+            class="flex flex-col bg-white rounded-xl border transition hover:cursor-pointer group border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-800 dark:hover:bg-theme-secondary-800 hover:border-theme-primary-200 hover:bg-theme-primary-50"
         >
             <div class="flex justify-center items-center mx-2 mt-2 rounded-xl">
                 <x-ark-icon name="app-wallets.{{$wallet['logo']}}" size="full" />

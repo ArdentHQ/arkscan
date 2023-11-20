@@ -6,7 +6,7 @@
     })"
     @theme-changed.window="dark = $event.detail.theme === 'dark'"
     x-ref="nav"
-    class="hidden relative z-30 bg-white border-b md:flex md:flex-col border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
+    class="hidden relative z-30 bg-white border-b md:flex md:flex-col border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-800"
 >
     <div
         class="flex justify-between items-center w-full content-container"
@@ -47,7 +47,7 @@
 
                                     <div
                                         x-show="openDropdown === '{{ $navItem['label'] }}'"
-                                        class="absolute z-30 max-w-4xl whitespace-nowrap bg-white rounded-lg shadow-lg top-[4.5rem] dark:bg-theme-secondary-800"
+                                        class="absolute z-30 max-w-4xl whitespace-nowrap bg-white rounded-lg shadow-lg top-[4.5rem] dark:bg-theme-dark-800"
                                         x-transition.origin.top
                                         x-cloak
                                     >

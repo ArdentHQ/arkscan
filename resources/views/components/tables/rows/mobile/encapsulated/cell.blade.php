@@ -9,7 +9,7 @@
         </span>
     @endif
 
-    <div class="text-theme-secondary-900 dark:text-theme-secondary-50">
+    <div class="text-theme-secondary-900 dark:text-theme-dark-50">
         {{ $slot }}
     </div>
 </div>

@@ -9,7 +9,7 @@
     ], fn ($enabled) => $enabled);
 @endphp
 
-<div {{ $attributes->class(['flex divide-x divide-theme-secondary-300 dark:divide-theme-secondary-800 space-x-2 text-theme-secondary-900 dark:text-theme-secondary-200 font-semibold leading-4.25']) }}>
+<div {{ $attributes->class(['flex divide-x divide-theme-secondary-300 dark:divide-theme-dark-800 space-x-2 text-theme-secondary-900 dark:text-theme-dark-200 font-semibold leading-4.25']) }}>
     @foreach ($pairs as $pair => $value)
         <div class="pl-2 first:pl-0">
             @lang('pages.exchanges.pair.' . $pair)

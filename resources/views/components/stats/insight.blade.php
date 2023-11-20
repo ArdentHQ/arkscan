@@ -20,7 +20,7 @@
             {{ $mainTitle }}
         </h2>
 
-        <div class="text-lg font-semibold md-lg:text-2xl leading-5.25 md:!leading-[29px] text-theme-secondary-900 dark:text-theme-secondary-200">
+        <div class="text-lg font-semibold md-lg:text-2xl leading-5.25 md:!leading-[29px] text-theme-secondary-900 dark:text-theme-dark-200">
             {{ $mainValue }}
         </div>
     </div>
@@ -31,7 +31,7 @@
                 wire:model="{{ $model }}"
                 wrapper-class="relative left-0 w-full xl:inline-block"
                 dropdown-class="left-0 mt-1 origin-top-left"
-                button-class="inline-block w-full text-left !px-3 !py-2 form-input transition-default dark:bg-theme-secondary-900 dark:border-theme-secondary-800 !text-sm font-semibold leading-4.25"
+                button-class="inline-block w-full text-left !px-3 !py-2 form-input transition-default dark:bg-theme-dark-900 dark:border-theme-dark-800 !text-sm font-semibold leading-4.25"
                 :initial-value="$selected"
                 :placeholder="$selected"
                 :options="$options"
@@ -49,7 +49,7 @@
                 </h3>
 
                 <div
-                    class="mt-2 text-sm font-semibold whitespace-nowrap md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-secondary-200"
+                    class="mt-2 text-sm font-semibold whitespace-nowrap md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-dark-200"
 
                     @if($secondaryTooltip)
                         data-tippy-content="{{ $secondaryTooltip }}"
@@ -74,12 +74,12 @@
                     />
                 </div>
             @else
-                <div class="sm:pl-6 sm:border-l border-theme-secondary-300 dark:border-theme-secondary-800">
+                <div class="sm:pl-6 sm:border-l border-theme-secondary-300 dark:border-theme-dark-800">
                     <h3 class="mb-0 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
                         {{ $tertiaryTitle }}
                     </h3>
 
-                    <div class="mt-2 text-sm font-semibold md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-secondary-200">
+                    <div class="mt-2 text-sm font-semibold md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-dark-200">
                         {{ $tertiaryValue }}
                     </div>
                 </div>

@@ -64,11 +64,11 @@
                     data-value="{{ $exchange->price }}"
                 >
                     @if ($exchange->price)
-                        <span class="text-theme-secondary-900 dark:text-theme-secondary-200">
+                        <span class="text-theme-secondary-900 dark:text-theme-dark-200">
                             {{ ExchangeRate::convertFiatToCurrency($exchange->price, 'USD', Settings::currency()) }}
                         </span>
                     @else
-                        <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
+                        <span class="text-theme-secondary-500 dark:text-theme-dark-700">
                             @lang('general.na')
                         </span>
                     @endif
@@ -83,7 +83,7 @@
                     @if ($exchange->volume)
                         {{ ExchangeRate::convertFiatToCurrency($exchange->volume, 'USD', Settings::currency(), 2) }}
                     @else
-                        <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
+                        <span class="text-theme-secondary-500 dark:text-theme-dark-700">
                             @lang('general.na')
                         </span>
                     @endif

@@ -37,7 +37,7 @@
 
         <nav
             x-ref="nav"
-            class="relative z-30 bg-white border-b border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
+            class="relative z-30 bg-white border-b border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-800"
             @click.outside="open = false"
         >
             <div class="flex relative justify-between w-full sm:h-16 h-[3.25rem] content-container">
@@ -81,11 +81,11 @@
                 x-transition.opacity
                 x-cloak
             >
-                <div class="border-t-2 shadow-xl border-theme-secondary-200 dark:border-theme-secondary-800">
-                    <div class="pt-2 bg-white rounded-b-lg dark:bg-theme-secondary-800">
+                <div class="border-t-2 shadow-xl border-theme-secondary-200 dark:border-theme-dark-800">
+                    <div class="pt-2 bg-white rounded-b-lg dark:bg-theme-dark-800">
                         @foreach ($navigation as $navItem)
                             @if (Arr::exists($navItem, 'children'))
-                                <div class="relative h-full dark:bg-theme-secondary-800">
+                                <div class="relative h-full dark:bg-theme-dark-800">
                                     <a
                                         href="#"
                                         class="inline-flex relative justify-between items-center py-3 px-6 w-full h-full font-semibold leading-5 focus:ring-inset focus:outline-none text-theme-secondary-700 dark:text-theme-dark-50 hover:text-theme-secondary-800"
@@ -99,7 +99,7 @@
 
                                     <div
                                         x-show="openDropdown === '{{ $navItem['label'] }}'"
-                                        class="bg-white dark:bg-theme-secondary-800"
+                                        class="bg-white dark:bg-theme-dark-800"
                                         x-cloak
                                     >
                                         <div class="flex flex-col pt-2 pb-2 w-full">
@@ -124,7 +124,7 @@
                         @endforeach
 
                         <div class="py-4 dark:bg-black bg-theme-secondary-100">
-                            <div class="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
+                            <div class="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800">
                                 <x-navbar.mobile.setting-item title="{{ trans('general.select_theme') }}">
                                     <livewire:navbar.dark-mode-toggle
                                         active-icon="underline-moon"
@@ -141,7 +141,7 @@
                                     <x-navbar.network-dropdown />
                                 </x-navbar.mobile.setting-item>
 
-                                <div class="flex pt-3 font-semibold dark:text-theme-secondary-500">
+                                <div class="flex pt-3 font-semibold dark:text-theme-dark-500">
                                     <livewire:price-ticker />
                                 </div>
                             </div>

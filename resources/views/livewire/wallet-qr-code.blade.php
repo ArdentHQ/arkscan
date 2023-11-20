@@ -7,7 +7,7 @@
         active-button-class=""
         dropdown-padding=""
         dropdown-wrapper-class="w-full"
-        dropdown-background="bg-white border border-transparent dark:shadow-lg-dark dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
+        dropdown-background="bg-white border border-transparent dark:shadow-lg-dark dark:bg-theme-dark-900 dark:border-theme-dark-800"
         :close-on-click="false"
         on-close="() => showOptions = false"
         button-wrapper-class=""
@@ -22,15 +22,15 @@
             </div>
         </x-slot>
 
-        <div class="flex justify-between items-center p-6 border-b border-theme-secondary-300 dark:border-theme-secondary-800">
-            <div class="text-lg text-theme-secondary-900 dark:text-theme-secondary-200">
+        <div class="flex justify-between items-center p-6 border-b border-theme-secondary-300 dark:border-theme-dark-800">
+            <div class="text-lg text-theme-secondary-900 dark:text-theme-dark-200">
                 @lang('pages.wallet.qrcode.title')
             </div>
 
             <div>
                 <button
                     type="button"
-                    class="p-2 hover:text-white button button-generic dark:hover:text-white dark:text-theme-secondary-600 hover:bg-theme-primary-700"
+                    class="p-2 hover:text-white button button-generic dark:hover:text-white dark:text-theme-dark-600 hover:bg-theme-primary-700"
                     @click="dropdownOpen = false"
                 >
                     <x-ark-icon
@@ -44,7 +44,7 @@
         <div class="p-6">
             <div
                 x-show="showOptions"
-                class="font-normal text-theme-secondary-700 dark:text-theme-secondary-500"
+                class="font-normal text-theme-secondary-700 dark:text-theme-dark-500"
             >
                 @lang('pages.wallet.qrcode.description')
             </div>
@@ -78,7 +78,7 @@
             </div>
 
             <div class="flex flex-col items-center">
-                <div class="inline-block p-2 rounded-lg border sm:block border-theme-secondary-300 dark:border-theme-secondary-300 dark:bg-theme-secondary-300">
+                <div class="inline-block p-2 rounded-lg border sm:block border-theme-secondary-300 dark:border-theme-dark-300 dark:bg-theme-dark-300">
                     {!! $this->code !!}
                 </div>
 
@@ -92,15 +92,15 @@
 
                 <div
                     x-show="showOptions"
-                    class="mt-4 mb-1 font-normal text-theme-secondary-700 dark:text-theme-secondary-500"
+                    class="mt-4 mb-1 font-normal text-theme-secondary-700 dark:text-theme-dark-500"
                 >
                     @lang('pages.wallet.qrcode.automatic_notice')
                 </div>
 
                 <div class="flex items-center mt-2 space-x-3">
-                    <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-secondary-800"></div>
+                    <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-800"></div>
                     <div class="font-semibold text-theme-secondary-700">@lang('general.or')</div>
-                    <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-secondary-800"></div>
+                    <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-800"></div>
                 </div>
 
                 <a

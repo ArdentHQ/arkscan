@@ -46,7 +46,7 @@
         />
 
         @if ($withNetworkCurrency)
-            <span class="text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-secondary-200">
+            <span class="text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-200">
                 {{ Network::currency() }}
             </span>
         @endif
