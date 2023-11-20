@@ -50,7 +50,7 @@
                 <div class="flex justify-end">
                     <div class="flex justify-end">
                         <div class="flex items-center space-x-1">
-                            <x-navbar.button
+                            <x-navbar.mobile.button
                                 @click="Livewire.emit('openSearchModal')"
                                 dusk="navigation-search-modal-trigger"
                                 :disabled="app()->isDownForMaintenance()"
@@ -60,9 +60,9 @@
                                 <span class="sr-only">
                                     @lang('actions.search')
                                 </span>
-                            </x-navbar.button>
+                            </x-navbar.mobile.button>
 
-                            <x-navbar.button @click="toggle">
+                            <x-navbar.mobile.button @click="toggle">
                                 <span :class="{'hidden': open, 'inline-flex': !open }">
                                     <x-ark-icon name="menu" />
                                 </span>
@@ -70,7 +70,7 @@
                                 <span :class="{'hidden': !open, 'inline-flex': open }" x-cloak>
                                     <x-ark-icon name="menu-show" />
                                 </span>
-                            </x-navbar.button>
+                            </x-navbar.mobile.button>
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                 x-cloak
             >
                 <div class="border-t-2 shadow-xl border-theme-secondary-200 dark:border-theme-dark-800">
-                    <div class="pt-2 bg-white rounded-b-lg dark:bg-theme-dark-800">
+                    <div class="pt-2 bg-white rounded-b-lg dark:bg-theme-dark-700">
                         @foreach ($navigation as $navItem)
                             @if (Arr::exists($navItem, 'children'))
                                 <div class="relative h-full dark:bg-theme-dark-800">

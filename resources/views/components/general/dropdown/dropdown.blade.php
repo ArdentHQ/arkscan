@@ -16,7 +16,7 @@
     'placement' => 'bottom',
     'placementFallbacks' => null,
     'dropdownRounding' => 'rounded-xl',
-    'disabledButtonClass' => 'text-theme-secondary-500 dark:text-theme-dark-700 bg-theme-secondary-200 dark:bg-theme-dark-800',
+    'disabledButtonClass' => 'text-theme-secondary-500 dark:text-theme-dark-500 bg-theme-secondary-200 dark:bg-theme-dark-700',
     'activeButtonClass' => 'bg-theme-secondary-200 dark:bg-theme-dark-800 md:bg-white md:dark:text-theme-dark-600 md:hover:text-theme-secondary-900 md:hover:bg-theme-secondary-200 md:dark:bg-theme-dark-900 dark:hover:bg-theme-secondary-800 text-theme-secondary-700 dark:text-theme-dark-200',
 ])
 
