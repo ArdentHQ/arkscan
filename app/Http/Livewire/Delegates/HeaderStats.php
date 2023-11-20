@@ -15,7 +15,10 @@ final class HeaderStats extends Component
     public function render(): View
     {
         [$missedBlockCount, $delegatesMissed] = $this->missedBlocks();
-        [$voterCount, $totalVoted]            = (new DelegateCache())->getTotalVoted();
+
+        $delegateCache = new DelegateCache();
+        $voterCount = $delegateCache->getTotalWalletsVoted();
+        $totalVoted = $delegateCache->getTotalBalanceVoted();
 
         return view('livewire.delegates.header-stats', [
             'voterCount'      => $voterCount,
