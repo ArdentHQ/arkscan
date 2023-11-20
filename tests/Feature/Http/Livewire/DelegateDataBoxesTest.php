@@ -203,7 +203,7 @@ it('should not error if no cached delegate data', function () {
 
     Livewire::test(DelegateDataBoxes::class)
         ->call('setIsReady')
-        ->assertSeeHtml('rounded-sm-md animate-pulse bg-theme-secondary-300 dark:bg-theme-secondary-800 w-[70px] h-5')
+        ->assertSeeHtml('rounded-sm-md animate-pulse bg-theme-secondary-300 dark:bg-theme-dark-800 w-[70px] h-5')
         ->assertSet('statistics.nextDelegate', null);
 });
 
