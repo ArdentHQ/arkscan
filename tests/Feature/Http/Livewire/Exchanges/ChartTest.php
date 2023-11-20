@@ -10,9 +10,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
-use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
-
 use function Tests\fakeCryptoCompare;
+use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
 beforeEach(function (): void {
     Carbon::setTestNow('2020-01-01 00:00:00');

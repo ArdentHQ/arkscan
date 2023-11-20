@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Home;
 
 use App\Enums\StatsPeriods;
-use App\Facades\Network;
 use App\Facades\Settings;
 use App\Http\Livewire\Concerns\GetsCurrentPrice;
 use App\Http\Livewire\Concerns\HandlesChart;
