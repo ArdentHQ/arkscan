@@ -44,13 +44,18 @@
                 <x-ark-tables.cell class="text-sm">
                     <div class="flex items-center space-x-3">
                         <div class="flex justify-center items-center w-5 h-5">
-                            <img class="max-w-full max-h-full" src="{{ config('arkscan.exchanges.icon_url') }}{{ $exchange->icon }}.svg" alt="{{ $exchange->name }} icon" />
+                            <img
+                                class="max-w-full max-h-full"
+                                src="{{ config('arkscan.exchanges.icon_url') }}{{ $exchange->icon }}.svg"
+                                alt="{{ $exchange->name }} icon"
+                            />
                         </div>
 
                         <x-ark-external-link
                             :url="$exchange->url"
                             :text="$exchange->name"
                             class="flex items-center space-x-2 font-semibold leading-4 break-words link"
+                            icon-class="inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-secondary-500 dark:text-theme-dark-500"
                         />
                     </div>
                 </x-ark-tables.cell>
@@ -64,11 +69,11 @@
                     data-value="{{ $exchange->price }}"
                 >
                     @if ($exchange->price)
-                        <span class="text-theme-secondary-900 dark:text-theme-dark-200">
+                        <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                             {{ ExchangeRate::convertFiatToCurrency($exchange->price, 'USD', Settings::currency()) }}
                         </span>
                     @else
-                        <span class="text-theme-secondary-500 dark:text-theme-dark-700">
+                        <span class="text-theme-secondary-500 dark:text-theme-dark-500">
                             @lang('general.na')
                         </span>
                     @endif
@@ -83,7 +88,7 @@
                     @if ($exchange->volume)
                         {{ ExchangeRate::convertFiatToCurrency($exchange->volume, 'USD', Settings::currency(), 2) }}
                     @else
-                        <span class="text-theme-secondary-500 dark:text-theme-dark-700">
+                        <span class="text-theme-secondary-500 dark:text-theme-dark-500">
                             @lang('general.na')
                         </span>
                     @endif

@@ -20,7 +20,7 @@
             {{ $mainTitle }}
         </h2>
 
-        <div class="text-lg font-semibold md-lg:text-2xl leading-5.25 md:!leading-[29px] text-theme-secondary-900 dark:text-theme-dark-200">
+        <div class="text-lg font-semibold md-lg:text-2xl leading-5.25 md:!leading-[29px] text-theme-secondary-900 dark:text-theme-dark-50">
             {{ $mainValue }}
         </div>
     </div>
@@ -49,7 +49,7 @@
                 </h3>
 
                 <div
-                    class="mt-2 text-sm font-semibold whitespace-nowrap md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-dark-200"
+                    class="mt-2 text-sm font-semibold whitespace-nowrap md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50"
 
                     @if($secondaryTooltip)
                         data-tippy-content="{{ $secondaryTooltip }}"
@@ -79,7 +79,7 @@
                         {{ $tertiaryTitle }}
                     </h3>
 
-                    <div class="mt-2 text-sm font-semibold md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-dark-200">
+                    <div class="mt-2 text-sm font-semibold md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50">
                         {{ $tertiaryValue }}
                     </div>
                 </div>

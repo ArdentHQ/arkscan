@@ -11,12 +11,12 @@
             <div class="xl:mt-6">
                 <h2 class="text-lg font-semibold sm:text-2xl text-theme-secondary-900">
                     <span>@lang('general.arkvault') </span>
-                    <span class="text-theme-secondary-500 dark:text-theme-dark-700">
+                    <span class="text-theme-secondary-500 dark:text-theme-dark-500">
                         (@lang('pages.compatible-wallets.arkvault.web_wallet'))
                     </span>
                 </h2>
 
-                <p class="mt-2 leading-7 dark:text-theme-dark-400">
+                <p class="mt-2 leading-7 dark:text-theme-dark-200">
                     @lang('pages.compatible-wallets.arkvault.description')
                 </p>
             </div>

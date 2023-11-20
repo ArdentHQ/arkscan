@@ -185,7 +185,7 @@ body.table-compact-until-lg .arrow-direction {
 }
 
 .table-encapsulated thead th {
-    @apply text-theme-secondary-700 dark:text-theme-dark-500 font-semibold;
+    @apply text-theme-secondary-700 dark:text-theme-dark-200 font-semibold;
 }
 
 .table-list-mobile .table-list-mobile-row {

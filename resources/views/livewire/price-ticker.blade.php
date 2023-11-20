@@ -47,7 +47,7 @@
                     @class([
                         'flex justify-center items-center py-2 pr-3 space-x-2 text-sm font-semibold leading-4 group transition-default',
                         'cursor-not-allowed' => $isDisabled,
-                        'dark:text-theme-dark-50 hover:text-theme-secondary-900 hover:dark:text-theme-dark-50 md:dark:text-theme-dark-200' => ! $isDisabled,
+                        'dark:text-theme-dark-50 hover:text-theme-secondary-900 hover:dark:text-theme-dark-50 md:dark:text-theme-dark-50' => ! $isDisabled,
                     ])
                     @if ($isDisabled)
                         disabled

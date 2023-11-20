@@ -25,7 +25,7 @@
     "pb-5 md:pt-5" => !$slot->isNotEmpty(),
     $breakpointClass,
 ])>
-    <div class="font-semibold dark:text-theme-dark-500">
+    <div class="font-semibold dark:text-theme-dark-200">
         <span class="hidden sm:inline">
             @lang('pagination.showing_x_results', ['count' => number_format($resultCount, 0)])
         </span>

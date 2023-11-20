@@ -39,7 +39,7 @@
             $detailBreakpointClass,
         ])>
             <div @class([
-                'text-sm dark:text-theme-dark-500 !leading-4.25 whitespace-nowrap',
+                'text-sm dark:text-theme-dark-200 !leading-4.25 whitespace-nowrap',
                 $labelBreakpointClass,
             ])>
                 {{ $label }}

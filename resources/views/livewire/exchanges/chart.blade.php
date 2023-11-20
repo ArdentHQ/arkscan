@@ -11,7 +11,7 @@
                             @lang('pages.exchanges.chart.current_price')
                         </div>
 
-                        <span class="text-lg font-semibold leading-5.25 md:!leading-[29px] md:text-2xl text-theme-secondary-900 dark:text-theme-dark-200">
+                        <span class="text-lg font-semibold leading-5.25 md:!leading-[29px] md:text-2xl text-theme-secondary-900 dark:text-theme-dark-50">
                             {{ $mainValueFiat }}
                         </span>
                     </div>
