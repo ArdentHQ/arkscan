@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Livewire\Concerns;
 
 use App\Facades\Settings;
@@ -11,6 +13,12 @@ trait HandlesChart
 
     public string $refreshInterval = '';
 
+    public function mountHandlesChart(): void
+    {
+        $this->refreshInterval = (string) config('arkscan.statistics.refreshInterval', '60');
+        $this->period          = $this->defaultPeriod();
+    }
+
     protected function getListenersHandlesChart(): array
     {
         return [
@@ -18,12 +26,6 @@ trait HandlesChart
             'themeChanged'    => '$refresh',
             'updateChart'     => '$refresh',
         ];
-    }
-
-    public function mountHandlesChart(): void
-    {
-        $this->refreshInterval = (string) config('arkscan.statistics.refreshInterval', '60');
-        $this->period          = $this->defaultPeriod();
     }
 
     private function mainValueVariation(array $dataset): string
