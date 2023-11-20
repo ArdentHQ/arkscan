@@ -19,7 +19,7 @@ trait HandlesChart
         $this->period          = $this->defaultPeriod();
     }
 
-    protected function getListenersHandlesChart(): array
+    public function getListeners(): array
     {
         return [
             'currencyChanged' => '$refresh',

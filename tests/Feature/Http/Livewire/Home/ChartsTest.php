@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Contracts\Network as NetworkContract;
 use App\Facades\Settings;
 use App\Http\Livewire\Home\Chart;
 use App\Services\Cache\NetworkCache;
@@ -10,6 +11,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
+use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
+
 use function Tests\fakeCryptoCompare;
 
 beforeEach(function (): void {
@@ -72,7 +75,7 @@ it('should change the period', function ($period) {
 
 it('should not change the period with an invalid value', function ($period) {
     Livewire::test(Chart::class)
-    ->set('period', 'day')
+        ->set('period', 'day')
         ->call('setPeriod', $period)
         ->assertSet('period', 'day');
 })->with([
@@ -80,3 +83,23 @@ it('should not change the period with an invalid value', function ($period) {
     'decade',
     'random-value',
 ]);
+
+it('should handle events', function () {
+    $networkStub = new NetworkStub(false);
+    app()->singleton(NetworkContract::class, fn () => $networkStub);
+
+    $component = Livewire::test(Chart::class)
+        ->assertDontSee(route('exchanges'));
+
+    $networkStub->canBeExchanged = true;
+    $component->emit('currencyChanged')
+        ->assertSee(route('exchanges'));
+
+    $networkStub->canBeExchanged = false;
+    $component->emit('themeChanged')
+        ->assertDontSee(route('exchanges'));
+
+    $networkStub->canBeExchanged = true;
+    $component->emit('updateChart')
+        ->assertSee(route('exchanges'));
+});

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Contracts\Network as NetworkContract;
 use App\Facades\Settings;
 use App\Http\Livewire\Exchanges\Chart;
 use App\Services\Cache\NetworkCache;
@@ -9,6 +10,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
+use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
+
 use function Tests\fakeCryptoCompare;
 
 beforeEach(function (): void {
@@ -210,4 +213,24 @@ it('should use a different unit for a weeks chart data', function () {
         ->assertSet('dateUnit', null)
         ->set('period', 'week')
         ->assertSet('dateUnit', 'day');
+});
+
+it('should handle events', function () {
+    $networkStub = new NetworkStub(true);
+    app()->singleton(NetworkContract::class, fn () => $networkStub);
+
+    $component = Livewire::test(Chart::class)
+        ->assertSee(trans('pages.exchanges.chart.current_price'));
+
+    $networkStub->canBeExchanged = false;
+    $component->emit('currencyChanged')
+        ->assertDontSee(trans('pages.exchanges.chart.current_price'));
+
+    $networkStub->canBeExchanged = true;
+    $component->emit('themeChanged')
+        ->assertSee(trans('pages.exchanges.chart.current_price'));
+
+    $networkStub->canBeExchanged = false;
+    $component->emit('updateChart')
+        ->assertDontSee(trans('pages.exchanges.chart.current_price'));
 });
