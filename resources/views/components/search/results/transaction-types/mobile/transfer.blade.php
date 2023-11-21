@@ -8,8 +8,6 @@
 
         <x-general.identity
             :model="$transaction->sender()"
-            without-reverse
-            without-reverse-class="space-x-2"
             without-link
             class="text-theme-secondary-900 dark:text-theme-dark-50"
         />
@@ -22,8 +20,6 @@
 
         <x-general.identity
             :model="$transaction->recipient()"
-            without-reverse
-            without-reverse-class="space-x-2"
             without-link
             class="text-theme-secondary-900 dark:text-theme-dark-50"
         />
