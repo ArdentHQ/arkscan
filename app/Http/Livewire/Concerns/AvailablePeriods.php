@@ -8,6 +8,8 @@ use App\Enums\StatsPeriods;
 
 trait AvailablePeriods
 {
+    public string $period = '';
+
     private function defaultPeriod(): string
     {
         return StatsPeriods::DAY;
