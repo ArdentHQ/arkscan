@@ -77,14 +77,16 @@
                 />
             </div>
 
-            <div class="flex items-center sm:hidden">
-                <a
-                    href="{{ route('exchanges') }}"
-                    class="py-1.5 px-4 button button-secondary"
-                >
-                    @lang('actions.exchanges')
-                </a>
-            </div>
+            @if (Network::canBeExchanged())
+                <div class="flex items-center sm:hidden">
+                    <a
+                        href="{{ route('exchanges') }}"
+                        class="py-1.5 px-4 button button-secondary"
+                    >
+                        @lang('actions.exchanges')
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 </div>
