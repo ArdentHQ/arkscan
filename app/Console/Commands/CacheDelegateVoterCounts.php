@@ -70,9 +70,7 @@ final class CacheDelegateVoterCounts extends Command
             $totalVoted->plus($wallet['balance']->valueOf());
         }
 
-        $delegateCache->setTotalVoted([
-            $wallets->count(),
-            $totalVoted->toFloat(),
-        ]);
+        $delegateCache->setTotalWalletsVoted($wallets->count());
+        $delegateCache->setTotalBalanceVoted($totalVoted->toFloat());
     }
 }
