@@ -58,23 +58,6 @@ body {
     @apply border-theme-secondary-800;
 }
 
-/* Tabs */
-.explorer-tab:first-child {
-    @apply ml-4;
-}
-.explorer-tab::before {
-    content: "";
-    @apply absolute top-0 left-0 h-4 -ml-4 border-l border-theme-secondary-300;
-
-    margin-top: 12.5px;
-}
-.explorer-tab:first-child::before {
-    @apply border-l-0;
-}
-.dark .explorer-tab::before {
-    @apply border-theme-secondary-800;
-}
-
 /* Transaction Icon */
 .transaction-icon {
     @apply flex-shrink-0 text-theme-secondary-900 border-theme-secondary-900;
