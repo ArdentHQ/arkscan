@@ -18,8 +18,6 @@ final class InsightAllTimeTransactions extends Component
     use ChartNumberFormatters;
     use StatisticsChart;
 
-    public string $period = '';
-
     public string $refreshInterval = '';
 
     public string $cache = '';
