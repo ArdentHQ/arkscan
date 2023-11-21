@@ -30,7 +30,7 @@
         >
             @foreach($options as $val => $label)
                 @unless ($loop->first)
-                    <div class="w-px ml-2 h-4 bg-theme-secondary-300 dark:bg-theme-dark-700"></div>
+                    <div class="ml-2 w-px h-4 bg-theme-secondary-300 dark:bg-theme-dark-700"></div>
                 @endunless
 
                 <x-tabs.tab
