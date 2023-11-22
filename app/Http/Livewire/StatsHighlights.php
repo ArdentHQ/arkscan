@@ -53,7 +53,7 @@ final class StatsHighlights extends Component
 
     private function getVotingValue(): float
     {
-        return (new DelegateCache())->getTotalVoted()[1];
+        return (new DelegateCache())->getTotalBalanceVoted();
     }
 
     private function getDelegates(): string

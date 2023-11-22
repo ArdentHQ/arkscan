@@ -19,7 +19,6 @@
 
     <x-general.identity
         :model="$delegate"
-        without-reverse
         :class="$valueClass"
     />
 </x-tables.rows.mobile.encapsulated.cell>

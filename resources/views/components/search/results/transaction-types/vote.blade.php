@@ -8,8 +8,6 @@
 
         <x-general.identity
             :model="$transaction->isUnvote() ? $transaction->unvoted() : $transaction->voted()"
-            without-reverse
-            without-reverse-class="space-x-2"
             without-link
             class="text-theme-secondary-900 dark:text-theme-dark-50"
         />
@@ -23,8 +21,6 @@
         @if ($transaction->isVoteCombination())
             <x-general.identity
                 :model="$transaction->voted()"
-                without-reverse
-                without-reverse-class="space-x-2"
                 without-link
                 class="text-theme-secondary-900 dark:text-theme-dark-50"
             />

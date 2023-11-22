@@ -4,8 +4,5 @@
     :label="trans('tables.blocks.generated_by')"
     :attributes="$attributes"
 >
-    <x-general.identity
-        :model="$model"
-        without-reverse
-    />
+    <x-general.identity :model="$model" />
 </x-tables.rows.mobile.encapsulated.cell>
