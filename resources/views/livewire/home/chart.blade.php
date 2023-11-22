@@ -68,12 +68,12 @@
                 />
             </div>
 
-            <x-home.exchanges-button class="hidden xs:flex items-center sm:hidden" />
+            <x-home.exchanges-button class="hidden items-center sm:hidden xs:flex" />
         </div>
     </div>
 
     <x-home.exchanges-button
-        class="flex items-center xs:hidden mt-3"
+        class="flex items-center mt-3 xs:hidden"
         button-class="flex-1"
     />
 </div>
