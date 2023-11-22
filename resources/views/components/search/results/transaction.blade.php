@@ -2,7 +2,7 @@
 
 <x-search.results.result :model="$transaction">
     <x-tables.rows.mobile class="md:hidden">
-        <x-slot name="header" class="leading-4.25">
+        <x-slot name="header">
             <div class="min-w-0 link group-hover/result:no-underline hover:text-theme-primary-600">
                 <x-truncate-middle>
                     {{ $transaction->id() }}
@@ -23,7 +23,7 @@
                 <x-general.encapsulated.transaction-type :transaction="$transaction" />
             </x-general.encapsulated.transaction-direction-badge>
 
-            <div class="flex-1 min-w-0 link leading-4.25 group-hover/result:no-underline hover:text-theme-primary-600">
+            <div class="flex-1 min-w-0 link group-hover/result:no-underline hover:text-theme-primary-600">
                 <x-truncate-middle :length="20">
                     {{ $transaction->id() }}
                 </x-truncate-middle>
