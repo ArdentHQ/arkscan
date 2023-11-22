@@ -31,7 +31,7 @@ final class BlocksController
     private function blockData(): array
     {
         return Cache::remember('blocks:stats', self::STATS_TTL, function () {
-            $timestamp = Timestamp::fromUnix(Carbon::now()->subDays(1)->unix())->unix();
+            $timestamp = Timestamp::fromUnix(Carbon::now()->subDays(1)->unix())->unix()* 1000;
             $data      = (array) DB::connection('explorer')
                 ->table('blocks')
                 ->selectRaw('COUNT(*) as block_count')
