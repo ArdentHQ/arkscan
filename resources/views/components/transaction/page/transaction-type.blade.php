@@ -62,6 +62,12 @@
             :value="$transaction->sender()->username()"
             :transaction="$transaction"
         />
+    @elseif ($transaction->isUsernameRegistration() || $transaction->isUsernameResignation())
+        <x-transaction.page.section-detail.row
+            :title="trans('pages.transaction.header.username')"
+            :value="$transaction->sender()->username()"
+            :transaction="$transaction"
+        />
     @elseif ($transaction->isLegacy())
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.sub_category')"

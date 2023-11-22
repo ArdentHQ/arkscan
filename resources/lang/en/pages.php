@@ -102,6 +102,7 @@ return [
             'nonce'        => 'Nonce',
             'category'     => 'Category',
             'delegate'     => 'Delegate',
+            'username'     => 'Name',
             'old_delegate' => 'Old Delegate',
             'new_delegate' => 'New Delegate',
             'address'      => 'Address',

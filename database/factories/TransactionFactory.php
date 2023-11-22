@@ -139,6 +139,26 @@ final class TransactionFactory extends Factory
         ]);
     }
 
+    public function usernameRegistration(): Factory
+    {
+        return $this->state(fn () => [
+            'type'       => CoreTransactionTypeEnum::USERNAME_REGISTRATION,
+            'type_group' => TransactionTypeGroupEnum::CORE,
+            'asset'      => [
+                'username' => 'bob'
+            ],
+        ]);
+    }
+
+    public function usernameResignation(): Factory
+    {
+        return $this->state(fn () => [
+            'type'       => CoreTransactionTypeEnum::USERNAME_RESIGNATION,
+            'type_group' => TransactionTypeGroupEnum::CORE,
+            'asset'      => [],
+        ]);
+    }
+
     public function timelock(): Factory
     {
         return $this->state(fn () => [

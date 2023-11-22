@@ -21,6 +21,8 @@ final class TransactionTypeIcon
         'isIpfs'                          => 'ipfs',
         'isDelegateResignation'           => 'delegate-resignation',
         'isMultiPayment'                  => 'multi-payment',
+        'isUsernameRegistration'          => 'delegate-registration',
+        'isUsernameResignation'           => 'delegate-resignation',
         'isTimelock'                      => 'timelock',
         'isTimelockClaim'                 => 'timelock',
         'isTimelockRefund'                => 'timelock',

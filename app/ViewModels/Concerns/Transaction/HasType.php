@@ -78,6 +78,16 @@ trait HasType
         return $this->type->isTimelockRefund();
     }
 
+    public function isUsernameRegistration(): bool
+    {
+        return $this->type->isUsernameRegistration();
+    }
+
+    public function isUsernameResignation(): bool
+    {
+        return $this->type->isUsernameResignation();
+    }
+
     public function isEntityRegistration(): bool
     {
         return $this->type->isEntityRegistration();
@@ -205,6 +215,14 @@ trait HasType
         }
 
         if ($this->isDelegateResignation()) {
+            return false;
+        }
+
+        if ($this->isUsernameRegistration()) {
+            return false;
+        }
+
+        if ($this->isUsernameResignation()) {
             return false;
         }
 

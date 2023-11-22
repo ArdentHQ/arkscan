@@ -111,6 +111,8 @@ return [
             'product-entity-resignation'          => 'Product Resignation',
             'product-entity-update'               => 'Product Update',
             'second-signature'                    => '2nd Signature',
+            'username-registration'               => 'Username Registration',
+            'username-resignation'                => 'Username Resignation',
             'timelock'                            => 'Timelock',
             'timelock-claim'                      => 'Timelock Claim',
             'timelock-refund'                     => 'Timelock Refund',

@@ -22,6 +22,8 @@ final class TransactionType
         'isTransfer'                      => 'transfer',
         'isSecondSignature'               => 'second-signature',
         'isDelegateRegistration'          => 'delegate-registration',
+        'isUsernameRegistration'          => 'username-registration',
+        'isUsernameResignation'           => 'username-resignation',
         'isVoteCombination'               => 'vote-combination',
         'isUnvote'                        => 'unvote',
         'isVote'                          => 'vote',
@@ -124,17 +126,27 @@ final class TransactionType
 
     public function isTimelock(): bool
     {
-        return $this->isCoreType(CoreTransactionTypeEnum::TIMELOCK);
+        return false;
     }
 
     public function isTimelockClaim(): bool
     {
-        return $this->isCoreType(CoreTransactionTypeEnum::TIMELOCK_CLAIM);
+        return false;
     }
 
     public function isTimelockRefund(): bool
     {
-        return $this->isCoreType(CoreTransactionTypeEnum::TIMELOCK_REFUND);
+        return false;
+    }
+
+    public function isUsernameRegistration(): bool
+    {
+        return $this->isCoreType(CoreTransactionTypeEnum::USERNAME_REGISTRATION);
+    }
+
+    public function isUsernameResignation(): bool
+    {
+        return $this->isCoreType(CoreTransactionTypeEnum::USERNAME_RESIGNATION);
     }
 
     public function isEntityRegistration(): bool
@@ -299,7 +311,11 @@ final class TransactionType
             return false;
         }
 
-        if ($this->isTimelock()) {
+        if ($this->isUsernameRegistration()) {
+            return false;
+        }
+
+        if ($this->isUsernameResignation()) {
             return false;
         }
 

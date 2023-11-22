@@ -12,18 +12,14 @@ final class Forms
     protected static array $transactionOptionsValues = [
         'all',
         'transfer',
-        'secondSignature',
         'delegateRegistration',
         'delegateResignation',
         'vote',
         'voteCombination',
         'multiSignature',
-        'ipfs',
         'multiPayment',
-        'timelock',
-        'timelockClaim',
-        'timelockRefund',
-        'magistrate',
+        'usernameRegistration',
+        'usernameResignation',
     ];
 
     /**

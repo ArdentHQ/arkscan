@@ -22,9 +22,14 @@ final class CoreTransactionTypeEnum
 
     public const DELEGATE_RESIGNATION = 7;
 
-    public const TIMELOCK = 8;
+    public const USERNAME_REGISTRATION = 8;
 
-    public const TIMELOCK_CLAIM = 9;
+    public const USERNAME_RESIGNATION = 9;
 
-    public const TIMELOCK_REFUND = 10;
+    // Obsolete
+    public const TIMELOCK = 9999;
+
+    public const TIMELOCK_CLAIM = 9999;
+
+    public const TIMELOCK_REFUND = 9999;
 }

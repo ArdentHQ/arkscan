@@ -28,6 +28,8 @@ return [
             'all'                  => 'All',
             'delegateRegistration' => 'Delegate Registration',
             'delegateResignation'  => 'Delegate Resignation',
+            'usernameRegistration' => 'Username Registration',
+            'usernameResignation'  => 'Username Resignation',
             'ipfs'                 => 'IPFS',
             'multiPayment'         => 'Multipayment',
             'multiSignature'       => 'Multisignature',
