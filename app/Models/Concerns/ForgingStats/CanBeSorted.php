@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Concerns\ForgingStats;
 
 use App\Enums\SortDirection;
@@ -36,6 +38,7 @@ trait CanBeSorted
 
         return $query->selectRaw('wallets.name AS delegate_name')
             ->selectRaw('forging_stats.*')
+            // @phpstan-ignore-next-line
             ->join(DB::raw(sprintf(
                 '(values %s) as wallets (public_key, name)',
                 $delegateNames->map(fn ($name, $publicKey) => sprintf('(\'%s\',\'%s\')', $publicKey, $name))
@@ -59,6 +62,7 @@ trait CanBeSorted
 
         return $query->selectRaw('wallets.votes AS votes')
             ->selectRaw('forging_stats.*')
+            // @phpstan-ignore-next-line
             ->join(DB::raw(sprintf(
                 '(values %s) as wallets (public_key, votes)',
                 $delegateVotes->map(fn ($votes, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $votes))
@@ -77,6 +81,7 @@ trait CanBeSorted
 
         return $query->selectRaw('voting_stats.count AS no_of_voters')
             ->selectRaw('forging_stats.*')
+            // @phpstan-ignore-next-line
             ->join(DB::raw(sprintf(
                 '(values %s) as voting_stats (public_key, count)',
                 collect($voterCounts)

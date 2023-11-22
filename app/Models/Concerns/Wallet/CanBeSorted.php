@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Concerns\Wallet;
 
 use App\Enums\SortDirection;
@@ -43,6 +45,7 @@ trait CanBeSorted
 
         return $query->selectRaw('voting_stats.count AS no_of_voters')
             ->selectRaw('wallets.*')
+            // @phpstan-ignore-next-line
             ->join(DB::raw(sprintf(
                 '(values %s) as voting_stats (public_key, count)',
                 collect($voterCounts)
@@ -67,6 +70,7 @@ trait CanBeSorted
 
         return $query->selectRaw('COALESCE(forging_stats.count, 0) AS missed_blocks')
             ->selectRaw('wallets.*')
+            // @phpstan-ignore-next-line
             ->join(DB::raw(sprintf(
                 '(values %s) as forging_stats (public_key, count)',
                 $missedBlocks->map(fn ($forgingStat) => sprintf('(\'%s\',%d)', $forgingStat->public_key, $forgingStat->count))
