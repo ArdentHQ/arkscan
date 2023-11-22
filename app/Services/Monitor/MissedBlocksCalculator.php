@@ -5,92 +5,83 @@ declare(strict_types=1);
 namespace App\Services\Monitor;
 
 use App\Facades\Network;
+use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Round;
 use App\Services\Monitor\Actions\ShuffleDelegates;
+use Illuminate\Support\Collection;
 
 /* @phpstan-ignore-next-line */
-class MissedBlocksCalculator
+class MissedBlocksCalculator implements \App\Contracts\Services\Monitor\MissedBlocksCalculator
 {
     public static function calculateFromHeightGoingBack(int $heightFrom, int $heightTo): array
     {
+        $roundHeightFrom = (int)floor(($heightFrom - Network::delegateCount()) / Network::delegateCount()) * Network::delegateCount() + 1;
+        $roundHeightTo = (int)floor(($heightTo - Network::delegateCount()) / Network::delegateCount()) * Network::delegateCount() + 1;
+
         $forgingStats = [];
-        for ($h = $heightFrom; $h <= $heightTo; $h += Network::delegateCount()) {
-            $forgingStats = $forgingStats + self::calculateForRound($h);
-        }
+        $rounds = Round::whereBetween('round_height', [$roundHeightFrom, $roundHeightTo])->orderBy('round', 'asc')->get();
+        $rounds->each(function ($round) use (&$forgingStats, $heightTo) {
+            $forgingStats = $forgingStats + self::calculateForRound($round, $heightTo);
+        });
 
         return $forgingStats;
     }
 
-    public static function calculateForRound(int $height): array
+    public static function calculateForRound(Round $round, int $heightTo): array
     {
-        $activeDelegates                       = Network::delegateCount();
-        $lastRoundInfo                         = RoundCalculator::calculate($height - $activeDelegates);
-        $round                                 = $lastRoundInfo['nextRound'];
-        $lastRoundLastBlockHeight              = $lastRoundInfo['nextRoundHeight'] - 1;
-        $lastRoundLastBlockTs                  = Block::where('height', $lastRoundLastBlockHeight)->firstOrFail()->timestamp;
-        $firstBlockInRoundTheoreticalTimestamp = $lastRoundLastBlockTs + Network::blockTime();
-        $slotNumberForFirstTheoreticalBlock    = (new Slots())->getSlotInfo($firstBlockInRoundTheoreticalTimestamp)['slotNumber'];
+        $roundValidators                       = $round->validators;
+        $activeDelegates = count($roundValidators);
 
-        $delegateOrderForRound = self::calculateDelegateOrder($round, $height, $slotNumberForFirstTheoreticalBlock, $activeDelegates);
+        $producedBlocks = Block::select(['generator_public_key', 'height', 'timestamp'])
+            ->whereBetween('height', [$round->round_height, $round->round_height + $activeDelegates - 1])
+            ->orderBy('height', 'asc')
+            ->get();
 
-        $actualBlocksTimestamps = self::getActualBlocksTimestampsForRound($lastRoundLastBlockHeight, $activeDelegates);
+        // Good Scenario (no missed block):
+        // Round order       [V1,V2,V3,V4,V5]
+        // Producted blocks: [V1,V2,V3,V4,V5]
+
+        // Bad Scenario (missed block):
+        // Round order       [V1,V2,V3,V4,V5]
+        // Producted blocks: [V1,V2,V3,V5,V1] <- V4 missed
+
+        $firstBlockInRoundTheoreticalTimestamp = $producedBlocks->first()->timestamp + Network::blockTime();
 
         $theoreticalBlocksByTimestamp = self::getTheoreticalTimestampsForRound(
-            $actualBlocksTimestamps,
+            $producedBlocks,
             $firstBlockInRoundTheoreticalTimestamp,
-            $delegateOrderForRound,
+            $roundValidators,
             $activeDelegates,
         );
 
-        return self::calculateForgingInfo($theoreticalBlocksByTimestamp, $actualBlocksTimestamps);
+        return self::calculateForgingInfo($theoreticalBlocksByTimestamp, $producedBlocks);
     }
 
-    private static function calculateForgingInfo(array $theoreticalBlocksByTimestamp, array $actualBlocksTimestamps): array
+    private static function calculateForgingInfo(array $theoreticalBlocksByTimestamp, Collection $producedBlocks): array
     {
         $forgeInfoByTimestamp = [];
         foreach ($theoreticalBlocksByTimestamp as $ts => $delegate) {
             $forgeInfoByTimestamp[$ts] = [
                 'publicKey' => $delegate,
-                'forged'    => in_array($ts, $actualBlocksTimestamps, true),
+                'forged'    => $producedBlocks->contains(function($block) use ($ts) {
+                    // NOTE: assume some variance is possible, since mainsail doesn't use slots anymore.
+                    return abs($block->timestamp - $ts) - Network::blockTime() <= 1;
+                }),
             ];
         }
 
         return $forgeInfoByTimestamp;
     }
 
-    private static function calculateDelegateOrder(
-        int $round,
-        int $height,
-        int $slotNumberForFirstTheoreticalBlock,
-        int $activeDelegates,
-    ): array {
-        $tempDelegateOrderForTheRound        = Round::where('round', $round)->orderByRaw('balance DESC, public_key ASC')->pluck('public_key')->toArray();
-        $tempDelegateOrderForTheRound        = ShuffleDelegates::execute($tempDelegateOrderForTheRound, $height);
-        $finalDelegateOrderForRound          = array_merge(
-            array_slice($tempDelegateOrderForTheRound, $slotNumberForFirstTheoreticalBlock % $activeDelegates),
-            array_slice($tempDelegateOrderForTheRound, 0, $slotNumberForFirstTheoreticalBlock % $activeDelegates)
-        );
-
-        return $finalDelegateOrderForRound;
-    }
-
-    private static function getActualBlocksTimestampsForRound(int $lastRoundLastBlockHeight, int $activeDelegates): array
-    {
-        return Block::where('height', '>', $lastRoundLastBlockHeight)
-            ->where('height', '<=', $lastRoundLastBlockHeight + $activeDelegates)
-            ->pluck('timestamp')
-            ->toArray();
-    }
-
     private static function getTheoreticalTimestampsForRound(
-        array $actualBlocksTimestamps,
+        Collection $producedBlocks,
         int $firstBlockInRoundTheoreticalTimestamp,
         array $delegateOrderForRound,
         int $activeDelegates,
     ): array {
         $theoreticalBlocksByTimestamp = [];
-        $lastActualTimestamp          = count($actualBlocksTimestamps) > 0 ? $actualBlocksTimestamps[count($actualBlocksTimestamps) - 1] : 0;
+        $lastActualTimestamp          = $producedBlocks->isNotEmpty() ? $producedBlocks->last()->timestamp : 0;
         for (
             $ts = $firstBlockInRoundTheoreticalTimestamp, $i = 0;
             $ts <= $lastActualTimestamp;

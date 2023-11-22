@@ -34,7 +34,6 @@ final class BuildForgingStats implements ShouldQueue
         $timeRange   = $this->getTimeRange($height);
         $startHeight = $this->getStartHeight($height, $timeRange);
 
-        // TODO:
         $forgingStats = MissedBlocksCalculator::calculateFromHeightGoingBack($startHeight, $height);
 
         $data = [];
@@ -45,7 +44,7 @@ final class BuildForgingStats implements ShouldQueue
                 $missedBlock = Block::select('height')
                     ->withCasts(['height' => 'int'])
                     ->withScope(OrderByTimestampScope::class)
-                    ->where('timestamp', '<=', $timestamp)
+                    ->where('timestamp', '<=', $timestamp * 1000)
                     ->limit(1)
                     ->first();
 
@@ -76,11 +75,9 @@ final class BuildForgingStats implements ShouldQueue
 
     private function getStartHeight(int $height, int $timeRangeInSeconds): int
     {
-        $heightTimestamp = Block::where('height', $height)
-            ->firstOrFail()
-            ->timestamp;
+        $heightTimestamp = $this->getTimestampForHeight($height);
 
-        return Block::where('timestamp', '<=', $heightTimestamp - $timeRangeInSeconds)
+        return Block::where('timestamp', '<=', ($heightTimestamp - $timeRangeInSeconds) * 1000)
             ->orderBy('height', 'desc')
             ->limit(1)
             ->firstOrFail()
@@ -102,7 +99,7 @@ final class BuildForgingStats implements ShouldQueue
 
     private function getTimeRange(int $height): int
     {
-        $timeRange = intval($this->numberOfDays * 24 * 60 * 60);
+        $timeRange = intval($this->numberOfDays * 24 * 60 * 60 * 1000);
         if ($timeRange === 0) {
             $lastForgingInfoTs = (int) ForgingStats::orderBy('timestamp', 'DESC')
                 ->limit(1)
@@ -136,6 +133,6 @@ final class BuildForgingStats implements ShouldQueue
 
     private function getTimestampForHeight(int $height): int
     {
-        return Block::where('height', $height)->limit(1)->firstOrFail()->timestamp;
+        return Block::where('height', $height)->firstOrFail()->timestamp;
     }
 }
