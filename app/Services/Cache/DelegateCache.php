@@ -56,22 +56,22 @@ final class DelegateCache implements Contract
 
     public function getTotalWalletsVoted(): int
     {
-        return $this->get('total_wallets_voted', 0);
+        return (int) $this->get('total_wallets_voted', 0);
     }
 
     public function setTotalWalletsVoted(int $count): void
     {
-        $this->put(sprintf('total_wallets_voted'), $count);
+        $this->put('total_wallets_voted', $count);
     }
 
     public function getTotalBalanceVoted(): float
     {
-        return $this->get('total_balance_voted', 0);
+        return (float) $this->get('total_balance_voted', 0);
     }
 
     public function setTotalBalanceVoted(float $balance): void
     {
-        $this->put(sprintf('total_balance_voted'), $balance);
+        $this->put('total_balance_voted', $balance);
     }
 
     public function getAllVoterCounts(): array

@@ -3,6 +3,7 @@
     'onSelected' => null,
     'defaultSelected' => '',
     'noData' => false,
+    'right' => null,
 ])
 
 <div
@@ -17,13 +18,11 @@
         )"
     @endunless
 >
-    <div class="flex">
-        {{ $slot }}
-    </div>
+    {{ $slot }}
 
-    <div>
-        @isset($right)
+    @if($right)
+        <div>
             {{ $right }}
-        @endisset
-    </div>
+        </div>
+    @endif
 </div>
