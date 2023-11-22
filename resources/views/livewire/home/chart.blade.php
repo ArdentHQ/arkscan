@@ -42,16 +42,7 @@
                     @endforeach
                 </x-general.dropdown.dropdown>
 
-                @if (Network::canBeExchanged())
-                    <div>
-                        <a
-                            href="{{ route('exchanges') }}"
-                            class="py-1.5 px-4 button button-secondary"
-                        >
-                            @lang('actions.exchanges')
-                        </a>
-                    </div>
-                @endif
+                <x-home.exchanges-button />
             </div>
         </div>
 
@@ -77,18 +68,14 @@
                 />
             </div>
 
-            @if (Network::canBeExchanged())
-                <div class="flex items-center sm:hidden">
-                    <a
-                        href="{{ route('exchanges') }}"
-                        class="py-1.5 px-4 button button-secondary"
-                    >
-                        @lang('actions.exchanges')
-                    </a>
-                </div>
-            @endif
+            <x-home.exchanges-button class="hidden items-center sm:hidden xs:flex" />
         </div>
     </div>
+
+    <x-home.exchanges-button
+        class="flex items-center mt-3 xs:hidden"
+        button-class="flex-1"
+    />
 </div>
 
 @push('scripts')

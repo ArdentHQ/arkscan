@@ -10,6 +10,12 @@ module.exports = {
         extend: {
             ...defaultConfig.theme.extend,
 
+            screens: {
+                ...defaultConfig.theme.extend.screens,
+
+                "xs": "480px",
+            },
+
             colors: {
                 ...defaultConfig.theme.extend.colors,
 
