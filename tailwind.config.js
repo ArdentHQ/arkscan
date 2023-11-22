@@ -21,7 +21,7 @@ module.exports = {
             screens: {
                 ...defaultConfig.theme.extend.screens,
 
-                "xs": "480px",
+                "xs": "370px",
             },
 
             colors: {
