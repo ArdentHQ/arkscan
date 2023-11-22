@@ -125,43 +125,9 @@ final class RecentVotes extends TabbedTableComponent
                         ->whereRaw('LEFT(asset->\'votes\'->>0, 1) = \'-\'');
                 }))->orWhere(fn ($query) => $query->when($this->filter['vote-swap'], fn ($query) => $query->whereRaw('jsonb_array_length(asset->\'votes\') = 2')));
             })
-            ->when($this->sortKey === 'age', fn ($query) => $query->orderBy('timestamp', $sortDirection->value))
-            ->when($this->sortKey === 'address', function ($query) use ($sortDirection) {
-                $query->join('wallets', 'wallets.public_key', '=', 'transactions.sender_public_key')
-                    ->orderBy('wallets.address', $sortDirection->value);
-            })
-            ->when($this->sortKey === 'type', function ($query) use ($sortDirection) {
-                $query->select([
-                    'transaction_type' => fn ($query) => $query
-                        ->selectRaw('coalesce(delegate_vote.votecombination, delegate_vote.vote, delegate_vote.unvote)')
-                        ->from(function ($query) {
-                            $query
-                                ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'-\') IS null) then 0 end as unvote')
-                                ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'+\') IS null) then 1 end as vote')
-                                ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'-\') IS null and asset->\'votes\'->>1 is not null and NULLIF(LEFT(asset->\'votes\'->>1, 1), \'+\') IS null) then 2 end as votecombination')
-                                ->whereColumn('transactions.id', 'delegate_transaction.id')
-                                ->from('transactions', 'delegate_transaction');
-                        }, 'delegate_vote'),
-                ])
-                ->selectRaw('transactions.*')
-                ->orderBy('transaction_type', $sortDirection->value);
-            })
-            ->when($this->sortKey === 'name', function ($query) use ($sortDirection) {
-                $query->select([
-                    'delegate_name' => fn ($query) => $query
-                        ->selectRaw('wallets.attributes->\'delegate\'->\'username\'')
-                        ->from(function ($query) {
-                            $query
-                                ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'-\') IS null) then substring(asset->\'votes\'->>0, 2) end as unvote')
-                                ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'+\') IS null) then substring(asset->\'votes\'->>0, 2) end as vote')
-                                ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'-\') IS null and asset->\'votes\'->>1 is not null and NULLIF(LEFT(asset->\'votes\'->>1, 1), \'+\') IS null) then substring(asset->\'votes\'->>1, 2) end as votecombination')
-                                ->whereColumn('transactions.id', 'delegate_transaction.id')
-                                ->from('transactions', 'delegate_transaction');
-                        }, 'delegate_vote')
-                        ->join('wallets', 'wallets.public_key', '=', DB::raw('coalesce(delegate_vote.votecombination, delegate_vote.vote, delegate_vote.unvote)')),
-                ])
-                ->selectRaw('transactions.*')
-                ->orderBy('delegate_name', $sortDirection->value);
-            });
+            ->when($this->sortKey === 'age', fn ($query) => $query->sortByAge($sortDirection))
+            ->when($this->sortKey === 'address', fn ($query) => $query->sortByAddress($sortDirection))
+            ->when($this->sortKey === 'type', fn ($query) => $query->sortByType($sortDirection))
+            ->when($this->sortKey === 'name', fn ($query) => $query->sortByUsername($sortDirection));
     }
 }

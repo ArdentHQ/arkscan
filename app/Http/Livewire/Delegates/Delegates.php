@@ -137,67 +137,10 @@ final class Delegates extends TabbedTableComponent
                     })))
                     ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->delegate->resigned', true)));
             }))
-            ->when($this->sortKey === 'rank', fn ($query) => $query->orderByRaw("(\"attributes\"->'delegate'->>'rank')::numeric ".$sortDirection->value))
-            ->when($this->sortKey === 'name', fn ($query) => $query->orderByRaw("(\"attributes\"->'delegate'->>'username')::text ".$sortDirection->value.', ("attributes"->\'delegate\'->>\'rank\')::numeric ASC'))
-            ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', function ($query) use ($sortDirection) {
-                $query->selectRaw('("attributes"->\'delegate\'->>\'voteBalance\')::numeric AS vote_count')
-                    ->selectRaw('wallets.*')
-                    ->orderByRaw('CASE WHEN NULLIF(("attributes"->\'delegate\'->>\'voteBalance\')::numeric, 0) IS NULL THEN 1 ELSE 0 END ASC')
-                    ->orderByRaw(sprintf(
-                        '("attributes"->\'delegate\'->>\'voteBalance\')::numeric %s',
-                        $sortDirection->value
-                    ))
-                    ->orderByRaw('("attributes"->\'delegate\'->>\'rank\')::numeric ASC');
-            })
-            ->when($this->sortKey === 'no_of_voters', function ($query) use ($sortDirection) {
-                $voterCounts = (new DelegateCache())->getAllVoterCounts();
-                if (count($voterCounts) === 0) {
-                    $query->selectRaw('0 AS no_of_voters')
-                        ->selectRaw('wallets.*');
-
-                    return;
-                }
-
-                $query->selectRaw('voting_stats.count AS no_of_voters')
-                    ->selectRaw('wallets.*')
-                    ->join(DB::raw(sprintf(
-                        '(values %s) as voting_stats (public_key, count)',
-                        collect($voterCounts)
-                            ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
-                            ->join(','),
-                    )), 'wallets.public_key', '=', 'voting_stats.public_key', 'left outer')
-                    ->orderByRaw(sprintf('no_of_voters %s NULLS LAST', $sortDirection->value))
-                    ->orderByRaw('("attributes"->\'delegate\'->>\'rank\')::numeric ASC');
-            })
-            ->when($this->sortKey === 'missed_blocks', function ($query) use ($sortDirection) {
-                $missedBlocks = ForgingStats::selectRaw('public_key, COUNT(*) as count')
-                    ->groupBy('public_key')
-                    ->whereNot('missed_height', null)
-                    ->get();
-
-                if (count($missedBlocks) === 0) {
-                    $query->selectRaw('0 AS missed_blocks')
-                        ->selectRaw('wallets.*');
-
-                    return;
-                }
-
-                $query->selectRaw('COALESCE(forging_stats.count, 0) AS missed_blocks')
-                    ->selectRaw('wallets.*')
-                    ->join(DB::raw(sprintf(
-                        '(values %s) as forging_stats (public_key, count)',
-                        $missedBlocks->map(fn ($forgingStat) => sprintf('(\'%s\',%d)', $forgingStat->public_key, $forgingStat->count))
-                            ->join(','),
-                    )), 'wallets.public_key', '=', 'forging_stats.public_key', 'left outer')
-                    ->when($sortDirection === SortDirection::ASC, fn ($query) => $query->orderByRaw(sprintf(
-                        'CASE WHEN ("attributes"->\'delegate\'->>\'rank\')::numeric <= %d THEN 0 ELSE 1 END ASC',
-                        Network::delegateCount(),
-                    )))
-                    ->orderByRaw(sprintf(
-                        'missed_blocks %s',
-                        $sortDirection->value,
-                    ))
-                    ->orderByRaw('("attributes"->\'delegate\'->>\'rank\')::numeric ASC');
-            });
+            ->when($this->sortKey === 'rank', fn ($query) => $query->sortByRank($sortDirection))
+            ->when($this->sortKey === 'name', fn ($query) => $query->sortByUsername($sortDirection))
+            ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', fn ($query) => $query->sortByVoteCount($sortDirection))
+            ->when($this->sortKey === 'no_of_voters', fn ($query) => $query->sortByNumberOfVoters($sortDirection))
+            ->when($this->sortKey === 'missed_blocks', fn ($query) => $query->sortByMissedBlocks($sortDirection));
     }
 }

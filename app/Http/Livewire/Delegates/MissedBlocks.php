@@ -80,73 +80,11 @@ final class MissedBlocks extends TabbedTableComponent
         }
 
         return ForgingStats::query()
-            ->when($this->sortKey === 'height', fn ($query) => $query->orderByRaw('missed_height '.$sortDirection->value.', timestamp DESC'))
-            ->when($this->sortKey === 'age', fn ($query) => $query->orderByRaw('timestamp '.$sortDirection->value))
-            ->when($this->sortKey === 'name', function ($query) use ($sortDirection) {
-                $missedBlockPublicKeys = ForgingStats::groupBy('public_key')->pluck('public_key');
-
-                $delegateNames = Wallet::whereIn('public_key', $missedBlockPublicKeys)
-                    ->get()
-                    ->pluck('attributes.delegate.username', 'public_key');
-
-                if (count($delegateNames) === 0) {
-                    $query->selectRaw('NULL AS delegate_name')
-                        ->selectRaw('forging_stats.*');
-
-                    return;
-                }
-
-                $query->selectRaw('wallets.name AS delegate_name')
-                    ->selectRaw('forging_stats.*')
-                    ->join(DB::raw(sprintf(
-                        '(values %s) as wallets (public_key, name)',
-                        $delegateNames->map(fn ($name, $publicKey) => sprintf('(\'%s\',\'%s\')', $publicKey, $name))
-                            ->join(','),
-                    )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
-                    ->orderByRaw('delegate_name '.$sortDirection->value.', timestamp DESC');
-            })
-            ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', function ($query) use ($sortDirection) {
-                $missedBlockPublicKeys = ForgingStats::groupBy('public_key')->pluck('public_key');
-
-                $delegateVotes = Wallet::whereIn('public_key', $missedBlockPublicKeys)
-                    ->get()
-                    ->pluck('attributes.delegate.voteBalance', 'public_key');
-
-                if (count($delegateVotes) === 0) {
-                    $query->selectRaw('0 AS votes')
-                        ->selectRaw('forging_stats.*');
-
-                    return;
-                }
-
-                $query->selectRaw('wallets.votes AS votes')
-                    ->selectRaw('forging_stats.*')
-                    ->join(DB::raw(sprintf(
-                        '(values %s) as wallets (public_key, votes)',
-                        $delegateVotes->map(fn ($votes, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $votes))
-                            ->join(','),
-                    )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
-                    ->orderByRaw('votes '.$sortDirection->value.', timestamp DESC');
-            })
-            ->when($this->sortKey === 'no_of_voters', function ($query) use ($sortDirection) {
-                $voterCounts = (new DelegateCache())->getAllVoterCounts();
-                if (count($voterCounts) === 0) {
-                    $query->selectRaw('0 AS no_of_voters')
-                        ->selectRaw('forging_stats.*');
-
-                    return;
-                }
-
-                $query->selectRaw('voting_stats.count AS no_of_voters')
-                    ->selectRaw('forging_stats.*')
-                    ->join(DB::raw(sprintf(
-                        '(values %s) as voting_stats (public_key, count)',
-                        collect($voterCounts)
-                            ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
-                            ->join(','),
-                    )), 'forging_stats.public_key', '=', 'voting_stats.public_key', 'left outer')
-                    ->orderByRaw(sprintf('no_of_voters %s NULLS LAST, timestamp DESC', $sortDirection->value));
-            })
+            ->when($this->sortKey === 'height', fn ($query) => $query->sortByHeight($sortDirection))
+            ->when($this->sortKey === 'age', fn ($query) => $query->sortByAge($sortDirection))
+            ->when($this->sortKey === 'name', fn ($query) => $query->sortByUsername($sortDirection))
+            ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', fn ($query) => $query->sortByVoteCount($sortDirection))
+            ->when($this->sortKey === 'no_of_voters', fn ($query) => $query->sortByNumberOfVoters($sortDirection))
             ->whereNotNull('missed_height');
     }
 }
