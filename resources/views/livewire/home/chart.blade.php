@@ -71,6 +71,11 @@
             <x-home.exchanges-button class="hidden xs:flex items-center sm:hidden" />
         </div>
     </div>
+
+    <x-home.exchanges-button
+        class="flex items-center xs:hidden mt-3"
+        button-class="flex-1"
+    />
 </div>
 
 @push('scripts')
