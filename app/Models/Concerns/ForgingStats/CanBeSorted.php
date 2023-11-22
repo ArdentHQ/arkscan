@@ -8,22 +8,21 @@ use App\Enums\SortDirection;
 use App\Models\ForgingStats;
 use App\Models\Wallet;
 use App\Services\Cache\DelegateCache;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 trait CanBeSorted
 {
-    public function scopeSortByHeight(Builder $query, SortDirection $sortDirection): Builder
+    public function scopeSortByHeight(mixed $query, SortDirection $sortDirection): mixed
     {
         return $query->orderByRaw('missed_height '.$sortDirection->value.', timestamp DESC');
     }
 
-    public function scopeSortByAge(Builder $query, SortDirection $sortDirection): Builder
+    public function scopeSortByAge(mixed $query, SortDirection $sortDirection): mixed
     {
         return $query->orderByRaw('timestamp '.$sortDirection->value);
     }
 
-    public function scopeSortByUsername(Builder $query, SortDirection $sortDirection): Builder
+    public function scopeSortByUsername(mixed $query, SortDirection $sortDirection): mixed
     {
         $missedBlockPublicKeys = ForgingStats::groupBy('public_key')->pluck('public_key');
 
@@ -38,7 +37,6 @@ trait CanBeSorted
 
         return $query->selectRaw('wallets.name AS delegate_name')
             ->selectRaw('forging_stats.*')
-            // @phpstan-ignore-next-line
             ->join(DB::raw(sprintf(
                 '(values %s) as wallets (public_key, name)',
                 $delegateNames->map(fn ($name, $publicKey) => sprintf('(\'%s\',\'%s\')', $publicKey, $name))
@@ -47,7 +45,7 @@ trait CanBeSorted
             ->orderByRaw('delegate_name '.$sortDirection->value.', timestamp DESC');
     }
 
-    public function scopeSortByVoteCount(Builder $query, SortDirection $sortDirection): Builder
+    public function scopeSortByVoteCount(mixed $query, SortDirection $sortDirection): mixed
     {
         $missedBlockPublicKeys = ForgingStats::groupBy('public_key')->pluck('public_key');
 
@@ -62,7 +60,6 @@ trait CanBeSorted
 
         return $query->selectRaw('wallets.votes AS votes')
             ->selectRaw('forging_stats.*')
-            // @phpstan-ignore-next-line
             ->join(DB::raw(sprintf(
                 '(values %s) as wallets (public_key, votes)',
                 $delegateVotes->map(fn ($votes, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $votes))
@@ -71,7 +68,7 @@ trait CanBeSorted
             ->orderByRaw('votes '.$sortDirection->value.', timestamp DESC');
     }
 
-    public function scopeSortByNumberOfVoters(Builder $query, SortDirection $sortDirection): Builder
+    public function scopeSortByNumberOfVoters(mixed $query, SortDirection $sortDirection): mixed
     {
         $voterCounts = (new DelegateCache())->getAllVoterCounts();
         if (count($voterCounts) === 0) {
@@ -81,7 +78,6 @@ trait CanBeSorted
 
         return $query->selectRaw('voting_stats.count AS no_of_voters')
             ->selectRaw('forging_stats.*')
-            // @phpstan-ignore-next-line
             ->join(DB::raw(sprintf(
                 '(values %s) as voting_stats (public_key, count)',
                 collect($voterCounts)

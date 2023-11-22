@@ -5,23 +5,22 @@ declare(strict_types=1);
 namespace App\Models\Concerns\Transaction;
 
 use App\Enums\SortDirection;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 trait CanBeSorted
 {
-    public function scopeSortByAge(Builder $query, SortDirection $sortDirection): Builder
+    public function scopeSortByAge(mixed $query, SortDirection $sortDirection): mixed
     {
         return $query->orderBy('timestamp', $sortDirection->value);
     }
 
-    public function scopeSortByAddress(Builder $query, SortDirection $sortDirection): Builder
+    public function scopeSortByAddress(mixed $query, SortDirection $sortDirection): mixed
     {
         return $query->join('wallets', 'wallets.public_key', '=', 'transactions.sender_public_key')
             ->orderBy('wallets.address', $sortDirection->value);
     }
 
-    public function scopeSortByType(Builder $query, SortDirection $sortDirection): Builder
+    public function scopeSortByType(mixed $query, SortDirection $sortDirection): mixed
     {
         return $query->select([
             'transaction_type' => fn ($query) => $query
@@ -39,7 +38,7 @@ trait CanBeSorted
         ->orderBy('transaction_type', $sortDirection->value);
     }
 
-    public function scopeSortByUsername(Builder $query, SortDirection $sortDirection): Builder
+    public function scopeSortByUsername(mixed $query, SortDirection $sortDirection): mixed
     {
         return $query->select([
             'delegate_name' => fn ($query) => $query
