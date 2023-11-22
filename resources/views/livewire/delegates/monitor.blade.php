@@ -5,7 +5,7 @@
     @if ($this->isReady && $this->hasDelegates)
         wire:poll.1s="pollDelegates"
     @elseif ($this->isReady)
-        wire:poll.8s="pollDelegates"
+        wire:poll.4s="pollDelegates"
     @endif
 >
     <x-skeletons.delegates.monitor>

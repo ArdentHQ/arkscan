@@ -19,8 +19,6 @@ final class DelegateTracker
      */
     public static function execute(array $delegates, int $startHeight): array
     {
-        // TODO: revisit all of this for mainsail consensus
-
         // Arrange Block
         $lastBlock = Block::withScope(OrderByHeightScope::class)->firstOrFail();
         $height    = $lastBlock->height->toNumber();

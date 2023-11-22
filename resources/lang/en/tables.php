@@ -73,7 +73,7 @@ return [
         'delegate_per_page_options' => [
             10,
             25,
-            51,
+            53,
             100,
         ],
 

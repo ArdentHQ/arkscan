@@ -99,7 +99,7 @@ final class BuildForgingStats implements ShouldQueue
 
     private function getTimeRange(int $height): int
     {
-        $timeRange = intval($this->numberOfDays * 24 * 60 * 60 * 1000);
+        $timeRange = intval($this->numberOfDays * 24 * 60 * 60);
         if ($timeRange === 0) {
             $lastForgingInfoTs = (int) ForgingStats::orderBy('timestamp', 'DESC')
                 ->limit(1)
