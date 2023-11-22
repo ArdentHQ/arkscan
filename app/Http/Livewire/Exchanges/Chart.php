@@ -8,8 +8,7 @@ use App\Enums\CryptoCurrencies;
 use App\Enums\StatsPeriods;
 use App\Facades\Network;
 use App\Facades\Settings;
-use App\Http\Livewire\Concerns\AvailablePeriods;
-use App\Http\Livewire\Concerns\StatisticsChart;
+use App\Http\Livewire\Concerns\HandlesChart;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\MarketCap;
 use App\Services\NumberFormatter as ServiceNumberFormatter;
@@ -19,31 +18,14 @@ use Livewire\Component;
 
 final class Chart extends Component
 {
-    use AvailablePeriods;
-    use StatisticsChart;
+    use HandlesChart;
 
-    public bool $show = true;
-
-    public string $period = '';
-
-    public string $refreshInterval = '';
-
-    /** @var mixed */
-    protected $listeners = [
-        'currencyChanged' => '$refresh',
-        'themeChanged'    => '$refresh',
-        'updateChart'     => '$refresh',
-    ];
-
-    public function mount(): void
+    public function render(): View | string
     {
-        $this->refreshInterval = (string) config('arkscan.statistics.refreshInterval', '60');
-        $this->period          = $this->defaultPeriod();
-        $this->show            = Network::canBeExchanged();
-    }
+        if (! Network::canBeExchanged()) {
+            return '<div></div>';
+        }
 
-    public function render(): View
-    {
         $chartData = $this->chartHistoricalPrice($this->period);
 
         /** @var array<float> $datasets */
@@ -64,7 +46,7 @@ final class Chart extends Component
             'maxPriceValue'       => $this->maxPrice($datasets),
             'datasets'            => collect($datasets),
             'labels'              => collect($labels),
-            'chartTheme'          => $this->chartTheme($variation === 'up' ? 'green' : 'red'),
+            'chartTheme'          => $this->chartTheme($variation),
             'options'             => $this->availablePeriods(),
             'refreshInterval'     => $this->refreshInterval,
         ]);
@@ -120,15 +102,6 @@ final class Chart extends Component
         }
 
         return (1 - ($initialValue / $currentValue)) * 100;
-    }
-
-    private function mainValueVariation(array $dataset): string
-    {
-        // Determine difference based on first datapoint
-        $initialValue = collect($dataset)->first();
-        $currentValue = $this->getPrice(Settings::currency());
-
-        return $initialValue > $currentValue ? 'down' : 'up';
     }
 
     private function marketCap(): ?string
