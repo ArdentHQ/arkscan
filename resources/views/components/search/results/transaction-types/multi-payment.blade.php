@@ -1,17 +1,29 @@
 @props(['transaction'])
 
-<div class="flex items-center space-x-2 text-xs">
-    <div class="flex items-center text-theme-secondary-500 dark:text-theme-dark-200">
-        <div class="mr-2 md:hidden">
-            @lang('general.search.type')
-        </div>
+<div class="flex flex-col space-y-2">
+    <div class="flex items-center space-x-2 text-xs">
+        <x-general.encapsulated.transaction-direction-badge>
+            @lang('general.search.from')
+        </x-general.encapsulated.transaction-direction-badge>
 
-        <x-ark-icon name="app-transactions.{{ $transaction->iconType() }}" />
+        <x-general.identity
+            :model="$transaction->sender()"
+            without-reverse
+            without-reverse-class="space-x-2"
+            without-link
+            class="text-theme-secondary-900 dark:text-theme-dark-50"
+        />
     </div>
 
-    <div class="text-theme-secondary-700 dark:text-theme-dark-50">
-        @lang('general.transaction.types.'.$transaction->typeName())
+    <div class="flex items-center space-x-2 text-xs">
+        <x-general.encapsulated.transaction-direction-badge>
+            @lang('general.search.to')
+        </x-general.encapsulated.transaction-direction-badge>
 
-        {{ count($transaction->payments()) }}
+        <span class="text-theme-secondary-900 dark:text-theme-dark-50">
+            @lang('tables.transactions.multiple')
+
+            ({{ $transaction->recipientsCount() }})
+        </span>
     </div>
 </div>
