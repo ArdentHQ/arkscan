@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Blockchain;
 
 use App\Contracts\Network as Contract;
+use App\Models\State;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\WalletCache;
@@ -110,7 +111,7 @@ final class Network implements Contract
 
     public function supply(): BigNumber
     {
-        return BigNumber::new(Wallet::where('balance', '>', 0)->sum('balance'));
+        return State::latest()->supply;
     }
 
     public function config(): AbstractNetwork
