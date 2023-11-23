@@ -18,8 +18,6 @@ final class PriceTicker extends Component
 {
     use HandlesSettings;
 
-    public string $price;
-
     public string $to;
 
     public bool $isAvailable = false;
@@ -37,7 +35,6 @@ final class PriceTicker extends Component
     public function setValues(): void
     {
         $this->isAvailable = (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency());
-        $this->price       = $this->getPriceFormatted();
         $this->to          = Settings::currency();
 
         $this->dispatchBrowserEvent('has-loaded-price-data');
@@ -47,7 +44,7 @@ final class PriceTicker extends Component
     {
         return view('livewire.price-ticker', [
             'to'    => $this->to,
-            'price' => $this->price,
+            'price' => $this->getPriceFormatted(),
         ]);
     }
 

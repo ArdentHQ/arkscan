@@ -5,7 +5,10 @@
 >
     <x-tables.toolbars.toolbar :result-count="$blocks->total()" />
 
-    <x-skeletons.blocks :row-count="$this->perPage">
+    <x-skeletons.blocks
+        :row-count="$this->perPage"
+        :paginator="$blocks"
+    >
         <x-tables.desktop.blocks
             :blocks="$blocks"
             :no-results-message="$this->noResultsMessage"

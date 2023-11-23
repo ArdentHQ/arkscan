@@ -23,7 +23,7 @@ final class SearchModal extends Component
     {
         $results = $this->results();
 
-        return view('components.general.search.search-modal', [
+        return view('livewire.search-modal', [
             'results'    => $results,
             'hasResults' => $results->isNotEmpty(),
         ]);

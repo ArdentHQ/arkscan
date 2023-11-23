@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\View\Components;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -22,6 +23,7 @@ final class TableSkeleton extends Component
         string $class = 'hidden md:block',
         private ?int $rowCount = null,
         private bool $encapsulated = false,
+        private ?LengthAwarePaginator $paginator = null,
         private array $componentProperties = [],
     ) {
         $this->items = collect($items);
@@ -67,9 +69,10 @@ final class TableSkeleton extends Component
         );
 
         return ViewFacade::make($component, [
-            'headers'  => $headers->toArray(),
-            'rows'     => $rows->toArray(),
-            'rowCount' => $this->rowCount,
+            'headers'   => $headers->toArray(),
+            'rows'      => $rows->toArray(),
+            'rowCount'  => $this->rowCount,
+            'paginator' => $this->paginator,
             ...$this->componentProperties,
         ]);
     }

@@ -14,15 +14,20 @@ use Illuminate\Support\Collection;
 
 final class ExchangeRate
 {
-    public static function convert(float $amount, int $timestamp, bool $showSmallAmounts = false): string
+    public static function convert(float $amount, ?int $timestamp = null, bool $showSmallAmounts = false): string
     {
         return NumberFormatter::currency(self::convertNumerical($amount, $timestamp), Settings::currency(), $showSmallAmounts);
     }
 
-    public static function convertNumerical(float $amount, int $timestamp): float
+    public static function convertNumerical(float $amount, ?int $timestamp = null): float
     {
-        $prices       = (new CryptoDataCache())->getPrices(Settings::currency().'.week');
-        $exchangeRate = Arr::get($prices, Carbon::parse(static::timestamp($timestamp))->format('Y-m-d'), 0);
+        $exchangeRate = 0;
+        if ($timestamp !== null) {
+            $prices       = (new CryptoDataCache())->getPrices(Settings::currency().'.week');
+            $exchangeRate = Arr::get($prices, Carbon::parse(static::timestamp($timestamp))->format('Y-m-d'), 0);
+        } else {
+            $exchangeRate = static::currentRate();
+        }
 
         return $amount * $exchangeRate;
     }

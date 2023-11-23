@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
 
@@ -87,15 +86,5 @@ class Settings
     public function usesFeeChart(): bool
     {
         return $this->feeChart();
-    }
-
-    public function favoriteDelegates(): Collection
-    {
-        return new Collection($this->get('favoriteDelegates', []));
-    }
-
-    public function hasFavoriteDelegate(string $publicKey): bool
-    {
-        return $this->favoriteDelegates()->contains($publicKey);
     }
 }

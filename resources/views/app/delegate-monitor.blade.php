@@ -16,7 +16,5 @@
         <div class="px-6 pt-6 pb-8 md:px-10 md:pt-0 md:mx-auto md:max-w-7xl">
             <livewire:delegates.monitor />
         </div>
-
-        <livewire:delegates.favorite-delegate-handler />
     @endsection
 @endcomponent

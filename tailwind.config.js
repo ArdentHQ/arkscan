@@ -7,8 +7,22 @@ module.exports = {
     ...defaultConfig,
     theme: {
         ...defaultConfig.theme,
+
+        container: {
+            screens: {
+                // We want to exclude xs from the container max-widths
+                ...defaultConfig.theme.extend.screens,
+            },
+        },
+
         extend: {
             ...defaultConfig.theme.extend,
+
+            screens: {
+                ...defaultConfig.theme.extend.screens,
+
+                "xs": "370px",
+            },
 
             colors: {
                 ...defaultConfig.theme.extend.colors,
