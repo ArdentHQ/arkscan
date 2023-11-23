@@ -14,8 +14,8 @@ trait HasQueries
     private function dateRangeQuery(Carbon $start, Carbon $end): Builder
     {
         return Transaction::query()->whereBetween('timestamp', [
-            Timestamp::fromUnix($start->unix())->unix(),
-            Timestamp::fromUnix($end->unix())->unix(),
+            Timestamp::fromUnix($start->unix())->unix() * 1000,
+            Timestamp::fromUnix($end->unix())->unix() * 1000,
         ]);
     }
 

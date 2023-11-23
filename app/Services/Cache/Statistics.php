@@ -16,20 +16,9 @@ final class Statistics
     public static function transactionData(): array
     {
         return Cache::remember('transactions:stats', self::STATS_TTL, function () {
-            $timestamp = Timestamp::fromUnix(Carbon::now()->subDays(1)->unix())->unix();
+            $timestamp = Timestamp::fromUnix(Carbon::now()->subDays(1)->unix())->unix() * 1000;
             $data      = (array) DB::connection('explorer')
                 ->table('transactions')
-                ->select([
-                    'multipayment_volume' => function ($query) use ($timestamp) {
-                        $query->selectRaw('SUM(MP_AMOUNT)')
-                            ->from(function ($query) use ($timestamp) {
-                                $query->selectRaw('(jsonb_array_elements(t.asset->\'payments\')->>\'amount\')::numeric as MP_AMOUNT')
-                                    ->from('transactions', 't')
-                                    ->where('type', 6)
-                                    ->where('timestamp', '>', $timestamp);
-                            }, 'b');
-                    },
-                ])
                 ->selectRaw('COUNT(*) as transaction_count')
                 ->selectRaw('SUM(amount) as volume')
                 ->selectRaw('SUM(fee) as total_fees')
@@ -40,7 +29,7 @@ final class Statistics
 
             return [
                 'transaction_count' => $data['transaction_count'],
-                'volume'            => ($data['volume'] ?? 0) + ($data['multipayment_volume'] ?? 0),
+                'volume'            => ($data['volume'] ?? 0),
                 'total_fees'        => $data['total_fees'] ?? 0,
                 'average_fee'       => $data['average_fee'] ?? 0,
             ];
