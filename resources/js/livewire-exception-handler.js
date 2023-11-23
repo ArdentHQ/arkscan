@@ -10,7 +10,7 @@ class LivewireExceptionHandler {
     }
 
     handleFailure(message, component) {
-        if (typeof this.failures[component.id] === 'undefined') {
+        if (typeof this.failures[component.id] === "undefined") {
             this.failures[component.id] = 0;
         }
 
@@ -22,7 +22,7 @@ class LivewireExceptionHandler {
     }
 
     handleSuccess(message, component) {
-        if (typeof this.failures[component.id] === 'undefined') {
+        if (typeof this.failures[component.id] === "undefined") {
             return;
         }
 
