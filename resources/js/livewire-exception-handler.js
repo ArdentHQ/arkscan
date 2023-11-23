@@ -1,7 +1,7 @@
 class LivewireExceptionHandler {
     CONCURRENT_MAX = 10;
 
-    concurrentFailures = {};
+    failures = {};
 
     constructor() {
         Livewire.hook("message.failed", this.handleFailure.bind(this));
@@ -10,23 +10,23 @@ class LivewireExceptionHandler {
     }
 
     handleFailure(message, component) {
-        if (typeof this.concurrentFailures[component.id] === 'undefined') {
-            this.concurrentFailures[component.id] = 0;
+        if (typeof this.failures[component.id] === 'undefined') {
+            this.failures[component.id] = 0;
         }
 
-        this.concurrentFailures[component.id]++;
+        this.failures[component.id]++;
 
-        if (this.concurrentFailures[component.id] === this.CONCURRENT_MAX) {
+        if (this.failures[component.id] === this.CONCURRENT_MAX) {
             location.reload();
         }
     }
 
     handleSuccess(message, component) {
-        if (typeof this.concurrentFailures[component.id] === 'undefined') {
+        if (typeof this.failures[component.id] === 'undefined') {
             return;
         }
 
-        delete this.concurrentFailures[component.id];
+        delete this.failures[component.id];
     }
 }
 
