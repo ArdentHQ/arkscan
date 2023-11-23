@@ -8,21 +8,22 @@ use App\Enums\SortDirection;
 use App\Facades\Network;
 use App\Models\ForgingStats;
 use App\Services\Cache\DelegateCache;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 trait CanBeSorted
 {
-    public function scopeSortByUsername(mixed $query, SortDirection $sortDirection): mixed
+    public function scopeSortByUsername(mixed $query, SortDirection $sortDirection): Builder
     {
         return $query->orderByRaw("(\"attributes\"->'delegate'->>'username')::text ".$sortDirection->value.', ("attributes"->\'delegate\'->>\'rank\')::numeric ASC');
     }
 
-    public function scopeSortByRank(mixed $query, SortDirection $sortDirection): mixed
+    public function scopeSortByRank(mixed $query, SortDirection $sortDirection): Builder
     {
         return $query->orderByRaw("(\"attributes\"->'delegate'->>'rank')::numeric ".$sortDirection->value);
     }
 
-    public function scopeSortByVoteCount(mixed $query, SortDirection $sortDirection): mixed
+    public function scopeSortByVoteCount(mixed $query, SortDirection $sortDirection): Builder
     {
         return $query->selectRaw('("attributes"->\'delegate\'->>\'voteBalance\')::numeric AS vote_count')
             ->selectRaw('wallets.*')
@@ -34,7 +35,7 @@ trait CanBeSorted
             ->orderByRaw('("attributes"->\'delegate\'->>\'rank\')::numeric ASC');
     }
 
-    public function scopeSortByNumberOfVoters(mixed $query, SortDirection $sortDirection): mixed
+    public function scopeSortByNumberOfVoters(mixed $query, SortDirection $sortDirection): Builder
     {
         $voterCounts = (new DelegateCache())->getAllVoterCounts();
         if (count($voterCounts) === 0) {
@@ -54,7 +55,7 @@ trait CanBeSorted
             ->orderByRaw('("attributes"->\'delegate\'->>\'rank\')::numeric ASC');
     }
 
-    public function scopeSortByMissedBlocks(mixed $query, SortDirection $sortDirection): mixed
+    public function scopeSortByMissedBlocks(mixed $query, SortDirection $sortDirection): Builder
     {
         $missedBlocks = ForgingStats::selectRaw('public_key, COUNT(*) as count')
             ->groupBy('public_key')

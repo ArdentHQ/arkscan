@@ -8,21 +8,22 @@ use App\Enums\SortDirection;
 use App\Models\ForgingStats;
 use App\Models\Wallet;
 use App\Services\Cache\DelegateCache;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 trait CanBeSorted
 {
-    public function scopeSortByHeight(mixed $query, SortDirection $sortDirection): mixed
+    public function scopeSortByHeight(mixed $query, SortDirection $sortDirection): Builder
     {
         return $query->orderByRaw('missed_height '.$sortDirection->value.', timestamp DESC');
     }
 
-    public function scopeSortByAge(mixed $query, SortDirection $sortDirection): mixed
+    public function scopeSortByAge(mixed $query, SortDirection $sortDirection): Builder
     {
         return $query->orderByRaw('timestamp '.$sortDirection->value);
     }
 
-    public function scopeSortByUsername(mixed $query, SortDirection $sortDirection): mixed
+    public function scopeSortByUsername(mixed $query, SortDirection $sortDirection): Builder
     {
         $missedBlockPublicKeys = ForgingStats::groupBy('public_key')->pluck('public_key');
 
@@ -45,7 +46,7 @@ trait CanBeSorted
             ->orderByRaw('delegate_name '.$sortDirection->value.', timestamp DESC');
     }
 
-    public function scopeSortByVoteCount(mixed $query, SortDirection $sortDirection): mixed
+    public function scopeSortByVoteCount(mixed $query, SortDirection $sortDirection): Builder
     {
         $missedBlockPublicKeys = ForgingStats::groupBy('public_key')->pluck('public_key');
 
@@ -68,7 +69,7 @@ trait CanBeSorted
             ->orderByRaw('votes '.$sortDirection->value.', timestamp DESC');
     }
 
-    public function scopeSortByNumberOfVoters(mixed $query, SortDirection $sortDirection): mixed
+    public function scopeSortByNumberOfVoters(mixed $query, SortDirection $sortDirection): Builder
     {
         $voterCounts = (new DelegateCache())->getAllVoterCounts();
         if (count($voterCounts) === 0) {
