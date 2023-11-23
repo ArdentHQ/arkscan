@@ -4,7 +4,10 @@
         :wallet="$wallet"
     />
 
-    <x-skeletons.wallet-transactions :row-count="$this->perPage">
+    <x-skeletons.wallet-transactions
+        :row-count="$this->perPage"
+        :paginator="$transactions"
+    >
         <x-tables.desktop.wallet-transactions
             :transactions="$transactions"
             :wallet="$wallet"

@@ -5,7 +5,10 @@
 >
     <x-tables.toolbars.transactions-generic :transactions="$transactions" />
 
-    <x-skeletons.transactions :row-count="$this->perPage">
+    <x-skeletons.transactions
+        :row-count="$this->perPage"
+        :paginator="$transactions"
+    >
         <x-tables.desktop.transactions
             :transactions="$transactions"
             :no-results-message="$this->noResultsMessage"

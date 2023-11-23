@@ -15,8 +15,6 @@ final class Slot
 {
     private int $currentRoundBlocks;
 
-    private bool $isFavorite = false;
-
     public function __construct(
         private string $publicKey,
         private int $order,
@@ -129,16 +127,6 @@ final class Slot
         }
 
         return false;
-    }
-
-    public function setFavorite(bool $isFavorite): void
-    {
-        $this->isFavorite = $isFavorite;
-    }
-
-    public function isFavorite(): bool
-    {
-        return $this->isFavorite;
     }
 
     private function getLastHeight(): int

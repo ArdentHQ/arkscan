@@ -1,8 +1,13 @@
 @php ($isDisabled = app()->isDownForMaintenance() || ! Network::canBeExchanged() || config('arkscan.network') !== 'production' || ! $isAvailable)
 
 <div
+    {{--
+        @TODO: use events and websockets to handle when price ticker (and all other areas) are updated instead of polling
+
+        https://app.clickup.com/t/86dqjdxjm
+    --}}
     @unless ($isDisabled)
-        wire:poll.visible.60s
+        wire:poll.visible.30s
     @endunless
     class="w-full md:w-auto"
     :class="{ 'opacity-50': busy }"

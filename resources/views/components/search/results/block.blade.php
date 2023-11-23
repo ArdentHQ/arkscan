@@ -14,10 +14,7 @@
             <x-search.results.mobile.detail :title="trans('general.search.generated_by')">
                 <x-general.identity
                     :model="$block->delegate()"
-                    without-reverse
-                    without-reverse-class="space-x-2"
                     without-link
-                    without-icon
                     :link-wallet="false"
                     class="text-theme-secondary-900 dark:text-theme-dark-50"
                 />
@@ -50,10 +47,7 @@
 
                 <x-general.identity
                     :model="$block->delegate()"
-                    without-reverse
-                    without-reverse-class="space-x-2"
                     without-link
-                    without-icon
                     :link-wallet="false"
                     class="text-theme-secondary-900 dark:text-theme-dark-50"
                 />

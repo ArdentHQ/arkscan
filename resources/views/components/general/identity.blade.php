@@ -1,41 +1,24 @@
 @props([
     'model',
-    'icon'            => false,
     'prefix'          => false,
     'isListing'       => false,
     'address'         => false,
     'suffix'          => false,
-    'withoutReverse'  => false,
     'withoutTruncate' => false,
     'truncateLength'  => null,
     'withoutUsername' => false,
     'addressVisible'  => false,
-    'withoutReverseClass' => 'space-x-3',
     'containerClass'  => null,
     'contentClass'    => null,
     'withoutLink'     => false,
     'linkClass'       => null,
-    'withoutIcon'     => false,
     'delegateNameClass' => null,
 ])
 
 <div @class($containerClass)>
-    <div {{ $attributes->class([
-        'flex items-center md:flex-row md:justify-start',
-        $withoutReverseClass => $withoutReverse,
-        'flex-row-reverse md:space-x-4' => ! $withoutReverse,
-    ]) }}>
-        @unless ($withoutIcon)
-            @unless ($icon)
-                <x-general.avatar :identifier="$model->address()" />
-            @else
-                {{ $icon }}
-            @endunless
-        @endunless
-
+    <div {{ $attributes->class('flex items-center md:flex-row md:justify-start') }}>
         <div @class([
             'flex items-center md:mr-0',
-            'mr-4' => ! $withoutIcon,
             $contentClass,
         ])>
             @if ($prefix)

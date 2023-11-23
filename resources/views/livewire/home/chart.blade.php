@@ -1,94 +1,81 @@
 <div
-    @class([
-        "flex-row justify-between space-x-4 h-full md:flex-col md:space-x-0",
-        "hidden md-lg:flex" => ! Network::canBeExchanged(),
-        "flex" => Network::canBeExchanged(),
-    ])
+    class="flex-col h-full"
     wire:poll.{{ $refreshInterval }}s
 >
-    <div class="flex justify-between items-center whitespace-nowrap sm:flex-1">
-        <x-home.stat
-            :title="trans('pages.home.statistics.currency_price', ['currency' => Network::currency()])"
-            class="md:hidden"
-        >
-            {{ $mainValueFiat }}
+    <div @class([
+        'flex-row justify-between h-full sm:flex-col',
+        'hidden md-lg:flex' => ! Network::canBeExchanged(),
+        'flex' => Network::canBeExchanged(),
+    ])>
+        <div class="flex items-center whitespace-nowrap sm:flex-1 sm:justify-between">
+            <livewire:home.price-ticker />
 
-            @if (ExplorerNumberFormatter::hasSymbol(Settings::currency()))
-                {{ Settings::currency() }}
-            @endif
-        </x-home.stat>
-
-        <p class="hidden items-center space-x-2 sm:space-x-3 md:inline-flex">
-            <span class="text-sm font-semibold sm:text-3xl md:text-2xl text-theme-secondary-900 dark:text-theme-secondary-200">
-                <span>
-                    {{ $mainValueFiat }}
-
-                    @if (ExplorerNumberFormatter::hasSymbol(Settings::currency()))
-                        {{ Settings::currency() }}
-                    @endif
-                </span>
-            </span>
-        </p>
-
-        <x-general.dropdown.dropdown
-            class="hidden md:block"
-            dropdown-class="w-50"
-            active-button-class="md:bg-white bg-theme-secondary-200 text-theme-secondary-700 md:dark:text-theme-secondary-50 md:hover:text-theme-secondary-700 md:hover:bg-theme-secondary-200 md:dark:bg-theme-secondary-900 dark:bg-theme-secondary-800 dark:hover:bg-theme-secondary-800 dark:text-theme-secondary-200"
-        >
-            <x-slot
-                name="button"
-                class="justify-between py-1.5 px-3 text-sm button-secondary w-[116px] shadow-px shadow-theme-secondary-300"
-            >
-                <span>@lang('pages.home.charts.periods.'.$this->period)</span>
-
-                <span
-                    class="transition-default"
-                    :class="{ 'rotate-180': dropdownOpen }"
+            <div class="hidden items-center space-x-3 sm:flex">
+                <x-general.dropdown.dropdown
+                    dropdown-class="w-50"
+                    active-button-class="bg-white text-theme-secondary-700 dark:text-theme-secondary-50 dark:bg-theme-secondary-900 dark:hover:bg-theme-secondary-800 hover:text-theme-secondary-700 hover:bg-theme-secondary-200"
                 >
-                    <x-ark-icon
-                        name="arrows.chevron-down-small"
-                        size="w-3 h-3"
-                    />
-                </span>
-            </x-slot>
+                    <x-slot
+                        name="button"
+                        class="justify-between py-1.5 px-3 text-sm button-secondary w-[116px] shadow-px shadow-theme-secondary-300"
+                    >
+                        <span>@lang('pages.home.charts.periods.'.$this->period)</span>
 
-            @foreach ($options as $period => $lang)
-                <x-general.dropdown.list-item
-                    :is-active="$period === $this->period"
-                    wire:click="setPeriod('{{ $period }}')"
-                >
-                    {{ $lang }}
-                </x-general.dropdown.list-item>
-            @endforeach
-        </x-general.dropdown.dropdown>
-    </div>
+                        <span
+                            class="transition-default"
+                            :class="{ 'rotate-180': dropdownOpen }"
+                        >
+                            <x-ark-icon
+                                name="arrows.chevron-down-small"
+                                size="w-3 h-3"
+                            />
+                        </span>
+                    </x-slot>
 
-    <div class="flex flex-1 justify-end min-w-0 md:items-end">
-        <div class="flex w-full sm:max-w-full md:hidden max-h-[39px] max-w-[258px]">
-            <livewire:price-stats />
+                    @foreach ($options as $period => $lang)
+                        <x-general.dropdown.list-item
+                            :is-active="$period === $this->period"
+                            wire:click="setPeriod('{{ $period }}')"
+                        >
+                            {{ $lang }}
+                        </x-general.dropdown.list-item>
+                    @endforeach
+                </x-general.dropdown.dropdown>
+
+                <x-home.exchanges-button />
+            </div>
         </div>
 
-        <div class="hidden w-full md:flex md:mt-4 h-[112px]">
-            <x-ark-chart
-                class="w-full h-auto"
-                canvas-class="max-w-full"
-                id="price-chart"
-                :data="$datasets->toJson()"
-                labels="[{{ $labels->map(fn ($l) => 'dayjs('.$l.' * 1000).toDate()')->join(',') }}]"
-                :theme="$chartTheme"
-                height="109"
-                :width="null"
-                tooltip-handler="chartTooltip"
-                has-date-time-labels
-                tooltips
-                grid
-                :currency="Settings::currency()"
-                :y-padding="10"
-                :x-padding="0"
-                show-crosshair
-            />
+        <div class="flex flex-1 justify-end min-w-0 sm:justify-between sm:items-center">
+            <div class="hidden w-full sm:flex sm:mt-4 h-[140px] md:h-[116px] lg:mt-[1.125rem]">
+                <x-ark-chart
+                    class="w-full h-auto"
+                    canvas-class="max-w-full"
+                    id="price-chart"
+                    :data="$datasets->toJson()"
+                    labels="[{{ $labels->map(fn ($l) => 'dayjs('.$l.' * 1000).toDate()')->join(',') }}]"
+                    :theme="$chartTheme"
+                    height="109"
+                    :width="null"
+                    tooltip-handler="chartTooltip"
+                    has-date-time-labels
+                    tooltips
+                    grid
+                    :currency="Settings::currency()"
+                    :y-padding="10"
+                    :x-padding="0"
+                    show-crosshair
+                />
+            </div>
+
+            <x-home.exchanges-button class="hidden items-center sm:hidden xs:flex" />
         </div>
     </div>
+
+    <x-home.exchanges-button
+        class="flex items-center mt-3 xs:hidden"
+        button-class="flex-1"
+    />
 </div>
 
 @push('scripts')

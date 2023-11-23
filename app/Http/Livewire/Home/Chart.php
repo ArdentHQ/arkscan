@@ -5,55 +5,38 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Home;
 
 use App\Enums\StatsPeriods;
-use App\Facades\Network;
 use App\Facades\Settings;
-use App\Http\Livewire\Concerns\AvailablePeriods;
-use App\Http\Livewire\Concerns\StatisticsChart;
-use App\Services\Cache\NetworkStatusBlockCache;
+use App\Http\Livewire\Concerns\GetsCurrentPrice;
+use App\Http\Livewire\Concerns\HandlesChart;
 use App\Services\NumberFormatter as ServiceNumberFormatter;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
 
 final class Chart extends Component
 {
-    use AvailablePeriods;
-    use StatisticsChart;
-
-    public bool $show = true;
-
-    public string $period = '';
-
-    public string $refreshInterval = '';
-
-    /** @var mixed */
-    protected $listeners = [
-        'currencyChanged' => '$refresh',
-        'themeChanged'    => '$refresh',
-        'updateChart'     => '$refresh',
-    ];
-
-    public function mount(): void
-    {
-        $this->refreshInterval = (string) config('arkscan.statistics.refreshInterval', '60');
-        $this->period          = $this->defaultPeriod();
-        $this->show            = Network::canBeExchanged();
-    }
+    use HandlesChart;
+    use GetsCurrentPrice;
 
     public function render(): View
     {
-        $chartData = $this->chartHistoricalPrice($this->period);
+        $currency = Settings::currency();
 
-        /** @var array<float> $datasets */
-        $datasets = $chartData->get('datasets');
+        $currentPrice = $this->getPrice($currency);
+        $chartData    = $this->chartHistoricalPrice($this->period);
+
+        $datasets = new Collection($chartData->get('datasets'));
+        $datasets->pop();
+        $datasets->push($currentPrice);
 
         /** @var array<int> $labels */
         $labels = $chartData->get('labels');
 
         return view('livewire.home.chart', [
-            'mainValueFiat'       => $this->mainValueFiat(),
+            'mainValueFiat'       => ServiceNumberFormatter::currency($currentPrice, $currency),
             'datasets'            => collect($datasets),
             'labels'              => collect($labels),
-            'chartTheme'          => $this->chartTheme($this->mainValueVariation($chartData->get('datasets', [])) === 'up' ? 'green' : 'red'),
+            'chartTheme'          => $this->chartTheme($this->mainValueVariation($chartData->get('datasets', []))),
             'options'             => $this->availablePeriods(),
             'refreshInterval'     => $this->refreshInterval,
         ]);
@@ -66,28 +49,6 @@ final class Chart extends Component
         }
 
         $this->period = $period;
-    }
-
-    private function mainValueFiat(): string
-    {
-        $currency = Settings::currency();
-        $price    = $this->getPrice($currency);
-
-        return ServiceNumberFormatter::currency($price, $currency);
-    }
-
-    private function getPrice(string $currency): float
-    {
-        return (new NetworkStatusBlockCache())->getPrice(Network::currency(), $currency) ?? 0.0;
-    }
-
-    private function mainValueVariation(array $dataset): string
-    {
-        // Determine difference based on first datapoint
-        $initialValue = collect($dataset)->first();
-        $currentValue = $this->getPrice(Settings::currency());
-
-        return $initialValue > $currentValue ? 'down' : 'up';
     }
 
     private function availablePeriods(): array

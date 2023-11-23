@@ -8,10 +8,7 @@
 
         <x-general.identity
             :model="$transaction->sender()"
-            without-reverse
-            without-reverse-class="space-x-2"
             without-link
-            without-icon
             class="text-theme-secondary-900 dark:text-theme-dark-50"
         />
     </div>

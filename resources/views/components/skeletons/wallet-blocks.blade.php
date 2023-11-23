@@ -1,10 +1,14 @@
 @props([
     'rowCount' => 10,
+    'paginator' => null,
 ])
 
 @if (! $this->isReady)
     <div wire:key="skeleton:blocks:not-ready">
-        <x-tables.desktop.skeleton.wallet-blocks :row-count="$rowCount" />
+        <x-tables.desktop.skeleton.wallet-blocks
+            :row-count="$rowCount"
+            :paginator="$paginator"
+        />
 
         <x-tables.mobile.skeleton.wallet-blocks />
     </div>
@@ -13,7 +17,10 @@
         wire:key="skeleton:blocks:ready"
         display-type="block"
     >
-        <x-tables.desktop.skeleton.wallet-blocks :row-count="$rowCount" />
+        <x-tables.desktop.skeleton.wallet-blocks
+            :row-count="$rowCount"
+            :paginator="$paginator"
+        />
 
         <x-tables.mobile.skeleton.wallet-blocks />
     </x-loading.visible>

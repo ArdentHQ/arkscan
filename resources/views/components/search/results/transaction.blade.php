@@ -39,19 +39,13 @@
                 @if ($transaction->isVote() || $transaction->isUnvote() || $transaction->isVoteCombination())
                     <x-general.identity
                         :model="$transaction->isUnvote() ? $transaction->unvoted() : $transaction->voted()"
-                        without-reverse
-                        without-reverse-class="space-x-2"
                         without-link
-                        without-icon
                         class="text-theme-secondary-900 dark:text-theme-dark-50"
                     />
                 @else
                     <x-general.identity
                         :model="$transaction->sender()"
-                        without-reverse
-                        without-reverse-class="space-x-2"
                         without-link
-                        without-icon
                         class="text-theme-secondary-900 dark:text-theme-dark-50"
                     />
                 @endif
@@ -65,19 +59,13 @@
                 @if ($transaction->isTransfer())
                     <x-general.identity
                         :model="$transaction->recipient()"
-                        without-reverse
-                        without-reverse-class="space-x-2"
                         without-link
-                        without-icon
                         class="text-theme-secondary-900 dark:text-theme-dark-50"
                     />
                 @elseif ($transaction->isVoteCombination())
                     <x-general.identity
                         :model="$transaction->voted()"
-                        without-reverse
-                        without-reverse-class="space-x-2"
                         without-link
-                        without-icon
                         class="text-theme-secondary-900 dark:text-theme-dark-50"
                     />
                 @elseif ($transaction->isMultiPayment())

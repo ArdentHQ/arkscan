@@ -22,6 +22,20 @@ it('should convert with a historical rate', function () {
         ->toBe(NumberFormatter::currency(30, 'USD.week'));
 });
 
+it('should convert with current rate if no timestamp', function () {
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::now()->subDays(3)->format('Y-m-d') => 1,
+        Carbon::now()->subDays(2)->format('Y-m-d') => 2,
+        Carbon::now()->subDays(1)->format('Y-m-d') => 3,
+        Carbon::now()->format('Y-m-d')             => 10,
+    ]));
+
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 24);
+
+    expect(ExchangeRate::convert(10))
+        ->toBe('$240.00');
+});
+
 it('should convert with a historical rate and return numerical value', function () {
     (new CryptoDataCache())->setPrices('USD.week', collect([
         Carbon::now()->subDays(3)->format('Y-m-d') => 1,
@@ -32,6 +46,20 @@ it('should convert with a historical rate and return numerical value', function 
 
     expect(ExchangeRate::convertNumerical(10, Timestamp::now()->subDays(1)->timestamp))
         ->toBe(30.0);
+});
+
+it('should convert with current rate and return numerical value', function () {
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::now()->subDays(3)->format('Y-m-d') => 1,
+        Carbon::now()->subDays(2)->format('Y-m-d') => 2,
+        Carbon::now()->subDays(1)->format('Y-m-d') => 3,
+        Carbon::now()->format('Y-m-d')             => 10,
+    ]));
+
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 24);
+
+    expect(ExchangeRate::convertNumerical(10))
+        ->toBe(240.0);
 });
 
 it('should convert with the current rate', function () {
