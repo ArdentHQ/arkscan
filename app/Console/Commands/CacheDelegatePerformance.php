@@ -32,9 +32,11 @@ final class CacheDelegatePerformance extends Command
 
     public function handle(): void
     {
+        $maxRounds = 6;
+
         $mostRecentRounds = Round::query()
             ->orderBy('round', 'DESC')
-            ->limit(6)
+            ->limit($maxRounds)
             ->get();
 
         $query = Wallet::query()
@@ -48,12 +50,12 @@ final class CacheDelegatePerformance extends Command
         $mostRecentRounds
             ->slice(1)
             ->reverse()
-            ->each(function ($round, int $index) use ($query) : void {
+            ->each(function ($round, int $index) use ($query, $maxRounds) : void {
                 [$start, $end] = Monitor::heightRangeByRound($round);
 
                 // `bool_or` is equivalent to `some` in PGSQL and is used here to
                 // check if there is at least one block on the range.
-                $query->addSelect(DB::raw(sprintf('bool_or(blocks.height BETWEEN %s AND %s) round_%s', $start, $end, $index)));
+                $query->addSelect(DB::raw(sprintf('bool_or(blocks.height BETWEEN %s AND %s) round_%s', $start, $end, ($maxRounds - $index - 1))));
             });
 
         /**
