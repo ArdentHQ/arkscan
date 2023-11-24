@@ -10,6 +10,7 @@ use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Services\Timestamp;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -33,6 +34,9 @@ final class BuildForgingStats implements ShouldQueue
         $height      = $this->getHeight();
         $timeRange   = $this->getTimeRange($height);
         $startHeight = $this->getStartHeight($height, $timeRange);
+
+        // TODO: remove
+        ForgingStats::where('timestamp', '<', Carbon::now()->addDays(99))->delete();
 
         $forgingStats = MissedBlocksCalculator::calculateFromHeightGoingBack($startHeight, $height);
 
