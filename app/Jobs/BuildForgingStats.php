@@ -81,10 +81,16 @@ final class BuildForgingStats implements ShouldQueue
     {
         $heightTimestamp = $this->getTimestampForHeight($height);
 
-        return Block::where('timestamp', '<=', ($heightTimestamp - $timeRangeInSeconds) * 1000)
+        $startBlock = Block::where('timestamp', '<=', ($heightTimestamp - $timeRangeInSeconds) * 1000)
             ->orderBy('height', 'desc')
             ->limit(1)
-            ->firstOrFail()
+            ->first();
+
+        if($startBlock == null) {
+            return 1;
+        }
+
+        return $startBlock
             ->height
             ->toNumber();
     }
