@@ -51,13 +51,21 @@ class MissedBlocksCalculator implements \App\Contracts\Services\Monitor\MissedBl
     private static function calculateForgingInfo(array $roundValidators, Collection $producedBlocks): array
     {
         $forgeInfoByTimestamp = [];
-        $producedBlocks->each(function ($block, $index) use (&$forgeInfoByTimestamp, $roundValidators) {
-            $expectedValidator = $roundValidators[$index];
+        $misses = 0;
+        $validatorCount = count($roundValidators);
+
+        $producedBlocks->each(function ($block, $index) use (&$forgeInfoByTimestamp, &$misses, $validatorCount, $roundValidators) {
+            $expectedValidator = $roundValidators[($index + $misses) % $validatorCount];
             $actualValidator = $block['generator_public_key'];
 
+            $isForger = $actualValidator == $expectedValidator;
+            if (!$isForger) {
+                $misses += 1;
+            }
+
             $forgeInfoByTimestamp[strval($block->timestamp)] = [
-                'publicKey' => $actualValidator,
-                'forged'    => $actualValidator == $expectedValidator,
+                'publicKey' => $expectedValidator,
+                'forged'    => $isForger,
             ];
         });
 
