@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 use Livewire\Component;
 
 /**
- * TODO: remove in a future update. Kept to prevent errors being spammed
+ * TODO: remove in a future update. Kept to prevent errors being spammed.
  *
  * @codeCoverageIgnore
  */
