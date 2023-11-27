@@ -11,21 +11,19 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
 use Illuminate\Support\Str;
-use Illuminate\View\View;
 use Livewire\Component;
 
+// TODO: remove in a future update. Kept to prevent errors being spammed
+// @codeCoverageIgnore
 final class PriceTicker extends Component
 {
     use HandlesSettings;
 
+    public string $price;
+
     public string $to;
 
     public bool $isAvailable = false;
-
-    /** @var mixed */
-    protected $listeners = [
-        'currencyChanged' => 'setValues',
-    ];
 
     public function mount(): void
     {
@@ -35,17 +33,15 @@ final class PriceTicker extends Component
     public function setValues(): void
     {
         $this->isAvailable = (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency());
+        $this->price       = $this->getPriceFormatted();
         $this->to          = Settings::currency();
 
         $this->dispatchBrowserEvent('has-loaded-price-data');
     }
 
-    public function render(): View
+    public function render(): string
     {
-        return view('livewire.price-ticker', [
-            'to'    => $this->to,
-            'price' => $this->getPriceFormatted(),
-        ]);
+        return '';
     }
 
     public function setCurrency(string $newCurrency): void
