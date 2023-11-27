@@ -13,8 +13,11 @@ use App\Services\NumberFormatter;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
-// TODO: remove in a future update. Kept to prevent errors being spammed
-// @codeCoverageIgnore
+/**
+ * TODO: remove in a future update. Kept to prevent errors being spammed
+ *
+ * @codeCoverageIgnore
+ */
 final class PriceTicker extends Component
 {
     use HandlesSettings;
