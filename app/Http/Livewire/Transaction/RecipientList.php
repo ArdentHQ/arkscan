@@ -49,7 +49,7 @@ final class RecipientList extends Component
         }
 
         $recipients = new Collection(
-            (new TransactionViewModel(Transaction::find($this->transactionId)))
+            (new TransactionViewModel(Transaction::findOrFail($this->transactionId)))
                 ->payments(true)
         );
 
