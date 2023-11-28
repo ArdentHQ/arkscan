@@ -24,7 +24,7 @@
             <x-general.page-section.confirmations :model="$transaction" />
 
             @if ($transaction->isMultiPayment())
-                <livewire:transactions.recipients :transaction="$transaction" />
+                <x-transaction.page.recipient-list :transaction="$transaction" />
             @elseif ($transaction->isMultisignature())
                 <x-transaction.page.participant-list :transaction="$transaction" />
             @endif
