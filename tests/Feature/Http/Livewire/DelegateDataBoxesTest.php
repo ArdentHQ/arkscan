@@ -17,9 +17,9 @@ beforeEach(function () {
     $this->travelTo(Carbon::parse('2022-08-22 00:00'));
 });
 
-function createRoundWithDelegatesAndPerformances(array $performances = null, bool $addBlockForNextRound = true): void
+function createRoundWithDelegatesAndPerformances(array $performances = null, bool $addBlockForNextRound = true, int $wallets = 51): void
 {
-    Wallet::factory(51)->create()->each(function ($wallet, $index) use ($performances, $addBlockForNextRound) {
+    Wallet::factory($wallets)->create()->each(function ($wallet, $index) use ($performances, $addBlockForNextRound) {
         $timestamp = Carbon::now()->add($index * 8, 'seconds')->timestamp;
 
         $block = Block::factory()->create([
@@ -222,3 +222,89 @@ it('should defer loading', function () {
         ->call('pollStatistics')
         ->assertSee('4,234,212');
 });
+
+it('should calculate not forging correctly', function () {
+    createRoundWithDelegatesAndPerformances([true, true, true, true, true], true, 50);
+    createRoundWithDelegatesAndPerformances([false, false, false, false, false], false, 1);
+
+    (new NetworkCache())->setHeight(fn (): int => 4234212);
+
+    Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady')
+        ->call('pollStatistics')
+        ->assertSeeInOrder([
+            'Forging',
+            50,
+            'Missed',
+            0,
+            'Not Forging',
+            1,
+            'Current Height',
+        ]);
+});
+
+it('should calculate missed correctly', function ($performances, $addBlockForNextRound) {
+    createRoundWithDelegatesAndPerformances([true, true, true, true, true], true, 50);
+    createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1);
+
+    (new NetworkCache())->setHeight(fn (): int => 4234212);
+
+    Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady')
+        ->call('pollStatistics')
+        ->assertSeeInOrder([
+            'Forging',
+            50,
+            'Missed',
+            1,
+            'Not Forging',
+            0,
+            'Current Height',
+        ]);
+})->with([
+    'missed, missed, missed, forged, missed' => [
+        [false, false, false, true, false],
+        false,
+    ],
+    'forged, forged, forged, forged, missed' => [
+        [true, true, true, true, false],
+        false,
+    ],
+    'missed, forged, missed, forged, missed' => [
+        [false, true, false, true, false],
+        false,
+    ],
+]);
+
+it('should calculate forging correctly', function ($performances, $addBlockForNextRound) {
+    createRoundWithDelegatesAndPerformances([true, true, true, true, true], true, 50);
+    createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1);
+
+    (new NetworkCache())->setHeight(fn (): int => 4234212);
+
+    Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady')
+        ->call('pollStatistics')
+        ->assertSeeInOrder([
+            'Forging',
+            51,
+            'Missed',
+            0,
+            'Not Forging',
+            0,
+            'Current Height',
+        ]);
+})->with([
+    'missed, missed, missed, forged, forged' => [
+        [false, false, false, true, true],
+        true,
+    ],
+    'forged, forged, forged, forged, forged' => [
+        [true, true, true, true, true],
+        true,
+    ],
+    'missed, forged, missed, forged, forged' => [
+        [false, true, false, true, true],
+        true,
+    ],
+]);
