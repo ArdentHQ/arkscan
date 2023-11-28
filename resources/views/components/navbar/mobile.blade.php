@@ -142,7 +142,7 @@
                                 </x-navbar.mobile.setting-item>
 
                                 <div class="flex pt-3 font-semibold dark:text-theme-secondary-500">
-                                    <livewire:price-ticker />
+                                    <livewire:navbar.price-ticker />
                                 </div>
                             </div>
                         </div>
