@@ -223,9 +223,9 @@ it('should defer loading', function () {
         ->assertSee('4,234,212');
 });
 
-it('should calculate not forging correctly', function () {
+it('should calculate forging correctly', function ($performances, $addBlockForNextRound) {
     createRoundWithDelegatesAndPerformances([true, true, true, true, true], true, 50);
-    createRoundWithDelegatesAndPerformances([false, false, false, false, false], false, 1);
+    createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1);
 
     (new NetworkCache())->setHeight(fn (): int => 4234212);
 
@@ -234,14 +234,27 @@ it('should calculate not forging correctly', function () {
         ->call('pollStatistics')
         ->assertSeeInOrder([
             'Forging',
-            50,
+            51,
             'Missed',
             0,
             'Not Forging',
-            1,
+            0,
             'Current Height',
         ]);
-});
+})->with([
+    'missed, missed, missed, forged, forged' => [
+        [false, false, false, true, true],
+        true,
+    ],
+    'forged, forged, forged, forged, forged' => [
+        [true, true, true, true, true],
+        true,
+    ],
+    'missed, forged, missed, forged, forged' => [
+        [false, true, false, true, true],
+        true,
+    ],
+]);
 
 it('should calculate missed correctly', function ($performances, $addBlockForNextRound) {
     createRoundWithDelegatesAndPerformances([true, true, true, true, true], true, 50);
@@ -276,7 +289,7 @@ it('should calculate missed correctly', function ($performances, $addBlockForNex
     ],
 ]);
 
-it('should calculate forging correctly', function ($performances, $addBlockForNextRound) {
+it('should calculate not forging correctly', function ($performances, $addBlockForNextRound) {
     createRoundWithDelegatesAndPerformances([true, true, true, true, true], true, 50);
     createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1);
 
@@ -287,24 +300,20 @@ it('should calculate forging correctly', function ($performances, $addBlockForNe
         ->call('pollStatistics')
         ->assertSeeInOrder([
             'Forging',
-            51,
+            50,
             'Missed',
             0,
             'Not Forging',
-            0,
+            1,
             'Current Height',
         ]);
 })->with([
-    'missed, missed, missed, forged, forged' => [
-        [false, false, false, true, true],
-        true,
+    'missed, missed, missed, missed, missed' => [
+        [false, false, false, false, false],
+        false,
     ],
-    'forged, forged, forged, forged, forged' => [
-        [true, true, true, true, true],
-        true,
-    ],
-    'missed, forged, missed, forged, forged' => [
-        [false, true, false, true, true],
-        true,
+    'forged, missed, forged, missed, missed' => [
+        [true, false, true, false, false],
+        false,
     ],
 ]);
