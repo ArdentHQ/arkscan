@@ -7,7 +7,7 @@
     <x-slot name="button">
         <div @class([
             'flex justify-center items-center py-2 px-3 space-x-2 text-sm font-semibold leading-4 transition-default',
-            'dark:text-theme-dark-200' => $attributes->get('disabled', false) === false,
+            'dark:text-theme-dark-50' => $attributes->get('disabled', false) === false,
             'dark:bg-theme-dark-800' => $attributes->get('disabled', false) === true,
         ])>
             <span>{{ $this->perPage }}</span>

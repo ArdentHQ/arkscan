@@ -5,7 +5,7 @@
 ])
 
 <div {{ $attributes->class(['sm:flex', $flexDirection]) }}>
-    <div class="text-sm font-semibold leading-4.25 dark:text-theme-dark-500">
+    <div class="text-sm font-semibold leading-4.25 dark:text-theme-dark-200">
         @lang('tables.blocks.transactions')
     </div>
 

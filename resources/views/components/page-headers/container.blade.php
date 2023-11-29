@@ -46,7 +46,7 @@
             </div>
 
             <div @class([
-                'min-w-0 leading-5 text-theme-secondary-900 dark:text-theme-dark-200',
+                'min-w-0 leading-5 text-theme-secondary-900 dark:text-theme-dark-50',
                 $contentBreakpointClass,
             ])>
                 {{ $slot }}

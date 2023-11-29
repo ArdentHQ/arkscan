@@ -1,6 +1,6 @@
 @props([
     'model',
-    'class' => 'text-theme-secondary-900 dark:text-theme-dark-200',
+    'class' => 'text-theme-secondary-900 dark:text-theme-dark-50',
 ])
 
 <span

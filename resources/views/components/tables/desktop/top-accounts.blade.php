@@ -1,7 +1,6 @@
 @props([
     'wallets',
     'hideVoting' => false,
-    'useVoteWeight' => false,
 ])
 
 <x-tables.encapsulated-table
@@ -88,18 +87,14 @@
                     class="text-right"
                     last-on="lg"
                 >
-                    <div class="flex flex-col font-semibold text-theme-secondary-900 dark:text-theme-dark-200">
+                    <div class="flex flex-col font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
                         <x-tables.rows.desktop.encapsulated.balance :model="$wallet" />
 
                         <span class="mt-1 !leading-3.75 !text-xs font-semibold text-theme-secondary-500 md-lg:hidden">
-                            @if($useVoteWeight)
-                                <x-tables.rows.desktop.vote-percentage :model="$wallet" />
-                            @else
-                                <x-tables.rows.desktop.balance-percentage
-                                    :model="$wallet"
-                                    class="text-xs !leading-3.75"
-                                />
-                            @endif
+                            <x-tables.rows.desktop.balance-percentage
+                                :model="$wallet"
+                                class="text-xs !leading-3.75"
+                            />
                         </span>
                     </div>
                 </x-ark-tables.cell>
@@ -109,11 +104,7 @@
                     responsive
                 >
                     <div class="flex font-semibold">
-                        @if($useVoteWeight)
-                            <x-tables.rows.desktop.vote-percentage :model="$wallet" />
-                        @else
-                            <x-tables.rows.desktop.balance-percentage :model="$wallet" />
-                        @endif
+                        <x-tables.rows.desktop.balance-percentage :model="$wallet" />
                     </div>
                 </x-ark-tables.cell>
             </x-ark-tables.row>

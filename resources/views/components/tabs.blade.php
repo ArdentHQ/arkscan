@@ -36,7 +36,7 @@
     >
         <x-ark-dropdown
             wrapper-class="relative w-full rounded border md:w-1/2 border-theme-secondary-300 dark:border-theme-dark-800"
-            button-class="justify-between py-3 px-4 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-dark-200"
+            button-class="justify-between py-3 px-4 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-dark-50"
             dropdown-classes="left-0 w-full z-20"
         >
             <x-slot name="button">

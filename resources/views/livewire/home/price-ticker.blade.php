@@ -11,7 +11,7 @@
     </x-home.stat>
 
     <p class="hidden items-center space-x-2 sm:space-x-3 md:inline-flex">
-        <span class="text-sm font-semibold sm:text-3xl md:text-2xl text-theme-secondary-900 dark:text-theme-dark-200">
+        <span class="text-sm font-semibold sm:text-3xl md:text-2xl text-theme-secondary-900 dark:text-theme-dark-50">
             <span>
                 {{ $price }}
 
