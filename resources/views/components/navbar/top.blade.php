@@ -2,7 +2,7 @@
     <div class="flex justify-between items-center py-3 w-full content-container">
         <div class="flex items-center mr-3 whitespace-nowrap">
             <div class="flex font-semibold dark:text-white text-theme-secondary-900">
-                <livewire:price-ticker />
+                <livewire:navbar.price-ticker />
             </div>
         </div>
 

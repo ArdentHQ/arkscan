@@ -9,6 +9,7 @@ use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Casts\BigInteger;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
+use App\Models\Concerns\Transaction\CanBeSorted;
 use App\Models\Scopes\DelegateRegistrationScope;
 use App\Models\Scopes\DelegateResignationScope;
 use App\Models\Scopes\IpfsScope;
@@ -49,6 +50,7 @@ use Laravel\Scout\Searchable;
  */
 final class Transaction extends Model
 {
+    use CanBeSorted;
     use HasFactory;
     use SearchesCaseInsensitive;
     use HasEmptyScope;
