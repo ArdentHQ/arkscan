@@ -23,6 +23,11 @@ final class TopAccountsTable extends Component
 
     public const PER_PAGE = 25;
 
+    /** @var mixed */
+    protected $listeners = [
+        'currencyChanged' => '$refresh',
+    ];
+
     public function render(): View
     {
         return view('livewire.top-accounts-table', [

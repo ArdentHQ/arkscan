@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Models\Casts\BigInteger;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
+use App\Models\Concerns\Wallet\CanBeSorted;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,6 +29,7 @@ use Laravel\Scout\Searchable;
  */
 final class Wallet extends Model
 {
+    use CanBeSorted;
     use HasFactory;
     use SearchesCaseInsensitive;
     use HasEmptyScope;

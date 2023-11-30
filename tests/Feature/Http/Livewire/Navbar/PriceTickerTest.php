@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Facades\Settings;
-use App\Http\Livewire\PriceTicker;
+use App\Http\Livewire\Navbar\PriceTicker;
 use App\Services\Cache\NetworkStatusBlockCache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
