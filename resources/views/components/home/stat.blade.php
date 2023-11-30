@@ -4,7 +4,7 @@
 ])
 
 <div {{ $attributes->class('space-y-2') }}>
-    <div class="text-sm font-semibold leading-4.25 dark:text-theme-dark-200">
+    <div class="text-sm font-semibold dark:text-theme-dark-200">
         {{ $title }}
     </div>
 
