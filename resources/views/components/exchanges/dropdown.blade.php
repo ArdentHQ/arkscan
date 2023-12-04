@@ -9,7 +9,7 @@
     dropdown-wrapper-class="w-full"
     activeButtonClass="hover:bg-theme-secondary-200 hover:dark:bg-theme-dark-800"
 >
-    <x-slot name="button" class="w-full font-semibold rounded border border-theme-secondary-300 text-theme-secondary-900 md-lg:w-50 dark:border-theme-dark-800 dark:text-theme-dark-50">
+    <x-slot name="button" class="w-full font-semibold rounded border border-theme-secondary-300 text-theme-secondary-900 md-lg:w-50 dark:border-theme-dark-700 dark:text-theme-dark-50">
         <div class="flex justify-between items-center py-3 px-4 w-full">
             <div class="flex items-center space-x-2">
                 <x-ark-icon

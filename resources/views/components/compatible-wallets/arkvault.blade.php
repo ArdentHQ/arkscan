@@ -1,4 +1,4 @@
-<div class="flex-col rounded-xl md:border border-theme-secondary-300 dark:border-theme-dark-800">
+<x-general.card class="!p-0">
     <x-compatible-wallets.disclaimer
         class="inline-flex pb-6 w-full md:px-8 md:pt-6 xl:hidden"
         inner-class="w-full"
@@ -28,4 +28,4 @@
             <img src="{{ mix('images/wallets/arkvault-dark.svg') }}" class="hidden dark:block" />
         </div>
     </div>
-</div>
+</x-general.card>

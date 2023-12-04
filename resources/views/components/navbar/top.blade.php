@@ -19,5 +19,5 @@
         </div>
     </div>
 
-    <div class="absolute bottom-0 w-full border-b border-theme-secondary-300 dark:border-theme-dark-800"></div>
+    <div class="absolute bottom-0 w-full border-b border-theme-secondary-300 dark:border-theme-dark-700"></div>
 </div>

@@ -6,7 +6,7 @@
     })"
     @theme-changed.window="dark = $event.detail.theme === 'dark'"
     x-ref="nav"
-    class="hidden relative z-30 bg-white border-b md:flex md:flex-col border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-800"
+    class="hidden relative z-30 bg-white border-b md:flex md:flex-col border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-700"
 >
     <div
         class="flex justify-between items-center w-full content-container"
