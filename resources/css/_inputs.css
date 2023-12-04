@@ -93,3 +93,9 @@
 .input-group:focus-within .input-label:not(.input-label--error) {
     @apply text-theme-primary-600 dark:text-theme-dark-blue-500;
 }
+
+/* Rich Input Select */
+.dropdown-entry,
+.rich-select-dropdown-entry:not(.rich-select-dropdown-entry-selected):not(.rich-select-dropdown-entry-hover) {
+    @apply dark:bg-theme-dark-800;
+}
