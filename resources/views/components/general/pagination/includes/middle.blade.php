@@ -71,20 +71,20 @@
     <button
         x-on:click="toggleSearch"
         type="button"
-        class="inline-flex relative justify-center items-center p-0 w-full leading-5 button-secondary group focus:ring-theme-primary-500 focus:dark:ring-theme-primary-300"
+        class="inline-flex relative justify-center items-center p-0 w-full leading-5 button-secondary group/pagination focus:ring-theme-primary-500 focus:dark:ring-theme-primary-300"
         :class="{ 'opacity-0': search }"
         @if ($disabled || ! $paginator->hasPages())
             disabled
         @endif
     >
-        <div class="py-1.5 px-2 sm:px-3 md:px-4 group-hover:text-transparent">
+        <div class="py-1.5 px-2 sm:px-3 md:px-4 group-hover/pagination:text-transparent">
             @lang('ui::generic.pagination.current_to', [
                 'currentPage' => number_format($paginator->currentPage(), 0),
                 'lastPage' => number_format($paginator->lastPage(), 0),
             ])
         </div>
 
-        <div class="absolute m-auto text-transparent group-hover:text-white">
+        <div class="absolute m-auto text-transparent group-hover/pagination:text-white">
             <x-ark-icon
                 name="magnifying-glass-small"
                 size="sm"

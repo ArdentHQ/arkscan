@@ -416,6 +416,31 @@ it('should get the specific multi payment fiat amount for a wallet recipient', f
     assertMatchesSnapshot($this->subject->amountReceivedFiat('B'));
 });
 
+it('should handle 256 recipients in a multipayment', function () {
+    $addresses = collect(array_fill(0, 256, null))->keys();
+
+    $addresses->each(fn ($address) => Wallet::factory()->create(['address' => 'address-'.$address]));
+
+    $this->subject = new TransactionViewModel(
+        Transaction::factory()->multiPayment()->create([
+            'asset' => [
+                'payments' => $addresses
+                    ->map(fn ($value) => ([
+                        'amount'      => (256 - $value) * 1e8,
+                        'recipientId' => 'address-'.$value,
+                    ]))
+                    ->toArray(),
+            ],
+        ])
+    );
+
+    $payments = $this->subject->payments(true);
+
+    expect($payments)->toHaveCount(256);
+    expect($payments[0]->address())->toBe('address-0');
+    expect($payments[255]->address())->toBe('address-255');
+});
+
 it('should get the total as fiat', function () {
     (new CryptoDataCache())->setPrices('USD.week', collect([
         Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,

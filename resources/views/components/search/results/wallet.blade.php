@@ -6,7 +6,7 @@
 
 <x-search.results.result :model="$wallet">
     <x-tables.rows.mobile class="md:hidden">
-        <x-slot name="header" class="leading-4.25">
+        <x-slot name="header">
             <x-general.identity
                 :model="$wallet"
                 without-link

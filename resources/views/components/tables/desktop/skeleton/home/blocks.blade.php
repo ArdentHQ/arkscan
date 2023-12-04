@@ -61,7 +61,6 @@
 <x-table-skeleton
     device="desktop"
     :items="$items"
-    :component-properties="['rounded' => false]"
     :row-count="$rowCount"
     encapsulated
 />
