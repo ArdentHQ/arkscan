@@ -85,7 +85,7 @@
                     <div class="pt-2 bg-white rounded-b-lg dark:bg-theme-dark-700">
                         @foreach ($navigation as $navItem)
                             @if (Arr::exists($navItem, 'children'))
-                                <div class="relative h-full dark:bg-theme-dark-800">
+                                <div class="relative h-full dark:bg-theme-dark-700">
                                     <a
                                         href="#"
                                         class="inline-flex relative justify-between items-center py-3 px-6 w-full h-full font-semibold leading-5 focus:ring-inset focus:outline-none text-theme-secondary-700 dark:text-theme-dark-50 hover:text-theme-secondary-800"
@@ -99,7 +99,7 @@
 
                                     <div
                                         x-show="openDropdown === '{{ $navItem['label'] }}'"
-                                        class="bg-white dark:bg-theme-dark-800"
+                                        class="bg-white dark:bg-theme-dark-700"
                                         x-cloak
                                     >
                                         <div class="flex flex-col pt-2 pb-2 w-full">
