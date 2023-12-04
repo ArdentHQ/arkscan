@@ -6,7 +6,7 @@
         <div class="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
             <div class="inline-flex items-center space-x-2 sm:space-x-3 md:items-end">
                 <div class="flex flex-col">
-                    <div class="mb-2 text-sm font-semibold sm:hidden leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                    <div class="mb-2 text-sm font-semibold sm:hidden text-theme-secondary-700 dark:text-theme-dark-200">
                         @lang('pages.exchanges.chart.current_price')
                     </div>
 
@@ -158,31 +158,31 @@
 
     <x-general.card class="py-4 space-y-4 divide-y sm:hidden divide-theme-secondary-300 dark:divide-theme-dark-700">
         <div class="space-y-2">
-            <div class="text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+            <div class="text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
                 @lang('pages.exchanges.chart.market-cap')
             </div>
 
-            <div class="text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50">
+            <div class="text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
                 {{ $marketCapValue }}
             </div>
         </div>
 
         <div class="pt-4 space-y-2">
-            <div class="text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+            <div class="text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
                 @lang('pages.exchanges.chart.min-price')
             </div>
 
-            <div class="text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50">
+            <div class="text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
                 {{ $minPriceValue }}
             </div>
         </div>
 
         <div class="pt-4 space-y-2">
-            <div class="text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+            <div class="text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
                 @lang('pages.exchanges.chart.max-price')
             </div>
 
-            <div class="text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50">
+            <div class="text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
                 {{ $maxPriceValue }}
             </div>
         </div>

@@ -6,7 +6,7 @@
     'fiat' => null,
     'amount' => null,
     'amountForItself' => null,
-    'class' => 'text-sm leading-4.25',
+    'class' => 'text-sm',
     'withoutStyling' => false,
 ])
 

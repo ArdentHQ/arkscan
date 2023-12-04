@@ -69,7 +69,7 @@
     >
         <x-slot
             name="button"
-            class="flex justify-between py-3.5 px-4 w-full h-11 rounded border border-theme-secondary-400 leading-4.25 outline outline-1 outline-transparent dark:border-theme-dark-500 dark:text-theme-dark-200 hover:border-theme-primary-400 hover:dark:border-theme-dark-blue-600 hover:outline-theme-primary-400 hover:dark:outline-theme-dark-blue-600"
+            class="flex justify-between py-3.5 px-4 w-full h-11 rounded border border-theme-secondary-400 outline outline-1 outline-transparent dark:border-theme-dark-500 dark:text-theme-dark-200 hover:border-theme-primary-400 hover:dark:border-theme-dark-blue-600 hover:outline-theme-primary-400 hover:dark:outline-theme-dark-blue-600"
         >
             @if ($multiple)
                 <span

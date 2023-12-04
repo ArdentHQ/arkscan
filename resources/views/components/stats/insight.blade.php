@@ -16,9 +16,9 @@
 
 <x-general.card class="flex flex-col py-4 w-full md:flex-row md:items-center md:py-6 md:pr-0 xl:flex-col xl:items-stretch xl:pr-6">
     <div class="flex flex-col flex-1 mb-4 space-y-2 md:mb-0 xl:pb-6 xl:mb-6">
-        <h2 class="mb-0 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+        <div class="mb-0 text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
             {{ $mainTitle }}
-        </h2>
+        </div>
 
         <div class="text-lg font-semibold md-lg:text-2xl leading-5.25 md:!leading-[29px] text-theme-secondary-900 dark:text-theme-dark-50">
             {{ $mainValue }}
@@ -31,7 +31,7 @@
                 wire:model="{{ $model }}"
                 wrapper-class="relative left-0 w-full xl:inline-block"
                 dropdown-class="left-0 mt-1 origin-top-left"
-                button-class="inline-block w-full text-left !px-3 !py-2 form-input transition-default dark:bg-theme-dark-900 dark:border-theme-dark-800 !text-sm font-semibold leading-4.25"
+                button-class="inline-block w-full text-left !px-3 !py-2 form-input transition-default dark:bg-theme-dark-900 dark:border-theme-dark-800 !text-sm font-semibold"
                 :initial-value="$selected"
                 :placeholder="$selected"
                 :options="$options"
@@ -44,12 +44,12 @@
             'justify-between items-end' => $chart,
         ])>
             <div class="mt-4">
-                <h3 class="mb-0 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                <div class="mb-0 text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
                     {{ $secondaryTitle }}
-                </h3>
+                </div>
 
                 <div
-                    class="mt-2 text-sm font-semibold whitespace-nowrap md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50"
+                    class="mt-2 text-sm font-semibold whitespace-nowrap md:text-base md:leading-5 text-theme-secondary-900 dark:text-theme-dark-50"
 
                     @if($secondaryTooltip)
                         data-tippy-content="{{ $secondaryTooltip }}"
@@ -75,11 +75,11 @@
                 </div>
             @else
                 <div class="sm:pl-6 sm:border-l border-theme-secondary-300 dark:border-theme-dark-800">
-                    <h3 class="mb-0 text-sm font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                    <div class="mb-0 text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
                         {{ $tertiaryTitle }}
-                    </h3>
+                    </div>
 
-                    <div class="mt-2 text-sm font-semibold md:text-base md:leading-5 leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50">
+                    <div class="mt-2 text-sm font-semibold md:text-base md:leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
                         {{ $tertiaryValue }}
                     </div>
                 </div>

@@ -7,7 +7,7 @@
 
 <div class="flex flex-col space-y-2 font-semibold">
     <div @class([
-        'text-sm whitespace-nowrap text-theme-secondary-700 leading-4.25 dark:text-theme-dark-200',
+        'text-sm whitespace-nowrap text-theme-secondary-700 dark:text-theme-dark-200',
         $titleClass,
     ])>
         {{ $title }}
