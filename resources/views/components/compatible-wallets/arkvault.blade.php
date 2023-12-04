@@ -1,4 +1,4 @@
-<x-general.card class="!p-0">
+<x-general.card class="!p-0 border-0 md:border">
     <x-compatible-wallets.disclaimer
         class="inline-flex pb-6 w-full md:px-8 md:pt-6 xl:hidden"
         inner-class="w-full"
