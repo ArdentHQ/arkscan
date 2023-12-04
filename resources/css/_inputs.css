@@ -96,6 +96,8 @@
 
 /* Rich Input Select */
 .dropdown-entry,
-.rich-select-dropdown-entry:not(.rich-select-dropdown-entry-selected):not(.rich-select-dropdown-entry-hover) {
+.rich-select-dropdown-entry:not(.rich-select-dropdown-entry-selected):not(
+        .rich-select-dropdown-entry-hover
+    ) {
     @apply dark:bg-theme-dark-800;
 }
