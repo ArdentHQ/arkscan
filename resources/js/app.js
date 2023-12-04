@@ -29,6 +29,8 @@ import TransactionsExport from "./transactions-export.js";
 import Tabs from "./tabs";
 import makeBlockie from "ethereum-blockies-base64";
 
+import "./livewire-exception-handler.js";
+
 window.makeBlockie = makeBlockie;
 window.Alpine = Alpine;
 window.BlocksExport = BlocksExport;
