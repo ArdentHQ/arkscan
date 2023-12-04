@@ -20,7 +20,7 @@
 @endphp
 
 <div @class([
-    "flex pt-1 md:px-6 md:rounded-t-xl md:border md:border-b-0 md:border-theme-secondary-300 md:dark:border-theme-dark-800",
+    "flex pt-1 md:px-6 md:rounded-t-xl md:border md:border-b-0 md:border-theme-secondary-300 md:dark:border-theme-dark-700",
     "pb-4 md:pt-4" => $slot->isNotEmpty(),
     "pb-5 md:pt-5" => !$slot->isNotEmpty(),
     $breakpointClass,
