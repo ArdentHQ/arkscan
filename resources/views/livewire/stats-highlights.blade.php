@@ -28,7 +28,7 @@
                     </div>
                 </x-stats.stat>
 
-                <x-stats.stat :label="trans('pages.statistics.highlights.wallets')">
+                <x-stats.stat :label="trans('pages.statistics.highlights.addresses')">
                     <span>{{ $wallets }}</span>
 
                     <div class="pl-3">
