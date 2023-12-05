@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Wallet;
 
+use App\Facades\Rounds;
+use App\Services\Monitor\Monitor;
 use App\Services\Cache\DelegateCache;
 use App\Services\Cache\WalletCache;
+use App\Services\Monitor\DelegateTracker;
 use Illuminate\Support\Arr;
 
 trait CanForge
@@ -57,7 +60,20 @@ trait CanForge
             return [];
         }
 
-        return (new WalletCache())->getPerformance($publicKey);
+        $performance = (new WalletCache())->getPerformance($publicKey);
+
+        $currentRound = $this->currentSlot();
+        dump($currentRound['status']);
+        if ($currentRound['status'] === 'done') {
+            $performance = [
+                $performance[1],
+                $currentRound['block'] !== null,
+            ];
+        }
+
+        // dump($publicKey, $performance, $currentRound);
+
+        return $performance;
     }
 
     public function hasForged(): bool
@@ -80,7 +96,8 @@ trait CanForge
 
     public function keepsMissing(): bool
     {
-        return array_slice(array_reverse($this->performance()), 0, 2) === [false, false];
+        dump($this->performance());
+        return $this->performance() === [false, false];
     }
 
     public function forgedBlocks(): int
@@ -101,5 +118,10 @@ trait CanForge
         }
 
         return (new WalletCache())->getMissedBlocks($publicKey);
+    }
+
+    public function currentSlot(): array
+    {
+        return Rounds::delegates()->firstWhere('publicKey', $this->publicKey());
     }
 }

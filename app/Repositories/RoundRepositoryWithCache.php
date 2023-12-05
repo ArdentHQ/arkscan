@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Contracts\RoundRepository;
+use App\Facades\Rounds;
+use App\Models\Block;
 use App\Repositories\Concerns\ManagesCache;
+use App\Services\Monitor\DelegateTracker;
+use App\Services\Monitor\Monitor;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Cache;
 
 final class RoundRepositoryWithCache implements RoundRepository
@@ -26,6 +31,11 @@ final class RoundRepositoryWithCache implements RoundRepository
     public function current(): int
     {
         return $this->rounds->current();
+    }
+
+    public function delegates(bool $withBlock = true): SupportCollection
+    {
+        return $this->rounds->delegates($withBlock);
     }
 
     private function getCache(): TaggedCache

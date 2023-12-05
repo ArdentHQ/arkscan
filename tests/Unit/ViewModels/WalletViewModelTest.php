@@ -3,14 +3,18 @@
 declare(strict_types=1);
 
 use App\Contracts\Network as Contract;
+use App\Facades\Rounds;
 use App\Models\Block;
+use App\Models\Round;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkFactory;
 use App\Services\Cache\DelegateCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
+use App\Services\Monitor\Monitor;
 use App\ViewModels\WalletViewModel;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use function Spatie\Snapshots\assertMatchesSnapshot;
@@ -339,35 +343,35 @@ it('should determine if a new delegate has forged', function () {
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false, false]);
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, false]);
 
     expect($this->subject->hasForged())->toBeFalse();
 });
 
 it('should determine if the delegate just missed a block', function () {
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false, true, true, true]);
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, true]);
 
     expect($this->subject->justMissed())->toBeFalse();
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false, true, false, true]);
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, true]);
 
     expect($this->subject->justMissed())->toBeFalse();
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, true, true, true, false]);
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false]);
 
     expect($this->subject->justMissed())->toBeTrue();
 });
 
 it('should determine if the delegate keeps is missing blocks', function () {
-    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [true, false, true, false, true]);
+    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [false, true]);
 
     expect($this->subject->keepsMissing())->toBeFalse();
 
-    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [true, false, true, false, false]);
+    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [false, false]);
 
     expect($this->subject->keepsMissing())->toBeTrue();
 });
@@ -757,4 +761,68 @@ it('should return zero if delegate has no public key', function () {
     ]));
 
     expect($wallet->missedBlocks())->toBe(0);
+});
+
+function createRoundWithDelegatesAndPerformances(array $performances = null, bool $addBlockForNextRound = true, int $wallets = 51): void
+{
+    Wallet::factory($wallets)->create()->each(function ($wallet, $index) use ($performances, $addBlockForNextRound) {
+        $timestamp = Carbon::now()->add($index * 8, 'seconds')->timestamp;
+
+        $block = Block::factory()->create([
+            'height'               => 5720529,
+            'timestamp'            => $timestamp,
+            'generator_public_key' => $wallet->public_key,
+        ]);
+
+        // Start height for round 112168
+        if ($addBlockForNextRound) {
+            Block::factory()->create([
+                'height'               => 5720518,
+                'timestamp'            => $timestamp,
+                'generator_public_key' => $wallet->public_key,
+            ]);
+        }
+
+        Round::factory()->create([
+            'round'      => '112168',
+            'public_key' => $wallet->public_key,
+        ]);
+
+        (new WalletCache())->setDelegate($wallet->public_key, $wallet);
+
+        if (is_null($performances)) {
+            for ($i = 0; $i < 2; $i++) {
+                $performances[] = (bool) mt_rand(0, 1);
+            }
+        }
+
+        (new WalletCache())->setPerformance($wallet->public_key, $performances);
+
+        (new WalletCache())->setLastBlock($wallet->public_key, [
+            'id'     => $block->id,
+            'height' => $block->height->toNumber(),
+        ]);
+    });
+}
+
+it('asd', function () {
+    $this->travelTo(Carbon::parse('2022-08-22 00:00'));
+
+    Wallet::truncate();
+
+    createRoundWithDelegatesAndPerformances();
+
+    $wallet = new WalletViewModel(Wallet::first());
+
+    expect($wallet->currentSlot())->toBeFalse();
+
+    $roundNumber = Rounds::current();
+    $heightRange = Monitor::heightRangeByRound($roundNumber);
+
+    Block::factory()->create([
+        'height' => $heightRange[0] + 1,
+        'generator_public_key' => $wallet->publicKey(),
+    ]);
+
+    expect($wallet->currentSlot())->toBeTrue();
 });

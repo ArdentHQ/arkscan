@@ -3,12 +3,14 @@
 declare(strict_types=1);
 
 use App\Enums\DelegateForgingStatus;
+use App\Facades\Rounds;
 use App\Http\Livewire\DelegateDataBoxes;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
+use App\Services\Monitor\Monitor;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Livewire\Livewire;
@@ -17,10 +19,10 @@ beforeEach(function () {
     $this->travelTo(Carbon::parse('2022-08-22 00:00'));
 });
 
-function createRoundWithDelegatesAndPerformances(array $performances = null, bool $addBlockForNextRound = true, int $wallets = 51): void
+function createRoundWithDelegatesAndPerformances(array $performances = null, bool $addBlockForNextRound = true, int $wallets = 51, int $baseIndex = 0): void
 {
-    Wallet::factory($wallets)->create()->each(function ($wallet, $index) use ($performances, $addBlockForNextRound) {
-        $timestamp = Carbon::now()->add($index * 8, 'seconds')->timestamp;
+    Wallet::factory($wallets)->create()->each(function ($wallet, $index) use ($performances, $addBlockForNextRound, $baseIndex) {
+        $timestamp = Carbon::now()->add(($baseIndex + $index) * 8, 'seconds')->timestamp;
 
         $block = Block::factory()->create([
             'height'               => 5720529,
@@ -45,7 +47,7 @@ function createRoundWithDelegatesAndPerformances(array $performances = null, boo
         (new WalletCache())->setDelegate($wallet->public_key, $wallet);
 
         if (is_null($performances)) {
-            for ($i = 0; $i < 5; $i++) {
+            for ($i = 0; $i < 2; $i++) {
                 $performances[] = (bool) mt_rand(0, 1);
             }
         }
@@ -97,7 +99,7 @@ it('should get the performances of active delegates and parse it into a readable
 });
 
 it('should determine if delegates are forging based on their round history', function () {
-    createRoundWithDelegatesAndPerformances([true, true, true, true, true]);
+    createRoundWithDelegatesAndPerformances([true, true]);
 
     $component = Livewire::test(DelegateDataBoxes::class)
         ->call('setIsReady');
@@ -112,7 +114,7 @@ it('should determine if delegates are forging based on their round history', fun
 });
 
 it('should determine if delegates are not forging based on their round history', function () {
-    createRoundWithDelegatesAndPerformances([false, false, false, false, false]);
+    createRoundWithDelegatesAndPerformances([false, false]);
 
     $component = Livewire::test(DelegateDataBoxes::class)
         ->call('setIsReady');
@@ -127,7 +129,7 @@ it('should determine if delegates are not forging based on their round history',
 });
 
 it('should determine if delegates just missed based on their round history', function () {
-    createRoundWithDelegatesAndPerformances([true, true, true, true, false]);
+    createRoundWithDelegatesAndPerformances([true, false]);
 
     $component = Livewire::test(DelegateDataBoxes::class)
         ->call('setIsReady');
@@ -142,7 +144,7 @@ it('should determine if delegates just missed based on their round history', fun
 });
 
 it('should determine if delegates are forging after missing 4 slots based on their round history', function () {
-    createRoundWithDelegatesAndPerformances([false, false, false, false, true]);
+    createRoundWithDelegatesAndPerformances([false, true]);
 
     $component = Livewire::test(DelegateDataBoxes::class)
         ->call('setIsReady');
@@ -224,7 +226,7 @@ it('should defer loading', function () {
 });
 
 it('should calculate forging correctly', function ($performances, $addBlockForNextRound) {
-    createRoundWithDelegatesAndPerformances([true, true, true, true, true], true, 50);
+    createRoundWithDelegatesAndPerformances([true, true], true, 50);
     createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1);
 
     (new NetworkCache())->setHeight(fn (): int => 4234212);
@@ -242,22 +244,22 @@ it('should calculate forging correctly', function ($performances, $addBlockForNe
             'Current Height',
         ]);
 })->with([
-    'missed, missed, missed, forged, forged' => [
-        [false, false, false, true, true],
+    'forged, forged, forged' => [
+        [true, true],
         true,
     ],
-    'forged, forged, forged, forged, forged' => [
-        [true, true, true, true, true],
+    'missed, forged, forged' => [
+        [false, true],
         true,
     ],
-    'missed, forged, missed, forged, forged' => [
-        [false, true, false, true, true],
+    'missed, missed, forged' => [
+        [false, false],
         true,
     ],
 ]);
 
 it('should calculate missed correctly', function ($performances, $addBlockForNextRound) {
-    createRoundWithDelegatesAndPerformances([true, true, true, true, true], true, 50);
+    createRoundWithDelegatesAndPerformances([true, true], true, 50);
     createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1);
 
     (new NetworkCache())->setHeight(fn (): int => 4234212);
@@ -275,23 +277,23 @@ it('should calculate missed correctly', function ($performances, $addBlockForNex
             'Current Height',
         ]);
 })->with([
-    'missed, missed, missed, forged, missed' => [
-        [false, false, false, true, false],
+    'forged, forged, missed' => [
+        [true, true],
         false,
     ],
-    'forged, forged, forged, forged, missed' => [
-        [true, true, true, true, false],
-        false,
-    ],
-    'missed, forged, missed, forged, missed' => [
-        [false, true, false, true, false],
+    'missed, forged, missed' => [
+        [false, true],
         false,
     ],
 ]);
 
 it('should calculate not forging correctly', function ($performances, $addBlockForNextRound) {
-    createRoundWithDelegatesAndPerformances([true, true, true, true, true], true, 50);
-    createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1);
+    createRoundWithDelegatesAndPerformances([true, true], true, 50);
+    createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1, 49);
+
+    $this->travel(1, 'minute');
+
+    dump(Rounds::delegates()->pluck('status', 'publicKey'));
 
     (new NetworkCache())->setHeight(fn (): int => 4234212);
 
@@ -308,12 +310,12 @@ it('should calculate not forging correctly', function ($performances, $addBlockF
             'Current Height',
         ]);
 })->with([
-    'missed, missed, missed, missed, missed' => [
-        [false, false, false, false, false],
+    'missed, missed, missed' => [
+        [false, false],
         false,
     ],
-    'forged, missed, forged, missed, missed' => [
-        [true, false, true, false, false],
+    'forged, missed, missed' => [
+        [true, false],
         false,
     ],
 ]);
