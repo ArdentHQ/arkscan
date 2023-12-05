@@ -820,7 +820,7 @@ it('asd', function () {
     $heightRange = Monitor::heightRangeByRound($roundNumber);
 
     Block::factory()->create([
-        'height' => $heightRange[0] + 1,
+        'height'               => $heightRange[0] + 1,
         'generator_public_key' => $wallet->publicKey(),
     ]);
 

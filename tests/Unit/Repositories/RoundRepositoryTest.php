@@ -40,7 +40,7 @@ it('should get the slot data for the current round', function () {
     expect($delegates->firstWhere(fn ($delegate) => $delegate['publicKey'] === $wallet['publicKey'])['block'])->toBeNull();
 
     Block::factory()->create([
-        'height' => 5720519,
+        'height'               => 5720519,
         'generator_public_key' => $wallet['publicKey'],
     ]);
 

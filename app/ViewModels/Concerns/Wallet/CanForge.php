@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\ViewModels\Concerns\Wallet;
 
 use App\Facades\Rounds;
-use App\Services\Monitor\Monitor;
 use App\Services\Cache\DelegateCache;
 use App\Services\Cache\WalletCache;
-use App\Services\Monitor\DelegateTracker;
 use Illuminate\Support\Arr;
 
 trait CanForge
@@ -97,6 +95,7 @@ trait CanForge
     public function keepsMissing(): bool
     {
         dump($this->performance());
+
         return $this->performance() === [false, false];
     }
 
