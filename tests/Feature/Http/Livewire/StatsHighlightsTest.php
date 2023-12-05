@@ -32,7 +32,7 @@ it('should render the component', function (): void {
             '84,235,364 '.$currency,
             trans('pages.statistics.highlights.delegates'),
             '1,171',
-            trans('pages.statistics.highlights.wallets'),
+            trans('pages.statistics.highlights.addresses'),
             '10',
         ]);
 });
