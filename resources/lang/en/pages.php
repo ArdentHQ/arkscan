@@ -442,13 +442,13 @@ return [
 
     'statistics'       => [
         'title'     => 'Statistics',
-        'subtitle'  => 'Explore blockchain data and currency exchange statistics.',
+        'subtitle'  => 'Explore information on blockchain data and fees categorized by type.',
 
         'highlights' => [
             'total_supply' => 'Total Supply',
             'voting'       => 'Voting (:percent)',
             'delegates'    => 'Delegates',
-            'wallets'      => 'Wallets',
+            'addresses'    => 'Addresses',
         ],
 
         'insights'   => [
