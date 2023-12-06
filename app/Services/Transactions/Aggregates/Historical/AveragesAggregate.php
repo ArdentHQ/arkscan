@@ -12,7 +12,7 @@ final class AveragesAggregate
 {
     public function aggregate(): array
     {
-        $data = DB::connection('explorer')
+        $data = (array) DB::connection('explorer')
             ->query()
             ->select([
                 DB::raw('COUNT(*) as count'),
@@ -34,9 +34,9 @@ final class AveragesAggregate
         $daysSinceEpoch = Timestamp::daysSinceEpoch();
 
         return [
-            'count' => (int) round($data->count / $daysSinceEpoch),
-            'amount' => (int) round(($data->amount + $data->multipayments) / 1e8 / $daysSinceEpoch),
-            'fee' => (int) round(($data->fee / 1e8) / $daysSinceEpoch),
+            'count' => (int) round($data['count'] / $daysSinceEpoch),
+            'amount' => (int) round(($data['amount'] + $data['multipayments']) / 1e8 / $daysSinceEpoch),
+            'fee' => (int) round(($data['fee'] / 1e8) / $daysSinceEpoch),
         ];
     }
 }
