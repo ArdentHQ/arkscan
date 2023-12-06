@@ -6,7 +6,7 @@
     }"
     x-cloak
 >
-    <div class="hidden md:block px-6 md:px-10 md:mx-auto md:max-w-7xl font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+    <div class="hidden px-6 font-semibold md:block md:px-10 md:mx-auto md:max-w-7xl text-theme-secondary-900 dark:text-theme-dark-50">
         @lang('pages.statistics.insights.transactions.title')
     </div>
 
