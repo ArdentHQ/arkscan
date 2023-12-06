@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Enums\StatsPeriods;
+use App\Enums\StatsTransactionType;
 use App\Services\Cache\TransactionCache;
 use App\Services\Transactions\Aggregates\HistoricalAggregateFactory;
 use Illuminate\Console\Command;
@@ -35,5 +36,8 @@ final class CacheTransactions extends Command
             StatsPeriods::YEAR,
             StatsPeriods::ALL,
         ])->each(fn ($period) => $cache->setHistorical($period, HistoricalAggregateFactory::period($period)->aggregate()));
+
+        StatsTransactionType::all()
+            ->each(fn ($type) => $cache->setHistoricalByType($type, HistoricalAggregateFactory::type($type)->aggregate()));
     }
 }
