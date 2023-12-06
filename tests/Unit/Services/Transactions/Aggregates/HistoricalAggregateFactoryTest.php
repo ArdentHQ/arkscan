@@ -9,14 +9,14 @@ use App\Services\Transactions\Aggregates\Historical\MonthAggregate;
 use App\Services\Transactions\Aggregates\Historical\QuarterAggregate;
 use App\Services\Transactions\Aggregates\Historical\WeekAggregate;
 use App\Services\Transactions\Aggregates\Historical\YearAggregate;
+use App\Services\Transactions\Aggregates\HistoricalAggregateFactory;
 use App\Services\Transactions\Aggregates\Type\DelegateRegistrationAggregate;
 use App\Services\Transactions\Aggregates\Type\DelegateResignationAggregate;
-use App\Services\Transactions\Aggregates\Type\TransferAggregate;
 use App\Services\Transactions\Aggregates\Type\MultipaymentAggregate;
-use App\Services\Transactions\Aggregates\Type\VoteAggregate;
+use App\Services\Transactions\Aggregates\Type\TransferAggregate;
 use App\Services\Transactions\Aggregates\Type\UnvoteAggregate;
+use App\Services\Transactions\Aggregates\Type\VoteAggregate;
 use App\Services\Transactions\Aggregates\Type\VoteCombinationAggregate;
-use App\Services\Transactions\Aggregates\HistoricalAggregateFactory;
 
 it('should create an instance that matches the period', function (string $type, string $class) {
     expect(HistoricalAggregateFactory::period($type))->toBeInstanceOf($class);
