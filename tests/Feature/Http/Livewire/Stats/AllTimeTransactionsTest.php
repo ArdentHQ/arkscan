@@ -26,9 +26,9 @@ it('should render the component', function () {
 
     Livewire::test(AllTimeTransactions::class)
         ->set('period', 'day')
-        ->assertSee(trans('pages.statistics.insights.all-time-transactions'))
+        ->assertSee(trans('pages.statistics.information-cards.all-time-transactions'))
         ->assertSee('135')
-        ->assertSee(trans('pages.statistics.insights.transactions'))
+        ->assertSee(trans('pages.statistics.information-cards.transactions'))
         ->assertSee('100')
         ->assertSee('[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,30,25,20,15,10]');
 });
@@ -45,9 +45,9 @@ it('should filter by year', function () {
 
     Livewire::test(AllTimeTransactions::class)
         ->set('period', 'year')
-        ->assertSee(trans('pages.statistics.insights.all-time-transactions'))
+        ->assertSee(trans('pages.statistics.information-cards.all-time-transactions'))
         ->assertSee('135')
-        ->assertSee(trans('pages.statistics.insights.transactions'))
+        ->assertSee(trans('pages.statistics.information-cards.transactions'))
         ->assertSee('100')
         ->assertSee('[0,0,0,0,0,0,0,30,25,20,15,10]');
 });

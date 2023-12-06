@@ -40,11 +40,11 @@ it('should render the component', function () {
 
     Livewire::test(CurrentAverageFee::class)
         ->set('transactionType', 'transfer')
-        ->assertSee(trans('pages.statistics.insights.current-average-fee', ['type' => 'Transfer']))
+        ->assertSee(trans('pages.statistics.information-cards.current-average-fee', ['type' => 'Transfer']))
         ->assertSee('50.2 DARK')
-        ->assertSee(trans('pages.statistics.insights.min-fee'))
+        ->assertSee(trans('pages.statistics.information-cards.min-fee'))
         ->assertSee('1 DARK')
-        ->assertSee(trans('pages.statistics.insights.max-fee'))
+        ->assertSee(trans('pages.statistics.information-cards.max-fee'))
         ->assertSee('100 DARK');
 });
 
@@ -73,10 +73,10 @@ it('should filter by transfer', function () {
 
     Livewire::test(CurrentAverageFee::class)
         ->set('transactionType', 'multiSignature')
-        ->assertSee(trans('pages.statistics.insights.current-average-fee', ['type' => 'Multisignature']))
+        ->assertSee(trans('pages.statistics.information-cards.current-average-fee', ['type' => 'Multisignature']))
         ->assertSee('49.2 DARK')
-        ->assertSee(trans('pages.statistics.insights.min-fee'))
+        ->assertSee(trans('pages.statistics.information-cards.min-fee'))
         ->assertSee('2 DARK')
-        ->assertSee(trans('pages.statistics.insights.max-fee'))
+        ->assertSee(trans('pages.statistics.information-cards.max-fee'))
         ->assertSee('99 DARK');
 });
