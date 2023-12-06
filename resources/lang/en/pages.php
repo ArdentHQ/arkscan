@@ -474,14 +474,14 @@ return [
                 'all_time' => 'All-Time',
 
                 'header' => [
-                    'transfer' => 'Transfers',
-                    'multipayment' => 'Multipayments',
-                    'vote' => 'Votes',
-                    'unvote' => 'Unvotes',
-                    'switch_vote' => 'Switch Votes',
+                    'transfer'              => 'Transfers',
+                    'multipayment'          => 'Multipayments',
+                    'vote'                  => 'Votes',
+                    'unvote'                => 'Unvotes',
+                    'switch_vote'           => 'Switch Votes',
                     'delegate_registration' => 'Delegate Registrations',
-                    'delegate_resignation' => 'Delegate Resignations',
-                ]
+                    'delegate_resignation'  => 'Delegate Resignations',
+                ],
             ],
         ],
     ],

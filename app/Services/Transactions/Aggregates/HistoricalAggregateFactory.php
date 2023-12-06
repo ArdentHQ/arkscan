@@ -13,10 +13,10 @@ use App\Services\Transactions\Aggregates\Historical\WeekAggregate;
 use App\Services\Transactions\Aggregates\Historical\YearAggregate;
 use App\Services\Transactions\Aggregates\Type\DelegateRegistrationAggregate;
 use App\Services\Transactions\Aggregates\Type\DelegateResignationAggregate;
-use App\Services\Transactions\Aggregates\Type\TransferAggregate;
 use App\Services\Transactions\Aggregates\Type\MultipaymentAggregate;
-use App\Services\Transactions\Aggregates\Type\VoteAggregate;
+use App\Services\Transactions\Aggregates\Type\TransferAggregate;
 use App\Services\Transactions\Aggregates\Type\UnvoteAggregate;
+use App\Services\Transactions\Aggregates\Type\VoteAggregate;
 use App\Services\Transactions\Aggregates\Type\VoteCombinationAggregate;
 use InvalidArgumentException;
 

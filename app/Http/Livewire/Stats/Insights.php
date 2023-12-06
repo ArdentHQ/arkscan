@@ -6,7 +6,6 @@ namespace App\Http\Livewire\Stats;
 
 use App\Enums\StatsTransactionType;
 use App\Services\Cache\TransactionCache;
-use App\Services\Transactions\Aggregates\HistoricalAggregateFactory;
 use Illuminate\View\View;
 use Livewire\Component;
 
