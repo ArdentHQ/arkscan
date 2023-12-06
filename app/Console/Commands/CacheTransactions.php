@@ -39,5 +39,7 @@ final class CacheTransactions extends Command
 
         StatsTransactionType::all()
             ->each(fn ($type) => $cache->setHistoricalByType($type, HistoricalAggregateFactory::type($type)->aggregate()));
+
+        $cache->setHistoricalAverages(HistoricalAggregateFactory::averages()->aggregate());
     }
 }
