@@ -12,7 +12,7 @@ use App\Http\Livewire\Concerns\StatisticsChart;
 use Illuminate\View\View;
 use Livewire\Component;
 
-final class InsightAllTimeTransactions extends Component
+final class AllTimeTransactions extends Component
 {
     use AvailablePeriods;
     use ChartNumberFormatters;
@@ -34,10 +34,10 @@ final class InsightAllTimeTransactions extends Component
 
     public function render(): View
     {
-        return view('livewire.stats.insight-all-time-transactions', [
-            'allTimeTransactionsTitle' => trans('pages.statistics.insights.all-time-transactions'),
+        return view('livewire.stats.all-time-transactions', [
+            'allTimeTransactionsTitle' => trans('pages.statistics.information-cards.all-time-transactions'),
             'allTimeTransactionsValue' => $this->asNumber($this->totalTransactionsPerPeriod($this->cache, StatsPeriods::ALL)),
-            'transactionsTitle'        => trans('pages.statistics.insights.transactions'),
+            'transactionsTitle'        => trans('pages.statistics.information-cards.transactions'),
             'transactionsValue'        => $this->asNumber($this->totalTransactionsPerPeriod($this->cache, $this->period)),
             'chartValues'              => $this->chartTotalTransactionsPerPeriod($this->cache, $this->period),
             'chartTheme'               => $this->chartTheme('black'),

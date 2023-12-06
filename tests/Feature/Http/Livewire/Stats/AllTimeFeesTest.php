@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\StatsPeriods;
-use App\Http\Livewire\Stats\InsightAllTimeFeesCollected;
+use App\Http\Livewire\Stats\AllTimeFees;
 use App\Models\Transaction;
 use App\Services\Cache\WalletCache;
 use App\Services\Timestamp;
@@ -25,11 +25,11 @@ it('should render the component', function () {
 
     Artisan::call('explorer:cache-fees');
 
-    Livewire::test(InsightAllTimeFeesCollected::class)
+    Livewire::test(AllTimeFees::class)
         ->set('period', StatsPeriods::DAY)
-        ->assertSee(trans('pages.statistics.insights.all-time-fees-collected'))
+        ->assertSee(trans('pages.statistics.information-cards.all-time-fees-collected'))
         ->assertSee('16,666.6665285 DARK')
-        ->assertSee(trans('pages.statistics.insights.fees'))
+        ->assertSee(trans('pages.statistics.information-cards.fees'))
         ->assertSee('12,345.67891 DARK')
         ->assertSee('[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3703.703673,3086.4197275,2469.135782,1851.8518365,1234.567891]');
 });
@@ -44,11 +44,11 @@ it('should filter by year', function () {
 
     Artisan::call('explorer:cache-fees');
 
-    Livewire::test(InsightAllTimeFeesCollected::class)
+    Livewire::test(AllTimeFees::class)
         ->set('period', StatsPeriods::YEAR)
-        ->assertSee(trans('pages.statistics.insights.all-time-fees-collected'))
+        ->assertSee(trans('pages.statistics.information-cards.all-time-fees-collected'))
         ->assertSee('16,666.6665285 DARK')
-        ->assertSee(trans('pages.statistics.insights.fees'))
+        ->assertSee(trans('pages.statistics.information-cards.fees'))
         ->assertSee('12,345.67891 DARK')
         ->assertSee('[0,0,0,0,0,0,0,3703.703673,3086.4197275,2469.135782,1851.8518365,1234.567891]');
 });
@@ -63,6 +63,6 @@ it('should throw an exception if using a wrong cache', function () {
 
     Artisan::call('explorer:cache-fees');
 
-    Livewire::test(InsightAllTimeFeesCollected::class)
+    Livewire::test(AllTimeFees::class)
         ->set('cache', WalletCache::class);
 })->throws(InvalidArgumentException::class, 'Given cache [App\Services\Cache\WalletCache] is invalid. Use FeeCache or TransactionCache.');

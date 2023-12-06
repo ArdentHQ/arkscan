@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Livewire\Stats\InsightAllTimeTransactions;
+use App\Http\Livewire\Stats\AllTimeTransactions;
 use App\Models\Transaction;
 use App\Services\Cache\WalletCache;
 use App\Services\Timestamp;
@@ -24,11 +24,11 @@ it('should render the component', function () {
 
     Artisan::call('explorer:cache-transactions');
 
-    Livewire::test(InsightAllTimeTransactions::class)
+    Livewire::test(AllTimeTransactions::class)
         ->set('period', 'day')
-        ->assertSee(trans('pages.statistics.insights.all-time-transactions'))
+        ->assertSee(trans('pages.statistics.information-cards.all-time-transactions'))
         ->assertSee('135')
-        ->assertSee(trans('pages.statistics.insights.transactions'))
+        ->assertSee(trans('pages.statistics.information-cards.transactions'))
         ->assertSee('100')
         ->assertSee('[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,30,25,20,15,10]');
 });
@@ -43,11 +43,11 @@ it('should filter by year', function () {
 
     Artisan::call('explorer:cache-transactions');
 
-    Livewire::test(InsightAllTimeTransactions::class)
+    Livewire::test(AllTimeTransactions::class)
         ->set('period', 'year')
-        ->assertSee(trans('pages.statistics.insights.all-time-transactions'))
+        ->assertSee(trans('pages.statistics.information-cards.all-time-transactions'))
         ->assertSee('135')
-        ->assertSee(trans('pages.statistics.insights.transactions'))
+        ->assertSee(trans('pages.statistics.information-cards.transactions'))
         ->assertSee('100')
         ->assertSee('[0,0,0,0,0,0,0,30,25,20,15,10]');
 });
@@ -62,6 +62,6 @@ it('should throw an exception if using a wrong cache', function () {
 
     Artisan::call('explorer:cache-transactions');
 
-    Livewire::test(InsightAllTimeTransactions::class)
+    Livewire::test(AllTimeTransactions::class)
         ->set('cache', WalletCache::class);
 })->throws(InvalidArgumentException::class, 'Given cache [App\Services\Cache\WalletCache] is invalid. Use FeeCache or TransactionCache.');

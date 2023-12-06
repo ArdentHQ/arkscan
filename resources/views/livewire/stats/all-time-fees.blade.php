@@ -1,5 +1,5 @@
 <div class="flex w-full" wire:poll.{{ $refreshInterval }}s>
-    <x-stats.insight
+    <x-stats.information-card
         id="all-time-fees-collected"
         :mainTitle="$allTimeFeesCollectedTitle"
         :mainValue="$allTimeFeesCollectedValue"

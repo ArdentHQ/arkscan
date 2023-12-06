@@ -26,6 +26,16 @@ final class TransactionCache implements Contract
         $this->put(sprintf('historical/%s', $period), $this->chartjs($data));
     }
 
+    public function getHistoricalByType(string $type): int
+    {
+        return (int) $this->get(sprintf('type/historical/%s', $type), 0);
+    }
+
+    public function setHistoricalByType(string $type, int $count): void
+    {
+        $this->put(sprintf('type/historical/%s', $type), $count);
+    }
+
     public function getCache(): TaggedCache
     {
         return Cache::tags('transaction');
