@@ -20,13 +20,13 @@ it('should render the component', function (): void {
 
     Livewire::test(Insights::class)
         ->assertViewHas('transactionDetails', [
-            'transfer' => 14,
-            'multipayment' => 18,
-            'vote' => 15,
-            'unvote' => 16,
-            'switch_vote' => 17,
+            'transfer'              => 14,
+            'multipayment'          => 18,
+            'vote'                  => 15,
+            'unvote'                => 16,
+            'switch_vote'           => 17,
             'delegate_registration' => 12,
-            'delegate_resignation' => 13,
+            'delegate_resignation'  => 13,
         ])
         ->assertSeeInOrder([
             trans('pages.statistics.insights.transactions.header.transfer'),
