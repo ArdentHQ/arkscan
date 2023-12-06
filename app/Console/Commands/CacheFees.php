@@ -31,7 +31,7 @@ final class CacheFees extends Command
 
     public function handle(FeeCache $cache): void
     {
-        $cache->setHistorical(StatsPeriods::ALL, HistoricalAggregateFactory::period(StatsPeriods::ALL)->aggregate());
+        $cache->setHistorical(StatsPeriods::ALL, HistoricalAggregateFactory::make(StatsPeriods::ALL)->aggregate());
 
         collect([
             StatsPeriods::DAY,
@@ -40,7 +40,7 @@ final class CacheFees extends Command
             StatsPeriods::QUARTER,
             StatsPeriods::YEAR,
         ])->each(function ($period) use ($cache): void {
-            $cache->setHistorical($period, HistoricalAggregateFactory::period($period)->aggregate());
+            $cache->setHistorical($period, HistoricalAggregateFactory::make($period)->aggregate());
         });
 
         collect(Forms::getTransactionOptions())->except(['all'])->keys()->each(function (string $type) use ($cache): void {
