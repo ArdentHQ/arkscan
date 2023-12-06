@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Services\Transactions\Aggregates;
 
 use App\Enums\StatsTransactionType;
-use App\Services\Transactions\Aggregates\Historical\AveragesAggregate;
 use App\Services\Transactions\Aggregates\Historical\AllAggregate;
+use App\Services\Transactions\Aggregates\Historical\AveragesAggregate;
 use App\Services\Transactions\Aggregates\Historical\DayAggregate;
 use App\Services\Transactions\Aggregates\Historical\MonthAggregate;
 use App\Services\Transactions\Aggregates\Historical\QuarterAggregate;

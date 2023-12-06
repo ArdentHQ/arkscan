@@ -26,7 +26,7 @@ final class AveragesAggregate
                                 ->from('transactions')
                                 ->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT);
                         }, 'payments');
-                }
+                },
             ])
             ->from('transactions')
             ->first();
@@ -34,9 +34,9 @@ final class AveragesAggregate
         $daysSinceEpoch = Timestamp::daysSinceEpoch();
 
         return [
-            'count' => (int) round($data->count / $daysSinceEpoch),
+            'count'  => (int) round($data->count / $daysSinceEpoch),
             'amount' => (int) round(($data->amount + $data->multipayments) / 1e8 / $daysSinceEpoch),
-            'fee' => (int) round(($data->fee / 1e8) / $daysSinceEpoch),
+            'fee'    => (int) round(($data->fee / 1e8) / $daysSinceEpoch),
         ];
     }
 }

@@ -18,7 +18,7 @@ final class Insights extends Component
         $transactionCache = new TransactionCache();
 
         return view('livewire.stats.insights', [
-            'transactionDetails' => $this->transactionDetails($transactionCache),
+            'transactionDetails'  => $this->transactionDetails($transactionCache),
             'transactionAverages' => $this->transactionAverages($transactionCache),
         ]);
     }
@@ -35,9 +35,9 @@ final class Insights extends Component
         $data = $cache->getHistoricalAverages();
 
         return [
-            'transactions' => $data['count'],
+            'transactions'       => $data['count'],
             'transaction_volume' => NumberFormatter::currency($data['amount'], Network::currency()),
-            'transaction_fees' => NumberFormatter::currency($data['fee'], Network::currency()),
+            'transaction_fees'   => NumberFormatter::currency($data['fee'], Network::currency()),
         ];
     }
 }

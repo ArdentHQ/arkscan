@@ -55,16 +55,16 @@ it('should render daily average', function (): void {
 
     Transaction::factory(2)->delegateRegistration()->create([
         'amount' => 0,
-        'fee' => 9 * 1e8,
+        'fee'    => 9 * 1e8,
     ]);
     Transaction::factory(3)->transfer()->create([
         'amount' => 2000 * 1e8,
-        'fee' => 10 * 1e8,
+        'fee'    => 10 * 1e8,
     ]);
     Transaction::factory(4)->multipayment()->create([
         'amount' => 0,
-        'fee' => 11 * 1e8,
-        'asset' => [
+        'fee'    => 11 * 1e8,
+        'asset'  => [
             'payments' => [
                 [
                     'amount' => 3000 * 1e8,
@@ -76,8 +76,8 @@ it('should render daily average', function (): void {
     expect(Transaction::count())->toBe(9);
 
     $transactionCount = (int) round(9 / 2);
-    $totalAmount = (int) round(((4 * 3000) + (3 * 2000)) / 2);
-    $totalFees = (int) round(((9 * 2) + (10 * 3) + (11 * 4)) / 2);
+    $totalAmount      = (int) round(((4 * 3000) + (3 * 2000)) / 2);
+    $totalFees        = (int) round(((9 * 2) + (10 * 3) + (11 * 4)) / 2);
 
     Artisan::call('explorer:cache-transactions');
 
