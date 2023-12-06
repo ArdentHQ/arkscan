@@ -1,6 +1,6 @@
 <div
     wire:key="{{ Illuminate\Support\Str::random(20) }}"
-    class="mb-5 md:hidden px-6"
+    class="px-6 mb-5 md:hidden"
 >
     <x-ark-dropdown
         wrapper-class="relative w-full rounded border md:w-1/2 border-theme-secondary-300 dark:border-theme-secondary-800"
