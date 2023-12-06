@@ -451,7 +451,7 @@ return [
             'addresses'    => 'Addresses',
         ],
 
-        'insights'   => [
+        'information-cards'   => [
             'all-time-transactions'   => 'All-Time Transactions',
             'transactions'            => 'Transactions',
             'current-average-fee'     => 'Current Average Fee (:type)',
@@ -459,6 +459,30 @@ return [
             'max-fee'                 => 'Max Fee',
             'all-time-fees-collected' => 'All-Time Fees Collected',
             'fees'                    => 'Fees',
+        ],
+
+        'insights' => [
+            'title'    => 'Insights',
+            'subtitle' => 'Explore interesting on-chain and market data for ARK.',
+
+            'dropdown' => [
+                'transactions' => 'Transaction Data',
+            ],
+
+            'transactions' => [
+                'title'    => 'Transaction Data',
+                'all_time' => 'All-Time',
+
+                'header' => [
+                    'transfer' => 'Transfers',
+                    'multipayment' => 'Multipayments',
+                    'vote' => 'Votes',
+                    'unvote' => 'Unvotes',
+                    'switch_vote' => 'Switch Votes',
+                    'delegate_registration' => 'Delegate Registrations',
+                    'delegate_resignation' => 'Delegate Resignations',
+                ]
+            ],
         ],
     ],
 
