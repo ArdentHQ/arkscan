@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Stats;
 
 use App\Actions\CacheNetworkSupply;
 use App\Facades\Network;
@@ -13,7 +13,7 @@ use App\Services\NumberFormatter;
 use Illuminate\View\View;
 use Livewire\Component;
 
-final class StatsHighlights extends Component
+final class Highlights extends Component
 {
     public string $refreshInterval = '';
 
@@ -27,7 +27,7 @@ final class StatsHighlights extends Component
 
     public function render(): View
     {
-        return view('livewire.stats-highlights', [
+        return view('livewire.stats.highlights', [
             'votingPercent'   => $this->getVotingPercent(),
             'votingValue'     => $this->getVotingValue(),
             'totalSupply'     => $this->getTotalSupply(),

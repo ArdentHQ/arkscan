@@ -13,7 +13,7 @@ use App\Http\Livewire\Concerns\StatisticsChart;
 use Illuminate\View\View;
 use Livewire\Component;
 
-final class InsightAllTimeFeesCollected extends Component
+final class AllTimeFees extends Component
 {
     use AvailablePeriods;
     use ChartNumberFormatters;
@@ -35,10 +35,10 @@ final class InsightAllTimeFeesCollected extends Component
 
     public function render(): View
     {
-        return view('livewire.stats.insight-all-time-fees-collected', [
-            'allTimeFeesCollectedTitle' => trans('pages.statistics.insights.all-time-fees-collected'),
+        return view('livewire.stats.all-time-fees', [
+            'allTimeFeesCollectedTitle' => trans('pages.statistics.information-cards.all-time-fees-collected'),
             'allTimeFeesCollectedValue' => $this->asMoney($this->totalTransactionsPerPeriod($this->cache, StatsPeriods::ALL)),
-            'feesTitle'                 => trans('pages.statistics.insights.fees'),
+            'feesTitle'                 => trans('pages.statistics.information-cards.fees'),
             'feesValue'                 => $this->truncate(),
             'feesTooltip'               => $this->tooltip(),
             'chartValues'               => $this->chartTotalTransactionsPerPeriod($this->cache, $this->period),

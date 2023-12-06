@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\StatsPeriods;
-use App\Http\Livewire\Stats\InsightAllTimeFeesCollected;
+use App\Http\Livewire\Stats\AllTimeFeesCollected;
 use App\Models\Transaction;
 use App\Services\Cache\WalletCache;
 use App\Services\Timestamp;
@@ -25,7 +25,7 @@ it('should render the component', function () {
 
     Artisan::call('explorer:cache-fees');
 
-    Livewire::test(InsightAllTimeFeesCollected::class)
+    Livewire::test(AllTimeFeesCollected::class)
         ->set('period', StatsPeriods::DAY)
         ->assertSee(trans('pages.statistics.insights.all-time-fees-collected'))
         ->assertSee('16,666.6665285 DARK')
@@ -44,7 +44,7 @@ it('should filter by year', function () {
 
     Artisan::call('explorer:cache-fees');
 
-    Livewire::test(InsightAllTimeFeesCollected::class)
+    Livewire::test(AllTimeFeesCollected::class)
         ->set('period', StatsPeriods::YEAR)
         ->assertSee(trans('pages.statistics.insights.all-time-fees-collected'))
         ->assertSee('16,666.6665285 DARK')
@@ -63,6 +63,6 @@ it('should throw an exception if using a wrong cache', function () {
 
     Artisan::call('explorer:cache-fees');
 
-    Livewire::test(InsightAllTimeFeesCollected::class)
+    Livewire::test(AllTimeFeesCollected::class)
         ->set('cache', WalletCache::class);
 })->throws(InvalidArgumentException::class, 'Given cache [App\Services\Cache\WalletCache] is invalid. Use FeeCache or TransactionCache.');

@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
 
-final class InsightCurrentAverageFee extends Component
+final class CurrentAverageFee extends Component
 {
     use ChartNumberFormatters;
 
@@ -35,14 +35,14 @@ final class InsightCurrentAverageFee extends Component
             ])
             ->toArray();
 
-        return view('livewire.stats.insight-current-average-fee', [
-            'currentAverageFeeTitle' => trans('pages.statistics.insights.current-average-fee', [
+        return view('livewire.stats.current-average-fee', [
+            'currentAverageFeeTitle' => trans('pages.statistics.information-cards.current-average-fee', [
                 'type' => $transactionOptions[$this->transactionType],
             ]),
             'currentAverageFeeValue' => $this->currentAverageFee($this->transactionType),
-            'minFeeTitle'            => trans('pages.statistics.insights.min-fee'),
+            'minFeeTitle'            => trans('pages.statistics.information-cards.min-fee'),
             'minFeeValue'            => $this->minFee($this->transactionType),
-            'maxFeeTitle'            => trans('pages.statistics.insights.max-fee'),
+            'maxFeeTitle'            => trans('pages.statistics.information-cards.max-fee'),
             'maxFeeValue'            => $this->maxFee($this->transactionType),
             'options'                => $transactionOptions,
             'refreshInterval'        => $this->refreshInterval,
