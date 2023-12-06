@@ -11,7 +11,7 @@ use App\Services\Transactions\Aggregates\Fees\Historical\YearAggregate;
 use App\Services\Transactions\Aggregates\Fees\HistoricalAggregateFactory;
 
 it('should create an instance that matches the period', function (string $type, string $class) {
-    expect(HistoricalAggregateFactory::make($type))->toBeInstanceOf($class);
+    expect(HistoricalAggregateFactory::period($type))->toBeInstanceOf($class);
 })->with([
     ['day', DayAggregate::class],
     ['month', MonthAggregate::class],
@@ -22,5 +22,5 @@ it('should create an instance that matches the period', function (string $type, 
 ]);
 
 it('should throw if an unknown period is used', function () {
-    HistoricalAggregateFactory::make('unknown');
+    HistoricalAggregateFactory::period('unknown');
 })->throws(InvalidArgumentException::class);

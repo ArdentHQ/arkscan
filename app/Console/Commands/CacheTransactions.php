@@ -34,6 +34,6 @@ final class CacheTransactions extends Command
             StatsPeriods::QUARTER,
             StatsPeriods::YEAR,
             StatsPeriods::ALL,
-        ])->each(fn ($period) => $cache->setHistorical($period, HistoricalAggregateFactory::make($period)->aggregate()));
+        ])->each(fn ($period) => $cache->setHistorical($period, HistoricalAggregateFactory::period($period)->aggregate()));
     }
 }

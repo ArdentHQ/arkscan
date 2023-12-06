@@ -14,7 +14,7 @@ use InvalidArgumentException;
 
 final class HistoricalAggregateFactory
 {
-    public static function make(string $period): DayAggregate | WeekAggregate | MonthAggregate | QuarterAggregate | YearAggregate | AllAggregate
+    public static function period(string $period): DayAggregate | WeekAggregate | MonthAggregate | QuarterAggregate | YearAggregate | AllAggregate
     {
         if ($period === 'day') {
             return new DayAggregate();
