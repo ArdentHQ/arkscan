@@ -7,7 +7,6 @@ namespace App\Http\Livewire\Stats;
 use App\Enums\StatsTransactionType;
 use App\Services\Cache\TransactionCache;
 use App\Services\Transactions\Aggregates\HistoricalAggregateFactory;
-use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -20,11 +19,12 @@ final class Insights extends Component
         ]);
     }
 
-    private function transactionDetails(): Collection
+    private function transactionDetails(): array
     {
         $transactionCache = new TransactionCache();
 
         return StatsTransactionType::all()
-            ->mapWithKeys(fn ($type) => [$type => $transactionCache->getHistoricalByType($type)]);
+            ->mapWithKeys(fn ($type) => [$type => $transactionCache->getHistoricalByType($type)])
+            ->toArray();
     }
 }
