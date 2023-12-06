@@ -13,19 +13,19 @@ it('should return count', function () {
     app()->singleton(NetworkContract::class, fn () => $networkStub);
 
     expect((new AveragesAggregate())->aggregate())->toBe([
-        'count' => 0,
+        'count'  => 0,
         'amount' => 0,
-        'fee' => 0,
+        'fee'    => 0,
     ]);
 
     Transaction::factory(12)->delegateRegistration()->create([
         'amount' => 0,
-        'fee' => 25 * 1e8,
+        'fee'    => 25 * 1e8,
     ]);
 
     expect((new AveragesAggregate())->aggregate())->toBe([
-        'count' => 12 / 2,
+        'count'  => 12 / 2,
         'amount' => 0,
-        'fee' => (25 * 12) / 2,
+        'fee'    => (25 * 12) / 2,
     ]);
 });
