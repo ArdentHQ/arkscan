@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Blocks\Aggregates\LargestBlockAggregate;
 
 it('should get largest transaction', function () {
     $largestBlock = Block::factory()->create();
-    $otherBlock = Block::factory()->create();
+    $otherBlock   = Block::factory()->create();
 
     Transaction::factory(1)->transfer()->create([
         'amount'   => 20000 * 1e8,
