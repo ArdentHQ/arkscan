@@ -499,7 +499,7 @@ return [
                         'largest_block'              => 'Largest Block',
                         'highest_fee'                => 'Highest Fee',
                         'most_transactions_in_block' => 'Most Tx in Block',
-                    ]
+                    ],
                 ],
             ],
         ],

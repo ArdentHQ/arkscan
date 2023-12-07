@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Services\Blocks\Aggregates\HighestBlockFeeAggregate;
-use App\Services\Cache\BlockCache;
 use App\Services\Blocks\Aggregates\LargestBlockAggregate;
 use App\Services\Blocks\Aggregates\MostTransactionsBlockAggregate;
+use App\Services\Cache\BlockCache;
 use Illuminate\Console\Command;
 
 final class CacheBlocks extends Command

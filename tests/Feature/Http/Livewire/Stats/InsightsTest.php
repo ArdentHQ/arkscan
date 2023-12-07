@@ -10,7 +10,6 @@ use App\Services\Cache\BlockCache;
 use App\Services\Cache\TransactionCache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
@@ -109,17 +108,17 @@ it('should render transaction daily average', function (): void {
 });
 
 it('should render transaction records', function (): void {
-    $largestTransaction = Transaction::factory()->transfer()->create();
-    $otherTransaction = Transaction::factory()->transfer()->create();
-    $largestBlock = Block::factory()->create();
-    $largestBlockFee = Block::factory()->create();
+    $largestTransaction        = Transaction::factory()->transfer()->create();
+    $otherTransaction          = Transaction::factory()->transfer()->create();
+    $largestBlock              = Block::factory()->create();
+    $largestBlockFee           = Block::factory()->create();
     $blockWithMostTransactions = Block::factory()->create();
-    $otherBlock = Block::factory()->create();
+    $otherBlock                = Block::factory()->create();
 
-    (new TransactionCache)->setLargestIdByAmount($largestTransaction->id);
-    (new BlockCache)->setLargestIdByAmount($largestBlock->id);
-    (new BlockCache)->setLargestIdByFees($largestBlockFee->id);
-    (new BlockCache)->setLargestIdByTransactionCount($blockWithMostTransactions->id);
+    (new TransactionCache())->setLargestIdByAmount($largestTransaction->id);
+    (new BlockCache())->setLargestIdByAmount($largestBlock->id);
+    (new BlockCache())->setLargestIdByFees($largestBlockFee->id);
+    (new BlockCache())->setLargestIdByTransactionCount($blockWithMostTransactions->id);
 
     Livewire::test(Insights::class)
         ->assertSeeInOrder([

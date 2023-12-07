@@ -7,8 +7,8 @@ namespace App\Console\Commands;
 use App\Enums\StatsPeriods;
 use App\Enums\StatsTransactionType;
 use App\Services\Cache\TransactionCache;
-use App\Services\Transactions\Aggregates\LargestTransactionAggregate;
 use App\Services\Transactions\Aggregates\HistoricalAggregateFactory;
+use App\Services\Transactions\Aggregates\LargestTransactionAggregate;
 use Illuminate\Console\Command;
 
 final class CacheTransactions extends Command
