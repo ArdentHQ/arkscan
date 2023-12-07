@@ -8,14 +8,15 @@
     'space-y-2 md:space-y-0' => $showOnMobile,
 ]) }}>
     <div @class([
-        'hidden md:flex items-center' => ! $showOnMobile,
+        'md:flex items-center',
+        'hidden' => ! $showOnMobile,
     ])>
         <span>{{ $title }}</span>
 
         <span class="hidden md:inline">:</span>
     </div>
 
-    <div class="text-theme-secondary-900">
+    <div class="text-theme-secondary-900 dark:text-theme-dark-50">
         {{ $slot }}
     </div>
 </div>

@@ -40,6 +40,7 @@
                     :key="$key"
                     :model="$model"
                     :show-transaction-count="$key === 'most_transactions_in_block'"
+                    :show-fee="$key === 'highest_fee'"
                 />
             @endforeach
         </x-stats.insights.container>
