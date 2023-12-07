@@ -7,7 +7,7 @@
 @php ($isTransaction = is_a($model, \App\ViewModels\TransactionViewModel::class))
 @php ($isBlock = is_a($model, \App\ViewModels\BlockViewModel::class))
 
-<div class="flex flex-col space-y-2 md:space-y-0 md:flex-row font-semibold md:justify-between pt-3 first:pt-0 md:pt-0">
+<div class="flex flex-col pt-3 space-y-2 font-semibold md:flex-row md:justify-between md:pt-0 md:space-y-0 first:pt-0">
     <div class="md:w-[209px]">
         <span class="hidden md:inline">
             @lang('pages.statistics.insights.transactions.header.'.$key)
@@ -84,7 +84,7 @@
         </x-stats.insights.entity-column>
 
         <x-stats.insights.entity-column
-            class="md:w-[180px] pt-1 md:pt-0"
+            class="pt-1 md:pt-0 md:w-[180px]"
             :title="trans('pages.statistics.insights.transactions.header.date')"
             show-on-mobile
         >
