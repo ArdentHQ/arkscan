@@ -40,8 +40,8 @@ final class TransactionCache implements Contract
     {
         return $this->get('averages', [
             'count'  => 0,
-            'volume' => 0,
-            'fees'   => 0,
+            'amount' => 0,
+            'fee'    => 0,
         ]);
     }
 
