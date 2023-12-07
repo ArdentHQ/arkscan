@@ -33,7 +33,7 @@
             x-model="selected"
             label-classes="text-base transition-default"
             alpine-label-class="{
-                'text-theme-secondary-900 font-normal dark:text-theme-secondary-200': ! selected,
+                'text-theme-secondary-900 font-normal dark:text-theme-dark-200': ! selected,
                 'text-theme-primary-600 font-semibold dark:group-hover:text-theme-dark-blue-600': selected,
             }"
             class=""

@@ -23,7 +23,7 @@
 @endphp
 
 <div {{ $attributes->class([
-    'border border-theme-secondary-300 dark:border-theme-secondary-800 overflow-hidden',
+    'border border-theme-secondary-300 dark:border-theme-dark-700 overflow-hidden',
     'rounded-t-xl' => $rounded,
     'rounded-b-xl' => $paginatorIsEmpty,
 ]) }}>
@@ -39,7 +39,7 @@
         @endif
 
         @if ($paginatorIsEmpty)
-            <div class="-mx-6 h-[5px] bg-theme-secondary-300 dark:bg-theme-secondary-800"></div>
+            <div class="-mx-6 h-[5px] bg-theme-secondary-300 dark:bg-theme-dark-700"></div>
         @endif
     </div>
 </div>

@@ -10,7 +10,7 @@
                         @lang('pages.exchanges.chart.current_price')
                     </div>
 
-                    <span class="text-lg font-semibold leading-5.25 md:!leading-[29px] md:text-2xl text-theme-secondary-900 dark:text-theme-secondary-200">
+                    <span class="text-lg font-semibold leading-5.25 md:!leading-[29px] md:text-2xl text-theme-secondary-900 dark:text-theme-dark-50">
                         {{ $mainValueFiat }}
                     </span>
                 </div>
@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        <div class="mt-4 sm:pt-4 sm:border-t md:pt-6 md:mt-6 lg:w-full border-theme-secondary-300 dark:border-theme-secondary-800">
+        <div class="mt-4 sm:pt-4 sm:border-t md:pt-6 md:mt-6 lg:w-full border-theme-secondary-300 dark:border-theme-dark-800">
             <div class="sm:flex sm:justify-between sm:items-end lg:items-center">
                 <div class="w-full sm:flex sm:pt-0 lg:flex-1 lg:mt-0">
                     <div class="hidden mt-3 sm:block sm:mt-0">
@@ -67,14 +67,14 @@
                                     @endif
                                 </span>
                             @else
-                                <span class="leading-5 text-theme-secondary-500 dark:text-theme-secondary-700">
+                                <span class="leading-5 text-theme-secondary-500 dark:text-theme-dark-700">
                                     @lang('general.na')
                                 </span>
                             @endif
                         </p>
                     </div>
 
-                    <div class="hidden mt-4 sm:block sm:pl-6 sm:mt-0 sm:ml-6 sm:border-l sm:border-theme-secondary-300 dark:border-theme-secondary-800">
+                    <div class="hidden mt-4 sm:block sm:pl-6 sm:mt-0 sm:ml-6 sm:border-l sm:border-theme-secondary-300 dark:border-theme-dark-800">
                         <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-700 dark:text-theme-dark-200">
                             @lang('pages.exchanges.chart.min-price')
                         </h3>
@@ -84,7 +84,7 @@
                         </p>
                     </div>
 
-                    <div class="hidden mt-4 sm:block sm:pl-6 sm:mt-0 sm:ml-6 sm:border-l sm:border-theme-secondary-300 dark:border-theme-secondary-800">
+                    <div class="hidden mt-4 sm:block sm:pl-6 sm:mt-0 sm:ml-6 sm:border-l sm:border-theme-secondary-300 dark:border-theme-dark-800">
                         <h3 class="mb-0 text-sm font-semibold leading-none text-theme-secondary-700 dark:text-theme-dark-200">
                             @lang('pages.exchanges.chart.max-price')
                         </h3>

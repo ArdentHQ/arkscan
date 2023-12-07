@@ -17,7 +17,7 @@
             buttons-style="flex flex-col sm:flex-row sm:justify-end !mt-6 sm:space-x-3 space-y-3 sm:space-y-0"
             breakpoint="sm"
             wrapper-class="max-w-full sm:max-w-[430px]"
-            content-class="relative bg-white sm:mx-auto sm:shadow-2xl sm:rounded-2.5xl dark:bg-theme-secondary-900"
+            content-class="relative bg-white sm:mx-auto sm:shadow-2xl sm:rounded-2.5xl dark:bg-theme-dark-900"
         >
             <x-slot name="description">
                 <div class="flex flex-col pt-2 space-y-5">

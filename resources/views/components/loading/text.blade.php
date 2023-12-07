@@ -5,7 +5,7 @@
 
 <div>
     <div {{ $attributes->class([
-        'rounded-sm-md animate-pulse bg-theme-secondary-300 dark:bg-theme-secondary-800',
+        'rounded-sm-md animate-pulse bg-theme-secondary-300 dark:bg-theme-dark-800',
         $width,
         $height,
     ]) }}></div>
