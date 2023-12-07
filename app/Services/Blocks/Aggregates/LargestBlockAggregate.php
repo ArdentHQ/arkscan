@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 final class LargestBlockAggregate
 {
-    public function aggregate(): Block
+    public function aggregate(): ?Block
     {
         $subquery = Transaction::select(DB::raw('block_id, jsonb_array_elements(asset->\'payments\')->>\'amount\' as multipayment_amount'));
 

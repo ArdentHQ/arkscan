@@ -52,22 +52,22 @@ final class Insights extends Component
         $blockCache = new BlockCache();
 
         $largestTransaction = Transaction::find($transactionCache->getLargestIdByAmount());
-        if ($largestTransaction) {
+        if ($largestTransaction !== null) {
             $largestTransaction = new TransactionViewModel($largestTransaction);
         }
 
         $largestBlock = Block::find($blockCache->getLargestIdByAmount());
-        if ($largestBlock) {
+        if ($largestBlock !== null) {
             $largestBlock = new BlockViewModel($largestBlock);
         }
 
         $blockWithHighestFees = Block::find($blockCache->getLargestIdByFees());
-        if ($blockWithHighestFees) {
+        if ($blockWithHighestFees !== null) {
             $blockWithHighestFees = new BlockViewModel($blockWithHighestFees);
         }
 
         $blockWithMostTransactions = Block::find($blockCache->getLargestIdByTransactionCount());
-        if ($blockWithMostTransactions) {
+        if ($blockWithMostTransactions !== null) {
             $blockWithMostTransactions = new BlockViewModel($blockWithMostTransactions);
         }
 

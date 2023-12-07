@@ -8,7 +8,7 @@ use App\Models\Block;
 
 final class HighestBlockFeeAggregate
 {
-    public function aggregate(): Block
+    public function aggregate(): ?Block
     {
         return Block::orderBy('total_fee', 'desc')
             ->limit(1)

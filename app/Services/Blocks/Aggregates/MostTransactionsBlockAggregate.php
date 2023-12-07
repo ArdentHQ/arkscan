@@ -8,7 +8,7 @@ use App\Models\Block;
 
 final class MostTransactionsBlockAggregate
 {
-    public function aggregate(): Block
+    public function aggregate(): ?Block
     {
         return Block::orderBy('number_of_transactions', 'desc')
             ->whereNot('height', 1)
