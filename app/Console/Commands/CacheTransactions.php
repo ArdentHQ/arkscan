@@ -7,6 +7,7 @@ namespace App\Console\Commands;
 use App\Enums\StatsPeriods;
 use App\Enums\StatsTransactionType;
 use App\Services\Cache\TransactionCache;
+use App\Services\Transactions\Aggregates\LargestTransactionAggregate;
 use App\Services\Transactions\Aggregates\HistoricalAggregateFactory;
 use Illuminate\Console\Command;
 
@@ -41,5 +42,6 @@ final class CacheTransactions extends Command
             ->each(fn ($type) => $cache->setHistoricalByType($type, HistoricalAggregateFactory::type($type)->aggregate()));
 
         $cache->setHistoricalAverages(HistoricalAggregateFactory::averages()->aggregate());
+        $cache->setLargestIdByAmount((new LargestTransactionAggregate())->aggregate()->id);
     }
 }

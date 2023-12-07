@@ -50,6 +50,16 @@ final class TransactionCache implements Contract
         $this->put('averages', $averages);
     }
 
+    public function getLargestIdByAmount(): ?string
+    {
+        return $this->get('largest/amount');
+    }
+
+    public function setLargestIdByAmount(string $id): void
+    {
+        $this->put('largest/amount', $id);
+    }
+
     public function getCache(): TaggedCache
     {
         return Cache::tags('transaction');
