@@ -34,7 +34,7 @@
                     @lang('pages.home.footer.title')
                 </div>
 
-                <div class="mt-2 text-sm font-semibold lg:text-base lg:leading-5 leading-4.25 text-theme-secondary-800 dark:text-theme-dark-200">
+                <div class="mt-2 text-sm font-semibold lg:text-base lg:leading-5 text-theme-secondary-800 dark:text-theme-dark-200">
                     @lang('pages.home.footer.subtitle')
                 </div>
             </div>

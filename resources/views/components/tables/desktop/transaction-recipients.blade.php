@@ -1,8 +1,9 @@
-@props(['transaction'])
+@props(['recipients'])
 
 <x-tables.encapsulated-table
     wire:key="{{ Helpers::generateId('transaction-recipients') }}"
-    class="hidden w-full rounded-b-xl sm:block"
+    class="hidden w-full md:block"
+    :paginator="$recipients"
     sticky
 >
     <thead>
@@ -12,19 +13,19 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($transaction->payments(true) as $payment)
+        @foreach($recipients as $recipient)
             <x-ark-tables.row wire:key="{{ Helpers::generateId('transaction-recipients-item', $loop->index) }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.address
                         class="!justify-start space-x-2"
-                        :model="$payment"
+                        :model="$recipient"
                         without-truncate
                     />
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell class="text-right">
                     <x-tables.rows.desktop.encapsulated.amount
-                        :model="$payment"
+                        :model="$recipient"
                         without-fee
                         with-network-currency
                     />

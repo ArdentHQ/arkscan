@@ -26,9 +26,13 @@
         @else
             <x-transaction.page.section-detail.row
                 :title="trans('pages.transaction.header.value')"
-                :value="$transaction->totalFiat()"
                 :transaction="$transaction"
-            />
+            >
+                <livewire:fiat-value
+                    :amount="$transaction->amountWithFee()"
+                    :timestamp="$transaction->model()->timestamp"
+                />
+            </x-transaction.page.section-detail.row>
         @endif
     @endif
 </x-general.page-section.container>
