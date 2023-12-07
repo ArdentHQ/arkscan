@@ -42,6 +42,10 @@ final class CacheTransactions extends Command
             ->each(fn ($type) => $cache->setHistoricalByType($type, HistoricalAggregateFactory::type($type)->aggregate()));
 
         $cache->setHistoricalAverages(HistoricalAggregateFactory::averages()->aggregate());
-        $cache->setLargestIdByAmount((new LargestTransactionAggregate())->aggregate()->id);
+
+        $largestTransaction = (new LargestTransactionAggregate())->aggregate();
+        if ($largestTransaction !== null) {
+            $cache->setLargestIdByAmount($largestTransaction->id);
+        }
     }
 }

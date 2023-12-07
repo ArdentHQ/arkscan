@@ -9,12 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 final class LargestTransactionAggregate
 {
-    public function aggregate(): Transaction
+    public function aggregate(): ?Transaction
     {
         $subquery = Transaction::select(DB::raw('id, jsonb_array_elements(asset->\'payments\')->>\'amount\' as multipayment_amount'));
 
         return Transaction::select(DB::raw('t.*, amount + sum(multipayment_amount::bigint) as total_amount'))
             ->from('transactions', 't')
+            // @phpstan-ignore-next-line
             ->join(DB::raw('('.$subquery->toSql().') AS d'), 'd.id', '=', 't.id')
             ->groupBy('t.id')
             ->orderBy('total_amount', 'desc')

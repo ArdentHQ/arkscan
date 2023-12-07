@@ -16,6 +16,7 @@ final class LargestBlockAggregate
 
         return Block::select(DB::raw('b.*, total_amount + sum(multipayment_amount::bigint) as consolidated_amount'))
             ->from('blocks', 'b')
+            // @phpstan-ignore-next-line
             ->join(DB::raw('('.$subquery->toSql().') AS d'), 'd.block_id', '=', 'b.id')
             ->groupBy('b.id')
             ->orderBy('consolidated_amount', 'desc')
