@@ -24,7 +24,7 @@
         {{ $attributes->except('class') }}
     >
         <span
-            class="block pt-3 pb-2.5 w-full h-full text-sm font-semibold whitespace-nowrap border-b-2 leading-4.25"
+            class="block pt-3 pb-2.5 w-full h-full text-sm font-semibold whitespace-nowrap border-b-2"
             :class="{
                 'border-transparent': selected !== '{{ $name }}',
                 'border-theme-primary-600': selected === '{{ $name }}',

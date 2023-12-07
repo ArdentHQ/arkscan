@@ -1,37 +1,28 @@
 @props([
     'label',
     'disabled'         => false,
-    'padding'          => 'px-4 py-3 md:px-6 md:py-4',
     'textClass'        => null,
-    'containerSpacing' => 'space-x-4',
+    'containerSpacing' => null,
 ])
 
-<div {{ $attributes->class(['flex border border-theme-secondary-300 dark:border-theme-dark-700 rounded md:rounded-xl', $padding]) }}>
+<x-page-headers.header-item :title="$label">
     <div @class([
-        'flex flex-grow items-center',
+        'flex flex-col flex-grow space-y-2 justify-between flex-grow',
         $containerSpacing,
+        $textClass,
     ])>
-        <span @class([
-            'flex flex-col flex-grow justify-between h-full space-y-2',
-            $textClass,
-        ])>
-            <span class="text-sm font-semibold whitespace-nowrap leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200">
-                {{ $label }}
+        @if ($disabled)
+            <span class="font-semibold leading-5 whitespace-nowrap text-theme-secondary-500 dark:text-theme-secondary-600">
+                @lang('general.not_available')
             </span>
-
-            @if ($disabled)
-                <span class="font-semibold leading-5 whitespace-nowrap text-theme-secondary-500 dark:text-theme-secondary-600">
-                    @lang('general.not_available')
-                </span>
-            @else
-                <span class="flex space-x-3 text-sm font-semibold !leading-4.25 md:!leading-5 whitespace-nowrap divide-x md:text-base text-theme-secondary-900 divide-theme-secondary-300 dark:text-theme-secondary-50 dark:divide-theme-dark-700">
-                    {{ $slot }}
-                </span>
-            @endif
-        </span>
+        @else
+            <span class="flex space-x-3 text-sm font-semibold !leading-4.25 md:!leading-5 whitespace-nowrap divide-x md:text-base text-theme-secondary-900 divide-theme-secondary-300 dark:text-theme-secondary-50 dark:divide-theme-dark-700">
+                {{ $slot }}
+            </span>
+        @endif
     </div>
 
     @isset($side)
         {{ $side }}
     @endisset
-</div>
+</x-page-headers.header-item>

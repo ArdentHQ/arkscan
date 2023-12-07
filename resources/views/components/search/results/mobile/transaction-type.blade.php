@@ -6,12 +6,12 @@
     </div>
 
     @if ($transaction->isTransfer())
-        <x-search.results.transaction-types.mobile.transfer :transaction="$transaction" />
+        <x-search.results.transaction-types.transfer :transaction="$transaction" />
     @elseif ($transaction->isVote() || $transaction->isUnvote() || $transaction->isVoteCombination())
-        <x-search.results.transaction-types.mobile.vote :transaction="$transaction" />
+        <x-search.results.transaction-types.vote :transaction="$transaction" />
     @elseif ($transaction->isMultiPayment())
-        <x-search.results.transaction-types.mobile.multi-payment :transaction="$transaction" />
+        <x-search.results.transaction-types.multi-payment :transaction="$transaction" />
     @else
-        <x-search.results.transaction-types.mobile.other :transaction="$transaction" />
+        <x-search.results.transaction-types.other :transaction="$transaction" />
     @endif
 </div>
