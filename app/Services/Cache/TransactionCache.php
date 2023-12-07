@@ -36,6 +36,20 @@ final class TransactionCache implements Contract
         $this->put(sprintf('type/historical/%s', $type), $count);
     }
 
+    public function getHistoricalAverages(): array
+    {
+        return $this->get('averages', [
+            'count'  => 0,
+            'volume' => 0,
+            'fees'   => 0,
+        ]);
+    }
+
+    public function setHistoricalAverages(array $averages): void
+    {
+        $this->put('averages', $averages);
+    }
+
     public function getCache(): TaggedCache
     {
         return Cache::tags('transaction');

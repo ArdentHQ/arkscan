@@ -6,6 +6,7 @@ namespace App\Services\Transactions\Aggregates;
 
 use App\Enums\StatsTransactionType;
 use App\Services\Transactions\Aggregates\Historical\AllAggregate;
+use App\Services\Transactions\Aggregates\Historical\AveragesAggregate;
 use App\Services\Transactions\Aggregates\Historical\DayAggregate;
 use App\Services\Transactions\Aggregates\Historical\MonthAggregate;
 use App\Services\Transactions\Aggregates\Historical\QuarterAggregate;
@@ -82,5 +83,10 @@ final class HistoricalAggregateFactory
         }
 
         throw new InvalidArgumentException('Invalid aggregate type.');
+    }
+
+    public static function averages(): AveragesAggregate
+    {
+        return new AveragesAggregate();
     }
 }

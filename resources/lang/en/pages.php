@@ -470,8 +470,9 @@ return [
             ],
 
             'transactions' => [
-                'title'    => 'Transaction Data',
-                'all_time' => 'All-Time',
+                'title'          => 'Transaction Data',
+                'all_time'       => 'All-Time',
+                'daily_averages' => 'Daily Averages',
 
                 'header' => [
                     'transfer'              => 'Transfers',
@@ -481,6 +482,9 @@ return [
                     'switch_vote'           => 'Switch Votes',
                     'delegate_registration' => 'Delegate Registrations',
                     'delegate_resignation'  => 'Delegate Resignations',
+                    'transactions'          => 'Transactions',
+                    'transaction_volume'    => 'Transaction Volume',
+                    'transaction_fees'      => 'Transaction Fees',
                 ],
             ],
         ],

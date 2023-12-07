@@ -1,4 +1,7 @@
-@props(['details'])
+@props([
+    'details',
+    'averages',
+])
 
 <div
     :class="{
@@ -12,9 +15,17 @@
 
     <div>
         <x-stats.insights.container :title="trans('pages.statistics.insights.transactions.all_time')">
-            @foreach($details as $detailKey => $detail)
-                <x-stats.insights.row :title="trans('pages.statistics.insights.transactions.header.'.$detailKey)">
+            @foreach($details as $key => $detail)
+                <x-stats.insights.row :title="trans('pages.statistics.insights.transactions.header.'.$key)">
                     <x-number>{{ $detail }}</x-number>
+                </x-stats.insights.row>
+            @endforeach
+        </x-stats.insights.container>
+
+        <x-stats.insights.container :title="trans('pages.statistics.insights.transactions.daily_averages')">
+            @foreach($averages as $key => $detail)
+                <x-stats.insights.row :title="trans('pages.statistics.insights.transactions.header.'.$key)">
+                    {{ $detail }}
                 </x-stats.insights.row>
             @endforeach
         </x-stats.insights.container>
