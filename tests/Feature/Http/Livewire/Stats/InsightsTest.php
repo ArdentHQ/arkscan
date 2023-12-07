@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 use App\Contracts\Network as NetworkContract;
 use App\Http\Livewire\Stats\Insights;
+use App\Models\Block;
 use App\Models\Transaction;
+use App\Services\Cache\BlockCache;
+use App\Services\Cache\TransactionCache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
@@ -49,7 +53,7 @@ it('should render transaction details', function (): void {
         ]);
 });
 
-it('should render daily average', function (): void {
+it('should render transaction daily average', function (): void {
     $networkStub = new NetworkStub(true, Carbon::now()->subDay(2));
     app()->singleton(NetworkContract::class, fn () => $networkStub);
 
@@ -102,4 +106,32 @@ it('should render daily average', function (): void {
             trans('pages.statistics.insights.transactions.header.transaction_fees'),
             number_format($totalFees).' DARK',
         ]);
+});
+
+it('should render transaction records', function (): void {
+    $largestTransaction = Transaction::factory()->transfer()->create();
+    $otherTransaction = Transaction::factory()->transfer()->create();
+    $largestBlock = Block::factory()->create();
+    $largestBlockFee = Block::factory()->create();
+    $blockWithMostTransactions = Block::factory()->create();
+    $otherBlock = Block::factory()->create();
+
+    (new TransactionCache)->setLargestIdByAmount($largestTransaction->id);
+    (new BlockCache)->setLargestIdByAmount($largestBlock->id);
+    (new BlockCache)->setLargestIdByFees($largestBlockFee->id);
+    (new BlockCache)->setLargestIdByTransactionCount($blockWithMostTransactions->id);
+
+    Livewire::test(Insights::class)
+        ->assertSeeInOrder([
+            trans('pages.statistics.insights.transactions.header.largest_transaction'),
+            $largestTransaction->id,
+            trans('pages.statistics.insights.transactions.header.largest_block'),
+            $largestBlock->id,
+            trans('pages.statistics.insights.transactions.header.highest_fee'),
+            $largestBlockFee->id,
+            trans('pages.statistics.insights.transactions.header.most_transactions_in_block'),
+            $blockWithMostTransactions->id,
+        ])
+        ->assertDontSee($otherTransaction->id)
+        ->assertDontSee($otherBlock->id);
 });
