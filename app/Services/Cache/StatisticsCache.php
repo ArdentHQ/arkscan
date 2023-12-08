@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace App\Services\Cache;
 
+use App\Contracts\Cache as Contract;
+use App\Services\Cache\Concerns\ManagesCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
+use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-final class Statistics
+final class StatisticsCache implements Contract
 {
+    use ManagesCache;
+
     public const STATS_TTL = 300;
 
-    public static function transactionData(): array
+    public function getTransactionData(): array
     {
-        return Cache::remember('transactions:stats', self::STATS_TTL, function () {
+        return $this->remember('transactions', self::STATS_TTL, function () {
             $timestamp = Timestamp::fromUnix(Carbon::now()->subDays(1)->unix())->unix();
             $data      = (array) DB::connection('explorer')
                 ->table('transactions')
@@ -45,5 +50,10 @@ final class Statistics
                 'average_fee'       => $data['average_fee'] ?? 0,
             ];
         });
+    }
+
+    public function getCache(): TaggedCache
+    {
+        return Cache::tags('statistics');
     }
 }

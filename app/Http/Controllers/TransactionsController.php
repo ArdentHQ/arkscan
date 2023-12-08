@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\BigNumber;
-use App\Services\Cache\Statistics;
+use App\Services\Cache\StatisticsCache;
 use Illuminate\Contracts\View\View;
 
 final class TransactionsController
 {
     public function __invoke(): View
     {
-        $data = Statistics::transactionData();
+        $data = (new StatisticsCache())->getTransactionData();
 
         return view('app.transactions', [
             'transactionCount' => $data['transaction_count'],
