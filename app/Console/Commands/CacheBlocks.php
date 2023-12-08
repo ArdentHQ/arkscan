@@ -28,8 +28,8 @@ final class CacheBlocks extends Command
 
     public function handle(BlockCache $cache): void
     {
-        $largestBlockByAmount = (new LargestBlockAggregate())->aggregate();
-        $largestBlockByFees = (new HighestBlockFeeAggregate())->aggregate();
+        $largestBlockByAmount           = (new LargestBlockAggregate())->aggregate();
+        $largestBlockByFees             = (new HighestBlockFeeAggregate())->aggregate();
         $largestBlockByTransactionCount = (new MostTransactionsBlockAggregate())->aggregate();
 
         if ($largestBlockByAmount !== null) {
