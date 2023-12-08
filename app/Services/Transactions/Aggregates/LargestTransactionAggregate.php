@@ -11,7 +11,7 @@ final class LargestTransactionAggregate
 {
     public function aggregate(): ?Transaction
     {
-        $transfer = Transaction::where('type', CoreTransactionTypeEnum::TRANSFER)->orderBy('amount', 'desc')->limit(1)->first();
+        $transfer     = Transaction::where('type', CoreTransactionTypeEnum::TRANSFER)->orderBy('amount', 'desc')->limit(1)->first();
         $multipayment = Transaction::query()->select('*')->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT)->from(function ($query) {
             $query->from('transactions', 't')
                 ->select([
@@ -30,9 +30,10 @@ final class LargestTransactionAggregate
         ->limit(1)
         ->first();
 
-        if ( $transfer['amount'] >= $multipayment['multipayment_amount']) {
+        if ($transfer['amount'] >= $multipayment['multipayment_amount']) {
             return $transfer;
         }
+
         return $multipayment;
     }
 }
