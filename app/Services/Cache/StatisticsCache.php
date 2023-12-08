@@ -52,6 +52,56 @@ final class StatisticsCache implements Contract
         });
     }
 
+    public function getMostUniqueVoters(): ?string
+    {
+        return $this->get('delegate/mostUniqueVoters');
+    }
+
+    public function setMostUniqueVoters(string $publicKey): void
+    {
+        $this->put('delegate/mostUniqueVoters', $publicKey);
+    }
+
+    public function getLeastUniqueVoters(): ?string
+    {
+        return $this->get('delegate/leastUniqueVoters');
+    }
+
+    public function setLeastUniqueVoters(string $publicKey): void
+    {
+        $this->put('delegate/leastUniqueVoters', $publicKey);
+    }
+
+    public function getOldestActiveDelegate(): ?string
+    {
+        return $this->get('delegate/oldestActiveDelegate');
+    }
+
+    public function setOldestActiveDelegate(string $publicKey): void
+    {
+        $this->put('delegate/oldestActiveDelegate', $publicKey);
+    }
+
+    public function getNewestActiveDelegate(): ?string
+    {
+        return $this->get('delegate/newestActiveDelegate');
+    }
+
+    public function setNewestActiveDelegate(string $publicKey): void
+    {
+        $this->put('delegate/newestActiveDelegate', $publicKey);
+    }
+
+    public function getMostBlocksForged(): ?string
+    {
+        return $this->get('delegate/mostBlocksForged');
+    }
+
+    public function setMostBlocksForged(string $publicKey): void
+    {
+        $this->put('delegate/mostBlocksForged', $publicKey);
+    }
+
     public function getCache(): TaggedCache
     {
         return Cache::tags('statistics');

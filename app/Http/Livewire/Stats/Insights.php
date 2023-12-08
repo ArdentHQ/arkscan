@@ -6,8 +6,11 @@ namespace App\Http\Livewire\Stats;
 
 use App\Enums\StatsTransactionType;
 use App\Facades\Network;
+use App\Models\Wallet;
+use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\TransactionCache;
 use App\Services\NumberFormatter;
+use App\ViewModels\ViewModelFactory;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -20,6 +23,7 @@ final class Insights extends Component
         return view('livewire.stats.insights', [
             'transactionDetails'  => $this->transactionDetails($transactionCache),
             'transactionAverages' => $this->transactionAverages($transactionCache),
+            'delegateDetails'     => $this->delegateDetails(),
         ]);
     }
 
@@ -38,6 +42,44 @@ final class Insights extends Component
             'transactions'       => $data['count'],
             'transaction_volume' => NumberFormatter::currency($data['amount'], Network::currency()),
             'transaction_fees'   => NumberFormatter::currency($data['fee'], Network::currency()),
+        ];
+    }
+
+    private function delegateDetails(): array
+    {
+        $cache = new StatisticsCache();
+
+        $mostUniqueVoters = Wallet::firstWhere('public_key', $cache->getMostUniqueVoters());
+        if ($mostUniqueVoters !== null) {
+            $mostUniqueVoters = ViewModelFactory::make($mostUniqueVoters);
+        }
+
+        $leastUniqueVoters = Wallet::firstWhere('public_key', $cache->getLeastUniqueVoters());
+        if ($leastUniqueVoters !== null) {
+            $leastUniqueVoters = ViewModelFactory::make($leastUniqueVoters);
+        }
+
+        $oldestActiveDelegate = Wallet::firstWhere('public_key', $cache->getOldestActiveDelegate());
+        if ($oldestActiveDelegate !== null) {
+            $oldestActiveDelegate = ViewModelFactory::make($oldestActiveDelegate);
+        }
+
+        $newestActiveDelegate = Wallet::firstWhere('public_key', $cache->getNewestActiveDelegate());
+        if ($newestActiveDelegate !== null) {
+            $newestActiveDelegate = ViewModelFactory::make($newestActiveDelegate);
+        }
+
+        $mostBlocksForged = Wallet::firstWhere('public_key', $cache->getMostBlocksForged());
+        if ($mostBlocksForged !== null) {
+            $mostBlocksForged = ViewModelFactory::make($mostBlocksForged);
+        }
+
+        return [
+            'most_unique_voters' => $mostUniqueVoters,
+            'least_unique_voters' => $leastUniqueVoters,
+            'oldest_active_delegate' => $oldestActiveDelegate,
+            'newest_active_delegate' => $newestActiveDelegate,
+            'most_blocks_forged' => $mostBlocksForged,
         ];
     }
 }
