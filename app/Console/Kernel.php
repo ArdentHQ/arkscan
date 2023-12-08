@@ -11,6 +11,7 @@ use App\Console\Commands\CacheDelegateAggregates;
 use App\Console\Commands\CacheDelegatePerformance;
 use App\Console\Commands\CacheDelegateProductivity;
 use App\Console\Commands\CacheDelegateResignationIds;
+use App\Console\Commands\CacheDelegateStatistics;
 use App\Console\Commands\CacheDelegatesWithVoters;
 use App\Console\Commands\CacheDelegateUsernames;
 use App\Console\Commands\CacheDelegateVoterCounts;
@@ -81,6 +82,8 @@ final class Kernel extends ConsoleKernel
         $schedule->command(CacheDelegateProductivity::class)->everyMinute();
 
         $schedule->command(CacheTransactions::class)->everyFiveMinutes();
+
+        $schedule->command(CacheDelegateStatistics::class)->everyFiveMinutes();
 
         $schedule->command(GenerateVoteReport::class)->everyFiveMinutes();
 
