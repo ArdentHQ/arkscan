@@ -31,7 +31,7 @@ final class LargestTransactionAggregate
         ->first();
 
         if ($multipayment === null) {
-            return $transfer; # Will return either a value or null
+            return $transfer; // Will return either a value or null
         }
 
         if ($transfer === null) {
