@@ -5,19 +5,28 @@ declare(strict_types=1);
 namespace App\Services\Transactions\Aggregates;
 
 use App\Models\Transaction;
-use Illuminate\Support\Facades\DB;
 
 final class LargestTransactionAggregate
 {
     public function aggregate(): ?Transaction
     {
-        $subquery = Transaction::select(DB::raw('id, jsonb_array_elements(asset->\'payments\')->>\'amount\' as multipayment_amount'));
-
-        return Transaction::select(DB::raw('t.*, amount + sum(multipayment_amount::bigint) as total_amount'))
-            ->from('transactions', 't')
-            // @phpstan-ignore-next-line
-            ->join(DB::raw('('.$subquery->toSql().') AS d'), 'd.id', '=', 't.id')
-            ->groupBy('t.id')
+        return Transaction::query()
+            ->select('*')
+            ->selectRaw('COALESCE(multipayment_volume, 0) + amount AS total_amount')
+            ->from(function ($query) {
+                $query->from('transactions', 't')
+                    ->select([
+                        't.*',
+                        'multipayment_volume' => function ($query) {
+                            $query->selectRaw('SUM(MP_AMOUNT)')
+                                ->from(function ($query) {
+                                    $query->selectRaw('(jsonb_array_elements(mpt.asset->\'payments\')->>\'amount\')::numeric as MP_AMOUNT')
+                                        ->from('transactions', 'mpt')
+                                        ->whereColumn('mpt.id', 't.id');
+                                }, 'b');
+                        },
+                    ]);
+            }, 't')
             ->orderBy('total_amount', 'desc')
             ->limit(1)
             ->first();

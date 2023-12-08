@@ -12,15 +12,30 @@ final class LargestBlockAggregate
 {
     public function aggregate(): ?Block
     {
-        $subquery = Transaction::select(DB::raw('block_id, jsonb_array_elements(asset->\'payments\')->>\'amount\' as multipayment_amount'));
-
-        return Block::select(DB::raw('b.*, total_amount + sum(multipayment_amount::bigint) as consolidated_amount'))
-            ->from('blocks', 'b')
-            // @phpstan-ignore-next-line
-            ->join(DB::raw('('.$subquery->toSql().') AS d'), 'd.block_id', '=', 'b.id')
-            ->groupBy('b.id')
-            ->orderBy('consolidated_amount', 'desc')
-            ->limit(1)
+        return Block::query()
+            ->where('id', function ($query) {
+                $query->select('block_id')
+                    ->from(function ($query) {
+                        $query->from('transactions', 't')
+                            ->select([
+                                'block_id',
+                                DB::raw('SUM(amount) as amount'),
+                                'multipayment_volume' => function ($query) {
+                                    $query->selectRaw('SUM(MP_AMOUNT)')
+                                        ->from(function ($query) {
+                                            $query->selectRaw('(jsonb_array_elements(mpt.asset->\'payments\')->>\'amount\')::numeric as MP_AMOUNT')
+                                                ->from('transactions', 'mpt')
+                                                ->whereColumn('mpt.block_id', 't.block_id');
+                                        }, 'b');
+                                },
+                            ])
+                            ->groupBy('block_id')
+                            ->whereNot('block_height', 1);
+                    }, 't')
+                    ->orderByRaw('COALESCE(multipayment_volume, 0) + amount desc')
+                    ->limit(1)
+                    ->first();
+            })
             ->first();
     }
 }
