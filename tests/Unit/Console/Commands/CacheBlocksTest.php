@@ -13,7 +13,7 @@ it('should cache largest block by amount', function () {
 
     $largestBlock = Block::factory()->create();
     Transaction::factory()->create([
-        'amount' => 1000 * 1e8,
+        'amount'   => 1000 * 1e8,
         'block_id' => $largestBlock->id,
     ]);
 
