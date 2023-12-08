@@ -504,18 +504,18 @@ return [
             ],
 
             'addresses' => [
-                'title' => 'Address Data',
+                'title'    => 'Address Data',
                 'holdings' => 'Address Holdings',
-                'unique' => 'Unique Addresses',
+                'unique'   => 'Unique Addresses',
 
                 'header' => [
-                    'genesis' => 'Genesis',
-                    'newest' => 'Newest',
+                    'genesis'           => 'Genesis',
+                    'newest'            => 'Newest',
                     'most_transactions' => 'Most Transactions',
-                    'largest' => 'Largest',
-                    'addresses' => 'Addresses',
-                ]
-            ]
+                    'largest'           => 'Largest',
+                    'addresses'         => 'Addresses',
+                ],
+            ],
         ],
     ],
 

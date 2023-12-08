@@ -14,7 +14,6 @@ use App\Services\Cache\TransactionCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\BlockViewModel;
 use App\ViewModels\TransactionViewModel;
-use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -28,7 +27,7 @@ final class Insights extends Component
             'transactionDetails'  => $this->transactionDetails($transactionCache),
             'transactionAverages' => $this->transactionAverages($transactionCache),
             'transactionRecords'  => $this->transactionRecords($transactionCache),
-            'addressHoldings' => $this->addressHoldings(),
+            'addressHoldings'     => $this->addressHoldings(),
         ]);
     }
 
@@ -85,14 +84,14 @@ final class Insights extends Component
     private function addressHoldings(): array
     {
         $statisticsCache = new Statistics();
-        $holdings = $statisticsCache->getAddressHoldings();
+        $holdings        = $statisticsCache->getAddressHoldings();
 
         unset($holdings['0']); // Ignore wallets below 1
 
         // Create new array with summed values instead of pure counts
         $previousValue = 0;
-        $summedValues = [];
-        foreach(array_reverse($holdings) as $key => $values) {
+        $summedValues  = [];
+        foreach (array_reverse($holdings) as $key => $values) {
             array_unshift($summedValues, ['grouped' => $values['grouped'], 'count' => $values['count'] + $previousValue]);
             $previousValue = $values['count'] + $previousValue;
         }

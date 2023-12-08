@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Services\Addresses\Aggregates\HoldingsAggregate;
 use App\Services\Cache\Statistics;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class CacheAddressStatistics extends Command
 {
