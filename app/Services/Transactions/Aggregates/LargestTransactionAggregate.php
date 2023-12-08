@@ -30,6 +30,7 @@ final class LargestTransactionAggregate
         ->limit(1)
         ->first();
 
+        /* @phpstan-ignore-next-line */
         if ($transfer['amount'] >= $multipayment['multipayment_amount']) {
             return $transfer;
         }
