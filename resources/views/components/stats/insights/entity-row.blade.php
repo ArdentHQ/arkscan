@@ -8,8 +8,8 @@
 @php ($isTransaction = is_a($model, \App\ViewModels\TransactionViewModel::class))
 @php ($isBlock = is_a($model, \App\ViewModels\BlockViewModel::class))
 
-<div class="flex flex-col sm:flex-row sm:justify-between pt-3 md:pt-1 xl:pt-0 font-semibold md:flex-row first:pt-0">
-    <div class="md:w-[209px] hidden md:inline">
+<div class="flex flex-col pt-3 font-semibold sm:flex-row sm:justify-between md:flex-row md:pt-1 xl:pt-0 first:pt-0">
+    <div class="hidden md:inline md:w-[209px]">
         <span class="">
             @lang('pages.statistics.insights.transactions.header.'.$key)
         </span>
@@ -23,7 +23,7 @@
         <div class="hidden xl:block xl:w-[227px]"></div>
         <div class="hidden xl:block xl:w-[180px]"></div>
     @else
-        <div class="sm:flex-1 md:flex-none space-y-3 sm:space-y-0 sm:flex md:flex-col md:space-y-3 md-lg:flex-row md-lg:space-y-0 sm:justify-between md-lg:space-x-[66px]">
+        <div class="space-y-3 sm:flex sm:flex-1 sm:justify-between sm:space-y-0 md:flex-col md:flex-none md:space-y-3 md-lg:flex-row md-lg:space-y-0 md-lg:space-x-[66px]">
             <div class="space-y-2 md:space-y-0">
                 <span class="md:hidden">
                     @lang('pages.statistics.insights.transactions.header.mobile.'.$key)
@@ -73,7 +73,7 @@
                 </x-stats.insights.entity-column>
             </div>
 
-            <div class="sm:flex md:flex-col md:space-y-3 xl:flex-row xl:space-y-0 sm:justify-between xl:space-x-[82px]">
+            <div class="sm:flex sm:justify-between md:flex-col md:space-y-3 xl:flex-row xl:space-y-0 xl:space-x-[82px]">
                 <x-stats.insights.entity-column class="hidden md:block md:w-[260px] xl:w-[227px]">
                     <x-slot name="title">
                         @if ($showTransactionCount)

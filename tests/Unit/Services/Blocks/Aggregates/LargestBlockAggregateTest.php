@@ -33,46 +33,46 @@ it('should get largest block', function () {
 
 it('should get largest block for multipayments', function () {
     $largestBlock = Block::factory()->create();
-    $otherBlock = Block::factory()->create();
+    $otherBlock   = Block::factory()->create();
 
     Transaction::factory()->transfer()->create([
         'block_id' => $otherBlock->id,
-        'amount' => 2000 * 1e8,
-        'fee'    => 10 * 1e8,
+        'amount'   => 2000 * 1e8,
+        'fee'      => 10 * 1e8,
     ]);
     Transaction::factory()->multipayment()->create([
         'block_id' => $largestBlock->id,
-        'amount' => 0,
-        'fee'    => 10 * 1e8,
-        'asset' => [
+        'amount'   => 0,
+        'fee'      => 10 * 1e8,
+        'asset'    => [
             'payments' => [
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 300 * 1e8,
+                    'amount'      => 300 * 1e8,
                 ],
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 300 * 1e8,
+                    'amount'      => 300 * 1e8,
                 ],
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 5000 * 1e8,
+                    'amount'      => 5000 * 1e8,
                 ],
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 300 * 1e8,
+                    'amount'      => 300 * 1e8,
                 ],
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 300 * 1e8,
+                    'amount'      => 300 * 1e8,
                 ],
             ],
         ],
     ]);
     Transaction::factory()->transfer()->create([
         'block_id' => $otherBlock->id,
-        'amount' => 3000 * 1e8,
-        'fee'    => 10 * 1e8,
+        'amount'   => 3000 * 1e8,
+        'fee'      => 10 * 1e8,
     ]);
 
     expect((new LargestBlockAggregate())->aggregate()->id)->toBe($largestBlock->id);
@@ -80,51 +80,51 @@ it('should get largest block for multipayments', function () {
 
 it('should get largest block for transfers and multipayments', function () {
     $largestBlock = Block::factory()->create();
-    $otherBlock = Block::factory()->create();
+    $otherBlock   = Block::factory()->create();
 
     Transaction::factory(2)->transfer()->create([
         'block_id' => $otherBlock->id,
-        'amount' => 2000 * 1e8,
-        'fee'    => 10 * 1e8,
+        'amount'   => 2000 * 1e8,
+        'fee'      => 10 * 1e8,
     ]);
     Transaction::factory()->multipayment()->create([
         'block_id' => $largestBlock->id,
-        'amount' => 0,
-        'fee'    => 10 * 1e8,
-        'asset' => [
+        'amount'   => 0,
+        'fee'      => 10 * 1e8,
+        'asset'    => [
             'payments' => [
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 300 * 1e8,
+                    'amount'      => 300 * 1e8,
                 ],
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 300 * 1e8,
+                    'amount'      => 300 * 1e8,
                 ],
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 5000 * 1e8,
+                    'amount'      => 5000 * 1e8,
                 ],
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 300 * 1e8,
+                    'amount'      => 300 * 1e8,
                 ],
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 300 * 1e8,
+                    'amount'      => 300 * 1e8,
                 ],
             ],
         ],
     ]);
     Transaction::factory(3)->transfer()->create([
         'block_id' => $otherBlock->id,
-        'amount' => 3000 * 1e8,
-        'fee'    => 10 * 1e8,
+        'amount'   => 3000 * 1e8,
+        'fee'      => 10 * 1e8,
     ]);
     Transaction::factory()->transfer()->create([
         'block_id' => $largestBlock->id,
-        'amount' => 7000 * 1e8,
-        'fee'    => 10 * 1e8,
+        'amount'   => 7000 * 1e8,
+        'fee'      => 10 * 1e8,
     ]);
 
     expect((new LargestBlockAggregate())->aggregate()->id)->toBe($largestBlock->id);

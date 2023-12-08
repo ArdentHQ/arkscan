@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\Blocks\Aggregates;
 
 use App\Models\Block;
-use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 
 final class LargestBlockAggregate

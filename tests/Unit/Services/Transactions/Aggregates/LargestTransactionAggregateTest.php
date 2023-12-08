@@ -34,27 +34,27 @@ it('should get largest transaction including multipayments', function () {
     $transaction = Transaction::factory()->multipayment()->create([
         'amount' => 0,
         'fee'    => 10 * 1e8,
-        'asset' => [
+        'asset'  => [
             'payments' => [
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 300 * 1e8,
+                    'amount'      => 300 * 1e8,
                 ],
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 300 * 1e8,
+                    'amount'      => 300 * 1e8,
                 ],
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 5000 * 1e8,
+                    'amount'      => 5000 * 1e8,
                 ],
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 300 * 1e8,
+                    'amount'      => 300 * 1e8,
                 ],
                 [
                     'recipientId' => 'test-address',
-                    'amount' => 300 * 1e8,
+                    'amount'      => 300 * 1e8,
                 ],
             ],
         ],
