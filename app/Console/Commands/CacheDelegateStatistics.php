@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Services\Cache\DelegateCache;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Wallets\Aggregates\UniqueVotersAggregate;

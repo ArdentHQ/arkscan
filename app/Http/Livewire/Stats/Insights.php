@@ -75,11 +75,11 @@ final class Insights extends Component
         }
 
         return [
-            'most_unique_voters' => $mostUniqueVoters,
-            'least_unique_voters' => $leastUniqueVoters,
+            'most_unique_voters'     => $mostUniqueVoters,
+            'least_unique_voters'    => $leastUniqueVoters,
             'oldest_active_delegate' => $oldestActiveDelegate,
             'newest_active_delegate' => $newestActiveDelegate,
-            'most_blocks_forged' => $mostBlocksForged,
+            'most_blocks_forged'     => $mostBlocksForged,
         ];
     }
 }
