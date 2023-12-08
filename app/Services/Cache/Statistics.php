@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace App\Services\Cache;
 
+use App\Services\Cache\Concerns\ManagesCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
+use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 final class Statistics
 {
+    use ManagesCache;
+
     public const STATS_TTL = 300;
 
     public static function transactionData(): array
@@ -45,5 +49,23 @@ final class Statistics
                 'average_fee'       => $data['average_fee'] ?? 0,
             ];
         });
+    }
+
+    public function setAddressHoldings(array $value): void
+    {
+        $this->put('address_holdings', $value);
+    }
+
+    /**
+     * @return array<int, array{'grouped': int, 'count': int}>
+     */
+    public function getAddressHoldings(): array
+    {
+        return $this->get('address_holdings', []);
+    }
+
+    public function getCache(): TaggedCache
+    {
+        return Cache::tags('statistics');
     }
 }

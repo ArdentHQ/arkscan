@@ -4,4 +4,8 @@
         :averages="$transactionAverages"
         :records="$transactionRecords"
     />
+
+    <x-stats.insights.addresses
+        :holdings="$addressHoldings"
+    />
 </div>

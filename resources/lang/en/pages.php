@@ -502,6 +502,20 @@ return [
                     ],
                 ],
             ],
+
+            'addresses' => [
+                'title' => 'Address Data',
+                'holdings' => 'Address Holdings',
+                'unique' => 'Unique Addresses',
+
+                'header' => [
+                    'genesis' => 'Genesis',
+                    'newest' => 'Newest',
+                    'most_transactions' => 'Most Transactions',
+                    'largest' => 'Largest',
+                    'addresses' => 'Addresses',
+                ]
+            ]
         ],
     ],
 

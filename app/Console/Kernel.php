@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console;
 
 use App\Console\Commands\BuildForgingStats;
+use App\Console\Commands\CacheAddressStatistics;
 use App\Console\Commands\CacheBlocks;
 use App\Console\Commands\CacheCurrenciesData;
 use App\Console\Commands\CacheCurrenciesHistory;
@@ -74,6 +75,8 @@ final class Kernel extends ConsoleKernel
         $schedule->command(CacheDelegateResignationIds::class)->everyMinute();
 
         $schedule->command(CacheNetworkAggregates::class)->everyMinute();
+
+        $schedule->command(CacheAddressStatistics::class)->everyFiveMinutes();
 
         $schedule->command(BuildForgingStats::class)->everyMinute();
 
