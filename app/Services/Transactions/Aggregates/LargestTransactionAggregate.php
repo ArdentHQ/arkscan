@@ -31,11 +31,11 @@ final class LargestTransactionAggregate
         ->first();
 
         if ($multipayment === null) {
-            return $transfer;
+            return $transfer; # Will return either a value or null
         }
 
         if ($transfer === null) {
-            return null;
+            return $multipayment;
         }
 
         /* @phpstan-ignore-next-line */
