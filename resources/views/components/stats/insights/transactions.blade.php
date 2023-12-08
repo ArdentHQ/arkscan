@@ -1,6 +1,7 @@
 @props([
     'details',
     'averages',
+    'records',
 ])
 
 <div
@@ -27,6 +28,20 @@
                 <x-stats.insights.row :title="trans('pages.statistics.insights.transactions.header.'.$key)">
                     {{ $detail }}
                 </x-stats.insights.row>
+            @endforeach
+        </x-stats.insights.container>
+
+        <x-stats.insights.container
+            :title="trans('pages.statistics.insights.transactions.records')"
+            full-width
+        >
+            @foreach($records as $key => $model)
+                <x-stats.insights.entity-row
+                    :key="$key"
+                    :model="$model"
+                    :show-transaction-count="$key === 'most_transactions_in_block'"
+                    :show-fee="$key === 'highest_fee'"
+                />
             @endforeach
         </x-stats.insights.container>
     </div>

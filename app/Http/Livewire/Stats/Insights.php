@@ -6,8 +6,13 @@ namespace App\Http\Livewire\Stats;
 
 use App\Enums\StatsTransactionType;
 use App\Facades\Network;
+use App\Models\Block;
+use App\Models\Transaction;
+use App\Services\Cache\BlockCache;
 use App\Services\Cache\TransactionCache;
 use App\Services\NumberFormatter;
+use App\ViewModels\BlockViewModel;
+use App\ViewModels\TransactionViewModel;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -20,6 +25,7 @@ final class Insights extends Component
         return view('livewire.stats.insights', [
             'transactionDetails'  => $this->transactionDetails($transactionCache),
             'transactionAverages' => $this->transactionAverages($transactionCache),
+            'transactionRecords'  => $this->transactionRecords($transactionCache),
         ]);
     }
 
@@ -38,6 +44,38 @@ final class Insights extends Component
             'transactions'       => $data['count'],
             'transaction_volume' => NumberFormatter::currency($data['amount'], Network::currency()),
             'transaction_fees'   => NumberFormatter::currency($data['fee'], Network::currency()),
+        ];
+    }
+
+    private function transactionRecords(TransactionCache $transactionCache): array
+    {
+        $blockCache = new BlockCache();
+
+        $largestTransaction = Transaction::find($transactionCache->getLargestIdByAmount());
+        if ($largestTransaction !== null) {
+            $largestTransaction = new TransactionViewModel($largestTransaction);
+        }
+
+        $largestBlock = Block::find($blockCache->getLargestIdByAmount());
+        if ($largestBlock !== null) {
+            $largestBlock = new BlockViewModel($largestBlock);
+        }
+
+        $blockWithHighestFees = Block::find($blockCache->getLargestIdByFees());
+        if ($blockWithHighestFees !== null) {
+            $blockWithHighestFees = new BlockViewModel($blockWithHighestFees);
+        }
+
+        $blockWithMostTransactions = Block::find($blockCache->getLargestIdByTransactionCount());
+        if ($blockWithMostTransactions !== null) {
+            $blockWithMostTransactions = new BlockViewModel($blockWithMostTransactions);
+        }
+
+        return [
+            'largest_transaction'        => $largestTransaction,
+            'largest_block'              => $largestBlock,
+            'highest_fee'                => $blockWithHighestFees,
+            'most_transactions_in_block' => $blockWithMostTransactions,
         ];
     }
 }
