@@ -8,16 +8,12 @@ use App\Enums\StatsTransactionType;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Transaction;
-use App\Models\Wallet;
 use App\Services\Cache\BlockCache;
 use App\Services\Cache\Statistics;
 use App\Services\Cache\TransactionCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\BlockViewModel;
 use App\ViewModels\TransactionViewModel;
-use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -108,16 +104,16 @@ final class Insights extends Component
     {
         $statisticsCache = new Statistics();
 
-        $genesis = $statisticsCache->getGenesisAddress();
-        $newest = $statisticsCache->getNewestAddress();
+        $genesis          = $statisticsCache->getGenesisAddress();
+        $newest           = $statisticsCache->getNewestAddress();
         $mostTransactions = $statisticsCache->getMostTransactions();
-        $largest = $statisticsCache->getLargestAddress();
+        $largest          = $statisticsCache->getLargestAddress();
 
         return [
-            'genesis' => $genesis,
-            'newest' => $newest,
+            'genesis'           => $genesis,
+            'newest'            => $newest,
             'most_transactions' => $mostTransactions,
-            'largest' => $largest,
+            'largest'           => $largest,
         ];
     }
 }

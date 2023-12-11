@@ -41,13 +41,13 @@ final class CacheAddressStatistics extends Command
         $genesis = Transaction::orderBy('block_height', 'asc')->limit(1)->first()->sender;
         $cache->setGenesisAddress([
             'address' => $genesis->address,
-            'value' => Carbon::createFromTimestamp(Network::epoch()->timestamp)->format(DateFormat::DATE),
+            'value'   => Carbon::createFromTimestamp(Network::epoch()->timestamp)->format(DateFormat::DATE),
         ]);
 
         $newest = Wallet::first(); // TODO: https://app.clickup.com/t/86dqtd90x
         $cache->setNewestAddress([
             'address' => $newest->address,
-            'value' => Carbon::createFromTimestamp(Carbon::now()->timestamp)->format(DateFormat::DATE), // TODO: https://app.clickup.com/t/86dqtd90x
+            'value'   => Carbon::createFromTimestamp(Carbon::now()->timestamp)->format(DateFormat::DATE), // TODO: https://app.clickup.com/t/86dqtd90x
         ]);
 
         /** @var $mostTransactions array{'address': string, 'tx_count': int} */
@@ -65,13 +65,13 @@ final class CacheAddressStatistics extends Command
             ->first();
         $cache->setMostTransactions([
             'address' => $mostTransactions['address'],
-            'value' => $mostTransactions['tx_count'],
+            'value'   => $mostTransactions['tx_count'],
         ]);
 
         $largest = Wallet::orderBy('balance', 'desc')->limit(1)->first();
         $cache->setLargestAddress([
             'address' => $largest->address,
-            'value' => $largest->balance->toFloat(),
+            'value'   => $largest->balance->toFloat(),
         ]);
     }
 }
