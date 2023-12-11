@@ -38,17 +38,21 @@ final class CacheAddressStatistics extends Command
             $cache->setAddressHoldings($holdings->toArray());
         }
 
-        $genesis = Transaction::orderBy('block_height', 'asc')->limit(1)->firstOrFail()->sender;
-        $cache->setGenesisAddress([
-            'address' => $genesis->address,
-            'value'   => Carbon::createFromTimestamp(Network::epoch()->timestamp)->format(DateFormat::DATE),
-        ]);
+        $genesis = Transaction::orderBy('block_height', 'asc')->limit(1)->first();
+        if ($genesis !== null) {
+            $cache->setGenesisAddress([
+                'address' => $genesis->sender->address,
+                'value'   => Carbon::createFromTimestamp(Network::epoch()->timestamp)->format(DateFormat::DATE),
+            ]);
+        }
 
-        $newest = Wallet::firstOrFail(); // TODO: https://app.clickup.com/t/86dqtd90x
-        $cache->setNewestAddress([
-            'address' => $newest->address,
-            'value'   => Carbon::createFromTimestamp(Carbon::now()->timestamp)->format(DateFormat::DATE), // TODO: https://app.clickup.com/t/86dqtd90x
-        ]);
+        $newest = Wallet::first(); // TODO: https://app.clickup.com/t/86dqtd90x
+        if ($newest !== null) {
+            $cache->setNewestAddress([
+                'address' => $newest->address,
+                'value'   => Carbon::createFromTimestamp(Carbon::now()->timestamp)->format(DateFormat::DATE), // TODO: https://app.clickup.com/t/86dqtd90x
+            ]);
+        }
 
         /** @var array{'address': string, 'tx_count': int} $mostTransactions */
         $mostTransactions = (array) DB::connection('explorer')
@@ -63,15 +67,19 @@ final class CacheAddressStatistics extends Command
             ->orderBy('tx_count', 'desc')
             ->limit(1)
             ->first();
-        $cache->setMostTransactions([
-            'address' => $mostTransactions['address'],
-            'value'   => $mostTransactions['tx_count'],
-        ]);
+        if (count($mostTransactions) > 0) {
+            $cache->setMostTransactions([
+                'address' => $mostTransactions['address'],
+                'value'   => $mostTransactions['tx_count'],
+            ]);
+        }
 
-        $largest = Wallet::orderBy('balance', 'desc')->limit(1)->firstOrFail();
-        $cache->setLargestAddress([
-            'address' => $largest->address,
-            'value'   => $largest->balance->toFloat(),
-        ]);
+        $largest = Wallet::orderBy('balance', 'desc')->limit(1)->first();
+        if ($largest !== null) {
+            $cache->setLargestAddress([
+                'address' => $largest->address,
+                'value'   => $largest->balance->toFloat(),
+            ]);
+        }
     }
 }
