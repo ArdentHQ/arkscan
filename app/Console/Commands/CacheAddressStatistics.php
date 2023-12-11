@@ -38,27 +38,27 @@ final class CacheAddressStatistics extends Command
             $cache->setAddressHoldings($holdings->toArray());
         }
 
-        $genesis = Transaction::orderBy('block_height', 'asc')->limit(1)->first()->sender;
+        $genesis = Transaction::orderBy('block_height', 'asc')->limit(1)->firstOrFail()->sender;
         $cache->setGenesisAddress([
             'address' => $genesis->address,
             'value'   => Carbon::createFromTimestamp(Network::epoch()->timestamp)->format(DateFormat::DATE),
         ]);
 
-        $newest = Wallet::first(); // TODO: https://app.clickup.com/t/86dqtd90x
+        $newest = Wallet::firstOrFail(); // TODO: https://app.clickup.com/t/86dqtd90x
         $cache->setNewestAddress([
             'address' => $newest->address,
             'value'   => Carbon::createFromTimestamp(Carbon::now()->timestamp)->format(DateFormat::DATE), // TODO: https://app.clickup.com/t/86dqtd90x
         ]);
 
-        /** @var $mostTransactions array{'address': string, 'tx_count': int} */
+        /** @var array{'address': string, 'tx_count': int} $mostTransactions  */
         $mostTransactions = (array) DB::connection('explorer')
             ->query()
             ->select([
                 DB::raw('count(transactions.id) as tx_count'),
                 DB::raw('wallets.address'),
             ])
-            ->from(DB::raw('wallets, transactions'))
-            ->whereRaw('wallets.public_key = transactions.sender_public_key')
+            ->from('transactions')
+            ->join('wallets', 'transactions.sender_public_key', '=', 'wallets.public_key')
             ->groupBy('wallets.address')
             ->orderBy('tx_count', 'desc')
             ->limit(1)
@@ -68,7 +68,7 @@ final class CacheAddressStatistics extends Command
             'value'   => $mostTransactions['tx_count'],
         ]);
 
-        $largest = Wallet::orderBy('balance', 'desc')->limit(1)->first();
+        $largest = Wallet::orderBy('balance', 'desc')->limit(1)->firstOrFail();
         $cache->setLargestAddress([
             'address' => $largest->address,
             'value'   => $largest->balance->toFloat(),
