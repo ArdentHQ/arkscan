@@ -8,7 +8,7 @@ use App\Services\Addresses\Aggregates\HoldingsAggregate;
 use App\Services\Cache\Statistics;
 use Illuminate\Console\Command;
 
-class CacheAddressStatistics extends Command
+final class CacheAddressStatistics extends Command
 {
     /**
      * The name and signature of the console command.
@@ -20,16 +20,11 @@ class CacheAddressStatistics extends Command
     /**
      * The console command description.
      *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Cache expensive address statistics';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle(Statistics $cache)
+    public function handle(Statistics $cache): void
     {
         $holdings = (new HoldingsAggregate())->aggregate();
 

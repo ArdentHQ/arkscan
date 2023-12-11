@@ -13,12 +13,17 @@
     </div>
 
     <div>
-        {{-- TODO: proper styling --}}
         <x-stats.insights.container :title="trans('pages.statistics.insights.addresses.holdings')">
             @foreach($holdings as $key => $values)
-                <x-stats.insights.row :title="trans('pages.statistics.insights.addresses.header.addresses')">
-                    <x-number>{{ $values['count'] }}</x-number>
-                </x-stats.insights.row>
+                <div class="w-full flex justify-between">
+                    <div class="flex flex-1">
+                        <span>&gt; <x-number>{{ $values['grouped'] }}</x-number> {{ Network::currency() }}</span>
+                    </div>
+                    <div class="flex flex-1 justify-between">
+                        <span>@lang('pages.statistics.insights.addresses.header.addresses'):</span>
+                        <span class="text-theme-secondary-900 dark:text-theme-dark-50"><x-number>{{ $values['count'] }}</x-number></span>
+                    </div>
+                </div>
             @endforeach
         </x-stats.insights.container>
     </div>
