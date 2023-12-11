@@ -15,7 +15,18 @@
     <div>
         <x-stats.insights.container :title="trans('pages.statistics.insights.addresses.holdings')">
             @foreach($holdings as $key => $values)
-                <div class="w-full flex justify-between">
+                {{-- Mobile --}}
+                <div class="flex md:hidden">
+                    <div class="flex flex-col space-y-2 pt-3">
+                        <span>&gt; <x-number>{{ $values['grouped'] }}</x-number> {{ Network::currency() }}</span>
+
+                        <span class="text-theme-secondary-900 dark:text-theme-dark-50">
+                            <x-number>{{ $values['count'] }}</x-number>
+                        </span>
+                    </div>
+                </div>
+                {{-- Desktop --}}
+                <div class="hidden md:flex w-full justify-between">
                     <div class="flex flex-1">
                         <span>&gt; <x-number>{{ $values['grouped'] }}</x-number> {{ Network::currency() }}</span>
                     </div>
