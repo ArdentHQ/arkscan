@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Addresses\Aggregates;
 
-use App\Models\Wallet;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 

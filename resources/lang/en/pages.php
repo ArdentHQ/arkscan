@@ -467,7 +467,7 @@ return [
 
             'dropdown' => [
                 'transactions' => 'Transaction Data',
-                'addresses' => 'Address Data',
+                'addresses'    => 'Address Data',
             ],
 
             'transactions' => [
