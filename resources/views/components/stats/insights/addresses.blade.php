@@ -43,7 +43,7 @@
             {{-- Mobile --}}
             @foreach (['genesis', 'newest', 'most_transactions', 'largest'] as $item)
                 <div class="flex md:hidden">
-                    <div class="flex flex-col sm:flex-row pt-3 justify-between w-full space-y-3 sm:space-y-0">
+                    <div class="flex flex-col justify-between pt-3 space-y-3 w-full sm:flex-row sm:space-y-0">
                         <div class="flex flex-col space-y-2">
                             <span>@lang('pages.statistics.insights.addresses.header.'.$item)</span>
                             <a
@@ -80,11 +80,11 @@
 
             {{-- Desktop --}}
             @foreach (['genesis', 'newest', 'most_transactions', 'largest'] as $item)
-                <div class="hidden justify-between w-full xl:w-[770px] md:flex">
+                <div class="hidden justify-between w-full md:flex xl:w-[770px]">
                     <div class="flex flex-1">
                         @lang('pages.statistics.insights.addresses.header.'.$item)
                     </div>
-                    <div class="flex flex-1 md-lg:flex-2 justify-between flex-col md-lg:flex-row space-y-3 md-lg:space-y-0">
+                    <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
                         <div class="flex flex-1 justify-between">
                             <span>@lang('pages.statistics.insights.addresses.header.address'):</span>
                             <a
@@ -94,7 +94,7 @@
                                 <x-truncate-middle>{{ $unique[$item]['address'] }}</x-truncate-middle>
                             </a>
                         </div>
-                        <div class="flex flex-1 justify-between w-full md-lg:pl-16 space-x-2">
+                        <div class="flex flex-1 justify-between space-x-2 w-full md-lg:pl-16">
                             <div>
                                 @if ($item === 'most_transactions')
                                     @lang('pages.statistics.insights.addresses.header.transactions'):
