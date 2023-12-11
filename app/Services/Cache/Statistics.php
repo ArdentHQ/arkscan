@@ -73,9 +73,9 @@ final class Statistics
     /**
      * @return array{'address': string, 'value': Carbon}
      */
-    public function getGenesisAddress(): array
+    public function getGenesisAddress(): ?array
     {
-        return $this->get('genesis_address', []);
+        return $this->get('genesis_address', null);
     }
 
     public function setNewestAddress(array $value): void
@@ -86,9 +86,9 @@ final class Statistics
     /**
      * @return array{'address': string, 'value': Carbon}
      */
-    public function getNewestAddress(): array
+    public function getNewestAddress(): ?array
     {
-        return $this->get('newest_address', []);
+        return $this->get('newest_address', null);
     }
 
     public function setMostTransactions(array $value): void
@@ -99,9 +99,9 @@ final class Statistics
     /**
      * @return array{'address': string, 'value': int}
      */
-    public function getMostTransactions(): array
+    public function getMostTransactions(): ?array
     {
-        return $this->get('most_transactions', []);
+        return $this->get('most_transactions', null);
     }
 
     public function setLargestAddress(array $value): void
@@ -112,9 +112,9 @@ final class Statistics
     /**
      * @return array{'address': string, 'value': BigNumber}
      */
-    public function getLargestAddress(): array
+    public function getLargestAddress(): ?array
     {
-        return $this->get('largest_address', []);
+        return $this->get('largest_address', null);
     }
 
     public function getCache(): TaggedCache
