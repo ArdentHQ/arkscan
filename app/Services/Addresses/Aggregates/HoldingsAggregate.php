@@ -15,8 +15,8 @@ final class HoldingsAggregate
      */
     public function aggregate(): ?Collection
     {
-        /* @var $result Collection<int, array{'grouped': int, 'count': int}> */
-        $result = Wallet::query()
+        // @phpstan-ignore-next-line
+        return Wallet::query()
             ->select(DB::raw(
                 'CASE WHEN balance > 1000000*1e8 THEN 1000000
                 WHEN balance > 100000*1e8 THEN 100000
@@ -29,7 +29,5 @@ final class HoldingsAggregate
             ->groupBy('grouped')
             ->orderBy('grouped', 'asc')
             ->get();
-
-        return $result;
     }
 }
