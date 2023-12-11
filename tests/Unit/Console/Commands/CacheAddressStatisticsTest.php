@@ -23,7 +23,7 @@ it('should cache address holdings', function () {
 
     expect($cache->getAddressHoldings())->toBe([
         ['grouped' => 0, 'count' => 5],
-        ['grouped' => 1, 'count' => 1]
+        ['grouped' => 1, 'count' => 1],
     ]);
 
     Wallet::factory()->count(5)->create([
