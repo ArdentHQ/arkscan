@@ -160,3 +160,26 @@ it('should render address holdings', function (): void {
         ])
         ->assertDontSee('> 0');
 });
+
+it('should render unique addresses', function (): void {
+    $currentDate = Carbon::now();
+
+    $cache = new Statistics();
+    $cache->setGenesisAddress(['address' => 'address1', 'value' => $currentDate]);
+    $cache->setNewestAddress(['address' => 'address2', 'value' => $currentDate]);
+    $cache->setMostTransactions(['address' => 'address3', 'value' => 12345]);
+    $cache->setLargestAddress(['address' => 'address4', 'value' => 789123]);
+
+    Livewire::test(Insights::class)
+        ->assertSeeInOrder([
+            trans('pages.statistics.insights.addresses.header.genesis'),
+            $currentDate,
+            trans('pages.statistics.insights.addresses.header.newest'),
+            $currentDate,
+            trans('pages.statistics.insights.addresses.header.most_transactions'),
+            '12,345',
+            trans('pages.statistics.insights.addresses.header.largest'),
+            '789,123',
+        ])
+        ->assertDontSee('> 0');
+});

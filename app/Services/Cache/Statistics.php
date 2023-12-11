@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Cache;
 
+use App\Services\BigNumber;
 use App\Services\Cache\Concerns\ManagesCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
@@ -62,6 +63,58 @@ final class Statistics
     public function getAddressHoldings(): array
     {
         return $this->get('address_holdings', []);
+    }
+
+    public function setGenesisAddress(array $value): void
+    {
+        $this->put('genesis_address', $value);
+    }
+
+    /**
+     * @return array{'address': string, 'value': Carbon}
+     */
+    public function getGenesisAddress(): ?array
+    {
+        return $this->get('genesis_address', null);
+    }
+
+    public function setNewestAddress(array $value): void
+    {
+        $this->put('newest_address', $value);
+    }
+
+    /**
+     * @return array{'address': string, 'value': Carbon}
+     */
+    public function getNewestAddress(): ?array
+    {
+        return $this->get('newest_address', null);
+    }
+
+    public function setMostTransactions(array $value): void
+    {
+        $this->put('most_transactions', $value);
+    }
+
+    /**
+     * @return array{'address': string, 'value': int}
+     */
+    public function getMostTransactions(): ?array
+    {
+        return $this->get('most_transactions', null);
+    }
+
+    public function setLargestAddress(array $value): void
+    {
+        $this->put('largest_address', $value);
+    }
+
+    /**
+     * @return array{'address': string, 'value': BigNumber}
+     */
+    public function getLargestAddress(): ?array
+    {
+        return $this->get('largest_address', null);
     }
 
     public function getCache(): TaggedCache

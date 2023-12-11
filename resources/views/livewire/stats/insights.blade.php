@@ -7,5 +7,6 @@
 
     <x-stats.insights.addresses
         :holdings="$addressHoldings"
+        :unique="$uniqueAddresses"
     />
 </div>
