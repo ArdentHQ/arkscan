@@ -9,6 +9,7 @@ use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Cache\BlockCache;
+use App\Services\Cache\Statistics;
 use App\Services\Cache\TransactionCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\BlockViewModel;
@@ -26,6 +27,7 @@ final class Insights extends Component
             'transactionDetails'  => $this->transactionDetails($transactionCache),
             'transactionAverages' => $this->transactionAverages($transactionCache),
             'transactionRecords'  => $this->transactionRecords($transactionCache),
+            'addressHoldings'     => $this->addressHoldings(),
         ]);
     }
 
@@ -77,5 +79,23 @@ final class Insights extends Component
             'highest_fee'                => $blockWithHighestFees,
             'most_transactions_in_block' => $blockWithMostTransactions,
         ];
+    }
+
+    private function addressHoldings(): array
+    {
+        $statisticsCache = new Statistics();
+        $holdings        = $statisticsCache->getAddressHoldings();
+
+        unset($holdings['0']); // Ignore wallets below 1
+
+        // Create new array with summed values instead of pure counts
+        $previousValue = 0;
+        $summedValues  = [];
+        foreach (array_reverse($holdings) as $key => $values) {
+            array_unshift($summedValues, ['grouped' => $values['grouped'], 'count' => $values['count'] + $previousValue]);
+            $previousValue = $values['count'] + $previousValue;
+        }
+
+        return $summedValues;
     }
 }

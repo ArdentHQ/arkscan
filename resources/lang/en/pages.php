@@ -467,6 +467,7 @@ return [
 
             'dropdown' => [
                 'transactions' => 'Transaction Data',
+                'addresses'    => 'Address Data',
             ],
 
             'transactions' => [
@@ -500,6 +501,20 @@ return [
                         'highest_fee'                => 'Highest Fee',
                         'most_transactions_in_block' => 'Most Tx in Block',
                     ],
+                ],
+            ],
+
+            'addresses' => [
+                'title'    => 'Address Data',
+                'holdings' => 'Address Holdings',
+                'unique'   => 'Unique Addresses',
+
+                'header' => [
+                    'genesis'           => 'Genesis',
+                    'newest'            => 'Newest',
+                    'most_transactions' => 'Most Transactions',
+                    'largest'           => 'Largest',
+                    'addresses'         => 'Addresses',
                 ],
             ],
         ],

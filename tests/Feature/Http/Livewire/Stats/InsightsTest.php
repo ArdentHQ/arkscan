@@ -7,6 +7,7 @@ use App\Http\Livewire\Stats\Insights;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Cache\BlockCache;
+use App\Services\Cache\Statistics;
 use App\Services\Cache\TransactionCache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
@@ -133,4 +134,29 @@ it('should render transaction records', function (): void {
         ])
         ->assertDontSee($otherTransaction->id)
         ->assertDontSee($otherBlock->id);
+});
+
+it('should render address holdings', function (): void {
+    $holdings = [
+        ['grouped' => 0, 'count' => 5],
+        ['grouped' => 1, 'count' => 6],
+        ['grouped' => 1000, 'count' => 3],
+        ['grouped' => 10000, 'count' => 4],
+        ['grouped' => 1000000, 'count' => 2],
+    ];
+
+    (new Statistics())->setAddressHoldings($holdings);
+
+    Livewire::test(Insights::class)
+        ->assertSeeInOrder([
+            '> 1',
+            $holdings[4]['count'] + $holdings[3]['count'] + $holdings[2]['count'] + $holdings[1]['count'],
+            '> 1,000',
+            $holdings[4]['count'] + $holdings[3]['count'] + $holdings[2]['count'],
+            '> 10,000',
+            $holdings[4]['count'] + $holdings[3]['count'],
+            '> 1,000,000',
+            $holdings[4]['count'],
+        ])
+        ->assertDontSee('> 0');
 });
