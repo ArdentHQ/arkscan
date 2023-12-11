@@ -17,7 +17,7 @@
             @foreach($holdings as $key => $values)
                 {{-- Mobile --}}
                 <div class="flex md:hidden">
-                    <div class="flex flex-col space-y-2 pt-3">
+                    <div class="flex flex-col pt-3 space-y-2">
                         <span>&gt; <x-number>{{ $values['grouped'] }}</x-number> {{ Network::currency() }}</span>
 
                         <span class="text-theme-secondary-900 dark:text-theme-dark-50">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 {{-- Desktop --}}
-                <div class="hidden md:flex w-full justify-between">
+                <div class="hidden justify-between w-full md:flex">
                     <div class="flex flex-1">
                         <span>&gt; <x-number>{{ $values['grouped'] }}</x-number> {{ Network::currency() }}</span>
                     </div>
