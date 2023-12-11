@@ -54,7 +54,7 @@ final class CacheAddressStatistics extends Command
             ]);
         }
 
-        /** @var array{'address': string, 'tx_count': int} $mostTransactions */
+        /** @var array{address?: string, tx_count?: int} $mostTransactions */
         $mostTransactions = (array) DB::connection('explorer')
             ->query()
             ->select([
