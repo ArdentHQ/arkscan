@@ -50,7 +50,7 @@ final class CacheAddressStatistics extends Command
             'value'   => Carbon::createFromTimestamp(Carbon::now()->timestamp)->format(DateFormat::DATE), // TODO: https://app.clickup.com/t/86dqtd90x
         ]);
 
-        /** @var array{'address': string, 'tx_count': int} $mostTransactions  */
+        /** @var array{'address': string, 'tx_count': int} $mostTransactions */
         $mostTransactions = (array) DB::connection('explorer')
             ->query()
             ->select([
