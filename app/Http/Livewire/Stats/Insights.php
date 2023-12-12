@@ -29,7 +29,7 @@ final class Insights extends Component
     public function render(): View
     {
         $transactionCache = new TransactionCache();
-        $statisticsCache = new StatisticsCache();
+        $statisticsCache  = new StatisticsCache();
 
         return view('livewire.stats.insights', [
             'transactionDetails'  => $this->transactionDetails($transactionCache),
@@ -96,34 +96,34 @@ final class Insights extends Component
 
     private function marketDataPrice(StatisticsCache $cache): array
     {
-        $priceAtl = $cache->getPriceAtl();
-        $priceAth = $cache->getPriceAth();
+        $priceAtl        = $cache->getPriceAtl();
+        $priceAth        = $cache->getPriceAth();
         $priceRangeDaily = $cache->getPriceRangeDaily();
-        $priceRange52w = $cache->getPriceRange52();
+        $priceRange52w   = $cache->getPriceRange52();
 
         return [
-            'daily_low' => NumberFormatter::currency($priceRangeDaily['low'], Settings::currency()),
+            'daily_low'  => NumberFormatter::currency($priceRangeDaily['low'], Settings::currency()),
             'daily_high' => NumberFormatter::currency($priceRangeDaily['high'], Settings::currency()),
-            '52w_low' => NumberFormatter::currency($priceRange52w['low'], Settings::currency()),
-            '52w_high' => NumberFormatter::currency($priceRange52w['high'], Settings::currency()),
-            'atl' => NumberFormatter::currency($priceAtl['value'], Settings::currency()),
-            'atl_date' => Carbon::createFromTimestamp($priceAtl['timestamp'])->format(DateFormat::DATE),
-            'ath' => NumberFormatter::currency($priceAth['value'], Settings::currency()),
-            'ath_date' => Carbon::createFromTimestamp($priceAth['timestamp'])->format(DateFormat::DATE),
+            '52w_low'    => NumberFormatter::currency($priceRange52w['low'], Settings::currency()),
+            '52w_high'   => NumberFormatter::currency($priceRange52w['high'], Settings::currency()),
+            'atl'        => NumberFormatter::currency($priceAtl['value'], Settings::currency()),
+            'atl_date'   => Carbon::createFromTimestamp($priceAtl['timestamp'])->format(DateFormat::DATE),
+            'ath'        => NumberFormatter::currency($priceAth['value'], Settings::currency()),
+            'ath_date'   => Carbon::createFromTimestamp($priceAth['timestamp'])->format(DateFormat::DATE),
         ];
     }
 
     private function marketDataVolume(StatisticsCache $cache): array
     {
-        $volume = (new CryptoDataCache())->getVolume(Settings::currency());
+        $volume    = (new CryptoDataCache())->getVolume(Settings::currency());
         $volumeAtl = $cache->getVolumeAtl();
         $volumeAth = $cache->getVolumeAth();
 
         return [
-            'value' => NumberFormatter::currencyForViews($volume ?? 0, Settings::currency()),
-            'atl' => NumberFormatter::currencyForViews($volumeAtl['value'], Settings::currency()),
+            'value'    => NumberFormatter::currencyForViews($volume ?? 0, Settings::currency()),
+            'atl'      => NumberFormatter::currencyForViews($volumeAtl['value'], Settings::currency()),
             'atl_date' => Carbon::createFromTimestamp($volumeAtl['timestamp'])->format(DateFormat::DATE),
-            'ath' => NumberFormatter::currencyForViews($volumeAth['value'], Settings::currency()),
+            'ath'      => NumberFormatter::currencyForViews($volumeAth['value'], Settings::currency()),
             'ath_date' => Carbon::createFromTimestamp($volumeAth['timestamp'])->format(DateFormat::DATE),
         ];
     }
@@ -134,10 +134,10 @@ final class Insights extends Component
         $marketCapAth = $cache->getMarketCapAth();
 
         return [
-            'value' => MarketCap::getFormatted(Network::currency(), Settings::currency()),
-            'atl' => NumberFormatter::currencyForViews($marketCapAtl['value'], Settings::currency()),
+            'value'    => MarketCap::getFormatted(Network::currency(), Settings::currency()),
+            'atl'      => NumberFormatter::currencyForViews($marketCapAtl['value'], Settings::currency()),
             'atl_date' => Carbon::createFromTimestamp($marketCapAtl['timestamp'])->format(DateFormat::DATE),
-            'ath' => NumberFormatter::currencyForViews($marketCapAth['value'], Settings::currency()),
+            'ath'      => NumberFormatter::currencyForViews($marketCapAth['value'], Settings::currency()),
             'ath_date' => Carbon::createFromTimestamp($marketCapAth['timestamp'])->format(DateFormat::DATE),
         ];
     }

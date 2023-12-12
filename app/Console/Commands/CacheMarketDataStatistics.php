@@ -6,18 +6,9 @@ namespace App\Console\Commands;
 
 use App\Contracts\MarketDataProvider;
 use App\Facades\Network;
-use App\Models\Transaction;
-use App\Models\Wallet;
-use App\Services\Addresses\Aggregates\HoldingsAggregate;
-use App\Services\Cache\CryptoDataCache;
-use App\Services\Cache\NetworkStatusBlockCache;
-use App\Services\Cache\PriceChartCache;
 use App\Services\Cache\StatisticsCache;
-use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 final class CacheMarketDataStatistics extends Command
 {
@@ -49,17 +40,17 @@ final class CacheMarketDataStatistics extends Command
         $cache->setPriceAth($priceAth['timestamp'] / 1000, $priceAth['value']);
 
         $start52WeeksAgo = Carbon::now()->subWeeks(52)->timestamp * 1000;
-        $prices52Week = $prices->filter(function ($item) use ($start52WeeksAgo){
+        $prices52Week    = $prices->filter(function ($item) use ($start52WeeksAgo) {
             return $item['timestamp'] > $start52WeeksAgo;
         });
-        $priceLow52 = $prices52Week->sortBy('value', SORT_REGULAR, false)->first(); // 52 week low
+        $priceLow52  = $prices52Week->sortBy('value', SORT_REGULAR, false)->first(); // 52 week low
         $priceHigh52 = $prices52Week->sortBy('value', SORT_REGULAR, true)->first(); // 52 week high
         $cache->setPriceRange52($priceLow52['value'], $priceHigh52['value']);
 
         $dailyData = $marketDataProvider->historicalAll(Network::currency(), 'usd');
-        $prices = collect($dailyData['prices'])
+        $prices    = collect($dailyData['prices'])
             ->map(fn ($item) => ['timestamp' => $item[0], 'value' => $item[1]]);
-        $priceDailyLow = $prices->sortBy('value', SORT_REGULAR, false)->first(); // Price Daily low
+        $priceDailyLow  = $prices->sortBy('value', SORT_REGULAR, false)->first(); // Price Daily low
         $priceDailyHigh = $prices->sortBy('value', SORT_REGULAR, true)->first(); // Price Daily high
         $cache->setPriceRangeDaily($priceDailyLow['value'], $priceDailyHigh['value']);
 
@@ -79,6 +70,5 @@ final class CacheMarketDataStatistics extends Command
 
         $cache->setMarketCapAtl($marketCapAtl['timestamp'] / 1000, $marketCapAtl['value']);
         $cache->setMarketCapAth($marketCapAth['timestamp'] / 1000, $marketCapAth['value']);
-
     }
 }

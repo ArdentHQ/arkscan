@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use function PHPSTORM_META\map;
-
 return [
 
     'block'            => [
@@ -508,19 +506,19 @@ return [
             ],
 
             'market_data' => [
-                'title' => 'Market Data',
-                'price' => 'Price',
+                'title'            => 'Market Data',
+                'price'            => 'Price',
                 'exchanges_volume' => 'Exchanges Volume',
-                'market_cap' => 'Market Cap',
+                'market_cap'       => 'Market Cap',
 
                 'header' => [
-                    'daily_range' => 'Daily Range',
+                    'daily_range'   => 'Daily Range',
                     '52_week_range' => '52-Week Range',
-                    'atl' => 'All-Time Low',
-                    'ath' => 'All-Time High',
-                    'today_volume' => 'Today\'s Volume',
-                    'today_value' => 'Today\'s Value',
-                    'date' => 'Date',
+                    'atl'           => 'All-Time Low',
+                    'ath'           => 'All-Time High',
+                    'today_volume'  => 'Today\'s Volume',
+                    'today_value'   => 'Today\'s Value',
+                    'date'          => 'Date',
                 ],
             ],
 
