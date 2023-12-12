@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Enums\CoreTransactionTypeEnum;
+use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Transaction;
@@ -55,7 +56,7 @@ final class CacheDelegateStatistics extends Command
             ->first();
 
         if ($newestActiveDelegateTx !== null) {
-            $cache->setNewestActiveDelegate($newestActiveDelegateTx->sender_public_key, $newestActiveDelegateTx->timestamp);
+            $cache->setNewestActiveDelegate($newestActiveDelegateTx->sender_public_key, (int) Network::epoch()->timestamp + $newestActiveDelegateTx->timestamp);
         }
 
         $oldestActiveDelegateTx = Transaction::where('type', '=', CoreTransactionTypeEnum::DELEGATE_REGISTRATION)
@@ -65,7 +66,7 @@ final class CacheDelegateStatistics extends Command
             ->first();
 
         if ($oldestActiveDelegateTx !== null) {
-            $cache->setOldestActiveDelegate($oldestActiveDelegateTx->sender_public_key, $oldestActiveDelegateTx->timestamp);
+            $cache->setOldestActiveDelegate($oldestActiveDelegateTx->sender_public_key, (int) Network::epoch()->timestamp + $oldestActiveDelegateTx->timestamp);
         }
 
         $mostBlocksForged = Block::select(DB::raw('COUNT(*), generator_public_key'))->groupBy('generator_public_key')->orderBy('count', 'desc')->limit(1)->first();

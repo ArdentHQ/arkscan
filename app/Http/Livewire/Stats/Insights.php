@@ -107,7 +107,7 @@ final class Insights extends Component
             if ($oldestActiveDelegate !== null) {
                 $oldestActiveDelegate = [
                     'delegate' => ViewModelFactory::make($oldestActiveDelegate),
-                    'value'    => Carbon::createFromTimestamp((int) Network::epoch()->timestamp + $oldestActiveDelegateData['timestamp'])->format(DateFormat::DATE),
+                    'value'    => Carbon::createFromTimestamp($oldestActiveDelegateData['timestamp'])->format(DateFormat::DATE),
                 ];
             }
         }
@@ -118,7 +118,7 @@ final class Insights extends Component
             if ($newestActiveDelegate !== null) {
                 $newestActiveDelegate = [
                     'delegate' => ViewModelFactory::make($newestActiveDelegate),
-                    'value'    => Carbon::createFromTimestamp((int) Network::epoch()->timestamp + $newestActiveDelegateData['timestamp'])->format(DateFormat::DATE),
+                    'value'    => Carbon::createFromTimestamp($newestActiveDelegateData['timestamp'])->format(DateFormat::DATE),
                 ];
             }
         }
