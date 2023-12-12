@@ -174,6 +174,110 @@ final class StatisticsCache implements Contract
         return $this->get('largest_address', null);
     }
 
+    public function setPriceRangeDaily(float $low, float $high): void
+    {
+        $this->put('prices/range_daily', ['low' => $low, 'high' => $high]);
+    }
+
+    /**
+     * @return array{'low': float, 'high': float}
+     */
+    public function getPriceRangeDaily(): ?array
+    {
+        return $this->get('prices/range_daily', null);
+    }
+
+    public function setPriceRange52(float $low, float $high): void
+    {
+        $this->put('prices/range_52w', ['low' => $low, 'high' => $high]);
+    }
+
+    /**
+     * @return array{'low': float, 'high': float}
+     */
+    public function getPriceRange52(): ?array
+    {
+        return $this->get('prices/range_52w', null);
+    }
+
+    public function setPriceAth(int $timestamp, float $value): void
+    {
+        $this->put('prices/ath', ['timestamp' => $timestamp, 'value' => $value]);
+    }
+
+    /**
+     * @return array{'timestamp': int, 'value': float}
+     */
+    public function getPriceAth(): ?array
+    {
+        return $this->get('prices/ath', null);
+    }
+
+    public function setPriceAtl(int $timestamp, float $value): void
+    {
+        $this->put('prices/atl', ['timestamp' => $timestamp, 'value' => $value]);
+    }
+
+    /**
+     * @return array{'timestamp': int, 'value': float}
+     */
+    public function getPriceAtl(): ?array
+    {
+        return $this->get('prices/atl', null);
+    }
+
+    public function setVolumeAth(int $timestamp, float $value): void
+    {
+        $this->put('volumes/ath', ['timestamp' => $timestamp, 'value' => $value]);
+    }
+
+    /**
+     * @return array{'timestamp': int, 'value': float}
+     */
+    public function getVolumeAth(): ?array
+    {
+        return $this->get('volumes/ath', null);
+    }
+
+    public function setVolumeAtl(int $timestamp, float $value): void
+    {
+        $this->put('volumes/atl', ['timestamp' => $timestamp, 'value' => $value]);
+    }
+
+    /**
+     * @return array{'timestamp': int, 'value': float}
+     */
+    public function getVolumeAtl(): ?array
+    {
+        return $this->get('volumes/atl', null);
+    }
+
+    public function setMarketCapAth(int $timestamp, float $value): void
+    {
+        $this->put('market_caps/ath', ['timestamp' => $timestamp, 'value' => $value]);
+    }
+
+    /**
+     * @return array{'timestamp': int, 'value': float}
+     */
+    public function getMarketCapAth(): ?array
+    {
+        return $this->get('market_caps/ath', null);
+    }
+
+    public function setMarketCapAtl(int $timestamp, float $value): void
+    {
+        $this->put('market_caps/atl', ['timestamp' => $timestamp, 'value' => $value]);
+    }
+
+    /**
+     * @return array{'timestamp': int, 'value': float}
+     */
+    public function getMarketCapAtl(): ?array
+    {
+        return $this->get('market_caps/atl', null);
+    }
+
     public function getCache(): TaggedCache
     {
         return Cache::tags('statistics');

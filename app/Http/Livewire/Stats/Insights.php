@@ -6,12 +6,15 @@ namespace App\Http\Livewire\Stats;
 
 use App\Enums\StatsTransactionType;
 use App\Facades\Network;
+use App\Facades\Settings;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\BlockCache;
+use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\TransactionCache;
+use App\Services\MarketCap;
 use App\Services\NumberFormatter;
 use App\ViewModels\BlockViewModel;
 use App\ViewModels\TransactionViewModel;
@@ -26,14 +29,18 @@ final class Insights extends Component
     public function render(): View
     {
         $transactionCache = new TransactionCache();
+        $statisticsCache = new StatisticsCache();
 
         return view('livewire.stats.insights', [
             'transactionDetails'  => $this->transactionDetails($transactionCache),
             'transactionAverages' => $this->transactionAverages($transactionCache),
             'transactionRecords'  => $this->transactionRecords($transactionCache),
-            'delegateDetails'     => $this->delegateDetails(),
-            'addressHoldings'     => $this->addressHoldings(),
-            'uniqueAddresses'     => $this->uniqueAddresses(),
+            'marketDataPrice'     => $this->marketDataPrice($statisticsCache),
+            'marketDataVolume'    => $this->marketDataVolume($statisticsCache),
+            'marketDataCap'       => $this->marketDataCap($statisticsCache),
+            'delegateDetails'     => $this->delegateDetails($statisticsCache),
+            'addressHoldings'     => $this->addressHoldings($statisticsCache),
+            'uniqueAddresses'     => $this->uniqueAddresses($statisticsCache),
         ]);
     }
 
@@ -87,10 +94,56 @@ final class Insights extends Component
         ];
     }
 
-    private function delegateDetails(): array
+    private function marketDataPrice(StatisticsCache $cache): array
     {
-        $cache = new StatisticsCache();
+        $priceAtl = $cache->getPriceAtl();
+        $priceAth = $cache->getPriceAth();
+        $priceRangeDaily = $cache->getPriceRangeDaily();
+        $priceRange52w = $cache->getPriceRange52();
 
+        return [
+            'daily_low' => NumberFormatter::currency($priceRangeDaily['low'], Settings::currency()),
+            'daily_high' => NumberFormatter::currency($priceRangeDaily['high'], Settings::currency()),
+            '52w_low' => NumberFormatter::currency($priceRange52w['low'], Settings::currency()),
+            '52w_high' => NumberFormatter::currency($priceRange52w['high'], Settings::currency()),
+            'atl' => NumberFormatter::currency($priceAtl['value'], Settings::currency()),
+            'atl_date' => Carbon::createFromTimestamp($priceAtl['timestamp'])->format(DateFormat::DATE),
+            'ath' => NumberFormatter::currency($priceAth['value'], Settings::currency()),
+            'ath_date' => Carbon::createFromTimestamp($priceAth['timestamp'])->format(DateFormat::DATE),
+        ];
+    }
+
+    private function marketDataVolume(StatisticsCache $cache): array
+    {
+        $volume = (new CryptoDataCache())->getVolume(Settings::currency());
+        $volumeAtl = $cache->getVolumeAtl();
+        $volumeAth = $cache->getVolumeAth();
+
+        return [
+            'value' => NumberFormatter::currencyForViews($volume ?? 0, Settings::currency()),
+            'atl' => NumberFormatter::currencyForViews($volumeAtl['value'], Settings::currency()),
+            'atl_date' => Carbon::createFromTimestamp($volumeAtl['timestamp'])->format(DateFormat::DATE),
+            'ath' => NumberFormatter::currencyForViews($volumeAth['value'], Settings::currency()),
+            'ath_date' => Carbon::createFromTimestamp($volumeAth['timestamp'])->format(DateFormat::DATE),
+        ];
+    }
+
+    private function marketDataCap(StatisticsCache $cache): array
+    {
+        $marketCapAtl = $cache->getMarketCapAtl();
+        $marketCapAth = $cache->getMarketCapAth();
+
+        return [
+            'value' => MarketCap::getFormatted(Network::currency(), Settings::currency()),
+            'atl' => NumberFormatter::currencyForViews($marketCapAtl['value'], Settings::currency()),
+            'atl_date' => Carbon::createFromTimestamp($marketCapAtl['timestamp'])->format(DateFormat::DATE),
+            'ath' => NumberFormatter::currencyForViews($marketCapAth['value'], Settings::currency()),
+            'ath_date' => Carbon::createFromTimestamp($marketCapAth['timestamp'])->format(DateFormat::DATE),
+        ];
+    }
+
+    private function delegateDetails(StatisticsCache $cache): array
+    {
         $mostUniqueVoters = Wallet::firstWhere('public_key', $cache->getMostUniqueVoters());
         if ($mostUniqueVoters !== null) {
             $mostUniqueVoters = ViewModelFactory::make($mostUniqueVoters);
@@ -137,10 +190,9 @@ final class Insights extends Component
         ];
     }
 
-    private function addressHoldings(): array
+    private function addressHoldings(StatisticsCache $cache): array
     {
-        $statisticsCache = new StatisticsCache();
-        $holdings        = $statisticsCache->getAddressHoldings();
+        $holdings = $cache->getAddressHoldings();
 
         unset($holdings['0']); // Ignore wallets below 1
 
@@ -155,14 +207,12 @@ final class Insights extends Component
         return $summedValues;
     }
 
-    private function uniqueAddresses(): array
+    private function uniqueAddresses(StatisticsCache $cache): array
     {
-        $statisticsCache = new StatisticsCache();
-
-        $genesis          = $statisticsCache->getGenesisAddress();
-        $newest           = $statisticsCache->getNewestAddress();
-        $mostTransactions = $statisticsCache->getMostTransactions();
-        $largest          = $statisticsCache->getLargestAddress();
+        $genesis          = $cache->getGenesisAddress();
+        $newest           = $cache->getNewestAddress();
+        $mostTransactions = $cache->getMostTransactions();
+        $largest          = $cache->getLargestAddress();
 
         return [
             'genesis'           => $genesis,

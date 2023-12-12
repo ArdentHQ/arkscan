@@ -13,6 +13,8 @@ interface MarketDataProvider
 
     public function historicalHourly(string $source, string $target, int $limit = 23, string $format = 'Y-m-d H:i:s'): Collection;
 
+    public function historicalAll(string $source, string $target, int $limit = 1): array;
+
     public function priceAndPriceChange(string $baseCurrency, Collection $targetCurrencies): Collection;
 
     /**

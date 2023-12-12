@@ -5,6 +5,12 @@
         :records="$transactionRecords"
     />
 
+    <x-stats.insights.marketdata
+        :prices="$marketDataPrice"
+        :volumes="$marketDataVolume"
+        :caps="$marketDataCap"
+    />
+
     <x-stats.insights.delegates :details="$delegateDetails" />
 
     <x-stats.insights.addresses
