@@ -42,6 +42,10 @@ final class CacheDevelopmentData extends Command
             'explorer:cache-delegates-with-voters',
             'explorer:cache-delegate-voter-counts',
             'explorer:cache-multi-signature-addresses',
+            'explorer:cache-blocks',
+            'explorer:cache-transactions',
+            'explorer:cache-address-statistics',
+            'explorer:cache-delegate-statistics',
         ])->map(fn (string $command) => Artisan::call($command));
     }
 }

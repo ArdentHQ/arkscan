@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Cache;
 
 use App\Contracts\Cache as Contract;
+use App\Services\BigNumber;
 use App\Services\Cache\Concerns\ManagesCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
@@ -100,6 +101,71 @@ final class StatisticsCache implements Contract
     public function setMostBlocksForged(string $publicKey): void
     {
         $this->put('delegate/mostBlocksForged', $publicKey);
+    }
+
+    public function setAddressHoldings(array $value): void
+    {
+        $this->put('address_holdings', $value);
+    }
+
+    /**
+     * @return array<int, array{'grouped': int, 'count': int}>
+     */
+    public function getAddressHoldings(): array
+    {
+        return $this->get('address_holdings', []);
+    }
+
+    public function setGenesisAddress(array $value): void
+    {
+        $this->put('genesis_address', $value);
+    }
+
+    /**
+     * @return array{'address': string, 'value': Carbon}
+     */
+    public function getGenesisAddress(): ?array
+    {
+        return $this->get('genesis_address', null);
+    }
+
+    public function setNewestAddress(array $value): void
+    {
+        $this->put('newest_address', $value);
+    }
+
+    /**
+     * @return array{'address': string, 'value': Carbon}
+     */
+    public function getNewestAddress(): ?array
+    {
+        return $this->get('newest_address', null);
+    }
+
+    public function setMostTransactions(array $value): void
+    {
+        $this->put('most_transactions', $value);
+    }
+
+    /**
+     * @return array{'address': string, 'value': int}
+     */
+    public function getMostTransactions(): ?array
+    {
+        return $this->get('most_transactions', null);
+    }
+
+    public function setLargestAddress(array $value): void
+    {
+        $this->put('largest_address', $value);
+    }
+
+    /**
+     * @return array{'address': string, 'value': BigNumber}
+     */
+    public function getLargestAddress(): ?array
+    {
+        return $this->get('largest_address', null);
     }
 
     public function getCache(): TaggedCache

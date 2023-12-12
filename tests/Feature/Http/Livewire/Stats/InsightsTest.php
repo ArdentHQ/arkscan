@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 use App\Contracts\Network as NetworkContract;
 use App\Http\Livewire\Stats\Insights;
+use App\Models\Block;
 use App\Models\Transaction;
+use App\Services\Cache\BlockCache;
+use App\Services\Cache\StatisticsCache;
+use App\Services\Cache\TransactionCache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Livewire\Livewire;
@@ -49,7 +53,7 @@ it('should render transaction details', function (): void {
         ]);
 });
 
-it('should render daily average', function (): void {
+it('should render transaction daily average', function (): void {
     $networkStub = new NetworkStub(true, Carbon::now()->subDay(2));
     app()->singleton(NetworkContract::class, fn () => $networkStub);
 
@@ -102,4 +106,80 @@ it('should render daily average', function (): void {
             trans('pages.statistics.insights.transactions.header.transaction_fees'),
             number_format($totalFees).' DARK',
         ]);
+});
+
+it('should render transaction records', function (): void {
+    $largestTransaction        = Transaction::factory()->transfer()->create();
+    $otherTransaction          = Transaction::factory()->transfer()->create();
+    $largestBlock              = Block::factory()->create();
+    $largestBlockFee           = Block::factory()->create();
+    $blockWithMostTransactions = Block::factory()->create();
+    $otherBlock                = Block::factory()->create();
+
+    (new TransactionCache())->setLargestIdByAmount($largestTransaction->id);
+    (new BlockCache())->setLargestIdByAmount($largestBlock->id);
+    (new BlockCache())->setLargestIdByFees($largestBlockFee->id);
+    (new BlockCache())->setLargestIdByTransactionCount($blockWithMostTransactions->id);
+
+    Livewire::test(Insights::class)
+        ->assertSeeInOrder([
+            trans('pages.statistics.insights.transactions.header.largest_transaction'),
+            $largestTransaction->id,
+            trans('pages.statistics.insights.transactions.header.largest_block'),
+            $largestBlock->id,
+            trans('pages.statistics.insights.transactions.header.highest_fee'),
+            $largestBlockFee->id,
+            trans('pages.statistics.insights.transactions.header.most_transactions_in_block'),
+            $blockWithMostTransactions->id,
+        ])
+        ->assertDontSee($otherTransaction->id)
+        ->assertDontSee($otherBlock->id);
+});
+
+it('should render address holdings', function (): void {
+    $holdings = [
+        ['grouped' => 0, 'count' => 5],
+        ['grouped' => 1, 'count' => 6],
+        ['grouped' => 1000, 'count' => 3],
+        ['grouped' => 10000, 'count' => 4],
+        ['grouped' => 1000000, 'count' => 2],
+    ];
+
+    (new StatisticsCache())->setAddressHoldings($holdings);
+
+    Livewire::test(Insights::class)
+        ->assertSeeInOrder([
+            '> 1',
+            $holdings[4]['count'] + $holdings[3]['count'] + $holdings[2]['count'] + $holdings[1]['count'],
+            '> 1,000',
+            $holdings[4]['count'] + $holdings[3]['count'] + $holdings[2]['count'],
+            '> 10,000',
+            $holdings[4]['count'] + $holdings[3]['count'],
+            '> 1,000,000',
+            $holdings[4]['count'],
+        ])
+        ->assertDontSee('> 0');
+});
+
+it('should render unique addresses', function (): void {
+    $currentDate = Carbon::now();
+
+    $cache = new StatisticsCache();
+    $cache->setGenesisAddress(['address' => 'address1', 'value' => $currentDate]);
+    $cache->setNewestAddress(['address' => 'address2', 'value' => $currentDate]);
+    $cache->setMostTransactions(['address' => 'address3', 'value' => 12345]);
+    $cache->setLargestAddress(['address' => 'address4', 'value' => 789123]);
+
+    Livewire::test(Insights::class)
+        ->assertSeeInOrder([
+            trans('pages.statistics.insights.addresses.header.genesis'),
+            $currentDate,
+            trans('pages.statistics.insights.addresses.header.newest'),
+            $currentDate,
+            trans('pages.statistics.insights.addresses.header.most_transactions'),
+            '12,345',
+            trans('pages.statistics.insights.addresses.header.largest'),
+            '789,123',
+        ])
+        ->assertDontSee('> 0');
 });

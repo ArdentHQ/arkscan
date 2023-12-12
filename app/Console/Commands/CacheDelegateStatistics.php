@@ -35,7 +35,7 @@ final class CacheDelegateStatistics extends Command
         // }
 
         $leastVotedDelegate = (new UniqueVotersAggregate())->aggregate(sortDescending: false);
-        dump($leastVotedDelegate);
+        //dump($leastVotedDelegate);
         if ($leastVotedDelegate !== null) {
             $cache->setLeastUniqueVoters($leastVotedDelegate->public_key);
 
