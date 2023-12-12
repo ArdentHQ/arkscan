@@ -467,6 +467,7 @@ return [
 
             'dropdown' => [
                 'transactions' => 'Transaction Data',
+                'delegates'    => 'Delegate Data',
                 'addresses'    => 'Address Data',
             ],
 
@@ -519,6 +520,21 @@ return [
                     'date'              => 'Date',
                     'transactions'      => 'Transactions',
                     'balance'           => 'Balance',
+                ],
+            ],
+
+            'delegates' => [
+                'title'          => 'Delegate Data',
+
+                'header' => [
+                    'most_unique_voters'     => 'Most Unique Voters',
+                    'least_unique_voters'    => 'Least Unique Voters',
+                    'oldest_active_delegate' => 'Oldest Active Delegate',
+                    'newest_active_delegate' => 'Newest Active Delegate',
+                    'most_blocks_forged'     => 'Most Blocks Forged (All-Time)',
+                    'voters'                 => 'Voters',
+                    'registered'             => 'Registered',
+                    'blocks'                 => 'Blocks',
                 ],
             ],
         ],

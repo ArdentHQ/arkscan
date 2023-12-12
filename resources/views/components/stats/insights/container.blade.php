@@ -27,9 +27,13 @@
                 'flex flex-col px-4 text-sm md:py-4 md:px-6 md:space-y-3 md:text-base md:leading-5',
                 'md-lg:w-[524px]' => ! $fullWidth,
             ])>
-                <div class="hidden md:inline-flex">
-                    <x-general.badge class="md:py-1 md:px-2 md:text-sm">{{ $title }}</x-general.badge>
-                </div>
+                @if ($title)
+                    <div class="hidden md:inline-flex">
+                        <x-general.badge class="md:py-1 md:px-2 md:text-sm">
+                            {{ $title }}
+                        </x-general.badge>
+                    </div>
+                @endif
 
                 <div class="flex flex-col flex-1 space-y-3 whitespace-nowrap divide-y divide-dashed md:divide-none divide-theme-secondary-300 dark:divide-theme-dark-700">
                     {{ $slot }}

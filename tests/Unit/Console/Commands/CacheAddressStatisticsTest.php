@@ -6,12 +6,12 @@ use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
-use App\Services\Cache\Statistics;
+use App\Services\Cache\StatisticsCache;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
 
 it('should cache address holdings', function () {
-    $cache = new Statistics();
+    $cache = new StatisticsCache();
 
     Wallet::factory()->create([
         'balance' => 1.1 * 1e8,
@@ -51,7 +51,7 @@ it('should cache address holdings', function () {
 });
 
 it('should cache unique addresses', function () {
-    $cache = new Statistics();
+    $cache = new StatisticsCache();
 
     $transaction = Transaction::factory()->create();
 
@@ -68,7 +68,7 @@ it('should cache unique addresses', function () {
 });
 
 it('should handle null scenarios for unique addresses', function () {
-    $cache = new Statistics();
+    $cache = new StatisticsCache();
 
     $this->artisan('explorer:cache-address-statistics');
 

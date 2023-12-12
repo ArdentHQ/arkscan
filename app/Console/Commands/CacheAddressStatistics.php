@@ -8,7 +8,7 @@ use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Addresses\Aggregates\HoldingsAggregate;
-use App\Services\Cache\Statistics;
+use App\Services\Cache\StatisticsCache;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -30,7 +30,7 @@ final class CacheAddressStatistics extends Command
      */
     protected $description = 'Cache expensive address statistics';
 
-    public function handle(Statistics $cache): void
+    public function handle(StatisticsCache $cache): void
     {
         $holdings = (new HoldingsAggregate())->aggregate();
 

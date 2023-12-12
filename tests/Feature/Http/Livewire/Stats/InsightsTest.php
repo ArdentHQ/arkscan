@@ -6,8 +6,9 @@ use App\Contracts\Network as NetworkContract;
 use App\Http\Livewire\Stats\Insights;
 use App\Models\Block;
 use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\Cache\BlockCache;
-use App\Services\Cache\Statistics;
+use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\TransactionCache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
@@ -145,7 +146,7 @@ it('should render address holdings', function (): void {
         ['grouped' => 1000000, 'count' => 2],
     ];
 
-    (new Statistics())->setAddressHoldings($holdings);
+    (new StatisticsCache())->setAddressHoldings($holdings);
 
     Livewire::test(Insights::class)
         ->assertSeeInOrder([
@@ -164,7 +165,7 @@ it('should render address holdings', function (): void {
 it('should render unique addresses', function (): void {
     $currentDate = Carbon::now();
 
-    $cache = new Statistics();
+    $cache = new StatisticsCache();
     $cache->setGenesisAddress(['address' => 'address1', 'value' => $currentDate]);
     $cache->setNewestAddress(['address' => 'address2', 'value' => $currentDate]);
     $cache->setMostTransactions(['address' => 'address3', 'value' => 12345]);
@@ -182,4 +183,37 @@ it('should render unique addresses', function (): void {
             '789,123',
         ])
         ->assertDontSee('> 0');
+});
+
+it('should render delegate statistics', function (): void {
+    $currentDate = Carbon::now();
+
+    $walletMostUnique   = Wallet::factory()->activeDelegate()->create();
+    $walletLeastUnique  = Wallet::factory()->activeDelegate()->create();
+    $walletOldestActive = Wallet::factory()->activeDelegate()->create();
+    $walletNewestActive = Wallet::factory()->activeDelegate()->create();
+    $walletMostBlocks   = Wallet::factory()->activeDelegate()->create();
+    $randomWallet       = Wallet::factory()->activeDelegate()->create();
+
+    $cache = new StatisticsCache();
+    $cache->setMostUniqueVoters($walletMostUnique->public_key);
+    $cache->setLeastUniqueVoters($walletLeastUnique->public_key);
+    $cache->setOldestActiveDelegate($walletOldestActive->public_key, $currentDate->subMonth()->timestamp);
+    $cache->setNewestActiveDelegate($walletNewestActive->public_key, $currentDate->timestamp);
+    $cache->setMostBlocksForged($walletMostBlocks->public_key);
+
+    Livewire::test(Insights::class)
+        ->assertSeeInOrder([
+            // trans('pages.statistics.insights.delegates.header.most_unique_voters'),
+            // $walletMostUnique->address,
+            // trans('pages.statistics.insights.delegates.header.least_unique_voters'),
+            // $walletLeastUnique->address,
+            trans('pages.statistics.insights.delegates.header.oldest_active_delegate'),
+            $walletOldestActive->address,
+            trans('pages.statistics.insights.delegates.header.newest_active_delegate'),
+            $walletNewestActive->address,
+            trans('pages.statistics.insights.delegates.header.most_blocks_forged'),
+            $walletMostBlocks->address,
+        ])
+        ->assertDontSee($randomWallet->address);
 });

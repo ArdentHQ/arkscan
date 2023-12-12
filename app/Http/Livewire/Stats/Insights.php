@@ -8,12 +8,16 @@ use App\Enums\StatsTransactionType;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\Cache\BlockCache;
-use App\Services\Cache\Statistics;
+use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\TransactionCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\BlockViewModel;
 use App\ViewModels\TransactionViewModel;
+use App\ViewModels\ViewModelFactory;
+use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
+use Carbon\Carbon;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -27,6 +31,7 @@ final class Insights extends Component
             'transactionDetails'  => $this->transactionDetails($transactionCache),
             'transactionAverages' => $this->transactionAverages($transactionCache),
             'transactionRecords'  => $this->transactionRecords($transactionCache),
+            'delegateDetails'     => $this->delegateDetails(),
             'addressHoldings'     => $this->addressHoldings(),
             'uniqueAddresses'     => $this->uniqueAddresses(),
         ]);
@@ -82,9 +87,59 @@ final class Insights extends Component
         ];
     }
 
+    private function delegateDetails(): array
+    {
+        $cache = new StatisticsCache();
+
+        $mostUniqueVoters = Wallet::firstWhere('public_key', $cache->getMostUniqueVoters());
+        if ($mostUniqueVoters !== null) {
+            $mostUniqueVoters = ViewModelFactory::make($mostUniqueVoters);
+        }
+
+        $leastUniqueVoters = Wallet::firstWhere('public_key', $cache->getLeastUniqueVoters());
+        if ($leastUniqueVoters !== null) {
+            $leastUniqueVoters = ViewModelFactory::make($leastUniqueVoters);
+        }
+
+        $oldestActiveDelegateData = $cache->getOldestActiveDelegate();
+        if ($oldestActiveDelegateData !== null) {
+            $oldestActiveDelegate = Wallet::firstWhere('public_key', $oldestActiveDelegateData['publicKey']);
+            if ($oldestActiveDelegate !== null) {
+                $oldestActiveDelegate = [
+                    'delegate' => ViewModelFactory::make($oldestActiveDelegate),
+                    'value'    => Carbon::createFromTimestamp($oldestActiveDelegateData['timestamp'])->format(DateFormat::DATE),
+                ];
+            }
+        }
+
+        $newestActiveDelegateData = $cache->getNewestActiveDelegate();
+        if ($newestActiveDelegateData !== null) {
+            $newestActiveDelegate = Wallet::firstWhere('public_key', $newestActiveDelegateData['publicKey']);
+            if ($newestActiveDelegate !== null) {
+                $newestActiveDelegate = [
+                    'delegate' => ViewModelFactory::make($newestActiveDelegate),
+                    'value'    => Carbon::createFromTimestamp($newestActiveDelegateData['timestamp'])->format(DateFormat::DATE),
+                ];
+            }
+        }
+
+        $mostBlocksForged = Wallet::firstWhere('public_key', $cache->getMostBlocksForged());
+        if ($mostBlocksForged !== null) {
+            $mostBlocksForged = ViewModelFactory::make($mostBlocksForged);
+        }
+
+        return [
+            'most_unique_voters'     => $mostUniqueVoters,
+            'least_unique_voters'    => $leastUniqueVoters,
+            'oldest_active_delegate' => $oldestActiveDelegate ?? null,
+            'newest_active_delegate' => $newestActiveDelegate ?? null,
+            'most_blocks_forged'     => $mostBlocksForged,
+        ];
+    }
+
     private function addressHoldings(): array
     {
-        $statisticsCache = new Statistics();
+        $statisticsCache = new StatisticsCache();
         $holdings        = $statisticsCache->getAddressHoldings();
 
         unset($holdings['0']); // Ignore wallets below 1
@@ -102,7 +157,7 @@ final class Insights extends Component
 
     private function uniqueAddresses(): array
     {
-        $statisticsCache = new Statistics();
+        $statisticsCache = new StatisticsCache();
 
         $genesis          = $statisticsCache->getGenesisAddress();
         $newest           = $statisticsCache->getNewestAddress();
