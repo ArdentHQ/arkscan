@@ -26,19 +26,23 @@
                 :model="$details['least_unique_voters']"
             />
 
-            <x-stats.insights.delegate-row
-                :title="trans('pages.statistics.insights.delegates.header.oldest_active_delegate')"
-                :value-title="trans('pages.statistics.insights.delegates.header.registered')"
-                :value="$details['oldest_active_delegate']['value']"
-                :model="$details['oldest_active_delegate']['delegate']"
-            />
+            @if($details['oldest_active_delegate'] !== null)
+                <x-stats.insights.delegate-row
+                    :title="trans('pages.statistics.insights.delegates.header.oldest_active_delegate')"
+                    :value-title="trans('pages.statistics.insights.delegates.header.registered')"
+                    :value="$details['oldest_active_delegate']['value']"
+                    :model="$details['oldest_active_delegate']['delegate']"
+                />
+            @endif
 
-            <x-stats.insights.delegate-row
-                :title="trans('pages.statistics.insights.delegates.header.newest_active_delegate')"
-                :value-title="trans('pages.statistics.insights.delegates.header.registered')"
-                :value="$details['newest_active_delegate']['value']"
-                :model="$details['newest_active_delegate']['delegate']"
-            />
+            @if($details['newest_active_delegate'] !== null)
+                <x-stats.insights.delegate-row
+                    :title="trans('pages.statistics.insights.delegates.header.newest_active_delegate')"
+                    :value-title="trans('pages.statistics.insights.delegates.header.registered')"
+                    :value="$details['newest_active_delegate']['value']"
+                    :model="$details['newest_active_delegate']['delegate']"
+                />
+            @endif
 
             <x-stats.insights.delegate-row
                 :title="trans('pages.statistics.insights.delegates.header.most_blocks_forged')"
