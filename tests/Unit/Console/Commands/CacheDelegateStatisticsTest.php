@@ -7,27 +7,24 @@ use App\Models\Block;
 use App\Models\Round;
 use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Services\BigNumber;
 use App\Services\Cache\StatisticsCache;
-use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
-use Carbon\Carbon;
 
 it('should cache delegate statistics', function () {
     $cache = new StatisticsCache();
 
-    $mostVoters = Wallet::factory()->activeDelegate()->create();
-    $leastVoters = Wallet::factory()->activeDelegate()->create();
+    $mostVoters   = Wallet::factory()->activeDelegate()->create();
+    $leastVoters  = Wallet::factory()->activeDelegate()->create();
     $oldestActive = Wallet::factory()->activeDelegate()->create();
     $newestActive = Wallet::factory()->activeDelegate()->create();
-    $mostBlocks = Wallet::factory()->activeDelegate()->create();
+    $mostBlocks   = Wallet::factory()->activeDelegate()->create();
 
     Round::factory()->create([
-        'round' => 1,
-        'public_key' => $oldestActive->public_key
+        'round'      => 1,
+        'public_key' => $oldestActive->public_key,
     ]);
     Round::factory()->create([
-        'round' => 1,
-        'public_key' => $newestActive->public_key
+        'round'      => 1,
+        'public_key' => $newestActive->public_key,
     ]);
 
     Wallet::factory()->count(5)->create([
@@ -39,12 +36,12 @@ it('should cache delegate statistics', function () {
     ]);
 
     Transaction::factory()->delegateRegistration()->create([
-        'timestamp' => 1,
+        'timestamp'         => 1,
         'sender_public_key' => $oldestActive->public_key,
     ]);
 
     Transaction::factory()->delegateRegistration()->create([
-        'timestamp' => 100,
+        'timestamp'         => 100,
         'sender_public_key' => $newestActive->public_key,
     ]);
 

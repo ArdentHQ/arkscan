@@ -188,12 +188,12 @@ it('should render unique addresses', function (): void {
 it('should render delegate statistics', function (): void {
     $currentDate = Carbon::now();
 
-    $walletMostUnique = Wallet::factory()->activeDelegate()->create();
-    $walletLeastUnique = Wallet::factory()->activeDelegate()->create();
+    $walletMostUnique   = Wallet::factory()->activeDelegate()->create();
+    $walletLeastUnique  = Wallet::factory()->activeDelegate()->create();
     $walletOldestActive = Wallet::factory()->activeDelegate()->create();
     $walletNewestActive = Wallet::factory()->activeDelegate()->create();
-    $walletMostBlocks = Wallet::factory()->activeDelegate()->create();
-    $randomWallet = Wallet::factory()->activeDelegate()->create();
+    $walletMostBlocks   = Wallet::factory()->activeDelegate()->create();
+    $randomWallet       = Wallet::factory()->activeDelegate()->create();
 
     $cache = new StatisticsCache();
     $cache->setMostUniqueVoters($walletMostUnique->public_key);
