@@ -102,21 +102,25 @@ final class Insights extends Component
         }
 
         $oldestActiveDelegateData = $cache->getOldestActiveDelegate();
-        if (count($oldestActiveDelegateData) > 0) {
+        if ($oldestActiveDelegateData !== null) {
             $oldestActiveDelegate = Wallet::firstWhere('public_key', $oldestActiveDelegateData['publicKey']);
-            $oldestActiveDelegate = [
-                'delegate' => ViewModelFactory::make($oldestActiveDelegate),
-                'value'    => Carbon::createFromTimestamp(Network::epoch()->timestamp + $oldestActiveDelegateData['timestamp'])->format(DateFormat::DATE),
-            ];
+            if ($oldestActiveDelegate !== null) {
+                $oldestActiveDelegate = [
+                    'delegate' => ViewModelFactory::make($oldestActiveDelegate),
+                    'value'    => Carbon::createFromTimestamp((int) Network::epoch()->timestamp + $oldestActiveDelegateData['timestamp'])->format(DateFormat::DATE),
+                ];
+            }
         }
 
         $newestActiveDelegateData = $cache->getNewestActiveDelegate();
-        if (count($newestActiveDelegateData) > 0) {
+        if ($newestActiveDelegateData !== null) {
             $newestActiveDelegate = Wallet::firstWhere('public_key', $newestActiveDelegateData['publicKey']);
-            $newestActiveDelegate = [
-                'delegate' => ViewModelFactory::make($newestActiveDelegate),
-                'value'    => Carbon::createFromTimestamp(Network::epoch()->timestamp + $newestActiveDelegateData['timestamp'])->format(DateFormat::DATE),
-            ];
+            if ($newestActiveDelegate !== null) {
+                $newestActiveDelegate = [
+                    'delegate' => ViewModelFactory::make($newestActiveDelegate),
+                    'value'    => Carbon::createFromTimestamp((int) Network::epoch()->timestamp + $newestActiveDelegateData['timestamp'])->format(DateFormat::DATE),
+                ];
+            }
         }
 
         $mostBlocksForged = Wallet::firstWhere('public_key', $cache->getMostBlocksForged());
@@ -127,8 +131,8 @@ final class Insights extends Component
         return [
             'most_unique_voters'     => $mostUniqueVoters,
             'least_unique_voters'    => $leastUniqueVoters,
-            'oldest_active_delegate' => $oldestActiveDelegate,
-            'newest_active_delegate' => $newestActiveDelegate,
+            'oldest_active_delegate' => $oldestActiveDelegate ?? null,
+            'newest_active_delegate' => $newestActiveDelegate ?? null,
             'most_blocks_forged'     => $mostBlocksForged,
         ];
     }
