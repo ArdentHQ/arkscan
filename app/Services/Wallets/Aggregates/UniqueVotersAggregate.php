@@ -9,8 +9,12 @@ use Illuminate\Support\Facades\DB;
 
 final class UniqueVotersAggregate
 {
-    public function aggregate(bool $sortDescending = true): ?Wallet
+    /**
+     * @return array{'public_key': string, 'voter_count': int}>
+     */
+    public function aggregate(bool $sortDescending = true): ?array
     {
+        // phpstan-ignore-next-line
         return Wallet::query()
             ->select(DB::raw('attributes->>\'vote\' as public_key, COUNT(*) as voter_count'))
             ->where('balance', '>=', 1 * 1e8)
@@ -18,6 +22,7 @@ final class UniqueVotersAggregate
             ->groupByRaw('attributes->>\'vote\'')
             ->orderBy('voter_count', $sortDescending ? 'desc' : 'asc')
             ->limit(1)
-            ->first();
+            ->first()
+            ->toArray();
     }
 }
