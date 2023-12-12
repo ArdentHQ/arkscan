@@ -106,7 +106,7 @@ final class Insights extends Component
             $oldestActiveDelegate = Wallet::firstWhere('public_key', $oldestActiveDelegateData['publicKey']);
             $oldestActiveDelegate = [
                 'delegate' => ViewModelFactory::make($oldestActiveDelegate),
-                'value' => Carbon::createFromTimestamp(Network::epoch()->timestamp + $oldestActiveDelegateData['timestamp'])->format(DateFormat::DATE)
+                'value'    => Carbon::createFromTimestamp(Network::epoch()->timestamp + $oldestActiveDelegateData['timestamp'])->format(DateFormat::DATE),
             ];
         }
 
@@ -115,7 +115,7 @@ final class Insights extends Component
             $newestActiveDelegate = Wallet::firstWhere('public_key', $newestActiveDelegateData['publicKey']);
             $newestActiveDelegate = [
                 'delegate' => ViewModelFactory::make($newestActiveDelegate),
-                'value' => Carbon::createFromTimestamp(Network::epoch()->timestamp + $newestActiveDelegateData['timestamp'])->format(DateFormat::DATE)
+                'value'    => Carbon::createFromTimestamp(Network::epoch()->timestamp + $newestActiveDelegateData['timestamp'])->format(DateFormat::DATE),
             ];
         }
 

@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Enums\CoreTransactionTypeEnum;
-use App\Facades\Blocks;
 use App\Facades\Rounds;
 use App\Models\Block;
-use App\Models\Round;
 use App\Models\Transaction;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\WalletCache;
