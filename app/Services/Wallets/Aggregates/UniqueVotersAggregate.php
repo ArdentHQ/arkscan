@@ -5,23 +5,17 @@ declare(strict_types=1);
 namespace App\Services\Wallets\Aggregates;
 
 use App\Models\Wallet;
+use Illuminate\Support\Facades\DB;
 
 final class UniqueVotersAggregate
 {
     public function aggregate($sortDescending = true): ?Wallet
     {
         return Wallet::query()
-            ->select([
-                '*',
-                'voter_count' => function ($query) {
-                    $query->selectRaw('COUNT(*)')
-                        ->from('wallets', 'voter_wallets')
-                        ->where('voter_wallets.balance', '>=', 1 * 1e8) // Only count >= 1 ARK wallets
-                        ->whereRaw('voter_wallets.attributes->>\'vote\' = wallets.public_key');
-                },
-            ])
-            ->from('wallets')
-            ->whereNotNull('attributes->delegate')
+            ->select(DB::raw('attributes->>\'vote\' as public_key, COUNT(*) as voter_count'))
+            ->where('balance', '>=', 1 * 1e8)
+            ->whereRaw('attributes->>\'vote\' IS NOT NULL')
+            ->groupBy(DB::raw('attributes->>\'vote\''))
             ->orderBy('voter_count', $sortDescending ? 'desc' : 'asc')
             ->limit(1)
             ->first();

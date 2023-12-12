@@ -32,19 +32,19 @@ final class CacheDelegateStatistics extends Command
 
     public function handle(StatisticsCache $cache, WalletCache $walletCache): void
     {
-        // $mostVotedDelegate = (new UniqueVotersAggregate())->aggregate();
-        // if ($mostVotedDelegate !== null) {
-        //     $cache->setMostUniqueVoters($mostVotedDelegate->public_key);
+        $mostVotedDelegate = (new UniqueVotersAggregate())->aggregate();
+        if ($mostVotedDelegate !== null) {
+            $cache->setMostUniqueVoters($mostVotedDelegate->public_key);
 
-        //     $walletCache->setVoterCount($mostVotedDelegate->public_key, $mostVotedDelegate->voter_count);
-        // }
+            $walletCache->setVoterCount($mostVotedDelegate->public_key, $mostVotedDelegate->voter_count);
+        }
 
-        // $leastVotedDelegate = (new UniqueVotersAggregate())->aggregate(sortDescending: false);
-        // if ($leastVotedDelegate !== null) {
-        //     $cache->setLeastUniqueVoters($leastVotedDelegate->public_key);
+        $leastVotedDelegate = (new UniqueVotersAggregate())->aggregate(sortDescending: false);
+        if ($leastVotedDelegate !== null) {
+            $cache->setLeastUniqueVoters($leastVotedDelegate->public_key);
 
-        //     $walletCache->setVoterCount($leastVotedDelegate->public_key, $leastVotedDelegate->voter_count);
-        // }
+            $walletCache->setVoterCount($leastVotedDelegate->public_key, $leastVotedDelegate->voter_count);
+        }
 
         $activeDelegates = Rounds::allByRound(Rounds::current())->pluck(['public_key']);
 
