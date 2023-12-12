@@ -16,6 +16,8 @@ use App\Services\NumberFormatter;
 use App\ViewModels\BlockViewModel;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\ViewModelFactory;
+use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
+use Carbon\Carbon;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -99,14 +101,22 @@ final class Insights extends Component
             $leastUniqueVoters = ViewModelFactory::make($leastUniqueVoters);
         }
 
-        $oldestActiveDelegate = Wallet::firstWhere('public_key', $cache->getOldestActiveDelegate());
-        if ($oldestActiveDelegate !== null) {
-            $oldestActiveDelegate = ViewModelFactory::make($oldestActiveDelegate);
+        $oldestActiveDelegateData = $cache->getOldestActiveDelegate();
+        if (count($oldestActiveDelegateData) > 0) {
+            $oldestActiveDelegate = Wallet::firstWhere('public_key', $oldestActiveDelegateData['publicKey']);
+            $oldestActiveDelegate = [
+                'delegate' => ViewModelFactory::make($oldestActiveDelegate),
+                'value' => Carbon::createFromTimestamp(Network::epoch()->timestamp + $oldestActiveDelegateData['timestamp'])->format(DateFormat::DATE)
+            ];
         }
 
-        $newestActiveDelegate = Wallet::firstWhere('public_key', $cache->getNewestActiveDelegate());
-        if ($newestActiveDelegate !== null) {
-            $newestActiveDelegate = ViewModelFactory::make($newestActiveDelegate);
+        $newestActiveDelegateData = $cache->getNewestActiveDelegate();
+        if (count($newestActiveDelegateData) > 0) {
+            $newestActiveDelegate = Wallet::firstWhere('public_key', $newestActiveDelegateData['publicKey']);
+            $newestActiveDelegate = [
+                'delegate' => ViewModelFactory::make($newestActiveDelegate),
+                'value' => Carbon::createFromTimestamp(Network::epoch()->timestamp + $newestActiveDelegateData['timestamp'])->format(DateFormat::DATE)
+            ];
         }
 
         $mostBlocksForged = Wallet::firstWhere('public_key', $cache->getMostBlocksForged());

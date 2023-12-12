@@ -73,24 +73,30 @@ final class StatisticsCache implements Contract
         $this->put('delegate/leastUniqueVoters', $publicKey);
     }
 
-    public function getOldestActiveDelegate(): ?string
+    /**
+     * @return array{'publicKey': string, 'timestamp': int}
+     */
+    public function getOldestActiveDelegate(): ?array
     {
         return $this->get('delegate/oldestActiveDelegate');
     }
 
-    public function setOldestActiveDelegate(string $publicKey): void
+    public function setOldestActiveDelegate(string $publicKey, int $timestamp): void
     {
-        $this->put('delegate/oldestActiveDelegate', $publicKey);
+        $this->put('delegate/oldestActiveDelegate', ['publicKey' => $publicKey, 'timestamp' => $timestamp]);
     }
 
-    public function getNewestActiveDelegate(): ?string
+    /**
+     * @return array{'publicKey': string, 'timestamp': int}
+     */
+    public function getNewestActiveDelegate(): ?array
     {
         return $this->get('delegate/newestActiveDelegate');
     }
 
-    public function setNewestActiveDelegate(string $publicKey): void
+    public function setNewestActiveDelegate(string $publicKey, int $timestamp): void
     {
-        $this->put('delegate/newestActiveDelegate', $publicKey);
+        $this->put('delegate/newestActiveDelegate', ['publicKey' => $publicKey, 'timestamp' => $timestamp]);
     }
 
     public function getMostBlocksForged(): ?string

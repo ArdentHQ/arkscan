@@ -29,21 +29,21 @@
             <x-stats.insights.delegate-row
                 :title="trans('pages.statistics.insights.delegates.header.oldest_active_delegate')"
                 :value-title="trans('pages.statistics.insights.delegates.header.registered')"
-                :value="$details['oldest_active_delegate']?->voterCount()"
-                :model="$details['oldest_active_delegate']"
+                :value="$details['oldest_active_delegate']['value']"
+                :model="$details['oldest_active_delegate']['delegate']"
             />
 
             <x-stats.insights.delegate-row
                 :title="trans('pages.statistics.insights.delegates.header.newest_active_delegate')"
                 :value-title="trans('pages.statistics.insights.delegates.header.registered')"
-                :value="$details['newest_active_delegate']?->voterCount()"
-                :model="$details['newest_active_delegate']"
+                :value="$details['newest_active_delegate']['value']"
+                :model="$details['newest_active_delegate']['delegate']"
             />
 
             <x-stats.insights.delegate-row
                 :title="trans('pages.statistics.insights.delegates.header.most_blocks_forged')"
                 :value-title="trans('pages.statistics.insights.delegates.header.blocks')"
-                :value="$details['most_blocks_forged']?->voterCount()"
+                :value="$details['most_blocks_forged']?->forgedBlocks()"
                 :model="$details['most_blocks_forged']"
             />
         </x-stats.insights.container>

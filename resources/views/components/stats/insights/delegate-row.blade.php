@@ -41,7 +41,7 @@
                 @if (is_numeric($value))
                     <x-number>{{ $value }}</x-number>
                 @else
-                    {{ $value }}
+                    <span>{{ $value }}</span>
                 @endif
             </x-stats.insights.entity-column>
         @endif

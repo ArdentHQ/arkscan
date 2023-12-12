@@ -16,6 +16,7 @@ final class UniqueVotersAggregate
                 'voter_count' => function ($query) {
                     $query->selectRaw('COUNT(*)')
                         ->from('wallets', 'voter_wallets')
+                        ->where('voter_wallets.balance', '>=', 1 * 1e8) // Only count >= 1 ARK wallets
                         ->whereRaw('voter_wallets.attributes->>\'vote\' = wallets.public_key');
                 },
             ])
