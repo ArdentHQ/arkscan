@@ -2,16 +2,24 @@
 
 declare(strict_types=1);
 
+use App\Console\Commands\CacheVolume;
 use App\Contracts\Network as NetworkContract;
 use App\Http\Livewire\Stats\Insights;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\BlockCache;
+use App\Services\Cache\CryptoDataCache;
+use App\Services\Cache\NetworkCache;
+use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\TransactionCache;
+use App\Services\MarketDataProviders\CoinGecko;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
 use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
@@ -217,3 +225,59 @@ it('should render delegate statistics', function (): void {
         ])
         ->assertDontSee($randomWallet->address);
 });
+
+it('should render marketdata statistics', function (): void {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
+    Http::fake([
+        'api.coingecko.com/*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true), 200),
+    ]);
+
+    $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('arkscan.networks.production')));
+
+    $crypto = app(CryptoDataCache::class);
+
+    app(CacheVolume::class)->handle($crypto, new CoinGecko());
+
+    $currentDate = Carbon::now();
+
+    $cache = new StatisticsCache();
+    $cache->setPriceRangeDaily(123, 456);
+    $cache->setPriceRange52(12, 789);
+    $cache->setPriceAtl($currentDate->subMonth()->timestamp, 0.4);
+    $cache->setPriceAth($currentDate->timestamp, 987.3);
+
+    $cache->setVolumeAtl($currentDate->subMonth()->timestamp, 10);
+    $cache->setVolumeAth($currentDate->timestamp, 20000);
+
+    $cache->setMarketCapAtl($currentDate->subMonth()->timestamp, 15);
+    $cache->setMarketCapAth($currentDate->timestamp, 30000);
+
+    (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 1.234);
+    (new NetworkCache())->setSupply(fn () => 4.567 * 1e8);
+
+    Livewire::test(Insights::class)
+        ->assertSeeInOrder([
+            trans('pages.statistics.insights.market_data.header.daily'),
+            '123.00', '456.00',
+            trans('pages.statistics.insights.market_data.header.52w'),
+            '12.00', '789.00',
+            trans('pages.statistics.insights.market_data.header.atl'),
+            '0.40',
+            trans('pages.statistics.insights.market_data.header.ath'),
+            '987.30',
+
+            '16,232,625',
+            trans('pages.statistics.insights.market_data.header.atl'),
+            '10',
+            trans('pages.statistics.insights.market_data.header.ath'),
+            '20,000',
+
+            '6',
+            trans('pages.statistics.insights.market_data.header.atl'),
+            '15',
+            trans('pages.statistics.insights.market_data.header.ath'),
+            '30,000',
+        ]);
+});
+
