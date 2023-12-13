@@ -281,11 +281,11 @@ final class StatisticsCache implements Contract
     public function setAnnualData(int $year, int $transactions, string $volume, string $fees, int $blocks): void
     {
         $this->put(sprintf('annual/%s', $year), [
-            'year' => $year,
+            'year'         => $year,
             'transactions' => $transactions,
-            'volume' => $volume,
-            'fees' => $fees,
-            'blocks' => $blocks,
+            'volume'       => $volume,
+            'fees'         => $fees,
+            'blocks'       => $blocks,
         ]);
     }
 

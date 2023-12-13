@@ -21,7 +21,6 @@ use App\ViewModels\TransactionViewModel;
 use App\ViewModels\ViewModelFactory;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -240,9 +239,9 @@ final class Insights extends Component
 
     private function annualData(StatisticsCache $cache): array
     {
-        $startYear = Carbon::parse(Network::epoch())->year;
+        $startYear   = Carbon::parse(Network::epoch())->year;
         $currentYear = Carbon::now()->year;
-        $yearData = [];
+        $yearData    = [];
 
         for ($year = $startYear; $year <= $currentYear; $year++) {
             $yearData[] = $cache->getAnnualData($year);

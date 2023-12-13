@@ -558,14 +558,14 @@ return [
             ],
 
             'annual' => [
-                'title' => 'Annual Data',
+                'title'  => 'Annual Data',
                 'header' => [
                     'transaction' => 'Tx',
-                    'volume' => 'Volume',
-                    'fees' => 'Fees',
-                    'blocks' => 'Blocks',
-                ]
-            ]
+                    'volume'      => 'Volume',
+                    'fees'        => 'Fees',
+                    'blocks'      => 'Blocks',
+                ],
+            ],
         ],
     ],
 

@@ -37,7 +37,7 @@ final class CacheAnnualStatistics extends Command
 
     private function cacheAllYears(StatisticsCache $cache): void
     {
-        $epoch = Network::epoch()->timestamp;
+        $epoch           = Network::epoch()->timestamp;
         $transactionData = DB::connection('explorer')
             ->query()
             ->select([
@@ -75,9 +75,9 @@ final class CacheAnnualStatistics extends Command
 
     private function cacheCurrentYear(StatisticsCache $cache): void
     {
-        $epoch = (int) Network::epoch()->timestamp;
+        $epoch       = (int) Network::epoch()->timestamp;
         $startOfYear = (int) Carbon::now()->startOfYear()->timestamp;
-        $year = Carbon::now()->year;
+        $year        = Carbon::now()->year;
 
         $transactionData = DB::connection('explorer')
             ->query()
