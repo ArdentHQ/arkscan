@@ -6,7 +6,7 @@
 
 <div
     :class="{
-        'hidden md:block': tab !== 'marketData',
+        'hidden md:block': tab !== 'market_data',
     }"
     x-cloak
 >
@@ -16,176 +16,161 @@
 
     <div>
         <x-stats.insights.container :title="trans('pages.statistics.insights.market_data.price')" full-width>
-            {{-- Desktop --}}
-            <div class="hidden justify-between w-full md:flex xl:w-[482px]">
-                <div class="flex flex-1">
-                    @lang('pages.statistics.insights.market_data.header.daily_range')
-                </div>
-                <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                    <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
-                        {{ $prices['daily_low'] }} - {{ $prices['daily_high'] }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="hidden justify-between w-full md:flex xl:w-[482px]">
-                <div class="flex flex-1">
-                    @lang('pages.statistics.insights.market_data.header.52_week_range')
-                </div>
-                <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                    <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
-                        {{ $prices['52w_low'] }} - {{ $prices['52w_high'] }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="hidden justify-between w-full md:flex xl:w-[770px]">
-                <div class="flex flex-1">
-                    @lang('pages.statistics.insights.market_data.header.atl')
-                </div>
-                <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                    <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
-                        {{ $prices['atl'] }}
-                    </div>
-
-                    <div class="flex flex-1 justify-between space-x-2 w-full md-lg:pl-16">
-                        <div>
-                            @lang('pages.statistics.insights.market_data.header.date'):
+            @foreach (['daily', '52w', 'atl', 'ath'] as $item)
+                {{-- Mobile --}}
+                <div class="flex md:hidden">
+                    <div class="flex flex-col justify-between pt-3 space-y-3 w-full sm:flex-row sm:space-y-0">
+                        <div class="flex flex-col space-y-2">
+                            <span>@lang('pages.statistics.insights.market_data.header.'.$item)</span>
+                            <span class="text-theme-secondary-900 dark:text-theme-dark-50">
+                                @if($item === 'daily' || $item === '52w')
+                                    {{ $prices[$item.'_low'] }} - {{ $prices[$item.'_high'] }}
+                                @else
+                                    {{ $prices[$item] }}
+                                @endif
+                            </span>
                         </div>
-                        <div class="text-theme-secondary-900 dark:text-theme-dark-50">
-                            {{ $prices['atl_date']}}
+
+                        <div class="flex flex-col space-y-2 w-[130px]">
+                            @if($item === 'atl' || $item === 'ath')
+                                <span>
+                                    @lang('pages.statistics.insights.market_data.header.date'):
+                                </span>
+                                <div class="text-theme-secondary-900 dark:text-theme-dark-50">
+                                    {{ $prices[$item.'_date']}}
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="hidden justify-between w-full md:flex xl:w-[770px]">
-                <div class="flex flex-1">
-                    @lang('pages.statistics.insights.market_data.header.ath')
-                </div>
-                <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                    <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
-                        {{ $prices['ath'] }}
+                {{-- Desktop --}}
+                <div class="hidden justify-between w-full md:flex xl:w-[770px]">
+                    <div class="flex flex-1">
+                        @lang('pages.statistics.insights.market_data.header.'.$item)
                     </div>
+                    <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
+                        <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
+                            @if($item === 'daily' || $item === '52w')
+                                {{ $prices[$item.'_low'] }} - {{ $prices[$item.'_high'] }}
+                            @else
+                                {{ $prices[$item] }}
+                            @endif
+                        </div>
 
-                    <div class="flex flex-1 justify-between space-x-2 w-full md-lg:pl-16">
-                        <div>
-                            @lang('pages.statistics.insights.market_data.header.date'):
-                        </div>
-                        <div class="text-theme-secondary-900 dark:text-theme-dark-50">
-                            {{ $prices['ath_date']}}
+                        <div class="flex flex-1 justify-between space-x-2 w-full md-lg:pl-16">
+                            @if($item === 'atl' || $item === 'ath')
+                                <div>
+                                    @lang('pages.statistics.insights.market_data.header.date'):
+                                </div>
+                                <div class="text-theme-secondary-900 dark:text-theme-dark-50">
+                                    {{ $prices[$item.'_date']}}
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </x-stats.insights.container>
 
         <x-stats.insights.container :title="trans('pages.statistics.insights.market_data.exchanges_volume')" full-width>
-            {{-- Desktop --}}
-            <div class="hidden justify-between w-full md:flex xl:w-[482px]">
-                <div class="flex flex-1">
-                    @lang('pages.statistics.insights.market_data.header.today_volume')
-                </div>
-                <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                    <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
-                        {{ $volumes['value'] }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="hidden justify-between w-full md:flex xl:w-[770px]">
-                <div class="flex flex-1">
-                    @lang('pages.statistics.insights.market_data.header.atl')
-                </div>
-                <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                    <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
-                        {{ $volumes['atl'] }}
-                    </div>
-
-                    <div class="flex flex-1 justify-between space-x-2 w-full md-lg:pl-16">
-                        <div>
-                            @lang('pages.statistics.insights.market_data.header.date'):
+            @foreach (['today_volume', 'atl', 'ath'] as $item)
+                {{-- Mobile --}}
+                <div class="flex md:hidden">
+                    <div class="flex flex-col justify-between pt-3 space-y-3 w-full sm:flex-row sm:space-y-0">
+                        <div class="flex flex-col space-y-2">
+                            <span>@lang('pages.statistics.insights.market_data.header.'.$item)</span>
+                            <span class="text-theme-secondary-900 dark:text-theme-dark-50">
+                                {{ $volumes[$item] }}
+                            </span>
                         </div>
-                        <div class="text-theme-secondary-900 dark:text-theme-dark-50">
-                            {{ $volumes['atl_date']}}
+
+                        <div class="flex flex-col space-y-2 w-[130px]">
+                            @if($item === 'atl' || $item === 'ath')
+                                <span>
+                                    @lang('pages.statistics.insights.market_data.header.date'):
+                                </span>
+                                <div class="text-theme-secondary-900 dark:text-theme-dark-50">
+                                    {{ $volumes[$item.'_date']}}
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="hidden justify-between w-full md:flex xl:w-[770px]">
-                <div class="flex flex-1">
-                    @lang('pages.statistics.insights.market_data.header.ath')
-                </div>
-                <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                    <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
-                        {{ $volumes['ath'] }}
+                {{-- Desktop --}}
+                <div class="hidden justify-between w-full md:flex xl:w-[770px]">
+                    <div class="flex flex-1">
+                        @lang('pages.statistics.insights.market_data.header.'.$item)
                     </div>
+                    <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
+                        <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
+                            {{ $volumes[$item] }}
+                        </div>
 
-                    <div class="flex flex-1 justify-between space-x-2 w-full md-lg:pl-16">
-                        <div>
-                            @lang('pages.statistics.insights.market_data.header.date'):
-                        </div>
-                        <div class="text-theme-secondary-900 dark:text-theme-dark-50">
-                            {{ $volumes['ath_date']}}
+                        <div class="flex flex-1 justify-between space-x-2 w-full md-lg:pl-16">
+                            @if($item === 'atl' || $item === 'ath')
+                                <div>
+                                    @lang('pages.statistics.insights.market_data.header.date'):
+                                </div>
+                                <div class="text-theme-secondary-900 dark:text-theme-dark-50">
+                                    {{ $volumes[$item.'_date']}}
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </x-stats.insights.container>
 
         <x-stats.insights.container :title="trans('pages.statistics.insights.market_data.market_cap')" full-width>
-            {{-- Desktop --}}
-            <div class="hidden justify-between w-full md:flex xl:w-[482px]">
-                <div class="flex flex-1">
-                    @lang('pages.statistics.insights.market_data.header.today_value')
-                </div>
-                <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                    <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
-                        {{ $caps['value'] }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="hidden justify-between w-full md:flex xl:w-[770px]">
-                <div class="flex flex-1">
-                    @lang('pages.statistics.insights.market_data.header.atl')
-                </div>
-                <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                    <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
-                        {{ $caps['atl'] }}
-                    </div>
-
-                    <div class="flex flex-1 justify-between space-x-2 w-full md-lg:pl-16">
-                        <div>
-                            @lang('pages.statistics.insights.market_data.header.date'):
+            @foreach (['today_value', 'atl', 'ath'] as $item)
+                {{-- Mobile --}}
+                <div class="flex md:hidden">
+                    <div class="flex flex-col justify-between pt-3 space-y-3 w-full sm:flex-row sm:space-y-0">
+                        <div class="flex flex-col space-y-2">
+                            <span>@lang('pages.statistics.insights.market_data.header.'.$item)</span>
+                            <span class="text-theme-secondary-900 dark:text-theme-dark-50">
+                                {{ $caps[$item] }}
+                            </span>
                         </div>
-                        <div class="text-theme-secondary-900 dark:text-theme-dark-50">
-                            {{ $caps['atl_date']}}
+
+                        <div class="flex flex-col space-y-2 w-[130px]">
+                            @if($item === 'atl' || $item === 'ath')
+                                <span>
+                                    @lang('pages.statistics.insights.market_data.header.date'):
+                                </span>
+                                <div class="text-theme-secondary-900 dark:text-theme-dark-50">
+                                    {{ $caps[$item.'_date']}}
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="hidden justify-between w-full md:flex xl:w-[770px]">
-                <div class="flex flex-1">
-                    @lang('pages.statistics.insights.market_data.header.ath')
-                </div>
-                <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                    <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
-                        {{ $caps['ath'] }}
+                {{-- Desktop --}}
+                <div class="hidden justify-between w-full md:flex xl:w-[770px]">
+                    <div class="flex flex-1">
+                        @lang('pages.statistics.insights.market_data.header.'.$item)
                     </div>
+                    <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
+                        <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
+                            {{ $caps[$item] }}
+                        </div>
 
-                    <div class="flex flex-1 justify-between space-x-2 w-full md-lg:pl-16">
-                        <div>
-                            @lang('pages.statistics.insights.market_data.header.date'):
-                        </div>
-                        <div class="text-theme-secondary-900 dark:text-theme-dark-50">
-                            {{ $caps['ath_date']}}
+                        <div class="flex flex-1 justify-between space-x-2 w-full md-lg:pl-16">
+                            @if($item === 'atl' || $item === 'ath')
+                                <div>
+                                    @lang('pages.statistics.insights.market_data.header.date'):
+                                </div>
+                                <div class="text-theme-secondary-900 dark:text-theme-dark-50">
+                                    {{ $caps[$item.'_date']}}
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </x-stats.insights.container>
     </div>
 </div>

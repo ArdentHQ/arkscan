@@ -134,11 +134,11 @@ final class Insights extends Component
         $volumeAth = $cache->getVolumeAth();
 
         return [
-            'value'    => NumberFormatter::currencyForViews($volume ?? 0, Settings::currency()),
-            'atl'      => $volumeAtl !== null ? $this->formatCurrency($volumeAtl['value'], false) : null,
-            'atl_date' => $volumeAtl !== null ? $this->formatDate($volumeAtl['timestamp']) : null,
-            'ath'      => $volumeAth !== null ? $this->formatCurrency($volumeAth['value'], false) : null,
-            'ath_date' => $volumeAth !== null ? $this->formatDate($volumeAth['timestamp']) : null,
+            'today_volume' => NumberFormatter::currencyForViews($volume ?? 0, Settings::currency()),
+            'atl'          => $volumeAtl !== null ? $this->formatCurrency($volumeAtl['value'], false) : null,
+            'atl_date'     => $volumeAtl !== null ? $this->formatDate($volumeAtl['timestamp']) : null,
+            'ath'          => $volumeAth !== null ? $this->formatCurrency($volumeAth['value'], false) : null,
+            'ath_date'     => $volumeAth !== null ? $this->formatDate($volumeAth['timestamp']) : null,
         ];
     }
 
@@ -148,11 +148,11 @@ final class Insights extends Component
         $marketCapAth = $cache->getMarketCapAth();
 
         return [
-            'value'    => MarketCap::getFormatted(Network::currency(), Settings::currency()),
-            'atl'      => $marketCapAtl !== null ? $this->formatCurrency($marketCapAtl['value'], false) : null,
-            'atl_date' => $marketCapAtl !== null ? $this->formatDate($marketCapAtl['timestamp']) : null,
-            'ath'      => $marketCapAth !== null ? $this->formatCurrency($marketCapAth['value'], false) : null,
-            'ath_date' => $marketCapAth !== null ? $this->formatDate($marketCapAth['timestamp']) : null,
+            'today_value' => MarketCap::getFormatted(Network::currency(), Settings::currency()),
+            'atl'         => $marketCapAtl !== null ? $this->formatCurrency($marketCapAtl['value'], false) : null,
+            'atl_date'    => $marketCapAtl !== null ? $this->formatDate($marketCapAtl['timestamp']) : null,
+            'ath'         => $marketCapAth !== null ? $this->formatCurrency($marketCapAth['value'], false) : null,
+            'ath_date'    => $marketCapAth !== null ? $this->formatDate($marketCapAth['timestamp']) : null,
         ];
     }
 

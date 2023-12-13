@@ -36,6 +36,10 @@
 
         <div class="block justify-center items-center py-3 mt-1">
             @foreach (trans('pages.statistics.insights.dropdown') as $name => $text)
+                @if ($name === 'market_data' && !Network::canBeExchanged())
+                    @continue
+                @endif
+
                 <a
                     wire:click="$set('view', '{{ $name }}');"
                     @click="view = '{{ $name }}'; tab = '{{ $name }}';"
