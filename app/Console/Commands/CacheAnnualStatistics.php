@@ -101,9 +101,9 @@ final class CacheAnnualStatistics extends Command
             // @phpstan-ignore-next-line
             (int) $transactionData?->transactions,
             // @phpstan-ignore-next-line
-            $transactionData?->amount,
+            $transactionData?->amount ?? '0',
             // @phpstan-ignore-next-line
-            $transactionData?->fees,
+            $transactionData?->fees ?? '0',
             $blocksData,
         );
     }

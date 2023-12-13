@@ -280,3 +280,32 @@ it('should render marketdata statistics', function (): void {
             '30,000',
         ]);
 });
+
+it('should render annual statistics', function (): void {
+    $cache = new StatisticsCache();
+    $cache->setAnnualData(2020, 12, '1234', '456', 28);
+    $cache->setAnnualData(2021, 34, '12345', '4567', 39);
+
+    Livewire::test(Insights::class)
+        ->assertSeeInOrder([
+            2020,
+            trans('pages.statistics.insights.annual.header.transaction'),
+            12,
+            trans('pages.statistics.insights.annual.header.volume'),
+            '1,234.00',
+            trans('pages.statistics.insights.annual.header.fees'),
+            '456.00',
+            trans('pages.statistics.insights.annual.header.blocks'),
+            28,
+
+            2021,
+            trans('pages.statistics.insights.annual.header.transaction'),
+            34,
+            trans('pages.statistics.insights.annual.header.volume'),
+            '12,345.00',
+            trans('pages.statistics.insights.annual.header.fees'),
+            '4,567.00',
+            trans('pages.statistics.insights.annual.header.blocks'),
+            39,
+        ]);
+});
