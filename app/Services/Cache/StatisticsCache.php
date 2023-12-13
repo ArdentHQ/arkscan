@@ -278,6 +278,25 @@ final class StatisticsCache implements Contract
         return $this->get('market_caps/atl', null);
     }
 
+    public function setAnnualData(int $year, int $transactions, string $volume, string $fees, int $blocks): void
+    {
+        $this->put(sprintf('annual/%s', $year), [
+            'year'         => $year,
+            'transactions' => $transactions,
+            'volume'       => $volume,
+            'fees'         => $fees,
+            'blocks'       => $blocks,
+        ]);
+    }
+
+    /**
+     * @return array{'year': int, 'transactions': int, 'volume': float, 'fees': float, 'blocks': int}
+     */
+    public function getAnnualData(int $year): ?array
+    {
+        return $this->get(sprintf('annual/%s', $year), null);
+    }
+
     public function getCache(): TaggedCache
     {
         return Cache::tags('statistics');

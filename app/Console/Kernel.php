@@ -6,6 +6,7 @@ namespace App\Console;
 
 use App\Console\Commands\BuildForgingStats;
 use App\Console\Commands\CacheAddressStatistics;
+use App\Console\Commands\CacheAnnualStatistics;
 use App\Console\Commands\CacheBlocks;
 use App\Console\Commands\CacheCurrenciesData;
 use App\Console\Commands\CacheCurrenciesHistory;
@@ -93,6 +94,8 @@ final class Kernel extends ConsoleKernel
         $schedule->command(CacheDelegateStatistics::class)->everyFiveMinutes();
 
         $schedule->command(CacheMarketDataStatistics::class)->everyFiveMinutes();
+
+        $schedule->command(CacheAnnualStatistics::class)->everyFiveMinutes();
 
         $schedule->command(GenerateVoteReport::class)->everyFiveMinutes();
 
