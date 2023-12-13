@@ -34,7 +34,7 @@
 
         @if ($value)
             <x-stats.insights.entity-column
-                class="sm:w-[90px] md:w-[260px] xl:w-[180px]"
+                class="sm:w-[90px] md:w-[260px] xl:w-[228px]"
                 :title="$valueTitle"
                 show-on-mobile
             >
