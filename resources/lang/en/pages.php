@@ -467,6 +467,7 @@ return [
 
             'dropdown' => [
                 'transactions' => 'Transaction Data',
+                'market_data'  => 'Market Data',
                 'delegates'    => 'Delegate Data',
                 'addresses'    => 'Address Data',
             ],
@@ -502,6 +503,23 @@ return [
                         'highest_fee'                => 'Highest Fee',
                         'most_transactions_in_block' => 'Most Tx in Block',
                     ],
+                ],
+            ],
+
+            'market_data' => [
+                'title'            => 'Market Data',
+                'price'            => 'Price',
+                'exchanges_volume' => 'Exchanges Volume',
+                'market_cap'       => 'Market Cap',
+
+                'header' => [
+                    'daily'         => 'Daily Range',
+                    '52w'           => '52-Week Range',
+                    'atl'           => 'All-Time Low',
+                    'ath'           => 'All-Time High',
+                    'today_volume'  => 'Today\'s Volume',
+                    'today_value'   => 'Today\'s Value',
+                    'date'          => 'Date',
                 ],
             ],
 

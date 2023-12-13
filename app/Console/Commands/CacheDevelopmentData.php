@@ -46,6 +46,7 @@ final class CacheDevelopmentData extends Command
             'explorer:cache-transactions',
             'explorer:cache-address-statistics',
             'explorer:cache-delegate-statistics',
+            'explorer:cache-market-data-statistics',
         ])->map(fn (string $command) => Artisan::call($command));
     }
 }
