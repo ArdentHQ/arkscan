@@ -55,7 +55,7 @@ it('should cache annual data for all time', function () {
     Block::factory()->create();
     Transaction::factory()->multiPayment()->count(3)->create([
         'amount' => 0,
-        'asset' => ['payments' => [['amount' => 10 * 1e8, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipientId' => 'Wallet2']]]
+        'asset'  => ['payments' => [['amount' => 10 * 1e8, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipientId' => 'Wallet2']]],
     ]);
 
     // Current year
