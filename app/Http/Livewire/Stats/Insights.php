@@ -94,6 +94,20 @@ final class Insights extends Component
         ];
     }
 
+    private function formatCurrency(float $value, bool $decimals = true): string
+    {
+        if ($decimals) {
+            return NumberFormatter::currency($value, Settings::currency());
+        }
+
+        return NumberFormatter::currencyForViews($value, Settings::currency());
+    }
+
+    private function formatDate(int $timestamp): string
+    {
+        return Carbon::createFromTimestamp($timestamp)->format(DateFormat::DATE);
+    }
+
     private function marketDataPrice(StatisticsCache $cache): array
     {
         $priceAtl        = $cache->getPriceAtl();
@@ -102,14 +116,14 @@ final class Insights extends Component
         $priceRange52w   = $cache->getPriceRange52();
 
         return [
-            'daily_low'  => NumberFormatter::currency($priceRangeDaily['low'], Settings::currency()),
-            'daily_high' => NumberFormatter::currency($priceRangeDaily['high'], Settings::currency()),
-            '52w_low'    => NumberFormatter::currency($priceRange52w['low'], Settings::currency()),
-            '52w_high'   => NumberFormatter::currency($priceRange52w['high'], Settings::currency()),
-            'atl'        => NumberFormatter::currency($priceAtl['value'], Settings::currency()),
-            'atl_date'   => Carbon::createFromTimestamp($priceAtl['timestamp'])->format(DateFormat::DATE),
-            'ath'        => NumberFormatter::currency($priceAth['value'], Settings::currency()),
-            'ath_date'   => Carbon::createFromTimestamp($priceAth['timestamp'])->format(DateFormat::DATE),
+            'daily_low'  => $priceRangeDaily !== null ? $this->formatCurrency($priceRangeDaily['low']) : null,
+            'daily_high' => $priceRangeDaily !== null ? $this->formatCurrency($priceRangeDaily['high']) : null,
+            '52w_low'    => $priceRange52w !== null ? $this->formatCurrency($priceRange52w['low']) : null,
+            '52w_high'   => $priceRange52w !== null ? $this->formatCurrency($priceRange52w['high']) : null,
+            'atl'        => $priceAtl !== null ? $this->formatCurrency($priceAtl['value']) : null,
+            'atl_date'   => $priceAtl !== null ? $this->formatDate($priceAtl['timestamp']) : null,
+            'ath'        => $priceAth !== null ? $this->formatCurrency($priceAth['value']) : null,
+            'ath_date'   => $priceAth !== null ? $this->formatDate($priceAth['timestamp']) : null,
         ];
     }
 
@@ -121,10 +135,10 @@ final class Insights extends Component
 
         return [
             'value'    => NumberFormatter::currencyForViews($volume ?? 0, Settings::currency()),
-            'atl'      => NumberFormatter::currencyForViews($volumeAtl['value'], Settings::currency()),
-            'atl_date' => Carbon::createFromTimestamp($volumeAtl['timestamp'])->format(DateFormat::DATE),
-            'ath'      => NumberFormatter::currencyForViews($volumeAth['value'], Settings::currency()),
-            'ath_date' => Carbon::createFromTimestamp($volumeAth['timestamp'])->format(DateFormat::DATE),
+            'atl'      => $volumeAtl !== null ? $this->formatCurrency($volumeAtl['value'], false) : null,
+            'atl_date' => $volumeAtl !== null ? $this->formatDate($volumeAtl['timestamp']) : null,
+            'ath'      => $volumeAth !== null ? $this->formatCurrency($volumeAth['value'], false) : null,
+            'ath_date' => $volumeAth !== null ? $this->formatDate($volumeAth['timestamp']) : null,
         ];
     }
 
@@ -135,10 +149,10 @@ final class Insights extends Component
 
         return [
             'value'    => MarketCap::getFormatted(Network::currency(), Settings::currency()),
-            'atl'      => NumberFormatter::currencyForViews($marketCapAtl['value'], Settings::currency()),
-            'atl_date' => Carbon::createFromTimestamp($marketCapAtl['timestamp'])->format(DateFormat::DATE),
-            'ath'      => NumberFormatter::currencyForViews($marketCapAth['value'], Settings::currency()),
-            'ath_date' => Carbon::createFromTimestamp($marketCapAth['timestamp'])->format(DateFormat::DATE),
+            'atl'      => $marketCapAtl !== null ? $this->formatCurrency($marketCapAtl['value'], false) : null,
+            'atl_date' => $marketCapAtl !== null ? $this->formatDate($marketCapAtl['timestamp']) : null,
+            'ath'      => $marketCapAth !== null ? $this->formatCurrency($marketCapAth['value'], false) : null,
+            'ath_date' => $marketCapAth !== null ? $this->formatDate($marketCapAth['timestamp']) : null,
         ];
     }
 
