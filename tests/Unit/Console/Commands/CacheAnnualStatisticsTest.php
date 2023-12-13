@@ -5,22 +5,19 @@ declare(strict_types=1);
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Transaction;
-use App\Models\Wallet;
-use App\Services\BigNumber;
 use App\Services\Cache\StatisticsCache;
-use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
 
 it('should cache annual data for current year', function () {
-    $cache = new StatisticsCache();
+    $cache       = new StatisticsCache();
     $currentTime = Carbon::now();
     $currentYear = $currentTime->year;
-    $timestamp = (int) $currentTime->timestamp - (int)Network::epoch()->timestamp;
+    $timestamp   = (int) $currentTime->timestamp - (int) Network::epoch()->timestamp;
 
     Transaction::factory()->count(5)->create([
         'timestamp' => $timestamp,
-        'amount' => 10 * 1e8,
-        'fee' => 0.1 * 1e8,
+        'amount'    => 10 * 1e8,
+        'fee'       => 0.1 * 1e8,
     ]);
     Block::factory()->count(5)->create([
         'timestamp' => $timestamp,
@@ -29,25 +26,25 @@ it('should cache annual data for current year', function () {
     $this->artisan('explorer:cache-annual-statistics');
 
     expect($cache->getAnnualData($currentYear))->toBe([
-        'year' => $currentYear,
+        'year'         => $currentYear,
         'transactions' => 5,
-        'volume' => '50.0000000000000000',
-        'fees' => '0.50000000000000000000',
-        'blocks' => 5,
+        'volume'       => '50.0000000000000000',
+        'fees'         => '0.50000000000000000000',
+        'blocks'       => 5,
     ]);
 });
 
 it('should cache annual data for all time', function () {
-    $cache = new StatisticsCache();
+    $cache       = new StatisticsCache();
     $currentTime = Carbon::now();
     $currentYear = $currentTime->year;
-    $timestamp = (int) $currentTime->timestamp - (int) Network::epoch()->timestamp;
+    $timestamp   = (int) $currentTime->timestamp - (int) Network::epoch()->timestamp;
 
     // 2017
     Transaction::factory()->count(6)->create([
         'timestamp' => 1,
-        'amount' => 10 * 1e8,
-        'fee' => 0.1 * 1e8,
+        'amount'    => 10 * 1e8,
+        'fee'       => 0.1 * 1e8,
     ]);
     Block::factory()->count(6)->create([
         'timestamp' => 1,
@@ -60,8 +57,8 @@ it('should cache annual data for all time', function () {
     // Current year
     Transaction::factory()->count(5)->create([
         'timestamp' => $timestamp,
-        'amount' => 10 * 1e8,
-        'fee' => 0.1 * 1e8,
+        'amount'    => 10 * 1e8,
+        'fee'       => 0.1 * 1e8,
     ]);
     Block::factory()->count(5)->create([
         'timestamp' => $timestamp,
@@ -70,19 +67,19 @@ it('should cache annual data for all time', function () {
     $this->artisan('explorer:cache-annual-statistics --all');
 
     expect($cache->getAnnualData(2017))->toBe([
-        'year' => 2017,
+        'year'         => 2017,
         'transactions' => 6,
-        'volume' => '60.0000000000000000',
-        'fees' => '0.60000000000000000000',
-        'blocks' => 6,
+        'volume'       => '60.0000000000000000',
+        'fees'         => '0.60000000000000000000',
+        'blocks'       => 6,
     ]);
 
     expect($cache->getAnnualData($currentYear))->toBe([
-        'year' => 2023,
+        'year'         => 2023,
         'transactions' => 5,
-        'volume' => '50.0000000000000000',
-        'fees' => '0.50000000000000000000',
-        'blocks' => 5,
+        'volume'       => '50.0000000000000000',
+        'fees'         => '0.50000000000000000000',
+        'blocks'       => 5,
     ]);
 });
 
