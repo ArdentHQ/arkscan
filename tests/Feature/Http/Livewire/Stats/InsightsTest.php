@@ -280,4 +280,3 @@ it('should render marketdata statistics', function (): void {
             '30,000',
         ]);
 });
-
