@@ -24,9 +24,11 @@
                             <span>@lang('pages.statistics.insights.market_data.header.'.$item)</span>
                             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                                 @if($item === 'daily' || $item === '52w')
-                                    {{ $prices[$item.'_low'] }} - {{ $prices[$item.'_high'] }}
+                                    {{ ExplorerNumberFormatter::currencyWithDecimals($prices[$item.'_low'], Settings::currency(), 2) }}
+                                    -
+                                    {{ ExplorerNumberFormatter::currencyWithDecimals($prices[$item.'_high'], Settings::currency(), 2) }}
                                 @else
-                                    {{ $prices[$item] }}
+                                    {{ ExplorerNumberFormatter::currencyWithDecimals($prices[$item], Settings::currency(), 2) }}
                                 @endif
                             </span>
                         </div>
@@ -37,7 +39,7 @@
                                     @lang('pages.statistics.insights.market_data.header.date'):
                                 </span>
                                 <div class="text-theme-secondary-900 dark:text-theme-dark-50">
-                                    {{ $prices[$item.'_date']}}
+                                    {{ Carbon\Carbon::createFromTimestamp($prices[$item.'_date'])->format(DateFormat::DATE) }}
                                 </div>
                             @endif
                         </div>
@@ -52,9 +54,11 @@
                     <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
                         <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
                             @if($item === 'daily' || $item === '52w')
-                                {{ $prices[$item.'_low'] }} - {{ $prices[$item.'_high'] }}
+                                {{ ExplorerNumberFormatter::currencyWithDecimals($prices[$item.'_low'], Settings::currency(), 2) }}
+                                -
+                                {{ ExplorerNumberFormatter::currencyWithDecimals($prices[$item.'_high'], Settings::currency(), 2) }}
                             @else
-                                {{ $prices[$item] }}
+                                {{ ExplorerNumberFormatter::currencyWithDecimals($prices[$item], Settings::currency(), 2) }}
                             @endif
                         </div>
 
@@ -64,7 +68,7 @@
                                     @lang('pages.statistics.insights.market_data.header.date'):
                                 </div>
                                 <div class="text-theme-secondary-900 dark:text-theme-dark-50">
-                                    {{ $prices[$item.'_date']}}
+                                    {{ Carbon\Carbon::createFromTimestamp($prices[$item.'_date'])->format(DateFormat::DATE) }}
                                 </div>
                             @endif
                         </div>
@@ -81,7 +85,7 @@
                         <div class="flex flex-col space-y-2">
                             <span>@lang('pages.statistics.insights.market_data.header.'.$item)</span>
                             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                                {{ $volumes[$item] }}
+                                {{ ExplorerNumberFormatter::currencyWithDecimals($volumes[$item], Settings::currency(), 0) }}
                             </span>
                         </div>
 
@@ -91,7 +95,7 @@
                                     @lang('pages.statistics.insights.market_data.header.date'):
                                 </span>
                                 <div class="text-theme-secondary-900 dark:text-theme-dark-50">
-                                    {{ $volumes[$item.'_date']}}
+                                    {{ Carbon\Carbon::createFromTimestamp($volumes[$item.'_date'])->format(DateFormat::DATE) }}
                                 </div>
                             @endif
                         </div>
@@ -105,7 +109,7 @@
                     </div>
                     <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
                         <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
-                            {{ $volumes[$item] }}
+                            {{ ExplorerNumberFormatter::currencyWithDecimals($volumes[$item], Settings::currency(), 0) }}
                         </div>
 
                         <div class="flex flex-1 justify-between space-x-2 w-full md-lg:pl-16">
@@ -114,7 +118,7 @@
                                     @lang('pages.statistics.insights.market_data.header.date'):
                                 </div>
                                 <div class="text-theme-secondary-900 dark:text-theme-dark-50">
-                                    {{ $volumes[$item.'_date']}}
+                                    {{ Carbon\Carbon::createFromTimestamp($volumes[$item.'_date'])->format(DateFormat::DATE) }}
                                 </div>
                             @endif
                         </div>
@@ -131,7 +135,7 @@
                         <div class="flex flex-col space-y-2">
                             <span>@lang('pages.statistics.insights.market_data.header.'.$item)</span>
                             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                                {{ $caps[$item] }}
+                                {{ ExplorerNumberFormatter::currencyWithDecimals($caps[$item], Settings::currency(), 0) }}
                             </span>
                         </div>
 
@@ -141,7 +145,7 @@
                                     @lang('pages.statistics.insights.market_data.header.date'):
                                 </span>
                                 <div class="text-theme-secondary-900 dark:text-theme-dark-50">
-                                    {{ $caps[$item.'_date']}}
+                                    {{ Carbon\Carbon::createFromTimestamp($caps[$item.'_date'])->format(DateFormat::DATE) }}
                                 </div>
                             @endif
                         </div>
@@ -155,7 +159,7 @@
                     </div>
                     <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
                         <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
-                            {{ $caps[$item] }}
+                            {{ ExplorerNumberFormatter::currencyWithDecimals($caps[$item], Settings::currency(), 0) }}
                         </div>
 
                         <div class="flex flex-1 justify-between space-x-2 w-full md-lg:pl-16">
@@ -164,7 +168,7 @@
                                     @lang('pages.statistics.insights.market_data.header.date'):
                                 </div>
                                 <div class="text-theme-secondary-900 dark:text-theme-dark-50">
-                                    {{ $caps[$item.'_date']}}
+                                    {{ Carbon\Carbon::createFromTimestamp($caps[$item.'_date'])->format(DateFormat::DATE) }}
                                 </div>
                             @endif
                         </div>
