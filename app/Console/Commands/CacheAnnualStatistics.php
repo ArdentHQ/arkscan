@@ -58,7 +58,7 @@ final class CacheAnnualStatistics extends Command
                 ->query()
                 ->select([
                     DB::raw('DATE_PART(\'year\', TO_TIMESTAMP(transactions.timestamp + '.$epoch.')) AS year'),
-                    DB::raw('SUM((payment->>\'amount\')::bigint) / 1e8 AS amount')
+                    DB::raw('SUM((payment->>\'amount\')::bigint) / 1e8 AS amount'),
                 ])
                 ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
                 ->where('transactions.type', '=', CoreTransactionTypeEnum::MULTI_PAYMENT)
@@ -80,7 +80,7 @@ final class CacheAnnualStatistics extends Command
 
         $transactionData->each(function ($item, $key) use ($blocksData, $multipaymentData, $cache) {
             // Find corresponding multipayment amount
-            $multipaymentAmount = $multipaymentData->first(function($value) use ($item) {
+            $multipaymentAmount = $multipaymentData->first(function ($value) use ($item) {
                 return $value->year === $item->year;
             })?->amount ?? '0';
 
