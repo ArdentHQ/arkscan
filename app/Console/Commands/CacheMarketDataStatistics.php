@@ -11,9 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
-/**
- * @phpstan-type MarketDataArray array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]}
- */
 final class CacheMarketDataStatistics extends Command
 {
     /**
@@ -32,7 +29,11 @@ final class CacheMarketDataStatistics extends Command
 
     public function handle(MarketDataProvider $marketDataProvider, StatisticsCache $cache): void
     {
-        $allTimeData = $marketDataProvider->historicalAll(Network::currency(), 'usd', Network::epoch()->diffInDays());
+        if (! Network::canBeExchanged()) {
+            return;
+        }
+
+        $allTimeData = $marketDataProvider->historicalAll(Network::currency(), 'usd', Network::epoch()->diffInDays() + 1); // +1 to handle edge case where first day is not returned in full
         $dailyData   = $marketDataProvider->historicalAll(Network::currency(), 'usd');
 
         if (count($allTimeData) === 0 || count($dailyData) === 0) {
@@ -45,8 +46,8 @@ final class CacheMarketDataStatistics extends Command
     }
 
     /**
-     * @param MarketDataArray $allTimeData
-     * @param MarketDataArray $dailyData
+     * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $allTimeData
+     * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $dailyData
      */
     private function cachePriceStats(array $allTimeData, array $dailyData, StatisticsCache $cache): void
     {
@@ -85,7 +86,7 @@ final class CacheMarketDataStatistics extends Command
     }
 
     /**
-     * @param MarketDataArray $data
+     * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $data
      */
     private function cacheDailyPriceStats(array $data, StatisticsCache $cache): void
     {
@@ -103,7 +104,7 @@ final class CacheMarketDataStatistics extends Command
     }
 
     /**
-     * @param MarketDataArray $data
+     * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $data
      */
     private function cacheVolumeStats(array $data, StatisticsCache $cache): void
     {
@@ -122,7 +123,7 @@ final class CacheMarketDataStatistics extends Command
     }
 
     /**
-     * @param MarketDataArray $data
+     * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $data
      */
     private function cacheMarketCapStats(array $data, StatisticsCache $cache): void
     {

@@ -15,9 +15,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
-/**
- * @phpstan-type MarketDataArray array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]}
- */
 final class CoinGecko extends AbstractMarketDataProvider
 {
     public function historical(string $source, string $target, string $format = 'Y-m-d'): Collection
@@ -54,7 +51,7 @@ final class CoinGecko extends AbstractMarketDataProvider
     }
 
     /**
-     * @return MarketDataArray|array{}
+     * @return array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]}|array{}
      */
     public function historicalAll(string $source, string $target, int $limit = 1): array
     {
@@ -66,7 +63,7 @@ final class CoinGecko extends AbstractMarketDataProvider
         $data = null;
 
         try {
-            /** @var MarketDataArray */
+            /** @var array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} */
             $data = Http::get(
                 'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
                 $params

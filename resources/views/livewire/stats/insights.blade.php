@@ -5,11 +5,13 @@
         :records="$transactionRecords"
     />
 
-    <x-stats.insights.marketdata
-        :prices="$marketDataPrice"
-        :volumes="$marketDataVolume"
-        :caps="$marketDataCap"
-    />
+    @if (Network::canBeExchanged())
+        <x-stats.insights.marketdata
+            :prices="$marketDataPrice"
+            :volumes="$marketDataVolume"
+            :caps="$marketDataCap"
+        />
+    @endif
 
     <x-stats.insights.delegates :details="$delegateDetails" />
 
