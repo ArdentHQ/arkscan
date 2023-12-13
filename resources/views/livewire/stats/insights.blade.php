@@ -19,4 +19,8 @@
         :holdings="$addressHoldings"
         :unique="$uniqueAddresses"
     />
+
+    <x-stats.insights.annual
+        :years="$annualData"
+    />
 </div>

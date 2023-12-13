@@ -470,6 +470,7 @@ return [
                 'market_data'  => 'Market Data',
                 'delegates'    => 'Delegate Data',
                 'addresses'    => 'Address Data',
+                'annual'       => 'Annual Data',
             ],
 
             'transactions' => [
@@ -555,6 +556,16 @@ return [
                     'blocks'                 => 'Blocks',
                 ],
             ],
+
+            'annual' => [
+                'title' => 'Annual Data',
+                'header' => [
+                    'transaction' => 'Tx',
+                    'volume' => 'Volume',
+                    'fees' => 'Fees',
+                    'blocks' => 'Blocks',
+                ]
+            ]
         ],
     ],
 

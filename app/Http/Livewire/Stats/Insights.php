@@ -21,6 +21,7 @@ use App\ViewModels\TransactionViewModel;
 use App\ViewModels\ViewModelFactory;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -41,6 +42,7 @@ final class Insights extends Component
             'delegateDetails'     => $this->delegateDetails($statisticsCache),
             'addressHoldings'     => $this->addressHoldings($statisticsCache),
             'uniqueAddresses'     => $this->uniqueAddresses($statisticsCache),
+            'annualData'          => $this->annualData($statisticsCache),
         ]);
     }
 
@@ -234,5 +236,18 @@ final class Insights extends Component
             'most_transactions' => $mostTransactions,
             'largest'           => $largest,
         ];
+    }
+
+    private function annualData(StatisticsCache $cache): array
+    {
+        $startYear = Carbon::parse(Network::epoch())->year;
+        $currentYear = Carbon::now()->year;
+        $yearData = [];
+
+        for ($year = $startYear; $year <= $currentYear; $year++) {
+            $yearData[] = $cache->getAnnualData($year);
+        }
+
+        return array_filter($yearData, fn ($item) => $item !== null);
     }
 }
