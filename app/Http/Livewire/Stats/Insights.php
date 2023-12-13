@@ -108,9 +108,9 @@ final class Insights extends Component
             '52w_low'    => $priceRange52w !== null ? $priceRange52w['low'] : null,
             '52w_high'   => $priceRange52w !== null ? $priceRange52w['high'] : null,
             'atl'        => $priceAtl !== null ? $priceAtl['value'] : null,
-            'atl_date'   => $priceAtl !== null ?$priceAtl['timestamp'] : null,
+            'atl_date'   => $priceAtl !== null ? $priceAtl['timestamp'] : null,
             'ath'        => $priceAth !== null ? $priceAth['value'] : null,
-            'ath_date'   => $priceAth !== null ?$priceAth['timestamp'] : null,
+            'ath_date'   => $priceAth !== null ? $priceAth['timestamp'] : null,
         ];
     }
 
@@ -123,9 +123,9 @@ final class Insights extends Component
         return [
             'today_volume' => $volume ?? 0,
             'atl'          => $volumeAtl !== null ? $volumeAtl['value'] : null,
-            'atl_date'     => $volumeAtl !== null ?$volumeAtl['timestamp'] : null,
+            'atl_date'     => $volumeAtl !== null ? $volumeAtl['timestamp'] : null,
             'ath'          => $volumeAth !== null ? $volumeAth['value'] : null,
-            'ath_date'     => $volumeAth !== null ?$volumeAth['timestamp'] : null,
+            'ath_date'     => $volumeAth !== null ? $volumeAth['timestamp'] : null,
         ];
     }
 
@@ -137,9 +137,9 @@ final class Insights extends Component
         return [
             'today_value' => MarketCap::get(Network::currency(), Settings::currency()),
             'atl'         => $marketCapAtl !== null ? $marketCapAtl['value'] : null,
-            'atl_date'    => $marketCapAtl !== null ?$marketCapAtl['timestamp'] : null,
+            'atl_date'    => $marketCapAtl !== null ? $marketCapAtl['timestamp'] : null,
             'ath'         => $marketCapAth !== null ? $marketCapAth['value'] : null,
-            'ath_date'    => $marketCapAth !== null ?$marketCapAth['timestamp'] : null,
+            'ath_date'    => $marketCapAth !== null ? $marketCapAth['timestamp'] : null,
         ];
     }
 
