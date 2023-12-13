@@ -53,11 +53,21 @@ it('should cache annual data for all time', function () {
     // 2020, default timestamp. Needed as transaction factory will create blocks in addition
     Transaction::factory()->count(3)->create();
     Block::factory()->create();
+    Transaction::factory()->multiPayment()->count(3)->create([
+        'amount' => 0,
+        'asset' => ['payments' => [['amount' => 10 * 1e8, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipientId' => 'Wallet2']]]
+    ]);
 
     // Current year
     Transaction::factory()->count(5)->create([
         'timestamp' => $timestamp,
         'amount'    => 10 * 1e8,
+        'fee'       => 0.1 * 1e8,
+    ]);
+    Transaction::factory()->multiPayment()->create([
+        'timestamp' => $timestamp,
+        'amount'    => 0,
+        'asset'     => ['payments' => [['amount' => 10 * 1e8, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipientId' => 'Wallet2']]],
         'fee'       => 0.1 * 1e8,
     ]);
     Block::factory()->count(5)->create([
@@ -76,9 +86,9 @@ it('should cache annual data for all time', function () {
 
     expect($cache->getAnnualData($currentYear))->toBe([
         'year'         => 2023,
-        'transactions' => 5,
-        'volume'       => '50.0000000000000000',
-        'fees'         => '0.50000000000000000000',
+        'transactions' => 6,
+        'volume'       => '61.0000000000000000',
+        'fees'         => '0.60000000000000000000',
         'blocks'       => 5,
     ]);
 });
