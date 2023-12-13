@@ -11,7 +11,6 @@ use App\Services\Cache\StatisticsCache;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 final class CacheAnnualStatistics extends Command
 {
@@ -65,7 +64,6 @@ final class CacheAnnualStatistics extends Command
                 ->groupBy('year')
                 ->orderBy('year')
                 ->get();
-        Log::debug($multipaymentData);
 
         $blocksData = DB::connection('explorer')
             ->query()
@@ -83,8 +81,6 @@ final class CacheAnnualStatistics extends Command
             $multipaymentAmount = $multipaymentData->first(function ($value) use ($item) {
                 return $value->year === $item->year;
             })?->amount ?? '0';
-
-            Log::debug($multipaymentAmount);
 
             $cache->setAnnualData(
                 (int) $item->year,
