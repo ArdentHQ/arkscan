@@ -2,75 +2,72 @@
 
 declare(strict_types=1);
 
+use App\Contracts\MarketDataProvider;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\StatisticsCache;
+use Illuminate\Support\Facades\Config;
 
 it('should cache market data statistics', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
     $cache = new StatisticsCache();
 
-    $mostVoters   = Wallet::factory()->activeDelegate()->create();
-    $leastVoters  = Wallet::factory()->activeDelegate()->create();
-    $oldestActive = Wallet::factory()->activeDelegate()->create();
-    $newestActive = Wallet::factory()->activeDelegate()->create();
-    $mostBlocks   = Wallet::factory()->activeDelegate()->create();
-
-    Round::factory()->create([
-        'round'      => 1,
-        'public_key' => $oldestActive->public_key,
-    ]);
-    Round::factory()->create([
-        'round'      => 1,
-        'public_key' => $newestActive->public_key,
-    ]);
-
-    Wallet::factory()->count(5)->create([
-        'attributes' => ['vote' => $mostVoters->public_key],
-    ]);
-
-    Wallet::factory()->count(1)->create([
-        'attributes' => ['vote' => $leastVoters->public_key],
-    ]);
-
-    Transaction::factory()->delegateRegistration()->create([
-        'timestamp'         => 1,
-        'sender_public_key' => $oldestActive->public_key,
-    ]);
-
-    Transaction::factory()->delegateRegistration()->create([
-        'timestamp'         => 100,
-        'sender_public_key' => $newestActive->public_key,
-    ]);
-
-    Block::factory()->count(10)->create([
-        'generator_public_key' => $mostBlocks->public_key,
-    ]);
-
-    Block::factory()->count(6)->create([
-        'generator_public_key' => $newestActive->public_key,
-    ]);
+    $this->mock(MarketDataProvider::class)
+        ->shouldReceive('historicalAll')
+        ->andReturn(json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
 
     $this->artisan('explorer:cache-market-data-statistics');
 
-    expect($cache->getMostUniqueVoters())->toBe($mostVoters->public_key);
-    expect($cache->getLeastUniqueVoters())->toBe($leastVoters->public_key);
-    expect($cache->getOldestActiveDelegate())->toBe(['publicKey' => $oldestActive->public_key, 'timestamp' => Network::epoch()->timestamp + 1]);
-    expect($cache->getNewestActiveDelegate())->toBe(['publicKey' => $newestActive->public_key, 'timestamp' => Network::epoch()->timestamp + 100]);
-    expect($cache->getMostBlocksForged())->toBe($mostBlocks->public_key);
+    expect($cache->getPriceRangeDaily())->toBe(['low' => 0.0339403, 'high' => 10.2219]);
+    expect($cache->getPriceRange52())->toBe(['low' => 0.2221350324167072, 'high' => 1.795718158629526]);
+    expect($cache->getPriceAth())->toBe(['timestamp' => 1515542400, 'value' => 10.2219]);
+    expect($cache->getPriceAtl())->toBe(['timestamp' => 1490140800, 'value' => 0.0339403]);
+
+    expect($cache->getVolumeAtl())->toBe(['timestamp' => 1688774400, 'value' => 40548.95038391039]);
+    expect($cache->getVolumeAth())->toBe(['timestamp' => 1698710400, 'value' => 443956833.91000223]);
+
+    expect($cache->getMarketCapAtl())->toBe(['timestamp' => 1490140800, 'value' => 3181903.0]);
+    expect($cache->getMarketCapAth())->toBe(['timestamp' => 1515542400, 'value' => 1001554886.9196]);
+});
+
+it('should exit early if network cannot be exchanged', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', false);
+
+    $cache = new StatisticsCache();
+
+    $this->artisan('explorer:cache-market-data-statistics');
+
+    expect($cache->getPriceRangeDaily())->toBe(null);
+    expect($cache->getPriceRange52())->toBe(null);
+    expect($cache->getPriceAth())->toBe(null);
+    expect($cache->getPriceAtl())->toBe(null);
+
+    expect($cache->getVolumeAtl())->toBe(null);
+    expect($cache->getVolumeAth())->toBe(null);
+
+    expect($cache->getMarketCapAtl())->toBe(null);
+    expect($cache->getMarketCapAth())->toBe(null);
 });
 
 it('should handle null scenarios for statistics', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
     $cache = new StatisticsCache();
-    Round::factory()->create();
+
+    $this->mock(MarketDataProvider::class)->shouldReceive('historicalAll')->andReturn([]);
 
     $this->artisan('explorer:cache-market-data-statistics');
 
-    expect($cache->getMostUniqueVoters())->toBeNull();
-    expect($cache->getLeastUniqueVoters())->toBeNull();
-    expect($cache->getOldestActiveDelegate())->toBeNull();
-    expect($cache->getNewestActiveDelegate())->toBeNull();
-    expect($cache->getMostBlocksForged())->toBeNull();
+    expect($cache->getPriceRangeDaily())->toBe(null);
+    expect($cache->getPriceRange52())->toBe(null);
+    expect($cache->getPriceAth())->toBe(null);
+    expect($cache->getPriceAtl())->toBe(null);
+
+    expect($cache->getVolumeAtl())->toBe(null);
+    expect($cache->getVolumeAth())->toBe(null);
+
+    expect($cache->getMarketCapAtl())->toBe(null);
+    expect($cache->getMarketCapAth())->toBe(null);
 });
