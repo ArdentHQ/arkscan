@@ -3,11 +3,6 @@
 declare(strict_types=1);
 
 use App\Contracts\MarketDataProvider;
-use App\Facades\Network;
-use App\Models\Block;
-use App\Models\Round;
-use App\Models\Transaction;
-use App\Models\Wallet;
 use App\Services\Cache\StatisticsCache;
 use Illuminate\Support\Facades\Config;
 
