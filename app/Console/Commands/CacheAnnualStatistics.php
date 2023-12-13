@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Enums\CoreTransactionTypeEnum;
 use App\Facades\Network;
+use App\Services\BigNumber;
 use App\Services\Cache\StatisticsCache;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 final class CacheAnnualStatistics extends Command
 {
@@ -42,14 +45,27 @@ final class CacheAnnualStatistics extends Command
             ->query()
             ->select([
                 DB::raw('DATE_PART(\'year\', TO_TIMESTAMP(transactions.timestamp + '.$epoch.')) AS year'),
-                DB::raw('COUNT(*) as transactions'),
-                DB::raw('SUM(amount) / 1e8 as amount'), // TODO: include multipayments
-                DB::raw('SUM(fee) / 1e8 as fees'),
+                DB::raw('COUNT(DISTINCT(transactions.id)) AS transactions'),
+                DB::raw('SUM(amount) / 1e8 AS amount'),
+                DB::raw('SUM(fee) / 1e8 AS fees'),
             ])
             ->from('transactions')
             ->groupBy('year')
             ->orderBy('year')
             ->get();
+
+        $multipaymentData = DB::connection('explorer')
+                ->query()
+                ->select([
+                    DB::raw('DATE_PART(\'year\', TO_TIMESTAMP(transactions.timestamp + '.$epoch.')) AS year'),
+                    DB::raw('SUM((payment->>\'amount\')::bigint) / 1e8 AS amount')
+                ])
+                ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
+                ->where('transactions.type', '=', CoreTransactionTypeEnum::MULTI_PAYMENT)
+                ->groupBy('year')
+                ->orderBy('year')
+                ->get();
+        Log::debug($multipaymentData);
 
         $blocksData = DB::connection('explorer')
             ->query()
@@ -62,11 +78,18 @@ final class CacheAnnualStatistics extends Command
             ->orderBy('year')
             ->get();
 
-        $transactionData->each(function ($item, $key) use ($blocksData, $cache) {
+        $transactionData->each(function ($item, $key) use ($blocksData, $multipaymentData, $cache) {
+            // Find corresponding multipayment amount
+            $multipaymentAmount = $multipaymentData->first(function($value) use ($item) {
+                return $value->year === $item->year;
+            })?->amount ?? '0';
+
+            Log::debug($multipaymentAmount);
+
             $cache->setAnnualData(
                 (int) $item->year,
                 (int) $item->transactions,
-                $item->amount,
+                BigNumber::new($item->amount)->plus($multipaymentAmount)->__toString(),
                 $item->fees,
                 $blocksData->get($key)->blocks, // We assume to have the same amount of entries for blocks and transactions (years)
             );
@@ -90,6 +113,14 @@ final class CacheAnnualStatistics extends Command
             ->where('timestamp', '>=', $startOfYear - $epoch)
             ->first();
 
+        $multipaymentAmount = DB::connection('explorer')
+            ->query()
+            ->select(DB::raw('SUM((payment->>\'amount\')::bigint) / 1e8 AS amount'))
+            ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
+            ->where('transactions.type', '=', CoreTransactionTypeEnum::MULTI_PAYMENT)
+            ->where('timestamp', '>=', $startOfYear - $epoch)
+            ->first()?->amount ?? '0';
+
         $blocksData = DB::connection('explorer')
             ->query()
             ->from('blocks')
@@ -101,7 +132,7 @@ final class CacheAnnualStatistics extends Command
             // @phpstan-ignore-next-line
             (int) $transactionData?->transactions,
             // @phpstan-ignore-next-line
-            $transactionData?->amount ?? '0',
+            BigNumber::new($transactionData?->amount ?? '0')->plus($multipaymentAmount)->__toString(),
             // @phpstan-ignore-next-line
             $transactionData?->fees ?? '0',
             $blocksData,
