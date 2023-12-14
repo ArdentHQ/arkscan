@@ -33,7 +33,6 @@ final class CacheAddressStatistics extends Command
 
     public function handle(StatisticsCache $cache): void
     {
-
         $this->cacheHoldings($cache);
         $this->cacheGenesis($cache);
         $this->cacheNewest($cache);
@@ -90,9 +89,9 @@ final class CacheAddressStatistics extends Command
             // Only store if later wallet is actually newer than previously cached wallet
             if ($currentAddress === null || $currentAddress['timestamp'] < $newest->timestamp) {
                 $cache->setNewestAddress([
-                    'address' => $newest->address,
+                    'address'   => $newest->address,
                     'timestamp' => $newest->timestamp,
-                    'value'   => Carbon::createFromTimestamp((int)$newest->timestamp + (int)Network::epoch()->timestamp)->format(DateFormat::DATE),
+                    'value'     => Carbon::createFromTimestamp((int) $newest->timestamp + (int) Network::epoch()->timestamp)->format(DateFormat::DATE),
                 ]);
             }
         }
