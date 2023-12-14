@@ -13,6 +13,7 @@ use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 final class CacheAddressStatistics extends Command
 {
@@ -47,6 +48,22 @@ final class CacheAddressStatistics extends Command
         }
 
         $newest = Wallet::first(); // TODO: https://app.clickup.com/t/86dqtd90x
+
+        $query = Wallet::query()
+            ->select('wallets.address', DB::raw('MIN(transactions.timestamp) as min_timestamp'))
+            ->leftJoin('transactions', function ($join) {
+                $join->on('wallets.public_key', '=', 'transactions.sender_public_key')
+                    ->orOn('wallets.address', '=', 'transactions.recipient_id');
+            })
+            ->where('wallets.updated_at', '>', '2023-12-01')
+            ->whereNotNull('transactions.sender_public_key')
+            ->whereNotNull('transactions.recipient_id')
+            ->groupBy('wallets.address')
+            ->orderBy('min_timestamp', 'desc')
+            ->limit(1)
+            ->get();
+        Log::debug($query);
+
         if ($newest !== null) {
             $cache->setNewestAddress([
                 'address' => $newest->address,
