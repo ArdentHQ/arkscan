@@ -36,12 +36,13 @@
             full-width
         >
             @foreach($records as $key => $model)
-                <x-stats.insights.entity-row
-                    :key="$key"
-                    :model="$model"
-                    :show-transaction-count="$key === 'most_transactions_in_block'"
-                    :show-fee="$key === 'highest_fee'"
-                />
+                @php ($isTransaction = is_a($model, \App\ViewModels\TransactionViewModel::class))
+                @php ($isBlock = is_a($model, \App\ViewModels\BlockViewModel::class))
+
+                <x-stats.insights.mobile.transaction-record-row :key="$key" :model="$model" />
+
+                <x-stats.insights.desktop.transaction-record-row :key="$key" :model="$model" />
+
             @endforeach
         </x-stats.insights.container>
     </div>
