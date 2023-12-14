@@ -36,8 +36,6 @@
             full-width
         >
             @foreach($records as $key => $model)
-                @php ($isTransaction = is_a($model, \App\ViewModels\TransactionViewModel::class))
-                @php ($isBlock = is_a($model, \App\ViewModels\BlockViewModel::class))
 
                 <x-stats.insights.mobile.transaction-record-row :key="$key" :model="$model" />
 
