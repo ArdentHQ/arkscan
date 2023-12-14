@@ -141,7 +141,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'address': string, 'value': Carbon}
+     * @return array{'address': string, 'timestamp': int, 'value': Carbon}
      */
     public function getNewestAddress(): ?array
     {
