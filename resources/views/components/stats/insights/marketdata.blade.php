@@ -16,14 +16,14 @@
 
     <div>
         <x-stats.insights.container :title="trans('pages.statistics.insights.market_data.price')" full-width>
-            @foreach (['daily', '52w', 'atl', 'ath'] as $item)
+            @foreach (['daily', 'atl', 'ath'] as $item) {{-- Mind the lack of "52w" here --}}
                 {{-- Mobile --}}
                 <div class="flex md:hidden">
                     <div class="flex flex-col justify-between pt-3 space-y-3 w-full sm:flex-row sm:space-y-0">
                         <div class="flex flex-col space-y-2">
                             <span>@lang('pages.statistics.insights.market_data.header.'.$item)</span>
                             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                                @if($item === 'daily' || $item === '52w')
+                                @if($item === 'daily')
                                     {{ ExplorerNumberFormatter::currencyWithDecimals($prices[$item.'_low'], Settings::currency(), 2) }}
                                     -
                                     {{ ExplorerNumberFormatter::currencyWithDecimals($prices[$item.'_high'], Settings::currency(), 2) }}
@@ -34,7 +34,14 @@
                         </div>
 
                         <div class="flex flex-col space-y-2 w-[130px]">
-                            @if($item === 'atl' || $item === 'ath')
+                            @if($item === 'daily')
+                                <span>@lang('pages.statistics.insights.market_data.header.52w')</span>
+                                <span class="text-theme-secondary-900 dark:text-theme-dark-50">
+                                    {{ ExplorerNumberFormatter::currencyWithDecimals($prices['52w_low'], Settings::currency(), 2) }}
+                                    -
+                                    {{ ExplorerNumberFormatter::currencyWithDecimals($prices['52w_high'], Settings::currency(), 2) }}
+                                </span>
+                            @elseif($item === 'atl' || $item === 'ath')
                                 <span>
                                     @lang('pages.statistics.insights.market_data.header.date'):
                                 </span>
