@@ -14,7 +14,7 @@
     </div>
 
     <div>
-        <x-stats.insights.container :title="trans('pages.statistics.insights.addresses.holdings')">
+        <x-stats.insights.container :title="trans('pages.statistics.insights.addresses.holdings')" full-width>
             @foreach($holdings as $key => $values)
                 {{-- Mobile --}}
                 <div class="flex md:hidden">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 {{-- Desktop --}}
-                <div class="hidden justify-between w-full md:flex">
+                <div class="hidden justify-between w-full md:flex lg:pr-8 lg:w-2/3 xl:pr-16 xl:w-1/2">
                     <div class="flex flex-1">
                         <span>&gt; <x-number>{{ $values['grouped'] }}</x-number> {{ Network::currency() }}</span>
                     </div>
