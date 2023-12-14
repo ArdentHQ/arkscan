@@ -55,9 +55,9 @@
         {{-- Desktop Medium --}}
         <div class="hidden md:block xl:hidden">
             <x-stats.insights.container full-width>
-                <div class="flex flex-col space-y-4">
+                <div class="flex flex-col space-y-4 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-700">
                     @foreach ($years as $year)
-                        <div class="flex">
+                        <div @class(["flex", "pt-4" => !$loop->first])>
                             <div class="flex flex-1 text-theme-secondary-900 dark:text-theme-dark-50">{{ $year['year'] }}</div>
                             <div class="flex flex-col flex-1 space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
                                 <div class="flex flex-col flex-1 space-y-3">
