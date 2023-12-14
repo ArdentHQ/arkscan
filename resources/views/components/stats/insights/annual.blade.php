@@ -17,7 +17,7 @@
         <div class="flex flex-col md:hidden">
             @foreach ($years as $year)
                 <x-stats.insights.container :title="$year['year']" full-width>
-                    <div class="flex flex-col flex-1 justify-between pt-3 space-y-3 w-full sm:flex-row sm:space-y-0">
+                    <div class="flex flex-col flex-1 justify-between pt-3 space-y-3 w-full divide-y divide-dashed sm:flex-row sm:space-y-0 sm:divide-none divide-theme-secondary-300 dark:divide-theme-dark-700">
                         <div class="flex flex-col space-y-2">
                             <span>@lang('pages.statistics.insights.annual.header.transaction')</span>
                             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
@@ -25,7 +25,7 @@
                             </span>
                         </div>
 
-                        <div class="flex flex-col space-y-2 w-[170px]">
+                        <div class="flex flex-col pt-3 space-y-2 w-full sm:pt-0 sm:w-[170px]">
                             <span>@lang('pages.statistics.insights.annual.header.volume')</span>
                             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                                 {{ ExplorerNumberFormatter::currencyWithDecimals($year['volume'], Network::currency(), 2) }}
@@ -33,7 +33,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col flex-1 justify-between pt-3 space-y-3 w-full sm:flex-row sm:space-y-0">
+                    <div class="flex flex-col flex-1 justify-between pt-3 space-y-3 w-full divide-y divide-dashed sm:flex-row sm:space-y-0 sm:divide-none divide-theme-secondary-300 dark:divide-theme-dark-700">
                         <div class="flex flex-col space-y-2">
                             <span>@lang('pages.statistics.insights.annual.header.fees')</span>
                             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
@@ -41,7 +41,7 @@
                             </span>
                         </div>
 
-                        <div class="flex flex-col space-y-2 w-[170px]">
+                        <div class="flex flex-col pt-3 space-y-2 w-full sm:pt-0 sm:w-[170px]">
                             <span>@lang('pages.statistics.insights.annual.header.blocks')</span>
                             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                                 <x-number>{{ $year['blocks'] }}</x-number>
@@ -55,9 +55,9 @@
         {{-- Desktop Medium --}}
         <div class="hidden md:block xl:hidden">
             <x-stats.insights.container full-width>
-                <div class="flex flex-col space-y-4">
+                <div class="flex flex-col space-y-4 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-700">
                     @foreach ($years as $year)
-                        <div class="flex">
+                        <div @class(["flex", "pt-4" => !$loop->first])>
                             <div class="flex flex-1 text-theme-secondary-900 dark:text-theme-dark-50">{{ $year['year'] }}</div>
                             <div class="flex flex-col flex-1 space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
                                 <div class="flex flex-col flex-1 space-y-3">
