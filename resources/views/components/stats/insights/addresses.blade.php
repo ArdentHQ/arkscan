@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 {{-- Desktop --}}
-                <div class="hidden justify-between md:flex w-full lg:w-2/3 xl:w-1/2 lg:pr-8 xl:pr-16">
+                <div class="hidden justify-between w-full md:flex lg:pr-8 lg:w-2/3 xl:pr-16 xl:w-1/2">
                     <div class="flex flex-1">
                         <span>&gt; <x-number>{{ $values['grouped'] }}</x-number> {{ Network::currency() }}</span>
                     </div>

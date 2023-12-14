@@ -6,8 +6,8 @@
 @php ($isTransaction = is_a($model, \App\ViewModels\TransactionViewModel::class))
 @php ($isBlock = is_a($model, \App\ViewModels\BlockViewModel::class))
 
-<div class="hidden md:flex w-full min-w-0 pt-1 xl:pt-0">
-    <div class="justify-between w-full flex xl:w-[770px]">
+<div class="hidden pt-1 w-full min-w-0 md:flex xl:pt-0">
+    <div class="flex justify-between w-full xl:w-[770px]">
         <div class="flex flex-1">
             @lang('pages.statistics.insights.transactions.header.'.$key)
         </div>
@@ -36,7 +36,7 @@
                     </a>
                 @endif
             </div>
-            <div class="flex flex-col xl:flex-row flex-1 w-full md-lg:pl-16 space-y-3 xl:space-y-0">
+            <div class="flex flex-col flex-1 space-y-3 w-full xl:flex-row xl:space-y-0 md-lg:pl-16">
                 <div class="flex flex-1 justify-between space-x-2 w-full">
                     <div>
                         @if ($key === 'most_transactions_in_block')
@@ -56,7 +56,7 @@
                     </div>
                 </div>
 
-                <div class="hidden md:flex xl:hidden justify-between space-x-2 ">
+                <div class="hidden justify-between space-x-2 md:flex xl:hidden">
                     <div>
                         @lang('pages.statistics.insights.transactions.header.date'):
                     </div>
@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    <div class="flex md:hidden xl:flex justify-between space-x-2 md-lg:pl-16 xl:w-[330px]">
+    <div class="flex justify-between space-x-2 md:hidden xl:flex md-lg:pl-16 xl:w-[330px]">
         <div>
             @lang('pages.statistics.insights.transactions.header.date'):
         </div>
