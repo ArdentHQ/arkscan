@@ -6,7 +6,6 @@ namespace App\Console\Commands;
 
 use App\Contracts\MarketDataProvider;
 use App\Facades\Network;
-use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\StatisticsCache;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -28,37 +27,29 @@ final class CacheMarketDataStatistics extends Command
      */
     protected $description = 'Cache expensive market data statistics';
 
-    public function handle(MarketDataProvider $marketDataProvider, StatisticsCache $cache, CryptoDataCache $crypto): void
+    public function handle(MarketDataProvider $marketDataProvider, StatisticsCache $cache): void
     {
         if (! Network::canBeExchanged()) {
             return;
         }
 
-        /** @var array<string, array<string, string>> */
-        $allCurrencies = config('currencies');
+        $allTimeData = $marketDataProvider->historicalAll(Network::currency(), 'usd', Network::epoch()->diffInDays() + 1); // +1 to handle edge case where first day is not returned in full
+        $dailyData   = $marketDataProvider->historicalAll(Network::currency(), 'usd');
 
-        $currencies = collect($allCurrencies)->pluck('currency');
+        if (count($allTimeData) === 0 || count($dailyData) === 0) {
+            return;
+        }
 
-        $currencies->each(function ($currency) use ($cache, $crypto): void {
-            // Grab prices from cache based on last cached value from CachePrices command
-            $allTimeData = $crypto->getHistoricalFullResponse(Network::currency(), $currency);
-            $dailyData   = $crypto->getHistoricalHourlyFullResponse(Network::currency(), $currency);
-
-            if (count($allTimeData) === 0 || count($dailyData) === 0) {
-                return;
-            }
-
-            $this->cachePriceStats($currency, $allTimeData, $dailyData, $cache);
-            $this->cacheVolumeStats($currency, $allTimeData, $cache);
-            $this->cacheMarketCapStats($currency, $allTimeData, $cache);
-        });
+        $this->cachePriceStats($allTimeData, $dailyData, $cache);
+        $this->cacheVolumeStats($allTimeData, $cache);
+        $this->cacheMarketCapStats($allTimeData, $cache);
     }
 
     /**
      * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $allTimeData
      * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $dailyData
      */
-    private function cachePriceStats(string $currency, array $allTimeData, array $dailyData, StatisticsCache $cache): void
+    private function cachePriceStats(array $allTimeData, array $dailyData, StatisticsCache $cache): void
     {
         $prices = collect($allTimeData['prices'])
             ->map(fn ($item) => ['timestamp' => $item[0], 'value' => $item[1]]);
@@ -70,14 +61,14 @@ final class CacheMarketDataStatistics extends Command
         /** @var array{timestamp: int, value: float} $priceAth */
         $priceAth = $pricesSorted->last();
 
-        $cache->setPriceAtl($currency, $priceAtl['timestamp'] / 1000, $priceAtl['value']);
-        $cache->setPriceAth($currency, $priceAth['timestamp'] / 1000, $priceAth['value']);
+        $cache->setPriceAtl($priceAtl['timestamp'] / 1000, $priceAtl['value']);
+        $cache->setPriceAth($priceAth['timestamp'] / 1000, $priceAth['value']);
 
-        $this->cache52WeekPriceStats($currency, $prices, $cache);
-        $this->cacheDailyPriceStats($currency, $dailyData, $cache);
+        $this->cache52WeekPriceStats($prices, $cache);
+        $this->cacheDailyPriceStats($dailyData, $cache);
     }
 
-    private function cache52WeekPriceStats(string $currency, Collection $data, StatisticsCache $cache): void
+    private function cache52WeekPriceStats(Collection $data, StatisticsCache $cache): void
     {
         $start52WeeksAgo = (int) Carbon::now()->subWeeks(52)->timestamp * 1000;
         $prices52Week    = $data->filter(function ($item) use ($start52WeeksAgo) {
@@ -91,13 +82,13 @@ final class CacheMarketDataStatistics extends Command
         /** @var array{timestamp: int, value: float} $priceHigh52 */
         $priceHigh52 = $pricesSorted->last();
 
-        $cache->setPriceRange52($currency, $priceLow52['value'], $priceHigh52['value']);
+        $cache->setPriceRange52($priceLow52['value'], $priceHigh52['value']);
     }
 
     /**
      * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $data
      */
-    private function cacheDailyPriceStats(string $currency, array $data, StatisticsCache $cache): void
+    private function cacheDailyPriceStats(array $data, StatisticsCache $cache): void
     {
         $prices = collect($data['prices'])
             ->map(fn ($item) => ['timestamp' => $item[0], 'value' => $item[1]]);
@@ -109,13 +100,13 @@ final class CacheMarketDataStatistics extends Command
         /** @var array{timestamp: int, value: float} $priceDailyHigh */
         $priceDailyHigh = $priceSorted->last();
 
-        $cache->setPriceRangeDaily($currency, $priceDailyLow['value'], $priceDailyHigh['value']);
+        $cache->setPriceRangeDaily($priceDailyLow['value'], $priceDailyHigh['value']);
     }
 
     /**
      * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $data
      */
-    private function cacheVolumeStats(string $currency, array $data, StatisticsCache $cache): void
+    private function cacheVolumeStats(array $data, StatisticsCache $cache): void
     {
         $volumes = collect($data['total_volumes'])
             ->map(fn ($item) => ['timestamp' => $item[0], 'value' => $item[1]]);
@@ -127,14 +118,14 @@ final class CacheMarketDataStatistics extends Command
         /** @var array{timestamp: int, value: float} $volumeAth */
         $volumeAth = $volumeSorted->last();
 
-        $cache->setVolumeAtl($currency, $volumeAtl['timestamp'] / 1000, $volumeAtl['value']);
-        $cache->setVolumeAth($currency, $volumeAth['timestamp'] / 1000, $volumeAth['value']);
+        $cache->setVolumeAtl($volumeAtl['timestamp'] / 1000, $volumeAtl['value']);
+        $cache->setVolumeAth($volumeAth['timestamp'] / 1000, $volumeAth['value']);
     }
 
     /**
      * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $data
      */
-    private function cacheMarketCapStats(string $currency, array $data, StatisticsCache $cache): void
+    private function cacheMarketCapStats(array $data, StatisticsCache $cache): void
     {
         $marketcaps = collect($data['market_caps'])
             ->map(fn ($item) => ['timestamp' => $item[0], 'value' => $item[1]]);
@@ -146,7 +137,7 @@ final class CacheMarketDataStatistics extends Command
         /** @var array{timestamp: int, value: float} $marketCapAth */
         $marketCapAth = $marketCapSorted->last();
 
-        $cache->setMarketCapAtl($currency, $marketCapAtl['timestamp'] / 1000, $marketCapAtl['value']);
-        $cache->setMarketCapAth($currency, $marketCapAth['timestamp'] / 1000, $marketCapAth['value']);
+        $cache->setMarketCapAtl($marketCapAtl['timestamp'] / 1000, $marketCapAtl['value']);
+        $cache->setMarketCapAth($marketCapAth['timestamp'] / 1000, $marketCapAth['value']);
     }
 }

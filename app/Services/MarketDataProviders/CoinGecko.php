@@ -19,12 +19,10 @@ final class CoinGecko extends AbstractMarketDataProvider
 {
     public function historical(string $source, string $target, string $format = 'Y-m-d'): Collection
     {
-        $cache = new CryptoDataCache();
-
-        return $cache->setHistorical($source, $target, $format, function () use ($source, $target, $format, $cache): Collection {
+        return (new CryptoDataCache())->setHistorical($source, $target, $format, function () use ($source, $target, $format): Collection {
             $params = [
                 'vs_currency' => Str::lower($target),
-                'days'        => Network::epoch()->diffInDays() + 1, // +1 to handle edge case where first day is not returned in full depending on time of day
+                'days'        => Network::epoch()->diffInDays(),
                 'interval'    => 'daily',
             ];
 
@@ -44,9 +42,6 @@ final class CoinGecko extends AbstractMarketDataProvider
                 return collect([]);
             }
 
-            // Store value in cache for others to use (statistics)
-            $cache->setHistoricalFullResponse($source, $target, $data);
-
             /** @var array<int, array<int, string>> */
             $prices = $data['prices'];
 
@@ -55,11 +50,38 @@ final class CoinGecko extends AbstractMarketDataProvider
         });
     }
 
+    /**
+     * @return array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]}|array{}
+     */
+    public function historicalAll(string $source, string $target, int $limit = 1): array
+    {
+        $params = [
+            'vs_currency' => Str::lower($target),
+            'days'        => $limit,
+        ];
+
+        $data = null;
+
+        try {
+            /** @var array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} */
+            $data = Http::get(
+                'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
+                $params
+            )->json();
+        } catch (\Throwable) {
+            //
+        }
+
+        if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data) || $data === null) {
+            return [];
+        }
+
+        return $data;
+    }
+
     public function historicalHourly(string $source, string $target, int $limit = 23, string $format = 'Y-m-d H:i:s'): Collection
     {
-        $cache = new CryptoDataCache();
-
-        return $cache->setHistoricalHourly($source, $target, $format, $limit, function () use ($source, $target, $format, $limit, $cache): Collection {
+        return (new CryptoDataCache())->setHistoricalHourly($source, $target, $format, $limit, function () use ($source, $target, $format, $limit): Collection {
             $params = [
                 'vs_currency' => Str::lower($target),
                 'days'        => strval(ceil($limit / 24)),
@@ -68,6 +90,7 @@ final class CoinGecko extends AbstractMarketDataProvider
             $data = null;
 
             try {
+                /** @var array<string, array<string, string>> */
                 $data = Http::get(
                     'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
                     $params
@@ -80,9 +103,6 @@ final class CoinGecko extends AbstractMarketDataProvider
                 /** @var Collection<int, mixed> */
                 return collect([]);
             }
-
-            // Store value in cache for others to use (statistics)
-            $cache->setHistoricalHourlyFullResponse($source, $target, $data);
 
             /** @var array<string, array<string, string>> $data */
             return collect($data['prices'])

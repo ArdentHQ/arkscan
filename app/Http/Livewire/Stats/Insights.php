@@ -97,12 +97,10 @@ final class Insights extends Component
 
     private function marketDataPrice(StatisticsCache $cache): array
     {
-        $currency = Settings::currency();
-
-        $priceAtl        = $cache->getPriceAtl($currency);
-        $priceAth        = $cache->getPriceAth($currency);
-        $priceRangeDaily = $cache->getPriceRangeDaily($currency);
-        $priceRange52w   = $cache->getPriceRange52($currency);
+        $priceAtl        = $cache->getPriceAtl();
+        $priceAth        = $cache->getPriceAth();
+        $priceRangeDaily = $cache->getPriceRangeDaily();
+        $priceRange52w   = $cache->getPriceRange52();
 
         return [
             'daily_low'  => $priceRangeDaily !== null ? $priceRangeDaily['low'] : 0,
@@ -118,10 +116,9 @@ final class Insights extends Component
 
     private function marketDataVolume(StatisticsCache $cache): array
     {
-        $currency  = Settings::currency();
-        $volume    = (new CryptoDataCache())->getVolume($currency);
-        $volumeAtl = $cache->getVolumeAtl($currency);
-        $volumeAth = $cache->getVolumeAth($currency);
+        $volume    = (new CryptoDataCache())->getVolume('USD');
+        $volumeAtl = $cache->getVolumeAtl();
+        $volumeAth = $cache->getVolumeAth();
 
         return [
             'today_volume' => $volume ?? 0,
@@ -134,13 +131,11 @@ final class Insights extends Component
 
     private function marketDataCap(StatisticsCache $cache): array
     {
-        $currency = Settings::currency();
-
-        $marketCapAtl = $cache->getMarketCapAtl($currency);
-        $marketCapAth = $cache->getMarketCapAth($currency);
+        $marketCapAtl = $cache->getMarketCapAtl();
+        $marketCapAth = $cache->getMarketCapAth();
 
         return [
-            'today_value' => MarketCap::get(Network::currency(), $currency) ?? 0,
+            'today_value' => MarketCap::get(Network::currency(), 'USD'),
             'atl'         => $marketCapAtl !== null ? $marketCapAtl['value'] : 0,
             'atl_date'    => $marketCapAtl !== null ? $marketCapAtl['timestamp'] : null,
             'ath'         => $marketCapAth !== null ? $marketCapAth['value'] : 0,
