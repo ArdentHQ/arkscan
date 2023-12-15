@@ -20,6 +20,7 @@ final class CoinGecko extends AbstractMarketDataProvider
     public function historical(string $source, string $target, string $format = 'Y-m-d'): Collection
     {
         $cache = new CryptoDataCache();
+
         return $cache->setHistorical($source, $target, $format, function () use ($source, $target, $format, $cache): Collection {
             $params = [
                 'vs_currency' => Str::lower($target),
@@ -57,6 +58,7 @@ final class CoinGecko extends AbstractMarketDataProvider
     public function historicalHourly(string $source, string $target, int $limit = 23, string $format = 'Y-m-d H:i:s'): Collection
     {
         $cache = new CryptoDataCache();
+
         return $cache->setHistoricalHourly($source, $target, $format, $limit, function () use ($source, $target, $format, $limit, $cache): Collection {
             $params = [
                 'vs_currency' => Str::lower($target),

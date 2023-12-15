@@ -42,7 +42,7 @@ final class CacheMarketDataStatistics extends Command
         $currencies->each(function ($currency) use ($cache, $crypto): void {
             // Grab prices from cache based on last cached value from CachePrices command
             $allTimeData = $crypto->getHistoricalFullResponse(Network::currency(), $currency);
-            $dailyData = $crypto->getHistoricalHourlyFullResponse(Network::currency(), $currency);
+            $dailyData   = $crypto->getHistoricalHourlyFullResponse(Network::currency(), $currency);
 
             if (count($allTimeData) === 0 || count($dailyData) === 0) {
                 return;
