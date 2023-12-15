@@ -116,7 +116,7 @@ final class Insights extends Component
 
     private function marketDataVolume(StatisticsCache $cache): array
     {
-        $volume    = (new CryptoDataCache())->getVolume(Settings::currency());
+        $volume    = (new CryptoDataCache())->getVolume('USD');
         $volumeAtl = $cache->getVolumeAtl();
         $volumeAth = $cache->getVolumeAth();
 
@@ -135,7 +135,7 @@ final class Insights extends Component
         $marketCapAth = $cache->getMarketCapAth();
 
         return [
-            'today_value' => MarketCap::get(Network::currency(), Settings::currency()),
+            'today_value' => MarketCap::get(Network::currency(), 'USD'),
             'atl'         => $marketCapAtl !== null ? $marketCapAtl['value'] : 0,
             'atl_date'    => $marketCapAtl !== null ? $marketCapAtl['timestamp'] : null,
             'ath'         => $marketCapAth !== null ? $marketCapAth['value'] : 0,
