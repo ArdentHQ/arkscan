@@ -98,7 +98,7 @@ final class CacheAddressStatistics extends Command
 
         // Cache last run timestamp for newest wallet query
         Cache::rememberForever($cacheKey, function () {
-            return Carbon::now();
+            return Carbon::now('UTC');
         });
     }
 
