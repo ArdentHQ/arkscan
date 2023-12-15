@@ -110,6 +110,11 @@ final class CryptoCompare extends AbstractMarketDataProvider
         ]);
     }
 
+    public function historicalAll(string $source, string $target, int $limit = 1): array
+    {
+        throw new \Exception('Not implemented');
+    }
+
     /**
      * @return array{
      *   price: float|int|null,
