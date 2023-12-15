@@ -240,7 +240,7 @@ it('should render marketdata statistics', function (): void {
     app(CacheVolume::class)->handle($crypto, new CoinGecko());
 
     $currentDate = Carbon::now();
-    $currency = 'USD';
+    $currency    = 'USD';
 
     $cache = new StatisticsCache();
     $cache->setPriceRangeDaily($currency, 123, 456);

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Contracts\MarketDataProvider;
 use App\Facades\Network;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\StatisticsCache;
@@ -10,7 +9,7 @@ use Illuminate\Support\Facades\Config;
 
 it('should cache market data statistics', function () {
     Config::set('arkscan.networks.development.canBeExchanged', true);
-    $cache = new StatisticsCache();
+    $cache  = new StatisticsCache();
     $crypto = new CryptoDataCache();
 
     $currency = 'USD';
@@ -34,7 +33,7 @@ it('should cache market data statistics', function () {
 it('should exit early if network cannot be exchanged', function () {
     Config::set('arkscan.networks.development.canBeExchanged', false);
 
-    $cache = new StatisticsCache();
+    $cache    = new StatisticsCache();
     $currency = 'USD';
 
     $this->artisan('explorer:cache-market-data-statistics');
