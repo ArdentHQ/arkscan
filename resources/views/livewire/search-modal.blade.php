@@ -28,12 +28,12 @@
                 initSearch();
             "
         >
-            <div wire:click.self="closeModal" class="fixed inset-0 opacity-70 dark:opacity-80 bg-theme-secondary-900 dark:bg-theme-secondary-800"></div>
+            <div wire:click.self="closeModal" class="fixed inset-0 opacity-70 dark:opacity-80 bg-theme-secondary-900 dark:bg-theme-dark-800"></div>
 
-            <div class="flex relative flex-col p-6 my-6 mx-4 bg-white rounded-xl border border-transparent sm:m-8 dark:bg-theme-secondary-900 dark:text-theme-secondary-200 dark:border-theme-secondary-800">
+            <div class="flex relative flex-col p-6 my-6 mx-4 bg-white rounded-xl border border-transparent sm:m-8 dark:bg-theme-dark-900 dark:text-theme-dark-200 dark:border-theme-dark-800">
                 <x-general.search.search-input />
 
-                <div x-ref="searchResults" class="flex flex-col space-y-1 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
+                <div x-ref="searchResults" class="flex flex-col space-y-1 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800">
                     @if ($hasResults && $results !== null)
                         @foreach ($results as $result)
                             <div wire:key="{{ $result->id() }}" class="pt-1">
