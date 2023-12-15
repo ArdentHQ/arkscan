@@ -21,6 +21,7 @@ use App\ViewModels\TransactionViewModel;
 use App\ViewModels\ViewModelFactory;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -97,48 +98,55 @@ final class Insights extends Component
 
     private function marketDataPrice(StatisticsCache $cache): array
     {
-        $priceAtl        = $cache->getPriceAtl();
-        $priceAth        = $cache->getPriceAth();
-        $priceRangeDaily = $cache->getPriceRangeDaily();
-        $priceRange52w   = $cache->getPriceRange52();
+        $currency = Settings::currency();
+
+        $priceAtl        = $cache->getPriceAtl($currency);
+        $priceAth        = $cache->getPriceAth($currency);
+        $priceRangeDaily = $cache->getPriceRangeDaily($currency);
+        $priceRange52w   = $cache->getPriceRange52($currency);
+
+        Log::debug($priceRangeDaily);
 
         return [
-            'daily_low'  => $priceRangeDaily !== null ? $priceRangeDaily['low'] : null,
-            'daily_high' => $priceRangeDaily !== null ? $priceRangeDaily['high'] : null,
-            '52w_low'    => $priceRange52w !== null ? $priceRange52w['low'] : null,
-            '52w_high'   => $priceRange52w !== null ? $priceRange52w['high'] : null,
-            'atl'        => $priceAtl !== null ? $priceAtl['value'] : null,
+            'daily_low'  => $priceRangeDaily !== null ? $priceRangeDaily['low'] : 0,
+            'daily_high' => $priceRangeDaily !== null ? $priceRangeDaily['high'] : 0,
+            '52w_low'    => $priceRange52w !== null ? $priceRange52w['low'] : 0,
+            '52w_high'   => $priceRange52w !== null ? $priceRange52w['high'] : 0,
+            'atl'        => $priceAtl !== null ? $priceAtl['value'] : 0,
             'atl_date'   => $priceAtl !== null ? $priceAtl['timestamp'] : null,
-            'ath'        => $priceAth !== null ? $priceAth['value'] : null,
+            'ath'        => $priceAth !== null ? $priceAth['value'] : 0,
             'ath_date'   => $priceAth !== null ? $priceAth['timestamp'] : null,
         ];
     }
 
     private function marketDataVolume(StatisticsCache $cache): array
     {
-        $volume    = (new CryptoDataCache())->getVolume(Settings::currency());
-        $volumeAtl = $cache->getVolumeAtl();
-        $volumeAth = $cache->getVolumeAth();
+        $currency  = Settings::currency();
+        $volume    = (new CryptoDataCache())->getVolume($currency);
+        $volumeAtl = $cache->getVolumeAtl($currency);
+        $volumeAth = $cache->getVolumeAth($currency);
 
         return [
             'today_volume' => $volume ?? 0,
-            'atl'          => $volumeAtl !== null ? $volumeAtl['value'] : null,
+            'atl'          => $volumeAtl !== null ? $volumeAtl['value'] : 0,
             'atl_date'     => $volumeAtl !== null ? $volumeAtl['timestamp'] : null,
-            'ath'          => $volumeAth !== null ? $volumeAth['value'] : null,
+            'ath'          => $volumeAth !== null ? $volumeAth['value'] : 0,
             'ath_date'     => $volumeAth !== null ? $volumeAth['timestamp'] : null,
         ];
     }
 
     private function marketDataCap(StatisticsCache $cache): array
     {
-        $marketCapAtl = $cache->getMarketCapAtl();
-        $marketCapAth = $cache->getMarketCapAth();
+        $currency = Settings::currency();
+
+        $marketCapAtl = $cache->getMarketCapAtl($currency);
+        $marketCapAth = $cache->getMarketCapAth($currency);
 
         return [
-            'today_value' => MarketCap::get(Network::currency(), Settings::currency()),
-            'atl'         => $marketCapAtl !== null ? $marketCapAtl['value'] : null,
+            'today_value' => MarketCap::get(Network::currency(), $currency) ?? 0,
+            'atl'         => $marketCapAtl !== null ? $marketCapAtl['value'] : 0,
             'atl_date'    => $marketCapAtl !== null ? $marketCapAtl['timestamp'] : null,
-            'ath'         => $marketCapAth !== null ? $marketCapAth['value'] : null,
+            'ath'         => $marketCapAth !== null ? $marketCapAth['value'] : 0,
             'ath_date'    => $marketCapAth !== null ? $marketCapAth['timestamp'] : null,
         ];
     }
