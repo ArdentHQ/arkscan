@@ -68,7 +68,6 @@ final class CoinGecko extends AbstractMarketDataProvider
             $data = null;
 
             try {
-                /** @var array<string, array<string, string>> */
                 $data = Http::get(
                     'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
                     $params

@@ -21,7 +21,6 @@ use App\ViewModels\TransactionViewModel;
 use App\ViewModels\ViewModelFactory;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -104,8 +103,6 @@ final class Insights extends Component
         $priceAth        = $cache->getPriceAth($currency);
         $priceRangeDaily = $cache->getPriceRangeDaily($currency);
         $priceRange52w   = $cache->getPriceRange52($currency);
-
-        Log::debug($priceRangeDaily);
 
         return [
             'daily_low'  => $priceRangeDaily !== null ? $priceRangeDaily['low'] : 0,
