@@ -15,7 +15,7 @@
     </div>
 
     <div>
-        <x-stats.insights.container :title="trans('pages.statistics.insights.transactions.all_time')">
+        <x-stats.insights.container :title="trans('pages.statistics.insights.transactions.all_time')" apply-spacing>
             @foreach($details as $key => $detail)
                 <x-stats.insights.row :title="trans('pages.statistics.insights.transactions.header.'.$key)">
                     <x-number>{{ $detail }}</x-number>
@@ -23,7 +23,7 @@
             @endforeach
         </x-stats.insights.container>
 
-        <x-stats.insights.container :title="trans('pages.statistics.insights.transactions.daily_averages')">
+        <x-stats.insights.container :title="trans('pages.statistics.insights.transactions.daily_averages')" apply-spacing>
             @foreach($averages as $key => $detail)
                 <x-stats.insights.row :title="trans('pages.statistics.insights.transactions.header.'.$key)">
                     {{ $detail }}

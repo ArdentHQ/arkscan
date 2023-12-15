@@ -1,6 +1,7 @@
 @props([
     'title' => null,
     'fullWidth' => false,
+    'applySpacing' => false,
 ])
 
 <div {{ $attributes->class('px-6 md:px-10 md:mx-auto md:max-w-7xl group/stats last:mb-8 dark:text-theme-dark-200 mt-3 first:mt-2') }}>
@@ -24,8 +25,9 @@
             @endif
 
             <div @class([
-                'flex flex-col px-4 text-sm md:py-4 md:px-6 md:space-y-3 md:text-base md:leading-5',
+                'flex flex-col px-4 text-sm md:py-4 md:px-6 md:text-base md:leading-5',
                 'md-lg:w-2/3 xl:w-[524px] md-lg:pr-10 xl:pr-5' => ! $fullWidth,
+                'space-y-3' => $applySpacing
             ])>
                 @if ($title)
                     <div class="hidden md:inline-flex">
