@@ -3,8 +3,9 @@
     class="px-6 mb-5 md:hidden"
 >
     <x-ark-dropdown
-        wrapper-class="relative w-full rounded border md:w-1/2 border-theme-secondary-300 dark:border-theme-secondary-800"
-        button-class="justify-between py-3 px-4 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-secondary-200"
+        wrapper-class="relative w-full rounded border md:w-1/2 border-theme-secondary-300 dark:text-theme-dark-200 dark:border-theme-dark-800"
+        button-class="justify-between py-3 px-4 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-dark-200"
+        dropdown-content-classes="bg-white dark:bg-theme-dark-800 rounded-xl shadow-lg dark:shadow-none"
         dropdown-classes="left-0 w-full z-20"
     >
         <x-slot name="button">
@@ -29,12 +30,12 @@
                 <x-ark-icon
                     name="arrows.chevron-down-small"
                     size="w-3 h-3"
-                    class="text-theme-secondary-700 dark:text-theme-secondary-200"
+                    class="text-theme-secondary-700 dark:text-theme-dark-200"
                 />
             </span>
         </x-slot>
 
-        <div class="block justify-center items-center py-3 mt-1">
+        <div class="block justify-center items-center py-2">
             @foreach (trans('pages.statistics.insights.dropdown') as $name => $text)
                 @if ($name === 'market_data' && !Network::canBeExchanged())
                     @continue

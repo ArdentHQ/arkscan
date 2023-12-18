@@ -95,7 +95,7 @@
 }
 
 /* Rich Input Select */
-.dropdown-entry,
+.dropdown-entry:not(.dropdown-entry-selected),
 .rich-select-dropdown-entry:not(.rich-select-dropdown-entry-selected):not(
         .rich-select-dropdown-entry-hover
     ) {
