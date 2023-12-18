@@ -61,7 +61,7 @@
                             @elseif ($key === 'highest_fee')
                                 {{ ExplorerNumberFormatter::currencyWithDecimals($model->fee(), Network::currency(), 2) }}
                             @else
-                                {{ ExplorerNumberFormatter::currencyForViews($model->amount(), Network::currency()) }}
+                                {{ trim(trim(ExplorerNumberFormatter::currencyWithDecimals($model->amount(), Network::currency(), 0), '0'), '.') }}
                             @endif
                         </div>
                     </div>
