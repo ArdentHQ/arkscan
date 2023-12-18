@@ -18,6 +18,7 @@
                     'newWindow' => true,
                 ]"
                 :socials="config('social.networks')"
+                class="dark:border-transparent dark:text-theme-dark-200"
             >
                 <span class="inline-flex items-center space-x-1 whitespace-nowrap">
                     <span>@lang ('general.market_data_by')</span>

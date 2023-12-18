@@ -14,7 +14,7 @@
         'border-transparent text-theme-secondary-900 hover:text-theme-secondary-900 hover:bg-theme-secondary-100 hover:dark:bg-theme-dark-900': {{ $variableName }} !== '{{ $id }}',
     }"
 
-    {{ $attributes->class('border-l-4 pl-5 pr-6 py-3 dark:text-theme-secondary-200 transition-default cursor-pointer leading-5') }}
+    {{ $attributes->class('border-l-4 pl-5 pr-6 py-3 dark:text-theme-dark-200 transition-default cursor-pointer leading-5') }}
 >
     {{ $slot }}
 </a>

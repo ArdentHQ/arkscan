@@ -1,4 +1,4 @@
-<div class="hidden relative z-40 bg-white md:flex md:flex-col dark:bg-theme-secondary-900">
+<div class="hidden relative z-40 bg-white md:flex md:flex-col dark:bg-theme-dark-900">
     <div class="flex justify-between items-center py-3 w-full content-container">
         <div class="flex items-center mr-3 whitespace-nowrap">
             <div class="flex font-semibold dark:text-white text-theme-secondary-900">
@@ -19,5 +19,5 @@
         </div>
     </div>
 
-    <div class="absolute bottom-0 w-full border-b border-theme-secondary-300 dark:border-theme-secondary-800"></div>
+    <div class="absolute bottom-0 w-full border-b border-theme-secondary-300 dark:border-theme-dark-700"></div>
 </div>

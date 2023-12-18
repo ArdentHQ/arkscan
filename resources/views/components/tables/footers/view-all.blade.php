@@ -5,7 +5,7 @@
 ])
 
 <x-tables.footers.footer>
-    <div class="font-semibold sm:mr-8 dark:text-theme-secondary-500">
+    <div class="font-semibold sm:mr-8 dark:text-theme-dark-200">
         <span>
             <x-number>{{ $results->total() }}</x-number>
         </span>

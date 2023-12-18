@@ -21,7 +21,7 @@
     <div class="flex items-center">
         <div @class([
             'w-3 h-3 rounded-full',
-            'bg-theme-secondary-500' => $model->isPending(),
+            'bg-theme-secondary-500 dark:bg-theme-dark-500' => $model->isPending(),
             'bg-theme-success-700 dark:bg-theme-success-500' => $model->hasForged(),
             'bg-theme-danger-600 dark:bg-theme-danger-300' => $model->justMissed(),
             'bg-theme-primary-600 dark:bg-theme-dark-blue-400' => ! $model->isPending() && ! $model->hasForged() && ! $model->justMissed(),

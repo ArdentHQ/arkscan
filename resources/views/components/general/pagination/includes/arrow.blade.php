@@ -8,7 +8,7 @@
 <div @class(["flex-1 sm:flex-none sm:w-8 md:w-auto", 'cursor-not-allowed' => $disabled])>
     <button
         {{ $attributes->class([
-            'items-center button-secondary flex justify-center h-8 p-0 w-full focus:ring-theme-primary-500 focus:dark:ring-theme-primary-300',
+            'items-center button-secondary flex justify-center h-8 p-0 w-full focus:ring-theme-primary-500 focus:dark:ring-theme-dark-blue-300',
             'sm:w-8' => ! $text,
             'w-8 md:w-auto md:px-4' => $text,
         ]) }}

@@ -7,7 +7,7 @@
         <x-tables.filters.includes.checkbox
             name="select-all"
             :label="trans('tables.filters.transactions.select_all')"
-            class="pb-4 mb-4 border-b md:pb-2 md:mb-1 border-theme-secondary-300 dark:border-theme-secondary-800"
+            class="pb-4 mb-4 border-b md:pb-2 md:mb-1 border-theme-secondary-300 dark:border-theme-dark-800"
             model="selectAllFilters"
         />
 
@@ -16,7 +16,7 @@
                 <x-slot name="label">
                     <span>@lang('tables.filters.transactions.outgoing')</span>
 
-                    <span class="text-theme-secondary-500 dark:text-theme-secondary-500">
+                    <span class="text-theme-secondary-500 dark:text-theme-dark-500">
                         (@lang('tables.filters.transactions.to'))
                     </span>
                 </x-slot>
@@ -26,7 +26,7 @@
                 <x-slot name="label">
                     <span>@lang('tables.filters.transactions.incoming')</span>
 
-                    <span class="text-theme-secondary-500 dark:text-theme-secondary-500">
+                    <span class="text-theme-secondary-500 dark:text-theme-dark-500">
                         (@lang('tables.filters.transactions.from'))
                     </span>
                 </x-slot>
