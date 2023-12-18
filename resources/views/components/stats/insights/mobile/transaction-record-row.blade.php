@@ -27,7 +27,7 @@
                         href="{{ route('transaction', $model->model()) }}"
                         class="link"
                     >
-                        {{ trim(trim(ExplorerNumberFormatter::currencyWithDecimals($model->amount(), Network::currency(), 0), '0'), '.') }}
+                        {{ ExplorerNumberFormatter::currencyWithDecimals($model->amount(), Network::currency(), 0) }}
                     </a>
                 @elseif ($isBlock)
                     <a
@@ -39,7 +39,7 @@
                         @elseif ($key === 'highest_fee')
                             {{ ExplorerNumberFormatter::currencyWithDecimals($model->fee(), Network::currency(), 2) }}
                         @else
-                            {{ trim(trim(ExplorerNumberFormatter::currencyWithDecimals($model->amount(), Network::currency(), 0), '0'), '.') }}
+                            {{ ExplorerNumberFormatter::currencyWithDecimals($model->amount(), Network::currency(), 0) }}
                         @endif
                     </a>
                 @endif
