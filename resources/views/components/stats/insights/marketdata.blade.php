@@ -52,7 +52,9 @@
                         </div>
                     </div>
                 </div>
+            @endforeach
 
+            @foreach (['daily', '52w', 'atl', 'ath'] as $item)
                 {{-- Desktop --}}
                 <div class="hidden justify-between w-full md:flex xl:w-[770px]">
                     <div class="flex flex-1">
