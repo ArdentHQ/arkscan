@@ -63,7 +63,7 @@
                     {{ $statistics['nextDelegate']->username() }}
                 </a>
             @else
-                <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
+                <span class="text-theme-secondary-500 dark:text-theme-dark-700">
                     @lang('general.na')
                 </span>
             @endif

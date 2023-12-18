@@ -10,7 +10,7 @@
             wrapper-class="flex-1"
             :tooltip-content="trans('pages.wallet.address_copied')"
             with-checkmarks
-            checkmarks-class="group-hover:text-white text-theme-primary-900 dark:text-theme-secondary-200"
+            checkmarks-class="group-hover:text-white text-theme-primary-900 dark:text-theme-dark-200"
         />
 
         @unless($wallet->isCold())

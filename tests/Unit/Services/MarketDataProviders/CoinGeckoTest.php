@@ -269,3 +269,42 @@ it('should throw an exception if the API response indicates throttling for volum
 
     (new CoinGecko())->volume('ARK');
 })->throws(CoinGeckoThrottledException::class);
+
+it('should fetch data for historicalAll', function () {
+    Http::fake([
+        'api.coingecko.com/*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true), 200),
+    ]);
+
+    assertMatchesSnapshot((new CoinGecko())->historicalAll('ARK', 'USD'));
+});
+
+it('should return an empty array if the API response is empty for historicalAll', function () {
+    Http::fake([
+        'api.coingecko.com/*' => Http::response(null, 200),
+    ]);
+
+    $response = (new CoinGecko())->historicalAll('ARK', 'USD');
+    expect($response)->toBe([]);
+});
+
+it('should return an empty array if the API response throws an exception for historicalAll', function () {
+    Http::fake([
+        'api.coingecko.com/*' => fn () => throw new \Exception('Test'),
+    ]);
+
+    $response = (new CoinGecko())->historicalAll('ARK', 'USD');
+    expect($response)->toBe([]);
+});
+
+it('should return an empty array if the API response indicates throttling for historicalAll', function () {
+    Http::fake([
+        'api.coingecko.com/*' => Http::response([
+            'status' => [
+                'error_code' => 1,
+            ],
+        ], 500),
+    ]);
+
+    $response = (new CoinGecko())->historicalAll('ARK', 'USD');
+    expect($response)->toBe([]);
+});

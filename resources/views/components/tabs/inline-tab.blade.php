@@ -20,14 +20,14 @@
     {{ $attributes }}
 >
     @unless ($first)
-        <div class="w-px h-5 bg-theme-secondary-300 dark:bg-theme-secondary-800"></div>
+        <div class="w-px h-5 bg-theme-secondary-300 dark:bg-theme-dark-800"></div>
     @endunless
 
     <span
         class="block pt-4 pb-3 w-full h-full font-semibold whitespace-nowrap border-b-2"
         :class="{
-            'border-transparent dark:text-theme-secondary-500 ': selected !== '{{ $name }}',
-            'text-theme-secondary-900 border-theme-primary-600 dark:text-theme-secondary-200': selected === '{{ $name }}',
+            'border-transparent dark:text-theme-dark-200 ': selected !== '{{ $name }}',
+            'text-theme-secondary-900 border-theme-primary-600 dark:text-theme-dark-50': selected === '{{ $name }}',
         }"
     >{{ $slot }}</span>
 </button>

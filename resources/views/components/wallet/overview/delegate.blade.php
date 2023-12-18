@@ -4,7 +4,10 @@
     <x-wallet.overview.item :title="trans('pages.wallet.delegate_info')">
         @if (! $wallet->isResigned())
             <x-slot name="titleExtra">
-                <x-ark-external-link :url="$wallet->voteUrl()">
+                <x-ark-external-link
+                    :url="$wallet->voteUrl()"
+                    icon-class="inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-secondary-500 dark:text-theme-dark-500"
+                >
                     <x-slot name="text">
                         <span class="md:hidden">
                             @lang('pages.wallet.delegate.vote')

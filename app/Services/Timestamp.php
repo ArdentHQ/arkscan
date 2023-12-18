@@ -36,4 +36,9 @@ final class Timestamp
     {
         return static::fromUnix(Carbon::now()->unix());
     }
+
+    public static function daysSinceEpoch(): int
+    {
+        return (int) floor(static::now()->unix() / 86400);
+    }
 }

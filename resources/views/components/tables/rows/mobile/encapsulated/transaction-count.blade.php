@@ -5,12 +5,12 @@
 ])
 
 <div {{ $attributes->class(['sm:flex', $flexDirection]) }}>
-    <div class="text-sm font-semibold leading-4.25 dark:text-theme-secondary-500">
+    <div class="text-sm font-semibold leading-4.25 dark:text-theme-dark-200">
         @lang('tables.blocks.transactions')
     </div>
 
     <div @class([
-        'inline-block font-semibold text-theme-secondary-900 dark:text-theme-secondary-50',
+        'inline-block font-semibold text-theme-secondary-900 dark:text-theme-dark-50',
         $valueClass,
     ])>
         <x-tables.rows.desktop.encapsulated.transaction-count :model="$model" />

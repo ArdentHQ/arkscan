@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e75f8051527991dce0ced9f10f8fe524",
+    "content-hash": "9b15112cf3c5c0d64b772b592a07b684",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -120,16 +120,16 @@
         },
         {
             "name": "arkecosystem/foundation",
-            "version": "13.28.0",
+            "version": "13.29.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-foundation.git",
-                "reference": "777043b7e4455cd18e8c8acada503ee6848e2107"
+                "reference": "52994d30887ebe4e1020564b97afa183875e25ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/777043b7e4455cd18e8c8acada503ee6848e2107",
-                "reference": "777043b7e4455cd18e8c8acada503ee6848e2107",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/52994d30887ebe4e1020564b97afa183875e25ac",
+                "reference": "52994d30887ebe4e1020564b97afa183875e25ac",
                 "shasum": ""
             },
             "require": {
@@ -227,9 +227,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by Tailwind CSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-foundation/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/13.28.0"
+                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/13.29.1"
             },
-            "time": "2023-11-24T09:15:09+00:00"
+            "time": "2023-12-18T11:38:06+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -17343,5 +17343,5 @@
         "ext-gmp": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
