@@ -6,6 +6,7 @@ const { themeVariants, prefersLight, prefersDark } = require("tailwindcss-theme-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     ...defaultConfig,
+
     theme: {
         ...defaultConfig.theme,
 
@@ -147,26 +148,4 @@ module.exports = {
             },
         },
     },
-
-    plugins: [
-        ...defaultConfig.plugins,
-
-        themeVariants({
-            themes: {
-                light: {
-                    mediaQuery: prefersLight,
-                },
-
-                dark: {
-                    mediaQuery: prefersDark,
-                    selector: "dark",
-                },
-
-                dim: {
-                    mediaQuery: prefersDark,
-                    selector: "dim",
-                },
-            },
-        }),
-    ],
 };
