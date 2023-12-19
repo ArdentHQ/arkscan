@@ -11,11 +11,9 @@
 
             <x-navbar.network-dropdown/>
 
-            <livewire:navbar.dark-mode-toggle
-                active-icon="underline-moon"
-                inactive-icon="underline-sun"
-                setting="darkTheme"
-            />
+            <div x-data="ThemeManager()">
+                <x-navbar.theme-dropdown/>
+            </div>
         </div>
     </div>
 
