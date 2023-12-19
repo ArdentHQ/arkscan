@@ -2,7 +2,7 @@
     <div
         class="fixed z-20 w-full md:relative"
         x-data="Navbar.dropdown({
-            dark: window.getThemeMode() === 'dark',
+            theme: window.getThemeMode(),
             open: false,
             showSettings: false,
 

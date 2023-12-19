@@ -1,12 +1,30 @@
-<x-navbar.dropdown>
+<x-navbar.dropdown
+    class="w-8"
+    without-dropdown-icon
+>
     <x-slot name="button">
-        <span x-show="theme === 'dark'">
-            <x-ark-icon name="underline-moon" />
-        </span>
+        <div>
+            <span x-show="theme === 'dark'" x-cloak>
+                <x-ark-icon
+                    name="underline-moon"
+                    size="sm"
+                />
+            </span>
 
-        <span x-show="theme === 'light'">
-            <x-ark-icon name="underline-sun" />
-        </span>
+            <span x-show="theme === 'light'" x-cloak>
+                <x-ark-icon
+                    name="underline-sun"
+                    size="sm"
+                />
+            </span>
+
+            <span x-show="theme === 'dim'" x-cloak>
+                <x-ark-icon
+                    name="underline-sun"
+                    size="sm"
+                />
+            </span>
+        </div>
     </x-slot>
 
     <x-general.dropdown.alpine-list-item
