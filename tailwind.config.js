@@ -1,6 +1,7 @@
 const defaultConfig = require("./vendor/arkecosystem/foundation/resources/tailwind.config.js");
 const plugin = require("tailwindcss/plugin");
 const selectorParser = require("postcss-selector-parser");
+const { themeVariants, prefersLight, prefersDark } = require("tailwindcss-theme-variants");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -146,4 +147,26 @@ module.exports = {
             },
         },
     },
+
+    plugins: [
+        ...defaultConfig.plugins,
+
+        themeVariants({
+            themes: {
+                light: {
+                    mediaQuery: prefersLight,
+                },
+
+                dark: {
+                    mediaQuery: prefersDark,
+                    selector: "dark",
+                },
+
+                dim: {
+                    mediaQuery: prefersDark,
+                    selector: "dim",
+                },
+            },
+        }),
+    ],
 };
