@@ -9,5 +9,5 @@
     @endif
 >
     {{-- TODO: take decimals from network --}}
-    <span>{{ ExplorerNumberFormatter::unformattedRawValue($model->balance()) }}</span>
+    <span>{{ ExplorerNumberFormatter::currencyWithoutSuffix($model->balance(), Network::currency()) }}</span>
 </span>

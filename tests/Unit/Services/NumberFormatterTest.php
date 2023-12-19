@@ -119,14 +119,14 @@ it('should format other currencies', function ($currency, $expectation) {
     'BTC' => ['BTC', '1.0005 BTC'],
 ]);
 
-// it('should properly trim zeros for non fiat values', function ($value, $expected) {
-//     expect(NumberFormatter::currencyWithDecimals($value, 'ARK', 0))->toBe($expected);
-// })->with([
-//     [125000000.000, '125,000,000 ARK'],
-//     [125000000.1234, '125,000,000 ARK'],
-//     [125000001.1234, '125,000,001 ARK'],
-//     [125000000.000123, '125,000,000 ARK'],
-// ]);
+it('should properly trim zeros for non fiat values', function ($value, $expected) {
+    expect(NumberFormatter::currencyWithDecimals($value, 'ARK', 0))->toBe($expected);
+})->with([
+    [125000000.000, '125,000,000 ARK'],
+    [125000000.1234, '125,000,000 ARK'],
+    [125000001.1234, '125,000,001 ARK'],
+    [125000000.000123, '125,000,000 ARK'],
+]);
 
 it('should format with network currency', function () {
     expect(NumberFormatter::networkCurrency(1.0005))->toBe('1.0005');
