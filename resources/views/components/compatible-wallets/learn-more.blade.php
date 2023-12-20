@@ -16,11 +16,11 @@
     <div @class([
         'flex flex-1 items-center bg-no-repeat bg-right mx-auto sm:ml-0 sm:mr-2 md-lg:bg-none md-lg:dark:bg-none',
 
-        "sm:dark:bg-[url('/images/wallets/arrows-dark.svg')] sm:bg-[url('/images/wallets/arrows.svg')] xl:dark:bg-[url('/images/wallets/arrows-dark.svg')] xl:bg-[url('/images/wallets/arrows.svg')]" => $arrowsBreakpoint === null && ! $home,
-        "sm:dark:bg-[url('/images/home/arrows-dark.svg')] sm:bg-[url('/images/home/arrows.svg')] xl:dark:bg-[url('/images/home/arrows-dark.svg')] xl:bg-[url('/images/home/arrows.svg')]" => $arrowsBreakpoint === null && $home,
+        "sm:dim:bg-[url('/images/wallets/arrows-dim.svg')] sm:dark:bg-[url('/images/wallets/arrows-dark.svg')] sm:bg-[url('/images/wallets/arrows.svg')] xl:dim:bg-[url('/images/wallets/arrows-dim.svg')] xl:dark:bg-[url('/images/wallets/arrows-dark.svg')] xl:bg-[url('/images/wallets/arrows.svg')]" => $arrowsBreakpoint === null && ! $home,
+        "sm:dim:!bg-[url('/images/home/arrows-dim.svg')] sm:dark:bg-[url('/images/home/arrows-dark.svg')] sm:bg-[url('/images/home/arrows.svg')] xl:dim:!bg-[url('/images/home/arrows-dim.svg')] xl:dark:bg-[url('/images/home/arrows-dark.svg')] xl:bg-[url('/images/home/arrows.svg')]" => $arrowsBreakpoint === null && $home,
 
-        "xl:dark:bg-[url('/images/wallets/arrows-dark.svg')] xl:bg-[url('/images/wallets/arrows.svg')]" => $arrowsBreakpoint === 'xl' && ! $home,
-        "xl:dark:bg-[url('/images/home/arrows-dark.svg')] xl:bg-[url('/images/home/arrows.svg')]" => $arrowsBreakpoint === 'xl' && $home,
+        "xl:dim:bg-[url('/images/wallets/arrows-dim.svg')] xl:dark:bg-[url('/images/wallets/arrows-dark.svg')] xl:bg-[url('/images/wallets/arrows.svg')]" => $arrowsBreakpoint === 'xl' && ! $home,
+        "xl:dim:!bg-[url('/images/home/arrows-dim.svg')] xl:dark:bg-[url('/images/home/arrows-dark.svg')] xl:bg-[url('/images/home/arrows.svg')]" => $arrowsBreakpoint === 'xl' && $home,
     ])>
         <div>
             <x-ark-icon
