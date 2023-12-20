@@ -11,11 +11,13 @@ const ThemeManager = () => {
         },
 
         setTheme(value) {
-            document.dispatchEvent(new CustomEvent("setThemeMode", {
-                detail: {
-                    theme: value,
-                },
-            }));
+            document.dispatchEvent(
+                new CustomEvent("setThemeMode", {
+                    detail: {
+                        theme: value,
+                    },
+                })
+            );
 
             this.$nextTick(() => {
                 this._theme = value;
