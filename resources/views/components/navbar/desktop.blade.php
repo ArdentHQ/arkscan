@@ -4,7 +4,7 @@
         open: false,
         showSettings: false
     })"
-    @theme-changed.window="dark = $event.detail.theme === 'dark'"
+    @theme-changed.window="theme = $event.detail.theme"
     x-ref="nav"
     class="hidden relative z-30 bg-white border-b md:flex md:flex-col border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-700"
 >

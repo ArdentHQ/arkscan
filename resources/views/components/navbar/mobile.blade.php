@@ -26,7 +26,7 @@
                 return ('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
             },
         })"
-        @theme-changed.window="dark = $event.detail.theme === 'dark'"
+        @theme-changed.window="theme = $event.detail.theme"
     >
         <div
             x-show="openDropdown !== null || open"
