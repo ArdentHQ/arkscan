@@ -6,7 +6,6 @@ namespace App\Http\Livewire\Navbar;
 
 use App\Facades\Settings;
 use App\Http\Livewire\Concerns\HandlesSettings;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
