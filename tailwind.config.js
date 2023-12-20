@@ -6,7 +6,6 @@ const { themeVariants, prefersLight, prefersDark } = require("tailwindcss-theme-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     ...defaultConfig,
-
     theme: {
         ...defaultConfig.theme,
 
@@ -148,4 +147,13 @@ module.exports = {
             },
         },
     },
+
+    plugins: [
+        ...defaultConfig.plugins,
+
+        plugin(function ({ addVariant }) {
+            addVariant("dim", ".dim &");
+            addVariant("dim-hover", ".dim &:hover");
+        }),
+    ],
 };
