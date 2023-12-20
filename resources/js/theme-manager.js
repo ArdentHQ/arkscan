@@ -1,11 +1,13 @@
-const ThemeManager = (xData = {}) => {
+const ThemeManager = () => {
     return Alpine.reactive({
+        _theme: localStorage.theme,
+
         set theme(value) {
             this.setTheme(value);
         },
 
         get theme() {
-            return localStorage.theme;
+            return this._theme;
         },
 
         setTheme(value) {
@@ -13,10 +15,12 @@ const ThemeManager = (xData = {}) => {
                 detail: {
                     theme: value,
                 },
-            }))
-        },
+            }));
 
-        ...xData,
+            this.$nextTick(() => {
+                this._theme = value;
+            });
+        },
     });
 };
 
