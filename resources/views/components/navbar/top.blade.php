@@ -11,7 +11,10 @@
 
             <x-navbar.network-dropdown/>
 
-            <div x-data="ThemeManager()">
+            <div
+                x-data="ThemeManager()"
+                @theme-changed.window="theme = $event.detail.theme"
+            >
                 <x-navbar.theme-dropdown/>
             </div>
         </div>
