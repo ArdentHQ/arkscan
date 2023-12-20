@@ -22,8 +22,8 @@
                 wire:click="setValue('{{ $option['value'] }}')"
                 @class([
                     'relative z-10',
-                    'dark:text-theme-dark-300' => ! $isDisabled && $currentValue === $option['value'],
-                    'text-theme-secondary-900 dark:text-theme-dark-300' => ! $isDisabled && $currentValue !== $option['value'],
+                    'dark:text-theme-dark-300' => ! $isDisabled && $currentValue !== $option['value'],
+                    'text-theme-secondary-900 dark:text-theme-dark-50' => ! $isDisabled && $currentValue === $option['value'],
                     'text-theme-secondary-500 dark:text-theme-dark-700' => $isDisabled,
                 ])
                 @if ($isDisabled)
