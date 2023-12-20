@@ -8,7 +8,7 @@ use App\Facades\Settings;
 use App\Http\Livewire\Concerns\HandlesSettings;
 use Livewire\Component;
 
-final class DarkModeToggle extends Component //extends Toggle
+final class DarkModeHandler extends Component
 {
     use HandlesSettings;
 

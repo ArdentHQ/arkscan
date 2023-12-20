@@ -10,5 +10,5 @@
     <x-navbar.desktop :navigation="$navigation" />
     <x-navbar.mobile :navigation="$navigation" />
 
-    <livewire:navbar.dark-mode-toggle setting="theme" />
+    <livewire:navbar.dark-mode-handler setting="theme" />
 </div>
