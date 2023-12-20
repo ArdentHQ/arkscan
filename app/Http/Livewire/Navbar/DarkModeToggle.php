@@ -21,7 +21,8 @@ final class DarkModeToggle extends Component //extends Toggle
         'themeChanged' => 'storeTheme',
     ];
 
-    public function mount(string $setting): void {
+    public function mount(string $setting): void
+    {
         $this->setting      = $setting;
         $this->currentValue = Settings::get($this->setting);
     }
@@ -33,7 +34,7 @@ final class DarkModeToggle extends Component //extends Toggle
 
     public function storeTheme(string $newValue): void
     {
-        if (! in_array($newValue, ['light', 'dark', 'dim'])) {
+        if (! in_array($newValue, ['light', 'dark', 'dim'], true)) {
             return;
         }
 
