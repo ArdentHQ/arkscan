@@ -41,20 +41,9 @@ final class DarkModeHandler extends Component
         if ($newValue !== $this->currentValue) {
             $this->currentValue = $newValue;
 
-            $this->save(false);
+            $this->saveSetting($this->setting, $this->currentValue);
 
             $this->emit('themeChanged', $newValue);
-        }
-    }
-
-    protected function save(bool $dispatchEvent = true): void
-    {
-        $this->saveSetting($this->setting, $this->currentValue);
-
-        if ($dispatchEvent && $this->setting === 'theme') {
-            $this->dispatchBrowserEvent('setThemeMode', [
-                'theme' => $this->isActive() ? 'dark' : 'light',
-            ]);
         }
     }
 }
