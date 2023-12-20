@@ -30,7 +30,7 @@
     <x-general.dropdown.alpine-list-item
         id="light"
         variable-name="theme"
-        inactive-class="font-semibold"
+        inactive-class="font-semibold border-transparent text-theme-secondary-700 hover:text-theme-secondary-700 hover:bg-theme-secondary-100 hover:dark:bg-theme-dark-900"
     >
         @lang('general.navbar.theme.light')
     </x-general.dropdown.alpine-list-item>
@@ -38,7 +38,7 @@
     <x-general.dropdown.alpine-list-item
         id="dark"
         variable-name="theme"
-        inactive-class="font-semibold"
+        inactive-class="font-semibold border-transparent text-theme-secondary-700 hover:text-theme-secondary-700 hover:bg-theme-secondary-100 hover:dark:bg-theme-dark-900"
     >
         @lang('general.navbar.theme.dark')
     </x-general.dropdown.alpine-list-item>
@@ -46,7 +46,7 @@
     <x-general.dropdown.alpine-list-item
         id="dim"
         variable-name="theme"
-        inactive-class="font-semibold"
+        inactive-class="font-semibold border-transparent text-theme-secondary-700 hover:text-theme-secondary-700 hover:bg-theme-secondary-100 hover:dark:bg-theme-dark-900"
     >
         @lang('general.navbar.theme.dim')
     </x-general.dropdown.alpine-list-item>
