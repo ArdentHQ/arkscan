@@ -4,31 +4,53 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Navbar;
 
-final class DarkModeToggle extends Toggle
+use App\Facades\Settings;
+use App\Http\Livewire\Concerns\HandlesSettings;
+use Livewire\Component;
+
+final class DarkModeToggle extends Component //extends Toggle
 {
+    use HandlesSettings;
+
+    public string $setting;
+
+    public mixed $currentValue = null;
+
     /** @var mixed */
     protected $listeners = [
         'themeChanged' => 'storeTheme',
     ];
 
-    public function storeTheme(string $theme): void
-    {
-        $currentValue = $theme === 'dark';
+    public function mount(string $setting): void {
+        $this->setting      = $setting;
+        $this->currentValue = Settings::get($this->setting);
+    }
 
-        if ($currentValue !== $this->currentValue) {
-            $this->currentValue = $currentValue;
+    public function render(): string
+    {
+        return '<div></div>';
+    }
+
+    public function storeTheme(string $newValue): void
+    {
+        if (! in_array($newValue, ['light', 'dark', 'dim'])) {
+            return;
+        }
+
+        if ($newValue !== $this->currentValue) {
+            $this->currentValue = $newValue;
 
             $this->save(false);
 
-            $this->emit('themeChanged', $theme);
+            $this->emit('themeChanged', $newValue);
         }
     }
 
     protected function save(bool $dispatchEvent = true): void
     {
-        parent::save();
+        $this->saveSetting($this->setting, $this->currentValue);
 
-        if ($dispatchEvent && $this->setting === 'darkTheme') {
+        if ($dispatchEvent && $this->setting === 'theme') {
             $this->dispatchBrowserEvent('setThemeMode', [
                 'theme' => $this->isActive() ? 'dark' : 'light',
             ]);
