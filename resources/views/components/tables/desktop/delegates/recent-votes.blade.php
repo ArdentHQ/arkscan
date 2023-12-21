@@ -61,6 +61,7 @@
                         always-show-address
                         without-truncate
                         class="hidden lg:flex"
+                        generic
                     />
 
                     <x-tables.rows.desktop.encapsulated.addressing

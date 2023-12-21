@@ -27,7 +27,7 @@ it('should have all settings with defaults', function () {
         'currency'       => 'USD',
         'priceChart'     => true,
         'feeChart'       => true,
-        'darkTheme'      => null,
+        'theme'          => null,
     ]);
 });
 
@@ -36,7 +36,7 @@ it('should have all settings with values from a session', function () {
         'currency'       => 'CHF',
         'priceChart'     => true,
         'feeChart'       => true,
-        'darkTheme'      => false,
+        'theme'          => 'light',
     ];
 
     expect(getSettingsFromCookies($this, 'all', $settings))->toBe($settings);
@@ -64,11 +64,14 @@ it('should have a dark theme setting', function () {
 it('should determine the name of the theme', function () {
     expect(Settings::theme())->toBe('auto');
 
-    expect(getSettingsFromCookies($this, 'theme', ['darkTheme' => false]))
+    expect(getSettingsFromCookies($this, 'theme', ['theme' => 'light']))
         ->toBe(['light']);
 
-    expect(getSettingsFromCookies($this, 'theme', ['darkTheme' => true]))
+    expect(getSettingsFromCookies($this, 'theme', ['theme' => 'dark']))
         ->toBe(['dark']);
+
+    expect(getSettingsFromCookies($this, 'theme', ['theme' => 'dim']))
+        ->toBe(['dim']);
 });
 
 it('should determine if visitor uses any chart', function () {
@@ -118,12 +121,16 @@ it('should determine if visitor uses fee chart', function () {
 
 it('should determine if visitor uses dark theme', function () {
     expect(getSettingsFromCookies($this, 'theme', [
-        'darkTheme' => true,
+        'theme' => 'dark',
     ]))->toBe(['dark']);
 
     expect(getSettingsFromCookies($this, 'theme', [
-        'darkTheme' => false,
+        'theme' => 'light',
     ]))->toBe(['light']);
+
+    expect(getSettingsFromCookies($this, 'theme', [
+        'theme' => 'dim',
+    ]))->toBe(['dim']);
 });
 
 it('should get the locale', function () {
