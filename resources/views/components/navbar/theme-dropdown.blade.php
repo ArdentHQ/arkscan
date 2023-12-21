@@ -3,7 +3,7 @@
     without-dropdown-icon
 >
     <x-slot name="button">
-        <div>
+        <div class="dim:text-theme-dark-300">
             <span x-show="theme === 'dark'" x-cloak>
                 <x-ark-icon
                     name="moon"

@@ -54,10 +54,7 @@
     --theme-color-dark-blue-950: var(--theme-color-dim-blue-950);
 
     /* Existing color overrides */
-    --theme-color-success-500: #42b263;
-    --theme-color-success-700: #307845;
 
-    --theme-color-primary-600: var(--theme-color-dim-blue-400);
 
     /* Secondary Overrides */
     --theme-color-secondary-200: var(--theme-color-dim-50);
@@ -67,4 +64,24 @@
     --theme-color-secondary-800: var(--theme-color-dim-700);
     --theme-color-secondary-900: var(--theme-color-dim-900);
     --color-black: var(--theme-color-dim-950);
+}
+
+.dim .link {
+    @apply text-theme-dark-blue-600;
+}
+
+.dark a.button-primary,
+.dark button.button-primary {
+    @apply bg-theme-dark-blue-600 text-theme-dark-50;
+}
+
+.dim a.button-secondary,
+.dim button.button-secondary {
+    @apply bg-theme-dark-blue-900;
+    box-shadow: 0 0 1px 1px var(--theme-color-dark-blue-900) inset;
+}
+
+.dim .ark-info-element > div {
+    @apply bg-theme-dark-blue-900;
+    box-shadow: 0 0 1px 1px var(--theme-color-dark-blue-900) inset;
 }

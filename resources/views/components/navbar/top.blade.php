@@ -9,13 +9,13 @@
         <div class="flex items-center space-x-3 md:w-full md-lg:w-auto">
             <livewire:navbar.search />
 
-            <x-navbar.network-dropdown/>
+            <x-navbar.network-dropdown />
 
             <div
                 x-data="ThemeManager()"
                 @theme-changed.window="theme = $event.detail.theme"
             >
-                <x-navbar.theme-dropdown/>
+                <x-navbar.theme-dropdown />
             </div>
         </div>
     </div>

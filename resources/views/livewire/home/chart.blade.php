@@ -13,7 +13,7 @@
             <div class="hidden items-center space-x-3 sm:flex">
                 <x-general.dropdown.dropdown
                     dropdown-class="w-50"
-                    active-button-class="bg-white text-theme-secondary-700 dark:text-theme-dark-50 dark:bg-theme-dark-900 dark:hover:bg-theme-secondary-800 hover:text-theme-secondary-700 hover:bg-theme-secondary-200"
+                    active-button-class="bg-white text-theme-secondary-700 dark:text-theme-dark-50 dark:bg-theme-dark-900 dark:hover:bg-theme-secondary-800 hover:text-theme-secondary-700 hover:bg-theme-secondary-200 dim:!shadow-theme-dark-700"
                 >
                     <x-slot
                         name="button"

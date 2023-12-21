@@ -10,7 +10,7 @@
 >
     <x-ark-input-with-prefix
         icon="magnifying-glass-small"
-        icon-class="text-theme-secondary-500 dark:text-theme-dark-700"
+        icon-class="text-theme-secondary-500 dark:text-theme-dark-500"
         type="text"
         id="search"
         name="search"
@@ -30,7 +30,7 @@
         :field-class-override="Arr::toCssClasses([
             'block w-full border-0 rounded outline-none appearance-none px-2 py-[7px] text-sm leading-4 bg-transparent',
             'placeholder:text-theme-secondary-500 text-theme-secondary-500 dark:placeholder:text-theme-secondary-700 cursor-not-allowed' => $isDisabled,
-            'placeholder:text-theme-secondary-700 text-theme-secondary-900 dark:text-theme-dark-400' => ! $isDisabled,
+            'placeholder:text-theme-secondary-700 text-theme-secondary-900 dark:text-theme-dark-50' => ! $isDisabled,
         ])"
         hide-label
         disable-dirty-styling
@@ -50,7 +50,7 @@
             <button
                 type="button"
                 wire:click="clear"
-                class="p-2 -my-px bg-transparent button-secondary text-theme-secondary-700 dark:text-theme-dark-600 dark:bg-theme-dark-900"
+                class="p-2 -my-px bg-transparent button-secondary text-theme-secondary-700 dark:text-theme-dark-200 dark:shadow-none dark:bg-theme-dark-900"
                 x-cloak
                 x-on:blur="blurHandler"
             >
@@ -62,7 +62,7 @@
 
             <x-ark-icon
                 name="square-return-arrow"
-                class="hidden sm:block dark:text-theme-dark-600"
+                class="hidden sm:block dark:text-theme-dark-200"
                 size="sm"
                 x-cloak
             />

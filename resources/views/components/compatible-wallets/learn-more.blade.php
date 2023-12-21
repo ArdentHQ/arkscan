@@ -1,8 +1,8 @@
 @props([
-    'backgroundColor' => 'bg-theme-primary-50 dark:bg-theme-dark-blue-900',
+    'backgroundColor' => 'bg-theme-primary-50 dark:bg-theme-dark-blue-900 dim:!bg-theme-dim-blue-950',
     'padding' => 'py-3 px-3 mt-6 md:px-6',
     'titleColor' => 'text-theme-secondary-900 dark:text-white',
-    'subtitleColor' => 'text-theme-secondary-700 dark:text-theme-dark-blue-400',
+    'subtitleColor' => 'text-theme-secondary-700 dark:text-theme-dark-blue-400 dim:!text-theme-dark-blue-600',
     'iconSize' => 'w-10 h-10',
     'home' => false,
     'arrowsBreakpoint' => null,
@@ -52,7 +52,7 @@
             href="@lang('pages.compatible-wallets.arkvault.url')"
             target="_blank"
             rel="noopener nofollow noreferrer"
-            class="flex items-center py-3.5 w-full rounded-lg sm:mt-0 sm:w-auto md:mt-0 md:w-full lg:w-auto button-primary sm:h-15"
+            class="flex items-center py-3.5 w-full rounded-lg sm:mt-0 sm:w-auto md:mt-0 md:w-full lg:w-auto button-primary sm:h-15 dim:bg-theme-dark-blue-600"
         >
             <div class="flex justify-center items-center h-full text-lg leading-5.25">
                 <span>

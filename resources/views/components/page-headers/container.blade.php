@@ -6,9 +6,9 @@
 
 @php
     $wrapperBreakpointClass = [
-        'sm' => 'sm:items-center sm:rounded-lg sm:border sm:border-theme-secondary-300 sm:dark:border-theme-dark-800',
-        'md' => 'md:items-center md:rounded-lg md:border md:border-theme-secondary-300 md:dark:border-theme-dark-800',
-    ][$breakpoint] ?? 'md:items-center md:rounded-lg md:border md:border-theme-secondary-300 md:dark:border-theme-dark-800';
+        'sm' => 'sm:items-center sm:rounded-lg sm:border sm:border-theme-secondary-300 sm:dark:border-theme-dark-700',
+        'md' => 'md:items-center md:rounded-lg md:border md:border-theme-secondary-300 md:dark:border-theme-dark-700',
+    ][$breakpoint] ?? 'md:items-center md:rounded-lg md:border md:border-theme-secondary-300 md:dark:border-theme-dark-700';
 
     $detailBreakpointClass = [
         'sm' => 'sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3',

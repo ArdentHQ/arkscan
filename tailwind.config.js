@@ -60,6 +60,9 @@ module.exports = {
                 "theme-dark-900": "var(--theme-color-dark-900)",
                 "theme-dark-950": "var(--theme-color-dark-950)",
 
+                // We don't have a dark-blue-950 so create a dim version to not confuse it
+                "theme-dim-blue-950": "var(--theme-color-dim-blue-950)",
+
                 black: "var(--theme-color-dark-950)",
             },
 

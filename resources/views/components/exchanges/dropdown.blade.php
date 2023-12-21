@@ -27,7 +27,7 @@
                 <x-ark-icon
                     name="arrows.chevron-down-small"
                     size="w-3 h-3"
-                    class="text-theme-secondary-700 dark:text-theme-dark-200"
+                    class="text-theme-secondary-700 dark:text-theme-dark-50"
                 />
             </span>
         </div>
