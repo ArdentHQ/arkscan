@@ -218,7 +218,7 @@ it('should show the correct styling for "warning" on missed blocks', function ()
     Livewire::test(Delegates::class)
         ->call('setIsReady')
         ->assertSee($wallet->address)
-        ->assertSee('bg-theme-orange-light border-theme-orange-light text-theme-orange-dark dark:border-theme-orange-dark dark:text-theme-warning-400');
+        ->assertSee('bg-theme-orange-light border-theme-orange-light text-theme-orange-dark dark:border-theme-orange-600 dark:text-theme-warning-400');
 });
 
 it('should show the correct styling for "danger" on missed blocks', function () {
