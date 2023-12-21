@@ -81,7 +81,7 @@
                 x-transition.opacity
                 x-cloak
             >
-                <div class="border-t-2 shadow-xl border-theme-secondary-200 dark:border-theme-dark-800">
+                <div class="border-t-2 shadow-xl border-theme-secondary-200 dark:border-theme-dark-800 dim:!border-theme-dark-700">
                     <div class="pt-2 bg-white rounded-b-lg dark:bg-theme-dark-700">
                         @foreach ($navigation as $navItem)
                             @if (Arr::exists($navItem, 'children'))

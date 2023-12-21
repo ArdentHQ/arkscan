@@ -1,6 +1,6 @@
 <x-page-headers.header-item
     :attributes="$attributes"
-    class="flex-none -mx-6 mt-6 -mb-8 rounded-none md:mx-0 md:mb-0 xl:flex-1 bg-theme-primary-100 sm:h-[140px] md:h-[150px] md-lg:h-[193px] lg:h-[206px] xl:h-[264px] dark:bg-theme-dark-800"
+    class="flex-none -mx-6 mt-6 -mb-8 rounded-none md:mx-0 md:mb-0 xl:flex-1 bg-theme-primary-100 sm:h-[140px] md:h-[150px] md-lg:h-[193px] lg:h-[206px] xl:h-[264px] dark:bg-theme-dark-800 dim:!bg-theme-dark-700"
     content-class="p-6 h-full sm:py-0"
     slot-class="h-full"
     without-padding
@@ -25,7 +25,7 @@
         />
     </x-slot>
 
-    <div class="absolute top-0 right-0 z-10 w-full h-full bg-gradient-to-t sm:w-3/4 sm:bg-gradient-to-r from-theme-primary-100 to-theme-primary-200 dark:from-theme-dark-800 dark:to-theme-dark-700"></div>
+    <div class="absolute top-0 right-0 z-10 w-full h-full bg-gradient-to-t dim:bg-gradient-to-b sm:w-3/4 sm:bg-gradient-to-r from-theme-primary-100 to-theme-primary-200 dark:from-theme-dark-800 dark:to-theme-dark-700 dim:sm:bg-gradient-to-l"></div>
 
     <div class="flex relative z-30 flex-col flex-1 items-center h-full sm:flex-row sm:justify-between">
         <div class="hidden -ml-24 h-full sm:block md:-ml-16 lg:ml-0">

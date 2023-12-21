@@ -34,7 +34,7 @@
         />
     </x-slot>
 
-    <div class="absolute top-0 right-0 z-10 w-full h-full bg-gradient-to-t sm:bg-gradient-to-r from-theme-primary-100 to-theme-primary-200 sm:w-[400px] dark:from-theme-dark-800 dark:to-theme-dark-700 dim:sm:bg-gradient-to-l"></div>
+    <div class="absolute top-0 right-0 z-10 w-full h-full bg-gradient-to-t dim:bg-gradient-to-b sm:bg-gradient-to-r from-theme-primary-100 to-theme-primary-200 sm:w-[400px] dark:from-theme-dark-800 dark:to-theme-dark-700 dim:sm:bg-gradient-to-l"></div>
 
     <div class="flex relative z-30 flex-col flex-1 items-center space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
         <div class="flex flex-col space-y-1.5 w-full">
