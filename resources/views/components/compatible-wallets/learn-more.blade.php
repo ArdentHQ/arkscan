@@ -52,7 +52,7 @@
             href="@lang('pages.compatible-wallets.arkvault.url')"
             target="_blank"
             rel="noopener nofollow noreferrer"
-            class="flex items-center py-3.5 w-full rounded-lg sm:mt-0 sm:w-auto md:mt-0 md:w-full lg:w-auto button-primary sm:h-15 dim:bg-theme-dark-blue-600"
+            class="flex items-center py-3.5 w-full rounded-lg sm:mt-0 sm:w-auto md:mt-0 md:w-full lg:w-auto button-primary dim:bg-theme-dark-blue-600 sm:h-15"
         >
             <div class="flex justify-center items-center h-full text-lg leading-5.25">
                 <span>

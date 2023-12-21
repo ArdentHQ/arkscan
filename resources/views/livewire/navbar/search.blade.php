@@ -50,7 +50,7 @@
             <button
                 type="button"
                 wire:click="clear"
-                class="p-2 -my-px bg-transparent button-secondary text-theme-secondary-700 dark:text-theme-dark-200 dark:shadow-none dark:bg-theme-dark-900"
+                class="p-2 -my-px bg-transparent dark:shadow-none button-secondary text-theme-secondary-700 dark:text-theme-dark-200 dark:bg-theme-dark-900"
                 x-cloak
                 x-on:blur="blurHandler"
             >
