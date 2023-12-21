@@ -62,6 +62,16 @@ it('should store theme from an event only on first load', function () {
         ->assertNotDispatchedBrowserEvent('setThemeMode');
 });
 
+it('should dispatch event on save', function () {
+    Cookie::shouldReceive('queue')
+        ->once();
+
+    $this->component->call('setValue', 'dark')
+        ->assertDispatchedBrowserEvent('setThemeMode', [
+            'theme' => 'dark',
+        ]);
+});
+
 it('should handle 404 and not spam livewire requests', function () {
     $payload = [
         'fingerprint' => [
