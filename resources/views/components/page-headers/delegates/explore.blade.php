@@ -1,6 +1,6 @@
 <x-page-headers.header-item
     :attributes="$attributes"
-    class="flex-none xl:flex-1 bg-theme-primary-100 dark:bg-theme-dark-800 dim:bg-theme-dark-700"
+    class="flex-none xl:flex-1 bg-theme-primary-100 dim:bg-theme-dark-700 dark:bg-theme-dark-800"
 >
     <x-slot name="background" class="left-0 right-auto sm:right-0 sm:left-auto">
         <img
@@ -15,12 +15,12 @@
 
         <img
             src="{{ mix('images/delegates/header-bg-dark.svg') }}"
-            class="hidden max-w-none dark:sm:block dim:sm:hidden"
+            class="hidden max-w-none dim:sm:hidden dark:sm:block"
         />
 
         <img
             src="{{ mix('images/delegates/header-bg-mobile-dark.svg') }}"
-            class="hidden max-w-none dark:block dark:sm:hidden dim:hidden"
+            class="hidden max-w-none dark:block dim:hidden dark:sm:hidden"
         />
 
         <img
