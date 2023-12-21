@@ -10,8 +10,11 @@
 >
     <div class="flex items-center space-x-2">
         <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-            <x-currency :currency="Network::currency()">
-                {{ ExplorerNumberFormatter::networkCurrency($totalVoted, 0) }}
+            <x-currency
+                :currency="Network::currency()"
+                :decimals="0"
+            >
+                {{ $totalVoted }}
             </x-currency>
         </span>
 
