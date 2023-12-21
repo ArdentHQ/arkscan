@@ -27,7 +27,7 @@
         }
 
         if($isSent && ! $isSentToSelf) {
-            $class[] = 'fiat-tooltip-sent text-theme-orange-dark bg-theme-orange-light border-theme-orange-light dark:bg-transparent dark:border-[#AA6868] dark:text-[#F39B9B] dim:!border-[#AB8282] dim:!text-[#CAA0A0]';
+            $class[] = 'fiat-tooltip-sent text-theme-orange-dark bg-theme-orange-light border-theme-orange-light dark:bg-transparent dark:border-[#AA6868] dark:text-[#F39B9B] dim:border-[#AB8282] dim:text-[#CAA0A0]';
         }
 
         if($isReceived || $isSentToSelf) {

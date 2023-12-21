@@ -22,7 +22,7 @@
     $padding,
 ])>
     <span @class([
-        'font-semibold dark:text-white text-theme-primary-900 dim:!text-theme-dark-50',
+        'font-semibold dark:text-white text-theme-primary-900 dim:text-theme-dark-50',
         $textBreakpoint,
     ])>
         {!! $text !!}

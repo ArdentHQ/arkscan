@@ -1,6 +1,6 @@
 <x-page-headers.header-item
     :attributes="$attributes"
-    class="flex-none -mx-6 mt-6 -mb-8 rounded-none md:mx-0 md:mb-0 xl:flex-1 bg-theme-primary-100 sm:h-[140px] md:h-[150px] md-lg:h-[193px] lg:h-[206px] xl:h-[264px] dark:bg-theme-dark-800 dim:!bg-theme-dark-700"
+    class="flex-none -mx-6 mt-6 -mb-8 rounded-none md:mx-0 md:mb-0 xl:flex-1 bg-theme-primary-100 sm:h-[140px] md:h-[150px] md-lg:h-[193px] lg:h-[206px] xl:h-[264px] dark:bg-theme-dark-800 dim:bg-theme-dark-700"
     content-class="p-6 h-full sm:py-0"
     slot-class="h-full"
     without-padding
@@ -16,7 +16,7 @@
 
         <img
             src="{{ mix('images/home/footer-bg-dark.svg') }}"
-            class="hidden max-w-none dark:block dim:!hidden"
+            class="hidden max-w-none dark:block dim:hidden"
         />
 
         <img
@@ -30,7 +30,7 @@
     <div class="flex relative z-30 flex-col flex-1 items-center h-full sm:flex-row sm:justify-between">
         <div class="hidden -ml-24 h-full sm:block md:-ml-16 lg:ml-0">
             <img src="{{ mix('images/home/footer.svg') }}" class="h-full dark:hidden" />
-            <img src="{{ mix('images/home/footer-dark.svg') }}" class="hidden h-full dark:block dim:!hidden" />
+            <img src="{{ mix('images/home/footer-dark.svg') }}" class="hidden h-full dark:block dim:hidden" />
             <img src="{{ mix('images/home/footer-dim.svg') }}" class="hidden h-full dim:block" />
         </div>
 
@@ -46,7 +46,7 @@
             </div>
 
             <x-compatible-wallets.learn-more
-                background-color="bg-[#F5FAFF]/30 dark:bg-[#505D6A]/30 dim:!bg-[#476DB0]/30 backdrop-blur"
+                background-color="bg-[#F5FAFF]/30 dark:bg-[#505D6A]/30 dim:bg-[#476DB0]/30 backdrop-blur"
                 class="border border-theme-primary-300 dark:border-theme-dark-500"
                 padding="p-6 sm:p-3 lg:px-6 md-lg:mt-5"
                 title-color="text-theme-primary-900 dark:text-theme-dark-50"

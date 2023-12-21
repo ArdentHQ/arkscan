@@ -155,8 +155,8 @@ module.exports = {
         ...defaultConfig.plugins,
 
         plugin(function ({ addVariant }) {
-            addVariant("dim", ".dim &");
-            addVariant("dim-hover", ".dim &:hover");
+            addVariant("dim", ":is(.dark.dim &)");
+            addVariant("dim-hover", ":is(.dark.dim &:hover)");
         }),
     ],
 };
