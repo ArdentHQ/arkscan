@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Facades\Settings;
 use App\Http\Livewire\Navbar\MobileDarkModeToggle;
 use Illuminate\Support\Facades\Cookie;
 use Livewire\ComponentChecksumManager;
@@ -11,15 +10,15 @@ use Livewire\Livewire;
 beforeEach(function () {
     $this->options   = [
         [
-            'icon' => 'sun',
+            'icon'  => 'sun',
             'value' => 'light',
         ],
         [
-            'icon' => 'moon',
+            'icon'  => 'moon',
             'value' => 'dark',
         ],
         [
-            'icon' => 'moon-stars',
+            'icon'  => 'moon-stars',
             'value' => 'dim',
         ],
     ];
