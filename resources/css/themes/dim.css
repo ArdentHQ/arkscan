@@ -55,7 +55,6 @@
 
     /* Existing color overrides */
 
-
     /* Secondary Overrides */
     --theme-color-secondary-200: var(--theme-color-dim-50);
     --theme-color-secondary-500: var(--theme-color-dim-200);
