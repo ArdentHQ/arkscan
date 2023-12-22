@@ -5,7 +5,7 @@
     class="px-3 sm:hidden"
 >
     @foreach ($transaction->participants() as $participant)
-        <x-tables.rows.mobile>
+        <x-tables.rows.mobile wire:key="{{ Helpers::generateId('participants-mobile-row', $participant->address()) }}">
             <x-slot name="header">
                 <x-tables.headers.mobile.encapsulated.address :model="$participant" />
 

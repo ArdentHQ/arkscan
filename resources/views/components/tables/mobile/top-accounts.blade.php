@@ -2,7 +2,7 @@
 
 <x-tables.mobile.includes.encapsulated wire:key="{{ Helpers::generateId('top-accounts-mobile') }}">
     @foreach ($wallets as $wallet)
-        <x-tables.rows.mobile>
+        <x-tables.rows.mobile wire:key="{{ Helpers::generateId('top-accounts-mobile-row', $wallet->address()) }}">
             <x-slot name="header">
                 <div class="flex items-center space-x-3">
                     <x-tables.headers.mobile.encapsulated.rank :results="$wallets" :index="$loop->index + 1" />
