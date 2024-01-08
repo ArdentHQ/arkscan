@@ -494,7 +494,7 @@ it('should fail to get the productivity if the wallet is a delegate', function (
     ]));
 
     expect($this->subject->productivity())->toBeFloat();
-    expect($this->subject->productivity())->toBe(-1.0);
+    expect($this->subject->productivity())->toBe(0.0);
 
     (new WalletCache())->setProductivity($this->subject->publicKey(), 10);
 
@@ -515,6 +515,15 @@ it('should fail to get the productivity if the wallet has no public key', functi
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'public_key' => null,
     ]));
+
+    expect($this->subject->productivity())->toBeFloat();
+    expect($this->subject->productivity())->toBe(0.0);
+});
+
+it('should return 0 for productivity if the cached value is less than 0', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->create());
+
+    (new WalletCache())->setProductivity($this->subject->publicKey(), -1);
 
     expect($this->subject->productivity())->toBeFloat();
     expect($this->subject->productivity())->toBe(0.0);
