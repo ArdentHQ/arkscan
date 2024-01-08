@@ -345,7 +345,7 @@ return [
     'delegates'        => [
         'title'              => 'Delegates',
         'subtitle'           => 'List of delegates registered on the network.',
-        'x_delegates'        => ':count Delegates',
+        'x_delegates'        => '{1} 1 Delegate|:count Delegates',
         'voting_x_addresses' => 'Voting (:count Addresses)',
 
         'missed-blocks'      => [

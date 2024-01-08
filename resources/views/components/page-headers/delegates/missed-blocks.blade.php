@@ -18,7 +18,7 @@
             </span>
 
             <x-general.badge class="py-px text-theme-secondary-700">
-                @lang('pages.delegates.x_delegates', ['count' => $delegatesMissed])
+                {{ trans_choice('pages.delegates.x_delegates', $delegatesMissed) }}
             </x-general.badge>
         </div>
 
