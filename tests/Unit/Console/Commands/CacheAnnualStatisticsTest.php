@@ -35,6 +35,8 @@ it('should cache annual data for current year', function () {
 });
 
 it('should cache annual data for all time', function () {
+    $this->travelTo(Carbon::parse('2023-08-12'));
+
     $cache       = new StatisticsCache();
     $currentTime = Carbon::now();
     $currentYear = $currentTime->year;
