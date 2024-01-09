@@ -31,7 +31,7 @@
             @class([
                 'flex flex-1 justify-center items-center rounded sm:flex-none button-secondary',
                 'h-8 w-8 p-0' => $withoutText,
-                'w-full sm:py-1.5 sm:px-4 md:p-2' => ! $withoutText,
+                'w-full py-1.5 sm:px-4 md:p-2' => ! $withoutText,
             ])
             @click="shown = true"
         >
