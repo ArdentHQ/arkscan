@@ -40,6 +40,7 @@
                 breakpoint="sm"
                 wrapper-class="max-w-full sm:max-w-[448px]"
                 content-class="relative bg-white sm:mx-auto sm:rounded-xl sm:shadow-2xl dark:bg-theme-dark-900"
+                overlay-class="dim:bg-theme-dark-950"
                 disable-overlay-close
             >
                 <x-slot name="title">
