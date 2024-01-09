@@ -1,6 +1,6 @@
 <x-page-headers.header-item
     :attributes="$attributes"
-    class="flex-none -mx-6 mt-6 -mb-8 rounded-none md:mx-0 md:mb-0 xl:flex-1 bg-theme-primary-100 dim:bg-theme-dark-700 sm:h-[140px] md:h-[150px] md-lg:h-[193px] lg:h-[206px] xl:h-[264px] dark:bg-theme-dark-800"
+    class="flex-none -mx-6 mt-8 -mb-8 rounded-none md:mx-0 md:mt-6 md:mb-0 xl:flex-1 bg-theme-primary-100 dim:bg-theme-dark-700 sm:h-[140px] md:h-[150px] md-lg:h-[193px] lg:h-[206px] xl:h-[264px] dark:bg-theme-dark-800"
     content-class="p-6 h-full sm:py-0"
     slot-class="h-full"
     without-padding
