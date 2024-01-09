@@ -26,6 +26,40 @@ final class TransactionCache implements Contract
         $this->put(sprintf('historical/%s', $period), $this->chartjs($data));
     }
 
+    public function getHistoricalByType(string $type): int
+    {
+        return (int) $this->get(sprintf('type/historical/%s', $type), 0);
+    }
+
+    public function setHistoricalByType(string $type, int $count): void
+    {
+        $this->put(sprintf('type/historical/%s', $type), $count);
+    }
+
+    public function getHistoricalAverages(): array
+    {
+        return $this->get('averages', [
+            'count'  => 0,
+            'amount' => 0,
+            'fee'    => 0,
+        ]);
+    }
+
+    public function setHistoricalAverages(array $averages): void
+    {
+        $this->put('averages', $averages);
+    }
+
+    public function getLargestIdByAmount(): ?string
+    {
+        return $this->get('largest/amount');
+    }
+
+    public function setLargestIdByAmount(string $id): void
+    {
+        $this->put('largest/amount', $id);
+    }
+
     public function getCache(): TaggedCache
     {
         return Cache::tags('transaction');

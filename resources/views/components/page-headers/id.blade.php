@@ -19,7 +19,7 @@
             wrapper-class="flex-1"
             :tooltip-content="$copyTooltip"
             with-checkmarks
-            checkmarks-class="group-hover:text-white text-theme-primary-900 dark:text-theme-secondary-200"
+            checkmarks-class="group-hover:text-white text-theme-primary-900 dark:text-theme-dark-200"
         >
             <div class="ml-2 sm:hidden">
                 @lang('actions.copy')

@@ -3,7 +3,7 @@
     'initialValue' => '',
     'dispatchEvent' => null,
     'class' => 'w-full',
-    'buttonClass' => 'inline-block w-full mr-10 px-4 py-3 text-left form-input transition-default dark:bg-theme-secondary-900 dark:border-theme-secondary-800',
+    'buttonClass' => 'inline-block w-full mr-10 px-4 py-3 text-left form-input transition-default dark:bg-theme-dark-900 dark:border-theme-dark-800',
     'wrapperClass' => 'w-full',
     'dropdownClass' => 'mt-1',
     'dropdownListClass' => 'max-h-80',
@@ -84,7 +84,7 @@ $initialText = $grouped
 
                 <span
                     x-show="!text"
-                    class="block truncate text-theme-secondary-500 dark:text-theme-secondary-700"
+                    class="block truncate text-theme-secondary-500 dark:text-theme-dark-700"
                 >
                     @if(isset($placeholder) && $placeholder)
                         {{ $placeholder }}
@@ -123,7 +123,7 @@ $initialText = $grouped
                 x-ref="listbox"
                 role="listbox"
                 aria-labelledby="listbox-label"
-                class="custom-scroll py-3 overflow-auto bg-white rounded-md outline-none dark:bg-theme-secondary-800 shadow-lg dark:text-theme-secondary-200 hover:outline-none {{ $dropdownListClass }}"
+                class="custom-scroll py-3 overflow-auto bg-white rounded-md outline-none dark:bg-theme-dark-800 shadow-lg dark:text-theme-dark-200 hover:outline-none {{ $dropdownListClass }}"
                 tabindex="-1"
             >
                 @isset($dropdownList)

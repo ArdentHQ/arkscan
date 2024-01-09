@@ -16,7 +16,7 @@
                 @lang('pages.delegates.resigned')
             </span>
         @elseif($wallet->rank() > Network::delegateCount())
-            <span class="text-theme-secondary-500 dark:text-theme-secondary-700">
+            <span class="text-theme-secondary-500 dark:text-theme-dark-700">
                 @lang('pages.delegates.standby')
             </span>
         @else

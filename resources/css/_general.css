@@ -1,5 +1,5 @@
 html {
-    @apply min-h-full bg-white;
+    @apply min-h-full bg-white leading-4.25;
 }
 
 body {

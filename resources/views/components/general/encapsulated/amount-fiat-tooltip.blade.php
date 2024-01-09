@@ -6,7 +6,7 @@
     'fiat' => null,
     'amount' => null,
     'amountForItself' => null,
-    'class' => 'text-sm leading-4.25',
+    'class' => 'text-sm',
     'withoutStyling' => false,
 ])
 
@@ -19,7 +19,7 @@
             $isSentToSelf = $transaction->isSentToSelf($wallet->address());
         }
         if(! $isSent && ! $isReceived) {
-            $class[] = 'text-theme-secondary-900 dark:text-theme-secondary-200';
+            $class[] = 'text-theme-secondary-900 dark:text-theme-dark-50';
         }
 
         if($isSent || $isReceived) {

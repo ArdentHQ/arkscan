@@ -36,7 +36,7 @@
                             />
                         </div>
 
-                        <span class="text-sm font-semibold leading-4.25 min-w-[32px]">
+                        <span class="text-sm font-semibold leading-4.25 min-w-[32px] dark:text-theme-dark-200">
                             {{ $delegate->order() }}
                         </span>
                     </div>

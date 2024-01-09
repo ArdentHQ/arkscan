@@ -3,9 +3,8 @@
     'withoutLink' => false,
 ])
 
-<div {{ $attributes }}>
-    <x-tables.rows.desktop.encapsulated.block-height
-        :model="$model"
-        :without-link="$withoutLink"
-    />
-</div>
+<x-tables.rows.desktop.encapsulated.block-height
+    :model="$model"
+    :without-link="$withoutLink"
+    :attributes="$attributes"
+/>

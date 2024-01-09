@@ -28,7 +28,7 @@
 
     <div class="flex relative z-30 flex-col flex-1 items-center space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
         <div class="flex flex-col space-y-1.5 w-full">
-            <div class="text-sm md:text-lg text-theme-primary-900 leading-4.25 md:leading-5.25 dark:text-theme-dark-50">
+            <div class="text-sm md:text-lg text-theme-primary-900 md:leading-5.25 dark:text-theme-dark-50">
                 @lang('pages.delegates.explore.title')
             </div>
 

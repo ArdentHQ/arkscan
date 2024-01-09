@@ -39,7 +39,7 @@
                 buttons-style="flex flex-col-reverse sm:flex-row sm:justify-end !mt-4 sm:!mt-6 sm:space-x-3"
                 breakpoint="sm"
                 wrapper-class="max-w-full sm:max-w-[448px]"
-                content-class="relative bg-white sm:mx-auto sm:rounded-xl sm:shadow-2xl dark:bg-theme-secondary-900"
+                content-class="relative bg-white sm:mx-auto sm:rounded-xl sm:shadow-2xl dark:bg-theme-dark-900"
                 disable-overlay-close
             >
                 <x-slot name="title">

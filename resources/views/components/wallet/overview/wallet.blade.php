@@ -15,11 +15,7 @@
     <x-wallet.overview.item-entry :title="trans('pages.wallet.value')">
         <x-slot name="value">
             @if (Network::canBeExchanged())
-                <span>{{ $wallet->balanceFiat() }}</span>
-
-                @if (ExplorerNumberFormatter::hasSymbol(Settings::currency()))
-                    <span>{{ Settings::currency() }}</span>
-                @endif
+                <livewire:fiat-value :amount="$wallet->balance()" />
             @endif
         </x-slot>
     </x-wallet.overview.item-entry>

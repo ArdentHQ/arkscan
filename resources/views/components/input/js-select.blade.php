@@ -65,11 +65,11 @@
         :init-alpine="false"
         button-class="w-full"
         button-wrapper-class="w-full rounded-md"
-        active-button-class="bg-white dark:text-theme-secondary-600 dark:bg-theme-secondary-900"
+        active-button-class="bg-white dark:text-theme-dark-600 dark:bg-theme-dark-900"
     >
         <x-slot
             name="button"
-            class="flex justify-between py-3.5 px-4 w-full h-11 rounded border border-theme-secondary-400 leading-4.25 outline outline-1 outline-transparent dark:border-theme-dark-500 dark:text-theme-dark-200 hover:border-theme-primary-400 hover:dark:border-theme-dark-blue-600 hover:outline-theme-primary-400 hover:dark:outline-theme-dark-blue-600"
+            class="flex justify-between py-3.5 px-4 w-full h-11 rounded border border-theme-secondary-400 outline outline-1 outline-transparent dark:border-theme-dark-500 dark:text-theme-dark-200 hover:border-theme-primary-400 hover:dark:border-theme-dark-blue-600 hover:outline-theme-primary-400 hover:dark:outline-theme-dark-blue-600"
         >
             @if ($multiple)
                 <span
@@ -198,7 +198,7 @@
             @foreach ($items as $key => $item)
                 <div
                     x-show="{{ $id }}.{{ $key }} === true"
-                    class="inline-flex items-center p-2.5 space-x-2 text-sm font-semibold rounded border border-transparent cursor-pointer dark:text-white hover:text-white bg-theme-primary-100 text-theme-primary-600 transition-default group dark:border-theme-dark-600 dark:bg-theme-dark-800 hover:bg-theme-primary-700 hover:dark:bg-theme-primary-700 hover:dark:border-theme-primary-700"
+                    class="inline-flex items-center p-2.5 space-x-2 text-sm font-semibold rounded border border-transparent cursor-pointer dark:text-white hover:text-white bg-theme-primary-100 text-theme-primary-600 transition-default group dark:border-theme-dark-600 dark:bg-theme-dark-800 hover:bg-theme-primary-700 hover:dark:bg-theme-dark-blue-700 hover:dark:border-theme-dark-blue-700"
                     @click="{{ $id }}.{{ $key }} = false"
                 >
                     <div>
