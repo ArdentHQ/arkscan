@@ -17,12 +17,20 @@ final class CryptoDataCache implements Contract
 
     public function setHistorical(string $source, string $target, string $format, Closure $callback): Collection
     {
-        return $this->remember(sprintf('historical/%s/%s/%s', $source, $target, $format), now()->addMinutes(10), $callback);
+        $data = $callback();
+
+        $this->put(sprintf('historical/%s/%s/%s', $source, $target, $format), $data);
+
+        return $data;
     }
 
     public function setHistoricalHourly(string $source, string $target, string $format, int $limit, Closure $callback): Collection
     {
-        return $this->remember(sprintf('historical/%s/%s/%s/%s', $source, $target, $format, $limit), now()->addMinutes(10), $callback);
+        $data = $callback();
+
+        $this->put(sprintf('historical/%s/%s/%s/%s', $source, $target, $format, $limit), $data);
+
+        return $data;
     }
 
     public function getPrices(string $currency): Collection
@@ -32,7 +40,7 @@ final class CryptoDataCache implements Contract
 
     public function setPrices(string $currency, Collection $prices): Collection
     {
-        $this->put(sprintf('prices/%s', $currency), $prices, now()->addMinutes(10));
+        $this->put(sprintf('prices/%s', $currency), $prices);
 
         return $prices;
     }
