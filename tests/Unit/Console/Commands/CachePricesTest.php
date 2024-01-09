@@ -32,7 +32,7 @@ function generateMockPrices(&$expectedCrypto, &$expectedPrices): array
     $prices = [];
     foreach (range(0, 23) as $hour) {
         $time        = Carbon::now()->sub($hour, 'hours');
-        $prices[] = [
+        $prices[]    = [
             $time->valueOf(),
             $hour,
         ];

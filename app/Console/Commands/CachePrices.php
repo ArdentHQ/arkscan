@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
 
 final class CachePrices extends Command
 {
-    const PERIODS = [
+    public const PERIODS = [
         StatsPeriods::DAY,
         StatsPeriods::WEEK,
         StatsPeriods::MONTH,
@@ -45,8 +45,7 @@ final class CachePrices extends Command
         PriceChartCache $cache,
         PriceCache $priceCache,
         MarketDataProvider $marketDataProvider,
-    ): void
-    {
+    ): void {
         if (! Network::canBeExchanged()) {
             return;
         }
