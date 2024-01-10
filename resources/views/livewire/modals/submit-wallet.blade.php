@@ -18,6 +18,7 @@
             breakpoint="sm"
             wrapper-class="max-w-full sm:max-w-[430px]"
             content-class="relative bg-white sm:mx-auto sm:shadow-2xl sm:rounded-2.5xl dark:bg-theme-dark-900"
+            overlay-class="dim:bg-theme-dark-950"
         >
             <x-slot name="description">
                 <div class="flex flex-col pt-2 space-y-5">
