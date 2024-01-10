@@ -72,7 +72,7 @@ final class WalletQrCode extends Component
     {
         $options = [];
 
-        if ($this->amount !== null && $this->amount !== '') {
+        if ($this->amount !== null && $this->amount !== '' && floatval($this->amount) > 0) {
             $options['amount'] = $this->amount;
         }
 
