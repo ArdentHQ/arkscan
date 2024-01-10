@@ -12,21 +12,8 @@ final class LargestBlockAggregate
     public function aggregate(): ?Block
     {
         return Block::query()
-            ->where('id', function ($query) {
-                $query->select('block_id')
-                    ->from(function ($query) {
-                        $query->from('transactions', 't')
-                            ->select([
-                                'block_id',
-                                DB::raw('SUM(amount) as amount'),
-                            ])
-                            ->groupBy('block_id')
-                            ->whereNot('block_height', 1);
-                    }, 't')
-                    ->orderByRaw('amount desc')
-                    ->limit(1)
-                    ->first();
-            })
+            ->where('height', '>', 0)
+            ->orderBy('total_amount', 'desc')
             ->first();
     }
 }
