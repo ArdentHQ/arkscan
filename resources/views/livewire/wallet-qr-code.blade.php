@@ -44,7 +44,7 @@
         <div class="p-6">
             <div
                 x-show="showOptions"
-                class="font-normal text-theme-secondary-700 dark:text-theme-dark-500"
+                class="font-normal text-theme-secondary-700 dark:text-theme-dark-200 leading-5.25"
             >
                 @lang('pages.wallet.qrcode.description')
             </div>
@@ -92,15 +92,19 @@
 
                 <div
                     x-show="showOptions"
-                    class="mt-4 mb-1 font-normal text-theme-secondary-700 dark:text-theme-dark-500"
+                    class="mt-4 mb-1 font-normal text-theme-secondary-700 dark:text-theme-dark-200 leading-5.25"
                 >
                     @lang('pages.wallet.qrcode.automatic_notice')
                 </div>
 
-                <div class="flex items-center mt-2 space-x-3">
-                    <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-800"></div>
-                    <div class="font-semibold text-theme-secondary-700">@lang('general.or')</div>
-                    <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-800"></div>
+                <div class="flex items-center mt-2 space-x-3 w-full">
+                    <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-700"></div>
+
+                    <div class="font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
+                        @lang('general.or')
+                    </div>
+
+                    <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-700"></div>
                 </div>
 
                 <a
