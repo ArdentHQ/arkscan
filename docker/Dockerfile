@@ -26,6 +26,8 @@ RUN adduser -S -h /var/www/arkscan -s /bin/bash -G www-data -u 1000 arkscan arks
     && docker-php-ext-install bcmath pcntl pdo_pgsql exif zip gmp pdo_sqlite intl \
     && pecl install redis \
     && docker-php-ext-enable redis \
+    && RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
+    && RUN echo "memory_limit = 1024M" >> $PHP_INI_DIR/php.ini \
     && curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && curl -fsSLO --compressed "https://unofficial-builds.nodejs.org/download/release/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64-musl.tar.xz" \
     && tar -xJf "node-v$NODE_VERSION-linux-x64-musl.tar.xz" -C /usr/local --strip-components=1 --no-same-owner \
