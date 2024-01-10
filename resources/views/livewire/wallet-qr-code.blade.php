@@ -44,7 +44,7 @@
         <div class="p-6">
             <div
                 x-show="showOptions"
-                class="font-normal text-theme-secondary-700 dark:text-theme-dark-200 leading-5.25"
+                class="font-normal text-theme-secondary-700 leading-5.25 dark:text-theme-dark-200"
             >
                 @lang('pages.wallet.qrcode.description')
             </div>
@@ -92,7 +92,7 @@
 
                 <div
                     x-show="showOptions"
-                    class="mt-4 mb-1 font-normal text-theme-secondary-700 dark:text-theme-dark-200 leading-5.25"
+                    class="mt-4 mb-1 font-normal text-theme-secondary-700 leading-5.25 dark:text-theme-dark-200"
                 >
                     @lang('pages.wallet.qrcode.automatic_notice')
                 </div>
