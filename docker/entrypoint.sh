@@ -21,6 +21,7 @@ php artisan explorer:cache-network-aggregates
 php artisan explorer:cache-fees
 php artisan explorer:cache-transactions
 php artisan explorer:cache-prices
+php artisan explorer:cache-volume
 php artisan explorer:cache-currencies-data
 php artisan explorer:cache-currencies-history --no-delay
 php artisan explorer:cache-delegate-aggregates
@@ -32,6 +33,12 @@ php artisan explorer:cache-delegate-wallets
 php artisan explorer:cache-delegates-with-voters
 php artisan explorer:cache-delegate-voter-counts
 php artisan explorer:cache-multi-signature-addresses
+php artisan explorer:cache-blocks
+php artisan explorer:cache-transactions
+php artisan explorer:cache-address-statistics
+php artisan explorer:cache-delegate-statistics
+php artisan explorer:cache-market-data-statistics
+php artisan explorer:cache-annual-statistics --all
 
 #--- run system scheduler
 sudo crond
