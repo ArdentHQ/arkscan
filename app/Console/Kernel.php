@@ -33,6 +33,8 @@ use App\Console\Commands\ScoutIndexModels;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+ini_set('memory_limit', '52428800');
+
 final class Kernel extends ConsoleKernel
 {
     /**
