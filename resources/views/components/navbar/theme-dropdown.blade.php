@@ -30,7 +30,7 @@
     <x-general.dropdown.alpine-list-item
         id="light"
         variable-name="theme"
-        active-class="border-theme-primary-600 dark:border-theme-dark-blue-500 bg-theme-primary-50 dark:bg-theme-dark-900 dim:bg-theme-dark-950 text-theme-secondary-900 dark:text-theme-dark-50 font-semibold"
+        active-class="font-semibold border-theme-primary-600 bg-theme-primary-50 dim:bg-theme-dark-950 text-theme-secondary-900 dark:border-theme-dark-blue-500 dark:bg-theme-dark-900 dark:text-theme-dark-50"
         inactive-class="font-semibold border-transparent text-theme-secondary-700 dark:text-theme-dark-50 hover:text-theme-secondary-700 hover:bg-theme-secondary-100 hover:dark:bg-theme-dark-900"
     >
         @lang('general.navbar.theme.light')
