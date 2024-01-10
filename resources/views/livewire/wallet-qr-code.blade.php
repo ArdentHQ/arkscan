@@ -78,7 +78,7 @@
             </div>
 
             <div class="flex flex-col items-center">
-                <div class="inline-block p-2 rounded-lg border sm:block border-theme-secondary-300 dark:border-theme-dark-300 dark:bg-theme-dark-300">
+                <div class="inline-block p-2 rounded-lg border sm:block border-theme-secondary-300 dark:border-theme-dark-300 bg-white">
                     {!! $this->code !!}
                 </div>
 
