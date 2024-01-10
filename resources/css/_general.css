@@ -365,6 +365,6 @@ input.qr-code-amount::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input.qr-code-amount[type=number] {
+input.qr-code-amount[type="number"] {
     -moz-appearance: textfield;
 }
