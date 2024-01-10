@@ -19,19 +19,11 @@ final class LargestBlockAggregate
                             ->select([
                                 'block_id',
                                 DB::raw('SUM(amount) as amount'),
-                                'multipayment_volume' => function ($query) {
-                                    $query->selectRaw('SUM(MP_AMOUNT)')
-                                        ->from(function ($query) {
-                                            $query->selectRaw('(jsonb_array_elements(mpt.asset->\'payments\')->>\'amount\')::numeric as MP_AMOUNT')
-                                                ->from('transactions', 'mpt')
-                                                ->whereColumn('mpt.block_id', 't.block_id');
-                                        }, 'b');
-                                },
                             ])
                             ->groupBy('block_id')
                             ->whereNot('block_height', 1);
                     }, 't')
-                    ->orderByRaw('COALESCE(multipayment_volume, 0) + amount desc')
+                    ->orderByRaw('amount desc')
                     ->limit(1)
                     ->first();
             })

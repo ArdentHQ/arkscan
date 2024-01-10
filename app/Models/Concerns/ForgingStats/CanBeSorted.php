@@ -29,7 +29,7 @@ trait CanBeSorted
 
         $delegateNames = Wallet::whereIn('public_key', $missedBlockPublicKeys)
             ->get()
-            ->pluck('attributes.delegate.username', 'public_key');
+            ->pluck('attributes.username', 'public_key');
 
         if (count($delegateNames) === 0) {
             return $query->selectRaw('NULL AS delegate_name')
@@ -52,7 +52,7 @@ trait CanBeSorted
 
         $delegateVotes = Wallet::whereIn('public_key', $missedBlockPublicKeys)
             ->get()
-            ->pluck('attributes.delegate.voteBalance', 'public_key');
+            ->pluck('attributes.validatorVoteBalance', 'public_key');
 
         if (count($delegateVotes) === 0) {
             return $query->selectRaw('0 AS votes')

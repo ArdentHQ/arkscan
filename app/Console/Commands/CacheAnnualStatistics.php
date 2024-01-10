@@ -39,11 +39,11 @@ final class CacheAnnualStatistics extends Command
 
     private function cacheAllYears(StatisticsCache $cache): void
     {
-        $epoch           = Network::epoch()->timestamp;
+        $epoch           = Network::epoch()->timestamp * 1000;
         $transactionData = DB::connection('explorer')
             ->query()
             ->select([
-                DB::raw('DATE_PART(\'year\', TO_TIMESTAMP(transactions.timestamp + '.$epoch.')) AS year'),
+                DB::raw('DATE_PART(\'year\', TO_TIMESTAMP((transactions.timestamp + '.$epoch.') / 1000)) AS year'),
                 DB::raw('COUNT(DISTINCT(transactions.id)) AS transactions'),
                 DB::raw('SUM(amount) / 1e8 AS amount'),
                 DB::raw('SUM(fee) / 1e8 AS fees'),
@@ -53,22 +53,10 @@ final class CacheAnnualStatistics extends Command
             ->orderBy('year')
             ->get();
 
-        $multipaymentData = DB::connection('explorer')
-                ->query()
-                ->select([
-                    DB::raw('DATE_PART(\'year\', TO_TIMESTAMP(transactions.timestamp + '.$epoch.')) AS year'),
-                    DB::raw('SUM((payment->>\'amount\')::bigint) / 1e8 AS amount'),
-                ])
-                ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
-                ->where('transactions.type', '=', CoreTransactionTypeEnum::MULTI_PAYMENT)
-                ->groupBy('year')
-                ->orderBy('year')
-                ->get();
-
         $blocksData = DB::connection('explorer')
             ->query()
             ->select([
-                DB::raw('DATE_PART(\'year\', TO_TIMESTAMP(blocks.timestamp + '.$epoch.')) AS year'),
+                DB::raw('DATE_PART(\'year\', TO_TIMESTAMP((blocks.timestamp + '.$epoch.') / 1000)) AS year'),
                 DB::raw('COUNT(*) as blocks'),
             ])
             ->from('blocks')
@@ -76,16 +64,11 @@ final class CacheAnnualStatistics extends Command
             ->orderBy('year')
             ->get();
 
-        $transactionData->each(function ($item, $key) use ($blocksData, $multipaymentData, $cache) {
-            // Find corresponding multipayment amount
-            $multipaymentAmount = $multipaymentData->first(function ($value) use ($item) {
-                return $value->year === $item->year;
-            })?->amount ?? '0';
-
+        $transactionData->each(function ($item, $key) use ($blocksData, $cache) {
             $cache->setAnnualData(
                 (int) $item->year,
                 (int) $item->transactions,
-                BigNumber::new($item->amount)->plus($multipaymentAmount)->__toString(),
+                BigNumber::new($item->amount)->__toString(),
                 $item->fees,
                 $blocksData->get($key)->blocks, // We assume to have the same amount of entries for blocks and transactions (years)
             );
@@ -102,25 +85,17 @@ final class CacheAnnualStatistics extends Command
             ->query()
             ->select([
                 DB::raw('COUNT(*) as transactions'),
-                DB::raw('SUM(amount) / 1e8 as amount'), // TODO: include multipayments
+                DB::raw('SUM(amount) / 1e8 as amount'),
                 DB::raw('SUM(fee) / 1e8 as fees'),
             ])
             ->from('transactions')
-            ->where('timestamp', '>=', $startOfYear - $epoch)
+            ->where('timestamp', '>=', ($startOfYear - $epoch)*1000)
             ->first();
-
-        $multipaymentAmount = DB::connection('explorer')
-            ->query()
-            ->select(DB::raw('SUM((payment->>\'amount\')::bigint) / 1e8 AS amount'))
-            ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
-            ->where('transactions.type', '=', CoreTransactionTypeEnum::MULTI_PAYMENT)
-            ->where('timestamp', '>=', $startOfYear - $epoch)
-            ->first()?->amount ?? '0';
 
         $blocksData = DB::connection('explorer')
             ->query()
             ->from('blocks')
-            ->where('timestamp', '>=', $startOfYear - $epoch)
+            ->where('timestamp', '>=', ($startOfYear - $epoch)*1000)
             ->count();
 
         $cache->setAnnualData(
@@ -128,7 +103,7 @@ final class CacheAnnualStatistics extends Command
             // @phpstan-ignore-next-line
             (int) $transactionData?->transactions,
             // @phpstan-ignore-next-line
-            BigNumber::new($transactionData?->amount ?? '0')->plus($multipaymentAmount)->__toString(),
+            BigNumber::new($transactionData?->amount ?? '0')->__toString(),
             // @phpstan-ignore-next-line
             $transactionData?->fees ?? '0',
             $blocksData,

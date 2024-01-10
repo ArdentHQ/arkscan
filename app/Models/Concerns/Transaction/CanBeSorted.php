@@ -43,7 +43,7 @@ trait CanBeSorted
     {
         return $query->select([
             'delegate_name' => fn ($query) => $query
-                ->selectRaw('wallets.attributes->\'delegate\'->\'username\'')
+                ->selectRaw('wallets.attributes->\'username\'')
                 ->from(function ($query) {
                     $query
                         ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'-\') IS null) then substring(asset->\'votes\'->>0, 2) end as unvote')

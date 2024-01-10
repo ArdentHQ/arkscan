@@ -47,7 +47,7 @@ final class CacheDelegateStatistics extends Command
             $walletCache->setVoterCount($leastVotedDelegate['public_key'], $leastVotedDelegate['voter_count']);
         }
 
-        $activeDelegates = Rounds::allByRound(Rounds::current())->pluck(['public_key']);
+        $activeDelegates = Rounds::current()->validators;
 
         $newestActiveDelegateTx = Transaction::where('type', '=', CoreTransactionTypeEnum::DELEGATE_REGISTRATION)
             ->whereIn('sender_public_key', $activeDelegates)

@@ -79,7 +79,8 @@ final class CacheAddressStatistics extends Command
         $lastRun = Cache::get($cacheKey, null);
 
         if ($lastRun !== null) {
-            $newestQuery->where('wallets.updated_at', '>', $lastRun);
+            // FIXME
+            // $newestQuery->where('wallets.updated_at', '>', $lastRun);
         }
 
         $newest = $newestQuery->first();

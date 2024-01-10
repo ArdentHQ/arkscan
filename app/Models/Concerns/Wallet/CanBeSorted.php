@@ -15,7 +15,7 @@ trait CanBeSorted
 {
     public function scopeSortByUsername(mixed $query, SortDirection $sortDirection): Builder
     {
-        return $query->orderByRaw("(\"attributes\"->>'username')::text ".$sortDirection->value.', ("attributes"->\'delegate\'->>\'rank\')::numeric ASC');
+        return $query->orderByRaw("(\"attributes\"->>'username')::text ".$sortDirection->value.', ("attributes"->>\'validatorRank\')::numeric ASC');
     }
 
     public function scopeSortByRank(mixed $query, SortDirection $sortDirection): Builder
