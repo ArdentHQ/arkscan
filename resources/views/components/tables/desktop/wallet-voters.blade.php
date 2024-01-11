@@ -36,7 +36,7 @@
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell class="text-right">
-                    <div class="flex flex-col font-semibold text-theme-secondary-900 dark:text-theme-secondary-200">
+                    <div class="flex flex-col font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
                         <x-tables.rows.desktop.encapsulated.balance :model="$wallet" />
                     </div>
                 </x-ark-tables.cell>

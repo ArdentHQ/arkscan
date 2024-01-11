@@ -17,12 +17,12 @@
 @endphp
 
 <div @class([
-    'flex flex-col justify-between items-center py-6 px-6 w-full text-center rounded-xl bg-theme-primary-100 dark:bg-theme-secondary-800',
+    'flex flex-col justify-between items-center py-6 px-6 w-full text-center rounded-xl bg-theme-primary-100 dark:bg-theme-dark-800',
     $containerBreakpoint,
     $padding,
 ])>
     <span @class([
-        'font-semibold  dark:text-white text-theme-primary-900',
+        'font-semibold dark:text-white text-theme-primary-900 dim:text-theme-dark-50',
         $textBreakpoint,
     ])>
         {!! $text !!}

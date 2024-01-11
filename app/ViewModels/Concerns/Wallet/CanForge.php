@@ -43,7 +43,12 @@ trait CanForge
             return 0;
         }
 
-        return (new WalletCache())->getProductivity($publicKey);
+        $productivity = (new WalletCache())->getProductivity($publicKey);
+        if ($productivity <= 0) {
+            return 0;
+        }
+
+        return $productivity;
     }
 
     public function performance(): array
@@ -101,7 +106,7 @@ trait CanForge
 
     public function forgedBlocks(): int
     {
-        return Arr::get($this->wallet->attributes, 'delegate.producedBlocks');
+        return Arr::get($this->wallet->attributes, 'delegate.producedBlocks', 0);
     }
 
     public function missedBlocks(): int

@@ -14,6 +14,11 @@ final class PriceTicker extends Component
 {
     use GetsCurrentPrice;
 
+    /** @var mixed */
+    protected $listeners = [
+        'currencyChanged' => '$refresh',
+    ];
+
     public function render(): View
     {
         $currency     = Settings::currency();

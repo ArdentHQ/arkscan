@@ -1,6 +1,6 @@
 @props([
     'key' => 'dropdownOpen',
-    'color' => 'text-theme-secondary-700 dark:text-theme-secondary-200',
+    'color' => 'text-theme-secondary-700 dark:text-theme-dark-200',
 ])
 
 <div

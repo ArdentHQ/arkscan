@@ -24,10 +24,13 @@ import ReadMore from "@ui/js/read-more.js";
 import RichSelect from "./rich-select.js";
 import Search from "./search";
 import TableSorting from "./table-sorting.js";
+import ThemeManager from "./theme-manager.js";
 import MobileSorting from "./mobile-sorting.js";
 import TransactionsExport from "./transactions-export.js";
 import Tabs from "./tabs";
 import makeBlockie from "ethereum-blockies-base64";
+
+import "./livewire-exception-handler.js";
 
 window.makeBlockie = makeBlockie;
 window.Alpine = Alpine;
@@ -47,6 +50,7 @@ window.Navbar = Navbar;
 window.CustomChart = CustomChart;
 window.CustomChart = CustomChart;
 window.TableSorting = TableSorting;
+window.ThemeManager = ThemeManager;
 window.MobileSorting = MobileSorting;
 window.TransactionsExport = TransactionsExport;
 window.Search = Search;

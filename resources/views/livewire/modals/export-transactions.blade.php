@@ -5,7 +5,7 @@
     <div>
         <button
             type="button"
-            class="flex justify-center items-center space-x-2 w-full sm:py-1.5 sm:px-4 button-secondary"
+            class="flex justify-center items-center py-1.5 space-x-2 w-full sm:px-4 button-secondary"
             wire:click="openModal"
             @if(!$hasTransactions)
                 disabled
@@ -35,11 +35,12 @@
                 title-class="mb-6 text-lg font-semibold text-left dark:text-theme-dark-50"
                 padding-class="p-6 py-4 sm:py-6"
                 wire-close="closeModal"
-                close-button-class="absolute top-0 right-0 p-0 mt-4 mr-6 w-8 h-8 bg-transparent rounded-none sm:mt-6 sm:rounded dark:bg-transparent dark:shadow-none button button-secondary text-theme-secondary-700 dark:text-theme-dark-200 hover:dark:text-theme-dark-50 hover:dark:bg-theme-dark-blue-600"
+                close-button-class="absolute top-0 right-0 p-0 mt-4 mr-6 w-8 h-8 bg-transparent rounded-none sm:mt-6 sm:rounded dark:bg-transparent dark:shadow-none button button-secondary text-theme-secondary-700 dim:bg-transparent dim:shadow-none dark:text-theme-dark-200 hover:dark:text-theme-dark-50 hover:dark:bg-theme-dark-blue-600"
                 buttons-style="flex flex-col-reverse sm:flex-row sm:justify-end !mt-4 sm:!mt-6 sm:space-x-3"
                 breakpoint="sm"
                 wrapper-class="max-w-full sm:max-w-[448px]"
-                content-class="relative bg-white sm:mx-auto sm:rounded-xl sm:shadow-2xl dark:bg-theme-secondary-900"
+                content-class="relative bg-white sm:mx-auto sm:rounded-xl sm:shadow-2xl dark:bg-theme-dark-900"
+                overlay-class="dim:bg-theme-dark-950"
                 disable-overlay-close
             >
                 <x-slot name="title">

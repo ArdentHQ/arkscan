@@ -6,7 +6,7 @@
 
 <x-search.results.result :model="$wallet">
     <x-tables.rows.mobile class="md:hidden">
-        <x-slot name="header" class="leading-4.25">
+        <x-slot name="header">
             <x-general.identity
                 :model="$wallet"
                 without-link
@@ -21,7 +21,7 @@
         </x-slot>
 
         <x-search.results.mobile.detail :title="trans('general.search.balance_currency', ['currency' => Network::currency()])">
-                {{ ExplorerNumberFormatter::unformattedRawValue($wallet->balance()) }}
+            {{ ExplorerNumberFormatter::currencyWithoutSuffix($wallet->balance(), Network::currency()) }}
         </x-search.results.mobile.detail>
     </x-tables.rows.mobile>
 
@@ -51,7 +51,7 @@
 
             <div class="truncate text-theme-secondary-900 dark:text-theme-dark-50">
                 <x-currency :currency="Network::currency()">
-                    {{ ExplorerNumberFormatter::unformattedRawValue($wallet->balance()) }}
+                    {{ $wallet->balance() }}
                 </x-currency>
             </div>
         </div>

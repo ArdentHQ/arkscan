@@ -6,7 +6,7 @@
     'fiat' => null,
     'amount' => null,
     'amountForItself' => null,
-    'class' => 'text-sm leading-4.25',
+    'class' => 'text-sm',
     'withoutStyling' => false,
 ])
 
@@ -19,7 +19,7 @@
             $isSentToSelf = $transaction->isSentToSelf($wallet->address());
         }
         if(! $isSent && ! $isReceived) {
-            $class[] = 'text-theme-secondary-900 dark:text-theme-secondary-200';
+            $class[] = 'text-theme-secondary-900 dark:text-theme-dark-50';
         }
 
         if($isSent || $isReceived) {
@@ -27,7 +27,7 @@
         }
 
         if($isSent && ! $isSentToSelf) {
-            $class[] = 'fiat-tooltip-sent text-theme-orange-dark bg-theme-orange-light border-theme-orange-light dark:bg-transparent dark:border-[#AA6868] dark:text-[#F39B9B]';
+            $class[] = 'fiat-tooltip-sent text-theme-orange-dark bg-theme-orange-light border-theme-orange-light dark:bg-transparent dark:border-[#AA6868] dark:text-[#F39B9B] dim:border-[#AB8282] dim:text-[#CAA0A0]';
         }
 
         if($isReceived || $isSentToSelf) {

@@ -345,7 +345,7 @@ return [
     'delegates'        => [
         'title'              => 'Delegates',
         'subtitle'           => 'List of delegates registered on the network.',
-        'x_delegates'        => ':count Delegates',
+        'x_delegates'        => '{1} 1 Delegate|:count Delegates',
         'voting_x_addresses' => 'Voting (:count Addresses)',
 
         'missed-blocks'      => [
@@ -442,16 +442,16 @@ return [
 
     'statistics'       => [
         'title'     => 'Statistics',
-        'subtitle'  => 'Explore blockchain data and currency exchange statistics.',
+        'subtitle'  => 'Explore information on blockchain data and fees categorized by type.',
 
         'highlights' => [
             'total_supply' => 'Total Supply',
             'voting'       => 'Voting (:percent)',
             'delegates'    => 'Delegates',
-            'wallets'      => 'Wallets',
+            'addresses'    => 'Addresses',
         ],
 
-        'insights'   => [
+        'information-cards'   => [
             'all-time-transactions'   => 'All-Time Transactions',
             'transactions'            => 'Transactions',
             'current-average-fee'     => 'Current Average Fee (:type)',
@@ -459,6 +459,113 @@ return [
             'max-fee'                 => 'Max Fee',
             'all-time-fees-collected' => 'All-Time Fees Collected',
             'fees'                    => 'Fees',
+        ],
+
+        'insights' => [
+            'title'    => 'Insights',
+            'subtitle' => 'Explore interesting on-chain and market data for ARK.',
+
+            'dropdown' => [
+                'transactions' => 'Transaction Data',
+                'market_data'  => 'Market Data',
+                'delegates'    => 'Delegate Data',
+                'addresses'    => 'Address Data',
+                'annual'       => 'Annual Data',
+            ],
+
+            'transactions' => [
+                'title'          => 'Transaction Data',
+                'all_time'       => 'All-Time',
+                'daily_averages' => 'Daily Averages',
+                'records'        => 'Records',
+
+                'header' => [
+                    'transfer'                   => 'Transfers',
+                    'multipayment'               => 'Multipayments',
+                    'vote'                       => 'Votes',
+                    'unvote'                     => 'Unvotes',
+                    'switch_vote'                => 'Switch Votes',
+                    'delegate_registration'      => 'Delegate Registrations',
+                    'delegate_resignation'       => 'Delegate Resignations',
+                    'transactions'               => 'Transactions',
+                    'transaction_volume'         => 'Transaction Volume',
+                    'transaction_fees'           => 'Transaction Fees',
+                    'largest_transaction'        => 'Largest Transaction',
+                    'largest_block'              => 'Largest Block',
+                    'highest_fee'                => 'Highest Fee',
+                    'most_transactions_in_block' => 'Most Transactions in Block',
+                    'transaction_id'             => 'TxID',
+                    'block'                      => 'Block',
+                    'date'                       => 'Date',
+                    'amount'                     => 'Amount',
+                    'mobile'                     => [
+                        'largest_transaction'        => 'Largest Tx',
+                        'largest_block'              => 'Largest Block',
+                        'highest_fee'                => 'Highest Fee',
+                        'most_transactions_in_block' => 'Most Tx in Block',
+                    ],
+                ],
+            ],
+
+            'market_data' => [
+                'title'            => 'Market Data',
+                'price'            => 'Price',
+                'exchanges_volume' => 'Exchanges Volume',
+                'market_cap'       => 'Market Cap',
+
+                'header' => [
+                    'daily'         => 'Daily Range',
+                    '52w'           => '52-Week Range',
+                    'atl'           => 'All-Time Low',
+                    'ath'           => 'All-Time High',
+                    'today_volume'  => 'Today\'s Volume',
+                    'today_value'   => 'Today\'s Value',
+                    'date'          => 'Date',
+                ],
+            ],
+
+            'addresses' => [
+                'title'    => 'Address Data',
+                'holdings' => 'Address Holdings',
+                'unique'   => 'Unique Addresses',
+
+                'header' => [
+                    'genesis'           => 'Genesis',
+                    'newest'            => 'Newest',
+                    'most_transactions' => 'Most Transactions',
+                    'largest'           => 'Largest',
+                    'addresses'         => 'Addresses',
+                    'address'           => 'Address',
+                    'date'              => 'Date',
+                    'transactions'      => 'Transactions',
+                    'balance'           => 'Balance',
+                ],
+            ],
+
+            'delegates' => [
+                'title'          => 'Delegate Data',
+
+                'header' => [
+                    'most_unique_voters'     => 'Most Unique Voters',
+                    'least_unique_voters'    => 'Least Unique Voters',
+                    'oldest_active_delegate' => 'Oldest Active Delegate',
+                    'newest_active_delegate' => 'Newest Active Delegate',
+                    'most_blocks_forged'     => 'Most Blocks Forged (All-Time)',
+                    'voters'                 => 'Voters',
+                    'registered'             => 'Registered',
+                    'blocks'                 => 'Blocks',
+                ],
+            ],
+
+            'annual' => [
+                'title'  => 'Annual Data',
+                'header' => [
+                    'transaction' => 'Tx',
+                    'volume'      => 'Volume',
+                    'fees'        => 'Fees',
+                    'blocks'      => 'Blocks',
+                ],
+            ],
         ],
     ],
 

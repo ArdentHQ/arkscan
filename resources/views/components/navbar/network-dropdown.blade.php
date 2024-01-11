@@ -2,33 +2,15 @@
     $isProduction = config('arkscan.network') === 'production';
 @endphp
 
-<x-general.dropdown.dropdown
-    active-button-class="space-x-1.5"
-    button-wrapper-class=""
-    button-class="justify-center p-2 space-x-1.5 h-8 text-sm font-semibold rounded md:px-3 md:bg-white md:border bg-theme-secondary-200 text-theme-secondary-700 md:hover:text-theme-secondary-700 md:border-theme-secondary-300 md:dark:border-theme-secondary-800 md:dark:bg-theme-secondary-900 md:dark:text-theme-dark-200 md:hover:text-theme-secondary-900 dark:bg-theme-secondary-800 dark:hover:bg-theme-dark-700 dark:text-theme-dark-200 hover:bg-theme-secondary-200"
->
+<x-navbar.dropdown>
     <x-slot name="button">
-        @if (strlen($slot) > 0)
-            <div>{{ $slot }}</div>
-        @else
-            <span>
-                @if ($isProduction)
-                    @lang('general.navbar.mainnet')
-                @else
-                    @lang('general.navbar.testnet')
-                @endif
-            </span>
-
-            <span
-                class="transition-default"
-                :class="{ 'rotate-180': dropdownOpen }"
-            >
-                <x-ark-icon
-                    name="arrows.chevron-down-small"
-                    size="w-2.5 h-2.5"
-                />
-            </span>
-        @endif
+        <span>
+            @if ($isProduction)
+                @lang('general.navbar.mainnet')
+            @else
+                @lang('general.navbar.testnet')
+            @endif
+        </span>
     </x-slot>
 
     <x-general.dropdown.list-item
@@ -44,4 +26,4 @@
     >
         @lang('general.navbar.testnet')
     </x-general.dropdown.list-item>
-</x-general.dropdown>
+</x-navbar.dropdown>

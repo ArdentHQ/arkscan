@@ -174,11 +174,6 @@ final class NumberFormatter
         return $isSmallValue ? self::CRYPTO_DECIMALS_SMALL : self::CRYPTO_DECIMALS;
     }
 
-    public static function unformattedRawValue(float $value, int $decimals = 8): string
-    {
-        return rtrim(rtrim(number_format((float) ResolveScientificNotation::execute($value), $decimals), '0'), '.');
-    }
-
     public static function hasSymbol(string $currency): bool
     {
         if (! self::isFiat($currency)) {

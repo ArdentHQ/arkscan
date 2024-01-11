@@ -50,6 +50,35 @@ final class CoinGecko extends AbstractMarketDataProvider
         });
     }
 
+    /**
+     * @return array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]}|array{}
+     */
+    public function historicalAll(string $source, string $target, int $limit = 1): array
+    {
+        $params = [
+            'vs_currency' => Str::lower($target),
+            'days'        => $limit,
+        ];
+
+        $data = null;
+
+        try {
+            /** @var array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} */
+            $data = Http::get(
+                'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
+                $params
+            )->json();
+        } catch (\Throwable) {
+            //
+        }
+
+        if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data) || $data === null) {
+            return [];
+        }
+
+        return $data;
+    }
+
     public function historicalHourly(string $source, string $target, int $limit = 23, string $format = 'Y-m-d H:i:s'): Collection
     {
         return (new CryptoDataCache())->setHistoricalHourly($source, $target, $format, $limit, function () use ($source, $target, $format, $limit): Collection {

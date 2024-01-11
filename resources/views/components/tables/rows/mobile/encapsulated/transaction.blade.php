@@ -4,16 +4,17 @@
     'label'  => null,
     'alwaysShowAddress' => false,
     'withoutTruncate' => false,
+    'generic' => false,
 ])
 
-<div {{ $attributes->class('space-y-2 sm:flex sm:flex-col sm:justify-center') }}>
-    <div class="text-sm font-semibold leading-4.25 dark:text-theme-secondary-500">
+<x-tables.rows.mobile.encapsulated.cell :attributes="$attributes">
+    <x-slot name="label">
         @unless ($label)
             <x-general.encapsulated.transaction-type :transaction="$model" />
         @else
             {{ $label }}
         @endif
-    </div>
+    </x-slot>
 
     <x-tables.rows.desktop.encapsulated.addressing
         :model="$model"
@@ -21,5 +22,6 @@
         :without-link="$wallet && $model->isSentToSelf($wallet->address())"
         :always-show-address="$alwaysShowAddress"
         :without-truncate="$withoutTruncate"
+        :generic="$generic"
     />
-</div>
+</x-tables.rows.mobile.encapsulated.cell>

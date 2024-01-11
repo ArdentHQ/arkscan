@@ -2,7 +2,7 @@
     <div
         class="fixed z-20 w-full md:relative"
         x-data="Navbar.dropdown({
-            dark: window.getThemeMode() === 'dark',
+            theme: window.getThemeMode(),
             open: false,
             showSettings: false,
 
@@ -26,7 +26,7 @@
                 return ('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
             },
         })"
-        @theme-changed.window="dark = $event.detail.theme === 'dark'"
+        @theme-changed.window="theme = $event.detail.theme"
     >
         <div
             x-show="openDropdown !== null || open"
@@ -37,7 +37,7 @@
 
         <nav
             x-ref="nav"
-            class="relative z-30 bg-white border-b border-theme-secondary-300 dark:bg-theme-secondary-900 dark:border-theme-secondary-800"
+            class="relative z-30 bg-white border-b border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-800"
             @click.outside="open = false"
         >
             <div class="flex relative justify-between w-full sm:h-16 h-[3.25rem] content-container">
@@ -50,7 +50,7 @@
                 <div class="flex justify-end">
                     <div class="flex justify-end">
                         <div class="flex items-center space-x-1">
-                            <x-navbar.button
+                            <x-navbar.mobile.button
                                 @click="Livewire.emit('openSearchModal')"
                                 dusk="navigation-search-modal-trigger"
                                 :disabled="app()->isDownForMaintenance()"
@@ -60,9 +60,9 @@
                                 <span class="sr-only">
                                     @lang('actions.search')
                                 </span>
-                            </x-navbar.button>
+                            </x-navbar.mobile.button>
 
-                            <x-navbar.button @click="toggle">
+                            <x-navbar.mobile.button @click="toggle">
                                 <span :class="{'hidden': open, 'inline-flex': !open }">
                                     <x-ark-icon name="menu" />
                                 </span>
@@ -70,7 +70,7 @@
                                 <span :class="{'hidden': !open, 'inline-flex': open }" x-cloak>
                                     <x-ark-icon name="menu-show" />
                                 </span>
-                            </x-navbar.button>
+                            </x-navbar.mobile.button>
                         </div>
                     </div>
                 </div>
@@ -81,11 +81,11 @@
                 x-transition.opacity
                 x-cloak
             >
-                <div class="border-t-2 shadow-xl border-theme-secondary-200 dark:border-theme-secondary-800">
-                    <div class="pt-2 bg-white rounded-b-lg dark:bg-theme-secondary-800">
+                <div class="border-t-2 shadow-xl border-theme-secondary-200 dim:border-theme-dark-700 dark:border-theme-dark-800">
+                    <div class="pt-2 bg-white rounded-b-lg dark:bg-theme-dark-700">
                         @foreach ($navigation as $navItem)
                             @if (Arr::exists($navItem, 'children'))
-                                <div class="relative h-full dark:bg-theme-secondary-800">
+                                <div class="relative h-full dark:bg-theme-dark-700">
                                     <a
                                         href="#"
                                         class="inline-flex relative justify-between items-center py-3 px-6 w-full h-full font-semibold leading-5 focus:ring-inset focus:outline-none text-theme-secondary-700 dark:text-theme-dark-50 hover:text-theme-secondary-800"
@@ -99,7 +99,7 @@
 
                                     <div
                                         x-show="openDropdown === '{{ $navItem['label'] }}'"
-                                        class="bg-white dark:bg-theme-secondary-800"
+                                        class="bg-white dark:bg-theme-dark-700"
                                         x-cloak
                                     >
                                         <div class="flex flex-col pt-2 pb-2 w-full">
@@ -124,13 +124,24 @@
                         @endforeach
 
                         <div class="py-4 dark:bg-black bg-theme-secondary-100">
-                            <div class="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-secondary-800">
+                            <div class="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800">
                                 <x-navbar.mobile.setting-item title="{{ trans('general.select_theme') }}">
-                                    <livewire:navbar.dark-mode-toggle
-                                        active-icon="underline-moon"
-                                        inactive-icon="underline-sun"
-                                        setting="darkTheme"
-                                        mobile
+                                    <livewire:navbar.mobile-dark-mode-toggle
+                                        setting="theme"
+                                        :options="[
+                                            [
+                                                'icon' => 'sun',
+                                                'value' => 'light',
+                                            ],
+                                            [
+                                                'icon' => 'moon',
+                                                'value' => 'dark',
+                                            ],
+                                            [
+                                                'icon' => 'moon-stars',
+                                                'value' => 'dim',
+                                            ],
+                                        ]"
                                     />
                                 </x-navbar.mobile.setting-item>
 
@@ -141,7 +152,7 @@
                                     <x-navbar.network-dropdown />
                                 </x-navbar.mobile.setting-item>
 
-                                <div class="flex pt-3 font-semibold dark:text-theme-secondary-500">
+                                <div class="flex pt-3 font-semibold dark:text-theme-dark-500">
                                     <livewire:navbar.price-ticker />
                                 </div>
                             </div>

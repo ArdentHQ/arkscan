@@ -31,7 +31,7 @@
             @class([
                 'flex flex-1 justify-center items-center rounded sm:flex-none button-secondary',
                 'h-8 w-8 p-0' => $withoutText,
-                'w-full sm:py-1.5 sm:px-4 md:p-2' => ! $withoutText,
+                'w-full py-1.5 sm:px-4 md:p-2' => ! $withoutText,
             ])
             @click="shown = true"
         >
@@ -60,7 +60,7 @@
             'w-full',
             'hidden md:block' => ! $mobile,
         ])"
-        dropdown-background="bg-white dark:bg-theme-secondary-900 dark:border dark:border-theme-secondary-800"
+        dropdown-background="bg-white dark:bg-theme-dark-900 dark:border dark:border-theme-dark-800"
         dropdown-padding="py-1"
         :button-class="Arr::toCssClasses([
             'flex flex-1 justify-center items-center rounded sm:flex-none button-secondary',

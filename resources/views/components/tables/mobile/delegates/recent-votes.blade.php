@@ -29,14 +29,16 @@
                     :label="trans('tables.recent-votes.addressing')"
                     class="sm:hidden"
                     always-show-address
+                    generic
                 />
 
                 <x-tables.rows.mobile.encapsulated.transaction
                     :model="$vote"
                     :label="trans('tables.recent-votes.addressing')"
-                    class="hidden md:block"
+                    class="hidden sm:block"
                     always-show-address
                     without-truncate
+                    generic
                 />
             </div>
 

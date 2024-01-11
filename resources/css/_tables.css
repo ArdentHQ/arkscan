@@ -6,7 +6,7 @@
 
 /* Table Avatar */
 td.hoverable-cell .table-avatar {
-    @apply -my-1 -mr-1 border-4 border-white dark:border-theme-secondary-900 rounded-full;
+    @apply -my-1 -mr-1 border-4 border-white dark:border-theme-dark-900 rounded-full;
 }
 
 tr:hover td.hoverable-cell .table-avatar {
@@ -185,7 +185,7 @@ body.table-compact-until-lg .arrow-direction {
 }
 
 .table-encapsulated thead th {
-    @apply text-theme-secondary-700 dark:text-theme-secondary-500 font-semibold;
+    @apply text-theme-secondary-700 dark:text-theme-dark-200 font-semibold leading-5;
 }
 
 .table-list-mobile .table-list-mobile-row {

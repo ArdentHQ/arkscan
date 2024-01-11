@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Enums\StatsPeriods;
+use App\Enums\StatsTransactionType;
 use App\Services\Cache\TransactionCache;
 use App\Services\Transactions\Aggregates\HistoricalAggregateFactory;
+use App\Services\Transactions\Aggregates\LargestTransactionAggregate;
 use Illuminate\Console\Command;
 
 final class CacheTransactions extends Command
@@ -34,6 +36,16 @@ final class CacheTransactions extends Command
             StatsPeriods::QUARTER,
             StatsPeriods::YEAR,
             StatsPeriods::ALL,
-        ])->each(fn ($period) => $cache->setHistorical($period, HistoricalAggregateFactory::make($period)->aggregate()));
+        ])->each(fn ($period) => $cache->setHistorical($period, HistoricalAggregateFactory::period($period)->aggregate()));
+
+        StatsTransactionType::all()
+            ->each(fn ($type) => $cache->setHistoricalByType($type, HistoricalAggregateFactory::type($type)->aggregate()));
+
+        $cache->setHistoricalAverages(HistoricalAggregateFactory::averages()->aggregate());
+
+        $largestTransaction = (new LargestTransactionAggregate())->aggregate();
+        if ($largestTransaction !== null) {
+            $cache->setLargestIdByAmount($largestTransaction->id);
+        }
     }
 }

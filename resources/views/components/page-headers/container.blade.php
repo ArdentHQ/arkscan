@@ -6,9 +6,9 @@
 
 @php
     $wrapperBreakpointClass = [
-        'sm' => 'sm:items-center sm:rounded-lg sm:border sm:border-theme-secondary-300 sm:dark:border-theme-secondary-800',
-        'md' => 'md:items-center md:rounded-lg md:border md:border-theme-secondary-300 md:dark:border-theme-secondary-800',
-    ][$breakpoint] ?? 'md:items-center md:rounded-lg md:border md:border-theme-secondary-300 md:dark:border-theme-secondary-800';
+        'sm' => 'sm:items-center sm:rounded-lg sm:border sm:border-theme-secondary-300 sm:dark:border-theme-dark-700',
+        'md' => 'md:items-center md:rounded-lg md:border md:border-theme-secondary-300 md:dark:border-theme-dark-700',
+    ][$breakpoint] ?? 'md:items-center md:rounded-lg md:border md:border-theme-secondary-300 md:dark:border-theme-dark-700';
 
     $detailBreakpointClass = [
         'sm' => 'sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3',
@@ -39,14 +39,14 @@
             $detailBreakpointClass,
         ])>
             <div @class([
-                'text-sm dark:text-theme-secondary-500 !leading-4.25 whitespace-nowrap',
+                'text-sm dark:text-theme-dark-200 !leading-4.25 whitespace-nowrap',
                 $labelBreakpointClass,
             ])>
                 {{ $label }}
             </div>
 
             <div @class([
-                'min-w-0 leading-5 text-theme-secondary-900 dark:text-theme-secondary-200',
+                'min-w-0 leading-5 text-theme-secondary-900 dark:text-theme-dark-50',
                 $contentBreakpointClass,
             ])>
                 {{ $slot }}

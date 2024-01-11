@@ -4,8 +4,8 @@
     wire:key="{{ Helpers::generateId('transaction-recipients-mobile') }}"
     class="px-3 sm:hidden"
 >
-    @foreach ($recipients as $recipient)
-        <x-tables.rows.mobile>
+    @foreach ($recipients as $index => $recipient)
+        <x-tables.rows.mobile wire:key="{{ Helpers::generateId('recipients-mobile-row', $index) }}">
             <x-slot name="header">
                 <x-tables.headers.mobile.encapsulated.address :model="$recipient" />
 
