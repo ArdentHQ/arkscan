@@ -59,6 +59,7 @@
                     name="amount"
                     maxlength="17"
                     class="font-normal"
+                    input-class="qr-code-amount"
                     :errors="$errors"
                     :placeholder="trans('pages.wallet.qrcode.currency_amount', ['currency' => Network::currency()])"
                     hide-label
