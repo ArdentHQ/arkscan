@@ -51,6 +51,12 @@ return [
         'mainnet'            => 'Mainnet',
         'testnet'            => 'Testnet',
         'price'              => 'Price',
+
+        'theme' => [
+            'light' => 'Light',
+            'dark'  => 'Dark',
+            'dim'   => 'Dim',
+        ],
     ],
 
     'block'                   => [

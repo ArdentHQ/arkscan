@@ -5,7 +5,7 @@
     'dropdownWrapperClass' => null,
     'dropdownClass' => null,
     'dropdownPadding' => 'py-2',
-    'dropdownBackground' => 'bg-white dark:bg-theme-dark-800',
+    'dropdownBackground' => 'bg-white dark:bg-theme-dark-700',
     'width' => 'min-w-40',
     'scrollClass' => null,
     'disabled' => false,

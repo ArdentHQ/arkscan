@@ -87,9 +87,7 @@
                 </div>
 
                 <div class="text-theme-secondary-900 dark:text-theme-dark-50">
-                    <x-currency :currency="Network::currency()">
-                        {{ ExplorerNumberFormatter::number($transaction->amountWithFee()) }}
-                    </x-currency>
+                    {{ ExplorerNumberFormatter::number($transaction->amountWithFee()) }}
                 </div>
             </div>
         </div>

@@ -13,21 +13,21 @@
         <x-delegates.monitor.stat
             :title="trans('pages.delegate-monitor.stats.forging')"
             :value="Arr::get($statistics, 'performances.forging')"
-            color="bg-theme-success-700"
+            color="bg-theme-success-700 dark:bg-theme-success-500"
             :loading="$isLoading"
         />
 
         <x-delegates.monitor.stat
             :title="trans('pages.delegate-monitor.stats.missed')"
             :value="Arr::get($statistics, 'performances.missed')"
-            color="bg-theme-warning-700"
+            color="bg-theme-warning-700 dark:bg-theme-warning-400"
             :loading="$isLoading"
         />
 
         <x-delegates.monitor.stat
             :title="trans('pages.delegate-monitor.stats.not_forging')"
             :value="Arr::get($statistics, 'performances.missing')"
-            color="bg-theme-danger-600"
+            color="bg-theme-danger-600 dark:bg-theme-danger-400"
             :loading="$isLoading"
         />
     </x-general.card>

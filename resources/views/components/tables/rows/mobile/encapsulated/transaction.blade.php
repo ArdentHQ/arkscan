@@ -4,6 +4,7 @@
     'label'  => null,
     'alwaysShowAddress' => false,
     'withoutTruncate' => false,
+    'generic' => false,
 ])
 
 <x-tables.rows.mobile.encapsulated.cell :attributes="$attributes">
@@ -21,5 +22,6 @@
         :without-link="$wallet && $model->isSentToSelf($wallet->address())"
         :always-show-address="$alwaysShowAddress"
         :without-truncate="$withoutTruncate"
+        :generic="$generic"
     />
 </x-tables.rows.mobile.encapsulated.cell>

@@ -29,6 +29,7 @@
                     :label="trans('tables.recent-votes.addressing')"
                     class="sm:hidden"
                     always-show-address
+                    generic
                 />
 
                 <x-tables.rows.mobile.encapsulated.transaction
@@ -37,6 +38,7 @@
                     class="hidden sm:block"
                     always-show-address
                     without-truncate
+                    generic
                 />
             </div>
 

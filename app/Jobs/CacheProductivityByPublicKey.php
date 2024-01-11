@@ -39,7 +39,7 @@ final class CacheProductivityByPublicKey implements ShouldQueue
 
         $walletCache->setProductivity(
             $this->publicKey,
-            $total > 0 ? Percentage::calculate($forged, $total) : -1
+            $total > 0 ? Percentage::calculate($forged, $total) : 0
         );
     }
 }
