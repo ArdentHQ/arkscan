@@ -53,3 +53,17 @@ it('should allow class property', function () {
         'class'   => 'test-class',
     ])->assertSeeHtml('class="test-class"');
 });
+
+it('should validate amount', function () {
+    Config::set('explorer.network', 'production');
+
+    $wallet = Wallet::factory()->create(['address' => 'AWkBFnqvCF4jhqPSdE2HBPJiwaf67tgfGR']);
+
+    Livewire::test(WalletQrCode::class, ['address' => $wallet->address])
+        ->set('amount', 1)
+        ->assertHasNoErrors()
+        ->set('amount', 0)
+        ->assertHasErrors()
+        ->set('amount', -1)
+        ->assertHasErrors();
+});
