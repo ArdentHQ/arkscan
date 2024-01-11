@@ -13,7 +13,7 @@
             title-class="text-lg text-left sm:text-2xl"
             padding-class="p-6 sm:p-10"
             wire-close="cancel"
-            close-button-class="absolute top-0 right-0 p-0 mt-0 mr-0 w-11 h-11 rounded-none sm:mt-6 sm:mr-6 sm:rounded button button-secondary text-theme-secondary-900"
+            close-button-class="absolute top-0 right-0 p-0 mt-0 mr-0 w-8 h-8 rounded-none sm:mt-6 sm:mr-6 sm:rounded button button-secondary text-theme-secondary-900 dim:bg-transparent dim:shadow-none hover:dark:text-theme-dark-50 hover:dark:bg-theme-dark-blue-600"
             buttons-style="flex flex-col sm:flex-row sm:justify-end !mt-6 sm:space-x-3 space-y-3 sm:space-y-0"
             breakpoint="sm"
             wrapper-class="max-w-full sm:max-w-[430px]"
