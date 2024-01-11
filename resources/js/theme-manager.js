@@ -1,6 +1,11 @@
+import * as dayjs from "dayjs";
+
+const SPAM_THRESHOLD = 300; // Milliseconds
+
 const ThemeManager = () => {
     return Alpine.reactive({
         _theme: localStorage.theme,
+        _lastEvent: null,
 
         get theme() {
             return this._theme;
@@ -17,6 +22,10 @@ const ThemeManager = () => {
 
             this._theme = value;
 
+            if (dayjs().subtract(SPAM_THRESHOLD, 'milliseconds').isBefore(this._lastEvent)) {
+                return;
+            }
+
             document.dispatchEvent(
                 new CustomEvent("setThemeMode", {
                     detail: {
@@ -24,6 +33,8 @@ const ThemeManager = () => {
                     },
                 })
             );
+
+            this._lastEvent = dayjs();
         },
     });
 };
