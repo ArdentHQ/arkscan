@@ -22,7 +22,11 @@ const ThemeManager = () => {
 
             this._theme = value;
 
-            if (dayjs().subtract(SPAM_THRESHOLD, 'milliseconds').isBefore(this._lastEvent)) {
+            if (
+                dayjs()
+                    .subtract(SPAM_THRESHOLD, "milliseconds")
+                    .isBefore(this._lastEvent)
+            ) {
                 return;
             }
 
