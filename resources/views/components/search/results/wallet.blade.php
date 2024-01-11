@@ -21,7 +21,7 @@
         </x-slot>
 
         <x-search.results.mobile.detail :title="trans('general.search.balance_currency', ['currency' => Network::currency()])">
-                {{ ExplorerNumberFormatter::unformattedRawValue($wallet->balance()) }}
+            {{ ExplorerNumberFormatter::currencyWithoutSuffix($wallet->balance(), Network::currency()) }}
         </x-search.results.mobile.detail>
     </x-tables.rows.mobile>
 
@@ -51,7 +51,7 @@
 
             <div class="truncate text-theme-secondary-900 dark:text-theme-dark-50">
                 <x-currency :currency="Network::currency()">
-                    {{ ExplorerNumberFormatter::unformattedRawValue($wallet->balance()) }}
+                    {{ $wallet->balance() }}
                 </x-currency>
             </div>
         </div>

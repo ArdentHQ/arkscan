@@ -2,7 +2,7 @@
     <div
         class="fixed z-20 w-full md:relative"
         x-data="Navbar.dropdown({
-            dark: window.getThemeMode() === 'dark',
+            theme: window.getThemeMode(),
             open: false,
             showSettings: false,
 
@@ -26,7 +26,7 @@
                 return ('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
             },
         })"
-        @theme-changed.window="dark = $event.detail.theme === 'dark'"
+        @theme-changed.window="theme = $event.detail.theme"
     >
         <div
             x-show="openDropdown !== null || open"
@@ -81,7 +81,7 @@
                 x-transition.opacity
                 x-cloak
             >
-                <div class="border-t-2 shadow-xl border-theme-secondary-200 dark:border-theme-dark-800">
+                <div class="border-t-2 shadow-xl border-theme-secondary-200 dim:border-theme-dark-700 dark:border-theme-dark-800">
                     <div class="pt-2 bg-white rounded-b-lg dark:bg-theme-dark-700">
                         @foreach ($navigation as $navItem)
                             @if (Arr::exists($navItem, 'children'))
@@ -126,11 +126,22 @@
                         <div class="py-4 dark:bg-black bg-theme-secondary-100">
                             <div class="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800">
                                 <x-navbar.mobile.setting-item title="{{ trans('general.select_theme') }}">
-                                    <livewire:navbar.dark-mode-toggle
-                                        active-icon="underline-moon"
-                                        inactive-icon="underline-sun"
-                                        setting="darkTheme"
-                                        mobile
+                                    <livewire:navbar.mobile-dark-mode-toggle
+                                        setting="theme"
+                                        :options="[
+                                            [
+                                                'icon' => 'sun',
+                                                'value' => 'light',
+                                            ],
+                                            [
+                                                'icon' => 'moon',
+                                                'value' => 'dark',
+                                            ],
+                                            [
+                                                'icon' => 'moon-stars',
+                                                'value' => 'dim',
+                                            ],
+                                        ]"
                                     />
                                 </x-navbar.mobile.setting-item>
 

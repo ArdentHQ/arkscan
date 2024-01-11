@@ -1,0 +1,92 @@
+/* Custom Overrides Dim Theme */
+/* These are meant to move to foundation when updating dim mode on other projects */
+.dim {
+    /* Dim Color */
+    --theme-color-dim-50: #e8ebf6;
+    --theme-color-dim-100: #cbd6ec;
+    --theme-color-dim-200: #9eb3db;
+    --theme-color-dim-300: #6a8cc6;
+    --theme-color-dim-400: #476db0;
+    --theme-color-dim-500: #355594;
+    --theme-color-dim-600: #2c4478;
+    --theme-color-dim-700: #283c64;
+    --theme-color-dim-800: #253355;
+    --theme-color-dim-900: #171f34;
+    --theme-color-dim-950: #101627;
+
+    /* Dim Blue Color */
+    --theme-color-dim-blue-50: #eff8ff;
+    --theme-color-dim-blue-100: #daeeff;
+    --theme-color-dim-blue-200: #bee3ff;
+    --theme-color-dim-blue-300: #91d2ff;
+    --theme-color-dim-blue-400: #5eb8fc;
+    --theme-color-dim-blue-500: #3898f9;
+    --theme-color-dim-blue-600: #2079ee;
+    --theme-color-dim-blue-700: #1a64db;
+    --theme-color-dim-blue-800: #1c51b1;
+    --theme-color-dim-blue-900: #1c468c;
+    --theme-color-dim-blue-950: #162b55;
+
+    /* Dark Overrides */
+    --theme-color-dark-50: var(--theme-color-dim-50);
+    --theme-color-dark-100: var(--theme-color-dim-100);
+    --theme-color-dark-200: var(--theme-color-dim-200);
+    --theme-color-dark-300: var(--theme-color-dim-300);
+    --theme-color-dark-400: var(--theme-color-dim-400);
+    --theme-color-dark-500: var(--theme-color-dim-500);
+    --theme-color-dark-600: var(--theme-color-dim-600);
+    --theme-color-dark-700: var(--theme-color-dim-700);
+    --theme-color-dark-800: var(--theme-color-dim-800);
+    --theme-color-dark-900: var(--theme-color-dim-900);
+    --theme-color-dark-950: var(--theme-color-dim-950);
+
+    /* Dark Blue Overrides */
+    --theme-color-dark-blue-50: var(--theme-color-dim-blue-50);
+    --theme-color-dark-blue-100: var(--theme-color-dim-blue-100);
+    --theme-color-dark-blue-200: var(--theme-color-dim-blue-200);
+    --theme-color-dark-blue-300: var(--theme-color-dim-blue-300);
+    --theme-color-dark-blue-400: var(--theme-color-dim-blue-400);
+    --theme-color-dark-blue-500: var(--theme-color-dim-blue-500);
+    --theme-color-dark-blue-600: var(--theme-color-dim-blue-600);
+    --theme-color-dark-blue-700: var(--theme-color-dim-blue-700);
+    --theme-color-dark-blue-800: var(--theme-color-dim-blue-800);
+    --theme-color-dark-blue-900: var(--theme-color-dim-blue-900);
+    --theme-color-dark-blue-950: var(--theme-color-dim-blue-950);
+
+    /* Existing color overrides */
+
+    /* Secondary Overrides */
+    --theme-color-secondary-200: var(--theme-color-dim-50);
+    --theme-color-secondary-500: var(--theme-color-dim-200);
+    --theme-color-secondary-600: var(--theme-color-dim-300);
+    --theme-color-secondary-700: var(--theme-color-dim-500);
+    --theme-color-secondary-800: var(--theme-color-dim-700);
+    --theme-color-secondary-900: var(--theme-color-dim-900);
+    --color-black: var(--theme-color-dim-950);
+}
+
+.dim .link {
+    @apply text-theme-dark-blue-600;
+}
+
+.dark a.button-primary,
+.dark button.button-primary {
+    @apply bg-theme-dark-blue-600 text-theme-dark-50;
+}
+
+.dim a.button-secondary,
+.dim button.button-secondary {
+    @apply bg-theme-dark-blue-900;
+    box-shadow: 0 0 1px 1px var(--theme-color-dark-blue-900) inset;
+}
+
+.dim a.button-secondary:disabled,
+.dim button.button-secondary:disabled {
+    @apply bg-theme-dark-800;
+    box-shadow: 0 0 1px 1px var(--theme-color-dark-800) inset;
+}
+
+.dim .ark-info-element > div {
+    @apply bg-theme-dark-blue-900;
+    box-shadow: 0 0 1px 1px var(--theme-color-dark-blue-900) inset;
+}

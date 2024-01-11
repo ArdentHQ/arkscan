@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Livewire\Delegates\HeaderStats;
+use App\Models\ForgingStats;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\DelegateCache;
@@ -51,3 +52,28 @@ it('should show the correct number of votes', function () {
         ->assertViewHas('voterCount', 25)
         ->assertViewHas('totalVoted', 200);
 });
+
+it('should pluralize missed delegate count', function ($count, $text) {
+    ForgingStats::truncate();
+
+    ForgingStats::factory($count)->create([
+        'forged' => false,
+    ]);
+
+    Livewire::test(HeaderStats::class)
+        ->assertViewHas('delegatesMissed', $count)
+        ->assertSeeInOrder([
+            'Missed Blocks (30 Days)',
+            $count,
+            $count,
+            $text,
+            'View',
+            'Voting (',
+        ]);
+})->with([
+    0 => [0, 'Delegates'],
+    1 => [1, 'Delegate'],
+    2 => [2, 'Delegates'],
+    3 => [3, 'Delegates'],
+    4 => [4, 'Delegates'],
+]);

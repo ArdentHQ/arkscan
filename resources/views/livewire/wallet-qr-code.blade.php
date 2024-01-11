@@ -44,7 +44,7 @@
         <div class="p-6">
             <div
                 x-show="showOptions"
-                class="font-normal text-theme-secondary-700 dark:text-theme-dark-500"
+                class="font-normal text-theme-secondary-700 leading-5.25 dark:text-theme-dark-200"
             >
                 @lang('pages.wallet.qrcode.description')
             </div>
@@ -59,6 +59,7 @@
                     name="amount"
                     maxlength="17"
                     class="font-normal"
+                    input-class="qr-code-amount"
                     :errors="$errors"
                     :placeholder="trans('pages.wallet.qrcode.currency_amount', ['currency' => Network::currency()])"
                     hide-label
@@ -78,7 +79,7 @@
             </div>
 
             <div class="flex flex-col items-center">
-                <div class="inline-block p-2 rounded-lg border sm:block border-theme-secondary-300 dark:border-theme-dark-300 dark:bg-theme-dark-300">
+                <div class="inline-block p-2 bg-white rounded-lg border sm:block border-theme-secondary-300 dark:border-theme-dark-300">
                     {!! $this->code !!}
                 </div>
 
@@ -92,15 +93,19 @@
 
                 <div
                     x-show="showOptions"
-                    class="mt-4 mb-1 font-normal text-theme-secondary-700 dark:text-theme-dark-500"
+                    class="mt-4 mb-1 font-normal text-theme-secondary-700 leading-5.25 dark:text-theme-dark-200"
                 >
                     @lang('pages.wallet.qrcode.automatic_notice')
                 </div>
 
-                <div class="flex items-center mt-2 space-x-3">
-                    <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-800"></div>
-                    <div class="font-semibold text-theme-secondary-700">@lang('general.or')</div>
-                    <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-800"></div>
+                <div class="flex items-center mt-2 space-x-3 w-full">
+                    <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-700"></div>
+
+                    <div class="font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
+                        @lang('general.or')
+                    </div>
+
+                    <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-700"></div>
                 </div>
 
                 <a

@@ -25,7 +25,8 @@
         </div>
         <div class="flex flex-1 pt-2 pr-3 md:py-2 grow">
             <img src="{{ mix('images/wallets/arkvault.svg') }}" class="dark:hidden" />
-            <img src="{{ mix('images/wallets/arkvault-dark.svg') }}" class="hidden dark:block" />
+            <img src="{{ mix('images/wallets/arkvault-dark.svg') }}" class="hidden dark:block dim:hidden" />
+            <img src="{{ mix('images/wallets/arkvault-dim.svg') }}" class="hidden dim:block" />
         </div>
     </div>
 </x-general.card>
