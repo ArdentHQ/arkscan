@@ -60,6 +60,7 @@
         dropdown-class="rounded"
         dropdown-rounding="rounded"
         dropdown-padding="py-1 mx-6 sm:mx-0"
+        dropdown-background="bg-white dark:bg-theme-dark-700 dim:bg-theme-dark-900 dim:border dim:border-theme-dark-700"
         :width="$dropdownWidth"
         :close-on-click="! $multiple"
         :init-alpine="false"

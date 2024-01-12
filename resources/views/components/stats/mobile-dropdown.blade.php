@@ -4,7 +4,7 @@
 >
     <x-ark-dropdown
         wrapper-class="relative w-full rounded border md:w-1/2 border-theme-secondary-300 dark:text-theme-dark-200 dark:border-theme-dark-800"
-        button-class="justify-between py-3 px-4 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-dark-200"
+        button-class="justify-between py-3 px-4 w-full font-semibold text-left text-theme-secondary-900 dim:text-theme-dark-50 dark:text-theme-dark-200"
         dropdown-content-classes="bg-white dark:bg-theme-dark-800 rounded-xl shadow-lg dark:shadow-none"
         dropdown-classes="left-0 w-full z-20"
     >

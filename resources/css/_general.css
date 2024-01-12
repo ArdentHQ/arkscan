@@ -269,15 +269,6 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply pl-2 ml-2;
 }
 
-/* Modal QR Code */
-.modal-qr-code {
-    @apply flex mx-auto border border-theme-secondary-300;
-    width: 250px;
-}
-.dark .modal-qr-code {
-    @apply border-0;
-}
-
 /* Progress circles delegates */
 .forging-status > circle:first-child {
     stroke: var(--theme-color-secondary-200);
@@ -349,6 +340,10 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     stroke: var(--theme-color-dark-blue-400);
 }
 
+.dim .favorite-icon__selected svg path {
+    stroke: var(--theme-color-dark-blue-600);
+}
+
 @media (hover: hover) and (pointer: fine) {
     .favorite-icon:hover svg path {
         fill: var(--theme-color-primary-700);
@@ -359,4 +354,17 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
         fill: var(--theme-color-dark-blue-500);
         stroke: var(--theme-color-dark-blue-500);
     }
+}
+
+/* Modal QR Code - hide numeric plus/minus buttons */
+/* Chrome, Safari, Edge, Opera */
+input.qr-code-amount::-webkit-outer-spin-button,
+input.qr-code-amount::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input.qr-code-amount[type="number"] {
+    -moz-appearance: textfield;
 }

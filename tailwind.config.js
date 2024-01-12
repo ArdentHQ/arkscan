@@ -1,6 +1,7 @@
 const defaultConfig = require("./vendor/arkecosystem/foundation/resources/tailwind.config.js");
 const plugin = require("tailwindcss/plugin");
 const selectorParser = require("postcss-selector-parser");
+const { themeVariants, prefersLight, prefersDark } = require("tailwindcss-theme-variants");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -58,6 +59,9 @@ module.exports = {
                 "theme-dark-800": "var(--theme-color-dark-800)",
                 "theme-dark-900": "var(--theme-color-dark-900)",
                 "theme-dark-950": "var(--theme-color-dark-950)",
+
+                // We don't have a dark-blue-950 so create a dim version to not confuse it
+                "theme-dim-blue-950": "var(--theme-color-dim-blue-950)",
 
                 black: "var(--theme-color-dark-950)",
             },
@@ -146,4 +150,13 @@ module.exports = {
             },
         },
     },
+
+    plugins: [
+        ...defaultConfig.plugins,
+
+        plugin(function ({ addVariant }) {
+            addVariant("dim", ":is(.dark.dim &)");
+            addVariant("dim-hover", ":is(.dark.dim &:hover)");
+        }),
+    ],
 };

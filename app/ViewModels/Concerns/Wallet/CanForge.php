@@ -42,7 +42,12 @@ trait CanForge
             return 0;
         }
 
-        return (new WalletCache())->getProductivity($publicKey);
+        $productivity = (new WalletCache())->getProductivity($publicKey);
+        if ($productivity <= 0) {
+            return 0;
+        }
+
+        return $productivity;
     }
 
     public function performance(): array

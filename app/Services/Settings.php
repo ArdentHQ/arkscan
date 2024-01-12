@@ -17,7 +17,7 @@ class Settings
             'currency'       => 'USD',
             'priceChart'     => true,
             'feeChart'       => true,
-            'darkTheme'      => null,
+            'theme'          => null,
         ];
 
         $settings = Cookie::get('settings');
@@ -59,10 +59,12 @@ class Settings
 
     public function theme(): string
     {
-        $darkMode = $this->get('darkTheme');
-        if ($darkMode === true) {
+        $theme = $this->get('theme');
+        if ($theme === 'dark') {
             return 'dark';
-        } elseif ($darkMode === false) {
+        } elseif ($theme === 'dim') {
+            return 'dim';
+        } elseif ($theme === 'light') {
             return 'light';
         }
 

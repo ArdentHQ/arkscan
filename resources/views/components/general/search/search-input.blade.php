@@ -4,7 +4,7 @@
         <x-ark-icon
             name="magnifying-glass-small"
             size="sm"
-            class="text-theme-secondary-500 dark:text-theme-dark-600"
+            class="text-theme-secondary-500 dim:text-theme-dark-200 dark:text-theme-dark-600"
         />
     </div>
 
@@ -12,7 +12,7 @@
         <input
             x-ref="input"
             type="text"
-            class="block py-2 w-full h-full text-theme-secondary-900 overflow-ellipsis dark:bg-theme-dark-900 dark:text-theme-dark-200"
+            class="block py-2 w-full h-full text-theme-secondary-900 overflow-ellipsis dim:text-theme-dark-50 dark:bg-theme-dark-900 dark:text-theme-dark-200"
             wire:model.debounce.500ms="query"
             wire:keydown.enter="goToFirstResult"
             placeholder="@lang('general.navbar.search_placeholder')"
@@ -21,11 +21,11 @@
 
     <button
         type="button"
-        @click="() => {
+        @click="function () {
             $wire.clear();
             $refs.input.focus();
         }"
-        class="pr-4 -my-px bg-transparent button-secondary text-theme-secondary-700 dark:bg-theme-dark-900 dark:text-theme-dark-600"
+        class="pr-4 -my-px bg-transparent button-secondary text-theme-secondary-700 dim:bg-transparent dim:shadow-none dim:text-theme-dark-50 dark:bg-theme-dark-900 dark:text-theme-dark-600"
         x-show="query"
         x-cloak
     >
