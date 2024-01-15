@@ -31,6 +31,8 @@ final class BuildForgingStats implements ShouldQueue
 
     public function handle(): void
     {
+        ForgingStats::where('timestamp', '>', 0)->delete();
+
         $height      = $this->getHeight();
         $timeRange   = $this->getTimeRange($height);
         $startHeight = $this->getStartHeight($height, $timeRange);
@@ -111,22 +113,19 @@ final class BuildForgingStats implements ShouldQueue
             $lastForgingInfoTs = (int) ForgingStats::orderBy('timestamp', 'DESC')
                 ->limit(1)
                 ->firstOr(function (): ForgingStats {
-                    // by default if forging_stats table is not initialized we just build stats for last hour
-                    // (building stats is expensive, if we want data from last X days we need to ask for it explicitly)
-                    $forgingStats1HourAgo            = new ForgingStats();
-                    $forgingStats1HourAgo->timestamp = Timestamp::now()->getTimestamp() - 60 * 60;
+                    // by default if forging_stats table is not initialized we just build stats for past 30 days
+                    $forgingStatsPast30Days            = new ForgingStats();
+                    $forgingStatsPast30Days->timestamp = Timestamp::now()->getTimestamp() - 60 * 60 * 24 * 30;
 
-                    return $forgingStats1HourAgo;
+                    return $forgingStatsPast30Days;
                 })
                 ->timestamp;
 
             $timestampForHeight = $this->getTimestampForHeight($height);
-            // use a one-round margin to be sure we don't skip blocks from last forging info
-            $timeRange = ($timestampForHeight - $lastForgingInfoTs) + (Network::delegateCount() * Network::blockTime());
+            $timeRange = $timestampForHeight - $lastForgingInfoTs;
 
-            if ($timeRange < 0 || $timeRange > 24 * 60 * 60) {
-                return 0;   // when time range is not specified, go back maximum 1 day (because
-                // it is then supposed to be an incremental stats build)
+            if ($timeRange < 0 || $timeRange > 24 * 60 * 60 * 30) {
+                return 0;
             }
         }
 
