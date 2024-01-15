@@ -366,7 +366,12 @@ it('should determine if the delegate just missed a block', function () {
     expect($this->subject->justMissed())->toBeTrue();
 });
 
-it('should determine if the delegate keeps is missing blocks', function () {
+it('should determine if the delegate is missing blocks', function () {
+    Round::factory()->create([
+        'round'      => '112167',
+        'public_key' => $this->subject->public_key,
+    ]);
+
     Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [false, true]);
 
     expect($this->subject->keepsMissing())->toBeFalse();
@@ -772,7 +777,7 @@ it('should return zero if delegate has no public key', function () {
     expect($wallet->missedBlocks())->toBe(0);
 });
 
-function createRoundWithDelegatesAndPerformances(array $performances = null, bool $addBlockForNextRound = true, int $wallets = 51): void
+function createRound(array $performances = null, bool $addBlockForNextRound = true, int $wallets = 51): void
 {
     Wallet::factory($wallets)->create()->each(function ($wallet, $index) use ($performances, $addBlockForNextRound) {
         $timestamp = Carbon::now()->add($index * 8, 'seconds')->timestamp;
@@ -819,7 +824,7 @@ it('asd', function () {
 
     Wallet::truncate();
 
-    createRoundWithDelegatesAndPerformances();
+    createRound();
 
     $wallet = new WalletViewModel(Wallet::first());
 
