@@ -31,8 +31,6 @@ final class BuildForgingStats implements ShouldQueue
 
     public function handle(): void
     {
-        ForgingStats::where('timestamp', '>', 0)->delete();
-
         $height      = $this->getHeight();
         $timeRange   = $this->getTimeRange($height);
         $startHeight = $this->getStartHeight($height, $timeRange);
