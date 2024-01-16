@@ -6,6 +6,7 @@ namespace App\Http\Livewire\Stats;
 
 use App\Enums\StatsTransactionType;
 use App\Facades\Network;
+use App\Facades\Settings;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -96,10 +97,12 @@ final class Insights extends Component
 
     private function marketDataPrice(StatisticsCache $cache): array
     {
-        $priceAtl        = $cache->getPriceAtl();
-        $priceAth        = $cache->getPriceAth();
-        $priceRangeDaily = $cache->getPriceRangeDaily();
-        $priceRange52w   = $cache->getPriceRange52();
+        $currency = Settings::currency();
+
+        $priceAtl        = $cache->getPriceAtl($currency);
+        $priceAth        = $cache->getPriceAth($currency);
+        $priceRangeDaily = $cache->getPriceRangeDaily($currency);
+        $priceRange52w   = $cache->getPriceRange52($currency);
 
         return [
             'daily_low'  => $priceRangeDaily !== null ? $priceRangeDaily['low'] : 0,
@@ -115,9 +118,10 @@ final class Insights extends Component
 
     private function marketDataVolume(StatisticsCache $cache): array
     {
-        $volume    = (new CryptoDataCache())->getVolume('USD');
-        $volumeAtl = $cache->getVolumeAtl();
-        $volumeAth = $cache->getVolumeAth();
+        $currency  = Settings::currency();
+        $volume    = (new CryptoDataCache())->getVolume($currency);
+        $volumeAtl = $cache->getVolumeAtl($currency);
+        $volumeAth = $cache->getVolumeAth($currency);
 
         return [
             'today_volume' => $volume ?? 0,
@@ -130,11 +134,13 @@ final class Insights extends Component
 
     private function marketDataCap(StatisticsCache $cache): array
     {
-        $marketCapAtl = $cache->getMarketCapAtl();
-        $marketCapAth = $cache->getMarketCapAth();
+        $currency = Settings::currency();
+
+        $marketCapAtl = $cache->getMarketCapAtl($currency);
+        $marketCapAth = $cache->getMarketCapAth($currency);
 
         return [
-            'today_value' => MarketCap::get(Network::currency(), 'USD'),
+            'today_value' => MarketCap::get(Network::currency(), $currency) ?? 0,
             'atl'         => $marketCapAtl !== null ? $marketCapAtl['value'] : 0,
             'atl_date'    => $marketCapAtl !== null ? $marketCapAtl['timestamp'] : null,
             'ath'         => $marketCapAth !== null ? $marketCapAth['value'] : 0,
