@@ -10,6 +10,8 @@ use App\DTO\Statistics\MarketDataPriceStatistics;
 use App\DTO\Statistics\MarketDataRecordStatistics;
 use App\DTO\Statistics\MarketDataStatistics;
 use App\DTO\Statistics\MarketDataVolumeStatistics;
+use App\DTO\Statistics\TransactionAveragesStatistics;
+use App\DTO\Statistics\TransactionRecordsStatistics;
 use App\DTO\Statistics\TransactionStatistics;
 use App\DTO\Statistics\UniqueAddressesStatistics;
 use App\DTO\Statistics\WalletWithValue;
@@ -64,47 +66,21 @@ final class Insights extends Component
             ->toArray();
     }
 
-    private function transactionAverages(TransactionCache $cache): array
+    private function transactionAverages(TransactionCache $cache): TransactionAveragesStatistics
     {
-        $data = $cache->getHistoricalAverages();
-
-        return [
-            'transactions'       => $data['count'],
-            'transaction_volume' => NumberFormatter::currency($data['amount'], Network::currency()),
-            'transaction_fees'   => NumberFormatter::currency($data['fee'], Network::currency()),
-        ];
+        return TransactionAveragesStatistics::make($cache->getHistoricalAverages());
     }
 
-    private function transactionRecords(TransactionCache $transactionCache): array
+    private function transactionRecords(TransactionCache $transactionCache): TransactionRecordsStatistics
     {
         $blockCache = new BlockCache();
 
-        $largestTransaction = Transaction::find($transactionCache->getLargestIdByAmount());
-        if ($largestTransaction !== null) {
-            $largestTransaction = new TransactionViewModel($largestTransaction);
-        }
-
-        $largestBlock = Block::find($blockCache->getLargestIdByAmount());
-        if ($largestBlock !== null) {
-            $largestBlock = new BlockViewModel($largestBlock);
-        }
-
-        $blockWithHighestFees = Block::find($blockCache->getLargestIdByFees());
-        if ($blockWithHighestFees !== null) {
-            $blockWithHighestFees = new BlockViewModel($blockWithHighestFees);
-        }
-
-        $blockWithMostTransactions = Block::find($blockCache->getLargestIdByTransactionCount());
-        if ($blockWithMostTransactions !== null) {
-            $blockWithMostTransactions = new BlockViewModel($blockWithMostTransactions);
-        }
-
-        return [
-            'largest_transaction'        => $largestTransaction,
-            'largest_block'              => $largestBlock,
-            'highest_fee'                => $blockWithHighestFees,
-            'most_transactions_in_block' => $blockWithMostTransactions,
-        ];
+        return TransactionRecordsStatistics::make(
+            Transaction::find($transactionCache->getLargestIdByAmount()),
+            Block::find($blockCache->getLargestIdByAmount()),
+            Block::find($blockCache->getLargestIdByFees()),
+            Block::find($blockCache->getLargestIdByTransactionCount()),
+        );
     }
 
     private function marketDataPrice(StatisticsCache $cache): MarketDataPriceStatistics

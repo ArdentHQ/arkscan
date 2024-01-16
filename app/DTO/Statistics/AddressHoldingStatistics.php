@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTO\Statistics;
 
 use Illuminate\Support\Collection;
 
-class AddressHoldingStatistics
+final class AddressHoldingStatistics
 {
     public Collection $data;
 

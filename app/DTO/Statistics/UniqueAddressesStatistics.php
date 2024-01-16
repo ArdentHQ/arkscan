@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTO\Statistics;
 
-class UniqueAddressesStatistics
+final class UniqueAddressesStatistics
 {
     public static function make(
-        $genesis,
-        $newest,
-        $mostTransactions,
-        $largest,
+        ?array $genesis,
+        ?array $newest,
+        ?array $mostTransactions,
+        ?array $largest,
     ): self
     {
         return new self(
@@ -20,10 +22,10 @@ class UniqueAddressesStatistics
     }
 
     public function __construct(
-        public array $genesis,
-        public array $newest,
-        public array $mostTransactions,
-        public array $largest,
+        public ?array $genesis,
+        public ?array $newest,
+        public ?array $mostTransactions,
+        public ?array $largest,
     ) {
         //
     }

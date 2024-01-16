@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTO\Statistics;
 
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
 
-class DelegateStatistics
+final class DelegateStatistics
 {
     public ?WalletViewModel $mostUniqueVoters = null;
     public ?WalletViewModel $leastUniqueVoters = null;
@@ -35,8 +37,16 @@ class DelegateStatistics
         public ?WalletWithValue $oldestActiveDelegate = null,
         public ?WalletWithValue $newestActiveDelegate = null,
     ) {
-        $this->mostUniqueVoters = new WalletViewModel($mostUniqueVoters);
-        $this->leastUniqueVoters = new WalletViewModel($leastUniqueVoters);
-        $this->mostBlocksForged = new WalletViewModel($mostBlocksForged);
+        if ($mostUniqueVoters !== null) {
+            $this->mostUniqueVoters = new WalletViewModel($mostUniqueVoters);
+        }
+
+        if ($leastUniqueVoters !== null) {
+            $this->leastUniqueVoters = new WalletViewModel($leastUniqueVoters);
+        }
+
+        if ($mostBlocksForged !== null) {
+            $this->mostBlocksForged = new WalletViewModel($mostBlocksForged);
+        }
     }
 }

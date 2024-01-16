@@ -1,16 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTO\Statistics;
 
-use App\Models\Wallet;
-use App\ViewModels\WalletViewModel;
-
-class TransactionStatistics
+final class TransactionStatistics
 {
     public static function make(
         array $details,
-        array $averages,
-        array $records,
+        TransactionAveragesStatistics $averages,
+        TransactionRecordsStatistics $records,
     ): self
     {
         return new self(
@@ -22,8 +21,8 @@ class TransactionStatistics
 
     public function __construct(
         public array $details,
-        public array $averages,
-        public array $records,
+        public TransactionAveragesStatistics $averages,
+        public TransactionRecordsStatistics $records,
     ) {
         //
     }

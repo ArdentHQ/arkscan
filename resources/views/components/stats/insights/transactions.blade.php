@@ -20,7 +20,7 @@
         </x-stats.insights.container>
 
         <x-stats.insights.container :title="trans('pages.statistics.insights.transactions.daily_averages')" apply-spacing>
-            @foreach($data->averages as $key => $detail)
+            @foreach($data->averages->toArray() as $key => $detail)
                 <x-stats.insights.row :title="trans('pages.statistics.insights.transactions.header.'.$key)">
                     {{ $detail }}
                 </x-stats.insights.row>
@@ -31,7 +31,7 @@
             :title="trans('pages.statistics.insights.transactions.records')"
             full-width
         >
-            @foreach($data->records as $key => $model)
+            @foreach($data->records->toArray() as $key => $model)
                 <x-stats.insights.mobile.transaction-record-row :key="$key" :model="$model" />
 
                 <x-stats.insights.desktop.transaction-record-row :key="$key" :model="$model" />

@@ -1,11 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTO\Statistics;
 
-use App\Models\Wallet;
-use App\ViewModels\WalletViewModel;
-
-class MarketDataStatistics
+final class MarketDataStatistics
 {
     public static function make(
         MarketDataPriceStatistics $prices,
