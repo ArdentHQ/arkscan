@@ -25,9 +25,9 @@
         </div>
 
         <div @class([
-            "flex-1 bg-theme-secondary-100 dark:bg-theme-dark-950",
-            "py-3 px-4 rounded-b-xl md-lg:rounded-bl-none md-lg:rounded-r-xl sm:px-6 sm:pb-4 md:py-6" => Network::canBeExchanged(),
-            "md-lg:rounded-r-xl md-lg:rounded-tl-xl md-lg:px-6 md-lg:py-6" => ! Network::canBeExchanged(),
+            "flex-1 bg-theme-secondary-100 dark:bg-theme-dark-950 rounded-b-xl lg:rounded-bl-none lg:rounded-r-xl",
+            "py-3 px-4 sm:px-6 sm:pb-4 md:py-6" => Network::canBeExchanged(),
+            "md-lg:px-6 md-lg:py-6" => ! Network::canBeExchanged(),
         ])>
             <div @class([
                 'relative w-full h-full',
