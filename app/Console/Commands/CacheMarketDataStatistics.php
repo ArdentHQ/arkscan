@@ -70,8 +70,13 @@ final class CacheMarketDataStatistics extends Command
         /** @var array{timestamp: int, value: float} $priceAth */
         $priceAth = $pricesSorted->last();
 
-        $cache->setPriceAtl($currency, $priceAtl['timestamp'] / 1000, $priceAtl['value']);
-        $cache->setPriceAth($currency, $priceAth['timestamp'] / 1000, $priceAth['value']);
+        if ($priceAtl['value'] !== null) {
+            $cache->setPriceAtl($currency, $priceAtl['timestamp'] / 1000, $priceAtl['value']);
+        }
+
+        if ($priceAth['value'] !== null) {
+            $cache->setPriceAth($currency, $priceAth['timestamp'] / 1000, $priceAth['value']);
+        }
 
         $this->cache52WeekPriceStats($currency, $prices, $cache);
         $this->cacheDailyPriceStats($currency, $dailyData, $cache);
@@ -127,8 +132,13 @@ final class CacheMarketDataStatistics extends Command
         /** @var array{timestamp: int, value: float} $volumeAth */
         $volumeAth = $volumeSorted->last();
 
-        $cache->setVolumeAtl($currency, $volumeAtl['timestamp'] / 1000, $volumeAtl['value']);
-        $cache->setVolumeAth($currency, $volumeAth['timestamp'] / 1000, $volumeAth['value']);
+        if ($volumeAtl['value'] !== null) {
+            $cache->setVolumeAtl($currency, $volumeAtl['timestamp'] / 1000, $volumeAtl['value']);
+        }
+
+        if ($volumeAth['value'] !== null) {
+            $cache->setVolumeAth($currency, $volumeAth['timestamp'] / 1000, $volumeAth['value']);
+        }
     }
 
     /**
@@ -146,7 +156,12 @@ final class CacheMarketDataStatistics extends Command
         /** @var array{timestamp: int, value: float} $marketCapAth */
         $marketCapAth = $marketCapSorted->last();
 
-        $cache->setMarketCapAtl($currency, $marketCapAtl['timestamp'] / 1000, $marketCapAtl['value']);
-        $cache->setMarketCapAth($currency, $marketCapAth['timestamp'] / 1000, $marketCapAth['value']);
+        if ($marketCapAtl['value'] !== null) {
+            $cache->setMarketCapAtl($currency, $marketCapAtl['timestamp'] / 1000, $marketCapAtl['value']);
+        }
+
+        if ($marketCapAth['value'] !== null) {
+            $cache->setMarketCapAth($currency, $marketCapAth['timestamp'] / 1000, $marketCapAth['value']);
+        }
     }
 }
