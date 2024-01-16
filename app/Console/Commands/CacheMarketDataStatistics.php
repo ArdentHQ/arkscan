@@ -65,9 +65,9 @@ final class CacheMarketDataStatistics extends Command
 
         $pricesSorted = $prices->sortBy('value');
 
-        /** @var array{timestamp: int, value: float} $priceAtl */
+        /** @var array{timestamp: int, value: float|null} $priceAtl */
         $priceAtl = $pricesSorted->first();
-        /** @var array{timestamp: int, value: float} $priceAth */
+        /** @var array{timestamp: int, value: float|null} $priceAth */
         $priceAth = $pricesSorted->last();
 
         if ($priceAtl['value'] !== null) {
@@ -127,9 +127,9 @@ final class CacheMarketDataStatistics extends Command
 
         $volumeSorted = $volumes->sortBy('value');
 
-        /** @var array{timestamp: int, value: float} $volumeAtl */
+        /** @var array{timestamp: int, value: float|null} $volumeAtl */
         $volumeAtl = $volumeSorted->first();
-        /** @var array{timestamp: int, value: float} $volumeAth */
+        /** @var array{timestamp: int, value: float|null} $volumeAth */
         $volumeAth = $volumeSorted->last();
 
         if ($volumeAtl['value'] !== null) {
@@ -151,9 +151,9 @@ final class CacheMarketDataStatistics extends Command
 
         $marketCapSorted = $marketcaps->sortBy('value');
 
-        /** @var array{timestamp: int, value: float} $marketCapAtl */
+        /** @var array{timestamp: int, value: float|null} $marketCapAtl */
         $marketCapAtl = $marketCapSorted->first();
-        /** @var array{timestamp: int, value: float} $marketCapAth */
+        /** @var array{timestamp: int, value: float|null} $marketCapAth */
         $marketCapAth = $marketCapSorted->last();
 
         if ($marketCapAtl['value'] !== null) {
