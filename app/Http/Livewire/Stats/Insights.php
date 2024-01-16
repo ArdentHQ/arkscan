@@ -26,6 +26,9 @@ use Livewire\Component;
 
 final class Insights extends Component
 {
+    /** @var mixed */
+    protected $listeners = ['currencyChanged' => '$refresh'];
+
     public function render(): View
     {
         $transactionCache = new TransactionCache();
