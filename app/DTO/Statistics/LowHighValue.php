@@ -1,0 +1,20 @@
+<?php
+
+namespace App\DTO\Statistics;
+
+class LowHighValue
+{
+    public function __construct(public ?float $low = null, public ?float $high = null)
+    {
+        //
+    }
+
+    public static function fromArray(?array $data): self
+    {
+        if ($data === null) {
+            return new self();
+        }
+
+        return new self($data['low'], $data['high']);
+    }
+}

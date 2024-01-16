@@ -15,7 +15,7 @@
 
     <div>
         <x-stats.insights.container :title="trans('pages.statistics.insights.addresses.holdings')" full-width>
-            @foreach($holdings->data as $grouping => $count)
+            @foreach($holdings->toArray() as $grouping => $count)
                 {{-- Mobile --}}
                 <div class="flex md:hidden">
                     <div class="flex flex-col pt-3 space-y-2">

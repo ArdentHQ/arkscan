@@ -11,19 +11,19 @@ use Carbon\Carbon;
 final class MarketDataPriceStatistics
 {
     public function __construct(
-        public ?array $atl,
-        public ?array $ath,
-        public ?array $daily,
-        public ?array $year,
+        public ?TimestampedValue $atl,
+        public ?TimestampedValue $ath,
+        public ?LowHighValue $daily,
+        public ?LowHighValue $year,
     ) {
         //
     }
 
     public static function make(
-        ?array $atl,
-        ?array $ath,
-        ?array $daily,
-        ?array $year,
+        ?TimestampedValue $atl,
+        ?TimestampedValue $ath,
+        ?LowHighValue $daily,
+        ?LowHighValue $year,
     ): self {
         return new self(
             $atl,
@@ -39,7 +39,7 @@ final class MarketDataPriceStatistics
             return null;
         }
 
-        return $this->formatCurrency($this->atl['value']);
+        return $this->formatCurrency($this->atl->value);
     }
 
     public function atlDate(): ?string
@@ -48,7 +48,7 @@ final class MarketDataPriceStatistics
             return null;
         }
 
-        return Carbon::createFromTimestamp($this->atl['timestamp'])->format(DateFormat::DATE);
+        return Carbon::createFromTimestamp($this->atl->timestamp)->format(DateFormat::DATE);
     }
 
     public function athValue(): ?string
@@ -57,7 +57,7 @@ final class MarketDataPriceStatistics
             return null;
         }
 
-        return $this->formatCurrency($this->ath['value']);
+        return $this->formatCurrency($this->ath->value);
     }
 
     public function athDate(): ?string
@@ -66,7 +66,7 @@ final class MarketDataPriceStatistics
             return null;
         }
 
-        return Carbon::createFromTimestamp($this->ath['timestamp'])->format(DateFormat::DATE);
+        return Carbon::createFromTimestamp($this->ath->timestamp)->format(DateFormat::DATE);
     }
 
     public function dailyLow(): ?string
@@ -75,7 +75,7 @@ final class MarketDataPriceStatistics
             return null;
         }
 
-        return $this->formatCurrency($this->daily['low']);
+        return $this->formatCurrency($this->daily->low);
     }
 
     public function dailyHigh(): ?string
@@ -84,7 +84,7 @@ final class MarketDataPriceStatistics
             return null;
         }
 
-        return $this->formatCurrency($this->daily['high']);
+        return $this->formatCurrency($this->daily->high);
     }
 
     public function yearLow(): ?string
@@ -93,7 +93,7 @@ final class MarketDataPriceStatistics
             return null;
         }
 
-        return $this->formatCurrency($this->year['low']);
+        return $this->formatCurrency($this->year->low);
     }
 
     public function yearHigh(): ?string
@@ -102,7 +102,7 @@ final class MarketDataPriceStatistics
             return null;
         }
 
-        return $this->formatCurrency($this->year['high']);
+        return $this->formatCurrency($this->year->high);
     }
 
     /**

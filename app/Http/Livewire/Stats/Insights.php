@@ -6,10 +6,12 @@ namespace App\Http\Livewire\Stats;
 
 use App\DTO\Statistics\AddressHoldingStatistics;
 use App\DTO\Statistics\DelegateStatistics;
+use App\DTO\Statistics\LowHighValue;
 use App\DTO\Statistics\MarketDataPriceStatistics;
 use App\DTO\Statistics\MarketDataRecordStatistics;
 use App\DTO\Statistics\MarketDataStatistics;
 use App\DTO\Statistics\MarketDataVolumeStatistics;
+use App\DTO\Statistics\TimestampedValue;
 use App\DTO\Statistics\TransactionAveragesStatistics;
 use App\DTO\Statistics\TransactionRecordsStatistics;
 use App\DTO\Statistics\TransactionStatistics;
@@ -83,10 +85,10 @@ final class Insights extends Component
     private function marketDataPrice(StatisticsCache $cache): MarketDataPriceStatistics
     {
         return MarketDataPriceStatistics::make(
-            $cache->getPriceAtl(),
-            $cache->getPriceAth(),
-            $cache->getPriceRangeDaily(),
-            $cache->getPriceRange52(),
+            TimestampedValue::fromArray($cache->getPriceAtl()),
+            TimestampedValue::fromArray($cache->getPriceAth()),
+            LowHighValue::fromArray($cache->getPriceRangeDaily()),
+            LowHighValue::fromArray($cache->getPriceRange52()),
         );
     }
 
@@ -94,8 +96,8 @@ final class Insights extends Component
     {
         return MarketDataVolumeStatistics::make(
             (new CryptoDataCache())->getVolume('USD'),
-            $cache->getVolumeAtl(),
-            $cache->getVolumeAth(),
+            TimestampedValue::fromArray($cache->getVolumeAtl()),
+            TimestampedValue::fromArray($cache->getVolumeAth()),
         );
     }
 
@@ -103,8 +105,8 @@ final class Insights extends Component
     {
         return MarketDataRecordStatistics::make(
             MarketCap::get(Network::currency(), 'USD'),
-            $cache->getMarketCapAtl(),
-            $cache->getMarketCapAth(),
+            TimestampedValue::fromArray($cache->getMarketCapAtl()),
+            TimestampedValue::fromArray($cache->getMarketCapAth()),
         );
     }
 

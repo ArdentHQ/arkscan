@@ -8,16 +8,40 @@ use Illuminate\Support\Collection;
 
 final class AddressHoldingStatistics
 {
-    public Collection $data;
+    public int $greaterThanOne;
+
+    public int $greaterThanOneThousand;
+
+    public int $greaterThanTenThousand;
+
+    public int $greaterThanOneHundredThousand;
+
+    public int $greaterThanOneMillion;
 
     public function __construct(array $data)
     {
-        $this->data = (new Collection($data))
-            ->pluck('count', 'grouped');
+        $grouped = (new Collection($data))->pluck('count', 'grouped');
+
+        $this->greaterThanOne = $grouped->get(1);
+        $this->greaterThanOneThousand = $grouped->get(1000);
+        $this->greaterThanTenThousand = $grouped->get(10000);
+        $this->greaterThanOneHundredThousand = $grouped->get(100000);
+        $this->greaterThanOneMillion = $grouped->get(1000000);
     }
 
     public static function make(array $data): self
     {
         return new self($data);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            1 => $this->greaterThanOne,
+            1000 => $this->greaterThanOneThousand,
+            10000 => $this->greaterThanTenThousand,
+            100000 => $this->greaterThanOneHundredThousand,
+            1000000 => $this->greaterThanOneMillion,
+        ];
     }
 }

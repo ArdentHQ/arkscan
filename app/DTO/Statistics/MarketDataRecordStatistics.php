@@ -12,16 +12,16 @@ final class MarketDataRecordStatistics
 {
     public function __construct(
         public ?float $today,
-        public ?array $atl,
-        public ?array $ath,
+        public ?TimestampedValue $atl,
+        public ?TimestampedValue $ath,
     ) {
         //
     }
 
     public static function make(
         ?float $today,
-        ?array $atl,
-        ?array $ath,
+        ?TimestampedValue $atl,
+        ?TimestampedValue $ath,
     ): self {
         return new self(
             $today,
@@ -45,7 +45,7 @@ final class MarketDataRecordStatistics
             return null;
         }
 
-        return $this->formatCurrency($this->atl['value']);
+        return $this->formatCurrency($this->atl->value);
     }
 
     public function atlDate(): ?string
@@ -54,7 +54,7 @@ final class MarketDataRecordStatistics
             return null;
         }
 
-        return Carbon::createFromTimestamp($this->atl['timestamp'])->format(DateFormat::DATE);
+        return Carbon::createFromTimestamp($this->atl->timestamp)->format(DateFormat::DATE);
     }
 
     public function athValue(): ?string
@@ -63,7 +63,7 @@ final class MarketDataRecordStatistics
             return null;
         }
 
-        return $this->formatCurrency($this->ath['value']);
+        return $this->formatCurrency($this->ath->value);
     }
 
     public function athDate(): ?string
@@ -72,7 +72,7 @@ final class MarketDataRecordStatistics
             return null;
         }
 
-        return Carbon::createFromTimestamp($this->ath['timestamp'])->format(DateFormat::DATE);
+        return Carbon::createFromTimestamp($this->ath->timestamp)->format(DateFormat::DATE);
     }
 
     /**
