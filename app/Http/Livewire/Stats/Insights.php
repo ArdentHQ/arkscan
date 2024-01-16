@@ -4,6 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Stats;
 
+use App\DTO\Statistics\AddressHoldingStatistics;
+use App\DTO\Statistics\DelegateStatistics;
+use App\DTO\Statistics\LowHighValue;
+use App\DTO\Statistics\MarketDataPriceStatistics;
+use App\DTO\Statistics\MarketDataRecordStatistics;
+use App\DTO\Statistics\MarketDataStatistics;
+use App\DTO\Statistics\MarketDataVolumeStatistics;
+use App\DTO\Statistics\TimestampedValue;
+use App\DTO\Statistics\TransactionAveragesStatistics;
+use App\DTO\Statistics\TransactionRecordsStatistics;
+use App\DTO\Statistics\TransactionStatistics;
+use App\DTO\Statistics\UniqueAddressesStatistics;
+use App\DTO\Statistics\WalletWithValue;
 use App\Enums\StatsTransactionType;
 use App\Facades\Network;
 use App\Models\Block;
@@ -14,11 +27,6 @@ use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\TransactionCache;
 use App\Services\MarketCap;
-use App\Services\NumberFormatter;
-use App\ViewModels\BlockViewModel;
-use App\ViewModels\TransactionViewModel;
-use App\ViewModels\ViewModelFactory;
-use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -31,16 +39,22 @@ final class Insights extends Component
         $statisticsCache  = new StatisticsCache();
 
         return view('livewire.stats.insights', [
-            'transactionDetails'  => $this->transactionDetails($transactionCache),
-            'transactionAverages' => $this->transactionAverages($transactionCache),
-            'transactionRecords'  => $this->transactionRecords($transactionCache),
-            'marketDataPrice'     => $this->marketDataPrice($statisticsCache),
-            'marketDataVolume'    => $this->marketDataVolume($statisticsCache),
-            'marketDataCap'       => $this->marketDataCap($statisticsCache),
-            'delegateDetails'     => $this->delegateDetails($statisticsCache),
-            'addressHoldings'     => $this->addressHoldings($statisticsCache),
-            'uniqueAddresses'     => $this->uniqueAddresses($statisticsCache),
-            'annualData'          => $this->annualData($statisticsCache),
+            'transactionDetails' => TransactionStatistics::make(
+                $this->transactionDetails($transactionCache),
+                $this->transactionAverages($transactionCache),
+                $this->transactionRecords($transactionCache),
+            ),
+
+            'marketData' => MarketDataStatistics::make(
+                $this->marketDataPrice($statisticsCache),
+                $this->marketDataVolume($statisticsCache),
+                $this->marketDataCap($statisticsCache),
+            ),
+
+            'delegateDetails'    => $this->delegateDetails($statisticsCache),
+            'addressHoldings'    => $this->addressHoldings($statisticsCache),
+            'uniqueAddresses'    => $this->uniqueAddresses($statisticsCache),
+            'annualData'         => $this->annualData($statisticsCache),
         ]);
     }
 
@@ -51,117 +65,62 @@ final class Insights extends Component
             ->toArray();
     }
 
-    private function transactionAverages(TransactionCache $cache): array
+    private function transactionAverages(TransactionCache $cache): TransactionAveragesStatistics
     {
-        $data = $cache->getHistoricalAverages();
-
-        return [
-            'transactions'       => $data['count'],
-            'transaction_volume' => NumberFormatter::currency($data['amount'], Network::currency()),
-            'transaction_fees'   => NumberFormatter::currency($data['fee'], Network::currency()),
-        ];
+        return TransactionAveragesStatistics::make($cache->getHistoricalAverages());
     }
 
-    private function transactionRecords(TransactionCache $transactionCache): array
+    private function transactionRecords(TransactionCache $transactionCache): TransactionRecordsStatistics
     {
         $blockCache = new BlockCache();
 
-        $largestTransaction = Transaction::find($transactionCache->getLargestIdByAmount());
-        if ($largestTransaction !== null) {
-            $largestTransaction = new TransactionViewModel($largestTransaction);
-        }
-
-        $largestBlock = Block::find($blockCache->getLargestIdByAmount());
-        if ($largestBlock !== null) {
-            $largestBlock = new BlockViewModel($largestBlock);
-        }
-
-        $blockWithHighestFees = Block::find($blockCache->getLargestIdByFees());
-        if ($blockWithHighestFees !== null) {
-            $blockWithHighestFees = new BlockViewModel($blockWithHighestFees);
-        }
-
-        $blockWithMostTransactions = Block::find($blockCache->getLargestIdByTransactionCount());
-        if ($blockWithMostTransactions !== null) {
-            $blockWithMostTransactions = new BlockViewModel($blockWithMostTransactions);
-        }
-
-        return [
-            'largest_transaction'        => $largestTransaction,
-            'largest_block'              => $largestBlock,
-            'highest_fee'                => $blockWithHighestFees,
-            'most_transactions_in_block' => $blockWithMostTransactions,
-        ];
+        return TransactionRecordsStatistics::make(
+            Transaction::find($transactionCache->getLargestIdByAmount()),
+            Block::find($blockCache->getLargestIdByAmount()),
+            Block::find($blockCache->getLargestIdByFees()),
+            Block::find($blockCache->getLargestIdByTransactionCount()),
+        );
     }
 
-    private function marketDataPrice(StatisticsCache $cache): array
+    private function marketDataPrice(StatisticsCache $cache): MarketDataPriceStatistics
     {
-        $priceAtl        = $cache->getPriceAtl();
-        $priceAth        = $cache->getPriceAth();
-        $priceRangeDaily = $cache->getPriceRangeDaily();
-        $priceRange52w   = $cache->getPriceRange52();
-
-        return [
-            'daily_low'  => $priceRangeDaily !== null ? $priceRangeDaily['low'] : 0,
-            'daily_high' => $priceRangeDaily !== null ? $priceRangeDaily['high'] : 0,
-            '52w_low'    => $priceRange52w !== null ? $priceRange52w['low'] : 0,
-            '52w_high'   => $priceRange52w !== null ? $priceRange52w['high'] : 0,
-            'atl'        => $priceAtl !== null ? $priceAtl['value'] : 0,
-            'atl_date'   => $priceAtl !== null ? $priceAtl['timestamp'] : null,
-            'ath'        => $priceAth !== null ? $priceAth['value'] : 0,
-            'ath_date'   => $priceAth !== null ? $priceAth['timestamp'] : null,
-        ];
+        return MarketDataPriceStatistics::make(
+            TimestampedValue::fromArray($cache->getPriceAtl()),
+            TimestampedValue::fromArray($cache->getPriceAth()),
+            LowHighValue::fromArray($cache->getPriceRangeDaily()),
+            LowHighValue::fromArray($cache->getPriceRange52()),
+        );
     }
 
-    private function marketDataVolume(StatisticsCache $cache): array
+    private function marketDataVolume(StatisticsCache $cache): MarketDataVolumeStatistics
     {
-        $volume    = (new CryptoDataCache())->getVolume('USD');
-        $volumeAtl = $cache->getVolumeAtl();
-        $volumeAth = $cache->getVolumeAth();
-
-        return [
-            'today_volume' => $volume ?? 0,
-            'atl'          => $volumeAtl !== null ? $volumeAtl['value'] : 0,
-            'atl_date'     => $volumeAtl !== null ? $volumeAtl['timestamp'] : null,
-            'ath'          => $volumeAth !== null ? $volumeAth['value'] : 0,
-            'ath_date'     => $volumeAth !== null ? $volumeAth['timestamp'] : null,
-        ];
+        return MarketDataVolumeStatistics::make(
+            (new CryptoDataCache())->getVolume('USD'),
+            TimestampedValue::fromArray($cache->getVolumeAtl()),
+            TimestampedValue::fromArray($cache->getVolumeAth()),
+        );
     }
 
-    private function marketDataCap(StatisticsCache $cache): array
+    private function marketDataCap(StatisticsCache $cache): MarketDataRecordStatistics
     {
-        $marketCapAtl = $cache->getMarketCapAtl();
-        $marketCapAth = $cache->getMarketCapAth();
-
-        return [
-            'today_value' => MarketCap::get(Network::currency(), 'USD'),
-            'atl'         => $marketCapAtl !== null ? $marketCapAtl['value'] : 0,
-            'atl_date'    => $marketCapAtl !== null ? $marketCapAtl['timestamp'] : null,
-            'ath'         => $marketCapAth !== null ? $marketCapAth['value'] : 0,
-            'ath_date'    => $marketCapAth !== null ? $marketCapAth['timestamp'] : null,
-        ];
+        return MarketDataRecordStatistics::make(
+            MarketCap::get(Network::currency(), 'USD'),
+            TimestampedValue::fromArray($cache->getMarketCapAtl()),
+            TimestampedValue::fromArray($cache->getMarketCapAth()),
+        );
     }
 
-    private function delegateDetails(StatisticsCache $cache): array
+    private function delegateDetails(StatisticsCache $cache): DelegateStatistics
     {
-        $mostUniqueVoters = Wallet::firstWhere('public_key', $cache->getMostUniqueVoters());
-        if ($mostUniqueVoters !== null) {
-            $mostUniqueVoters = ViewModelFactory::make($mostUniqueVoters);
-        }
-
+        $mostUniqueVoters  = Wallet::firstWhere('public_key', $cache->getMostUniqueVoters());
         $leastUniqueVoters = Wallet::firstWhere('public_key', $cache->getLeastUniqueVoters());
-        if ($leastUniqueVoters !== null) {
-            $leastUniqueVoters = ViewModelFactory::make($leastUniqueVoters);
-        }
+        $mostBlocksForged  = Wallet::firstWhere('public_key', $cache->getMostBlocksForged());
 
         $oldestActiveDelegateData = $cache->getOldestActiveDelegate();
         if ($oldestActiveDelegateData !== null) {
             $oldestActiveDelegate = Wallet::firstWhere('public_key', $oldestActiveDelegateData['publicKey']);
             if ($oldestActiveDelegate !== null) {
-                $oldestActiveDelegate = [
-                    'delegate' => ViewModelFactory::make($oldestActiveDelegate),
-                    'value'    => Carbon::createFromTimestamp($oldestActiveDelegateData['timestamp'])->format(DateFormat::DATE),
-                ];
+                $oldestActiveDelegate = WalletWithValue::make($oldestActiveDelegate, Carbon::createFromTimestamp($oldestActiveDelegateData['timestamp']));
             }
         }
 
@@ -169,28 +128,20 @@ final class Insights extends Component
         if ($newestActiveDelegateData !== null) {
             $newestActiveDelegate = Wallet::firstWhere('public_key', $newestActiveDelegateData['publicKey']);
             if ($newestActiveDelegate !== null) {
-                $newestActiveDelegate = [
-                    'delegate' => ViewModelFactory::make($newestActiveDelegate),
-                    'value'    => Carbon::createFromTimestamp($newestActiveDelegateData['timestamp'])->format(DateFormat::DATE),
-                ];
+                $newestActiveDelegate = WalletWithValue::make($newestActiveDelegate, Carbon::createFromTimestamp($newestActiveDelegateData['timestamp']));
             }
         }
 
-        $mostBlocksForged = Wallet::firstWhere('public_key', $cache->getMostBlocksForged());
-        if ($mostBlocksForged !== null) {
-            $mostBlocksForged = ViewModelFactory::make($mostBlocksForged);
-        }
-
-        return [
-            'most_unique_voters'     => $mostUniqueVoters,
-            'least_unique_voters'    => $leastUniqueVoters,
-            'oldest_active_delegate' => $oldestActiveDelegate ?? null,
-            'newest_active_delegate' => $newestActiveDelegate ?? null,
-            'most_blocks_forged'     => $mostBlocksForged,
-        ];
+        return DelegateStatistics::make(
+            $mostUniqueVoters,
+            $leastUniqueVoters,
+            $mostBlocksForged,
+            $oldestActiveDelegate ?? null,
+            $newestActiveDelegate ?? null,
+        );
     }
 
-    private function addressHoldings(StatisticsCache $cache): array
+    private function addressHoldings(StatisticsCache $cache): AddressHoldingStatistics
     {
         $holdings = $cache->getAddressHoldings();
 
@@ -204,22 +155,17 @@ final class Insights extends Component
             $previousValue = $values['count'] + $previousValue;
         }
 
-        return $summedValues;
+        return AddressHoldingStatistics::make($summedValues);
     }
 
-    private function uniqueAddresses(StatisticsCache $cache): array
+    private function uniqueAddresses(StatisticsCache $cache): UniqueAddressesStatistics
     {
-        $genesis          = $cache->getGenesisAddress();
-        $newest           = $cache->getNewestAddress();
-        $mostTransactions = $cache->getMostTransactions();
-        $largest          = $cache->getLargestAddress();
-
-        return [
-            'genesis'           => $genesis,
-            'newest'            => $newest,
-            'most_transactions' => $mostTransactions,
-            'largest'           => $largest,
-        ];
+        return UniqueAddressesStatistics::make(
+            $cache->getGenesisAddress(),
+            $cache->getNewestAddress(),
+            $cache->getMostTransactions(),
+            $cache->getLargestAddress(),
+        );
     }
 
     private function annualData(StatisticsCache $cache): array
