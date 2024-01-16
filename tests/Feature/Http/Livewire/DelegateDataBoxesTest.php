@@ -286,15 +286,13 @@ it('should calculate missed correctly', function ($performances, $addBlockForNex
     ],
 ]);
 
-it('should calculate not forging correctly', function ($performances, $addBlockForNextRound) {
+it('should calculate not forging correctly for previous rounds', function ($performances, $addBlockForNextRound) {
     createRoundWithDelegatesAndPerformances([true, true], true, 50);
     createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1, 49);
 
     $this->travel(1, 'minute');
 
-    dump(Rounds::delegates()->pluck('status', 'publicKey'));
-
-    (new NetworkCache())->setHeight(fn (): int => 4234212);
+    (new NetworkCache())->setHeight(fn (): int => 5720519);
 
     Livewire::test(DelegateDataBoxes::class)
         ->call('setIsReady')
@@ -313,6 +311,34 @@ it('should calculate not forging correctly', function ($performances, $addBlockF
         [false, false],
         false,
     ],
+    // 'forged, missed, missed' => [
+    //     [true, false],
+    //     false,
+    // ],
+]);
+
+it('should calculate not forging correctly with current round', function ($performances, $addBlockForNextRound) {
+    createRoundWithDelegatesAndPerformances([true, true], true, 50);
+    createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1, 49);
+
+    // dump(Rounds::delegates()->pluck('status', 'publicKey'));
+    // dd(Rounds::current(), Round::find(Rounds::current()));
+
+    (new NetworkCache())->setHeight(fn (): int => 5720520);
+
+    Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady')
+        ->call('pollStatistics')
+        ->assertSeeInOrder([
+            'Forging',
+            50,
+            'Missed',
+            0,
+            'Not Forging',
+            1,
+            'Current Height',
+        ]);
+})->with([
     'forged, missed, missed' => [
         [true, false],
         false,
