@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 use App\Console\Commands\CacheVolume;
 use App\Contracts\Network as NetworkContract;
+use App\DTO\Statistics\TransactionAveragesStatistics;
+use App\DTO\Statistics\TransactionRecordsStatistics;
+use App\DTO\Statistics\TransactionStatistics;
+use App\Enums\StatsTransactionType;
 use App\Http\Livewire\Stats\Insights;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\BlockCache;
 use App\Services\Cache\CryptoDataCache;
@@ -32,10 +37,16 @@ it('should render transaction details', function (): void {
     Transaction::factory(17)->voteCombination()->create();
     Transaction::factory(18)->multipayment()->create();
 
+    $transactionCache = new TransactionCache();
+    $transactionCache->getCache()->flush();
+
     Artisan::call('explorer:cache-transactions');
 
-    Livewire::test(Insights::class)
-        ->assertViewHas('transactionDetails', [
+    $largestTransaction = Transaction::find($transactionCache->getLargestIdByAmount());
+    $largestTransaction->amount = BigNumber::new($largestTransaction->amount->valueOf());
+
+    $transactionDetails = TransactionStatistics::make(
+        [
             'transfer'              => 14,
             'multipayment'          => 18,
             'vote'                  => 15,
@@ -43,7 +54,13 @@ it('should render transaction details', function (): void {
             'switch_vote'           => 17,
             'delegate_registration' => 12,
             'delegate_resignation'  => 13,
-        ])
+        ],
+        TransactionAveragesStatistics::make($transactionCache->getHistoricalAverages()),
+        TransactionRecordsStatistics::make($largestTransaction),
+    );
+
+    Livewire::test(Insights::class)
+        ->assertViewHas('transactionDetails', $transactionDetails)
         ->assertSeeInOrder([
             trans('pages.statistics.insights.transactions.header.transfer'),
             '14',
@@ -65,6 +82,8 @@ it('should render transaction details', function (): void {
 it('should render transaction daily average', function (): void {
     $networkStub = new NetworkStub(true, Carbon::now()->subDay(2));
     app()->singleton(NetworkContract::class, fn () => $networkStub);
+
+    $transactionCache = new TransactionCache();
 
     Transaction::factory(2)->delegateRegistration()->create([
         'amount' => 0,
@@ -94,12 +113,16 @@ it('should render transaction daily average', function (): void {
 
     Artisan::call('explorer:cache-transactions');
 
+    $transactionDetails = TransactionStatistics::make(
+        StatsTransactionType::all()
+            ->mapWithKeys(fn ($type) => [$type => $transactionCache->getHistoricalByType($type)])
+            ->toArray(),
+        TransactionAveragesStatistics::make($transactionCache->getHistoricalAverages()),
+        TransactionRecordsStatistics::make(Transaction::find($transactionCache->getLargestIdByAmount())),
+    );
+
     Livewire::test(Insights::class)
-        ->assertViewHas('transactionAverages', [
-            'transactions'       => $transactionCount,
-            'transaction_volume' => number_format($totalAmount).' DARK',
-            'transaction_fees'   => number_format($totalFees).' DARK',
-        ])
+        ->assertViewHas('transactionDetails', $transactionDetails)
         ->assertSeeInOrder([
             trans('pages.statistics.insights.transactions.header.transfer'),
             trans('pages.statistics.insights.transactions.header.multipayment'),
