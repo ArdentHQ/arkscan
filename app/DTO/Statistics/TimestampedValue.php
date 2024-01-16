@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTO\Statistics;
 
-class TimestampedValue
+final class TimestampedValue
 {
     public function __construct(public ?int $timestamp = null, public ?float $value = null)
     {

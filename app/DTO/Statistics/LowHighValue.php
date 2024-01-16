@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTO\Statistics;
 
-class LowHighValue
+final class LowHighValue
 {
     public function __construct(public ?float $low = null, public ?float $high = null)
     {

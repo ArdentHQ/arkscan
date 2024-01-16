@@ -12,16 +12,16 @@ final class MarketDataVolumeStatistics
 {
     public function __construct(
         public ?string $today,
-        public ?TimestampedValue $atl,
-        public ?TimestampedValue $ath,
+        public TimestampedValue $atl,
+        public TimestampedValue $ath,
     ) {
         //
     }
 
     public static function make(
         ?string $today,
-        ?TimestampedValue $atl,
-        ?TimestampedValue $ath,
+        TimestampedValue $atl,
+        TimestampedValue $ath,
     ): self {
         return new self(
             $today,
@@ -41,7 +41,7 @@ final class MarketDataVolumeStatistics
 
     public function atlValue(): string
     {
-        if ($this->atl === null) {
+        if ($this->atl->value === null) {
             return $this->zeroValue();
         }
 
@@ -50,7 +50,7 @@ final class MarketDataVolumeStatistics
 
     public function atlDate(): ?string
     {
-        if ($this->atl === null) {
+        if ($this->atl->timestamp === null) {
             return null;
         }
 
@@ -59,7 +59,7 @@ final class MarketDataVolumeStatistics
 
     public function athValue(): string
     {
-        if ($this->ath === null) {
+        if ($this->ath->value === null) {
             return $this->zeroValue();
         }
 
@@ -68,7 +68,7 @@ final class MarketDataVolumeStatistics
 
     public function athDate(): ?string
     {
-        if ($this->ath === null) {
+        if ($this->ath->timestamp === null) {
             return null;
         }
 

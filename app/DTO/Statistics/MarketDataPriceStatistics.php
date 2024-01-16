@@ -11,19 +11,19 @@ use Carbon\Carbon;
 final class MarketDataPriceStatistics
 {
     public function __construct(
-        public ?TimestampedValue $atl,
-        public ?TimestampedValue $ath,
-        public ?LowHighValue $daily,
-        public ?LowHighValue $year,
+        public TimestampedValue $atl,
+        public TimestampedValue $ath,
+        public LowHighValue $daily,
+        public LowHighValue $year,
     ) {
         //
     }
 
     public static function make(
-        ?TimestampedValue $atl,
-        ?TimestampedValue $ath,
-        ?LowHighValue $daily,
-        ?LowHighValue $year,
+        TimestampedValue $atl,
+        TimestampedValue $ath,
+        LowHighValue $daily,
+        LowHighValue $year,
     ): self {
         return new self(
             $atl,
@@ -35,7 +35,7 @@ final class MarketDataPriceStatistics
 
     public function atlValue(): ?string
     {
-        if ($this->atl === null) {
+        if ($this->atl->value === null) {
             return null;
         }
 
@@ -44,7 +44,7 @@ final class MarketDataPriceStatistics
 
     public function atlDate(): ?string
     {
-        if ($this->atl === null) {
+        if ($this->atl->timestamp === null) {
             return null;
         }
 
@@ -53,7 +53,7 @@ final class MarketDataPriceStatistics
 
     public function athValue(): ?string
     {
-        if ($this->ath === null) {
+        if ($this->ath->value === null) {
             return null;
         }
 
@@ -62,7 +62,7 @@ final class MarketDataPriceStatistics
 
     public function athDate(): ?string
     {
-        if ($this->ath === null) {
+        if ($this->ath->timestamp === null) {
             return null;
         }
 
@@ -71,7 +71,7 @@ final class MarketDataPriceStatistics
 
     public function dailyLow(): ?string
     {
-        if ($this->daily === null) {
+        if ($this->daily->low === null) {
             return null;
         }
 
@@ -80,7 +80,7 @@ final class MarketDataPriceStatistics
 
     public function dailyHigh(): ?string
     {
-        if ($this->daily === null) {
+        if ($this->daily->high === null) {
             return null;
         }
 
@@ -89,7 +89,7 @@ final class MarketDataPriceStatistics
 
     public function yearLow(): ?string
     {
-        if ($this->year === null) {
+        if ($this->year->low === null) {
             return null;
         }
 
@@ -98,7 +98,7 @@ final class MarketDataPriceStatistics
 
     public function yearHigh(): ?string
     {
-        if ($this->year === null) {
+        if ($this->year->high === null) {
             return null;
         }
 
