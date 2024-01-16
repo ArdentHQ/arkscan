@@ -9,8 +9,12 @@ class TimestampedValue
         //
     }
 
-    public static function fromArray(array $data): self
+    public static function fromArray(?array $data): self
     {
+        if ($data === null) {
+            return new self();
+        }
+
         return new self($data['timestamp'], $data['value']);
     }
 }
