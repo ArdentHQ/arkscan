@@ -11,30 +11,22 @@ use Carbon\Carbon;
 
 final class WalletWithValue
 {
-    public static function make(?Wallet $wallet, ?Carbon $timestamp): self
+    public static function make(Wallet $wallet, Carbon $timestamp): self
     {
         return new self($wallet, $timestamp);
     }
 
-    public function __construct(public ?Wallet $wallet, public ?Carbon $timestamp) {
+    public function __construct(public Wallet $wallet, public Carbon $timestamp) {
         //
     }
 
-    public function wallet(): ?WalletViewModel
+    public function wallet(): WalletViewModel
     {
-        if ($this->wallet === null) {
-            return null;
-        }
-
         return new WalletViewModel($this->wallet);
     }
 
-    public function value(): ?string
+    public function value(): string
     {
-        if ($this->timestamp === null) {
-            return null;
-        }
-
         return $this->timestamp->format(DateFormat::DATE);
     }
 }
