@@ -10,19 +10,6 @@ use Carbon\Carbon;
 
 final class MarketDataVolumeStatistics
 {
-    public static function make(
-        ?string $today,
-        ?array $atl,
-        ?array $ath,
-    ): self
-    {
-        return new self(
-            $today,
-            $atl,
-            $ath,
-        );
-    }
-
     public function __construct(
         public ?string $today,
         public ?array $atl,
@@ -31,9 +18,16 @@ final class MarketDataVolumeStatistics
         //
     }
 
-    private function zeroValue(): string
-    {
-        return $this->formatCurrency(0);
+    public static function make(
+        ?string $today,
+        ?array $atl,
+        ?array $ath,
+    ): self {
+        return new self(
+            $today,
+            $atl,
+            $ath,
+        );
     }
 
     public function todayVolumeValue(): string
@@ -79,6 +73,11 @@ final class MarketDataVolumeStatistics
         }
 
         return Carbon::createFromTimestamp($this->ath['timestamp'])->format(DateFormat::DATE);
+    }
+
+    private function zeroValue(): string
+    {
+        return $this->formatCurrency(0);
     }
 
     /**

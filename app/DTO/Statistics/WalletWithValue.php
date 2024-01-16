@@ -11,13 +11,14 @@ use Carbon\Carbon;
 
 final class WalletWithValue
 {
+    public function __construct(public ?Wallet $wallet, public ?Carbon $timestamp)
+    {
+        //
+    }
+
     public static function make(?Wallet $wallet, ?Carbon $timestamp): self
     {
         return new self($wallet, $timestamp);
-    }
-
-    public function __construct(public ?Wallet $wallet, public ?Carbon $timestamp) {
-        //
     }
 
     public function wallet(): ?WalletViewModel

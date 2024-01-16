@@ -10,25 +10,10 @@ use App\ViewModels\WalletViewModel;
 final class DelegateStatistics
 {
     public ?WalletViewModel $mostUniqueVoters = null;
-    public ?WalletViewModel $leastUniqueVoters = null;
-    public ?WalletViewModel $mostBlocksForged = null;
 
-    public static function make(
-        ?Wallet $mostUniqueVoters = null,
-        ?Wallet $leastUniqueVoters = null,
-        ?Wallet $mostBlocksForged = null,
-        ?WalletWithValue $oldestActiveDelegate = null,
-        ?WalletWithValue $newestActiveDelegate = null,
-    ): self
-    {
-        return new self(
-            $mostUniqueVoters,
-            $leastUniqueVoters,
-            $mostBlocksForged,
-            $oldestActiveDelegate,
-            $newestActiveDelegate,
-        );
-    }
+    public ?WalletViewModel $leastUniqueVoters = null;
+
+    public ?WalletViewModel $mostBlocksForged = null;
 
     public function __construct(
         ?Wallet $mostUniqueVoters = null,
@@ -48,5 +33,21 @@ final class DelegateStatistics
         if ($mostBlocksForged !== null) {
             $this->mostBlocksForged = new WalletViewModel($mostBlocksForged);
         }
+    }
+
+    public static function make(
+        ?Wallet $mostUniqueVoters = null,
+        ?Wallet $leastUniqueVoters = null,
+        ?Wallet $mostBlocksForged = null,
+        ?WalletWithValue $oldestActiveDelegate = null,
+        ?WalletWithValue $newestActiveDelegate = null,
+    ): self {
+        return new self(
+            $mostUniqueVoters,
+            $leastUniqueVoters,
+            $mostBlocksForged,
+            $oldestActiveDelegate,
+            $newestActiveDelegate,
+        );
     }
 }
