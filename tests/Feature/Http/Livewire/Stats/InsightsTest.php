@@ -240,18 +240,19 @@ it('should render marketdata statistics', function (): void {
     app(CacheVolume::class)->handle($crypto, new CoinGecko());
 
     $currentDate = Carbon::now();
+    $currency    = 'USD';
 
     $cache = new StatisticsCache();
-    $cache->setPriceRangeDaily(123, 456);
-    $cache->setPriceRange52(12, 789);
-    $cache->setPriceAtl($currentDate->subMonth()->timestamp, 0.4);
-    $cache->setPriceAth($currentDate->timestamp, 987.3);
+    $cache->setPriceRangeDaily($currency, 123, 456);
+    $cache->setPriceRange52($currency, 12, 789);
+    $cache->setPriceAtl($currency, $currentDate->subMonth()->timestamp, 0.4);
+    $cache->setPriceAth($currency, $currentDate->timestamp, 987.3);
 
-    $cache->setVolumeAtl($currentDate->subMonth()->timestamp, 10);
-    $cache->setVolumeAth($currentDate->timestamp, 20000);
+    $cache->setVolumeAtl($currency, $currentDate->subMonth()->timestamp, 10);
+    $cache->setVolumeAth($currency, $currentDate->timestamp, 20000);
 
-    $cache->setMarketCapAtl($currentDate->subMonth()->timestamp, 15);
-    $cache->setMarketCapAth($currentDate->timestamp, 30000);
+    $cache->setMarketCapAtl($currency, $currentDate->subMonth()->timestamp, 15);
+    $cache->setMarketCapAth($currency, $currentDate->timestamp, 30000);
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 1.234);
     (new NetworkCache())->setSupply(fn () => 4.567 * 1e8);
