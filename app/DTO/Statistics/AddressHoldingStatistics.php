@@ -22,11 +22,11 @@ final class AddressHoldingStatistics
     {
         $grouped = (new Collection($data))->pluck('count', 'grouped');
 
-        $this->greaterThanOne = $grouped->get(1, 0);
-        $this->greaterThanOneThousand = $grouped->get(1000, 0);
-        $this->greaterThanTenThousand = $grouped->get(10000, 0);
+        $this->greaterThanOne                = $grouped->get(1, 0);
+        $this->greaterThanOneThousand        = $grouped->get(1000, 0);
+        $this->greaterThanTenThousand        = $grouped->get(10000, 0);
         $this->greaterThanOneHundredThousand = $grouped->get(100000, 0);
-        $this->greaterThanOneMillion = $grouped->get(1000000, 0);
+        $this->greaterThanOneMillion         = $grouped->get(1000000, 0);
     }
 
     public static function make(array $data): self
@@ -37,10 +37,10 @@ final class AddressHoldingStatistics
     public function toArray(): array
     {
         return [
-            1 => $this->greaterThanOne,
-            1000 => $this->greaterThanOneThousand,
-            10000 => $this->greaterThanTenThousand,
-            100000 => $this->greaterThanOneHundredThousand,
+            1       => $this->greaterThanOne,
+            1000    => $this->greaterThanOneThousand,
+            10000   => $this->greaterThanTenThousand,
+            100000  => $this->greaterThanOneHundredThousand,
             1000000 => $this->greaterThanOneMillion,
         ];
     }
