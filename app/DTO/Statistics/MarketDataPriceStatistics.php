@@ -10,21 +10,6 @@ use Carbon\Carbon;
 
 final class MarketDataPriceStatistics
 {
-    public static function make(
-        ?array $atl,
-        ?array $ath,
-        ?array $daily,
-        ?array $year,
-    ): self
-    {
-        return new self(
-            $atl,
-            $ath,
-            $daily,
-            $year,
-        );
-    }
-
     public function __construct(
         public ?array $atl,
         public ?array $ath,
@@ -32,6 +17,20 @@ final class MarketDataPriceStatistics
         public ?array $year,
     ) {
         //
+    }
+
+    public static function make(
+        ?array $atl,
+        ?array $ath,
+        ?array $daily,
+        ?array $year,
+    ): self {
+        return new self(
+            $atl,
+            $ath,
+            $daily,
+            $year,
+        );
     }
 
     public function atlValue(): ?string

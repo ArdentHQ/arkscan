@@ -16,7 +16,8 @@ final class WalletWithValue
         return new self($wallet, $timestamp);
     }
 
-    public function __construct(public Wallet $wallet, public Carbon $timestamp) {
+    public function __construct(public Wallet $wallet, public Carbon $timestamp)
+    {
         //
     }
 

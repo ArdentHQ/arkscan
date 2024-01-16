@@ -10,19 +10,21 @@ use App\Services\NumberFormatter;
 final class TransactionAveragesStatistics
 {
     public int $count;
-    public string $volume;
-    public string $fees;
 
-    public static function make(array $data): self
-    {
-        return new self($data);
-    }
+    public string $volume;
+
+    public string $fees;
 
     public function __construct(array $data)
     {
         $this->count  = $data['count'];
         $this->volume = $this->formatCurrency($data['amount']);
         $this->fees   = $this->formatCurrency($data['fee']);
+    }
+
+    public static function make(array $data): self
+    {
+        return new self($data);
     }
 
     public function toArray(): array

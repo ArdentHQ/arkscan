@@ -12,24 +12,12 @@ use App\ViewModels\TransactionViewModel;
 final class TransactionRecordsStatistics
 {
     public ?TransactionViewModel $largestTransaction = null;
-    public ?BlockViewModel $largestBlock = null;
-    public ?BlockViewModel $blockWithHighestFees = null;
-    public ?BlockViewModel $blockWithMostTransactions = null;
 
-    public static function make(
-        ?Transaction $largestTransaction = null,
-        ?Block $largestBlock = null,
-        ?Block $blockWithHighestFees = null,
-        ?Block $blockWithMostTransactions = null,
-    ): self
-    {
-        return new self(
-            $largestTransaction,
-            $largestBlock,
-            $blockWithHighestFees,
-            $blockWithMostTransactions,
-        );
-    }
+    public ?BlockViewModel $largestBlock = null;
+
+    public ?BlockViewModel $blockWithHighestFees = null;
+
+    public ?BlockViewModel $blockWithMostTransactions = null;
 
     public function __construct(
         ?Transaction $largestTransaction = null,
@@ -52,6 +40,20 @@ final class TransactionRecordsStatistics
         if ($blockWithMostTransactions !== null) {
             $this->blockWithMostTransactions = new BlockViewModel($blockWithMostTransactions);
         }
+    }
+
+    public static function make(
+        ?Transaction $largestTransaction = null,
+        ?Block $largestBlock = null,
+        ?Block $blockWithHighestFees = null,
+        ?Block $blockWithMostTransactions = null,
+    ): self {
+        return new self(
+            $largestTransaction,
+            $largestBlock,
+            $blockWithHighestFees,
+            $blockWithMostTransactions,
+        );
     }
 
     public function toArray(): array

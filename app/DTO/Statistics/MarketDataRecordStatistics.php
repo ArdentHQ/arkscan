@@ -10,25 +10,24 @@ use Carbon\Carbon;
 
 final class MarketDataRecordStatistics
 {
-    public static function make(
-        ?float $today,
-        ?array $atl,
-        ?array $ath,
-    ): self
-    {
-        return new self(
-            $today,
-            $atl,
-            $ath,
-        );
-    }
-
     public function __construct(
         public ?float $today,
         public ?array $atl,
         public ?array $ath,
     ) {
         //
+    }
+
+    public static function make(
+        ?float $today,
+        ?array $atl,
+        ?array $ath,
+    ): self {
+        return new self(
+            $today,
+            $atl,
+            $ath,
+        );
     }
 
     public function todayValueValue(): ?string
