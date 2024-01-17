@@ -92,8 +92,6 @@ trait CanForge
 
     public function justMissed(): bool
     {
-        // @TODO: check if we are past our slot
-
         return ! $this->hasForged();
     }
 

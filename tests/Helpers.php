@@ -4,7 +4,16 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use App\Console\Commands\CacheDelegatePerformance;
+use App\Facades\Rounds;
+use App\Models\Block;
+use App\Models\Round;
+use App\Models\Wallet;
+use App\Services\Cache\NetworkCache;
+use App\Services\Cache\WalletCache;
+use App\Services\Timestamp;
 use ArkEcosystem\Crypto\Identities\PublicKey;
+use Carbon\Carbon;
 use Faker\Generator;
 use FurqanSiddiqui\BIP39\BIP39;
 use Illuminate\Support\Facades\Http;
@@ -143,4 +152,128 @@ function fakeCryptoCompare(bool $setToZero = false, string $currency = 'USD'): v
 function bip39(): string
 {
     return PublicKey::fromPassphrase((implode(' ', BIP39::Generate()->words)))->getHex();
+}
+
+function createBlock($height, $publicKey)
+{
+    Block::factory()->create([
+        'timestamp'              => Timestamp::now()->unix(),
+        'previous_block'         => $height - 1,
+        'height'                 => $height,
+        'number_of_transactions' => 0,
+        'total_amount'           => 0,
+        'total_fee'              => 0,
+        'reward'                 => 2 * 1e8,
+        'generator_public_key'   => $publicKey,
+    ]);
+}
+
+function createRealisticRound(array $performances, $context, array $partialRound = null)
+{
+    Round::truncate();
+    Block::truncate();
+
+    $context->travelTo(Carbon::now()->subSeconds(51 * 8 * count($performances)));
+
+    $height = 1;
+    $cache = new WalletCache();
+
+    $round = 1;
+    $delegateWallets = Wallet::factory(51)
+        ->activeDelegate()
+        ->create()
+        ->each(function ($delegate) use (&$height, $cache, $round) {
+            $cache->setDelegate($delegate->public_key, $delegate);
+
+            Round::factory()->create([
+                'public_key' => $delegate->public_key,
+                'round'      => $round,
+                'balance'    => 0,
+            ]);
+
+            createBlock($height, $delegate->public_key);
+
+            $height++;
+        });
+
+    $round++;
+    foreach ($performances as $didForge) {
+        $delegates = Rounds::delegates();
+        foreach ($delegates as $delegate) {
+            Round::factory()->create([
+                'public_key' => $delegate['publicKey'],
+                'balance'    => 0,
+                'round'      => $round,
+            ]);
+        }
+
+        $blockCount = 0;
+        while ($blockCount < 51) {
+            foreach ($delegates as $delegate) {
+                $delegateIndex = $delegateWallets->search(fn ($wallet) => $wallet->public_key === $delegate['publicKey']);
+                if (isset($didForge[$delegateIndex]) && ! $didForge[$delegateIndex]) {
+                    $context->travel(8)->seconds();
+
+                    continue;
+                }
+
+                createBlock($height + $blockCount, $delegate['publicKey']);
+
+                $context->travel(8)->seconds();
+
+                $blockCount++;
+                if ($blockCount === 51) {
+                    break;
+                }
+            }
+        }
+
+        $round++;
+        $height += $blockCount;
+    }
+
+    if ($partialRound) {
+        $performanceSlots = array_fill(0, count($partialRound), false);
+
+        $delegates = Rounds::delegates();
+        foreach ($delegates as $delegate) {
+            Round::factory()->create([
+                'public_key' => $delegate['publicKey'],
+                'balance'    => 0,
+                'round'      => $round,
+            ]);
+        }
+
+        $blockCount = 0;
+        foreach ($delegates as $delegate) {
+            if (array_search(false, $performanceSlots) === false) {
+                $height += $blockCount;
+
+                break;
+            }
+
+            $delegateIndex = $delegateWallets->search(fn ($wallet) => $wallet->public_key === $delegate['publicKey']);
+            $performanceSlots[$delegateIndex] = true;
+            if (isset($didForge[$delegateIndex]) && ! $didForge[$delegateIndex]) {
+                $context->travel(8)->seconds();
+
+                continue;
+            }
+
+            createBlock($height + $blockCount, $delegate['publicKey']);
+
+            $context->travel(8)->seconds();
+
+            $blockCount++;
+            if ($blockCount === 51) {
+                break;
+            }
+        }
+    }
+
+    (new NetworkCache())->setHeight(fn (): int => $height);
+
+    (new CacheDelegatePerformance())->handle();
+
+    return $delegateWallets;
 }

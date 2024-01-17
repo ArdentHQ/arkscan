@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Console\Commands\CacheDelegatePerformance;
 use App\Enums\DelegateForgingStatus;
 use App\Facades\Rounds;
 use App\Http\Livewire\DelegateDataBoxes;
@@ -10,9 +11,14 @@ use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
+use App\Services\Timestamp;
+use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Livewire\Livewire;
+
+use function Tests\createRealisticRound;
 
 beforeEach(function () {
     $this->travelTo(Carbon::parse('2022-08-22 00:00'));
@@ -224,123 +230,229 @@ it('should defer loading', function () {
         ->assertSee('4,234,212');
 });
 
-it('should calculate forging correctly', function ($performances, $addBlockForNextRound) {
-    createRoundWithDelegatesAndPerformances([true, true], true, 50);
-    createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1);
+// it('should calculate forging correctly', function ($performances, $addBlockForNextRound) {
+//     createRoundWithDelegatesAndPerformances([true, true], true, 50);
+//     createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1);
 
-    (new NetworkCache())->setHeight(fn (): int => 4234212);
+//     (new NetworkCache())->setHeight(fn (): int => 4234212);
 
-    Livewire::test(DelegateDataBoxes::class)
-        ->call('setIsReady')
-        ->call('pollStatistics')
-        ->assertSeeInOrder([
-            'Forging',
-            51,
-            'Missed',
-            0,
-            'Not Forging',
-            0,
-            'Current Height',
-        ]);
-})->with([
-    'forged, forged, forged' => [
-        [true, true],
-        true,
-    ],
-    'missed, forged, forged' => [
-        [false, true],
-        true,
-    ],
-    'missed, missed, forged' => [
-        [false, false],
-        true,
-    ],
-]);
+//     Livewire::test(DelegateDataBoxes::class)
+//         ->call('setIsReady')
+//         ->call('pollStatistics')
+//         ->assertSeeInOrder([
+//             'Forging',
+//             51,
+//             'Missed',
+//             0,
+//             'Not Forging',
+//             0,
+//             'Current Height',
+//         ]);
+// })->with([
+//     'forged, forged, forged' => [
+//         [true, true],
+//         true,
+//     ],
+//     'missed, forged, forged' => [
+//         [false, true],
+//         true,
+//     ],
+//     'missed, missed, forged' => [
+//         [false, false],
+//         true,
+//     ],
+// ]);
 
-it('should calculate missed correctly', function ($performances, $addBlockForNextRound) {
-    createRoundWithDelegatesAndPerformances([true, true], true, 50);
-    createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1);
+it('should calculate forging correctly with current round', function () {
+    $this->freezeTime();
 
-    (new NetworkCache())->setHeight(fn (): int => 4234212);
+    $delegates = createRealisticRound([
+        array_fill(0, 51, true),
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 3, true),
+        ]
+    ], $this, array_fill(0, 20, true));
 
-    Livewire::test(DelegateDataBoxes::class)
-        ->call('setIsReady')
-        ->call('pollStatistics')
-        ->assertSeeInOrder([
-            'Forging',
-            50,
-            'Missed',
-            1,
-            'Not Forging',
-            0,
-            'Current Height',
-        ]);
-})->with([
-    'forged, forged, missed' => [
-        [true, true],
-        false,
-    ],
-    'missed, forged, missed' => [
-        [false, true],
-        false,
-    ],
-]);
-
-it('should calculate not forging correctly for previous rounds', function ($performances, $addBlockForNextRound) {
-    createRoundWithDelegatesAndPerformances([true, true], true, 50);
-    createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1, 49);
-
-    $this->travel(1, 'minute');
-
-    (new NetworkCache())->setHeight(fn (): int => 5720519);
+    expect((new WalletViewModel($delegates->get(4)))->hasForged())->toBeTrue();
 
     Livewire::test(DelegateDataBoxes::class)
         ->call('setIsReady')
         ->call('pollStatistics')
-        ->assertSeeInOrder([
+        ->assertSeeHtmlInOrder([
             'Forging',
-            50,
+            '<span>51</span>',
             'Missed',
-            0,
+            '<span>0</span>',
             'Not Forging',
-            1,
+            '<span>0</span>',
             'Current Height',
         ]);
-})->with([
-    'missed, missed, missed' => [
-        [false, false],
-        false,
-    ],
-    // 'forged, missed, missed' => [
-    //     [true, false],
-    //     false,
-    // ],
-]);
+});
 
-it('should calculate not forging correctly with current round', function ($performances, $addBlockForNextRound) {
-    createRoundWithDelegatesAndPerformances([true, true], true, 50);
-    createRoundWithDelegatesAndPerformances($performances, $addBlockForNextRound, 1, 49);
+it('should calculate forging correctly for previous rounds', function () {
+    $this->freezeTime();
 
-    // dump(Rounds::delegates()->pluck('status', 'publicKey'));
-    // dd(Rounds::current(), Round::find(Rounds::current()));
+    $delegates = createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        array_fill(0, 51, true),
+        array_fill(0, 51, true),
+    ], $this);
 
-    (new NetworkCache())->setHeight(fn (): int => 5720520);
+    expect((new WalletViewModel($delegates->get(4)))->hasForged())->toBeTrue();
 
     Livewire::test(DelegateDataBoxes::class)
         ->call('setIsReady')
         ->call('pollStatistics')
-        ->assertSeeInOrder([
+        ->assertSeeHtmlInOrder([
             'Forging',
-            50,
+            '<span>51</span>',
             'Missed',
-            0,
+            '<span>0</span>',
             'Not Forging',
-            1,
+            '<span>0</span>',
             'Current Height',
         ]);
-})->with([
-    'forged, missed, missed' => [
-        [true, false],
+});
+
+it('should calculate missed correctly with current round', function () {
+    $this->freezeTime();
+
+    $delegates = createRealisticRound([
+        array_fill(0, 51, true),
+        array_fill(0, 51, true),
+        array_fill(0, 51, true),
+    ], $this, [
+        ...array_fill(0, 4, true),
         false,
-    ],
-]);
+        ...array_fill(0, 3, true),
+    ]);
+
+    expect((new WalletViewModel($delegates->get(4)))->justMissed())->toBeTrue();
+
+    Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady')
+        ->call('pollStatistics')
+        ->assertSeeHtmlInOrder([
+            'Forging',
+            '<span>50</span>',
+            'Missed',
+            '<span>1</span>',
+            'Not Forging',
+            '<span>0</span>',
+            'Current Height',
+        ]);
+});
+
+it('should calculate missed correctly for previous rounds', function () {
+    $this->freezeTime();
+
+    $delegates = createRealisticRound([
+        array_fill(0, 51, true),
+        array_fill(0, 51, true),
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        array_fill(0, 51, true),
+    ], $this);
+
+    expect((new WalletViewModel($delegates->get(4)))->justMissed())->toBeTrue();
+
+    Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady')
+        ->call('pollStatistics')
+        ->assertSeeHtmlInOrder([
+            'Forging',
+            '<span>50</span>',
+            'Missed',
+            '<span>1</span>',
+            'Not Forging',
+            '<span>0</span>',
+            'Current Height',
+        ]);
+});
+
+it('should calculate not forging correctly with current round', function () {
+    $this->freezeTime();
+
+    $delegates = createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this, [
+        ...array_fill(0, 4, true),
+        false,
+        ...array_fill(0, 3, true),
+    ]);
+
+    expect((new WalletViewModel($delegates->get(4)))->keepsMissing())->toBeTrue();
+
+    Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady')
+        ->call('pollStatistics')
+        ->assertSeeHtmlInOrder([
+            'Forging',
+            '<span>50</span>',
+            'Missed',
+            '<span>0</span>',
+            'Not Forging',
+            '<span>1</span>',
+            'Current Height',
+        ]);
+});
+
+it('should calculate not forging correctly for previous rounds', function () {
+    $this->freezeTime();
+
+    $delegates = createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this);
+
+    expect((new WalletViewModel($delegates->get(4)))->keepsMissing())->toBeTrue();
+
+    Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady')
+        ->call('pollStatistics')
+        ->assertSeeHtmlInOrder([
+            'Forging',
+            '<span>50</span>',
+            'Missed',
+            '<span>0</span>',
+            'Not Forging',
+            '<span>1</span>',
+            'Current Height',
+        ]);
+});
