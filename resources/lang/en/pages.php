@@ -515,7 +515,7 @@ return [
 
                 'header' => [
                     'daily'         => 'Daily Range',
-                    '52w'           => '52-Week Range',
+                    'year'          => '52-Week Range',
                     'atl'           => 'All-Time Low',
                     'ath'           => 'All-Time High',
                     'today_volume'  => 'Today\'s Volume',
