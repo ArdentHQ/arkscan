@@ -2,22 +2,16 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\CacheDelegatePerformance;
 use App\Enums\DelegateForgingStatus;
-use App\Facades\Rounds;
 use App\Http\Livewire\DelegateDataBoxes;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
-use App\Services\Timestamp;
-use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
 use Livewire\Livewire;
-
 use function Tests\createRealisticRound;
 
 beforeEach(function () {
@@ -272,7 +266,7 @@ it('should calculate forging correctly with current round', function () {
             ...array_fill(0, 4, true),
             false,
             ...array_fill(0, 3, true),
-        ]
+        ],
     ], $this, array_fill(0, 20, true));
 
     expect((new WalletViewModel($delegates->get(4)))->hasForged())->toBeTrue();

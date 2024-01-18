@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\Console\Commands\CacheDelegatePerformance;
-use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
@@ -177,9 +176,9 @@ function createRealisticRound(array $performances, $context, array $partialRound
     $context->travelTo(Carbon::now()->subSeconds(51 * 8 * count($performances)));
 
     $height = 1;
-    $cache = new WalletCache();
+    $cache  = new WalletCache();
 
-    $round = 1;
+    $round           = 1;
     $delegateWallets = Wallet::factory(51)
         ->activeDelegate()
         ->create()
@@ -247,13 +246,13 @@ function createRealisticRound(array $performances, $context, array $partialRound
 
         $blockCount = 0;
         foreach ($delegates as $delegate) {
-            if (array_search(false, $performanceSlots) === false) {
+            if (array_search(false, $performanceSlots, true) === false) {
                 $height += $blockCount;
 
                 break;
             }
 
-            $delegateIndex = $delegateWallets->search(fn ($wallet) => $wallet->public_key === $delegate['publicKey']);
+            $delegateIndex                    = $delegateWallets->search(fn ($wallet) => $wallet->public_key === $delegate['publicKey']);
             $performanceSlots[$delegateIndex] = true;
             if (isset($didForge[$delegateIndex]) && ! $didForge[$delegateIndex]) {
                 $context->travel(8)->seconds();
