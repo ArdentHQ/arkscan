@@ -47,6 +47,7 @@
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
         <server name="SCOUT_DRIVER" value="null"/>
+        <server name="BROADCAST_DRIVER" value="log"/>
         <!-- Third-Party -->
         <server name="MODEL_CACHE_ENABLED" value="false"/>
         <server name="TELESCOPE_ENABLED" value="false"/>
