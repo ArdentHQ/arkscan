@@ -6,5 +6,5 @@ namespace App\Events;
 
 final class NewBlock extends NewEntity
 {
-    const CHANNEL = 'blocks';
+    public const CHANNEL = 'blocks';
 }

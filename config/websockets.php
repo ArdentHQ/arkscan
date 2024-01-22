@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use BeyondCode\LaravelWebSockets\Dashboard\Http\Middleware\Authorize;
 
 $allowedOrigins = [];
@@ -40,12 +42,12 @@ return [
      */
     'apps' => [
         [
-            'id' => env('PUSHER_APP_ID'),
-            'name' => env('APP_NAME'),
-            'key' => env('PUSHER_APP_KEY'),
-            'secret' => env('PUSHER_APP_SECRET'),
+            'id'                     => env('PUSHER_APP_ID'),
+            'name'                   => env('APP_NAME'),
+            'key'                    => env('PUSHER_APP_KEY'),
+            'secret'                 => env('PUSHER_APP_SECRET'),
             'enable_client_messages' => false,
-            'enable_statistics' => true,
+            'enable_statistics'      => true,
         ],
     ],
 
@@ -94,7 +96,7 @@ return [
          */
         'model' => \BeyondCode\LaravelWebSockets\Statistics\Models\WebSocketsStatisticsEntry::class,
 
-        /**
+        /*
          * The Statistics Logger will, by default, handle the incoming statistics, store them
          * and then release them into the database on each interval defined below.
          */

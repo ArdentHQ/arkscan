@@ -33,18 +33,18 @@ return [
     'connections' => [
 
         'pusher' => [
-            'driver' => 'pusher',
-            'key' => env('PUSHER_APP_KEY'),
-            'secret' => env('PUSHER_APP_SECRET'),
-            'app_id' => env('PUSHER_APP_ID'),
+            'driver'  => 'pusher',
+            'key'     => env('PUSHER_APP_KEY'),
+            'secret'  => env('PUSHER_APP_SECRET'),
+            'app_id'  => env('PUSHER_APP_ID'),
             'options' => [
-                'cluster' => null,
-                'useTLS' => env('APP_ENV') === 'production',
+                'cluster'   => null,
+                'useTLS'    => env('APP_ENV') === 'production',
                 'encrypted' => true,
-                'host' => env('PUSHER_APP_BROADCAST_HOST'),
-                'path' => env('PUSHER_APP_BROADCAST_PATH'),
-                'port' => (env('PUSHER_APP_BROADCAST_PORT') ?: (env('APP_ENV') === 'production' ? env('PUSHER_APP_TLS_PORT') : env('PUSHER_APP_PORT'))),
-                'scheme' => env('PUSHER_APP_BROADCAST_SCHEME', 'http'),
+                'host'      => env('PUSHER_APP_BROADCAST_HOST'),
+                'path'      => env('PUSHER_APP_BROADCAST_PATH'),
+                'port'      => (env('PUSHER_APP_BROADCAST_PORT') ?: (env('APP_ENV') === 'production' ? env('PUSHER_APP_TLS_PORT') : env('PUSHER_APP_PORT'))),
+                'scheme'    => env('PUSHER_APP_BROADCAST_SCHEME', 'http'),
             ],
         ],
 

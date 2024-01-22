@@ -6,5 +6,5 @@ namespace App\Events;
 
 final class NewWalletBlock extends NewEntity
 {
-    const CHANNEL = 'wallet-blocks';
+    public const CHANNEL = 'wallet-blocks';
 }

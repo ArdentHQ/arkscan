@@ -23,8 +23,8 @@ final class WalletBlockTable extends TabbedTableComponent
 
     /** @var mixed */
     protected $listeners = [
-        'setBlocksReady'  => 'setIsReady',
-        'currencyChanged' => '$refresh',
+        'setBlocksReady'              => 'setIsReady',
+        'currencyChanged'             => '$refresh',
         'echo:wallet-blocks,NewBlock' => '$refresh',
     ];
 
