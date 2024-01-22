@@ -16,7 +16,7 @@ abstract class NewEntity implements ShouldBroadcast
 
     const CHANNEL = 'channel';
 
-    public function broadcastOn()
+    final public function broadcastOn()
     {
         return new Channel(static::CHANNEL);
     }
