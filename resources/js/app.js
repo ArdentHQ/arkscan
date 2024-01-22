@@ -5,6 +5,8 @@ import "@ui/js/reposition-dropdown";
 
 import "./includes/page-scroll-handler";
 
+import Pusher from 'pusher-js';
+import Echo from 'laravel-echo';
 import * as dayjs from "dayjs";
 import * as dayjsRelativeTime from "dayjs/plugin/relativeTime";
 
@@ -46,6 +48,7 @@ window.Modal = Modal;
 window.ReadMore = ReadMore;
 window.RichSelect = RichSelect;
 window.PriceChart = PriceChart;
+window.Pusher = Pusher;
 window.Navbar = Navbar;
 window.CustomChart = CustomChart;
 window.CustomChart = CustomChart;
@@ -54,6 +57,27 @@ window.ThemeManager = ThemeManager;
 window.MobileSorting = MobileSorting;
 window.TransactionsExport = TransactionsExport;
 window.Search = Search;
+
+const options = {
+    broadcaster: 'pusher',
+    key: process.env.MIX_PUSHER_APP_KEY,
+    cluster: '',
+    encrypted: true,
+    wsHost: process.env.MIX_PUSHER_APP_HOST,
+    wsPort: process.env.MIX_PUSHER_APP_PORT,
+    forceTLS: false,
+    disableStats: true,
+    enabledTransports: ['ws'],
+};
+
+if (process.env.MIX_APP_ENV === 'production') {
+    options.enabledTransports = ['ws', 'wss'];
+    options.authEndpoint = process.env.MIX_PUSHER_APP_AUTH_ENDPOINT;
+    options.forceTLS = true;
+    options.wsPath = process.env.MIX_PUSHER_APP_PATH;
+}
+
+window.Echo = new Echo(options);
 
 dayjs.extend(dayjsRelativeTime);
 
