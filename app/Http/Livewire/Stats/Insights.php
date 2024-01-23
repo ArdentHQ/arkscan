@@ -19,6 +19,7 @@ use App\DTO\Statistics\UniqueAddressesStatistics;
 use App\DTO\Statistics\WalletWithValue;
 use App\Enums\StatsTransactionType;
 use App\Facades\Network;
+use App\Facades\Settings;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -33,6 +34,9 @@ use Livewire\Component;
 
 final class Insights extends Component
 {
+    /** @var mixed */
+    protected $listeners = ['currencyChanged' => '$refresh'];
+
     public function render(): View
     {
         $transactionCache = new TransactionCache();
@@ -84,29 +88,35 @@ final class Insights extends Component
 
     private function marketDataPrice(StatisticsCache $cache): MarketDataPriceStatistics
     {
+        $currency = Settings::currency();
+
         return MarketDataPriceStatistics::make(
-            TimestampedValue::fromArray($cache->getPriceAtl()),
-            TimestampedValue::fromArray($cache->getPriceAth()),
-            LowHighValue::fromArray($cache->getPriceRangeDaily()),
-            LowHighValue::fromArray($cache->getPriceRange52()),
+            TimestampedValue::fromArray($cache->getPriceAtl($currency)),
+            TimestampedValue::fromArray($cache->getPriceAth($currency)),
+            LowHighValue::fromArray($cache->getPriceRangeDaily($currency)),
+            LowHighValue::fromArray($cache->getPriceRange52($currency)),
         );
     }
 
     private function marketDataVolume(StatisticsCache $cache): MarketDataVolumeStatistics
     {
+        $currency  = Settings::currency();
+
         return MarketDataVolumeStatistics::make(
-            (new CryptoDataCache())->getVolume('USD'),
-            TimestampedValue::fromArray($cache->getVolumeAtl()),
-            TimestampedValue::fromArray($cache->getVolumeAth()),
+            (new CryptoDataCache())->getVolume($currency),
+            TimestampedValue::fromArray($cache->getVolumeAtl($currency)),
+            TimestampedValue::fromArray($cache->getVolumeAth($currency)),
         );
     }
 
     private function marketDataCap(StatisticsCache $cache): MarketDataRecordStatistics
     {
+        $currency = Settings::currency();
+
         return MarketDataRecordStatistics::make(
-            MarketCap::get(Network::currency(), 'USD'),
-            TimestampedValue::fromArray($cache->getMarketCapAtl()),
-            TimestampedValue::fromArray($cache->getMarketCapAth()),
+            MarketCap::get(Network::currency(), $currency),
+            TimestampedValue::fromArray($cache->getMarketCapAtl($currency)),
+            TimestampedValue::fromArray($cache->getMarketCapAth($currency)),
         );
     }
 

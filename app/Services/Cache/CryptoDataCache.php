@@ -60,4 +60,30 @@ final class CryptoDataCache implements Contract
     {
         $this->put(sprintf('volume/%s', $currency), $volume);
     }
+
+    public function setHistoricalFullResponse(string $source, string $target, array $values): void
+    {
+        $this->put(sprintf('historical_full/all_time/%s/%s', $source, $target), $values);
+    }
+
+    public function setHistoricalHourlyFullResponse(string $source, string $target, array $values): void
+    {
+        $this->put(sprintf('historical_full/hourly/%s/%s', $source, $target), $values);
+    }
+
+    /**
+     * @return array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]}|array{}
+     */
+    public function getHistoricalFullResponse(string $source, string $target): array
+    {
+        return $this->get(sprintf('historical_full/all_time/%s/%s', $source, $target), []);
+    }
+
+    /**
+     * @return array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]}|array{}
+     */
+    public function getHistoricalHourlyFullResponse(string $source, string $target): array
+    {
+        return $this->get(sprintf('historical_full/hourly/%s/%s', $source, $target), []);
+    }
 }
