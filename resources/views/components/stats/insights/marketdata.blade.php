@@ -25,7 +25,7 @@
                                 @if($item === 'daily')
                                     <x-loading.text
                                         wire:loading
-                                        outer-class="flex"
+                                        wrapper-class="flex"
                                         width="w-[100px]"
                                     />
 
@@ -40,7 +40,7 @@
                                 @else
                                     <x-loading.text
                                         wire:loading
-                                        outer-class="flex"
+                                        wrapper-class="flex"
                                     />
 
                                     <span
@@ -63,7 +63,7 @@
                                 <span class="flex text-theme-secondary-900 dark:text-theme-dark-50">
                                     <x-loading.text
                                         wire:loading
-                                        outer-class="flex"
+                                        wrapper-class="flex"
                                         width="w-[100px]"
                                     />
 
@@ -81,7 +81,7 @@
                                 <div class="flex text-theme-secondary-900 dark:text-theme-dark-50">
                                     <x-loading.text
                                         wire:loading
-                                        outer-class="flex"
+                                        wrapper-class="flex"
                                     />
 
                                     <span wire:loading.remove>
@@ -106,7 +106,7 @@
                             @if($item === 'daily' || $item === 'year')
                                 <x-loading.text
                                     wire:loading
-                                    outer-class="flex"
+                                    wrapper-class="flex"
                                     width="w-[120px]"
                                 />
 
@@ -118,7 +118,7 @@
                             @else
                                 <x-loading.text
                                     wire:loading
-                                    outer-class="flex"
+                                    wrapper-class="flex"
                                 />
 
                                 <span wire:loading.remove>
@@ -136,7 +136,7 @@
                                 <div class="flex text-theme-secondary-900 dark:text-theme-dark-50">
                                     <x-loading.text
                                         wire:loading
-                                        outer-class="flex"
+                                        wrapper-class="flex"
                                         width="w-[100px]"
                                     />
 
@@ -164,7 +164,7 @@
                             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                                 <x-loading.text
                                     wire:loading
-                                    outer-class="flex"
+                                    wrapper-class="flex"
                                     width="w-[100px]"
                                 />
 
@@ -183,7 +183,7 @@
                                 <div class="flex text-theme-secondary-900 dark:text-theme-dark-50">
                                     <x-loading.text
                                         wire:loading
-                                        outer-class="flex"
+                                        wrapper-class="flex"
                                     />
 
                                     <span wire:loading.remove>
@@ -205,7 +205,7 @@
                         <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
                             <x-loading.text
                                 wire:loading
-                                outer-class="flex"
+                                wrapper-class="flex"
                                 width="w-[120px]"
                             />
 
@@ -223,7 +223,7 @@
                                 <div class="flex text-theme-secondary-900 dark:text-theme-dark-50">
                                     <x-loading.text
                                         wire:loading
-                                        outer-class="flex"
+                                        wrapper-class="flex"
                                         width="w-[100px]"
                                     />
 
@@ -251,7 +251,7 @@
                             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                                 <x-loading.text
                                     wire:loading
-                                    outer-class="flex"
+                                    wrapper-class="flex"
                                     width="w-[100px]"
                                 />
 
@@ -270,7 +270,7 @@
                                 <div class="flex text-theme-secondary-900 dark:text-theme-dark-50">
                                     <x-loading.text
                                         wire:loading
-                                        outer-class="flex"
+                                        wrapper-class="flex"
                                     />
 
                                     <span wire:loading.remove>
@@ -292,7 +292,7 @@
                         <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
                             <x-loading.text
                                 wire:loading
-                                outer-class="flex"
+                                wrapper-class="flex"
                                 width="w-[140px]"
                             />
 
@@ -310,7 +310,7 @@
                                 <div class="flex text-theme-secondary-900 dark:text-theme-dark-50">
                                     <x-loading.text
                                         wire:loading
-                                        outer-class="flex"
+                                        wrapper-class="flex"
                                         width="w-[100px]"
                                     />
 
