@@ -284,7 +284,7 @@ it('should render marketdata statistics', function (): void {
         ->assertSeeInOrder([
             trans('pages.statistics.insights.market_data.header.daily'),
             '123.00', '456.00',
-            trans('pages.statistics.insights.market_data.header.52w'),
+            trans('pages.statistics.insights.market_data.header.year'),
             '12.00', '789.00',
             trans('pages.statistics.insights.market_data.header.atl'),
             '0.40',
