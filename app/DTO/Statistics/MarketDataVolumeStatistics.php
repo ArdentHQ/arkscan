@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO\Statistics;
 
+use App\Facades\Settings;
 use App\Services\NumberFormatter;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
@@ -85,6 +86,6 @@ final class MarketDataVolumeStatistics
      */
     private function formatCurrency($value): string
     {
-        return NumberFormatter::currencyForViews($value, 'USD');
+        return NumberFormatter::currencyForViews($value, Settings::currency());
     }
 }

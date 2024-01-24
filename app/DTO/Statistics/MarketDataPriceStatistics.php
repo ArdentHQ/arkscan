@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO\Statistics;
 
+use App\Facades\Settings;
 use App\Services\NumberFormatter;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
@@ -110,6 +111,6 @@ final class MarketDataPriceStatistics
      */
     private function formatCurrency($value): string
     {
-        return NumberFormatter::currencyWithDecimals($value, 'USD', 2);
+        return NumberFormatter::currencyWithDecimals($value, Settings::currency(), 2);
     }
 }
