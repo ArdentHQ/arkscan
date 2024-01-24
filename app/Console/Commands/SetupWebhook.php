@@ -59,8 +59,6 @@ final class SetupWebhook extends Command
             'conditions' => [],
         ]);
 
-        $data = json_decode((string) $response->getBody(), true);
-
         dump($data);
 
         $this->info('ID: '.$data['data']['id']);

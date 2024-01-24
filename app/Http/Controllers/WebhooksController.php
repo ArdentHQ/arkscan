@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Events\NewBlock;
+use App\Models\Block;
 use Illuminate\Support\Facades\Log;
 
-class WebhooksController
+final class WebhooksController
 {
     public function __invoke(): void
     {
@@ -13,8 +16,13 @@ class WebhooksController
             abort(401);
         }
 
-        Log::debug('POST webhook: '.request()->input('event'));
+        match (request()->input('event')) {
+            'block.applied' => $this->handleBlockApplied(),
+        };
+    }
 
+    private function handleBlockApplied()
+    {
         NewBlock::dispatch();
     }
 }

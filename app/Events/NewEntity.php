@@ -19,7 +19,7 @@ abstract class NewEntity implements ShouldBroadcast, ShouldBeUnique
 
     public const CHANNEL = 'channel';
 
-    final public function broadcastOn()
+    public function broadcastOn()
     {
         return new Channel(static::CHANNEL);
     }
