@@ -138,3 +138,30 @@ it('should handle a lot of blocks', function () {
         ->call('gotoPage', 159)
         ->assertSee(160);
 });
+
+it('should reload on new block event', function () {
+    $this->travelTo(Carbon::parse('2023-07-12 00:00:00'));
+
+    foreach (range(1, 400) as $index) {
+        $this->travel(8)->seconds();
+
+        Block::factory()->create([
+            'timestamp' => Carbon::parse('2023-07-12 00:00:00')->timestamp,
+            'height'    => $index,
+        ]);
+    }
+
+    $component = Livewire::test(BlockTable::class);
+    $component->call('setIsReady');
+
+    $this->travel(10)->minutes();
+
+    $otherBlock = Block::factory()->create([
+        'timestamp' => Carbon::parse('2023-07-13 00:00:00')->timestamp,
+        'height'    => 401,
+    ]);
+
+    $component->assertDontSee($otherBlock->id)
+        ->emit('echo:blocks,NewBlock')
+        ->assertSee($otherBlock->id);
+});
