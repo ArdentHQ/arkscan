@@ -95,4 +95,10 @@ return [
     'scout' => [
         'run_jobs' => env('SCOUT_RUN_JOBS', false),
     ],
+
+    'webhooks' => [
+        'block-applied' => [
+            'ttl' => env('ARKSCAN_WEBHOOKS_BLOCK_APPLIED_TTL', 8),
+        ],
+    ],
 ];

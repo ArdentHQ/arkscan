@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Events\NewBlock;
+use Illuminate\Support\Facades\Cache;
 
 final class WebhooksController
 {
@@ -21,6 +22,10 @@ final class WebhooksController
 
     private function handleBlockApplied()
     {
-        NewBlock::dispatch();
+        $lock = Cache::lock('foo', config('arkscan.webhooks.block-applied.ttl', 8));
+
+        if ($lock->get()) {
+            NewBlock::dispatch();
+        }
     }
 }
