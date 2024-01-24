@@ -6,12 +6,11 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBeUnique;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-abstract class NewEntity implements ShouldBroadcast, ShouldBeUnique
+abstract class NewEntity implements ShouldBroadcast
 {
     use Dispatchable;
     use InteractsWithSockets;
@@ -19,13 +18,8 @@ abstract class NewEntity implements ShouldBroadcast, ShouldBeUnique
 
     public const CHANNEL = 'channel';
 
-    public function broadcastOn()
+    final public function broadcastOn()
     {
         return new Channel(static::CHANNEL);
-    }
-
-    final public function uniqueId(): string
-    {
-        return static::class.':'.static::CHANNEL;
     }
 }
