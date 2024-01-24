@@ -53,13 +53,13 @@ final class SetupWebhook extends Command
         );
 
         $response = Http::post($url, [
-            'event'      => $this->option('event'),
-            'target'     => URL::signedRoute('webhooks'),
-            'enabled'    => true,
+            'event' => $this->option('event'),
+            'target' => URL::signedRoute('webhooks'),
+            'enabled' => true,
             'conditions' => [],
         ]);
 
-        dump($data);
+        $data = json_decode($response->body(), true);
 
         $this->info('ID: '.$data['data']['id']);
         $this->info('Token: '.$data['data']['token']);
