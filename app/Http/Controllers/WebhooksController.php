@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Events\NewBlock;
-use App\Models\Block;
-use Illuminate\Support\Facades\Log;
 
 final class WebhooksController
 {

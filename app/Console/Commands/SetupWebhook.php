@@ -53,9 +53,9 @@ final class SetupWebhook extends Command
         );
 
         $response = Http::post($url, [
-            'event' => $this->option('event'),
-            'target' => URL::signedRoute('webhooks'),
-            'enabled' => true,
+            'event'      => $this->option('event'),
+            'target'     => URL::signedRoute('webhooks'),
+            'enabled'    => true,
             'conditions' => [],
         ]);
 
