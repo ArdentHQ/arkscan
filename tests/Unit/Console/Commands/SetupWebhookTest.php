@@ -22,3 +22,22 @@ it('should execute the command', function () {
     expect($output)->toContain('ID: responseId');
     expect($output)->toContain('Token: random-token');
 });
+
+it('should require host', function () {
+    Artisan::call('ark:webhook:setup');
+
+    $output = Artisan::output();
+
+    expect($output)->toContain('Missing [host] argument.');
+});
+
+it('should require port', function () {
+    Artisan::call('ark:webhook:setup', [
+        '--host' => '1.2.3.4',
+        '--port' => null,
+    ]);
+
+    $output = Artisan::output();
+
+    expect($output)->toContain('Missing [port] argument.');
+});
