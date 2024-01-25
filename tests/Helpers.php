@@ -196,8 +196,11 @@ function createRealisticRound(array $performances, $context, array $partialRound
             $height++;
         });
 
+    expect(Block::count())->toBe(51);
+    expect(Block::count())->toBe($height - 1);
+
     $round++;
-    foreach ($performances as $didForge) {
+    foreach ($performances as $index => $didForge) {
         $delegates = DelegateTracker::execute($delegateWallets, $height - 1);
         foreach ($delegates as $delegate) {
             Round::factory()->create([
@@ -230,48 +233,62 @@ function createRealisticRound(array $performances, $context, array $partialRound
 
         $round++;
         $height += $blockCount;
+
+        expect(Block::count())->toBe(51 + (($index + 1) * 51));
+        expect(Block::count())->toBe($height - 1);
     }
 
     if ($partialRound) {
         $performanceSlots = array_fill(0, count($partialRound), false);
 
-        $delegates = DelegateTracker::execute($delegateWallets, $height - 1);
-        foreach ($delegates as $delegate) {
-            Round::factory()->create([
-                'public_key' => $delegate['publicKey'],
-                'balance'    => 0,
-                'round'      => $round,
-            ]);
+        $wasLastInRound = null;
+        while ($wasLastInRound === null || $wasLastInRound === true) {
+            $wasLastInRound = false;
+
+            $delegates = DelegateTracker::execute($delegateWallets, $height - 1);
+            foreach ($delegates as $delegate) {
+                Round::factory()->create([
+                    'public_key' => $delegate['publicKey'],
+                    'balance'    => 0,
+                    'round'      => $round,
+                ]);
+            }
+
+            $blockCount = 0;
+            while ($blockCount < 51) {
+                foreach ($delegates as $delegate) {
+                    if (array_search(false, $performanceSlots, true) === false) {
+                        break 2;
+                    }
+
+                    $delegateIndex                    = $delegateWallets->search(fn ($wallet) => $wallet->public_key === $delegate['publicKey']);
+                    $performanceSlots[$delegateIndex] = true;
+                    if (isset($partialRound[$delegateIndex]) && ! $partialRound[$delegateIndex]) {
+                        $context->travel(8)->seconds();
+
+                        continue;
+                    }
+
+                    createBlock($height + $blockCount, $delegate['publicKey']);
+
+                    $context->travel(8)->seconds();
+
+                    $blockCount++;
+                    if ($blockCount === 51) {
+                        $wasLastInRound = true;
+
+                        break 2;
+                    }
+                }
+            }
+
+            $height += $blockCount;
         }
 
-        $blockCount = 0;
-        foreach ($delegates as $delegate) {
-            if (array_search(false, $performanceSlots, true) === false) {
-                $height += $blockCount;
-
-                break;
-            }
-
-            $delegateIndex                    = $delegateWallets->search(fn ($wallet) => $wallet->public_key === $delegate['publicKey']);
-            $performanceSlots[$delegateIndex] = true;
-            if (isset($didForge[$delegateIndex]) && ! $didForge[$delegateIndex]) {
-                $context->travel(8)->seconds();
-
-                continue;
-            }
-
-            createBlock($height + $blockCount, $delegate['publicKey']);
-
-            $context->travel(8)->seconds();
-
-            $blockCount++;
-            if ($blockCount === 51) {
-                break;
-            }
-        }
+        expect(Block::count())->toBe($height - 1);
     }
 
-    (new NetworkCache())->setHeight(fn (): int => $height);
+    (new NetworkCache())->setHeight(fn (): int => $height - 1);
 
     (new CacheDelegatePerformance())->handle();
 
