@@ -17,12 +17,20 @@ final class CryptoDataCache implements Contract
 
     public function setHistorical(string $source, string $target, string $format, Closure $callback): Collection
     {
-        return $this->remember(sprintf('historical/%s/%s/%s', $source, $target, $format), now()->addMinutes(10), $callback);
+        $data = $callback();
+
+        $this->put(sprintf('historical/%s/%s/%s', $source, $target, $format), $data);
+
+        return $data;
     }
 
     public function setHistoricalHourly(string $source, string $target, string $format, int $limit, Closure $callback): Collection
     {
-        return $this->remember(sprintf('historical/%s/%s/%s/%s', $source, $target, $format, $limit), now()->addMinutes(10), $callback);
+        $data = $callback();
+
+        $this->put(sprintf('historical/%s/%s/%s/%s', $source, $target, $format, $limit), $data);
+
+        return $data;
     }
 
     public function getPrices(string $currency): Collection
@@ -32,7 +40,7 @@ final class CryptoDataCache implements Contract
 
     public function setPrices(string $currency, Collection $prices): Collection
     {
-        $this->put(sprintf('prices/%s', $currency), $prices, now()->addMinutes(10));
+        $this->put(sprintf('prices/%s', $currency), $prices);
 
         return $prices;
     }
@@ -51,5 +59,31 @@ final class CryptoDataCache implements Contract
     public function setVolume(string $currency, string $volume): void
     {
         $this->put(sprintf('volume/%s', $currency), $volume);
+    }
+
+    public function setHistoricalFullResponse(string $source, string $target, array $values): void
+    {
+        $this->put(sprintf('historical_full/all_time/%s/%s', $source, $target), $values);
+    }
+
+    public function setHistoricalHourlyFullResponse(string $source, string $target, array $values): void
+    {
+        $this->put(sprintf('historical_full/hourly/%s/%s', $source, $target), $values);
+    }
+
+    /**
+     * @return array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]}|array{}
+     */
+    public function getHistoricalFullResponse(string $source, string $target): array
+    {
+        return $this->get(sprintf('historical_full/all_time/%s/%s', $source, $target), []);
+    }
+
+    /**
+     * @return array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]}|array{}
+     */
+    public function getHistoricalHourlyFullResponse(string $source, string $target): array
+    {
+        return $this->get(sprintf('historical_full/hourly/%s/%s', $source, $target), []);
     }
 }
