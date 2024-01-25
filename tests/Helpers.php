@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\Console\Commands\CacheDelegatePerformance;
+use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
@@ -154,7 +155,7 @@ function bip39(): string
     return PublicKey::fromPassphrase((implode(' ', BIP39::Generate()->words)))->getHex();
 }
 
-function createBlock($height, $publicKey)
+function createBlock(int $height, string $publicKey)
 {
     Block::factory()->create([
         'timestamp'              => Timestamp::now()->unix(),
@@ -168,16 +169,22 @@ function createBlock($height, $publicKey)
     ]);
 }
 
+// The initial delegate wallets are used as an index for the performances.
+// This is to ensure the SAME delegate misses or forges per round
 function createRealisticRound(array $performances, $context, array $partialRound = null)
 {
     Round::truncate();
     Block::truncate();
 
-    $context->travelTo(Carbon::now()->subSeconds(51 * 8 * count($performances)));
+    $context->travel(51 * 8 * (count($performances) + 1))->seconds();
+    if ($partialRound) {
+        $context->travel(51 * 8)->seconds();
+    }
 
     $height = 1;
     $cache  = new WalletCache();
 
+    // Create initial round
     $round           = 1;
     $delegateWallets = Wallet::factory(51)
         ->activeDelegate()
@@ -199,9 +206,10 @@ function createRealisticRound(array $performances, $context, array $partialRound
     expect(Block::count())->toBe(51);
     expect(Block::count())->toBe($height - 1);
 
+    // Loop through performances and generate rounds for each - requires 51 entries (blocks per round) to work correctly
     $round++;
     foreach ($performances as $index => $didForge) {
-        $delegates = DelegateTracker::execute($delegateWallets, $height - 1);
+        $delegates = Rounds::delegates();
         foreach ($delegates as $delegate) {
             Round::factory()->create([
                 'public_key' => $delegate['publicKey'],
@@ -238,6 +246,7 @@ function createRealisticRound(array $performances, $context, array $partialRound
         expect(Block::count())->toBe($height - 1);
     }
 
+    // If a partial round, do the same process but make sure all entries are handled
     if ($partialRound) {
         $performanceSlots = array_fill(0, count($partialRound), false);
 
@@ -245,7 +254,7 @@ function createRealisticRound(array $performances, $context, array $partialRound
         while ($wasLastInRound === null || $wasLastInRound === true) {
             $wasLastInRound = false;
 
-            $delegates = DelegateTracker::execute($delegateWallets, $height - 1);
+            $delegates = Rounds::delegates();
             foreach ($delegates as $delegate) {
                 Round::factory()->create([
                     'public_key' => $delegate['publicKey'],
@@ -253,6 +262,8 @@ function createRealisticRound(array $performances, $context, array $partialRound
                     'round'      => $round,
                 ]);
             }
+
+            $round++;
 
             $blockCount = 0;
             while ($blockCount < 51) {
