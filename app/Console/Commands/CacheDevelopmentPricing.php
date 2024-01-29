@@ -28,7 +28,6 @@ final class CacheDevelopmentPricing extends Command
         collect([
             'explorer:cache-currencies-data',
             'explorer:cache-prices',
-            'explorer:cache-currencies-history --no-delay',
         ])->map(fn (string $command) => Artisan::call($command));
     }
 }
