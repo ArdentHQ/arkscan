@@ -50,7 +50,7 @@
 <span {{ $attributes->class($class) }}>
     @if($amountForItself !== null && $amountForItself > 0)
         <div
-            class="flex items-center py-[4.5px] px-1.5 mr-1.5 h-full dark:bg-[#AA6868] dim:bg-[#AB8282] dark:text-theme-dark-50"
+            class="flex items-center py-[4.5px] px-1.5 mr-1.5 h-full text-[#A56D4C] bg-[#F6DFB5] dark:bg-[#AA6868] dim:bg-[#AB8282] dark:text-theme-dark-50"
             data-tippy-content="{{ trans('general.fiat_excluding_itself', [
                 'amount' => ExplorerNumberFormatter::currency($amountForItself, Network::currency())
             ]) }}"
