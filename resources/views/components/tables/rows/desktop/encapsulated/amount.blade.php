@@ -17,7 +17,7 @@
     if ($wallet && ($isReceived || $model->isSentToSelf($wallet->address()))) {
         $amount = $model->amountReceived($wallet?->address());
         $amountFiat = $model->amountReceivedFiat($wallet?->address());
-    } else {
+    } else if ($wallet) {
         $amountForItself = $model->amountForItself();
         if ($amountForItself > 0) {
             $amount = $model->amountExcludingItself();
