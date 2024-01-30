@@ -30,7 +30,7 @@
             }
         }
 
-        if ($transaction && $transaction->isSentToSelf($wallet->address())) {
+        if ($wallet && $transaction && $transaction->isSentToSelf($wallet->address())) {
             $class[] = 'fiat-tooltip-sent text-theme-secondary-700 bg-theme-secondary-200 border-theme-secondary-200 dark:bg-transparent dark:border-theme-dark-700 dark:text-theme-dark-200 dim:border-theme-dim-700 dim:text-theme-dim-200';
 
             $isSent = false;

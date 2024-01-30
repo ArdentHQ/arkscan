@@ -18,8 +18,10 @@
         $amount = $model->amountReceived($wallet?->address());
         $amountFiat = $model->amountReceivedFiat($wallet?->address());
     } else {
-        $amount = $model->amountExcludingItself();
         $amountForItself = $model->amountForItself();
+        if ($amountForItself > 0) {
+            $amount = $model->amountExcludingItself();
+        }
     }
 
     $feeBreakpointClass = [

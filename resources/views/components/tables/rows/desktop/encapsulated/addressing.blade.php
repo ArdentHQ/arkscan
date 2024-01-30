@@ -8,7 +8,7 @@
 ])
 
 @php ($isSent = $wallet && $model->isSent($wallet->address()) && ! $model->isSentToSelf($wallet->address()))
-@php ($isSentToSelf = $model->isSentToSelf($wallet->address()))
+@php ($isSentToSelf = $wallet && $model->isSentToSelf($wallet->address()))
 
 <div {{ $attributes->class('flex items-center space-x-2 text-sm font-semibold') }}>
     <div @class([
