@@ -1,5 +1,7 @@
 @props(['data'])
 
+@php ($isFiat = ExplorerNumberFormatter::isFiat(Settings::currency()))
+
 <div
     :class="{
         'hidden md:block': tab !== 'market_data',
@@ -15,7 +17,11 @@
             @foreach (['daily', 'atl', 'ath'] as $item) {{-- Mind the lack of "52w" here --}}
                 {{-- Mobile --}}
                 <div class="flex md:hidden">
-                    <div class="flex flex-col justify-between pt-3 space-y-3 w-full sm:flex-row sm:space-y-0">
+                    <div @class([
+                        'flex flex-col justify-between pt-3 space-y-3 w-full',
+                        'sm:flex-row sm:space-y-0' => $isFiat,
+                        'md:flex-row md:space-y-0' => ! $isFiat
+                    ])>
                         <div class="flex flex-col space-y-2">
                             <span>
                                 @lang('pages.statistics.insights.market_data.header.'.$item)
@@ -96,8 +102,16 @@
 
             @foreach (['daily', 'year', 'atl', 'ath'] as $item)
                 {{-- Desktop --}}
-                <div class="hidden justify-between w-full md:flex xl:w-[770px]">
-                    <div class="flex flex-1">
+                <div @class([
+                    'hidden justify-between w-full md:flex',
+                    'xl:w-[770px]' => $isFiat,
+                    'xl:w-[950px]' => ! $isFiat,
+                ])>
+                    <div @class([
+                        'flex',
+                        'flex-1' => $isFiat,
+                        'flex-1 md-lg:flex-none md-lg:w-[150px]' => ! $isFiat,
+                     ])">
                         @lang('pages.statistics.insights.market_data.header.'.$item)
                     </div>
 
@@ -196,8 +210,16 @@
                 </div>
 
                 {{-- Desktop --}}
-                <div class="hidden justify-between w-full md:flex xl:w-[770px]">
-                    <div class="flex flex-1">
+                <div @class([
+                    'hidden justify-between w-full md:flex',
+                    'xl:w-[770px]' => $isFiat,
+                    'xl:w-[950px]' => ! $isFiat,
+                ])>
+                    <div @class([
+                        'flex',
+                        'flex-1' => $isFiat,
+                        'flex-1 md-lg:flex-none md-lg:w-[150px]' => ! $isFiat,
+                     ])">
                         @lang('pages.statistics.insights.market_data.header.'.$item)
                     </div>
 
@@ -283,8 +305,16 @@
                 </div>
 
                 {{-- Desktop --}}
-                <div class="hidden justify-between w-full md:flex xl:w-[770px]">
-                    <div class="flex flex-1">
+                <div @class([
+                    'hidden justify-between w-full md:flex',
+                    'xl:w-[770px]' => $isFiat,
+                    'xl:w-[950px]' => ! $isFiat,
+                ])>
+                    <div @class([
+                        'flex',
+                        'flex-1' => $isFiat,
+                        'flex-1 md-lg:flex-none md-lg:w-[150px]' => ! $isFiat,
+                     ])">
                         @lang('pages.statistics.insights.market_data.header.'.$item)
                     </div>
 
