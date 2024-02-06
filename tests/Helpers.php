@@ -246,11 +246,10 @@ function createRealisticRound(array $performances, $context, array $partialRound
 
     // If a partial round, do the same process but make sure all entries are handled
     if ($partialRound) {
-        $performanceSlots = array_fill(0, count($partialRound), false);
-
         $wasLastInRound = null;
         while ($wasLastInRound === null || $wasLastInRound === true) {
             $wasLastInRound = false;
+            $performanceSlots = array_fill(0, count($partialRound), false);
 
             $delegates = Rounds::delegates();
             foreach ($delegates as $delegate) {
