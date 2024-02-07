@@ -111,6 +111,15 @@ final class MarketDataPriceStatistics
      */
     private function formatCurrency($value): string
     {
-        return NumberFormatter::currencyWithDecimals($value, Settings::currency(), 2);
+        return NumberFormatter::currencyWithDecimals($value, Settings::currency(), $this->decimals());
+    }
+
+    private function decimals(): int
+    {
+        if (NumberFormatter::isFiat(Settings::currency())) {
+            return 2;
+        }
+
+        return 8;
     }
 }
