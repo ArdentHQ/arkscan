@@ -37,7 +37,7 @@ final class RoundRepository implements Contract
         $delegates   = Rounds::allByRound($roundNumber);
         $heightRange = Monitor::heightRangeByRound($roundNumber);
         $delegates   = new SupportCollection(DelegateTracker::execute($delegates, $heightRange[0]));
-
+// dump($delegates, $heightRange);
         if ($withBlock) {
             $blocks = Block::whereBetween('height', $heightRange)->get()->keyBy('generator_public_key');
 

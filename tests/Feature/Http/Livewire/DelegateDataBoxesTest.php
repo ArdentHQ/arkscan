@@ -3,16 +3,23 @@
 declare(strict_types=1);
 
 use App\Enums\DelegateForgingStatus;
+use App\Facades\Rounds;
 use App\Http\Livewire\DelegateDataBoxes;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
+use App\Services\Monitor\DelegateTracker;
+use App\Services\Monitor\Monitor;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Livewire\Livewire;
+use Illuminate\Support\Collection as SupportCollection;
+
+use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
+use function Tests\delegatesForRound;
 
 beforeEach(function () {
     $this->travelTo(Carbon::parse('2022-08-22 00:00'));
@@ -258,16 +265,37 @@ it('should defer loading', function () {
 // ]);
 
 it('should calculate forged correctly with current round', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
     $this->freezeTime();
 
-    $delegates = createRealisticRound([
+    [$delegates, $round, $height] = createRealisticRound([
         array_fill(0, 51, true),
         [
             ...array_fill(0, 4, true),
             false,
             ...array_fill(0, 46, true),
         ],
-    ], $this, array_fill(0, 20, true));
+    ], $this);
+
+    $nextRoundDelegates = delegatesForRound(true, $round);
+
+    dump($height, $nextRoundDelegates->map(function ($d) {
+        return $d['status'].'-'.(array_key_exists('block', $d) && $d['block'] ? $d['block']['height'].'-' : '').(array_key_exists('block', $d) && $d['block'] ? 'true' : 'false').'-'.$d['publicKey'];
+    }));
+
+    dump('Height: '.$height);
+
+    // expect((new WalletViewModel($delegates->get(4)))->hasForged())->toBeFalse();
+
+    createPartialRound($round, $height, 20, $this, requiredPublicKey: $delegates->get(4)->publicKey);
+
+    $nextRoundDelegates = delegatesForRound(true, $round - 1);
+    // dd($nextRoundDelegates);
+
+    dd($height, $nextRoundDelegates->map(function ($d) {
+        return $d['status'].'-'.(array_key_exists('block', $d) && $d['block'] ? $d['block']['height'].'-' : '').(array_key_exists('block', $d) && $d['block'] ? 'true' : 'false').'-'.$d['publicKey'];
+    }));
 
     // expect((new WalletViewModel($delegates->get(4)))->hasForged())->toBeTrue();
 

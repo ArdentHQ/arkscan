@@ -46,6 +46,8 @@ final class DelegateTracker
             $startHeight
         );
 
+        // dump($originalOrder, debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2)[1]);
+
         // Note: static order will be found by shifting the index based on the forging data from above
         $delegateCount    = Network::delegateCount();
         $delegatesOrdered = self::orderDelegates(
@@ -112,6 +114,9 @@ final class DelegateTracker
     ): array {
         $delegatesOrdered = [];
         for ($i = $currentForger; $i < $delegateCount + $currentForger; $i++) {
+            if (! array_key_exists($i % $delegateCount, $activeDelegates)) {
+                dd($activeDelegates, $currentForger, $delegateCount);
+            }
             $delegatesOrdered[] = $activeDelegates[$i % $delegateCount];
         }
 

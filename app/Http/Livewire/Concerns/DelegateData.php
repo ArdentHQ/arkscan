@@ -88,6 +88,8 @@ trait DelegateData
         $blockTimestamp = $roundBlocks->last()->timestamp;
         $delegates      = [];
 
+        // dump($roundBlocks);
+
         $roundBlockCount = $roundBlocks->groupBy('generator_public_key')
             ->map(function ($blocks) {
                 return count($blocks);

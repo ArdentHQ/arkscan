@@ -73,6 +73,7 @@ trait CanForge
                 $currentRound['block'] !== null,
             ];
         }
+        // dd($currentRound);
 
         // dump($publicKey, $performance, $currentRound);
 
