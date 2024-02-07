@@ -74,7 +74,7 @@ final class CachePrices extends Command
                 }
 
                 if ($periodPrices->isEmpty()) {
-                    break 2;
+                    continue;
                 }
 
                 $crypto->setPrices($currency.'.'.$period, $periodPrices);

@@ -8,6 +8,7 @@ use App\DTO\Statistics\TransactionAveragesStatistics;
 use App\DTO\Statistics\TransactionRecordsStatistics;
 use App\DTO\Statistics\TransactionStatistics;
 use App\Enums\StatsTransactionType;
+use App\Facades\Settings;
 use App\Http\Livewire\Stats\Insights;
 use App\Models\Block;
 use App\Models\Transaction;
@@ -249,7 +250,7 @@ it('should render delegate statistics', function (): void {
         ->assertDontSee($randomWallet->address);
 });
 
-it('should render marketdata statistics', function (): void {
+it('should render marketdata statistics for fiat', function (): void {
     Config::set('arkscan.networks.development.canBeExchanged', true);
 
     Http::fake([
@@ -302,6 +303,65 @@ it('should render marketdata statistics', function (): void {
             '15',
             trans('pages.statistics.insights.market_data.header.ath'),
             '30,000',
+        ]);
+});
+
+it('should render marketdata statistics for crypto', function (): void {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
+    Http::fake([
+        'api.coingecko.com/*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true), 200),
+    ]);
+
+    Settings::shouldReceive('currency')
+        ->andReturn('BTC');
+
+    $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('arkscan.networks.production')));
+
+    $crypto = app(CryptoDataCache::class);
+
+    app(CacheVolume::class)->handle($crypto, new CoinGecko());
+
+    $currentDate = Carbon::now();
+    $currency    = 'BTC';
+
+    $cache = new StatisticsCache();
+    $cache->setPriceRangeDaily($currency, 0.00000123, 0.00000456);
+    $cache->setPriceRange52($currency, 0.00000012, 0.00000789);
+    $cache->setPriceAtl($currency, $currentDate->subMonth()->timestamp, 0.0000004);
+    $cache->setPriceAth($currency, $currentDate->timestamp, 0.00009873);
+
+    $cache->setVolumeAtl($currency, $currentDate->subMonth()->timestamp, 0.000001);
+    $cache->setVolumeAth($currency, $currentDate->timestamp, 0.0002);
+
+    $cache->setMarketCapAtl($currency, $currentDate->subMonth()->timestamp, 0.00000015);
+    $cache->setMarketCapAth($currency, $currentDate->timestamp, 0.0003);
+
+    (new NetworkStatusBlockCache())->setPrice('ARK', 'BTC', 0.00001234);
+    (new NetworkCache())->setSupply(fn () => 4.567 * 1e8);
+
+    Livewire::test(Insights::class)
+        ->assertSeeInOrder([
+            trans('pages.statistics.insights.market_data.header.daily'),
+            '0.00000123 BTC', '0.00000456 BTC',
+            trans('pages.statistics.insights.market_data.header.year'),
+            '0.00000012 BTC', '0.00000789 BTC',
+            trans('pages.statistics.insights.market_data.header.atl'),
+            '0.0000004 BTC',
+            trans('pages.statistics.insights.market_data.header.ath'),
+            '0.00009873 BTC',
+
+            '355.786 BTC',
+            trans('pages.statistics.insights.market_data.header.atl'),
+            '0.000001 BTC',
+            trans('pages.statistics.insights.market_data.header.ath'),
+            '0.0002 BTC',
+
+            '0.00005636 BTC',
+            trans('pages.statistics.insights.market_data.header.atl'),
+            '0.00000015 BTC',
+            trans('pages.statistics.insights.market_data.header.ath'),
+            '0.0003 BTC',
         ]);
 });
 

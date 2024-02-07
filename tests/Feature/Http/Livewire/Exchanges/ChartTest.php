@@ -29,7 +29,6 @@ it('should render the component with fiat value', function () {
     Config::set('arkscan.networks.development.currency', 'ARK');
 
     Artisan::call('explorer:cache-currencies-data');
-    Artisan::call('explorer:cache-currencies-history --no-delay');
     Artisan::call('explorer:cache-prices');
 
     (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
@@ -63,7 +62,6 @@ it('should render the component with non fiat value', function () {
     Config::set('arkscan.networks.development.currency', 'ARK');
 
     Artisan::call('explorer:cache-currencies-data');
-    Artisan::call('explorer:cache-currencies-history --no-delay');
     Artisan::call('explorer:cache-prices');
 
     (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
@@ -93,7 +91,6 @@ it('should not render the component', function () {
     Config::set('arkscan.networks.development.currency', 'ARK');
 
     Artisan::call('explorer:cache-currencies-data');
-    Artisan::call('explorer:cache-currencies-history --no-delay');
     Artisan::call('explorer:cache-prices');
 
     (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
@@ -123,7 +120,6 @@ it('should filter by year', function () {
     Config::set('arkscan.networks.development.currency', 'ARK');
 
     Artisan::call('explorer:cache-currencies-data');
-    Artisan::call('explorer:cache-currencies-history --no-delay');
     Artisan::call('explorer:cache-prices');
 
     (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
@@ -153,7 +149,6 @@ it('should render min max price and percentage', function () {
     Config::set('arkscan.networks.development.currency', 'ARK');
 
     Artisan::call('explorer:cache-currencies-data');
-    Artisan::call('explorer:cache-currencies-history --no-delay');
     Artisan::call('explorer:cache-prices');
 
     (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
@@ -187,7 +182,6 @@ it('should show fiat data', function () {
     Config::set('arkscan.networks.development.currency', 'ARK');
 
     Artisan::call('explorer:cache-currencies-data');
-    Artisan::call('explorer:cache-currencies-history --no-delay');
     Artisan::call('explorer:cache-prices');
 
     (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
