@@ -66,16 +66,12 @@ trait CanForge
         $performance = (new WalletCache())->getPerformance($publicKey);
 
         $currentRound = $this->currentSlot();
-        // dump($currentRound['status']);
         if ($currentRound['status'] === 'done') {
             $performance = [
                 $performance[1],
                 $currentRound['block'] !== null,
             ];
         }
-        // dd($currentRound);
-
-        // dump($publicKey, $performance, $currentRound);
 
         return $performance;
     }
@@ -98,8 +94,6 @@ trait CanForge
 
     public function keepsMissing(): bool
     {
-        // dump($this->performance());
-
         return $this->performance() === [false, false];
     }
 
