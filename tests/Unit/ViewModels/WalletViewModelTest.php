@@ -327,6 +327,7 @@ it('should fail to get the performance if the wallet is not a delegate', functio
     ]));
 
     expect($this->subject->performance())->toBeEmpty();
+    expect($this->subject->hasForged())->toBeFalse();
 });
 
 it('should fail to get the performance if the wallet has no public key', function () {
@@ -803,45 +804,3 @@ it('should return zero if delegate has no public key', function () {
 
     expect($wallet->missedBlocks())->toBe(0);
 });
-
-function createRound(array $performances = null, bool $addBlockForNextRound = true, int $wallets = 51): void
-{
-    Wallet::factory($wallets)->create()->each(function ($wallet, $index) use ($performances, $addBlockForNextRound) {
-        $timestamp = Carbon::now()->add($index * 8, 'seconds')->timestamp;
-
-        $block = Block::factory()->create([
-            'height'               => 5720529,
-            'timestamp'            => $timestamp,
-            'generator_public_key' => $wallet->public_key,
-        ]);
-
-        // Start height for round 112168
-        if ($addBlockForNextRound) {
-            Block::factory()->create([
-                'height'               => 5720518,
-                'timestamp'            => $timestamp,
-                'generator_public_key' => $wallet->public_key,
-            ]);
-        }
-
-        Round::factory()->create([
-            'round'      => '112168',
-            'public_key' => $wallet->public_key,
-        ]);
-
-        (new WalletCache())->setDelegate($wallet->public_key, $wallet);
-
-        if (is_null($performances)) {
-            for ($i = 0; $i < 2; $i++) {
-                $performances[] = (bool) mt_rand(0, 1);
-            }
-        }
-
-        (new WalletCache())->setPerformance($wallet->public_key, $performances);
-
-        (new WalletCache())->setLastBlock($wallet->public_key, [
-            'id'     => $block->id,
-            'height' => $block->height->toNumber(),
-        ]);
-    });
-}
