@@ -20,6 +20,7 @@ use FurqanSiddiqui\BIP39\BIP39;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Tests\Stubs\FullPartialRoundException;
 
 function faker(): Generator
 {
@@ -263,10 +264,6 @@ function createFullRound(&$round, &$height, $delegateWallets, $context, $didForg
 
     $round++;
     $height += $blockCount;
-}
-
-class Helpers extends \Exception
-{
 }
 
 function createPartialRound(int &$round, int &$height, int $blocks, $context, string $missedPublicKey = null, string $requiredPublicKey = null)

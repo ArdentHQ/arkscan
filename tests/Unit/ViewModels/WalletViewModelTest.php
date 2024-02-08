@@ -16,34 +16,10 @@ use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Tests\Stubs\RoundsMock;
+
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeKnownWallets;
-
-class WalletViewModelTest
-{
-    public function __construct(private ?Block $block = null)
-    {
-        //
-    }
-
-    public function delegates()
-    {
-        return new class($this->block) {
-            public function __construct(private ?Block $block = null)
-            {
-                //
-            }
-
-            public function firstWhere()
-            {
-                return [
-                    'status' => 'done',
-                    'block'  => $this->block,
-                ];
-            }
-        };
-    }
-}
 
 beforeEach(function () {
     $this->app->singleton(Contract::class, fn () => NetworkFactory::make('production'));
