@@ -170,12 +170,28 @@ function createBlock(int $height, string $publicKey)
     ]);
 }
 
+function createRoundEntry(int $round, string $publicKey)
+{
+    $balance = faker()->numberBetween(1, 1000) * 1e8;
+    $existing = Round::firstWhere('public_key', $publicKey);
+    if ($existing) {
+        $balance = $existing->balance;
+    }
+
+    Round::factory()->create([
+        'public_key' => $publicKey,
+        'round'      => $round,
+        'balance'    => $balance,
+    ]);
+}
+
 // The initial delegate wallets are used as an index for the performances.
 // This is to ensure the SAME delegate misses or forges per round
 function createRealisticRound(array $performances, $context)
 {
     Round::truncate();
     Block::truncate();
+    Wallet::truncate();
 
     $context->travel(-(51 * 8 * (count($performances) + 1)))->seconds();
 
@@ -187,61 +203,26 @@ function createRealisticRound(array $performances, $context)
     $delegateWallets = Wallet::factory(51)
         ->activeDelegate()
         ->create()
-        ->each(function ($delegate, $index) use (&$height, $cache, $round) {
+        ->each(function ($delegate) use (&$height, $cache, $round) {
             $cache->setDelegate($delegate->public_key, $delegate);
 
-            Round::factory()->create([
-                'public_key' => $delegate->public_key,
-                'round'      => $round,
-                'balance'    => ($index + 50000) * 1e8,
-            ]);
+            createRoundEntry($round, $delegate->public_key);
 
             createBlock($height, $delegate->public_key);
 
             $height++;
         });
 
+    $round++;
+
     expect(Block::count())->toBe(51);
-    // expect(Block::count())->toBe($height - 1);
+    expect($height - 1)->toBe(51);
 
     // Loop through performances and generate rounds for each - requires 51 entries (blocks per round) to work correctly
-    $round++;
     foreach ($performances as $index => $didForge) {
-        $delegates = delegatesForRound();
-        foreach ($delegates as $delegate) {
-            Round::factory()->create([
-                'public_key' => $delegate['publicKey'],
-                'balance'    => 0,
-                'round'      => $round,
-            ]);
-        }
-
-        $blockCount = 0;
-        while ($blockCount < 51) {
-            foreach ($delegates as $delegate) {
-                $delegateIndex = $delegateWallets->search(fn ($wallet) => $wallet->public_key === $delegate['publicKey']);
-                if (isset($didForge[$delegateIndex]) && ! $didForge[$delegateIndex]) {
-                    $context->travel(8)->seconds();
-
-                    continue;
-                }
-
-                createBlock($height + $blockCount, $delegate['publicKey']);
-
-                $context->travel(8)->seconds();
-
-                $blockCount++;
-                if ($blockCount === 51) {
-                    break;
-                }
-            }
-        }
-
-        $round++;
-        $height += $blockCount;
+        createFullRound($round, $height, $delegateWallets, $context, $didForge);
 
         expect(Block::count())->toBe(51 + (($index + 1) * 51));
-        // expect(Block::count())->toBe($height - 1);
     }
 
     (new NetworkCache())->setHeight(fn (): int => $height - 1);
@@ -251,13 +232,48 @@ function createRealisticRound(array $performances, $context)
     return [$delegateWallets, $round, $height];
 }
 
+function createFullRound(&$round, &$height, $delegateWallets, $context, $didForge = null)
+{
+    $delegates = delegatesForRound(false, $round);
+
+    foreach (Wallet::all() as $delegate) {
+        createRoundEntry($round, $delegate->public_key);
+    }
+
+    $blockCount = 0;
+    while ($blockCount < 51) {
+        foreach ($delegates as $delegate) {
+            $delegateIndex = $delegateWallets->search(fn ($wallet) => $wallet->public_key === $delegate['publicKey']);
+            if ($didForge && isset($didForge[$delegateIndex]) && ! $didForge[$delegateIndex]) {
+                $context->travel(8)->seconds();
+
+                continue;
+            }
+
+            createBlock($height + $blockCount, $delegate['publicKey']);
+
+            $context->travel(8)->seconds();
+
+            $blockCount++;
+            if ($blockCount === 51) {
+                break;
+            }
+        }
+    }
+
+    $round++;
+    $height += $blockCount;
+}
+
+class FullPartialRoundException extends \Exception {}
+
 function createPartialRound(int &$round, int &$height, int $blocks, $context, string $missedPublicKey = null, string $requiredPublicKey = null)
 {
     $delegates = delegatesForRound(false, $round);
-    dump('Round: '.$round, Rounds::current());
-    dump($delegates->map(function ($d) {
-        return $d['status'].'-'.(array_key_exists('block', $d) && $d['block'] ? $d['block']['height'].'-' : '').(array_key_exists('block', $d) && $d['block'] ? 'true' : 'false').'-'.$d['publicKey'];
-    }));
+
+    foreach (Wallet::all() as $delegate) {
+        createRoundEntry($round, $delegate->public_key);
+    }
 
     if ($missedPublicKey) {
         $hasPublicKey = false;
@@ -289,45 +305,34 @@ function createPartialRound(int &$round, int &$height, int $blocks, $context, st
         }
 
         if ($requiredIndex >= $blocks) {
-            $blocks = $requiredIndex;
+            throw new FullPartialRoundException();
         }
-    }
-
-    foreach ($delegates as $delegate) {
-        Round::factory()->create([
-            'public_key' => $delegate['publicKey'],
-            'balance'    => 0,
-            'round'      => $round,
-        ]);
     }
 
     $round++;
 
     $blockCount = 0;
-    foreach ($delegates as $delegate) {
-        if ($blockCount === $blocks) {
-            break;
-        }
+    while ($blockCount < 51) {
+        foreach ($delegates as $delegate) {
+            if ($blockCount === $blocks) {
+                break 2;
+            }
 
-        if ($missedPublicKey && $delegate['publicKey'] === $missedPublicKey) {
-            dump($delegate['publicKey'].'-missed');
+            if ($missedPublicKey && $delegate['publicKey'] === $missedPublicKey) {
+                $context->travel(8)->seconds();
+
+                continue;
+            }
+
+            createBlock($height + $blockCount, $delegate['publicKey']);
+
             $context->travel(8)->seconds();
 
-            continue;
+            $blockCount++;
         }
-
-        dump($delegate['publicKey'].'-forged');
-
-        createBlock($height + $blockCount, $delegate['publicKey']);
-
-        $context->travel(8)->seconds();
-
-        $blockCount++;
     }
 
     $height += $blockCount;
-
-    // expect(Block::count())->toBe($height - 1);
 
     if ($requiredIndex && $requiredIndex === 50) {
         return createPartialRound($round, $height, $blocks, $context, $missedPublicKey, $requiredPublicKey);
@@ -340,23 +345,45 @@ function createPartialRound(int &$round, int &$height, int $blocks, $context, st
 
 function delegatesForRound(bool $withBlock = true, int $roundNumber = null): SupportCollection
 {
-    $delegates = Round::query()
-        ->orderBy('balance', 'desc')
-        ->orderBy('public_key', 'asc')
-        ->get();
+    $delegates = null;
+    if ($roundNumber) {
+        $delegates = Rounds::allByRound($roundNumber);
+    }
 
-    dump('ASDASDASD', $roundNumber);
+    if (! $delegates || $delegates->count() === 0) {
+        $delegates = Round::query()
+            ->orderBy('round')
+            ->orderBy('balance', 'desc')
+            ->orderBy('public_key', 'asc')
+            ->limit(51)
+            ->get();
+    }
+
+    if ($delegates->count() === 0) {
+        $delegates = Wallet::all();
+    }
+
+    expect($delegates->count())->toBe(51);
+
     $roundNumber = $roundNumber ?: Rounds::current();
     $heightRange = Monitor::heightRangeByRound($roundNumber);
-    $delegates   = new SupportCollection(DelegateTracker::execute($delegates, $heightRange[0]));
-    dump($heightRange);
+
+    try {
+        $delegates = new SupportCollection(DelegateTracker::execute($delegates, $heightRange[0]));
+    } catch (\Throwable) {
+        $delegates = $delegates->map(fn ($delegate) => [
+            'publicKey' => $delegate->public_key,
+            'status' => 'initial',
+        ]);
+    }
+
     if ($withBlock) {
         $blocks = Block::whereBetween('height', $heightRange)->get()->keyBy('generator_public_key');
 
         $delegates = $delegates->map(fn ($delegate) => [
             ...$delegate,
 
-            'block' => $blocks->get($delegate['publicKey']),
+            'block' => $blocks->get($delegate['publicKey'] ?? $delegate['public_key']),
         ]);
     }
 

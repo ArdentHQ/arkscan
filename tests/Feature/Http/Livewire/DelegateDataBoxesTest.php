@@ -3,23 +3,20 @@
 declare(strict_types=1);
 
 use App\Enums\DelegateForgingStatus;
-use App\Facades\Rounds;
 use App\Http\Livewire\DelegateDataBoxes;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
-use App\Services\Monitor\DelegateTracker;
-use App\Services\Monitor\Monitor;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Livewire\Livewire;
-use Illuminate\Support\Collection as SupportCollection;
+use Illuminate\Support\Facades\Artisan;
+use Tests\FullPartialRoundException;
 
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
-use function Tests\delegatesForRound;
 
 beforeEach(function () {
     $this->travelTo(Carbon::parse('2022-08-22 00:00'));
@@ -269,35 +266,33 @@ it('should calculate forged correctly with current round', function () {
 
     $this->freezeTime();
 
-    [$delegates, $round, $height] = createRealisticRound([
-        array_fill(0, 51, true),
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-    ], $this);
+    try {
+        [$delegates, $round, $height] = createRealisticRound([
+            array_fill(0, 51, true),
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
 
-    $nextRoundDelegates = delegatesForRound(true, $round);
+        createPartialRound($round, $height, 49, $this, null, $delegates->get(4)->public_key);
+    } catch (FullPartialRoundException) {
+        Artisan::call('cache:clear');
 
-    dump($height, $nextRoundDelegates->map(function ($d) {
-        return $d['status'].'-'.(array_key_exists('block', $d) && $d['block'] ? $d['block']['height'].'-' : '').(array_key_exists('block', $d) && $d['block'] ? 'true' : 'false').'-'.$d['publicKey'];
-    }));
+        [$delegates, $round, $height] = createRealisticRound([
+            array_fill(0, 51, true),
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
 
-    dump('Height: '.$height);
+        createPartialRound($round, $height, 49, $this, null, $delegates->get(4)->public_key);
+    }
 
-    // expect((new WalletViewModel($delegates->get(4)))->hasForged())->toBeFalse();
-
-    createPartialRound($round, $height, 20, $this, requiredPublicKey: $delegates->get(4)->publicKey);
-
-    $nextRoundDelegates = delegatesForRound(true, $round - 1);
-    // dd($nextRoundDelegates);
-
-    dd($height, $nextRoundDelegates->map(function ($d) {
-        return $d['status'].'-'.(array_key_exists('block', $d) && $d['block'] ? $d['block']['height'].'-' : '').(array_key_exists('block', $d) && $d['block'] ? 'true' : 'false').'-'.$d['publicKey'];
-    }));
-
-    // expect((new WalletViewModel($delegates->get(4)))->hasForged())->toBeTrue();
+    expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, true]);
 
     Livewire::test(DelegateDataBoxes::class)
         ->call('setIsReady')
@@ -314,9 +309,11 @@ it('should calculate forged correctly with current round', function () {
 });
 
 it('should calculate forged correctly for previous rounds', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
     $this->freezeTime();
 
-    $delegates = createRealisticRound([
+    [0 => $delegates] = createRealisticRound([
         [
             ...array_fill(0, 4, true),
             false,
@@ -326,9 +323,7 @@ it('should calculate forged correctly for previous rounds', function () {
         array_fill(0, 51, true),
     ], $this);
 
-    expect((new NetworkCache())->getHeight())->toBe(51 * 4);
-
-    // expect((new WalletViewModel($delegates->get(4)))->hasForged())->toBeTrue();
+    expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, true]);
 
     Livewire::test(DelegateDataBoxes::class)
         ->call('setIsReady')
@@ -345,19 +340,31 @@ it('should calculate forged correctly for previous rounds', function () {
 });
 
 it('should calculate missed correctly with current round', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
     $this->freezeTime();
 
-    $delegates = createRealisticRound([
-        array_fill(0, 51, true),
-        array_fill(0, 51, true),
-        array_fill(0, 51, true),
-    ], $this, [
-        ...array_fill(0, 4, true),
-        false,
-        ...array_fill(0, 3, true),
-    ]);
+    try {
+        [$delegates, $round, $height] = createRealisticRound([
+            array_fill(0, 51, true),
+            array_fill(0, 51, true),
+            array_fill(0, 51, true),
+        ], $this);
 
-    // expect((new WalletViewModel($delegates->get(4)))->justMissed())->toBeTrue();
+        createPartialRound($round, $height, 49, $this, $delegates->get(4)->public_key, $delegates->get(4)->public_key);
+    } catch (FullPartialRoundException) {
+        Artisan::call('cache:clear');
+
+        [$delegates, $round, $height] = createRealisticRound([
+            array_fill(0, 51, true),
+            array_fill(0, 51, true),
+            array_fill(0, 51, true),
+        ], $this);
+
+        createPartialRound($round, $height, 49, $this, $delegates->get(4)->public_key, $delegates->get(4)->public_key);
+    }
+
+    expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([true, false]);
 
     Livewire::test(DelegateDataBoxes::class)
         ->call('setIsReady')
@@ -374,9 +381,11 @@ it('should calculate missed correctly with current round', function () {
 });
 
 it('should calculate missed correctly for previous rounds', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
     $this->freezeTime();
 
-    $delegates = createRealisticRound([
+    [0 => $delegates] = createRealisticRound([
         array_fill(0, 51, true),
         array_fill(0, 51, true),
         [
@@ -387,9 +396,7 @@ it('should calculate missed correctly for previous rounds', function () {
         array_fill(0, 51, true),
     ], $this);
 
-    expect((new NetworkCache())->getHeight())->toBe(51 * 5);
-
-    // expect((new WalletViewModel($delegates->get(4)))->justMissed())->toBeTrue();
+    expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([true, false]);
 
     Livewire::test(DelegateDataBoxes::class)
         ->call('setIsReady')
@@ -406,31 +413,55 @@ it('should calculate missed correctly for previous rounds', function () {
 });
 
 it('should calculate not forging correctly with current round', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
     $this->freezeTime();
 
-    $delegates = createRealisticRound([
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-    ], $this, [
-        ...array_fill(0, 4, true),
-        false,
-        ...array_fill(0, 3, true),
-    ]);
+    try {
+        [$delegates, $round, $height] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
 
-    // expect((new WalletViewModel($delegates->get(4)))->keepsMissing())->toBeTrue();
+        createPartialRound($round, $height, 49, $this, $delegates->get(4)->public_key, $delegates->get(4)->public_key);
+    } catch (FullPartialRoundException) {
+        Artisan::call('cache:clear');
+
+        [$delegates, $round, $height] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
+
+        createPartialRound($round, $height, 49, $this, $delegates->get(4)->public_key, $delegates->get(4)->public_key);
+    }
+
+    expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, false]);
 
     Livewire::test(DelegateDataBoxes::class)
         ->call('setIsReady')
@@ -447,9 +478,11 @@ it('should calculate not forging correctly with current round', function () {
 });
 
 it('should calculate not forging correctly for previous rounds', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
     $this->freezeTime();
 
-    $delegates = createRealisticRound([
+    [0 => $delegates] = createRealisticRound([
         [
             ...array_fill(0, 4, true),
             false,
@@ -467,9 +500,7 @@ it('should calculate not forging correctly for previous rounds', function () {
         ],
     ], $this);
 
-    expect((new NetworkCache())->getHeight())->toBe(51 * 4);
-
-    // expect((new WalletViewModel($delegates->get(4)))->keepsMissing())->toBeTrue();
+    expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, false]);
 
     Livewire::test(DelegateDataBoxes::class)
         ->call('setIsReady')

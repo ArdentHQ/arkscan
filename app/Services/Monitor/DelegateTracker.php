@@ -114,9 +114,6 @@ final class DelegateTracker
     ): array {
         $delegatesOrdered = [];
         for ($i = $currentForger; $i < $delegateCount + $currentForger; $i++) {
-            if (! array_key_exists($i % $delegateCount, $activeDelegates)) {
-                dd($activeDelegates, $currentForger, $delegateCount);
-            }
             $delegatesOrdered[] = $activeDelegates[$i % $delegateCount];
         }
 

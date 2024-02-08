@@ -28,7 +28,7 @@ final class RoundRepository implements Contract
 
     public function current(): int
     {
-        return Round::max('round');
+        return Round::max('round') ?: 1;
     }
 
     public function delegates(bool $withBlock = true): SupportCollection

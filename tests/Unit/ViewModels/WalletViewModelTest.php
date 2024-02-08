@@ -20,6 +20,32 @@ use Illuminate\Support\Facades\Http;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeKnownWallets;
 
+class RoundsMock {
+    public function __construct(private ?Block $block = null)
+    {
+        //
+    }
+
+    public function delegates()
+    {
+        return new class($this->block)
+        {
+            public function __construct(private ?Block $block = null)
+            {
+                //
+            }
+
+            public function firstWhere()
+            {
+                return [
+                    'status' => 'done',
+                    'block'  => $this->block,
+                ];
+            }
+        };
+    }
+}
+
 beforeEach(function () {
     $this->app->singleton(Contract::class, fn () => NetworkFactory::make('production'));
 
@@ -301,13 +327,19 @@ it('should fail to get the wallet of the vote if it is not cached', function () 
 });
 
 it('should get the performance if the wallet is a delegate', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
+    Rounds::swap(new RoundsMock());
+
+    $wallet = Wallet::factory()->create([
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
             'delegate' => [],
         ],
-    ]));
+    ]);
+
+    (new WalletCache())->setPerformance($wallet->public_key, [true, true]);
+
+    $this->subject = new WalletViewModel($wallet);
 
     expect($this->subject->performance())->toBeArray();
 });
@@ -331,17 +363,27 @@ it('should fail to get the performance if the wallet has no public key', functio
 });
 
 it('should determine if a new delegate has forged', function () {
-    (new WalletCache())->setPerformance($this->subject->publicKey(), []);
+    $block = Block::factory()->create([
+        'generator_public_key' => $this->wallet->public_key,
+    ]);
+
+    Rounds::swap(new RoundsMock());
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, false]);
 
     expect($this->subject->hasForged())->toBeFalse();
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true]);
+    Rounds::swap(new RoundsMock($block));
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, true]);
 
     expect($this->subject->hasForged())->toBeTrue();
 
     Cache::flush();
+
+    Rounds::swap(new RoundsMock());
 
     (new WalletCache())->setPerformance($this->subject->publicKey(), [false, false]);
 
@@ -349,6 +391,12 @@ it('should determine if a new delegate has forged', function () {
 });
 
 it('should determine if the delegate just missed a block', function () {
+    $block = Block::factory()->create([
+        'generator_public_key' => $this->wallet->public_key,
+    ]);
+
+    Rounds::swap(new RoundsMock($block));
+
     (new WalletCache())->setPerformance($this->subject->publicKey(), [true, true]);
 
     expect($this->subject->justMissed())->toBeFalse();
@@ -361,15 +409,19 @@ it('should determine if the delegate just missed a block', function () {
 
     Cache::flush();
 
+    Rounds::swap(new RoundsMock());
+
     (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false]);
 
     expect($this->subject->justMissed())->toBeTrue();
 });
 
 it('should determine if the delegate is missing blocks', function () {
+    Rounds::swap(new RoundsMock());
+
     Round::factory()->create([
         'round'      => '112167',
-        'public_key' => $this->subject->public_key,
+        'public_key' => $this->wallet->public_key,
     ]);
 
     Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [false, true]);
@@ -818,25 +870,3 @@ function createRound(array $performances = null, bool $addBlockForNextRound = tr
         ]);
     });
 }
-
-it('asd', function () {
-    $this->travelTo(Carbon::parse('2022-08-22 00:00'));
-
-    Wallet::truncate();
-
-    createRound();
-
-    $wallet = new WalletViewModel(Wallet::first());
-
-    expect($wallet->currentSlot())->toBeFalse();
-
-    $roundNumber = Rounds::current();
-    $heightRange = Monitor::heightRangeByRound($roundNumber);
-
-    Block::factory()->create([
-        'height'               => $heightRange[0] + 1,
-        'generator_public_key' => $wallet->publicKey(),
-    ]);
-
-    expect($wallet->currentSlot())->toBeTrue();
-});

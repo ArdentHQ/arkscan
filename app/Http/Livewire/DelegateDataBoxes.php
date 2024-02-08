@@ -50,8 +50,6 @@ final class DelegateDataBoxes extends Component
             'nextDelegate' => $this->getNextDelegate(),
             'performances' => $this->getDelegatesPerformance(),
         ];
-
-        dd(collect($this->delegates)->map(fn ($d) => $d->status().'-'.($d->hasForged() ? 'true' : 'false').'-'.$d->publicKey()), $this->getDelegatesPerformance());
     }
 
     public function getDelegatesPerformance(): array
