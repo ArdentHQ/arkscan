@@ -172,7 +172,7 @@ function createBlock(int $height, string $publicKey)
 
 function createRoundEntry(int $round, string $publicKey)
 {
-    $balance = faker()->numberBetween(1, 1000) * 1e8;
+    $balance  = faker()->numberBetween(1, 1000) * 1e8;
     $existing = Round::firstWhere('public_key', $publicKey);
     if ($existing) {
         $balance = $existing->balance;
@@ -265,7 +265,9 @@ function createFullRound(&$round, &$height, $delegateWallets, $context, $didForg
     $height += $blockCount;
 }
 
-class FullPartialRoundException extends \Exception {}
+class Helpers extends \Exception
+{
+}
 
 function createPartialRound(int &$round, int &$height, int $blocks, $context, string $missedPublicKey = null, string $requiredPublicKey = null)
 {
@@ -373,7 +375,7 @@ function delegatesForRound(bool $withBlock = true, int $roundNumber = null): Sup
     } catch (\Throwable) {
         $delegates = $delegates->map(fn ($delegate) => [
             'publicKey' => $delegate->public_key,
-            'status' => 'initial',
+            'status'    => 'initial',
         ]);
     }
 
