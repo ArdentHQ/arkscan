@@ -7,24 +7,11 @@ namespace App\Services\Cache;
 use App\Contracts\Cache as Contract;
 use App\Services\Cache\Concerns\ManagesCache;
 use Illuminate\Cache\TaggedCache;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 final class NetworkStatusBlockCache implements Contract
 {
     use ManagesCache;
-
-    public function getHistoricalHourly(string $source, string $target): ?Collection
-    {
-        return $this->get(sprintf('historical-hourly/%s/%s', $source, $target));
-    }
-
-    public function setHistoricalHourly(string $source, string $target, ?Collection $historical): ?Collection
-    {
-        $this->put(sprintf('historical-hourly/%s/%s', $source, $target), $historical);
-
-        return $historical;
-    }
 
     public function getPrice(string $source, string $target): ?float
     {

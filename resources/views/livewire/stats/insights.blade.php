@@ -1,16 +1,8 @@
 <div>
-    <x-stats.insights.transactions
-        :details="$transactionDetails"
-        :averages="$transactionAverages"
-        :records="$transactionRecords"
-    />
+    <x-stats.insights.transactions :data="$transactionDetails" />
 
     @if (Network::canBeExchanged())
-        <x-stats.insights.marketdata
-            :prices="$marketDataPrice"
-            :volumes="$marketDataVolume"
-            :caps="$marketDataCap"
-        />
+        <x-stats.insights.marketdata :data="$marketData" />
     @endif
 
     <x-stats.insights.delegates :details="$delegateDetails" />
