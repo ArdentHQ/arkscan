@@ -12,7 +12,6 @@ use App\Services\Blockchain\NetworkFactory;
 use App\Services\Cache\DelegateCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
-use App\Services\Monitor\Monitor;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -20,7 +19,8 @@ use Illuminate\Support\Facades\Http;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeKnownWallets;
 
-class RoundsMock {
+class WalletViewModelTest
+{
     public function __construct(private ?Block $block = null)
     {
         //
@@ -28,8 +28,7 @@ class RoundsMock {
 
     public function delegates()
     {
-        return new class($this->block)
-        {
+        return new class($this->block) {
             public function __construct(private ?Block $block = null)
             {
                 //

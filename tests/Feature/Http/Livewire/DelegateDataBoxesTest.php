@@ -11,12 +11,11 @@ use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
-use Livewire\Livewire;
 use Illuminate\Support\Facades\Artisan;
-use Tests\FullPartialRoundException;
-
+use Livewire\Livewire;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
+use Tests\FullPartialRoundException;
 
 beforeEach(function () {
     $this->travelTo(Carbon::parse('2022-08-22 00:00'));
