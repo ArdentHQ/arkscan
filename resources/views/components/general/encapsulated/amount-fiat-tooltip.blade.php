@@ -31,7 +31,7 @@
         }
 
         if ($wallet && $transaction && $transaction->isSentToSelf($wallet->address())) {
-            $class[] = 'fiat-tooltip-sent text-theme-secondary-700 bg-theme-secondary-200 border-theme-secondary-200 dark:bg-transparent dark:border-theme-dark-700 dark:text-theme-dark-200 dim:border-theme-dim-700 dim:text-theme-dim-200';
+            $class[] = 'fiat-tooltip-sent text-theme-secondary-700 bg-theme-secondary-200 border-theme-secondary-200 dark:bg-transparent dark:border-theme-dark-700 dark:text-theme-dark-200 dim:border-theme-dim-700 dim:text-theme-dim-200 encapsulated-badge';
 
             $isSent = false;
             $isSentToSelf = true;
@@ -51,7 +51,7 @@
     @if($amountForItself !== null && $amountForItself > 0)
         <div
             class="flex items-center py-[4.5px] px-1.5 mr-1.5 h-full text-[#A56D4C] bg-[#F6DFB5] dark:bg-[#AA6868] dim:bg-[#AB8282] dark:text-theme-dark-50"
-            data-tippy-content="{{ trans('general.fiat_excluding_itself', [
+            data-tippy-content="{{ trans('general.fiat_excluding_self', [
                 'amount' => ExplorerNumberFormatter::currency($amountForItself, Network::currency())
             ]) }}"
         >
