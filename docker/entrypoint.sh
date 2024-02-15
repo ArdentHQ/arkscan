@@ -23,7 +23,6 @@ php artisan explorer:cache-transactions
 php artisan explorer:cache-prices
 php artisan explorer:cache-volume
 php artisan explorer:cache-currencies-data
-php artisan explorer:cache-currencies-history --no-delay
 php artisan explorer:cache-delegate-aggregates
 php artisan explorer:cache-delegate-performance
 php artisan explorer:cache-delegate-productivity
