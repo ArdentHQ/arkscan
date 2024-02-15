@@ -32,7 +32,6 @@ final class CacheDevelopmentData extends Command
             'explorer:cache-prices',
             'explorer:cache-volume',
             'explorer:cache-currencies-data',
-            'explorer:cache-currencies-history --no-delay',
             'explorer:cache-delegate-aggregates',
             'explorer:cache-delegate-performance',
             'explorer:cache-delegate-productivity',

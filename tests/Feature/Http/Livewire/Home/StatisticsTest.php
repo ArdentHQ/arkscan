@@ -55,7 +55,6 @@ it('should render with a height, volume, supply and market cap', function () {
     $transaction->block->delegate->save();
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 1.606);
-    (new NetworkStatusBlockCache())->setHistoricalHourly('ARK', 'USD', collect());
     (new CryptoDataCache())->setVolume('USD', '12345');
 
     Livewire::test(Statistics::class)
@@ -94,7 +93,6 @@ it('should render with a height, volume, supply and market cap for BTC', functio
     $transaction->block->delegate->save();
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'BTC', 0.00003132);
-    (new NetworkStatusBlockCache())->setHistoricalHourly('ARK', 'BTC', collect());
     (new CryptoDataCache())->setVolume('BTC', '123');
 
     Livewire::test(Statistics::class)

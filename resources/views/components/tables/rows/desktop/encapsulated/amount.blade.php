@@ -12,10 +12,16 @@
 
     $amount = $model->amount();
     $amountFiat = $model->amountFiat(true);
+    $amountForItself = null;
 
     if ($wallet && ($isReceived || $model->isSentToSelf($wallet->address()))) {
         $amount = $model->amountReceived($wallet?->address());
         $amountFiat = $model->amountReceivedFiat($wallet?->address());
+    } else if ($wallet) {
+        $amountForItself = $model->amountForItself();
+        if ($amountForItself > 0) {
+            $amount = $model->amountExcludingItself();
+        }
     }
 
     $feeBreakpointClass = [
@@ -38,6 +44,7 @@
     <div class="inline-block leading-4.25">
         <x-general.encapsulated.amount-fiat-tooltip
             :amount="$amount"
+            :amount-for-itself="$amountForItself"
             :fiat="$amountFiat"
             :is-received="$isReceived"
             :is-sent="$isSent"

@@ -25,7 +25,6 @@ it('should render the component with fiat value', function () {
     Config::set('arkscan.networks.development.currency', 'ARK');
 
     Artisan::call('explorer:cache-currencies-data');
-    Artisan::call('explorer:cache-currencies-history --no-delay');
     Artisan::call('explorer:cache-prices');
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 1.4);
@@ -48,7 +47,6 @@ it('should render the component with non fiat value', function () {
     Config::set('arkscan.networks.development.currency', 'ARK');
 
     Artisan::call('explorer:cache-currencies-data');
-    Artisan::call('explorer:cache-currencies-history --no-delay');
     Artisan::call('explorer:cache-prices');
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'BTC', 15);

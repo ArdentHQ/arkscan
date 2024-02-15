@@ -11,36 +11,47 @@
 ])
 
 @php
-    $class = ['font-semibold', $class];
+    $class = ['inline-flex items-center font-semibold', $class];
+    $sentToSelfClass = null;
 
-    $isSentToSelf = false;
+    $isSentToSelf = $amountForItself !== null && $amountForItself > 0;
     if (! $withoutStyling) {
-        if ($transaction && $wallet) {
-            $isSentToSelf = $transaction->isSentToSelf($wallet->address());
-        }
         if(! $isSent && ! $isReceived) {
             $class[] = 'text-theme-secondary-900 dark:text-theme-dark-50';
         }
 
         if($isSent || $isReceived) {
-            $class[] = 'flex px-1.5 py-0.5 whitespace-nowrap rounded border';
+            $class[] = 'flex whitespace-nowrap rounded border';
+
+            if ($isSentToSelf) {
+                $class[] = 'pr-1.5';
+            } else {
+                $class[] = 'px-1.5 py-0.5';
+            }
         }
 
-        if($isSent && ! $isSentToSelf) {
-            $class[] = 'fiat-tooltip-sent text-theme-orange-dark bg-theme-orange-light border-theme-orange-light dark:bg-transparent dark:border-[#AA6868] dark:text-[#F39B9B] dim:border-[#AB8282] dim:text-[#CAA0A0]';
-        }
+        if ($wallet && $transaction && $transaction->isSentToSelf($wallet->address())) {
+            $class[] = 'fiat-tooltip-sent text-theme-secondary-700 bg-theme-secondary-200 border-theme-secondary-200 dark:bg-transparent dark:border-theme-dark-700 dark:text-theme-dark-200 dim:border-theme-dim-700 dim:text-theme-dim-200 encapsulated-badge';
 
-        if($isReceived || $isSentToSelf) {
-            $class[] = 'fiat-tooltip-received text-theme-success-700 bg-theme-success-100 border-theme-success-100 dark:bg-transparent dark:border-theme-success-700 dark:text-theme-success-500';
+            $isSent = false;
+            $isSentToSelf = true;
+        } else {
+            if ($isSent) {
+                $class[] = 'fiat-tooltip-sent text-theme-orange-dark bg-theme-orange-light border-theme-orange-light dark:bg-transparent dark:border-[#AA6868] dark:text-[#F39B9B] dim:border-[#AB8282] dim:text-[#CAA0A0]';
+            }
+
+            if ($isReceived) {
+                $class[] = 'fiat-tooltip-received text-theme-success-700 bg-theme-success-100 border-theme-success-100 dark:bg-transparent dark:border-theme-success-700 dark:text-theme-success-500';
+            }
         }
     }
 @endphp
 
 <span {{ $attributes->class($class) }}>
     @if($amountForItself !== null && $amountForItself > 0)
-        <span
-            class="fiat-hint"
-            data-tippy-content="{{ trans('general.fiat_excluding_itself', [
+        <div
+            class="flex items-center py-[4.5px] px-1.5 mr-1.5 h-full text-[#A56D4C] bg-[#F6DFB5] dark:bg-[#AA6868] dim:bg-[#AB8282] dark:text-theme-dark-50"
+            data-tippy-content="{{ trans('general.fiat_excluding_self', [
                 'amount' => ExplorerNumberFormatter::currency($amountForItself, Network::currency())
             ]) }}"
         >
@@ -48,7 +59,7 @@
                 name="hint-small"
                 size="xs"
             />
-        </span>
+        </div>
     @endif
 
     <span
@@ -56,7 +67,7 @@
             data-tippy-content="{{ $fiat }}"
         @endif
     >
-        {{ $isSent && ! $isSentToSelf ? '-' : ($isReceived || $isSentToSelf ? '+' : '')}}
+        {{ $isSent && ! $isSentToSelf ? '-' : ($isReceived ? '+' : '')}}
 
         @if (is_numeric($amount))
             {{ ExplorerNumberFormatter::networkCurrency($amount) }}
