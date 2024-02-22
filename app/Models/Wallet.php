@@ -63,10 +63,9 @@ final class Wallet extends Model
         'attributes' => 'array',
     ];
 
-    // TODO: remove again, this is just for testing
-    public function username(): string {
+    public function username(): ?string {
         $attributes = json_decode($this->attributes['attributes'], true);
-        return Arr::get($attributes, 'username', 'validator_'.$attributes['validatorRank']);
+        return Arr::get($attributes, 'username', null);
     }
 
     /**
