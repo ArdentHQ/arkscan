@@ -34,8 +34,16 @@ final class PriceTicker extends Component
 
     public function setValues(): void
     {
-        $this->isAvailable = (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency());
-        $this->to          = Settings::currency();
+        $cache = new NetworkStatusBlockCache();
+        foreach (config('currencies') as $currency) {
+            if (! $cache->getIsAvailable(Network::currency(), $currency['currency'])) {
+                continue;
+            }
+
+            $this->isAvailable = true;
+        }
+
+        $this->to = Settings::currency();
 
         $this->dispatchBrowserEvent('has-loaded-price-data');
     }

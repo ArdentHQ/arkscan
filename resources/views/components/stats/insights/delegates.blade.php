@@ -16,80 +16,80 @@
             <x-stats.insights.mobile.delegate-row
                 :title="trans('pages.statistics.insights.delegates.header.most_unique_voters')"
                 :value-title="trans('pages.statistics.insights.delegates.header.voters')"
-                :value="$details['most_unique_voters']?->voterCount()"
-                :model="$details['most_unique_voters']"
+                :value="$details->mostUniqueVoters?->voterCount()"
+                :model="$details->mostUniqueVoters"
             />
 
             <x-stats.insights.mobile.delegate-row
                 :title="trans('pages.statistics.insights.delegates.header.least_unique_voters')"
                 :value-title="trans('pages.statistics.insights.delegates.header.voters')"
-                :value="$details['least_unique_voters']?->voterCount()"
-                :model="$details['least_unique_voters']"
+                :value="$details->leastUniqueVoters?->voterCount()"
+                :model="$details->leastUniqueVoters"
             />
 
-            @if ($details['oldest_active_delegate'] !== null)
+            @if ($details->oldestActiveDelegate !== null)
                 <x-stats.insights.mobile.delegate-row
                     :title="trans('pages.statistics.insights.delegates.header.oldest_active_delegate')"
                     :value-title="trans('pages.statistics.insights.delegates.header.registered')"
-                    :value="$details['oldest_active_delegate']['value']"
-                    :model="$details['oldest_active_delegate']['delegate']"
+                    :value="$details->oldestActiveDelegate->value()"
+                    :model="$details->oldestActiveDelegate->wallet()"
                 />
             @endif
 
-            @if ($details['newest_active_delegate'] !== null)
+            @if ($details->newestActiveDelegate !== null)
                 <x-stats.insights.mobile.delegate-row
                     :title="trans('pages.statistics.insights.delegates.header.newest_active_delegate')"
                     :value-title="trans('pages.statistics.insights.delegates.header.registered')"
-                    :value="$details['newest_active_delegate']['value']"
-                    :model="$details['newest_active_delegate']['delegate']"
+                    :value="$details->newestActiveDelegate->value()"
+                    :model="$details->newestActiveDelegate->wallet()"
                 />
             @endif
 
             <x-stats.insights.mobile.delegate-row
                 :title="trans('pages.statistics.insights.delegates.header.most_blocks_forged')"
                 :value-title="trans('pages.statistics.insights.delegates.header.blocks')"
-                :value="$details['most_blocks_forged']?->forgedBlocks()"
-                :model="$details['most_blocks_forged']"
+                :value="$details->mostBlocksForged?->forgedBlocks()"
+                :model="$details->mostBlocksForged"
             />
 
             {{-- Desktop --}}
             <x-stats.insights.desktop.delegate-row
                 :title="trans('pages.statistics.insights.delegates.header.most_unique_voters')"
                 :value-title="trans('pages.statistics.insights.delegates.header.voters')"
-                :value="$details['most_unique_voters']?->voterCount()"
-                :model="$details['most_unique_voters']"
+                :value="$details->mostUniqueVoters?->voterCount()"
+                :model="$details->mostUniqueVoters"
             />
 
             <x-stats.insights.desktop.delegate-row
                 :title="trans('pages.statistics.insights.delegates.header.least_unique_voters')"
                 :value-title="trans('pages.statistics.insights.delegates.header.voters')"
-                :value="$details['least_unique_voters']?->voterCount()"
-                :model="$details['least_unique_voters']"
+                :value="$details->leastUniqueVoters?->voterCount()"
+                :model="$details->leastUniqueVoters"
             />
 
-            @if ($details['oldest_active_delegate'] !== null)
+            @if ($details->oldestActiveDelegate !== null)
                 <x-stats.insights.desktop.delegate-row
                     :title="trans('pages.statistics.insights.delegates.header.oldest_active_delegate')"
                     :value-title="trans('pages.statistics.insights.delegates.header.registered')"
-                    :value="$details['oldest_active_delegate']['value']"
-                    :model="$details['oldest_active_delegate']['delegate']"
+                    :value="$details->oldestActiveDelegate->value()"
+                    :model="$details->oldestActiveDelegate->wallet()"
                 />
             @endif
 
-            @if ($details['newest_active_delegate'] !== null)
+            @if ($details->newestActiveDelegate !== null)
                 <x-stats.insights.desktop.delegate-row
                     :title="trans('pages.statistics.insights.delegates.header.newest_active_delegate')"
                     :value-title="trans('pages.statistics.insights.delegates.header.registered')"
-                    :value="$details['newest_active_delegate']['value']"
-                    :model="$details['newest_active_delegate']['delegate']"
+                    :value="$details->newestActiveDelegate->value()"
+                    :model="$details->newestActiveDelegate->wallet()"
                 />
             @endif
 
             <x-stats.insights.desktop.delegate-row
                 :title="trans('pages.statistics.insights.delegates.header.most_blocks_forged')"
                 :value-title="trans('pages.statistics.insights.delegates.header.blocks')"
-                :value="$details['most_blocks_forged']?->forgedBlocks()"
-                :model="$details['most_blocks_forged']"
+                :value="$details->mostBlocksForged?->forgedBlocks()"
+                :model="$details->mostBlocksForged"
             />
         </x-stats.insights.container>
     </div>

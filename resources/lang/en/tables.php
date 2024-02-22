@@ -20,6 +20,7 @@ return [
         'contract'   => 'Contract',
         'multiple'   => 'Multiple',
         'address'    => 'Address',
+        'return'     => 'Return',
 
         'amount_no_currency' => 'Amount',
 

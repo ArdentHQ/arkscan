@@ -8,13 +8,24 @@ use App\Contracts\MarketDataProvider;
 use App\Enums\StatsPeriods;
 use App\Facades\Network;
 use App\Services\Cache\CryptoDataCache;
+use App\Services\Cache\PriceCache;
 use App\Services\Cache\PriceChartCache;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 final class CachePrices extends Command
 {
+    public const PERIODS = [
+        StatsPeriods::DAY,
+        StatsPeriods::WEEK,
+        StatsPeriods::MONTH,
+        StatsPeriods::QUARTER,
+        StatsPeriods::YEAR,
+        StatsPeriods::ALL,
+    ];
+
     /**
      * The name and signature of the console command.
      *
@@ -29,39 +40,52 @@ final class CachePrices extends Command
      */
     protected $description = 'Cache prices and exchange rates.';
 
-    public function handle(CryptoDataCache $crypto, PriceChartCache $cache, MarketDataProvider $marketDataProvider): void
-    {
+    public function handle(
+        CryptoDataCache $crypto,
+        PriceChartCache $cache,
+        PriceCache $priceCache,
+        MarketDataProvider $marketDataProvider,
+    ): void {
         if (! Network::canBeExchanged()) {
             return;
         }
 
-        /** @var array<string, array<string, string>> */
-        $currencies = config('currencies');
+        $currencyLastUpdated = $priceCache->getLastUpdated();
 
-        collect($currencies)->values()->each(function ($currency) use ($crypto, $cache, $marketDataProvider): void {
-            $currency     = $currency['currency'];
+        $currencies = (new Collection(config('currencies')))
+            ->pluck('currency')
+            // Only update currency prices if they're 10+ minutes old
+            ->filter(fn ($currency) => Arr::get($currencyLastUpdated, $currency, 0) < Carbon::now()->sub('minutes', 10)->unix())
+            ->sort(function ($a, $b) use ($currencyLastUpdated) {
+                $aLastUpdated = Arr::get($currencyLastUpdated, $a, 0);
+                $bLastUpdated = Arr::get($currencyLastUpdated, $b, 0);
+
+                return $aLastUpdated - $bLastUpdated;
+            });
+
+        foreach ($currencies as $currency) {
             $prices       = $marketDataProvider->historical(Network::currency(), $currency);
             $hourlyPrices = $marketDataProvider->historicalHourly(Network::currency(), $currency);
 
-            collect([
-                StatsPeriods::DAY,
-                StatsPeriods::WEEK,
-                StatsPeriods::MONTH,
-                StatsPeriods::QUARTER,
-                StatsPeriods::YEAR,
-                StatsPeriods::ALL,
-            ])->each(function ($period) use ($currency, $crypto, $cache, $prices, $hourlyPrices): void {
+            foreach (self::PERIODS as $period) {
+                $periodPrices = $prices;
                 if ($period === StatsPeriods::DAY) {
-                    $prices = $hourlyPrices;
+                    $periodPrices = $hourlyPrices;
                 }
 
-                if (! $prices->isEmpty()) {
-                    $crypto->setPrices($currency.'.'.$period, $prices);
-                    $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $prices));
-                    $cache->setHistoricalRaw($currency, $period, $this->statsByPeriodRaw($period, $prices));
+                if ($periodPrices->isEmpty()) {
+                    continue;
                 }
-            });
-        });
+
+                $crypto->setPrices($currency.'.'.$period, $periodPrices);
+                $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $periodPrices));
+                $cache->setHistoricalRaw($currency, $period, $this->statsByPeriodRaw($period, $periodPrices));
+
+                $currencyLastUpdated[$currency] = Carbon::now()->unix();
+            }
+        }
+
+        $priceCache->setLastUpdated($currencyLastUpdated);
     }
 
     private function statsByPeriod(string $period, Collection $datasets): Collection

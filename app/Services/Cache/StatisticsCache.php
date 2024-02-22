@@ -163,108 +163,108 @@ final class StatisticsCache implements Contract
         return $this->get('largest_address', null);
     }
 
-    public function setPriceRangeDaily(float $low, float $high): void
+    public function setPriceRangeDaily(string $currency, float $low, float $high): void
     {
-        $this->put('prices/range_daily', ['low' => $low, 'high' => $high]);
+        $this->put(sprintf('prices/range_daily/%s', $currency), ['low' => $low, 'high' => $high]);
     }
 
     /**
      * @return array{'low': float, 'high': float}
      */
-    public function getPriceRangeDaily(): ?array
+    public function getPriceRangeDaily(string $currency): ?array
     {
-        return $this->get('prices/range_daily', null);
+        return $this->get(sprintf('prices/range_daily/%s', $currency), null);
     }
 
-    public function setPriceRange52(float $low, float $high): void
+    public function setPriceRange52(string $currency, float $low, float $high): void
     {
-        $this->put('prices/range_52w', ['low' => $low, 'high' => $high]);
+        $this->put(sprintf('prices/range_52w/%s', $currency), ['low' => $low, 'high' => $high]);
     }
 
     /**
      * @return array{'low': float, 'high': float}
      */
-    public function getPriceRange52(): ?array
+    public function getPriceRange52(string $currency): ?array
     {
-        return $this->get('prices/range_52w', null);
+        return $this->get(sprintf('prices/range_52w/%s', $currency), null);
     }
 
-    public function setPriceAth(int $timestamp, float $value): void
+    public function setPriceAth(string $currency, int $timestamp, float $value): void
     {
-        $this->put('prices/ath', ['timestamp' => $timestamp, 'value' => $value]);
-    }
-
-    /**
-     * @return array{'timestamp': int, 'value': float}
-     */
-    public function getPriceAth(): ?array
-    {
-        return $this->get('prices/ath', null);
-    }
-
-    public function setPriceAtl(int $timestamp, float $value): void
-    {
-        $this->put('prices/atl', ['timestamp' => $timestamp, 'value' => $value]);
+        $this->put(sprintf('prices/ath/%s', $currency), ['timestamp' => $timestamp, 'value' => $value]);
     }
 
     /**
      * @return array{'timestamp': int, 'value': float}
      */
-    public function getPriceAtl(): ?array
+    public function getPriceAth(string $currency): ?array
     {
-        return $this->get('prices/atl', null);
+        return $this->get(sprintf('prices/ath/%s', $currency), null);
     }
 
-    public function setVolumeAth(int $timestamp, float $value): void
+    public function setPriceAtl(string $currency, int $timestamp, float $value): void
     {
-        $this->put('volumes/ath', ['timestamp' => $timestamp, 'value' => $value]);
-    }
-
-    /**
-     * @return array{'timestamp': int, 'value': float}
-     */
-    public function getVolumeAth(): ?array
-    {
-        return $this->get('volumes/ath', null);
-    }
-
-    public function setVolumeAtl(int $timestamp, float $value): void
-    {
-        $this->put('volumes/atl', ['timestamp' => $timestamp, 'value' => $value]);
+        $this->put(sprintf('prices/atl/%s', $currency), ['timestamp' => $timestamp, 'value' => $value]);
     }
 
     /**
      * @return array{'timestamp': int, 'value': float}
      */
-    public function getVolumeAtl(): ?array
+    public function getPriceAtl(string $currency): ?array
     {
-        return $this->get('volumes/atl', null);
+        return $this->get(sprintf('prices/atl/%s', $currency), null);
     }
 
-    public function setMarketCapAth(int $timestamp, float $value): void
+    public function setVolumeAth(string $currency, int $timestamp, float $value): void
     {
-        $this->put('market_caps/ath', ['timestamp' => $timestamp, 'value' => $value]);
-    }
-
-    /**
-     * @return array{'timestamp': int, 'value': float}
-     */
-    public function getMarketCapAth(): ?array
-    {
-        return $this->get('market_caps/ath', null);
-    }
-
-    public function setMarketCapAtl(int $timestamp, float $value): void
-    {
-        $this->put('market_caps/atl', ['timestamp' => $timestamp, 'value' => $value]);
+        $this->put(sprintf('volumes/ath/%s', $currency), ['timestamp' => $timestamp, 'value' => $value]);
     }
 
     /**
      * @return array{'timestamp': int, 'value': float}
      */
-    public function getMarketCapAtl(): ?array
+    public function getVolumeAth(string $currency): ?array
     {
-        return $this->get('market_caps/atl', null);
+        return $this->get(sprintf('volumes/ath/%s', $currency), null);
+    }
+
+    public function setVolumeAtl(string $currency, int $timestamp, float $value): void
+    {
+        $this->put(sprintf('volumes/atl/%s', $currency), ['timestamp' => $timestamp, 'value' => $value]);
+    }
+
+    /**
+     * @return array{'timestamp': int, 'value': float}
+     */
+    public function getVolumeAtl(string $currency): ?array
+    {
+        return $this->get(sprintf('volumes/atl/%s', $currency), null);
+    }
+
+    public function setMarketCapAth(string $currency, int $timestamp, float $value): void
+    {
+        $this->put(sprintf('market_caps/ath/%s', $currency), ['timestamp' => $timestamp, 'value' => $value]);
+    }
+
+    /**
+     * @return array{'timestamp': int, 'value': float}
+     */
+    public function getMarketCapAth(string $currency): ?array
+    {
+        return $this->get(sprintf('market_caps/ath/%s', $currency), null);
+    }
+
+    public function setMarketCapAtl(string $currency, int $timestamp, float $value): void
+    {
+        $this->put(sprintf('market_caps/atl/%s', $currency), ['timestamp' => $timestamp, 'value' => $value]);
+    }
+
+    /**
+     * @return array{'timestamp': int, 'value': float}
+     */
+    public function getMarketCapAtl(string $currency): ?array
+    {
+        return $this->get(sprintf('market_caps/atl/%s', $currency), null);
     }
 
     public function setAnnualData(int $year, int $transactions, string $volume, string $fees, int $blocks): void
