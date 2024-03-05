@@ -43,7 +43,7 @@ final class CacheDelegateVoterCounts extends Command
             'COUNT(voters.public_key) total',
         ];
 
-        $results = Wallets::allWithUsername()
+        $results = Wallets::allWithValidatorPublicKey()
             ->selectRaw(implode(', ', $select))
             ->join(
                 'wallets as voters',

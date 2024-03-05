@@ -32,7 +32,7 @@ final class CacheDelegateUsernames extends Command
 
         $knownWallets = collect(Network::knownWallets());
 
-        Wallets::allWithUsername()
+        Wallets::allWithValidatorPublicKey()
             ->orWhereIn('address', $knownWallets->pluck('address'))
             ->select([
                 'address',
