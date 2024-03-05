@@ -27,7 +27,7 @@ final class CacheDelegateWallets extends Command
 
     public function handle(WalletCache $cache): void
     {
-        Wallets::allWithUsername()
+        Wallets::allWithValidatorPublicKey()
             ->orderBy('balance')
             ->chunk(200, function ($wallets) use ($cache): void {
                 /** @var Wallet $wallet */

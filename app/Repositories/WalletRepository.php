@@ -20,6 +20,11 @@ final class WalletRepository implements Contract
         return Wallet::whereNotNull('wallets.attributes->username');
     }
 
+    public function allWithValidatorPublicKey(): Builder
+    {
+        return Wallet::whereNotNull('wallets.attributes->validatorPublicKey');
+    }    
+
     public function allWithVote(): Builder
     {
         return Wallet::whereNotNull('attributes->vote')->orderBy('balance');

@@ -11,7 +11,7 @@ final class DelegateTotalAggregates
 {
     public function aggregate(): Collection
     {
-        return Wallets::allWithUsername()
+        return Wallets::allWithValidatorPublicKey()
             ->join('blocks', 'blocks.generator_public_key', '=', 'wallets.public_key')
             ->selectRaw('
                 SUM(blocks.total_amount) as total_amount,

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static Builder allWithUsername()
+ * @method static Builder allWithValidatorPublicKey()
  * @method static Builder allWithVote()
  * @method static Builder allWithPublicKey()
  * @method static Builder allWithMultiSignature()
