@@ -37,7 +37,7 @@ final class CacheDelegateUsernames extends Command
             ->select([
                 'address',
                 'public_key',
-                'attributes'
+                'attributes',
             ])
             ->get()
             ->each(function (Model $wallet) use ($cache, $knownWallets) : void {

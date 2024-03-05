@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Transactions\Aggregates\Historical;
 
-use App\Enums\CoreTransactionTypeEnum;
 use App\Services\Timestamp;
 use Illuminate\Support\Facades\DB;
 

@@ -21,7 +21,7 @@ class UnixSeconds implements CastsAttributes
     {
         // TODO: Database now stores timestamp in unix milliseconds,
         // consider adapting all backend code to use Carbon instead of an int
-        return (int)floor($value / 1000);
+        return (int) floor($value / 1000);
     }
 
     /**

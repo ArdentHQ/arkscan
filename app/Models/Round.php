@@ -42,9 +42,9 @@ final class Round extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'balance' => BigInteger::class,
-        'public_key' => 'string',
-        'round' => 'int',
+        'balance'      => BigInteger::class,
+        'public_key'   => 'string',
+        'round'        => 'int',
         'round_height' => 'int',
     ];
 
@@ -81,7 +81,7 @@ final class Round extends Model
     protected function validators(): Attribute
     {
         return Attribute::make(
-           get: fn ($value) => json_decode($value),
+            get: fn ($value) => json_decode($value),
         )->shouldCache();
     }
 }

@@ -58,7 +58,7 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(CacheVolume::class)->hourly();
 
-        $schedule->command(CacheDelegateWallets::class)->everyTenMinutes();
+        $schedule->command(CacheDelegateWallets::class)->everyMinute();
 
         $schedule->command(CacheDelegateVoterCounts::class)->everyTenMinutes();
 

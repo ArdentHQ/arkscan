@@ -12,7 +12,6 @@ use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Transaction;
 use App\ViewModels\Concerns\Transaction\InteractsWithVendorField;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 final class TransactionType
 {
@@ -492,8 +491,8 @@ final class TransactionType
             return [$containsVote, $containsUnvote];
         }
 
-        $containsVote = !empty(Arr::get($this->transaction->asset, 'votes', []));
-        $containsUnvote = !empty(Arr::get($this->transaction->asset, 'unvotes', []));
+        $containsVote   = ! empty(Arr::get($this->transaction->asset, 'votes', []));
+        $containsUnvote = ! empty(Arr::get($this->transaction->asset, 'unvotes', []));
 
         return [$containsVote, $containsUnvote];
     }

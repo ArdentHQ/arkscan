@@ -74,8 +74,8 @@ trait DelegateData
     private function fetchDelegates(): array
     {
         $currentRound = Rounds::current();
-        $heightRange = Monitor::heightRangeByRound($currentRound);
-        $delegates   = $currentRound->validators;
+        $heightRange  = Monitor::heightRangeByRound($currentRound);
+        $delegates    = $currentRound->validators;
 
         $this->cacheLastBlocks($delegates);
 

@@ -8,7 +8,6 @@ use App\Models\Casts\BigInteger;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Model;
 
-
 /**
  * @property BigNumber $height
  * @property BigNumber $supply
@@ -35,7 +34,7 @@ final class State extends Model
     /**
      * @return State
      */
-    public static function latest(): State
+    public static function latest(): self
     {
         return self::where('id', 1)->firstOrFail();
     }

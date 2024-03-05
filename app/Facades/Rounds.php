@@ -6,7 +6,6 @@ namespace App\Facades;
 
 use App\Contracts\RoundRepository;
 use App\Models\Round;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Facade;
 
 /**

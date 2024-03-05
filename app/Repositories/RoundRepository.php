@@ -9,7 +9,7 @@ use App\Models\Round;
 
 final class RoundRepository implements Contract
 {
-     public function current(): Round
+    public function current(): Round
     {
         return Round::orderBy('round', 'desc')->firstOrFail();
     }

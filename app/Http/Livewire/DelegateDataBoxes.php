@@ -12,7 +12,6 @@ use App\Facades\Rounds;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\DelegateData;
 use App\Models\Block;
-use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\MonitorCache;
 use App\Services\Cache\WalletCache;

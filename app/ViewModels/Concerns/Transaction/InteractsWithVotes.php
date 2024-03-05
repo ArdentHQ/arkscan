@@ -7,7 +7,6 @@ namespace App\ViewModels\Concerns\Transaction;
 use App\Facades\Wallets;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 trait InteractsWithVotes
 {

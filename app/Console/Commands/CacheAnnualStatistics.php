@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Enums\CoreTransactionTypeEnum;
 use App\Facades\Network;
 use App\Services\BigNumber;
 use App\Services\Cache\StatisticsCache;
@@ -89,13 +88,13 @@ final class CacheAnnualStatistics extends Command
                 DB::raw('SUM(fee) / 1e8 as fees'),
             ])
             ->from('transactions')
-            ->where('timestamp', '>=', ($startOfYear - $epoch)*1000)
+            ->where('timestamp', '>=', ($startOfYear - $epoch) * 1000)
             ->first();
 
         $blocksData = DB::connection('explorer')
             ->query()
             ->from('blocks')
-            ->where('timestamp', '>=', ($startOfYear - $epoch)*1000)
+            ->where('timestamp', '>=', ($startOfYear - $epoch) * 1000)
             ->count();
 
         $cache->setAnnualData(
