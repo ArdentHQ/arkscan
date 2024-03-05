@@ -211,12 +211,12 @@ final class Transaction extends Model
     /**
      * A transaction belongs to a recipient.
      *
-    * @return Wallet
+     * @return Wallet
      */
     public function recipient(): Wallet
     {
         $recipientId = $this->recipient_id;
-        if (!is_null($recipientId)) {
+        if (! is_null($recipientId)) {
             return Wallet::firstWhere('address', $recipientId);
         }
 

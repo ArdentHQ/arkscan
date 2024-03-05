@@ -63,8 +63,10 @@ final class Wallet extends Model
         'attributes' => 'array',
     ];
 
-    public function username(): ?string {
+    public function username(): ?string
+    {
         $attributes = json_decode($this->attributes['attributes'], true);
+
         return Arr::get($attributes, 'username', null);
     }
 

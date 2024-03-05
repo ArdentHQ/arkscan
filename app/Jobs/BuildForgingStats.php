@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Facades\Network;
 use App\Facades\Services\Monitor\MissedBlocksCalculator;
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Services\Timestamp;
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -83,7 +81,7 @@ final class BuildForgingStats implements ShouldQueue
             ->limit(1)
             ->first();
 
-        if($startBlock == null) {
+        if ($startBlock === null) {
             return 1;
         }
 
@@ -120,7 +118,7 @@ final class BuildForgingStats implements ShouldQueue
                 ->timestamp;
 
             $timestampForHeight = $this->getTimestampForHeight($height);
-            $timeRange = $timestampForHeight - $lastForgingInfoTs;
+            $timeRange          = $timestampForHeight - $lastForgingInfoTs;
 
             if ($timeRange < 0 || $timeRange > 24 * 60 * 60 * 30) {
                 return 0;

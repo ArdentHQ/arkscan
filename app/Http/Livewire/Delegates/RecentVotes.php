@@ -121,8 +121,9 @@ final class RecentVotes extends TabbedTableComponent
                     $query->whereRaw('jsonb_array_length(asset->\'votes\') >= 1');
                 }))->orWhere(fn ($query) => $query->when($this->filter['unvote'], function ($query) {
                     $query->whereRaw('jsonb_array_length(asset->\'unvotes\') >= 1');
-                }))->orWhere(fn ($query) => $query->when($this->filter['vote-swap'], fn ($query) =>
-                    $query
+                }))->orWhere(fn ($query) => $query->when(
+                    $this->filter['vote-swap'],
+                    fn ($query) => $query
                         ->whereRaw('jsonb_array_length(asset->\'votes\') >= 1')
                         ->whereRaw('jsonb_array_length(asset->\'unvotes\') >= 1')
                 ));

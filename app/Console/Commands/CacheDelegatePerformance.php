@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Facades\Network;
-use App\Facades\Rounds;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
@@ -42,7 +40,7 @@ final class CacheDelegatePerformance extends Command
         $query = Wallet::query()
             ->select([
                 'wallets.public_key',
-                DB::raw('MAX(wallets.balance) as balance')
+                DB::raw('MAX(wallets.balance) as balance'),
             ])
             ->whereIn('wallets.public_key', $mostRecentRounds->first()->validators)
             ->join('blocks', 'blocks.generator_public_key', '=', 'wallets.public_key');

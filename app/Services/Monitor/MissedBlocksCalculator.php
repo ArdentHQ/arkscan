@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Services\Monitor;
 
 use App\Facades\Network;
-use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Round;
-use App\Services\Monitor\Actions\ShuffleDelegates;
 use Illuminate\Support\Collection;
 
 /* @phpstan-ignore-next-line */
@@ -16,11 +14,11 @@ class MissedBlocksCalculator implements \App\Contracts\Services\Monitor\MissedBl
 {
     public static function calculateFromHeightGoingBack(int $heightFrom, int $heightTo): array
     {
-        $roundHeightFrom = (int)floor(($heightFrom - Network::delegateCount()) / Network::delegateCount()) * Network::delegateCount() + 1;
-        $roundHeightTo = (int)floor(($heightTo - Network::delegateCount()) / Network::delegateCount()) * Network::delegateCount() + 1;
+        $roundHeightFrom = (int) floor(($heightFrom - Network::delegateCount()) / Network::delegateCount()) * Network::delegateCount() + 1;
+        $roundHeightTo   = (int) floor(($heightTo - Network::delegateCount()) / Network::delegateCount()) * Network::delegateCount() + 1;
 
         $forgingStats = [];
-        $rounds = Round::whereBetween('round_height', [$roundHeightFrom, $roundHeightTo])->orderBy('round', 'asc')->get();
+        $rounds       = Round::whereBetween('round_height', [$roundHeightFrom, $roundHeightTo])->orderBy('round', 'asc')->get();
         $rounds->each(function ($round) use (&$forgingStats, $heightTo) {
             $forgingStats = $forgingStats + self::calculateForRound($round, $heightTo);
         });
@@ -51,15 +49,15 @@ class MissedBlocksCalculator implements \App\Contracts\Services\Monitor\MissedBl
     private static function calculateForgingInfo(array $roundValidators, Collection $producedBlocks): array
     {
         $forgeInfoByTimestamp = [];
-        $misses = 0;
-        $validatorCount = count($roundValidators);
+        $misses               = 0;
+        $validatorCount       = count($roundValidators);
 
         $producedBlocks->each(function ($block, $index) use (&$forgeInfoByTimestamp, &$misses, $validatorCount, $roundValidators) {
             $expectedValidator = $roundValidators[($index + $misses) % $validatorCount];
-            $actualValidator = $block['generator_public_key'];
+            $actualValidator   = $block['generator_public_key'];
 
-            $isForger = $actualValidator == $expectedValidator;
-            if (!$isForger) {
+            $isForger = $actualValidator === $expectedValidator;
+            if (! $isForger) {
                 $misses += 1;
             }
 

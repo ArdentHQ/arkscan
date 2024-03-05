@@ -145,7 +145,7 @@ final class TransactionFactory extends Factory
             'type'       => CoreTransactionTypeEnum::USERNAME_REGISTRATION,
             'type_group' => TransactionTypeGroupEnum::CORE,
             'asset'      => [
-                'username' => 'bob'
+                'username' => 'bob',
             ],
         ]);
     }

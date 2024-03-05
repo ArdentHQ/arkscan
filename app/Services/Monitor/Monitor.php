@@ -18,6 +18,7 @@ final class Monitor
     public static function heightRangeByRound(Round $round): array
     {
         $delegateCount = Network::delegateCount();
+
         return [$round->round_height, $round->round_height + ($delegateCount - 1)];
     }
 

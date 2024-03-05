@@ -6,7 +6,6 @@ namespace App\Services\Blockchain;
 
 use App\Contracts\Network as Contract;
 use App\Models\State;
-use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\WalletCache;
 use ArkEcosystem\Crypto\Networks\AbstractNetwork;
