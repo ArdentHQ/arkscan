@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 interface WalletRepository
 {
     public function allWithUsername(): Builder;
-    
+
     public function allWithValidatorPublicKey(): Builder;
 
     public function allWithVote(): Builder;

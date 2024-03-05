@@ -23,7 +23,7 @@ final class WalletRepository implements Contract
     public function allWithValidatorPublicKey(): Builder
     {
         return Wallet::whereNotNull('wallets.attributes->validatorPublicKey');
-    }    
+    }
 
     public function allWithVote(): Builder
     {

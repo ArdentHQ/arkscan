@@ -29,7 +29,7 @@ final class WalletRepositoryWithCache implements WalletRepository
     {
         return $this->wallets->allWithValidatorPublicKey();
     }
-    
+
     public function allWithVote(): Builder
     {
         return $this->wallets->allWithVote();
