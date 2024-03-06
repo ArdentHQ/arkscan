@@ -50,10 +50,12 @@ final class CacheDelegateUsernames extends Command
                     $username = $wallet->username();
                 }
 
-                $cache->setUsernameByAddress($wallet->address, $username);
+                if (! is_null($username)) {
+                    $cache->setUsernameByAddress($wallet->address, $username);
 
-                if (! is_null($wallet->public_key)) {
-                    $cache->setUsernameByPublicKey($wallet->public_key, $username);
+                    if (! is_null($wallet->public_key)) {
+                        $cache->setUsernameByPublicKey($wallet->public_key, $username);
+                    }
                 }
             });
     }

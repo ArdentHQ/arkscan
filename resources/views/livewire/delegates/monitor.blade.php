@@ -3,7 +3,7 @@
     class="w-full"
     wire:init="monitorIsReady"
     @if ($this->isReady && $this->hasDelegates)
-        wire:poll.1s="pollDelegates"
+        wire:poll.2s="pollDelegates"
     @elseif ($this->isReady)
         wire:poll.4s="pollDelegates"
     @endif

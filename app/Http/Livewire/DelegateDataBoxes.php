@@ -85,6 +85,10 @@ final class DelegateDataBoxes extends Component
             return DelegateForgingStatus::missing;
         }
 
+        // NOTE: In the first round of a newly registered validator it is always considered "missed"
+        // because we don't have the information here to know whether the delegate just joined or not.
+        // It will auto-correct itself after the first round.
+
         return DelegateForgingStatus::missed;
     }
 
