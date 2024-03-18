@@ -12,6 +12,10 @@
 
             <x-compatible-wallets.section-divider class="dim:bg-theme-dark-950 dim:text-theme-dark-950" />
 
+            <x-compatible-wallets.arkconnect />
+
+            <x-compatible-wallets.section-divider class="dim:bg-theme-dark-950 dim:text-theme-dark-950" />
+
             <x-compatible-wallets.wallet-grid />
 
             <x-information-pages.cta :text="trans('pages.compatible-wallets.get_listed')">
