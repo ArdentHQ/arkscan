@@ -3,7 +3,7 @@
     "/js/chart-tooltip.js": "/js/chart-tooltip.js?id=b74d64d41a6d6165abc8a5196bf704ca",
     "/js/clipboard.js": "/js/clipboard.js?id=80d900f861e2aacb0e23e914068d0de9",
     "/js/manifest.js": "/js/manifest.js?id=bf375adc4a6d48ff1f208128c5b5b26f",
-    "/css/app.css": "/css/app.css?id=0d21599f0c40ee3ae334958ffedf6a00",
+    "/css/app.css": "/css/app.css?id=243bfea0cc69ffae972127d66d20dd26",
     "/js/vendor.js": "/js/vendor.js?id=7cda3c0df7a095f8a5ac21b340ca97bd",
     "/images/delegates/header-bg-dark.svg": "/images/delegates/header-bg-dark.svg?id=0fc9d2cfbec09d702832f3bd81fae169",
     "/images/delegates/header-bg-dim.svg": "/images/delegates/header-bg-dim.svg?id=48500cc7f16e42f8f0f07af07b76dead",
@@ -67,5 +67,7 @@
     "/images/wallets/arkvault.svg": "/images/wallets/arkvault.svg?id=9282f73b764c9511882be827a609eef1",
     "/images/wallets/arrows-dark.svg": "/images/wallets/arrows-dark.svg?id=9bbc2b481bd831221919d0266d3b5d51",
     "/images/wallets/arrows-dim.svg": "/images/wallets/arrows-dim.svg?id=b6082823a489f3b12ceb85a8a952c16f",
+    "/images/wallets/arrows-success-dark.svg": "/images/wallets/arrows-success-dark.svg?id=eb61bed5f27b437907e94560db0b5999",
+    "/images/wallets/arrows-success.svg": "/images/wallets/arrows-success.svg?id=0bcd3a6c897075b254c0d8064859e2d2",
     "/images/wallets/arrows.svg": "/images/wallets/arrows.svg?id=4b106788d496df090459c1727cf8a97d"
 }

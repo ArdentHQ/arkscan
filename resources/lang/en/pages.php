@@ -602,6 +602,13 @@ return [
             'url'         => 'https://arkvault.io',
         ],
 
+        'arkconnect' => [
+            'title'       => 'ARKConnect',
+            'title_extra' => '(Browser Extension)',
+            'subtitle'    => 'Web3 Browser Extension',
+            'url'         => 'https://arkconnect.io',
+        ],
+
         'wallets' => [
             'abra' => [
                 'title' => 'Abra',
