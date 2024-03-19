@@ -157,6 +157,10 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="flex flex-col mx-6 py-3">
+                            <x-navbar.arkconnect />
+                        </div>
                     </div>
                 </div>
             </div>

@@ -17,6 +17,8 @@
             >
                 <x-navbar.theme-dropdown />
             </div>
+
+            <x-navbar.arkconnect />
         </div>
     </div>
 

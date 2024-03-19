@@ -51,11 +51,17 @@ return [
         'mainnet'            => 'Mainnet',
         'testnet'            => 'Testnet',
         'price'              => 'Price',
+        'connect_wallet'     => 'Connect Wallet',
 
         'theme' => [
             'light' => 'Light',
             'dark'  => 'Dark',
             'dim'   => 'Dim',
+        ],
+
+        'arkconnect' => [
+            'copy_address' => 'Copy Address',
+            'disconnect' => 'Disconnect',
         ],
     ],
 
