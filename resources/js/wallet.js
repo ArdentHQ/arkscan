@@ -4,21 +4,27 @@ const Wallet = () => {
         isLoading: true,
 
         async init() {
-            if (! this.hasExtension()) {
+            if (!this.hasExtension()) {
                 return;
             }
 
             this.isConnected = await this.extension().isConnected();
 
-            this.extension().on('connected', this.handleConnectionEvent.bind(this));
+            this.extension().on(
+                "connected",
+                this.handleConnectionEvent.bind(this)
+            );
 
-            this.extension().on('disconnected', this.handleConnectionEvent.bind(this));
+            this.extension().on(
+                "disconnected",
+                this.handleConnectionEvent.bind(this)
+            );
 
             this.isLoading = false;
         },
 
         handleConnectionEvent(data) {
-            this.isConnected = data.type === 'connected';
+            this.isConnected = data.type === "connected";
         },
 
         extension() {
@@ -26,7 +32,7 @@ const Wallet = () => {
         },
 
         async address() {
-            if (! this.isConnected) {
+            if (!this.isConnected) {
                 return null;
             }
 
@@ -39,7 +45,7 @@ const Wallet = () => {
 
         async copy() {
             const address = await this.address();
-            if (! address) {
+            if (!address) {
                 return;
             }
 
@@ -47,7 +53,7 @@ const Wallet = () => {
         },
 
         connect() {
-            if (! this.hasExtension()) {
+            if (!this.hasExtension()) {
                 return;
             }
 
@@ -55,7 +61,7 @@ const Wallet = () => {
         },
 
         disconnect() {
-            if (! this.hasExtension()) {
+            if (!this.hasExtension()) {
                 return;
             }
 
