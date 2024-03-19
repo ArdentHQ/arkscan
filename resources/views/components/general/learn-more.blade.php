@@ -22,7 +22,7 @@
 ]) }}>
     <div @class([
         'flex flex-1 items-center bg-no-repeat bg-right mx-auto sm:ml-0 sm:mr-2',
-        'flex-col text-center' => $mobileTall,
+        'flex-col text-center sm:flex-row sm:text-left' => $mobileTall,
         ...$arrowsClass,
     ])>
         <div>
@@ -36,7 +36,7 @@
         <div class="flex flex-col justify-center ml-3 space-y-2">
             <span @class([
                 'text-lg leading-5.25 font-semibold leading-6',
-                'flex flex-col mt-3' => $mobileTall,
+                'flex flex-col mt-3 sm:flex-row sm:mt-0 sm:space-x-1' => $mobileTall,
                 $titleColor,
             ])>
                 <span>{{ $title }}</span>

@@ -1,9 +1,9 @@
 @props([
     'backgroundColor' => 'bg-theme-success-50 dark:bg-theme-success-900 dim:bg-theme-dim-blue-950 border border-transparent dark:border-theme-success-500',
-    'padding' => 'p-6 mt-6',
+    'padding' => 'p-6 mt-6 sm:py-4',
     'titleColor' => 'text-theme-secondary-900 dark:text-white',
     'subtitleColor' => 'text-theme-secondary-700 dark:text-theme-success-700',
-    'iconSize' => 'w-11 h-11',
+    'iconSize' => 'w-10 h-10',
     'buttonColor' => '!bg-theme-success-600',
     'arrowsBreakpoint' => null,
 ])
