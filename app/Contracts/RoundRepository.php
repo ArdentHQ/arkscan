@@ -6,6 +6,7 @@ namespace App\Contracts;
 
 use App\Models\Round;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 
 interface RoundRepository
 {
@@ -16,4 +17,6 @@ interface RoundRepository
     public function allByRound(int $round): Collection;
 
     public function current(): int;
+
+    public function delegates(bool $withBlock = true): SupportCollection;
 }

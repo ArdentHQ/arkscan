@@ -3,7 +3,9 @@
 declare(strict_types=1);
 
 use App\Contracts\Network as Contract;
+use App\Facades\Rounds;
 use App\Models\Block;
+use App\Models\Round;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkFactory;
@@ -15,6 +17,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeKnownWallets;
+use Tests\Stubs\RoundsMock;
 
 beforeEach(function () {
     $this->app->singleton(Contract::class, fn () => NetworkFactory::make('production'));
@@ -297,13 +300,19 @@ it('should fail to get the wallet of the vote if it is not cached', function () 
 });
 
 it('should get the performance if the wallet is a delegate', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
+    Rounds::swap(new RoundsMock());
+
+    $wallet = Wallet::factory()->create([
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
             'delegate' => [],
         ],
-    ]));
+    ]);
+
+    (new WalletCache())->setPerformance($wallet->public_key, [true, true]);
+
+    $this->subject = new WalletViewModel($wallet);
 
     expect($this->subject->performance())->toBeArray();
 });
@@ -316,6 +325,7 @@ it('should fail to get the performance if the wallet is not a delegate', functio
     ]));
 
     expect($this->subject->performance())->toBeEmpty();
+    expect($this->subject->hasForged())->toBeFalse();
 });
 
 it('should fail to get the performance if the wallet has no public key', function () {
@@ -327,47 +337,72 @@ it('should fail to get the performance if the wallet has no public key', functio
 });
 
 it('should determine if a new delegate has forged', function () {
-    (new WalletCache())->setPerformance($this->subject->publicKey(), []);
+    $block = Block::factory()->create([
+        'generator_public_key' => $this->wallet->public_key,
+    ]);
+
+    Rounds::swap(new RoundsMock());
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, false]);
 
     expect($this->subject->hasForged())->toBeFalse();
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true]);
+    Rounds::swap(new RoundsMock($block));
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, true]);
 
     expect($this->subject->hasForged())->toBeTrue();
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false, false]);
+    Rounds::swap(new RoundsMock());
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, false]);
 
     expect($this->subject->hasForged())->toBeFalse();
 });
 
 it('should determine if the delegate just missed a block', function () {
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false, true, true, true]);
+    $block = Block::factory()->create([
+        'generator_public_key' => $this->wallet->public_key,
+    ]);
+
+    Rounds::swap(new RoundsMock($block));
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, true]);
 
     expect($this->subject->justMissed())->toBeFalse();
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false, true, false, true]);
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, true]);
 
     expect($this->subject->justMissed())->toBeFalse();
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, true, true, true, false]);
+    Rounds::swap(new RoundsMock());
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false]);
 
     expect($this->subject->justMissed())->toBeTrue();
 });
 
-it('should determine if the delegate keeps is missing blocks', function () {
-    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [true, false, true, false, true]);
+it('should determine if the delegate is missing blocks', function () {
+    Rounds::swap(new RoundsMock());
+
+    Round::factory()->create([
+        'round'      => '112167',
+        'public_key' => $this->wallet->public_key,
+    ]);
+
+    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [false, true]);
 
     expect($this->subject->keepsMissing())->toBeFalse();
 
-    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [true, false, true, false, false]);
+    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [false, false]);
 
     expect($this->subject->keepsMissing())->toBeTrue();
 });

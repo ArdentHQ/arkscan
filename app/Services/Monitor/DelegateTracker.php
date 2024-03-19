@@ -42,7 +42,7 @@ final class DelegateTracker
 
         // Get the original forging info to determine the actual first
         $originalOrder = ForgingInfoCalculator::calculate(
-            Block::where('height', $startHeight)->firstOrFail()->timestamp,
+            Block::where('height', $startHeight)->first()?->timestamp,
             $startHeight
         );
 
