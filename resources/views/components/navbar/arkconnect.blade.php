@@ -5,7 +5,7 @@
 >
     <button
         x-show="! isConnected"
-        class="button-secondary whitespace-nowrap py-1.5 px-4"
+        class="py-1.5 px-4 whitespace-nowrap button-secondary"
         @click="connect"
     >
         @lang('general.navbar.connect_wallet')
@@ -24,7 +24,7 @@
             dropdown-background="bg-white dark:bg-theme-dark-700"
             dropdown-padding="py-1"
             dropdown-wrapper-class="w-full"
-            active-button-class="flex items-center justify-between md:justify-start space-x-2 bg-transparent whitespace-nowrap pl-3 pr-2 h-8 border border-theme-secondary-300 dark:border-theme-dark-700 text-theme-secondary-700 dark:text-theme-dark-200 hover:text-theme-secondary-900 rounded hover:bg-theme-secondary-200 dark:hover:bg-theme-dark-700 transition-default"
+            active-button-class="flex justify-between items-center pr-2 pl-3 space-x-2 h-8 whitespace-nowrap bg-transparent rounded border md:justify-start border-theme-secondary-300 text-theme-secondary-700 transition-default dark:border-theme-dark-700 dark:text-theme-dark-200 dark:hover:bg-theme-dark-700 hover:text-theme-secondary-900 hover:bg-theme-secondary-200"
         >
             <x-slot name="button">
                 <div
