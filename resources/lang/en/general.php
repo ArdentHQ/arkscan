@@ -61,7 +61,7 @@ return [
 
         'arkconnect' => [
             'copy_address' => 'Copy Address',
-            'disconnect' => 'Disconnect',
+            'disconnect'   => 'Disconnect',
         ],
     ],
 
