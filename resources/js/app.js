@@ -30,6 +30,7 @@ import MobileSorting from "./mobile-sorting.js";
 import TransactionsExport from "./transactions-export.js";
 import Tabs from "./tabs";
 import makeBlockie from "ethereum-blockies-base64";
+import { truncateMiddle } from "./truncate-middle.js";
 
 import "./livewire-exception-handler.js";
 
@@ -56,6 +57,7 @@ window.ThemeManager = ThemeManager;
 window.MobileSorting = MobileSorting;
 window.TransactionsExport = TransactionsExport;
 window.Search = Search;
+window.truncateMiddle = truncateMiddle;
 
 dayjs.extend(dayjsRelativeTime);
 

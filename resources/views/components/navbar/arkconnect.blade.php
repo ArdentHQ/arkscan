@@ -28,8 +28,8 @@
         >
             <x-slot name="button">
                 <div
-                    x-text="address"
-                    class="text-sm font-semibold leading-3.75 truncate md:max-w-[100px]"
+                    x-text="truncateMiddle(await address())"
+                    class="text-sm font-semibold leading-3.75"
                 ></div>
 
                 <div class="dark:text-theme-dark-300">
