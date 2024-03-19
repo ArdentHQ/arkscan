@@ -10,6 +10,7 @@ import * as dayjsRelativeTime from "dayjs/plugin/relativeTime";
 
 // @see https://laravel-mix.com/docs/6.0/upgrade#unused-library-extraction
 import Alpine from "alpinejs";
+import Wallet from "./wallet.js";
 import BlocksExport from "./blocks-export.js";
 import { Chart } from "chart.js";
 import CustomChart from "@ui/js/chart.js";
@@ -34,6 +35,7 @@ import "./livewire-exception-handler.js";
 
 window.makeBlockie = makeBlockie;
 window.Alpine = Alpine;
+window.Wallet = Wallet;
 window.BlocksExport = BlocksExport;
 window.Chart = Chart;
 window.Dropdown = Dropdown;
