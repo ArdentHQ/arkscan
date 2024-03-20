@@ -31,13 +31,14 @@ final class BlocksController
     private function blockData(): array
     {
         return Cache::remember('blocks:stats', self::STATS_TTL, function () {
-            $timestamp = Timestamp::fromUnix(Carbon::now()->subDays(1)->unix())->unix() * 1000;
+            $timestamp = Timestamp::fromUnix(Carbon::now()->subDays(1)->unix())->unix();
+
             $data      = (array) DB::connection('explorer')
                 ->table('blocks')
                 ->selectRaw('COUNT(*) as block_count')
                 ->selectRaw('SUM(reward) as total_rewards')
                 ->selectRaw('MAX(total_amount) as largest_amount')
-                ->where('timestamp', '>', $timestamp)
+                ->where('timestamp', '>', $timestamp * 1000)
                 ->first();
 
             return [
