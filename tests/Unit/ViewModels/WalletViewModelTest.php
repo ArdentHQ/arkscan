@@ -844,6 +844,10 @@ it('should return count for blocks since last forged', function () {
     (new NetworkCache())->setHeight(fn (): int => 100);
 
     expect($wallet->blocksSinceLastForged())->toBe(90);
+
+    (new WalletCache())->setLastBlock($wallet->publicKey(), []);
+
+    expect($wallet->blocksSinceLastForged())->toBe(null);
 });
 
 it('should return null for time since last forged if not forged', function () {
