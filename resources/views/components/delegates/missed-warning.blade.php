@@ -1,6 +1,6 @@
 @props(['delegate'])
 
-@if ($delegate->justMissed() || $delegate->keepsMissing())
+@if ($delegate->keepsMissing())
     <div
         data-tippy-content=""
         class="text-theme-warning-900"

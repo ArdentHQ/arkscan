@@ -83,7 +83,7 @@
                             without-clipboard
                             :delegate-name-class="Arr::toCssClasses([
                                 'md-lg:w-auto',
-                                'md:w-[200px]' => ! ($delegate->justMissed() || $delegate->keepsMissing()),
+                                'md:w-[200px]' => ! $delegate->keepsMissing(),
                             ])"
                         />
 
