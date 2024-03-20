@@ -18,7 +18,9 @@
                 <x-navbar.theme-dropdown />
             </div>
 
-            <x-navbar.arkconnect />
+            @if (config('arkscan.arkconnect.enabled', false))
+                <x-navbar.arkconnect />
+            @endif
         </div>
     </div>
 
