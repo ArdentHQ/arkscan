@@ -11,11 +11,38 @@
         @lang('general.navbar.connect_wallet')
     </button>
 
+    <div class="flex justify-between items-center w-full md:hidden">
+        <div class="flex items-center space-x-1 text-sm font-semibold">
+            <span>
+                @lang('general.navbar.arkconnect.my_address')
+            </span>
+
+            <div
+                x-text="truncateMiddle(await address())"
+                class="md:leading-3.75"
+            ></div>
+        </div>
+
+        <div class="flex space-x-4 md:hidden">
+            <a
+                x-on:click="copy"
+                data-tippy-content="@lang('tooltips.copied')"
+            >
+                <x-ark-icon name="copy" />
+            </a>
+
+            <a x-on:click="disconnect">
+                <x-ark-icon name="arrows.arrow-right-bracket" />
+            </a>
+        </div>
+    </div>
+
     <div
         x-show="isConnected"
         x-init="{
             dropdownOpen: false,
         }"
+        class="hidden md:block"
     >
         <x-general.dropdown.dropdown
             placement="bottom"
@@ -24,12 +51,12 @@
             dropdown-background="bg-white dark:bg-theme-dark-700"
             dropdown-padding="py-1"
             dropdown-wrapper-class="w-full"
-            active-button-class="flex justify-between items-center pr-2 pl-3 space-x-2 h-8 whitespace-nowrap bg-transparent rounded border md:justify-start border-theme-secondary-300 text-theme-secondary-700 transition-default dark:border-theme-dark-700 dark:text-theme-dark-200 dark:hover:bg-theme-dark-700 hover:text-theme-secondary-900 hover:bg-theme-secondary-200"
+            active-button-class="flex justify-between items-center md:pr-2 md:pl-3 md:space-x-2 md:h-8 whitespace-nowrap bg-transparent rounded md:border md:justify-start border-theme-secondary-300 text-theme-secondary-700 transition-default dark:border-theme-dark-700 dark:text-theme-dark-200 dark:hover:bg-theme-dark-700 hover:text-theme-secondary-900 hover:bg-theme-secondary-200"
         >
             <x-slot name="button">
                 <div
                     x-text="truncateMiddle(await address())"
-                    class="text-sm font-semibold leading-3.75"
+                    class="text-sm font-semibold md:leading-3.75"
                 ></div>
 
                 <div class="dark:text-theme-dark-300">
