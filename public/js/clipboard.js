@@ -1,1 +1,106 @@
-(self.webpackChunk=self.webpackChunk||[]).push([[934],{72619:()=>{window.clipboard=function(e){return{copying:!1,notSupported:!1,showCheckmarks:!1,copy:function(t){var n=this;this.copying=!0,e&&(this.showCheckmarks=!0);var o=window.navigator.clipboard;o&&window.isSecureContext?o.writeText(t).then((function(){n.copying=!1,n.handleCheckmarks()}),(function(){n.copying=!1,console.error("Failed to copy contents to the clipboard.")})):(console.warn("Using fallback due to lack of navigator support or HTTPS in this browser"),this.copyUsingExec(t),this.handleCheckmarks())},copyUsingExec:function(e){var t=this,n=document.createElement("textarea");if(n.value=e,n.setAttribute("readonly",""),n.style.cssText="position:absolute;top:0;left:0;z-index:-9999;opacity:0;fontSize:12pt;",this.$root.append(n),navigator.userAgent.match(/ipad|iphone/i)){var o=n.contentEditable,c=n.readOnly;n.contentEditable="true",n.readOnly=!1;var i=document.createRange();i.selectNodeContents(n);var a=window.getSelection();a&&(a.removeAllRanges(),a.addRange(i)),n.setSelectionRange(0,999999),n.contentEditable=o,n.readOnly=c}else n.select(),n.focus();this.copying=!0,setTimeout((function(){return t.copying=!1}),1200),document.execCommand("copy"),n.remove()},copyFromInput:function(e){var t=document.querySelector(e);this.copy(t.value)},handleCheckmarks:function(){var t=this;e&&setTimeout((function(){t.showCheckmarks=!1}),5e3)}}}}},e=>{var t;t=72619,e(e.s=t)}]);
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["/js/clipboard"],{
+
+/***/ "./vendor/arkecosystem/foundation/resources/assets/js/clipboard.js":
+/*!*************************************************************************!*\
+  !*** ./vendor/arkecosystem/foundation/resources/assets/js/clipboard.js ***!
+  \*************************************************************************/
+/***/ (() => {
+
+window.clipboard = function (withCheckmarks) {
+  return {
+    copying: false,
+    notSupported: false,
+    showCheckmarks: false,
+    copy: function copy(value) {
+      var _this = this;
+
+      this.copying = true;
+
+      if (withCheckmarks) {
+        this.showCheckmarks = true;
+      }
+
+      var clipboard = window.navigator.clipboard;
+
+      if (clipboard && window.isSecureContext) {
+        clipboard.writeText(value).then(function () {
+          _this.copying = false;
+
+          _this.handleCheckmarks();
+        }, function () {
+          _this.copying = false;
+          console.error("Failed to copy contents to the clipboard.");
+        });
+        return;
+      }
+
+      console.warn("Using fallback due to lack of navigator support or HTTPS in this browser"); // fallback to execCommand for older browsers and non-https
+
+      this.copyUsingExec(value);
+      this.handleCheckmarks();
+    },
+    copyUsingExec: function copyUsingExec(value) {
+      var _this2 = this;
+
+      var textArea = document.createElement("textarea");
+      textArea.value = value; // Prevent keyboard from showing on mobile
+
+      textArea.setAttribute("readonly", ""); // fontSize prevents zooming on iOS
+
+      textArea.style.cssText = "position:absolute;top:0;left:0;z-index:-9999;opacity:0;fontSize:12pt;";
+      this.$root.append(textArea);
+      var isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
+
+      if (isiOSDevice) {
+        var editable = textArea.contentEditable;
+        var readOnly = textArea.readOnly;
+        textArea.contentEditable = "true";
+        textArea.readOnly = false;
+        var range = document.createRange();
+        range.selectNodeContents(textArea);
+        var selection = window.getSelection();
+
+        if (selection) {
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+
+        textArea.setSelectionRange(0, 999999);
+        textArea.contentEditable = editable;
+        textArea.readOnly = readOnly;
+      } else {
+        textArea.select();
+        textArea.focus();
+      }
+
+      this.copying = true;
+      setTimeout(function () {
+        return _this2.copying = false;
+      }, 1200);
+      document.execCommand("copy");
+      textArea.remove();
+    },
+    copyFromInput: function copyFromInput(identifier) {
+      var element = document.querySelector(identifier);
+      this.copy(element.value);
+    },
+    handleCheckmarks: function handleCheckmarks() {
+      var _this3 = this;
+
+      if (withCheckmarks) {
+        setTimeout(function () {
+          _this3.showCheckmarks = false;
+        }, 5000);
+      }
+    }
+  };
+};
+
+/***/ })
+
+},
+/******/ __webpack_require__ => { // webpackRuntimeModules
+/******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
+/******/ var __webpack_exports__ = (__webpack_exec__("./vendor/arkecosystem/foundation/resources/assets/js/clipboard.js"));
+/******/ }
+]);
