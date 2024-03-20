@@ -12,7 +12,9 @@ use App\Services\Blockchain\NetworkFactory;
 use App\Services\Cache\DelegateCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
+use App\Services\Timestamp;
 use App\ViewModels\WalletViewModel;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use function Spatie\Snapshots\assertMatchesSnapshot;
@@ -801,4 +803,104 @@ it('should return zero if delegate has no public key', function () {
     ]));
 
     expect($wallet->missedBlocks())->toBe(0);
+});
+
+it('should return null for blocks since last forged if not forged', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->create([
+        'public_key'   => null,
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'producedBlocks' => 54321,
+            ],
+        ],
+    ]));
+
+    expect($wallet->blocksSinceLastForged())->toBe(null);
+});
+
+it('should return count for blocks since last forged', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->create([
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'producedBlocks' => 54321,
+            ],
+        ],
+    ]));
+
+    $block = Block::factory()->create([
+        'generator_public_key' => $wallet->publicKey(),
+        'height' => 10,
+    ]);
+
+    (new WalletCache())->setLastBlock($wallet->publicKey(), [
+        'id'     => $block->id,
+        'height' => $block->height->toNumber(),
+    ]);
+
+    (new NetworkCache())->setHeight(fn (): int => 100);
+
+    expect($wallet->blocksSinceLastForged())->toBe(90);
+});
+
+it('should return null for time since last forged if not forged', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->create([
+        'public_key'   => null,
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'producedBlocks' => 54321,
+            ],
+        ],
+    ]));
+
+    expect($wallet->durationSinceLastForged())->toBe(null);
+});
+
+it('should return count for time since last forged', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->create([
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'producedBlocks' => 54321,
+            ],
+        ],
+    ]));
+
+    $block = Block::factory()->create([
+        'timestamp'            => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
+        'generator_public_key' => $wallet->publicKey(),
+        'height'               => 10,
+    ]);
+
+    (new WalletCache())->setLastBlock($wallet->publicKey(), [
+        'id'        => $block->id,
+        'height'    => $block->height->toNumber(),
+        'timestamp' => Timestamp::fromGenesis($block->timestamp)->unix(),
+    ]);
+
+    $this->travelTo(Carbon::parse('2021-04-14 13:02:14'));
+
+    expect($wallet->durationSinceLastForged())->toBe('~ 1 min');
+
+    $this->travelTo(Carbon::parse('2021-04-14 13:12:14'));
+
+    expect($wallet->durationSinceLastForged())->toBe('~ 11 min');
+
+    $this->travelTo(Carbon::parse('2021-04-14 14:02:04'));
+
+    expect($wallet->durationSinceLastForged())->toBe('~ 1h');
+
+    $this->travelTo(Carbon::parse('2021-04-14 15:02:14'));
+
+    expect($wallet->durationSinceLastForged())->toBe('~ 2h 1 min');
+
+    $this->travelTo(Carbon::parse('2021-04-16 15:02:14'));
+
+    expect($wallet->durationSinceLastForged())->toBe('more than a day');
 });

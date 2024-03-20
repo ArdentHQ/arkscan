@@ -204,8 +204,9 @@ return [
     ],
 
     'time' => [
-        'minutes_short'   => '~ :minutes min',
-        'hours_short'     => '~ :hoursh :minutes min',
-        'more_than_a_day' => 'more than a day',
+        'minutes_short'       => '~ :minutes min',
+        'hours_short'         => '~ :hoursh',
+        'hours_minutes_short' => '~ :hoursh :minutes min',
+        'more_than_a_day'     => 'more than a day',
     ],
 ];

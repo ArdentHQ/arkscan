@@ -140,13 +140,17 @@ trait CanForge
         }
 
         $difference = CarbonInterval::instance(Carbon::parse($lastBlock['timestamp'])->diff());
-
+        $difference->ceilMinutes();
         if ($difference->totalHours < 1) {
             return trans('general.time.minutes_short', ['minutes' => $difference->minutes]);
         }
 
         if ($difference->totalHours >= 1 && $difference->totalDays < 1) {
-            return trans('general.time.hours_short', [
+            if ($difference->minutes === 0) {
+                return trans('general.time.hours_short', ['hours' => $difference->hours]);
+            }
+
+            return trans('general.time.hours_minutes_short', [
                 'hours'   => $difference->hours,
                 'minutes' => $difference->minutes,
             ]);
