@@ -51,7 +51,7 @@
             dropdown-background="bg-white dark:bg-theme-dark-700"
             dropdown-padding="py-1"
             dropdown-wrapper-class="w-full"
-            active-button-class="flex justify-between items-center md:pr-2 md:pl-3 md:space-x-2 md:h-8 whitespace-nowrap bg-transparent rounded md:border md:justify-start border-theme-secondary-300 text-theme-secondary-700 transition-default dark:border-theme-dark-700 dark:text-theme-dark-200 dark:hover:bg-theme-dark-700 hover:text-theme-secondary-900 hover:bg-theme-secondary-200"
+            active-button-class="flex justify-between items-center whitespace-nowrap bg-transparent rounded md:justify-start md:pr-2 md:pl-3 md:space-x-2 md:h-8 md:border border-theme-secondary-300 text-theme-secondary-700 transition-default dark:border-theme-dark-700 dark:text-theme-dark-200 dark:hover:bg-theme-dark-700 hover:text-theme-secondary-900 hover:bg-theme-secondary-200"
         >
             <x-slot name="button">
                 <div
