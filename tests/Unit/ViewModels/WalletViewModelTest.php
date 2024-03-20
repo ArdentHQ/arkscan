@@ -833,7 +833,7 @@ it('should return count for blocks since last forged', function () {
 
     $block = Block::factory()->create([
         'generator_public_key' => $wallet->publicKey(),
-        'height' => 10,
+        'height'               => 10,
     ]);
 
     (new WalletCache())->setLastBlock($wallet->publicKey(), [
