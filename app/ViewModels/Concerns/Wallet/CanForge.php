@@ -163,7 +163,12 @@ trait CanForge
 
     private function lastBlock(): ?array
     {
-        $lastBlock = (new WalletCache())->getLastBlock($this->publicKey());
+        $publicKey = $this->publicKey();
+        if (is_null($publicKey)) {
+            return null;
+        }
+
+        $lastBlock = (new WalletCache())->getLastBlock($publicKey);
         if ($lastBlock === []) {
             return null;
         }
