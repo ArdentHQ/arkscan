@@ -1,4 +1,5 @@
 import "focus-visible";
+import "@ui/js/clipboard.js";
 import "@ui/js/tippy.js";
 import "@ui/js/page-scroll";
 import "@ui/js/reposition-dropdown";
