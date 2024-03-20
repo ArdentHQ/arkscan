@@ -349,7 +349,7 @@ it('should show warning icon for delegates missing blocks - minutes', function (
         ->call('pollDelegates')
         ->assertSeeInOrder([
             $delegate->username(),
-            'Delegate last forged 199 blocks ago (~ 20 min)',
+            'Delegate last forged 199 blocks ago (~ 21 min)',
         ]);
 });
 
@@ -387,7 +387,7 @@ it('should show warning icon for delegates missing blocks - hours', function () 
         ->call('pollDelegates')
         ->assertSeeInOrder([
             $delegate->username(),
-            'Delegate last forged 199 blocks ago (~ 1h 27 min)',
+            'Delegate last forged 199 blocks ago (~ 1h 28 min)',
         ]);
 });
 
