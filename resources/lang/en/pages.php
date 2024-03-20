@@ -408,6 +408,7 @@ return [
     'delegate-monitor' => [
         'title'    => 'Delegate Monitor',
         'subtitle' => 'Delegate block production observer tool.',
+        'missed_blocks_tooltip' => 'Delegate last forged :blocks blocks ago (:time)',
 
         'stats' => [
             'forging'        => 'Forging',
