@@ -11,12 +11,10 @@ use App\Services\Cache\WalletCache;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\ForgingInfoCalculator;
 use App\Services\Monitor\Slots;
-use App\Services\Timestamp;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
-
 use function Tests\createRealisticRound;
 
 beforeEach(function () {
