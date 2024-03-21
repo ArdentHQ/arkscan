@@ -1,5 +1,4 @@
 <div
-    x-show="hasExtension() && ! isLoading"
     x-data="Wallet()"
     class="flex flex-col py-3 px-6 md:py-0 md:px-0"
     :class="{
@@ -11,6 +10,7 @@
         x-show="! isConnected"
         class="py-1.5 px-4 whitespace-nowrap button-secondary"
         @click="connect"
+        :disabled="! hasExtension() || isLoading"
     >
         @lang('general.navbar.connect_wallet')
     </button>
