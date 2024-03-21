@@ -17,10 +17,9 @@
                 @lang('general.navbar.arkconnect.my_address')
             </span>
 
-            <div
-                x-text="truncateMiddle(await address())"
-                class="md:leading-3.75"
-            ></div>
+            <div class="flex-1 min-w-0">
+                <x-truncate-dynamic />
+            </div>
         </div>
 
         <div class="flex space-x-4 md:hidden">

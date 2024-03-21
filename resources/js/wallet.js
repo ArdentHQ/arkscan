@@ -31,6 +31,10 @@ const Wallet = () => {
             return window.arkconnect;
         },
 
+        async truncateValue() {
+            return this.address();
+        },
+
         async address() {
             if (!this.isConnected) {
                 return null;
