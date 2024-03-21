@@ -48,7 +48,7 @@ return [
      * Each replacer must implement the Replacer interface.
      */
     'replacers'                 => [
-        \Spatie\ResponseCache\Replacers\CsrfTokenReplacer::class,
+        Spatie\ResponseCache\Replacers\CsrfTokenReplacer::class,
     ],
 
     /*
@@ -64,10 +64,10 @@ return [
      * This class is responsible for generating a hash for a request. This hash
      * is used to look up an cached response.
      */
-    'hasher'                    => \Spatie\ResponseCache\Hasher\DefaultHasher::class,
+    'hasher'                    => Spatie\ResponseCache\Hasher\DefaultHasher::class,
 
     /*
      * This class is responsible for serializing responses.
      */
-    'serializer'                => \Spatie\ResponseCache\Serializers\DefaultSerializer::class,
+    'serializer'                => Spatie\ResponseCache\Serializers\DefaultSerializer::class,
 ];
