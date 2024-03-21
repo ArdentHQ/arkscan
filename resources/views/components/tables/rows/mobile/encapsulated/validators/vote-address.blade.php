@@ -1,0 +1,24 @@
+@props([
+    'transaction',
+    'valueClass' => null,
+])
+
+<x-tables.rows.mobile.encapsulated.cell :attributes="$attributes">
+    <x-slot name="label">
+        <div class="text-sm font-semibold leading-4.25 dark:text-theme-dark-200">
+            <x-general.encapsulated.transaction-type :transaction="$transaction" />
+        </div>
+    </x-slot>
+
+    @php
+        $validator = $transaction->voted();
+        if ($transaction->isUnvote()) {
+            $validator = $transaction->unvoted();
+        }
+    @endphp
+
+    <x-general.identity
+        :model="$validator"
+        :class="$valueClass"
+    />
+</x-tables.rows.mobile.encapsulated.cell>

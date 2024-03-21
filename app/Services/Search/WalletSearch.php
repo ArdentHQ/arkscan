@@ -42,7 +42,7 @@ final class WalletSearch implements Search
         return collect($rawResults)->map(fn ($item) => new Wallet([
             ...$item,
             'attributes' => [
-                'delegate' => [
+                'validator' => [
                     'username' => Arr::get($item, 'username'),
                 ],
             ],

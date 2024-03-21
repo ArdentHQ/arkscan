@@ -14,8 +14,8 @@ class MissedBlocksCalculator implements \App\Contracts\Services\Monitor\MissedBl
 {
     public static function calculateFromHeightGoingBack(int $heightFrom, int $heightTo): array
     {
-        $roundHeightFrom = (int) floor(($heightFrom - Network::delegateCount()) / Network::delegateCount()) * Network::delegateCount() + 1;
-        $roundHeightTo   = (int) floor(($heightTo - Network::delegateCount()) / Network::delegateCount()) * Network::delegateCount() + 1;
+        $roundHeightFrom = (int) floor(($heightFrom - Network::validatorCount()) / Network::validatorCount()) * Network::validatorCount() + 1;
+        $roundHeightTo   = (int) floor(($heightTo - Network::validatorCount()) / Network::validatorCount()) * Network::validatorCount() + 1;
 
         $forgingStats = [];
         $rounds       = Round::whereBetween('round_height', [$roundHeightFrom, $roundHeightTo])->orderBy('round', 'asc')->get();
@@ -29,10 +29,10 @@ class MissedBlocksCalculator implements \App\Contracts\Services\Monitor\MissedBl
     public static function calculateForRound(Round $round, int $heightTo): array
     {
         $roundValidators = $round->validators;
-        $activeDelegates = count($roundValidators);
+        $activeValidators = count($roundValidators);
 
         $producedBlocks = Block::select(['generator_public_key', 'height', 'timestamp'])
-            ->whereBetween('height', [$round->round_height, $round->round_height + $activeDelegates - 1])
+            ->whereBetween('height', [$round->round_height, $round->round_height + $activeValidators - 1])
             ->orderBy('height', 'asc')
             ->get();
 

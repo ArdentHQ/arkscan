@@ -26,7 +26,7 @@ return [
             'volume'       => 'Volume',
             'block_reward' => 'Block Reward',
             'total_fees'   => 'Total Fees',
-            'delegate'     => 'Delegate',
+            'validator'     => 'Validator',
         ],
     ],
 
@@ -101,10 +101,10 @@ return [
             'block'        => 'Block',
             'nonce'        => 'Nonce',
             'category'     => 'Category',
-            'delegate'     => 'Delegate',
+            'validator'     => 'Validator',
             'username'     => 'Name',
-            'old_delegate' => 'Old Delegate',
-            'new_delegate' => 'New Delegate',
+            'old_validator' => 'Old Validator',
+            'new_validator' => 'New Validator',
             'address'      => 'Address',
             'signatures'   => 'Signatures',
             'hash'         => 'Hash',
@@ -142,7 +142,7 @@ return [
         'title'              => 'Top Accounts',
         'subtitle'           => 'A list of the largest ARK addresses by token holdings.',
         'supply_tooltip'     => 'Percentage of the total :symbol supply',
-        'percentage_tooltip' => 'Percentage of votes in relation to the delegate total.',
+        'percentage_tooltip' => 'Percentage of votes in relation to the validator total.',
 
         'blocks' => [
             'volume_tooltip'       => 'A sum of transactions value in the block.',
@@ -170,7 +170,7 @@ return [
         'productivity_tooltip'  => 'Success rate of validating blocks over the last 30 days.',
         'no_results'            => 'No :0 transactions could be found.',
         'transactions'          => 'Transactions',
-        'delegate_info'         => 'Delegate Info',
+        'validator_info'         => 'Validator Info',
         'name'                  => 'Name',
         'value'                 => 'Value',
         'copied_public_key'     => 'Public Key Copied',
@@ -190,8 +190,8 @@ return [
             'title'       => 'Public Key',
         ],
 
-        'delegate'              => [
-            'title'                 => 'Delegate :0',
+        'validator'              => [
+            'title'                 => 'Validator :0',
             'rank'                  => 'Rank',
             'status'                => 'Status',
             'commission'            => 'Commission',
@@ -207,10 +207,10 @@ return [
             'validated_blocks'      => 'Validated Blocks',
             'votes_title'           => 'Votes',
             'productivity_title'    => 'Productivity',
-            'not_registered_text'   => 'This address is not a registered delegate',
+            'not_registered_text'   => 'This address is not a registered validator',
             'vote'                  => 'Vote',
-            'vote_for_delegate'     => 'Vote for Delegate',
-            'resigned_vote_tooltip' => 'Cannot vote for resigned delegates.',
+            'vote_for_validator'     => 'Vote for Validator',
+            'resigned_vote_tooltip' => 'Cannot vote for resigned validators.',
         ],
 
         'export-transactions-modal' => [
@@ -343,10 +343,10 @@ return [
         ],
     ],
 
-    'delegates'        => [
-        'title'              => 'Delegates',
-        'subtitle'           => 'List of delegates registered on the network.',
-        'x_delegates'        => '{1} 1 Delegate|:count Delegates',
+    'validators'        => [
+        'title'              => 'Validators',
+        'subtitle'           => 'List of validators registered on the network.',
+        'x_validators'        => '{1} 1 Validator|:count Validators',
         'voting_x_addresses' => 'Voting (:count Addresses)',
 
         'missed-blocks'      => [
@@ -359,13 +359,13 @@ return [
         ],
 
         'explore'            => [
-            'title'    => 'How can I become a delegate?',
-            'subtitle' => 'Step-by-step guide on how to register as a delegate',
+            'title'    => 'How can I become a validator?',
+            'subtitle' => 'Step-by-step guide on how to register as a validator',
             'action'   => 'Explore',
         ],
 
         'tabs'               => [
-            'delegates'     => 'Delegates',
+            'validators'     => 'Validators',
             'missed_blocks' => 'Missed Blocks',
             'recent_votes'  => 'Recent Votes',
         ],
@@ -374,7 +374,7 @@ return [
         'standby'    => 'Standby',
         'resigned'   => 'Resigned',
         'order'      => 'Order',
-        'name'       => 'Delegate Name',
+        'name'       => 'Validator Name',
         'forging_at' => 'Time to Forge',
         'status'     => 'Status',
         'block_id'   => 'Block ID',
@@ -386,14 +386,14 @@ return [
         'now'        => 'Now',
         'monitor'    => 'Monitor',
         'statistics' => [
-            'delegate_registrations' => 'Delegate Registrations',
+            'validator_registrations' => 'Validator Registrations',
             'block_reward'           => 'Block Reward',
             'fees_collected'         => 'Fees Collected (24h)',
             'votes'                  => 'Current Votes',
             'block_count'            => 'Current Round',
             'transactions'           => 'Round Transactions',
-            'current_delegate'       => 'Current',
-            'next_delegate'          => 'Next',
+            'current_validator'       => 'Current',
+            'next_validator'          => 'Next',
             'next_slot'              => 'Next Slot',
             'blocks_generated'       => ':forged / :total Blocks',
             'forging'                => 'Forging',
@@ -401,14 +401,14 @@ return [
             'not_forging'            => 'Not Forging',
         ],
         'info'       => [
-            'status'       => 'View the status of the last 5 blocks for a delegate. Latest blocks are displayed from right to left.',
+            'status'       => 'View the status of the last 5 blocks for a validator. Latest blocks are displayed from right to left.',
             'productivity' => 'The productivity statistic is calculated over the previous 30 day period.',
         ],
     ],
 
-    'delegate-monitor' => [
-        'title'    => 'Delegate Monitor',
-        'subtitle' => 'Delegate block production observer tool.',
+    'validator-monitor' => [
+        'title'    => 'Validator Monitor',
+        'subtitle' => 'Validator block production observer tool.',
 
         'stats' => [
             'forging'        => 'Forging',
@@ -423,13 +423,13 @@ return [
     'blocks_by_wallet' => [
         'title'       => 'Generated Blocks',
         'table_title' => 'Block History',
-        'no_results'  => 'This Delegate has not generated any blocks yet. Generated blocks will appear in a list here.',
+        'no_results'  => 'This Validator has not generated any blocks yet. Generated blocks will appear in a list here.',
     ],
 
     'voters_by_wallet' => [
-        'title'      => 'Delegate Voters',
+        'title'      => 'Validator Voters',
         'subtitle'   => 'Voters',
-        'no_results' => 'This Delegate does not have any voters yet. Voters will appear in a list here.',
+        'no_results' => 'This Validator does not have any voters yet. Voters will appear in a list here.',
     ],
 
     'blocks'           => [
@@ -448,7 +448,7 @@ return [
         'highlights' => [
             'total_supply' => 'Total Supply',
             'voting'       => 'Voting (:percent)',
-            'delegates'    => 'Delegates',
+            'validators'    => 'Validators',
             'addresses'    => 'Addresses',
         ],
 
@@ -469,7 +469,7 @@ return [
             'dropdown' => [
                 'transactions' => 'Transaction Data',
                 'market_data'  => 'Market Data',
-                'delegates'    => 'Delegate Data',
+                'validators'    => 'Validator Data',
                 'addresses'    => 'Address Data',
                 'annual'       => 'Annual Data',
             ],
@@ -486,8 +486,8 @@ return [
                     'vote'                       => 'Votes',
                     'unvote'                     => 'Unvotes',
                     'switch_vote'                => 'Switch Votes',
-                    'delegate_registration'      => 'Delegate Registrations',
-                    'delegate_resignation'       => 'Delegate Resignations',
+                    'validator_registration'      => 'Validator Registrations',
+                    'validator_resignation'       => 'Validator Resignations',
                     'transactions'               => 'Transactions',
                     'transaction_volume'         => 'Transaction Volume',
                     'transaction_fees'           => 'Transaction Fees',
@@ -543,14 +543,14 @@ return [
                 ],
             ],
 
-            'delegates' => [
-                'title'          => 'Delegate Data',
+            'validators' => [
+                'title'          => 'Validator Data',
 
                 'header' => [
                     'most_unique_voters'     => 'Most Unique Voters',
                     'least_unique_voters'    => 'Least Unique Voters',
-                    'oldest_active_delegate' => 'Oldest Active Delegate',
-                    'newest_active_delegate' => 'Newest Active Delegate',
+                    'oldest_active_validator' => 'Oldest Active Validator',
+                    'newest_active_validator' => 'Newest Active Validator',
                     'most_blocks_forged'     => 'Most Blocks Forged (All-Time)',
                     'voters'                 => 'Voters',
                     'registered'             => 'Registered',

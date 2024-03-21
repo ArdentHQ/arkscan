@@ -4,7 +4,7 @@ import { FailedExportRequest } from "./includes/helpers";
 export class BlocksApi {
     static async request(host, query, publicKey) {
         const response = await axios.get(
-            `${host}/delegates/${publicKey}/blocks`,
+            `${host}/validators/${publicKey}/blocks`,
             {
                 params: query,
             }

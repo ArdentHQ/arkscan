@@ -12,7 +12,7 @@ import {
 } from "./includes/helpers";
 
 import { BlocksApi } from "./blocks-api";
-import { DelegatesApi } from "./delegates-api";
+import { ValidatorsApi } from "./validators-api";
 import { ExportStatus } from "./includes/enums";
 
 window.ExportStatus = ExportStatus;
@@ -175,8 +175,8 @@ const BlocksExport = ({
             if (dateFrom) {
                 const dateFromEpoch = timeSinceEpoch(dateFrom, this.network);
                 const dateToEpoch = timeSinceEpoch(dateTo, this.network);
-                // Check if delegate's last forged block is not older than the range
-                // This is to handle cases of old delegates where it's expensive
+                // Check if validator's last forged block is not older than the range
+                // This is to handle cases of old validators where it's expensive
                 // to request their block height
                 const lastForgedBlockEpoch =
                     await this.getLastForgedBlockEpoch();
@@ -222,7 +222,7 @@ const BlocksExport = ({
         // The API options "timestamp:desc" & "timestamp.to" can cause 500 errors.
         // We do it this way and attempt to get the first block after (the epoch - 1 round) instead.
         async getFirstBlockHeightBeforeEpoch(epoch) {
-            epoch -= this.network.blockTime * this.network.delegateCount;
+            epoch -= this.network.blockTime * this.network.validatorCount;
             if (epoch < 0) {
                 return 0;
             }
@@ -247,12 +247,12 @@ const BlocksExport = ({
         },
 
         async getLastForgedBlockEpoch() {
-            const delegate = await DelegatesApi.fetch({
+            const validator = await ValidatorsApi.fetch({
                 host: network.api,
                 publicKey,
             });
 
-            return delegate?.blocks?.last?.timestamp?.epoch ?? 0;
+            return validator?.blocks?.last?.timestamp?.epoch ?? 0;
         },
 
         getColumns() {

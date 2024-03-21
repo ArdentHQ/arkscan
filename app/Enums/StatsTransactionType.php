@@ -18,9 +18,9 @@ enum StatsTransactionType
 
     public const SWITCH_VOTE = 'switch_vote';
 
-    public const DELEGATE_REGISTRATION = 'delegate_registration';
+    public const VALIDATOR_REGISTRATION = 'validator_registration';
 
-    public const DELEGATE_RESIGNATION = 'delegate_resignation';
+    public const VALIDATOR_RESIGNATION = 'validator_resignation';
 
     public static function all(): Collection
     {
@@ -30,8 +30,8 @@ enum StatsTransactionType
             self::VOTE,
             self::UNVOTE,
             self::SWITCH_VOTE,
-            self::DELEGATE_REGISTRATION,
-            self::DELEGATE_RESIGNATION,
+            self::VALIDATOR_REGISTRATION,
+            self::VALIDATOR_RESIGNATION,
         ]);
     }
 }

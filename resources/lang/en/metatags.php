@@ -16,16 +16,16 @@ return [
         'image'       => 'images/metadata/statistics.png',
     ],
 
-    'delegates'     => [
-        'title'       => 'Delegates | :name Blockchain Explorer',
-        'description' => 'View Delegates (Validators) and their activity on the :name Blockchain.',
-        'image'       => 'images/metadata/delegates.png',
+    'validators'     => [
+        'title'       => 'Validators | :name Blockchain Explorer',
+        'description' => 'View Validators (Validators) and their activity on the :name Blockchain.',
+        'image'       => 'images/metadata/validators.png',
     ],
 
-    'delegate-monitor' => [
-        'title'       => 'Delegate Monitor | :name Blockchain Explorer',
-        'description' => 'Delegate Monitor allows real-time observation of block production and delegates\' participation in each round.',
-        'image'       => 'images/metadata/delegate-monitor.png',
+    'validator-monitor' => [
+        'title'       => 'Validator Monitor | :name Blockchain Explorer',
+        'description' => 'Validator Monitor allows real-time observation of block production and validators\' participation in each round.',
+        'image'       => 'images/metadata/validator-monitor.png',
     ],
 
     'transactions'  => [
@@ -77,14 +77,14 @@ return [
     ],
 
     'wallet-voters' => [
-        'title'       => 'Voters of :delegate | :name Blockchain Explorer',
-        'description' => 'View all voters of :delegate on the :name Blockchain.',
+        'title'       => 'Voters of :validator | :name Blockchain Explorer',
+        'description' => 'View all voters of :validator on the :name Blockchain.',
         'image'       => 'images/metadata/wallets.png',
     ],
 
     'wallet-blocks' => [
-        'title'       => 'Blocks Validated by :delegate | :name Blockchain Explorer',
-        'description' => 'View blocks validated by :delegate on the :name Blockchain.',
+        'title'       => 'Blocks Validated by :validator | :name Blockchain Explorer',
+        'description' => 'View blocks validated by :validator on the :name Blockchain.',
         'image'       => 'images/metadata/wallets.png',
     ],
 

@@ -12,8 +12,8 @@ use App\Services\Transactions\Aggregates\Historical\MonthAggregate;
 use App\Services\Transactions\Aggregates\Historical\QuarterAggregate;
 use App\Services\Transactions\Aggregates\Historical\WeekAggregate;
 use App\Services\Transactions\Aggregates\Historical\YearAggregate;
-use App\Services\Transactions\Aggregates\Type\DelegateRegistrationAggregate;
-use App\Services\Transactions\Aggregates\Type\DelegateResignationAggregate;
+use App\Services\Transactions\Aggregates\Type\ValidatorRegistrationAggregate;
+use App\Services\Transactions\Aggregates\Type\ValidatorResignationAggregate;
 use App\Services\Transactions\Aggregates\Type\MultipaymentAggregate;
 use App\Services\Transactions\Aggregates\Type\TransferAggregate;
 use App\Services\Transactions\Aggregates\Type\UnvoteAggregate;
@@ -52,7 +52,7 @@ final class HistoricalAggregateFactory
         throw new InvalidArgumentException('Invalid aggregate period.');
     }
 
-    public static function type(string $type): TransferAggregate | MultipaymentAggregate | VoteAggregate | UnvoteAggregate | VoteCombinationAggregate | DelegateRegistrationAggregate | DelegateResignationAggregate
+    public static function type(string $type): TransferAggregate | MultipaymentAggregate | VoteAggregate | UnvoteAggregate | VoteCombinationAggregate | ValidatorRegistrationAggregate | ValidatorResignationAggregate
     {
         if ($type === StatsTransactionType::TRANSFER) {
             return new TransferAggregate();
@@ -74,12 +74,12 @@ final class HistoricalAggregateFactory
             return new VoteCombinationAggregate();
         }
 
-        if ($type === StatsTransactionType::DELEGATE_REGISTRATION) {
-            return new DelegateRegistrationAggregate();
+        if ($type === StatsTransactionType::VALIDATOR_REGISTRATION) {
+            return new ValidatorRegistrationAggregate();
         }
 
-        if ($type === StatsTransactionType::DELEGATE_RESIGNATION) {
-            return new DelegateResignationAggregate();
+        if ($type === StatsTransactionType::VALIDATOR_RESIGNATION) {
+            return new ValidatorResignationAggregate();
         }
 
         throw new InvalidArgumentException('Invalid aggregate type.');

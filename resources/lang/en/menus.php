@@ -8,8 +8,8 @@ return [
     'resources'        => 'Resources',
     'developers'       => 'Developers',
 
-    'delegates'        => 'Delegates',
-    'delegate_monitor' => 'Delegate Monitor',
+    'validators'        => 'Validators',
+    'validator_monitor' => 'Validator Monitor',
     'wallets'          => 'Wallets',
     'top_accounts'     => 'Top Accounts',
     'blocks'           => 'Blocks',

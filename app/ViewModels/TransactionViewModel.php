@@ -16,7 +16,7 @@ use App\ViewModels\Concerns\Transaction\HasDirection;
 use App\ViewModels\Concerns\Transaction\HasIcons;
 use App\ViewModels\Concerns\Transaction\HasState;
 use App\ViewModels\Concerns\Transaction\HasType;
-use App\ViewModels\Concerns\Transaction\InteractsWithDelegateRegistration;
+use App\ViewModels\Concerns\Transaction\InteractsWithValidatorRegistration;
 use App\ViewModels\Concerns\Transaction\InteractsWithEntities;
 use App\ViewModels\Concerns\Transaction\InteractsWithMultiPayment;
 use App\ViewModels\Concerns\Transaction\InteractsWithMultiSignature;
@@ -33,7 +33,7 @@ final class TransactionViewModel implements ViewModel
     use HasIcons;
     use HasState;
     use HasType;
-    use InteractsWithDelegateRegistration;
+    use InteractsWithValidatorRegistration;
     use InteractsWithEntities;
     use InteractsWithMultiPayment;
     use InteractsWithMultiSignature;

@@ -5,7 +5,7 @@
     'withoutClipboard' => false,
     'truncateBreakpoint' => 'xl',
     'withoutTransactionCount' => true,
-    'delegateNameClass' => null,
+    'validatorNameClass' => null,
 ])
 
 @php
@@ -27,7 +27,7 @@
                 :model="$model"
                 :without-truncate="$withoutTruncate"
                 :without-username="$withoutUsername"
-                :delegate-name-class="$delegateNameClass"
+                :validator-name-class="$validatorNameClass"
             >
                 <x-slot name="address">
                     @unless ($withoutTruncate)

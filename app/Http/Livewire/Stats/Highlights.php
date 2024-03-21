@@ -7,7 +7,7 @@ namespace App\Http\Livewire\Stats;
 use App\Actions\CacheNetworkSupply;
 use App\Facades\Network;
 use App\Models\Wallet;
-use App\Services\Cache\DelegateCache;
+use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\NumberFormatter;
 use Illuminate\View\View;
@@ -31,7 +31,7 @@ final class Highlights extends Component
             'votingPercent'   => $this->getVotingPercent(),
             'votingValue'     => $this->getVotingValue(),
             'totalSupply'     => $this->getTotalSupply(),
-            'delegates'       => $this->getDelegates(),
+            'validators'      => $this->getValidators(),
             'wallets'         => $this->getWallets(),
             'refreshInterval' => $this->refreshInterval,
         ]);
@@ -53,14 +53,14 @@ final class Highlights extends Component
 
     private function getVotingValue(): float
     {
-        return (new DelegateCache())->getTotalBalanceVoted();
+        return (new ValidatorCache())->getTotalBalanceVoted();
     }
 
-    private function getDelegates(): string
+    private function getValidators(): string
     {
-        $registeredDelegates = (new NetworkCache())->getDelegateRegistrationCount();
+        $registeredValidators = (new NetworkCache())->getValidatorRegistrationCount();
 
-        return NumberFormatter::number($registeredDelegates);
+        return NumberFormatter::number($registeredValidators);
     }
 
     private function getWallets(): string

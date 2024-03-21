@@ -44,58 +44,58 @@ final class StatisticsCache implements Contract
 
     public function getMostUniqueVoters(): ?string
     {
-        return $this->get('delegate/mostUniqueVoters');
+        return $this->get('validator/mostUniqueVoters');
     }
 
     public function setMostUniqueVoters(string $publicKey): void
     {
-        $this->put('delegate/mostUniqueVoters', $publicKey);
+        $this->put('validator/mostUniqueVoters', $publicKey);
     }
 
     public function getLeastUniqueVoters(): ?string
     {
-        return $this->get('delegate/leastUniqueVoters');
+        return $this->get('validator/leastUniqueVoters');
     }
 
     public function setLeastUniqueVoters(string $publicKey): void
     {
-        $this->put('delegate/leastUniqueVoters', $publicKey);
+        $this->put('validator/leastUniqueVoters', $publicKey);
     }
 
     /**
      * @return array{'publicKey': string, 'timestamp': int}
      */
-    public function getOldestActiveDelegate(): ?array
+    public function getOldestActiveValidator(): ?array
     {
-        return $this->get('delegate/oldestActiveDelegate');
+        return $this->get('validator/oldestActiveValidator');
     }
 
-    public function setOldestActiveDelegate(string $publicKey, int $timestamp): void
+    public function setOldestActiveValidator(string $publicKey, int $timestamp): void
     {
-        $this->put('delegate/oldestActiveDelegate', ['publicKey' => $publicKey, 'timestamp' => $timestamp]);
+        $this->put('validator/oldestActiveValidator', ['publicKey' => $publicKey, 'timestamp' => $timestamp]);
     }
 
     /**
      * @return array{'publicKey': string, 'timestamp': int}
      */
-    public function getNewestActiveDelegate(): ?array
+    public function getNewestActiveValidator(): ?array
     {
-        return $this->get('delegate/newestActiveDelegate');
+        return $this->get('validator/newestActiveValidator');
     }
 
-    public function setNewestActiveDelegate(string $publicKey, int $timestamp): void
+    public function setNewestActiveValidator(string $publicKey, int $timestamp): void
     {
-        $this->put('delegate/newestActiveDelegate', ['publicKey' => $publicKey, 'timestamp' => $timestamp]);
+        $this->put('validator/newestActiveValidator', ['publicKey' => $publicKey, 'timestamp' => $timestamp]);
     }
 
     public function getMostBlocksForged(): ?string
     {
-        return $this->get('delegate/mostBlocksForged');
+        return $this->get('validator/mostBlocksForged');
     }
 
     public function setMostBlocksForged(string $publicKey): void
     {
-        $this->put('delegate/mostBlocksForged', $publicKey);
+        $this->put('validator/mostBlocksForged', $publicKey);
     }
 
     public function setAddressHoldings(array $value): void

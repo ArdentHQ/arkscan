@@ -14,5 +14,5 @@ final class MagistrateTransactionEntityTypeEnum
 
     public const MODULE = 3;
 
-    public const DELEGATE = 4;
+    public const VALIDATOR = 4;
 }

@@ -56,11 +56,11 @@ final class Round extends Model
     protected $table = 'validator_rounds';
 
     /**
-     * A round slot belongs to a delegate.
+     * A round slot belongs to a validator.
      *
      * @return BelongsTo
      */
-    public function delegate(): BelongsTo
+    public function validator(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'public_key', 'public_key');
     }

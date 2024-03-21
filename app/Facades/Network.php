@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static bool canBeExchanged()
  * @method static bool hasTimelock()
  * @method static Carbon epoch()
- * @method static int delegateCount()
+ * @method static int validatorCount()
  * @method static int blockTime()
  * @method static int blockReward()
  * @method static BigNumber supply()

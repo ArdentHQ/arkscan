@@ -9,15 +9,15 @@ use App\Console\Commands\CacheAddressStatistics;
 use App\Console\Commands\CacheAnnualStatistics;
 use App\Console\Commands\CacheBlocks;
 use App\Console\Commands\CacheCurrenciesData;
-use App\Console\Commands\CacheDelegateAggregates;
-use App\Console\Commands\CacheDelegatePerformance;
-use App\Console\Commands\CacheDelegateProductivity;
-use App\Console\Commands\CacheDelegateResignationIds;
-use App\Console\Commands\CacheDelegateStatistics;
-use App\Console\Commands\CacheDelegatesWithVoters;
-use App\Console\Commands\CacheDelegateUsernames;
-use App\Console\Commands\CacheDelegateVoterCounts;
-use App\Console\Commands\CacheDelegateWallets;
+use App\Console\Commands\CacheValidatorAggregates;
+use App\Console\Commands\CacheValidatorPerformance;
+use App\Console\Commands\CacheValidatorProductivity;
+use App\Console\Commands\CacheValidatorResignationIds;
+use App\Console\Commands\CacheValidatorStatistics;
+use App\Console\Commands\CacheValidatorsWithVoters;
+use App\Console\Commands\CacheValidatorUsernames;
+use App\Console\Commands\CacheValidatorVoterCounts;
+use App\Console\Commands\CacheValidatorWallets;
 use App\Console\Commands\CacheFees;
 use App\Console\Commands\CacheMarketDataStatistics;
 use App\Console\Commands\CacheMultiSignatureAddresses;
@@ -58,29 +58,29 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(CacheVolume::class)->hourly();
 
-        $schedule->command(CacheDelegateWallets::class)->everyMinute();
+        $schedule->command(CacheValidatorWallets::class)->everyMinute();
 
-        $schedule->command(CacheDelegateVoterCounts::class)->everyTenMinutes();
+        $schedule->command(CacheValidatorVoterCounts::class)->everyTenMinutes();
 
-        $schedule->command(CacheDelegateAggregates::class)->everyMinute();
+        $schedule->command(CacheValidatorAggregates::class)->everyMinute();
 
         $schedule->command(CacheFees::class)->everyFiveMinutes();
 
-        $schedule->command(CacheDelegateUsernames::class)->everyMinute();
+        $schedule->command(CacheValidatorUsernames::class)->everyMinute();
 
         $schedule->command(CacheMultiSignatureAddresses::class)->everyMinute();
 
-        $schedule->command(CacheDelegatesWithVoters::class)->everyMinute();
+        $schedule->command(CacheValidatorsWithVoters::class)->everyMinute();
 
-        $schedule->command(CacheDelegateResignationIds::class)->everyMinute();
+        $schedule->command(CacheValidatorResignationIds::class)->everyMinute();
 
         $schedule->command(CacheNetworkAggregates::class)->everyMinute();
 
         $schedule->command(BuildForgingStats::class)->everyMinute();
 
-        $schedule->command(CacheDelegatePerformance::class)->everyMinute();
+        $schedule->command(CacheValidatorPerformance::class)->everyMinute();
 
-        $schedule->command(CacheDelegateProductivity::class)->everyMinute();
+        $schedule->command(CacheValidatorProductivity::class)->everyMinute();
 
         $schedule->command(CacheTransactions::class)->everyFiveMinutes();
 
@@ -88,7 +88,7 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(CacheAddressStatistics::class)->everyFiveMinutes();
 
-        $schedule->command(CacheDelegateStatistics::class)->everyFiveMinutes();
+        $schedule->command(CacheValidatorStatistics::class)->everyFiveMinutes();
 
         $schedule->command(CacheMarketDataStatistics::class)->everyFiveMinutes();
 

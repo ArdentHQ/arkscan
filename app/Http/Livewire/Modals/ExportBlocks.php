@@ -29,7 +29,7 @@ final class ExportBlocks extends Component
 
         $this->publicKey = $publicKey;
 
-        if ($wallet->isDelegate()) {
+        if ($wallet->isValidator()) {
             $this->username = $wallet->username();
         }
     }

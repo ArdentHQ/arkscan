@@ -11,8 +11,8 @@ use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
-use App\Models\Scopes\DelegateRegistrationScope;
-use App\Models\Scopes\DelegateResignationScope;
+use App\Models\Scopes\ValidatorRegistrationScope;
+use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Scopes\IpfsScope;
 use App\Models\Scopes\MagistrateScope;
 use App\Models\Scopes\MultiPaymentScope;
@@ -64,8 +64,8 @@ final class Transaction extends Model
      * all places that need to filter transactions by their type.
      */
     public const TYPE_SCOPES = [
-        'delegateRegistration'          => DelegateRegistrationScope::class,
-        'delegateResignation'           => DelegateResignationScope::class,
+        'validatorRegistration'         => ValidatorRegistrationScope::class,
+        'validatorResignation'          => ValidatorResignationScope::class,
         'ipfs'                          => IpfsScope::class,
         'multiPayment'                  => MultiPaymentScope::class,
         'multiSignature'                => MultiSignatureScope::class,

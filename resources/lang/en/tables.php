@@ -44,13 +44,13 @@ return [
 
     'wallet' => [
         'blocks' => [
-            'no_results' => 'This delegate has not yet validated a block.',
+            'no_results' => 'This validator has not yet validated a block.',
         ],
     ],
 
     'wallets' => [
         'balance_currency' => 'Balance (:currency)',
-        'no_results'       => 'This delegate does not currently have any voters.',
+        'no_results'       => 'This validator does not currently have any voters.',
     ],
 
     'exchanges' => [
@@ -62,16 +62,16 @@ return [
         'volume_currency' => 'Volume (:currency)',
     ],
 
-    'delegates' => [
+    'validators' => [
         'rank'          => 'Rank',
-        'delegate'      => 'Delegate',
+        'validator'      => 'Validator',
         'status'        => 'Status',
         'no_of_voters'  => '# of Voters',
         'votes'         => 'Votes (:currency)',
         'percentage'    => 'Percentage',
         'missed_blocks' => 'Missed Blocks (30d)',
 
-        'delegate_per_page_options' => [
+        'validator_per_page_options' => [
             10,
             25,
             53,
@@ -84,13 +84,13 @@ return [
 
         'no_results' => [
             'no_filters' => 'All filtering options have been deselected. Please select one or more options to display transactions.',
-            'no_results' => 'No delegates matching the selected types could be found.',
+            'no_results' => 'No validators matching the selected types could be found.',
         ],
     ],
 
-    'delegate-monitor' => [
+    'validator-monitor' => [
         'order'                => 'Order',
-        'delegate'             => 'Delegate',
+        'validator'             => 'Validator',
         'status'               => 'Status',
         'time_to_forge'        => 'Time to Forge',
         'status_time_to_forge' => 'Status / Time to Forge',
@@ -112,7 +112,7 @@ return [
     'missed-blocks' => [
         'height'        => 'Block Height',
         'age'           => 'Age',
-        'delegate'      => 'Delegate',
+        'validator'      => 'Validator',
         'no_of_voters'  => '# of Voters',
         'votes'         => 'Votes (:currency)',
         'percentage'    => 'Percentage',
@@ -131,7 +131,7 @@ return [
         'type'       => 'Type',
         'addressing' => 'Addressing',
         'from'       => 'From',
-        'delegate'   => 'Delegate',
+        'validator'   => 'Validator',
 
         'no_results' => [
             'no_filters' => 'All filtering options have been deselected. Please select one or more options to display recent votes.',
@@ -154,7 +154,7 @@ return [
             'others'        => 'Others',
         ],
 
-        'delegates' => [
+        'validators' => [
             'select_all' => 'Select All',
             'active'     => 'Active',
             'standby'    => 'Standby',

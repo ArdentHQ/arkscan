@@ -20,7 +20,7 @@ final class TransactionType
     private array $types = [
         'isTransfer'                      => 'transfer',
         'isSecondSignature'               => 'second-signature',
-        'isDelegateRegistration'          => 'delegate-registration',
+        'isValidatorRegistration'          => 'validator-registration',
         'isUsernameRegistration'          => 'username-registration',
         'isUsernameResignation'           => 'username-resignation',
         'isVoteCombination'               => 'vote-combination',
@@ -28,7 +28,7 @@ final class TransactionType
         'isVote'                          => 'vote',
         'isMultiSignature'                => 'multi-signature',
         'isIpfs'                          => 'ipfs',
-        'isDelegateResignation'           => 'delegate-resignation',
+        'isValidatorResignation'           => 'validator-resignation',
         'isMultiPayment'                  => 'multi-payment',
         'isTimelock'                      => 'timelock',
         'isTimelockClaim'                 => 'timelock-claim',
@@ -45,9 +45,9 @@ final class TransactionType
         'isModuleEntityRegistration'      => 'module-entity-registration',
         'isModuleEntityResignation'       => 'module-entity-resignation',
         'isModuleEntityUpdate'            => 'module-entity-update',
-        'isDelegateEntityRegistration'    => 'delegate-entity-registration',
-        'isDelegateEntityResignation'     => 'delegate-entity-resignation',
-        'isDelegateEntityUpdate'          => 'delegate-entity-update',
+        'isValidatorEntityRegistration'    => 'validator-entity-registration',
+        'isValidatorEntityResignation'     => 'validator-entity-resignation',
+        'isValidatorEntityUpdate'          => 'validator-entity-update',
         'isLegacyBusinessRegistration'    => 'legacy-business-registration',
         'isLegacyBusinessResignation'     => 'legacy-business-resignation',
         'isLegacyBusinessUpdate'          => 'legacy-business-update',
@@ -81,9 +81,9 @@ final class TransactionType
         return $this->isCoreType(CoreTransactionTypeEnum::SECOND_SIGNATURE);
     }
 
-    public function isDelegateRegistration(): bool
+    public function isValidatorRegistration(): bool
     {
-        return $this->isCoreType(CoreTransactionTypeEnum::DELEGATE_REGISTRATION);
+        return $this->isCoreType(CoreTransactionTypeEnum::VALIDATOR_REGISTRATION);
     }
 
     public function isVote(): bool
@@ -113,9 +113,9 @@ final class TransactionType
         return $this->isCoreType(CoreTransactionTypeEnum::IPFS);
     }
 
-    public function isDelegateResignation(): bool
+    public function isValidatorResignation(): bool
     {
-        return $this->isCoreType(CoreTransactionTypeEnum::DELEGATE_RESIGNATION);
+        return $this->isCoreType(CoreTransactionTypeEnum::VALIDATOR_RESIGNATION);
     }
 
     public function isMultiPayment(): bool
@@ -223,19 +223,19 @@ final class TransactionType
         return $this->isEntityWithUpdate(MagistrateTransactionEntityTypeEnum::MODULE);
     }
 
-    public function isDelegateEntityRegistration(): bool
+    public function isValidatorEntityRegistration(): bool
     {
-        return $this->isEntityWithRegistration(MagistrateTransactionEntityTypeEnum::DELEGATE);
+        return $this->isEntityWithRegistration(MagistrateTransactionEntityTypeEnum::VALIDATOR);
     }
 
-    public function isDelegateEntityResignation(): bool
+    public function isValidatorEntityResignation(): bool
     {
-        return $this->isEntityWithResignation(MagistrateTransactionEntityTypeEnum::DELEGATE);
+        return $this->isEntityWithResignation(MagistrateTransactionEntityTypeEnum::VALIDATOR);
     }
 
-    public function isDelegateEntityUpdate(): bool
+    public function isValidatorEntityUpdate(): bool
     {
-        return $this->isEntityWithUpdate(MagistrateTransactionEntityTypeEnum::DELEGATE);
+        return $this->isEntityWithUpdate(MagistrateTransactionEntityTypeEnum::VALIDATOR);
     }
 
     public function isLegacyBusinessRegistration(): bool
@@ -278,7 +278,7 @@ final class TransactionType
             return false;
         }
 
-        if ($this->isDelegateRegistration()) {
+        if ($this->isValidatorRegistration()) {
             return false;
         }
 
@@ -302,7 +302,7 @@ final class TransactionType
             return false;
         }
 
-        if ($this->isDelegateResignation()) {
+        if ($this->isValidatorResignation()) {
             return false;
         }
 
@@ -374,15 +374,15 @@ final class TransactionType
             return false;
         }
 
-        if ($this->isDelegateEntityRegistration()) {
+        if ($this->isValidatorEntityRegistration()) {
             return false;
         }
 
-        if ($this->isDelegateEntityResignation()) {
+        if ($this->isValidatorEntityResignation()) {
             return false;
         }
 
-        if ($this->isDelegateEntityUpdate()) {
+        if ($this->isValidatorEntityUpdate()) {
             return false;
         }
 

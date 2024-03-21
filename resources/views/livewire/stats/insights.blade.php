@@ -5,7 +5,7 @@
         <x-stats.insights.marketdata :data="$marketData" />
     @endif
 
-    <x-stats.insights.delegates :details="$delegateDetails" />
+    <x-stats.insights.validators :details="$validatorDetails" />
 
     <x-stats.insights.addresses
         :holdings="$addressHoldings"
