@@ -1,6 +1,6 @@
 Object.defineProperties(window, {
     _arkconnect: {
-        writable: true
+        writable: true,
     },
 
     arkconnect: {
@@ -11,7 +11,7 @@ Object.defineProperties(window, {
         set: function (arkconnect) {
             this._arkconnect = arkconnect;
 
-            window.dispatchEvent(new Event('ARKConnectLoaded'));
+            window.dispatchEvent(new Event("ARKConnectLoaded"));
         },
     },
 });
@@ -67,7 +67,7 @@ const Wallet = () => {
             }
 
             return new Promise((resolve) => {
-                window.addEventListener('ARKConnectLoaded', () => {
+                window.addEventListener("ARKConnectLoaded", () => {
                     resolve(window.arkconnect !== undefined);
                 });
             });
