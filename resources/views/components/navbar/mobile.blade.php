@@ -159,9 +159,7 @@
                         </div>
 
                         @if (config('arkscan.arkconnect.enabled', false))
-                            <div class="flex flex-col py-3 px-6 border-t bg-theme-secondary-200 border-theme-secondary-300">
-                                <x-navbar.arkconnect />
-                            </div>
+                            <x-navbar.arkconnect />
                         @endif
                     </div>
                 </div>
