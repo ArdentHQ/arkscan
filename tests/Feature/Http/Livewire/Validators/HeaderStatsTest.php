@@ -36,10 +36,10 @@ it('should not error if no validator data', function () {
 
     Livewire::test(HeaderStats::class)
         ->assertViewHasAll([
-            'voterCount'      => 0,
-            'totalVoted'      => 0,
-            'votesPercentage' => 0,
-            'missedBlocks'    => 0,
+            'voterCount'       => 0,
+            'totalVoted'       => 0,
+            'votesPercentage'  => 0,
+            'missedBlocks'     => 0,
             'validatorsMissed' => 0,
         ]);
 });

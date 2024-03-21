@@ -49,7 +49,7 @@ it('should render with a height, volume, supply and market cap', function () {
         'fee'       => 0.99 * 1e8,
     ]);
 
-    $transaction->sender->balance          = 0;
+    $transaction->sender->balance           = 0;
     $transaction->block->validator->balance = 0;
     $transaction->sender->save();
     $transaction->block->validator->save();
@@ -87,7 +87,7 @@ it('should render with a height, volume, supply and market cap for BTC', functio
         'fee'       => 0.99 * 1e8,
     ]);
 
-    $transaction->sender->balance          = 0;
+    $transaction->sender->balance           = 0;
     $transaction->block->validator->balance = 0;
     $transaction->sender->save();
     $transaction->block->validator->save();

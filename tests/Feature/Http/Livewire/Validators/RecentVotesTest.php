@@ -21,7 +21,7 @@ it('should render', function () {
 it('should render with votes', function () {
     $this->travelTo(Carbon::parse('2020-03-21 18:42:00'));
 
-    $wallet   = Wallet::factory()->create();
+    $wallet    = Wallet::factory()->create();
     $validator = Wallet::factory()->activeValidator()->create();
 
     Transaction::factory(27)->vote()->create([
@@ -41,7 +41,7 @@ it('should render with votes', function () {
 it('should not render votes older than 30 days', function () {
     $this->travelTo(Carbon::parse('2020-04-21 18:42:00'));
 
-    $wallet   = Wallet::factory()->create();
+    $wallet    = Wallet::factory()->create();
     $validator = Wallet::factory()->activeValidator()->create();
 
     Transaction::factory(27)->vote()->create([
@@ -118,7 +118,7 @@ it('should toggle "select all" when all filters are selected', function () {
 });
 
 it('should filter vote transactions', function () {
-    $sender        = Wallet::factory()->create();
+    $sender         = Wallet::factory()->create();
     $validator      = Wallet::factory()->activeValidator(false)->create();
     $otherValidator = Wallet::factory()->activeValidator(false)->create();
 
@@ -159,7 +159,7 @@ it('should filter vote transactions', function () {
 });
 
 it('should filter unvote transactions', function () {
-    $sender        = Wallet::factory()->create();
+    $sender         = Wallet::factory()->create();
     $validator      = Wallet::factory()->activeValidator(false)->create();
     $otherValidator = Wallet::factory()->activeValidator(false)->create();
 
@@ -200,7 +200,7 @@ it('should filter unvote transactions', function () {
 });
 
 it('should filter vote swap transactions', function () {
-    $sender        = Wallet::factory()->create();
+    $sender         = Wallet::factory()->create();
     $validator      = Wallet::factory()->activeValidator(false)->create();
     $otherValidator = Wallet::factory()->activeValidator(false)->create();
 
@@ -311,9 +311,9 @@ function generateTransactions(): array
         'validator1'           => $validator1,
         'validator2'           => $validator2,
         'validator3'           => $validator3,
-        'voteTransaction'     => $voteTransaction,
-        'unvoteTransaction'   => $unvoteTransaction,
-        'voteSwapTransaction' => $voteSwapTransaction,
+        'voteTransaction'      => $voteTransaction,
+        'unvoteTransaction'    => $unvoteTransaction,
+        'voteSwapTransaction'  => $voteSwapTransaction,
     ];
 };
 

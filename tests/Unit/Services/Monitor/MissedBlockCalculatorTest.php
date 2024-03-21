@@ -7,8 +7,8 @@ use App\Models\Round;
 use App\Services\Monitor\MissedBlocksCalculator;
 
 it('should calculate the missed blocks', function () {
-    $expectedStats                 = []; // expected { forged, missed } by validator public key
-    $heightIterator                = 0;
+    $expectedStats                  = []; // expected { forged, missed } by validator public key
+    $heightIterator                 = 0;
     $validatorPublicKeysBalanceDesc = [
         '027716e659220085e41389efc7cf6a05f7f7c659cf3db9126caabce6cda9156582',
         '03d3c6889608074b44155ad2e6577c3368e27e6e129c457418eb3e5ed029544e8d',
@@ -157,7 +157,7 @@ it('should calculate the missed blocks', function () {
         'timestamp' => 124595288,
     ]);
 
-    $blocksInfo    = MissedBlocksCalculator::calculateForRound(6970364); // any height in the round [6970324, 6970374]
+    $blocksInfo     = MissedBlocksCalculator::calculateForRound(6970364); // any height in the round [6970324, 6970374]
     $validatorStats = [];
     foreach ($blocksInfo as $blockInfo) {
         if (! isset($validatorStats[$blockInfo['publicKey']])) {

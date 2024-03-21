@@ -723,7 +723,7 @@ it('should force ascending if invalid query string value', function () {
 it('should handle sorting several pages without cached data', function ($columnSortBy, $modelSortBy) {
     $validatorData = [];
     foreach (range(1, 145) as $rank) {
-        $wallet         = faker()->wallet;
+        $wallet          = faker()->wallet;
         $validatorData[] = [
             'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e8,
@@ -816,7 +816,7 @@ it('should handle sorting several pages without cached data', function ($columnS
 it('should handle sorting several pages with cached data', function ($columnSortBy, $modelSortBy) {
     $validatorData = [];
     foreach (range(1, 145) as $rank) {
-        $wallet         = faker()->wallet;
+        $wallet          = faker()->wallet;
         $validatorData[] = [
             'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e8,
