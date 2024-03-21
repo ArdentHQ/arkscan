@@ -19,9 +19,9 @@ final class DelegateCache implements Contract
         return $this->get('total_amounts', []);
     }
 
-    public function setTotalAmounts(Closure $callback): array
+    public function setTotalAmounts(Closure $callback): void
     {
-        return $this->remember('total_amounts', now()->addHour(), $callback);
+        $this->put('total_amounts', $callback());
     }
 
     public function getTotalBlocks(): array
@@ -29,9 +29,9 @@ final class DelegateCache implements Contract
         return $this->get('total_blocks', []);
     }
 
-    public function setTotalBlocks(Closure $callback): array
+    public function setTotalBlocks(Closure $callback): void
     {
-        return $this->remember('total_blocks', now()->addHour(), $callback);
+        $this->put('total_blocks', $callback());
     }
 
     public function getTotalFees(): array
@@ -39,9 +39,9 @@ final class DelegateCache implements Contract
         return $this->get('total_fees', []);
     }
 
-    public function setTotalFees(Closure $callback): array
+    public function setTotalFees(Closure $callback): void
     {
-        return $this->remember('total_fees', now()->addHour(), $callback);
+        $this->put('total_fees', $callback());
     }
 
     public function getTotalRewards(): array
@@ -49,9 +49,9 @@ final class DelegateCache implements Contract
         return $this->get('total_rewards', []);
     }
 
-    public function setTotalRewards(Closure $callback): array
+    public function setTotalRewards(Closure $callback): void
     {
-        return $this->remember('total_rewards', now()->addHour(), $callback);
+        $this->put('total_rewards', $callback());
     }
 
     public function getTotalWalletsVoted(): int
