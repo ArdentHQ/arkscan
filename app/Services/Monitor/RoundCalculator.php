@@ -11,23 +11,23 @@ final class RoundCalculator
     public static function calculate(int $height): array
     {
         $result = [
-            'round'           => 1,
-            'roundHeight'     => 1,
-            'nextRound'       => 0,
-            'nextRoundHeight' => 0,
+            'round'            => 1,
+            'roundHeight'      => 1,
+            'nextRound'        => 0,
+            'nextRoundHeight'  => 0,
             'maxValidators'    => 0,
         ];
 
         $activeValidators    = Network::validatorCount();
-        $milestoneHeight    = 1;
-        $heightFromLastSpan = $height - $milestoneHeight;
-        $currentRound       = (int) floor($heightFromLastSpan / $activeValidators) + 1;
-        $nextRound          = $currentRound + 1;
+        $milestoneHeight     = 1;
+        $heightFromLastSpan  = $height - $milestoneHeight;
+        $currentRound        = (int) floor($heightFromLastSpan / $activeValidators) + 1;
+        $nextRound           = $currentRound + 1;
 
-        $result['round']           = $currentRound;
-        $result['roundHeight']     = static::getRoundHeight($currentRound, $activeValidators);
-        $result['nextRound']       = $nextRound;
-        $result['nextRoundHeight'] = static::getRoundHeight($nextRound, $activeValidators);
+        $result['round']            = $currentRound;
+        $result['roundHeight']      = static::getRoundHeight($currentRound, $activeValidators);
+        $result['nextRound']        = $nextRound;
+        $result['nextRoundHeight']  = static::getRoundHeight($nextRound, $activeValidators);
         $result['maxValidators']    = $activeValidators;
 
         return $result;

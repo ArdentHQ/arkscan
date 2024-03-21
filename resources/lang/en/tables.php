@@ -63,13 +63,13 @@ return [
     ],
 
     'validators' => [
-        'rank'          => 'Rank',
+        'rank'           => 'Rank',
         'validator'      => 'Validator',
-        'status'        => 'Status',
-        'no_of_voters'  => '# of Voters',
-        'votes'         => 'Votes (:currency)',
-        'percentage'    => 'Percentage',
-        'missed_blocks' => 'Missed Blocks (30d)',
+        'status'         => 'Status',
+        'no_of_voters'   => '# of Voters',
+        'votes'          => 'Votes (:currency)',
+        'percentage'     => 'Percentage',
+        'missed_blocks'  => 'Missed Blocks (30d)',
 
         'validator_per_page_options' => [
             10,
@@ -89,17 +89,17 @@ return [
     ],
 
     'validator-monitor' => [
-        'order'                => 'Order',
+        'order'                 => 'Order',
         'validator'             => 'Validator',
-        'status'               => 'Status',
-        'time_to_forge'        => 'Time to Forge',
-        'status_time_to_forge' => 'Status / Time to Forge',
-        'block_height'         => 'Block Height',
-        'completed'            => 'Completed',
-        'missed'               => 'Missed',
-        'tbd'                  => 'TBD',
-        'favorite'             => 'Favorite',
-        'my_favorites'         => 'My Favorites',
+        'status'                => 'Status',
+        'time_to_forge'         => 'Time to Forge',
+        'status_time_to_forge'  => 'Status / Time to Forge',
+        'block_height'          => 'Block Height',
+        'completed'             => 'Completed',
+        'missed'                => 'Missed',
+        'tbd'                   => 'TBD',
+        'favorite'              => 'Favorite',
+        'my_favorites'          => 'My Favorites',
 
         'forging-status' => [
             'block_generated' => 'Block Generated',
@@ -110,13 +110,13 @@ return [
     ],
 
     'missed-blocks' => [
-        'height'        => 'Block Height',
-        'age'           => 'Age',
+        'height'         => 'Block Height',
+        'age'            => 'Age',
         'validator'      => 'Validator',
-        'no_of_voters'  => '# of Voters',
-        'votes'         => 'Votes (:currency)',
-        'percentage'    => 'Percentage',
-        'addressing'    => 'Addressing',
+        'no_of_voters'   => '# of Voters',
+        'votes'          => 'Votes (:currency)',
+        'percentage'     => 'Percentage',
+        'addressing'     => 'Addressing',
 
         'info' => [
             'percentage' => 'Percentage of votes in relation to the total supply.',
@@ -126,11 +126,11 @@ return [
     ],
 
     'recent-votes' => [
-        'id'         => 'Tx ID',
-        'age'        => 'Age',
-        'type'       => 'Type',
-        'addressing' => 'Addressing',
-        'from'       => 'From',
+        'id'          => 'Tx ID',
+        'age'         => 'Age',
+        'type'        => 'Type',
+        'addressing'  => 'Addressing',
+        'from'        => 'From',
         'validator'   => 'Validator',
 
         'no_results' => [

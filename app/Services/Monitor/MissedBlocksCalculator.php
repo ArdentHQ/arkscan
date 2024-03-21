@@ -28,7 +28,7 @@ class MissedBlocksCalculator implements \App\Contracts\Services\Monitor\MissedBl
 
     public static function calculateForRound(Round $round, int $heightTo): array
     {
-        $roundValidators = $round->validators;
+        $roundValidators  = $round->validators;
         $activeValidators = count($roundValidators);
 
         $producedBlocks = Block::select(['generator_public_key', 'height', 'timestamp'])

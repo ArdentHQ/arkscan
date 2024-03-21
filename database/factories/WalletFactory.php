@@ -22,7 +22,7 @@ final class WalletFactory extends Factory
             'balance'           => $this->faker->numberBetween(1, 1000) * 1e8,
             'nonce'             => $this->faker->numberBetween(1, 1000),
             'attributes'        => [
-                'secondPublicKey' => $this->faker->publicKey,
+                'secondPublicKey'  => $this->faker->publicKey,
                 'validator'        => [
                     'username'       => $this->faker->userName,
                     'voteBalance'    => $this->faker->numberBetween(1, 1000) * 1e8,

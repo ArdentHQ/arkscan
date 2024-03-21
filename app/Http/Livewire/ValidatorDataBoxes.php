@@ -47,9 +47,9 @@ final class ValidatorDataBoxes extends Component
         }
 
         $this->statistics = [
-            'blockCount'   => $this->getBlockCount(),
+            'blockCount'    => $this->getBlockCount(),
             'nextValidator' => $this->getNextValidator(),
-            'performances' => $this->getValidatorsPerformance(),
+            'performances'  => $this->getValidatorsPerformance(),
         ];
     }
 

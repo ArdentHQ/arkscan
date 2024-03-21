@@ -19,8 +19,8 @@ final class ShuffleValidators
             // $elements = [];
 
             for ($x = 0; $x < 4 && $i < $delCount; $i++, $x++) {
-                $newIndex             = intval(unpack('C*', $currentSeed)[$x + 1]) % $delCount;
-                $b                    = $validators[$newIndex];
+                $newIndex              = intval(unpack('C*', $currentSeed)[$x + 1]) % $delCount;
+                $b                     = $validators[$newIndex];
                 $validators[$newIndex] = $validators[$i];
                 $validators[$i]        = $b;
 

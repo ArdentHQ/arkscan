@@ -9,8 +9,8 @@ use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
 use App\Services\Cache\WalletCache;
-use App\Services\Monitor\ValidatorTracker;
 use App\Services\Monitor\Monitor;
+use App\Services\Monitor\ValidatorTracker;
 use App\Services\Timestamp;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
@@ -73,8 +73,8 @@ trait ValidatorData
 
     private function fetchValidators(): array
     {
-        $currentRound = Rounds::current();
-        $heightRange  = Monitor::heightRangeByRound($currentRound);
+        $currentRound  = Rounds::current();
+        $heightRange   = Monitor::heightRangeByRound($currentRound);
         $validators    = $currentRound->validators;
 
         $this->cacheLastBlocks($validators);
@@ -83,9 +83,9 @@ trait ValidatorData
             return [];
         }
 
-        $tracking       = ValidatorTracker::execute($validators, $heightRange[0]);
-        $roundBlocks    = $this->getBlocksByRange(Arr::pluck($tracking, 'publicKey'), $heightRange);
-        $blockTimestamp = $roundBlocks->last()->timestamp;
+        $tracking        = ValidatorTracker::execute($validators, $heightRange[0]);
+        $roundBlocks     = $this->getBlocksByRange(Arr::pluck($tracking, 'publicKey'), $heightRange);
+        $blockTimestamp  = $roundBlocks->last()->timestamp;
         $validators      = [];
 
         $roundBlockCount = $roundBlocks->groupBy('generator_public_key')

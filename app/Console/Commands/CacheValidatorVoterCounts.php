@@ -35,7 +35,7 @@ final class CacheValidatorVoterCounts extends Command
      */
     public function handle(): void
     {
-        $walletCache   = new WalletCache();
+        $walletCache    = new WalletCache();
         $validatorCache = new ValidatorCache();
 
         $select = [

@@ -10,16 +10,16 @@ return [
 
     'validators'        => 'Validators',
     'validator_monitor' => 'Validator Monitor',
-    'wallets'          => 'Wallets',
-    'top_accounts'     => 'Top Accounts',
-    'blocks'           => 'Blocks',
-    'transactions'     => 'Transactions',
-    'statistics'       => 'Statistics',
-    'support'          => 'Support',
-    'exchanges'        => 'Exchanges',
-    'docs'             => 'Docs',
-    'api'              => 'API',
-    'github'           => 'GitHub',
+    'wallets'           => 'Wallets',
+    'top_accounts'      => 'Top Accounts',
+    'blocks'            => 'Blocks',
+    'transactions'      => 'Transactions',
+    'statistics'        => 'Statistics',
+    'support'           => 'Support',
+    'exchanges'         => 'Exchanges',
+    'docs'              => 'Docs',
+    'api'               => 'API',
+    'github'            => 'GitHub',
 
     'network-select'   => [
         'main' => [
