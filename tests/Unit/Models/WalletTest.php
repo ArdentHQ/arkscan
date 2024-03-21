@@ -15,7 +15,7 @@ beforeEach(function () {
         'updated_at' => Carbon::createFromTimestamp(123456789),
         'balance'    => '100000000000',
         'attributes' => [
-            'delegate' => [
+            'validator' => [
                 'username'    => 'test',
                 'voteBalance' => '200000000000',
             ],

@@ -26,7 +26,7 @@ it('should have all required properties', function (array $config) {
     expect($subject->knownWallets())->toBeArray();
     expect($subject->canBeExchanged())->toBe($config['canBeExchanged']);
     expect($subject->epoch())->toBeInstanceOf(Carbon::class);
-    expect($subject->delegateCount())->toBe($config['delegateCount']);
+    expect($subject->validatorCount())->toBe($config['validatorCount']);
     expect($subject->blockTime())->toBe($config['blockTime']);
     expect($subject->blockReward())->toBe($config['blockReward']);
     expect($subject->config())->toBeInstanceOf(Bitwasp::class);
@@ -42,7 +42,7 @@ it('should have all required properties', function (array $config) {
         'knownWallets'       => 'https://raw.githubusercontent.com/ArkEcosystem/common/master/mainnet/known-wallets-extended.json',
         'canBeExchanged'     => true,
         'epoch'              => Mainnet::new()->epoch(),
-        'delegateCount'      => 51,
+        'validatorCount'      => 51,
         'blockTime'          => 8,
         'blockReward'        => 2,
         'base58Prefix'       => 23,
@@ -59,7 +59,7 @@ it('should have all required properties', function (array $config) {
         'confirmations'      => 51,
         'canBeExchanged'     => false,
         'epoch'              => Devnet::new()->epoch(),
-        'delegateCount'      => 51,
+        'validatorCount'      => 51,
         'blockTime'          => 8,
         'blockReward'        => 2,
         'base58Prefix'       => 30,

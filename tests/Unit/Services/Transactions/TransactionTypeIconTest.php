@@ -19,8 +19,8 @@ it('should determine the icon that matches the type', function (string $type, st
         'second-signature',
     ],
     [
-        'delegateRegistration',
-        'delegate-registration',
+        'validatorRegistration',
+        'validator-registration',
     ],
     [
         'vote',
@@ -43,8 +43,8 @@ it('should determine the icon that matches the type', function (string $type, st
         'ipfs',
     ],
     [
-        'delegateResignation',
-        'delegate-resignation',
+        'validatorResignation',
+        'validator-resignation',
     ],
     [
         'multiPayment',
@@ -111,16 +111,16 @@ it('should determine the icon that matches the type', function (string $type, st
         'module',
     ],
     [
-        'delegateEntityRegistration',
-        'delegate-registration',
+        'validatorEntityRegistration',
+        'validator-registration',
     ],
     [
-        'delegateEntityResignation',
-        'delegate-registration',
+        'validatorEntityResignation',
+        'validator-registration',
     ],
     [
-        'delegateEntityUpdate',
-        'delegate-registration',
+        'validatorEntityUpdate',
+        'validator-registration',
     ],
     [
         'legacyBusinessRegistration',

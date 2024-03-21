@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\CacheDelegateAggregates;
-use App\Services\Cache\DelegateCache;
+use App\Console\Commands\CacheValidatorAggregates;
+use App\Services\Cache\ValidatorCache;
 
 it('should execute the command', function () {
-    (new CacheDelegateAggregates())->handle($cache = new DelegateCache());
+    (new CacheValidatorAggregates())->handle($cache = new ValidatorCache());
 
     expect($cache->getTotalAmounts())->toBeArray();
     expect($cache->getTotalFees())->toBeArray();

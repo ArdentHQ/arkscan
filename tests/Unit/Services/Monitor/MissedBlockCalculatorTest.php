@@ -7,9 +7,9 @@ use App\Models\Round;
 use App\Services\Monitor\MissedBlocksCalculator;
 
 it('should calculate the missed blocks', function () {
-    $expectedStats                 = []; // expected { forged, missed } by delegate public key
+    $expectedStats                 = []; // expected { forged, missed } by validator public key
     $heightIterator                = 0;
-    $delegatePublicKeysBalanceDesc = [
+    $validatorPublicKeysBalanceDesc = [
         '027716e659220085e41389efc7cf6a05f7f7c659cf3db9126caabce6cda9156582',
         '03d3c6889608074b44155ad2e6577c3368e27e6e129c457418eb3e5ed029544e8d',
         '032cfbb18f4e49952c6d6475e8adc6d0cba00b81ef6606cc4927b78c6c50558beb',
@@ -62,7 +62,7 @@ it('should calculate the missed blocks', function () {
         '029918d8fe6a78cc01bbab31f636494568dd954431f75f4ea6ff1da040b7063a70',
         '036a520acf24036ff691a4f8ba19514828e9b5aa36ca4ba0452e9012023caccfef',
     ];
-    $delegateOrderForRound = [
+    $validatorOrderForRound = [
         '02257c58004e5ae23716d1c44beea0cca7f5b522a692df367bae9015a4f15c1670',
         '03f08761f99892996c6771761955ec41ee6cdffadd43171228f5f28f8c76423b3d',
         '02e345079aca0567db96ec0ba3acf859b7cfd15134a855671f9c0fe8b1173767bd',
@@ -121,7 +121,7 @@ it('should calculate the missed blocks', function () {
         '0306950dae7158103814e3828b1ab97a87dbb3680db1b4c6998b8208865b2f9db7',
         '03ce92e54f9dbb5e4a050edddf5862dee29f419c60ceaad052d50aad6fcced5652',
     ];
-    $delegatesWhoMissed = [
+    $validatorsWhoMissed = [
         '025b86c5d4cce6de8ea076ac1983e0857da8322b5eb8613928d3ec7fdd7229b873',
         '027f997ab2d8874c8f06d12ef78d39e309ed887a1141d2ba0f50aec8abffaffcde',
         '02e311d97f92dc879860ec0d63b344239f17149ed1700b279b5ef52d2baaa0226f',
@@ -129,7 +129,7 @@ it('should calculate the missed blocks', function () {
         '029918d8fe6a78cc01bbab31f636494568dd954431f75f4ea6ff1da040b7063a70',
         '036a520acf24036ff691a4f8ba19514828e9b5aa36ca4ba0452e9012023caccfef',
     ];
-    foreach ($delegatePublicKeysBalanceDesc as $key => $publicKey) {
+    foreach ($validatorPublicKeysBalanceDesc as $key => $publicKey) {
         Round::factory()->create([
             'round'      => '136674',
             'public_key' => $publicKey,
@@ -137,9 +137,9 @@ it('should calculate the missed blocks', function () {
         ]);
     }
 
-    foreach ($delegateOrderForRound as $key => $publicKey) {
-        if (! in_array($publicKey, $delegatesWhoMissed, true)) {
-            // we'll make every of 10 delegate miss his block
+    foreach ($validatorOrderForRound as $key => $publicKey) {
+        if (! in_array($publicKey, $validatorsWhoMissed, true)) {
+            // we'll make every of 10 validator miss his block
             // Start height for round 136674 is 6970324
             Block::factory()->create([
                 'height'    => 6970324 + $heightIterator,
@@ -158,17 +158,17 @@ it('should calculate the missed blocks', function () {
     ]);
 
     $blocksInfo    = MissedBlocksCalculator::calculateForRound(6970364); // any height in the round [6970324, 6970374]
-    $delegateStats = [];
+    $validatorStats = [];
     foreach ($blocksInfo as $blockInfo) {
-        if (! isset($delegateStats[$blockInfo['publicKey']])) {
-            $delegateStats[$blockInfo['publicKey']] = ['forged' => 0, 'missed' => 0];
+        if (! isset($validatorStats[$blockInfo['publicKey']])) {
+            $validatorStats[$blockInfo['publicKey']] = ['forged' => 0, 'missed' => 0];
         }
 
         if ($blockInfo['forged']) {
-            $delegateStats[$blockInfo['publicKey']]['forged']++;
+            $validatorStats[$blockInfo['publicKey']]['forged']++;
         } else {
-            $delegateStats[$blockInfo['publicKey']]['missed']++;
+            $validatorStats[$blockInfo['publicKey']]['missed']++;
         }
     }
-    $this->assertEquals($delegateStats, $expectedStats);
+    $this->assertEquals($validatorStats, $expectedStats);
 });

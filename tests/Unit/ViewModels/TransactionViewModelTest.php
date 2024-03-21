@@ -500,13 +500,13 @@ it('should determine the transaction type', function (string $type) {
 })->with([
     ['transfer'],
     ['secondSignature'],
-    ['delegateRegistration'],
+    ['validatorRegistration'],
     ['vote'],
     ['unvote'],
     ['voteCombination'],
     ['multiSignature'],
     ['ipfs'],
-    ['delegateResignation'],
+    ['validatorResignation'],
     ['multiPayment'],
     ['timelock'],
     ['timelockClaim'],
@@ -526,9 +526,9 @@ it('should determine the transaction type', function (string $type) {
     ['moduleEntityRegistration'],
     ['moduleEntityResignation'],
     ['moduleEntityUpdate'],
-    ['delegateEntityRegistration'],
-    ['delegateEntityResignation'],
-    ['delegateEntityUpdate'],
+    ['validatorEntityRegistration'],
+    ['validatorEntityResignation'],
+    ['validatorEntityUpdate'],
     ['legacyBusinessRegistration'],
     ['legacyBusinessResignation'],
     ['legacyBusinessUpdate'],
@@ -552,11 +552,11 @@ it('should determine if the transaction is self-receiving', function (string $ty
     expect($subject->isSelfReceiving())->toBeFalse();
 })->with([
     ['secondSignature'],
-    ['delegateRegistration'],
+    ['validatorRegistration'],
     ['vote'],
     ['unvote'],
     ['voteCombination'],
-    ['delegateResignation'],
+    ['validatorResignation'],
     ['entityRegistration'],
     ['entityResignation'],
     ['entityUpdate'],
@@ -572,9 +572,9 @@ it('should determine if the transaction is self-receiving', function (string $ty
     ['moduleEntityRegistration'],
     ['moduleEntityResignation'],
     ['moduleEntityUpdate'],
-    ['delegateEntityRegistration'],
-    ['delegateEntityResignation'],
-    ['delegateEntityUpdate'],
+    ['validatorEntityRegistration'],
+    ['validatorEntityResignation'],
+    ['validatorEntityUpdate'],
     ['legacyBusinessRegistration'],
     ['legacyBusinessResignation'],
     ['legacyBusinessUpdate'],
@@ -596,7 +596,7 @@ it('should determine transactions that doesnt have amount', function (string $ty
 
     expect($subject->hasAmount())->toBeFalse();
 })->with([
-    'delegateRegistration',
+    'validatorRegistration',
     'entityRegistration',
     'entityResignation',
     'entityUpdate',
@@ -624,7 +624,7 @@ it('should fallback to the sender if no recipient exists', function () {
     expect($this->subject->recipient())->toEqual($this->subject->sender());
 });
 
-it('should get the voted delegate', function () {
+it('should get the voted validator', function () {
     Wallet::factory()->create(['public_key' => 'publicKey']);
 
     $subject = new TransactionViewModel(Transaction::factory()->vote()->create());
@@ -632,13 +632,13 @@ it('should get the voted delegate', function () {
     expect($subject->voted())->toBeInstanceOf(WalletViewModel::class);
 });
 
-it('should fail to get the voted delegate if the transaction is not an unvote', function () {
+it('should fail to get the voted validator if the transaction is not an unvote', function () {
     $subject = new TransactionViewModel(Transaction::factory()->unvote()->create());
 
     expect($subject->voted())->toBeNull();
 });
 
-it('should fail to get the voted delegate if the transaction asset is empty', function ($asset) {
+it('should fail to get the voted validator if the transaction asset is empty', function ($asset) {
     $subject = new TransactionViewModel(Transaction::factory()->vote()->create([
         'asset' => $asset,
     ]));
@@ -646,7 +646,7 @@ it('should fail to get the voted delegate if the transaction asset is empty', fu
     expect($subject->voted())->toBeNull();
 })->with([[[]], null]);
 
-it('should get the unvoted delegate', function () {
+it('should get the unvoted validator', function () {
     Wallet::factory()->create(['public_key' => 'publicKey']);
 
     $subject = new TransactionViewModel(Transaction::factory()->unvote()->create());
@@ -654,13 +654,13 @@ it('should get the unvoted delegate', function () {
     expect($subject->unvoted())->toBeInstanceOf(WalletViewModel::class);
 });
 
-it('should fail to get the unvoted delegate if the transaction is not an unvote', function () {
+it('should fail to get the unvoted validator if the transaction is not an unvote', function () {
     $subject = new TransactionViewModel(Transaction::factory()->vote()->create());
 
     expect($subject->unvoted())->toBeNull();
 });
 
-it('should fail to get the unvoted delegate if the transaction asset is empty', function ($asset) {
+it('should fail to get the unvoted validator if the transaction asset is empty', function ($asset) {
     $subject = new TransactionViewModel(Transaction::factory()
         ->vote()
         ->create(['asset' => $asset]));
@@ -1060,13 +1060,13 @@ it('should determine if the transaction has extra data', function (bool $outcome
 })->with([
     [false, 'transfer'],
     [false, 'secondSignature'],
-    [false, 'delegateRegistration'],
+    [false, 'validatorRegistration'],
     [false, 'vote'],
     [false, 'unvote'],
     [true, 'voteCombination'],
     [true, 'multiSignature'],
     [false, 'ipfs'],
-    [false, 'delegateResignation'],
+    [false, 'validatorResignation'],
     [true, 'multiPayment'],
     [false, 'timelock'],
     [false, 'timelockClaim'],
@@ -1086,9 +1086,9 @@ it('should determine if the transaction has extra data', function (bool $outcome
     [false, 'moduleEntityRegistration'],
     [false, 'moduleEntityResignation'],
     [false, 'moduleEntityUpdate'],
-    [false, 'delegateEntityRegistration'],
-    [false, 'delegateEntityResignation'],
-    [false, 'delegateEntityUpdate'],
+    [false, 'validatorEntityRegistration'],
+    [false, 'validatorEntityResignation'],
+    [false, 'validatorEntityUpdate'],
     [false, 'legacyBusinessRegistration'],
     [false, 'legacyBusinessResignation'],
     [false, 'legacyBusinessUpdate'],
@@ -1151,18 +1151,18 @@ it('should get the entity hash', function () {
     expect($subject->entityHash())->toBe('ipfs');
 });
 
-it('should get the username if the transaction is not a delegate registration', function () {
+it('should get the username if the transaction is not a validator registration', function () {
     $subject = new TransactionViewModel(Transaction::factory()
-        ->delegateRegistration()
-        ->create(['asset' => ['delegate' => ['username' => 'john']]]));
+        ->validatorRegistration()
+        ->create(['asset' => ['validator' => ['username' => 'john']]]));
 
-    expect($subject->delegateUsername())->toBe('john');
+    expect($subject->validatorUsername())->toBe('john');
 });
 
-it('should fail to get the username if the transaction is not a delegate registration', function () {
+it('should fail to get the username if the transaction is not a validator registration', function () {
     $subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
 
-    expect($subject->delegateUsername())->toBeNull();
+    expect($subject->validatorUsername())->toBeNull();
 });
 
 it('should get the vendor field', function () {
@@ -1198,12 +1198,12 @@ it('should determine if the transaction is any kind of registration', function (
 
     expect($subject->isRegistration())->toBeTrue();
 })->with([
-    ['delegateRegistration'],
+    ['validatorRegistration'],
     ['businessEntityRegistration'],
     ['productEntityRegistration'],
     ['pluginEntityRegistration'],
     ['moduleEntityRegistration'],
-    ['delegateEntityRegistration'],
+    ['validatorEntityRegistration'],
 ]);
 
 it('should determine that the transaction is not any kind of registration', function () {
@@ -1302,8 +1302,8 @@ it('should determine a non-legacy transaction', function ($transaction) {
     expect($transaction->isLegacy())->toBeFalse();
 })->with([
     'transfer',
-    'delegateRegistration',
-    'delegateResignation',
+    'validatorRegistration',
+    'validatorResignation',
     'multisignature',
     'ipfs',
     'multiPayment',
@@ -1336,9 +1336,9 @@ it('should determine a legacy transaction', function ($transaction) {
     'moduleEntityRegistration',
     'moduleEntityResignation',
     'moduleEntityUpdate',
-    'delegateEntityRegistration',
-    'delegateEntityResignation',
-    'delegateEntityUpdate',
+    'validatorEntityRegistration',
+    'validatorEntityResignation',
+    'validatorEntityUpdate',
     'legacyBusinessRegistration',
     'legacyBusinessResignation',
     'legacyBusinessUpdate',

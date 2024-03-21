@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\SortDirection;
-use App\Http\Livewire\Delegates\RecentVotes;
+use App\Http\Livewire\Validators\RecentVotes;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Timestamp;
@@ -22,13 +22,13 @@ it('should render with votes', function () {
     $this->travelTo(Carbon::parse('2020-03-21 18:42:00'));
 
     $wallet   = Wallet::factory()->create();
-    $delegate = Wallet::factory()->activeDelegate()->create();
+    $validator = Wallet::factory()->activeValidator()->create();
 
     Transaction::factory(27)->vote()->create([
         'timestamp'         => Timestamp::fromUnix(Carbon::parse('2020-03-21 14:12:00')->unix())->unix(),
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => ['+'.$delegate->public_key],
+            'votes' => ['+'.$validator->public_key],
         ],
     ]);
 
@@ -42,13 +42,13 @@ it('should not render votes older than 30 days', function () {
     $this->travelTo(Carbon::parse('2020-04-21 18:42:00'));
 
     $wallet   = Wallet::factory()->create();
-    $delegate = Wallet::factory()->activeDelegate()->create();
+    $validator = Wallet::factory()->activeValidator()->create();
 
     Transaction::factory(27)->vote()->create([
         'timestamp'         => Timestamp::fromUnix(Carbon::parse('2020-03-21 14:12:00')->unix())->unix(),
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => ['+'.$delegate->public_key],
+            'votes' => ['+'.$validator->public_key],
         ],
     ]);
 
@@ -56,7 +56,7 @@ it('should not render votes older than 30 days', function () {
         'timestamp'         => Timestamp::fromUnix(Carbon::parse('2020-04-20 14:12:00')->unix())->unix(),
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => ['+'.$delegate->public_key],
+            'votes' => ['+'.$validator->public_key],
         ],
     ]);
 
@@ -119,14 +119,14 @@ it('should toggle "select all" when all filters are selected', function () {
 
 it('should filter vote transactions', function () {
     $sender        = Wallet::factory()->create();
-    $delegate      = Wallet::factory()->activeDelegate(false)->create();
-    $otherDelegate = Wallet::factory()->activeDelegate(false)->create();
+    $validator      = Wallet::factory()->activeValidator(false)->create();
+    $otherValidator = Wallet::factory()->activeValidator(false)->create();
 
     $vote = Transaction::factory()->vote()->create([
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
         'asset'             => [
-            'votes' => ['+'.$delegate->public_key],
+            'votes' => ['+'.$validator->public_key],
         ],
     ]);
 
@@ -134,7 +134,7 @@ it('should filter vote transactions', function () {
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
         'asset'             => [
-            'votes' => ['-'.$delegate->public_key],
+            'votes' => ['-'.$validator->public_key],
         ],
     ]);
 
@@ -142,7 +142,7 @@ it('should filter vote transactions', function () {
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
         'asset'             => [
-            'votes' => ['-'.$delegate->public_key, '+'.$otherDelegate->public_key],
+            'votes' => ['-'.$validator->public_key, '+'.$otherValidator->public_key],
         ],
     ]);
 
@@ -160,14 +160,14 @@ it('should filter vote transactions', function () {
 
 it('should filter unvote transactions', function () {
     $sender        = Wallet::factory()->create();
-    $delegate      = Wallet::factory()->activeDelegate(false)->create();
-    $otherDelegate = Wallet::factory()->activeDelegate(false)->create();
+    $validator      = Wallet::factory()->activeValidator(false)->create();
+    $otherValidator = Wallet::factory()->activeValidator(false)->create();
 
     $vote = Transaction::factory()->vote()->create([
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
         'asset'             => [
-            'votes' => ['+'.$delegate->public_key],
+            'votes' => ['+'.$validator->public_key],
         ],
     ]);
 
@@ -175,7 +175,7 @@ it('should filter unvote transactions', function () {
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
         'asset'             => [
-            'votes' => ['-'.$delegate->public_key],
+            'votes' => ['-'.$validator->public_key],
         ],
     ]);
 
@@ -183,7 +183,7 @@ it('should filter unvote transactions', function () {
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
         'asset'             => [
-            'votes' => ['-'.$delegate->public_key, '+'.$otherDelegate->public_key],
+            'votes' => ['-'.$validator->public_key, '+'.$otherValidator->public_key],
         ],
     ]);
 
@@ -201,14 +201,14 @@ it('should filter unvote transactions', function () {
 
 it('should filter vote swap transactions', function () {
     $sender        = Wallet::factory()->create();
-    $delegate      = Wallet::factory()->activeDelegate(false)->create();
-    $otherDelegate = Wallet::factory()->activeDelegate(false)->create();
+    $validator      = Wallet::factory()->activeValidator(false)->create();
+    $otherValidator = Wallet::factory()->activeValidator(false)->create();
 
     $vote = Transaction::factory()->vote()->create([
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
         'asset'             => [
-            'votes' => ['+'.$delegate->public_key],
+            'votes' => ['+'.$validator->public_key],
         ],
     ]);
 
@@ -216,7 +216,7 @@ it('should filter vote swap transactions', function () {
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
         'asset'             => [
-            'votes' => ['-'.$delegate->public_key],
+            'votes' => ['-'.$validator->public_key],
         ],
     ]);
 
@@ -224,7 +224,7 @@ it('should filter vote swap transactions', function () {
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
         'asset'             => [
-            'votes' => ['-'.$delegate->public_key, '+'.$otherDelegate->public_key],
+            'votes' => ['-'.$validator->public_key, '+'.$otherValidator->public_key],
         ],
     ]);
 
@@ -259,29 +259,29 @@ it('should show correct message when there are no results', function () {
 
 function generateTransactions(): array
 {
-    $delegate1 = Wallet::factory()->activeDelegate()->create([
-        'address'    => 'delegate-address-c',
+    $validator1 = Wallet::factory()->activeValidator()->create([
+        'address'    => 'validator-address-c',
         'attributes' => [
-            'delegate' => [
-                'username' => 'delegate-1',
+            'validator' => [
+                'username' => 'validator-1',
             ],
         ],
     ]);
 
-    $delegate2 = Wallet::factory()->activeDelegate()->create([
-        'address'    => 'delegate-address-b',
+    $validator2 = Wallet::factory()->activeValidator()->create([
+        'address'    => 'validator-address-b',
         'attributes' => [
-            'delegate' => [
-                'username' => 'delegate-2',
+            'validator' => [
+                'username' => 'validator-2',
             ],
         ],
     ]);
 
-    $delegate3 = Wallet::factory()->activeDelegate()->create([
-        'address'    => 'delegate-address-a',
+    $validator3 = Wallet::factory()->activeValidator()->create([
+        'address'    => 'validator-address-a',
         'attributes' => [
-            'delegate' => [
-                'username' => 'delegate-3',
+            'validator' => [
+                'username' => 'validator-3',
             ],
         ],
     ]);
@@ -289,28 +289,28 @@ function generateTransactions(): array
     $voteTransaction = Transaction::factory()->vote()->create([
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 03:41:04')->unix())->unix(),
         'asset'     => [
-            'vote' => ['+'.$delegate1->public_key],
+            'vote' => ['+'.$validator1->public_key],
         ],
     ]);
 
     $unvoteTransaction = Transaction::factory()->unvote()->create([
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 04:41:04')->unix())->unix(),
         'asset'     => [
-            'vote' => ['-'.$delegate2->public_key],
+            'vote' => ['-'.$validator2->public_key],
         ],
     ]);
 
     $voteSwapTransaction = Transaction::factory()->voteCombination()->create([
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 05:41:04')->unix())->unix(),
         'asset'     => [
-            'vote' => ['-'.$delegate1->public_key, '+'.$delegate3->public_key],
+            'vote' => ['-'.$validator1->public_key, '+'.$validator3->public_key],
         ],
     ]);
 
     return [
-        'delegate1'           => $delegate1,
-        'delegate2'           => $delegate2,
-        'delegate3'           => $delegate3,
+        'validator1'           => $validator1,
+        'validator2'           => $validator2,
+        'validator3'           => $validator3,
         'voteTransaction'     => $voteTransaction,
         'unvoteTransaction'   => $unvoteTransaction,
         'voteSwapTransaction' => $voteSwapTransaction,
@@ -494,13 +494,13 @@ it('should reset page on sorting change', function () {
 });
 
 it('should parse sorting direction from query string', function () {
-    Route::get('/test-delegates', function () {
-        return BladeCompiler::render('<livewire:delegates.recent-votes :defer-loading="false" />');
+    Route::get('/test-validators', function () {
+        return BladeCompiler::render('<livewire:validators.recent-votes :defer-loading="false" />');
     });
 
     $data = generateTransactions();
 
-    $this->get('/test-delegates?sort=type&sort-direction=asc')
+    $this->get('/test-validators?sort=type&sort-direction=asc')
         ->assertSeeInOrder([
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,
@@ -510,7 +510,7 @@ it('should parse sorting direction from query string', function () {
             $data['voteSwapTransaction']->address,
         ]);
 
-    $this->get('/test-delegates?sort=type&sort-direction=desc')
+    $this->get('/test-validators?sort=type&sort-direction=desc')
         ->assertSeeInOrder([
             $data['voteSwapTransaction']->address,
             $data['voteTransaction']->address,
@@ -522,13 +522,13 @@ it('should parse sorting direction from query string', function () {
 });
 
 it('should force default sort direction if invalid query string value', function () {
-    Route::get('/test-delegates', function () {
-        return BladeCompiler::render('<livewire:delegates.recent-votes :defer-loading="false" />');
+    Route::get('/test-validators', function () {
+        return BladeCompiler::render('<livewire:validators.recent-votes :defer-loading="false" />');
     });
 
     $data = generateTransactions();
 
-    $this->get('/test-delegates?sort=type&sort-direction=desc')
+    $this->get('/test-validators?sort=type&sort-direction=desc')
         ->assertSeeInOrder([
             $data['voteSwapTransaction']->address,
             $data['voteTransaction']->address,
@@ -538,7 +538,7 @@ it('should force default sort direction if invalid query string value', function
             $data['unvoteTransaction']->address,
         ]);
 
-    $this->get('/test-delegates?sort=type&sort-direction=testing')
+    $this->get('/test-validators?sort=type&sort-direction=testing')
         ->assertSeeInOrder([
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,

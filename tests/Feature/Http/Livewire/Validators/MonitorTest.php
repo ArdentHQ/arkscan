@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use App\Facades\Rounds;
-use App\Http\Livewire\Delegates\Monitor;
+use App\Http\Livewire\Validators\Monitor;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
-use App\Services\Monitor\DelegateTracker;
+use App\Services\Monitor\ValidatorTracker;
 use App\Services\Monitor\ForgingInfoCalculator;
 use App\Services\Monitor\Slots;
 use Carbon\Carbon;
@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
 
 beforeEach(function () {
-    $this->activeDelegates = require dirname(dirname(dirname(dirname(__DIR__)))).'/fixtures/forgers.php';
+    $this->activeValidators = require dirname(dirname(dirname(dirname(__DIR__)))).'/fixtures/forgers.php';
 });
 
-function createRoundWithDelegates(): void
+function createRoundWithValidators(): void
 {
     Wallet::factory(51)->create()->each(function ($wallet) {
         $block = Block::factory()->create([
@@ -40,7 +40,7 @@ function createRoundWithDelegates(): void
             'public_key' => $wallet->public_key,
         ]);
 
-        (new WalletCache())->setDelegate($wallet->public_key, $wallet);
+        (new WalletCache())->setValidator($wallet->public_key, $wallet);
 
         (new WalletCache())->setLastBlock($wallet->public_key, [
             'id'     => $block->id,
@@ -66,15 +66,15 @@ function forgeBlock(string $publicKey, int &$height): void
 }
 
 it('should render without errors', function () {
-    createRoundWithDelegates();
+    createRoundWithValidators();
 
     $component = Livewire::test(Monitor::class)
         ->call('setIsReady')
-        ->assertSeeHtml('pollDelegates');
+        ->assertSeeHtml('pollValidators');
 });
 
 it('should throw an exception after 3 tries', function () {
-    createRoundWithDelegates();
+    createRoundWithValidators();
 
     $this->expectExceptionMessage('Something went wrong!');
 
@@ -86,11 +86,11 @@ it('should throw an exception after 3 tries', function () {
 
     Livewire::test(Monitor::class)
         ->call('setIsReady')
-        ->call('pollDelegates');
+        ->call('pollValidators');
 });
 
 it('shouldnt throw an exception if only fails 2 times', function () {
-    createRoundWithDelegates();
+    createRoundWithValidators();
 
     $taggedCache = Cache::tags('tags');
 
@@ -110,7 +110,7 @@ it('shouldnt throw an exception if only fails 2 times', function () {
         ->shouldReceive('forget')
         ->andReturn(null);
 
-    $component->call('pollDelegates');
+    $component->call('pollValidators');
 });
 
 it('should get the last blocks from the last 2 rounds and beyond', function () {
@@ -127,13 +127,13 @@ it('should get the last blocks from the last 2 rounds and beyond', function () {
             ]);
         }
 
-        (new WalletCache())->setDelegate($wallet->public_key, $wallet);
+        (new WalletCache())->setValidator($wallet->public_key, $wallet);
     });
 
     $wallets->first()->blocks()->delete();
 
     Livewire::test(Monitor::class)
-        ->call('setIsReady')->call('pollDelegates');
+        ->call('setIsReady')->call('pollValidators');
 
     expect((new WalletCache())->getLastBlock($wallets->first()->public_key))->toBe([]);
 
@@ -150,18 +150,18 @@ it('should do nothing if no rounds', function () {
         ]);
     });
 
-    // Mark component delegate property as public & update monitor data
-    $delegateProperty = new ReflectionProperty(Monitor::class, 'delegates');
-    $delegateProperty->setAccessible(true);
+    // Mark component validator property as public & update monitor data
+    $validatorProperty = new ReflectionProperty(Monitor::class, 'validators');
+    $validatorProperty->setAccessible(true);
 
     $component = Livewire::test(Monitor::class);
     $component->call('setIsReady');
 
-    expect($delegateProperty->getValue($component->instance()))->toBe([]);
+    expect($validatorProperty->getValue($component->instance()))->toBe([]);
 
-    $component->call('pollDelegates');
+    $component->call('pollValidators');
 
-    expect($delegateProperty->getValue($component->instance()))->toBe([]);
+    expect($validatorProperty->getValue($component->instance()))->toBe([]);
 });
 
 it('should set it ready on event', function () {
@@ -186,131 +186,131 @@ it('should not poll if not ready', function () {
         ]);
     });
 
-    // Mark component delegate property as public & update monitor data
-    $delegateProperty = new ReflectionProperty(Monitor::class, 'delegates');
-    $delegateProperty->setAccessible(true);
+    // Mark component validator property as public & update monitor data
+    $validatorProperty = new ReflectionProperty(Monitor::class, 'validators');
+    $validatorProperty->setAccessible(true);
 
     $component = Livewire::test(Monitor::class);
 
-    expect($delegateProperty->getValue($component->instance()))->toBe([]);
+    expect($validatorProperty->getValue($component->instance()))->toBe([]);
 
-    $component->instance()->pollDelegates();
+    $component->instance()->pollValidators();
 
-    expect($delegateProperty->getValue($component->instance()))->toBe([]);
+    expect($validatorProperty->getValue($component->instance()))->toBe([]);
 });
 
 it('should correctly show the block is missed', function () {
     // Force round time
     $this->travelTo(new Carbon('2021-01-01 00:04:00'));
 
-    // Create wallets for each delegate
-    $this->activeDelegates->each(function ($delegate) use (&$wallets) {
-        $wallet = Wallet::factory()->create(['public_key' => $delegate->public_key]);
+    // Create wallets for each validator
+    $this->activeValidators->each(function ($validator) use (&$wallets) {
+        $wallet = Wallet::factory()->create(['public_key' => $validator->public_key]);
 
         Round::factory()->create([
             'round'      => '1',
-            'public_key' => $delegate->public_key,
+            'public_key' => $validator->public_key,
             'balance'    => 0,
         ]);
 
-        (new WalletCache())->setDelegate($delegate->public_key, $wallet);
+        (new WalletCache())->setValidator($validator->public_key, $wallet);
     });
 
-    // Store delegate record for each Round object
-    $wallets = Rounds::allByRound(1)->map(fn ($round) => $round->delegate);
+    // Store validator record for each Round object
+    $wallets = Rounds::allByRound(1)->map(fn ($round) => $round->validator);
 
     // Make methods public for fetching forging order
-    $activeDelegatesMethod  = new ReflectionMethod(DelegateTracker::class, 'getActiveDelegates');
-    $shuffleDelegatesMethod = new ReflectionMethod(DelegateTracker::class, 'shuffleDelegates');
-    $orderDelegatesMethod   = new ReflectionMethod(DelegateTracker::class, 'orderDelegates');
-    $activeDelegatesMethod->setAccessible(true);
-    $shuffleDelegatesMethod->setAccessible(true);
-    $orderDelegatesMethod->setAccessible(true);
+    $activeValidatorsMethod  = new ReflectionMethod(ValidatorTracker::class, 'getActiveValidators');
+    $shuffleValidatorsMethod = new ReflectionMethod(ValidatorTracker::class, 'shuffleValidators');
+    $orderValidatorsMethod   = new ReflectionMethod(ValidatorTracker::class, 'orderValidators');
+    $activeValidatorsMethod->setAccessible(true);
+    $shuffleValidatorsMethod->setAccessible(true);
+    $orderValidatorsMethod->setAccessible(true);
 
-    // Get delegate order so we can forge in the correct order
+    // Get validator order so we can forge in the correct order
     $originalOrder     = ForgingInfoCalculator::calculate((new Slots())->getTime(), 1);
-    $activeDelegates   = $activeDelegatesMethod->invokeArgs(null, [$wallets]);
-    $shuffledDelegates = $shuffleDelegatesMethod->invokeArgs(null, [$activeDelegates, 1]);
-    $delegatesInOrder  = collect($orderDelegatesMethod->invokeArgs(null, [
-        $shuffledDelegates,
+    $activeValidators   = $activeValidatorsMethod->invokeArgs(null, [$wallets]);
+    $shuffledValidators = $shuffleValidatorsMethod->invokeArgs(null, [$activeValidators, 1]);
+    $validatorsInOrder  = collect($orderValidatorsMethod->invokeArgs(null, [
+        $shuffledValidators,
         $originalOrder['currentForger'],
         51,
     ]));
 
-    // Forge blocks for first 5 delegates
+    // Forge blocks for first 5 validators
     $height = 1;
-    $delegatesInOrder->take(5)->each(function ($publicKey) use (&$height) {
+    $validatorsInOrder->take(5)->each(function ($publicKey) use (&$height) {
         forgeBlock($publicKey, $height);
 
         $this->travel(8)->seconds();
     });
 
-    // Mark component delegate property as public & update monitor data
-    $delegateProperty = new ReflectionProperty(Monitor::class, 'delegates');
-    $delegateProperty->setAccessible(true);
+    // Mark component validator property as public & update monitor data
+    $validatorProperty = new ReflectionProperty(Monitor::class, 'validators');
+    $validatorProperty->setAccessible(true);
 
     $component = Livewire::test(Monitor::class);
 
-    expect($delegateProperty->getValue($component->instance()))->toBe([]);
+    expect($validatorProperty->getValue($component->instance()))->toBe([]);
 
     $component->call('setIsReady');
 
     $instance  = $component->instance();
-    $instance->pollDelegates();
+    $instance->pollValidators();
 
-    $delegates = collect($delegateProperty->getValue($instance));
+    $validators = collect($validatorProperty->getValue($instance));
 
-    expect($delegates)->toHaveCount(51);
+    expect($validators)->toHaveCount(51);
 
-    // Split up delegate slot data to check
-    $forgedDelegates  = $delegates->splice(0, 5);
-    $waitingDelegates = $delegates->splice(0, 1);
-    $missedDelegates  = $delegates->splice(0, 5);
+    // Split up validator slot data to check
+    $forgedValidators  = $validators->splice(0, 5);
+    $waitingValidators = $validators->splice(0, 1);
+    $missedValidators  = $validators->splice(0, 5);
 
-    $forgedDelegates->each(fn ($delegate) => expect($delegate->hasForged())->toBeTrue());
-    $waitingDelegates->each(fn ($delegate) => expect($delegate->isNext())->toBeTrue());
-    $missedDelegates->each(fn ($delegate) => expect($delegate->isPending())->toBeTrue());
+    $forgedValidators->each(fn ($validator) => expect($validator->hasForged())->toBeTrue());
+    $waitingValidators->each(fn ($validator) => expect($validator->isNext())->toBeTrue());
+    $missedValidators->each(fn ($validator) => expect($validator->isPending())->toBeTrue());
 
-    // Progress time by 15 delegate slots
+    // Progress time by 15 validator slots
     $this->travel(14 * 8)->seconds();
 
-    // Forge block with 20th delegate
-    forgeBlock($delegatesInOrder->get(20), $height);
+    // Forge block with 20th validator
+    forgeBlock($validatorsInOrder->get(20), $height);
     $this->travel(8)->seconds();
 
-    // Update delegate data again
-    $instance->pollDelegates();
+    // Update validator data again
+    $instance->pollValidators();
 
-    $delegates = collect($delegateProperty->getValue($instance));
+    $validators = collect($validatorProperty->getValue($instance));
 
-    expect($delegates)->toHaveCount(51);
+    expect($validators)->toHaveCount(51);
 
-    // Check delegate data is correct after 15 missed blocks
-    $forgedDelegates  = $delegates->splice(0, 5);
-    $missedDelegates  = $delegates->splice(0, 15);
-    $waitingDelegates = $delegates->splice(0, 1);
+    // Check validator data is correct after 15 missed blocks
+    $forgedValidators  = $validators->splice(0, 5);
+    $missedValidators  = $validators->splice(0, 15);
+    $waitingValidators = $validators->splice(0, 1);
 
-    $forgedDelegates->each(fn ($delegate) => expect($delegate->isWaiting())->toBeFalse());
-    $forgedDelegates->each(fn ($delegate) => expect($delegate->hasForged())->toBeTrue());
-    $missedDelegates->each(fn ($delegate) => expect($delegate->isWaiting())->toBeFalse());
-    $missedDelegates->each(fn ($delegate) => expect($delegate->justMissed())->toBeTrue());
-    $waitingDelegates->each(fn ($delegate) => expect($delegate->isNext())->toBeTrue());
+    $forgedValidators->each(fn ($validator) => expect($validator->isWaiting())->toBeFalse());
+    $forgedValidators->each(fn ($validator) => expect($validator->hasForged())->toBeTrue());
+    $missedValidators->each(fn ($validator) => expect($validator->isWaiting())->toBeFalse());
+    $missedValidators->each(fn ($validator) => expect($validator->justMissed())->toBeTrue());
+    $waitingValidators->each(fn ($validator) => expect($validator->isNext())->toBeTrue());
 
     $outputData = [];
-    $forgedDelegates->each(function ($delegate) use (&$outputData) {
-        $outputData[] = $delegate->wallet()->username();
+    $forgedValidators->each(function ($validator) use (&$outputData) {
+        $outputData[] = $validator->wallet()->username();
         $outputData[] = 'Completed';
     });
-    $missedDelegates->each(function ($delegate) use (&$outputData) {
-        $outputData[] = $delegate->wallet()->username();
+    $missedValidators->each(function ($validator) use (&$outputData) {
+        $outputData[] = $validator->wallet()->username();
         $outputData[] = 'Missed';
     });
-    $waitingDelegates->each(function ($delegate) use (&$outputData) {
-        $outputData[] = $delegate->wallet()->username();
+    $waitingValidators->each(function ($validator) use (&$outputData) {
+        $outputData[] = $validator->wallet()->username();
         $outputData[] = 'Now';
     });
 
     $component
-        ->call('pollDelegates')
+        ->call('pollValidators')
         ->assertSeeInOrder($outputData);
 });

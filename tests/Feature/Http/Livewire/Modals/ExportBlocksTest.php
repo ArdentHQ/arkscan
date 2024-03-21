@@ -9,7 +9,7 @@ use App\ViewModels\WalletViewModel;
 use Livewire\Livewire;
 
 it('should render', function () {
-    $wallet = new WalletViewModel(Wallet::factory()->activeDelegate()->create());
+    $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Livewire::test(ExportBlocks::class, [$wallet])
         ->assertSet('publicKey', $wallet->publicKey())
@@ -18,7 +18,7 @@ it('should render', function () {
         ->assertDontSee(trans('pages.wallet.export-blocks-modal.title'));
 });
 
-it('should handle non-delegates', function () {
+it('should handle non-validators', function () {
     $wallet = new WalletViewModel(Wallet::factory()->create(['attributes' => []]));
 
     Livewire::test(ExportBlocks::class, [$wallet])
@@ -29,7 +29,7 @@ it('should handle non-delegates', function () {
 });
 
 it('should open modal', function () {
-    $wallet = new WalletViewModel(Wallet::factory()->activeDelegate()->create());
+    $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Livewire::test(ExportBlocks::class, [$wallet])
         ->assertSet('publicKey', $wallet->publicKey())
@@ -41,7 +41,7 @@ it('should open modal', function () {
 });
 
 it('should close modal', function () {
-    $wallet = new WalletViewModel(Wallet::factory()->activeDelegate()->create());
+    $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Livewire::test(ExportBlocks::class, [$wallet])
         ->assertSet('publicKey', $wallet->publicKey())
@@ -54,7 +54,7 @@ it('should close modal', function () {
 });
 
 it('should not be enabled if not ready', function () {
-    $wallet = new WalletViewModel(Wallet::factory()->activeDelegate()->create());
+    $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Block::factory()->create([
         'generator_public_key' => $wallet->publicKey(),
@@ -67,7 +67,7 @@ it('should not be enabled if not ready', function () {
 });
 
 it('should not be enabled if no blocks', function () {
-    $wallet = new WalletViewModel(Wallet::factory()->activeDelegate()->create());
+    $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Livewire::test(ExportBlocks::class, [$wallet])
         ->assertSet('hasForgedBlocks', false)

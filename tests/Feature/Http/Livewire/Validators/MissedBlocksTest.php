@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use App\Enums\SortDirection;
-use App\Http\Livewire\Delegates\MissedBlocks;
+use App\Http\Livewire\Validators\MissedBlocks;
 use App\Models\ForgingStats;
 use App\Models\Wallet;
-use App\Services\Cache\DelegateCache;
+use App\Services\Cache\ValidatorCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -47,19 +47,19 @@ it('should show no results message if no missed blocks', function () {
 });
 
 it('should sort height in ascending order', function () {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-2',
+            'validator' => [
+                'username'    => 'validator-2',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
@@ -80,27 +80,27 @@ it('should sort height in ascending order', function () {
         ->call('sortBy', 'height')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            'delegate-1',
-            'delegate-2',
-            'delegate-1',
-            'delegate-2',
+            'validator-1',
+            'validator-2',
+            'validator-1',
+            'validator-2',
         ]);
 });
 
 it('should sort height in descending order', function () {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-2',
+            'validator' => [
+                'username'    => 'validator-2',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
@@ -122,27 +122,27 @@ it('should sort height in descending order', function () {
         ->call('sortBy', 'height')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            'delegate-2',
-            'delegate-1',
-            'delegate-2',
-            'delegate-1',
+            'validator-2',
+            'validator-1',
+            'validator-2',
+            'validator-1',
         ]);
 });
 
 it('should sort by age by default', function () {
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-2',
+            'validator' => [
+                'username'    => 'validator-2',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
     ]);
 
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 10000 * 1e8,
             ],
         ],
@@ -163,27 +163,27 @@ it('should sort by age by default', function () {
         ->assertSet('sortKey', 'age')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            'delegate-2',
-            'delegate-1',
-            'delegate-2',
-            'delegate-1',
+            'validator-2',
+            'validator-1',
+            'validator-2',
+            'validator-1',
         ]);
 });
 
 it('should sort age in ascending order', function () {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 10000 * 1e8,
             ],
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-2',
+            'validator' => [
+                'username'    => 'validator-2',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
@@ -205,27 +205,27 @@ it('should sort age in ascending order', function () {
         ->call('sortBy', 'age')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            'delegate-1',
-            'delegate-2',
-            'delegate-1',
-            'delegate-2',
+            'validator-1',
+            'validator-2',
+            'validator-1',
+            'validator-2',
         ]);
 });
 
 it('should sort name in ascending order', function () {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 10000 * 1e8,
             ],
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-2',
+            'validator' => [
+                'username'    => 'validator-2',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
@@ -244,27 +244,27 @@ it('should sort name in ascending order', function () {
         ->call('sortBy', 'name')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            'delegate-1',
-            'delegate-2',
-            'delegate-1',
-            'delegate-2',
+            'validator-1',
+            'validator-2',
+            'validator-1',
+            'validator-2',
         ]);
 });
 
 it('should sort name in descending order', function () {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 10000 * 1e8,
             ],
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-2',
+            'validator' => [
+                'username'    => 'validator-2',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
@@ -283,36 +283,36 @@ it('should sort name in descending order', function () {
         ->call('sortBy', 'name')
         ->set('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            'delegate-2',
-            'delegate-1',
-            'delegate-2',
-            'delegate-1',
+            'validator-2',
+            'validator-1',
+            'validator-2',
+            'validator-1',
         ]);
 });
 
 it('should sort number of voters in ascending order', function () {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 10000 * 1e8,
             ],
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-2',
+            'validator' => [
+                'username'    => 'validator-2',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
     ]);
 
-    $walletWithoutVoters = Wallet::factory()->activeDelegate()->create([
+    $walletWithoutVoters = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-3',
+            'validator' => [
+                'username'    => 'validator-3',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
@@ -330,7 +330,7 @@ it('should sort number of voters in ascending order', function () {
         'public_key' => $walletWithoutVoters->public_key,
     ]);
 
-    (new DelegateCache())->setAllVoterCounts([
+    (new ValidatorCache())->setAllVoterCounts([
         $wallet1->public_key => 30,
         $wallet2->public_key => 10,
     ]);
@@ -340,38 +340,38 @@ it('should sort number of voters in ascending order', function () {
         ->call('sortBy', 'no_of_voters')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            'delegate-2',
-            'delegate-1',
-            'delegate-3',
-            'delegate-2',
-            'delegate-1',
-            'delegate-3',
+            'validator-2',
+            'validator-1',
+            'validator-3',
+            'validator-2',
+            'validator-1',
+            'validator-3',
         ]);
 });
 
 it('should sort number of voters in descending order', function () {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 10000 * 1e8,
             ],
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-2',
+            'validator' => [
+                'username'    => 'validator-2',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
     ]);
 
-    $walletWithoutVoters = Wallet::factory()->activeDelegate()->create([
+    $walletWithoutVoters = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-3',
+            'validator' => [
+                'username'    => 'validator-3',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
@@ -389,7 +389,7 @@ it('should sort number of voters in descending order', function () {
         'public_key' => $walletWithoutVoters->public_key,
     ]);
 
-    (new DelegateCache())->setAllVoterCounts([
+    (new ValidatorCache())->setAllVoterCounts([
         $wallet1->public_key => 30,
         $wallet2->public_key => 10,
     ]);
@@ -400,38 +400,38 @@ it('should sort number of voters in descending order', function () {
         ->call('sortBy', 'no_of_voters')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            'delegate-1',
-            'delegate-2',
-            'delegate-3',
-            'delegate-1',
-            'delegate-2',
-            'delegate-3',
+            'validator-1',
+            'validator-2',
+            'validator-3',
+            'validator-1',
+            'validator-2',
+            'validator-3',
         ]);
 });
 
 it('should handle no cached votes when sorting by number of voters', function () {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 10000 * 1e8,
             ],
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-2',
+            'validator' => [
+                'username'    => 'validator-2',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
     ]);
 
-    $walletWithoutVoters = Wallet::factory()->activeDelegate()->create([
+    $walletWithoutVoters = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-3',
+            'validator' => [
+                'username'    => 'validator-3',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
@@ -454,29 +454,29 @@ it('should handle no cached votes when sorting by number of voters', function ()
         ->call('sortBy', 'no_of_voters')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            'delegate-1',
-            'delegate-2',
-            'delegate-3',
-            'delegate-1',
-            'delegate-2',
-            'delegate-3',
+            'validator-1',
+            'validator-2',
+            'validator-3',
+            'validator-1',
+            'validator-2',
+            'validator-3',
         ]);
 });
 
 it('should sort votes & percentage in ascending order', function (string $sortKey) {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 10000 * 1e8,
             ],
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-2',
+            'validator' => [
+                'username'    => 'validator-2',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
@@ -495,10 +495,10 @@ it('should sort votes & percentage in ascending order', function (string $sortKe
         ->call('sortBy', $sortKey)
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            'delegate-2',
-            'delegate-1',
-            'delegate-2',
-            'delegate-1',
+            'validator-2',
+            'validator-1',
+            'validator-2',
+            'validator-1',
         ]);
 })->with([
     'votes',
@@ -506,19 +506,19 @@ it('should sort votes & percentage in ascending order', function (string $sortKe
 ]);
 
 it('should sort votes & percentage in descending order', function (string $sortKey) {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 10000 * 1e8,
             ],
         ],
     ]);
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-2',
+            'validator' => [
+                'username'    => 'validator-2',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
@@ -537,10 +537,10 @@ it('should sort votes & percentage in descending order', function (string $sortK
         ->call('sortBy', $sortKey)
         ->set('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            'delegate-1',
-            'delegate-2',
-            'delegate-1',
-            'delegate-2',
+            'validator-1',
+            'validator-2',
+            'validator-1',
+            'validator-2',
         ]);
 })->with([
     'votes',
@@ -548,10 +548,10 @@ it('should sort votes & percentage in descending order', function (string $sortK
 ]);
 
 it('should alternate sorting direction', function () {
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 10000 * 1e8,
             ],
         ],
@@ -561,7 +561,7 @@ it('should alternate sorting direction', function () {
         'public_key' => $wallet1->public_key,
     ]);
 
-    (new DelegateCache())->setAllVoterCounts([
+    (new ValidatorCache())->setAllVoterCounts([
         $wallet1->public_key => 30,
     ]);
 
@@ -621,23 +621,23 @@ it('should reset page on sorting change', function () {
 });
 
 it('should parse sorting direction from query string', function () {
-    Route::get('/test-delegates', function () {
-        return BladeCompiler::render('<livewire:delegates.missed-blocks :defer-loading="false" />');
+    Route::get('/test-validators', function () {
+        return BladeCompiler::render('<livewire:validators.missed-blocks :defer-loading="false" />');
     });
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-2',
+            'validator' => [
+                'username'    => 'validator-2',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
     ]);
 
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 10000 * 1e8,
             ],
         ],
@@ -653,7 +653,7 @@ it('should parse sorting direction from query string', function () {
         'timestamp'  => 134,
     ]);
 
-    $this->get('/test-delegates?sort=name&sort-direction=asc')
+    $this->get('/test-validators?sort=name&sort-direction=asc')
         ->assertSeeInOrder([
             $wallet1->address,
             $wallet2->address,
@@ -661,7 +661,7 @@ it('should parse sorting direction from query string', function () {
             $wallet2->address,
         ]);
 
-    $this->get('/test-delegates?sort=name&sort-direction=desc')
+    $this->get('/test-validators?sort=name&sort-direction=desc')
         ->assertSeeInOrder([
             $wallet2->address,
             $wallet1->address,
@@ -671,23 +671,23 @@ it('should parse sorting direction from query string', function () {
 });
 
 it('should force ascending if invalid query string value', function () {
-    Route::get('/test-delegates', function () {
-        return BladeCompiler::render('<livewire:delegates.missed-blocks :defer-loading="false" />');
+    Route::get('/test-validators', function () {
+        return BladeCompiler::render('<livewire:validators.missed-blocks :defer-loading="false" />');
     });
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-2',
+            'validator' => [
+                'username'    => 'validator-2',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
     ]);
 
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 10000 * 1e8,
             ],
         ],
@@ -703,7 +703,7 @@ it('should force ascending if invalid query string value', function () {
         'timestamp'  => 134,
     ]);
 
-    $this->get('/test-delegates?sort=name&sort-direction=desc')
+    $this->get('/test-validators?sort=name&sort-direction=desc')
         ->assertSeeInOrder([
             $wallet2->address,
             $wallet1->address,
@@ -711,7 +711,7 @@ it('should force ascending if invalid query string value', function () {
             $wallet1->address,
         ]);
 
-    $this->get('/test-delegates?sort=name&sort-direction=testing')
+    $this->get('/test-validators?sort=name&sort-direction=testing')
         ->assertSeeInOrder([
             $wallet1->address,
             $wallet2->address,
@@ -721,15 +721,15 @@ it('should force ascending if invalid query string value', function () {
 });
 
 it('should handle sorting several pages without cached data', function ($columnSortBy, $modelSortBy) {
-    $delegateData = [];
+    $validatorData = [];
     foreach (range(1, 145) as $rank) {
         $wallet         = faker()->wallet;
-        $delegateData[] = [
+        $validatorData[] = [
             'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e8,
             'nonce'             => faker()->numberBetween(1, 1000),
             'attributes'        => [
-                'delegate'        => [
+                'validator'        => [
                     'username'       => faker()->userName,
                     'voteBalance'    => faker()->numberBetween(1, 1000) * 1e8,
                     'producedBlocks' => faker()->numberBetween(1, 1000),
@@ -741,30 +741,30 @@ it('should handle sorting several pages without cached data', function ($columnS
             'address'    => $wallet['address'],
             'public_key' => $wallet['publicKey'],
             'attributes' => json_encode([
-                'delegate' => [
+                'validator' => [
                     'rank'        => $rank,
-                    'username'    => 'delegate-'.$rank,
+                    'username'    => 'validator-'.$rank,
                     'voteBalance' => random_int(1000, 10000) * 1e8,
                 ],
             ]),
         ];
     }
 
-    Wallet::insert($delegateData);
+    Wallet::insert($validatorData);
 
     $missedBlocks       = [];
     $missedBlockCounter = 0;
 
     $missedBlocksData = [];
 
-    $delegates = Wallet::all();
+    $validators = Wallet::all();
 
-    foreach ($delegates as $delegate) {
+    foreach ($validators as $validator) {
         $missedBlockCount = random_int(2, 4);
         foreach (range(1, $missedBlockCount) as $_) {
             $missedBlocksData[] = [
                 'timestamp'     => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
-                'public_key'    => $delegate->public_key,
+                'public_key'    => $validator->public_key,
                 'forged'        => faker()->boolean(),
                 'missed_height' => faker()->numberBetween(1, 10000),
             ];
@@ -772,7 +772,7 @@ it('should handle sorting several pages without cached data', function ($columnS
             $missedBlockCounter++;
         }
 
-        $voterCounts[$delegate->public_key] = random_int(10, 100);
+        $voterCounts[$validator->public_key] = random_int(10, 100);
     }
 
     ForgingStats::insert($missedBlocksData);
@@ -814,15 +814,15 @@ it('should handle sorting several pages without cached data', function ($columnS
 ]);
 
 it('should handle sorting several pages with cached data', function ($columnSortBy, $modelSortBy) {
-    $delegateData = [];
+    $validatorData = [];
     foreach (range(1, 145) as $rank) {
         $wallet         = faker()->wallet;
-        $delegateData[] = [
+        $validatorData[] = [
             'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e8,
             'nonce'             => faker()->numberBetween(1, 1000),
             'attributes'        => [
-                'delegate'        => [
+                'validator'        => [
                     'username'       => faker()->userName,
                     'voteBalance'    => faker()->numberBetween(1, 1000) * 1e8,
                     'producedBlocks' => faker()->numberBetween(1, 1000),
@@ -834,16 +834,16 @@ it('should handle sorting several pages with cached data', function ($columnSort
             'address'    => $wallet['address'],
             'public_key' => $wallet['publicKey'],
             'attributes' => json_encode([
-                'delegate' => [
+                'validator' => [
                     'rank'        => $rank,
-                    'username'    => 'delegate-'.$rank,
+                    'username'    => 'validator-'.$rank,
                     'voteBalance' => random_int(1000, 10000) * 1e8,
                 ],
             ]),
         ];
     }
 
-    Wallet::insert($delegateData);
+    Wallet::insert($validatorData);
 
     $voterCounts        = [];
     $missedBlocks       = [];
@@ -851,14 +851,14 @@ it('should handle sorting several pages with cached data', function ($columnSort
 
     $missedBlocksData = [];
 
-    $delegates = Wallet::all()->keyBy('public_key');
+    $validators = Wallet::all()->keyBy('public_key');
 
-    foreach ($delegates as $delegate) {
+    foreach ($validators as $validator) {
         $missedBlockCount = random_int(2, 4);
         foreach (range(1, $missedBlockCount) as $_) {
             $missedBlocksData[] = [
                 'timestamp'     => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
-                'public_key'    => $delegate->public_key,
+                'public_key'    => $validator->public_key,
                 'forged'        => faker()->boolean(),
                 'missed_height' => faker()->numberBetween(1, 10000),
             ];
@@ -866,26 +866,26 @@ it('should handle sorting several pages with cached data', function ($columnSort
             $missedBlockCounter++;
         }
 
-        $voterCounts[$delegate->public_key] = random_int(10, 100);
+        $voterCounts[$validator->public_key] = random_int(10, 100);
     }
 
     ForgingStats::insert($missedBlocksData);
 
     $missedBlocks = ForgingStats::all();
 
-    $delegateCache = new DelegateCache();
-    $delegateCache->setAllVoterCounts($voterCounts);
+    $validatorCache = new ValidatorCache();
+    $validatorCache->setAllVoterCounts($voterCounts);
 
-    $missedBlocks = $missedBlocks->sort(function ($a, $b) use ($modelSortBy, $voterCounts, $delegates) {
+    $missedBlocks = $missedBlocks->sort(function ($a, $b) use ($modelSortBy, $voterCounts, $validators) {
         if ($modelSortBy === 'no_of_voters') {
             $aValue = $voterCounts[$a->public_key];
             $bValue = $voterCounts[$b->public_key];
         } elseif ($modelSortBy === 'votes' || $modelSortBy === 'percentage_votes') {
-            $aValue = Arr::get($delegates[$a->public_key], 'attributes.delegate.voteBalance');
-            $bValue = Arr::get($delegates[$b->public_key], 'attributes.delegate.voteBalance');
+            $aValue = Arr::get($validators[$a->public_key], 'attributes.validator.voteBalance');
+            $bValue = Arr::get($validators[$b->public_key], 'attributes.validator.voteBalance');
         } elseif ($modelSortBy === 'name') {
-            $aValue = Arr::get($delegates[$a->public_key], 'attributes.delegate.username');
-            $bValue = Arr::get($delegates[$b->public_key], 'attributes.delegate.username');
+            $aValue = Arr::get($validators[$a->public_key], 'attributes.validator.username');
+            $bValue = Arr::get($validators[$b->public_key], 'attributes.validator.username');
         } else {
             $aValue = Arr::get($a, $modelSortBy);
             $bValue = Arr::get($b, $modelSortBy);
@@ -927,19 +927,19 @@ it('should not sort for sqlite databases', function ($sortBy) {
 
     $this->refreshDatabase();
 
-    $wallet2 = Wallet::factory()->activeDelegate()->create([
+    $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-2',
+            'validator' => [
+                'username'    => 'validator-2',
                 'voteBalance' => 4000 * 1e8,
             ],
         ],
     ]);
 
-    $wallet1 = Wallet::factory()->activeDelegate()->create([
+    $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'delegate' => [
-                'username'    => 'delegate-1',
+            'validator' => [
+                'username'    => 'validator-1',
                 'voteBalance' => 10000 * 1e8,
             ],
         ],
@@ -966,10 +966,10 @@ it('should not sort for sqlite databases', function ($sortBy) {
         ->call('setIsReady')
         ->call('sortBy', $sortBy)
         ->assertSeeInOrder([
-            'delegate-2',
-            'delegate-1',
-            'delegate-2',
-            'delegate-1',
+            'validator-2',
+            'validator-1',
+            'validator-2',
+            'validator-1',
         ]);
 })->with([
     'height',

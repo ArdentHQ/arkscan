@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\CacheDelegateVoterCounts;
+use App\Console\Commands\CacheValidatorVoterCounts;
 use App\Models\Wallet;
-use App\Services\Cache\DelegateCache;
+use App\Services\Cache\ValidatorCache;
 use Illuminate\Support\Facades\Cache;
 
 it('should cache the voter count for the public key', function () {
@@ -18,7 +18,7 @@ it('should cache the voter count for the public key', function () {
 
     expect(Cache::tags('wallet')->has(md5("voter_count/$vote")))->toBeFalse();
 
-    (new CacheDelegateVoterCounts())->handle();
+    (new CacheValidatorVoterCounts())->handle();
 
     expect(Cache::tags('wallet')->has(md5("voter_count/$vote")))->toBeTrue();
 });
@@ -33,25 +33,25 @@ it('should cache voter counts', function () {
 
     $wallet->attributes['vote'];
 
-    $delegateCache = new DelegateCache();
+    $validatorCache = new ValidatorCache();
 
-    expect($delegateCache->getTotalWalletsVoted())->toBe(0);
-    expect($delegateCache->getTotalBalanceVoted())->toBe(0.0);
+    expect($validatorCache->getTotalWalletsVoted())->toBe(0);
+    expect($validatorCache->getTotalBalanceVoted())->toBe(0.0);
 
-    (new CacheDelegateVoterCounts())->handle();
+    (new CacheValidatorVoterCounts())->handle();
 
-    expect($delegateCache->getTotalWalletsVoted())->toBe(1);
-    expect($delegateCache->getTotalBalanceVoted())->toBe(123.0);
+    expect($validatorCache->getTotalWalletsVoted())->toBe(1);
+    expect($validatorCache->getTotalBalanceVoted())->toBe(123.0);
 });
 
 it('should not cache voter counts if no voting wallets found', function () {
-    $delegateCache = new DelegateCache();
+    $validatorCache = new ValidatorCache();
 
-    $delegateCache->setTotalWalletsVoted(1);
-    $delegateCache->setTotalBalanceVoted(123);
+    $validatorCache->setTotalWalletsVoted(1);
+    $validatorCache->setTotalBalanceVoted(123);
 
-    expect($delegateCache->getTotalWalletsVoted())->toBe(1);
-    expect($delegateCache->getTotalBalanceVoted())->toBe(123.0);
+    expect($validatorCache->getTotalWalletsVoted())->toBe(1);
+    expect($validatorCache->getTotalBalanceVoted())->toBe(123.0);
 
     $walletCount = Wallet::select('balance')
         ->whereRaw("\"attributes\"->>'vote' is not null")
@@ -59,8 +59,8 @@ it('should not cache voter counts if no voting wallets found', function () {
 
     expect($walletCount)->toBe(0);
 
-    (new CacheDelegateVoterCounts())->handle();
+    (new CacheValidatorVoterCounts())->handle();
 
-    expect($delegateCache->getTotalWalletsVoted())->toBe(1);
-    expect($delegateCache->getTotalBalanceVoted())->toBe(123.0);
+    expect($validatorCache->getTotalWalletsVoted())->toBe(1);
+    expect($validatorCache->getTotalBalanceVoted())->toBe(123.0);
 });

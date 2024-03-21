@@ -10,8 +10,8 @@ use App\Services\Transactions\Aggregates\Historical\QuarterAggregate;
 use App\Services\Transactions\Aggregates\Historical\WeekAggregate;
 use App\Services\Transactions\Aggregates\Historical\YearAggregate;
 use App\Services\Transactions\Aggregates\HistoricalAggregateFactory;
-use App\Services\Transactions\Aggregates\Type\DelegateRegistrationAggregate;
-use App\Services\Transactions\Aggregates\Type\DelegateResignationAggregate;
+use App\Services\Transactions\Aggregates\Type\ValidatorRegistrationAggregate;
+use App\Services\Transactions\Aggregates\Type\ValidatorResignationAggregate;
 use App\Services\Transactions\Aggregates\Type\MultipaymentAggregate;
 use App\Services\Transactions\Aggregates\Type\TransferAggregate;
 use App\Services\Transactions\Aggregates\Type\UnvoteAggregate;
@@ -41,8 +41,8 @@ it('should create an instance that matches the type', function (string $type, st
     [StatsTransactionType::VOTE, VoteAggregate::class],
     [StatsTransactionType::UNVOTE, UnvoteAggregate::class],
     [StatsTransactionType::SWITCH_VOTE, VoteCombinationAggregate::class],
-    [StatsTransactionType::DELEGATE_REGISTRATION, DelegateRegistrationAggregate::class],
-    [StatsTransactionType::DELEGATE_RESIGNATION, DelegateResignationAggregate::class],
+    [StatsTransactionType::VALIDATOR_REGISTRATION, ValidatorRegistrationAggregate::class],
+    [StatsTransactionType::VALIDATOR_RESIGNATION, ValidatorResignationAggregate::class],
 ]);
 
 it('should throw if an unknown type is used', function () {

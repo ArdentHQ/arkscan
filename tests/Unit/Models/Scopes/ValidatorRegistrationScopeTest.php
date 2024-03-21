@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Models\Scopes\DelegateResignationScope;
+use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Scope;
 
 beforeEach(function () {
-    $this->subject = new DelegateResignationScope();
+    $this->subject = new ValidatorRegistrationScope();
 });
 
 it('should be an instance of a scope', function () {

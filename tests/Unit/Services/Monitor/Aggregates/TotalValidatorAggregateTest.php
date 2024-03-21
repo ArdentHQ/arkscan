@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 use App\Models\Block;
 use App\Models\Wallet;
-use App\Services\Monitor\Aggregates\DelegateTotalAggregates;
+use App\Services\Monitor\Aggregates\ValidatorTotalAggregates;
 use Illuminate\Database\Eloquent\Collection;
 
 beforeEach(function () {
     Wallet::factory()->create([
         'public_key' => 'generator',
         'attributes' => [
-            'delegate' => [
+            'validator' => [
                 'username' => 'generator',
             ],
         ],
@@ -24,7 +24,7 @@ it('should aggregate the total amount forged', function () {
         'total_amount'         => '100000000',
     ])->pluck('generator_public_key')->toArray();
 
-    $result = (new DelegateTotalAggregates())->aggregate();
+    $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
@@ -38,7 +38,7 @@ it('should aggregate the total fee forged', function () {
         'total_fee'            => '100000000',
     ])->pluck('generator_public_key')->toArray();
 
-    $result = (new DelegateTotalAggregates())->aggregate();
+    $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
@@ -51,7 +51,7 @@ it('should aggregate the total count forged', function () {
         'generator_public_key' => 'generator',
     ])->pluck('generator_public_key')->toArray();
 
-    $result = (new DelegateTotalAggregates())->aggregate();
+    $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
@@ -65,7 +65,7 @@ it('should aggregate the total rewards forged', function () {
         'reward'               => '100000000',
     ])->pluck('generator_public_key')->toArray();
 
-    $result = (new DelegateTotalAggregates())->aggregate();
+    $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
@@ -81,7 +81,7 @@ it('should aggregate all the forged data', function () {
         'reward'               => '300000000',
     ])->pluck('generator_public_key')->toArray();
 
-    $result = (new DelegateTotalAggregates())->aggregate();
+    $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);

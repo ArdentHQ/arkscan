@@ -6,7 +6,7 @@ use App\Facades\Network;
 use App\Http\Livewire\Stats\Highlights;
 use App\Models\Block;
 use App\Models\Wallet;
-use App\Services\Cache\DelegateCache;
+use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\NetworkCache;
 use Livewire\Livewire;
 
@@ -17,10 +17,10 @@ it('should render the component', function (): void {
         'generator_public_key' => $wallets->get(0)->public_key,
     ]);
 
-    (new NetworkCache())->setDelegateRegistrationCount(1171);
+    (new NetworkCache())->setValidatorRegistrationCount(1171);
     (new NetworkCache())->setVotesPercentage('74.08');
-    (new DelegateCache())->setTotalWalletsVoted(0);
-    (new DelegateCache())->setTotalBalanceVoted(84235364);
+    (new ValidatorCache())->setTotalWalletsVoted(0);
+    (new ValidatorCache())->setTotalBalanceVoted(84235364);
 
     $currency = Network::currency();
 
@@ -30,7 +30,7 @@ it('should render the component', function (): void {
             '1,362,809,820 '.$currency,
             trans('pages.statistics.highlights.voting', ['percent' => '74.08%']),
             '84,235,364 '.$currency,
-            trans('pages.statistics.highlights.delegates'),
+            trans('pages.statistics.highlights.validators'),
             '1,171',
             trans('pages.statistics.highlights.addresses'),
             '10',
