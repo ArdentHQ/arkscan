@@ -1,3 +1,21 @@
+Object.defineProperties(window, {
+    _arkconnect: {
+        writable: true
+    },
+
+    arkconnect: {
+        get: function () {
+            return this._arkconnect;
+        },
+
+        set: function (arkconnect) {
+            this._arkconnect = arkconnect;
+
+            window.dispatchEvent(new Event('ARKConnectLoaded'));
+        },
+    },
+});
+
 const Wallet = () => {
     return Alpine.reactive({
         isConnected: false,
@@ -44,10 +62,14 @@ const Wallet = () => {
         },
 
         async hasExtension() {
+            if (window.arkconnect !== undefined) {
+                return true;
+            }
+
             return new Promise((resolve) => {
-                setTimeout(() => {
+                window.addEventListener('ARKConnectLoaded', () => {
                     resolve(window.arkconnect !== undefined);
-                }, 500);
+                });
             });
         },
 
