@@ -1,7 +1,7 @@
 <div
     x-show="hasExtension() && ! isLoading"
     x-data="Wallet()"
-    class="flex flex-col py-3 px-6 md:px-0 md:py-0"
+    class="flex flex-col py-3 px-6 md:py-0 md:px-0"
     :class="{
         'border-t bg-theme-secondary-200 border-theme-secondary-300 md:border-0 md:bg-transparent': isConnected,
     }"
@@ -17,10 +17,10 @@
 
     <div
         x-show="isConnected"
-        class="flex justify-between items-center w-full md:hidden min-w-0 space-x-2"
+        class="flex justify-between items-center space-x-2 w-full min-w-0 md:hidden"
     >
-        <div class="flex items-center space-x-1 text-sm font-semibold min-w-0">
-            <span class="hidden xs:block whitespace-nowrap">
+        <div class="flex items-center space-x-1 min-w-0 text-sm font-semibold">
+            <span class="hidden whitespace-nowrap xs:block">
                 @lang('general.navbar.arkconnect.my_address')
             </span>
 
