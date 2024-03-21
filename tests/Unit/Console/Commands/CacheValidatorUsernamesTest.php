@@ -64,7 +64,7 @@ it('should cache the known wallet name if doesnt have validator name', function 
     ], 200));
 
     $wallet = Wallet::factory()->create([
-        'address'                        => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
+        'address'                         => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
         'attributes->validator->username' => null,
     ]);
 

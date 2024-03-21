@@ -8,9 +8,9 @@ use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
-use App\Services\Monitor\ValidatorTracker;
 use App\Services\Monitor\ForgingInfoCalculator;
 use App\Services\Monitor\Slots;
+use App\Services\Monitor\ValidatorTracker;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
@@ -228,7 +228,7 @@ it('should correctly show the block is missed', function () {
     $orderValidatorsMethod->setAccessible(true);
 
     // Get validator order so we can forge in the correct order
-    $originalOrder     = ForgingInfoCalculator::calculate((new Slots())->getTime(), 1);
+    $originalOrder      = ForgingInfoCalculator::calculate((new Slots())->getTime(), 1);
     $activeValidators   = $activeValidatorsMethod->invokeArgs(null, [$wallets]);
     $shuffledValidators = $shuffleValidatorsMethod->invokeArgs(null, [$activeValidators, 1]);
     $validatorsInOrder  = collect($orderValidatorsMethod->invokeArgs(null, [

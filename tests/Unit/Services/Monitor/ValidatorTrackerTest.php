@@ -12,7 +12,7 @@ use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
     $this->activeValidators = require dirname(dirname(dirname(__DIR__))).'/fixtures/forgers.php';
-    $this->expected        = require dirname(dirname(dirname(__DIR__))).'/fixtures/validator-tracker.php';
+    $this->expected         = require dirname(dirname(dirname(__DIR__))).'/fixtures/validator-tracker.php';
 });
 
 it('should calculate the forging order', function () {

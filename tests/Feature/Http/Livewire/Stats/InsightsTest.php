@@ -48,11 +48,11 @@ it('should render transaction details', function (): void {
 
     $transactionDetails = TransactionStatistics::make(
         [
-            'transfer'              => 14,
-            'multipayment'          => 18,
-            'vote'                  => 15,
-            'unvote'                => 16,
-            'switch_vote'           => 17,
+            'transfer'               => 14,
+            'multipayment'           => 18,
+            'vote'                   => 15,
+            'unvote'                 => 16,
+            'switch_vote'            => 17,
             'validator_registration' => 12,
             'validator_resignation'  => 13,
         ],

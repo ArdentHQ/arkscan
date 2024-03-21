@@ -66,7 +66,7 @@ it('should find a wallet by username case insensitive', function () {
 });
 
 it('should find a wallet by username containing a whitespace', function () {
-    $wallet               = Wallet::factory()->create();
+    $wallet                = Wallet::factory()->create();
     $validator             = $wallet->attributes['validator'];
     $validator['username'] = 'something with a whitespace';
 

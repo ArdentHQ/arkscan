@@ -6,8 +6,8 @@ use App\Facades\Network;
 use App\Http\Livewire\Stats\Highlights;
 use App\Models\Block;
 use App\Models\Wallet;
-use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\NetworkCache;
+use App\Services\Cache\ValidatorCache;
 use Livewire\Livewire;
 
 it('should render the component', function (): void {
