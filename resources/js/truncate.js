@@ -26,9 +26,11 @@ export const TruncateDynamic = (value) => {
         throttleTimeout: null,
 
         init() {
-            new ResizeObserver(() => this.throttledTruncate()).observe(this.$root);
+            new ResizeObserver(() => this.throttledTruncate()).observe(
+                this.$root
+            );
 
-            window.addEventListener('resize', () => this.throttledTruncate());
+            window.addEventListener("resize", () => this.throttledTruncate());
 
             this.truncate();
         },
@@ -49,11 +51,11 @@ export const TruncateDynamic = (value) => {
             const el = this.$root;
 
             let truncateValue = this.value;
-            if (! truncateValue) {
+            if (!truncateValue) {
                 truncateValue = await Promise.resolve(this.truncateValue());
             }
 
-            el.innerHTML = ''
+            el.innerHTML = "";
             el.appendChild(document.createTextNode(truncateValue));
 
             if (!this.hasOverflow(el)) {
@@ -64,17 +66,17 @@ export const TruncateDynamic = (value) => {
             do {
                 const a = truncateValue.substr(0, length);
                 const b = truncateValue.substr(-length);
-                const truncated = a + '...' + b;
+                const truncated = a + "..." + b;
 
-                el.innerHTML = ''
+                el.innerHTML = "";
                 el.appendChild(document.createTextNode(truncated));
 
                 length--;
-            } while(this.hasOverflow(el) && length >= 0)
+            } while (this.hasOverflow(el) && length >= 0);
         },
 
         hasOverflow(el) {
             return el.offsetWidth < el.scrollWidth;
         },
     });
-}
+};
