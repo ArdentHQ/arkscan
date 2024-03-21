@@ -4,7 +4,7 @@ const Wallet = () => {
         isLoading: true,
 
         async init() {
-            if (!this.hasExtension()) {
+            if (! await this.hasExtension()) {
                 return;
             }
 
@@ -43,8 +43,12 @@ const Wallet = () => {
             return await this.extension().getAddress();
         },
 
-        hasExtension() {
-            return window.arkconnect !== undefined;
+        async hasExtension() {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(window.arkconnect !== undefined);
+                }, 500);
+            })
         },
 
         async copy() {
@@ -56,16 +60,16 @@ const Wallet = () => {
             window.clipboard(false).copy(address);
         },
 
-        connect() {
-            if (!this.hasExtension()) {
+        async connect() {
+            if (! await this.hasExtension()) {
                 return;
             }
 
             window.arkconnect.connect();
         },
 
-        disconnect() {
-            if (!this.hasExtension()) {
+        async disconnect() {
+            if (! await this.hasExtension()) {
                 return;
             }
 
