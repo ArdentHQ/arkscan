@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Stats;
 
 use App\DTO\Statistics\AddressHoldingStatistics;
-use App\DTO\Statistics\ValidatorStatistics;
 use App\DTO\Statistics\LowHighValue;
 use App\DTO\Statistics\MarketDataPriceStatistics;
 use App\DTO\Statistics\MarketDataRecordStatistics;
@@ -16,6 +15,7 @@ use App\DTO\Statistics\TransactionAveragesStatistics;
 use App\DTO\Statistics\TransactionRecordsStatistics;
 use App\DTO\Statistics\TransactionStatistics;
 use App\DTO\Statistics\UniqueAddressesStatistics;
+use App\DTO\Statistics\ValidatorStatistics;
 use App\DTO\Statistics\WalletWithValue;
 use App\Enums\StatsTransactionType;
 use App\Facades\Network;

@@ -8,7 +8,7 @@ use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
 
-final class CacheValidatorWithVoters extends Command
+final class CacheValidatorsWithVoters extends Command
 {
     /**
      * The name and signature of the console command.

@@ -30,7 +30,7 @@ final class Monitor extends Component
     public function render(): View
     {
         return view('livewire.validators.monitor', [
-            'round'     => Rounds::current()->round,
+            'round'      => Rounds::current()->round,
             'validators' => $this->validators,
         ]);
     }
