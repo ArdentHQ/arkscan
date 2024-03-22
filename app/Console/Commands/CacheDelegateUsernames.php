@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Models\Wallet;
 use App\Facades\Network;
 use App\Facades\Wallets;
-use Illuminate\Console\Command;
+use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
+use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 
 final class CacheDelegateUsernames extends Command
