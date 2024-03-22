@@ -77,11 +77,18 @@
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>
-                    <x-tables.rows.desktop.encapsulated.address
-                        :model="$delegate->wallet()"
-                        without-clipboard
-                        delegate-name-class="md:w-[200px] md-lg:w-auto"
-                    />
+                    <div class="flex items-center space-x-2">
+                        <x-tables.rows.desktop.encapsulated.address
+                            :model="$delegate->wallet()"
+                            without-clipboard
+                            :delegate-name-class="Arr::toCssClasses([
+                                'md-lg:w-auto',
+                                'md:w-[200px]' => ! $delegate->keepsMissing(),
+                            ])"
+                        />
+
+                        <x-delegates.missed-warning :delegate="$delegate->wallet()" />
+                    </div>
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell

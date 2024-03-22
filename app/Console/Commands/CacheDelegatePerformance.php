@@ -71,9 +71,6 @@ final class CacheDelegatePerformance extends Command
             (new WalletCache())->setPerformance($row['public_key'], [
                 $row['round_0'],
                 $row['round_1'],
-                $row['round_2'],
-                $row['round_3'],
-                $row['round_4'],
             ]);
         });
     }
