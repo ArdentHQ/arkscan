@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Contracts\RoundRepository as Contract;
-use App\Models\Round;
-use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
+use App\Models\Round;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\Monitor;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 
 final class RoundRepository implements Contract
