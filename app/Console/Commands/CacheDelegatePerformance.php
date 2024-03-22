@@ -37,12 +37,17 @@ final class CacheDelegatePerformance extends Command
             ->limit($maxRounds)
             ->get();
 
+        /**
+         * @var Round $mostRecentRound
+         */
+        $mostRecentRound = $mostRecentRounds->first();
+
         $query = Wallet::query()
             ->select([
                 'wallets.public_key',
                 DB::raw('MAX(wallets.balance) as balance'),
             ])
-            ->whereIn('wallets.public_key', $mostRecentRounds->first()->validators)
+            ->whereIn('wallets.public_key', $mostRecentRound->validators)
             ->join('blocks', 'blocks.generator_public_key', '=', 'wallets.public_key');
 
         $actualNumberOfRounds = min($maxRounds, $mostRecentRounds->count());
