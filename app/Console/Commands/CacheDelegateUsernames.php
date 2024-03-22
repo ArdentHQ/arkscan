@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Models\Wallet;
 use App\Facades\Network;
 use App\Facades\Wallets;
-use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
+use App\Services\Cache\WalletCache;
 use Illuminate\Database\Eloquent\Model;
 
 final class CacheDelegateUsernames extends Command
@@ -41,7 +42,7 @@ final class CacheDelegateUsernames extends Command
             ])
             ->get()
             ->each(function (Model $wallet) use ($cache, $knownWallets) : void {
-                /** @var \stdClass $wallet */
+                /** @var Wallet $wallet */
                 $knownWallet = $knownWallets->firstWhere('address', $wallet->address);
 
                 if (! is_null($knownWallet)) {

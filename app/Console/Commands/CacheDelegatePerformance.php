@@ -55,7 +55,7 @@ final class CacheDelegatePerformance extends Command
         $mostRecentRounds
             ->slice(1)
             ->reverse()
-            ->each(function ($round, int $index) use ($actualNumberOfRounds, $query, $maxRounds) : void {
+            ->each(function ($round, int $index) use ($actualNumberOfRounds, $query) : void {
                 [$start, $end] = Monitor::heightRangeByRound($round);
 
                 // `bool_or` is equivalent to `some` in PGSQL and is used here to
