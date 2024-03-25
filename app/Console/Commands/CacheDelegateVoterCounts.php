@@ -48,7 +48,7 @@ final class CacheDelegateVoterCounts extends Command
             ->join(
                 'wallets as voters',
                 'wallets.public_key',
-                DB::raw('voters.attributes->vote')->getValue(DB::connection()->getQueryGrammar())
+                (string) DB::raw('voters.attributes->vote')->getValue(DB::connection()->getQueryGrammar())
             )
             ->groupBy('wallets.public_key')
             ->pluck('total', 'public_key');
