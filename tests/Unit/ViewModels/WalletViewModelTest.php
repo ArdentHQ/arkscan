@@ -89,8 +89,8 @@ it('should get the votes as percentage from supply', function () {
 });
 
 it('should sum up the total forged', function () {
-    (new DelegateCache())->setTotalFees(fn () => [$this->subject->publicKey() => '1000000000']);
-    (new DelegateCache())->setTotalRewards(fn () => [$this->subject->publicKey() => '1000000000']);
+    (new DelegateCache())->setTotalFees([$this->subject->publicKey() => '1000000000']);
+    (new DelegateCache())->setTotalRewards([$this->subject->publicKey() => '1000000000']);
 
     expect($this->subject->totalForged())->toBeFloat();
 
@@ -98,7 +98,7 @@ it('should sum up the total forged', function () {
 });
 
 it('should sum up the amount forged', function () {
-    (new DelegateCache())->setTotalAmounts(fn () => [$this->subject->publicKey() => '1000000000']);
+    (new DelegateCache())->setTotalAmounts([$this->subject->publicKey() => '1000000000']);
 
     expect($this->subject->amountForged())->toBeInt();
 
@@ -106,7 +106,7 @@ it('should sum up the amount forged', function () {
 });
 
 it('should sum up the fees forged', function () {
-    (new DelegateCache())->setTotalFees(fn () => [$this->subject->publicKey() => '800000000']);
+    (new DelegateCache())->setTotalFees([$this->subject->publicKey() => '800000000']);
 
     expect($this->subject->feesForged())->toBeInt();
 
@@ -114,7 +114,7 @@ it('should sum up the fees forged', function () {
 });
 
 it('should sum up the rewards forged', function () {
-    (new DelegateCache())->setTotalRewards(fn () => [$this->subject->publicKey() => '200000000']);
+    (new DelegateCache())->setTotalRewards([$this->subject->publicKey() => '200000000']);
 
     expect($this->subject->rewardsForged())->toBeInt();
 
