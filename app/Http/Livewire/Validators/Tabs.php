@@ -16,16 +16,16 @@ final class Tabs extends Component
 {
     use HasTabs;
 
-    public string $view = 'validator';
+    public string $view = 'validators';
 
-    public ?string $previousView = 'validator';
+    public ?string $previousView = 'validators';
 
     public array $tabQueryData = [];
 
     public array $savedQueryData = [];
 
     public array $alreadyLoadedViews = [
-        'validator'     => false,
+        'validators'     => false,
         'missed-blocks' => false,
         'recent-votes'  => false,
     ];
@@ -38,14 +38,14 @@ final class Tabs extends Component
     public function queryString(): array
     {
         $perPage = intval(config('arkscan.pagination.per_page'));
-        if ($this->view === 'validator') {
+        if ($this->view === 'validators') {
             $perPage = Validators::defaultPerPage();
         }
 
         // TODO: Handle filters - https://app.clickup.com/t/861n4ydmh - see WalletTables
 
         return [
-            'view'    => ['except' => 'validator'],
+            'view'    => ['except' => 'validators'],
             'page'    => ['except' => 1],
             'perPage' => ['except' => $perPage],
         ];
@@ -55,7 +55,7 @@ final class Tabs extends Component
     {
         if ($this->tabQueryData === []) {
             $this->tabQueryData = [
-                'validator' => [
+                'validators' => [
                     'page'    => 1,
                     'perPage' => Validators::defaultPerPage(),
 
@@ -79,7 +79,7 @@ final class Tabs extends Component
 
     public function render(): View
     {
-        return view('livewire.validator.tabs');
+        return view('livewire.validators.tabs');
     }
 
     public function showValidatorsView(string $view): void
@@ -90,7 +90,7 @@ final class Tabs extends Component
     private function tabbedComponent(): string
     {
         return [
-            'validator'     => Validators::class,
+            'validators'    => Validators::class,
             'missed-blocks' => MissedBlocks::class,
             'recent-votes'  => RecentVotes::class,
         ][$this->view];

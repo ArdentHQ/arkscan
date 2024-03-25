@@ -20,7 +20,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * @property bool $isAllSelected
  * @property LengthAwarePaginator $validators
  * */
-final class Validator extends TabbedTableComponent
+final class Validators extends TabbedTableComponent
 {
     use DeferLoading;
     use HasTableFilter;
