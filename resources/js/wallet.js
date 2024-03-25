@@ -28,7 +28,10 @@ const Wallet = () => {
                 return this.handleExtensionLoadEvent();
             }
 
-            window.addEventListener("ARKConnectLoaded", this.handleExtensionLoadEvent.bind(this));
+            window.addEventListener(
+                "ARKConnectLoaded",
+                this.handleExtensionLoadEvent.bind(this)
+            );
         },
 
         async handleExtensionLoadEvent() {
@@ -89,7 +92,7 @@ const Wallet = () => {
         },
 
         async connect() {
-            if (! this.hasExtension) {
+            if (!this.hasExtension) {
                 return;
             }
 
@@ -97,7 +100,7 @@ const Wallet = () => {
         },
 
         async disconnect() {
-            if (! this.hasExtension) {
+            if (!this.hasExtension) {
                 return;
             }
 
