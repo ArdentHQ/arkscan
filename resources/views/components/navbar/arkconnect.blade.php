@@ -9,7 +9,8 @@
         x-show="! isConnected"
         class="py-1.5 px-4 whitespace-nowrap button-secondary"
         @click="connect"
-        :disabled="! hasExtension() || isLoading"
+        :disabled="! hasExtension"
+        disabled
     >
         @lang('general.navbar.connect_wallet')
     </button>

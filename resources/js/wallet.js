@@ -1,6 +1,8 @@
 Object.defineProperties(window, {
     _arkconnect: {
         writable: true,
+        configurable: true,
+        value: window.arkconnect,
     },
 
     arkconnect: {
@@ -19,13 +21,17 @@ Object.defineProperties(window, {
 const Wallet = () => {
     return Alpine.reactive({
         isConnected: false,
-        isLoading: true,
+        hasExtension: false,
 
         async init() {
-            if (!(await this.hasExtension())) {
-                return;
+            if (window.arkconnect) {
+                return this.handleExtensionLoadEvent();
             }
 
+            window.addEventListener("ARKConnectLoaded", this.handleExtensionLoadEvent.bind(this));
+        },
+
+        async handleExtensionLoadEvent() {
             this.isConnected = await this.extension().isConnected();
 
             this.extension().on(
@@ -38,7 +44,7 @@ const Wallet = () => {
                 this.handleConnectionEvent.bind(this)
             );
 
-            this.isLoading = false;
+            this.hasExtension = window.arkconnect !== undefined;
         },
 
         handleConnectionEvent(data) {
@@ -61,18 +67,6 @@ const Wallet = () => {
             return await this.extension().getAddress();
         },
 
-        async hasExtension() {
-            if (window.arkconnect !== undefined) {
-                return true;
-            }
-
-            return new Promise((resolve) => {
-                window.addEventListener("ARKConnectLoaded", () => {
-                    resolve(window.arkconnect !== undefined);
-                });
-            });
-        },
-
         async copy() {
             const address = await this.address();
             if (!address) {
@@ -83,7 +77,7 @@ const Wallet = () => {
         },
 
         async connect() {
-            if (!(await this.hasExtension())) {
+            if (! this.hasExtension) {
                 return;
             }
 
@@ -91,7 +85,7 @@ const Wallet = () => {
         },
 
         async disconnect() {
-            if (!(await this.hasExtension())) {
+            if (! this.hasExtension) {
                 return;
             }
 
