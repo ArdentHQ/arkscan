@@ -51,7 +51,12 @@ const Wallet = () => {
             );
 
             this.hasExtension = window.arkconnect !== undefined;
-            this.isConnected = await this.extension().isConnected();
+
+            try {
+                this.isConnected = await this.extension().isConnected();
+            } catch (e) {
+                //
+            }
         },
 
         handleConnectionEvent(data) {
@@ -96,7 +101,11 @@ const Wallet = () => {
                 return;
             }
 
-            window.arkconnect.connect();
+            try {
+                await window.arkconnect.connect();
+            } catch (e) {
+                //
+            }
         },
 
         async disconnect() {
