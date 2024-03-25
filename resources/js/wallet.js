@@ -32,8 +32,6 @@ const Wallet = () => {
         },
 
         async handleExtensionLoadEvent() {
-            this.isConnected = await this.extension().isConnected();
-
             this.extension().on(
                 "connected",
                 this.handleConnectionEvent.bind(this)
@@ -44,11 +42,25 @@ const Wallet = () => {
                 this.handleConnectionEvent.bind(this)
             );
 
+            this.extension().on(
+                "lockToggled",
+                this.handleLockToggledEvent.bind(this)
+            );
+
             this.hasExtension = window.arkconnect !== undefined;
+            this.isConnected = await this.extension().isConnected();
         },
 
         handleConnectionEvent(data) {
             this.isConnected = data.type === "connected";
+        },
+
+        async handleLockToggledEvent(data) {
+            if (data.data.isLocked) {
+                this.isConnected = false;
+            } else {
+                this.isConnected = await this.extension().isConnected();
+            }
         },
 
         extension() {
