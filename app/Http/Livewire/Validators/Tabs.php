@@ -26,8 +26,8 @@ final class Tabs extends Component
 
     public array $alreadyLoadedViews = [
         'validators'     => false,
-        'missed-blocks' => false,
-        'recent-votes'  => false,
+        'missed-blocks'  => false,
+        'recent-votes'   => false,
     ];
 
     /** @var mixed */
