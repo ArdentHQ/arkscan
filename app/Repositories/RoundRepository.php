@@ -8,8 +8,8 @@ use App\Contracts\RoundRepository as Contract;
 use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Round;
-use App\Services\Monitor\ValidatorTracker;
 use App\Services\Monitor\Monitor;
+use App\Services\Monitor\ValidatorTracker;
 use Illuminate\Support\Collection as SupportCollection;
 
 final class RoundRepository implements Contract

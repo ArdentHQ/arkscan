@@ -11,8 +11,8 @@ use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
-use App\Services\Monitor\ValidatorTracker;
 use App\Services\Monitor\Monitor;
+use App\Services\Monitor\ValidatorTracker;
 use App\Services\Timestamp;
 use ArkEcosystem\Crypto\Identities\PublicKey;
 use Faker\Generator;
@@ -200,7 +200,7 @@ function createRealisticRound(array $performances, $context)
     $cache  = new WalletCache();
 
     // Create initial round
-    $round           = 1;
+    $round            = 1;
     $validatorWallets = Wallet::factory(51)
         ->activeValidator()
         ->create()
