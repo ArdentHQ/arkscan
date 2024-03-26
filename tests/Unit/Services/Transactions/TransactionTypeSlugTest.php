@@ -26,9 +26,9 @@ it('should determine the type', function (string $type, string $expectedExact, ?
         'second-signature',
     ],
     [
-        'delegateRegistration',
-        'delegate-registration',
-        'delegate-registration',
+        'validatorRegistration',
+        'validator-registration',
+        'validator-registration',
     ],
     [
         'vote',
@@ -56,9 +56,9 @@ it('should determine the type', function (string $type, string $expectedExact, ?
         'ipfs',
     ],
     [
-        'delegateResignation',
-        'delegate-resignation',
-        'delegate-resignation',
+        'validatorResignation',
+        'validator-resignation',
+        'validator-resignation',
     ],
     [
         'multiPayment',
@@ -141,18 +141,18 @@ it('should determine the type', function (string $type, string $expectedExact, ?
         'entity-update',
     ],
     [
-        'delegateEntityRegistration',
-        'delegate-entity-registration',
+        'validatorEntityRegistration',
+        'validator-entity-registration',
         'entity-registration',
     ],
     [
-        'delegateEntityResignation',
-        'delegate-entity-resignation',
+        'validatorEntityResignation',
+        'validator-entity-resignation',
         'entity-resignation',
     ],
     [
-        'delegateEntityUpdate',
-        'delegate-entity-update',
+        'validatorEntityUpdate',
+        'validator-entity-update',
         'entity-update',
     ],
     [

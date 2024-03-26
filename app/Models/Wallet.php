@@ -23,9 +23,9 @@ use Laravel\Scout\Searchable;
  * @property BigNumber $balance
  * @property BigNumber $nonce
  * @property array $attributes
- * @property string $delegate_username (only available when indexed by scout)
+ * @property string $validator_username (only available when indexed by scout)
  * @property string $timestamp (only available when indexed by scout)
- * @property int $missed_blocks (only available when sorting delegates by missed blocks)
+ * @property int $missed_blocks (only available when sorting validators by missed blocks)
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Wallet extends Model
@@ -110,7 +110,7 @@ final class Wallet extends Model
 
         return $self->newQuery()
             ->select([
-                DB::raw("wallets.attributes->>'username' AS delegate_username"),
+                DB::raw("wallets.attributes->>'username' AS validator_username"),
                 'wallets.address',
                 'wallets.attributes',
                 'wallets.balance',
@@ -157,7 +157,7 @@ final class Wallet extends Model
     }
 
     /**
-     * A wallet has many blocks if it is a delegate.
+     * A wallet has many blocks if it is a validator.
      *
      * @return HasMany
      */

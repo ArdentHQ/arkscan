@@ -105,14 +105,14 @@ final class WalletCache implements Contract
         $this->put(sprintf('username_by_public_key/%s', $publicKey), $username);
     }
 
-    public function getDelegate(string $publicKey): ?Wallet
+    public function getValidator(string $publicKey): ?Wallet
     {
-        return $this->get(sprintf('delegate/%s', $publicKey));
+        return $this->get(sprintf('validator/%s', $publicKey));
     }
 
-    public function setDelegate(string $publicKey, Wallet $wallet): void
+    public function setValidator(string $publicKey, Wallet $wallet): void
     {
-        $this->put(sprintf('delegate/%s', $publicKey), $wallet);
+        $this->put(sprintf('validator/%s', $publicKey), $wallet);
     }
 
     public function getVoterCount(string $publicKey): int

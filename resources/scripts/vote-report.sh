@@ -16,7 +16,7 @@ OutputFile="$SCRIPT_PATH/../../public/VoteReport.txt"
 
 function GetVotersCount {
 
-        VotersJsonData=$( curl -s "$EXPLORER_NODE/delegates/$1/voters?page=1&limit=1" )
+        VotersJsonData=$( curl -s "$EXPLORER_NODE/validators/$1/voters?page=1&limit=1" )
         echo $VotersJsonData | jq '.meta.totalCount'
 }
 
@@ -28,7 +28,7 @@ function PrintJsonData {
 
                 Rank=$( printf %02d $( echo $Line | jq -r '.rank' ) )
 
-                Delegate=$( printf %-25s $( echo $Line | jq -r '.username' ) )
+                Validator=$( printf %-25s $( echo $Line | jq -r '.username' ) )
                 Approval=$( printf %0.2f $( echo $Line | jq -r '.production.approval' ) )
 
                 Vote=$( expr $( echo $Line | jq -r '.votes' ) / 100000000 )
@@ -38,7 +38,7 @@ function PrintJsonData {
                 PublicKey=$( echo $Line | jq -r '.publicKey' )
                 Voters=$( printf %4s $( GetVotersCount $PublicKey ) )
 
-                echo "|  $Rank  | $Delegate |  $Approval  | $Vote |  $Voters  |" >> $2
+                echo "|  $Rank  | $Validator |  $Approval  | $Vote |  $Voters  |" >> $2
         done
 }
 #==============================================================================
@@ -68,7 +68,7 @@ function PrintTotalVotingWeightData {
         TotalArk=$( expr $( echo $TotalArk ) / 100000000 )
         TotalArk=$( echo $TotalArk | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta' )
 
-        echo -e "Top 51 Delegates Stats\n" >> $2
+        echo -e "Top 51 Validators Stats\n" >> $2
         echo -e "=> Total Votes  : $Percentage% ( $TotalVote / $TotalArk )" >> $2
         echo -e "=> Total Voters : $TotalVoters\n" >> $2
 }
@@ -77,15 +77,15 @@ function PrintTotalVotingWeightData {
 # MAIN
 ###############################################################################
 
-JsonData1=$( curl -s "$EXPLORER_NODE/delegates?page=1&limit=51" )
-JsonData2=$( curl -s "$EXPLORER_NODE/delegates?limit=29&offset=51" )
+JsonData1=$( curl -s "$EXPLORER_NODE/validators?page=1&limit=51" )
+JsonData2=$( curl -s "$EXPLORER_NODE/validators?limit=29&offset=51" )
 
 WorkFile='./TxtVoteReport.txt'
 
 echo '' > $WorkFile
 PrintTotalVotingWeightData $JsonData1 $WorkFile
 echo '===================================================================' >> $WorkFile
-echo '| Rank | Delegate                  | Vote % |  Vote ARK  | Voters |' >> $WorkFile
+echo '| Rank | Validator                  | Vote % |  Vote ARK  | Voters |' >> $WorkFile
 echo '===================================================================' >> $WorkFile
 PrintJsonData $JsonData1 $WorkFile
 echo '===================================================================' >> $WorkFile
@@ -93,6 +93,6 @@ PrintJsonData $JsonData2 $WorkFile
 echo '===================================================================' >> $WorkFile
 Date=$( date -u "+%Y-%m-%d %H:%M:%S" )
 echo -e "\n $Date UTC / TxtVoteReport.sh v2.5.1 / ark.io \n" >> $WorkFile
-echo -e "\n NOTE: This report is based on the 51 active delegates only! \n" >> $WorkFile
+echo -e "\n NOTE: This report is based on the 51 active validators only! \n" >> $WorkFile
 
 cp -f $WorkFile $OutputFile

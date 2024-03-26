@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Artisan;
 beforeEach(function () {
     ForgingStats::truncate();
 
-    $delegatePublicKeysBalanceDesc = [
+    $validatorPublicKeysBalanceDesc = [
         '027716e659220085e41389efc7cf6a05f7f7c659cf3db9126caabce6cda9156582',
         '03d3c6889608074b44155ad2e6577c3368e27e6e129c457418eb3e5ed029544e8d',
         '032cfbb18f4e49952c6d6475e8adc6d0cba00b81ef6606cc4927b78c6c50558beb',
@@ -66,7 +66,7 @@ beforeEach(function () {
     ];
 
     for ($round = 136669; $round <= 136675; $round++) {
-        foreach ($delegatePublicKeysBalanceDesc as $key => $publicKey) {
+        foreach ($validatorPublicKeysBalanceDesc as $key => $publicKey) {
             Round::factory()->create([
                 'round'      => strval($round),
                 'public_key' => $publicKey,

@@ -15,7 +15,7 @@ $environments = [
         'balanceCooldown' => 1,
         'tries'           => 1,
     ],
-    'delegates'   => [
+    'validators'   => [
         'connection'      => 'redis',
         'queue'           => ['resignations', 'voters', 'usernames'],
         'balance'         => 'auto',

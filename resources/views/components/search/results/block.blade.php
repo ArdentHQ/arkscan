@@ -13,7 +13,7 @@
         <div class="flex flex-col space-y-4">
             <x-search.results.mobile.detail :title="trans('general.search.generated_by')">
                 <x-general.identity
-                    :model="$block->delegate()"
+                    :model="$block->validator()"
                     without-link
                     :link-wallet="false"
                     class="text-theme-secondary-900 dark:text-theme-dark-50"
@@ -46,7 +46,7 @@
                 </div>
 
                 <x-general.identity
-                    :model="$block->delegate()"
+                    :model="$block->validator()"
                     without-link
                     :link-wallet="false"
                     class="text-theme-secondary-900 dark:text-theme-dark-50"

@@ -7,7 +7,7 @@ namespace App\Models\Concerns\ForgingStats;
 use App\Enums\SortDirection;
 use App\Models\ForgingStats;
 use App\Models\Wallet;
-use App\Services\Cache\DelegateCache;
+use App\Services\Cache\ValidatorCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
@@ -27,34 +27,34 @@ trait CanBeSorted
     {
         $missedBlockPublicKeys = ForgingStats::groupBy('public_key')->pluck('public_key');
 
-        $delegateNames = Wallet::whereIn('public_key', $missedBlockPublicKeys)
+        $validatorNames = Wallet::whereIn('public_key', $missedBlockPublicKeys)
             ->get()
             ->pluck('attributes.username', 'public_key');
 
-        if (count($delegateNames) === 0) {
-            return $query->selectRaw('NULL AS delegate_name')
+        if (count($validatorNames) === 0) {
+            return $query->selectRaw('NULL AS validator_name')
                 ->selectRaw('forging_stats.*');
         }
 
-        return $query->selectRaw('wallets.name AS delegate_name')
+        return $query->selectRaw('wallets.name AS validator_name')
             ->selectRaw('forging_stats.*')
             ->join(DB::raw(sprintf(
                 '(values %s) as wallets (public_key, name)',
-                $delegateNames->map(fn ($name, $publicKey) => sprintf('(\'%s\',\'%s\')', $publicKey, $name))
+                $validatorNames->map(fn ($name, $publicKey) => sprintf('(\'%s\',\'%s\')', $publicKey, $name))
                     ->join(','),
             )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
-            ->orderByRaw('delegate_name '.$sortDirection->value.', timestamp DESC');
+            ->orderByRaw('validator_name '.$sortDirection->value.', timestamp DESC');
     }
 
     public function scopeSortByVoteCount(mixed $query, SortDirection $sortDirection): Builder
     {
         $missedBlockPublicKeys = ForgingStats::groupBy('public_key')->pluck('public_key');
 
-        $delegateVotes = Wallet::whereIn('public_key', $missedBlockPublicKeys)
+        $validatorVotes = Wallet::whereIn('public_key', $missedBlockPublicKeys)
             ->get()
             ->pluck('attributes.validatorVoteBalance', 'public_key');
 
-        if (count($delegateVotes) === 0) {
+        if (count($validatorVotes) === 0) {
             return $query->selectRaw('0 AS votes')
                 ->selectRaw('forging_stats.*');
         }
@@ -63,7 +63,7 @@ trait CanBeSorted
             ->selectRaw('forging_stats.*')
             ->join(DB::raw(sprintf(
                 '(values %s) as wallets (public_key, votes)',
-                $delegateVotes->map(fn ($votes, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $votes))
+                $validatorVotes->map(fn ($votes, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $votes))
                     ->join(','),
             )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
             ->orderByRaw('votes '.$sortDirection->value.', timestamp DESC');
@@ -71,7 +71,7 @@ trait CanBeSorted
 
     public function scopeSortByNumberOfVoters(mixed $query, SortDirection $sortDirection): Builder
     {
-        $voterCounts = (new DelegateCache())->getAllVoterCounts();
+        $voterCounts = (new ValidatorCache())->getAllVoterCounts();
         if (count($voterCounts) === 0) {
             return $query->selectRaw('0 AS no_of_voters')
                 ->selectRaw('forging_stats.*');

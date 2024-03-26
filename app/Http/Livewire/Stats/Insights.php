@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Stats;
 
 use App\DTO\Statistics\AddressHoldingStatistics;
-use App\DTO\Statistics\DelegateStatistics;
 use App\DTO\Statistics\LowHighValue;
 use App\DTO\Statistics\MarketDataPriceStatistics;
 use App\DTO\Statistics\MarketDataRecordStatistics;
@@ -16,6 +15,7 @@ use App\DTO\Statistics\TransactionAveragesStatistics;
 use App\DTO\Statistics\TransactionRecordsStatistics;
 use App\DTO\Statistics\TransactionStatistics;
 use App\DTO\Statistics\UniqueAddressesStatistics;
+use App\DTO\Statistics\ValidatorStatistics;
 use App\DTO\Statistics\WalletWithValue;
 use App\Enums\StatsTransactionType;
 use App\Facades\Network;
@@ -55,7 +55,7 @@ final class Insights extends Component
                 $this->marketDataCap($statisticsCache),
             ),
 
-            'delegateDetails'    => $this->delegateDetails($statisticsCache),
+            'validatorDetails'   => $this->validatorDetails($statisticsCache),
             'addressHoldings'    => $this->addressHoldings($statisticsCache),
             'uniqueAddresses'    => $this->uniqueAddresses($statisticsCache),
             'annualData'         => $this->annualData($statisticsCache),
@@ -120,34 +120,34 @@ final class Insights extends Component
         );
     }
 
-    private function delegateDetails(StatisticsCache $cache): DelegateStatistics
+    private function validatorDetails(StatisticsCache $cache): ValidatorStatistics
     {
         $mostUniqueVoters  = Wallet::firstWhere('public_key', $cache->getMostUniqueVoters());
         $leastUniqueVoters = Wallet::firstWhere('public_key', $cache->getLeastUniqueVoters());
         $mostBlocksForged  = Wallet::firstWhere('public_key', $cache->getMostBlocksForged());
 
-        $oldestActiveDelegateData = $cache->getOldestActiveDelegate();
-        if ($oldestActiveDelegateData !== null) {
-            $oldestActiveDelegate = Wallet::firstWhere('public_key', $oldestActiveDelegateData['publicKey']);
-            if ($oldestActiveDelegate !== null) {
-                $oldestActiveDelegate = WalletWithValue::make($oldestActiveDelegate, Carbon::createFromTimestamp($oldestActiveDelegateData['timestamp']));
+        $oldestActiveValidatorData = $cache->getOldestActiveValidator();
+        if ($oldestActiveValidatorData !== null) {
+            $oldestActiveValidator = Wallet::firstWhere('public_key', $oldestActiveValidatorData['publicKey']);
+            if ($oldestActiveValidator !== null) {
+                $oldestActiveValidator = WalletWithValue::make($oldestActiveValidator, Carbon::createFromTimestamp($oldestActiveValidatorData['timestamp']));
             }
         }
 
-        $newestActiveDelegateData = $cache->getNewestActiveDelegate();
-        if ($newestActiveDelegateData !== null) {
-            $newestActiveDelegate = Wallet::firstWhere('public_key', $newestActiveDelegateData['publicKey']);
-            if ($newestActiveDelegate !== null) {
-                $newestActiveDelegate = WalletWithValue::make($newestActiveDelegate, Carbon::createFromTimestamp($newestActiveDelegateData['timestamp']));
+        $newestActiveValidatorData = $cache->getNewestActiveValidator();
+        if ($newestActiveValidatorData !== null) {
+            $newestActiveValidator = Wallet::firstWhere('public_key', $newestActiveValidatorData['publicKey']);
+            if ($newestActiveValidator !== null) {
+                $newestActiveValidator = WalletWithValue::make($newestActiveValidator, Carbon::createFromTimestamp($newestActiveValidatorData['timestamp']));
             }
         }
 
-        return DelegateStatistics::make(
+        return ValidatorStatistics::make(
             $mostUniqueVoters,
             $leastUniqueVoters,
             $mostBlocksForged,
-            $oldestActiveDelegate ?? null,
-            $newestActiveDelegate ?? null,
+            $oldestActiveValidator ?? null,
+            $newestActiveValidator ?? null,
         );
     }
 

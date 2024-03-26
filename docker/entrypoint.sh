@@ -23,19 +23,19 @@ php artisan explorer:cache-transactions
 php artisan explorer:cache-prices
 php artisan explorer:cache-volume
 php artisan explorer:cache-currencies-data
-php artisan explorer:cache-delegate-aggregates
-php artisan explorer:cache-delegate-performance
-php artisan explorer:cache-delegate-productivity
-php artisan explorer:cache-delegate-resignation-ids
-php artisan explorer:cache-delegate-usernames
-php artisan explorer:cache-delegate-wallets
-php artisan explorer:cache-delegates-with-voters
-php artisan explorer:cache-delegate-voter-counts
+php artisan explorer:cache-validator-aggregates
+php artisan explorer:cache-validator-performance
+php artisan explorer:cache-validator-productivity
+php artisan explorer:cache-validator-resignation-ids
+php artisan explorer:cache-validator-usernames
+php artisan explorer:cache-validator-wallets
+php artisan explorer:cache-validators-with-voters
+php artisan explorer:cache-validator-voter-counts
 php artisan explorer:cache-multi-signature-addresses
 php artisan explorer:cache-blocks
 php artisan explorer:cache-transactions
 php artisan explorer:cache-address-statistics
-php artisan explorer:cache-delegate-statistics
+php artisan explorer:cache-validator-statistics
 php artisan explorer:cache-market-data-statistics
 php artisan explorer:cache-annual-statistics --all
 

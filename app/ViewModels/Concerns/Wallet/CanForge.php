@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Wallet;
 
-use App\Services\Cache\DelegateCache;
+use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
 use Illuminate\Support\Arr;
 
@@ -17,22 +17,22 @@ trait CanForge
 
     public function amountForged(): int
     {
-        return (int) Arr::get((new DelegateCache())->getTotalAmounts(), $this->wallet->public_key, 0);
+        return (int) Arr::get((new ValidatorCache())->getTotalAmounts(), $this->wallet->public_key, 0);
     }
 
     public function feesForged(): int
     {
-        return (int) Arr::get((new DelegateCache())->getTotalFees(), $this->wallet->public_key, 0);
+        return (int) Arr::get((new ValidatorCache())->getTotalFees(), $this->wallet->public_key, 0);
     }
 
     public function rewardsForged(): int
     {
-        return (int) Arr::get((new DelegateCache())->getTotalRewards(), $this->wallet->public_key, 0);
+        return (int) Arr::get((new ValidatorCache())->getTotalRewards(), $this->wallet->public_key, 0);
     }
 
     public function productivity(): float
     {
-        if (! $this->isDelegate()) {
+        if (! $this->isValidator()) {
             return 0;
         }
 
@@ -52,7 +52,7 @@ trait CanForge
 
     public function performance(): array
     {
-        if (! $this->isDelegate()) {
+        if (! $this->isValidator()) {
             return [];
         }
 

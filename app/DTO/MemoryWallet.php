@@ -38,7 +38,7 @@ final class MemoryWallet
         return (new WalletCache())->getUsernameByAddress($this->address);
     }
 
-    public function isDelegate(): bool
+    public function isValidator(): bool
     {
         return ! is_null($this->username());
     }

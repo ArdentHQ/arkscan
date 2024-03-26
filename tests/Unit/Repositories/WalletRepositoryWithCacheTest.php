@@ -49,7 +49,7 @@ it('should find wallets by public keys', function () {
 it('should find a wallet by username', function () {
     $wallet = Wallet::factory()->create();
 
-    expect($this->subject->findByUsername($wallet->attributes['delegate']['username']))->toBeInstanceOf(Wallet::class);
+    expect($this->subject->findByUsername($wallet->attributes['validator']['username']))->toBeInstanceOf(Wallet::class);
 });
 
 it('should find a wallet by identifier', function () {

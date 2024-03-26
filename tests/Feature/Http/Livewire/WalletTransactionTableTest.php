@@ -508,7 +508,7 @@ it('should filter by other transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $delegateRegistration = Transaction::factory()->delegateRegistration()->create([
+    $validatorRegistration = Transaction::factory()->validatorRegistration()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
@@ -526,7 +526,7 @@ it('should filter by other transactions', function () {
             'multipayments' => false,
             'others'        => true,
         ])
-        ->assertSee($delegateRegistration->id)
+        ->assertSee($validatorRegistration->id)
         ->assertSee($entityRegistration->id)
         ->assertDontSee($transfer->id);
 });
@@ -536,7 +536,7 @@ it('should show no transactions if no filters', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $delegateRegistration = Transaction::factory()->delegateRegistration()->create([
+    $validatorRegistration = Transaction::factory()->validatorRegistration()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
@@ -555,7 +555,7 @@ it('should show no transactions if no filters', function () {
             'others'        => false,
         ])
         ->assertDontSee($transfer->id)
-        ->assertDontSee($delegateRegistration->id)
+        ->assertDontSee($validatorRegistration->id)
         ->assertDontSee($entityRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_filters'));
 });
@@ -565,7 +565,7 @@ it('should show no transactions if no addressing filter', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $delegateRegistration = Transaction::factory()->delegateRegistration()->create([
+    $validatorRegistration = Transaction::factory()->validatorRegistration()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
@@ -584,7 +584,7 @@ it('should show no transactions if no addressing filter', function () {
             'others'        => true,
         ])
         ->assertDontSee($transfer->id)
-        ->assertDontSee($delegateRegistration->id)
+        ->assertDontSee($validatorRegistration->id)
         ->assertDontSee($entityRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_addressing_filters'));
 });
@@ -594,7 +594,7 @@ it('should show no transactions if no type filter', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $delegateRegistration = Transaction::factory()->delegateRegistration()->create([
+    $validatorRegistration = Transaction::factory()->validatorRegistration()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
@@ -613,7 +613,7 @@ it('should show no transactions if no type filter', function () {
             'others'        => false,
         ])
         ->assertDontSee($transfer->id)
-        ->assertDontSee($delegateRegistration->id)
+        ->assertDontSee($validatorRegistration->id)
         ->assertDontSee($entityRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_results'));
 });

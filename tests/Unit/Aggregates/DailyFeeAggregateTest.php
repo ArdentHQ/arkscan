@@ -6,7 +6,7 @@ use App\Aggregates\DailyFeeAggregate;
 use App\Models\Transaction;
 
 beforeEach(function () {
-    Transaction::factory(10)->delegateRegistration()->create();
+    Transaction::factory(10)->validatorRegistration()->create();
 
     $this->subject = new DailyFeeAggregate();
 });

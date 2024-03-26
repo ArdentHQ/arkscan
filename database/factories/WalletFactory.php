@@ -22,8 +22,8 @@ final class WalletFactory extends Factory
             'balance'           => $this->faker->numberBetween(1, 1000) * 1e8,
             'nonce'             => $this->faker->numberBetween(1, 1000),
             'attributes'        => [
-                'secondPublicKey' => $this->faker->publicKey,
-                'delegate'        => [
+                'secondPublicKey'  => $this->faker->publicKey,
+                'validator'        => [
                     'username'       => $this->faker->userName,
                     'voteBalance'    => $this->faker->numberBetween(1, 1000) * 1e8,
                     'producedBlocks' => $this->faker->numberBetween(1, 1000),
@@ -34,12 +34,12 @@ final class WalletFactory extends Factory
         ];
     }
 
-    public function activeDelegate()
+    public function activeValidator()
     {
         return $this->state(function () {
             return [
                 'attributes'        => [
-                    'delegate'        => [
+                    'validator'        => [
                         'rank'           => $this->faker->numberBetween(1, 51),
                         'username'       => $this->faker->userName,
                         'voteBalance'    => $this->faker->numberBetween(1, 1000) * 1e8,
@@ -51,12 +51,12 @@ final class WalletFactory extends Factory
         });
     }
 
-    public function standbyDelegate(bool $isResigned = true)
+    public function standbyValidator(bool $isResigned = true)
     {
         return $this->state(function () use ($isResigned) {
             return [
                 'attributes'        => [
-                    'delegate'        => [
+                    'validator'        => [
                         'resigned'       => $isResigned,
                         'rank'           => $this->faker->numberBetween(52, 102),
                         'username'       => $this->faker->userName,

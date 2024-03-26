@@ -27,13 +27,13 @@ trait CanVote
             return null;
         }
 
-        $delegate = (new WalletCache())->getVote($vote);
+        $validator = (new WalletCache())->getVote($vote);
 
-        if (is_null($delegate)) {
+        if (is_null($validator)) {
             return null;
         }
 
-        return new static($delegate);
+        return new static($validator);
     }
 
     public function votePercentage(): ?float
@@ -48,16 +48,16 @@ trait CanVote
             return null;
         }
 
-        $delegate = (new WalletCache())->getVote($vote);
+        $validator = (new WalletCache())->getVote($vote);
 
-        if (is_null($delegate)) {
+        if (is_null($validator)) {
             return null;
         }
 
-        if ((float) $delegate->attributes['validatorVoteBalance'] === 0.0) {
+        if ((float) $validator->attributes['validatorVoteBalance'] === 0.0) {
             return null;
         }
 
-        return Percentage::calculate($this->wallet->balance->toNumber(), (float) $delegate->attributes['validatorVoteBalance']);
+        return Percentage::calculate($this->wallet->balance->toNumber(), (float) $validator->attributes['validatorVoteBalance']);
     }
 }

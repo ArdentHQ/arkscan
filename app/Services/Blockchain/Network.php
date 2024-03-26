@@ -93,9 +93,9 @@ final class Network implements Contract
         return Carbon::parse($this->config['epoch']);
     }
 
-    public function delegateCount(): int
+    public function validatorCount(): int
     {
-        return $this->config['delegateCount'];
+        return $this->config['validatorCount'];
     }
 
     public function blockTime(): int

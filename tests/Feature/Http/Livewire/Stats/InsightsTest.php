@@ -30,8 +30,8 @@ use Livewire\Livewire;
 use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
 it('should render transaction details', function (): void {
-    Transaction::factory(12)->delegateRegistration()->create();
-    Transaction::factory(13)->delegateResignation()->create();
+    Transaction::factory(12)->validatorRegistration()->create();
+    Transaction::factory(13)->validatorResignation()->create();
     Transaction::factory(14)->transfer()->create();
     Transaction::factory(15)->vote()->create();
     Transaction::factory(16)->unvote()->create();
@@ -48,13 +48,13 @@ it('should render transaction details', function (): void {
 
     $transactionDetails = TransactionStatistics::make(
         [
-            'transfer'              => 14,
-            'multipayment'          => 18,
-            'vote'                  => 15,
-            'unvote'                => 16,
-            'switch_vote'           => 17,
-            'delegate_registration' => 12,
-            'delegate_resignation'  => 13,
+            'transfer'               => 14,
+            'multipayment'           => 18,
+            'vote'                   => 15,
+            'unvote'                 => 16,
+            'switch_vote'            => 17,
+            'validator_registration' => 12,
+            'validator_resignation'  => 13,
         ],
         TransactionAveragesStatistics::make($transactionCache->getHistoricalAverages()),
         TransactionRecordsStatistics::make($largestTransaction),
@@ -73,9 +73,9 @@ it('should render transaction details', function (): void {
             '16',
             trans('pages.statistics.insights.transactions.header.switch_vote'),
             '17',
-            trans('pages.statistics.insights.transactions.header.delegate_registration'),
+            trans('pages.statistics.insights.transactions.header.validator_registration'),
             '12',
-            trans('pages.statistics.insights.transactions.header.delegate_resignation'),
+            trans('pages.statistics.insights.transactions.header.validator_resignation'),
             '13',
         ]);
 });
@@ -86,7 +86,7 @@ it('should render transaction daily average', function (): void {
 
     $transactionCache = new TransactionCache();
 
-    Transaction::factory(2)->delegateRegistration()->create([
+    Transaction::factory(2)->validatorRegistration()->create([
         'amount' => 0,
         'fee'    => 9 * 1e8,
     ]);
@@ -130,8 +130,8 @@ it('should render transaction daily average', function (): void {
             trans('pages.statistics.insights.transactions.header.vote'),
             trans('pages.statistics.insights.transactions.header.unvote'),
             trans('pages.statistics.insights.transactions.header.switch_vote'),
-            trans('pages.statistics.insights.transactions.header.delegate_registration'),
-            trans('pages.statistics.insights.transactions.header.delegate_resignation'),
+            trans('pages.statistics.insights.transactions.header.validator_registration'),
+            trans('pages.statistics.insights.transactions.header.validator_resignation'),
             trans('pages.statistics.insights.transactions.header.transactions'),
             $transactionCount,
             trans('pages.statistics.insights.transactions.header.transaction_volume'),
@@ -217,34 +217,34 @@ it('should render unique addresses', function (): void {
         ->assertDontSee('> 0');
 });
 
-it('should render delegate statistics', function (): void {
+it('should render validator statistics', function (): void {
     $currentDate = Carbon::now();
 
-    $walletMostUnique   = Wallet::factory()->activeDelegate()->create();
-    $walletLeastUnique  = Wallet::factory()->activeDelegate()->create();
-    $walletOldestActive = Wallet::factory()->activeDelegate()->create();
-    $walletNewestActive = Wallet::factory()->activeDelegate()->create();
-    $walletMostBlocks   = Wallet::factory()->activeDelegate()->create();
-    $randomWallet       = Wallet::factory()->activeDelegate()->create();
+    $walletMostUnique   = Wallet::factory()->activeValidator()->create();
+    $walletLeastUnique  = Wallet::factory()->activeValidator()->create();
+    $walletOldestActive = Wallet::factory()->activeValidator()->create();
+    $walletNewestActive = Wallet::factory()->activeValidator()->create();
+    $walletMostBlocks   = Wallet::factory()->activeValidator()->create();
+    $randomWallet       = Wallet::factory()->activeValidator()->create();
 
     $cache = new StatisticsCache();
     $cache->setMostUniqueVoters($walletMostUnique->public_key);
     $cache->setLeastUniqueVoters($walletLeastUnique->public_key);
-    $cache->setOldestActiveDelegate($walletOldestActive->public_key, $currentDate->subMonth()->timestamp);
-    $cache->setNewestActiveDelegate($walletNewestActive->public_key, $currentDate->timestamp);
+    $cache->setOldestActiveValidator($walletOldestActive->public_key, $currentDate->subMonth()->timestamp);
+    $cache->setNewestActiveValidator($walletNewestActive->public_key, $currentDate->timestamp);
     $cache->setMostBlocksForged($walletMostBlocks->public_key);
 
     Livewire::test(Insights::class)
         ->assertSeeInOrder([
-            // trans('pages.statistics.insights.delegates.header.most_unique_voters'),
+            // trans('pages.statistics.insights.validators.header.most_unique_voters'),
             // $walletMostUnique->address,
-            // trans('pages.statistics.insights.delegates.header.least_unique_voters'),
+            // trans('pages.statistics.insights.validators.header.least_unique_voters'),
             // $walletLeastUnique->address,
-            trans('pages.statistics.insights.delegates.header.oldest_active_delegate'),
+            trans('pages.statistics.insights.validators.header.oldest_active_validator'),
             $walletOldestActive->address,
-            trans('pages.statistics.insights.delegates.header.newest_active_delegate'),
+            trans('pages.statistics.insights.validators.header.newest_active_validator'),
             $walletNewestActive->address,
-            trans('pages.statistics.insights.delegates.header.most_blocks_forged'),
+            trans('pages.statistics.insights.validators.header.most_blocks_forged'),
             $walletMostBlocks->address,
         ])
         ->assertDontSee($randomWallet->address);

@@ -5,8 +5,8 @@ declare(strict_types=1);
 use App\Facades\Settings;
 use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Services\Cache\DelegateCache;
 use App\Services\Cache\NetworkCache;
+use App\Services\Cache\ValidatorCache;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
@@ -19,10 +19,10 @@ it('should render the page without any errors', function () {
 
     (new NetworkCache())->setSupply(fn () => '10000000000');
 
-    ((new DelegateCache())->setTotalAmounts(fn () => [$wallet->public_key => '1000000000']));
-    ((new DelegateCache())->setTotalFees(fn () => [$wallet->public_key => '1000000000']));
-    ((new DelegateCache())->setTotalRewards(fn () => [$wallet->public_key => '1000000000']));
-    ((new DelegateCache())->setTotalBlocks(fn () => [$wallet->public_key => '1000000000']));
+    ((new ValidatorCache())->setTotalAmounts(fn () => [$wallet->public_key => '1000000000']));
+    ((new ValidatorCache())->setTotalFees(fn () => [$wallet->public_key => '1000000000']));
+    ((new ValidatorCache())->setTotalRewards(fn () => [$wallet->public_key => '1000000000']));
+    ((new ValidatorCache())->setTotalBlocks(fn () => [$wallet->public_key => '1000000000']));
 
     $this
         ->get(route('wallet', $wallet))
@@ -33,14 +33,14 @@ it('can lookup wallets by the username', function () {
     $this->withoutExceptionHandling();
 
     $wallet   = Wallet::factory()->create();
-    $username = $wallet->attributes['delegate']['username'];
+    $username = $wallet->attributes['validator']['username'];
 
     (new NetworkCache())->setSupply(fn () => '10000000000');
 
-    ((new DelegateCache())->setTotalAmounts(fn () => [$wallet->public_key => '1000000000']));
-    ((new DelegateCache())->setTotalFees(fn () => [$wallet->public_key => '1000000000']));
-    ((new DelegateCache())->setTotalRewards(fn () => [$wallet->public_key => '1000000000']));
-    ((new DelegateCache())->setTotalBlocks(fn () => [$wallet->public_key => '1000000000']));
+    ((new ValidatorCache())->setTotalAmounts(fn () => [$wallet->public_key => '1000000000']));
+    ((new ValidatorCache())->setTotalFees(fn () => [$wallet->public_key => '1000000000']));
+    ((new ValidatorCache())->setTotalRewards(fn () => [$wallet->public_key => '1000000000']));
+    ((new ValidatorCache())->setTotalBlocks(fn () => [$wallet->public_key => '1000000000']));
 
     expect($username)->not->toBeEmpty();
 
@@ -141,7 +141,7 @@ it('should filter transactions in url', function () {
 it('should get query data from referer', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
-            'delegate' => [
+            'validator' => [
                 'voteBalance'    => 1234037456742,
                 'producedBlocks' => 12340,
             ],
@@ -157,7 +157,7 @@ it('should get query data from referer', function () {
 it('should handle referer without a query string', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
-            'delegate' => [
+            'validator' => [
                 'voteBalance'    => 1234037456742,
                 'producedBlocks' => 12340,
             ],
@@ -173,7 +173,7 @@ it('should handle referer without a query string', function () {
 it('should handle no referer', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
-            'delegate' => [
+            'validator' => [
                 'voteBalance'    => 1234037456742,
                 'producedBlocks' => 12340,
             ],
@@ -189,15 +189,15 @@ it('should handle no referer', function () {
 it('should not trim 0 at the end of votes or total forged', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
-            'delegate' => [
+            'validator' => [
                 'voteBalance'    => 1234037456742,
                 'producedBlocks' => 12340,
             ],
         ],
     ]);
 
-    (new DelegateCache())->setTotalFees(fn () => [$wallet->public_key => 234037456741]);
-    (new DelegateCache())->setTotalRewards(fn () => [$wallet->public_key => 1000000000001]);
+    (new ValidatorCache())->setTotalFees(fn () => [$wallet->public_key => 234037456741]);
+    (new ValidatorCache())->setTotalRewards(fn () => [$wallet->public_key => 1000000000001]);
 
     $this
         ->get(route('wallet', $wallet))

@@ -23,9 +23,9 @@ trait HasType
         return $this->type->isSecondSignature();
     }
 
-    public function isDelegateRegistration(): bool
+    public function isValidatorRegistration(): bool
     {
-        return $this->type->isDelegateRegistration();
+        return $this->type->isValidatorRegistration();
     }
 
     public function isVote(): bool
@@ -53,9 +53,9 @@ trait HasType
         return $this->type->isIpfs();
     }
 
-    public function isDelegateResignation(): bool
+    public function isValidatorResignation(): bool
     {
-        return $this->type->isDelegateResignation();
+        return $this->type->isValidatorResignation();
     }
 
     public function isMultiPayment(): bool
@@ -163,19 +163,19 @@ trait HasType
         return $this->type->isModuleEntityUpdate();
     }
 
-    public function isDelegateEntityRegistration(): bool
+    public function isValidatorEntityRegistration(): bool
     {
-        return $this->type->isDelegateEntityRegistration();
+        return $this->type->isValidatorEntityRegistration();
     }
 
-    public function isDelegateEntityResignation(): bool
+    public function isValidatorEntityResignation(): bool
     {
-        return $this->type->isDelegateEntityResignation();
+        return $this->type->isValidatorEntityResignation();
     }
 
-    public function isDelegateEntityUpdate(): bool
+    public function isValidatorEntityUpdate(): bool
     {
-        return $this->type->isDelegateEntityUpdate();
+        return $this->type->isValidatorEntityUpdate();
     }
 
     public function isLegacyBusinessRegistration(): bool
@@ -210,11 +210,11 @@ trait HasType
 
     public function isLegacy(): bool
     {
-        if ($this->isDelegateRegistration()) {
+        if ($this->isValidatorRegistration()) {
             return false;
         }
 
-        if ($this->isDelegateResignation()) {
+        if ($this->isValidatorResignation()) {
             return false;
         }
 
@@ -268,11 +268,11 @@ trait HasType
 
     public function isSelfReceiving(): bool
     {
-        if ($this->isDelegateRegistration()) {
+        if ($this->isValidatorRegistration()) {
             return true;
         }
 
-        if ($this->isDelegateResignation()) {
+        if ($this->isValidatorResignation()) {
             return true;
         }
 

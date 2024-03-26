@@ -31,27 +31,27 @@ it('should get the height', function () {
     expect($this->subject->height())->toBe(54321);
 });
 
-it('should get the delegate address', function () {
-    $wallet = Wallet::factory()->activeDelegate()->create();
+it('should get the validator address', function () {
+    $wallet = Wallet::factory()->activeValidator()->create();
 
     $this->subject = new ForgingStatsViewModel(ForgingStats::factory()->create([
         'public_key' => $wallet->public_key,
     ]));
 
-    expect($this->subject->delegate()->address())->toBe($wallet->address);
+    expect($this->subject->validator()->address())->toBe($wallet->address);
 });
 
-it('should handle no delegate', function () {
+it('should handle no validator', function () {
     $this->subject = new ForgingStatsViewModel(ForgingStats::factory()->create([
-        'public_key' => 'key-to-missing-delegate',
+        'public_key' => 'key-to-missing-validator',
     ]));
 
-    expect($this->subject->delegate())->toBeNull();
+    expect($this->subject->validator())->toBeNull();
 });
 
-it('should get the delegate username', function () {
-    $wallet = Wallet::factory()->activeDelegate()->create(['attributes' => [
-        'delegate' => [
+it('should get the validator username', function () {
+    $wallet = Wallet::factory()->activeValidator()->create(['attributes' => [
+        'validator' => [
             'username' => 'joe.blogs',
         ],
     ]]);
@@ -64,8 +64,8 @@ it('should get the delegate username', function () {
     expect($this->subject->username())->toBe('joe.blogs');
 });
 
-it('should handle no delegate username', function () {
-    $wallet = Wallet::factory()->activeDelegate()->create(['attributes' => []]);
+it('should handle no validator username', function () {
+    $wallet = Wallet::factory()->activeValidator()->create(['attributes' => []]);
 
     $this->subject = new ForgingStatsViewModel(ForgingStats::factory()->create([
         'public_key' => $wallet->public_key,

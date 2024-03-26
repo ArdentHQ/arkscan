@@ -10,7 +10,7 @@ final class CoreTransactionTypeEnum
 
     public const SECOND_SIGNATURE = 1;
 
-    public const DELEGATE_REGISTRATION = 2;
+    public const VALIDATOR_REGISTRATION = 2;
 
     public const VOTE = 3;
 
@@ -20,7 +20,7 @@ final class CoreTransactionTypeEnum
 
     public const MULTI_PAYMENT = 6;
 
-    public const DELEGATE_RESIGNATION = 7;
+    public const VALIDATOR_RESIGNATION = 7;
 
     public const USERNAME_REGISTRATION = 8;
 

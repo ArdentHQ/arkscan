@@ -11,7 +11,7 @@ it('should execute the command', function () {
 
     CacheTotalSupply::execute();
 
-    expect((new NetworkCache())->getTotalSupply())->toBe((float) $block->delegate->balance->toNumber());
+    expect((new NetworkCache())->getTotalSupply())->toBe((float) $block->validator->balance->toNumber());
 });
 
 it('should execute the command with missing data', function () {

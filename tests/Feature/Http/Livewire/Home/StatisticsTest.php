@@ -49,10 +49,10 @@ it('should render with a height, volume, supply and market cap', function () {
         'fee'       => 0.99 * 1e8,
     ]);
 
-    $transaction->sender->balance          = 0;
-    $transaction->block->delegate->balance = 0;
+    $transaction->sender->balance           = 0;
+    $transaction->block->validator->balance = 0;
     $transaction->sender->save();
-    $transaction->block->delegate->save();
+    $transaction->block->validator->save();
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 1.606);
     (new CryptoDataCache())->setVolume('USD', '12345');
@@ -87,10 +87,10 @@ it('should render with a height, volume, supply and market cap for BTC', functio
         'fee'       => 0.99 * 1e8,
     ]);
 
-    $transaction->sender->balance          = 0;
-    $transaction->block->delegate->balance = 0;
+    $transaction->sender->balance           = 0;
+    $transaction->block->validator->balance = 0;
     $transaction->sender->save();
-    $transaction->block->delegate->save();
+    $transaction->block->validator->save();
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'BTC', 0.00003132);
     (new CryptoDataCache())->setVolume('BTC', '123');

@@ -2,6 +2,6 @@
     <div class="flex flex-col md:space-y-3 md-lg:space-y-0 md-lg:flex-row md-lg:space-x-3">
         <x-wallet.overview.wallet :wallet="$wallet" />
 
-        <x-wallet.overview.delegate :wallet="$wallet" />
+        <x-wallet.overview.validator :wallet="$wallet" />
     </div>
 </div>

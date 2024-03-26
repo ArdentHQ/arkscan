@@ -83,9 +83,9 @@ final class AppServiceProvider extends ServiceProvider
     private function registerDataBags(): void
     {
         DataBag::register('metatags', [
-            'delegates' => [
-                'title'       => 'Delegate Monitor | ARKScan | Cryptocurrency Block Explorer',
-                'description' => 'Monitor Delegate activity for the ARK Public Network. See Delegate rankings and track Voting Power in the ARK Blockchain.',
+            'validators' => [
+                'title'       => 'Validator Monitor | ARKScan | Cryptocurrency Block Explorer',
+                'description' => 'Monitor Validator activity for the ARK Public Network. See Validator rankings and track Voting Power in the ARK Blockchain.',
             ],
             'wallets'   => [
                 'title'       => 'Wallet Addresses | ARKScan | Cryptocurrency Block Explorer',
@@ -105,12 +105,12 @@ final class AppServiceProvider extends ServiceProvider
             ['label' => trans('menus.blockchain'), 'children' => [
                 ['route' => 'blocks',           'label' => trans('menus.blocks')],
                 ['route' => 'transactions',     'label' => trans('menus.transactions')],
-                ['route' => 'delegates',        'label' => trans('menus.delegates')],
+                ['route' => 'validators',        'label' => trans('menus.validators')],
                 ['route' => 'top-accounts',     'label' => trans('menus.top_accounts')],
                 ['route' => 'statistics',       'label' => trans('menus.statistics')],
             ]],
             ['label' => trans('menus.resources'), 'children' => [
-                ['route' => 'delegate-monitor', 'label' => trans('menus.delegate_monitor')],
+                ['route' => 'validator-monitor', 'label' => trans('menus.validator_monitor')],
                 ['route' => 'compatible-wallets',  'label' => trans('menus.wallets')],
             ]],
             ['label' => trans('menus.developers'), 'children' => [
