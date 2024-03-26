@@ -25,10 +25,6 @@ mix.webpackConfig({
     // App
     .js("resources/js/app.js", "public/js")
     .js("resources/js/chart-tooltip.js", "public/js")
-    .js(
-        "vendor/arkecosystem/foundation/resources/assets/js/clipboard.js",
-        "public/js/clipboard.js"
-    )
     .postCss("resources/css/app.css", "public/css", [
         require("postcss-import"),
         require("tailwindcss"),

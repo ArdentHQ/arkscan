@@ -1,4 +1,5 @@
 import "focus-visible";
+import "@ui/js/clipboard.js";
 import "@ui/js/tippy.js";
 import "@ui/js/page-scroll";
 import "@ui/js/reposition-dropdown";
@@ -10,6 +11,7 @@ import * as dayjsRelativeTime from "dayjs/plugin/relativeTime";
 
 // @see https://laravel-mix.com/docs/6.0/upgrade#unused-library-extraction
 import Alpine from "alpinejs";
+import Wallet from "./wallet.js";
 import BlocksExport from "./blocks-export.js";
 import { Chart } from "chart.js";
 import CustomChart from "@ui/js/chart.js";
@@ -29,11 +31,13 @@ import MobileSorting from "./mobile-sorting.js";
 import TransactionsExport from "./transactions-export.js";
 import Tabs from "./tabs";
 import makeBlockie from "ethereum-blockies-base64";
+import { truncateMiddle, TruncateDynamic } from "./truncate.js";
 
 import "./livewire-exception-handler.js";
 
 window.makeBlockie = makeBlockie;
 window.Alpine = Alpine;
+window.Wallet = Wallet;
 window.BlocksExport = BlocksExport;
 window.Chart = Chart;
 window.Dropdown = Dropdown;
@@ -54,6 +58,8 @@ window.ThemeManager = ThemeManager;
 window.MobileSorting = MobileSorting;
 window.TransactionsExport = TransactionsExport;
 window.Search = Search;
+window.truncateMiddle = truncateMiddle;
+window.TruncateDynamic = TruncateDynamic;
 
 dayjs.extend(dayjsRelativeTime);
 

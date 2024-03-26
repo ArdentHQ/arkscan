@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Wallet;
 
+use App\Actions\CacheNetworkHeight;
 use App\Facades\Rounds;
 use App\Services\Cache\DelegateCache;
 use App\Services\Cache\WalletCache;
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Illuminate\Support\Arr;
 
 trait CanForge
@@ -117,8 +120,62 @@ trait CanForge
         return (new WalletCache())->getMissedBlocks($publicKey);
     }
 
+    public function blocksSinceLastForged(): ?int
+    {
+        $lastBlock = $this->lastBlock();
+        if ($lastBlock === null) {
+            return null;
+        }
+
+        $height = CacheNetworkHeight::execute();
+
+        return $height - $lastBlock['height'];
+    }
+
+    public function durationSinceLastForged(): ?string
+    {
+        $lastBlock = $this->lastBlock();
+        if ($lastBlock === null) {
+            return null;
+        }
+
+        $difference = CarbonInterval::instance(Carbon::parse($lastBlock['timestamp'])->diff());
+        $difference->ceilMinutes();
+        if ($difference->totalHours < 1) {
+            return trans('general.time.minutes_short', ['minutes' => $difference->minutes]);
+        }
+
+        if ($difference->totalHours >= 1 && $difference->totalDays < 1) {
+            if ($difference->minutes === 0) {
+                return trans('general.time.hours_short', ['hours' => $difference->hours]);
+            }
+
+            return trans('general.time.hours_minutes_short', [
+                'hours'   => $difference->hours,
+                'minutes' => $difference->minutes,
+            ]);
+        }
+
+        return trans('general.time.more_than_a_day');
+    }
+
     public function currentSlot(): array
     {
         return Rounds::delegates()->firstWhere('publicKey', $this->publicKey());
+    }
+
+    private function lastBlock(): ?array
+    {
+        $publicKey = $this->publicKey();
+        if (is_null($publicKey)) {
+            return null;
+        }
+
+        $lastBlock = (new WalletCache())->getLastBlock($publicKey);
+        if ($lastBlock === []) {
+            return null;
+        }
+
+        return $lastBlock;
     }
 }
