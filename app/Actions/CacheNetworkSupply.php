@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Facades\Network;
-use App\Models\Transaction;
-use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\NetworkCache;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +27,7 @@ final class CacheNetworkSupply
                             $query->selectRaw('SUM(amount)')
                                 ->from('transactions')
                                 ->where('recipient_id', 'DGG1ovZUrPcBXR84ei2L69YyiXQvQfkUqV');
-                        }
+                        },
                     ]);
                 }, 'data')
                 ->first()->amount;
