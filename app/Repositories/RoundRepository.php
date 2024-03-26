@@ -26,9 +26,10 @@ final class RoundRepository implements Contract
 
     public function validators(bool $withBlock = true): SupportCollection
     {
-        $roundNumber = Rounds::current();
-        $validators  = Rounds::byRound($roundNumber);
-        $heightRange = Monitor::heightRangeByRound($roundNumber);
+        $round       = Rounds::current();
+        $roundNumber = $round->round;
+        $validators  = Rounds::byRound($roundNumber)->validators;
+        $heightRange = Monitor::heightRangeByRound($round);
         $validators  = new SupportCollection(ValidatorTracker::execute($validators, $heightRange[0]));
 
         if ($withBlock) {
