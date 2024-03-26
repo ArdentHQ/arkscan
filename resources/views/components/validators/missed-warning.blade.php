@@ -1,10 +1,10 @@
-@props(['delegate'])
+@props(['validator'])
 
-@if ($delegate->keepsMissing())
+@if ($validator->keepsMissing())
     <div
-        data-tippy-content="@lang('pages.delegate-monitor.missed_blocks_tooltip', [
-            'blocks' => $delegate->blocksSinceLastForged(),
-            'time'   => $delegate->durationSinceLastForged(),
+        data-tippy-content="@lang('pages.validator-monitor.missed_blocks_tooltip', [
+            'blocks' => $validator->blocksSinceLastForged(),
+            'time'   => $validator->durationSinceLastForged(),
         ])"
         class="text-theme-warning-900"
     >

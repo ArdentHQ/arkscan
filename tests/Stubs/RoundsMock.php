@@ -13,7 +13,7 @@ class RoundsMock
         //
     }
 
-    public function delegates()
+    public function validators()
     {
         return new class($this->block) {
             public function __construct(private ?Block $block = null)

@@ -29,9 +29,9 @@ final class RoundRepositoryWithCache implements RoundRepository
         return $this->remember(fn () => $this->rounds->byRound($round));
     }
 
-    public function delegates(bool $withBlock = true): SupportCollection
+    public function validators(bool $withBlock = true): SupportCollection
     {
-        return $this->rounds->delegates($withBlock);
+        return $this->rounds->validators($withBlock);
     }
 
     private function getCache(): TaggedCache

@@ -8,7 +8,7 @@ use App\Contracts\RoundRepository as Contract;
 use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Round;
-use App\Services\Monitor\DelegateTracker;
+use App\Services\Monitor\ValidatorTracker;
 use App\Services\Monitor\Monitor;
 use Illuminate\Support\Collection as SupportCollection;
 
@@ -24,23 +24,23 @@ final class RoundRepository implements Contract
         return Round::findOrFail($round);
     }
 
-    public function delegates(bool $withBlock = true): SupportCollection
+    public function validators(bool $withBlock = true): SupportCollection
     {
         $roundNumber = Rounds::current();
-        $delegates   = Rounds::allByRound($roundNumber);
+        $validators  = Rounds::byRound($roundNumber);
         $heightRange = Monitor::heightRangeByRound($roundNumber);
-        $delegates   = new SupportCollection(DelegateTracker::execute($delegates, $heightRange[0]));
+        $validators  = new SupportCollection(ValidatorTracker::execute($validators, $heightRange[0]));
 
         if ($withBlock) {
             $blocks = Block::whereBetween('height', $heightRange)->get()->keyBy('generator_public_key');
 
-            $delegates = $delegates->map(fn ($delegate) => [
-                ...$delegate,
+            $validators = $validators->map(fn ($validator) => [
+                ...$validator,
 
-                'block' => $blocks->get($delegate['publicKey']),
+                'block' => $blocks->get($validator['publicKey']),
             ]);
         }
 
-        return $delegates;
+        return $validators;
     }
 }

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static Round byRound(int $round)
  * @method static Round current()
- * @method static SupportCollection delegates()
+ * @method static SupportCollection validators()
  */
 final class Rounds extends Facade
 {

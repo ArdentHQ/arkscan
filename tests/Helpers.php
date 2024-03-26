@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use App\Console\Commands\CacheDelegatePerformance;
+use App\Console\Commands\CacheValidatorPerformance;
 use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
-use App\Services\Monitor\DelegateTracker;
+use App\Services\Monitor\ValidatorTracker;
 use App\Services\Monitor\Monitor;
 use App\Services\Timestamp;
 use ArkEcosystem\Crypto\Identities\PublicKey;
@@ -186,8 +186,8 @@ function createRoundEntry(int $round, string $publicKey)
     ]);
 }
 
-// The initial delegate wallets are used as an index for the performances.
-// This is to ensure the SAME delegate misses or forges per round
+// The initial validator wallets are used as an index for the performances.
+// This is to ensure the SAME validator misses or forges per round
 function createRealisticRound(array $performances, $context)
 {
     Round::truncate();
@@ -201,15 +201,15 @@ function createRealisticRound(array $performances, $context)
 
     // Create initial round
     $round           = 1;
-    $delegateWallets = Wallet::factory(51)
-        ->activeDelegate()
+    $validatorWallets = Wallet::factory(51)
+        ->activeValidator()
         ->create()
-        ->each(function ($delegate) use (&$height, $cache, $round) {
-            $cache->setDelegate($delegate->public_key, $delegate);
+        ->each(function ($validator) use (&$height, $cache, $round) {
+            $cache->setValidator($validator->public_key, $validator);
 
-            createRoundEntry($round, $delegate->public_key);
+            createRoundEntry($round, $validator->public_key);
 
-            createBlock($height, $delegate->public_key);
+            createBlock($height, $validator->public_key);
 
             $height++;
         });
@@ -221,37 +221,37 @@ function createRealisticRound(array $performances, $context)
 
     // Loop through performances and generate rounds for each - requires 51 entries (blocks per round) to work correctly
     foreach ($performances as $index => $didForge) {
-        createFullRound($round, $height, $delegateWallets, $context, $didForge);
+        createFullRound($round, $height, $validatorWallets, $context, $didForge);
 
         expect(Block::count())->toBe(51 + (($index + 1) * 51));
     }
 
     (new NetworkCache())->setHeight(fn (): int => $height - 1);
 
-    (new CacheDelegatePerformance())->handle();
+    (new CacheValidatorPerformance())->handle();
 
-    return [$delegateWallets, $round, $height];
+    return [$validatorWallets, $round, $height];
 }
 
-function createFullRound(&$round, &$height, $delegateWallets, $context, $didForge = null)
+function createFullRound(&$round, &$height, $validatorWallets, $context, $didForge = null)
 {
-    $delegates = delegatesForRound(false, $round);
+    $validators = validatorsForRound(false, $round);
 
-    foreach (Wallet::all() as $delegate) {
-        createRoundEntry($round, $delegate->public_key);
+    foreach (Wallet::all() as $validator) {
+        createRoundEntry($round, $validator->public_key);
     }
 
     $blockCount = 0;
     while ($blockCount < 51) {
-        foreach ($delegates as $delegate) {
-            $delegateIndex = $delegateWallets->search(fn ($wallet) => $wallet->public_key === $delegate['publicKey']);
-            if ($didForge && isset($didForge[$delegateIndex]) && ! $didForge[$delegateIndex]) {
+        foreach ($validators as $validator) {
+            $validatorIndex = $validatorWallets->search(fn ($wallet) => $wallet->public_key === $validator['publicKey']);
+            if ($didForge && isset($didForge[$validatorIndex]) && ! $didForge[$validatorIndex]) {
                 $context->travel(8)->seconds();
 
                 continue;
             }
 
-            createBlock($height + $blockCount, $delegate['publicKey']);
+            createBlock($height + $blockCount, $validator['publicKey']);
 
             $context->travel(8)->seconds();
 
@@ -268,16 +268,16 @@ function createFullRound(&$round, &$height, $delegateWallets, $context, $didForg
 
 function createPartialRound(int &$round, int &$height, int $blocks, $context, string $missedPublicKey = null, string $requiredPublicKey = null)
 {
-    $delegates = delegatesForRound(false, $round);
+    $validators = validatorsForRound(false, $round);
 
-    foreach (Wallet::all() as $delegate) {
-        createRoundEntry($round, $delegate->public_key);
+    foreach (Wallet::all() as $validator) {
+        createRoundEntry($round, $validator->public_key);
     }
 
     if ($missedPublicKey) {
         $hasPublicKey = false;
-        foreach ($delegates as $delegate) {
-            if ($delegate['publicKey'] !== $missedPublicKey) {
+        foreach ($validators as $validator) {
+            if ($validator['publicKey'] !== $missedPublicKey) {
                 continue;
             }
 
@@ -287,14 +287,14 @@ function createPartialRound(int &$round, int &$height, int $blocks, $context, st
         }
 
         if (! $hasPublicKey) {
-            throw new \Exception('Missed Public Key is not in list of delegates');
+            throw new \Exception('Missed Public Key is not in list of validators');
         }
     }
 
     $requiredIndex = null;
     if ($requiredPublicKey) {
-        foreach ($delegates as $index => $delegate) {
-            if ($delegate['publicKey'] !== $requiredPublicKey) {
+        foreach ($validators as $index => $validator) {
+            if ($validator['publicKey'] !== $requiredPublicKey) {
                 continue;
             }
 
@@ -312,18 +312,18 @@ function createPartialRound(int &$round, int &$height, int $blocks, $context, st
 
     $blockCount = 0;
     while ($blockCount < 51) {
-        foreach ($delegates as $delegate) {
+        foreach ($validators as $validator) {
             if ($blockCount === $blocks) {
                 break 2;
             }
 
-            if ($missedPublicKey && $delegate['publicKey'] === $missedPublicKey) {
+            if ($missedPublicKey && $validator['publicKey'] === $missedPublicKey) {
                 $context->travel(8)->seconds();
 
                 continue;
             }
 
-            createBlock($height + $blockCount, $delegate['publicKey']);
+            createBlock($height + $blockCount, $validator['publicKey']);
 
             $context->travel(8)->seconds();
 
@@ -339,18 +339,18 @@ function createPartialRound(int &$round, int &$height, int $blocks, $context, st
 
     (new NetworkCache())->setHeight(fn (): int => $height - 1);
 
-    (new CacheDelegatePerformance())->handle();
+    (new CacheValidatorPerformance())->handle();
 }
 
-function delegatesForRound(bool $withBlock = true, int $roundNumber = null): SupportCollection
+function validatorsForRound(bool $withBlock = true, int $roundNumber = null): SupportCollection
 {
-    $delegates = null;
+    $validators = null;
     if ($roundNumber) {
-        $delegates = Rounds::allByRound($roundNumber);
+        $validators = Rounds::byRound($roundNumber);
     }
 
-    if (! $delegates || $delegates->count() === 0) {
-        $delegates = Round::query()
+    if (! $validators || $validators->count() === 0) {
+        $validators = Round::query()
             ->orderBy('round')
             ->orderBy('balance', 'desc')
             ->orderBy('public_key', 'asc')
@@ -358,20 +358,20 @@ function delegatesForRound(bool $withBlock = true, int $roundNumber = null): Sup
             ->get();
     }
 
-    if ($delegates->count() === 0) {
-        $delegates = Wallet::all();
+    if ($validators->count() === 0) {
+        $validators = Wallet::all();
     }
 
-    expect($delegates->count())->toBe(51);
+    expect($validators->count())->toBe(51);
 
     $roundNumber = $roundNumber ?: Rounds::current();
     $heightRange = Monitor::heightRangeByRound($roundNumber);
 
     try {
-        $delegates = new SupportCollection(DelegateTracker::execute($delegates, $heightRange[0]));
+        $validators = new SupportCollection(ValidatorTracker::execute($validators, $heightRange[0]));
     } catch (\Throwable) {
-        $delegates = $delegates->map(fn ($delegate) => [
-            'publicKey' => $delegate->public_key,
+        $validators = $validators->map(fn ($validator) => [
+            'publicKey' => $validator->public_key,
             'status'    => 'initial',
         ]);
     }
@@ -379,12 +379,12 @@ function delegatesForRound(bool $withBlock = true, int $roundNumber = null): Sup
     if ($withBlock) {
         $blocks = Block::whereBetween('height', $heightRange)->get()->keyBy('generator_public_key');
 
-        $delegates = $delegates->map(fn ($delegate) => [
-            ...$delegate,
+        $validators = $validators->map(fn ($validator) => [
+            ...$validator,
 
-            'block' => $blocks->get($delegate['publicKey'] ?? $delegate['public_key']),
+            'block' => $blocks->get($validator['publicKey'] ?? $validator['public_key']),
         ]);
     }
 
-    return $delegates;
+    return $validators;
 }

@@ -811,7 +811,7 @@ it('should return null for blocks since last forged if not forged', function () 
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'producedBlocks' => 54321,
             ],
         ],
@@ -825,7 +825,7 @@ it('should return count for blocks since last forged', function () {
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'producedBlocks' => 54321,
             ],
         ],
@@ -856,7 +856,7 @@ it('should return null for time since last forged if not forged', function () {
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'producedBlocks' => 54321,
             ],
         ],
@@ -870,7 +870,7 @@ it('should return count for time since last forged', function () {
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'producedBlocks' => 54321,
             ],
         ],

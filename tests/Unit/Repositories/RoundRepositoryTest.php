@@ -20,7 +20,7 @@ beforeEach(function () {
 });
 
 it('should get all validators for the given round', function () {
-    expect($this->subject->allByRound(112168))->toHaveCount(51);
+    expect($this->subject->byRound(112168))->toHaveCount(51);
 });
 
 it('should get the current round', function () {
@@ -30,26 +30,26 @@ it('should get the current round', function () {
 it('should get the slot data for the current round', function () {
     Block::factory()->create(['height' => 5720518]);
 
-    $delegates = $this->subject->delegates();
+    $validators = $this->subject->validators();
 
-    expect($delegates)->toHaveCount(51);
+    expect($validators)->toHaveCount(51);
     expect(Rounds::current())->toBe(112168);
 
-    $wallet = $delegates->first();
+    $wallet = $validators->first();
 
-    expect($delegates->firstWhere(fn ($delegate) => $delegate['publicKey'] === $wallet['publicKey'])['block'])->toBeNull();
+    expect($validators->firstWhere(fn ($validator) => $validator['publicKey'] === $wallet['publicKey'])['block'])->toBeNull();
 
     Block::factory()->create([
         'height'               => 5720519,
         'generator_public_key' => $wallet['publicKey'],
     ]);
 
-    $delegates = $this->subject->delegates();
+    $validators = $this->subject->validators();
 
-    expect($delegates)->toHaveCount(51);
+    expect($validators)->toHaveCount(51);
     expect(Rounds::current())->toBe(112168);
 
-    $wallet = $delegates->first();
+    $wallet = $validators->first();
 
-    expect($delegates->firstWhere(fn ($delegate) => $delegate['publicKey'] === $wallet['publicKey'])['block'])->not->toBeNull();
+    expect($validators->firstWhere(fn ($validator) => $validator['publicKey'] === $wallet['publicKey'])['block'])->not->toBeNull();
 });

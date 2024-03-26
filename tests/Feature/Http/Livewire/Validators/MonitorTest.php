@@ -219,7 +219,7 @@ it('should correctly show the block is missed', function () {
     });
 
     // Store validator record for each Round object
-    $wallets = Rounds::allByRound(1)->map(fn ($round) => $round->validator);
+    $wallets = Rounds::byRound(1)->map(fn ($round) => $round->validator);
 
     // Make methods public for fetching forging order
     $activeValidatorsMethod  = new ReflectionMethod(ValidatorTracker::class, 'getActiveValidators');
@@ -317,12 +317,12 @@ it('should correctly show the block is missed', function () {
         ->assertSeeInOrder($outputData);
 });
 
-it('should show warning icon for delegates missing blocks - minutes', function () {
+it('should show warning icon for validators missing blocks - minutes', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
     $this->freezeTime();
 
-    [0 => $delegates] = createRealisticRound([
+    [0 => $validators] = createRealisticRound([
         [
             ...array_fill(0, 4, true),
             false,
@@ -340,25 +340,25 @@ it('should show warning icon for delegates missing blocks - minutes', function (
         ],
     ], $this);
 
-    $delegate = (new WalletViewModel($delegates->get(4)));
+    $validator = (new WalletViewModel($validators->get(4)));
 
-    expect($delegate->performance())->toBe([false, false]);
+    expect($validator->performance())->toBe([false, false]);
 
     Livewire::test(Monitor::class)
         ->call('setIsReady')
-        ->call('pollDelegates')
+        ->call('pollValidators')
         ->assertSeeInOrder([
-            $delegate->username(),
-            'Delegate last forged 199 blocks ago (~ 21 min)',
+            $validator->username(),
+            'Validator last forged 199 blocks ago (~ 21 min)',
         ]);
 });
 
-it('should show warning icon for delegates missing blocks - hours', function () {
+it('should show warning icon for validators missing blocks - hours', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
     $this->freezeTime();
 
-    [0 => $delegates] = createRealisticRound([
+    [0 => $validators] = createRealisticRound([
         [
             ...array_fill(0, 4, true),
             false,
@@ -378,25 +378,25 @@ it('should show warning icon for delegates missing blocks - hours', function () 
 
     $this->travelTo(Carbon::parse('2024-02-01 15:00:00Z'));
 
-    $delegate = (new WalletViewModel($delegates->get(4)));
+    $validator = (new WalletViewModel($validators->get(4)));
 
-    expect($delegate->performance())->toBe([false, false]);
+    expect($validator->performance())->toBe([false, false]);
 
     Livewire::test(Monitor::class)
         ->call('setIsReady')
-        ->call('pollDelegates')
+        ->call('pollValidators')
         ->assertSeeInOrder([
-            $delegate->username(),
-            'Delegate last forged 199 blocks ago (~ 1h 28 min)',
+            $validator->username(),
+            'Validator last forged 199 blocks ago (~ 1h 28 min)',
         ]);
 });
 
-it('should show warning icon for delegates missing blocks - days', function () {
+it('should show warning icon for validators missing blocks - days', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
     $this->freezeTime();
 
-    [0 => $delegates] = createRealisticRound([
+    [0 => $validators] = createRealisticRound([
         [
             ...array_fill(0, 4, true),
             false,
@@ -416,15 +416,15 @@ it('should show warning icon for delegates missing blocks - days', function () {
 
     $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
 
-    $delegate = (new WalletViewModel($delegates->get(4)));
+    $validator = (new WalletViewModel($validators->get(4)));
 
-    expect($delegate->performance())->toBe([false, false]);
+    expect($validator->performance())->toBe([false, false]);
 
     Livewire::test(Monitor::class)
         ->call('setIsReady')
-        ->call('pollDelegates')
+        ->call('pollValidators')
         ->assertSeeInOrder([
-            $delegate->username(),
-            'Delegate last forged 199 blocks ago (more than a day)',
+            $validator->username(),
+            'Validator last forged 199 blocks ago (more than a day)',
         ]);
 });

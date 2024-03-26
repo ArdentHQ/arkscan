@@ -13,5 +13,5 @@ interface RoundRepository
 
     public function byRound(int $round): Round;
 
-    public function delegates(bool $withBlock = true): SupportCollection;
+    public function validators(bool $withBlock = true): SupportCollection;
 }

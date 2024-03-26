@@ -158,7 +158,7 @@ trait CanForge
 
     public function currentSlot(): array
     {
-        return Rounds::delegates()->firstWhere('publicKey', $this->publicKey());
+        return Rounds::validators()->firstWhere('publicKey', $this->publicKey());
     }
 
     private function lastBlock(): ?array
