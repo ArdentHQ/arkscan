@@ -3,9 +3,9 @@
         'transactions' => trans('pages.wallet.transactions'),
     ];
 
-    if ($wallet->isDelegate()) {
-        $items['blocks'] = trans('pages.wallet.delegate.validated_blocks');
-        $items['voters'] = trans('pages.wallet.delegate.voters');
+    if ($wallet->isValidator()) {
+        $items['blocks'] = trans('pages.wallet.validator.validated_blocks');
+        $items['voters'] = trans('pages.wallet.validator.voters');
     }
 @endphp
 
@@ -21,7 +21,7 @@
     <div id="wallet-table-list">
         <x-wallet.tables.transactions :wallet="$wallet" />
 
-        @if($wallet->isDelegate())
+        @if($wallet->isValidator())
             <x-wallet.tables.voters :wallet="$wallet" x-cloak />
 
             <x-wallet.tables.blocks :wallet="$wallet" x-cloak />

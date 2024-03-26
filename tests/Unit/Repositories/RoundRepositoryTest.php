@@ -19,7 +19,7 @@ beforeEach(function () {
     });
 });
 
-it('should get all delegates for the given round', function () {
+it('should get all validators for the given round', function () {
     expect($this->subject->allByRound(112168))->toHaveCount(51);
 });
 

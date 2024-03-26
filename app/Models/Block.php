@@ -74,7 +74,7 @@ final class Block extends Model
         // for the search results.
         return [
             'id'     => $this->id,
-            // used to get the delegate
+            // used to get the validator
             'generator_public_key' => $this->generator_public_key,
             // shown on the results
             'number_of_transactions' => $this->number_of_transactions,
@@ -128,11 +128,11 @@ final class Block extends Model
     }
 
     /**
-     * A block belongs to a delegate.
+     * A block belongs to a validator.
      *
      * @return BelongsTo
      */
-    public function delegate(): BelongsTo
+    public function validator(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'generator_public_key', 'public_key');
     }

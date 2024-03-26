@@ -12,8 +12,8 @@ final class Forms
     protected static array $transactionOptionsValues = [
         'all',
         'transfer',
-        'delegateRegistration',
-        'delegateResignation',
+        'validatorRegistration',
+        'validatorResignation',
         'vote',
         'voteCombination',
         'multiSignature',

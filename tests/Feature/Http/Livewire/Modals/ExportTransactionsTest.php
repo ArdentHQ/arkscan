@@ -41,7 +41,7 @@ it('should close modal', function () {
 });
 
 it('should not be enabled if not ready', function () {
-    $wallet = new WalletViewModel(Wallet::factory()->activeDelegate()->create());
+    $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Transaction::factory()->create([
         'sender_public_key' => $wallet->publicKey(),
@@ -52,7 +52,7 @@ it('should not be enabled if not ready', function () {
         ->call('setIsReady')
         ->assertSet('hasTransactions', true);
 
-    $wallet = new WalletViewModel(Wallet::factory()->activeDelegate()->create());
+    $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Transaction::factory()->create([
         'recipient_id' => $wallet->address(),
@@ -65,7 +65,7 @@ it('should not be enabled if not ready', function () {
 });
 
 it('should not be enabled if no transactions', function () {
-    $wallet = new WalletViewModel(Wallet::factory()->activeDelegate()->create());
+    $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Livewire::test(ExportTransactions::class, [$wallet])
         ->assertSet('hasTransactions', false)

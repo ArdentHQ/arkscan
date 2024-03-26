@@ -59,10 +59,10 @@ final class TransactionFactory extends Factory
         ]);
     }
 
-    public function delegateRegistration(): Factory
+    public function validatorRegistration(): Factory
     {
         return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::DELEGATE_REGISTRATION,
+            'type'       => CoreTransactionTypeEnum::VALIDATOR_REGISTRATION,
             'type_group' => TransactionTypeGroupEnum::CORE,
             'asset'      => [],
         ]);
@@ -121,10 +121,10 @@ final class TransactionFactory extends Factory
         ]);
     }
 
-    public function delegateResignation(): Factory
+    public function validatorResignation(): Factory
     {
         return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::DELEGATE_RESIGNATION,
+            'type'       => CoreTransactionTypeEnum::VALIDATOR_RESIGNATION,
             'type_group' => TransactionTypeGroupEnum::CORE,
             'asset'      => [],
         ]);
@@ -377,39 +377,39 @@ final class TransactionFactory extends Factory
         ]);
     }
 
-    public function delegateEntityRegistration(): Factory
+    public function validatorEntityRegistration(): Factory
     {
         return $this->state(fn () => [
             'type'       => MagistrateTransactionTypeEnum::ENTITY,
             'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
             'asset'      => [
-                'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
+                'type'    => MagistrateTransactionEntityTypeEnum::VALIDATOR,
                 'subtype' => MagistrateTransactionEntitySubTypeEnum::NONE,
                 'action'  => MagistrateTransactionEntityActionEnum::REGISTER,
             ],
         ]);
     }
 
-    public function delegateEntityResignation(): Factory
+    public function validatorEntityResignation(): Factory
     {
         return $this->state(fn () => [
             'type'       => MagistrateTransactionTypeEnum::ENTITY,
             'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
             'asset'      => [
-                'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
+                'type'    => MagistrateTransactionEntityTypeEnum::VALIDATOR,
                 'subtype' => MagistrateTransactionEntitySubTypeEnum::NONE,
                 'action'  => MagistrateTransactionEntityActionEnum::RESIGN,
             ],
         ]);
     }
 
-    public function delegateEntityUpdate(): Factory
+    public function validatorEntityUpdate(): Factory
     {
         return $this->state(fn () => [
             'type'       => MagistrateTransactionTypeEnum::ENTITY,
             'type_group' => TransactionTypeGroupEnum::MAGISTRATE,
             'asset'      => [
-                'type'    => MagistrateTransactionEntityTypeEnum::DELEGATE,
+                'type'    => MagistrateTransactionEntityTypeEnum::VALIDATOR,
                 'subtype' => MagistrateTransactionEntitySubTypeEnum::NONE,
                 'action'  => MagistrateTransactionEntityActionEnum::UPDATE,
             ],

@@ -21,8 +21,8 @@ it('should determine the type', function (string $type, string $expected) {
         'second-signature',
     ],
     [
-        'delegateRegistration',
-        'delegate-registration',
+        'validatorRegistration',
+        'validator-registration',
     ],
     [
         'vote',
@@ -45,8 +45,8 @@ it('should determine the type', function (string $type, string $expected) {
         'ipfs',
     ],
     [
-        'delegateResignation',
-        'delegate-resignation',
+        'validatorResignation',
+        'validator-resignation',
     ],
     [
         'multiPayment',
@@ -113,16 +113,16 @@ it('should determine the type', function (string $type, string $expected) {
         'module-entity-update',
     ],
     [
-        'delegateEntityRegistration',
-        'delegate-entity-registration',
+        'validatorEntityRegistration',
+        'validator-entity-registration',
     ],
     [
-        'delegateEntityResignation',
-        'delegate-entity-resignation',
+        'validatorEntityResignation',
+        'validator-entity-resignation',
     ],
     [
-        'delegateEntityUpdate',
-        'delegate-entity-update',
+        'validatorEntityUpdate',
+        'validator-entity-update',
     ],
     [
         'legacyBusinessRegistration',
@@ -169,13 +169,13 @@ it('should play through every scenario of an unknown type', function (string $ty
 })->with([
     ['transfer'],
     ['secondSignature'],
-    ['delegateRegistration'],
+    ['validatorRegistration'],
     ['vote'],
     ['unvote'],
     ['voteCombination'],
     ['multiSignature'],
     ['ipfs'],
-    ['delegateResignation'],
+    ['validatorResignation'],
     ['multiPayment'],
     ['timelock'],
     ['timelockClaim'],
@@ -192,9 +192,9 @@ it('should play through every scenario of an unknown type', function (string $ty
     ['moduleEntityRegistration'],
     ['moduleEntityResignation'],
     ['moduleEntityUpdate'],
-    ['delegateEntityRegistration'],
-    ['delegateEntityResignation'],
-    ['delegateEntityUpdate'],
+    ['validatorEntityRegistration'],
+    ['validatorEntityResignation'],
+    ['validatorEntityUpdate'],
     ['legacyBusinessRegistration'],
     ['legacyBusinessResignation'],
     ['legacyBusinessUpdate'],

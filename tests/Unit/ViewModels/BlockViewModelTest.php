@@ -140,16 +140,16 @@ it('should get the total reward as fiat', function () {
     expect($this->subject->totalRewardFiat())->toBeString();
 });
 
-it('should get the delegate', function () {
-    expect($this->subject->delegate())->toBeInstanceOf(MemoryWallet::class);
+it('should get the validator', function () {
+    expect($this->subject->validator())->toBeInstanceOf(MemoryWallet::class);
 });
 
-it('should get the delegate username', function () {
+it('should get the validator username', function () {
     expect($this->subject->username())->toBeString();
     expect($this->subject->username())->toBe('Genesis');
 });
 
-it('should fail to get the delegate username', function () {
+it('should fail to get the validator username', function () {
     $this->subject = new BlockViewModel(Block::factory()->create([
         'generator_public_key' => Wallet::factory()->create([
             'attributes' => [],

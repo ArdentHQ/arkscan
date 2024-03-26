@@ -31,7 +31,7 @@ interface Network
 
     public function epoch(): Carbon;
 
-    public function delegateCount(): int;
+    public function validatorCount(): int;
 
     public function blockTime(): int;
 

@@ -115,7 +115,7 @@ it('should toggle "select all" when all filters are selected', function () {
 it('should filter by transfer transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $wallet = Wallet::factory()->activeDelegate()->create();
+    $wallet = Wallet::factory()->activeValidator()->create();
     $vote   = Transaction::factory()->vote()->create([
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
@@ -138,7 +138,7 @@ it('should filter by transfer transactions', function () {
 it('should filter by vote transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $wallet = Wallet::factory()->activeDelegate()->create();
+    $wallet = Wallet::factory()->activeValidator()->create();
     $vote   = Transaction::factory()->vote()->create([
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
@@ -182,7 +182,7 @@ it('should filter by multipayment transactions', function () {
 it('should filter by other transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $delegateRegistration = Transaction::factory()->delegateRegistration()->create();
+    $validatorRegistration = Transaction::factory()->validatorRegistration()->create();
 
     $entityRegistration = Transaction::factory()->entityRegistration()->create();
 
@@ -194,7 +194,7 @@ it('should filter by other transactions', function () {
             'multipayments' => false,
             'others'        => true,
         ])
-        ->assertSee($delegateRegistration->id)
+        ->assertSee($validatorRegistration->id)
         ->assertSee($entityRegistration->id)
         ->assertDontSee($transfer->id);
 });
@@ -202,7 +202,7 @@ it('should filter by other transactions', function () {
 it('should show no transactions if no type filter', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $delegateRegistration = Transaction::factory()->delegateRegistration()->create();
+    $validatorRegistration = Transaction::factory()->validatorRegistration()->create();
 
     $entityRegistration = Transaction::factory()->entityRegistration()->create();
 
@@ -215,7 +215,7 @@ it('should show no transactions if no type filter', function () {
             'others'        => false,
         ])
         ->assertDontSee($transfer->id)
-        ->assertDontSee($delegateRegistration->id)
+        ->assertDontSee($validatorRegistration->id)
         ->assertDontSee($entityRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_filters'));
 });

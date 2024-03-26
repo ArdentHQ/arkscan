@@ -84,14 +84,14 @@ final class NetworkCache implements Contract
         $this->put('votes_percentage', $value);
     }
 
-    public function getDelegateRegistrationCount(): int
+    public function getValidatorRegistrationCount(): int
     {
-        return (int) $this->get('delegate_registration_count');
+        return (int) $this->get('validator_registration_count');
     }
 
-    public function setDelegateRegistrationCount(int $value): void
+    public function setValidatorRegistrationCount(int $value): void
     {
-        $this->put('delegate_registration_count', $value);
+        $this->put('validator_registration_count', $value);
     }
 
     public function getFeesCollected(): float

@@ -44,13 +44,13 @@ return [
 
     'wallet' => [
         'blocks' => [
-            'no_results' => 'This delegate has not yet validated a block.',
+            'no_results' => 'This validator has not yet validated a block.',
         ],
     ],
 
     'wallets' => [
         'balance_currency' => 'Balance (:currency)',
-        'no_results'       => 'This delegate does not currently have any voters.',
+        'no_results'       => 'This validator does not currently have any voters.',
     ],
 
     'exchanges' => [
@@ -62,16 +62,16 @@ return [
         'volume_currency' => 'Volume (:currency)',
     ],
 
-    'delegates' => [
-        'rank'          => 'Rank',
-        'delegate'      => 'Delegate',
-        'status'        => 'Status',
-        'no_of_voters'  => '# of Voters',
-        'votes'         => 'Votes (:currency)',
-        'percentage'    => 'Percentage',
-        'missed_blocks' => 'Missed Blocks (30d)',
+    'validators' => [
+        'rank'           => 'Rank',
+        'validator'      => 'Validator',
+        'status'         => 'Status',
+        'no_of_voters'   => '# of Voters',
+        'votes'          => 'Votes (:currency)',
+        'percentage'     => 'Percentage',
+        'missed_blocks'  => 'Missed Blocks (30d)',
 
-        'delegate_per_page_options' => [
+        'validator_per_page_options' => [
             10,
             25,
             53,
@@ -84,22 +84,22 @@ return [
 
         'no_results' => [
             'no_filters' => 'All filtering options have been deselected. Please select one or more options to display transactions.',
-            'no_results' => 'No delegates matching the selected types could be found.',
+            'no_results' => 'No validators matching the selected types could be found.',
         ],
     ],
 
-    'delegate-monitor' => [
-        'order'                => 'Order',
-        'delegate'             => 'Delegate',
-        'status'               => 'Status',
-        'time_to_forge'        => 'Time to Forge',
-        'status_time_to_forge' => 'Status / Time to Forge',
-        'block_height'         => 'Block Height',
-        'completed'            => 'Completed',
-        'missed'               => 'Missed',
-        'tbd'                  => 'TBD',
-        'favorite'             => 'Favorite',
-        'my_favorites'         => 'My Favorites',
+    'validator-monitor' => [
+        'order'                 => 'Order',
+        'validator'             => 'Validator',
+        'status'                => 'Status',
+        'time_to_forge'         => 'Time to Forge',
+        'status_time_to_forge'  => 'Status / Time to Forge',
+        'block_height'          => 'Block Height',
+        'completed'             => 'Completed',
+        'missed'                => 'Missed',
+        'tbd'                   => 'TBD',
+        'favorite'              => 'Favorite',
+        'my_favorites'          => 'My Favorites',
 
         'forging-status' => [
             'block_generated' => 'Block Generated',
@@ -110,13 +110,13 @@ return [
     ],
 
     'missed-blocks' => [
-        'height'        => 'Block Height',
-        'age'           => 'Age',
-        'delegate'      => 'Delegate',
-        'no_of_voters'  => '# of Voters',
-        'votes'         => 'Votes (:currency)',
-        'percentage'    => 'Percentage',
-        'addressing'    => 'Addressing',
+        'height'         => 'Block Height',
+        'age'            => 'Age',
+        'validator'      => 'Validator',
+        'no_of_voters'   => '# of Voters',
+        'votes'          => 'Votes (:currency)',
+        'percentage'     => 'Percentage',
+        'addressing'     => 'Addressing',
 
         'info' => [
             'percentage' => 'Percentage of votes in relation to the total supply.',
@@ -126,12 +126,12 @@ return [
     ],
 
     'recent-votes' => [
-        'id'         => 'Tx ID',
-        'age'        => 'Age',
-        'type'       => 'Type',
-        'addressing' => 'Addressing',
-        'from'       => 'From',
-        'delegate'   => 'Delegate',
+        'id'          => 'Tx ID',
+        'age'         => 'Age',
+        'type'        => 'Type',
+        'addressing'  => 'Addressing',
+        'from'        => 'From',
+        'validator'   => 'Validator',
 
         'no_results' => [
             'no_filters' => 'All filtering options have been deselected. Please select one or more options to display recent votes.',
@@ -154,7 +154,7 @@ return [
             'others'        => 'Others',
         ],
 
-        'delegates' => [
+        'validators' => [
             'select_all' => 'Select All',
             'active'     => 'Active',
             'standby'    => 'Standby',

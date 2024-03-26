@@ -30,7 +30,7 @@ trait InteractsWithTypeData
      */
     public function hasAmount(): bool
     {
-        if ($this->isDelegateRegistration()) {
+        if ($this->isValidatorRegistration()) {
             return false;
         }
 
@@ -67,7 +67,7 @@ trait InteractsWithTypeData
 
     public function isRegistration(): bool
     {
-        if ($this->isDelegateRegistration()) {
+        if ($this->isValidatorRegistration()) {
             return true;
         }
 

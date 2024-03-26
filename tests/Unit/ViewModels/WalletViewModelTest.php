@@ -9,8 +9,8 @@ use App\Models\Round;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkFactory;
-use App\Services\Cache\DelegateCache;
 use App\Services\Cache\NetworkCache;
+use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Timestamp;
 use App\ViewModels\WalletViewModel;
@@ -28,7 +28,7 @@ beforeEach(function () {
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'voteBalance' => '100000000000',
             ],
         ],
@@ -89,8 +89,8 @@ it('should get the votes as percentage from supply', function () {
 });
 
 it('should sum up the total forged', function () {
-    (new DelegateCache())->setTotalFees(fn () => [$this->subject->publicKey() => '1000000000']);
-    (new DelegateCache())->setTotalRewards(fn () => [$this->subject->publicKey() => '1000000000']);
+    (new ValidatorCache())->setTotalFees(fn () => [$this->subject->publicKey() => '1000000000']);
+    (new ValidatorCache())->setTotalRewards(fn () => [$this->subject->publicKey() => '1000000000']);
 
     expect($this->subject->totalForged())->toBeFloat();
 
@@ -98,7 +98,7 @@ it('should sum up the total forged', function () {
 });
 
 it('should sum up the amount forged', function () {
-    (new DelegateCache())->setTotalAmounts(fn () => [$this->subject->publicKey() => '1000000000']);
+    (new ValidatorCache())->setTotalAmounts(fn () => [$this->subject->publicKey() => '1000000000']);
 
     expect($this->subject->amountForged())->toBeInt();
 
@@ -106,7 +106,7 @@ it('should sum up the amount forged', function () {
 });
 
 it('should sum up the fees forged', function () {
-    (new DelegateCache())->setTotalFees(fn () => [$this->subject->publicKey() => '800000000']);
+    (new ValidatorCache())->setTotalFees(fn () => [$this->subject->publicKey() => '800000000']);
 
     expect($this->subject->feesForged())->toBeInt();
 
@@ -114,7 +114,7 @@ it('should sum up the fees forged', function () {
 });
 
 it('should sum up the rewards forged', function () {
-    (new DelegateCache())->setTotalRewards(fn () => [$this->subject->publicKey() => '200000000']);
+    (new ValidatorCache())->setTotalRewards(fn () => [$this->subject->publicKey() => '200000000']);
 
     expect($this->subject->rewardsForged())->toBeInt();
 
@@ -161,7 +161,7 @@ it('should determine if the wallet has a special type when known', function () {
     fakeKnownWallets();
 
     $subject = new WalletViewModel(Wallet::factory()
-        ->activeDelegate()
+        ->activeValidator()
         ->create(['address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67']));
 
     expect($subject->isKnown())->toBeTrue();
@@ -171,7 +171,7 @@ it('should determine if the wallet has a special type when known', function () {
     expect($subject->hasSpecialType())->toBeTrue();
 
     $subject = new WalletViewModel(Wallet::factory()
-        ->activeDelegate()
+        ->activeValidator()
         ->create(['address' => 'unknown']));
 
     expect($subject->hasSpecialType())->toBeFalse();
@@ -190,7 +190,7 @@ it('should determine if the wallet has a special type if multisignature', functi
     expect($subject->hasSpecialType())->toBeTrue();
 
     $subject = new WalletViewModel(Wallet::factory()
-        ->activeDelegate()
+        ->activeValidator()
         ->create(['address' => 'unknown']));
 
     expect($subject->hasSpecialType())->toBeFalse();
@@ -207,7 +207,7 @@ it('should determine if the wallet has a special type if second signature', func
     expect($subject->hasSpecialType())->toBeTrue();
 
     $subject = new WalletViewModel(Wallet::factory()
-        ->activeDelegate()
+        ->activeValidator()
         ->create(['address' => 'unknown']));
 
     expect($subject->hasSpecialType())->toBeFalse();
@@ -223,28 +223,28 @@ it('should determine if the wallet has a special type if exchange', function () 
     expect($subject->hasSpecialType())->toBeTrue();
 
     $subject = new WalletViewModel(Wallet::factory()
-        ->activeDelegate()
+        ->activeValidator()
         ->create(['address' => 'unknown']));
 
     expect($subject->hasSpecialType())->toBeFalse();
 });
 
-it('should determine if the wallet is a delegate', function () {
+it('should determine if the wallet is a validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [],
     ]));
 
-    expect($this->subject->isDelegate())->toBeFalse();
+    expect($this->subject->isValidator())->toBeFalse();
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'username' => 'John',
             ],
         ],
     ]));
 
-    expect($this->subject->isDelegate())->toBeTrue();
+    expect($this->subject->isValidator())->toBeTrue();
 });
 
 it('should determine if the wallet is voting', function () {
@@ -301,14 +301,14 @@ it('should fail to get the wallet of the vote if it is not cached', function () 
     expect($this->subject->vote())->toBeNull();
 });
 
-it('should get the performance if the wallet is a delegate', function () {
+it('should get the performance if the wallet is a validator', function () {
     Rounds::swap(new RoundsMock());
 
     $wallet = Wallet::factory()->create([
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
-            'delegate' => [],
+            'validator' => [],
         ],
     ]);
 
@@ -319,7 +319,7 @@ it('should get the performance if the wallet is a delegate', function () {
     expect($this->subject->performance())->toBeArray();
 });
 
-it('should fail to get the performance if the wallet is not a delegate', function () {
+it('should fail to get the performance if the wallet is not a validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'balance'      => '100000000000',
         'nonce'        => 1000,
@@ -338,7 +338,7 @@ it('should fail to get the performance if the wallet has no public key', functio
     expect($this->subject->performance())->toBeEmpty();
 });
 
-it('should determine if a new delegate has forged', function () {
+it('should determine if a new validator has forged', function () {
     $block = Block::factory()->create([
         'generator_public_key' => $this->wallet->public_key,
     ]);
@@ -366,7 +366,7 @@ it('should determine if a new delegate has forged', function () {
     expect($this->subject->hasForged())->toBeFalse();
 });
 
-it('should determine if the delegate just missed a block', function () {
+it('should determine if the validator just missed a block', function () {
     $block = Block::factory()->create([
         'generator_public_key' => $this->wallet->public_key,
     ]);
@@ -392,7 +392,7 @@ it('should determine if the delegate just missed a block', function () {
     expect($this->subject->justMissed())->toBeTrue();
 });
 
-it('should determine if the delegate is missing blocks', function () {
+it('should determine if the validator is missing blocks', function () {
     Rounds::swap(new RoundsMock());
 
     Round::factory()->create([
@@ -414,13 +414,13 @@ it('should get the resignation id', function () {
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'resigned' => true,
             ],
         ],
     ]));
 
-    $transaction = Transaction::factory()->delegateResignation()->create([
+    $transaction = Transaction::factory()->validatorResignation()->create([
         'sender_public_key' => $this->subject->publicKey(),
     ]);
 
@@ -429,12 +429,12 @@ it('should get the resignation id', function () {
     expect($this->subject->resignationId())->toBeString();
 });
 
-it('should fail to get the resignation id if the delegate is not resigned', function () {
+it('should fail to get the resignation id if the validator is not resigned', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
-            'delegate' => [],
+            'validator' => [],
         ],
     ]));
 
@@ -454,7 +454,7 @@ it('should get the vote weight as percentage', function () {
 
     $vote = Wallet::factory()->create([
         'attributes' => [
-            'delegate' => ['voteBalance' => 10e8],
+            'validator' => ['voteBalance' => 10e8],
         ],
     ]);
 
@@ -476,7 +476,7 @@ it('should handle vote weight percentage with 0 vote balance', function () {
 
     $vote = Wallet::factory()->create([
         'attributes' => [
-            'delegate' => ['voteBalance' => 0],
+            'validator' => ['voteBalance' => 0],
         ],
     ]);
 
@@ -497,7 +497,7 @@ it('should handle vote weight percentage with 1 arktoshi vote balance', function
 
     $vote = Wallet::factory()->create([
         'attributes' => [
-            'delegate' => ['voteBalance' => 1e8],
+            'validator' => ['voteBalance' => 1e8],
         ],
     ]);
 
@@ -522,11 +522,11 @@ it('should fail to get the vote weight as percentage if the wallet has no public
     expect($this->subject->votePercentage())->toBeNull();
 });
 
-it('should fail to get the productivity if the wallet is a delegate', function () {
+it('should fail to get the productivity if the wallet is a validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'balance'    => 1e8,
         'attributes' => [
-            'delegate' => [],
+            'validator' => [],
         ],
     ]));
 
@@ -539,7 +539,7 @@ it('should fail to get the productivity if the wallet is a delegate', function (
     expect($this->subject->productivity())->toBe(10.0);
 });
 
-it('should fail to get the productivity if the wallet is not a delegate', function () {
+it('should fail to get the productivity if the wallet is not a validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [],
     ]));
@@ -600,12 +600,12 @@ it('should get the username if the wallet is known', function () {
     expect($this->subject->username())->toBe('ACF Hot Wallet');
 });
 
-it('should get the username if the wallet is a delegate', function () {
+it('should get the username if the wallet is a validator', function () {
     fakeKnownWallets();
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'username' => 'John',
             ],
         ],
@@ -622,29 +622,29 @@ it('should determine if the wallet has a multi signature', function () {
     expect($this->subject->hasMultiSignature())->toBeBool();
 });
 
-it('should get the delegate user name', function () {
+it('should get the validator user name', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'username' => 'john',
             ],
         ],
     ]));
 
-    expect($this->subject->delegateUsername())->toBe('john');
+    expect($this->subject->validatorUsername())->toBe('john');
 });
 
 it('should get the vote url with public key', function () {
     expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?coin=ARK&nethash=');
     expect($this->subject->voteUrl())->toContain('&method=vote');
     expect($this->subject->voteUrl())->toContain('&publicKey=');
-    expect($this->subject->voteUrl())->not->toContain('&delegate=');
+    expect($this->subject->voteUrl())->not->toContain('&validator=');
 });
 
-it('should get the vote url with delegate', function () {
+it('should get the vote url with validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'username' => 'john',
             ],
         ],
@@ -653,13 +653,13 @@ it('should get the vote url with delegate', function () {
     expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?coin=ARK&nethash=');
     expect($this->subject->voteUrl())->toContain('&method=vote');
     expect($this->subject->voteUrl())->not->toContain('&publicKey=');
-    expect($this->subject->voteUrl())->toContain('&delegate=john');
+    expect($this->subject->voteUrl())->toContain('&validator=john');
 });
 
-it('should get whether delegate is standby', function () {
+it('should get whether validator is standby', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'username' => 'John',
                 'rank'     => 52,
             ],
@@ -669,10 +669,10 @@ it('should get whether delegate is standby', function () {
     expect($this->subject->isStandby())->toBeTrue();
 });
 
-it('should get whether delegate is active', function () {
+it('should get whether validator is active', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'username' => 'John',
                 'rank'     => 50,
             ],
@@ -682,10 +682,10 @@ it('should get whether delegate is active', function () {
     expect($this->subject->isActive())->toBeTrue();
 });
 
-it('should get that resigned delegate is not an active delegate', function () {
+it('should get that resigned validator is not an active validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'resigned' => true,
             ],
         ],
@@ -694,7 +694,7 @@ it('should get that resigned delegate is not an active delegate', function () {
     expect($this->subject->isActive())->toBeFalse();
 });
 
-it('should get that non delegate is not an active delegate', function () {
+it('should get that non validator is not an active validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [],
     ]));
@@ -702,10 +702,10 @@ it('should get that non delegate is not an active delegate', function () {
     expect($this->subject->isActive())->toBeFalse();
 });
 
-it('should get delegate name for wallet name', function () {
+it('should get validator name for wallet name', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'username' => 'John',
                 'rank'     => 50,
             ],
@@ -735,10 +735,10 @@ it('should get known wallet name for wallet name', function () {
     expect($this->subject->name())->toBe('Test Wallet');
 });
 
-it('should get delegate name before known wallet name for a wallet', function () {
+it('should get validator name before known wallet name for a wallet', function () {
     $wallet = Wallet::factory()->create([
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'username' => 'John',
                 'rank'     => 50,
             ],
@@ -770,12 +770,12 @@ it('should get no name if a standard wallet', function () {
     expect($this->subject->name())->toBeNull();
 });
 
-it('should get forged block count for delegate', function () {
+it('should get forged block count for validator', function () {
     $wallet = new WalletViewModel(Wallet::factory()->create([
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'producedBlocks' => 54321,
             ],
         ],
@@ -784,19 +784,19 @@ it('should get forged block count for delegate', function () {
     expect($wallet->forgedBlocks())->toBe(54321);
 });
 
-it('should get missed block count for delegate', function () {
+it('should get missed block count for validator', function () {
     (new WalletCache())->setMissedBlocks($this->subject->publicKey(), 12345);
 
     expect($this->subject->missedBlocks())->toBe(12345);
 });
 
-it('should return zero if delegate has no public key', function () {
+it('should return zero if validator has no public key', function () {
     $wallet = new WalletViewModel(Wallet::factory()->create([
         'public_key'   => null,
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
-            'delegate' => [
+            'validator' => [
                 'producedBlocks' => 54321,
             ],
         ],

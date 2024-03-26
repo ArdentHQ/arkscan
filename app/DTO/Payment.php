@@ -20,7 +20,7 @@ final class Payment
     {
         $this->amount      = $payment['amount'] / 1e8;
         $this->address     = $payment['recipientId'];
-        $this->username    = Arr::get(Wallets::findByAddress($payment['recipientId']), 'attributes.delegate.username');
+        $this->username    = Arr::get(Wallets::findByAddress($payment['recipientId']), 'attributes.validator.username');
     }
 
     public function amount(): float

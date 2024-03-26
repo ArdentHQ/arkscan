@@ -7,7 +7,7 @@ namespace App\Models\Concerns\Wallet;
 use App\Enums\SortDirection;
 use App\Facades\Network;
 use App\Models\ForgingStats;
-use App\Services\Cache\DelegateCache;
+use App\Services\Cache\ValidatorCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
@@ -37,7 +37,7 @@ trait CanBeSorted
 
     public function scopeSortByNumberOfVoters(mixed $query, SortDirection $sortDirection): Builder
     {
-        $voterCounts = (new DelegateCache())->getAllVoterCounts();
+        $voterCounts = (new ValidatorCache())->getAllVoterCounts();
         if (count($voterCounts) === 0) {
             return $query->selectRaw('0 AS no_of_voters')
                 ->selectRaw('wallets.*');
@@ -76,7 +76,7 @@ trait CanBeSorted
             )), 'wallets.public_key', '=', 'forging_stats.public_key', 'left outer')
             ->when($sortDirection === SortDirection::ASC, fn ($query) => $query->orderByRaw(sprintf(
                 'CASE WHEN ("attributes"->>\'validatorRank\')::numeric <= %d THEN 0 ELSE 1 END ASC',
-                Network::delegateCount(),
+                Network::validatorCount(),
             )))
             ->orderByRaw(sprintf(
                 'missed_blocks %s',

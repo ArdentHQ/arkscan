@@ -15,23 +15,23 @@ final class ForgingStatsViewModel implements ViewModel
     {
     }
 
-    public function delegate(): ?WalletViewModel
+    public function validator(): ?WalletViewModel
     {
-        if ($this->forgingStats->delegate === null) {
+        if ($this->forgingStats->validator === null) {
             return null;
         }
 
-        return new WalletViewModel($this->forgingStats->delegate);
+        return new WalletViewModel($this->forgingStats->validator);
     }
 
     public function address(): ?string
     {
-        return $this->delegate()?->address();
+        return $this->validator()?->address();
     }
 
     public function username(): ?string
     {
-        return $this->delegate()?->username();
+        return $this->validator()?->username();
     }
 
     public function timestamp(): string

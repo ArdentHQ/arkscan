@@ -17,10 +17,10 @@ it('should render the page without any errors', function ($type) {
 })->with([
     'transfer',
     'secondSignature',
-    'delegateRegistration',
+    'validatorRegistration',
     'multiSignature',
     'ipfs',
-    'delegateResignation',
+    'validatorResignation',
     'timelock',
     'timelockClaim',
     'timelockRefund',
@@ -39,9 +39,9 @@ it('should render the page without any errors', function ($type) {
     'moduleEntityRegistration',
     'moduleEntityResignation',
     'moduleEntityUpdate',
-    'delegateEntityRegistration',
-    'delegateEntityResignation',
-    'delegateEntityUpdate',
+    'validatorEntityRegistration',
+    'validatorEntityResignation',
+    'validatorEntityUpdate',
     'legacyBusinessRegistration',
     'legacyBusinessResignation',
     'legacyBusinessUpdate',
@@ -53,10 +53,10 @@ it('should render the page without any errors', function ($type) {
 it('should render the page for a vote/unvote transaction without any errors', function ($type) {
     $this->withoutExceptionHandling();
 
-    $delegate    = Wallet::factory()->activeDelegate()->create();
-    $transaction = Transaction::factory()->{$type}()->create([
+    $validator    = Wallet::factory()->activeValidator()->create();
+    $transaction  = Transaction::factory()->{$type}()->create([
         'asset' => [
-            'votes' => ['+'.$delegate->public_key],
+            'votes' => ['+'.$validator->public_key],
         ],
     ]);
 
@@ -72,11 +72,11 @@ it('should render the page for a vote/unvote transaction without any errors', fu
 it('should render the page for a vote combination transaction without any errors', function () {
     $this->withoutExceptionHandling();
 
-    $oldDelegate = Wallet::factory()->activeDelegate()->create();
-    $newDelegate = Wallet::factory()->activeDelegate()->create();
-    $transaction = Transaction::factory()->voteCombination()->create([
+    $oldValidator = Wallet::factory()->activeValidator()->create();
+    $newValidator = Wallet::factory()->activeValidator()->create();
+    $transaction  = Transaction::factory()->voteCombination()->create([
         'asset' => [
-            'votes' => ['-'.$oldDelegate->public_key, '+'.$newDelegate->public_key],
+            'votes' => ['-'.$oldValidator->public_key, '+'.$newValidator->public_key],
         ],
     ]);
 

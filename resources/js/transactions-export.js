@@ -301,10 +301,10 @@ const TransactionsExport = ({
                 if (this.types.others) {
                     data.type.push(
                         TransactionType.SecondSignature,
-                        TransactionType.DelegateRegistration,
+                        TransactionType.ValidatorRegistration,
                         TransactionType.MultiSignature,
                         TransactionType.Ipfs,
-                        TransactionType.DelegateResignation,
+                        TransactionType.ValidatorResignation,
                         TransactionType.HtlcLock,
                         TransactionType.HtlcClaim,
                         TransactionType.HtlcRefund

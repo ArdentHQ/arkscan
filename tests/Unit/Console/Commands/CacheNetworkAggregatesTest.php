@@ -15,6 +15,6 @@ it('should execute the command', function () {
     expect($cache->getTransactionsCount())->toBeInt();
     expect($cache->getVotesCount())->toBeInt();
     expect($cache->getVotesPercentage())->toBeFloat();
-    expect($cache->getDelegateRegistrationCount())->toBeInt();
+    expect($cache->getValidatorRegistrationCount())->toBeInt();
     expect($cache->getFeesCollected())->toBeFloat();
 });

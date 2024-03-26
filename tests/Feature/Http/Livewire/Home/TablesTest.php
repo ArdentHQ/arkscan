@@ -7,7 +7,7 @@ use App\Models\Wallet;
 use Livewire\Livewire;
 
 it('should render all tabs', function () {
-    Wallet::factory()->activeDelegate()->create();
+    Wallet::factory()->activeValidator()->create();
 
     Livewire::test(Tables::class)
         ->assertSeeHtml("tab === 'transactions'")
@@ -15,7 +15,7 @@ it('should render all tabs', function () {
 });
 
 it('should trigger is ready event for current tab view', function () {
-    Wallet::factory()->activeDelegate()->create();
+    Wallet::factory()->activeValidator()->create();
 
     Livewire::test(Tables::class)
         ->call('triggerViewIsReady')
@@ -23,7 +23,7 @@ it('should trigger is ready event for current tab view', function () {
 });
 
 it('should trigger is ready event when changing tab view', function () {
-    Wallet::factory()->activeDelegate()->create();
+    Wallet::factory()->activeValidator()->create();
 
     Livewire::test(Tables::class)
         ->call('triggerViewIsReady')
@@ -33,7 +33,7 @@ it('should trigger is ready event when changing tab view', function () {
 });
 
 it('should not trigger is ready event if tab view does not exist', function () {
-    Wallet::factory()->activeDelegate()->create();
+    Wallet::factory()->activeValidator()->create();
 
     Livewire::test(Tables::class)
         ->set('view', 'testing')
@@ -41,7 +41,7 @@ it('should not trigger is ready event if tab view does not exist', function () {
 });
 
 it('should not trigger is ready event more than once', function () {
-    Wallet::factory()->activeDelegate()->create();
+    Wallet::factory()->activeValidator()->create();
 
     Livewire::test(Tables::class)
         ->call('triggerViewIsReady')

@@ -10,7 +10,7 @@
             @lang('tables.transactions.from')
         </x-general.badge>
 
-        <x-dynamic-tooltip tooltip="{{$transactionWallet->isDelegate() ? $transactionWallet->username() : null}}">
+        <x-dynamic-tooltip tooltip="{{$transactionWallet->isValidator() ? $transactionWallet->username() : null}}">
             <div
                 class="min-w-0 truncate"
             >
@@ -18,7 +18,7 @@
                     class="whitespace-nowrap link"
                     href="{{ route('wallet', $transactionWallet->address()) }}"
                 >
-                    @if ($transactionWallet->isDelegate())
+                    @if ($transactionWallet->isValidator())
                         {{ $transactionWallet->username() }}
                     @else
                         <x-truncate-middle>{{ $transactionWallet->address }}</x-truncate-middle>
@@ -35,7 +35,7 @@
 
         @php ($recipient = $model->recipient())
 
-        <x-dynamic-tooltip tooltip="{{$model->isTransfer() && $recipient->isDelegate() ? $recipient->username() : null}}">
+        <x-dynamic-tooltip tooltip="{{$model->isTransfer() && $recipient->isValidator() ? $recipient->username() : null}}">
             <div
                 class="min-w-0 truncate"
             >
@@ -44,7 +44,7 @@
                         class="whitespace-nowrap link"
                         href="{{ route('wallet', $recipient->address()) }}"
                     >
-                        @if ($recipient->isDelegate())
+                        @if ($recipient->isValidator())
                             {{ $recipient->username() }}
                         @else
                             <x-truncate-middle>{{ $recipient->address }}</x-truncate-middle>
