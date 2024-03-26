@@ -64,6 +64,16 @@ final class Network implements Contract
         return $this->config['nethash'];
     }
 
+    public function genesisAddress(): string
+    {
+        return $this->config['genesisAddress'];
+    }
+
+    public function genesisPublicKey(): string
+    {
+        return $this->config['genesisPublicKey'];
+    }
+
     public function confirmations(): int
     {
         return $this->config['confirmations'];

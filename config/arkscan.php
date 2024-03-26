@@ -37,6 +37,8 @@ return [
             'blockTime'          => intval(env('ARKSCAN_NETWORK_BLOCK_TIME', 8)),
             'blockReward'        => intval(env('ARKSCAN_NETWORK_BLOCK_REWARD', 2)),
             'base58Prefix'       => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 23)),
+            'genesisAddress'     => env('ARKSCAN_NETWORK_GENESIS_ADDRESS', 'AewxfHQobSc49a4radHp74JZCGP8LRe4xA'),
+            'genesisPublicKey'   => env('ARKSCAN_NETWORK_GENESIS_PUBLIC_KEY', '0235d486fea0193cbe77e955ab175b8f6eb9eaf784de689beffbd649989f5d6be3'),
         ],
         'development' => [
             'name'               => env('ARKSCAN_NETWORK_NAME', 'ARK Development Network'),
@@ -56,6 +58,8 @@ return [
             'blockTime'          => intval(env('ARKSCAN_NETWORK_BLOCK_TIME', 8)),
             'blockReward'        => intval(env('ARKSCAN_NETWORK_BLOCK_REWARD', 2)),
             'base58Prefix'       => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 30)),
+            'genesisAddress'     => env('ARKSCAN_NETWORK_GENESIS_ADDRESS', 'DGG1ovZUrPcBXR84ei2L69YyiXQvQfkUqV'),
+            'genesisPublicKey'   => env('ARKSCAN_NETWORK_GENESIS_PUBLIC_KEY', '03cd365c09739561385c710b34a4b5ef2363dc461efd1336f7d0e16f0d2956cdf0'),
         ],
     ],
 

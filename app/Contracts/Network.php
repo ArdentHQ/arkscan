@@ -19,6 +19,10 @@ interface Network
 
     public function currency(): string;
 
+    public function genesisAddress(): string;
+
+    public function genesisPublicKey(): string;
+
     public function currencySymbol(): string;
 
     public function confirmations(): int;

@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static string currency()
  * @method static string currencySymbol()
  * @method static string nethash()
+ * @method static string genesisAddress()
+ * @method static string genesisPublicKey()
  * @method static int confirmations()
  * @method static array knownWallets()
  * @method static bool canBeExchanged()
