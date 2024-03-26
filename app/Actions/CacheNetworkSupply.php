@@ -16,7 +16,7 @@ final class CacheNetworkSupply
         return (new NetworkCache())->setSupply(function (): float {
             $amount = DB::connection('explorer')
                 ->query()
-                ->selectRaw('coalesce(transaction_amount, 0) + coalesce(balance, 0) AS amount')
+                ->selectRaw('coalesce(balance, 0) - coalesce(transaction_amount, 0) AS amount')
                 ->from(function ($query) {
                     $query->select([
                         'balance' => function ($query) {
