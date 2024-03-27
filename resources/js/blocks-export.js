@@ -8,7 +8,7 @@ import {
     generateCsv,
     getCustomDateRange,
     getDateRange,
-    timeSinceEpoch,
+    queryTimestamp,
 } from "./includes/helpers";
 
 import { BlocksApi } from "./blocks-api";
@@ -22,7 +22,7 @@ dayjs.extend(dayjsLocalizedFormat);
 const csvColumns = {
     id: "Block ID",
     timestamp: "Timestamp",
-    transactions: "Transactions",
+    numberOfTransactions: "Transactions",
     volume: "Volume [:networkCurrency]",
     volumeFiat: "Volume [:userCurrency]",
     total: "Total Rewards [:networkCurrency]",
@@ -38,17 +38,19 @@ const BlocksExport = ({
     canBeExchanged,
 }) => {
     const columnMapping = {
-        timestamp: (block) => dayjs(block.timestamp.human).format("L LTS"),
-        volume: (block) => arktoshiToNumber(block.forged.amount),
+        timestamp: (block) => dayjs(parseInt(block.timestamp)).format("L LTS"),
+        volume: (block) => arktoshiToNumber(block.totalAmount),
         volumeFiat: function (block) {
             return this.volume(block) * this.rate(block);
         },
-        total: (block) => arktoshiToNumber(block.forged.total),
+        total: (block) => {
+            return arktoshiToNumber(block.totalAmount + block.totalFee + block.reward)
+        },
         totalFiat: function (block) {
             return this.total(block) * this.rate(block);
         },
         rate: (block) => {
-            const date = dayjs(block.timestamp.human).format("YYYY-MM-DD");
+            const date = dayjs(parseInt(block.timestamp)).format("YYYY-MM-DD");
 
             return rates[date] ?? 0;
         },
@@ -75,7 +77,7 @@ const BlocksExport = ({
         columns: {
             id: false,
             timestamp: false,
-            transactions: false,
+            numberOfTransactions: false,
             volume: false,
             total: false,
         },
@@ -173,8 +175,8 @@ const BlocksExport = ({
             const data = {};
 
             if (dateFrom) {
-                const dateFromEpoch = timeSinceEpoch(dateFrom, this.network);
-                const dateToEpoch = timeSinceEpoch(dateTo, this.network);
+                const dateFromEpoch = queryTimestamp(dateFrom);
+                const dateToEpoch = queryTimestamp(dateTo);
                 // Check if validator's last forged block is not older than the range
                 // This is to handle cases of old validators where it's expensive
                 // to request their block height
@@ -252,7 +254,7 @@ const BlocksExport = ({
                 publicKey,
             });
 
-            return validator?.blocks?.last?.timestamp?.epoch ?? 0;
+            return validator?.attributes?.validatorLastBlock?.timestamp ?? 0;
         },
 
         getColumns() {

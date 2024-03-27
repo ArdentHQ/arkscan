@@ -9,7 +9,7 @@ import {
     generateCsv,
     getCustomDateRange,
     getDateRange,
-    timeSinceEpoch,
+    queryTimestamp,
 } from "./includes/helpers";
 import {
     ExportStatus,
@@ -77,8 +77,7 @@ const TransactionsExport = ({
     };
 
     const columnMapping = {
-        timestamp: (transaction) =>
-            dayjs(transaction.timestamp.human).format("L LTS"),
+        timestamp: (transaction) => dayjs(parseInt(transaction.timestamp)).format("L LTS"),
         recipient: (transaction) => {
             if (transaction.typeGroup !== TransactionTypeGroup.Core) {
                 return "Other";
@@ -124,7 +123,7 @@ const TransactionsExport = ({
             return this.total(transaction) * this.rate(transaction);
         },
         rate: (transaction) => {
-            const date = dayjs(transaction.timestamp.human).format(
+            const date = dayjs(parseInt(transaction.timestamp)).format(
                 "YYYY-MM-DD"
             );
 
@@ -279,8 +278,8 @@ const TransactionsExport = ({
             };
 
             if (dateFrom) {
-                data["timestamp.from"] = timeSinceEpoch(dateFrom, this.network);
-                data["timestamp.to"] = timeSinceEpoch(dateTo, this.network);
+                data["timestamp.from"] = queryTimestamp(dateFrom);
+                data["timestamp.to"] = queryTimestamp(dateTo);
             }
 
             if (withoutTransactionTypes === false) {
@@ -415,7 +414,7 @@ const TransactionsExport = ({
                     query,
                     timestamp:
                         query["timestamp.to"] ??
-                        timeSinceEpoch(dayjs(), this.network),
+                        queryTimestamp(dayjs()),
                 },
                 this
             );
