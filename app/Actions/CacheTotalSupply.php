@@ -12,7 +12,7 @@ final class CacheTotalSupply
     public static function execute(): float
     {
         return (new NetworkCache())->setTotalSupply(function (): float {
-            return (float) State::latest()->supply;
+            return State::latest()->supply->toFloat();
         });
     }
 }

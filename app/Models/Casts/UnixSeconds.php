@@ -6,7 +6,7 @@ namespace App\Models\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
-class UnixSeconds implements CastsAttributes
+final class UnixSeconds implements CastsAttributes
 {
     /**
      * Cast the given value.

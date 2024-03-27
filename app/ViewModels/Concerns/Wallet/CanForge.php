@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Wallet;
 
+use App\Actions\CacheNetworkHeight;
+use App\Facades\Rounds;
 use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Illuminate\Support\Arr;
 
 trait CanForge
@@ -62,7 +66,17 @@ trait CanForge
             return [];
         }
 
-        return (new WalletCache())->getPerformance($publicKey);
+        $performance = (new WalletCache())->getPerformance($publicKey);
+
+        $currentRound = $this->currentSlot();
+        if ($currentRound['status'] === 'done') {
+            $performance = [
+                $performance[1],
+                $currentRound['block'] !== null,
+            ];
+        }
+
+        return $performance;
     }
 
     public function hasForged(): bool
@@ -75,14 +89,12 @@ trait CanForge
 
     public function justMissed(): bool
     {
-        // @TODO: check if we are past our slot
-
         return ! $this->hasForged();
     }
 
     public function keepsMissing(): bool
     {
-        return array_slice(array_reverse($this->performance()), 0, 2) === [false, false];
+        return $this->performance() === [false, false];
     }
 
     public function forgedBlocks(): int
@@ -103,5 +115,64 @@ trait CanForge
         }
 
         return (new WalletCache())->getMissedBlocks($publicKey);
+    }
+
+    public function blocksSinceLastForged(): ?int
+    {
+        $lastBlock = $this->lastBlock();
+        if ($lastBlock === null) {
+            return null;
+        }
+
+        $height = CacheNetworkHeight::execute();
+
+        return $height - $lastBlock['height'];
+    }
+
+    public function durationSinceLastForged(): ?string
+    {
+        $lastBlock = $this->lastBlock();
+        if ($lastBlock === null) {
+            return null;
+        }
+
+        $difference = CarbonInterval::instance(Carbon::parse($lastBlock['timestamp'])->diff());
+        $difference->ceilMinutes();
+        if ($difference->totalHours < 1) {
+            return trans('general.time.minutes_short', ['minutes' => $difference->minutes]);
+        }
+
+        if ($difference->totalHours >= 1 && $difference->totalDays < 1) {
+            if ($difference->minutes === 0) {
+                return trans('general.time.hours_short', ['hours' => $difference->hours]);
+            }
+
+            return trans('general.time.hours_minutes_short', [
+                'hours'   => $difference->hours,
+                'minutes' => $difference->minutes,
+            ]);
+        }
+
+        return trans('general.time.more_than_a_day');
+    }
+
+    public function currentSlot(): array
+    {
+        return Rounds::validators()->firstWhere('publicKey', $this->publicKey());
+    }
+
+    private function lastBlock(): ?array
+    {
+        $publicKey = $this->publicKey();
+        if (is_null($publicKey)) {
+            return null;
+        }
+
+        $lastBlock = (new WalletCache())->getLastBlock($publicKey);
+        if ($lastBlock === []) {
+            return null;
+        }
+
+        return $lastBlock;
     }
 }

@@ -42,15 +42,19 @@
                     </div>
 
                     <div class="flex flex-1 justify-between items-center pl-3 min-w-0">
-                        <x-tables.rows.mobile.encapsulated.validators.address
-                            :model="$validator->wallet()"
-                            class="min-w-0"
-                            identity-class="min-w-0"
-                            identity-content-class="min-w-0"
-                            identity-link-class="pr-2 min-w-0"
-                            without-clipboard
-                            without-label
-                        />
+                        <div class="flex items-center">
+                            <x-tables.rows.mobile.encapsulated.validators.address
+                                :model="$validator->wallet()"
+                                class="min-w-0"
+                                identity-class="min-w-0"
+                                identity-content-class="min-w-0"
+                                identity-link-class="pr-2 min-w-0"
+                                without-clipboard
+                                without-label
+                            />
+
+                            <x-validators.missed-warning :validator="$validator->wallet()" />
+                        </div>
 
                         <div class="flex items-center sm:space-x-3 h-[21px]">
                             <div class="flex items-center sm:hidden">
