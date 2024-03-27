@@ -495,7 +495,7 @@ it('should handle vote weight percentage with 1 arktoshi vote balance', function
 
     $vote = Wallet::factory()->create([
         'attributes' => [
-            'validatorVoteBalance' => 1e8
+            'validatorVoteBalance' => 1e8,
         ],
     ]);
 
