@@ -8,6 +8,7 @@ use App\Facades\Wallets;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 
 final class CacheValidatorWallets extends Command
 {
@@ -36,6 +37,11 @@ final class CacheValidatorWallets extends Command
                     $publicKey = $wallet->public_key;
 
                     $cache->setValidator($publicKey, $wallet);
+
+                    $validatorPublicKey = Arr::get($wallet, 'attributes.validatorPublicKey');
+                    if ($validatorPublicKey !== null) {
+                        $cache->setValidatorPublicKeyByAddress($wallet->address, $validatorPublicKey);
+                    }
                 }
             });
     }

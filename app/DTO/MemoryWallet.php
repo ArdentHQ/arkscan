@@ -40,6 +40,6 @@ final class MemoryWallet
 
     public function isValidator(): bool
     {
-        return ! is_null($this->username());
+        return (new WalletCache())->getValidatorPublicKeyByAddress($this->address) !== null;
     }
 }
