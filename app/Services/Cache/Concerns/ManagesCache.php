@@ -42,6 +42,14 @@ trait ManagesCache
         return $this->getCache()->put(md5($key), $value, $ttl = null);
     }
 
+    /**
+     * @return bool
+     */
+    private function forget(string $key)
+    {
+        return $this->getCache()->forget(md5($key));
+    }
+
     private function blockTimeTTL(): int
     {
         return (int) ceil(Network::blockTime() / 2);

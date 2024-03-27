@@ -6,6 +6,8 @@ namespace App\Console\Commands;
 
 use App\Facades\Network;
 use App\Facades\Wallets;
+use App\Models\Scopes\UsernameResignationScope;
+use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
@@ -58,6 +60,12 @@ final class CacheUsernames extends Command
                         $cache->setUsernameByPublicKey($wallet->public_key, $username);
                     }
                 }
+            });
+
+        Transaction::withScope(UsernameResignationScope::class)
+            ->each(function (Transaction $transaction) use ($cache): void {
+                $cache->forgetUsernameByAddress($transaction->sender->address);
+                $cache->forgetUsernameByPublicKey($transaction->sender->public_key);
             });
     }
 }
