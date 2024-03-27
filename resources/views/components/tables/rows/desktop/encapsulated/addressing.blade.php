@@ -39,7 +39,7 @@
                     class="link"
                     href="{{ route('wallet', $transactionWallet->address()) }}"
                 >
-                    @if ($transactionWallet->isValidator())
+                    @if ($transactionWallet->hasUsername())
                         {{ $transactionWallet->username() }}
                     @elseif ($withoutTruncate)
                         {{ $transactionWallet->address }}
@@ -49,7 +49,7 @@
                 </a>
             @else
                 <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                    @if ($transactionWallet->isValidator())
+                    @if ($transactionWallet->hasUsername())
                         {{ $transactionWallet->username() }}
                     @elseif ($withoutTruncate)
                         {{ $transactionWallet->address }}
@@ -70,7 +70,7 @@
                     class="link"
                     href="{{ route('wallet', $model->sender()->address()) }}"
                 >
-                    @if ($model->sender()->isValidator())
+                    @if ($model->sender()->hasUsername())
                         {{ $model->sender()->username() }}
                     @elseif ($withoutTruncate)
                         {{ $model->sender()->address }}

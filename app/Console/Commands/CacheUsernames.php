@@ -11,14 +11,14 @@ use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 
-final class CacheValidatorUsernames extends Command
+final class CacheUsernames extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'explorer:cache-validator-usernames';
+    protected $signature = 'explorer:cache-usernames';
 
     /**
      * The console command description.
@@ -33,7 +33,7 @@ final class CacheValidatorUsernames extends Command
 
         $knownWallets = collect(Network::knownWallets());
 
-        Wallets::allWithValidatorPublicKey()
+        Wallets::allWithUsername()
             ->orWhereIn('address', $knownWallets->pluck('address'))
             ->select([
                 'address',

@@ -25,12 +25,10 @@ beforeEach(function () {
     $this->app->singleton(Contract::class, fn () => NetworkFactory::make('production'));
 
     $this->wallet = Wallet::factory()->create([
-        'balance'      => '100000000000',
-        'nonce'        => 1000,
-        'attributes'   => [
-            'validator' => [
-                'voteBalance' => '100000000000',
-            ],
+        'balance'    => '100000000000',
+        'nonce'      => 1000,
+        'attributes' => [
+            'validatorVoteBalance' => '100000000000',
         ],
     ]);
 
@@ -237,10 +235,8 @@ it('should determine if the wallet is a validator', function () {
     expect($this->subject->isValidator())->toBeFalse();
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'attributes'   => [
-            'validator' => [
-                'username' => 'John',
-            ],
+        'attributes' => [
+            'username' => 'John',
         ],
     ]));
 
@@ -414,9 +410,7 @@ it('should get the resignation id', function () {
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
-            'validator' => [
-                'resigned' => true,
-            ],
+            'validatorResigned' => true,
         ],
     ]));
 
@@ -454,13 +448,15 @@ it('should get the vote weight as percentage', function () {
 
     $vote = Wallet::factory()->create([
         'attributes' => [
-            'validator' => ['voteBalance' => 10e8],
+            'validatorVoteBalance' => 10e8,
         ],
     ]);
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'balance'    => 1e8,
-        'attributes' => ['vote' => $vote->public_key],
+        'attributes' => [
+            'vote' => $vote->public_key,
+        ],
     ]));
 
     expect($this->subject->votePercentage())->toBeNull();
@@ -476,13 +472,15 @@ it('should handle vote weight percentage with 0 vote balance', function () {
 
     $vote = Wallet::factory()->create([
         'attributes' => [
-            'validator' => ['voteBalance' => 0],
+            'validatorVoteBalance' => 0,
         ],
     ]);
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'balance'    => 0,
-        'attributes' => ['vote' => $vote->public_key],
+        'attributes' => [
+            'vote' => $vote->public_key,
+        ],
     ]));
 
     expect($this->subject->votePercentage())->toBeNull();
@@ -497,7 +495,7 @@ it('should handle vote weight percentage with 1 arktoshi vote balance', function
 
     $vote = Wallet::factory()->create([
         'attributes' => [
-            'validator' => ['voteBalance' => 1e8],
+            'validatorVoteBalance' => 1e8,
         ],
     ]);
 
@@ -605,9 +603,7 @@ it('should get the username if the wallet is a validator', function () {
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
-            'validator' => [
-                'username' => 'John',
-            ],
+            'username' => 'John',
         ],
     ]));
 
@@ -624,14 +620,12 @@ it('should determine if the wallet has a multi signature', function () {
 
 it('should get the validator user name', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'attributes'   => [
-            'validator' => [
-                'username' => 'john',
-            ],
+        'attributes' => [
+            'username' => 'john',
         ],
     ]));
 
-    expect($this->subject->validatorUsername())->toBe('john');
+    expect($this->subject->username())->toBe('john');
 });
 
 it('should get the vote url with public key', function () {
@@ -643,10 +637,8 @@ it('should get the vote url with public key', function () {
 
 it('should get the vote url with validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'attributes'   => [
-            'validator' => [
-                'username' => 'john',
-            ],
+        'attributes' => [
+            'username' => 'john',
         ],
     ]));
 
@@ -659,10 +651,8 @@ it('should get the vote url with validator', function () {
 it('should get whether validator is standby', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
-            'validator' => [
-                'username' => 'John',
-                'rank'     => 52,
-            ],
+            'username'      => 'John',
+            'validatorRank' => 52,
         ],
     ]));
 
@@ -671,11 +661,9 @@ it('should get whether validator is standby', function () {
 
 it('should get whether validator is active', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'attributes'   => [
-            'validator' => [
-                'username' => 'John',
-                'rank'     => 50,
-            ],
+        'attributes' => [
+            'username'      => 'John',
+            'validatorRank' => 50,
         ],
     ]));
 
@@ -685,9 +673,7 @@ it('should get whether validator is active', function () {
 it('should get that resigned validator is not an active validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
-            'validator' => [
-                'resigned' => true,
-            ],
+            'validatorResigned' => true,
         ],
     ]));
 
@@ -705,14 +691,12 @@ it('should get that non validator is not an active validator', function () {
 it('should get validator name for wallet name', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
-            'validator' => [
-                'username' => 'John',
-                'rank'     => 50,
-            ],
+            'username'      => 'John',
+            'validatorRank' => 50,
         ],
     ]));
 
-    expect($this->subject->name())->toBe('John');
+    expect($this->subject->usernameBeforeKnown())->toBe('John');
 });
 
 it('should get known wallet name for wallet name', function () {
@@ -732,16 +716,14 @@ it('should get known wallet name for wallet name', function () {
 
     $this->subject = new WalletViewModel($wallet);
 
-    expect($this->subject->name())->toBe('Test Wallet');
+    expect($this->subject->usernameBeforeKnown())->toBe('Test Wallet');
 });
 
 it('should get validator name before known wallet name for a wallet', function () {
     $wallet = Wallet::factory()->create([
-        'attributes'   => [
-            'validator' => [
-                'username' => 'John',
-                'rank'     => 50,
-            ],
+        'attributes' => [
+            'username'      => 'John',
+            'validatorRank' => 50,
         ],
     ]);
 
@@ -757,7 +739,7 @@ it('should get validator name before known wallet name for a wallet', function (
 
     $this->subject = new WalletViewModel($wallet);
 
-    expect($this->subject->name())->toBe('John');
+    expect($this->subject->usernameBeforeKnown())->toBe('John');
 });
 
 it('should get no name if a standard wallet', function () {
@@ -767,17 +749,15 @@ it('should get no name if a standard wallet', function () {
         'attributes' => [],
     ]));
 
-    expect($this->subject->name())->toBeNull();
+    expect($this->subject->usernameBeforeKnown())->toBeNull();
 });
 
 it('should get forged block count for validator', function () {
     $wallet = new WalletViewModel(Wallet::factory()->create([
-        'balance'      => '100000000000',
-        'nonce'        => 1000,
-        'attributes'   => [
-            'validator' => [
-                'producedBlocks' => 54321,
-            ],
+        'balance'    => '100000000000',
+        'nonce'      => 1000,
+        'attributes' => [
+            'validatorProducedBlocks' => 54321,
         ],
     ]));
 
@@ -792,13 +772,11 @@ it('should get missed block count for validator', function () {
 
 it('should return zero if validator has no public key', function () {
     $wallet = new WalletViewModel(Wallet::factory()->create([
-        'public_key'   => null,
-        'balance'      => '100000000000',
-        'nonce'        => 1000,
-        'attributes'   => [
-            'validator' => [
-                'producedBlocks' => 54321,
-            ],
+        'public_key' => null,
+        'balance'    => '100000000000',
+        'nonce'      => 1000,
+        'attributes' => [
+            'validatorProducedBlocks' => 54321,
         ],
     ]));
 

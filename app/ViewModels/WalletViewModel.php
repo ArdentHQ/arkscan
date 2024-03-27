@@ -12,6 +12,7 @@ use App\Services\ExchangeRate;
 use App\ViewModels\Concerns\Wallet\CanBeCold;
 use App\ViewModels\Concerns\Wallet\CanBeValidator;
 use App\ViewModels\Concerns\Wallet\CanForge;
+use App\ViewModels\Concerns\Wallet\CanHaveUsername;
 use App\ViewModels\Concerns\Wallet\CanVote;
 use App\ViewModels\Concerns\Wallet\HasType;
 use App\ViewModels\Concerns\Wallet\HasVoters;
@@ -22,6 +23,7 @@ final class WalletViewModel implements ViewModel
     use CanBeCold;
     use CanBeValidator;
     use CanForge;
+    use CanHaveUsername;
     use CanVote;
     use HasType;
     use HasVoters;
@@ -78,22 +80,8 @@ final class WalletViewModel implements ViewModel
     public function voteUrl(): string
     {
         /** @var string $subject */
-        $subject = $this->validatorUsername() ?? $this->publicKey();
+        $subject = $this->username() ?? $this->publicKey();
 
         return ArkVaultUrlBuilder::get()->generateVote($subject);
-    }
-
-    public function name(): ?string
-    {
-        if ($this->isValidator()) {
-            return $this->validatorUsername();
-        }
-
-        $knownWallet = $this->findWalletByKnown();
-        if ($knownWallet !== null) {
-            return $knownWallet['name'];
-        }
-
-        return null;
     }
 }
