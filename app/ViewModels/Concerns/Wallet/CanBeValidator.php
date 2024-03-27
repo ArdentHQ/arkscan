@@ -51,22 +51,6 @@ trait CanBeValidator
         return (new WalletCache())->getResignationId($this->wallet->public_key);
     }
 
-    public function validatorUsername(): ?string
-    {
-        return $this->wallet->username();
-    }
-
-    public function username(): ?string
-    {
-        $knownWallet = $this->findWalletByKnown();
-
-        if (! is_null($knownWallet)) {
-            return $knownWallet['name'];
-        }
-
-        return $this->validatorUsername();
-    }
-
     public function rank(): ?int
     {
         return Arr::get($this->wallet, 'attributes.validatorRank', 0);
