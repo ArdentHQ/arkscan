@@ -120,7 +120,7 @@ final class Validators extends TabbedTableComponent
         }
 
         return Wallet::query()
-            ->whereNotNull('attributes->validatorRank')
+            ->whereNotNull('attributes->validatorPublicKey')
             ->where(fn ($query) => $query->when($this->hasFilters(), function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['active'] === true, fn ($query) => $query->where(function ($query) {
                     $query->where('attributes->validatorResigned', null)
