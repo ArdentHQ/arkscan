@@ -38,7 +38,7 @@ final class CacheAnnualStatistics extends Command
 
     private function cacheAllYears(StatisticsCache $cache): void
     {
-        $epoch           = Network::epoch()->timestamp * 1000;
+        $epoch           = (float) Network::epoch()->timestamp * 1000;
         $transactionData = DB::connection('explorer')
             ->query()
             ->select([

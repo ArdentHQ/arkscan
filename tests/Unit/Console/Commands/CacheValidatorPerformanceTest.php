@@ -35,9 +35,6 @@ it('should cache the past performance for a public key', function () {
     expect((new WalletCache())->getPerformance($publicKey))->toBe([
         true,
         true,
-        true,
-        true,
-        true,
     ]);
 });
 
@@ -66,9 +63,6 @@ it('should cache end of a round missed blocks for a public key ', function () {
     expect(Cache::tags('wallet')->has(md5("performance/$publicKey")))->toBeTrue();
     expect((new WalletCache())->getPerformance($publicKey))->toBe([
         true,
-        true,
-        true,
-        true,
         false,
     ]);
 });
@@ -95,9 +89,6 @@ it('uses the 1st block to set the performance on the first range', function () {
 
     expect(Cache::tags('wallet')->has(md5("performance/$publicKey")))->toBeTrue();
     expect((new WalletCache())->getPerformance($publicKey))->toBe([
-        true,
-        false,
-        false,
         false,
         false,
     ]);
@@ -125,9 +116,6 @@ it('uses the 51st block to set the performance on the first range', function () 
 
     expect(Cache::tags('wallet')->has(md5("performance/$publicKey")))->toBeTrue();
     expect((new WalletCache())->getPerformance($publicKey))->toBe([
-        true,
-        false,
-        false,
         false,
         false,
     ]);
@@ -155,9 +143,6 @@ it('uses the 52st block to set the performance on the second range', function ()
 
     expect(Cache::tags('wallet')->has(md5("performance/$publicKey")))->toBeTrue();
     expect((new WalletCache())->getPerformance($publicKey))->toBe([
-        false,
-        true,
-        false,
         false,
         false,
     ]);

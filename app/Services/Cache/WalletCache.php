@@ -37,7 +37,7 @@ final class WalletCache implements Contract
 
     public function getPerformance(string $publicKey): array
     {
-        return $this->get(sprintf('performance/%s', $publicKey), []);
+        return $this->get(sprintf('performance/%s', $publicKey), [true, true]);
     }
 
     public function setPerformance(string $publicKey, array $value): void

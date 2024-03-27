@@ -407,8 +407,9 @@ return [
     ],
 
     'validator-monitor' => [
-        'title'    => 'Validator Monitor',
-        'subtitle' => 'Validator block production observer tool.',
+        'title'                 => 'Validator Monitor',
+        'subtitle'              => 'Validator block production observer tool.',
+        'missed_blocks_tooltip' => 'Validator last forged :blocks blocks ago (:time)',
 
         'stats' => [
             'forging'        => 'Forging',
@@ -601,6 +602,13 @@ return [
             'description' => 'ARKVault is the native web-wallet solution developed by the team behind ARK Core. It was built from the ground up to be the best ARK wallet possible and we highly recommend you give it a try!',
             'subtitle'    => 'Control Your Assets',
             'url'         => 'https://arkvault.io',
+        ],
+
+        'arkconnect' => [
+            'title'       => 'ARKConnect',
+            'title_extra' => '(Browser Extension)',
+            'subtitle'    => 'Web3 Browser Extension',
+            'url'         => 'https://arkconnect.io',
         ],
 
         'wallets' => [

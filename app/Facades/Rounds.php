@@ -6,11 +6,13 @@ namespace App\Facades;
 
 use App\Contracts\RoundRepository;
 use App\Models\Round;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static Round byRound(int $round)
  * @method static Round current()
+ * @method static SupportCollection validators()
  */
 final class Rounds extends Facade
 {

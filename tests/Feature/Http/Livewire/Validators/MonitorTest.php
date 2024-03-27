@@ -11,9 +11,11 @@ use App\Services\Cache\WalletCache;
 use App\Services\Monitor\ForgingInfoCalculator;
 use App\Services\Monitor\Slots;
 use App\Services\Monitor\ValidatorTracker;
+use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
+use function Tests\createRealisticRound;
 
 beforeEach(function () {
     $this->activeValidators = require dirname(dirname(dirname(dirname(__DIR__)))).'/fixtures/forgers.php';
@@ -217,7 +219,7 @@ it('should correctly show the block is missed', function () {
     });
 
     // Store validator record for each Round object
-    $wallets = Rounds::allByRound(1)->map(fn ($round) => $round->validator);
+    $wallets = Rounds::byRound(1)->map(fn ($round) => $round->validator);
 
     // Make methods public for fetching forging order
     $activeValidatorsMethod  = new ReflectionMethod(ValidatorTracker::class, 'getActiveValidators');
@@ -313,4 +315,116 @@ it('should correctly show the block is missed', function () {
     $component
         ->call('pollValidators')
         ->assertSeeInOrder($outputData);
+});
+
+it('should show warning icon for validators missing blocks - minutes', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    [0 => $validators] = createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this);
+
+    $validator = (new WalletViewModel($validators->get(4)));
+
+    expect($validator->performance())->toBe([false, false]);
+
+    Livewire::test(Monitor::class)
+        ->call('setIsReady')
+        ->call('pollValidators')
+        ->assertSeeInOrder([
+            $validator->username(),
+            'Validator last forged 199 blocks ago (~ 21 min)',
+        ]);
+});
+
+it('should show warning icon for validators missing blocks - hours', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    [0 => $validators] = createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this);
+
+    $this->travelTo(Carbon::parse('2024-02-01 15:00:00Z'));
+
+    $validator = (new WalletViewModel($validators->get(4)));
+
+    expect($validator->performance())->toBe([false, false]);
+
+    Livewire::test(Monitor::class)
+        ->call('setIsReady')
+        ->call('pollValidators')
+        ->assertSeeInOrder([
+            $validator->username(),
+            'Validator last forged 199 blocks ago (~ 1h 28 min)',
+        ]);
+});
+
+it('should show warning icon for validators missing blocks - days', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    [0 => $validators] = createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this);
+
+    $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
+
+    $validator = (new WalletViewModel($validators->get(4)));
+
+    expect($validator->performance())->toBe([false, false]);
+
+    Livewire::test(Monitor::class)
+        ->call('setIsReady')
+        ->call('pollValidators')
+        ->assertSeeInOrder([
+            $validator->username(),
+            'Validator last forged 199 blocks ago (more than a day)',
+        ]);
 });
