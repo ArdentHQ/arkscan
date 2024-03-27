@@ -12,7 +12,7 @@ trait CanBeValidator
 {
     public function isValidator(): bool
     {
-        return Arr::has($this->wallet, 'attributes.validatorRank');
+        return Arr::has($this->wallet, 'attributes.validatorPublicKey');
     }
 
     public function isResigned(): bool
