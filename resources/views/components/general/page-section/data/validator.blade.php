@@ -8,7 +8,15 @@
         @if ($validator->hasUsername())
             {{ $validator->username() }}
         @else
-            <x-truncate-middle>{{ $validator->address() }}</x-truncate-middle>
+            <div class="hidden md:inline">
+                {{ $validator->address() }}
+            </div>
+
+            <div class="md:hidden">
+                <x-truncate-middle>
+                    {{ $validator->address() }}
+                </x-truncate-middle>
+            </div>
         @endif
     </a>
 </span>
