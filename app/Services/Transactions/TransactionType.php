@@ -491,8 +491,8 @@ final class TransactionType
             return [$containsVote, $containsUnvote];
         }
 
-        $containsVote   = ! empty(Arr::get($this->transaction->asset, 'votes', []));
-        $containsUnvote = ! empty(Arr::get($this->transaction->asset, 'unvotes', []));
+        $containsVote   = count(Arr::get($this->transaction->asset, 'votes', [])) !== 0;
+        $containsUnvote = count(Arr::get($this->transaction->asset, 'unvotes', [])) !== 0;
 
         return [$containsVote, $containsUnvote];
     }

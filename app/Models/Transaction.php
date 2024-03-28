@@ -217,7 +217,7 @@ final class Transaction extends Model
     {
         $recipientId = $this->recipient_id;
         if (! is_null($recipientId)) {
-            return Wallet::firstWhere('address', $recipientId);
+            return Wallet::where('address', $recipientId)->firstOrFail();
         }
 
         $votePublicKey = Arr::get($this, 'asset.votes.0');
@@ -225,7 +225,7 @@ final class Transaction extends Model
             $votePublicKey = Arr::get($this, 'asset.unvotes.0');
         }
 
-        return Wallet::firstWhere('public_key', $votePublicKey);
+        return Wallet::where('public_key', $votePublicKey)->firstOrFail();
     }
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder
