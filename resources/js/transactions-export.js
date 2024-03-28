@@ -77,7 +77,8 @@ const TransactionsExport = ({
     };
 
     const columnMapping = {
-        timestamp: (transaction) => dayjs(parseInt(transaction.timestamp)).format("L LTS"),
+        timestamp: (transaction) =>
+            dayjs(parseInt(transaction.timestamp)).format("L LTS"),
         recipient: (transaction) => {
             if (transaction.typeGroup !== TransactionTypeGroup.Core) {
                 return "Other";
@@ -412,9 +413,7 @@ const TransactionsExport = ({
                     host: network.api,
                     limit,
                     query,
-                    timestamp:
-                        query["timestamp.to"] ??
-                        queryTimestamp(dayjs()),
+                    timestamp: query["timestamp.to"] ?? queryTimestamp(dayjs()),
                 },
                 this
             );

@@ -44,7 +44,9 @@ const BlocksExport = ({
             return this.volume(block) * this.rate(block);
         },
         total: (block) => {
-            return arktoshiToNumber(block.totalAmount + block.totalFee + block.reward)
+            return arktoshiToNumber(
+                block.totalAmount + block.totalFee + block.reward
+            );
         },
         totalFiat: function (block) {
             return this.total(block) * this.rate(block);
