@@ -20,6 +20,7 @@ use App\ViewModels\Concerns\Transaction\InteractsWithEntities;
 use App\ViewModels\Concerns\Transaction\InteractsWithMultiPayment;
 use App\ViewModels\Concerns\Transaction\InteractsWithMultiSignature;
 use App\ViewModels\Concerns\Transaction\InteractsWithTypeData;
+use App\ViewModels\Concerns\Transaction\InteractsWithUsernames;
 use App\ViewModels\Concerns\Transaction\InteractsWithValidatorRegistration;
 use App\ViewModels\Concerns\Transaction\InteractsWithVendorField;
 use App\ViewModels\Concerns\Transaction\InteractsWithVotes;
@@ -38,6 +39,7 @@ final class TransactionViewModel implements ViewModel
     use InteractsWithMultiPayment;
     use InteractsWithMultiSignature;
     use InteractsWithTypeData;
+    use InteractsWithUsernames;
     use InteractsWithVendorField;
     use InteractsWithVotes;
     use InteractsWithWallets;

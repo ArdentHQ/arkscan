@@ -16,21 +16,19 @@ final class WalletFactory extends Factory
         $wallet = $this->faker->wallet;
 
         return [
-            'id'                => $this->faker->uuid,
-            'address'           => $wallet['address'],
-            'public_key'        => $wallet['publicKey'],
-            'balance'           => $this->faker->numberBetween(1, 1000) * 1e8,
-            'nonce'             => $this->faker->numberBetween(1, 1000),
-            'attributes'        => [
-                'secondPublicKey'  => $this->faker->publicKey,
-                'validator'        => [
-                    'username'       => $this->faker->userName,
-                    'voteBalance'    => $this->faker->numberBetween(1, 1000) * 1e8,
-                    'producedBlocks' => $this->faker->numberBetween(1, 1000),
-                    'missedBlocks'   => $this->faker->numberBetween(1, 1000),
-                ],
+            'id'         => $this->faker->uuid,
+            'address'    => $wallet['address'],
+            'public_key' => $wallet['publicKey'],
+            'balance'    => $this->faker->numberBetween(1, 1000) * 1e8,
+            'nonce'      => $this->faker->numberBetween(1, 1000),
+            'attributes' => [
+                'secondPublicKey'         => $this->faker->publicKey,
+                'username'                => $this->faker->userName,
+                'validatorVoteBalance'    => $this->faker->numberBetween(1, 1000) * 1e8,
+                'validatorProducedBlocks' => $this->faker->numberBetween(1, 1000),
+                'validatorMissedBlocks'   => $this->faker->numberBetween(1, 1000),
             ],
-            'updated_at'       => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'updated_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 
@@ -38,14 +36,12 @@ final class WalletFactory extends Factory
     {
         return $this->state(function () {
             return [
-                'attributes'        => [
-                    'validator'        => [
-                        'rank'           => $this->faker->numberBetween(1, 51),
-                        'username'       => $this->faker->userName,
-                        'voteBalance'    => $this->faker->numberBetween(1, 1000) * 1e8,
-                        'producedBlocks' => $this->faker->numberBetween(1, 1000),
-                        'missedBlocks'   => $this->faker->numberBetween(1, 1000),
-                    ],
+                'attributes' => [
+                    'username'                => $this->faker->userName,
+                    'validatorRank'           => $this->faker->numberBetween(1, 51),
+                    'validatorVoteBalance'    => $this->faker->numberBetween(1, 1000) * 1e8,
+                    'validatorProducedBlocks' => $this->faker->numberBetween(1, 1000),
+                    'validatorMissedBlocks'   => $this->faker->numberBetween(1, 1000),
                 ],
             ];
         });
@@ -55,15 +51,13 @@ final class WalletFactory extends Factory
     {
         return $this->state(function () use ($isResigned) {
             return [
-                'attributes'        => [
-                    'validator'        => [
-                        'resigned'       => $isResigned,
-                        'rank'           => $this->faker->numberBetween(52, 102),
-                        'username'       => $this->faker->userName,
-                        'voteBalance'    => $this->faker->numberBetween(1, 100) * 1e8,
-                        'producedBlocks' => $this->faker->numberBetween(1, 1000),
-                        'missedBlocks'   => $this->faker->numberBetween(1, 1000),
-                    ],
+                'attributes' => [
+                    'username'                => $this->faker->userName,
+                    'validatorResigned'       => $isResigned,
+                    'validatorRank'           => $this->faker->numberBetween(52, 102),
+                    'validatorVoteBalance'    => $this->faker->numberBetween(1, 100) * 1e8,
+                    'validatorProducedBlocks' => $this->faker->numberBetween(1, 1000),
+                    'validatorMissedBlocks'   => $this->faker->numberBetween(1, 1000),
                 ],
             ];
         });
