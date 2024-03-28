@@ -95,6 +95,11 @@ final class WalletCache implements Contract
         $this->put(sprintf('username_by_address/%s', $address), $username);
     }
 
+    public function forgetUsernameByAddress(string $address): void
+    {
+        $this->forget(sprintf('username_by_address/%s', $address));
+    }
+
     public function getValidatorPublicKeyByAddress(string $address): ?string
     {
         return $this->get(sprintf('validator_public_key_by_address/%s', $address));
@@ -113,6 +118,11 @@ final class WalletCache implements Contract
     public function setUsernameByPublicKey(string $publicKey, string $username): void
     {
         $this->put(sprintf('username_by_public_key/%s', $publicKey), $username);
+    }
+
+    public function forgetUsernameByPublicKey(string $publicKey): void
+    {
+        $this->forget(sprintf('username_by_public_key/%s', $publicKey));
     }
 
     public function getValidator(string $publicKey): ?Wallet
