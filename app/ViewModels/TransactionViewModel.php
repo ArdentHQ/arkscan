@@ -82,9 +82,9 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction->block_height;
     }
 
-    public function timestamp(bool $short = false): string
+    public function timestamp(): string
     {
-        return Timestamp::fromUnixHuman($this->transaction->timestamp, $short);
+        return Timestamp::fromUnixHuman($this->transaction->timestamp);
     }
 
     public function dateTime(): Carbon

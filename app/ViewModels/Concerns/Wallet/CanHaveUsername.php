@@ -23,7 +23,7 @@ trait CanHaveUsername
             return $knownWallet['name'];
         }
 
-        return $this->delegateUsername();
+        return $this->username();
     }
 
     public function usernameBeforeKnown(): ?string
