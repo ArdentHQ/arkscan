@@ -175,86 +175,11 @@ const BlocksExport = ({
             const data = {};
 
             if (dateFrom) {
-                const dateFromEpoch = queryTimestamp(dateFrom);
-                const dateToEpoch = queryTimestamp(dateTo);
-                // Check if validator's last forged block is not older than the range
-                // This is to handle cases of old validators where it's expensive
-                // to request their block height
-                const lastForgedBlockEpoch =
-                    await this.getLastForgedBlockEpoch();
-
-                if (
-                    lastForgedBlockEpoch === 0 ||
-                    lastForgedBlockEpoch < dateFromEpoch
-                ) {
-                    return { "height.from": 0, "height.to": 0 };
-                }
-
-                if (lastForgedBlockEpoch < dateToEpoch) {
-                    return {
-                        "height.from": await this.getFirstBlockHeightAfterEpoch(
-                            dateFromEpoch
-                        ),
-                        "height.to": await this.getFirstBlockHeightBeforeEpoch(
-                            lastForgedBlockEpoch
-                        ),
-                    };
-                }
-
-                data["height.from"] = await this.getFirstBlockHeightAfterEpoch(
-                    dateFromEpoch
-                );
-                data["height.to"] = await this.getFirstBlockHeightBeforeEpoch(
-                    dateToEpoch
-                );
+                data["timestamp.from"] = queryTimestamp(dateFrom);
+                data["timestamp.to"] = queryTimestamp(dateTo);
             }
 
             return data;
-        },
-
-        async getFirstBlockHeightAfterEpoch(epoch) {
-            return this.getBlockHeight({
-                query: {
-                    "timestamp.from": epoch,
-                },
-                orderBy: "timestamp:asc",
-            });
-        },
-
-        // The API options "timestamp:desc" & "timestamp.to" can cause 500 errors.
-        // We do it this way and attempt to get the first block after (the epoch - 1 round) instead.
-        async getFirstBlockHeightBeforeEpoch(epoch) {
-            epoch -= this.network.blockTime * this.network.validatorCount;
-            if (epoch < 0) {
-                return 0;
-            }
-
-            return await this.getBlockHeight({
-                query: {
-                    "timestamp.from": epoch,
-                },
-                orderBy: "timestamp:asc",
-            });
-        },
-
-        async getBlockHeight({ query, orderBy }) {
-            const block = await BlocksApi.fetch({
-                host: network.api,
-                query,
-                orderBy,
-                publicKey,
-            });
-
-            return block?.height ?? 0;
-        },
-
-        async getLastForgedBlockEpoch() {
-            const validator = await ValidatorsApi.fetch({
-                host: network.api,
-                publicKey,
-            });
-
-            return validator?.attributes?.validatorLastBlock?.timestamp ?? 0;
         },
 
         getColumns() {
