@@ -4,7 +4,7 @@ import { FailedExportRequest } from "./includes/helpers";
 export class BlocksApi {
     static async request(host, query, publicKey) {
         const response = await axios.get(
-            `${host}/validators/${publicKey}/blocks`,
+            `${host}/delegates/${publicKey}/blocks`,
             {
                 params: query,
             }
@@ -33,6 +33,7 @@ export class BlocksApi {
                     orderBy,
                     ...query,
                     "height.to": height,
+                    transform: false,
                 },
                 publicKey
             );
