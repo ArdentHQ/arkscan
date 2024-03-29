@@ -9,6 +9,7 @@ use Faker\Generator;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Tests\FakerProviders\Block;
+use Tests\FakerProviders\Round;
 use Tests\FakerProviders\Transaction;
 use Tests\FakerProviders\Wallet;
 
@@ -25,6 +26,7 @@ final class DevelopmentServiceProvider extends ServiceProvider
             $faker = Factory::create();
             $faker->addProvider(new Wallet($faker));
             $faker->addProvider(new Transaction($faker));
+            $faker->addProvider(new Round($faker));
             $faker->addProvider(new Block($faker));
 
             $this->app->instance(Generator::class, $faker);

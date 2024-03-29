@@ -14,13 +14,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property int $round
  * @property int $round_height
- * @property string $public_key
  * @property string[] $validators
  * @property BigNumber $balance
  */
 final class Round extends Model
 {
     use HasFactory;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'validator_rounds';
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -37,33 +43,22 @@ final class Round extends Model
     protected $primaryKey = 'round';
 
     /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
     protected $casts = [
-        'balance'      => BigInteger::class,
-        'public_key'   => 'string',
         'round'        => 'int',
         'round_height' => 'int',
+        'validators'   => 'array',
     ];
-
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'validator_rounds';
-
-    /**
-     * A round slot belongs to a validator.
-     *
-     * @return BelongsTo
-     */
-    public function validator(): BelongsTo
-    {
-        return $this->belongsTo(Wallet::class, 'public_key', 'public_key');
-    }
 
     /**
      * Get the current connection name for the model.
