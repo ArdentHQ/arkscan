@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\ValidatorForgingStatus;
+use App\Facades\Network;
 use App\Http\Livewire\ValidatorDataBoxes;
 use App\Models\Block;
 use App\Models\Round;
@@ -15,15 +16,22 @@ use Illuminate\Support\Facades\Artisan;
 use Livewire\Livewire;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
+use function Tests\createRoundEntry;
+
 use Tests\Stubs\FullPartialRoundException;
 
 beforeEach(function () {
     $this->travelTo(Carbon::parse('2022-08-22 00:00'));
 });
 
-function createRoundWithValidatorsAndPerformances(array $performances = null, bool $addBlockForNextRound = true, int $wallets = 51, int $baseIndex = 0): void
+function createRoundWithValidatorsAndPerformances(array $performances = null, bool $addBlockForNextRound = true, int $walletCount = 53, int $baseIndex = 0): void
 {
-    Wallet::factory($wallets)->create()->each(function ($wallet, $index) use ($performances, $addBlockForNextRound, $baseIndex) {
+    $wallets = Wallet::factory($walletCount)
+        ->create();
+
+    createRoundEntry(112168, 5720518, $wallets);
+
+    $wallets->each(function ($wallet, $index) use ($performances, $addBlockForNextRound, $baseIndex) {
         $timestamp = Carbon::now()->add(($baseIndex + $index) * 8, 'seconds')->timestamp;
 
         $block = Block::factory()->create([
@@ -40,11 +48,6 @@ function createRoundWithValidatorsAndPerformances(array $performances = null, bo
                 'generator_public_key' => $wallet->public_key,
             ]);
         }
-
-        Round::factory()->create([
-            'round'      => '112168',
-            'public_key' => $wallet->public_key,
-        ]);
 
         (new WalletCache())->setValidator($wallet->public_key, $wallet);
 
@@ -179,27 +182,25 @@ it('should return the next validator', function () {
 });
 
 it('should not error if no cached validator data', function () {
-    $wallets = Wallet::factory(51)
+    $wallets = Wallet::factory(Network::validatorCount())
         ->activeValidator()
-        ->create()
-        ->each(function ($wallet) {
-            $block = Block::factory()->create([
-                'height'               => 5720529,
-                'timestamp'            => 113620904,
-                'generator_public_key' => $wallet->public_key,
-            ]);
+        ->create();
 
-            Block::factory()->create([
-                'height'               => 5720518,
-                'timestamp'            => 113620904,
-                'generator_public_key' => $wallet->public_key,
-            ]);
+    createRoundEntry(112168, 5720518, $wallets);
 
-            Round::factory()->create([
-                'round'      => '112168',
-                'public_key' => $wallet->public_key,
-            ]);
-        });
+    $wallets->each(function ($wallet) {
+        Block::factory()->create([
+            'height'               => 5720529,
+            'timestamp'            => 113620904,
+            'generator_public_key' => $wallet->public_key,
+        ]);
+
+        Block::factory()->create([
+            'height'               => 5720518,
+            'timestamp'            => 113620904,
+            'generator_public_key' => $wallet->public_key,
+        ]);
+    });
 
     foreach ($wallets as $wallet) {
         expect((new WalletCache())->getValidator($wallet->public_key))->toBeNull();
@@ -227,39 +228,6 @@ it('should defer loading', function () {
         ->assertSee('4,234,212');
 });
 
-// it('should calculate forged correctly', function ($performances, $addBlockForNextRound) {
-//     createRoundWithValidatorsAndPerformances([true, true], true, 50);
-//     createRoundWithValidatorsAndPerformances($performances, $addBlockForNextRound, 1);
-
-//     (new NetworkCache())->setHeight(fn (): int => 4234212);
-
-//     Livewire::test(ValidatorDataBoxes::class)
-//         ->call('setIsReady')
-//         ->call('pollStatistics')
-//         ->assertSeeInOrder([
-//             'Forging',
-//             51,
-//             'Missed',
-//             0,
-//             'Not Forging',
-//             0,
-//             'Current Height',
-//         ]);
-// })->with([
-//     'forged, forged, forged' => [
-//         [true, true],
-//         true,
-//     ],
-//     'missed, forged, forged' => [
-//         [false, true],
-//         true,
-//     ],
-//     'missed, missed, forged' => [
-//         [false, false],
-//         true,
-//     ],
-// ]);
-
 it('should calculate forged correctly with current round', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
@@ -267,11 +235,11 @@ it('should calculate forged correctly with current round', function () {
 
     try {
         [$validators, $round, $height] = createRealisticRound([
-            array_fill(0, 51, true),
+            array_fill(0, 53, true),
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, 46, true),
+                ...array_fill(0, 48, true),
             ],
         ], $this);
 
@@ -280,11 +248,11 @@ it('should calculate forged correctly with current round', function () {
         Artisan::call('cache:clear');
 
         [$validators, $round, $height] = createRealisticRound([
-            array_fill(0, 51, true),
+            array_fill(0, 53, true),
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, 46, true),
+                ...array_fill(0, 48, true),
             ],
         ], $this);
 
@@ -298,7 +266,7 @@ it('should calculate forged correctly with current round', function () {
         ->call('pollStatistics')
         ->assertSeeHtmlInOrder([
             'Forging',
-            '<span>51</span>',
+            '<span>53</span>',
             'Missed',
             '<span>0</span>',
             'Not Forging',
@@ -316,10 +284,10 @@ it('should calculate forged correctly for previous rounds', function () {
         [
             ...array_fill(0, 4, true),
             false,
-            ...array_fill(0, 46, true),
+            ...array_fill(0, 48, true),
         ],
-        array_fill(0, 51, true),
-        array_fill(0, 51, true),
+        array_fill(0, 53, true),
+        array_fill(0, 53, true),
     ], $this);
 
     expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, true]);
@@ -329,7 +297,7 @@ it('should calculate forged correctly for previous rounds', function () {
         ->call('pollStatistics')
         ->assertSeeHtmlInOrder([
             'Forging',
-            '<span>51</span>',
+            '<span>53</span>',
             'Missed',
             '<span>0</span>',
             'Not Forging',
@@ -345,9 +313,9 @@ it('should calculate missed correctly with current round', function () {
 
     try {
         [$validators, $round, $height] = createRealisticRound([
-            array_fill(0, 51, true),
-            array_fill(0, 51, true),
-            array_fill(0, 51, true),
+            array_fill(0, 53, true),
+            array_fill(0, 53, true),
+            array_fill(0, 53, true),
         ], $this);
 
         createPartialRound($round, $height, 49, $this, $validators->get(4)->public_key, $validators->get(4)->public_key);
@@ -355,9 +323,9 @@ it('should calculate missed correctly with current round', function () {
         Artisan::call('cache:clear');
 
         [$validators, $round, $height] = createRealisticRound([
-            array_fill(0, 51, true),
-            array_fill(0, 51, true),
-            array_fill(0, 51, true),
+            array_fill(0, 53, true),
+            array_fill(0, 53, true),
+            array_fill(0, 53, true),
         ], $this);
 
         createPartialRound($round, $height, 49, $this, $validators->get(4)->public_key, $validators->get(4)->public_key);
@@ -370,7 +338,7 @@ it('should calculate missed correctly with current round', function () {
         ->call('pollStatistics')
         ->assertSeeHtmlInOrder([
             'Forging',
-            '<span>50</span>',
+            '<span>52</span>',
             'Missed',
             '<span>1</span>',
             'Not Forging',
@@ -385,14 +353,14 @@ it('should calculate missed correctly for previous rounds', function () {
     $this->freezeTime();
 
     [0 => $validators] = createRealisticRound([
-        array_fill(0, 51, true),
-        array_fill(0, 51, true),
+        array_fill(0, 53, true),
+        array_fill(0, 53, true),
         [
             ...array_fill(0, 4, true),
             false,
-            ...array_fill(0, 46, true),
+            ...array_fill(0, 48, true),
         ],
-        array_fill(0, 51, true),
+        array_fill(0, 53, true),
     ], $this);
 
     expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);
@@ -402,7 +370,7 @@ it('should calculate missed correctly for previous rounds', function () {
         ->call('pollStatistics')
         ->assertSeeHtmlInOrder([
             'Forging',
-            '<span>50</span>',
+            '<span>52</span>',
             'Missed',
             '<span>1</span>',
             'Not Forging',
@@ -421,17 +389,17 @@ it('should calculate not forging correctly with current round', function () {
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, 46, true),
+                ...array_fill(0, 48, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, 46, true),
+                ...array_fill(0, 48, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, 46, true),
+                ...array_fill(0, 48, true),
             ],
         ], $this);
 
@@ -443,17 +411,17 @@ it('should calculate not forging correctly with current round', function () {
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, 46, true),
+                ...array_fill(0, 48, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, 46, true),
+                ...array_fill(0, 48, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, 46, true),
+                ...array_fill(0, 48, true),
             ],
         ], $this);
 
@@ -467,7 +435,7 @@ it('should calculate not forging correctly with current round', function () {
         ->call('pollStatistics')
         ->assertSeeHtmlInOrder([
             'Forging',
-            '<span>50</span>',
+            '<span>52</span>',
             'Missed',
             '<span>0</span>',
             'Not Forging',
@@ -485,17 +453,17 @@ it('should calculate not forging correctly for previous rounds', function () {
         [
             ...array_fill(0, 4, true),
             false,
-            ...array_fill(0, 46, true),
+            ...array_fill(0, 48, true),
         ],
         [
             ...array_fill(0, 4, true),
             false,
-            ...array_fill(0, 46, true),
+            ...array_fill(0, 48, true),
         ],
         [
             ...array_fill(0, 4, true),
             false,
-            ...array_fill(0, 46, true),
+            ...array_fill(0, 48, true),
         ],
     ], $this);
 
@@ -506,7 +474,7 @@ it('should calculate not forging correctly for previous rounds', function () {
         ->call('pollStatistics')
         ->assertSeeHtmlInOrder([
             'Forging',
-            '<span>50</span>',
+            '<span>52</span>',
             'Missed',
             '<span>0</span>',
             'Not Forging',
