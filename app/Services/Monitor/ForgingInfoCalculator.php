@@ -8,7 +8,7 @@ use App\Facades\Network;
 
 final class ForgingInfoCalculator
 {
-    public static function calculate(array $validators, int $roundHeight, int $currentHeight): array
+    public static function calculate(int $roundHeight, int $currentHeight): array
     {
         [$currentForger, $nextForger] = static::findIndex($roundHeight, $currentHeight);
 

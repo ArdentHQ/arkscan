@@ -230,7 +230,7 @@ it('should correctly show the block is missed', function () {
     $orderValidatorsMethod->setAccessible(true);
 
     // Get validator order so we can forge in the correct order
-    $originalOrder      = ForgingInfoCalculator::calculate((new Slots())->getTime(), 1);
+    $originalOrder      = ForgingInfoCalculator::calculate(1, 1);
     $activeValidators   = $activeValidatorsMethod->invokeArgs(null, [$wallets]);
     $shuffledValidators = $shuffleValidatorsMethod->invokeArgs(null, [$activeValidators, 1]);
     $validatorsInOrder  = collect($orderValidatorsMethod->invokeArgs(null, [
