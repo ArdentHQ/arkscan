@@ -334,10 +334,10 @@ function createPartialRound(int &$round, int &$height, int $blocks, $context, st
 
 function validatorCount(bool $withBlock = true, int $roundNumber = null): SupportCollection
 {
-    $round = null;
+    $round      = null;
     $validators = null;
     if ($roundNumber) {
-        $round = Rounds::byRound($roundNumber);
+        $round      = Rounds::byRound($roundNumber);
         $validators = collect($round->validators);
     }
 
@@ -356,7 +356,7 @@ function validatorCount(bool $withBlock = true, int $roundNumber = null): Suppor
 
     expect($validators->count())->toBe(Network::validatorCount());
 
-    $round = $round ?: Rounds::current();
+    $round       = $round ?: Rounds::current();
     $heightRange = Monitor::heightRangeByRound($round);
 
     try {

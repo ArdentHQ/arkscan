@@ -17,7 +17,6 @@ use Livewire\Livewire;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
 use function Tests\createRoundEntry;
-
 use Tests\Stubs\FullPartialRoundException;
 
 beforeEach(function () {
