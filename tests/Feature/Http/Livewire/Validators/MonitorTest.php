@@ -301,7 +301,7 @@ it('should correctly show the block is missed', function () {
     $component
         ->call('pollValidators')
         ->assertSeeInOrder($outputData);
-})->skip();
+})->skip('Should be reviewed once all other tests are passing - it uses obsolete methods which should be removed');
 
 it('should show warning icon for validators missing blocks - minutes', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
