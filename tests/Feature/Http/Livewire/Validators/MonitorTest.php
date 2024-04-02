@@ -27,18 +27,18 @@ function createRoundWithValidators(): void
 {
     $wallets = Wallet::factory(Network::validatorCount())->create();
 
-    createRoundEntry(112168, 5720518, $wallets);
+    createRoundEntry(112168, 5944904, $wallets);
 
     $wallets->each(function ($wallet) {
         $block = Block::factory()->create([
-            'height'               => 5720529,
+            'height'               => 5944900,
             'timestamp'            => 113620904,
             'generator_public_key' => $wallet->public_key,
         ]);
 
         // Start height for round 112168
         Block::factory()->create([
-            'height'               => 5720518,
+            'height'               => 5944904,
             'timestamp'            => 113620904,
             'generator_public_key' => $wallet->public_key,
         ]);

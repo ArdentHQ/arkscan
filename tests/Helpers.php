@@ -232,7 +232,7 @@ function createRealisticRound(array $performances, $context)
 function createFullRound(&$round, &$height, $validatorWallets, $context, $didForge = null)
 {
     createRoundEntry($round, $height, Wallet::all());
-    $validators = validatorCount(false, $round);
+    $validators = getRoundValidators(false, $round);
 
     $blockCount = 0;
     while ($blockCount < Network::validatorCount()) {
@@ -262,7 +262,7 @@ function createFullRound(&$round, &$height, $validatorWallets, $context, $didFor
 function createPartialRound(int &$round, int &$height, int $blocks, $context, string $missedPublicKey = null, string $requiredPublicKey = null)
 {
     createRoundEntry($round, $height, Wallet::all());
-    $validators = validatorCount(false, $round);
+    $validators = getRoundValidators(false, $round);
 
     if ($missedPublicKey) {
         $hasPublicKey = false;
@@ -332,7 +332,7 @@ function createPartialRound(int &$round, int &$height, int $blocks, $context, st
     (new CacheValidatorPerformance())->handle();
 }
 
-function validatorCount(bool $withBlock = true, int $roundNumber = null): SupportCollection
+function getRoundValidators(bool $withBlock = true, int $roundNumber = null): SupportCollection
 {
     $round      = null;
     $validators = null;

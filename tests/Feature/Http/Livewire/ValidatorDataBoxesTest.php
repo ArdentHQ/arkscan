@@ -26,15 +26,16 @@ beforeEach(function () {
 function createRoundWithValidatorsAndPerformances(array $performances = null, bool $addBlockForNextRound = true, int $walletCount = 53, int $baseIndex = 0): void
 {
     $wallets = Wallet::factory($walletCount)
+        ->activeValidator()
         ->create();
 
-    createRoundEntry(112168, 5720518, $wallets);
+    createRoundEntry(112168, 5944904, $wallets);
 
     $wallets->each(function ($wallet, $index) use ($performances, $addBlockForNextRound, $baseIndex) {
         $timestamp = Carbon::now()->add(($baseIndex + $index) * 8, 'seconds')->timestamp;
 
         $block = Block::factory()->create([
-            'height'               => 5720529,
+            'height'               => 5944900,
             'timestamp'            => $timestamp,
             'generator_public_key' => $wallet->public_key,
         ]);
@@ -42,7 +43,7 @@ function createRoundWithValidatorsAndPerformances(array $performances = null, bo
         // Start height for round 112168
         if ($addBlockForNextRound) {
             Block::factory()->create([
-                'height'               => 5720518,
+                'height'               => 5944904,
                 'timestamp'            => $timestamp,
                 'generator_public_key' => $wallet->public_key,
             ]);
@@ -118,7 +119,7 @@ it('should determine if validators are forging based on their round history', fu
 });
 
 it('should determine if validators are not forging based on their round history', function () {
-    createRoundWithValidatorsAndPerformances([false, false]);
+    createRoundWithValidatorsAndPerformances([false, false], false);
 
     $component = Livewire::test(ValidatorDataBoxes::class)
         ->call('setIsReady');
@@ -127,6 +128,8 @@ it('should determine if validators are not forging based on their round history'
 
     $validatorWallet = Wallet::first();
     $validator       = new WalletViewModel($validatorWallet);
+
+    expect($validator->performance())->toBe([false, false]);
 
     expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBeString();
     expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBe(ValidatorForgingStatus::missing);
@@ -185,17 +188,17 @@ it('should not error if no cached validator data', function () {
         ->activeValidator()
         ->create();
 
-    createRoundEntry(112168, 5720518, $wallets);
+    createRoundEntry(112168, 5944904, $wallets);
 
     $wallets->each(function ($wallet) {
         Block::factory()->create([
-            'height'               => 5720529,
+            'height'               => 5944900,
             'timestamp'            => 113620904,
             'generator_public_key' => $wallet->public_key,
         ]);
 
         Block::factory()->create([
-            'height'               => 5720518,
+            'height'               => 5944904,
             'timestamp'            => 113620904,
             'generator_public_key' => $wallet->public_key,
         ]);
@@ -289,7 +292,7 @@ it('should calculate forged correctly for previous rounds', function () {
         array_fill(0, 53, true),
     ], $this);
 
-    expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, true]);
+    expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, true]);
 
     Livewire::test(ValidatorDataBoxes::class)
         ->call('setIsReady')
@@ -359,7 +362,6 @@ it('should calculate missed correctly for previous rounds', function () {
             false,
             ...array_fill(0, 48, true),
         ],
-        array_fill(0, 53, true),
     ], $this);
 
     expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);

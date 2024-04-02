@@ -54,4 +54,6 @@ return collect([
     (object) ['public_key' => '02e311d97f92dc879860ec0d63b344239f17149ed1700b279b5ef52d2baaa0226f'],
     (object) ['public_key' => '03eda1b9127d9a12a7c6903ca896534937ec492afa12ffa57a9aa6f3c77b618fdb'],
     (object) ['public_key' => '03f6af8c750b9d29d9da3d4ddf5818a1fcdd4558ba0dde731f9c4b17bcbdcd83f2'],
+    (object) ['public_key' => '03d44e231cf418ae60347a6126a15870c4fc63c94408ba567d8996cdad84270a99'],
+    (object) ['public_key' => '03d4fd4b583d92e0c53e202a2da879395eeb3994e0f8e763faa259dea5cd78ee9f'],
 ]);
