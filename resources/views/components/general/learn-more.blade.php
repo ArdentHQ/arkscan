@@ -10,7 +10,6 @@
     'iconSize' => 'w-11 h-11',
     'iconColor' => 'dark:text-white text-theme-navy-600',
     'buttonColor' => 'dim:bg-theme-dark-blue-600',
-    'arrowsBreakpoint' => null,
     'arrowsClass' => [],
     'mobileTall' => false,
 ])
