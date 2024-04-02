@@ -8,7 +8,6 @@ use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Repositories\RoundRepository;
-
 use function Tests\createRoundEntry;
 
 beforeEach(function () {
