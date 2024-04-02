@@ -71,7 +71,7 @@ trait CanForge
         $currentRound = $this->currentSlot();
         if ($currentRound['status'] === 'done') {
             $performance = [
-                $performance[1],
+                collect($performance)->last(),
                 $currentRound['block'] !== null,
             ];
         }

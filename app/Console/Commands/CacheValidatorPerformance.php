@@ -30,7 +30,7 @@ final class CacheValidatorPerformance extends Command
 
     public function handle(): void
     {
-        $maxRounds = 6;
+        $maxRounds = 3;
 
         $mostRecentRounds = Round::query()
             ->orderBy('round', 'DESC')
