@@ -1,6 +1,6 @@
 <div
     x-data="Wallet()"
-    class="flex flex-col py-3 px-6 md:py-0 md:px-0 dark:text-theme-secondary-200 dark:bg-theme-dark-900 dark:border-transparent"
+    class="flex flex-col py-3 px-6 md:py-0 md:px-0 dark:border-transparent dark:text-theme-secondary-200 dark:bg-theme-dark-900"
     :class="{
         'border-t bg-theme-secondary-200 border-theme-secondary-300 md:border-0 md:bg-transparent': isConnected,
     }"
