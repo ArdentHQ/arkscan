@@ -80,64 +80,63 @@ jobs:
                   commit_message: "style: resolve style guide violations"
                   branch: ${{ github.head_ref }}
 
-    # unit:
-    #     needs: [conflicts, format]
-    #     # needs: [conflicts, analyse, format]
+    unit:
+        needs: [conflicts, analyse, format]
 
-    #     runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
-    #     services:
-    #         postgres:
-    #             image: postgres:12
-    #             env:
-    #                 POSTGRES_DB: arkscan_test_db
-    #                 POSTGRES_USER: arkscan_test_db
-    #                 POSTGRES_PASSWORD: password
-    #             ports:
-    #                 - 5432:5432
-    #             options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        services:
+            postgres:
+                image: postgres:12
+                env:
+                    POSTGRES_DB: arkscan_test_db
+                    POSTGRES_USER: arkscan_test_db
+                    POSTGRES_PASSWORD: password
+                ports:
+                    - 5432:5432
+                options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-    #     steps:
-    #         - name: Checkout code
-    #           uses: actions/checkout@v3
-    #           with:
-    #               ref: ${{ github.head_ref }}
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+              with:
+                  ref: ${{ github.head_ref }}
 
-    #         - name: Setup PHP
-    #           uses: shivammathur/setup-php@v2
-    #           with:
-    #               php-version: "8.1"
-    #               extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
-    #               coverage: pcov
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.1"
+                  extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
+                  coverage: pcov
 
-    #         - name: Cache dependencies
-    #           uses: actions/cache@v3
-    #           with:
-    #               path: ~/.composer/cache/files
-    #               key: dependencies-composer-${{ hashFiles('composer.json') }}
+            - name: Cache dependencies
+              uses: actions/cache@v3
+              with:
+                  path: ~/.composer/cache/files
+                  key: dependencies-composer-${{ hashFiles('composer.json') }}
 
-    #         - name: Install Composer dependencies
-    #           run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
+            - name: Install Composer dependencies
+              run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
-    #         - name: Install Yarn dependencies
-    #           run: yarn --frozen-lockfile
+            - name: Install Yarn dependencies
+              run: yarn --frozen-lockfile
 
-    #         - name: Prepare the database
-    #           run: touch database/database.sqlite
+            - name: Prepare the database
+              run: touch database/database.sqlite
 
-    #         - name: Prepare the application
-    #           run: cp .env.example .env && php artisan key:generate
+            - name: Prepare the application
+              run: cp .env.example .env && php artisan key:generate
 
-    #         - name: Clear Config
-    #           run: php artisan config:clear && php artisan route:clear
+            - name: Clear Config
+              run: php artisan config:clear && php artisan route:clear
 
-    #         - name: Run Tests
-    #           run: composer test:coverage
-    #           env:
-    #               DB_CONNECTION: pgsql
-    #               DB_HOST: 127.0.0.1
-    #               DB_PORT: 5432
-    #               DB_DATABASE: arkscan_test_db
-    #               DB_USERNAME: arkscan_test_db
-    #               DB_PASSWORD: password
-    #               PDO_ATTR_PERSISTENT: false
+            - name: Run Tests
+              run: composer test:coverage
+              env:
+                  DB_CONNECTION: pgsql
+                  DB_HOST: 127.0.0.1
+                  DB_PORT: 5432
+                  DB_DATABASE: arkscan_test_db
+                  DB_USERNAME: arkscan_test_db
+                  DB_PASSWORD: password
+                  PDO_ATTR_PERSISTENT: false
