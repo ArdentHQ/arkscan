@@ -7,7 +7,7 @@ use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 
 it('should execute the command', function () {
-    $wallet = Wallet::factory()->create();
+    $wallet = Wallet::factory()->activeValidator()->create();
 
     (new CacheValidatorWallets())->handle($cache = new WalletCache());
 
