@@ -3,19 +3,17 @@
 declare(strict_types=1);
 
 use App\Actions\CacheTotalSupply;
-use App\Models\Block;
+use App\Models\State;
 use App\Services\Cache\NetworkCache;
 
 it('should execute the command', function () {
-    $block = Block::factory()->create(['height' => 1000]);
+    State::create([
+        'id'     => 1,
+        'height' => 1000,
+        'supply' => 120.0 * 1e8,
+    ]);
 
     CacheTotalSupply::execute();
 
-    expect((new NetworkCache())->getTotalSupply())->toBe((float) $block->validator->balance->toNumber());
-});
-
-it('should execute the command with missing data', function () {
-    CacheTotalSupply::execute();
-
-    expect((new NetworkCache())->getTotalSupply())->toBe(0.0);
+    expect((new NetworkCache())->getTotalSupply())->toBe(120.0);
 });
