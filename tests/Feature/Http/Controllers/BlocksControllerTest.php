@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 use App\Models\Block;
 use App\Models\ForgingStats;
-use App\Services\Timestamp;
 use Carbon\Carbon;
 
 beforeEach(fn () => ForgingStats::truncate());
 
 it('should render the page without any errors', function () {
     Block::factory()->create([
-        'timestamp'    => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
+        'timestamp'    => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'reward'       => 2 * 1e8,
         'total_amount' => 904 * 1e8,
     ]);
@@ -26,25 +25,25 @@ it('should get the block stats for the last 24 hours', function () {
 
     foreach (range(1, 19) as $seconds) {
         ForgingStats::factory()->create([
-            'timestamp'     => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->subSecond($seconds)->unix())->unix(),
+            'timestamp'     => Carbon::parse('2021-04-14 13:02:04')->subSecond($seconds)->getTimestampMs(),
             'missed_height' => 1,
         ]);
     }
 
     Block::factory(147)->create([
-        'timestamp'    => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
+        'timestamp'    => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'reward'       => 2 * 1e8,
         'total_amount' => 13 * 1e8,
     ]);
 
     Block::factory()->create([
-        'timestamp'    => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
+        'timestamp'    => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'reward'       => 2 * 1e8,
         'total_amount' => 904 * 1e8,
     ]);
 
     Block::factory(12)->create([
-        'timestamp'    => Timestamp::fromUnix(Carbon::parse('2021-04-13 13:02:04')->unix())->unix(),
+        'timestamp'    => Carbon::parse('2021-04-13 13:02:04')->getTimestampMs(),
         'reward'       => 2 * 1e8,
         'total_amount' => 123 * 1e8,
     ]);
@@ -97,7 +96,7 @@ it('should show the correct decimal places for the stats', function ($decimalPla
     $this->travelTo('2021-04-14 16:02:04');
 
     Block::factory()->create([
-        'timestamp'    => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
+        'timestamp'    => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'reward'       => $totalRewards * 1e8,
         'total_amount' => $largestAmount * 1e8,
     ]);
@@ -146,14 +145,14 @@ it('should cache the transaction stats for 5 minutes', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
     Block::factory(148)->create([
-        'timestamp'    => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
+        'timestamp'    => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'reward'       => 2 * 1e8,
         'total_amount' => 13 * 1e8,
     ]);
 
     foreach (range(1, 19) as $seconds) {
         ForgingStats::factory()->create([
-            'timestamp'     => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->subSecond($seconds)->unix())->unix(),
+            'timestamp'     => Carbon::parse('2021-04-14 13:02:04')->subSecond($seconds)->getTimestampMs(),
             'missed_height' => 1,
         ]);
     }
@@ -169,14 +168,14 @@ it('should cache the transaction stats for 5 minutes', function () {
         ]);
 
     Block::factory(12)->create([
-        'timestamp'    => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:03:04')->unix())->unix(),
+        'timestamp'    => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
         'reward'       => 2 * 1e8,
         'total_amount' => 14 * 1e8,
     ]);
 
     foreach (range(1, 2) as $seconds) {
         ForgingStats::factory()->create([
-            'timestamp'     => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:03:04')->subSecond($seconds)->unix())->unix(),
+            'timestamp'     => Carbon::parse('2021-04-14 13:03:04')->subSecond($seconds)->getTimestampMs(),
             'missed_height' => 1,
         ]);
     }

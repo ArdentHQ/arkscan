@@ -24,7 +24,7 @@ final class ValidatorTracker
         $height    = $lastBlock->height->toNumber();
 
         // Act
-        $forgingInfo = ForgingInfoCalculator::calculate($validators, $startHeight, $height);
+        $forgingInfo = ForgingInfoCalculator::calculate($startHeight, $height);
 
         // Map Next Forgers...
         $forgingIndex = 2; // We start at 2 to skip 0 which results in 0 as time and 1 which would be the next forger.

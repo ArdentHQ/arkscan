@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Facades\Network;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -38,10 +39,15 @@ final class WalletFactory extends Factory
             return [
                 'attributes' => [
                     'username'                => $this->faker->userName,
-                    'validatorRank'           => $this->faker->numberBetween(1, 51),
-                    'validatorVoteBalance'    => $this->faker->numberBetween(1, 1000) * 1e8,
+                    'validatorPublicKey'      => $this->faker->publicKey,
+                    'validatorRank'           => $this->faker->numberBetween(1, Network::validatorCount()),
+                    'validatorApproval'       => $this->faker->randomFloat(2, 0, 2),
+                    'validatorPublicKey'      => $this->faker->publicKey,
+                    'validatorForgedFees'     => $this->faker->numberBetween(1, 100) * 1e8,
+                    'validatorForgedTotal'    => $this->faker->numberBetween(1, 100) * 1e8,
+                    'validatorVoteBalance'    => $this->faker->numberBetween(1, 100) * 1e8,
+                    'validatorForgedRewards'  => $this->faker->numberBetween(1, 100) * 1e8,
                     'validatorProducedBlocks' => $this->faker->numberBetween(1, 1000),
-                    'validatorMissedBlocks'   => $this->faker->numberBetween(1, 1000),
                 ],
             ];
         });
@@ -50,14 +56,28 @@ final class WalletFactory extends Factory
     public function standbyValidator(bool $isResigned = true)
     {
         return $this->state(function () use ($isResigned) {
+            if ($isResigned) {
+                return [
+                    'attributes' => [
+                        'username'             => $this->faker->userName,
+                        'validatorResigned'    => true,
+                        'validatorPublicKey'   => $this->faker->publicKey,
+                        'validatorVoteBalance' => $this->faker->numberBetween(1, 100) * 1e8,
+                    ],
+                ];
+            }
+
             return [
                 'attributes' => [
                     'username'                => $this->faker->userName,
-                    'validatorResigned'       => $isResigned,
-                    'validatorRank'           => $this->faker->numberBetween(52, 102),
+                    'validatorRank'           => $this->faker->numberBetween(Network::validatorCount() + 1, (Network::validatorCount() * 2) - 1),
+                    'validatorApproval'       => $this->faker->randomFloat(2, 0, 2),
+                    'validatorPublicKey'      => $this->faker->publicKey,
+                    'validatorForgedFees'     => $this->faker->numberBetween(1, 100) * 1e8,
+                    'validatorForgedTotal'    => $this->faker->numberBetween(1, 100) * 1e8,
                     'validatorVoteBalance'    => $this->faker->numberBetween(1, 100) * 1e8,
+                    'validatorForgedRewards'  => $this->faker->numberBetween(1, 100) * 1e8,
                     'validatorProducedBlocks' => $this->faker->numberBetween(1, 1000),
-                    'validatorMissedBlocks'   => $this->faker->numberBetween(1, 1000),
                 ],
             ];
         });
