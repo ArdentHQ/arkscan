@@ -2,7 +2,7 @@
     x-data="Wallet()"
     class="flex flex-col py-3 px-6 md:py-0 md:px-0"
     :class="{
-        'border-t bg-theme-secondary-200 border-theme-secondary-300 md:border-0 md:bg-transparent': isConnected,
+        'border-t bg-theme-secondary-200 dark:text-theme-secondary-200 dark:bg-theme-dark-900 border-theme-secondary-300 dark:border-0 md:border-0 md:bg-transparent': isConnected,
     }"
 >
     <button
@@ -21,7 +21,7 @@
         x-cloak
     >
         <div class="flex items-center space-x-1 min-w-0 text-sm font-semibold">
-            <span class="hidden whitespace-nowrap xs:block">
+            <span class="whitespace-nowrap">
                 @lang('general.navbar.arkconnect.my_address')
             </span>
 
