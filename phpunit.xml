@@ -52,24 +52,8 @@
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit/Actions</directory>
             <directory suffix="Test.php">./tests/Unit/Aggregates</directory>
+            <directory suffix="Test.php">./tests/Unit/Console</directory>
 
-            <file>./tests/Unit/Console/Commands/CacheAddressStatisticsTest.php</file>
-            <file>./tests/Unit/Console/Commands/CacheCurrenciesDataTest.php</file>
-            <file>./tests/Unit/Console/Commands/CacheFeesTest.php</file>
-            <file>./tests/Unit/Console/Commands/CacheMarketDataStatisticsTest.php</file>
-            <file>./tests/Unit/Console/Commands/CacheMultiSignatureAddressesTest.php</file>
-            <file>./tests/Unit/Console/Commands/CacheNetworkAggregatesTest.php</file>
-            <file>./tests/Unit/Console/Commands/CacheUsernamesTest.php</file>
-            <file>./tests/Unit/Console/Commands/CacheValidatorAggregatesTest.php</file>
-            <file>./tests/Unit/Console/Commands/CacheValidatorResignationIdsTest.php</file>
-            <file>./tests/Unit/Console/Commands/ClearExpiredViewsTest.php</file>
-            <file>./tests/Unit/Console/Commands/FetchExchangesDetailsTest.php</file>
-            <file>./tests/Unit/Console/Commands/GenerateVoteReportTest.php</file>
-            <file>./tests/Unit/Console/Commands/ImportCommandTest.php</file>
-            <file>./tests/Unit/Console/Commands/LoadExchangesTest.php</file>
-            <file>./tests/Unit/Console/Commands/ScoutIndexModelsTest.php</file>
-            <file>./tests/Unit/Console/Commands/ScoutPauseIndexingTest.php</file>
-            <file>./tests/Unit/Console/Commands/ScoutResumeIndexingTest.php</file>
             <file>./tests/Unit/DTO/MarketDataTest.php</file>
 
             <file>./tests/Unit/Jobs/CacheMultiSignatureAddressTest.php</file>
