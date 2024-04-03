@@ -25,6 +25,13 @@ final class ForgingStats extends Model
     use SearchesCaseInsensitive;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * The "type" of the primary key ID.
      *
      * @var string
