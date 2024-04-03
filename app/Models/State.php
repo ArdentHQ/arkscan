@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 final class State extends Model
 {
+    public $timestamps = false;
+
     /**
      * The attributes that should be cast.
      *
@@ -23,8 +25,6 @@ final class State extends Model
         'supply'    => BigInteger::class,
         'height'    => BigInteger::class,
     ];
-
-    public $timestamps = false;
 
     /**
      * The table associated with the model.

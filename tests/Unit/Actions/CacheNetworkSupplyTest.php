@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Actions\CacheNetworkSupply;
-use App\Models\Block;
 use App\Models\State;
 use App\Services\Cache\NetworkCache;
 
