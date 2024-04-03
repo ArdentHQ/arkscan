@@ -24,6 +24,8 @@ final class State extends Model
         'height'    => BigInteger::class,
     ];
 
+    public $timestamps = false;
+
     /**
      * The table associated with the model.
      *
