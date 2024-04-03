@@ -23,6 +23,8 @@ final class BuildForgingStats implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    const DEFAULT_RANGE_SECONDS = 24 * 60 * 60 * 30; // 30 days
+
     public function __construct(public int $height, public float $numberOfDays)
     {
     }
@@ -111,7 +113,7 @@ final class BuildForgingStats implements ShouldQueue
                 ->firstOr(function (): ForgingStats {
                     // by default if forging_stats table is not initialized we just build stats for past 30 days
                     $forgingStatsPast30Days            = new ForgingStats();
-                    $forgingStatsPast30Days->timestamp = Timestamp::now()->getTimestamp() - 60 * 60 * 24 * 30;
+                    $forgingStatsPast30Days->timestamp = Timestamp::now()->getTimestamp() - self::DEFAULT_RANGE_SECONDS;
 
                     return $forgingStatsPast30Days;
                 })
@@ -120,7 +122,7 @@ final class BuildForgingStats implements ShouldQueue
             $timestampForHeight = $this->getTimestampForHeight($height);
             $timeRange          = $timestampForHeight - $lastForgingInfoTs;
 
-            if ($timeRange < 0 || $timeRange > 24 * 60 * 60 * 30) {
+            if ($timeRange < 0 || $timeRange > self::DEFAULT_RANGE_SECONDS) {
                 return 0;
             }
         }
@@ -130,7 +132,7 @@ final class BuildForgingStats implements ShouldQueue
 
     private function deleteMoreThan30DaysOldStats(int $refTimestamp): void
     {
-        ForgingStats::where('timestamp', '<', $refTimestamp - 30 * 24 * 60 * 60)->delete();
+        ForgingStats::where('timestamp', '<', $refTimestamp - self::DEFAULT_RANGE_SECONDS)->delete();
     }
 
     private function getTimestampForHeight(int $height): int
