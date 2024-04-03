@@ -80,9 +80,9 @@ it('should not update prices if coingecko throws an exception', function () {
     $crypto->getCache()->flush();
 
     Http::fake([
-        'api.coingecko.com/*' => function () {
+        'api.coingecko.com/*' => Http::response(function () {
             throw new ConnectionException();
-        },
+        }),
     ]);
 
     $crypto->setVolume('USD', '123');
