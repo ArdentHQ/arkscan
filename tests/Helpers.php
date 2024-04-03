@@ -183,7 +183,7 @@ function createRoundEntry(int $round, int $height, SupportCollection $wallets)
 
 // The initial validator wallets are used as an index for the performances.
 // This is to ensure the SAME validator misses or forges per round
-function createRealisticRound(array $performances, $context)
+function createRealisticRound(array $performances, $context, bool $cachePerformance = true)
 {
     Round::truncate();
     Block::truncate();
@@ -224,7 +224,9 @@ function createRealisticRound(array $performances, $context)
 
     (new NetworkCache())->setHeight(fn (): int => $height - 1);
 
-    (new CacheValidatorPerformance())->handle();
+    if ($cachePerformance) {
+        (new CacheValidatorPerformance())->handle();
+    }
 
     return [$validatorWallets, $round, $height];
 }
@@ -259,8 +261,15 @@ function createFullRound(&$round, &$height, $validatorWallets, $context, $didFor
     $height += $blockCount;
 }
 
-function createPartialRound(int &$round, int &$height, int $blocks, $context, string $missedPublicKey = null, string $requiredPublicKey = null)
-{
+function createPartialRound(
+    int &$round,
+    int &$height,
+    int $blocks,
+    $context,
+    string $missedPublicKey = null,
+    string $requiredPublicKey = null,
+    bool $cachePerformance = true,
+) {
     createRoundEntry($round, $height, Wallet::all());
     $validators = getRoundValidators(false, $round);
 
@@ -329,7 +338,9 @@ function createPartialRound(int &$round, int &$height, int $blocks, $context, st
 
     (new NetworkCache())->setHeight(fn (): int => $height - 1);
 
-    (new CacheValidatorPerformance())->handle();
+    if ($cachePerformance) {
+        (new CacheValidatorPerformance())->handle();
+    }
 }
 
 function getRoundValidators(bool $withBlock = true, int $roundNumber = null): SupportCollection
