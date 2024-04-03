@@ -1,6 +1,6 @@
 <div
     x-data="Wallet()"
-    class="flex flex-col py-3 px-6 md:py-0 md:px-0"
+    class="flex flex-col py-3 px-6 md:py-0 md:px-0 dark:border-transparent dark:text-theme-dark-200 dark:bg-theme-dark-900"
     :class="{
         'border-t bg-theme-secondary-200 border-theme-secondary-300 md:border-0 md:bg-transparent': isConnected,
     }"
@@ -21,7 +21,7 @@
         x-cloak
     >
         <div class="flex items-center space-x-1 min-w-0 text-sm font-semibold">
-            <span class="hidden whitespace-nowrap xs:block">
+            <span class="whitespace-nowrap">
                 @lang('general.navbar.arkconnect.my_address')
             </span>
 
@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <div class="flex space-x-4 md:hidden">
+        <div class="flex space-x-4 md:hidden dark:text-theme-dark-300">
             <a
                 x-on:click="copy"
                 data-tippy-content="@lang('tooltips.copied')"
