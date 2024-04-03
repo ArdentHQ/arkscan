@@ -91,7 +91,7 @@ final class CacheAnnualStatistics extends Command
 
     private function cacheCurrentYear(StatisticsCache $cache): void
     {
-        $startOfYear = (int) Carbon::now()->startOfYear()->getTimestampMs();
+        $startOfYear = Carbon::now()->startOfYear()->getTimestampMs();
         $year        = Carbon::now()->year;
 
         $transactionData = DB::connection('explorer')
