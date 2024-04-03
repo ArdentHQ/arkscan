@@ -7,13 +7,12 @@ use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
-
 use function Tests\createRealisticRound;
 use function Tests\createRoundEntry;
 
 it('should cache the past performance for a public key', function () {
     $currentRound = 16;
-    $cache = new WalletCache();
+    $cache        = new WalletCache();
 
     $wallets = Wallet::factory(Network::validatorCount())
         ->activeValidator()

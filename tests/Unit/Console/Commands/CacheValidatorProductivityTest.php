@@ -7,7 +7,6 @@ use App\Facades\Network;
 use App\Jobs\CacheProductivityByPublicKey;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Queue;
-
 use function Tests\createRoundEntry;
 
 it('should execute the command', function () {

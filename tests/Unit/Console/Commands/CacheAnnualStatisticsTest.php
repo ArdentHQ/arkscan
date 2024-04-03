@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Cache\StatisticsCache;

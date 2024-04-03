@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Enums\CoreTransactionTypeEnum;
-use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Transaction;
