@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Cache\StatisticsCache;
@@ -12,7 +11,7 @@ it('should cache annual data for current year', function () {
     $cache       = new StatisticsCache();
     $currentTime = Carbon::now();
     $currentYear = $currentTime->year;
-    $timestamp   = (int) $currentTime->timestamp - (int) Network::epoch()->timestamp;
+    $timestamp   = $currentTime->getTimestampMs();
 
     Transaction::factory()->count(5)->create([
         'timestamp' => $timestamp,
@@ -40,16 +39,17 @@ it('should cache annual data for all time', function () {
     $cache       = new StatisticsCache();
     $currentTime = Carbon::now();
     $currentYear = $currentTime->year;
-    $timestamp   = (int) $currentTime->timestamp - (int) Network::epoch()->timestamp;
+    $timestamp   = $currentTime->getTimestampMs();
 
     // 2017
+    $initialDate = Carbon::parse('2017-03-21 13:00:00');
     Transaction::factory()->count(6)->create([
-        'timestamp' => 1,
+        'timestamp' => $initialDate->getTimestampMs(),
         'amount'    => 10 * 1e8,
         'fee'       => 0.1 * 1e8,
     ]);
     Block::factory()->count(6)->create([
-        'timestamp' => 1,
+        'timestamp' => $initialDate->getTimestampMs(),
     ]);
 
     // 2020, default timestamp. Needed as transaction factory will create blocks in addition

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Enums\CoreTransactionTypeEnum;
-use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Transaction;
@@ -56,7 +55,10 @@ final class CacheValidatorStatistics extends Command
             ->first();
 
         if ($newestActiveValidatorTx !== null) {
-            $cache->setNewestActiveValidator($newestActiveValidatorTx->sender_public_key, (int) Network::epoch()->timestamp + $newestActiveValidatorTx->timestamp);
+            $cache->setNewestActiveValidator(
+                $newestActiveValidatorTx->sender_public_key,
+                $newestActiveValidatorTx->timestamp
+            );
         }
 
         $oldestActiveValidatorTx = Transaction::where('type', '=', CoreTransactionTypeEnum::VALIDATOR_REGISTRATION)
@@ -66,10 +68,18 @@ final class CacheValidatorStatistics extends Command
             ->first();
 
         if ($oldestActiveValidatorTx !== null) {
-            $cache->setOldestActiveValidator($oldestActiveValidatorTx->sender_public_key, (int) Network::epoch()->timestamp + $oldestActiveValidatorTx->timestamp);
+            $cache->setOldestActiveValidator(
+                $oldestActiveValidatorTx->sender_public_key,
+                $oldestActiveValidatorTx->timestamp
+            );
         }
 
-        $mostBlocksForged = Block::select(DB::raw('COUNT(*), generator_public_key'))->groupBy('generator_public_key')->orderBy('count', 'desc')->limit(1)->first();
+        $mostBlocksForged = Block::select(DB::raw('COUNT(*), generator_public_key'))
+            ->groupBy('generator_public_key')
+            ->orderBy('count', 'desc')
+            ->limit(1)
+            ->first();
+
         if ($mostBlocksForged !== null) {
             $cache->setMostBlocksForged($mostBlocksForged->generator_public_key);
         }

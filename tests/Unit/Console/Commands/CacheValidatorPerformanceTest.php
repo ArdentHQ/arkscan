@@ -5,21 +5,24 @@ declare(strict_types=1);
 use App\Console\Commands\CacheValidatorPerformance;
 use App\Facades\Network;
 use App\Models\Block;
-use App\Models\Round;
+use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
-use Illuminate\Support\Facades\Cache;
+use function Tests\createRealisticRound;
+use function Tests\createRoundEntry;
 
 it('should cache the past performance for a public key', function () {
-    $round = 16;
+    $currentRound = 16;
+    $cache        = new WalletCache();
 
-    $publicKey = 'generator';
+    $wallets = Wallet::factory(Network::validatorCount())
+        ->activeValidator()
+        ->create();
 
-    Round::factory()->create([
-        'round'      => $round,
-        'public_key' => $publicKey,
-    ]);
+    $publicKey = $wallets->first()->public_key;
 
-    foreach (range($round - 5, $round - 1) as $round) {
+    foreach (range($currentRound - 5, $currentRound - 1) as $round) {
+        createRoundEntry($round, $round * Network::validatorCount(), $wallets);
+
         Block::factory()->create([
             'generator_public_key' => $publicKey,
             'height'               => $round * Network::validatorCount(),
@@ -27,122 +30,79 @@ it('should cache the past performance for a public key', function () {
     }
 
     expect(Block::whereGeneratorPublicKey($publicKey)->count())->toBe(5);
-    expect(Cache::tags('wallet')->has(md5("performance/$publicKey")))->toBeFalse();
+    expect($cache->getCache()->has(md5('performance/'.$publicKey)))->toBeFalse();
 
     (new CacheValidatorPerformance())->handle();
 
-    expect(Cache::tags('wallet')->has(md5("performance/$publicKey")))->toBeTrue();
-    expect((new WalletCache())->getPerformance($publicKey))->toBe([
+    expect($cache->getCache()->has(md5('performance/'.$publicKey)))->toBeTrue();
+    expect($cache->getPerformance($publicKey))->toBe([
         true,
         true,
     ]);
 });
 
-it('should cache end of a round missed blocks for a public key ', function () {
-    $round = 16;
+it('should cache end of a round missed blocks for a public key', function () {
+    $this->freezeTime();
 
-    $publicKey = 'generator';
+    [0 => $validators] = createRealisticRound([
+        array_fill(0, 53, true),
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 48, true),
+        ],
+        [ // Doesn't use data from the last round
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 48, true),
+        ],
+    ], $this, false);
 
-    Round::factory()->create([
-        'round'      => $round,
-        'public_key' => $publicKey,
-    ]);
+    $publicKey = $validators->get(4)->public_key;
 
-    foreach (range($round - 5, $round - 2) as $round) {
-        Block::factory()->create([
-            'generator_public_key' => $publicKey,
-            'height'               => $round * Network::validatorCount(),
-        ]);
-    }
+    $cache = new WalletCache();
 
-    expect(Block::whereGeneratorPublicKey($publicKey)->count())->toBe(4);
-    expect(Cache::tags('wallet')->has(md5("performance/$publicKey")))->toBeFalse();
+    expect(Block::whereGeneratorPublicKey($publicKey)->count())->toBe(2);
+    expect($cache->getCache()->has(md5('performance/'.$publicKey)))->toBeFalse();
 
     (new CacheValidatorPerformance())->handle();
 
-    expect(Cache::tags('wallet')->has(md5("performance/$publicKey")))->toBeTrue();
-    expect((new WalletCache())->getPerformance($publicKey))->toBe([
-        true,
-        false,
-    ]);
+    expect($cache->getCache()->has(md5('performance/'.$publicKey)))->toBeTrue();
+    expect($cache->getPerformance($publicKey))->toBe([true, false]);
 });
 
-it('uses the 1st block to set the performance on the first range', function () {
-    $round     = 16;
-    $publicKey = 'generator';
+it('should cache concurrent failures', function () {
+    $this->freezeTime();
 
-    Round::factory()->create([
-        'round'      => $round,
-        'public_key' => $publicKey,
-    ]);
+    [0 => $validators] = createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 48, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 48, true),
+        ],
+        [ // Doesn't use data from the last round
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 48, true),
+        ],
+    ], $this, false);
 
-    // First block in range 1
-    Block::factory()->create([
-        'generator_public_key' => $publicKey,
-        'height'               => (($round - 6) * Network::validatorCount()) + 1, // 511
-    ]);
+    $publicKey = $validators->get(4)->public_key;
+
+    $cache = new WalletCache();
 
     expect(Block::whereGeneratorPublicKey($publicKey)->count())->toBe(1);
-    expect(Cache::tags('wallet')->has(md5("performance/$publicKey")))->toBeFalse();
+    expect($cache->getCache()->has(md5('performance/'.$publicKey)))->toBeFalse();
 
     (new CacheValidatorPerformance())->handle();
 
-    expect(Cache::tags('wallet')->has(md5("performance/$publicKey")))->toBeTrue();
-    expect((new WalletCache())->getPerformance($publicKey))->toBe([
-        false,
-        false,
-    ]);
-});
-
-it('uses the 51st block to set the performance on the first range', function () {
-    $round     = 16;
-    $publicKey = 'generator';
-
-    Round::factory()->create([
-        'round'      => $round,
-        'public_key' => $publicKey,
-    ]);
-
-    // Last blocks in range 1
-    Block::factory()->create([
-        'generator_public_key' => $publicKey,
-        'height'               => ($round - 5) * Network::validatorCount(), // 561
-    ]);
-
-    expect(Block::whereGeneratorPublicKey($publicKey)->count())->toBe(1);
-    expect(Cache::tags('wallet')->has(md5("performance/$publicKey")))->toBeFalse();
-
-    (new CacheValidatorPerformance())->handle();
-
-    expect(Cache::tags('wallet')->has(md5("performance/$publicKey")))->toBeTrue();
-    expect((new WalletCache())->getPerformance($publicKey))->toBe([
-        false,
-        false,
-    ]);
-});
-
-it('uses the 52st block to set the performance on the second range', function () {
-    $round     = 16;
-    $publicKey = 'generator';
-
-    Round::factory()->create([
-        'round'      => $round,
-        'public_key' => $publicKey,
-    ]);
-
-    // First blocks in range 2
-    Block::factory()->create([
-        'generator_public_key' => $publicKey,
-        'height'               => ($round - 5) * Network::validatorCount() + 1, // 562
-    ]);
-
-    expect(Block::whereGeneratorPublicKey($publicKey)->count())->toBe(1);
-    expect(Cache::tags('wallet')->has(md5("performance/$publicKey")))->toBeFalse();
-
-    (new CacheValidatorPerformance())->handle();
-
-    expect(Cache::tags('wallet')->has(md5("performance/$publicKey")))->toBeTrue();
-    expect((new WalletCache())->getPerformance($publicKey))->toBe([
+    expect($cache->getCache()->has(md5('performance/'.$publicKey)))->toBeTrue();
+    expect($cache->getPerformance($publicKey))->toBe([
         false,
         false,
     ]);

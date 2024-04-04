@@ -46,6 +46,13 @@ final class ForgingStats extends Model
     public $incrementing = false;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>

@@ -11,7 +11,7 @@ it('should execute the command', function () {
     Queue::fake();
 
     $validator = Wallet::factory()->create([
-        'attributes' => ['validator' => ['voteBalance' => 100]],
+        'attributes' => ['validatorVoteBalance' => 100],
     ]);
 
     Wallet::factory(10)->create([

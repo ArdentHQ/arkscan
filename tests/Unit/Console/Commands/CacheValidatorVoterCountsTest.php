@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Cache;
 it('should cache the voter count for the public key', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
-            'vote' => Wallet::factory()->create()->public_key,
+            'vote' => Wallet::factory()->activeValidator()->create()->public_key,
         ],
     ]);
 
@@ -27,7 +27,7 @@ it('should cache voter counts', function () {
     $wallet = Wallet::factory()->create([
         'balance'    => 123 * 1e8,
         'attributes' => [
-            'vote' => Wallet::factory()->create()->public_key,
+            'vote' => Wallet::factory()->activeValidator()->create()->public_key,
         ],
     ]);
 

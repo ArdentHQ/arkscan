@@ -11,13 +11,13 @@ it('should cache largest block by amount', function () {
 
     Transaction::factory()->create(['amount' => 0]);
 
-    $largestBlock = Block::factory()->create();
-    Transaction::factory()->create([
-        'amount'   => 1000 * 1e8,
-        'block_id' => $largestBlock->id,
+    $largestBlock = Block::factory()->create([
+        'total_amount' => 1000 * 1e8,
     ]);
 
-    Transaction::factory()->create(['amount' => 0]);
+    Block::factory()->create([
+        'total_amount' => 0,
+    ]);
 
     $this->artisan('explorer:cache-blocks');
 

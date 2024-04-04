@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\StatisticsCache;
+use Carbon\Carbon;
 
 it('should cache validator statistics', function () {
     $cache = new StatisticsCache();
@@ -19,12 +19,12 @@ it('should cache validator statistics', function () {
     $mostBlocks   = Wallet::factory()->activeValidator()->create();
 
     Round::factory()->create([
-        'round'      => 1,
-        'public_key' => $oldestActive->public_key,
-    ]);
-    Round::factory()->create([
-        'round'      => 1,
-        'public_key' => $newestActive->public_key,
+        'round'        => 1,
+        'round_height' => 1,
+        'validators'   => [
+            $oldestActive->public_key,
+            $newestActive->public_key,
+        ],
     ]);
 
     Wallet::factory()->count(5)->create([
@@ -35,13 +35,13 @@ it('should cache validator statistics', function () {
         'attributes' => ['vote' => $leastVoters->public_key],
     ]);
 
-    Transaction::factory()->validatorRegistration()->create([
-        'timestamp'         => 1,
+    $t = Transaction::factory()->validatorRegistration()->create([
+        'timestamp'         => Carbon::now()->addSecond(1)->getTimestampMs(),
         'sender_public_key' => $oldestActive->public_key,
     ]);
 
     Transaction::factory()->validatorRegistration()->create([
-        'timestamp'         => 100,
+        'timestamp'         => Carbon::now()->addSecond(100)->getTimestampMs(),
         'sender_public_key' => $newestActive->public_key,
     ]);
 
@@ -57,8 +57,14 @@ it('should cache validator statistics', function () {
 
     expect($cache->getMostUniqueVoters())->toBe($mostVoters->public_key);
     expect($cache->getLeastUniqueVoters())->toBe($leastVoters->public_key);
-    expect($cache->getOldestActiveValidator())->toBe(['publicKey' => $oldestActive->public_key, 'timestamp' => Network::epoch()->timestamp + 1]);
-    expect($cache->getNewestActiveValidator())->toBe(['publicKey' => $newestActive->public_key, 'timestamp' => Network::epoch()->timestamp + 100]);
+    expect($cache->getOldestActiveValidator())->toBe([
+        'publicKey' => $oldestActive->public_key,
+        'timestamp' => Carbon::now()->addSecond(1)->unix(),
+    ]);
+    expect($cache->getNewestActiveValidator())->toBe([
+        'publicKey' => $newestActive->public_key,
+        'timestamp' => Carbon::now()->addSecond(100)->unix(),
+    ]);
     expect($cache->getMostBlocksForged())->toBe($mostBlocks->public_key);
 });
 
