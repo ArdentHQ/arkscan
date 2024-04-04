@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Contracts\Network as Contract;
+use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Round;
@@ -29,6 +30,7 @@ beforeEach(function () {
         'nonce'      => 1000,
         'attributes' => [
             'validatorVoteBalance' => '100000000000',
+            'validatorPublicKey'   => 'publickey',
         ],
     ]);
 
@@ -236,7 +238,7 @@ it('should determine if the wallet is a validator', function () {
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [
-            'username' => 'John',
+            'validatorPublicKey' => 'publickey',
         ],
     ]));
 
@@ -392,8 +394,9 @@ it('should determine if the validator is missing blocks', function () {
     Rounds::swap(new RoundsMock());
 
     Round::factory()->create([
-        'round'      => '112167',
-        'public_key' => $this->wallet->public_key,
+        'round'        => 112167,
+        'round_height' => 112167 * Network::validatorCount(),
+        'validators'   => [$this->wallet->public_key],
     ]);
 
     Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [false, true]);
@@ -524,7 +527,7 @@ it('should fail to get the productivity if the wallet is a validator', function 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'balance'    => 1e8,
         'attributes' => [
-            'validator' => [],
+            'validatorPublicKey' => 'publickey',
         ],
     ]));
 
@@ -590,12 +593,18 @@ it('should fail to get the voter count if the wallet has no public key', functio
     expect($this->subject->voterCount())->toBe(0);
 });
 
-it('should get the username if the wallet is known', function () {
+it('should get the known wallet name before username', function () {
     fakeKnownWallets();
 
-    $this->subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67']));
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
+        'attributes' => [
+            'validatorPublicKey' => 'publicKey',
+            'username'           => 'john',
+        ],
+    ]));
 
-    expect($this->subject->username())->toBe('ACF Hot Wallet');
+    expect($this->subject->usernameIfNotKnown())->toBe('ACF Hot Wallet');
 });
 
 it('should get the username if the wallet is a validator', function () {
@@ -632,12 +641,13 @@ it('should get the vote url with public key', function () {
     expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?coin=ARK&nethash=');
     expect($this->subject->voteUrl())->toContain('&method=vote');
     expect($this->subject->voteUrl())->toContain('&publicKey=');
-    expect($this->subject->voteUrl())->not->toContain('&validator=');
+    expect($this->subject->voteUrl())->not->toContain('&delegate=');
 });
 
 it('should get the vote url with validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [
+            'validatorPublicKey' => 'publickey',
             'username' => 'john',
         ],
     ]));
@@ -645,14 +655,14 @@ it('should get the vote url with validator', function () {
     expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?coin=ARK&nethash=');
     expect($this->subject->voteUrl())->toContain('&method=vote');
     expect($this->subject->voteUrl())->not->toContain('&publicKey=');
-    expect($this->subject->voteUrl())->toContain('&validator=john');
+    expect($this->subject->voteUrl())->toContain('&delegate=john');
 });
 
 it('should get whether validator is standby', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes'   => [
             'username'      => 'John',
-            'validatorRank' => 52,
+            'validatorRank' => 54,
         ],
     ]));
 
@@ -662,8 +672,9 @@ it('should get whether validator is standby', function () {
 it('should get whether validator is active', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [
-            'username'      => 'John',
-            'validatorRank' => 50,
+            'username'           => 'John',
+            'validatorRank'      => 50,
+            'validatorPublicKey' => 'publickey',
         ],
     ]));
 
@@ -672,7 +683,7 @@ it('should get whether validator is active', function () {
 
 it('should get that resigned validator is not an active validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'attributes'   => [
+        'attributes' => [
             'validatorResigned' => true,
         ],
     ]));
@@ -848,14 +859,12 @@ it('should return count for time since last forged', function () {
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
-            'validator' => [
-                'producedBlocks' => 54321,
-            ],
+            'validatorProducedBlocks' => 54321,
         ],
     ]));
 
     $block = Block::factory()->create([
-        'timestamp'            => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
+        'timestamp'            => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'generator_public_key' => $wallet->publicKey(),
         'height'               => 10,
     ]);
@@ -863,7 +872,7 @@ it('should return count for time since last forged', function () {
     (new WalletCache())->setLastBlock($wallet->publicKey(), [
         'id'        => $block->id,
         'height'    => $block->height->toNumber(),
-        'timestamp' => Timestamp::fromGenesis($block->timestamp)->unix(),
+        'timestamp' => $block->timestamp,
     ]);
 
     $this->travelTo(Carbon::parse('2021-04-14 13:02:14'));
