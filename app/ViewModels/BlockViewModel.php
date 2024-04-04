@@ -9,14 +9,14 @@ use App\Contracts\ViewModel;
 use App\Models\Block;
 use App\Services\ExchangeRate;
 use App\Services\Timestamp;
-use App\ViewModels\Concerns\Block\HasDelegate;
 use App\ViewModels\Concerns\Block\HasTransactions;
+use App\ViewModels\Concerns\Block\HasValidator;
 use App\ViewModels\Concerns\Block\InteractsWithNeighbours;
 use Carbon\Carbon;
 
 final class BlockViewModel implements ViewModel
 {
-    use HasDelegate;
+    use HasValidator;
     use HasTransactions;
     use InteractsWithNeighbours;
 

@@ -18,7 +18,7 @@ it('should return count', function () {
         'fee'    => 0,
     ]);
 
-    Transaction::factory(12)->delegateRegistration()->create([
+    Transaction::factory(12)->validatorRegistration()->create([
         'amount' => 0,
         'fee'    => 25 * 1e8,
     ]);

@@ -40,7 +40,7 @@ trait ValidatesTerm
     private function couldBeUsername(string $term): bool
     {
         // "Known wallets" are not related to anything on-chain, they are set by ARK team and can be seen here: https://github.com/ArkEcosystem/common/tree/master/mainnet
-        // They are not related to delegate usernames that are registered on-chain, meaning that they can be anything.
+        // They are not related to validator usernames that are registered on-chain, meaning that they can be anything.
         // Therefore 30 character restriction is not something that's actively enforced for those names
 
         $regex = '/^[a-zA-Z0-9!@$&_.()\[\] ]+$/';

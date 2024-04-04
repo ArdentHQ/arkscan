@@ -8,7 +8,7 @@ use App\Facades\Network;
 
 final class ForgingInfoCalculator
 {
-    public static function calculate(array $delegates, int $roundHeight, int $currentHeight): array
+    public static function calculate(int $roundHeight, int $currentHeight): array
     {
         [$currentForger, $nextForger] = static::findIndex($roundHeight, $currentHeight);
 
@@ -20,10 +20,10 @@ final class ForgingInfoCalculator
 
     private static function findIndex(int $roundHeight, int $currentHeight): array
     {
-        $activeDelegates    = Network::delegateCount();
+        $activeValidators    = Network::validatorCount();
 
-        $currentForger = ($currentHeight - $roundHeight) % $activeDelegates;
-        $nextForger    = ($currentForger + 1) % $activeDelegates;
+        $currentForger = ($currentHeight - $roundHeight) % $activeValidators;
+        $nextForger    = ($currentForger + 1) % $activeValidators;
 
         return [$currentForger, $nextForger];
     }

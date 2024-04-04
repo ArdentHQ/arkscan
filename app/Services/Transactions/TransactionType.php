@@ -18,42 +18,42 @@ final class TransactionType
     use InteractsWithVendorField;
 
     private array $types = [
-        'isTransfer'                      => 'transfer',
-        'isSecondSignature'               => 'second-signature',
-        'isDelegateRegistration'          => 'delegate-registration',
-        'isUsernameRegistration'          => 'username-registration',
-        'isUsernameResignation'           => 'username-resignation',
-        'isVoteCombination'               => 'vote-combination',
-        'isUnvote'                        => 'unvote',
-        'isVote'                          => 'vote',
-        'isMultiSignature'                => 'multi-signature',
-        'isIpfs'                          => 'ipfs',
-        'isDelegateResignation'           => 'delegate-resignation',
-        'isMultiPayment'                  => 'multi-payment',
-        'isTimelock'                      => 'timelock',
-        'isTimelockClaim'                 => 'timelock-claim',
-        'isTimelockRefund'                => 'timelock-refund',
-        'isBusinessEntityRegistration'    => 'business-entity-registration',
-        'isBusinessEntityResignation'     => 'business-entity-resignation',
-        'isBusinessEntityUpdate'          => 'business-entity-update',
-        'isProductEntityRegistration'     => 'product-entity-registration',
-        'isProductEntityResignation'      => 'product-entity-resignation',
-        'isProductEntityUpdate'           => 'product-entity-update',
-        'isPluginEntityRegistration'      => 'plugin-entity-registration',
-        'isPluginEntityResignation'       => 'plugin-entity-resignation',
-        'isPluginEntityUpdate'            => 'plugin-entity-update',
-        'isModuleEntityRegistration'      => 'module-entity-registration',
-        'isModuleEntityResignation'       => 'module-entity-resignation',
-        'isModuleEntityUpdate'            => 'module-entity-update',
-        'isDelegateEntityRegistration'    => 'delegate-entity-registration',
-        'isDelegateEntityResignation'     => 'delegate-entity-resignation',
-        'isDelegateEntityUpdate'          => 'delegate-entity-update',
-        'isLegacyBusinessRegistration'    => 'legacy-business-registration',
-        'isLegacyBusinessResignation'     => 'legacy-business-resignation',
-        'isLegacyBusinessUpdate'          => 'legacy-business-update',
-        'isLegacyBridgechainRegistration' => 'bridgechain-entity-registration',
-        'isLegacyBridgechainResignation'  => 'bridgechain-entity-resignation',
-        'isLegacyBridgechainUpdate'       => 'bridgechain-entity-update',
+        'isTransfer'                       => 'transfer',
+        'isSecondSignature'                => 'second-signature',
+        'isValidatorRegistration'          => 'validator-registration',
+        'isUsernameRegistration'           => 'username-registration',
+        'isUsernameResignation'            => 'username-resignation',
+        'isVoteCombination'                => 'vote-combination',
+        'isUnvote'                         => 'unvote',
+        'isVote'                           => 'vote',
+        'isMultiSignature'                 => 'multi-signature',
+        'isIpfs'                           => 'ipfs',
+        'isValidatorResignation'           => 'validator-resignation',
+        'isMultiPayment'                   => 'multi-payment',
+        'isTimelock'                       => 'timelock',
+        'isTimelockClaim'                  => 'timelock-claim',
+        'isTimelockRefund'                 => 'timelock-refund',
+        'isBusinessEntityRegistration'     => 'business-entity-registration',
+        'isBusinessEntityResignation'      => 'business-entity-resignation',
+        'isBusinessEntityUpdate'           => 'business-entity-update',
+        'isProductEntityRegistration'      => 'product-entity-registration',
+        'isProductEntityResignation'       => 'product-entity-resignation',
+        'isProductEntityUpdate'            => 'product-entity-update',
+        'isPluginEntityRegistration'       => 'plugin-entity-registration',
+        'isPluginEntityResignation'        => 'plugin-entity-resignation',
+        'isPluginEntityUpdate'             => 'plugin-entity-update',
+        'isModuleEntityRegistration'       => 'module-entity-registration',
+        'isModuleEntityResignation'        => 'module-entity-resignation',
+        'isModuleEntityUpdate'             => 'module-entity-update',
+        'isValidatorEntityRegistration'    => 'validator-entity-registration',
+        'isValidatorEntityResignation'     => 'validator-entity-resignation',
+        'isValidatorEntityUpdate'          => 'validator-entity-update',
+        'isLegacyBusinessRegistration'     => 'legacy-business-registration',
+        'isLegacyBusinessResignation'      => 'legacy-business-resignation',
+        'isLegacyBusinessUpdate'           => 'legacy-business-update',
+        'isLegacyBridgechainRegistration'  => 'bridgechain-entity-registration',
+        'isLegacyBridgechainResignation'   => 'bridgechain-entity-resignation',
+        'isLegacyBridgechainUpdate'        => 'bridgechain-entity-update',
     ];
 
     public function __construct(private Transaction $transaction)
@@ -81,9 +81,9 @@ final class TransactionType
         return $this->isCoreType(CoreTransactionTypeEnum::SECOND_SIGNATURE);
     }
 
-    public function isDelegateRegistration(): bool
+    public function isValidatorRegistration(): bool
     {
-        return $this->isCoreType(CoreTransactionTypeEnum::DELEGATE_REGISTRATION);
+        return $this->isCoreType(CoreTransactionTypeEnum::VALIDATOR_REGISTRATION);
     }
 
     public function isVote(): bool
@@ -113,9 +113,9 @@ final class TransactionType
         return $this->isCoreType(CoreTransactionTypeEnum::IPFS);
     }
 
-    public function isDelegateResignation(): bool
+    public function isValidatorResignation(): bool
     {
-        return $this->isCoreType(CoreTransactionTypeEnum::DELEGATE_RESIGNATION);
+        return $this->isCoreType(CoreTransactionTypeEnum::VALIDATOR_RESIGNATION);
     }
 
     public function isMultiPayment(): bool
@@ -223,19 +223,19 @@ final class TransactionType
         return $this->isEntityWithUpdate(MagistrateTransactionEntityTypeEnum::MODULE);
     }
 
-    public function isDelegateEntityRegistration(): bool
+    public function isValidatorEntityRegistration(): bool
     {
-        return $this->isEntityWithRegistration(MagistrateTransactionEntityTypeEnum::DELEGATE);
+        return $this->isEntityWithRegistration(MagistrateTransactionEntityTypeEnum::VALIDATOR);
     }
 
-    public function isDelegateEntityResignation(): bool
+    public function isValidatorEntityResignation(): bool
     {
-        return $this->isEntityWithResignation(MagistrateTransactionEntityTypeEnum::DELEGATE);
+        return $this->isEntityWithResignation(MagistrateTransactionEntityTypeEnum::VALIDATOR);
     }
 
-    public function isDelegateEntityUpdate(): bool
+    public function isValidatorEntityUpdate(): bool
     {
-        return $this->isEntityWithUpdate(MagistrateTransactionEntityTypeEnum::DELEGATE);
+        return $this->isEntityWithUpdate(MagistrateTransactionEntityTypeEnum::VALIDATOR);
     }
 
     public function isLegacyBusinessRegistration(): bool
@@ -278,7 +278,7 @@ final class TransactionType
             return false;
         }
 
-        if ($this->isDelegateRegistration()) {
+        if ($this->isValidatorRegistration()) {
             return false;
         }
 
@@ -302,7 +302,7 @@ final class TransactionType
             return false;
         }
 
-        if ($this->isDelegateResignation()) {
+        if ($this->isValidatorResignation()) {
             return false;
         }
 
@@ -374,15 +374,15 @@ final class TransactionType
             return false;
         }
 
-        if ($this->isDelegateEntityRegistration()) {
+        if ($this->isValidatorEntityRegistration()) {
             return false;
         }
 
-        if ($this->isDelegateEntityResignation()) {
+        if ($this->isValidatorEntityResignation()) {
             return false;
         }
 
-        if ($this->isDelegateEntityUpdate()) {
+        if ($this->isValidatorEntityUpdate()) {
             return false;
         }
 
@@ -491,8 +491,8 @@ final class TransactionType
             return [$containsVote, $containsUnvote];
         }
 
-        $containsVote   = ! empty(Arr::get($this->transaction->asset, 'votes', []));
-        $containsUnvote = ! empty(Arr::get($this->transaction->asset, 'unvotes', []));
+        $containsVote   = count(Arr::get($this->transaction->asset, 'votes', [])) !== 0;
+        $containsUnvote = count(Arr::get($this->transaction->asset, 'unvotes', [])) !== 0;
 
         return [$containsVote, $containsUnvote];
     }

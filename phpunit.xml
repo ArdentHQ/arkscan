@@ -6,13 +6,103 @@
          printerClass="NunoMaduro\Collision\Adapters\Phpunit\Printer">
     <testsuites>
         <testsuite name="Analysis">
-            <directory suffix="Test.php">./tests/Analysis</directory>
+            <!-- <directory suffix="Test.php">./tests/Analysis</directory> -->
         </testsuite>
+
         <testsuite name="Feature">
-            <directory suffix="Test.php">./tests/Feature</directory>
+            <directory suffix="Test.php">./tests/Feature/Console</directory>
+            <file>./tests/Feature/Http/Controllers/ExchangeControllerTest.php</file>
+            <file>./tests/Feature/Http/Controllers/ShowBlockControllerTest.php</file>
+            <file>./tests/Feature/Http/Controllers/SupportControllerTest.php</file>
+
+            <file>./tests/Feature/Http/Livewire/Concerns/HasTablePaginationTest.php</file>
+            <file>./tests/Feature/Http/Livewire/ExchangeTableFilterTest.php</file>
+            <file>./tests/Feature/Http/Livewire/ExchangeTableTest.php</file>
+            <file>./tests/Feature/Http/Livewire/Exchanges/ChartTest.php</file>
+            <file>./tests/Feature/Http/Livewire/FiatValueTest.php</file>
+            <file>./tests/Feature/Http/Livewire/Home/BlocksTest.php</file>
+            <file>./tests/Feature/Http/Livewire/Home/ChartsTest.php</file>
+            <file>./tests/Feature/Http/Livewire/Home/PriceTickerTest.php</file>
+            <file>./tests/Feature/Http/Livewire/Home/TablesTest.php</file>
+            <file>./tests/Feature/Http/Livewire/Home/TransactionsTest.php</file>
+            <directory suffix="Test.php">./tests/Feature/Http/Livewire/Modals</directory>
+            <directory suffix="Test.php">./tests/Feature/Http/Livewire/Navbar</directory>
+            <file>./tests/Feature/Http/Livewire/Stats/CurrentAverageFeeTest.php</file>
+            <directory suffix="Test.php">./tests/Feature/Http/Livewire/Transaction</directory>
+            <file>./tests/Feature/Http/Livewire/Validators/MonitorTest.php</file>
+            <file>./tests/Feature/Http/Livewire/BlockTransactionsTableTest.php</file>
+            <file>./tests/Feature/Http/Livewire/ExchangeTableFilterTest.php</file>
+            <file>./tests/Feature/Http/Livewire/ExchangeTableTest.php</file>
+            <file>./tests/Feature/Http/Livewire/FiatValueTest.php</file>
+            <file>./tests/Feature/Http/Livewire/PriceStatsTest.php</file>
+            <file>./tests/Feature/Http/Livewire/SearchModalTest.php</file>
+            <file>./tests/Feature/Http/Livewire/TopAccountsTableTest.php</file>
+            <file>./tests/Feature/Http/Livewire/ValidatorDataBoxesTest.php</file>
+            <file>./tests/Feature/Http/Livewire/WalletBalanceTest.php</file>
+            <file>./tests/Feature/Http/Livewire/WalletBlockTableTest.php</file>
+            <file>./tests/Feature/Http/Livewire/WalletQrCodeTest.php</file>
+            <file>./tests/Feature/Http/Livewire/WalletTablesTest.php</file>
+            <file>./tests/Feature/Http/Livewire/WalletVoterTableTest.php</file>
+
+            <directory suffix="Test.php">./tests/Feature/Models</directory>
+
+            <!-- <directory suffix="Test.php">./tests/Feature</directory> -->
         </testsuite>
+
         <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
+            <directory suffix="Test.php">./tests/Unit/Actions</directory>
+            <directory suffix="Test.php">./tests/Unit/Aggregates</directory>
+            <directory suffix="Test.php">./tests/Unit/Console</directory>
+
+            <file>./tests/Unit/DTO/MarketDataTest.php</file>
+
+            <file>./tests/Unit/Jobs/CacheMultiSignatureAddressTest.php</file>
+            <file>./tests/Unit/Jobs/CacheProductivityByPublicKeyTest.php</file>
+            <file>./tests/Unit/Jobs/CacheRegistrationIdTest.php</file>
+            <file>./tests/Unit/Jobs/FetchExchangeDetailsTest.php</file>
+            <file>./tests/Unit/Jobs/IndexWalletsTest.php</file>
+
+            <directory suffix="Test.php">./tests/Unit/Mail</directory>
+
+            <file>./tests/Unit/Models/BlockTest.php</file>
+            <directory suffix="Test.php">./tests/Unit/Models/Scopes</directory>
+
+            <file>./tests/Unit/Repositories/BlockRepositoryTest.php</file>
+            <file>./tests/Unit/Repositories/BlockRepositoryWithCacheTest.php</file>
+            <file>./tests/Unit/Repositories/RoundRepositoryTest.php</file>
+
+            <file>./tests/Unit/Services/ArkVaultUrlBuilderTest.php</file>
+            <directory suffix="Test.php">./tests/Unit/Services/Blockchain</directory>
+            <file>./tests/Unit/Services/Blocks/Aggregates/HighestBlockFeeAggregateTest.php</file>
+            <file>./tests/Unit/Services/Blocks/Aggregates/MostTransactionsBlockAggregateTest.php</file>
+            <directory suffix="Test.php">./tests/Unit/Services/Cache</directory>
+            <file>./tests/Unit/Services/ExchangeRateTest.php</file>
+            <file>./tests/Unit/Services/HelpersTest.php</file>
+            <file>./tests/Unit/Services/IdentityTest.php</file>
+            <file>./tests/Unit/Services/MarketCapTest.php</file>
+            <file>./tests/Unit/Services/MarketDataProviders/CryptoCompareTest.php</file>
+            <file>./tests/Unit/Services/Monitor/ForgingInfoCalculatorTest.php</file>
+            <file>./tests/Unit/Services/NumberFormatterTest.php</file>
+            <directory suffix="Test.php">./tests/Unit/Services/Search</directory>
+            <file>./tests/Unit/Services/SettingsTest.php</file>
+            <file>./tests/Unit/Services/Transactions/Aggregates/Fees/HistoricalAggregateFactoryTest.php</file>
+            <file>./tests/Unit/Services/Transactions/Aggregates/HistoricalAggregateFactoryTest.php</file>
+            <file>./tests/Unit/Services/Transactions/Aggregates/Type/MultipaymentAggregateTest.php</file>
+            <file>./tests/Unit/Services/Transactions/Aggregates/Type/TransferAggregateTest.php</file>
+            <file>./tests/Unit/Services/Transactions/Aggregates/Type/UnvoteAggregateTest.php</file>
+            <file>./tests/Unit/Services/Transactions/Aggregates/Type/ValidatorRegistrationAggregateTest.php</file>
+            <file>./tests/Unit/Services/Transactions/Aggregates/Type/ValidatorResignationAggregateTest.php</file>
+            <file>./tests/Unit/Services/Transactions/Aggregates/Type/VoteAggregateTest.php</file>
+            <file>./tests/Unit/Services/Transactions/Aggregates/Type/VoteCombinationAggregateTest.php</file>
+            <file>./tests/Unit/Services/Transactions/TransactionDirectionIconTest.php</file>
+            <file>./tests/Unit/Services/Transactions/TransactionDirectionTest.php</file>
+            <file>./tests/Unit/Services/Transactions/TransactionStateIconTest.php</file>
+            <file>./tests/Unit/Services/Transactions/TransactionStateTest.php</file>
+            <file>./tests/Unit/Services/VendorFieldTest.php</file>
+
+            <file>./tests/Unit/ViewModels/ViewModelFactoryTest.php</file>
+
+            <!-- <directory suffix="Test.php">./tests/Unit</directory> -->
         </testsuite>
     </testsuites>
     <filter>

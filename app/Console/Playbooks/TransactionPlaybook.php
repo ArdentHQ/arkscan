@@ -22,7 +22,7 @@ final class TransactionPlaybook extends Playbook
 
         Transaction::factory(10)->secondSignature()->create();
 
-        Transaction::factory(10)->delegateRegistration()->create();
+        Transaction::factory(10)->validatorRegistration()->create();
 
         Transaction::factory(10)->vote()->create();
 
@@ -32,7 +32,7 @@ final class TransactionPlaybook extends Playbook
 
         Transaction::factory(10)->multiPayment()->create();
 
-        Transaction::factory(10)->delegateResignation()->create();
+        Transaction::factory(10)->validatorResignation()->create();
 
         Transaction::factory(10)->timelock()->create();
 

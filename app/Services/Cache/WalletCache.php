@@ -37,7 +37,7 @@ final class WalletCache implements Contract
 
     public function getPerformance(string $publicKey): array
     {
-        return $this->get(sprintf('performance/%s', $publicKey), []);
+        return $this->get(sprintf('performance/%s', $publicKey), [true, true]);
     }
 
     public function setPerformance(string $publicKey, array $value): void
@@ -95,6 +95,21 @@ final class WalletCache implements Contract
         $this->put(sprintf('username_by_address/%s', $address), $username);
     }
 
+    public function forgetUsernameByAddress(string $address): void
+    {
+        $this->forget(sprintf('username_by_address/%s', $address));
+    }
+
+    public function getValidatorPublicKeyByAddress(string $address): ?string
+    {
+        return $this->get(sprintf('validator_public_key_by_address/%s', $address));
+    }
+
+    public function setValidatorPublicKeyByAddress(string $address, string $validatorPublicKey): void
+    {
+        $this->put(sprintf('validator_public_key_by_address/%s', $address), $validatorPublicKey);
+    }
+
     public function getUsernameByPublicKey(string $publicKey): ?string
     {
         return $this->get(sprintf('username_by_public_key/%s', $publicKey));
@@ -105,14 +120,19 @@ final class WalletCache implements Contract
         $this->put(sprintf('username_by_public_key/%s', $publicKey), $username);
     }
 
-    public function getDelegate(string $publicKey): ?Wallet
+    public function forgetUsernameByPublicKey(string $publicKey): void
     {
-        return $this->get(sprintf('delegate/%s', $publicKey));
+        $this->forget(sprintf('username_by_public_key/%s', $publicKey));
     }
 
-    public function setDelegate(string $publicKey, Wallet $wallet): void
+    public function getValidator(string $publicKey): ?Wallet
     {
-        $this->put(sprintf('delegate/%s', $publicKey), $wallet);
+        return $this->get(sprintf('validator/%s', $publicKey));
+    }
+
+    public function setValidator(string $publicKey, Wallet $wallet): void
+    {
+        $this->put(sprintf('validator/%s', $publicKey), $wallet);
     }
 
     public function getVoterCount(string $publicKey): int

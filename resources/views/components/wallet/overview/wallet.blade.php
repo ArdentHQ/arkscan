@@ -3,7 +3,7 @@
 <x-wallet.overview.item :title="trans('general.overview')">
     <x-wallet.overview.item-entry
         :title="trans('pages.wallet.name')"
-        :value="$wallet->name()"
+        :value="$wallet->usernameBeforeKnown()"
     />
 
     <x-wallet.overview.item-entry :title="trans('pages.wallet.balance')">

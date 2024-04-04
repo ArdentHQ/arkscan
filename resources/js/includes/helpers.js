@@ -12,15 +12,8 @@ const delimiters = {
 
 export const arktoshiToNumber = (value) => value / 1e8;
 
-export const timeSinceEpoch = (date, network) => {
-    const epoch = dayjs(network.epoch);
-
-    let duration = date.unix() - epoch.unix();
-    if (duration < 0) {
-        return 0;
-    }
-
-    return duration;
+export const queryTimestamp = (date) => {
+    return date.unix() * 1000;
 };
 
 export const getDateRange = (dateRange) => {

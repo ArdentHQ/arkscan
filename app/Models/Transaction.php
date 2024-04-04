@@ -11,8 +11,6 @@ use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
-use App\Models\Scopes\DelegateRegistrationScope;
-use App\Models\Scopes\DelegateResignationScope;
 use App\Models\Scopes\IpfsScope;
 use App\Models\Scopes\MagistrateScope;
 use App\Models\Scopes\MultiPaymentScope;
@@ -21,6 +19,8 @@ use App\Models\Scopes\SecondSignatureScope;
 use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\UsernameRegistrationScope;
 use App\Models\Scopes\UsernameResignationScope;
+use App\Models\Scopes\ValidatorRegistrationScope;
+use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Scopes\VoteCombinationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
@@ -64,8 +64,8 @@ final class Transaction extends Model
      * all places that need to filter transactions by their type.
      */
     public const TYPE_SCOPES = [
-        'delegateRegistration'          => DelegateRegistrationScope::class,
-        'delegateResignation'           => DelegateResignationScope::class,
+        'validatorRegistration'         => ValidatorRegistrationScope::class,
+        'validatorResignation'          => ValidatorResignationScope::class,
         'ipfs'                          => IpfsScope::class,
         'multiPayment'                  => MultiPaymentScope::class,
         'multiSignature'                => MultiSignatureScope::class,
@@ -217,7 +217,7 @@ final class Transaction extends Model
     {
         $recipientId = $this->recipient_id;
         if (! is_null($recipientId)) {
-            return Wallet::firstWhere('address', $recipientId);
+            return Wallet::where('address', $recipientId)->firstOrFail();
         }
 
         $votePublicKey = Arr::get($this, 'asset.votes.0');
@@ -225,7 +225,7 @@ final class Transaction extends Model
             $votePublicKey = Arr::get($this, 'asset.unvotes.0');
         }
 
-        return Wallet::firstWhere('public_key', $votePublicKey);
+        return Wallet::where('public_key', $votePublicKey)->firstOrFail();
     }
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder

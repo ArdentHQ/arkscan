@@ -151,7 +151,7 @@
                         "167.114.29.54",
                         "167.114.29.55"
                     ],
-                    "delegate": {
+                    "validator": {
                         "type": "public",
                         "percentage": {
                             "min": 20,

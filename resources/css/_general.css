@@ -84,13 +84,13 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 }
 
 @screen md {
-    .delegate-details > .detail-box:nth-child(2n + 1) {
+    .validator-details > .detail-box:nth-child(2n + 1) {
         @apply pr-6 border-r border-theme-secondary-300;
     }
 }
 
 @screen lg {
-    .delegate-details > .detail-box:not(:last-child) {
+    .validator-details > .detail-box:not(:last-child) {
         @apply pr-6 border-r border-theme-secondary-300;
     }
 }
@@ -105,7 +105,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     }
 }
 
-.dark .delegate-details > .detail-box,
+.dark .validator-details > .detail-box,
 .dark .chart-details > .detail-box {
     @apply border-theme-secondary-800;
 }
@@ -207,7 +207,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     }
 }
 
-/* Delegate Monitor */
+/* Validator Monitor */
 .round-status-history > span {
     @apply hidden;
 }
@@ -222,36 +222,36 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     }
 }
 
-/* Delegate Stats Grid */
+/* Validator Stats Grid */
 @screen md {
-    .delegate-statistics-grid > *:nth-child(2n + 1) {
+    .validator-statistics-grid > *:nth-child(2n + 1) {
         @apply border-r border-theme-secondary-800;
     }
 }
 
 @screen xl {
-    .delegate-statistics-grid > *:not(:last-child) {
+    .validator-statistics-grid > *:not(:last-child) {
         @apply border-r border-theme-secondary-800;
     }
 }
 
-/* Delegate name truncation */
-.delegate-name-truncate {
+/* Validator name truncation */
+.validator-name-truncate {
     @apply w-full truncate;
 }
-.delegate-name-truncate-listing {
-    @apply delegate-name-truncate;
+.validator-name-truncate-listing {
+    @apply validator-name-truncate;
     max-width: 7rem;
 }
 
 @media (max-width: 375px) {
-    .delegate-name-truncate-listing {
+    .validator-name-truncate-listing {
         max-width: 4.6rem;
     }
 }
 
-.delegate-name-truncate-prefix {
-    @apply delegate-name-truncate;
+.validator-name-truncate-prefix {
+    @apply validator-name-truncate;
     max-width: 6rem;
 }
 
@@ -269,7 +269,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply pl-2 ml-2;
 }
 
-/* Progress circles delegates */
+/* Progress circles validators */
 .forging-status > circle:first-child {
     stroke: var(--theme-color-secondary-200);
 }

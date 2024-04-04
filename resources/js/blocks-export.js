@@ -8,11 +8,11 @@ import {
     generateCsv,
     getCustomDateRange,
     getDateRange,
-    timeSinceEpoch,
+    queryTimestamp,
 } from "./includes/helpers";
 
 import { BlocksApi } from "./blocks-api";
-import { DelegatesApi } from "./delegates-api";
+import { ValidatorsApi } from "./validators-api";
 import { ExportStatus } from "./includes/enums";
 
 window.ExportStatus = ExportStatus;
@@ -22,7 +22,7 @@ dayjs.extend(dayjsLocalizedFormat);
 const csvColumns = {
     id: "Block ID",
     timestamp: "Timestamp",
-    transactions: "Transactions",
+    numberOfTransactions: "Transactions",
     volume: "Volume [:networkCurrency]",
     volumeFiat: "Volume [:userCurrency]",
     total: "Total Rewards [:networkCurrency]",
@@ -38,17 +38,21 @@ const BlocksExport = ({
     canBeExchanged,
 }) => {
     const columnMapping = {
-        timestamp: (block) => dayjs(block.timestamp.human).format("L LTS"),
-        volume: (block) => arktoshiToNumber(block.forged.amount),
+        timestamp: (block) => dayjs(parseInt(block.timestamp)).format("L LTS"),
+        volume: (block) => arktoshiToNumber(block.totalAmount),
         volumeFiat: function (block) {
             return this.volume(block) * this.rate(block);
         },
-        total: (block) => arktoshiToNumber(block.forged.total),
+        total: (block) => {
+            return arktoshiToNumber(
+                block.totalAmount + block.totalFee + block.reward
+            );
+        },
         totalFiat: function (block) {
             return this.total(block) * this.rate(block);
         },
         rate: (block) => {
-            const date = dayjs(block.timestamp.human).format("YYYY-MM-DD");
+            const date = dayjs(parseInt(block.timestamp)).format("YYYY-MM-DD");
 
             return rates[date] ?? 0;
         },
@@ -75,7 +79,7 @@ const BlocksExport = ({
         columns: {
             id: false,
             timestamp: false,
-            transactions: false,
+            numberOfTransactions: false,
             volume: false,
             total: false,
         },
@@ -173,86 +177,11 @@ const BlocksExport = ({
             const data = {};
 
             if (dateFrom) {
-                const dateFromEpoch = timeSinceEpoch(dateFrom, this.network);
-                const dateToEpoch = timeSinceEpoch(dateTo, this.network);
-                // Check if delegate's last forged block is not older than the range
-                // This is to handle cases of old delegates where it's expensive
-                // to request their block height
-                const lastForgedBlockEpoch =
-                    await this.getLastForgedBlockEpoch();
-
-                if (
-                    lastForgedBlockEpoch === 0 ||
-                    lastForgedBlockEpoch < dateFromEpoch
-                ) {
-                    return { "height.from": 0, "height.to": 0 };
-                }
-
-                if (lastForgedBlockEpoch < dateToEpoch) {
-                    return {
-                        "height.from": await this.getFirstBlockHeightAfterEpoch(
-                            dateFromEpoch
-                        ),
-                        "height.to": await this.getFirstBlockHeightBeforeEpoch(
-                            lastForgedBlockEpoch
-                        ),
-                    };
-                }
-
-                data["height.from"] = await this.getFirstBlockHeightAfterEpoch(
-                    dateFromEpoch
-                );
-                data["height.to"] = await this.getFirstBlockHeightBeforeEpoch(
-                    dateToEpoch
-                );
+                data["timestamp.from"] = queryTimestamp(dateFrom);
+                data["timestamp.to"] = queryTimestamp(dateTo);
             }
 
             return data;
-        },
-
-        async getFirstBlockHeightAfterEpoch(epoch) {
-            return this.getBlockHeight({
-                query: {
-                    "timestamp.from": epoch,
-                },
-                orderBy: "timestamp:asc",
-            });
-        },
-
-        // The API options "timestamp:desc" & "timestamp.to" can cause 500 errors.
-        // We do it this way and attempt to get the first block after (the epoch - 1 round) instead.
-        async getFirstBlockHeightBeforeEpoch(epoch) {
-            epoch -= this.network.blockTime * this.network.delegateCount;
-            if (epoch < 0) {
-                return 0;
-            }
-
-            return await this.getBlockHeight({
-                query: {
-                    "timestamp.from": epoch,
-                },
-                orderBy: "timestamp:asc",
-            });
-        },
-
-        async getBlockHeight({ query, orderBy }) {
-            const block = await BlocksApi.fetch({
-                host: network.api,
-                query,
-                orderBy,
-                publicKey,
-            });
-
-            return block?.height ?? 0;
-        },
-
-        async getLastForgedBlockEpoch() {
-            const delegate = await DelegatesApi.fetch({
-                host: network.api,
-                publicKey,
-            });
-
-            return delegate?.blocks?.last?.timestamp?.epoch ?? 0;
         },
 
         getColumns() {

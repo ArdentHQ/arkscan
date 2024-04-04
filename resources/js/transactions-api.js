@@ -20,6 +20,7 @@ export class TransactionsApi {
                 orderBy: "timestamp:desc,sequence:desc",
                 ...query,
                 "timestamp.to": timestamp,
+                transform: false,
             });
 
             if (instance?.hasAborted()) {

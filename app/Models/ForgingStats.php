@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $timestamp
  * @property string $public_key
  * @property bool $forged
- * @property int $count (only available when sorting delegates by missed blocks)
+ * @property int $count (only available when sorting validators by missed blocks)
  */
 final class ForgingStats extends Model
 {
@@ -46,6 +46,13 @@ final class ForgingStats extends Model
     public $incrementing = false;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
@@ -58,11 +65,11 @@ final class ForgingStats extends Model
     ];
 
     /**
-     * A round slot belongs to a delegate.
+     * A round slot belongs to a validator.
      *
      * @return BelongsTo
      */
-    public function delegate(): BelongsTo
+    public function validator(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'public_key', 'public_key');
     }

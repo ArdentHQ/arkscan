@@ -12,7 +12,7 @@
     'contentClass'    => null,
     'withoutLink'     => false,
     'linkClass'       => null,
-    'delegateNameClass' => null,
+    'validatorNameClass' => null,
 ])
 
 <div @class($containerClass)>
@@ -36,18 +36,18 @@
                 @if ($model->username() && !$withoutUsername)
                     @if ($prefix)
                         <div @class([
-                            'delegate-name-truncate-prefix',
-                            $delegateNameClass,
+                            'validator-name-truncate-prefix',
+                            $validatorNameClass,
                         ])>
                     @elseif ($isListing)
                         <div @class([
-                            'delegate-name-truncate-listing',
-                            $delegateNameClass,
+                            'validator-name-truncate-listing',
+                            $validatorNameClass,
                         ])>
                     @else
                         <div @class([
-                            'delegate-name-truncate',
-                            $delegateNameClass,
+                            'validator-name-truncate',
+                            $validatorNameClass,
                         ])>
                     @endif
                         {{ $model->username() }}

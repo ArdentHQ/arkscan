@@ -8,6 +8,7 @@ use App\Contracts\RoundRepository;
 use App\Models\Round;
 use App\Repositories\Concerns\ManagesCache;
 use Illuminate\Cache\TaggedCache;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Cache;
 
 final class RoundRepositoryWithCache implements RoundRepository
@@ -26,6 +27,11 @@ final class RoundRepositoryWithCache implements RoundRepository
     public function byRound(int $round): Round
     {
         return $this->remember(fn () => $this->rounds->byRound($round));
+    }
+
+    public function validators(bool $withBlock = true): SupportCollection
+    {
+        return $this->rounds->validators($withBlock);
     }
 
     private function getCache(): TaggedCache

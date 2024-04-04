@@ -10,15 +10,15 @@ use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
 use Livewire\Livewire;
 
-it('should render all tabs for delegates', function () {
-    $wallet = Wallet::factory()->activeDelegate()->create();
+it('should render all tabs for validators', function () {
+    $wallet = Wallet::factory()->activeValidator()->create();
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->assertSeeHtml("tab === 'transactions'")
         ->assertSeeHtml("tab === 'voters'");
 });
 
-it('should not render tabs for non-delegates', function () {
+it('should not render tabs for non-validators', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [],
     ]);
@@ -29,7 +29,7 @@ it('should not render tabs for non-delegates', function () {
 });
 
 it('should change view with event', function () {
-    $wallet = Wallet::factory()->activeDelegate()->create();
+    $wallet = Wallet::factory()->activeValidator()->create();
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->assertSet('view', 'transactions')
@@ -42,7 +42,7 @@ it('should change view with event', function () {
 });
 
 it('should track querystring between tabs', function () {
-    $wallet = Wallet::factory()->activeDelegate()->create();
+    $wallet = Wallet::factory()->activeValidator()->create();
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->set('view', 'transactions')
@@ -95,7 +95,7 @@ it('should track querystring between tabs', function () {
 });
 
 it('should be able to get the property of the previous view', function () {
-    $wallet = Wallet::factory()->activeDelegate()->create();
+    $wallet = Wallet::factory()->activeValidator()->create();
 
     $instance = Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->instance();
@@ -113,7 +113,7 @@ it('should be able to get the property of the previous view', function () {
 });
 
 it('should try to get property if not part of the querystring properties', function () {
-    $wallet = Wallet::factory()->activeDelegate()->create();
+    $wallet = Wallet::factory()->activeValidator()->create();
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->set('view', 'transactions')
@@ -121,7 +121,7 @@ it('should try to get property if not part of the querystring properties', funct
 });
 
 it('should trigger is ready event for current tab view', function () {
-    $wallet = Wallet::factory()->activeDelegate()->create();
+    $wallet = Wallet::factory()->activeValidator()->create();
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->call('triggerViewIsReady')
@@ -129,7 +129,7 @@ it('should trigger is ready event for current tab view', function () {
 });
 
 it('should trigger is ready event when changing tab view', function () {
-    $wallet = Wallet::factory()->activeDelegate()->create();
+    $wallet = Wallet::factory()->activeValidator()->create();
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->call('triggerViewIsReady')
@@ -139,7 +139,7 @@ it('should trigger is ready event when changing tab view', function () {
 });
 
 it('should not trigger is ready event if tab view does not exist', function () {
-    $wallet = Wallet::factory()->activeDelegate()->create();
+    $wallet = Wallet::factory()->activeValidator()->create();
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->set('view', 'testing')
@@ -147,7 +147,7 @@ it('should not trigger is ready event if tab view does not exist', function () {
 });
 
 it('should not trigger is ready event more than once', function () {
-    $wallet = Wallet::factory()->activeDelegate()->create();
+    $wallet = Wallet::factory()->activeValidator()->create();
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->call('triggerViewIsReady')
@@ -163,7 +163,7 @@ it('should not trigger is ready event more than once', function () {
 });
 
 it('should not allow invalid per page value', function () {
-    $wallet = Wallet::factory()->activeDelegate()->create();
+    $wallet = Wallet::factory()->activeValidator()->create();
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->set('tabQueryData.transactions.perPage', 1234)
@@ -172,7 +172,7 @@ it('should not allow invalid per page value', function () {
 });
 
 it('should not update initial page if view does not exist', function () {
-    $wallet = Wallet::factory()->activeDelegate()->create();
+    $wallet = Wallet::factory()->activeValidator()->create();
 
     $instance = Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->set('view', 'testing')

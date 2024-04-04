@@ -33,6 +33,7 @@ export class BlocksApi {
                     orderBy,
                     ...query,
                     "height.to": height,
+                    transform: false,
                 },
                 publicKey
             );

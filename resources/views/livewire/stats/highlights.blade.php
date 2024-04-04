@@ -15,12 +15,12 @@
                     </x-currency>
                 </x-stats.stat>
 
-                <x-stats.stat :label="trans('pages.statistics.highlights.delegates')">
-                    <span>{{ $delegates }}</span>
+                <x-stats.stat :label="trans('pages.statistics.highlights.validators')">
+                    <span>{{ $validators }}</span>
 
                     <div class="pl-3">
                         <a
-                            href="{{ route('delegates') }}"
+                            href="{{ route('validators') }}"
                             class="link"
                         >
                             @lang('actions.view_all')

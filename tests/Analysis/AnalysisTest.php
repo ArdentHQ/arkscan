@@ -32,6 +32,12 @@ final class AnalysisTest extends TestCase
             'Tests\faker',
             'Tests\fakeCryptoCompare',
             'Tests\fakeKnownWallets',
+            'Tests\createBlock',
+            'Tests\createRoundEntry',
+            'Tests\createRealisticRound',
+            'Tests\createFullRound',
+            'Tests\createPartialRound',
+            'Tests\validatorsForRound',
         ];
     }
 }

@@ -2,16 +2,21 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
 use App\Facades\Services\Monitor\MissedBlocksCalculator;
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Round;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 
 beforeEach(function () {
+    $this->freezeTime();
+    $this->travelTo(Carbon::parse('2024-04-03 01:12:44'));
+
     ForgingStats::truncate();
 
-    $delegatePublicKeysBalanceDesc = [
+    $validatorPublicKeysBalanceDesc = [
         '027716e659220085e41389efc7cf6a05f7f7c659cf3db9126caabce6cda9156582',
         '03d3c6889608074b44155ad2e6577c3368e27e6e129c457418eb3e5ed029544e8d',
         '032cfbb18f4e49952c6d6475e8adc6d0cba00b81ef6606cc4927b78c6c50558beb',
@@ -63,44 +68,45 @@ beforeEach(function () {
         '03f6af8c750b9d29d9da3d4ddf5818a1fcdd4558ba0dde731f9c4b17bcbdcd83f2',
         '029918d8fe6a78cc01bbab31f636494568dd954431f75f4ea6ff1da040b7063a70',
         '036a520acf24036ff691a4f8ba19514828e9b5aa36ca4ba0452e9012023caccfef',
+        '03d44e231cf418ae60347a6126a15870c4fc63c94408ba567d8996cdad84270a99',
+        '03d4fd4b583d92e0c53e202a2da879395eeb3994e0f8e763faa259dea5cd78ee9f',
     ];
 
     for ($round = 136669; $round <= 136675; $round++) {
-        foreach ($delegatePublicKeysBalanceDesc as $key => $publicKey) {
-            Round::factory()->create([
-                'round'      => strval($round),
-                'public_key' => $publicKey,
-                'balance'    => (100 - $key), // so that first one will have higher balance
+        Round::factory()->create([
+            'round'        => $round,
+            'round_height' => $round * Network::validatorCount(),
+            'validators'   => array_values($validatorPublicKeysBalanceDesc),
+        ]);
+
+        foreach ($validatorPublicKeysBalanceDesc as $key => $_) {
+            Block::factory()->create([
+                'height'    => ($round - 1) * Network::validatorCount() + $key,
+                'timestamp' => Carbon::now()->getTimestampMs(),
             ]);
 
-            $height = ($round - 1) * 51 + $key;
-            Block::factory()->create([
-                'height'    => $height,
-                'timestamp' => $height * 8,
-            ]);
+            $this->travel(Network::blockTime())->seconds();
         }
     }
 });
 
 it('should execute the command - with parameters', function () {
     Artisan::call('explorer:forging-stats:build', [
-        '--height' => 6970364, '--days' => 0.01,
+        '--height' => 7243669, '--days' => 0.01,
     ]);
 
-    $this->assertEquals(ForgingStats::all()->count(), 153);
+    expect(ForgingStats::all()->count())->toBe(159);
 });
 
 it('should execute the command - without parameter', function () {
     Artisan::call('explorer:forging-stats:build');
 
-    $this->assertEquals(ForgingStats::all()->count(), 50);
-    // because of how test data is generated (see beforeEach), the last round contains
-    // 50 blocks, hence 50 entries in forging stats
+    expect(ForgingStats::all()->count())->toBe(265);
 });
 
-it('should not add multiple multiple records to database', function () {
+it('should not add multiple records to database', function () {
     $args = [
-        '--height' => 6970364, '--days' => 0.01,
+        '--height' => 7243669, '--days' => 0.01,
     ];
 
     Artisan::call('explorer:forging-stats:build', $args);
@@ -109,7 +115,7 @@ it('should not add multiple multiple records to database', function () {
     Artisan::call('explorer:forging-stats:build', $args);
     Artisan::call('explorer:forging-stats:build', $args);
 
-    $this->assertEquals(ForgingStats::all()->count(), 153);
+    expect(ForgingStats::all()->count())->toBe(159);
 });
 
 it('should store the height for missed blocks', function () {
