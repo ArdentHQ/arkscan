@@ -92,7 +92,7 @@ final class CacheAddressStatistics extends Command
                 $cache->setNewestAddress([
                     'address'   => $newest->address,
                     'timestamp' => $newest->timestamp,
-                    'value'     => Carbon::createFromTimestamp((int) $newest->timestamp + (int) Network::epoch()->timestamp)->format(DateFormat::DATE),
+                    'value'     => Carbon::createFromTimestamp($newest->timestamp / 1000)->format(DateFormat::DATE),
                 ]);
             }
         }
