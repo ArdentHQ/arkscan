@@ -1154,7 +1154,11 @@ it('should get the entity hash', function () {
 it('should get the username if the transaction is not a validator registration', function () {
     $subject = new TransactionViewModel(Transaction::factory()
         ->validatorRegistration()
-        ->create(['asset' => ['validator' => ['username' => 'john']]]));
+        ->create([
+            'asset' => [
+                'username' => 'john',
+            ],
+        ]));
 
     expect($subject->validatorUsername())->toBe('john');
 });

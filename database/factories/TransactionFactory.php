@@ -74,7 +74,7 @@ final class TransactionFactory extends Factory
             'type'       => CoreTransactionTypeEnum::VOTE,
             'type_group' => TransactionTypeGroupEnum::CORE,
             'asset'      => [
-                'votes' => ['+publicKey'],
+                'votes' => ['publicKey'],
             ],
         ]);
     }
@@ -85,7 +85,7 @@ final class TransactionFactory extends Factory
             'type'       => CoreTransactionTypeEnum::VOTE,
             'type_group' => TransactionTypeGroupEnum::CORE,
             'asset'      => [
-                'votes' => ['-publicKey'],
+                'unvotes' => ['publicKey'],
             ],
         ]);
     }
@@ -96,7 +96,8 @@ final class TransactionFactory extends Factory
             'type'       => CoreTransactionTypeEnum::VOTE,
             'type_group' => TransactionTypeGroupEnum::CORE,
             'asset'      => [
-                'votes' => ['+publicKey', '-publicKey'],
+                'votes'   => ['publicKey'],
+                'unvotes' => ['publicKey'],
             ],
         ]);
     }
