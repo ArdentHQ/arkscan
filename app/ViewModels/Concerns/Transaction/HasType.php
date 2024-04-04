@@ -63,21 +63,6 @@ trait HasType
         return $this->type->isMultiPayment();
     }
 
-    public function isTimelock(): bool
-    {
-        return $this->type->isTimelock();
-    }
-
-    public function isTimelockClaim(): bool
-    {
-        return $this->type->isTimelockClaim();
-    }
-
-    public function isTimelockRefund(): bool
-    {
-        return $this->type->isTimelockRefund();
-    }
-
     public function isUsernameRegistration(): bool
     {
         return $this->type->isUsernameRegistration();

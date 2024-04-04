@@ -33,10 +33,6 @@ final class Forms
         $options = collect(static::$transactionOptionsValues)
             ->mapWithKeys(fn ($option) => [$option =>__('forms.search.transaction_types.'.$option)]);
 
-        if (! Network::hasTimelock()) {
-            $options = $options->filter(fn ($value, $key) => str_contains($key, 'timelock') === false);
-        }
-
         return $options->toArray();
     }
 }

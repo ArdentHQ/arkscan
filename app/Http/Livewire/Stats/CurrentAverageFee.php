@@ -29,8 +29,6 @@ final class CurrentAverageFee extends Component
         $transactionOptions = collect(Forms::getTransactionOptions())
             ->except([
                 'all',
-                'timelockClaim',
-                'timelockRefund',
                 'magistrate',
             ])
             ->toArray();

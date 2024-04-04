@@ -51,18 +51,6 @@ it('should determine the icon that matches the type', function (string $type, st
         'multi-payment',
     ],
     [
-        'timelock',
-        'timelock',
-    ],
-    [
-        'timelockClaim',
-        'timelock',
-    ],
-    [
-        'timelockRefund',
-        'timelock',
-    ],
-    [
         'businessEntityRegistration',
         'business',
     ],
