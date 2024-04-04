@@ -53,8 +53,7 @@
             <directory suffix="Test.php">./tests/Unit/Actions</directory>
             <directory suffix="Test.php">./tests/Unit/Aggregates</directory>
             <directory suffix="Test.php">./tests/Unit/Console</directory>
-
-            <file>./tests/Unit/DTO/MarketDataTest.php</file>
+            <directory suffix="Test.php">./tests/Unit/DTO</directory>
 
             <file>./tests/Unit/Jobs/CacheMultiSignatureAddressTest.php</file>
             <file>./tests/Unit/Jobs/CacheProductivityByPublicKeyTest.php</file>

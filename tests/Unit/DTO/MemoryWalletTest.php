@@ -24,6 +24,7 @@ it('should make an instance from a public key', function () {
 });
 
 it('should be a validator', function () {
+    (new WalletCache())->setValidatorPublicKeyByAddress('D6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax', '03d3fdad9c5b25bf8880e6b519eb3611a5c0b31adebc8455f0e096175b28321aff');
     (new WalletCache())->setUsernameByAddress('D6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax', 'username');
 
     $subject =  MemoryWallet::fromPublicKey('03d3fdad9c5b25bf8880e6b519eb3611a5c0b31adebc8455f0e096175b28321aff');
