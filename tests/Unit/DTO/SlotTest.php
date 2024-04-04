@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\DTO\Slot;
 use App\Models\Block;
 use App\Models\ForgingStats;
+use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\Services\Timestamp;
@@ -12,10 +13,20 @@ use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 
+beforeEach(function () {
+    ForgingStats::truncate();
+});
+
 it('should make an instance that has all properties', function (string $status) {
     $wallet = Wallet::factory()->create();
 
-    $lastBlockHeight = Block::factory()->create()->height->toNumber();
+    $lastBlockHeight = 7521;
+
+    Block::factory()->create(['height' => $lastBlockHeight]);
+    Round::factory()->create([
+        'round_height' => 7520,
+    ]);
+
     $roundBlockCount = Block::whereBetween('height', [1, 5])
         ->get()
         ->groupBy('generator_public_key')
@@ -50,7 +61,11 @@ it('should make an instance that has all properties', function (string $status) 
     expect($subject->isNext())->toBeBool();
     expect($subject->isPending())->toBeBool();
     expect($subject->status())->toBeString();
-})->with(['done', 'next', 'pending']);
+})->with([
+    'done',
+    'next',
+    'pending',
+]);
 
 it('should not be marked as missing if it never had a block', function () {
     $wallet = Wallet::factory()->create();
