@@ -53,7 +53,10 @@ it('should cache address holdings', function () {
 it('should cache unique addresses', function () {
     $cache = new StatisticsCache();
 
-    $transaction = Transaction::factory()->create();
+    $transactionTimestamp = Carbon::parse('2024-03-03 13:24:44')->getTimestampMs();
+    $transaction = Transaction::factory()->create([
+        'timestamp' => $transactionTimestamp,
+    ]);
 
     $largest = Wallet::factory()->create([
         'balance' => BigNumber::new(1000000 * 1e8),
@@ -61,10 +64,39 @@ it('should cache unique addresses', function () {
 
     $this->artisan('explorer:cache-address-statistics');
 
-    expect($cache->getGenesisAddress())->toBe(['address' => $transaction->sender->address, 'value' => Carbon::createFromTimestamp(Network::epoch()->timestamp)->format(DateFormat::DATE)]);
-    //expect($cache->getNewestAddress())->toBe(['address' => $wallet->address, 'value' => '0']); // TODO: handle once implemented
-    expect($cache->getMostTransactions())->toBe(['address' => $transaction->sender->address, 'value' => 1]);
-    expect($cache->getLargestAddress())->toBe(['address' => $largest->address, 'value' => $largest->balance->toFloat()]);
+    expect($cache->getGenesisAddress())->toBe([
+        'address' => $transaction->sender->address,
+        'value' => Carbon::createFromTimestamp(Network::epoch()->timestamp)->format(DateFormat::DATE),
+    ]);
+
+    expect($cache->getNewestAddress())->toBe([
+        'address' => $transaction->sender->address,
+        'timestamp' => $transactionTimestamp,
+        'value' => Carbon::parse('2024-03-03 13:24:44')->format(DateFormat::DATE),
+    ]);
+
+    expect($cache->getMostTransactions())->toBe([
+        'address' => $transaction->sender->address,
+        'value' => 1,
+    ]);
+
+    expect($cache->getLargestAddress())->toBe([
+        'address' => $largest->address,
+        'value' => $largest->balance->toFloat(),
+    ]);
+
+    $newestTransactionTimestamp = Carbon::parse('2024-03-04 13:24:44')->getTimestampMs();
+    $newestTransaction = Transaction::factory()->create([
+        'timestamp' => $newestTransactionTimestamp,
+    ]);
+
+    $this->artisan('explorer:cache-address-statistics');
+
+    expect($cache->getNewestAddress())->toBe([
+        'address' => $newestTransaction->sender->address,
+        'timestamp' => $newestTransactionTimestamp,
+        'value' => Carbon::parse('2024-03-04 13:24:44')->format(DateFormat::DATE),
+    ]);
 });
 
 it('should handle null scenarios for unique addresses', function () {
