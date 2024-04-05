@@ -8,7 +8,7 @@ use App\Services\Monitor\Monitor;
 
 it('should calculate the forging information', function () {
     Round::factory()->create([
-        'round' => 112168,
+        'round'        => 112168,
         'round_height' => 112168 * Network::validatorCount(),
     ]);
 
@@ -17,7 +17,7 @@ it('should calculate the forging information', function () {
 
 it('should calculate the height range for the given round', function ($roundNumber) {
     $round = Round::factory()->create([
-        'round' => $roundNumber,
+        'round'        => $roundNumber,
         'round_height' => $roundNumber * Network::validatorCount(),
     ]);
 

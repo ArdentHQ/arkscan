@@ -12,7 +12,7 @@ beforeEach(function () {
         'public_key' => 'generator',
         'attributes' => [
             'validatorPublicKey' => 'publickey',
-            'username' => 'generator',
+            'username'           => 'generator',
         ],
     ]);
 });
