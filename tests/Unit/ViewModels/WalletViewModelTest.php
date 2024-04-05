@@ -13,7 +13,6 @@ use App\Services\Blockchain\NetworkFactory;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
-use App\Services\Timestamp;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -597,7 +596,7 @@ it('should get the known wallet name before username', function () {
     fakeKnownWallets();
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
+        'address'    => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
         'attributes' => [
             'validatorPublicKey' => 'publicKey',
             'username'           => 'john',
@@ -648,7 +647,7 @@ it('should get the vote url with validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [
             'validatorPublicKey' => 'publickey',
-            'username' => 'john',
+            'username'           => 'john',
         ],
     ]));
 
