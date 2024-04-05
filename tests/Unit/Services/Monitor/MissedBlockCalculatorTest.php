@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Round;
 use App\Services\Monitor\MissedBlocksCalculator;
+use Carbon\Carbon;
 
 it('should calculate the missed blocks', function () {
     $expectedStats                  = []; // expected { forged, missed } by validator public key
@@ -129,13 +131,14 @@ it('should calculate the missed blocks', function () {
         '029918d8fe6a78cc01bbab31f636494568dd954431f75f4ea6ff1da040b7063a70',
         '036a520acf24036ff691a4f8ba19514828e9b5aa36ca4ba0452e9012023caccfef',
     ];
-    foreach ($validatorPublicKeysBalanceDesc as $key => $publicKey) {
-        Round::factory()->create([
-            'round'      => '136674',
-            'public_key' => $publicKey,
-            'balance'    => (100 - $key), // so that first one will have higher balance
-        ]);
-    }
+
+    $round = Round::factory()->create([
+        'round'        => 136674,
+        'round_height' => 136674 * Network::validatorCount(),
+        'validators'   => $validatorPublicKeysBalanceDesc,
+    ]);
+
+    $this->travelTo(Carbon::parse('2023-03-14 12:44:32'));
 
     foreach ($validatorOrderForRound as $key => $publicKey) {
         if (! in_array($publicKey, $validatorsWhoMissed, true)) {
@@ -143,21 +146,27 @@ it('should calculate the missed blocks', function () {
             // Start height for round 136674 is 6970324
             Block::factory()->create([
                 'height'    => 6970324 + $heightIterator,
-                'timestamp' => 124595296 + $key * 8,
+                'timestamp' => Carbon::now()->getTimestampMs(),
             ]);
+
             $heightIterator            = $heightIterator + 1;
             $expectedStats[$publicKey] = isset($expectedStats[$publicKey]) ? $expectedStats[$publicKey] : ['forged'=> 0, 'missed'=> 0];
             $expectedStats[$publicKey]['forged']++;
         } else {
-            $expectedStats[$publicKey] = ['forged'=> 0, 'missed'=> 1];
+            $expectedStats[$publicKey] = [
+                'forged'=> 0,
+                'missed'=> 1,
+            ];
         }
+
+        $this->travel(8)->seconds();
     }
     Block::factory()->create([
         'height'    => 6970323,
         'timestamp' => 124595288,
     ]);
 
-    $blocksInfo     = MissedBlocksCalculator::calculateForRound(6970364); // any height in the round [6970324, 6970374]
+    $blocksInfo     = MissedBlocksCalculator::calculateForRound($round, $round->round_height + Network::validatorCount()); // any height in the round [6970324, 6970374]
     $validatorStats = [];
     foreach ($blocksInfo as $blockInfo) {
         if (! isset($validatorStats[$blockInfo['publicKey']])) {
@@ -170,5 +179,6 @@ it('should calculate the missed blocks', function () {
             $validatorStats[$blockInfo['publicKey']]['missed']++;
         }
     }
-    $this->assertEquals($validatorStats, $expectedStats);
+
+    expect($validatorStats)->toEqual($expectedStats);
 });
