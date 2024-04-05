@@ -54,7 +54,7 @@ it('should cache unique addresses', function () {
     $cache = new StatisticsCache();
 
     $transactionTimestamp = Carbon::parse('2024-03-03 13:24:44')->getTimestampMs();
-    $transaction = Transaction::factory()->create([
+    $transaction          = Transaction::factory()->create([
         'timestamp' => $transactionTimestamp,
     ]);
 
@@ -66,36 +66,36 @@ it('should cache unique addresses', function () {
 
     expect($cache->getGenesisAddress())->toBe([
         'address' => $transaction->sender->address,
-        'value' => Carbon::createFromTimestamp(Network::epoch()->timestamp)->format(DateFormat::DATE),
+        'value'   => Carbon::createFromTimestamp(Network::epoch()->timestamp)->format(DateFormat::DATE),
     ]);
 
     expect($cache->getNewestAddress())->toBe([
-        'address' => $transaction->sender->address,
+        'address'   => $transaction->sender->address,
         'timestamp' => $transactionTimestamp,
-        'value' => Carbon::parse('2024-03-03 13:24:44')->format(DateFormat::DATE),
+        'value'     => Carbon::parse('2024-03-03 13:24:44')->format(DateFormat::DATE),
     ]);
 
     expect($cache->getMostTransactions())->toBe([
         'address' => $transaction->sender->address,
-        'value' => 1,
+        'value'   => 1,
     ]);
 
     expect($cache->getLargestAddress())->toBe([
         'address' => $largest->address,
-        'value' => $largest->balance->toFloat(),
+        'value'   => $largest->balance->toFloat(),
     ]);
 
     $newestTransactionTimestamp = Carbon::parse('2024-03-04 13:24:44')->getTimestampMs();
-    $newestTransaction = Transaction::factory()->create([
+    $newestTransaction          = Transaction::factory()->create([
         'timestamp' => $newestTransactionTimestamp,
     ]);
 
     $this->artisan('explorer:cache-address-statistics');
 
     expect($cache->getNewestAddress())->toBe([
-        'address' => $newestTransaction->sender->address,
+        'address'   => $newestTransaction->sender->address,
         'timestamp' => $newestTransactionTimestamp,
-        'value' => Carbon::parse('2024-03-04 13:24:44')->format(DateFormat::DATE),
+        'value'     => Carbon::parse('2024-03-04 13:24:44')->format(DateFormat::DATE),
     ]);
 });
 
