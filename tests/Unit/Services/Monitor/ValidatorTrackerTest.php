@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
@@ -9,6 +10,7 @@ use App\Services\Monitor\ValidatorTracker;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use function Spatie\Snapshots\assertMatchesSnapshot;
+use function Tests\createRoundEntry;
 
 beforeEach(function () {
     $this->activeValidators = require dirname(dirname(dirname(__DIR__))).'/fixtures/forgers.php';
@@ -18,15 +20,13 @@ beforeEach(function () {
 it('should calculate the forging order', function () {
     $this->travelTo(new Carbon('2021-01-01 00:04:00'));
 
-    Wallet::factory(51)->create()->each(function ($wallet) {
-        Round::factory()->create([
-            'round'      => '112168',
-            'public_key' => $wallet->public_key,
-        ]);
-
+    $wallets = Wallet::factory(51)->create();
+    $wallets->each(function ($wallet) {
         Cache::tags(['validators'])->put($wallet->public_key, $wallet);
         Cache::put('lastBlock:'.$wallet->public_key, []);
     });
+
+    createRoundEntry(112168, 112168 * Network::validatorCount(), $wallets);
 
     // Start height for round 112168
     Block::factory()->create([

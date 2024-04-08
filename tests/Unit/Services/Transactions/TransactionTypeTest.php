@@ -53,18 +53,6 @@ it('should determine the type', function (string $type, string $expected) {
         'multi-payment',
     ],
     [
-        'timelock',
-        'timelock',
-    ],
-    [
-        'timelockClaim',
-        'timelock-claim',
-    ],
-    [
-        'timelockRefund',
-        'timelock-refund',
-    ],
-    [
         'businessEntityRegistration',
         'business-entity-registration',
     ],
@@ -177,9 +165,6 @@ it('should play through every scenario of an unknown type', function (string $ty
     ['ipfs'],
     ['validatorResignation'],
     ['multiPayment'],
-    ['timelock'],
-    ['timelockClaim'],
-    ['timelockRefund'],
     ['businessEntityRegistration'],
     ['businessEntityResignation'],
     ['businessEntityUpdate'],
