@@ -18,7 +18,7 @@ final class RangeAggregate
     {
         $select = [
             'SUM(fee) as fee',
-            sprintf("to_char(to_timestamp(%d+timestamp) AT TIME ZONE 'UTC', '%s') as formatted_date", Network::epoch()->timestamp, $format),
+            sprintf("to_char(to_timestamp(timestamp / 1000) AT TIME ZONE 'UTC', '%s') as formatted_date", $format),
         ];
 
         return $this
