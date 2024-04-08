@@ -11,7 +11,7 @@ it('should aggregate the fees for 12 months', function () {
     Carbon::setTestNow('2021-01-01 00:00:00');
 
     $startTime = Carbon::parse('2020-10-19 04:54:16');
-    $endTime = Carbon::now()->subMinutes(10);
+    $endTime   = Carbon::now()->subMinutes(10);
 
     Transaction::factory(10)->create([
         'fee'       => '100000000',

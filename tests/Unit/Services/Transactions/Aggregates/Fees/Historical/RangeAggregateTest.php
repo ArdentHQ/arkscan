@@ -11,7 +11,7 @@ it('should aggregate the fees for the given range', function () {
     $this->travelTo(Carbon::parse('2020-10-19 04:54:16'));
 
     $startTime = Carbon::now();
-    $endTime = Carbon::now()->addDays(200);
+    $endTime   = Carbon::now()->addDays(200);
 
     $start = Transaction::factory(10)->create([
         'fee'       => '100000000',
@@ -32,6 +32,6 @@ it('should aggregate the fees for the given range', function () {
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result->toArray())->toEqual([
         $startTime->format('Y-m-d') => 10,
-        $endTime->format('Y-m-d') => 10,
+        $endTime->format('Y-m-d')   => 10,
     ]);
 });
