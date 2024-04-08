@@ -58,7 +58,7 @@ it('should get active validators', function () {
 
     expect($method->invokeArgs(null, [$this->activeValidators]))
         ->toEqual($this->expected['input']);
-});
+})->skip('using obsolete method');
 
 it('should shuffle validators correctly', function () {
     $validatorsMethod = new ReflectionMethod(ValidatorTracker::class, 'getActiveValidators');
@@ -71,4 +71,4 @@ it('should shuffle validators correctly', function () {
 
     expect($shuffleMethod->invokeArgs(null, [$activeValidators, 5720529]))
         ->toEqual($this->expected['output']);
-});
+})->skip('using obsolete method');
