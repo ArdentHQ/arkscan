@@ -58,7 +58,7 @@ it('should shuffle validators in a deterministic order', function () {
         '027e80c676004226c602df8c35260955bb5cb14e852851f4cb281d840cbf2f1e85',
         '03c521450f8fb765d7ee2fd3cabfd0ab0138ecc5ae4d69d47ed910088183c52451',
         '022c94738794b9a25dd8e5db2a86a888463a05553d5522e840f5c9e254ae93355e',
-        '03150a599c9f8df707f3433fe8d6d53bda646de0054cc82cb22ba375cb9bd1f096'
+        '03150a599c9f8df707f3433fe8d6d53bda646de0054cc82cb22ba375cb9bd1f096',
     ], 374075);
 
     expect($actual)->toBe([
