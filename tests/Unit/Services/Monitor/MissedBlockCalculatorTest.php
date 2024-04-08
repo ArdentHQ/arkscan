@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Round;
-use App\Models\Wallet;
 use App\Services\Monitor\MissedBlocksCalculator;
 use Carbon\Carbon;
 
@@ -149,8 +148,8 @@ it('should calculate the missed blocks', function () {
             // Start height for round 7059 is 374074
             Block::factory()->create([
                 'generator_public_key' => $publicKey,
-                'height'    => 374074 + $heightIterator,
-                'timestamp' => Carbon::now()->getTimestampMs(),
+                'height'               => 374074 + $heightIterator,
+                'timestamp'            => Carbon::now()->getTimestampMs(),
             ]);
 
             $heightIterator++;
