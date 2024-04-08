@@ -39,7 +39,17 @@ it('should calculate the forging order', function () {
         'timestamp' => 113620904,
     ]);
 
-    assertMatchesSnapshot(ValidatorTracker::execute($this->activeValidators, 5720517));
+    $order = ValidatorTracker::execute($this->activeValidators->pluck('public_key')->toArray(), 5720517);
+
+    expect($order)->toHaveCount(Network::validatorCount());
+
+    $publicKeys = $this->activeValidators->pluck('public_key');
+
+    foreach ($order as $validator) {
+        expect($publicKeys)->toContain($validator['publicKey']);
+    }
+
+    assertMatchesSnapshot($order);
 });
 
 it('should get active validators', function () {
