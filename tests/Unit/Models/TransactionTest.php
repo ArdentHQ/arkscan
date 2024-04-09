@@ -12,7 +12,7 @@ use Meilisearch\Endpoints\Indexes;
 
 beforeEach(function () {
     $this->recipient = Wallet::factory()->create();
-    $this->subject = Transaction::factory()->create([
+    $this->subject   = Transaction::factory()->create([
         'fee'          => '100000000',
         'amount'       => '200000000',
         'recipient_id' => $this->recipient,
