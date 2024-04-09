@@ -65,11 +65,7 @@
 
             <file>./tests/Unit/Models/BlockTest.php</file>
             <directory suffix="Test.php">./tests/Unit/Models/Scopes</directory>
-
-            <file>./tests/Unit/Repositories/BlockRepositoryTest.php</file>
-            <file>./tests/Unit/Repositories/BlockRepositoryWithCacheTest.php</file>
-            <file>./tests/Unit/Repositories/RoundRepositoryTest.php</file>
-
+            <directory suffix="Test.php">./tests/Unit/Repositories</directory>
             <directory suffix="Test.php">./tests/Unit/Services</directory>
 
             <file>./tests/Unit/ViewModels/ViewModelFactoryTest.php</file>
