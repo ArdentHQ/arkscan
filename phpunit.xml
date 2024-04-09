@@ -54,13 +54,7 @@
             <directory suffix="Test.php">./tests/Unit/Aggregates</directory>
             <directory suffix="Test.php">./tests/Unit/Console</directory>
             <directory suffix="Test.php">./tests/Unit/DTO</directory>
-
-            <file>./tests/Unit/Jobs/CacheMultiSignatureAddressTest.php</file>
-            <file>./tests/Unit/Jobs/CacheProductivityByPublicKeyTest.php</file>
-            <file>./tests/Unit/Jobs/CacheRegistrationIdTest.php</file>
-            <file>./tests/Unit/Jobs/FetchExchangeDetailsTest.php</file>
-            <file>./tests/Unit/Jobs/IndexWalletsTest.php</file>
-
+            <directory suffix="Test.php">./tests/Unit/Jobs</directory>
             <directory suffix="Test.php">./tests/Unit/Mail</directory>
 
             <file>./tests/Unit/Models/BlockTest.php</file>

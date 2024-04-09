@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Jobs\IndexBlocks;
 use App\Models\Block;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
@@ -24,25 +25,27 @@ beforeEach(function () {
 });
 
 it('should index new blocks', function () {
+    $this->travelTo(Carbon::parse('2024-04-09 13:32:44'));
+
     Event::fake();
 
     Cache::shouldReceive('get')
         ->with('latest-indexed-timestamp:blocks')
         ->andReturn(null)
         ->shouldReceive('put')
-        ->with('latest-indexed-timestamp:blocks', 10)
+        ->with('latest-indexed-timestamp:blocks', 1712583164) // 1 day
         ->once();
 
     $latestIndexedBlock = Block::factory()->create([
-        'timestamp' => 5,
+        'timestamp' => 1712583164000, // 1 day
     ]);
 
-    $newBlock = Block::factory()->create([
-        'timestamp' => 10,
+    Block::factory()->create([
+        'timestamp' => 1712237564000, // 5 days
     ]);
 
-    $oldBlock = Block::factory()->create([
-        'timestamp' => 1,
+    Block::factory()->create([
+        'timestamp' => 1711805564000, // 10 days
     ]);
 
     $url = sprintf(
@@ -61,39 +64,48 @@ it('should index new blocks', function () {
 
     IndexBlocks::dispatch();
 
-    Event::assertDispatched(ModelsImported::class, function ($event) use ($newBlock) {
-        return $event->models->count() === 1
-            && $event->models->first()->is($newBlock);
+    Event::assertDispatched(ModelsImported::class, function ($event) {
+        return $event->models->count() === 3 &&
+            $event->models->pluck('timestamp')->sort()->values()->toArray() === [
+                Carbon::now()->subDays(10)->unix(),
+                Carbon::now()->subDays(5)->unix(),
+                Carbon::now()->subDays(1)->unix(),
+            ];
     });
 });
 
-it('should index new blocks using the timestamp from cache', function () {
+it('should index blocks using the timestamp from cache', function () {
+    $this->travelTo(Carbon::parse('2024-04-09 13:32:44'));
+
     Event::fake();
 
     Cache::shouldReceive('get')
         ->with('latest-indexed-timestamp:blocks')
-        ->andReturn(2) // so new ones are the one with timestamp 5 and 10
+        ->andReturn(1711978364000) // 8 days ago, so new ones are 1 and 5 days ago
         ->shouldReceive('put')
-        ->with('latest-indexed-timestamp:blocks', 10)
+        ->with('latest-indexed-timestamp:blocks', 1712583164) // 1 day
         ->once();
 
     Block::factory()->create([
-        'timestamp' => 10,
+        'timestamp' => 1712583164000, // 1 day
     ]);
 
     Block::factory()->create([
-        'timestamp' => 5,
+        'timestamp' => 1712237564000, // 5 days
     ]);
 
     Block::factory()->create([
-        'timestamp' => 1,
+        'timestamp' => 1711805564000, // 10 days
     ]);
 
     IndexBlocks::dispatch();
 
     Event::assertDispatched(ModelsImported::class, function ($event) {
         return $event->models->count() === 2 &&
-            $event->models->pluck('timestamp')->sort()->values()->toArray() === [5, 10];
+            $event->models->pluck('timestamp')->sort()->values()->toArray() === [
+                Carbon::now()->subDays(5)->unix(),
+                Carbon::now()->subDays(1)->unix(),
+            ];
     });
 });
 
