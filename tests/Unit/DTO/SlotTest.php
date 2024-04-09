@@ -119,9 +119,7 @@ it('should show the correct missed blocks amount when spanning multiple rounds',
         roundNumber: 10
     );
 
-    $this->assertDatabaseMissing('forging_stats', [
-        'public_key' => $wallet->public_key,
-    ]);
+    expect(ForgingStats::where('public_key', $wallet->public_key)->exists())->toBeFalse();
 
     ForgingStats::create([
         'timestamp'  => 1,
@@ -134,15 +132,14 @@ it('should show the correct missed blocks amount when spanning multiple rounds',
         'public_key' => $wallet->public_key,
         'forged'     => false,
     ]);
+
     ForgingStats::create([
         'timestamp'  => 3,
         'public_key' => $wallet->public_key,
         'forged'     => false,
     ]);
 
-    $this->assertDatabaseHas('forging_stats', [
-        'public_key' => $wallet->public_key,
-    ]);
+    expect(ForgingStats::where('public_key', $wallet->public_key)->exists())->toBeTrue();
 
     $missed = ForgingStats::where('forged', false)->where('public_key', $wallet->public_key)->count();
 
