@@ -199,4 +199,4 @@ it('should calculate the missed blocks', function () {
     }
 
     expect($validatorStats)->toEqual($expectedStats);
-})->skip('look into why missed blocks consider the next delegate as not forged');
+})->skip('see TODO at app/Services/Monitor/MissedBlocksCalculator.php#63');
