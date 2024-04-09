@@ -116,4 +116,4 @@ it('should shuffle validators in a deterministic order', function () {
         '03150a599c9f8df707f3433fe8d6d53bda646de0054cc82cb22ba375cb9bd1f096',
         '027e80c676004226c602df8c35260955bb5cb14e852851f4cb281d840cbf2f1e85',
     ]);
-})->skip('look into why shuffling does not match core');
+})->skip('using obsolete method');
