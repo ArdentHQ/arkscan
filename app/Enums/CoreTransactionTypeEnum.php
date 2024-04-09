@@ -25,11 +25,4 @@ final class CoreTransactionTypeEnum
     public const USERNAME_REGISTRATION = 8;
 
     public const USERNAME_RESIGNATION = 9;
-
-    // Obsolete
-    public const TIMELOCK = 9999;
-
-    public const TIMELOCK_CLAIM = 9999;
-
-    public const TIMELOCK_REFUND = 9999;
 }

@@ -160,33 +160,6 @@ final class TransactionFactory extends Factory
         ]);
     }
 
-    public function timelock(): Factory
-    {
-        return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::TIMELOCK,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-            'asset'      => [],
-        ]);
-    }
-
-    public function timelockClaim(): Factory
-    {
-        return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::TIMELOCK_CLAIM,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-            'asset'      => [],
-        ]);
-    }
-
-    public function timelockRefund(): Factory
-    {
-        return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::TIMELOCK_REFUND,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-            'asset'      => [],
-        ]);
-    }
-
     public function entityRegistration(): Factory
     {
         return $this->state(fn () => [

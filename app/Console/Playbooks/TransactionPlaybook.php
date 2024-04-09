@@ -34,12 +34,6 @@ final class TransactionPlaybook extends Playbook
 
         Transaction::factory(10)->validatorResignation()->create();
 
-        Transaction::factory(10)->timelock()->create();
-
-        Transaction::factory(10)->timelockClaim()->create();
-
-        Transaction::factory(10)->timelockRefund()->create();
-
         foreach (range(1, 365) as $day) {
             Transaction::factory(1)->create([
                 'timestamp' => Timestamp::fromUnix(Carbon::now()->subDays($day)->unix())->unix(),

@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Facade;
  * @method static int confirmations()
  * @method static array knownWallets()
  * @method static bool canBeExchanged()
- * @method static bool hasTimelock()
  * @method static Carbon epoch()
  * @method static int validatorCount()
  * @method static int blockTime()

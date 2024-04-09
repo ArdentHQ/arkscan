@@ -508,9 +508,6 @@ it('should determine the transaction type', function (string $type) {
     ['ipfs'],
     ['validatorResignation'],
     ['multiPayment'],
-    ['timelock'],
-    ['timelockClaim'],
-    ['timelockRefund'],
     ['entityRegistration'],
     ['entityResignation'],
     ['entityUpdate'],
@@ -1068,9 +1065,6 @@ it('should determine if the transaction has extra data', function (bool $outcome
     [false, 'ipfs'],
     [false, 'validatorResignation'],
     [true, 'multiPayment'],
-    [false, 'timelock'],
-    [false, 'timelockClaim'],
-    [false, 'timelockRefund'],
     [false, 'entityRegistration'],
     [false, 'entityResignation'],
     [false, 'entityUpdate'],
@@ -1318,9 +1312,6 @@ it('should determine a legacy transaction', function ($transaction) {
 
     expect($transaction->isLegacy())->toBeTrue();
 })->with([
-    'timelock',
-    'timelockClaim',
-    'timelockRefund',
     'entityRegistration',
     'entityResignation',
     'entityUpdate',
