@@ -10,7 +10,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "alpinejs": "^3.13.7",
+        "alpinejs": "^3.13.8",
         "autoprefixer": "10.4.5",
         "body-scroll-lock": "^4.0.0-beta.0",
         "chart.js": "^3.9.1",
