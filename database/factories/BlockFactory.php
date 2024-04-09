@@ -17,7 +17,7 @@ final class BlockFactory extends Factory
         return [
             'id'                     => $this->faker->blockId,
             'version'                => 2,
-            'timestamp'              => 112982056,
+            'timestamp'              => 1603083256000,
             'previous_block'         => 1,
             'height'                 => $this->faker->numberBetween(1, 10000),
             'number_of_transactions' => $this->faker->numberBetween(1, 100),

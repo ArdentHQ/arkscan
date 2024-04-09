@@ -12,7 +12,7 @@ beforeEach(function () {
 
     $this->subject = new ForgingStatsViewModel(ForgingStats::factory()->create([
         'missed_height' => 54321,
-        'timestamp'     => 1934,
+        'timestamp'     => 1490103134,
     ]));
 });
 
@@ -50,11 +50,13 @@ it('should handle no validator', function () {
 });
 
 it('should get the validator username', function () {
-    $wallet = Wallet::factory()->activeValidator()->create(['attributes' => [
-        'validator' => [
-            'username' => 'joe.blogs',
-        ],
-    ]]);
+    $wallet = Wallet::factory()
+        ->activeValidator()
+        ->create([
+            'attributes' => [
+                'username' => 'joe.blogs',
+            ],
+        ]);
 
     $this->subject = new ForgingStatsViewModel(ForgingStats::factory()->create([
         'public_key' => $wallet->public_key,
