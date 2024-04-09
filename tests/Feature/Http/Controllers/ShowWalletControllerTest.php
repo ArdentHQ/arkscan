@@ -33,7 +33,7 @@ it('can lookup wallets by the username', function () {
     $this->withoutExceptionHandling();
 
     $wallet   = Wallet::factory()->create();
-    $username = $wallet->attributes['validator']['username'];
+    $username = $wallet->attributes['username'];
 
     (new NetworkCache())->setSupply(fn () => '10000000000');
 
@@ -61,7 +61,7 @@ it('should not double up currency for crypto', function () {
 
     $response = $this
         ->get(route('wallet', $wallet))
-        ->assertSee($wallet->username)
+        ->assertSee($wallet->username())
         ->assertSee('0 BTC');
 
     $content = preg_replace('/\s+/', ' ', str_replace("\n", '', strip_tags($response->getContent())));
@@ -81,7 +81,7 @@ it('should show currency symbol and code for crypto', function () {
 
     $response = $this
         ->get(route('wallet', $wallet))
-        ->assertSee($wallet->username)
+        ->assertSee($wallet->username())
         ->assertSeeInOrder([
             $wallet->balance->toFloat(),
             '£0.00',
@@ -102,7 +102,7 @@ it('should not show overview value if cannot be exchanged', function () {
 
     $this
         ->get(route('wallet', $wallet))
-        ->assertSee($wallet->username)
+        ->assertSee($wallet->username())
         ->assertSeeInOrder([
             'Value',
             'N/A',
@@ -141,10 +141,8 @@ it('should filter transactions in url', function () {
 it('should get query data from referer', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
-            'validator' => [
-                'voteBalance'    => 1234037456742,
-                'producedBlocks' => 12340,
-            ],
+            'validatorVoteBalance'    => 1234037456742,
+            'validatorProducedBlocks' => 12340,
         ],
     ]);
 
@@ -157,10 +155,8 @@ it('should get query data from referer', function () {
 it('should handle referer without a query string', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
-            'validator' => [
-                'voteBalance'    => 1234037456742,
-                'producedBlocks' => 12340,
-            ],
+            'validatorVoteBalance'    => 1234037456742,
+            'validatorProducedBlocks' => 12340,
         ],
     ]);
 
@@ -173,10 +169,8 @@ it('should handle referer without a query string', function () {
 it('should handle no referer', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
-            'validator' => [
-                'voteBalance'    => 1234037456742,
-                'producedBlocks' => 12340,
-            ],
+            'validatorVoteBalance'    => 1234037456742,
+            'validatorProducedBlocks' => 12340,
         ],
     ]);
 
@@ -187,12 +181,11 @@ it('should handle no referer', function () {
 });
 
 it('should not trim 0 at the end of votes or total forged', function () {
-    $wallet = Wallet::factory()->create([
+    $wallet = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'validator' => [
-                'voteBalance'    => 1234037456742,
-                'producedBlocks' => 12340,
-            ],
+            'validatorPublicKey'      => 'publicKey',
+            'validatorVoteBalance'    => 1234037456742,
+            'validatorProducedBlocks' => 12340,
         ],
     ]);
 
@@ -201,7 +194,7 @@ it('should not trim 0 at the end of votes or total forged', function () {
 
     $this
         ->get(route('wallet', $wallet))
-        ->assertSee($wallet->username)
+        ->assertSee($wallet->username())
         ->assertSeeInOrder([
             '12,340 DARK',
             'Vote',
