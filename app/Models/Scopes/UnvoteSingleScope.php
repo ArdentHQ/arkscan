@@ -13,7 +13,6 @@ final class UnvoteSingleScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         $builder->withScope(VoteScope::class)
-            ->whereJsonLength('asset->votes', 1)
-            ->whereRaw('LEFT(asset->\'votes\'->>0, 1) = \'-\'');
+            ->whereJsonLength('asset->unvotes', 1);
     }
 }

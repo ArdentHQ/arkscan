@@ -32,32 +32,8 @@ it('should get largest transaction including multipayments', function () {
         'fee'    => 10 * 1e8,
     ]);
     $transaction = Transaction::factory()->multipayment()->create([
-        'amount' => 0,
+        'amount' => ((300 * 1e8) * 4) + (5000 * 1e8),
         'fee'    => 10 * 1e8,
-        'asset'  => [
-            'payments' => [
-                [
-                    'recipientId' => 'test-address',
-                    'amount'      => 300 * 1e8,
-                ],
-                [
-                    'recipientId' => 'test-address',
-                    'amount'      => 300 * 1e8,
-                ],
-                [
-                    'recipientId' => 'test-address',
-                    'amount'      => 5000 * 1e8,
-                ],
-                [
-                    'recipientId' => 'test-address',
-                    'amount'      => 300 * 1e8,
-                ],
-                [
-                    'recipientId' => 'test-address',
-                    'amount'      => 300 * 1e8,
-                ],
-            ],
-        ],
     ]);
 
     expect((new LargestTransactionAggregate())->aggregate()->id)->toBe($transaction->id);

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\Transaction;
-use App\Services\Timestamp;
 use App\Services\Transactions\Aggregates\Fees\Historical\MonthAggregate;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -14,12 +13,12 @@ it('should aggregate the fees for 30 days', function () {
 
     Transaction::factory(10)->create([
         'fee'       => '100000000',
-        'timestamp' => Timestamp::now()->subDays(30)->startOfDay()->unix(),
+        'timestamp' => Carbon::now()->subDays(30)->startOfDay()->getTimestampMs(),
     ]);
 
     Transaction::factory(10)->create([
         'fee'       => '100000000',
-        'timestamp' => Timestamp::now()->subMinutes(10)->unix(),
+        'timestamp' => Carbon::now()->subMinutes(10)->getTimestampMs(),
     ]);
 
     $result = (new MonthAggregate())->aggregate();

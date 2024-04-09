@@ -70,34 +70,7 @@
             <file>./tests/Unit/Repositories/BlockRepositoryWithCacheTest.php</file>
             <file>./tests/Unit/Repositories/RoundRepositoryTest.php</file>
 
-            <file>./tests/Unit/Services/ArkVaultUrlBuilderTest.php</file>
-            <directory suffix="Test.php">./tests/Unit/Services/Blockchain</directory>
-            <file>./tests/Unit/Services/Blocks/Aggregates/HighestBlockFeeAggregateTest.php</file>
-            <file>./tests/Unit/Services/Blocks/Aggregates/MostTransactionsBlockAggregateTest.php</file>
-            <directory suffix="Test.php">./tests/Unit/Services/Cache</directory>
-            <file>./tests/Unit/Services/ExchangeRateTest.php</file>
-            <file>./tests/Unit/Services/HelpersTest.php</file>
-            <file>./tests/Unit/Services/IdentityTest.php</file>
-            <file>./tests/Unit/Services/MarketCapTest.php</file>
-            <file>./tests/Unit/Services/MarketDataProviders/CryptoCompareTest.php</file>
-            <file>./tests/Unit/Services/Monitor/ForgingInfoCalculatorTest.php</file>
-            <file>./tests/Unit/Services/NumberFormatterTest.php</file>
-            <directory suffix="Test.php">./tests/Unit/Services/Search</directory>
-            <file>./tests/Unit/Services/SettingsTest.php</file>
-            <file>./tests/Unit/Services/Transactions/Aggregates/Fees/HistoricalAggregateFactoryTest.php</file>
-            <file>./tests/Unit/Services/Transactions/Aggregates/HistoricalAggregateFactoryTest.php</file>
-            <file>./tests/Unit/Services/Transactions/Aggregates/Type/MultipaymentAggregateTest.php</file>
-            <file>./tests/Unit/Services/Transactions/Aggregates/Type/TransferAggregateTest.php</file>
-            <file>./tests/Unit/Services/Transactions/Aggregates/Type/UnvoteAggregateTest.php</file>
-            <file>./tests/Unit/Services/Transactions/Aggregates/Type/ValidatorRegistrationAggregateTest.php</file>
-            <file>./tests/Unit/Services/Transactions/Aggregates/Type/ValidatorResignationAggregateTest.php</file>
-            <file>./tests/Unit/Services/Transactions/Aggregates/Type/VoteAggregateTest.php</file>
-            <file>./tests/Unit/Services/Transactions/Aggregates/Type/VoteCombinationAggregateTest.php</file>
-            <file>./tests/Unit/Services/Transactions/TransactionDirectionIconTest.php</file>
-            <file>./tests/Unit/Services/Transactions/TransactionDirectionTest.php</file>
-            <file>./tests/Unit/Services/Transactions/TransactionStateIconTest.php</file>
-            <file>./tests/Unit/Services/Transactions/TransactionStateTest.php</file>
-            <file>./tests/Unit/Services/VendorFieldTest.php</file>
+            <directory suffix="Test.php">./tests/Unit/Services</directory>
 
             <file>./tests/Unit/ViewModels/ViewModelFactoryTest.php</file>
 
