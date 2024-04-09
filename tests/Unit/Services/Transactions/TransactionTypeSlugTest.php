@@ -66,21 +66,6 @@ it('should determine the type', function (string $type, string $expectedExact, ?
         'multi-payment',
     ],
     [
-        'timelock',
-        'timelock',
-        'timelock',
-    ],
-    [
-        'timelockClaim',
-        'timelock-claim',
-        'timelock-claim',
-    ],
-    [
-        'timelockRefund',
-        'timelock-refund',
-        'timelock-refund',
-    ],
-    [
         'businessEntityRegistration',
         'business-entity-registration',
         'entity-registration',

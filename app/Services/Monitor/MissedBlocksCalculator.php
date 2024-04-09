@@ -59,6 +59,12 @@ class MissedBlocksCalculator implements \App\Contracts\Services\Monitor\MissedBl
             $isForger = $actualValidator === $expectedValidator;
             if (! $isForger) {
                 $misses += 1;
+
+                // TODO: update stats for actual forger, however this currently gets overridden below since it shares the same timestamp.
+                $forgeInfoByTimestamp[strval($block->timestamp)] = [
+                    'publicKey' => $actualValidator,
+                    'forged'    => true,
+                ];
             }
 
             $forgeInfoByTimestamp[strval($block->timestamp)] = [

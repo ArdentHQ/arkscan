@@ -39,6 +39,6 @@ final class Timestamp
 
     public static function daysSinceEpoch(): int
     {
-        return (int) floor(static::now()->unix() / 86400);
+        return (int) floor((Carbon::now()->unix() - Network::epoch()->unix()) / 86400);
     }
 }
