@@ -11,9 +11,11 @@ use Meilisearch\Client as MeilisearchClient;
 use Meilisearch\Endpoints\Indexes;
 
 beforeEach(function () {
-    $this->subject = Transaction::factory()->create([
-        'fee'    => '100000000',
-        'amount' => '200000000',
+    $this->recipient = Wallet::factory()->create();
+    $this->subject   = Transaction::factory()->create([
+        'fee'          => '100000000',
+        'amount'       => '200000000',
+        'recipient_id' => $this->recipient,
     ]);
 });
 
@@ -30,10 +32,9 @@ it('should belong to a sender', function () {
 });
 
 it('should belong to a recipient', function () {
-    Wallet::factory()->create(['address' => $this->subject->recipient_id]);
+    Wallet::factory()->create(['address' => $this->recipient->address]);
 
-    expect($this->subject->recipient())->toBeInstanceOf(BelongsTo::class);
-    expect($this->subject->recipient)->toBeInstanceOf(Wallet::class);
+    expect($this->subject->recipient())->toEqual($this->recipient->fresh());
 });
 
 it('should get vendorfield value multiple times despite resource', function () {
