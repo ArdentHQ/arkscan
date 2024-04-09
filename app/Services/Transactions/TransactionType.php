@@ -30,9 +30,6 @@ final class TransactionType
         'isIpfs'                           => 'ipfs',
         'isValidatorResignation'           => 'validator-resignation',
         'isMultiPayment'                   => 'multi-payment',
-        'isTimelock'                       => 'timelock',
-        'isTimelockClaim'                  => 'timelock-claim',
-        'isTimelockRefund'                 => 'timelock-refund',
         'isBusinessEntityRegistration'     => 'business-entity-registration',
         'isBusinessEntityResignation'      => 'business-entity-resignation',
         'isBusinessEntityUpdate'           => 'business-entity-update',
@@ -121,21 +118,6 @@ final class TransactionType
     public function isMultiPayment(): bool
     {
         return $this->isCoreType(CoreTransactionTypeEnum::MULTI_PAYMENT);
-    }
-
-    public function isTimelock(): bool
-    {
-        return false;
-    }
-
-    public function isTimelockClaim(): bool
-    {
-        return false;
-    }
-
-    public function isTimelockRefund(): bool
-    {
-        return false;
     }
 
     public function isUsernameRegistration(): bool
@@ -315,14 +297,6 @@ final class TransactionType
         }
 
         if ($this->isUsernameResignation()) {
-            return false;
-        }
-
-        if ($this->isTimelockClaim()) {
-            return false;
-        }
-
-        if ($this->isTimelockRefund()) {
             return false;
         }
 

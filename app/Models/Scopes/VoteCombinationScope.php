@@ -16,6 +16,7 @@ final class VoteCombinationScope implements Scope
     {
         $builder->where('type_group', TransactionTypeGroupEnum::CORE);
         $builder->where('type', CoreTransactionTypeEnum::VOTE);
-        $builder->whereJsonLength('asset->votes', 2);
+        $builder->whereJsonLength('asset->votes', 1);
+        $builder->whereJsonLength('asset->unvotes', 1);
     }
 }

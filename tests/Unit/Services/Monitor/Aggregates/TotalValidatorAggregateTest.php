@@ -11,9 +11,8 @@ beforeEach(function () {
     Wallet::factory()->create([
         'public_key' => 'generator',
         'attributes' => [
-            'validator' => [
-                'username' => 'generator',
-            ],
+            'validatorPublicKey' => 'publickey',
+            'username'           => 'generator',
         ],
     ]);
 });

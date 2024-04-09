@@ -25,7 +25,7 @@ final class Monitor
     public static function roundNumberFromHeight(int $height): int
     {
         return Round::where('round_height', '<=', $height)
-            ->orderBy('round_height')
+            ->orderBy('round', 'desc')
             ->firstOrFail()
             ->round;
     }

@@ -15,10 +15,8 @@ beforeEach(function () {
         'updated_at' => Carbon::createFromTimestamp(123456789),
         'balance'    => '100000000000',
         'attributes' => [
-            'validator' => [
-                'username'    => 'test',
-                'voteBalance' => '200000000000',
-            ],
+            'username'             => 'test',
+            'validatorVoteBalance' => '200000000000',
         ],
     ]);
 });
@@ -46,7 +44,7 @@ it('has custom scout key name', function () {
     expect($this->subject->getScoutKeyName())->toBe('address');
 });
 
-it('adds the timestamp from the updated_t column and username when making searchable', function () {
+it('adds the timestamp from the updated_at column and username when making searchable', function () {
     $mock    = $this->mock(MeilisearchClient::class);
     $indexes = $this->mock(Indexes::class);
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Facades\Network;
 use Illuminate\Support\Collection;
 
 final class Forms
@@ -32,10 +31,6 @@ final class Forms
         /** @var Collection<string, string> $options */
         $options = collect(static::$transactionOptionsValues)
             ->mapWithKeys(fn ($option) => [$option =>__('forms.search.transaction_types.'.$option)]);
-
-        if (! Network::hasTimelock()) {
-            $options = $options->filter(fn ($value, $key) => str_contains($key, 'timelock') === false);
-        }
 
         return $options->toArray();
     }
