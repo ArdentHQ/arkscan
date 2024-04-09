@@ -136,8 +136,8 @@ it('should calculate the missed blocks', function () {
     ];
 
     $round = Round::factory()->create([
-        'round'        => 7059,
-        'round_height' => (7059 - 1) * Network::validatorCount(),
+        'round'        => 7103,
+        'round_height' => (7103 - 1) * Network::validatorCount() + 1,
         'validators'   => $validatorPublicKeysBalanceDesc,
     ]);
 
@@ -145,10 +145,10 @@ it('should calculate the missed blocks', function () {
 
     foreach ($validatorOrderForRound as $publicKey) {
         if (! in_array($publicKey, $validatorsWhoMissed, true)) {
-            // Start height for round 7059 is 374074
+            // Start height for round 7103 is 376407
             Block::factory()->create([
                 'generator_public_key' => $publicKey,
-                'height'               => 374074 + $heightIterator,
+                'height'               => 376407 + $heightIterator,
                 'timestamp'            => Carbon::now()->getTimestampMs(),
             ]);
 
@@ -177,11 +177,11 @@ it('should calculate the missed blocks', function () {
     }
 
     Block::factory()->create([
-        'height'    => 374073,
+        'height'    => 376406,
         'timestamp' => Carbon::now()->getTimestampMs(),
     ]);
 
-    $blocksInfo     = MissedBlocksCalculator::calculateForRound($round, $round->round_height - 1 + Network::validatorCount()); // any height in the round
+    $blocksInfo     = MissedBlocksCalculator::calculateForRound($round, $round->round_height + Network::validatorCount()); // any height in the round
     $validatorStats = [];
     foreach ($blocksInfo as $blockInfo) {
         if (! isset($validatorStats[$blockInfo['publicKey']])) {
