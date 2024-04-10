@@ -14,8 +14,11 @@ use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
+
+use function Tests\createBlock;
 use function Tests\createRealisticRound;
 use function Tests\createRoundEntry;
+use function Tests\getRoundValidators;
 
 beforeEach(function () {
     $this->activeValidators = require dirname(dirname(dirname(dirname(__DIR__)))).'/fixtures/forgers.php';
@@ -50,21 +53,14 @@ function createRoundWithValidators(): void
     });
 }
 
-// Obsolete method
-function forgeBlock(string $publicKey, int &$height): void
+function forgeBlock(string $publicKey, int $height): void
 {
-    $block = Block::factory()->create([
-        'height'               => $height,
-        'generator_public_key' => $publicKey,
-        // 'timestamp'            => (new Slots())->getTime(),
-    ]);
+    $block = createBlock($height, $publicKey);
 
     (new WalletCache())->setLastBlock($publicKey, [
         'id'     => $block->id,
         'height' => $block->height->toNumber(),
     ]);
-
-    $height++;
 }
 
 it('should render without errors', function () {
@@ -191,46 +187,32 @@ it('should not poll if not ready', function () {
 });
 
 it('should correctly show the block is missed', function () {
-    // Force round time
     $this->travelTo(new Carbon('2021-01-01 00:04:00'));
 
-    createRoundEntry(1, 1, $this->activeValidators);
+    $round = 1403;
+    $height = (($round - 1) * Network::validatorCount()) + 1;
+    createRoundEntry($round, $height, $this->activeValidators);
 
     // Create wallets for each validator
-    $this->activeValidators->each(function ($validator) use (&$wallets) {
+    $this->activeValidators->each(function ($validator) {
         $wallet = Wallet::factory()->create(['public_key' => $validator->public_key]);
 
         (new WalletCache())->setValidator($validator->public_key, $wallet);
     });
 
-    // Store validator record for each Round object
-    $wallets = Rounds::byRound(1)->validators;
+    $validatorsInOrder = getRoundValidators(false, $round);
 
-    // Make methods public for fetching forging order
-    $activeValidatorsMethod  = new ReflectionMethod(ValidatorTracker::class, 'getActiveValidators');
-    $shuffleValidatorsMethod = new ReflectionMethod(ValidatorTracker::class, 'shuffleValidators');
-    $orderValidatorsMethod   = new ReflectionMethod(ValidatorTracker::class, 'orderValidators');
-    $activeValidatorsMethod->setAccessible(true);
-    $shuffleValidatorsMethod->setAccessible(true);
-    $orderValidatorsMethod->setAccessible(true);
-
-    // Get validator order so we can forge in the correct order
-    $originalOrder      = ForgingInfoCalculator::calculate(1, 1);
-    $activeValidators   = $activeValidatorsMethod->invokeArgs(null, [$wallets]);
-    $shuffledValidators = $shuffleValidatorsMethod->invokeArgs(null, [$activeValidators, 1]);
-    $validatorsInOrder  = collect($orderValidatorsMethod->invokeArgs(null, [
-        $shuffledValidators,
-        $originalOrder['currentForger'],
-        51,
-    ]));
+    expect(Block::count())->toBe(0);
 
     // Forge blocks for first 5 validators
-    $height = 1;
-    $validatorsInOrder->take(5)->each(function ($publicKey) use (&$height) {
-        forgeBlock($publicKey, $height);
+    foreach ($validatorsInOrder->take(5) as $validator) {
+        forgeBlock($validator['publicKey'], $height);
+        $height++;
 
         $this->travel(8)->seconds();
-    });
+    }
+
+    expect(Block::count())->toBe(5);
 
     // Mark component validator property as public & update monitor data
     $validatorProperty = new ReflectionProperty(Monitor::class, 'validators');
@@ -247,7 +229,7 @@ it('should correctly show the block is missed', function () {
 
     $validators = collect($validatorProperty->getValue($instance));
 
-    expect($validators)->toHaveCount(51);
+    expect($validators)->toHaveCount(Network::validatorCount());
 
     // Split up validator slot data to check
     $forgedValidators  = $validators->splice(0, 5);
@@ -259,10 +241,16 @@ it('should correctly show the block is missed', function () {
     $missedValidators->each(fn ($validator) => expect($validator->isPending())->toBeTrue());
 
     // Progress time by 15 validator slots
-    $this->travel(14 * 8)->seconds();
+    $this->travel(15 * 8)->seconds();
+
+    foreach ($validatorsInOrder->skip(20)->take(15) as $validator) {
+        forgeBlock($validator['publicKey'], $height);
+        $height++;
+
+        $this->travel(8)->seconds();
+    }
 
     // Forge block with 20th validator
-    forgeBlock($validatorsInOrder->get(20), $height);
     $this->travel(8)->seconds();
 
     // Update validator data again
@@ -270,7 +258,7 @@ it('should correctly show the block is missed', function () {
 
     $validators = collect($validatorProperty->getValue($instance));
 
-    expect($validators)->toHaveCount(51);
+    expect($validators)->toHaveCount(Network::validatorCount());
 
     // Check validator data is correct after 15 missed blocks
     $forgedValidators  = $validators->splice(0, 5);
@@ -300,7 +288,7 @@ it('should correctly show the block is missed', function () {
     $component
         ->call('pollValidators')
         ->assertSeeInOrder($outputData);
-})->skip('Should be reviewed once all other tests are passing - it uses obsolete methods which should be removed');
+})->skip('See comment at app/Services/Monitor/ValidatorTracker.php#38');
 
 it('should show warning icon for validators missing blocks - minutes', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));

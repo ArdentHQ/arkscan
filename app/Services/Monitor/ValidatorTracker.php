@@ -35,7 +35,7 @@ final class ValidatorTracker
         return collect($validators)
             ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $validatorCount) {
                 // Determine forging order based on the original offset
-                $difference      = $forgingInfo['currentForger'];
+                $difference      = $forgingInfo['currentForger']; // should this be nextForger? The "next" delegate has already forged a block based on the height
                 $normalizedOrder = $difference >= 0 ? $difference : $validatorCount + $difference;
 
                 if ($index === $normalizedOrder) {
