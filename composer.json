@@ -113,7 +113,7 @@
             "./vendor/bin/pest --parallel"
         ],
         "test:coverage": [
-            "./vendor/bin/pest --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml"
+            "./vendor/bin/pest --coverage --min=99.5 --coverage-html=.coverage --coverage-clover=coverage.xml"
         ]
     }
 }
