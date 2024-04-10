@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use App\Services\BigNumber;
-use App\Services\Timestamp;
 use Carbon\Carbon;
 
 it('should render the page without any errors', function () {

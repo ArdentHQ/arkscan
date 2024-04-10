@@ -120,7 +120,7 @@ it('should filter by transfer transactions', function () {
     $vote   = Transaction::factory()->vote()->create([
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => [$wallet->public_key],
+            'votes'   => [$wallet->public_key],
             'unvotes' => [],
         ],
     ]);
@@ -144,7 +144,7 @@ it('should filter by vote transactions', function () {
     $vote   = Transaction::factory()->vote()->create([
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => [$wallet->public_key],
+            'votes'   => [$wallet->public_key],
             'unvotes' => [],
         ],
     ]);

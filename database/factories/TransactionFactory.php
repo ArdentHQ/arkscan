@@ -74,7 +74,7 @@ final class TransactionFactory extends Factory
             'type'       => CoreTransactionTypeEnum::VOTE,
             'type_group' => TransactionTypeGroupEnum::CORE,
             'asset'      => [
-                'votes' => ['publicKey'],
+                'votes'   => ['publicKey'],
                 'unvotes' => [],
             ],
         ]);
@@ -86,7 +86,7 @@ final class TransactionFactory extends Factory
             'type'       => CoreTransactionTypeEnum::VOTE,
             'type_group' => TransactionTypeGroupEnum::CORE,
             'asset'      => [
-                'votes' => [],
+                'votes'   => [],
                 'unvotes' => ['publicKey'],
             ],
         ]);

@@ -28,7 +28,7 @@ it('should render with votes', function () {
         'timestamp'         => Carbon::parse('2020-03-21 14:12:00')->getTimestampMs(),
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => [$validator->public_key],
+            'votes'   => [$validator->public_key],
             'unvotes' => [],
         ],
     ]);
@@ -49,7 +49,7 @@ it('should not render votes older than 30 days', function () {
         'timestamp'         => Carbon::parse('2020-03-21 14:12:00')->getTimestampMs(),
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => [$validator->public_key],
+            'votes'   => [$validator->public_key],
             'unvotes' => [],
         ],
     ]);
@@ -58,7 +58,7 @@ it('should not render votes older than 30 days', function () {
         'timestamp'         => Carbon::parse('2020-04-20 14:12:00')->getTimestampMs(),
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => [$validator->public_key],
+            'votes'   => [$validator->public_key],
             'unvotes' => [],
         ],
     ]);
@@ -129,7 +129,7 @@ it('should filter vote transactions', function () {
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => [$validator->public_key],
+            'votes'   => [$validator->public_key],
             'unvotes' => [],
         ],
     ]);
@@ -138,7 +138,7 @@ it('should filter vote transactions', function () {
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => [],
+            'votes'   => [],
             'unvotes' => [$validator->public_key],
         ],
     ]);
@@ -147,7 +147,7 @@ it('should filter vote transactions', function () {
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => [$otherValidator->public_key],
+            'votes'   => [$otherValidator->public_key],
             'unvotes' => [$validator->public_key],
         ],
     ]);
@@ -173,7 +173,7 @@ it('should filter unvote transactions', function () {
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => [$validator->public_key],
+            'votes'   => [$validator->public_key],
             'unvotes' => [],
         ],
     ]);
@@ -183,7 +183,7 @@ it('should filter unvote transactions', function () {
         'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
             'unvotes' => [$validator->public_key],
-            'votes' => [],
+            'votes'   => [],
         ],
     ]);
 
@@ -191,7 +191,7 @@ it('should filter unvote transactions', function () {
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => [$otherValidator->public_key],
+            'votes'   => [$otherValidator->public_key],
             'unvotes' => [$validator->public_key],
         ],
     ]);
@@ -233,7 +233,7 @@ it('should filter vote swap transactions', function () {
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => [$otherValidator->public_key],
+            'votes'   => [$otherValidator->public_key],
             'unvotes' => [$validator->public_key],
         ],
     ]);
@@ -307,7 +307,7 @@ function generateTransactions(): array
     $voteSwapTransaction = Transaction::factory()->voteCombination()->create([
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 05:41:04')->unix())->unix(),
         'asset'     => [
-            'votes' => [$validator3->public_key],
+            'votes'   => [$validator3->public_key],
             'unvotes' => [$validator1->public_key],
         ],
     ]);

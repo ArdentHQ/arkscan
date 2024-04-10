@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Facades\Network;
 use App\Http\Livewire\Stats\Highlights;
-use App\Models\Block;
 use App\Models\State;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;

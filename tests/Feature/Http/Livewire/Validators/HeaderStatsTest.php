@@ -5,12 +5,10 @@ declare(strict_types=1);
 use App\Facades\Network;
 use App\Http\Livewire\Validators\HeaderStats;
 use App\Models\ForgingStats;
-use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
 use Livewire\Livewire;
-
 use function Tests\createRoundEntry;
 
 beforeEach(function () {

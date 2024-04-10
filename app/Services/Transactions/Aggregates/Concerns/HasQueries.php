@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\Transactions\Aggregates\Concerns;
 
 use App\Models\Transaction;
-use App\Services\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 

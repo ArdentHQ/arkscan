@@ -13,7 +13,6 @@ use App\Http\Livewire\Stats\Insights;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Services\BigNumber;
 use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\BlockCache;
 use App\Services\Cache\CryptoDataCache;
