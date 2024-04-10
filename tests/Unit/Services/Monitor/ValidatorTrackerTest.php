@@ -51,24 +51,3 @@ it('should calculate the forging order', function () {
 
     assertMatchesSnapshot($order);
 });
-
-it('should get active validators', function () {
-    $method = new ReflectionMethod(ValidatorTracker::class, 'getActiveValidators');
-    $method->setAccessible(true);
-
-    expect($method->invokeArgs(null, [$this->activeValidators]))
-        ->toEqual($this->expected['input']);
-})->skip('using obsolete method');
-
-it('should shuffle validators correctly', function () {
-    $validatorsMethod = new ReflectionMethod(ValidatorTracker::class, 'getActiveValidators');
-    $validatorsMethod->setAccessible(true);
-
-    $activeValidators = $validatorsMethod->invokeArgs(null, [$this->activeValidators]);
-
-    $shuffleMethod = new ReflectionMethod(ValidatorTracker::class, 'shuffleValidators');
-    $shuffleMethod->setAccessible(true);
-
-    expect($shuffleMethod->invokeArgs(null, [$activeValidators, 5720529]))
-        ->toEqual($this->expected['output']);
-})->skip('using obsolete method');
