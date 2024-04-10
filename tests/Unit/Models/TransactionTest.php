@@ -44,8 +44,8 @@ it('should get recipient if vote', function () {
         ->vote()
         ->create([
             'recipient_id' => null,
-            'asset' => [
-                'votes' => [$validator->public_key],
+            'asset'        => [
+                'votes'   => [$validator->public_key],
                 'unvotes' => [],
             ],
         ]);
@@ -60,9 +60,9 @@ it('should get recipient if unvote', function () {
         ->unvote()
         ->create([
             'recipient_id' => null,
-            'asset' => [
+            'asset'        => [
                 'unvotes' => [$validator->public_key],
-                'votes' => [],
+                'votes'   => [],
             ],
         ]);
 
@@ -70,15 +70,15 @@ it('should get recipient if unvote', function () {
 });
 
 it('should get vote recipient if vote combination', function () {
-    $validator = Wallet::factory()->activeValidator()->create();
+    $validator    = Wallet::factory()->activeValidator()->create();
     $oldValidator = Wallet::factory()->activeValidator()->create();
 
     $transaction = Transaction::factory()
         ->voteCombination()
         ->create([
             'recipient_id' => null,
-            'asset' => [
-                'votes' => [$validator->public_key],
+            'asset'        => [
+                'votes'   => [$validator->public_key],
                 'unvotes' => [$oldValidator->public_key],
             ],
         ]);
