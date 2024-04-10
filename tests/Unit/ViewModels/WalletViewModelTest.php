@@ -301,19 +301,24 @@ it('should fail to get the wallet of the vote if it is not cached', function () 
 it('should get the performance if the wallet is a validator', function () {
     Rounds::swap(new RoundsMock());
 
-    $wallet = Wallet::factory()->create([
-        'balance'      => '100000000000',
-        'nonce'        => 1000,
-        'attributes'   => [
-            'validator' => [],
-        ],
-    ]);
+    $wallet = Wallet::factory()
+        ->activeValidator()
+        ->create([
+            'balance'      => '100000000000',
+            'nonce'        => 1000,
+            'attributes'   => [
+                'validatorPublicKey' => 'publicKey',
+            ],
+        ]);
 
     (new WalletCache())->setPerformance($wallet->public_key, [true, true]);
 
     $this->subject = new WalletViewModel($wallet);
 
-    expect($this->subject->performance())->toBeArray();
+    expect($this->subject->performance())->toBe([
+        true,
+        false,
+    ]);
 });
 
 it('should fail to get the performance if the wallet is not a validator', function () {
@@ -328,9 +333,11 @@ it('should fail to get the performance if the wallet is not a validator', functi
 });
 
 it('should fail to get the performance if the wallet has no public key', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'public_key' => null,
-    ]));
+    $this->subject = new WalletViewModel(Wallet::factory()
+        ->activeValidator()
+        ->create([
+            'public_key' => null,
+        ]));
 
     expect($this->subject->performance())->toBeEmpty();
 });
