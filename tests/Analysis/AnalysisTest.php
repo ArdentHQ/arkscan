@@ -37,6 +37,7 @@ final class AnalysisTest extends TestCase
             'Tests\createRealisticRound',
             'Tests\createFullRound',
             'Tests\createPartialRound',
+            'Tests\getRoundValidators',
             'Tests\validatorsForRound',
         ];
     }
