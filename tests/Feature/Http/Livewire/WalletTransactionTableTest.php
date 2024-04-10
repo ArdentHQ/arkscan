@@ -232,11 +232,12 @@ it('should show multipayment without amount sent to self', function () {
     ));
     $component->assertSeeInOrder(['Multiple', '(3)']);
     $component->assertSeeInOrder([
+        'Excluding 1 DARK sent to self',
         '-',
         $transaction->amountExcludingItself(),
         $transaction->fee(),
     ]);
-})->skip('to be updated in https://app.clickup.com/t/861mz64kj');
+});
 
 it('should show transfer without amount sent to self', function () {
     $sent = Transaction::factory()->transfer()->create([
