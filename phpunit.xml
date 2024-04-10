@@ -6,7 +6,7 @@
          printerClass="NunoMaduro\Collision\Adapters\Phpunit\Printer">
     <testsuites>
         <testsuite name="Analysis">
-            <!-- <directory suffix="Test.php">./tests/Analysis</directory> -->
+            <directory suffix="Test.php">./tests/Analysis</directory>
         </testsuite>
 
         <testsuite name="Feature">
