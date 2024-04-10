@@ -34,7 +34,6 @@ final class TransactionViewModel implements ViewModel
     use HasIcons;
     use HasState;
     use HasType;
-    use InteractsWithValidatorRegistration;
     use InteractsWithEntities;
     use InteractsWithMultiPayment;
     use InteractsWithMultiSignature;
