@@ -6,11 +6,9 @@ use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Http\Livewire\Validators\Monitor;
 use App\Models\Block;
-use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\ForgingInfoCalculator;
-use App\Services\Monitor\Slots;
 use App\Services\Monitor\ValidatorTracker;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
@@ -52,12 +50,13 @@ function createRoundWithValidators(): void
     });
 }
 
+// Obsolete method
 function forgeBlock(string $publicKey, int &$height): void
 {
     $block = Block::factory()->create([
         'height'               => $height,
         'generator_public_key' => $publicKey,
-        'timestamp'            => (new Slots())->getTime(),
+        // 'timestamp'            => (new Slots())->getTime(),
     ]);
 
     (new WalletCache())->setLastBlock($publicKey, [
