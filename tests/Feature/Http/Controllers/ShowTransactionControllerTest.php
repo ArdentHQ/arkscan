@@ -53,7 +53,7 @@ it('should render the page for a vote/unvote transaction without any errors', fu
     $validator    = Wallet::factory()->activeValidator()->create();
     $transaction  = Transaction::factory()->{$type}()->create([
         'asset' => [
-            'votes' => ['+'.$validator->public_key],
+            'votes' => [$validator->public_key],
         ],
     ]);
 
@@ -73,7 +73,7 @@ it('should render the page for a vote combination transaction without any errors
     $newValidator = Wallet::factory()->activeValidator()->create();
     $transaction  = Transaction::factory()->voteCombination()->create([
         'asset' => [
-            'votes' => ['-'.$oldValidator->public_key, '+'.$newValidator->public_key],
+            'unvotes' => [$oldValidator->public_key, '+'.$newValidator->public_key],
         ],
     ]);
 

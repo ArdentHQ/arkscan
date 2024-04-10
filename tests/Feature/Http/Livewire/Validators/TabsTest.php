@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
 use App\Http\Livewire\Validators\Tabs;
 use Livewire\Livewire;
 
@@ -15,7 +16,7 @@ it('should set initial data', function () {
         ->assertSet('tabQueryData', [
             'validators' => [
                 'page'    => 1,
-                'perPage' => 51,
+                'perPage' => Network::validatorCount(),
             ],
 
             'missed-blocks' => [
@@ -37,7 +38,7 @@ it('should get querystring data', function () {
     expect($instance->queryString())->toBe([
         'view'    => ['except' => 'validators'],
         'page'    => ['except' => 1],
-        'perPage' => ['except' => 51],
+        'perPage' => ['except' => Network::validatorCount()],
     ]);
 });
 

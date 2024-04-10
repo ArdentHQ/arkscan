@@ -118,9 +118,11 @@ final class RecentVotes extends TabbedTableComponent
             ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix() * 1000)
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['vote'], function ($query) {
-                    $query->whereRaw('jsonb_array_length(asset->\'votes\') >= 1');
+                    $query->whereRaw('jsonb_array_length(asset->\'votes\') >= 1')
+                        ->whereRaw('jsonb_array_length(asset->\'unvotes\') = 0');
                 }))->orWhere(fn ($query) => $query->when($this->filter['unvote'], function ($query) {
-                    $query->whereRaw('jsonb_array_length(asset->\'unvotes\') >= 1');
+                    $query->whereRaw('jsonb_array_length(asset->\'unvotes\') >= 1')
+                        ->whereRaw('jsonb_array_length(asset->\'votes\') = 0');
                 }))->orWhere(fn ($query) => $query->when(
                     $this->filter['vote-swap'],
                     fn ($query) => $query

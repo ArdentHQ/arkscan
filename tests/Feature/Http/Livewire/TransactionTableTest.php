@@ -10,6 +10,7 @@ use App\Models\Wallet;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
@@ -44,7 +45,7 @@ it('should update the records fiat tooltip when currency changed', function () {
     ]));
 
     Transaction::factory()->transfer()->create([
-        'timestamp' => 112982056,
+        'timestamp' => Carbon::parse('2020-10-19 05:54:16')->getTimestampMs(),
         'amount'    => 499 * 1e8,
     ]);
 
@@ -119,7 +120,8 @@ it('should filter by transfer transactions', function () {
     $vote   = Transaction::factory()->vote()->create([
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => ['+'.$wallet->public_key],
+            'votes'   => [$wallet->public_key],
+            'unvotes' => [],
         ],
     ]);
 
@@ -142,7 +144,8 @@ it('should filter by vote transactions', function () {
     $vote   = Transaction::factory()->vote()->create([
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => ['+'.$wallet->public_key],
+            'votes'   => [$wallet->public_key],
+            'unvotes' => [],
         ],
     ]);
 
