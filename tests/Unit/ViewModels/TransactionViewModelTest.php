@@ -1309,6 +1309,8 @@ it('should determine a non-legacy transaction', function ($transaction) {
     'vote',
     'unvote',
     'secondSignature',
+    'usernameRegistration',
+    'usernameResignation',
 ]);
 
 it('should determine a legacy transaction', function ($transaction) {
