@@ -7,8 +7,6 @@ namespace App\Services\Monitor;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
-use App\Services\Monitor\Actions\ShuffleValidators;
-use Illuminate\Support\Collection;
 
 final class ValidatorTracker
 {

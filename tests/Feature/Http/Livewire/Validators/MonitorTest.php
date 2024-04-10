@@ -3,18 +3,14 @@
 declare(strict_types=1);
 
 use App\Facades\Network;
-use App\Facades\Rounds;
 use App\Http\Livewire\Validators\Monitor;
 use App\Models\Block;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
-use App\Services\Monitor\ForgingInfoCalculator;
-use App\Services\Monitor\ValidatorTracker;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
-
 use function Tests\createBlock;
 use function Tests\createRealisticRound;
 use function Tests\createRoundEntry;
@@ -189,7 +185,7 @@ it('should not poll if not ready', function () {
 it('should correctly show the block is missed', function () {
     $this->travelTo(new Carbon('2021-01-01 00:04:00'));
 
-    $round = 1403;
+    $round  = 1403;
     $height = (($round - 1) * Network::validatorCount()) + 1;
     createRoundEntry($round, $height, $this->activeValidators);
 
