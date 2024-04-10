@@ -50,21 +50,7 @@
         </testsuite>
 
         <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit/Actions</directory>
-            <directory suffix="Test.php">./tests/Unit/Aggregates</directory>
-            <directory suffix="Test.php">./tests/Unit/Console</directory>
-            <directory suffix="Test.php">./tests/Unit/DTO</directory>
-            <directory suffix="Test.php">./tests/Unit/Jobs</directory>
-            <directory suffix="Test.php">./tests/Unit/Mail</directory>
-
-            <file>./tests/Unit/Models/BlockTest.php</file>
-            <directory suffix="Test.php">./tests/Unit/Models/Scopes</directory>
-            <directory suffix="Test.php">./tests/Unit/Repositories</directory>
-            <directory suffix="Test.php">./tests/Unit/Services</directory>
-
-            <file>./tests/Unit/ViewModels/ViewModelFactoryTest.php</file>
-
-            <!-- <directory suffix="Test.php">./tests/Unit</directory> -->
+            <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
     </testsuites>
     <filter>
