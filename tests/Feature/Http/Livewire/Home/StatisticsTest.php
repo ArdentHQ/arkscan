@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Facades\Settings;
 use App\Http\Livewire\Home\Statistics;
 use App\Models\Block;
+use App\Models\State;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\CryptoDataCache;
@@ -15,14 +16,11 @@ use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
 it('should render with a height, volume, supply and not available market cap', function () {
+    Config::set('arkscan.network', 'development');
     Config::set('arkscan.networks.development.canBeExchanged', false);
 
-    Block::factory()->create([
-        'height'               => 5651290,
-        'generator_public_key' => Wallet::factory()->create([
-            'balance' => '13628098200000000',
-        ])->public_key,
-    ]);
+    Block::factory()->create(['height' => 5651290]);
+    State::factory()->create(['supply' => '13628098200000000']);
 
     Livewire::test(Statistics::class)
         ->assertSeeInOrder([
@@ -36,15 +34,11 @@ it('should render with a height, volume, supply and not available market cap', f
 it('should render with a height, volume, supply and market cap', function () {
     Config::set('arkscan.network', 'production');
 
-    Block::factory()->create([
-        'height'               => 5651290,
-        'generator_public_key' => Wallet::factory()->create([
-            'balance' => '13628098200000000',
-        ])->public_key,
-    ]);
+    Block::factory()->create(['height' => 5651290]);
+    State::factory()->create(['supply' => '13628098200000000']);
 
     $transaction = Transaction::factory()->transfer()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::now()->unix())->unix(),
+        'timestamp' => Carbon::now()->getTimestampMs(),
         'amount'    => 18204 * 1e8,
         'fee'       => 0.99 * 1e8,
     ]);
@@ -74,15 +68,11 @@ it('should render with a height, volume, supply and market cap for BTC', functio
     Settings::shouldReceive('currency')->andReturn('BTC');
     Settings::shouldReceive('usesDarkTheme')->andReturn(false);
 
-    Block::factory()->create([
-        'height'               => 5651290,
-        'generator_public_key' => Wallet::factory()->create([
-            'balance' => '13628098200000000',
-        ])->public_key,
-    ]);
+    Block::factory()->create(['height' => 5651290]);
+    State::factory()->create(['supply' => '13628098200000000']);
 
     $transaction = Transaction::factory()->transfer()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::now()->unix())->unix(),
+        'timestamp' => Carbon::now()->getTimestampMs(),
         'amount'    => 18204 * 1e8,
         'fee'       => 0.99 * 1e8,
     ]);

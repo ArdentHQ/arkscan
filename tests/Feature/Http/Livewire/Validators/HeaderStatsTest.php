@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
 use App\Http\Livewire\Validators\HeaderStats;
 use App\Models\ForgingStats;
 use App\Models\Round;
@@ -10,16 +11,14 @@ use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
 use Livewire\Livewire;
 
+use function Tests\createRoundEntry;
+
 beforeEach(function () {
     $this->wallets = Wallet::factory(51)
         ->activeValidator()
-        ->create()
-        ->each(function ($wallet) {
-            Round::factory()->create([
-                'round'      => '112168',
-                'public_key' => $wallet->public_key,
-            ]);
-        });
+        ->create();
+
+    createRoundEntry(112168, (112168 - 1) * Network::validatorCount(), $this->wallets);
 });
 
 it('should render without errors', function () {

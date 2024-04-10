@@ -32,19 +32,43 @@ use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 it('should render transaction details', function (): void {
     Transaction::factory(12)->validatorRegistration()->create();
     Transaction::factory(13)->validatorResignation()->create();
-    Transaction::factory(14)->transfer()->create();
+    Transaction::factory(14)->transfer()->create([
+        'amount' => 1 * 1e8,
+    ]);
     Transaction::factory(15)->vote()->create();
     Transaction::factory(16)->unvote()->create();
     Transaction::factory(17)->voteCombination()->create();
-    Transaction::factory(18)->multipayment()->create();
+
+    $largest = Transaction::factory()->multiPayment()->create([
+        'amount' => 99 * 1e8,
+        'fee'    => 11 * 1e8,
+        'asset'  => [
+            'payments' => [
+                [
+                    'amount' => 99 * 1e8,
+                ],
+            ],
+        ],
+    ]);
+
+    Transaction::factory(17)->multiPayment()->create([
+        'amount' => 2 * 1e8,
+        'fee'    => 11 * 1e8,
+        'asset'  => [
+            'payments' => [
+                [
+                    'amount' => 2 * 1e8,
+                ],
+            ],
+        ],
+    ]);
 
     $transactionCache = new TransactionCache();
     $transactionCache->getCache()->flush();
 
     Artisan::call('explorer:cache-transactions');
 
-    $largestTransaction         = Transaction::find($transactionCache->getLargestIdByAmount());
-    $largestTransaction->amount = BigNumber::new($largestTransaction->amount->valueOf());
+    $largestTransaction = Transaction::find($largest->id);
 
     $transactionDetails = TransactionStatistics::make(
         [
@@ -95,7 +119,7 @@ it('should render transaction daily average', function (): void {
         'fee'    => 10 * 1e8,
     ]);
     Transaction::factory(4)->multipayment()->create([
-        'amount' => 0,
+        'amount' => 3000 * 1e8,
         'fee'    => 11 * 1e8,
         'asset'  => [
             'payments' => [
@@ -367,12 +391,12 @@ it('should render marketdata statistics for crypto', function (): void {
 
 it('should render annual statistics', function (): void {
     $cache = new StatisticsCache();
-    $cache->setAnnualData(2020, 12, '1234', '456', 28);
-    $cache->setAnnualData(2021, 34, '12345', '4567', 39);
+    $cache->setAnnualData(2023, 12, '1234', '456', 28);
+    $cache->setAnnualData(2024, 34, '12345', '4567', 39);
 
     Livewire::test(Insights::class)
         ->assertSeeInOrder([
-            2020,
+            2023,
             trans('pages.statistics.insights.annual.header.transaction'),
             12,
             trans('pages.statistics.insights.annual.header.volume'),
@@ -382,7 +406,7 @@ it('should render annual statistics', function (): void {
             trans('pages.statistics.insights.annual.header.blocks'),
             28,
 
-            2021,
+            2024,
             trans('pages.statistics.insights.annual.header.transaction'),
             34,
             trans('pages.statistics.insights.annual.header.volume'),

@@ -5,17 +5,16 @@ declare(strict_types=1);
 use App\Facades\Network;
 use App\Http\Livewire\Stats\Highlights;
 use App\Models\Block;
+use App\Models\State;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\ValidatorCache;
 use Livewire\Livewire;
 
 it('should render the component', function (): void {
-    $wallets = Wallet::factory()->count(10)->create(['balance' => '13628098200000000']);
+    State::factory()->create(['supply' => 13628098200000000 * 10]);
 
-    Block::factory()->create([
-        'generator_public_key' => $wallets->get(0)->public_key,
-    ]);
+    Wallet::factory()->count(10)->create();
 
     (new NetworkCache())->setValidatorRegistrationCount(1171);
     (new NetworkCache())->setVotesPercentage('74.08');
