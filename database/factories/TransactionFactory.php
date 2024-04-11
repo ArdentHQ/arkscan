@@ -30,26 +30,14 @@ final class TransactionFactory extends Factory
             'fee'               => $this->faker->numberBetween(1, 100) * 1e8,
             'amount'            => $this->faker->numberBetween(1, 100) * 1e8,
             'nonce'             => 1,
-            'asset'             => [
-                'ipfs' => 'QmXrvSZaDr8vjLUB9b7xz26S3kpk3S3bSc8SUyZmNPvmVo',
-            ],
         ];
     }
 
     public function transfer(): Factory
     {
         return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::TRANSFER,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-            'asset'      => [],
-        ]);
-    }
-
-    public function secondSignature(): Factory
-    {
-        return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::SECOND_SIGNATURE,
-            'type_group' => TransactionTypeGroupEnum::CORE,
+            'type'       => TransactionTypeEnum::TRANSFER,
+            'type_group' => 1,
             'asset'      => [],
         ]);
     }
