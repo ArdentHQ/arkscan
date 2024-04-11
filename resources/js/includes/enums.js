@@ -5,15 +5,8 @@ export const TransactionType = {
     MultiSignature: 4,
     MultiPayment: 6,
     ValidatorResignation: 7,
-    HtlcLock: 8,
-    HtlcClaim: 9,
-    HtlcRefund: 10,
-};
-
-export const TransactionTypeGroup = {
-    Test: 0,
-    Core: 1,
-    Magistrate: 2,
+    UsernameRegistration: 8,
+    UsernameResignation: 9,
 };
 
 export const ExportStatus = {

@@ -265,36 +265,29 @@ const TransactionsExport = ({
                 data["timestamp.to"] = queryTimestamp(dateTo);
             }
 
-            if (withoutTransactionTypes === false) {
-                data.typeGroup = TransactionTypeGroup.Core;
-
-                if (this.types.transfers) {
-                    data.type.push(TransactionType.Transfer);
-                }
-
-                if (this.types.votes) {
-                    data.type.push(TransactionType.Vote);
-                }
-
-                if (this.types.multipayments) {
-                    data.type.push(TransactionType.MultiPayment);
-                }
-
-                if (this.types.others) {
-                    data.type.push(
-                        TransactionType.SecondSignature,
-                        TransactionType.ValidatorRegistration,
-                        TransactionType.MultiSignature,
-                        TransactionType.Ipfs,
-                        TransactionType.ValidatorResignation,
-                        TransactionType.HtlcLock,
-                        TransactionType.HtlcClaim,
-                        TransactionType.HtlcRefund
-                    );
-                }
-
-                data.type = data.type.join(",");
+            if (this.types.transfers) {
+                data.type.push(TransactionType.Transfer);
             }
+
+            if (this.types.votes) {
+                data.type.push(TransactionType.Vote);
+            }
+
+            if (this.types.multipayments) {
+                data.type.push(TransactionType.MultiPayment);
+            }
+
+            if (this.types.others) {
+                data.type.push(
+                    TransactionType.ValidatorRegistration,
+                    TransactionType.MultiSignature,
+                    TransactionType.ValidatorResignation,
+                    TransactionType.UsernameRegistration,
+                    TransactionType.UsernameResignation,
+                );
+            }
+
+            data.type = data.type.join(",");
 
             return data;
         },
