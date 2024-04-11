@@ -70,12 +70,12 @@ final class TransactionType
 
     public function isTransfer(): bool
     {
-        return $this->isCoreType(TransactionTypeEnum::TRANSFER);
+        return $this->transaction->type === TransactionTypeEnum::TRANSFER;
     }
 
     public function isValidatorRegistration(): bool
     {
-        return $this->isCoreType(TransactionTypeEnum::VALIDATOR_REGISTRATION);
+        return $this->transaction->type === TransactionTypeEnum::VALIDATOR_REGISTRATION;
     }
 
     public function isVote(): bool

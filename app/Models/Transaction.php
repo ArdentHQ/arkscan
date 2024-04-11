@@ -232,10 +232,8 @@ final class Transaction extends Model
                     ->orWhere(fn ($query) => $query->when($filter['votes'] === true, fn ($query) => $query->where('type', TransactionTypeEnum::VOTE)))
                     ->orWhere(fn ($query) => $query->when($filter['multipayments'] === true, fn ($query) => $query->where('type', TransactionTypeEnum::MULTI_PAYMENT)))
                     ->orWhere(fn ($query) => $query->when($filter['others'] === true, fn ($query) => $query
-                        ->where('type_group', TransactionTypeGroupEnum::MAGISTRATE)
                         ->orWhere(
                             fn ($query) => $query
-                                ->where('type_group', TransactionTypeGroupEnum::CORE)
                                 ->whereNotIn('type', [
                                     TransactionTypeEnum::TRANSFER,
                                     TransactionTypeEnum::VOTE,

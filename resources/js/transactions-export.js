@@ -47,10 +47,7 @@ const TransactionsExport = ({
 
     const getTransactionAmount = (transaction) => {
         let amount = arktoshiToNumber(transaction.amount);
-        if (
-            transaction.type === TransactionType.MultiPayment &&
-            transaction.typeGroup === TransactionTypeGroup.Core
-        ) {
+        if (transaction.type === TransactionType.MultiPayment) {
             return transaction.asset.payments.reduce(
                 (totalAmount, recipientData) => {
                     if (recipientData.recipientId === address) {
@@ -80,10 +77,6 @@ const TransactionsExport = ({
         timestamp: (transaction) =>
             dayjs(parseInt(transaction.timestamp)).format("L LTS"),
         recipient: (transaction) => {
-            if (transaction.typeGroup !== TransactionTypeGroup.Core) {
-                return "Other";
-            }
-
             if (transaction.type === TransactionType.Transfer) {
                 return transaction.recipient;
             }
