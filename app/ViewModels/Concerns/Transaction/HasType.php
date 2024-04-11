@@ -135,6 +135,14 @@ trait HasType
             return true;
         }
 
+        if ($this->isUsernameRegistration()) {
+            return true;
+        }
+
+        if ($this->isUsernameResignation()) {
+            return true;
+        }
+
         return false;
     }
 }
