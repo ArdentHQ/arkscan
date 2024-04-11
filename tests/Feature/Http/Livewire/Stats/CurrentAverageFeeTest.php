@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Enums\CoreTransactionTypeEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Http\Livewire\Stats\CurrentAverageFee;
 use App\Models\Transaction;
@@ -18,21 +18,21 @@ beforeEach(function () {
 it('should render the component', function () {
     Transaction::factory(5)
         ->state(new Sequence(
-            ['fee' => 1 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::TRANSFER],
-            ['fee' => 25 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::TRANSFER],
-            ['fee' => 50 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::TRANSFER],
-            ['fee' => 75 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::TRANSFER],
-            ['fee' => 100 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::TRANSFER],
+            ['fee' => 1 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::TRANSFER],
+            ['fee' => 25 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::TRANSFER],
+            ['fee' => 50 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::TRANSFER],
+            ['fee' => 75 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::TRANSFER],
+            ['fee' => 100 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::TRANSFER],
         ))
         ->create();
 
     Transaction::factory(5)
         ->state(new Sequence(
-            ['fee' => 2 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::MULTI_SIGNATURE],
-            ['fee' => 24 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::MULTI_SIGNATURE],
-            ['fee' => 50 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::MULTI_SIGNATURE],
-            ['fee' => 71 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::MULTI_SIGNATURE],
-            ['fee' => 99 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::MULTI_SIGNATURE],
+            ['fee' => 2 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
+            ['fee' => 24 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
+            ['fee' => 50 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
+            ['fee' => 71 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
+            ['fee' => 99 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
         ))
         ->create();
 
@@ -51,21 +51,21 @@ it('should render the component', function () {
 it('should filter by transfer', function () {
     Transaction::factory(5)
         ->state(new Sequence(
-            ['fee' => 1 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::TRANSFER],
-            ['fee' => 25 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::TRANSFER],
-            ['fee' => 50 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::TRANSFER],
-            ['fee' => 75 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::TRANSFER],
-            ['fee' => 100 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::TRANSFER],
+            ['fee' => 1 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::TRANSFER],
+            ['fee' => 25 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::TRANSFER],
+            ['fee' => 50 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::TRANSFER],
+            ['fee' => 75 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::TRANSFER],
+            ['fee' => 100 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::TRANSFER],
         ))
         ->create();
 
     Transaction::factory(5)
         ->state(new Sequence(
-            ['fee' => 2 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::MULTI_SIGNATURE],
-            ['fee' => 24 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::MULTI_SIGNATURE],
-            ['fee' => 50 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::MULTI_SIGNATURE],
-            ['fee' => 71 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::MULTI_SIGNATURE],
-            ['fee' => 99 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => CoreTransactionTypeEnum::MULTI_SIGNATURE],
+            ['fee' => 2 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
+            ['fee' => 24 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
+            ['fee' => 50 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
+            ['fee' => 71 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
+            ['fee' => 99 * 1e8, 'type_group' => TransactionTypeGroupEnum::CORE, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
         ))
         ->create();
 

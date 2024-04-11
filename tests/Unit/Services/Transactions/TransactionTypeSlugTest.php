@@ -21,11 +21,6 @@ it('should determine the type', function (string $type, string $expectedExact, ?
         'transfer',
     ],
     [
-        'secondSignature',
-        'second-signature',
-        'second-signature',
-    ],
-    [
         'validatorRegistration',
         'validator-registration',
         'validator-registration',
@@ -51,11 +46,6 @@ it('should determine the type', function (string $type, string $expectedExact, ?
         'multi-signature',
     ],
     [
-        'ipfs',
-        'ipfs',
-        'ipfs',
-    ],
-    [
         'validatorResignation',
         'validator-resignation',
         'validator-resignation',
@@ -66,103 +56,14 @@ it('should determine the type', function (string $type, string $expectedExact, ?
         'multi-payment',
     ],
     [
-        'businessEntityRegistration',
-        'business-entity-registration',
-        'entity-registration',
+        'usernameRegistration',
+        'username-registration',
+        'username-registration',
     ],
     [
-        'businessEntityResignation',
-        'business-entity-resignation',
-        'entity-resignation',
-    ],
-    [
-        'businessEntityUpdate',
-        'business-entity-update',
-        'entity-update',
-    ],
-    [
-        'productEntityRegistration',
-        'product-entity-registration',
-        'entity-registration',
-    ],
-    [
-        'productEntityResignation',
-        'product-entity-resignation',
-        'entity-resignation',
-    ],
-    [
-        'productEntityUpdate',
-        'product-entity-update',
-        'entity-update',
-    ],
-    [
-        'pluginEntityRegistration',
-        'plugin-entity-registration',
-        'entity-registration',
-    ],
-    [
-        'pluginEntityResignation',
-        'plugin-entity-resignation',
-        'entity-resignation',
-    ],
-    [
-        'pluginEntityUpdate',
-        'plugin-entity-update',
-        'entity-update',
-    ],
-    [
-        'moduleEntityRegistration',
-        'module-entity-registration',
-        'entity-registration',
-    ],
-    [
-        'moduleEntityResignation',
-        'module-entity-resignation',
-        'entity-resignation',
-    ],
-    [
-        'moduleEntityUpdate',
-        'module-entity-update',
-        'entity-update',
-    ],
-    [
-        'validatorEntityRegistration',
-        'validator-entity-registration',
-        'entity-registration',
-    ],
-    [
-        'validatorEntityResignation',
-        'validator-entity-resignation',
-        'entity-resignation',
-    ],
-    [
-        'validatorEntityUpdate',
-        'validator-entity-update',
-        'entity-update',
-    ],
-    [
-        'legacyBusinessRegistration',
-        'legacy-business-registration',
-    ],
-    [
-        'legacyBusinessResignation',
-        'legacy-business-resignation',
-    ],
-    [
-        'legacyBusinessUpdate',
-        'legacy-business-update',
-    ],
-    [
-        'legacyBridgechainRegistration',
-        'legacy-bridgechain-registration',
-    ],
-    [
-        'legacyBridgechainResignation',
-        'legacy-bridgechain-resignation',
-    ],
-    [
-        'legacyBridgechainUpdate',
-        'legacy-bridgechain-update',
+        'usernameResignation',
+        'username-resignation',
+        'username-resignation',
     ],
 ]);
 

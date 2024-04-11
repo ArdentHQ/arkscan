@@ -15,10 +15,6 @@ it('should determine the icon that matches the type', function (string $type, st
         'transfer',
     ],
     [
-        'secondSignature',
-        'second-signature',
-    ],
-    [
         'validatorRegistration',
         'validator-registration',
     ],
@@ -39,10 +35,6 @@ it('should determine the icon that matches the type', function (string $type, st
         'multi-signature',
     ],
     [
-        'ipfs',
-        'ipfs',
-    ],
-    [
         'validatorResignation',
         'validator-resignation',
     ],
@@ -51,88 +43,12 @@ it('should determine the icon that matches the type', function (string $type, st
         'multi-payment',
     ],
     [
-        'businessEntityRegistration',
-        'business',
+        'usernameRegistration',
+        'username-registration',
     ],
     [
-        'businessEntityResignation',
-        'business',
-    ],
-    [
-        'businessEntityUpdate',
-        'business',
-    ],
-    [
-        'productEntityRegistration',
-        'product',
-    ],
-    [
-        'productEntityResignation',
-        'product',
-    ],
-    [
-        'productEntityUpdate',
-        'product',
-    ],
-    [
-        'pluginEntityRegistration',
-        'plugin',
-    ],
-    [
-        'pluginEntityResignation',
-        'plugin',
-    ],
-    [
-        'pluginEntityUpdate',
-        'plugin',
-    ],
-    [
-        'moduleEntityRegistration',
-        'module',
-    ],
-    [
-        'moduleEntityResignation',
-        'module',
-    ],
-    [
-        'moduleEntityUpdate',
-        'module',
-    ],
-    [
-        'validatorEntityRegistration',
-        'validator-registration',
-    ],
-    [
-        'validatorEntityResignation',
-        'validator-registration',
-    ],
-    [
-        'validatorEntityUpdate',
-        'validator-registration',
-    ],
-    [
-        'legacyBusinessRegistration',
-        'business',
-    ],
-    [
-        'legacyBusinessResignation',
-        'business',
-    ],
-    [
-        'legacyBusinessUpdate',
-        'business',
-    ],
-    [
-        'legacyBridgechainRegistration',
-        'bridgechain',
-    ],
-    [
-        'legacyBridgechainResignation',
-        'bridgechain',
-    ],
-    [
-        'legacyBridgechainUpdate',
-        'bridgechain',
+        'usernameResignation',
+        'username-resignation',
     ],
 ]);
 
