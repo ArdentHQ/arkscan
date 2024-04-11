@@ -56,9 +56,8 @@ it('should determine the type', function (string $type, string $expected) {
 
 it('should determine is unknown type', function () {
     $transaction = Transaction::factory()->create([
-        'type'       => 0,
-        'type_group' => 0,
-        'asset'      => [],
+        'type'  => 1234,
+        'asset' => [],
     ]);
     $transactionType = new TransactionType($transaction);
 

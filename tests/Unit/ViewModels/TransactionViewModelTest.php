@@ -534,27 +534,6 @@ it('should determine the type icon', function () {
     expect($this->subject->iconType())->toBeString();
 });
 
-it('should determine transactions that doesnt have amount', function (string $type) {
-    $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());
-
-    expect($subject->hasAmount())->toBeFalse();
-})->with([
-    'validatorRegistration',
-    'validatorResignation',
-    'usernameRegistration',
-    'usernameResignation',
-    'multiSignature',
-    'voteCombination',
-    'unvote',
-    'vote',
-]);
-
-it('should determine that transactions have amount by default', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
-
-    expect($subject->hasAmount())->toBeTrue();
-});
-
 it('should determine the direction icon', function () {
     expect($this->subject->iconDirection('sender'))->toBeString();
 });
@@ -996,23 +975,6 @@ it('should fail to get the multi signature wallet if the transaction is not a mu
     expect($this->subject->multiSignatureWallet())->toBeEmpty();
 });
 
-it('should determine if the transaction has extra data', function (bool $outcome, string $type) {
-    $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());
-
-    expect($subject->hasExtraData())->toBe($outcome);
-})->with([
-    [false, 'transfer'],
-    [false, 'validatorRegistration'],
-    [false, 'vote'],
-    [false, 'unvote'],
-    [true, 'voteCombination'],
-    [true, 'multiSignature'],
-    [false, 'validatorResignation'],
-    [true, 'multiPayment'],
-    [false, 'usernameRegistration'],
-    [false, 'usernameResignation'],
-]);
-
 it('should determine if the transaction type is unknown', function () {
     $subject = new TransactionViewModel(Transaction::factory()->create([
         'type'       => 123,
@@ -1066,24 +1028,6 @@ it('should fail to get the vendor field if it is empty after reading it', functi
     $this->subject = new TransactionViewModel($transaction->fresh());
 
     expect($this->subject->vendorField())->toBeNull();
-});
-
-it('should determine if the transaction is any kind of registration', function (string $type) {
-    $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());
-
-    expect($subject->isRegistration())->toBeTrue();
-})->with([
-    ['validatorRegistration'],
-    ['usernameRegistration'],
-]);
-
-it('should determine that the transaction is not any kind of registration', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => 0,
-        'type_group' => 0,
-    ]));
-
-    expect($subject->isRegistration())->toBeFalse();
 });
 
 it('should get the address of legacy multi signature transactions', function () {
