@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\CoreTransactionTypeEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Casts\BigInteger;
 use App\Models\Casts\UnixSeconds;
@@ -232,18 +232,18 @@ final class Transaction extends Model
     {
         return $query
             ->where(function ($query) use ($filter) {
-                $query->where(fn ($query) => $query->when($filter['transfers'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::TRANSFER)))
-                    ->orWhere(fn ($query) => $query->when($filter['votes'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::VOTE)))
-                    ->orWhere(fn ($query) => $query->when($filter['multipayments'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT)))
+                $query->where(fn ($query) => $query->when($filter['transfers'] === true, fn ($query) => $query->where('type', TransactionTypeEnum::TRANSFER)))
+                    ->orWhere(fn ($query) => $query->when($filter['votes'] === true, fn ($query) => $query->where('type', TransactionTypeEnum::VOTE)))
+                    ->orWhere(fn ($query) => $query->when($filter['multipayments'] === true, fn ($query) => $query->where('type', TransactionTypeEnum::MULTI_PAYMENT)))
                     ->orWhere(fn ($query) => $query->when($filter['others'] === true, fn ($query) => $query
                         ->where('type_group', TransactionTypeGroupEnum::MAGISTRATE)
                         ->orWhere(
                             fn ($query) => $query
                                 ->where('type_group', TransactionTypeGroupEnum::CORE)
                                 ->whereNotIn('type', [
-                                    CoreTransactionTypeEnum::TRANSFER,
-                                    CoreTransactionTypeEnum::VOTE,
-                                    CoreTransactionTypeEnum::MULTI_PAYMENT,
+                                    TransactionTypeEnum::TRANSFER,
+                                    TransactionTypeEnum::VOTE,
+                                    TransactionTypeEnum::MULTI_PAYMENT,
                                 ])
                         )));
             });

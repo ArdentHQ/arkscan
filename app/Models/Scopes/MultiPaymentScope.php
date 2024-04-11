@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Scopes;
 
-use App\Enums\CoreTransactionTypeEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Enums\TransactionTypeGroupEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +15,6 @@ final class MultiPaymentScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         $builder->where('type_group', TransactionTypeGroupEnum::CORE);
-        $builder->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT);
+        $builder->where('type', TransactionTypeEnum::MULTI_PAYMENT);
     }
 }

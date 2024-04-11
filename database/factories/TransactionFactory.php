@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\CoreTransactionTypeEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Enums\MagistrateTransactionEntityActionEnum;
 use App\Enums\MagistrateTransactionEntitySubTypeEnum;
 use App\Enums\MagistrateTransactionEntityTypeEnum;
@@ -62,8 +62,8 @@ final class TransactionFactory extends Factory
     public function validatorRegistration(): Factory
     {
         return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::VALIDATOR_REGISTRATION,
-            'type_group' => TransactionTypeGroupEnum::CORE,
+            'type'       => TransactionTypeEnum::VALIDATOR_REGISTRATION,
+            'type_group' => 1,
             'asset'      => [],
         ]);
     }
@@ -71,8 +71,8 @@ final class TransactionFactory extends Factory
     public function vote(): Factory
     {
         return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::VOTE,
-            'type_group' => TransactionTypeGroupEnum::CORE,
+            'type'       => TransactionTypeEnum::VOTE,
+            'type_group' => 1,
             'asset'      => [
                 'votes'   => ['publicKey'],
                 'unvotes' => [],
@@ -83,8 +83,8 @@ final class TransactionFactory extends Factory
     public function unvote(): Factory
     {
         return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::VOTE,
-            'type_group' => TransactionTypeGroupEnum::CORE,
+            'type'       => TransactionTypeEnum::VOTE,
+            'type_group' => 1,
             'asset'      => [
                 'votes'   => [],
                 'unvotes' => ['publicKey'],
@@ -95,8 +95,8 @@ final class TransactionFactory extends Factory
     public function voteCombination(): Factory
     {
         return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::VOTE,
-            'type_group' => TransactionTypeGroupEnum::CORE,
+            'type'       => TransactionTypeEnum::VOTE,
+            'type_group' => 1,
             'asset'      => [
                 'votes'   => ['publicKey'],
                 'unvotes' => ['publicKey'],
@@ -107,28 +107,17 @@ final class TransactionFactory extends Factory
     public function multiSignature(): Factory
     {
         return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::MULTI_SIGNATURE,
-            'type_group' => TransactionTypeGroupEnum::CORE,
+            'type'       => TransactionTypeEnum::MULTI_SIGNATURE,
+            'type_group' => 1,
             'asset'      => [],
-        ]);
-    }
-
-    public function ipfs(): Factory
-    {
-        return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::IPFS,
-            'type_group' => TransactionTypeGroupEnum::CORE,
-            'asset'      => [
-                'ipfs' => 'QmXrvSZaDr8vjLUB9b7xz26S3kpk3S3bSc8SUyZmNPvmVo',
-            ],
         ]);
     }
 
     public function validatorResignation(): Factory
     {
         return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::VALIDATOR_RESIGNATION,
-            'type_group' => TransactionTypeGroupEnum::CORE,
+            'type'       => TransactionTypeEnum::VALIDATOR_RESIGNATION,
+            'type_group' => 1,
             'asset'      => [],
         ]);
     }
@@ -136,8 +125,8 @@ final class TransactionFactory extends Factory
     public function multiPayment(): Factory
     {
         return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::MULTI_PAYMENT,
-            'type_group' => TransactionTypeGroupEnum::CORE,
+            'type'       => TransactionTypeEnum::MULTI_PAYMENT,
+            'type_group' => 1,
             'asset'      => [],
         ]);
     }
@@ -145,8 +134,8 @@ final class TransactionFactory extends Factory
     public function usernameRegistration(): Factory
     {
         return $this->state(fn () => [
-            'type'       => CoreTransactionTypeEnum::USERNAME_REGISTRATION,
-            'type_group' => TransactionTypeGroupEnum::CORE,
+            'type'       => TransactionTypeEnum::USERNAME_REGISTRATION,
+            'type_group' => 1,
             'asset'      => [
                 'username' => 'bob',
             ],

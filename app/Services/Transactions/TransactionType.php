@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Transactions;
 
-use App\Enums\CoreTransactionTypeEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Enums\MagistrateTransactionEntityActionEnum;
 use App\Enums\MagistrateTransactionEntityTypeEnum;
 use App\Enums\MagistrateTransactionTypeEnum;
@@ -70,17 +70,17 @@ final class TransactionType
 
     public function isTransfer(): bool
     {
-        return $this->isCoreType(CoreTransactionTypeEnum::TRANSFER);
+        return $this->isCoreType(TransactionTypeEnum::TRANSFER);
     }
 
     public function isSecondSignature(): bool
     {
-        return $this->isCoreType(CoreTransactionTypeEnum::SECOND_SIGNATURE);
+        return $this->isCoreType(TransactionTypeEnum::SECOND_SIGNATURE);
     }
 
     public function isValidatorRegistration(): bool
     {
-        return $this->isCoreType(CoreTransactionTypeEnum::VALIDATOR_REGISTRATION);
+        return $this->isCoreType(TransactionTypeEnum::VALIDATOR_REGISTRATION);
     }
 
     public function isVote(): bool
@@ -300,156 +300,7 @@ final class TransactionType
             return false;
         }
 
-        if ($this->isBusinessEntityRegistration()) {
-            return false;
-        }
-
-        if ($this->isBusinessEntityResignation()) {
-            return false;
-        }
-
-        if ($this->isBusinessEntityUpdate()) {
-            return false;
-        }
-
-        if ($this->isProductEntityRegistration()) {
-            return false;
-        }
-
-        if ($this->isProductEntityResignation()) {
-            return false;
-        }
-
-        if ($this->isProductEntityUpdate()) {
-            return false;
-        }
-
-        if ($this->isPluginEntityRegistration()) {
-            return false;
-        }
-
-        if ($this->isPluginEntityResignation()) {
-            return false;
-        }
-
-        if ($this->isPluginEntityUpdate()) {
-            return false;
-        }
-
-        if ($this->isModuleEntityRegistration()) {
-            return false;
-        }
-
-        if ($this->isModuleEntityResignation()) {
-            return false;
-        }
-
-        if ($this->isModuleEntityUpdate()) {
-            return false;
-        }
-
-        if ($this->isValidatorEntityRegistration()) {
-            return false;
-        }
-
-        if ($this->isValidatorEntityResignation()) {
-            return false;
-        }
-
-        if ($this->isValidatorEntityUpdate()) {
-            return false;
-        }
-
-        if ($this->isLegacyBusinessRegistration()) {
-            return false;
-        }
-
-        if ($this->isLegacyBusinessResignation()) {
-            return false;
-        }
-
-        if ($this->isLegacyBusinessUpdate()) {
-            return false;
-        }
-
-        if ($this->isLegacyBridgechainRegistration()) {
-            return false;
-        }
-
-        if ($this->isLegacyBridgechainResignation()) {
-            return false;
-        }
-
-        if ($this->isLegacyBridgechainUpdate()) {
-            return false;
-        }
-
         return true;
-    }
-
-    private function isCoreType(int $type): bool
-    {
-        $matchesType      = $this->transaction->type === $type;
-        $matchesTypeGroup = $this->transaction->type_group === TransactionTypeGroupEnum::CORE;
-
-        return $matchesType && $matchesTypeGroup;
-    }
-
-    private function isMagistrateType(int $type): bool
-    {
-        $matchesType      = $this->transaction->type === $type;
-        $matchesTypeGroup = $this->transaction->type_group === TransactionTypeGroupEnum::MAGISTRATE;
-
-        return $matchesType && $matchesTypeGroup;
-    }
-
-    private function isEntityWithRegistration(int $type): bool
-    {
-        if (! $this->isEntityRegistration()) {
-            return false;
-        }
-
-        return $this->isEntityType($type);
-    }
-
-    private function isEntityWithResignation(int $type): bool
-    {
-        if (! $this->isEntityResignation()) {
-            return false;
-        }
-
-        return $this->isEntityType($type);
-    }
-
-    private function isEntityWithUpdate(int $type): bool
-    {
-        if (! $this->isEntityUpdate()) {
-            return false;
-        }
-
-        return $this->isEntityType($type);
-    }
-
-    private function isEntityType(int $type): bool
-    {
-        return Arr::get($this->transaction->asset ?? [], 'type') === $type;
-    }
-
-    private function isEntityAction(int $action): bool
-    {
-        if (! $this->isMagistrateTypeGroup()) {
-            return false;
-        }
-
-        $matchesType   = $this->transaction->type === MagistrateTransactionTypeEnum::ENTITY;
-        $matchesAction = Arr::get($this->transaction->asset ?? [], 'action') === $action;
-
-        return $matchesType && $matchesAction;
-    }
-
-    private function isMagistrateTypeGroup(): bool
-    {
-        return $this->transaction->type_group === TransactionTypeGroupEnum::MAGISTRATE;
     }
 
     private function determineVoteTypes(): array
@@ -457,7 +308,7 @@ final class TransactionType
         $containsVote   = false;
         $containsUnvote = false;
 
-        if (! $this->isCoreType(CoreTransactionTypeEnum::VOTE)) {
+        if ($this->transaction->type !== TransactionTypeEnum::VOTE) {
             return [$containsVote, $containsUnvote];
         }
 
