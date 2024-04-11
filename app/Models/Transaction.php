@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\TransactionTypeEnum;
-use App\Enums\TransactionTypeGroupEnum;
 use App\Models\Casts\BigInteger;
 use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
-use App\Models\Scopes\MagistrateScope;
 use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\MultiSignatureScope;
 use App\Models\Scopes\TransferScope;
@@ -71,7 +69,6 @@ final class Transaction extends Model
         'transfer'                      => TransferScope::class,
         'vote'                          => VoteScope::class,
         'voteCombination'               => VoteCombinationScope::class,
-        'magistrate'                    => MagistrateScope::class,
     ];
 
     /**

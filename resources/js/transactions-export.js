@@ -196,17 +196,6 @@ const TransactionsExport = ({
                         return;
                     }
 
-                    if (this.types.others) {
-                        transactions.push(
-                            ...(await this.fetch({
-                                query: {
-                                    ...this.requestData(true),
-                                    typeGroup: TransactionTypeGroup.Magistrate,
-                                },
-                            }))
-                        );
-                    }
-
                     if (transactions.length === 0) {
                         this.hasFinishedExport = true;
 
