@@ -526,18 +526,6 @@ it('should determine if the transaction is self-receiving', function (string $ty
     ['usernameResignation'],
 ]);
 
-it('should determine the state icon', function () {
-    expect($this->subject->iconState())->toBeString();
-});
-
-it('should determine the type icon', function () {
-    expect($this->subject->iconType())->toBeString();
-});
-
-it('should determine the direction icon', function () {
-    expect($this->subject->iconDirection('sender'))->toBeString();
-});
-
 it('should fallback to the sender if no recipient exists', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'recipient_id' => null,
