@@ -18,11 +18,6 @@ trait HasType
         return $this->type->isTransfer();
     }
 
-    public function isSecondSignature(): bool
-    {
-        return $this->type->isSecondSignature();
-    }
-
     public function isValidatorRegistration(): bool
     {
         return $this->type->isValidatorRegistration();
@@ -46,11 +41,6 @@ trait HasType
     public function isMultiSignature(): bool
     {
         return $this->type->isMultiSignature();
-    }
-
-    public function isIpfs(): bool
-    {
-        return $this->type->isIpfs();
     }
 
     public function isValidatorResignation(): bool
@@ -211,10 +201,6 @@ trait HasType
             return false;
         }
 
-        if ($this->isIpfs()) {
-            return false;
-        }
-
         if ($this->isMultiPayment()) {
             return false;
         }
@@ -228,10 +214,6 @@ trait HasType
         }
 
         if ($this->isUnvote()) {
-            return false;
-        }
-
-        if ($this->isSecondSignature()) {
             return false;
         }
 

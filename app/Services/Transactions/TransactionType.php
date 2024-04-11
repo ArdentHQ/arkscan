@@ -73,11 +73,6 @@ final class TransactionType
         return $this->isCoreType(TransactionTypeEnum::TRANSFER);
     }
 
-    public function isSecondSignature(): bool
-    {
-        return $this->isCoreType(TransactionTypeEnum::SECOND_SIGNATURE);
-    }
-
     public function isValidatorRegistration(): bool
     {
         return $this->isCoreType(TransactionTypeEnum::VALIDATOR_REGISTRATION);
@@ -256,10 +251,6 @@ final class TransactionType
             return false;
         }
 
-        if ($this->isSecondSignature()) {
-            return false;
-        }
-
         if ($this->isValidatorRegistration()) {
             return false;
         }
@@ -277,10 +268,6 @@ final class TransactionType
         }
 
         if ($this->isMultiSignature()) {
-            return false;
-        }
-
-        if ($this->isIpfs()) {
             return false;
         }
 

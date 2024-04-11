@@ -200,9 +200,4 @@ final class TransactionViewModel implements ViewModel
     {
         return abs(CacheNetworkHeight::execute() - $this->transaction->block_height);
     }
-
-    public function ipfsHash(): ?string
-    {
-        return Arr::get($this->transaction, 'asset.ipfs');
-    }
 }

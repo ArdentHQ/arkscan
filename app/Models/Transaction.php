@@ -11,11 +11,9 @@ use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
-use App\Models\Scopes\IpfsScope;
 use App\Models\Scopes\MagistrateScope;
 use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\MultiSignatureScope;
-use App\Models\Scopes\SecondSignatureScope;
 use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\UsernameRegistrationScope;
 use App\Models\Scopes\UsernameResignationScope;
@@ -66,10 +64,8 @@ final class Transaction extends Model
     public const TYPE_SCOPES = [
         'validatorRegistration'         => ValidatorRegistrationScope::class,
         'validatorResignation'          => ValidatorResignationScope::class,
-        'ipfs'                          => IpfsScope::class,
         'multiPayment'                  => MultiPaymentScope::class,
         'multiSignature'                => MultiSignatureScope::class,
-        'secondSignature'               => SecondSignatureScope::class,
         'usernameRegistration'          => UsernameRegistrationScope::class,
         'usernameResignation'           => UsernameResignationScope::class,
         'transfer'                      => TransferScope::class,
