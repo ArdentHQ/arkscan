@@ -301,19 +301,24 @@ it('should fail to get the wallet of the vote if it is not cached', function () 
 it('should get the performance if the wallet is a validator', function () {
     Rounds::swap(new RoundsMock());
 
-    $wallet = Wallet::factory()->create([
-        'balance'      => '100000000000',
-        'nonce'        => 1000,
-        'attributes'   => [
-            'validator' => [],
-        ],
-    ]);
+    $wallet = Wallet::factory()
+        ->activeValidator()
+        ->create([
+            'balance'      => '100000000000',
+            'nonce'        => 1000,
+            'attributes'   => [
+                'validatorPublicKey' => 'publicKey',
+            ],
+        ]);
 
     (new WalletCache())->setPerformance($wallet->public_key, [true, true]);
 
     $this->subject = new WalletViewModel($wallet);
 
-    expect($this->subject->performance())->toBeArray();
+    expect($this->subject->performance())->toBe([
+        true,
+        false,
+    ]);
 });
 
 it('should fail to get the performance if the wallet is not a validator', function () {
@@ -328,9 +333,11 @@ it('should fail to get the performance if the wallet is not a validator', functi
 });
 
 it('should fail to get the performance if the wallet has no public key', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'public_key' => null,
-    ]));
+    $this->subject = new WalletViewModel(Wallet::factory()
+        ->activeValidator()
+        ->create([
+            'public_key' => null,
+        ]));
 
     expect($this->subject->performance())->toBeEmpty();
 });
@@ -522,7 +529,7 @@ it('should fail to get the vote weight as percentage if the wallet has no public
     expect($this->subject->votePercentage())->toBeNull();
 });
 
-it('should fail to get the productivity if the wallet is a validator', function () {
+it('should get the productivity if the wallet is a validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'balance'    => 1e8,
         'attributes' => [
@@ -549,16 +556,20 @@ it('should fail to get the productivity if the wallet is not a validator', funct
 });
 
 it('should fail to get the productivity if the wallet has no public key', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'public_key' => null,
-    ]));
+    $this->subject = new WalletViewModel(Wallet::factory()
+        ->activeValidator()
+        ->create([
+            'public_key' => null,
+        ]));
 
     expect($this->subject->productivity())->toBeFloat();
     expect($this->subject->productivity())->toBe(0.0);
 });
 
 it('should return 0 for productivity if the cached value is less than 0', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create());
+    $this->subject = new WalletViewModel(Wallet::factory()
+        ->activeValidator()
+        ->create());
 
     (new WalletCache())->setProductivity($this->subject->publicKey(), -1);
 
@@ -604,6 +615,20 @@ it('should get the known wallet name before username', function () {
     ]));
 
     expect($this->subject->usernameIfNotKnown())->toBe('ACF Hot Wallet');
+});
+
+it('should get username if wallet not know', function () {
+    fakeKnownWallets();
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'address'    => 'random-address',
+        'attributes' => [
+            'validatorPublicKey' => 'publicKey',
+            'username'           => 'john',
+        ],
+    ]));
+
+    expect($this->subject->usernameIfNotKnown())->toBe('john');
 });
 
 it('should get the username if the wallet is a validator', function () {

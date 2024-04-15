@@ -160,7 +160,7 @@ function bip39(): string
 
 function createBlock(int $height, string $publicKey)
 {
-    Block::factory()->create([
+    return Block::factory()->create([
         'timestamp'              => Timestamp::now()->getTimestampMs(),
         'previous_block'         => $height - 1,
         'height'                 => $height,

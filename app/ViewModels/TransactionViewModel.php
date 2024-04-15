@@ -18,7 +18,6 @@ use App\ViewModels\Concerns\Transaction\HasType;
 use App\ViewModels\Concerns\Transaction\InteractsWithMultiPayment;
 use App\ViewModels\Concerns\Transaction\InteractsWithMultiSignature;
 use App\ViewModels\Concerns\Transaction\InteractsWithUsernames;
-use App\ViewModels\Concerns\Transaction\InteractsWithValidatorRegistration;
 use App\ViewModels\Concerns\Transaction\InteractsWithVendorField;
 use App\ViewModels\Concerns\Transaction\InteractsWithVotes;
 use App\ViewModels\Concerns\Transaction\InteractsWithWallets;
@@ -30,7 +29,6 @@ final class TransactionViewModel implements ViewModel
     use HasDirection;
     use HasState;
     use HasType;
-    use InteractsWithValidatorRegistration;
     use InteractsWithMultiPayment;
     use InteractsWithMultiSignature;
     use InteractsWithUsernames;
