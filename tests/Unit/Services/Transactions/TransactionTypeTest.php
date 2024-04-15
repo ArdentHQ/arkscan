@@ -186,4 +186,6 @@ it('should play through every scenario of an unknown type', function (string $ty
     ['legacyBridgechainRegistration'],
     ['legacyBridgechainResignation'],
     ['legacyBridgechainUpdate'],
+    ['usernameRegistration'],
+    ['usernameResignation'],
 ]);

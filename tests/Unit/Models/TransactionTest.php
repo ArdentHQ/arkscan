@@ -37,6 +37,55 @@ it('should belong to a recipient', function () {
     expect($this->subject->recipient())->toEqual($this->recipient->fresh());
 });
 
+it('should get recipient if vote', function () {
+    $validator = Wallet::factory()->activeValidator()->create();
+
+    $transaction = Transaction::factory()
+        ->vote()
+        ->create([
+            'recipient_id' => null,
+            'asset'        => [
+                'votes'   => [$validator->public_key],
+                'unvotes' => [],
+            ],
+        ]);
+
+    expect($transaction->recipient())->toEqual($validator->fresh());
+});
+
+it('should get recipient if unvote', function () {
+    $validator = Wallet::factory()->activeValidator()->create();
+
+    $transaction = Transaction::factory()
+        ->unvote()
+        ->create([
+            'recipient_id' => null,
+            'asset'        => [
+                'unvotes' => [$validator->public_key],
+                'votes'   => [],
+            ],
+        ]);
+
+    expect($transaction->recipient())->toEqual($validator->fresh());
+});
+
+it('should get vote recipient if vote combination', function () {
+    $validator    = Wallet::factory()->activeValidator()->create();
+    $oldValidator = Wallet::factory()->activeValidator()->create();
+
+    $transaction = Transaction::factory()
+        ->voteCombination()
+        ->create([
+            'recipient_id' => null,
+            'asset'        => [
+                'votes'   => [$validator->public_key],
+                'unvotes' => [$oldValidator->public_key],
+            ],
+        ]);
+
+    expect($transaction->recipient())->toEqual($validator->fresh());
+});
+
 it('should get vendorfield value multiple times despite resource', function () {
     $transaction = Transaction::factory()->transfer()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',

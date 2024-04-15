@@ -1154,13 +1154,13 @@ it('should get the username if the transaction is not a validator registration',
             ],
         ]));
 
-    expect($subject->validatorUsername())->toBe('john');
+    expect($subject->username())->toBe('john');
 });
 
-it('should fail to get the username if the transaction is not a validator registration', function () {
+it('should return null for username if not specified', function () {
     $subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
 
-    expect($subject->validatorUsername())->toBeNull();
+    expect($subject->username())->toBeNull();
 });
 
 it('should get the vendor field', function () {
@@ -1309,6 +1309,8 @@ it('should determine a non-legacy transaction', function ($transaction) {
     'vote',
     'unvote',
     'secondSignature',
+    'usernameRegistration',
+    'usernameResignation',
 ]);
 
 it('should determine a legacy transaction', function ($transaction) {
