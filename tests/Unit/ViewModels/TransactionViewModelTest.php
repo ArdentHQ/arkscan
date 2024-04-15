@@ -477,13 +477,6 @@ it('should determine if the transaction is confirmed', function () {
     expect($this->subject->isConfirmed())->toBeTrue();
 });
 
-it('should get the ipfs hash', function () {
-    $transaction = new TransactionViewModel(Transaction::factory()->ipfs()->create());
-
-    expect($transaction->ipfsHash())->toBeString();
-    expect($transaction->ipfsHash())->toBe('QmXrvSZaDr8vjLUB9b7xz26S3kpk3S3bSc8SUyZmNPvmVo');
-});
-
 it('should determine the transaction type', function (string $type) {
     $transaction = Transaction::factory()->{$type}()->create();
     $subject     = new TransactionViewModel($transaction);
@@ -499,39 +492,15 @@ it('should determine the transaction type', function (string $type) {
     expect($subject->{'is'.ucfirst($type)}())->toBeFalse();
 })->with([
     ['transfer'],
-    ['secondSignature'],
     ['validatorRegistration'],
     ['vote'],
     ['unvote'],
     ['voteCombination'],
     ['multiSignature'],
-    ['ipfs'],
     ['validatorResignation'],
     ['multiPayment'],
-    ['entityRegistration'],
-    ['entityResignation'],
-    ['entityUpdate'],
-    ['businessEntityRegistration'],
-    ['businessEntityResignation'],
-    ['businessEntityUpdate'],
-    ['productEntityRegistration'],
-    ['productEntityResignation'],
-    ['productEntityUpdate'],
-    ['pluginEntityRegistration'],
-    ['pluginEntityResignation'],
-    ['pluginEntityUpdate'],
-    ['moduleEntityRegistration'],
-    ['moduleEntityResignation'],
-    ['moduleEntityUpdate'],
-    ['validatorEntityRegistration'],
-    ['validatorEntityResignation'],
-    ['validatorEntityUpdate'],
-    ['legacyBusinessRegistration'],
-    ['legacyBusinessResignation'],
-    ['legacyBusinessUpdate'],
-    ['legacyBridgechainRegistration'],
-    ['legacyBridgechainResignation'],
-    ['legacyBridgechainUpdate'],
+    ['usernameRegistration'],
+    ['usernameResignation'],
 ]);
 
 it('should determine if the transaction is self-receiving', function (string $type) {
@@ -548,70 +517,14 @@ it('should determine if the transaction is self-receiving', function (string $ty
 
     expect($subject->isSelfReceiving())->toBeFalse();
 })->with([
-    ['secondSignature'],
     ['validatorRegistration'],
     ['vote'],
     ['unvote'],
     ['voteCombination'],
     ['validatorResignation'],
-    ['entityRegistration'],
-    ['entityResignation'],
-    ['entityUpdate'],
-    ['businessEntityRegistration'],
-    ['businessEntityResignation'],
-    ['businessEntityUpdate'],
-    ['productEntityRegistration'],
-    ['productEntityResignation'],
-    ['productEntityUpdate'],
-    ['pluginEntityRegistration'],
-    ['pluginEntityResignation'],
-    ['pluginEntityUpdate'],
-    ['moduleEntityRegistration'],
-    ['moduleEntityResignation'],
-    ['moduleEntityUpdate'],
-    ['validatorEntityRegistration'],
-    ['validatorEntityResignation'],
-    ['validatorEntityUpdate'],
-    ['legacyBusinessRegistration'],
-    ['legacyBusinessResignation'],
-    ['legacyBusinessUpdate'],
-    ['legacyBridgechainRegistration'],
-    ['legacyBridgechainResignation'],
-    ['legacyBridgechainUpdate'],
+    ['usernameRegistration'],
+    ['usernameResignation'],
 ]);
-
-it('should determine the state icon', function () {
-    expect($this->subject->iconState())->toBeString();
-});
-
-it('should determine the type icon', function () {
-    expect($this->subject->iconType())->toBeString();
-});
-
-it('should determine transactions that doesnt have amount', function (string $type) {
-    $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());
-
-    expect($subject->hasAmount())->toBeFalse();
-})->with([
-    'validatorRegistration',
-    'entityRegistration',
-    'entityResignation',
-    'entityUpdate',
-    'multiSignature',
-    'voteCombination',
-    'unvote',
-    'vote',
-]);
-
-it('should determine that transactions have amount by default', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
-
-    expect($subject->hasAmount())->toBeTrue();
-});
-
-it('should determine the direction icon', function () {
-    expect($this->subject->iconDirection('sender'))->toBeString();
-});
 
 it('should fallback to the sender if no recipient exists', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
@@ -1050,47 +963,6 @@ it('should fail to get the multi signature wallet if the transaction is not a mu
     expect($this->subject->multiSignatureWallet())->toBeEmpty();
 });
 
-it('should determine if the transaction has extra data', function (bool $outcome, string $type) {
-    $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());
-
-    expect($subject->hasExtraData())->toBe($outcome);
-})->with([
-    [false, 'transfer'],
-    [false, 'secondSignature'],
-    [false, 'validatorRegistration'],
-    [false, 'vote'],
-    [false, 'unvote'],
-    [true, 'voteCombination'],
-    [true, 'multiSignature'],
-    [false, 'ipfs'],
-    [false, 'validatorResignation'],
-    [true, 'multiPayment'],
-    [false, 'entityRegistration'],
-    [false, 'entityResignation'],
-    [false, 'entityUpdate'],
-    [false, 'businessEntityRegistration'],
-    [false, 'businessEntityResignation'],
-    [false, 'businessEntityUpdate'],
-    [false, 'productEntityRegistration'],
-    [false, 'productEntityResignation'],
-    [false, 'productEntityUpdate'],
-    [false, 'pluginEntityRegistration'],
-    [false, 'pluginEntityResignation'],
-    [false, 'pluginEntityUpdate'],
-    [false, 'moduleEntityRegistration'],
-    [false, 'moduleEntityResignation'],
-    [false, 'moduleEntityUpdate'],
-    [false, 'validatorEntityRegistration'],
-    [false, 'validatorEntityResignation'],
-    [false, 'validatorEntityUpdate'],
-    [false, 'legacyBusinessRegistration'],
-    [false, 'legacyBusinessResignation'],
-    [false, 'legacyBusinessUpdate'],
-    [false, 'legacyBridgechainRegistration'],
-    [false, 'legacyBridgechainResignation'],
-    [false, 'legacyBridgechainUpdate'],
-]);
-
 it('should determine if the transaction type is unknown', function () {
     $subject = new TransactionViewModel(Transaction::factory()->create([
         'type'       => 123,
@@ -1098,51 +970,6 @@ it('should determine if the transaction type is unknown', function () {
     ]));
 
     expect($subject->isUnknown())->toBeTrue();
-});
-
-it('should get the entity type', function () {
-    $subject = new TransactionViewModel(Transaction::factory()
-        ->productEntityRegistration(['name' => 'John', 'ipfsData' => 'ipfs'])
-        ->create());
-
-    expect($subject->entityType())->toBe('product-entity-registration');
-});
-
-it('should get the entity name', function () {
-    $subject = new TransactionViewModel(Transaction::factory()
-        ->productEntityRegistration(['name' => 'John', 'ipfsData' => 'ipfs'])
-        ->create());
-
-    expect($subject->entityName())->toBe('John');
-});
-
-it('should get the entity name for entity update types', function () {
-    $registrationId = Transaction::factory()
-        ->productEntityRegistration(['name' => 'John', 'ipfsData' => 'ipfs'])
-        ->create()
-        ->id;
-
-    $subject = new TransactionViewModel(Transaction::factory()
-        ->productEntityUpdate($registrationId)
-        ->create());
-
-    expect($subject->entityName())->toBe('John');
-});
-
-it('should get the entity category', function () {
-    $subject = new TransactionViewModel(Transaction::factory()
-        ->productEntityRegistration(['name' => 'John', 'ipfsData' => 'ipfs'])
-        ->create());
-
-    expect($subject->entityCategory())->toBeNull();
-});
-
-it('should get the entity hash', function () {
-    $subject = new TransactionViewModel(Transaction::factory()
-        ->productEntityRegistration(['name' => 'John', 'ipfsData' => 'ipfs'])
-        ->create());
-
-    expect($subject->entityHash())->toBe('ipfs');
 });
 
 it('should get the username if the transaction is not a validator registration', function () {
@@ -1189,28 +1016,6 @@ it('should fail to get the vendor field if it is empty after reading it', functi
     $this->subject = new TransactionViewModel($transaction->fresh());
 
     expect($this->subject->vendorField())->toBeNull();
-});
-
-it('should determine if the transaction is any kind of registration', function (string $type) {
-    $subject = new TransactionViewModel(Transaction::factory()->{$type}()->create());
-
-    expect($subject->isRegistration())->toBeTrue();
-})->with([
-    ['validatorRegistration'],
-    ['businessEntityRegistration'],
-    ['productEntityRegistration'],
-    ['pluginEntityRegistration'],
-    ['moduleEntityRegistration'],
-    ['validatorEntityRegistration'],
-]);
-
-it('should determine that the transaction is not any kind of registration', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => 0,
-        'type_group' => 0,
-    ]));
-
-    expect($subject->isRegistration())->toBeFalse();
 });
 
 it('should get the address of legacy multi signature transactions', function () {
@@ -1303,43 +1108,10 @@ it('should determine a non-legacy transaction', function ($transaction) {
     'validatorRegistration',
     'validatorResignation',
     'multisignature',
-    'ipfs',
     'multiPayment',
     'voteCombination',
     'vote',
     'unvote',
-    'secondSignature',
     'usernameRegistration',
     'usernameResignation',
-]);
-
-it('should determine a legacy transaction', function ($transaction) {
-    $transaction = new TransactionViewModel(Transaction::factory()->{$transaction}()->create());
-
-    expect($transaction->isLegacy())->toBeTrue();
-})->with([
-    'entityRegistration',
-    'entityResignation',
-    'entityUpdate',
-    'businessEntityRegistration',
-    'businessEntityResignation',
-    'businessEntityUpdate',
-    'productEntityRegistration',
-    'productEntityResignation',
-    'productEntityUpdate',
-    'pluginEntityRegistration',
-    'pluginEntityResignation',
-    'pluginEntityUpdate',
-    'moduleEntityRegistration',
-    'moduleEntityResignation',
-    'moduleEntityUpdate',
-    'validatorEntityRegistration',
-    'validatorEntityResignation',
-    'validatorEntityUpdate',
-    'legacyBusinessRegistration',
-    'legacyBusinessResignation',
-    'legacyBusinessUpdate',
-    'legacyBridgechainRegistration',
-    'legacyBridgechainResignation',
-    'legacyBridgechainUpdate',
 ]);

@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-final class CoreTransactionTypeEnum
+final class TransactionTypeEnum
 {
     public const TRANSFER = 0;
-
-    public const SECOND_SIGNATURE = 1;
 
     public const VALIDATOR_REGISTRATION = 2;
 
     public const VOTE = 3;
 
     public const MULTI_SIGNATURE = 4;
-
-    public const IPFS = 5;
 
     public const MULTI_PAYMENT = 6;
 

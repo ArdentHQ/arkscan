@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Enums\CoreTransactionTypeEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Services\BigNumber;
 use App\Services\Cache\StatisticsCache;
 use Carbon\Carbon;
@@ -58,7 +58,7 @@ final class CacheAnnualStatistics extends Command
                 DB::raw('SUM((payment->>\'amount\')::bigint) / 1e8 AS amount'),
             ])
             ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
-            ->where('transactions.type', '=', CoreTransactionTypeEnum::MULTI_PAYMENT)
+            ->where('transactions.type', '=', TransactionTypeEnum::MULTI_PAYMENT)
             ->groupBy('year')
             ->orderBy('year')
             ->get();
@@ -109,7 +109,7 @@ final class CacheAnnualStatistics extends Command
             ->query()
             ->select(DB::raw('SUM((payment->>\'amount\')::bigint) / 1e8 AS amount'))
             ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
-            ->where('transactions.type', '=', CoreTransactionTypeEnum::MULTI_PAYMENT)
+            ->where('transactions.type', '=', TransactionTypeEnum::MULTI_PAYMENT)
             ->where('timestamp', '>=', $startOfYear)
             ->first()?->amount ?? '0';
 

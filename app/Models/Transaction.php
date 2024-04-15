@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\CoreTransactionTypeEnum;
-use App\Enums\TransactionTypeGroupEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Models\Casts\BigInteger;
 use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
-use App\Models\Scopes\IpfsScope;
-use App\Models\Scopes\MagistrateScope;
 use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\MultiSignatureScope;
-use App\Models\Scopes\SecondSignatureScope;
 use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\UsernameRegistrationScope;
 use App\Models\Scopes\UsernameResignationScope;
@@ -66,16 +62,13 @@ final class Transaction extends Model
     public const TYPE_SCOPES = [
         'validatorRegistration'         => ValidatorRegistrationScope::class,
         'validatorResignation'          => ValidatorResignationScope::class,
-        'ipfs'                          => IpfsScope::class,
         'multiPayment'                  => MultiPaymentScope::class,
         'multiSignature'                => MultiSignatureScope::class,
-        'secondSignature'               => SecondSignatureScope::class,
         'usernameRegistration'          => UsernameRegistrationScope::class,
         'usernameResignation'           => UsernameResignationScope::class,
         'transfer'                      => TransferScope::class,
         'vote'                          => VoteScope::class,
         'voteCombination'               => VoteCombinationScope::class,
-        'magistrate'                    => MagistrateScope::class,
     ];
 
     /**
@@ -232,18 +225,16 @@ final class Transaction extends Model
     {
         return $query
             ->where(function ($query) use ($filter) {
-                $query->where(fn ($query) => $query->when($filter['transfers'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::TRANSFER)))
-                    ->orWhere(fn ($query) => $query->when($filter['votes'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::VOTE)))
-                    ->orWhere(fn ($query) => $query->when($filter['multipayments'] === true, fn ($query) => $query->where('type', CoreTransactionTypeEnum::MULTI_PAYMENT)))
+                $query->where(fn ($query) => $query->when($filter['transfers'] === true, fn ($query) => $query->where('type', TransactionTypeEnum::TRANSFER)))
+                    ->orWhere(fn ($query) => $query->when($filter['votes'] === true, fn ($query) => $query->where('type', TransactionTypeEnum::VOTE)))
+                    ->orWhere(fn ($query) => $query->when($filter['multipayments'] === true, fn ($query) => $query->where('type', TransactionTypeEnum::MULTI_PAYMENT)))
                     ->orWhere(fn ($query) => $query->when($filter['others'] === true, fn ($query) => $query
-                        ->where('type_group', TransactionTypeGroupEnum::MAGISTRATE)
                         ->orWhere(
                             fn ($query) => $query
-                                ->where('type_group', TransactionTypeGroupEnum::CORE)
                                 ->whereNotIn('type', [
-                                    CoreTransactionTypeEnum::TRANSFER,
-                                    CoreTransactionTypeEnum::VOTE,
-                                    CoreTransactionTypeEnum::MULTI_PAYMENT,
+                                    TransactionTypeEnum::TRANSFER,
+                                    TransactionTypeEnum::VOTE,
+                                    TransactionTypeEnum::MULTI_PAYMENT,
                                 ])
                         )));
             });

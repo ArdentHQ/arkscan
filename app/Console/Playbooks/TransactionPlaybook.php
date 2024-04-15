@@ -20,15 +20,11 @@ final class TransactionPlaybook extends Playbook
 
         Transaction::factory(10)->transfer()->create();
 
-        Transaction::factory(10)->secondSignature()->create();
-
         Transaction::factory(10)->validatorRegistration()->create();
 
         Transaction::factory(10)->vote()->create();
 
         Transaction::factory(10)->multiSignature()->create();
-
-        Transaction::factory(10)->ipfs()->create();
 
         Transaction::factory(10)->multiPayment()->create();
 

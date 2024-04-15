@@ -49,13 +49,6 @@
             ])"
             :transaction="$transaction"
         />
-    @elseif ($transaction->isIpfs())
-        <x-transaction.page.section-detail.row
-            :title="trans('pages.transaction.header.hash')"
-            :transaction="$transaction"
-        >
-            <x-transaction.page.section-detail.ipfs-link :hash="$transaction->ipfsHash()" />
-        </x-transaction.page.section-detail.row>
     @elseif ($transaction->isValidatorRegistration() || $transaction->isValidatorResignation())
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.validator')"

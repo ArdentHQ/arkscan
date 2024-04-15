@@ -17,10 +17,6 @@ it('should determine the type', function (string $type, string $expected) {
         'transfer',
     ],
     [
-        'secondSignature',
-        'second-signature',
-    ],
-    [
         'validatorRegistration',
         'validator-registration',
     ],
@@ -41,10 +37,6 @@ it('should determine the type', function (string $type, string $expected) {
         'multi-signature',
     ],
     [
-        'ipfs',
-        'ipfs',
-    ],
-    [
         'validatorResignation',
         'validator-resignation',
     ],
@@ -53,96 +45,19 @@ it('should determine the type', function (string $type, string $expected) {
         'multi-payment',
     ],
     [
-        'businessEntityRegistration',
-        'business-entity-registration',
+        'usernameRegistration',
+        'username-registration',
     ],
     [
-        'businessEntityResignation',
-        'business-entity-resignation',
-    ],
-    [
-        'businessEntityUpdate',
-        'business-entity-update',
-    ],
-    [
-        'productEntityRegistration',
-        'product-entity-registration',
-    ],
-    [
-        'productEntityResignation',
-        'product-entity-resignation',
-    ],
-    [
-        'productEntityUpdate',
-        'product-entity-update',
-    ],
-    [
-        'pluginEntityRegistration',
-        'plugin-entity-registration',
-    ],
-    [
-        'pluginEntityResignation',
-        'plugin-entity-resignation',
-    ],
-    [
-        'pluginEntityUpdate',
-        'plugin-entity-update',
-    ],
-    [
-        'moduleEntityRegistration',
-        'module-entity-registration',
-    ],
-    [
-        'moduleEntityResignation',
-        'module-entity-resignation',
-    ],
-    [
-        'moduleEntityUpdate',
-        'module-entity-update',
-    ],
-    [
-        'validatorEntityRegistration',
-        'validator-entity-registration',
-    ],
-    [
-        'validatorEntityResignation',
-        'validator-entity-resignation',
-    ],
-    [
-        'validatorEntityUpdate',
-        'validator-entity-update',
-    ],
-    [
-        'legacyBusinessRegistration',
-        'legacy-business-registration',
-    ],
-    [
-        'legacyBusinessResignation',
-        'legacy-business-resignation',
-    ],
-    [
-        'legacyBusinessUpdate',
-        'legacy-business-update',
-    ],
-    [
-        'legacyBridgechainRegistration',
-        'bridgechain-entity-registration',
-    ],
-    [
-        'legacyBridgechainResignation',
-        'bridgechain-entity-resignation',
-    ],
-    [
-        'legacyBridgechainUpdate',
-        'bridgechain-entity-update',
+        'usernameResignation',
+        'username-resignation',
     ],
 ]);
 
 it('should determine is unknown type', function () {
     $transaction = Transaction::factory()->create([
-        'type'       => 0,
-        'type_group' => 0,
-        'asset'      => [],
+        'type'  => 1234,
+        'asset' => [],
     ]);
     $transactionType = new TransactionType($transaction);
 
@@ -156,36 +71,13 @@ it('should play through every scenario of an unknown type', function (string $ty
     expect((new TransactionType($transaction))->isUnknown())->toBeFalse();
 })->with([
     ['transfer'],
-    ['secondSignature'],
     ['validatorRegistration'],
     ['vote'],
     ['unvote'],
     ['voteCombination'],
     ['multiSignature'],
-    ['ipfs'],
     ['validatorResignation'],
     ['multiPayment'],
-    ['businessEntityRegistration'],
-    ['businessEntityResignation'],
-    ['businessEntityUpdate'],
-    ['productEntityRegistration'],
-    ['productEntityResignation'],
-    ['productEntityUpdate'],
-    ['pluginEntityRegistration'],
-    ['pluginEntityResignation'],
-    ['pluginEntityUpdate'],
-    ['moduleEntityRegistration'],
-    ['moduleEntityResignation'],
-    ['moduleEntityUpdate'],
-    ['validatorEntityRegistration'],
-    ['validatorEntityResignation'],
-    ['validatorEntityUpdate'],
-    ['legacyBusinessRegistration'],
-    ['legacyBusinessResignation'],
-    ['legacyBusinessUpdate'],
-    ['legacyBridgechainRegistration'],
-    ['legacyBridgechainResignation'],
-    ['legacyBridgechainUpdate'],
     ['usernameRegistration'],
     ['usernameResignation'],
 ]);
