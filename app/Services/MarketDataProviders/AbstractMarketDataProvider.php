@@ -16,8 +16,7 @@ abstract class AbstractMarketDataProvider implements MarketDataProvider
         string $message,
         callable $errorCheck,
         bool $throwException = true,
-    ): bool
-    {
+    ): bool {
         $hasError = $errorCheck($data);
 
         if ($hasError || $data === null) {
