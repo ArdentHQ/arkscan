@@ -79,6 +79,7 @@ it('should reset exception trigger for empty responses', function ($attempt) {
         'api.coingecko.com/*' => Http::response(null, 200),
     ]);
 
+    Config::set('arkscan.market_data.coingecko.ignore_errors', false);
     Config::set('arkscan.market_data.coingecko.exception_frequency', 6);
 
     Cache::set('coingecko_response_error', (($attempt - 1) % 6) + 1);
@@ -101,6 +102,7 @@ it('should trigger exception for throttled requests', function ($attempt) {
         ], 500),
     ]);
 
+    Config::set('arkscan.market_data.coingecko.ignore_errors', false);
     Config::set('arkscan.market_data.coingecko.exception_frequency', 6);
 
     Cache::set('coingecko_response_error', (($attempt - 1) % 6) + 1);
@@ -123,14 +125,15 @@ it('should not throw exception if ignored', function ($attempt) {
         ], 500),
     ]);
 
-    Config::set('arkscan.market_data.coingecko.ignore_error', true);
+    Config::set('arkscan.market_data.coingecko.ignore_errors', true);
     Config::set('arkscan.market_data.coingecko.exception_frequency', 6);
 
     Cache::set('coingecko_response_error', (($attempt - 1) % 6) + 1);
 
-    $this->expectNotToPerformAssertions();
-
     (new CoinGecko())->historicalHourly('ARK', 'USD');
+
+    // We shouldn't receive any exceptions
+    expect(true)->toBe(true);
 })->with(range(1, 12));
 
 it('should fetch exchange details for the given exchange', function () {
