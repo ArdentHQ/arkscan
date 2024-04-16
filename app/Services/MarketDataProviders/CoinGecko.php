@@ -24,7 +24,7 @@ final class CoinGecko extends AbstractMarketDataProvider
         return $cache->setHistorical($source, $target, $format, function () use ($source, $target, $format, $cache): Collection {
             $params = [
                 'vs_currency' => Str::lower($target),
-                'days'        => Network::epoch()->diffInDays() + 1, // +1 to handle edge case where first day is not returned in full depending on time of day
+                'days'        => min(365, Network::epoch()->diffInDays() + 1), // +1 to handle edge case where first day is not returned in full depending on time of day
                 'interval'    => 'daily',
             ];
 

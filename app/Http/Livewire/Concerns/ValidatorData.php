@@ -71,6 +71,15 @@ trait ValidatorData
         });
     }
 
+    private function hasRoundStarted(int $height): bool
+    {
+        return Cache::remember(
+            'delegate:round:'.$height,
+            Network::blockTime() / 2,
+            fn () => Block::where('height', $height)->exists()
+        );
+    }
+
     private function fetchValidators(): array
     {
         $currentRound  = Rounds::current();
@@ -79,7 +88,7 @@ trait ValidatorData
 
         $this->cacheLastBlocks($validators);
 
-        if (! Block::where('height', $heightRange[0])->exists()) {
+        if (! $this->hasRoundStarted($heightRange[0])) {
             return [];
         }
 
