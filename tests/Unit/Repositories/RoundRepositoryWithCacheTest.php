@@ -30,7 +30,7 @@ it('should get the current round', function () {
     expect($this->subject->current())->toBe(Round::max('round'));
 });
 
-it('should get the slot data for the current round', function () {
+it('should get the slot data for the current round using cache', function () {
     Block::factory()->create(['height' => 5720518]);
 
     $delegates = $this->subject->delegates();
@@ -52,7 +52,13 @@ it('should get the slot data for the current round', function () {
     expect($delegates)->toHaveCount(51);
     expect(Rounds::current())->toBe(112168);
 
+    expect($delegates->firstWhere(fn ($delegate) => $delegate['publicKey'] === $wallet['publicKey'])['block'])->toBeNull();
+
     $wallet = $delegates->first();
+
+    $this->travel(8)->seconds();
+
+    $delegates = $this->subject->delegates();
 
     expect($delegates->firstWhere(fn ($delegate) => $delegate['publicKey'] === $wallet['publicKey'])['block'])->not->toBeNull();
 });
