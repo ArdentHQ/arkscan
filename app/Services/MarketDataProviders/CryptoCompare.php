@@ -139,7 +139,7 @@ final class CryptoCompare extends AbstractMarketDataProvider
             (int) config('arkscan.market_data.cryptocompare.exception_frequency', 60),
             'Too many empty CryptoCompare responses',
             $errorCheck,
-            config('arkscan.market_data.cryptocompare.ignore_error', false) === false,
+            config('arkscan.market_data.cryptocompare.ignore_errors', false) === false,
         );
     }
 
@@ -156,7 +156,7 @@ final class CryptoCompare extends AbstractMarketDataProvider
             (int) config('arkscan.market_data.cryptocompare.exception_frequency', 60),
             'CryptoCompare requests are being throttled',
             $errorCheck,
-            config('arkscan.market_data.cryptocompare.ignore_error', false) === false,
+            config('arkscan.market_data.cryptocompare.ignore_errors', false) === false,
         );
     }
 }

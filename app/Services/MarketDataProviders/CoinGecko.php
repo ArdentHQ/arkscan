@@ -176,7 +176,7 @@ final class CoinGecko extends AbstractMarketDataProvider
             (int) config('arkscan.market_data.coingecko.exception_frequency', 60),
             'Too many empty CoinGecko responses',
             fn ($data) => Arr::get($data, 'status.error_code') !== null,
-            config('arkscan.market_data.coingecko.ignore_error', false) === false,
+            config('arkscan.market_data.coingecko.ignore_errors', false) === false,
         );
     }
 
@@ -188,7 +188,7 @@ final class CoinGecko extends AbstractMarketDataProvider
             (int) config('arkscan.market_data.coingecko.exception_frequency', 60),
             'CoinGecko requests are being throttled',
             fn ($data) => Arr::get($data, 'status.error_code') !== null,
-            config('arkscan.market_data.coingecko.ignore_error', false) === false,
+            config('arkscan.market_data.coingecko.ignore_errors', false) === false,
         );
     }
 }
