@@ -78,7 +78,7 @@ it('should reset exception trigger for empty responses', function ($attempt) {
         'cryptocompare.com/*' => Http::response(null, 200),
     ]);
 
-    Config::set('arkscan.cryptocompare_exception_frequency', 6);
+    Config::set('arkscan.market_data.cryptocompare.exception_frequency', 6);
 
     Cache::set('cryptocompare_response_error', (($attempt - 1) % 6) + 1);
 
@@ -98,7 +98,7 @@ it('should trigger exception for throttled requests', function ($attempt) {
         ], 500),
     ]);
 
-    Config::set('arkscan.cryptocompare_exception_frequency', 6);
+    Config::set('arkscan.market_data.cryptocompare.exception_frequency', 6);
 
     Cache::set('cryptocompare_response_error', (($attempt - 1) % 6) + 1);
 
@@ -107,6 +107,25 @@ it('should trigger exception for throttled requests', function ($attempt) {
     } else {
         $this->expectNotToPerformAssertions();
     }
+
+    (new CryptoCompare())->historicalHourly('ARK', 'USD');
+})->with(range(1, 12));
+
+it('should not throw exception if ignored', function ($attempt) {
+    Http::fake([
+        'cryptocompare.com/*' => Http::response([
+            'status' => [
+                'error_code' => 1,
+            ],
+        ], 500),
+    ]);
+
+    Config::set('arkscan.market_data.cryptocompare.ignore_error', true);
+    Config::set('arkscan.market_data.cryptocompare.exception_frequency', 6);
+
+    Cache::set('cryptocompare_response_error', (($attempt - 1) % 6) + 1);
+
+    $this->expectNotToPerformAssertions();
 
     (new CryptoCompare())->historicalHourly('ARK', 'USD');
 })->with(range(1, 12));
