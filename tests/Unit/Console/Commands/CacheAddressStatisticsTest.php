@@ -132,22 +132,15 @@ it('should cache newest address only since last run', function () {
 
     $this->artisan('explorer:cache-address-statistics');
 
-    expect(Cache::get('commands:cache_address_statistics/last_run'))->toEqual(Carbon::parse('2024-04-17 13:23:44'));
+    expect(Cache::get('commands:cache_address_statistics/last_run'))->toEqual($wallet1->updated_at);
 
     expect($cache->getNewestAddress()['address'])->toBe($wallet1->address);
-
-    $block = Block::factory()->create([
-        'generator_public_key' => $wallet1->public_key,
-        'height' => 153,
-        'timestamp' => Carbon::parse('2024-02-17 13:23:44')->getTimestampMs(),
-    ]);
 
     $wallet2 = Wallet::factory()->create([
         'address' => 'address2',
         'updated_at' => 153,
     ]);
 
-    // Transaction which occurs in the future, but it isn't used to check the cache `last_run` value
     Transaction::factory()->create([
         'recipient_id'      => $wallet2->address,
         'sender_public_key' => $wallet2->public_key,
@@ -156,11 +149,18 @@ it('should cache newest address only since last run', function () {
 
     $this->artisan('explorer:cache-address-statistics');
 
-    expect($cache->getNewestAddress()['address'])->toBe($wallet1->address);
+    expect($cache->getNewestAddress()['address'])->toBe($wallet2->address);
 
-    // Change block to have a timestamp after the `last_run` value
-    $block->timestamp = Carbon::parse('2024-04-18 13:23:44')->getTimestampMs();
-    $block->save();
+    $wallet3 = Wallet::factory()->create([
+        'address' => 'address2',
+        'updated_at' => 13, // prior to `last_run` value
+    ]);
+
+    Transaction::factory()->create([
+        'recipient_id'      => $wallet3->address,
+        'sender_public_key' => $wallet3->public_key,
+        'timestamp'         => Carbon::parse('2024-04-18 13:23:44')->getTimestampMs(),
+    ]);
 
     $this->artisan('explorer:cache-address-statistics');
 

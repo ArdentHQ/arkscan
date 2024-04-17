@@ -36,17 +36,17 @@ it('should index new Wallets', function () {
 
     // New Wallet
     $newWallet = Wallet::factory()->create([
-        'updated_at' => Carbon::createFromTimestamp(10),
+        'updated_at' => 1000,
     ]);
 
     // Latest indexed wallet timestamp
     Wallet::factory()->create([
-        'updated_at'    => Carbon::createFromTimestamp(5),
+        'updated_at' => 500,
     ]);
 
     // Old Wallet
     Wallet::factory()->create([
-        'updated_at'    => Carbon::createFromTimestamp(1),
+        'updated_at' => 100,
     ]);
 
     $url = sprintf(
@@ -79,7 +79,7 @@ it('should not store any value on cache if no new wallets', function () {
         ->andReturn(6);
 
     Wallet::factory()->create([
-        'updated_at' => Carbon::createFromTimestamp(5),
+        'updated_at' => 500,
     ]);
 
     IndexWallets::dispatch();
@@ -99,17 +99,17 @@ it('should index new wallets using the timestamp from cache', function () {
 
     // New Wallet
     Wallet::factory()->create([
-        'updated_at' => Carbon::createFromTimestamp(10),
+        'updated_at' => 1000,
     ]);
 
     // Relatively new Wallet
     Wallet::factory()->create([
-        'updated_at'    => Carbon::createFromTimestamp(5),
+        'updated_at' => 500,
     ]);
 
     // Old Wallet
     Wallet::factory()->create([
-        'updated_at'    => Carbon::createFromTimestamp(1),
+        'updated_at' => 100,
     ]);
 
     IndexWallets::dispatch();

@@ -671,7 +671,7 @@ it('should handle sorting several pages without cached data', function ($columnS
             'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e8,
             'nonce'             => faker()->numberBetween(1, 1000),
-            'updated_at'        => faker()->dateTimeBetween('-1 year', 'now'),
+            'updated_at'        => faker()->numberBetween(1, 1000),
 
             'address'    => $wallet['address'],
             'public_key' => $wallet['publicKey'],
@@ -756,7 +756,7 @@ it('should handle sorting several pages with cached data', function ($columnSort
             'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e8,
             'nonce'             => faker()->numberBetween(1, 1000),
-            'updated_at'        => faker()->dateTimeBetween('-1 year', 'now'),
+            'updated_at'        => faker()->numberBetween(1, 1000),
 
             'address'    => $wallet['address'],
             'public_key' => $wallet['publicKey'],

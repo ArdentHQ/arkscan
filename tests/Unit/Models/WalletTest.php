@@ -12,7 +12,7 @@ use Meilisearch\Endpoints\Indexes;
 
 beforeEach(function () {
     $this->subject = Wallet::factory()->create([
-        'updated_at' => Carbon::createFromTimestamp(123456789),
+        'updated_at' => 148373,
         'balance'    => '100000000000',
         'attributes' => [
             'username'             => 'test',
@@ -58,7 +58,7 @@ it('adds the timestamp from the updated_at column and username when making searc
 
             return $document['username'] === 'test'
                 && $document['address'] === $this->subject->address
-                && $document['timestamp'] === 123456789;
+                && $document['timestamp'] === 148373;
         });
 
     // Default value, overriden in phpunit.xml for the tests
