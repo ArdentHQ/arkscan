@@ -13,7 +13,7 @@ final class ImportCommand extends LaravelScoutImportCommand
     /**
      * Execute the console command.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @param  Dispatcher  $events
      * @return void
      */
     public function handle(Dispatcher $events)

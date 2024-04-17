@@ -29,7 +29,7 @@ it('should get the current round', function () {
     expect($this->subject->current()->round)->toBe(Round::max('round'));
 });
 
-it('should get the slot data for the current round', function () {
+it('should get the slot data for the current round using cache', function () {
     Block::factory()->create(['height' => 5944852]);
 
     $validators = $this->subject->validators();
@@ -51,7 +51,13 @@ it('should get the slot data for the current round', function () {
     expect($validators)->toHaveCount(Network::validatorCount());
     expect(Rounds::current()->round)->toBe(112168);
 
+    expect($validators->firstWhere(fn ($validator) => $validator['publicKey'] === $wallet['publicKey'])['block'])->toBeNull();
+
     $wallet = $validators->first();
+
+    $this->travel(8)->seconds();
+
+    $validators = $this->subject->validators();
 
     expect($validators->firstWhere(fn ($validator) => $validator['publicKey'] === $wallet['publicKey'])['block'])->not->toBeNull();
 });

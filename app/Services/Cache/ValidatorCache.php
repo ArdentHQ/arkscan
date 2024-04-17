@@ -6,7 +6,6 @@ namespace App\Services\Cache;
 
 use App\Contracts\Cache as Contract;
 use App\Services\Cache\Concerns\ManagesCache;
-use Closure;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Facades\Cache;
 
@@ -19,9 +18,9 @@ final class ValidatorCache implements Contract
         return $this->get('total_amounts', []);
     }
 
-    public function setTotalAmounts(Closure $callback): array
+    public function setTotalAmounts(array $data): void
     {
-        return $this->remember('total_amounts', now()->addHour(), $callback);
+        $this->put('total_amounts', $data);
     }
 
     public function getTotalBlocks(): array
@@ -29,9 +28,9 @@ final class ValidatorCache implements Contract
         return $this->get('total_blocks', []);
     }
 
-    public function setTotalBlocks(Closure $callback): array
+    public function setTotalBlocks(array $data): void
     {
-        return $this->remember('total_blocks', now()->addHour(), $callback);
+        $this->put('total_blocks', $data);
     }
 
     public function getTotalFees(): array
@@ -39,9 +38,9 @@ final class ValidatorCache implements Contract
         return $this->get('total_fees', []);
     }
 
-    public function setTotalFees(Closure $callback): array
+    public function setTotalFees(array $data): void
     {
-        return $this->remember('total_fees', now()->addHour(), $callback);
+        $this->put('total_fees', $data);
     }
 
     public function getTotalRewards(): array
@@ -49,9 +48,9 @@ final class ValidatorCache implements Contract
         return $this->get('total_rewards', []);
     }
 
-    public function setTotalRewards(Closure $callback): array
+    public function setTotalRewards(array $data): void
     {
-        return $this->remember('total_rewards', now()->addHour(), $callback);
+        $this->put('total_rewards', $data);
     }
 
     public function getTotalWalletsVoted(): int

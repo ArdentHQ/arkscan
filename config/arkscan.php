@@ -93,4 +93,8 @@ return [
     'scout' => [
         'run_jobs' => env('SCOUT_RUN_JOBS', false),
     ],
+
+    'arkconnect' => [
+        'enabled' => env('ARKCONNECT_ENABLED', false),
+    ],
 ];
