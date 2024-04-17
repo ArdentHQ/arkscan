@@ -31,7 +31,7 @@ it('should index new Wallets', function () {
         ->with('latest-indexed-timestamp:wallets')
         ->andReturn(null)
         ->shouldReceive('put')
-        ->with('latest-indexed-timestamp:wallets', 10)
+        ->with('latest-indexed-timestamp:wallets', 1000)
         ->once();
 
     // New Wallet
@@ -58,7 +58,7 @@ it('should index new Wallets', function () {
     Http::fake([
         $url => Http::response([
             'hits' => [
-                ['timestamp' => 5],
+                ['timestamp' => 500],
             ],
         ]),
     ]);
@@ -76,7 +76,7 @@ it('should not store any value on cache if no new wallets', function () {
 
     Cache::shouldReceive('get')
         ->with('latest-indexed-timestamp:wallets')
-        ->andReturn(6);
+        ->andReturn(600);
 
     Wallet::factory()->create([
         'updated_at' => 500,
@@ -92,9 +92,9 @@ it('should index new wallets using the timestamp from cache', function () {
 
     Cache::shouldReceive('get')
         ->with('latest-indexed-timestamp:wallets')
-        ->andReturn(2) // so new ones are the one with timestamp 5 and 10
+        ->andReturn(200) // so new ones are the one with updated_at (timestamp) 500 and 1000
         ->shouldReceive('put')
-        ->with('latest-indexed-timestamp:wallets', 10)
+        ->with('latest-indexed-timestamp:wallets', 1000)
         ->once();
 
     // New Wallet
@@ -117,7 +117,7 @@ it('should index new wallets using the timestamp from cache', function () {
     Event::assertDispatched(
         ModelsImported::class,
         fn ($event) => $event->models->count() === 2
-        && $event->models->pluck('timestamp')->sort()->values()->toArray() === [5, 10]
+        && $event->models->pluck('timestamp')->sort()->values()->toArray() === [500, 1000]
     );
 });
 
