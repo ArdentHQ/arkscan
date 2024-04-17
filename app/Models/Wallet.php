@@ -50,6 +50,11 @@ final class Wallet extends Model
      */
     public $keyType = 'string';
 
+    /**
+     * The column name of the primary key.
+     *
+     * @var string
+     */
     protected $primaryKey = 'address';
 
     /**
