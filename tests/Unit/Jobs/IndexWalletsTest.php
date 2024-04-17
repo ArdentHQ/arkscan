@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Jobs\IndexWallets;
 use App\Models\Wallet;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;

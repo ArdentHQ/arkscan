@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\Wallet;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;

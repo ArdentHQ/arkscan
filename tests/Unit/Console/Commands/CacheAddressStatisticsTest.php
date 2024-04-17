@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Facades\Network;
-use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -152,7 +151,7 @@ it('should cache newest address only since last run', function () {
     expect($cache->getNewestAddress()['address'])->toBe($wallet2->address);
 
     $wallet3 = Wallet::factory()->create([
-        'address' => 'address2',
+        'address'    => 'address2',
         'updated_at' => 13, // prior to `last_run` value
     ]);
 
