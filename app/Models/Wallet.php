@@ -23,6 +23,7 @@ use Laravel\Scout\Searchable;
  * @property BigNumber $balance
  * @property BigNumber $nonce
  * @property array $attributes
+ * @property int $updated_at
  * @property string $validator_username (only available when indexed by scout)
  * @property string $timestamp (only available when indexed by scout)
  * @property int $missed_blocks (only available when sorting validators by missed blocks)
