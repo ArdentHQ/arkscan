@@ -6,7 +6,6 @@ namespace App\Jobs;
 
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 
 final class IndexWallets extends IndexModel
 {
