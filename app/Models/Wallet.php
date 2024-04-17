@@ -51,18 +51,18 @@ final class Wallet extends Model
     public $keyType = 'string';
 
     /**
-     * The column name of the primary key.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'address';
-
-    /**
      * Indicates if the model should be timestamped.
      *
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * The column name of the primary key.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'address';
 
     /**
      * The attributes that should be cast.

@@ -116,7 +116,7 @@ it('should cache newest address only since last run', function () {
     $cache = new StatisticsCache();
 
     $wallet1 = Wallet::factory()->create([
-        'address' => 'address1',
+        'address'    => 'address1',
         'updated_at' => 0,
     ]);
 
@@ -138,12 +138,12 @@ it('should cache newest address only since last run', function () {
 
     $block = Block::factory()->create([
         'generator_public_key' => $wallet1->public_key,
-        'height' => 153,
-        'timestamp' => Carbon::parse('2024-02-17 13:23:44')->getTimestampMs(),
+        'height'               => 153,
+        'timestamp'            => Carbon::parse('2024-02-17 13:23:44')->getTimestampMs(),
     ]);
 
     $wallet2 = Wallet::factory()->create([
-        'address' => 'address2',
+        'address'    => 'address2',
         'updated_at' => 153,
     ]);
 
