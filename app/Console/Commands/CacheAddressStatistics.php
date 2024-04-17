@@ -65,7 +65,11 @@ final class CacheAddressStatistics extends Command
         $cacheKey = 'commands:cache_address_statistics/last_run';
 
         $newestQuery = Wallet::query()
-            ->select('wallets.address', DB::raw('MIN(transactions.timestamp) as timestamp'))
+            ->select(
+                'wallets.address',
+                DB::raw('MIN(transactions.timestamp) as timestamp'),
+                DB::raw('MAX(wallets.updated_at) as updated_at'),
+            )
             ->leftJoin('transactions', function ($join) {
                 $join->on('wallets.public_key', '=', 'transactions.sender_public_key')
                     ->orOn('wallets.address', '=', 'transactions.recipient_id');
