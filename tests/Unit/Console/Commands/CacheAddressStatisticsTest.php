@@ -187,10 +187,25 @@ it('should cache newest address only since last run', function () {
     Transaction::factory()->create([
         'recipient_id'      => $wallet4->address,
         'sender_public_key' => $wallet4->public_key,
-        'timestamp'         => Carbon::parse('2024-04-19 13:23:44')->getTimestampMs(),
+        'timestamp'         => Carbon::parse('2024-04-15 13:23:44')->getTimestampMs(), // prior to most recent wallet's timestamp
     ]);
 
     $this->artisan('explorer:cache-address-statistics');
 
-    expect($cache->getNewestAddress()['address'])->toBe($wallet4->address);
+    expect($cache->getNewestAddress()['address'])->toBe($wallet2->address);
+
+    $wallet5 = Wallet::factory()->create([
+        'address'    => 'address5',
+        'updated_at' => 200,
+    ]);
+
+    Transaction::factory()->create([
+        'recipient_id'      => $wallet5->address,
+        'sender_public_key' => $wallet5->public_key,
+        'timestamp'         => Carbon::parse('2024-04-20 13:23:44')->getTimestampMs(),
+    ]);
+
+    $this->artisan('explorer:cache-address-statistics');
+
+    expect($cache->getNewestAddress()['address'])->toBe($wallet5->address);
 });
