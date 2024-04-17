@@ -126,7 +126,7 @@ final class Wallet extends Model
                 'wallets.address',
                 'wallets.attributes',
                 'wallets.balance',
-                DB::raw('CAST(EXTRACT(epoch from wallets.updated_at) as integer) as timestamp'),
+                DB::raw('wallets.updated_at as timestamp'),
             ])
             ->when(true, function ($query) use ($self) {
                 $self->makeAllSearchableUsing($query);
