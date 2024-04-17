@@ -17,6 +17,6 @@ final class IndexWallets extends IndexModel
 
     protected function elementsToIndexQuery(int $latestIndexedTimestamp): Builder
     {
-        return Wallet::getSearchableQuery()->where(DB::raw('(CAST(EXTRACT(epoch from wallets.updated_at) as integer))'), '>', $latestIndexedTimestamp);
+        return Wallet::getSearchableQuery()->where('wallets.updated_at', '>', $latestIndexedTimestamp);
     }
 }
