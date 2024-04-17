@@ -116,7 +116,7 @@ it('should cache newest address only since last run', function () {
     $cache = new StatisticsCache();
 
     $wallet1 = Wallet::factory()->create([
-        'address' => 'address1',
+        'address'    => 'address1',
         'updated_at' => 0,
     ]);
 
@@ -137,7 +137,7 @@ it('should cache newest address only since last run', function () {
     expect($cache->getNewestAddress()['address'])->toBe($wallet1->address);
 
     $wallet2 = Wallet::factory()->create([
-        'address' => 'address2',
+        'address'    => 'address2',
         'updated_at' => 153,
     ]);
 
