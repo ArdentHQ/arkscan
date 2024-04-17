@@ -34,15 +34,17 @@ it('should update cache on each run', function () {
     expect($cache->getTotalRewards())->toBe([]);
     expect($cache->getTotalBlocks())->toBe([]);
 
-    $wallet = Wallet::factory()->activeDelegate()->create([
-        'attributes' => [
-            'delegate' => [
-                'username'       => 'delegate_1',
-                'voteBalance'    => 1234037456742,
-                'producedBlocks' => 12340,
+    $wallet = Wallet::factory()
+        ->activeValidator()
+        ->create([
+            'public_key' => 'public-key',
+            'attributes' => [
+                'username'                => 'validator_1',
+                'validatorPublicKey'      => 'validator-public-key',
+                'validatorVoteBalance'    => 1234037456742,
+                'validatorProducedBlocks' => 12340,
             ],
-        ],
-    ]);
+        ]);
 
     Block::factory()->create([
         'generator_public_key' => $wallet->public_key,
