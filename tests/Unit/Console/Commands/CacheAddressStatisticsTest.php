@@ -54,9 +54,15 @@ it('should cache address holdings', function () {
 it('should cache unique addresses', function () {
     $cache = new StatisticsCache();
 
+    $newestWallet1 = Wallet::factory()->create([
+        'address'    => 'address1',
+        'updated_at' => 153,
+    ]);
     $transactionTimestamp = Carbon::parse('2024-03-03 13:24:44')->getTimestampMs();
     $transaction          = Transaction::factory()->create([
         'timestamp' => $transactionTimestamp,
+        'sender_public_key' => $newestWallet1->public_key,
+        'recipient_id' => $newestWallet1->address,
     ]);
 
     $largest = Wallet::factory()->create([
@@ -86,9 +92,15 @@ it('should cache unique addresses', function () {
         'value'   => $largest->balance->toFloat(),
     ]);
 
+    $newestWallet2 = Wallet::factory()->create([
+        'address'    => 'address2',
+        'updated_at' => 154,
+    ]);
     $newestTransactionTimestamp = Carbon::parse('2024-03-04 13:24:44')->getTimestampMs();
     $newestTransaction          = Transaction::factory()->create([
         'timestamp' => $newestTransactionTimestamp,
+        'sender_public_key' => $newestWallet2->public_key,
+        'recipient_id' => $newestWallet2->address,
     ]);
 
     $this->artisan('explorer:cache-address-statistics');
