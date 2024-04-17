@@ -102,7 +102,7 @@ final class CacheAddressStatistics extends Command
         ]);
 
         // Cache the updated_at value of the newest wallet
-        Cache::rememberForever($cacheKey, fn () => $newest->updated_at);
+        Cache::put($cacheKey, $newest->updated_at);
     }
 
     private function cacheMostTransactions(StatisticsCache $cache): void
