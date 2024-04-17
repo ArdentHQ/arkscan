@@ -12,6 +12,7 @@
     'buttonColor' => 'dim:bg-theme-dark-blue-600',
     'arrowsClass' => [],
     'mobileTall' => false,
+    'url' => trans('urls.arkvault'),
 ])
 
 <div {{ $attributes->class([
@@ -58,7 +59,7 @@
 
     <div class="flex items-center mt-4 sm:mt-0 sm:h-auto">
         <a
-            href="@lang('pages.compatible-wallets.arkvault.url')"
+            href="{{ $url }}"
             target="_blank"
             rel="noopener nofollow noreferrer"
             @class(['flex items-center py-3.5 w-full rounded-lg sm:mt-0 sm:w-auto md:mt-0 md:w-full lg:w-auto button-primary sm:h-15', $buttonColor])

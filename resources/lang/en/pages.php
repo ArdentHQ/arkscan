@@ -600,7 +600,6 @@ return [
             'web_wallet'  => 'Web Wallet',
             'description' => 'ARKVault is the native web-wallet solution developed by the team behind ARK Core. It was built from the ground up to be the best ARK wallet possible and we highly recommend you give it a try!',
             'subtitle'    => 'Control Your Assets',
-            'url'         => 'https://arkvault.io',
         ],
 
         'arkconnect' => [
