@@ -52,7 +52,6 @@
                 title-color="text-theme-primary-900 dark:text-theme-dark-50"
                 subtitle-color="text-theme-secondary-800 dark:text-theme-dark-200 text-xs"
                 icon-size="w-11 h-11"
-                arrows-breakpoint="xl"
                 home
             />
         </div>

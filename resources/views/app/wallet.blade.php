@@ -1,8 +1,4 @@
 @component('layouts.app')
-    @push('scripts')
-        <script src="{{ mix('js/clipboard.js')}}"></script>
-    @endpush
-
     <x-metadata page="wallet" :detail="['address' => $wallet->hasUsername() ? $wallet->username() : $wallet->address()]" />
 
     @section('content')

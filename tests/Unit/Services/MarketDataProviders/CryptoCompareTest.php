@@ -83,7 +83,7 @@ it('should reset exception trigger for empty responses', function ($attempt) {
     Cache::set('cryptocompare_response_error', (($attempt - 1) % 6) + 1);
 
     if (($attempt % 6) === 0) {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
     } else {
         $this->expectNotToPerformAssertions();
     }
@@ -103,7 +103,7 @@ it('should trigger exception for throttled requests', function ($attempt) {
     Cache::set('cryptocompare_response_error', (($attempt - 1) % 6) + 1);
 
     if (($attempt % 6) === 0) {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
     } else {
         $this->expectNotToPerformAssertions();
     }
