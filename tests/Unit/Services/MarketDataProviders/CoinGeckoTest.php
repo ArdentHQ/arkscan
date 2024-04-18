@@ -84,7 +84,7 @@ it('should reset exception trigger for empty responses', function ($attempt) {
     Cache::set('coingecko_response_error', (($attempt - 1) % 6) + 1);
 
     if (($attempt % 6) === 0) {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
     } else {
         $this->expectNotToPerformAssertions();
     }
@@ -106,7 +106,7 @@ it('should trigger exception for throttled requests', function ($attempt) {
     Cache::set('coingecko_response_error', (($attempt - 1) % 6) + 1);
 
     if (($attempt % 6) === 0) {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
     } else {
         $this->expectNotToPerformAssertions();
     }
@@ -190,7 +190,7 @@ it('should throw an exception if the API response throws an exception', function
     Artisan::call('migrate:fresh');
 
     Http::fake([
-        'api.coingecko.com/*' => fn () => throw new \Exception('Test'),
+        'api.coingecko.com/*' => fn () => throw new Exception('Test'),
     ]);
 
     $exchange = Exchange::factory()->create([
@@ -252,7 +252,7 @@ it('should throw an exception if the API response is empty for volume', function
 
 it('should throw an exception if the API response throws an exception for volume', function () {
     Http::fake([
-        'api.coingecko.com/*' => fn () => throw new \Exception('Test'),
+        'api.coingecko.com/*' => fn () => throw new Exception('Test'),
     ]);
 
     (new CoinGecko())->volume('ARK');

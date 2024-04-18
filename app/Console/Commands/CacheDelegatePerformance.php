@@ -41,7 +41,7 @@ final class CacheDelegatePerformance extends Command
             ])
             ->join('blocks', 'blocks.generator_public_key', '=', 'rounds.public_key');
 
-        collect(range($round - 5, $round - 1))
+        collect(range($round - 2, $round - 1))
             ->each(function ($round, int $index) use ($query) : void {
                 [$start, $end] = Monitor::heightRangeByRound($round);
 
@@ -62,9 +62,6 @@ final class CacheDelegatePerformance extends Command
             (new WalletCache())->setPerformance($row['public_key'], [
                 $row['round_0'],
                 $row['round_1'],
-                $row['round_2'],
-                $row['round_3'],
-                $row['round_4'],
             ]);
         });
     }

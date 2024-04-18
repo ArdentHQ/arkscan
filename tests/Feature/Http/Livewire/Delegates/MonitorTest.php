@@ -11,9 +11,11 @@ use App\Services\Cache\WalletCache;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\ForgingInfoCalculator;
 use App\Services\Monitor\Slots;
+use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
+use function Tests\createRealisticRound;
 
 beforeEach(function () {
     $this->activeDelegates = require dirname(dirname(dirname(dirname(__DIR__)))).'/fixtures/forgers.php';
@@ -313,4 +315,116 @@ it('should correctly show the block is missed', function () {
     $component
         ->call('pollDelegates')
         ->assertSeeInOrder($outputData);
+});
+
+it('should show warning icon for delegates missing blocks - minutes', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    [0 => $delegates] = createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this);
+
+    $delegate = (new WalletViewModel($delegates->get(4)));
+
+    expect($delegate->performance())->toBe([false, false]);
+
+    Livewire::test(Monitor::class)
+        ->call('setIsReady')
+        ->call('pollDelegates')
+        ->assertSeeInOrder([
+            $delegate->username(),
+            'Delegate last forged 199 blocks ago (~ 21 min)',
+        ]);
+});
+
+it('should show warning icon for delegates missing blocks - hours', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    [0 => $delegates] = createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this);
+
+    $this->travelTo(Carbon::parse('2024-02-01 15:00:00Z'));
+
+    $delegate = (new WalletViewModel($delegates->get(4)));
+
+    expect($delegate->performance())->toBe([false, false]);
+
+    Livewire::test(Monitor::class)
+        ->call('setIsReady')
+        ->call('pollDelegates')
+        ->assertSeeInOrder([
+            $delegate->username(),
+            'Delegate last forged 199 blocks ago (~ 1h 28 min)',
+        ]);
+});
+
+it('should show warning icon for delegates missing blocks - days', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    [0 => $delegates] = createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this);
+
+    $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
+
+    $delegate = (new WalletViewModel($delegates->get(4)));
+
+    expect($delegate->performance())->toBe([false, false]);
+
+    Livewire::test(Monitor::class)
+        ->call('setIsReady')
+        ->call('pollDelegates')
+        ->assertSeeInOrder([
+            $delegate->username(),
+            'Delegate last forged 199 blocks ago (more than a day)',
+        ]);
 });
