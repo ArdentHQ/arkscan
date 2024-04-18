@@ -14,6 +14,7 @@
 @endphp
 
 <x-general.learn-more
+    :url="trans('urls.arkconnect')"
     icon="app-wallets.arkconnect"
     icon-color="text-[#058751] dark:text-theme-success-600"
     :title="trans('pages.compatible-wallets.arkconnect.title')"
