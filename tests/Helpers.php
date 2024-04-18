@@ -18,6 +18,7 @@ use ArkEcosystem\Crypto\Identities\PublicKey;
 use Faker\Generator;
 use FurqanSiddiqui\BIP39\BIP39;
 use Illuminate\Support\Collection as SupportCollection;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Tests\Stubs\FullPartialRoundException;
@@ -302,10 +303,6 @@ function createPartialRound(int &$round, int &$height, int $blocks, $context, st
 
             break;
         }
-
-        if ($requiredIndex >= $blocks) {
-            throw new FullPartialRoundException();
-        }
     }
 
     $round++;
@@ -333,7 +330,9 @@ function createPartialRound(int &$round, int &$height, int $blocks, $context, st
 
     $height += $blockCount;
 
-    if ($requiredIndex && $requiredIndex === 50) {
+    if ($requiredIndex && ($requiredIndex === 50 || $requiredIndex >= $blocks)) {
+        Artisan::call('cache:clear');
+
         return createPartialRound($round, $height, $blocks, $context, $missedPublicKey, $requiredPublicKey);
     }
 
