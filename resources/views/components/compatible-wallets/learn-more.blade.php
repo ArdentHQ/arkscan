@@ -18,7 +18,7 @@
 
 <x-general.learn-more
     icon="app-wallets.arkvault"
-    :title="trans('general.arkvault')"
+    :title="trans('brands.arkvault')"
     :subtitle="trans('pages.compatible-wallets.arkvault.subtitle')"
     :background-color="$backgroundColor"
     :padding="$padding"
