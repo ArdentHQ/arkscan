@@ -4,7 +4,7 @@
     'titleColor' => 'text-theme-secondary-900 dark:text-white',
     'subtitleColor' => 'text-theme-secondary-700 dark:text-theme-success-700',
     'iconSize' => 'w-10 h-10',
-    'buttonColor' => '!bg-theme-success-600',
+    'buttonColor' => '!bg-theme-success-600 hover:!bg-theme-success-700',
 ])
 
 @php
