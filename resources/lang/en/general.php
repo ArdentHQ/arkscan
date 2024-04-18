@@ -44,6 +44,7 @@ return [
     'x_of_y'              => ':0 of :1',
     'filter'              => 'Filter',
     'now'                 => 'Now',
+    'vote_with'           => 'Vote With',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
