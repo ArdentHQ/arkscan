@@ -3,18 +3,23 @@
 declare(strict_types=1);
 
 use App\Contracts\Network as Contract;
+use App\Facades\Rounds;
 use App\Models\Block;
+use App\Models\Round;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkFactory;
 use App\Services\Cache\DelegateCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
+use App\Services\Timestamp;
 use App\ViewModels\WalletViewModel;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeKnownWallets;
+use Tests\Stubs\RoundsMock;
 
 beforeEach(function () {
     $this->app->singleton(Contract::class, fn () => NetworkFactory::make('production'));
@@ -84,8 +89,8 @@ it('should get the votes as percentage from supply', function () {
 });
 
 it('should sum up the total forged', function () {
-    (new DelegateCache())->setTotalFees(fn () => [$this->subject->publicKey() => '1000000000']);
-    (new DelegateCache())->setTotalRewards(fn () => [$this->subject->publicKey() => '1000000000']);
+    (new DelegateCache())->setTotalFees([$this->subject->publicKey() => '1000000000']);
+    (new DelegateCache())->setTotalRewards([$this->subject->publicKey() => '1000000000']);
 
     expect($this->subject->totalForged())->toBeFloat();
 
@@ -93,7 +98,7 @@ it('should sum up the total forged', function () {
 });
 
 it('should sum up the amount forged', function () {
-    (new DelegateCache())->setTotalAmounts(fn () => [$this->subject->publicKey() => '1000000000']);
+    (new DelegateCache())->setTotalAmounts([$this->subject->publicKey() => '1000000000']);
 
     expect($this->subject->amountForged())->toBeInt();
 
@@ -101,7 +106,7 @@ it('should sum up the amount forged', function () {
 });
 
 it('should sum up the fees forged', function () {
-    (new DelegateCache())->setTotalFees(fn () => [$this->subject->publicKey() => '800000000']);
+    (new DelegateCache())->setTotalFees([$this->subject->publicKey() => '800000000']);
 
     expect($this->subject->feesForged())->toBeInt();
 
@@ -109,7 +114,7 @@ it('should sum up the fees forged', function () {
 });
 
 it('should sum up the rewards forged', function () {
-    (new DelegateCache())->setTotalRewards(fn () => [$this->subject->publicKey() => '200000000']);
+    (new DelegateCache())->setTotalRewards([$this->subject->publicKey() => '200000000']);
 
     expect($this->subject->rewardsForged())->toBeInt();
 
@@ -297,13 +302,19 @@ it('should fail to get the wallet of the vote if it is not cached', function () 
 });
 
 it('should get the performance if the wallet is a delegate', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
+    Rounds::swap(new RoundsMock());
+
+    $wallet = Wallet::factory()->create([
         'balance'      => '100000000000',
         'nonce'        => 1000,
         'attributes'   => [
             'delegate' => [],
         ],
-    ]));
+    ]);
+
+    (new WalletCache())->setPerformance($wallet->public_key, [true, true]);
+
+    $this->subject = new WalletViewModel($wallet);
 
     expect($this->subject->performance())->toBeArray();
 });
@@ -316,6 +327,7 @@ it('should fail to get the performance if the wallet is not a delegate', functio
     ]));
 
     expect($this->subject->performance())->toBeEmpty();
+    expect($this->subject->hasForged())->toBeFalse();
 });
 
 it('should fail to get the performance if the wallet has no public key', function () {
@@ -327,47 +339,72 @@ it('should fail to get the performance if the wallet has no public key', functio
 });
 
 it('should determine if a new delegate has forged', function () {
-    (new WalletCache())->setPerformance($this->subject->publicKey(), []);
+    $block = Block::factory()->create([
+        'generator_public_key' => $this->wallet->public_key,
+    ]);
+
+    Rounds::swap(new RoundsMock());
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, false]);
 
     expect($this->subject->hasForged())->toBeFalse();
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true]);
+    Rounds::swap(new RoundsMock($block));
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, true]);
 
     expect($this->subject->hasForged())->toBeTrue();
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false, false]);
+    Rounds::swap(new RoundsMock());
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, false]);
 
     expect($this->subject->hasForged())->toBeFalse();
 });
 
 it('should determine if the delegate just missed a block', function () {
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false, true, true, true]);
+    $block = Block::factory()->create([
+        'generator_public_key' => $this->wallet->public_key,
+    ]);
+
+    Rounds::swap(new RoundsMock($block));
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, true]);
 
     expect($this->subject->justMissed())->toBeFalse();
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false, true, false, true]);
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, true]);
 
     expect($this->subject->justMissed())->toBeFalse();
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, true, true, true, false]);
+    Rounds::swap(new RoundsMock());
+
+    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false]);
 
     expect($this->subject->justMissed())->toBeTrue();
 });
 
-it('should determine if the delegate keeps is missing blocks', function () {
-    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [true, false, true, false, true]);
+it('should determine if the delegate is missing blocks', function () {
+    Rounds::swap(new RoundsMock());
+
+    Round::factory()->create([
+        'round'      => '112167',
+        'public_key' => $this->wallet->public_key,
+    ]);
+
+    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [false, true]);
 
     expect($this->subject->keepsMissing())->toBeFalse();
 
-    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [true, false, true, false, false]);
+    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [false, false]);
 
     expect($this->subject->keepsMissing())->toBeTrue();
 });
@@ -766,4 +803,108 @@ it('should return zero if delegate has no public key', function () {
     ]));
 
     expect($wallet->missedBlocks())->toBe(0);
+});
+
+it('should return null for blocks since last forged if not forged', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->create([
+        'public_key'   => null,
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'producedBlocks' => 54321,
+            ],
+        ],
+    ]));
+
+    expect($wallet->blocksSinceLastForged())->toBe(null);
+});
+
+it('should return count for blocks since last forged', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->create([
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'producedBlocks' => 54321,
+            ],
+        ],
+    ]));
+
+    $block = Block::factory()->create([
+        'generator_public_key' => $wallet->publicKey(),
+        'height'               => 10,
+    ]);
+
+    (new WalletCache())->setLastBlock($wallet->publicKey(), [
+        'id'     => $block->id,
+        'height' => $block->height->toNumber(),
+    ]);
+
+    (new NetworkCache())->setHeight(fn (): int => 100);
+
+    expect($wallet->blocksSinceLastForged())->toBe(90);
+
+    (new WalletCache())->setLastBlock($wallet->publicKey(), []);
+
+    expect($wallet->blocksSinceLastForged())->toBe(null);
+});
+
+it('should return null for time since last forged if not forged', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->create([
+        'public_key'   => null,
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'producedBlocks' => 54321,
+            ],
+        ],
+    ]));
+
+    expect($wallet->durationSinceLastForged())->toBe(null);
+});
+
+it('should return count for time since last forged', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->create([
+        'balance'      => '100000000000',
+        'nonce'        => 1000,
+        'attributes'   => [
+            'delegate' => [
+                'producedBlocks' => 54321,
+            ],
+        ],
+    ]));
+
+    $block = Block::factory()->create([
+        'timestamp'            => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
+        'generator_public_key' => $wallet->publicKey(),
+        'height'               => 10,
+    ]);
+
+    (new WalletCache())->setLastBlock($wallet->publicKey(), [
+        'id'        => $block->id,
+        'height'    => $block->height->toNumber(),
+        'timestamp' => Timestamp::fromGenesis($block->timestamp)->unix(),
+    ]);
+
+    $this->travelTo(Carbon::parse('2021-04-14 13:02:14'));
+
+    expect($wallet->durationSinceLastForged())->toBe('~ 1 min');
+
+    $this->travelTo(Carbon::parse('2021-04-14 13:12:14'));
+
+    expect($wallet->durationSinceLastForged())->toBe('~ 11 min');
+
+    $this->travelTo(Carbon::parse('2021-04-14 14:02:04'));
+
+    expect($wallet->durationSinceLastForged())->toBe('~ 1h');
+
+    $this->travelTo(Carbon::parse('2021-04-14 15:02:14'));
+
+    expect($wallet->durationSinceLastForged())->toBe('~ 2h 1 min');
+
+    $this->travelTo(Carbon::parse('2021-04-16 15:02:14'));
+
+    expect($wallet->durationSinceLastForged())->toBe('more than a day');
 });

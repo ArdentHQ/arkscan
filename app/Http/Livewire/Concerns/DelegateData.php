@@ -71,6 +71,15 @@ trait DelegateData
         });
     }
 
+    private function hasRoundStarted(int $height): bool
+    {
+        return Cache::remember(
+            'delegate:round:'.$height,
+            Network::blockTime() / 2,
+            fn () => Block::where('height', $height)->exists()
+        );
+    }
+
     private function fetchDelegates(): array
     {
         $roundNumber = Rounds::current();
@@ -79,7 +88,7 @@ trait DelegateData
 
         $this->cacheLastBlocks($delegates->pluck('public_key')->toArray());
 
-        if (! Block::where('height', $heightRange[0])->exists()) {
+        if (! $this->hasRoundStarted($heightRange[0])) {
             return [];
         }
 

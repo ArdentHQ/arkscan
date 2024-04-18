@@ -19,10 +19,10 @@ it('should render the page without any errors', function () {
 
     (new NetworkCache())->setSupply(fn () => '10000000000');
 
-    ((new DelegateCache())->setTotalAmounts(fn () => [$wallet->public_key => '1000000000']));
-    ((new DelegateCache())->setTotalFees(fn () => [$wallet->public_key => '1000000000']));
-    ((new DelegateCache())->setTotalRewards(fn () => [$wallet->public_key => '1000000000']));
-    ((new DelegateCache())->setTotalBlocks(fn () => [$wallet->public_key => '1000000000']));
+    ((new DelegateCache())->setTotalAmounts([$wallet->public_key => '1000000000']));
+    ((new DelegateCache())->setTotalFees([$wallet->public_key => '1000000000']));
+    ((new DelegateCache())->setTotalRewards([$wallet->public_key => '1000000000']));
+    ((new DelegateCache())->setTotalBlocks([$wallet->public_key => '1000000000']));
 
     $this
         ->get(route('wallet', $wallet))
@@ -37,10 +37,10 @@ it('can lookup wallets by the username', function () {
 
     (new NetworkCache())->setSupply(fn () => '10000000000');
 
-    ((new DelegateCache())->setTotalAmounts(fn () => [$wallet->public_key => '1000000000']));
-    ((new DelegateCache())->setTotalFees(fn () => [$wallet->public_key => '1000000000']));
-    ((new DelegateCache())->setTotalRewards(fn () => [$wallet->public_key => '1000000000']));
-    ((new DelegateCache())->setTotalBlocks(fn () => [$wallet->public_key => '1000000000']));
+    ((new DelegateCache())->setTotalAmounts([$wallet->public_key => '1000000000']));
+    ((new DelegateCache())->setTotalFees([$wallet->public_key => '1000000000']));
+    ((new DelegateCache())->setTotalRewards([$wallet->public_key => '1000000000']));
+    ((new DelegateCache())->setTotalBlocks([$wallet->public_key => '1000000000']));
 
     expect($username)->not->toBeEmpty();
 
@@ -196,8 +196,8 @@ it('should not trim 0 at the end of votes or total forged', function () {
         ],
     ]);
 
-    (new DelegateCache())->setTotalFees(fn () => [$wallet->public_key => 234037456741]);
-    (new DelegateCache())->setTotalRewards(fn () => [$wallet->public_key => 1000000000001]);
+    (new DelegateCache())->setTotalFees([$wallet->public_key => 234037456741]);
+    (new DelegateCache())->setTotalRewards([$wallet->public_key => 1000000000001]);
 
     $this
         ->get(route('wallet', $wallet))
