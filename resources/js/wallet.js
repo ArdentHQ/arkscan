@@ -29,6 +29,7 @@ const Wallet = (network, xData = {}) => {
         hasExtension: false,
         cache: {
             votingFor: null,
+            votingForPublicKey: null,
         },
 
         async init() {
@@ -104,10 +105,6 @@ const Wallet = (network, xData = {}) => {
         },
 
         get votingFor() {
-            if (!this.isConnected) {
-                return null;
-            }
-
             if (!this.cache.votingFor) {
                 return null;
             }
@@ -121,8 +118,18 @@ const Wallet = (network, xData = {}) => {
             }
 
             if (!this.cache.votingFor) {
-                this.cache.votingFor = await WalletsApi.getVote(network.api, await this.address());
+                this.updateVote();
             }
+        },
+
+        async updateVote() {
+            const publicKey = await WalletsApi.getVote(network.api, await this.address());
+            if (publicKey === this.cache.votingForPublicKey) {
+                return;
+            }
+
+            this.cache.votingForPublicKey = publicKey;
+            this.cache.votingFor = (await WalletsApi.wallet(network.api, publicKey)).address;
         },
 
         async copy() {
@@ -132,6 +139,46 @@ const Wallet = (network, xData = {}) => {
             }
 
             window.clipboard(false).copy(address);
+        },
+
+        async performVote(address) {
+            if (!this.hasExtension) {
+                return;
+            }
+
+            const votingFor = this.votingFor;
+
+            const voteData = {};
+            if (address !== votingFor) {
+                voteData.unvote = {
+                    amount: 0,
+                    delegateAddress: votingFor,
+                };
+
+                voteData.vote = {
+                    amount: 0,
+                    delegateAddress: address,
+                };
+            } else {
+                voteData.unvote = {
+                    amount: 0,
+                    delegateAddress: address,
+                };
+            }
+
+            try {
+                await window.arkconnect.signVote(voteData)
+
+                const updateVoteTimer = setInterval(async () => {
+                    await this.updateVote();
+
+                    if (this.votingFor !== votingFor) {
+                        clearInterval(updateVoteTimer);
+                    }
+                }, 5000);
+            } catch (e) {
+                //
+            }
         },
 
         async connect() {

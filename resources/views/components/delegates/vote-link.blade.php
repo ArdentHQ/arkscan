@@ -2,7 +2,7 @@
 
 <div x-data="{
     voteDropdownOpen: false,
-    delegate: '{{ $model->publicKey() }}',
+    delegate: '{{ $model->address() }}',
 }">
     <x-general.dropdown.dropdown
         active-button-class="space-x-1.5"
@@ -48,6 +48,7 @@
                 <button
                     type="button"
                     class="flex items-center space-x-2 font-semibold leading-5 py-3 link"
+                    @click="performVote('{{ $model->address() }}')"
                 >
                     @lang('brands.arkconnect')
                 </button>

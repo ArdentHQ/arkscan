@@ -1,7 +1,7 @@
 @props(['model'])
 
 <div
-    x-show="votingFor === '{{ $model->publicKey() }}'"
+    x-show="votingFor === '{{ $model->address() }}'"
     class="flex items-center space-x-2 bg-theme-secondary-200 dark:bg-theme-dark-800 dark:text-theme-dark-200 p-3 -mx-3 mb-1"
 >
     <div>
