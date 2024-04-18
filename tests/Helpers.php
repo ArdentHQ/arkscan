@@ -21,7 +21,6 @@ use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use Tests\Stubs\FullPartialRoundException;
 
 function faker(): Generator
 {
