@@ -47,15 +47,13 @@ it('should find wallets by public keys', function () {
 it('should find a wallet by username', function () {
     $wallet = Wallet::factory()->create();
 
-    expect($this->subject->findByUsername($wallet->attributes['validator']['username']))->toBeInstanceOf(Wallet::class);
+    expect($this->subject->findByUsername($wallet->attributes['username']))->toBeInstanceOf(Wallet::class);
 });
 
 it('should find a wallet by username case insensitive', function () {
     Wallet::factory()->create([
         'attributes' => [
-            'validator' => [
-                'username' => 'johndoe',
-            ],
+            'username' => 'johndoe',
         ],
     ]);
 
@@ -67,14 +65,14 @@ it('should find a wallet by username case insensitive', function () {
 
 it('should find a wallet by username containing a whitespace', function () {
     $wallet                = Wallet::factory()->create();
-    $validator             = $wallet->attributes['validator'];
+    $validator             = $wallet->attributes;
     $validator['username'] = 'something with a whitespace';
 
     $wallet->update([
         'attributes' => array_merge($wallet->attributes, ['validator' => $validator]),
     ]);
 
-    expect($this->subject->findByUsername($wallet->attributes['validator']['username']))->toBeInstanceOf(Wallet::class);
+    expect($this->subject->findByUsername($wallet->attributes['username']))->toBeInstanceOf(Wallet::class);
 });
 
 it('should find a wallet by identifier if could be public key', function () {
@@ -92,9 +90,7 @@ it('should find a wallet by identifier if could be wallet address', function () 
 it('should find a wallet by identifier if could be username', function () {
     Wallet::factory()->create([
         'attributes' => [
-            'validator' => [
-                'username' => 'johndoe',
-            ],
+            'username' => 'johndoe',
         ],
     ]);
 

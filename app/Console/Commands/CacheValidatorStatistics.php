@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Enums\CoreTransactionTypeEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Transaction;
@@ -48,7 +48,7 @@ final class CacheValidatorStatistics extends Command
 
         $activeValidators = Rounds::current()->validators;
 
-        $newestActiveValidatorTx = Transaction::where('type', '=', CoreTransactionTypeEnum::VALIDATOR_REGISTRATION)
+        $newestActiveValidatorTx = Transaction::where('type', '=', TransactionTypeEnum::VALIDATOR_REGISTRATION)
             ->whereIn('sender_public_key', $activeValidators)
             ->orderBy('timestamp', 'desc')
             ->limit(1)
@@ -61,7 +61,7 @@ final class CacheValidatorStatistics extends Command
             );
         }
 
-        $oldestActiveValidatorTx = Transaction::where('type', '=', CoreTransactionTypeEnum::VALIDATOR_REGISTRATION)
+        $oldestActiveValidatorTx = Transaction::where('type', '=', TransactionTypeEnum::VALIDATOR_REGISTRATION)
             ->whereIn('sender_public_key', $activeValidators)
             ->orderBy('timestamp', 'asc')
             ->limit(1)

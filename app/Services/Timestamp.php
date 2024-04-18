@@ -34,11 +34,11 @@ final class Timestamp
 
     public static function now(): Carbon
     {
-        return static::fromUnix(Carbon::now()->unix());
+        return Carbon::now();
     }
 
     public static function daysSinceEpoch(): int
     {
-        return (int) floor(static::now()->unix() / 86400);
+        return (int) floor((Carbon::now()->unix() - Network::epoch()->unix()) / 86400);
     }
 }

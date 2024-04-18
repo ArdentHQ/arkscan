@@ -49,30 +49,6 @@ final class VendorField
             return null;
         }
 
-        if (str_starts_with($vendorField, '0x')) {
-            return $vendorField;
-        }
-
-        if (! self::isValidHex($vendorField)) {
-            return $vendorField;
-        }
-
-        /** @var string $vendorField */
-        $vendorField = hex2bin($vendorField);
-
         return $vendorField;
-    }
-
-    private static function isValidHex(string $value): bool
-    {
-        if ((strlen($value) & 1) === 1) {
-            return false;
-        }
-
-        if (! ctype_xdigit($value)) {
-            return false;
-        }
-
-        return preg_match('/^[a-f0-9]{2,}$/i', $value) !== false;
     }
 }

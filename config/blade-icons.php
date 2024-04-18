@@ -65,12 +65,6 @@ return [
             'class'  => 'fill-current',
         ],
 
-        'transactions' => [
-            'path'   => 'resources/icons/transactions',
-            'prefix' => 'app.transactions',
-            'class'  => 'fill-current',
-        ],
-
     ],
 
     /*

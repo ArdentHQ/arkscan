@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use App\Services\BigNumber;
-use App\Services\Timestamp;
 use Carbon\Carbon;
 
 it('should render the page without any errors', function () {
@@ -17,13 +16,13 @@ it('should get the transaction stats for the last 24 hours', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
     Transaction::factory(148)->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
+        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'amount'    => 123 * 1e8,
         'fee'       => 0.99 * 1e8,
     ]);
 
     Transaction::factory(12)->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2021-04-13 13:02:04')->unix())->unix(),
+        'timestamp' => Carbon::parse('2021-04-13 13:02:04')->getTimestampMs(),
         'amount'    => 123 * 1e8,
         'fee'       => 0.99 * 1e8,
     ]);
@@ -75,7 +74,7 @@ it('should show the correct decimal places for the stats', function ($decimalPla
     $this->travelTo('2021-04-14 16:02:04');
 
     Transaction::factory()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
+        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'amount'    => BigNumber::new($amount * 1e8),
         'fee'       => $fee * 1e8,
     ]);
@@ -123,14 +122,14 @@ it('should cache the transaction stats for 5 minutes', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
     Transaction::factory(146)->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
+        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'amount'    => 123 * 1e8,
         'fee'       => 0.99 * 1e8,
     ]);
 
     Transaction::factory(2)->multiPayment()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
-        'amount'    => 0,
+        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
+        'amount'    => (432 + 42) * 1e8,
         'fee'       => 0.99 * 1e8,
         'asset'     => [
             'payments' => [
@@ -157,7 +156,7 @@ it('should cache the transaction stats for 5 minutes', function () {
         ]);
 
     Transaction::factory(12)->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:03:04')->unix())->unix(),
+        'timestamp' => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
         'amount'    => 123 * 1e8,
         'fee'       => 0.99 * 1e8,
     ]);

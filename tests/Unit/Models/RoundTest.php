@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 use App\Models\Round;
 use App\Models\Wallet;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 beforeEach(function () {
-    $this->subject = Round::factory()->create(['balance' => '500000000000']);
+    $this->subject = Round::factory()->create();
 });
 
 it('should have a validator that forged the block', function () {
-    Wallet::factory()->create(['public_key' => $this->subject->public_key]);
+    foreach ($this->subject->validators as $publicKey) {
+        Wallet::factory()->create(['public_key' => $publicKey]);
+    }
 
-    expect($this->subject->validator())->toBeInstanceOf(BelongsTo::class);
-    expect($this->subject->validator)->toBeInstanceOf(Wallet::class);
+    foreach ($this->subject->validators as $validator) {
+        expect($validator)->toBeString();
+    }
 });

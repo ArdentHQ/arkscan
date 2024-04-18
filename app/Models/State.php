@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Casts\BigInteger;
 use App\Services\BigNumber;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 final class State extends Model
 {
+    use HasFactory;
+
     public $timestamps = false;
 
     /**

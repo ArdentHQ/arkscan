@@ -13,8 +13,8 @@ final class RoundViewModel implements ViewModel
     {
     }
 
-    public function balance(): float
+    public function model(): Round
     {
-        return $this->round->balance->toFloat();
+        return $this->round;
     }
 }

@@ -47,10 +47,7 @@ const TransactionsExport = ({
 
     const getTransactionAmount = (transaction) => {
         let amount = arktoshiToNumber(transaction.amount);
-        if (
-            transaction.type === TransactionType.MultiPayment &&
-            transaction.typeGroup === TransactionTypeGroup.Core
-        ) {
+        if (transaction.type === TransactionType.MultiPayment) {
             return transaction.asset.payments.reduce(
                 (totalAmount, recipientData) => {
                     if (recipientData.recipientId === address) {
@@ -80,10 +77,6 @@ const TransactionsExport = ({
         timestamp: (transaction) =>
             dayjs(parseInt(transaction.timestamp)).format("L LTS"),
         recipient: (transaction) => {
-            if (transaction.typeGroup !== TransactionTypeGroup.Core) {
-                return "Other";
-            }
-
             if (transaction.type === TransactionType.Transfer) {
                 return transaction.recipient;
             }
@@ -203,17 +196,6 @@ const TransactionsExport = ({
                         return;
                     }
 
-                    if (this.types.others) {
-                        transactions.push(
-                            ...(await this.fetch({
-                                query: {
-                                    ...this.requestData(true),
-                                    typeGroup: TransactionTypeGroup.Magistrate,
-                                },
-                            }))
-                        );
-                    }
-
                     if (transactions.length === 0) {
                         this.hasFinishedExport = true;
 
@@ -283,36 +265,29 @@ const TransactionsExport = ({
                 data["timestamp.to"] = queryTimestamp(dateTo);
             }
 
-            if (withoutTransactionTypes === false) {
-                data.typeGroup = TransactionTypeGroup.Core;
-
-                if (this.types.transfers) {
-                    data.type.push(TransactionType.Transfer);
-                }
-
-                if (this.types.votes) {
-                    data.type.push(TransactionType.Vote);
-                }
-
-                if (this.types.multipayments) {
-                    data.type.push(TransactionType.MultiPayment);
-                }
-
-                if (this.types.others) {
-                    data.type.push(
-                        TransactionType.SecondSignature,
-                        TransactionType.ValidatorRegistration,
-                        TransactionType.MultiSignature,
-                        TransactionType.Ipfs,
-                        TransactionType.ValidatorResignation,
-                        TransactionType.HtlcLock,
-                        TransactionType.HtlcClaim,
-                        TransactionType.HtlcRefund
-                    );
-                }
-
-                data.type = data.type.join(",");
+            if (this.types.transfers) {
+                data.type.push(TransactionType.Transfer);
             }
+
+            if (this.types.votes) {
+                data.type.push(TransactionType.Vote);
+            }
+
+            if (this.types.multipayments) {
+                data.type.push(TransactionType.MultiPayment);
+            }
+
+            if (this.types.others) {
+                data.type.push(
+                    TransactionType.ValidatorRegistration,
+                    TransactionType.MultiSignature,
+                    TransactionType.ValidatorResignation,
+                    TransactionType.UsernameRegistration,
+                    TransactionType.UsernameResignation
+                );
+            }
+
+            data.type = data.type.join(",");
 
             return data;
         },

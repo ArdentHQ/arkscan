@@ -7,7 +7,7 @@
 
     @if ($model->hasMultiSignature())
         <div data-tippy-content="@lang('labels.multi_signature')">
-            <x-ark-icon name="app.transactions-multi-signature" size="sm" />
+            <x-ark-icon name="app-multi-signature" size="sm" />
         </div>
     @endif
 
@@ -19,7 +19,7 @@
 
     @if ($model->hasSecondSignature())
         <div data-tippy-content="@lang('labels.second_signature')">
-            <x-ark-icon name="app.transactions-second-signature" size="sm" />
+            <x-ark-icon name="app-second-signature" size="sm" />
         </div>
     @endif
 </div>

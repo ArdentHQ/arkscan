@@ -14,6 +14,6 @@ final class VoteSingleScope implements Scope
     {
         $builder->withScope(VoteScope::class)
             ->whereJsonLength('asset->votes', 1)
-            ->whereRaw('LEFT(asset->\'votes\'->>0, 1) = \'+\'');
+            ->whereJsonLength('asset->unvotes', 0);
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Transactions\Aggregates\Historical;
 
-use App\Facades\Network;
 use App\Models\Transaction;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +15,7 @@ final class AllAggregate
         $select = [
             'MAX(timestamp) as timestamp',
             'COUNT(*) as total',
-            sprintf("to_char(to_timestamp(%d+timestamp) AT TIME ZONE 'UTC', '%s') as formatted_date", Network::epoch()->timestamp, 'YYYY-MM'),
+            sprintf("to_char(to_timestamp(timestamp / 1000) AT TIME ZONE 'UTC', '%s') as formatted_date", 'YYYY-MM'),
         ];
 
         return Transaction::query()

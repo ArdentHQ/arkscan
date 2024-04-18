@@ -10,6 +10,7 @@ use App\Models\Wallet;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
@@ -44,7 +45,7 @@ it('should update the records fiat tooltip when currency changed', function () {
     ]));
 
     Transaction::factory()->transfer()->create([
-        'timestamp' => 112982056,
+        'timestamp' => Carbon::parse('2020-10-19 05:54:16')->getTimestampMs(),
         'amount'    => 499 * 1e8,
     ]);
 
@@ -119,7 +120,8 @@ it('should filter by transfer transactions', function () {
     $vote   = Transaction::factory()->vote()->create([
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => ['+'.$wallet->public_key],
+            'votes'   => [$wallet->public_key],
+            'unvotes' => [],
         ],
     ]);
 
@@ -142,7 +144,8 @@ it('should filter by vote transactions', function () {
     $vote   = Transaction::factory()->vote()->create([
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => ['+'.$wallet->public_key],
+            'votes'   => [$wallet->public_key],
+            'unvotes' => [],
         ],
     ]);
 
@@ -184,7 +187,7 @@ it('should filter by other transactions', function () {
 
     $validatorRegistration = Transaction::factory()->validatorRegistration()->create();
 
-    $entityRegistration = Transaction::factory()->entityRegistration()->create();
+    $usernameRegistration = Transaction::factory()->usernameRegistration()->create();
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
@@ -195,7 +198,7 @@ it('should filter by other transactions', function () {
             'others'        => true,
         ])
         ->assertSee($validatorRegistration->id)
-        ->assertSee($entityRegistration->id)
+        ->assertSee($usernameRegistration->id)
         ->assertDontSee($transfer->id);
 });
 
@@ -204,7 +207,7 @@ it('should show no transactions if no type filter', function () {
 
     $validatorRegistration = Transaction::factory()->validatorRegistration()->create();
 
-    $entityRegistration = Transaction::factory()->entityRegistration()->create();
+    $usernameRegistration = Transaction::factory()->usernameRegistration()->create();
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
@@ -216,6 +219,6 @@ it('should show no transactions if no type filter', function () {
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($validatorRegistration->id)
-        ->assertDontSee($entityRegistration->id)
+        ->assertDontSee($usernameRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_filters'));
 });

@@ -9,10 +9,10 @@
     'subtitleColor' => 'text-theme-secondary-700 dark:text-theme-dark-blue-400 dim:text-theme-dark-blue-600',
     'iconSize' => 'w-11 h-11',
     'iconColor' => 'dark:text-white text-theme-navy-600',
-    'buttonColor' => 'dim:bg-theme-dark-blue-600',
-    'arrowsBreakpoint' => null,
+    'buttonColor' => 'dark:!bg-theme-dark-blue-500 dark:hover:!bg-theme-dark-blue-600 dim:!bg-theme-dark-blue-600 dim:hover:!bg-theme-dark-blue-700',
     'arrowsClass' => [],
     'mobileTall' => false,
+    'url' => trans('urls.arkvault'),
 ])
 
 <div {{ $attributes->class([
@@ -59,7 +59,7 @@
 
     <div class="flex items-center mt-4 sm:mt-0 sm:h-auto">
         <a
-            href="@lang('pages.compatible-wallets.arkvault.url')"
+            href="{{ $url }}"
             target="_blank"
             rel="noopener nofollow noreferrer"
             @class(['flex items-center py-3.5 w-full rounded-lg sm:mt-0 sm:w-auto md:mt-0 md:w-full lg:w-auto button-primary sm:h-15', $buttonColor])

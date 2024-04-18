@@ -27,8 +27,6 @@ interface Network
 
     public function canBeExchanged(): bool;
 
-    public function hasTimelock(): bool;
-
     public function epoch(): Carbon;
 
     public function validatorCount(): int;

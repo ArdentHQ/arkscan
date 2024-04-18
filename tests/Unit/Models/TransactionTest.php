@@ -11,9 +11,11 @@ use Meilisearch\Client as MeilisearchClient;
 use Meilisearch\Endpoints\Indexes;
 
 beforeEach(function () {
-    $this->subject = Transaction::factory()->create([
-        'fee'    => '100000000',
-        'amount' => '200000000',
+    $this->recipient = Wallet::factory()->create();
+    $this->subject   = Transaction::factory()->create([
+        'fee'          => '100000000',
+        'amount'       => '200000000',
+        'recipient_id' => $this->recipient,
     ]);
 });
 
@@ -30,10 +32,58 @@ it('should belong to a sender', function () {
 });
 
 it('should belong to a recipient', function () {
-    Wallet::factory()->create(['address' => $this->subject->recipient_id]);
+    Wallet::factory()->create(['address' => $this->recipient->address]);
 
-    expect($this->subject->recipient())->toBeInstanceOf(BelongsTo::class);
-    expect($this->subject->recipient)->toBeInstanceOf(Wallet::class);
+    expect($this->subject->recipient())->toEqual($this->recipient->fresh());
+});
+
+it('should get recipient if vote', function () {
+    $validator = Wallet::factory()->activeValidator()->create();
+
+    $transaction = Transaction::factory()
+        ->vote()
+        ->create([
+            'recipient_id' => null,
+            'asset'        => [
+                'votes'   => [$validator->public_key],
+                'unvotes' => [],
+            ],
+        ]);
+
+    expect($transaction->recipient())->toEqual($validator->fresh());
+});
+
+it('should get recipient if unvote', function () {
+    $validator = Wallet::factory()->activeValidator()->create();
+
+    $transaction = Transaction::factory()
+        ->unvote()
+        ->create([
+            'recipient_id' => null,
+            'asset'        => [
+                'unvotes' => [$validator->public_key],
+                'votes'   => [],
+            ],
+        ]);
+
+    expect($transaction->recipient())->toEqual($validator->fresh());
+});
+
+it('should get vote recipient if vote combination', function () {
+    $validator    = Wallet::factory()->activeValidator()->create();
+    $oldValidator = Wallet::factory()->activeValidator()->create();
+
+    $transaction = Transaction::factory()
+        ->voteCombination()
+        ->create([
+            'recipient_id' => null,
+            'asset'        => [
+                'votes'   => [$validator->public_key],
+                'unvotes' => [$oldValidator->public_key],
+            ],
+        ]);
+
+    expect($transaction->recipient())->toEqual($validator->fresh());
 });
 
 it('should get vendorfield value multiple times despite resource', function () {

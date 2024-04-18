@@ -18,11 +18,6 @@ trait HasType
         return $this->type->isTransfer();
     }
 
-    public function isSecondSignature(): bool
-    {
-        return $this->type->isSecondSignature();
-    }
-
     public function isValidatorRegistration(): bool
     {
         return $this->type->isValidatorRegistration();
@@ -48,11 +43,6 @@ trait HasType
         return $this->type->isMultiSignature();
     }
 
-    public function isIpfs(): bool
-    {
-        return $this->type->isIpfs();
-    }
-
     public function isValidatorResignation(): bool
     {
         return $this->type->isValidatorResignation();
@@ -63,21 +53,6 @@ trait HasType
         return $this->type->isMultiPayment();
     }
 
-    public function isTimelock(): bool
-    {
-        return $this->type->isTimelock();
-    }
-
-    public function isTimelockClaim(): bool
-    {
-        return $this->type->isTimelockClaim();
-    }
-
-    public function isTimelockRefund(): bool
-    {
-        return $this->type->isTimelockRefund();
-    }
-
     public function isUsernameRegistration(): bool
     {
         return $this->type->isUsernameRegistration();
@@ -86,126 +61,6 @@ trait HasType
     public function isUsernameResignation(): bool
     {
         return $this->type->isUsernameResignation();
-    }
-
-    public function isEntityRegistration(): bool
-    {
-        return $this->type->isEntityRegistration();
-    }
-
-    public function isEntityResignation(): bool
-    {
-        return $this->type->isEntityResignation();
-    }
-
-    public function isEntityUpdate(): bool
-    {
-        return $this->type->isEntityUpdate();
-    }
-
-    public function isBusinessEntityRegistration(): bool
-    {
-        return $this->type->isBusinessEntityRegistration();
-    }
-
-    public function isBusinessEntityResignation(): bool
-    {
-        return $this->type->isBusinessEntityResignation();
-    }
-
-    public function isBusinessEntityUpdate(): bool
-    {
-        return $this->type->isBusinessEntityUpdate();
-    }
-
-    public function isProductEntityRegistration(): bool
-    {
-        return $this->type->isProductEntityRegistration();
-    }
-
-    public function isProductEntityResignation(): bool
-    {
-        return $this->type->isProductEntityResignation();
-    }
-
-    public function isProductEntityUpdate(): bool
-    {
-        return $this->type->isProductEntityUpdate();
-    }
-
-    public function isPluginEntityRegistration(): bool
-    {
-        return $this->type->isPluginEntityRegistration();
-    }
-
-    public function isPluginEntityResignation(): bool
-    {
-        return $this->type->isPluginEntityResignation();
-    }
-
-    public function isPluginEntityUpdate(): bool
-    {
-        return $this->type->isPluginEntityUpdate();
-    }
-
-    public function isModuleEntityRegistration(): bool
-    {
-        return $this->type->isModuleEntityRegistration();
-    }
-
-    public function isModuleEntityResignation(): bool
-    {
-        return $this->type->isModuleEntityResignation();
-    }
-
-    public function isModuleEntityUpdate(): bool
-    {
-        return $this->type->isModuleEntityUpdate();
-    }
-
-    public function isValidatorEntityRegistration(): bool
-    {
-        return $this->type->isValidatorEntityRegistration();
-    }
-
-    public function isValidatorEntityResignation(): bool
-    {
-        return $this->type->isValidatorEntityResignation();
-    }
-
-    public function isValidatorEntityUpdate(): bool
-    {
-        return $this->type->isValidatorEntityUpdate();
-    }
-
-    public function isLegacyBusinessRegistration(): bool
-    {
-        return $this->type->isLegacyBusinessRegistration();
-    }
-
-    public function isLegacyBusinessResignation(): bool
-    {
-        return $this->type->isLegacyBusinessResignation();
-    }
-
-    public function isLegacyBusinessUpdate(): bool
-    {
-        return $this->type->isLegacyBusinessUpdate();
-    }
-
-    public function isLegacyBridgechainRegistration(): bool
-    {
-        return $this->type->isLegacyBridgechainRegistration();
-    }
-
-    public function isLegacyBridgechainResignation(): bool
-    {
-        return $this->type->isLegacyBridgechainResignation();
-    }
-
-    public function isLegacyBridgechainUpdate(): bool
-    {
-        return $this->type->isLegacyBridgechainUpdate();
     }
 
     public function isLegacy(): bool
@@ -226,10 +81,6 @@ trait HasType
             return false;
         }
 
-        if ($this->isIpfs()) {
-            return false;
-        }
-
         if ($this->isMultiPayment()) {
             return false;
         }
@@ -243,10 +94,6 @@ trait HasType
         }
 
         if ($this->isUnvote()) {
-            return false;
-        }
-
-        if ($this->isSecondSignature()) {
             return false;
         }
 
@@ -288,43 +135,11 @@ trait HasType
             return true;
         }
 
-        if ($this->isSecondSignature()) {
+        if ($this->isUsernameRegistration()) {
             return true;
         }
 
-        if ($this->isEntityRegistration()) {
-            return true;
-        }
-
-        if ($this->isEntityResignation()) {
-            return true;
-        }
-
-        if ($this->isEntityUpdate()) {
-            return true;
-        }
-
-        if ($this->isLegacyBusinessRegistration()) {
-            return true;
-        }
-
-        if ($this->isLegacyBusinessResignation()) {
-            return true;
-        }
-
-        if ($this->isLegacyBusinessUpdate()) {
-            return true;
-        }
-
-        if ($this->isLegacyBridgechainRegistration()) {
-            return true;
-        }
-
-        if ($this->isLegacyBridgechainResignation()) {
-            return true;
-        }
-
-        if ($this->isLegacyBridgechainUpdate()) {
+        if ($this->isUsernameResignation()) {
             return true;
         }
 

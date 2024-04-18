@@ -16,38 +16,11 @@ it('should render the page without any errors', function ($type) {
         ->assertSee($transaction->id);
 })->with([
     'transfer',
-    'secondSignature',
     'validatorRegistration',
     'multiSignature',
-    'ipfs',
     'validatorResignation',
-    'timelock',
-    'timelockClaim',
-    'timelockRefund',
-    'entityRegistration',
-    'entityResignation',
-    'entityUpdate',
-    'businessEntityRegistration',
-    'businessEntityResignation',
-    'businessEntityUpdate',
-    'productEntityRegistration',
-    'productEntityResignation',
-    'productEntityUpdate',
-    'pluginEntityRegistration',
-    'pluginEntityResignation',
-    'pluginEntityUpdate',
-    'moduleEntityRegistration',
-    'moduleEntityResignation',
-    'moduleEntityUpdate',
-    'validatorEntityRegistration',
-    'validatorEntityResignation',
-    'validatorEntityUpdate',
-    'legacyBusinessRegistration',
-    'legacyBusinessResignation',
-    'legacyBusinessUpdate',
-    'legacyBridgechainRegistration',
-    'legacyBridgechainResignation',
-    'legacyBridgechainUpdate',
+    'usernameRegistration',
+    'usernameResignation',
 ]);
 
 it('should render the page for a vote/unvote transaction without any errors', function ($type) {
@@ -56,7 +29,7 @@ it('should render the page for a vote/unvote transaction without any errors', fu
     $validator    = Wallet::factory()->activeValidator()->create();
     $transaction  = Transaction::factory()->{$type}()->create([
         'asset' => [
-            'votes' => ['+'.$validator->public_key],
+            'votes' => [$validator->public_key],
         ],
     ]);
 
@@ -76,7 +49,7 @@ it('should render the page for a vote combination transaction without any errors
     $newValidator = Wallet::factory()->activeValidator()->create();
     $transaction  = Transaction::factory()->voteCombination()->create([
         'asset' => [
-            'votes' => ['-'.$oldValidator->public_key, '+'.$newValidator->public_key],
+            'unvotes' => [$oldValidator->public_key, '+'.$newValidator->public_key],
         ],
     ]);
 

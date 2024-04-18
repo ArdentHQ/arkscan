@@ -232,11 +232,12 @@ it('should show multipayment without amount sent to self', function () {
     ));
     $component->assertSeeInOrder(['Multiple', '(3)']);
     $component->assertSeeInOrder([
+        'Excluding 1 DARK sent to self',
         '-',
         $transaction->amountExcludingItself(),
         $transaction->fee(),
     ]);
-})->skip('to be updated in https://app.clickup.com/t/861mz64kj');
+});
 
 it('should show transfer without amount sent to self', function () {
     $sent = Transaction::factory()->transfer()->create([
@@ -436,7 +437,7 @@ it('should filter by transfer transactions', function () {
     $vote = Transaction::factory()->vote()->create([
         'sender_public_key' => $this->subject->public_key,
         'asset'             => [
-            'votes' => ['+'.$this->subject->public_key],
+            'votes' => [$this->subject->public_key],
         ],
     ]);
 
@@ -462,7 +463,7 @@ it('should filter by vote transactions', function () {
     $vote = Transaction::factory()->vote()->create([
         'sender_public_key' => $this->subject->public_key,
         'asset'             => [
-            'votes' => ['+'.$this->subject->public_key],
+            'votes' => [$this->subject->public_key],
         ],
     ]);
 
@@ -512,7 +513,7 @@ it('should filter by other transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $entityRegistration = Transaction::factory()->entityRegistration()->create([
+    $usernameRegistration = Transaction::factory()->usernameRegistration()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
@@ -527,7 +528,7 @@ it('should filter by other transactions', function () {
             'others'        => true,
         ])
         ->assertSee($validatorRegistration->id)
-        ->assertSee($entityRegistration->id)
+        ->assertSee($usernameRegistration->id)
         ->assertDontSee($transfer->id);
 });
 
@@ -540,7 +541,7 @@ it('should show no transactions if no filters', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $entityRegistration = Transaction::factory()->entityRegistration()->create([
+    $usernameRegistration = Transaction::factory()->usernameRegistration()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
@@ -556,7 +557,7 @@ it('should show no transactions if no filters', function () {
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($validatorRegistration->id)
-        ->assertDontSee($entityRegistration->id)
+        ->assertDontSee($usernameRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_filters'));
 });
 
@@ -569,7 +570,7 @@ it('should show no transactions if no addressing filter', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $entityRegistration = Transaction::factory()->entityRegistration()->create([
+    $usernameRegistration = Transaction::factory()->usernameRegistration()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
@@ -585,7 +586,7 @@ it('should show no transactions if no addressing filter', function () {
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($validatorRegistration->id)
-        ->assertDontSee($entityRegistration->id)
+        ->assertDontSee($usernameRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_addressing_filters'));
 });
 
@@ -598,7 +599,7 @@ it('should show no transactions if no type filter', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $entityRegistration = Transaction::factory()->entityRegistration()->create([
+    $usernameRegistration = Transaction::factory()->usernameRegistration()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
@@ -614,7 +615,7 @@ it('should show no transactions if no type filter', function () {
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($validatorRegistration->id)
-        ->assertDontSee($entityRegistration->id)
+        ->assertDontSee($usernameRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_results'));
 });
 
@@ -629,7 +630,7 @@ it('should reset pagination when filtering', function () {
         'sender_public_key' => $this->subject->public_key,
         'timestamp'         => 102982050, // oldest transaction
         'asset'             => [
-            'votes' => ['+'.$this->subject->public_key],
+            'votes' => [$this->subject->public_key],
         ],
     ]);
 

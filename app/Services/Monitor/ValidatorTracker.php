@@ -7,8 +7,6 @@ namespace App\Services\Monitor;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
-use App\Services\Monitor\Actions\ShuffleValidators;
-use Illuminate\Support\Collection;
 
 final class ValidatorTracker
 {
@@ -35,7 +33,7 @@ final class ValidatorTracker
         return collect($validators)
             ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $validatorCount) {
                 // Determine forging order based on the original offset
-                $difference      = $forgingInfo['currentForger'];
+                $difference      = $forgingInfo['currentForger']; // should this be nextForger? The "next" delegate has already forged a block based on the height
                 $normalizedOrder = $difference >= 0 ? $difference : $validatorCount + $difference;
 
                 if ($index === $normalizedOrder) {
@@ -69,32 +67,5 @@ final class ValidatorTracker
                 ];
             })
             ->toArray();
-    }
-
-    // obsolete
-    private static function getActiveValidators(Collection $validators): array
-    {
-        return $validators->toBase()
-            ->map(fn ($validator) => $validator->public_key)
-            ->toArray();
-    }
-
-    // obsolete
-    private static function shuffleValidators(array $validators, int $height): array
-    {
-        return ShuffleValidators::execute($validators, $height);
-    }
-
-    private static function orderValidators(
-        array $activeValidators,
-        int $currentForger,
-        int $validatorCount,
-    ): array {
-        $validatorsOrdered = [];
-        for ($i = $currentForger; $i < $validatorCount + $currentForger; $i++) {
-            $validatorsOrdered[] = $activeValidators[$i % $validatorCount];
-        }
-
-        return $validatorsOrdered;
     }
 }

@@ -25,10 +25,11 @@ it('should render with votes', function () {
     $validator = Wallet::factory()->activeValidator()->create();
 
     Transaction::factory(27)->vote()->create([
-        'timestamp'         => Timestamp::fromUnix(Carbon::parse('2020-03-21 14:12:00')->unix())->unix(),
+        'timestamp'         => Carbon::parse('2020-03-21 14:12:00')->getTimestampMs(),
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => ['+'.$validator->public_key],
+            'votes'   => [$validator->public_key],
+            'unvotes' => [],
         ],
     ]);
 
@@ -45,18 +46,20 @@ it('should not render votes older than 30 days', function () {
     $validator = Wallet::factory()->activeValidator()->create();
 
     Transaction::factory(27)->vote()->create([
-        'timestamp'         => Timestamp::fromUnix(Carbon::parse('2020-03-21 14:12:00')->unix())->unix(),
+        'timestamp'         => Carbon::parse('2020-03-21 14:12:00')->getTimestampMs(),
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => ['+'.$validator->public_key],
+            'votes'   => [$validator->public_key],
+            'unvotes' => [],
         ],
     ]);
 
     Transaction::factory(4)->vote()->create([
-        'timestamp'         => Timestamp::fromUnix(Carbon::parse('2020-04-20 14:12:00')->unix())->unix(),
+        'timestamp'         => Carbon::parse('2020-04-20 14:12:00')->getTimestampMs(),
         'sender_public_key' => $wallet->public_key,
         'asset'             => [
-            'votes' => ['+'.$validator->public_key],
+            'votes'   => [$validator->public_key],
+            'unvotes' => [],
         ],
     ]);
 
@@ -119,30 +122,33 @@ it('should toggle "select all" when all filters are selected', function () {
 
 it('should filter vote transactions', function () {
     $sender         = Wallet::factory()->create();
-    $validator      = Wallet::factory()->activeValidator(false)->create();
-    $otherValidator = Wallet::factory()->activeValidator(false)->create();
+    $validator      = Wallet::factory()->activeValidator()->create();
+    $otherValidator = Wallet::factory()->activeValidator()->create();
 
     $vote = Transaction::factory()->vote()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => ['+'.$validator->public_key],
+            'votes'   => [$validator->public_key],
+            'unvotes' => [],
         ],
     ]);
 
     $unvote = Transaction::factory()->unvote()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => ['-'.$validator->public_key],
+            'votes'   => [],
+            'unvotes' => [$validator->public_key],
         ],
     ]);
 
     $voteSwap = Transaction::factory()->voteCombination()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => ['-'.$validator->public_key, '+'.$otherValidator->public_key],
+            'votes'   => [$otherValidator->public_key],
+            'unvotes' => [$validator->public_key],
         ],
     ]);
 
@@ -160,30 +166,33 @@ it('should filter vote transactions', function () {
 
 it('should filter unvote transactions', function () {
     $sender         = Wallet::factory()->create();
-    $validator      = Wallet::factory()->activeValidator(false)->create();
-    $otherValidator = Wallet::factory()->activeValidator(false)->create();
+    $validator      = Wallet::factory()->activeValidator()->create();
+    $otherValidator = Wallet::factory()->activeValidator()->create();
 
     $vote = Transaction::factory()->vote()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => ['+'.$validator->public_key],
+            'votes'   => [$validator->public_key],
+            'unvotes' => [],
         ],
     ]);
 
     $unvote = Transaction::factory()->unvote()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => ['-'.$validator->public_key],
+            'unvotes' => [$validator->public_key],
+            'votes'   => [],
         ],
     ]);
 
     $voteSwap = Transaction::factory()->voteCombination()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => ['-'.$validator->public_key, '+'.$otherValidator->public_key],
+            'votes'   => [$otherValidator->public_key],
+            'unvotes' => [$validator->public_key],
         ],
     ]);
 
@@ -201,30 +210,31 @@ it('should filter unvote transactions', function () {
 
 it('should filter vote swap transactions', function () {
     $sender         = Wallet::factory()->create();
-    $validator      = Wallet::factory()->activeValidator(false)->create();
-    $otherValidator = Wallet::factory()->activeValidator(false)->create();
+    $validator      = Wallet::factory()->activeValidator()->create();
+    $otherValidator = Wallet::factory()->activeValidator()->create();
 
     $vote = Transaction::factory()->vote()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => ['+'.$validator->public_key],
+            'votes' => [$validator->public_key],
         ],
     ]);
 
     $unvote = Transaction::factory()->unvote()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => ['-'.$validator->public_key],
+            'unvotes' => [$validator->public_key],
         ],
     ]);
 
     $voteSwap = Transaction::factory()->voteCombination()->create([
         'sender_public_key' => $sender->public_key,
-        'timestamp'         => Timestamp::now()->subMinute(1)->unix(),
+        'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
         'asset'             => [
-            'votes' => ['-'.$validator->public_key, '+'.$otherValidator->public_key],
+            'votes'   => [$otherValidator->public_key],
+            'unvotes' => [$validator->public_key],
         ],
     ]);
 
@@ -262,48 +272,43 @@ function generateTransactions(): array
     $validator1 = Wallet::factory()->activeValidator()->create([
         'address'    => 'validator-address-c',
         'attributes' => [
-            'validator' => [
-                'username' => 'validator-1',
-            ],
+            'username' => 'validator-1',
         ],
     ]);
 
     $validator2 = Wallet::factory()->activeValidator()->create([
         'address'    => 'validator-address-b',
         'attributes' => [
-            'validator' => [
-                'username' => 'validator-2',
-            ],
+            'username' => 'validator-2',
         ],
     ]);
 
     $validator3 = Wallet::factory()->activeValidator()->create([
         'address'    => 'validator-address-a',
         'attributes' => [
-            'validator' => [
-                'username' => 'validator-3',
-            ],
+            'username' => 'validator-3',
         ],
     ]);
 
     $voteTransaction = Transaction::factory()->vote()->create([
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 03:41:04')->unix())->unix(),
         'asset'     => [
-            'vote' => ['+'.$validator1->public_key],
+            'votes' => [$validator1->public_key],
         ],
     ]);
 
     $unvoteTransaction = Transaction::factory()->unvote()->create([
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 04:41:04')->unix())->unix(),
         'asset'     => [
-            'vote' => ['-'.$validator2->public_key],
+            'unvotes' => [$validator2->public_key],
         ],
     ]);
 
     $voteSwapTransaction = Transaction::factory()->voteCombination()->create([
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 05:41:04')->unix())->unix(),
         'asset'     => [
-            'vote' => ['-'.$validator1->public_key, '+'.$validator3->public_key],
+            'votes'   => [$validator3->public_key],
+            'unvotes' => [$validator1->public_key],
         ],
     ]);
 

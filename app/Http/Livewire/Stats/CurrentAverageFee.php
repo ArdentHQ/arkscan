@@ -27,12 +27,7 @@ final class CurrentAverageFee extends Component
     public function render(): View
     {
         $transactionOptions = collect(Forms::getTransactionOptions())
-            ->except([
-                'all',
-                'timelockClaim',
-                'timelockRefund',
-                'magistrate',
-            ])
+            ->except(['all'])
             ->toArray();
 
         return view('livewire.stats.current-average-fee', [
