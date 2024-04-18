@@ -123,13 +123,18 @@ const Wallet = (network, xData = {}) => {
         },
 
         async updateVote() {
-            const publicKey = await WalletsApi.getVote(network.api, await this.address());
+            const publicKey = await WalletsApi.getVote(
+                network.api,
+                await this.address()
+            );
             if (publicKey === this.cache.votingForPublicKey) {
                 return;
             }
 
             this.cache.votingForPublicKey = publicKey;
-            this.cache.votingFor = (await WalletsApi.wallet(network.api, publicKey)).address;
+            this.cache.votingFor = (
+                await WalletsApi.wallet(network.api, publicKey)
+            ).address;
         },
 
         async copy() {
@@ -167,7 +172,7 @@ const Wallet = (network, xData = {}) => {
             }
 
             try {
-                await window.arkconnect.signVote(voteData)
+                await window.arkconnect.signVote(voteData);
 
                 const updateVoteTimer = setInterval(async () => {
                     await this.updateVote();
