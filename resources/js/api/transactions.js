@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FailedExportRequest } from "./includes/helpers";
+import { FailedExportRequest } from "../includes/helpers";
 
 export class TransactionsApi {
     static async fetch(host, query) {

@@ -28,7 +28,6 @@ return [
     'confirmations'       => ':count Confirmation|:count Confirmations',
     'confirmations_only'  => 'Confirmations',
     'market_data_by'      => 'Market Data by',
-    'arkvault'            => 'ARKVault',
     'select_theme'        => 'Select Theme',
     'select_network'      => 'Select Network',
     'na'                  => 'N/A',
@@ -45,6 +44,7 @@ return [
     'x_of_y'              => ':0 of :1',
     'filter'              => 'Filter',
     'now'                 => 'Now',
+    'vote_with'           => 'Vote With',
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',

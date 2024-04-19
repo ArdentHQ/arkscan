@@ -11,8 +11,8 @@ import {
     timeSinceEpoch,
 } from "./includes/helpers";
 
-import { BlocksApi } from "./blocks-api";
-import { DelegatesApi } from "./delegates-api";
+import { BlocksApi } from "./api/blocks";
+import { DelegatesApi } from "./api/delegates";
 import { ExportStatus } from "./includes/enums";
 
 window.ExportStatus = ExportStatus;

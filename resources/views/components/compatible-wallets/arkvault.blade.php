@@ -10,7 +10,7 @@
 
             <div class="xl:mt-6">
                 <h2 class="text-lg font-semibold sm:text-2xl text-theme-secondary-900">
-                    <span>@lang('general.arkvault') </span>
+                    <span>@lang('brands.arkvault') </span>
                     <span class="text-theme-secondary-500 dark:text-theme-dark-500">
                         (@lang('pages.compatible-wallets.arkvault.web_wallet'))
                     </span>

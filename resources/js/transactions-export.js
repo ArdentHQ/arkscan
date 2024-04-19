@@ -17,7 +17,7 @@ import {
     TransactionTypeGroup,
 } from "./includes/enums";
 
-import { TransactionsApi } from "./transactions-api";
+import { TransactionsApi } from "./api/transactions";
 
 window.ExportStatus = ExportStatus;
 

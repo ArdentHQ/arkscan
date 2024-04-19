@@ -14,6 +14,7 @@
                 'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700' => ! $delegate->isResigned(),
             ])"
             expandable
+            :content-class="config('arkscan.arkconnect.enabled') ? '!pb-0 sm:!pb-3' : ''"
         >
             <x-slot name="header">
                 <div class="flex flex-1 min-w-0 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
@@ -61,6 +62,12 @@
             <x-tables.rows.mobile.encapsulated.delegates.votes-percentage :model="$delegate" />
 
             <x-tables.rows.mobile.encapsulated.delegates.missed-blocks :model="$delegate" />
+
+            @if (config('arkscan.arkconnect.enabled'))
+                <div class="sm:hidden">
+                    <x-tables.rows.mobile.encapsulated.delegates.voting-for :model="$delegate" />
+                </div>
+            @endif
         </x-tables.rows.mobile>
     @endforeach
 </x-tables.mobile.includes.encapsulated>

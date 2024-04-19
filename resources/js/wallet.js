@@ -1,3 +1,5 @@
+import { WalletsApi } from "./api/wallets";
+
 Object.defineProperties(window, {
     _arkconnect: {
         writable: true,
@@ -18,10 +20,17 @@ Object.defineProperties(window, {
     },
 });
 
-const Wallet = () => {
+const Wallet = (network, xData = {}) => {
     return Alpine.reactive({
+        ...xData,
+        network,
+
         isConnected: false,
         hasExtension: false,
+        cache: {
+            votingFor: null,
+            votingForPublicKey: null,
+        },
 
         async init() {
             if (window.arkconnect) {
@@ -53,14 +62,22 @@ const Wallet = () => {
             this.hasExtension = window.arkconnect !== undefined;
 
             try {
-                this.isConnected = await this.extension().isConnected();
+                this.setConnectedStatus(await this.extension().isConnected());
             } catch (e) {
                 //
             }
         },
 
+        setConnectedStatus(isConnected) {
+            this.isConnected = isConnected;
+
+            if (this.isConnected && this.network !== undefined) {
+                this.cacheData();
+            }
+        },
+
         handleConnectionEvent(data) {
-            this.isConnected = data.type === "connected";
+            this.setConnectedStatus(data.type === "connected");
         },
 
         async handleLockToggledEvent(data) {
@@ -87,6 +104,39 @@ const Wallet = () => {
             return await this.extension().getAddress();
         },
 
+        get votingFor() {
+            if (!this.cache.votingFor) {
+                return null;
+            }
+
+            return this.cache.votingFor;
+        },
+
+        async cacheData() {
+            if (!this.isConnected) {
+                return null;
+            }
+
+            if (!this.cache.votingFor) {
+                this.updateVote();
+            }
+        },
+
+        async updateVote() {
+            const publicKey = await WalletsApi.getVote(
+                network.api,
+                await this.address()
+            );
+            if (publicKey === this.cache.votingForPublicKey) {
+                return;
+            }
+
+            this.cache.votingForPublicKey = publicKey;
+            this.cache.votingFor = (
+                await WalletsApi.wallet(network.api, publicKey)
+            ).address;
+        },
+
         async copy() {
             const address = await this.address();
             if (!address) {
@@ -94,6 +144,46 @@ const Wallet = () => {
             }
 
             window.clipboard(false).copy(address);
+        },
+
+        async performVote(address) {
+            if (!this.hasExtension) {
+                return;
+            }
+
+            const votingFor = this.votingFor;
+
+            const voteData = {};
+            if (address !== votingFor) {
+                voteData.unvote = {
+                    amount: 0,
+                    delegateAddress: votingFor,
+                };
+
+                voteData.vote = {
+                    amount: 0,
+                    delegateAddress: address,
+                };
+            } else {
+                voteData.unvote = {
+                    amount: 0,
+                    delegateAddress: address,
+                };
+            }
+
+            try {
+                await window.arkconnect.signVote(voteData);
+
+                const updateVoteTimer = setInterval(async () => {
+                    await this.updateVote();
+
+                    if (this.votingFor !== votingFor) {
+                        clearInterval(updateVoteTimer);
+                    }
+                }, 5000);
+            } catch (e) {
+                //
+            }
         },
 
         async connect() {

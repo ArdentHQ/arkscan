@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html
+    lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+    @if (config('arkscan.arkconnect.enabled'))
+        x-data="Wallet({{ json_encode(Network::toArray()) }})"
+    @endif
+>
     <x-ark-pages-includes-layout-head
         :default-name="trans('metatags.home.title')"
         mask-icon-color="#de5846"
