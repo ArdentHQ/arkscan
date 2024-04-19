@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Contracts\RoundRepository;
+use App\Facades\Network;
 use App\Repositories\Concerns\ManagesCache;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Database\Eloquent\Collection;
@@ -31,7 +32,7 @@ final class RoundRepositoryWithCache implements RoundRepository
 
     public function delegates(bool $withBlock = true): SupportCollection
     {
-        return $this->rounds->delegates($withBlock);
+        return $this->remember(fn () => $this->rounds->delegates($withBlock), Network::blockTime() / 2);
     }
 
     private function getCache(): TaggedCache
