@@ -29,7 +29,6 @@ const Wallet = (network, xData = {}) => {
         hasExtension: false,
         cache: {
             votingFor: null,
-            votingForPublicKey: null,
         },
 
         async init() {
@@ -122,7 +121,7 @@ const Wallet = (network, xData = {}) => {
 
         get isVotedDelegateResigned() {
             if (!this.cache.votingFor) {
-                return null;
+                return false;
             }
 
             return this.cache.votingFor.attributes?.delegate?.resigned === true;
@@ -145,14 +144,15 @@ const Wallet = (network, xData = {}) => {
             );
 
             if (! publicKey) {
+                this.cache.votingFor = null;
+
                 return;
             }
 
-            if (publicKey === this.cache.votingForPublicKey) {
+            if (publicKey === this.cache.votingFor?.publicKey) {
                 return;
             }
 
-            this.cache.votingForPublicKey = publicKey;
             this.cache.votingFor = await WalletsApi.wallet(network.api, publicKey);
         },
 
@@ -174,10 +174,12 @@ const Wallet = (network, xData = {}) => {
 
             const voteData = {};
             if (address !== votingForAddress) {
-                voteData.unvote = {
-                    amount: 0,
-                    delegateAddress: votingForAddress,
-                };
+                if (votingForAddress) {
+                    voteData.unvote = {
+                        amount: 0,
+                        delegateAddress: votingForAddress,
+                    };
+                }
 
                 voteData.vote = {
                     amount: 0,
@@ -193,13 +195,23 @@ const Wallet = (network, xData = {}) => {
             try {
                 await window.arkconnect.signVote(voteData);
 
-                const updateVoteTimer = setInterval(async () => {
+                let updateVoteTimer = null;
+                let loopCounter = 0;
+                const updateVoteLoop = async () => {
+                    loopCounter++;
+
                     await this.updateVote();
 
-                    if (this.votingForAddress !== votingForAddress) {
-                        clearInterval(updateVoteTimer);
+                    if (loopCounter > 10 || this.votingForAddress !== votingForAddress) {
+                        clearTimeout(updateVoteTimer);
+
+                        return;
                     }
-                }, 5000);
+
+                    updateVoteTimer = setTimeout(updateVoteLoop, 5000);
+                };
+
+                updateVoteLoop();
             } catch (e) {
                 //
             }

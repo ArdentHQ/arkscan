@@ -1,7 +1,9 @@
 <div class="w-full">
     <x-tables.toolbars.delegates.list-table :delegates="$delegates" />
 
-    <x-delegates.resigned-delegate-notice class="sm:hidden" />
+    <div class="sm:hidden">
+        <x-delegates.resigned-delegate-notice />
+    </div>
 
     <x-skeletons.delegates.list-table
         :row-count="$this->perPage"

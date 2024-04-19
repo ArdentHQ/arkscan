@@ -12,7 +12,9 @@
     />
 
     <div id="delegate-table-list">
-        <x-delegates.resigned-delegate-notice class="hidden sm:block" />
+        <div class="hidden sm:block">
+            <x-delegates.resigned-delegate-notice />
+        </div>
 
         <x-delegates.tables.delegates />
 
