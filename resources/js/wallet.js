@@ -104,12 +104,28 @@ const Wallet = (network, xData = {}) => {
             return await this.extension().getAddress();
         },
 
-        get votingFor() {
+        get votingForAddress() {
             if (!this.cache.votingFor) {
                 return null;
             }
 
-            return this.cache.votingFor;
+            return this.cache.votingFor.address;
+        },
+
+        get votedDelegateName() {
+            if (!this.cache.votingFor) {
+                return null;
+            }
+
+            return this.cache.votingFor.attributes?.delegate?.username;
+        },
+
+        get isVotedDelegateResigned() {
+            if (!this.cache.votingFor) {
+                return null;
+            }
+
+            return this.cache.votingFor.attributes?.delegate?.resigned === true;
         },
 
         async cacheData() {
@@ -127,14 +143,17 @@ const Wallet = (network, xData = {}) => {
                 network.api,
                 await this.address()
             );
+
+            if (! publicKey) {
+                return;
+            }
+
             if (publicKey === this.cache.votingForPublicKey) {
                 return;
             }
 
             this.cache.votingForPublicKey = publicKey;
-            this.cache.votingFor = (
-                await WalletsApi.wallet(network.api, publicKey)
-            ).address;
+            this.cache.votingFor = await WalletsApi.wallet(network.api, publicKey);
         },
 
         async copy() {
@@ -151,13 +170,13 @@ const Wallet = (network, xData = {}) => {
                 return;
             }
 
-            const votingFor = this.votingFor;
+            const votingForAddress = this.votingForAddress;
 
             const voteData = {};
-            if (address !== votingFor) {
+            if (address !== votingForAddress) {
                 voteData.unvote = {
                     amount: 0,
-                    delegateAddress: votingFor,
+                    delegateAddress: votingForAddress,
                 };
 
                 voteData.vote = {
@@ -177,7 +196,7 @@ const Wallet = (network, xData = {}) => {
                 const updateVoteTimer = setInterval(async () => {
                     await this.updateVote();
 
-                    if (this.votingFor !== votingFor) {
+                    if (this.votingForAddress !== votingForAddress) {
                         clearInterval(updateVoteTimer);
                     }
                 }, 5000);

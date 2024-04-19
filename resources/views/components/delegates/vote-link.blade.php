@@ -19,15 +19,15 @@
             name="button"
             class="text-sm font-semibold hover:underline transition-default"
             ::class="{
-                'text-theme-primary-600 hover:text-theme-primary-700 dark:text-theme-dark-blue-400 dark:hover:text-theme-dark-blue-500': votingFor !== delegate,
-                'text-theme-danger-400 hover:text-theme-danger-500': votingFor === delegate,
+                'text-theme-primary-600 hover:text-theme-primary-700 dark:text-theme-dark-blue-400 dark:hover:text-theme-dark-blue-500': votingForAddress !== delegate,
+                'text-theme-danger-400 hover:text-theme-danger-500': votingForAddress === delegate,
             }"
         >
-            <div x-show="votingFor !== delegate">
+            <div x-show="votingForAddress !== delegate">
                 @lang('actions.vote')
             </div>
 
-            <div x-show="votingFor === delegate">
+            <div x-show="votingForAddress === delegate">
                 @lang('actions.unvote')
             </div>
         </x-slot>

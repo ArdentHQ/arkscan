@@ -80,8 +80,8 @@
                             delegate-name-class="md:w-[100px] md-lg:w-auto"
                         />
 
-                        <div x-show="votingFor === '{{ $delegate->address() }}'">
-                            <div data-tippy-content="@lang('pages.delegates.voting_for_tooltip')">
+                        <div x-show="votingForAddress === '{{ $delegate->address() }}'">
+                            <div data-tippy-content="@lang('pages.delegates.arkconnect.voting_for_tooltip')">
                                 <x-ark-icon
                                     name="check-mark-box"
                                     size="sm"

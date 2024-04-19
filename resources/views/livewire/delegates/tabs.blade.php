@@ -12,6 +12,8 @@
     />
 
     <div id="delegate-table-list">
+        <x-delegates.resigned-delegate-notice class="hidden sm:block" />
+
         <x-delegates.tables.delegates />
 
         <x-delegates.tables.missed-blocks x-cloak />
