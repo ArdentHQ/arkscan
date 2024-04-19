@@ -1,10 +1,6 @@
 @if (config('arkscan.arkconnect.enabled'))
     <div
-        x-data="{
-            isResigned: false,
-        }"
-        x-init="$watch('isVotedDelegateResigned', (value) => isResigned = isVotedDelegateResigned)"
-        :class="{ '!hidden': isResigned === false }"
+        :class="{ '!hidden': isVotedDelegateResigned === false }"
         class="mb-4 sm:mb-3"
         x-cloak
     >
