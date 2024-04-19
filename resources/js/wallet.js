@@ -205,7 +205,10 @@ const Wallet = (network, xData = {}) => {
 
                     await this.updateVote();
 
-                    if (loopCounter > 10 || this.votingForAddress !== votingForAddress) {
+                    if (
+                        loopCounter > 10 ||
+                        this.votingForAddress !== votingForAddress
+                    ) {
                         clearTimeout(updateVoteTimer);
 
                         return;
