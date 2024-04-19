@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Jobs\IndexWallets;
 use App\Models\Wallet;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
@@ -31,22 +30,22 @@ it('should index new Wallets', function () {
         ->with('latest-indexed-timestamp:wallets')
         ->andReturn(null)
         ->shouldReceive('put')
-        ->with('latest-indexed-timestamp:wallets', 10)
+        ->with('latest-indexed-timestamp:wallets', 1000)
         ->once();
 
     // New Wallet
     $newWallet = Wallet::factory()->create([
-        'updated_at' => Carbon::createFromTimestamp(10),
+        'updated_at' => 1000,
     ]);
 
     // Latest indexed wallet timestamp
     Wallet::factory()->create([
-        'updated_at'    => Carbon::createFromTimestamp(5),
+        'updated_at' => 500,
     ]);
 
     // Old Wallet
     Wallet::factory()->create([
-        'updated_at'    => Carbon::createFromTimestamp(1),
+        'updated_at' => 100,
     ]);
 
     $url = sprintf(
@@ -58,7 +57,7 @@ it('should index new Wallets', function () {
     Http::fake([
         $url => Http::response([
             'hits' => [
-                ['timestamp' => 5],
+                ['timestamp' => 500],
             ],
         ]),
     ]);
@@ -76,10 +75,10 @@ it('should not store any value on cache if no new wallets', function () {
 
     Cache::shouldReceive('get')
         ->with('latest-indexed-timestamp:wallets')
-        ->andReturn(6);
+        ->andReturn(600);
 
     Wallet::factory()->create([
-        'updated_at' => Carbon::createFromTimestamp(5),
+        'updated_at' => 500,
     ]);
 
     IndexWallets::dispatch();
@@ -92,24 +91,24 @@ it('should index new wallets using the timestamp from cache', function () {
 
     Cache::shouldReceive('get')
         ->with('latest-indexed-timestamp:wallets')
-        ->andReturn(2) // so new ones are the one with timestamp 5 and 10
+        ->andReturn(200) // so new ones are the one with updated_at (timestamp) 500 and 1000
         ->shouldReceive('put')
-        ->with('latest-indexed-timestamp:wallets', 10)
+        ->with('latest-indexed-timestamp:wallets', 1000)
         ->once();
 
     // New Wallet
     Wallet::factory()->create([
-        'updated_at' => Carbon::createFromTimestamp(10),
+        'updated_at' => 1000,
     ]);
 
     // Relatively new Wallet
     Wallet::factory()->create([
-        'updated_at'    => Carbon::createFromTimestamp(5),
+        'updated_at' => 500,
     ]);
 
     // Old Wallet
     Wallet::factory()->create([
-        'updated_at'    => Carbon::createFromTimestamp(1),
+        'updated_at' => 100,
     ]);
 
     IndexWallets::dispatch();
@@ -117,7 +116,7 @@ it('should index new wallets using the timestamp from cache', function () {
     Event::assertDispatched(
         ModelsImported::class,
         fn ($event) => $event->models->count() === 2
-        && $event->models->pluck('timestamp')->sort()->values()->toArray() === [5, 10]
+        && $event->models->pluck('timestamp')->sort()->values()->toArray() === [500, 1000]
     );
 });
 

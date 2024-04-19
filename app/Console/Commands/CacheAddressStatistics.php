@@ -65,7 +65,11 @@ final class CacheAddressStatistics extends Command
         $cacheKey = 'commands:cache_address_statistics/last_run';
 
         $newestQuery = Wallet::query()
-            ->select('wallets.address', DB::raw('MIN(transactions.timestamp) as timestamp'))
+            ->select(
+                'wallets.address',
+                DB::raw('MIN(transactions.timestamp) as timestamp'),
+                DB::raw('MAX(wallets.updated_at) as updated_at'),
+            )
             ->leftJoin('transactions', function ($join) {
                 $join->on('wallets.public_key', '=', 'transactions.sender_public_key')
                     ->orOn('wallets.address', '=', 'transactions.recipient_id');
@@ -77,30 +81,28 @@ final class CacheAddressStatistics extends Command
             ->limit(1);
 
         $lastRun = Cache::get($cacheKey, null);
-
         if ($lastRun !== null) {
-            // FIXME
-            // $newestQuery->where('wallets.updated_at', '>', $lastRun);
+            $newestQuery->where('wallets.updated_at', '>', $lastRun);
         }
 
         $newest = $newestQuery->first();
-
-        if ($newest !== null) {
-            $currentAddress = $cache->getNewestAddress();
-            // Only store if later wallet is actually newer than previously cached wallet
-            if ($currentAddress === null || $currentAddress['timestamp'] < $newest->timestamp) {
-                $cache->setNewestAddress([
-                    'address'   => $newest->address,
-                    'timestamp' => $newest->timestamp,
-                    'value'     => Carbon::createFromTimestamp((int) $newest->timestamp / 1000)->format(DateFormat::DATE),
-                ]);
-            }
+        if ($newest === null) {
+            return;
         }
 
-        // Cache last run timestamp for newest wallet query
-        Cache::rememberForever($cacheKey, function () {
-            return Carbon::now();
-        });
+        $currentAddress = $cache->getNewestAddress();
+        if ($currentAddress !== null && $currentAddress['timestamp'] > $newest->timestamp) {
+            return;
+        }
+
+        $cache->setNewestAddress([
+            'address'   => $newest->address,
+            'timestamp' => $newest->timestamp,
+            'value'     => Carbon::createFromTimestamp((int) $newest->timestamp / 1000)->format(DateFormat::DATE),
+        ]);
+
+        // Cache the updated_at value of the newest wallet
+        Cache::put($cacheKey, $newest->updated_at);
     }
 
     private function cacheMostTransactions(StatisticsCache $cache): void
