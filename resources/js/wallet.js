@@ -143,7 +143,7 @@ const Wallet = (network, xData = {}) => {
                 await this.address()
             );
 
-            if (! publicKey) {
+            if (!publicKey) {
                 this.cache.votingFor = null;
 
                 return;
@@ -153,7 +153,10 @@ const Wallet = (network, xData = {}) => {
                 return;
             }
 
-            this.cache.votingFor = await WalletsApi.wallet(network.api, publicKey);
+            this.cache.votingFor = await WalletsApi.wallet(
+                network.api,
+                publicKey
+            );
         },
 
         async copy() {
