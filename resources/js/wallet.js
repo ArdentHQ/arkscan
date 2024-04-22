@@ -186,6 +186,28 @@ const Wallet = (network, xData = {}) => {
             }
         },
 
+        async performSend(address, amount, memo) {
+            if (!this.hasExtension) {
+                return;
+            }
+
+            const transactionData = {
+                amount: parseFloat(amount),
+                receiverAddress: address,
+                memo: memo || null,
+            };
+
+            if (transactionData.amount === NaN) {
+                throw new Error(`There was a problem determining Transaction Amount "${amount}"`)
+            }
+
+            try {
+                await window.arkconnect.signTransaction(transactionData);
+            } catch (e) {
+                //
+            }
+        },
+
         async connect() {
             if (!this.hasExtension) {
                 return;
