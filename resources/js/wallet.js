@@ -20,6 +20,9 @@ Object.defineProperties(window, {
     },
 });
 
+const MAX_VOTE_CHECK_ATTEMPTS = 10;
+const VOTE_CHECK_TIMEOUT = 5000;
+
 const Wallet = (network, xData = {}) => {
     return Alpine.reactive({
         ...xData,
@@ -206,7 +209,7 @@ const Wallet = (network, xData = {}) => {
                     await this.updateVote();
 
                     if (
-                        loopCounter > 10 ||
+                        loopCounter > MAX_VOTE_CHECK_ATTEMPTS ||
                         this.votingForAddress !== votingForAddress
                     ) {
                         clearTimeout(updateVoteTimer);
@@ -214,7 +217,7 @@ const Wallet = (network, xData = {}) => {
                         return;
                     }
 
-                    updateVoteTimer = setTimeout(updateVoteLoop, 5000);
+                    updateVoteTimer = setTimeout(updateVoteLoop, VOTE_CHECK_TIMEOUT);
                 };
 
                 updateVoteLoop();
