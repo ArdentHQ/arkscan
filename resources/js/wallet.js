@@ -198,7 +198,9 @@ const Wallet = (network, xData = {}) => {
             };
 
             if (transactionData.amount === NaN) {
-                throw new Error(`There was a problem determining Transaction Amount "${amount}"`)
+                throw new Error(
+                    `There was a problem determining Transaction Amount "${amount}"`
+                );
             }
 
             try {
