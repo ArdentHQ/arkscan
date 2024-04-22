@@ -1,5 +1,17 @@
 <div
-    x-data="{ showOptions: false }"
+    x-data="{
+        showOptions: false,
+        preventAmountScroll: (e) => {
+            const hasFocus = document.activeElement === e.target;
+            e.target.blur();
+            e.stopPropagation();
+            if (hasFocus) {
+                setTimeout(() => {
+                    e.target.focus()
+                }, 0);
+            }
+        }
+    }"
     @class($class)
 >
     <x-general.dropdown.dropdown
@@ -62,6 +74,7 @@
                     input-class="qr-code-amount"
                     :errors="$errors"
                     :placeholder="trans('pages.wallet.qrcode.currency_amount', ['currency' => Network::currency()])"
+                    x-on:wheel="preventAmountScroll"
                     hide-label
                     autofocus
                 />
