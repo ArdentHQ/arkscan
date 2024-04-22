@@ -217,7 +217,10 @@ const Wallet = (network, xData = {}) => {
                         return;
                     }
 
-                    updateVoteTimer = setTimeout(updateVoteLoop, VOTE_CHECK_TIMEOUT);
+                    updateVoteTimer = setTimeout(
+                        updateVoteLoop,
+                        VOTE_CHECK_TIMEOUT
+                    );
                 };
 
                 updateVoteLoop();
