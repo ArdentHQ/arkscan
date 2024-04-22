@@ -209,6 +209,7 @@ return [
             'not_registered_text'   => 'This address is not a registered delegate',
             'vote'                  => 'Vote',
             'vote_for_delegate'     => 'Vote for Delegate',
+            'unvote_for_delegate'   => 'Unvote for Delegate',
             'resigned_vote_tooltip' => 'Cannot vote for resigned delegates.',
         ],
 
