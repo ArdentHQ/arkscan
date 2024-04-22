@@ -139,11 +139,11 @@ it('should cache newest address only since last run', function () {
     $this->freezeTime();
     $this->travelTo(Carbon::parse('2024-04-17 13:23:44'));
 
-    expect(Cache::get('commands:cache_address_statistics/last_run'))->toBeNull();
+    expect(Cache::get('commands:cache_address_statistics/last_updated_at_height'))->toBeNull();
 
     $this->artisan('explorer:cache-address-statistics');
 
-    expect(Cache::get('commands:cache_address_statistics/last_run'))->toEqual($wallet1->updated_at);
+    expect(Cache::get('commands:cache_address_statistics/last_updated_at_height'))->toEqual($wallet1->updated_at);
 
     expect($cache->getNewestAddress()['address'])->toBe($wallet1->address);
 
@@ -160,13 +160,13 @@ it('should cache newest address only since last run', function () {
 
     $this->artisan('explorer:cache-address-statistics');
 
-    expect(Cache::get('commands:cache_address_statistics/last_run'))->toEqual(153);
+    expect(Cache::get('commands:cache_address_statistics/last_updated_at_height'))->toEqual(153);
 
     expect($cache->getNewestAddress()['address'])->toBe($wallet2->address);
 
     $wallet3 = Wallet::factory()->create([
         'address'    => 'address3',
-        'updated_at' => 13, // prior to `last_run` value
+        'updated_at' => 13, // prior to `last_updated_at_height` value
     ]);
 
     Transaction::factory()->create([
