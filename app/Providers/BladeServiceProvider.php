@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\View\Components\TableSkeleton;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 final class BladeServiceProvider extends ServiceProvider
@@ -18,5 +19,6 @@ final class BladeServiceProvider extends ServiceProvider
     public function boot()
     {
         Blade::component('table-skeleton', TableSkeleton::class);
+        Vite::macro('image', fn (string $asset) => $this->asset("resources/images/{$asset}"));
     }
 }

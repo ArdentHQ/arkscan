@@ -4,12 +4,14 @@ import "@ui/js/tippy.js";
 import "@ui/js/page-scroll";
 import "@ui/js/reposition-dropdown";
 
+// Load images into the vite build
+import.meta.glob(['../images/**']);
+
 import "./includes/page-scroll-handler";
 
-import * as dayjs from "dayjs";
-import * as dayjsRelativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs/esm/index.js";
+import dayjsRelativeTime from "dayjs/esm/plugin/relativeTime/index.js";
 
-// @see https://laravel-mix.com/docs/6.0/upgrade#unused-library-extraction
 import Alpine from "alpinejs";
 import Wallet from "./wallet.js";
 import BlocksExport from "./blocks-export.js";

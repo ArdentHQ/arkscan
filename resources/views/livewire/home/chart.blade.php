@@ -79,5 +79,5 @@
 </div>
 
 @push('scripts')
-    <script src="{{ mix('js/chart-tooltip.js')}}"></script>
+    @vite('resources/js/chart-tooltip.js')
 @endpush
