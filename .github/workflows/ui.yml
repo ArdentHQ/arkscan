@@ -18,11 +18,15 @@ jobs:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
 
-            - name: Install
-              run: yarn install --frozen-lockfile
+            - uses: pnpm/action-setup@v2
+              with:
+                  version: 9
+
+            - name: Install pnpm dependencies
+              run: pnpm i --frozen-lockfile
 
             - name: Run prettier
-              run: yarn run prettier --write 'resources/**/*.{css,js,vue}'
+              run: pnpm run prettier --write 'resources/**/*.{css,js,vue}'
 
             - uses: stefanzweifel/git-auto-commit-action@v4
               with:
@@ -38,10 +42,14 @@ jobs:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
 
+            - uses: pnpm/action-setup@v2
+              with:
+                  version: 9
+
             - name: Format
               run: |
-                  export PATH="$(yarn global bin):$PATH"
-                  yarn global add rustywind
+                  export PATH="$(pnpm global bin):$PATH"
+                  pnpm global add rustywind
                   rustywind --write resources/views
 
             - uses: stefanzweifel/git-auto-commit-action@v4
@@ -100,11 +108,15 @@ jobs:
             - name: Install Composer dependencies
               run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
-            - name: Install
-              run: yarn install --frozen-lockfile
+            - uses: pnpm/action-setup@v2
+              with:
+                  version: 9
+
+            - name: Install pnpm dependencies
+              run: pnpm i --frozen-lockfile
 
             - name: Build
-              run: yarn prod
+              run: pnpm prod
 
             - uses: stefanzweifel/git-auto-commit-action@v4
               with:
