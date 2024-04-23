@@ -19,6 +19,6 @@ final class BladeServiceProvider extends ServiceProvider
     public function boot()
     {
         Blade::component('table-skeleton', TableSkeleton::class);
-        Vite::macro('image', fn (string $asset) => $this->asset("resources/images/{$asset}"));
+        Vite::macro('image', fn (string $asset) => Vite::asset("resources/images/{$asset}"));
     }
 }
