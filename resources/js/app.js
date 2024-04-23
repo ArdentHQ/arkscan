@@ -5,7 +5,7 @@ import "@ui/js/page-scroll";
 import "@ui/js/reposition-dropdown";
 
 // Load images into the vite build
-import.meta.glob(['../images/**']);
+import.meta.glob(["../images/**"]);
 
 import "./includes/page-scroll-handler";
 
