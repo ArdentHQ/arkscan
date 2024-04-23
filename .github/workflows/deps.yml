@@ -35,7 +35,7 @@ jobs:
               run: pnpm i --frozen-lockfile
 
             - name: Rebuild assets
-              run: pnpm prod
+              run: pnpm build
 
             - name: Create Pull Request
               id: cpr
@@ -79,7 +79,7 @@ jobs:
               run: pnpm i --frozen-lockfile
 
             - name: Rebuild assets
-              run: pnpm prod
+              run: pnpm build
 
             - name: Create Pull Request
               id: cpr
