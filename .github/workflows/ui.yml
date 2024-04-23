@@ -71,7 +71,7 @@ jobs:
               uses: ericcornelissen/svgo-action@v3
               id: svgo
               with:
-                  ignore: public/vendor/**/*.svg
+                  ignore: public/build/assets/*.svg
                   repo-token: ${{ secrets.GH_TOKEN }}
                   svgo-config: .svgo.js
 
