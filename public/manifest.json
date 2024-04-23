@@ -1,0 +1,28 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-CXajBog2.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-D4ewc7yv.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "css": [
+      "assets/app-LriLsbSV.css"
+    ]
+  },
+  "vendor/arkecosystem/foundation/resources/assets/fonts/FiraMono-Bold.otf": {
+    "file": "assets/FiraMono-Bold-B-B0yLLJ.otf",
+    "src": "vendor/arkecosystem/foundation/resources/assets/fonts/FiraMono-Bold.otf"
+  },
+  "vendor/arkecosystem/foundation/resources/assets/fonts/FiraMono-Regular.otf": {
+    "file": "assets/FiraMono-Regular-D1XHEM7M.otf",
+    "src": "vendor/arkecosystem/foundation/resources/assets/fonts/FiraMono-Regular.otf"
+  },
+  "vendor/arkecosystem/foundation/resources/assets/fonts/FiraMono-RegularItalic.otf": {
+    "file": "assets/FiraMono-RegularItalic-BR5c0tkW.otf",
+    "src": "vendor/arkecosystem/foundation/resources/assets/fonts/FiraMono-RegularItalic.otf"
+  }
+}
