@@ -1,4 +1,9 @@
-@props(['model'])
+@props([
+    'model',
+    'voteText' => trans('actions.vote'),
+    'unvoteText' => trans('actions.unvote'),
+    'buttonClass' => 'text-sm font-semibold hover:underline',
+])
 
 <div x-data="{
     voteDropdownOpen: false,
@@ -17,18 +22,21 @@
     >
         <x-slot
             name="button"
-            class="text-sm font-semibold hover:underline transition-default"
+            :class="Arr::toCssClasses([
+                'transition-default',
+                $buttonClass,
+            ])"
             ::class="{
-                'text-theme-primary-600 hover:text-theme-primary-700 dark:text-theme-dark-blue-400 dark:hover:text-theme-dark-blue-500': votingFor !== delegate,
+                'text-theme-primary-600 hover:text-theme-primary-700 dark:text-theme-dark-blue-400 dark:hover:text-theme-dark-blue-500 dim:text-theme-dim-blue-600 dim:hover:text-theme-dim-blue-700': votingFor !== delegate,
                 'text-theme-danger-400 hover:text-theme-danger-500': votingFor === delegate,
             }"
         >
             <div x-show="votingFor !== delegate">
-                @lang('actions.vote')
+                {{ $voteText }}
             </div>
 
             <div x-show="votingFor === delegate">
-                @lang('actions.unvote')
+                {{ $unvoteText }}
             </div>
         </x-slot>
 

@@ -59,6 +59,8 @@ module.exports = {
                 "theme-dark-950": "var(--theme-color-dark-950)",
 
                 // We don't have a dark-blue-950 so create a dim version to not confuse it
+                "theme-dim-blue-600": "var(--theme-color-dim-blue-600)",
+                "theme-dim-blue-700": "var(--theme-color-dim-blue-700)",
                 "theme-dim-blue-950": "var(--theme-color-dim-blue-950)",
 
                 black: "var(--theme-color-dark-950)",
