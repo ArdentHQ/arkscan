@@ -68,7 +68,9 @@ const Wallet = (network, xData = {}) => {
             this.hasExtension = window.arkconnect !== undefined;
 
             try {
-                await this.setConnectedStatus(await this.extension().isConnected());
+                await this.setConnectedStatus(
+                    await this.extension().isConnected()
+                );
             } catch (e) {
                 //
             }
@@ -78,7 +80,7 @@ const Wallet = (network, xData = {}) => {
             this.isConnected = isConnected;
 
             if (this.isConnected && this.network !== undefined) {
-                if (! await this.isOnSameNetwork()) {
+                if (!(await this.isOnSameNetwork())) {
                     this.isConnected = false;
                     this.votingFor = null;
 
@@ -94,7 +96,10 @@ const Wallet = (network, xData = {}) => {
         async isOnSameNetwork() {
             const extensionNetwork = await this.extension().getNetwork();
 
-            return extensionNetwork.toLowerCase() === this.network.alias.toLowerCase();
+            return (
+                extensionNetwork.toLowerCase() ===
+                this.network.alias.toLowerCase()
+            );
         },
 
         async handleConnectionEvent(data) {
@@ -175,10 +180,7 @@ const Wallet = (network, xData = {}) => {
                 return;
             }
 
-            this.votingFor = await WalletsApi.wallet(
-                network.api,
-                publicKey
-            );
+            this.votingFor = await WalletsApi.wallet(network.api, publicKey);
         },
 
         async copy() {
