@@ -62,7 +62,7 @@ final class CacheAddressStatistics extends Command
 
     private function cacheNewest(StatisticsCache $cache): void
     {
-        $cacheKey = 'commands:cache_address_statistics/last_run';
+        $cacheKey = 'commands:cache_address_statistics/last_updated_at_height';
 
         $newestQuery = Wallet::query()
             ->select(
