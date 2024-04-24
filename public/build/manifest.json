@@ -4,7 +4,7 @@
     "name": "utils"
   },
   "resources/css/app.css": {
-    "file": "assets/app-CKiSMmX7.css",
+    "file": "assets/app-B1RjRI_I.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -205,7 +205,7 @@
     "src": "resources/images/wallets/arrows.svg"
   },
   "resources/js/app.js": {
-    "file": "assets/app-rcZz5W4i.js",
+    "file": "assets/app-C8XKryZZ.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,

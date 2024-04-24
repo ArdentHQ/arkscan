@@ -34,7 +34,7 @@
                             without-label
                         />
 
-                        <div class="flex items-center sm:space-x-3 sm:divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
+                        <div class="flex items-center">
                             <x-tables.rows.mobile.encapsulated.delegates.status
                                 :model="$delegate"
                                 class="hidden sm:block"
@@ -43,7 +43,7 @@
 
                             <x-tables.rows.mobile.encapsulated.delegates.vote-link
                                 :model="$delegate"
-                                class="sm:pl-3"
+                                class="sm:pl-3 sm:ml-3 sm:border-l border-theme-secondary-300 dark:border-theme-dark-700"
                             />
                         </div>
                     </div>
