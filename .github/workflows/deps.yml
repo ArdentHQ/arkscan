@@ -27,11 +27,15 @@ jobs:
             - name: Install PHP dependencies
               run: composer update --no-ansi --no-interaction --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
-            - name: Install JS dependencies
-              run: yarn --ignore-engines
+            - uses: pnpm/action-setup@v2
+              with:
+                  version: 9
+
+            - name: Install pnpm dependencies
+              run: pnpm i --frozen-lockfile
 
             - name: Rebuild assets
-              run: yarn prod
+              run: pnpm prod
 
             - name: Create Pull Request
               id: cpr
@@ -67,11 +71,15 @@ jobs:
             - name: Update JS dependencies
               run: npx npm-check-updates --configFilePath ./vendor/arkecosystem/foundation/
 
-            - name: Install Updated JS dependencies
-              run: yarn --ignore-engines
+            - uses: pnpm/action-setup@v2
+              with:
+                  version: 9
+
+            - name: Install pnpm dependencies
+              run: pnpm i --frozen-lockfile
 
             - name: Rebuild assets
-              run: yarn prod
+              run: pnpm prod
 
             - name: Create Pull Request
               id: cpr

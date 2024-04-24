@@ -211,6 +211,7 @@ return [
             'not_registered_text'   => 'This address is not a registered delegate',
             'vote'                  => 'Vote',
             'vote_for_delegate'     => 'Vote for Delegate',
+            'unvote_delegate'       => 'Unvote Delegate',
             'resigned_vote_tooltip' => 'Cannot vote for resigned delegates.',
         ],
 
@@ -386,7 +387,11 @@ return [
         'next'               => 'Next',
         'now'                => 'Now',
         'monitor'            => 'Monitor',
-        'voting_for_tooltip' => 'You\'re voting for this delegate',
+        'arkconnect'         => [
+            'voting_for_tooltip'     => 'You\'re voting for this delegate',
+            'resigned_delegate'      => ', the delegate you are voting for, has resigned.',
+            'recommend_switch_votes' => 'We recommend switching your vote to an active delegate.',
+        ],
 
         'statistics' => [
             'delegate_registrations' => 'Delegate Registrations',

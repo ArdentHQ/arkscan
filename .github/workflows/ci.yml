@@ -118,8 +118,12 @@ jobs:
             - name: Install Composer dependencies
               run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
-            - name: Install Yarn dependencies
-              run: yarn --frozen-lockfile
+            - uses: pnpm/action-setup@v2
+              with:
+                  version: 9
+
+            - name: Install pnpm dependencies
+              run: pnpm i --frozen-lockfile
 
             - name: Prepare the database
               run: touch database/database.sqlite
