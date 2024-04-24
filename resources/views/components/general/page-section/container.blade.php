@@ -16,7 +16,7 @@
             <div class="hidden flex-1 w-full border-l-2 sm:block group-last:hidden border-theme-secondary-300 min-h-[12px] dark:border-theme-dark-700"></div>
         </div>
 
-        <div class="flex flex-col flex-1 space-y-3 font-semibold sm:pb-4 sm:space-y-2 min-w-0">
+        <div class="flex flex-col flex-1 space-y-3 min-w-0 font-semibold sm:pb-4 sm:space-y-2">
             <div class="py-2 px-3 border-l-2 sm:py-0 sm:px-0 sm:bg-transparent sm:border-0 bg-theme-secondary-100 border-theme-primary-400 dark:sm:bg-transparent dark:bg-theme-dark-950 dark:border-theme-dark-blue-400">
                 {{ $title }}
             </div>
