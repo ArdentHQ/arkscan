@@ -25,7 +25,7 @@
                             </span>
 
                             <span class="hidden md:inline">
-                                @lang('pages.wallet.delegate.unvote_for_delegate')
+                                @lang('pages.wallet.delegate.unvote_delegate')
                             </span>
                         </x-slot>
                     </x-delegates.vote-link>
