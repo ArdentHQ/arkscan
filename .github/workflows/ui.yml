@@ -71,7 +71,7 @@ jobs:
               uses: ericcornelissen/svgo-action@v3
               id: svgo
               with:
-                  ignore: public/vendor/**/*.svg
+                  ignore: public/build/assets/*.svg
                   repo-token: ${{ secrets.GH_TOKEN }}
                   svgo-config: .svgo.js
 
@@ -116,7 +116,7 @@ jobs:
               run: pnpm i --frozen-lockfile
 
             - name: Build
-              run: pnpm prod
+              run: pnpm build
 
             - uses: stefanzweifel/git-auto-commit-action@v4
               with:

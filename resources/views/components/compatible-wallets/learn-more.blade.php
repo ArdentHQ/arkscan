@@ -11,8 +11,8 @@
     $arrows = [
         'md-lg:bg-none md-lg:dark:bg-none',
 
-        "xl:dim:bg-[url('/images/wallets/arrows-dim.svg')] xl:dark:bg-[url('/images/wallets/arrows-dark.svg')] xl:bg-[url('/images/wallets/arrows.svg')]" => ! $home,
-        "xl:dim:bg-[url('/images/home/arrows-dim.svg')] xl:dark:bg-[url('/images/home/arrows-dark.svg')] xl:bg-[url('/images/home/arrows.svg')]" => $home,
+        "xl:dim:bg-[url('".Vite::image('wallets/arrows-dim.svg').")] xl:dark:bg-[url('".Vite::image('wallets/arrows-dark.svg').")] xl:bg-[url('".Vite::image('wallets/arrows.svg').")]" => ! $home,
+        "xl:dim:bg-[url('".Vite::image('home/arrows-dim.svg').")] xl:dark:bg-[url('".Vite::image('home/arrows-dark.svg').")] xl:bg-[url('".Vite::image('home/arrows.svg').")]" => $home,
     ];
 @endphp
 
