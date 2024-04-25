@@ -1,5 +1,5 @@
-import * as dayjs from "dayjs";
-import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
+import dayjs from "dayjs/esm/index.js";
+import dayjsQuarterOfYear from "dayjs/esm/plugin/quarterOfYear/index.js";
 
 dayjs.extend(dayjsQuarterOfYear);
 

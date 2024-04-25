@@ -1,7 +1,6 @@
 @props(['exchanges'])
 
 <x-tables.encapsulated-table
-    x-data="TableSorting('header-volume', 'desc')"
     class="hidden w-full rounded-b-xl md:block"
     sticky
 >

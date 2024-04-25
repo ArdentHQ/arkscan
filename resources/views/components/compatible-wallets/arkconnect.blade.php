@@ -9,7 +9,7 @@
 
 @php
     $arrows = [
-        "md-lg:dark:bg-[url('/images/wallets/arrows-success-dark.svg')] md-lg:bg-[url('/images/wallets/arrows-success.svg')]",
+        "md-lg:dark:bg-[url('".Vite::image('wallets/arrows-success-dark.svg')."')] md-lg:bg-[url('".Vite::image('wallets/arrows-success.svg')."')]",
     ];
 @endphp
 

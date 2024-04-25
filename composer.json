@@ -12,7 +12,7 @@
         "ext-gmp": "*",
         "ardenthq/arkvault-url": "^1.1",
         "arkecosystem/crypto": "^1.8",
-        "arkecosystem/foundation": "^14.0",
+        "arkecosystem/foundation": "^15.0",
         "blade-ui-kit/blade-icons": "^1.5",
         "brick/math": "^0.11",
         "danharrin/livewire-rate-limiting": "1.1.0",
@@ -35,6 +35,7 @@
         "barryvdh/laravel-debugbar": "^3.9",
         "furqansiddiqui/bip39-mnemonic-php": "^0.1",
         "laravel/dusk": "^8.0",
+        "phpdocumentor/reflection-docblock": "5.3.0",
         "spatie/laravel-ignition": "^2.4",
         "wnx/laravel-stats": "^2.12"
     },

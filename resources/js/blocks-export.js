@@ -1,5 +1,5 @@
-import * as dayjs from "dayjs";
-import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
+import dayjs from "dayjs/esm/index.js";
+import dayjsLocalizedFormat from "dayjs/esm/plugin/localizedFormat/index.js";
 
 import {
     FailedExportRequest,
