@@ -28,11 +28,10 @@ const Wallet = (network, xData = {}) => {
         ...xData,
         network,
 
+        address: null,
         isConnected: false,
         hasExtension: false,
-        cache: {
-            votingFor: null,
-        },
+        votingFor: null,
 
         async init() {
             if (window.arkconnect) {
@@ -46,6 +45,11 @@ const Wallet = (network, xData = {}) => {
         },
 
         async handleExtensionLoadEvent() {
+            this.extension().on(
+                "addressChanged",
+                this.handleAddressChangedEvent.bind(this)
+            );
+
             this.extension().on(
                 "connected",
                 this.handleConnectionEvent.bind(this)
@@ -64,22 +68,46 @@ const Wallet = (network, xData = {}) => {
             this.hasExtension = window.arkconnect !== undefined;
 
             try {
-                this.setConnectedStatus(await this.extension().isConnected());
+                await this.setConnectedStatus(
+                    await this.extension().isConnected()
+                );
             } catch (e) {
                 //
             }
         },
 
-        setConnectedStatus(isConnected) {
+        async setConnectedStatus(isConnected) {
             this.isConnected = isConnected;
 
             if (this.isConnected && this.network !== undefined) {
-                this.cacheData();
+                if (!(await this.isOnSameNetwork())) {
+                    this.isConnected = false;
+                    this.votingFor = null;
+
+                    return;
+                }
+
+                await this.storeData();
+            } else {
+                this.votingFor = null;
             }
         },
 
-        handleConnectionEvent(data) {
-            this.setConnectedStatus(data.type === "connected");
+        async isOnSameNetwork() {
+            const extensionNetwork = await this.extension().getNetwork();
+
+            return (
+                extensionNetwork.toLowerCase() ===
+                this.network.alias.toLowerCase()
+            );
+        },
+
+        async handleConnectionEvent(data) {
+            await this.setConnectedStatus(data.type === "connected");
+        },
+
+        async handleAddressChangedEvent() {
+            await this.setConnectedStatus(await this.extension().isConnected());
         },
 
         async handleLockToggledEvent(data) {
@@ -94,81 +122,73 @@ const Wallet = (network, xData = {}) => {
             return window.arkconnect;
         },
 
-        async truncateValue() {
-            return this.address();
-        },
-
-        async address() {
-            if (!this.isConnected) {
-                return null;
-            }
-
-            return await this.extension().getAddress();
+        // Used for TruncateDynamic
+        truncateValue() {
+            return this.address;
         },
 
         get votingForAddress() {
-            if (!this.cache.votingFor) {
+            if (!this.votingFor) {
                 return null;
             }
 
-            return this.cache.votingFor.address;
+            return this.votingFor.address;
         },
 
         get votedDelegateName() {
-            if (!this.cache.votingFor) {
+            if (!this.votingFor) {
                 return null;
             }
 
-            return this.cache.votingFor.attributes?.delegate?.username;
+            return this.votingFor.attributes?.delegate?.username;
         },
 
         get isVotedDelegateResigned() {
-            if (!this.cache.votingFor) {
+            if (!this.votingFor) {
                 return false;
             }
 
-            return this.cache.votingFor.attributes?.delegate?.resigned === true;
+            return this.votingFor.attributes?.delegate?.resigned === true;
         },
 
-        async cacheData() {
+        async storeData() {
+            await this.updateAddress();
+            await this.updateVote();
+        },
+
+        async updateAddress() {
             if (!this.isConnected) {
                 return null;
             }
 
-            if (!this.cache.votingFor) {
-                this.updateVote();
-            }
+            this.address = await this.extension().getAddress();
         },
 
         async updateVote() {
             const publicKey = await WalletsApi.getVote(
                 network.api,
-                await this.address()
+                await this.address
             );
 
             if (!publicKey) {
-                this.cache.votingFor = null;
+                this.votingFor = null;
 
                 return;
             }
 
-            if (publicKey === this.cache.votingFor?.publicKey) {
+            if (publicKey === this.votingFor?.publicKey) {
                 return;
             }
 
-            this.cache.votingFor = await WalletsApi.wallet(
-                network.api,
-                publicKey
-            );
+            this.votingFor = await WalletsApi.wallet(network.api, publicKey);
         },
 
         async copy() {
-            const address = await this.address();
-            if (!address) {
+            if (!this.address) {
                 return;
             }
 
-            window.clipboard(false).copy(address);
+            window.clipboard(false).copy(this.address);
         },
 
         async performVote(address) {
