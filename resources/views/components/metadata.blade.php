@@ -23,6 +23,6 @@
 
 @isset(trans('metatags.'.$page)['image'])
     @section('meta-image')
-        {{ mix(trans("metatags.{$page}.image", $detail)) }}
+        {{ Vite::image(trans("metatags.{$page}.image", $detail)) }}
     @endsection
 @endisset
