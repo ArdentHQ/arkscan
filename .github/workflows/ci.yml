@@ -125,6 +125,9 @@ jobs:
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
 
+            - name: Build public-facing assets
+              run: pnpm build
+
             - name: Prepare the database
               run: touch database/database.sqlite
 

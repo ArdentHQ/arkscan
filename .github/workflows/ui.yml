@@ -117,8 +117,3 @@ jobs:
 
             - name: Build
               run: pnpm build
-
-            - uses: stefanzweifel/git-auto-commit-action@v4
-              with:
-                  commit_message: "chore: rebuild assets"
-                  branch: ${{ github.head_ref }}
