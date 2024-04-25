@@ -1,71 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
-         colors="true"
-         printerClass="NunoMaduro\Collision\Adapters\Phpunit\Printer">
-    <testsuites>
-        <testsuite name="Analysis">
-            <directory suffix="Test.php">./tests/Analysis</directory>
-        </testsuite>
-        <testsuite name="Feature">
-            <directory suffix="Test.php">./tests/Feature</directory>
-        </testsuite>
-        <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./app</directory>
-            <exclude>
-                <!-- Framework Code -->
-                <directory suffix=".php">./app/Console/Playbooks</directory>
-                <directory suffix=".php">./app/Exceptions</directory>
-                <directory suffix=".php">./app/Http/Middleware</directory>
-                <directory suffix=".php">./app/Nova</directory>
-                <directory suffix=".php">./app/Providers</directory>
-                <directory suffix=".php">./app/View/Components</directory>
-                <file>./app/Console/Commands/RunPlaybookCommand.php</file>
-                <file>./app/Console/Commands/GenerateVoteReport.php</file>
-                <file>./app/Jobs/GenerateVoteReport.php</file>
-                <file>./app/Console/Kernel.php</file>
-                <file>./app/Http/Kernel.php</file>
-                <!-- Application Code -->
-                <directory suffix=".php">./app/Console/Commands/CacheDevelopmentData.php</directory>
-                <directory suffix=".php">./app/Console/Commands/CacheDevelopmentPricing.php</directory>
-                <directory suffix=".php">./app/Facades</directory>
-                <directory suffix=".php">./app/Models/Scopes</directory>
-            </exclude>
-        </whitelist>
-    </filter>
-    <php>
-        <!-- Framework -->
-        <server name="APP_ENV" value="testing"/>
-        <server name="BCRYPT_ROUNDS" value="4"/>
-        <server name="CACHE_DRIVER" value="array"/>
-        <server name="MAIL_MAILER" value="array"/>
-        <server name="QUEUE_CONNECTION" value="sync"/>
-        <server name="SESSION_DRIVER" value="array"/>
-        <server name="SCOUT_DRIVER" value="null"/>
-        <!-- Third-Party -->
-        <server name="MODEL_CACHE_ENABLED" value="false"/>
-        <server name="TELESCOPE_ENABLED" value="false"/>
-        <server name="RESPONSE_CACHE_ENABLED" value="false"/>
-        <server name="ZENDESK_SUBDOMAIN" value="subdomain"/>
-        <server name="ZENDESK_TOKEN" value="token"/>
-        <server name="ZENDESK_USERNAME" value="username"/>
-        <!-- App -->
-        <server name="ARKSCAN_NETWORK" value="development"/>
-        <server name="ARKSCAN_DB_HOST" value="127.0.0.1"/>
-        <server name="ARKSCAN_DB_PORT" value="5432"/>
-        <server name="ARKSCAN_DB_DATABASE" value="arkscan_test_db"/>
-        <server name="ARKSCAN_DB_USERNAME" value="arkscan_test_db"/>
-        <server name="ARKSCAN_DB_PASSWORD" value="password"/>
-        <server name="ARKSCAN_NETWORK_CAN_BE_EXCHANGED" value="true" />
-        <server name="PDO_ATTR_PERSISTENT" value="false"/>
-    </php>
-    <listeners>
-        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
-    </listeners>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" bootstrap="vendor/autoload.php" colors="true" cacheDirectory=".phpunit.cache">
+  <testsuites>
+    <testsuite name="Analysis">
+      <directory suffix="Test.php">./tests/Analysis</directory>
+    </testsuite>
+    <testsuite name="Feature">
+      <directory suffix="Test.php">./tests/Feature</directory>
+    </testsuite>
+    <testsuite name="Unit">
+      <directory suffix="Test.php">./tests/Unit</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <!-- Framework -->
+    <server name="APP_ENV" value="testing"/>
+    <server name="BCRYPT_ROUNDS" value="4"/>
+    <server name="CACHE_DRIVER" value="array"/>
+    <server name="MAIL_MAILER" value="array"/>
+    <server name="QUEUE_CONNECTION" value="sync"/>
+    <server name="SESSION_DRIVER" value="array"/>
+    <server name="SCOUT_DRIVER" value="null"/>
+    <!-- Third-Party -->
+    <server name="MODEL_CACHE_ENABLED" value="false"/>
+    <server name="TELESCOPE_ENABLED" value="false"/>
+    <server name="RESPONSE_CACHE_ENABLED" value="false"/>
+    <server name="ZENDESK_SUBDOMAIN" value="subdomain"/>
+    <server name="ZENDESK_TOKEN" value="token"/>
+    <server name="ZENDESK_USERNAME" value="username"/>
+    <!-- App -->
+    <server name="ARKSCAN_NETWORK" value="development"/>
+    <server name="ARKSCAN_DB_HOST" value="127.0.0.1"/>
+    <server name="ARKSCAN_DB_PORT" value="5432"/>
+    <server name="ARKSCAN_DB_DATABASE" value="arkscan_test_db"/>
+    <server name="ARKSCAN_DB_USERNAME" value="arkscan_test_db"/>
+    <server name="ARKSCAN_DB_PASSWORD" value="password"/>
+    <server name="ARKSCAN_NETWORK_CAN_BE_EXCHANGED" value="true"/>
+    <server name="PDO_ATTR_PERSISTENT" value="false"/>
+  </php>
+  <source>
+    <include>
+      <directory suffix=".php">./app</directory>
+    </include>
+    <exclude>
+      <directory suffix=".php">./app/Console/Playbooks</directory>
+      <directory suffix=".php">./app/Exceptions</directory>
+      <directory suffix=".php">./app/Http/Middleware</directory>
+      <directory suffix=".php">./app/Nova</directory>
+      <directory suffix=".php">./app/Providers</directory>
+      <directory suffix=".php">./app/View/Components</directory>
+      <file>./app/Console/Commands/RunPlaybookCommand.php</file>
+      <file>./app/Console/Commands/GenerateVoteReport.php</file>
+      <file>./app/Jobs/GenerateVoteReport.php</file>
+      <file>./app/Console/Kernel.php</file>
+      <file>./app/Http/Kernel.php</file>
+      <directory suffix=".php">./app/Console/Commands/CacheDevelopmentData.php</directory>
+      <directory suffix=".php">./app/Console/Commands/CacheDevelopmentPricing.php</directory>
+      <directory suffix=".php">./app/Facades</directory>
+      <directory suffix=".php">./app/Models/Scopes</directory>
+    </exclude>
+  </source>
 </phpunit>
