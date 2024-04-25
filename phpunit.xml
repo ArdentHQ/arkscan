@@ -53,8 +53,8 @@
       <file>./app/Jobs/GenerateVoteReport.php</file>
       <file>./app/Console/Kernel.php</file>
       <file>./app/Http/Kernel.php</file>
-      <directory suffix=".php">./app/Console/Commands/CacheDevelopmentData.php</directory>
-      <directory suffix=".php">./app/Console/Commands/CacheDevelopmentPricing.php</directory>
+      <file>./app/Console/Commands/CacheDevelopmentData.php</file>
+      <file>./app/Console/Commands/CacheDevelopmentPricing.php</file>
       <directory suffix=".php">./app/Facades</directory>
       <directory suffix=".php">./app/Models/Scopes</directory>
     </exclude>
