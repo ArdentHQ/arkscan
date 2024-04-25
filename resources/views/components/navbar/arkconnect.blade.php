@@ -62,7 +62,7 @@
             >
                 <x-slot name="button">
                     <div
-                        x-text="truncateMiddle(await address())"
+                        x-text="truncateMiddle(address)"
                         class="text-sm font-semibold md:leading-3.75"
                     ></div>
 
