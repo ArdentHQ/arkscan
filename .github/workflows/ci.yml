@@ -75,7 +75,7 @@ jobs:
             - name: Run php-cs-fixer
               run: composer format
 
-            - uses: stefanzweifel/git-auto-commit-action@v4
+            - uses: stefanzweifel/git-auto-commit-action@v5
               with:
                   commit_message: "style: resolve style guide violations"
                   branch: ${{ github.head_ref }}

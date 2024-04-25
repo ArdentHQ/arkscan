@@ -28,7 +28,7 @@ jobs:
             - name: Run prettier
               run: pnpm prettier --write 'resources/**/*.{css,js,vue}'
 
-            - uses: stefanzweifel/git-auto-commit-action@v4
+            - uses: stefanzweifel/git-auto-commit-action@v5
               with:
                   commit_message: "style: resolve style guide violations"
                   branch: ${{ github.head_ref }}
@@ -52,7 +52,7 @@ jobs:
                   pnpm add -g rustywind
                   rustywind --write resources/views
 
-            - uses: stefanzweifel/git-auto-commit-action@v4
+            - uses: stefanzweifel/git-auto-commit-action@v5
               with:
                   commit_message: "style: resolve style guide violations"
                   branch: ${{ github.head_ref }}
@@ -76,7 +76,7 @@ jobs:
                   svgo-config: .svgo.js
 
             - name: Commit optimizations
-              uses: stefanzweifel/git-auto-commit-action@v4
+              uses: stefanzweifel/git-auto-commit-action@v5
               if: ${{steps.svgo.outputs.DID_OPTIMIZE}}
               with:
                   commit_message: Optimize ${{steps.svgo.outputs.OPTIMIZED_COUNT}} SVG(s)
