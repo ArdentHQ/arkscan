@@ -49,17 +49,4 @@ abstract class TestCase extends BaseTestCase
 
         return $app;
     }
-
-    /**
-     * Refresh a conventional test database.
-     *
-     * @return void
-     */
-    protected function refreshTestDatabase()
-    {
-        Artisan::call('migrate:fresh', [
-            '--database' => 'explorer',
-            '--path'     => 'tests/migrations',
-        ]);
-    }
 }

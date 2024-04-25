@@ -13,7 +13,9 @@ use ARKEcosystem\Foundation\DataBags\DataBag;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -51,6 +53,8 @@ final class AppServiceProvider extends ServiceProvider
         $this->registerCollectionMacros();
 
         $this->registerDataBags();
+
+        $this->setupParallelTesting();
 
         Fortify::loginView(fn () => abort(404));
 
@@ -129,5 +133,15 @@ final class AppServiceProvider extends ServiceProvider
         }
 
         return $navigationEntries;
+    }
+
+    private function setupParallelTesting(): void
+    {
+        ParallelTesting::setUpTestDatabase(function ($database, $token) {
+            Artisan::call('migrate:fresh', [
+                '--database' => 'explorer',
+                '--path'     => 'tests/migrations',
+            ]);
+        });
     }
 }
