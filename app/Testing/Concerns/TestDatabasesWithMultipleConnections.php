@@ -7,14 +7,12 @@ namespace App\Testing\Concerns;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Testing\Concerns\TestDatabases;
 
-/* Ignore phpstan as this is heavily based on \Illuminate\Testing\Concerns\TestDatabases.
-/* @phpstan-ignore-next-line */
+/* Heavily based on \Illuminate\Testing\Concerns\TestDatabases. */
 trait TestDatabasesWithMultipleConnections
 {
     use TestDatabases;

@@ -98,7 +98,7 @@
             "@php artisan playbook:run DevelopmentPlaybook"
         ],
         "analyse": [
-            "vendor/bin/phpstan analyse --configuration=vendor/arkecosystem/foundation/phpstan.neon --memory-limit=2G"
+            "vendor/bin/phpstan analyse --configuration=phpstan.neon --memory-limit=2G"
         ],
         "format": [
             "vendor/bin/php-cs-fixer fix --config=vendor/arkecosystem/foundation/.php-cs-fixer.php"

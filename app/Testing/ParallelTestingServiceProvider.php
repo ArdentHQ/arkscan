@@ -9,6 +9,7 @@ use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Testing\ParallelTesting;
 
+/* Heavily based on \Illuminate\Testing\ParallelTestingServiceProvider. */
 final class ParallelTestingServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     use TestDatabasesWithMultipleConnections;
