@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Testing\Concerns;
 
 use Illuminate\Database\QueryException;
@@ -92,6 +94,7 @@ trait TestDatabasesWithMultipleConnections
      * Ensure a test database exists and returns its name.
      *
      * @param  string  $database
+     * @param null|mixed $connection
      * @return array
      */
     protected function ensureTestDatabaseExists($database, $connection = null)
@@ -133,6 +136,7 @@ trait TestDatabasesWithMultipleConnections
      *
      * @param  string  $database
      * @param  callable  $callable
+     * @param null|mixed $connection
      * @return void
      */
     protected function usingDatabase($database, $callable, $connection = null)
@@ -180,6 +184,7 @@ trait TestDatabasesWithMultipleConnections
      * Switch to the given database.
      *
      * @param  string  $database
+     * @param null|mixed $connection
      * @return void
      */
     protected function switchToDatabase($database, $connection = null)
@@ -212,6 +217,7 @@ trait TestDatabasesWithMultipleConnections
     /**
      * Returns the test database name.
      *
+     * @param mixed $database
      * @return string
      */
     protected function testDatabase($database)

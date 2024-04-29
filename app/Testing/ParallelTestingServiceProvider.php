@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Testing;
 
-use Illuminate\Contracts\Support\DeferrableProvider;
-use Illuminate\Testing\ParallelTesting;
-use Illuminate\Support\ServiceProvider;
 use App\Testing\Concerns\TestDatabasesWithMultipleConnections;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\ParallelTesting as ParallelTestingFacade;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Testing\ParallelTesting;
 
 class ParallelTestingServiceProvider extends ServiceProvider implements DeferrableProvider
 {
