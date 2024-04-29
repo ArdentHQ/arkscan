@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Testing\Concerns;
 
 use Illuminate\Database\QueryException;
-use Illuminate\Foundation\Testing;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\DatabaseTruncation;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\ParallelTesting;
@@ -47,10 +50,10 @@ trait TestDatabasesWithMultipleConnections
             $uses = array_flip(class_uses_recursive(get_class($testCase)));
 
             $databaseTraits = [
-                Testing\DatabaseMigrations::class,
-                Testing\DatabaseTransactions::class,
-                Testing\DatabaseTruncation::class,
-                Testing\RefreshDatabase::class,
+                DatabaseMigrations::class,
+                DatabaseTransactions::class,
+                DatabaseTruncation::class,
+                RefreshDatabase::class,
             ];
 
             if (Arr::hasAny($uses, $databaseTraits) && ! ParallelTesting::option('without_databases')) {
@@ -59,7 +62,7 @@ trait TestDatabasesWithMultipleConnections
 
                     $this->switchToDatabase($testDatabase, $connection);
 
-                    if (isset($uses[Testing\DatabaseTransactions::class]) && $connection === null) {
+                    if (isset($uses[DatabaseTransactions::class]) && $connection === null) {
                         $this->ensureSchemaIsUpToDate();
                     }
 
