@@ -3,24 +3,17 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Config;
+use Tests\Feature\Http\Livewire\__stubs\HasTablePaginationStub;
 use Tests\Feature\Http\Livewire\__stubs\TablePaginationComponentStub;
 
-/**
- * @coversNothing
- */
-class HasTablePaginationTest extends TablePaginationComponentStub
-{
-    public const PER_PAGE = 50;
-}
-
 it('should use PER_PAGE constant if exists', function () {
-    $instance = new HasTablePaginationTest();
+    $instance = new HasTablePaginationStub();
 
     expect($instance->perPage)->toBeNull();
 
     $instance->bootHasTablePagination();
 
-    expect($instance->perPage)->toBe(HasTablePaginationTest::PER_PAGE);
+    expect($instance->perPage)->toBe(HasTablePaginationStub::PER_PAGE);
 });
 
 it('should use config if constant does not exist', function () {
