@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Livewire\__stubs;
 
-use Tests\Feature\Http\Livewire\__stubs\TablePaginationComponentStub;
-
 /**
  * @coversNothing
  */
