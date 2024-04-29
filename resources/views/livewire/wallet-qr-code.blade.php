@@ -1,5 +1,17 @@
 <div
-    x-data="{ showOptions: false }"
+    x-data="{
+        showOptions: false,
+        preventAmountScroll: (e) => {
+            const hasFocus = document.activeElement === e.target;
+            e.target.blur();
+            e.stopPropagation();
+            if (hasFocus) {
+                setTimeout(() => {
+                    e.target.focus()
+                }, 0);
+            }
+        }
+    }"
     @class($class)
 >
     <x-general.dropdown.dropdown
@@ -62,6 +74,7 @@
                     input-class="qr-code-amount"
                     :errors="$errors"
                     :placeholder="trans('pages.wallet.qrcode.currency_amount', ['currency' => Network::currency()])"
+                    x-on:wheel="preventAmountScroll"
                     hide-label
                     autofocus
                 />
@@ -102,19 +115,61 @@
                     <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-700"></div>
 
                     <div class="font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
-                        @lang('general.or')
+                        @lang('pages.wallet.qrcode.or_send_with')
                     </div>
 
                     <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-700"></div>
                 </div>
 
-                <a
-                    href="{{ $this->walletUri }}"
-                    class="mt-2 w-full button-primary"
-                    target="_blank"
-                >
-                    @lang('pages.wallet.qrcode.send_from_wallet')
-                </a>
+                <div class="mt-2 w-full">
+                    @php ($arkconnectEnabled = config('arkscan.arkconnect.enabled'))
+
+                    @if ($arkconnectEnabled)
+                        <div
+                            x-show="showOptions"
+                            class="flex flex-col space-y-2 w-full"
+                        >
+                            <div
+                                @if (! $this->hasAmount)
+                                    data-tippy-content="@lang('pages.wallet.qrcode.arkconnect_specify_amount_tooltip')"
+                                @endif
+                            >
+                                <button
+                                    type="button"
+                                    class="w-full button-primary"
+                                    x-on:click="await performSend('{{ $this->address }}', '{{ $this->amount }}', '{{ $this->smartbridge }}')"
+                                    @if (! $this->hasAmount)
+                                        disabled
+                                    @endif
+                                >
+                                    @lang('brands.arkconnect')
+                                </button>
+                            </div>
+
+                            <x-ark-external-link
+                                :url="$this->walletUri"
+                                class="w-full button-secondary"
+                                icon-class="inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-primary-400 dim:text-theme-dim-blue-300 dark:text-theme-dark-500"
+                            >
+                                @lang('brands.arkvault')
+                            </x-ark-external-link>
+                        </div>
+                    @endif
+
+                    <div
+                        @if ($arkconnectEnabled)
+                            x-show="! showOptions"
+                        @endif
+                    >
+                        <x-ark-external-link
+                            :url="$this->walletUri"
+                            class="w-full button-primary"
+                            icon-class="inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-primary-400 dim:text-theme-dim-blue-300 dark:text-theme-dark-blue-300"
+                        >
+                            @lang('brands.arkvault')
+                        </x-ark-external-link>
+                    </div>
+                </div>
             </div>
         </div>
     </x-general.dropdown>

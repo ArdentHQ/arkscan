@@ -67,3 +67,19 @@ it('should validate amount', function () {
         ->set('amount', -1)
         ->assertHasErrors();
 });
+
+it('should determine if amount is set', function () {
+    $wallet = Wallet::factory()->create(['address' => 'AWkBFnqvCF4jhqPSdE2HBPJiwaf67tgfGR']);
+
+    Livewire::test(WalletQrCode::class, ['address' => $wallet->address])
+        ->set('amount', 1)
+        ->assertSet('hasAmount', true)
+        ->set('amount', 0)
+        ->assertSet('hasAmount', false)
+        ->set('amount', null)
+        ->assertSet('hasAmount', false)
+        ->set('amount', '')
+        ->assertSet('hasAmount', false)
+        ->set('amount', 0.00000001)
+        ->assertSet('hasAmount', true);
+});
