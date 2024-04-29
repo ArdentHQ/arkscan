@@ -11,17 +11,13 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Testing\Concerns\TestDatabases;
 
 /* Ignore phpstan as this is heavily based on \Illuminate\Testing\Concerns\TestDatabases.
 /* @phpstan-ignore-next-line */
 trait TestDatabasesWithMultipleConnections
 {
-    /**
-     * Indicates if the test database schema is up to date.
-     *
-     * @var bool
-     */
-    protected static $schemaIsUpToDate = false;
+    use TestDatabases;
 
     protected array $additionalConnections = [
         'explorer',
@@ -120,20 +116,6 @@ trait TestDatabasesWithMultipleConnections
     }
 
     /**
-     * Ensure the current database test schema is up to date.
-     *
-     * @return void
-     */
-    protected function ensureSchemaIsUpToDate()
-    {
-        if (! static::$schemaIsUpToDate) {
-            Artisan::call('migrate');
-
-            static::$schemaIsUpToDate = true;
-        }
-    }
-
-    /**
      * Runs the given callable using the given database.
      *
      * @param  string  $database
@@ -210,18 +192,5 @@ trait TestDatabasesWithMultipleConnections
                 $database,
             );
         }
-    }
-
-    /**
-     * Returns the test database name.
-     *
-     * @param mixed $database
-     * @return string
-     */
-    protected function testDatabase($database)
-    {
-        $token = ParallelTesting::token();
-
-        return "{$database}_test_{$token}";
     }
 }
