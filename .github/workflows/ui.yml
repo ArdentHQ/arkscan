@@ -13,12 +13,16 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
 
-            - uses: pnpm/action-setup@v2
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            - uses: pnpm/action-setup@v3
               with:
                   version: 9
 
@@ -28,7 +32,7 @@ jobs:
             - name: Run prettier
               run: pnpm prettier --write 'resources/**/*.{css,js,vue}'
 
-            - uses: stefanzweifel/git-auto-commit-action@v4
+            - uses: stefanzweifel/git-auto-commit-action@v5
               with:
                   commit_message: "style: resolve style guide violations"
                   branch: ${{ github.head_ref }}
@@ -37,12 +41,16 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
 
-            - uses: pnpm/action-setup@v2
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            - uses: pnpm/action-setup@v3
               with:
                   version: 9
 
@@ -52,7 +60,7 @@ jobs:
                   pnpm add -g rustywind
                   rustywind --write resources/views
 
-            - uses: stefanzweifel/git-auto-commit-action@v4
+            - uses: stefanzweifel/git-auto-commit-action@v5
               with:
                   commit_message: "style: resolve style guide violations"
                   branch: ${{ github.head_ref }}
@@ -62,7 +70,7 @@ jobs:
 
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -76,7 +84,7 @@ jobs:
                   svgo-config: .svgo.js
 
             - name: Commit optimizations
-              uses: stefanzweifel/git-auto-commit-action@v4
+              uses: stefanzweifel/git-auto-commit-action@v5
               if: ${{steps.svgo.outputs.DID_OPTIMIZE}}
               with:
                   commit_message: Optimize ${{steps.svgo.outputs.OPTIMIZED_COUNT}} SVG(s)
@@ -87,7 +95,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -95,12 +103,12 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.1"
+                  php-version: "8.2"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
                   coverage: pcov
 
             - name: Cache dependencies
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                   path: ~/.composer/cache/files
                   key: dependencies-composer-${{ hashFiles('composer.json') }}
@@ -108,7 +116,11 @@ jobs:
             - name: Install Composer dependencies
               run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
-            - uses: pnpm/action-setup@v2
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            - uses: pnpm/action-setup@v3
               with:
                   version: 9
 
