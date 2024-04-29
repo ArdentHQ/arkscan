@@ -9,6 +9,7 @@ use App\Services\MarketDataProviders\CryptoCompare;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
@@ -47,5 +48,18 @@ abstract class TestCase extends BaseTestCase
         );
 
         return $app;
+    }
+
+    /**
+     * Refresh a conventional test database.
+     *
+     * @return void
+     */
+    protected function refreshTestDatabase()
+    {
+        Artisan::call('migrate:fresh', [
+            '--database' => 'explorer',
+            '--path'     => 'tests/migrations',
+        ]);
     }
 }

@@ -25,6 +25,7 @@ final class AnalysisTest extends TestCase
     public function getIgnored(): array
     {
         return [
+            'App\Testing',
             'InvalidModel',
             'Laravel\Scout\Builder',
             'Spatie\Snapshots\assertMatchesSnapshot',
