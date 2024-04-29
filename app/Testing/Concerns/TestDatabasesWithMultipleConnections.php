@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Facades\Schema;
 
+/* Ignore phpstan as this is heavily based on \Illuminate\Testing\Concerns\TestDatabases.
+/* @phpstan-ignore-next-line */
 trait TestDatabasesWithMultipleConnections
 {
     /**
@@ -189,10 +191,6 @@ trait TestDatabasesWithMultipleConnections
      */
     protected function switchToDatabase($database, $connection = null)
     {
-        // if ($connection) {
-        //     DB::connection($connection)->purge();
-        // } else {
-        // }
         DB::purge($connection);
 
         if ($connection === null) {
