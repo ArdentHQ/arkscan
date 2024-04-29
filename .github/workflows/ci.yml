@@ -142,7 +142,7 @@ jobs:
               run: php artisan config:clear && php artisan route:clear
 
             - name: Run Tests
-              run: composer test:fast:coverage
+              run: composer test:coverage
               env:
                   DB_CONNECTION: pgsql
                   DB_HOST: 127.0.0.1

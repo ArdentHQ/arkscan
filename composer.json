@@ -113,9 +113,6 @@
             "./vendor/bin/pest --parallel"
         ],
         "test:coverage": [
-            "./vendor/bin/pest --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml"
-        ],
-        "test:fast:coverage": [
             "./vendor/bin/pest --parallel --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml"
         ]
     }
