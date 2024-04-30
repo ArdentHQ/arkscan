@@ -1,6 +1,6 @@
 <div
     x-show="showWrongNetworkMessage"
-    class="fixed flex w-full bottom-6 justify-center z-20 px-2 sm:px-15 md:px-9 md-lg:px-[130px] lg:px-14 xl:px-0"
+    class="flex fixed bottom-6 z-20 justify-center px-2 w-full md:px-9 lg:px-14 xl:px-0 sm:px-15 md-lg:px-[130px]"
     x-cloak
 >
     <x-ark-toast
