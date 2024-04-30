@@ -127,9 +127,10 @@
                     @if ($arkconnectEnabled)
                         <div
                             x-show="showOptions"
-                            class="flex flex-col space-y-2 w-full"
+                            class="flex flex-col w-full"
                         >
                             <div
+                                x-show="isOnSameNetwork"
                                 @if (! $this->hasAmount)
                                     data-tippy-content="@lang('pages.wallet.qrcode.arkconnect_specify_amount_tooltip')"
                                 @endif
@@ -146,9 +147,22 @@
                                 </button>
                             </div>
 
+                            <div
+                                x-show="!isOnSameNetwork"
+                                data-tippy-content="@lang('general.arkconnect.wrong_network')"
+                            >
+                                <button
+                                    type="button"
+                                    class="w-full button-primary"
+                                    disabled
+                                >
+                                    @lang('brands.arkconnect')
+                                </button>
+                            </div>
+
                             <x-ark-external-link
                                 :url="$this->walletUri"
-                                class="w-full button-secondary"
+                                class="w-full button-secondary mt-2"
                                 icon-class="inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-primary-400 dim:text-theme-dim-blue-300 dark:text-theme-dark-500"
                             >
                                 @lang('brands.arkvault')
