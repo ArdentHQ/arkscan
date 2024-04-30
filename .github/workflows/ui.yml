@@ -75,6 +75,14 @@ jobs:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
 
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            - uses: pnpm/action-setup@v3
+              with:
+                  version: 9
+
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
 
@@ -82,7 +90,7 @@ jobs:
               id: svgo
               run: |
                   export PATH="$(pnpm global bin):$PATH"
-                  pnpm add -g svgo
+                  pnpm add -g svgo@2.8.0
                   pnpm svgo --config .svgo.js
 
             - name: Commit optimizations
