@@ -162,7 +162,7 @@
 
                             <x-ark-external-link
                                 :url="$this->walletUri"
-                                class="w-full button-secondary mt-2"
+                                class="mt-2 w-full button-secondary"
                                 icon-class="inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-primary-400 dim:text-theme-dim-blue-300 dark:text-theme-dark-500"
                             >
                                 @lang('brands.arkvault')
