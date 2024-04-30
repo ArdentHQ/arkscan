@@ -98,7 +98,7 @@
             "@php artisan playbook:run DevelopmentPlaybook"
         ],
         "analyse": [
-            "vendor/bin/phpstan analyse --configuration=vendor/arkecosystem/foundation/phpstan.neon --memory-limit=2G"
+            "vendor/bin/phpstan analyse --configuration=phpstan.neon --memory-limit=2G"
         ],
         "format": [
             "vendor/bin/php-cs-fixer fix --config=vendor/arkecosystem/foundation/.php-cs-fixer.php"
@@ -113,7 +113,7 @@
             "./vendor/bin/pest --parallel"
         ],
         "test:coverage": [
-            "./vendor/bin/pest --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml"
+            "./vendor/bin/pest --parallel --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml"
         ]
     }
 }

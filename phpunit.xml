@@ -57,6 +57,7 @@
       <file>./app/Console/Commands/CacheDevelopmentPricing.php</file>
       <directory suffix=".php">./app/Facades</directory>
       <directory suffix=".php">./app/Models/Scopes</directory>
+      <directory suffix=".php">./app/Testing</directory>
     </exclude>
   </source>
 </phpunit>
