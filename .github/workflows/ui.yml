@@ -91,7 +91,7 @@ jobs:
               run: |
                   export PATH="$(pnpm global bin):$PATH"
                   pnpm add -g svgo@2.8.0
-                  pnpm svgo --config .svgo.js
+                  pnpm svgo --config .svgo.js ./resources
 
             - name: Commit optimizations
               uses: stefanzweifel/git-auto-commit-action@v5
