@@ -79,7 +79,9 @@ const Wallet = (network, xData = {}) => {
         },
 
         getIgnoredWrongNetworkAddresses() {
-            let ignoredAddresses = localStorage.getItem('ignoredNetworkMessageAddresses');
+            let ignoredAddresses = localStorage.getItem(
+                "ignoredNetworkMessageAddresses"
+            );
             if (ignoredAddresses) {
                 return JSON.parse(ignoredAddresses);
             }
@@ -99,7 +101,10 @@ const Wallet = (network, xData = {}) => {
 
             ignoredAddresses.push(address);
 
-            localStorage.setItem('ignoredNetworkMessageAddresses', JSON.stringify(ignoredAddresses));
+            localStorage.setItem(
+                "ignoredNetworkMessageAddresses",
+                JSON.stringify(ignoredAddresses)
+            );
 
             this.isWrongNetworkMessageIgnored = true;
         },
@@ -185,7 +190,7 @@ const Wallet = (network, xData = {}) => {
             await this.updateAddress();
             await this.updateCurrentNetwork();
 
-            if (! this.isOnSameNetwork) {
+            if (!this.isOnSameNetwork) {
                 this.votingFor = null;
 
                 return;
@@ -197,8 +202,11 @@ const Wallet = (network, xData = {}) => {
         async updateCurrentNetwork() {
             const extensionNetwork = await this.extension().getNetwork();
 
-            this.isOnSameNetwork = extensionNetwork.toLowerCase() === this.network.alias.toLowerCase();
-            this.isWrongNetworkMessageIgnored = this.getIgnoredWrongNetworkAddresses().includes(this.address);
+            this.isOnSameNetwork =
+                extensionNetwork.toLowerCase() ===
+                this.network.alias.toLowerCase();
+            this.isWrongNetworkMessageIgnored =
+                this.getIgnoredWrongNetworkAddresses().includes(this.address);
         },
 
         async updateAddress() {
