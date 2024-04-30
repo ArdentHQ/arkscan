@@ -75,13 +75,15 @@ jobs:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
 
+            - name: Install pnpm dependencies
+              run: pnpm i --frozen-lockfile
+
             - name: Optimize SVGs
-              uses: ericcornelissen/svgo-action@v3
               id: svgo
-              with:
-                  ignore: public/build/assets/*.svg
-                  repo-token: ${{ secrets.GH_TOKEN }}
-                  svgo-config: .svgo.js
+              run: |
+                  export PATH="$(pnpm global bin):$PATH"
+                  pnpm add -g svgo
+                  pnpm svgo --config .svgo.js
 
             - name: Commit optimizations
               uses: stefanzweifel/git-auto-commit-action@v5
