@@ -19,7 +19,7 @@
 
     <div class="hidden flex-col space-y-2 md:flex">
         <div class="flex items-center space-x-2">
-            <x-general.encapsulated.transaction-direction-badge width="w-[92px]">
+            <x-general.encapsulated.transaction-direction-badge width="min-w-[92px]">
                 <x-general.encapsulated.transaction-type :transaction="$transaction" />
             </x-general.encapsulated.transaction-direction-badge>
 
