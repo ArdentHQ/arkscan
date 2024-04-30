@@ -46,6 +46,11 @@ return [
     'now'                 => 'Now',
     'vote_with'           => 'Vote With',
 
+    'arkconnect' => [
+        'mainnet_network' => 'You\'re viewing data from the main network, but your wallet is connected to test network (ARK Testnet). To use ARKScan, please switch to <span class="font-semibold">test.arkscan.io</span>.',
+        'testnet_network' => 'You\'re viewing data from the test network, but your wallet is connected to main network (ARK Mainnet). To use ARKScan, please switch to <span class="font-semibold">live.arkscan.io</span>.',
+    ],
+
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
         'mainnet'            => 'Mainnet',

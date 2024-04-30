@@ -32,6 +32,8 @@ const Wallet = (network, xData = {}) => {
         isConnected: false,
         hasExtension: false,
         votingFor: null,
+        isOnSameNetwork: null,
+        isWrongNetworkMessageIgnored: null,
 
         async init() {
             if (window.arkconnect) {
@@ -76,30 +78,54 @@ const Wallet = (network, xData = {}) => {
             }
         },
 
+        getIgnoredWrongNetworkAddresses() {
+            let ignoredAddresses = localStorage.getItem('ignoredNetworkMessageAddresses');
+            if (ignoredAddresses) {
+                return JSON.parse(ignoredAddresses);
+            }
+
+            return [];
+        },
+
+        ignoreWrongNetworkAddress(address) {
+            if (this.isWrongNetworkMessageIgnored) {
+                return;
+            }
+
+            const ignoredAddresses = this.getIgnoredWrongNetworkAddresses();
+            if (ignoredAddresses.includes(address)) {
+                return;
+            }
+
+            ignoredAddresses.push(address);
+
+            localStorage.setItem('ignoredNetworkMessageAddresses', JSON.stringify(ignoredAddresses));
+
+            this.isWrongNetworkMessageIgnored = true;
+        },
+
+        get showWrongNetworkMessage() {
+            if (!this.isConnected) {
+                return false;
+            }
+
+            if (this.isOnSameNetwork) {
+                return false;
+            }
+
+            return this.isWrongNetworkMessageIgnored === false;
+        },
+
         async setConnectedStatus(isConnected) {
             this.isConnected = isConnected;
+            this.isOnSameNetwork = null;
+            this.isWrongNetworkMessageIgnored = null;
 
             if (this.isConnected && this.network !== undefined) {
-                if (!(await this.isOnSameNetwork())) {
-                    this.isConnected = false;
-                    this.votingFor = null;
-
-                    return;
-                }
-
                 await this.storeData();
             } else {
                 this.votingFor = null;
             }
-        },
-
-        async isOnSameNetwork() {
-            const extensionNetwork = await this.extension().getNetwork();
-
-            return (
-                extensionNetwork.toLowerCase() ===
-                this.network.alias.toLowerCase()
-            );
         },
 
         async handleConnectionEvent(data) {
@@ -152,15 +178,30 @@ const Wallet = (network, xData = {}) => {
         },
 
         async storeData() {
-            await this.updateAddress();
-            await this.updateVote();
-        },
-
-        async updateAddress() {
             if (!this.isConnected) {
                 return null;
             }
 
+            await this.updateAddress();
+            await this.updateCurrentNetwork();
+
+            if (! this.isOnSameNetwork) {
+                this.votingFor = null;
+
+                return;
+            }
+
+            await this.updateVote();
+        },
+
+        async updateCurrentNetwork() {
+            const extensionNetwork = await this.extension().getNetwork();
+
+            this.isOnSameNetwork = extensionNetwork.toLowerCase() === this.network.alias.toLowerCase();
+            this.isWrongNetworkMessageIgnored = this.getIgnoredWrongNetworkAddresses().includes(this.address);
+        },
+
+        async updateAddress() {
             this.address = await this.extension().getAddress();
         },
 
