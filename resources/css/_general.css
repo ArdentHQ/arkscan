@@ -372,36 +372,36 @@ input.qr-code-amount[type="number"] {
 /* Learn More */
 @screen md-lg {
     .arkconnect-arrows {
-        background-image: url('/resources/images/wallets/arrows-success.svg') !important;
+        background-image: url("/resources/images/wallets/arrows-success.svg") !important;
     }
 
     .dark .arkconnect-arrows {
-        background-image: url('/resources/images/wallets/arrows-success-dark.svg') !important;
+        background-image: url("/resources/images/wallets/arrows-success-dark.svg") !important;
     }
 }
 
 @screen xl {
     .arkvault-arrows {
-        background-image: url('/resources/images/wallets/arrows.svg') !important;
+        background-image: url("/resources/images/wallets/arrows.svg") !important;
     }
 
     .arkvault-arrows-home {
-        background-image: url('/resources/images/home/arrows.svg') !important;
+        background-image: url("/resources/images/home/arrows.svg") !important;
     }
 
     .dark .arkvault-arrows {
-        background-image: url('/resources/images/wallets/arrows-dark.svg') !important;
+        background-image: url("/resources/images/wallets/arrows-dark.svg") !important;
     }
 
     .dark .arkvault-arrows-home {
-        background-image: url('/resources/images/home/arrows-dark.svg') !important;
+        background-image: url("/resources/images/home/arrows-dark.svg") !important;
     }
 
     .dim .arkvault-arrows {
-        background-image: url('/resources/images/wallets/arrows-dim.svg') !important;
+        background-image: url("/resources/images/wallets/arrows-dim.svg") !important;
     }
 
     .dim .arkvault-arrows-home {
-        background-image: url('/resources/images/home/arrows-dim.svg') !important;
+        background-image: url("/resources/images/home/arrows-dim.svg") !important;
     }
 }
