@@ -77,7 +77,22 @@
                         :text="trans('brands.arkvault')"
                     />
 
+                    <div
+                        x-show="!isOnSameNetwork"
+                        data-tippy-content="@lang('general.arkconnect.wrong_network.'.Network::alias())"
+                    >
+                        <button
+                            type="button"
+                            class="flex items-center py-3 space-x-2 font-semibold leading-5 text-theme-secondary-500 dark:text-theme-dark-500"
+                            disabled
+                            x-on:click="performVote('{{ $model->address() }}')"
+                        >
+                            @lang('brands.arkconnect')
+                        </button>
+                    </div>
+
                     <button
+                        x-show="isOnSameNetwork"
                         type="button"
                         class="flex items-center py-3 space-x-2 font-semibold leading-5 link"
                         @click="performVote('{{ $model->address() }}')"

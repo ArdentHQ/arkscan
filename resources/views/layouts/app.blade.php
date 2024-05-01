@@ -36,6 +36,10 @@
             </x-ark-footer>
 
             <livewire:search-modal />
+
+            @if (config('arkscan.arkconnect.enabled'))
+                <x-arkconnect.delegate-toasts />
+            @endif
         </x-slot>
     </x-ark-pages-includes-layout-body>
 </html>

@@ -46,6 +46,16 @@ return [
     'now'                 => 'Now',
     'vote_with'           => 'Vote With',
 
+    'arkconnect' => [
+        'mainnet_network' => 'You\'re viewing data from the main network, but your wallet is connected to test network (ARK Testnet). To use ARKScan, please switch to <a class="link font-semibold" href="https://test.arkscan.io/">test.arkscan.io</a>.',
+        'testnet_network' => 'You\'re viewing data from the test network, but your wallet is connected to main network (ARK Mainnet). To use ARKScan, please switch to <a class="link font-semibold" href="https://live.arkscan.io/">live.arkscan.io</a>.',
+
+        'wrong_network' => [
+            'mainnet' => 'Wrong network, please switch to [Testnet] to enable this action.',
+            'devnet'  => 'Wrong network, please switch to [Mainnet] to enable this action.',
+        ],
+    ],
+
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',
         'mainnet'            => 'Mainnet',
