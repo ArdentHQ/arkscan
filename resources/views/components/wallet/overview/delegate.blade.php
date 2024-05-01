@@ -11,7 +11,7 @@
                     >
                         <x-slot name="voteText">
                             <span class="md:hidden">
-                                @lang('pages.wallet.delegate.vote')
+                                @lang('actions.vote')
                             </span>
 
                             <span class="hidden md:inline">
@@ -21,7 +21,7 @@
 
                         <x-slot name="unvoteText">
                             <span class="md:hidden">
-                                @lang('pages.wallet.delegate.unvote')
+                                @lang('actions.unvote')
                             </span>
 
                             <span class="hidden md:inline">
