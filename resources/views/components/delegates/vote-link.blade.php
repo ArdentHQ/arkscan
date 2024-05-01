@@ -79,7 +79,7 @@
 
                     <div
                         x-show="!isOnSameNetwork"
-                        data-tippy-content="@lang('general.arkconnect.wrong_network')"
+                        data-tippy-content="@lang('general.arkconnect.wrong_network.'.Network::alias())"
                     >
                         <button
                             type="button"
