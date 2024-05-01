@@ -75,19 +75,31 @@ jobs:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
 
-            - name: Optimize SVGs
-              uses: ericcornelissen/svgo-action@v3
-              id: svgo
+            - uses: actions/setup-node@v4
               with:
-                  ignore: public/build/assets/*.svg
-                  repo-token: ${{ secrets.GH_TOKEN }}
-                  svgo-config: .svgo.js
+                  node-version: 20
+
+            - uses: pnpm/action-setup@v3
+              with:
+                  version: 9
+
+            - name: Install pnpm dependencies
+              run: pnpm i --frozen-lockfile
+
+              # We are using 2.8.0 svgo as that seems to be the most compatible with out SVGs.
+              # Anything higher and some SVGs get re-formatted incorrectly.
+              # Task to update to latest svgo version: https://app.clickup.com/t/86dtdax3n
+            - name: Optimize SVGs
+              id: svgo
+              run: |
+                  export PATH="$(pnpm global bin):$PATH"
+                  pnpm add -g svgo@2.8.0
+                  pnpm svgo --config .svgo.js ./resources/**/*.svg
 
             - name: Commit optimizations
               uses: stefanzweifel/git-auto-commit-action@v5
-              if: ${{steps.svgo.outputs.DID_OPTIMIZE}}
               with:
-                  commit_message: Optimize ${{steps.svgo.outputs.OPTIMIZED_COUNT}} SVG(s)
+                  commit_message: Optimize SVG(s)
 
     build:
         needs: [prettier, rustywind, svg]
