@@ -166,7 +166,9 @@ const Wallet = (network, xData = {}) => {
             this.isOnSameNetwork =
                 extensionNetwork.toLowerCase() ===
                 this.network.alias.toLowerCase();
-            this.isWrongNetworkMessageIgnored = this.getIgnoredToastAddresses('network').includes(this.address);
+            this.isWrongNetworkMessageIgnored = this.getIgnoredToastAddresses(
+                "network"
+            ).includes(this.address);
         },
 
         async updateAddress() {
@@ -194,10 +196,18 @@ const Wallet = (network, xData = {}) => {
             }
 
             this.votingFor = await WalletsApi.wallet(network.api, publicKey);
-            this.isVotedDelegateOnStandby = this.votingFor.attributes?.delegate?.rank > this.network.delegateCount;
-            this.isVotedDelegateResigned = this.votingFor.attributes?.delegate?.resigned === true;
-            this.isVotedDelegateResignedIgnored = this.getIgnoredToastAddresses('resigned').includes(this.votingFor.address);
-            this.isVotedDelegateOnStandbyIgnored = this.getIgnoredToastAddresses('standby').includes(this.votingFor.address);
+            this.isVotedDelegateOnStandby =
+                this.votingFor.attributes?.delegate?.rank >
+                this.network.delegateCount;
+            this.isVotedDelegateResigned =
+                this.votingFor.attributes?.delegate?.resigned === true;
+            this.isVotedDelegateResignedIgnored = this.getIgnoredToastAddresses(
+                "resigned"
+            ).includes(this.votingFor.address);
+            this.isVotedDelegateOnStandbyIgnored =
+                this.getIgnoredToastAddresses("standby").includes(
+                    this.votingFor.address
+                );
         },
 
         getIgnoredToastAddresses(type) {
@@ -230,19 +240,19 @@ const Wallet = (network, xData = {}) => {
         },
 
         ignoreWrongNetworkAddress(address) {
-            this.ignoreToastAddress(address, 'network');
+            this.ignoreToastAddress(address, "network");
 
             this.isWrongNetworkMessageIgnored = true;
         },
 
         ignoreResignedAddress() {
-            this.ignoreToastAddress(this.votingFor.address, 'resigned');
+            this.ignoreToastAddress(this.votingFor.address, "resigned");
 
             this.isVotedDelegateResignedIgnored = true;
         },
 
         ignoreStandbyAddress() {
-            this.ignoreToastAddress(this.votingFor.address, 'standby');
+            this.ignoreToastAddress(this.votingFor.address, "standby");
 
             this.isVotedDelegateOnStandbyIgnored = true;
         },
