@@ -9,7 +9,7 @@
 <div
     {{ $attributes }}
     x-data="{ preventPopup: false }"
-    class="flex fixed bottom-2 left-2 right-2 sm:bottom-4 sm:left-auto sm:right-6 z-20 sm:max-w-[410px] arkconnect-toast"
+    class="flex fixed right-2 bottom-2 left-2 z-20 sm:bottom-4 sm:right-6 sm:left-auto arkconnect-toast sm:max-w-[410px]"
     x-cloak
 >
     <x-ark-toast
@@ -24,7 +24,7 @@
         {!! $text !!}
 
         <a
-            class="link font-semibold mt-2"
+            class="mt-2 font-semibold link"
             href="{{ route('delegates') }}"
         >
             {!! $linkText !!}
