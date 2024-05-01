@@ -52,7 +52,7 @@ return [
 
         'wrong_network' => [
             'mainnet' => 'Wrong network, please switch to [Testnet] to enable this action.',
-            'devnet' => 'Wrong network, please switch to [Mainnet] to enable this action.',
+            'devnet'  => 'Wrong network, please switch to [Mainnet] to enable this action.',
         ],
     ],
 
