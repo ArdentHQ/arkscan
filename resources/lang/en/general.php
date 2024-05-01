@@ -49,7 +49,7 @@ return [
     'arkconnect' => [
         'mainnet_network' => 'You\'re viewing data from the main network, but your wallet is connected to test network (ARK Testnet). To use ARKScan, please switch to <span class="font-semibold">test.arkscan.io</span>.',
         'testnet_network' => 'You\'re viewing data from the test network, but your wallet is connected to main network (ARK Mainnet). To use ARKScan, please switch to <span class="font-semibold">live.arkscan.io</span>.',
-        'wrong_network'   => 'You can\'t do this as you\'re currently on the wrong network.',
+        'wrong_network'   => 'You\'re unable to do this because you\'re connected to the wrong network.',
     ],
 
     'navbar' => [
