@@ -50,6 +50,10 @@ return [
         'mainnet_network' => 'You\'re viewing data from the main network, but your wallet is connected to test network (ARK Testnet). To use ARKScan, please switch to <span class="font-semibold">test.arkscan.io</span>.',
         'testnet_network' => 'You\'re viewing data from the test network, but your wallet is connected to main network (ARK Mainnet). To use ARKScan, please switch to <span class="font-semibold">live.arkscan.io</span>.',
         'wrong_network'   => 'You can\'t do this as you\'re currently on the wrong network.',
+        'delegate_resigned' => '<span class="font-semibold" x-text="votedDelegateName"></span>, the delegate you are voting for, has resigned.',
+        'delegate_standby' => 'The delegate you are voting for <span class="font-semibold">(<span x-text="votedDelegateName"></span>)</span> is not in an active forging position at the moment.',
+        'switch_vote_to_active_delegate' => 'We recommend switching your vote to an active delegate.',
+        'view_delegates' => 'View Delegates.',
     ],
 
     'navbar' => [

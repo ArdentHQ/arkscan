@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 return [
 
+    'general' => [
+        'do_not_remind' => 'Do not remind me again.',
+    ],
+
     'search'     => [
         'block'                   => 'Block',
         'transaction'             => 'Transaction',
