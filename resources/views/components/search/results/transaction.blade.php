@@ -19,7 +19,7 @@
 
     <div class="hidden flex-col space-y-2 md:flex">
         <div class="flex items-center space-x-2">
-            <x-general.encapsulated.transaction-direction-badge width="w-[92px]">
+            <x-general.encapsulated.transaction-direction-badge width="min-w-[92px]">
                 <x-general.encapsulated.transaction-type :transaction="$transaction" />
             </x-general.encapsulated.transaction-direction-badge>
 
@@ -87,7 +87,7 @@
                 </div>
 
                 <div class="text-theme-secondary-900 dark:text-theme-dark-50">
-                    {{ ExplorerNumberFormatter::number($transaction->amountWithFee()) }}
+                    {{ ExplorerNumberFormatter::currency($transaction->amountWithFee(), Network::currency()) }}
                 </div>
             </div>
         </div>
