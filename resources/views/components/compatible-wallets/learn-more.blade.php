@@ -7,15 +7,6 @@
     'home' => false,
 ])
 
-@php
-    $arrows = [
-        'md-lg:bg-none md-lg:dark:bg-none',
-
-        "xl:dim:bg-[url('".Vite::image('wallets/arrows-dim.svg').")] xl:dark:bg-[url('".Vite::image('wallets/arrows-dark.svg').")] xl:bg-[url('".Vite::image('wallets/arrows.svg').")]" => ! $home,
-        "xl:dim:bg-[url('".Vite::image('home/arrows-dim.svg').")] xl:dark:bg-[url('".Vite::image('home/arrows-dark.svg').")] xl:bg-[url('".Vite::image('home/arrows.svg').")]" => $home,
-    ];
-@endphp
-
 <x-general.learn-more
     icon="app-wallets.arkvault"
     :title="trans('brands.arkvault')"
@@ -25,5 +16,10 @@
     :title-color="$titleColor"
     :subtitle-color="$subtitleColor"
     :icon-size="$iconSize"
-    :arrows-class="$arrows"
+    :arrows-class="Arr::toCssClasses([
+        'md-lg:bg-none md-lg:dark:bg-none',
+
+        'arkvault-arrows' => ! $home,
+        'arkvault-arrows-home' => $home,
+    ])"
 />

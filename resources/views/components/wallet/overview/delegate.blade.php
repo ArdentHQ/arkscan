@@ -2,7 +2,7 @@
 
 @if ($wallet->isDelegate())
     <x-wallet.overview.item :title="trans('pages.wallet.delegate_info')">
-        @if (! $wallet->isResigned())
+        @if (! $wallet->isResigned() && config('arkscan.arkconnect.enabled'))
             <x-slot name="titleExtra">
                 <div x-cloak>
                     <x-delegates.vote-link

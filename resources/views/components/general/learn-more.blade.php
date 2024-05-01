@@ -10,7 +10,7 @@
     'iconSize' => 'w-11 h-11',
     'iconColor' => 'dark:text-white text-theme-navy-600',
     'buttonColor' => 'dark:!bg-theme-dark-blue-500 dark:hover:!bg-theme-dark-blue-600 dim:!bg-theme-dark-blue-600 dim:hover:!bg-theme-dark-blue-700',
-    'arrowsClass' => [],
+    'arrowsClass' => null,
     'mobileTall' => false,
     'url' => trans('urls.arkvault'),
 ])
@@ -23,7 +23,7 @@
     <div @class([
         'flex flex-1 items-center bg-no-repeat bg-right mx-auto sm:ml-0 sm:mr-2',
         'flex-col text-center sm:flex-row sm:text-left' => $mobileTall,
-        ...$arrowsClass,
+        $arrowsClass,
     ])>
         <div>
             <x-ark-icon
