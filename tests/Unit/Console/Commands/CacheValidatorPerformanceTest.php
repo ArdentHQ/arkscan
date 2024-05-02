@@ -50,7 +50,7 @@ it('should cache end of a round missed blocks for a public key', function () {
             ...array_fill(0, 4, true),
             false,
             ...array_fill(0, 48, true),
-        ]
+        ],
     ], $this, false);
 
     $publicKey = $validators->get(4)->public_key;
