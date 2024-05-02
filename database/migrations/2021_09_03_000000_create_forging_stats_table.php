@@ -6,8 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-final class CreateForgingStatsTable extends Migration
-{
+return new class() extends Migration {
     public function up()
     {
         Schema::create('forging_stats', function (Blueprint $table) {
@@ -18,4 +17,4 @@ final class CreateForgingStatsTable extends Migration
             $table->timestamp('updated_at')->nullable();
         });
     }
-}
+};
