@@ -80,14 +80,16 @@
                             validator-name-class="md:w-[100px] md-lg:w-auto"
                         />
 
-                        <div x-show="votingForAddress === '{{ $validator->address() }}'">
-                            <div data-tippy-content="@lang('pages.validators.arkconnect.voting_for_tooltip')">
-                                <x-ark-icon
-                                    name="check-mark-box"
-                                    size="sm"
-                                />
+                        @if (config('arkscan.arkconnect.enabled'))
+                            <div x-show="votingForAddress === '{{ $validator->address() }}'">
+                                <div data-tippy-content="@lang('pages.validators.arkconnect.voting_for_tooltip')">
+                                    <x-ark-icon
+                                        name="check-mark-box"
+                                        size="sm"
+                                    />
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </x-ark-tables.cell>
 
