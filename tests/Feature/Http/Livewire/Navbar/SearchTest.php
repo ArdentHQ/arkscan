@@ -17,9 +17,16 @@ use Meilisearch\Endpoints\Indexes;
 it('should search for a wallet', function () {
     $wallet      = Wallet::factory()->create();
     $otherWallet = Wallet::factory()->create();
-    Transaction::factory()->create();
+
+    Transaction::factory()
+        ->transfer()
+        ->create();
+
     $block = Block::factory()->create();
-    Transaction::factory()->create(['block_id' => $block->id]);
+
+    Transaction::factory()
+        ->transfer()
+        ->create(['block_id' => $block->id]);
 
     Livewire::test(Search::class)
         ->set('query', $wallet->address)
@@ -38,7 +45,10 @@ it('should search for a wallet username over a block generator', function () {
     $block = Block::factory()->create([
         'generator_public_key' => $wallet->public_key,
     ]);
-    Transaction::factory()->create(['block_id' => $block->id]);
+
+    Transaction::factory()
+        ->transfer()
+        ->create(['block_id' => $block->id]);
 
     Livewire::test(Search::class)
         ->set('query', $wallet->address)
@@ -46,10 +56,19 @@ it('should search for a wallet username over a block generator', function () {
 });
 
 it('should search for a transaction', function () {
-    Transaction::factory()->create();
+    Transaction::factory()
+        ->transfer()
+        ->create();
+
     $block = Block::factory()->create();
-    Transaction::factory()->create(['block_id' => $block->id]);
-    $transaction = Transaction::factory()->create();
+
+    Transaction::factory()
+        ->transfer()
+        ->create(['block_id' => $block->id]);
+
+    $transaction = Transaction::factory()
+        ->transfer()
+        ->create();
 
     Livewire::test(Search::class)
         ->set('query', $transaction->id)
@@ -186,9 +205,11 @@ it('should search only transactions and blocks when searching for id', function 
     $mock->shouldReceive('index')->andReturn($indexes);
     $indexes->shouldReceive('addDocuments');
 
-    $transaction      = Transaction::factory()->create([
-        'id' => '01119cd018eef8c7314aed7fc3af13ec04b05ad55dd558dcc3ff7169f0af921c',
-    ]);
+    $transaction = Transaction::factory()
+        ->transfer()
+        ->create([
+            'id' => '01119cd018eef8c7314aed7fc3af13ec04b05ad55dd558dcc3ff7169f0af921c',
+        ]);
 
     $this->mock(MeilisearchEngine::class)
         ->shouldReceive('multiSearch')

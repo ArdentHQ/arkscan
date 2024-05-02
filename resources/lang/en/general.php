@@ -28,7 +28,6 @@ return [
     'confirmations'       => ':count Confirmation|:count Confirmations',
     'confirmations_only'  => 'Confirmations',
     'market_data_by'      => 'Market Data by',
-    'arkvault'            => 'ARKVault',
     'select_theme'        => 'Select Theme',
     'select_network'      => 'Select Network',
     'na'                  => 'N/A',
@@ -45,6 +44,21 @@ return [
     'x_of_y'              => ':0 of :1',
     'filter'              => 'Filter',
     'now'                 => 'Now',
+    'vote_with'           => 'Vote With',
+
+    'arkconnect' => [
+        'mainnet_network'               => 'You\'re viewing data from the main network, but your wallet is connected to test network (ARK Testnet). To use ARKScan, please switch to <a class="link font-semibold" href="https://test.arkscan.io/">test.arkscan.io</a>.',
+        'testnet_network'               => 'You\'re viewing data from the test network, but your wallet is connected to main network (ARK Mainnet). To use ARKScan, please switch to <a class="link font-semibold" href="https://live.arkscan.io/">live.arkscan.io</a>.',
+        'delegate_resigned'             => '<span class="font-semibold" x-text="votedDelegateName"></span>, the delegate you are voting for, has resigned.',
+        'delegate_resigned_switch_vote' => 'We recommend switching your vote to an active delegate.',
+        'delegate_standby'              => 'The delegate you are voting for <span class="font-semibold">(<span x-text="votedDelegateName"></span>)</span> is not in an active forging position at the moment.',
+        'view_delegates'                => 'View Delegates.',
+
+        'wrong_network' => [
+            'mainnet' => 'Wrong network, please switch to [Testnet] to enable this action.',
+            'devnet'  => 'Wrong network, please switch to [Mainnet] to enable this action.',
+        ],
+    ],
 
     'navbar' => [
         'search_placeholder' => 'Address / Tx ID / Block ID',

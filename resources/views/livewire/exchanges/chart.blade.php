@@ -202,5 +202,6 @@
             sessionStorage.setItem('scrollPos', window.scrollY.toString());
         });
     </script>
-    <script src="{{ mix('js/chart-tooltip.js')}}"></script>
+
+    @vite('resources/js/chart-tooltip.js')
 @endpush

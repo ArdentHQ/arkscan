@@ -1,6 +1,10 @@
 <div class="w-full">
     <x-tables.toolbars.validators.list-table :validators="$validators" />
 
+    <div class="sm:hidden">
+        <x-validators.resigned-validator-notice />
+    </div>
+
     <x-skeletons.validators.list-table
         :row-count="$this->perPage"
         :paginator="$validators"

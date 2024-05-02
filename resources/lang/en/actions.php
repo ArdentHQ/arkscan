@@ -9,6 +9,7 @@ return [
     'view_all'        => 'View All',
     'receive'         => 'Receive',
     'vote'            => 'Vote',
+    'unvote'          => 'Unvote',
     'submit_wallet'   => 'Submit Wallet',
     'submit_exchange' => 'Submit Exchange',
     'learn_more'      => 'Learn More',

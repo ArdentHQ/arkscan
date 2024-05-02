@@ -17,7 +17,7 @@ use Livewire\Livewire;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
 use function Tests\createRoundEntry;
-use Tests\Stubs\FullPartialRoundException;
+use function Tests\getRoundValidators;
 
 beforeEach(function () {
     $this->travelTo(Carbon::parse('2022-08-22 00:00'));
@@ -235,7 +235,22 @@ it('should calculate forged correctly with current round', function () {
 
     $this->freezeTime();
 
-    try {
+    [$validators, $round, $height] = createRealisticRound([
+        array_fill(0, 53, true),
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 48, true),
+        ],
+    ], $this);
+
+    for ($i = 0; $i < 3; $i++) {
+        $validatorsOrder = getRoundValidators(false, $round);
+        $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['publicKey'] === $validators->get(4)->public_key);
+        if ($validatorIndex < 51) {
+            break;
+        }
+
         [$validators, $round, $height] = createRealisticRound([
             array_fill(0, 53, true),
             [
@@ -244,22 +259,9 @@ it('should calculate forged correctly with current round', function () {
                 ...array_fill(0, 48, true),
             ],
         ], $this);
-
-        createPartialRound($round, $height, 49, $this, null, $validators->get(4)->public_key);
-    } catch (FullPartialRoundException) {
-        Artisan::call('cache:clear');
-
-        [$validators, $round, $height] = createRealisticRound([
-            array_fill(0, 53, true),
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-        ], $this);
-
-        createPartialRound($round, $height, 49, $this, null, $validators->get(4)->public_key);
     }
+
+    createPartialRound($round, $height, 51, $this, null, $validators->get(4)->public_key);
 
     expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, true]);
 
@@ -313,25 +315,25 @@ it('should calculate missed correctly with current round', function () {
 
     $this->freezeTime();
 
-    try {
+    [$validators, $round, $height] = createRealisticRound([
+        array_fill(0, 53, true),
+        array_fill(0, 53, true),
+        array_fill(0, 53, true),
+    ], $this);
+
+    for ($i = 0; $i < 3; $i++) {
+        $validatorsOrder = getRoundValidators(false, $round);
+        $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['publicKey'] === $validators->get(4)->public_key);
+        if ($validatorIndex < 51) {
+            break;
+        }
+
         [$validators, $round, $height] = createRealisticRound([
             array_fill(0, 53, true),
-            array_fill(0, 53, true),
-            array_fill(0, 53, true),
         ], $this);
-
-        createPartialRound($round, $height, 49, $this, $validators->get(4)->public_key, $validators->get(4)->public_key);
-    } catch (FullPartialRoundException) {
-        Artisan::call('cache:clear');
-
-        [$validators, $round, $height] = createRealisticRound([
-            array_fill(0, 53, true),
-            array_fill(0, 53, true),
-            array_fill(0, 53, true),
-        ], $this);
-
-        createPartialRound($round, $height, 49, $this, $validators->get(4)->public_key, $validators->get(4)->public_key);
     }
+
+    createPartialRound($round, $height, 51, $this, $validators->get(4)->public_key, $validators->get(4)->public_key);
 
     expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);
 
@@ -362,6 +364,7 @@ it('should calculate missed correctly for previous rounds', function () {
             false,
             ...array_fill(0, 48, true),
         ],
+        array_fill(0, 53, true),
     ], $this);
 
     expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);
@@ -385,49 +388,41 @@ it('should calculate not forging correctly with current round', function () {
 
     $this->freezeTime();
 
-    try {
+    [$validators, $round, $height] = createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 48, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 48, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 48, true),
+        ],
+    ], $this);
+
+    for ($i = 0; $i < 3; $i++) {
+        $validatorsOrder = getRoundValidators(false, $round);
+        $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['publicKey'] === $validators->get(4)->public_key);
+        if ($validatorIndex < 51) {
+            break;
+        }
+
         [$validators, $round, $height] = createRealisticRound([
             [
                 ...array_fill(0, 4, true),
                 false,
                 ...array_fill(0, 48, true),
             ],
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
         ], $this);
-
-        createPartialRound($round, $height, 49, $this, $validators->get(4)->public_key, $validators->get(4)->public_key);
-    } catch (FullPartialRoundException) {
-        Artisan::call('cache:clear');
-
-        [$validators, $round, $height] = createRealisticRound([
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-        ], $this);
-
-        createPartialRound($round, $height, 49, $this, $validators->get(4)->public_key, $validators->get(4)->public_key);
     }
+
+    createPartialRound($round, $height, 51, $this, $validators->get(4)->public_key, $validators->get(4)->public_key);
 
     expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, false]);
 

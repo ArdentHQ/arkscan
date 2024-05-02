@@ -7,12 +7,6 @@
     'buttonColor' => '!bg-theme-success-600 hover:!bg-theme-success-700',
 ])
 
-@php
-    $arrows = [
-        "md-lg:dark:bg-[url('/images/wallets/arrows-success-dark.svg')] md-lg:bg-[url('/images/wallets/arrows-success.svg')]",
-    ];
-@endphp
-
 <x-general.learn-more
     :url="trans('urls.arkconnect')"
     icon="app-wallets.arkconnect"
@@ -26,6 +20,6 @@
     :subtitle-color="$subtitleColor"
     :icon-size="$iconSize"
     :button-color="$buttonColor"
-    :arrows-class="$arrows"
+    arrows-class="arkconnect-arrows"
     mobile-tall
 />

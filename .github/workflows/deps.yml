@@ -9,7 +9,7 @@ jobs:
     php:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -17,7 +17,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.1"
+                  php-version: "8.2"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite
                   coverage: none
 
@@ -27,11 +27,19 @@ jobs:
             - name: Install PHP dependencies
               run: composer update --no-ansi --no-interaction --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
-            - name: Install JS dependencies
-              run: yarn --ignore-engines
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            - uses: pnpm/action-setup@v3
+              with:
+                  version: 9
+
+            - name: Install pnpm dependencies
+              run: pnpm i --frozen-lockfile
 
             - name: Rebuild assets
-              run: yarn prod
+              run: pnpm build
 
             - name: Create Pull Request
               id: cpr
@@ -49,7 +57,7 @@ jobs:
     js:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -57,7 +65,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.1"
+                  php-version: "8.2"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite
                   coverage: none
 
@@ -67,11 +75,19 @@ jobs:
             - name: Update JS dependencies
               run: npx npm-check-updates --configFilePath ./vendor/arkecosystem/foundation/
 
-            - name: Install Updated JS dependencies
-              run: yarn --ignore-engines
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            - uses: pnpm/action-setup@v3
+              with:
+                  version: 9
+
+            - name: Install pnpm dependencies
+              run: pnpm i --frozen-lockfile
 
             - name: Rebuild assets
-              run: yarn prod
+              run: pnpm build
 
             - name: Create Pull Request
               id: cpr

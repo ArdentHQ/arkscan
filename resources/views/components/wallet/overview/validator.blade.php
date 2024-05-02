@@ -2,22 +2,34 @@
 
 @if ($wallet->isValidator())
     <x-wallet.overview.item :title="trans('pages.wallet.validator_info')">
-        @if (! $wallet->isResigned())
+        @if (! $wallet->isResigned() && config('arkscan.arkconnect.enabled'))
             <x-slot name="titleExtra">
-                <x-ark-external-link
-                    :url="$wallet->voteUrl()"
-                    icon-class="inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-secondary-500 dark:text-theme-dark-500"
-                >
-                    <x-slot name="text">
-                        <span class="md:hidden">
-                            @lang('pages.wallet.validator.vote')
-                        </span>
+                <div x-cloak>
+                    <x-validators.vote-link
+                        :model="$wallet"
+                        button-class="font-semibold hover:underline"
+                    >
+                        <x-slot name="voteText">
+                            <span class="md:hidden">
+                                @lang('actions.vote')
+                            </span>
 
-                        <span class="hidden md:inline">
-                            @lang('pages.wallet.validator.vote_for_validator')
-                        </span>
-                    </x-slot>
-                </x-ark-external-link>
+                            <span class="hidden md:inline">
+                                @lang('pages.wallet.validator.vote_for_validator')
+                            </span>
+                        </x-slot>
+
+                        <x-slot name="unvoteText">
+                            <span class="md:hidden">
+                                @lang('actions.unvote')
+                            </span>
+
+                            <span class="hidden md:inline">
+                                @lang('pages.wallet.validator.unvote_validator')
+                            </span>
+                        </x-slot>
+                    </x-validators.vote-link>
+                </div>
             </x-slot>
         @endif
 

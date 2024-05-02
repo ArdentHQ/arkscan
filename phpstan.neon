@@ -1,0 +1,9 @@
+includes:
+	- vendor/arkecosystem/foundation/phpstan.neon
+
+parameters:
+    excludePaths:
+        - app/Console/Playbooks
+        - app/Console/Commands/RunPlaybookCommand.php
+        - app/Services/Monitor
+        - app/Testing
