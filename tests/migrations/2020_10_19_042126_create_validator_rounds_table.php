@@ -6,8 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-final class CreateValidatorRoundsTable extends Migration
-{
+return new class() extends Migration {
     public function up()
     {
         Schema::create('validator_rounds', function (Blueprint $table) {
@@ -16,4 +15,4 @@ final class CreateValidatorRoundsTable extends Migration
             $table->jsonb('validators');
         });
     }
-}
+};
