@@ -230,11 +230,11 @@ it('should correctly show the block is missed', function () {
     // Split up validator slot data to check
     $forgedValidators  = $validators->splice(0, 5);
     $waitingValidators = $validators->splice(0, 1);
-    $missedValidators  = $validators->splice(0, 5);
+    $pendingValidators = $validators->splice(0, 5);
 
     $forgedValidators->each(fn ($validator) => expect($validator->hasForged())->toBeTrue());
     $waitingValidators->each(fn ($validator) => expect($validator->isNext())->toBeTrue());
-    $missedValidators->each(fn ($validator) => expect($validator->isPending())->toBeTrue());
+    $pendingValidators->each(fn ($validator) => expect($validator->isPending())->toBeTrue());
 
     // Progress time by 15 validator slots
     $this->travel(15 * 8)->seconds();
@@ -284,7 +284,7 @@ it('should correctly show the block is missed', function () {
     $component
         ->call('pollValidators')
         ->assertSeeInOrder($outputData);
-})->skip('See comment at app/Services/Monitor/ValidatorTracker.php#38');
+});
 
 it('should show warning icon for validators missing blocks - minutes', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));

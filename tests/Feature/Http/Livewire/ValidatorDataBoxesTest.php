@@ -28,160 +28,51 @@ beforeEach(function () {
     $this->freezeTime();
 });
 
-function createRoundWithValidatorsAndPerformances(array $performances = null, bool $addBlockForNextRound = true, int $walletCount = 53, int $baseIndex = 0): void
-{
-    $wallets = Wallet::factory($walletCount)
+it('should return the block count', function () {
+    [$validators, $round, $height] = createRealisticRound([
+        array_fill(0, 53, true),
+    ], $this);
+
+    createPartialRound($round, $height, 2, $this);
+
+    $component = Livewire::test(ValidatorDataBoxes::class)
+        ->call('setIsReady');
+
+    expect($component->instance()->getBlockCount())->toBe('2 / 53 Blocks');
+});
+
+it('should return no validators if current and previous round has no blocks', function () {
+    $wallets = Wallet::factory(Network::validatorCount())
         ->activeValidator()
         ->create();
 
-    createRoundEntry(112168, 5944904, $wallets);
+    createRoundEntry(112168, 112168 * Network::validatorCount(), $wallets);
+    createRoundEntry(112169, 112169 * Network::validatorCount(), $wallets);
 
-    $wallets->each(function ($wallet, $index) use ($performances, $addBlockForNextRound, $baseIndex) {
-        $timestamp = Carbon::now()->add(($baseIndex + $index) * 8, 'seconds')->timestamp;
-
-        $block = Block::factory()->create([
-            'height'               => 5944900,
-            'timestamp'            => $timestamp,
-            'generator_public_key' => $wallet->public_key,
-        ]);
-
-        // Start height for round 112168
-        if ($addBlockForNextRound) {
-            Block::factory()->create([
-                'height'               => 5944904,
-                'timestamp'            => $timestamp,
-                'generator_public_key' => $wallet->public_key,
-            ]);
-        }
-
-        (new WalletCache())->setValidator($wallet->public_key, $wallet);
-
-        if (is_null($performances)) {
-            for ($i = 0; $i < 2; $i++) {
-                $performances[] = (bool) mt_rand(0, 1);
-            }
-        }
-
-        (new WalletCache())->setPerformance($wallet->public_key, $performances);
-
-        (new WalletCache())->setLastBlock($wallet->public_key, [
-            'id'     => $block->id,
-            'height' => $block->height->toNumber(),
-        ]);
-    });
-}
-
-it('should render without errors', function () {
-    createRoundWithValidatorsAndPerformances();
+    (new NetworkCache())->setHeight(fn (): int => 112169 * Network::validatorCount());
 
     $component = Livewire::test(ValidatorDataBoxes::class)
         ->call('setIsReady');
 
-    $component->call('pollStatistics');
-
-    $component->assertHasNoErrors();
-    $component->assertViewIs('livewire.validator-data-boxes');
-});
-
-it('should handle case no block yet', function () {
-    createRoundWithValidatorsAndPerformances(null, false);
-
-    $component = Livewire::test(ValidatorDataBoxes::class)
-        ->call('setIsReady');
-
-    $component->call('pollStatistics');
-
-    $component->assertHasNoErrors();
-
-    $component->assertViewIs('livewire.validator-data-boxes');
-});
-
-it('should get the performances of active validators and parse it into a readable array', function () {
-    createRoundWithValidatorsAndPerformances();
-
-    $component = Livewire::test(ValidatorDataBoxes::class)
-        ->call('setIsReady');
-
-    $component->call('pollStatistics');
-
-    expect($component->instance()->getValidatorsPerformance())->toBeArray();
-    expect($component->instance()->getValidatorsPerformance())->toHaveKeys(['forging', 'missed', 'missing']);
-});
-
-it('should determine if validators are forging based on their round history', function () {
-    createRoundWithValidatorsAndPerformances([true, true]);
-
-    $component = Livewire::test(ValidatorDataBoxes::class)
-        ->call('setIsReady');
-
-    $component->call('pollStatistics');
-
-    $validatorWallet = Wallet::first();
-    $validator       = new WalletViewModel($validatorWallet);
-
-    expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBe(ValidatorForgingStatus::forging);
-});
-
-it('should determine if validators are not forging based on their round history', function () {
-    createRoundWithValidatorsAndPerformances([false, false]);
-
-    $component = Livewire::test(ValidatorDataBoxes::class)
-        ->call('setIsReady');
-
-    $component->call('pollStatistics');
-
-    $validatorWallet = Wallet::first();
-    $validator       = new WalletViewModel($validatorWallet);
-
-    expect($validator->performance())->toBe([false, false]);
-
-    expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBe(ValidatorForgingStatus::missing);
-});
-
-it('should determine if validators just missed based on their round history', function () {
-    createRoundWithValidatorsAndPerformances([true, false]);
-
-    $component = Livewire::test(ValidatorDataBoxes::class)
-        ->call('setIsReady');
-
-    $component->call('pollStatistics');
-
-    $validatorWallet = Wallet::first();
-    $validator       = new WalletViewModel($validatorWallet);
-
-    expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBe(ValidatorForgingStatus::missed);
-});
-
-it('should determine if validators are forging after missing 4 slots based on their round history', function () {
-    createRoundWithValidatorsAndPerformances([false, true]);
-
-    $component = Livewire::test(ValidatorDataBoxes::class)
-        ->call('setIsReady');
-
-    $component->call('pollStatistics');
-
-    $validatorWallet = Wallet::first();
-    $validator       = new WalletViewModel($validatorWallet);
-
-    expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBe(ValidatorForgingStatus::forging);
-});
-
-it('should return the block count', function () {
-    createRoundWithValidatorsAndPerformances();
-
-    $component = Livewire::test(ValidatorDataBoxes::class)
-        ->call('setIsReady');
-
-    expect($component->instance()->getBlockCount())->toBeString();
+    expect($component->instance()->getNextValidator())->toBeNull();
 });
 
 it('should return the next validator', function () {
-    createRoundWithValidatorsAndPerformances();
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    [$validators, $round, $height] = createRealisticRound([
+        array_fill(0, 53, true),
+    ], $this);
+
+    createPartialRound($round, $height, 2, $this);
 
     $component = Livewire::test(ValidatorDataBoxes::class)
         ->call('setIsReady');
 
-    expect($component->instance()->getNextvalidator())->toBeInstanceOf(WalletViewModel::class);
+    expect($component->instance()->getNextValidator()->address())->toBe($validators->get(3)->address);
+    expect($component->instance()->getNextValidator())->toBeInstanceOf(WalletViewModel::class);
 });
 
 it('should not error if no cached validator data', function () {
@@ -216,7 +107,11 @@ it('should not error if no cached validator data', function () {
 });
 
 it('should defer loading', function () {
-    createRoundWithValidatorsAndPerformances();
+    $wallets = Wallet::factory(Network::validatorCount())
+        ->activeValidator()
+        ->create();
+
+    createRoundEntry(79890, 79890 * Network::validatorCount(), $wallets);
 
     (new NetworkCache())->setHeight(fn (): int => 4234212);
 
@@ -263,13 +158,19 @@ it('should calculate forged correctly with current round', function () {
         ], $this);
     }
 
-    createPartialRound($round, $height, 51, $this, null, $validators->get(4)->public_key);
+    $validator = $validators->get(4);
 
-    expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, true]);
+    createPartialRound($round, $height, 51, $this, null, $validator->public_key);
 
-    Livewire::test(ValidatorDataBoxes::class)
-        ->call('setIsReady')
-        ->call('pollStatistics')
+    $component = Livewire::test(ValidatorDataBoxes::class)
+        ->call('setIsReady');
+
+    expect($component->instance()->getValidatorsPerformance())->toHaveKeys(['forging', 'missed', 'missing']);
+    expect($component->instance()->getValidatorPerformance($validator->public_key))->toBe(ValidatorForgingStatus::forging);
+
+    expect((new WalletViewModel($validator))->performance())->toBe([false, true]);
+
+    $component->call('pollStatistics')
         ->assertSeeHtmlInOrder([
             'Forging',
             '<span>53</span>',
@@ -296,11 +197,17 @@ it('should calculate forged correctly for previous rounds', function () {
         array_fill(0, 53, true),
     ], $this);
 
-    expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, true]);
+    $validator = $validators->get(4);
 
-    Livewire::test(ValidatorDataBoxes::class)
-        ->call('setIsReady')
-        ->call('pollStatistics')
+    $component = Livewire::test(ValidatorDataBoxes::class)
+        ->call('setIsReady');
+
+    expect($component->instance()->getValidatorsPerformance())->toHaveKeys(['forging', 'missed', 'missing']);
+    expect($component->instance()->getValidatorPerformance($validator->public_key))->toBe(ValidatorForgingStatus::forging);
+
+    expect((new WalletViewModel($validator))->performance())->toBe([true, true]);
+
+    $component->call('pollStatistics')
         ->assertSeeHtmlInOrder([
             'Forging',
             '<span>53</span>',
@@ -323,6 +230,8 @@ it('should calculate missed correctly with current round', function () {
         array_fill(0, 53, true),
     ], $this);
 
+    $validator = $validators->get(4);
+
     for ($i = 0; $i < 3; $i++) {
         createRoundEntry($round, $height, $validators);
         $validatorsOrder = getRoundValidators(false, $round);
@@ -336,13 +245,17 @@ it('should calculate missed correctly with current round', function () {
         ], $this);
     }
 
-    createPartialRound($round, $height, 51, $this, $validators->get(4)->public_key, $validators->get(4)->public_key);
+    createPartialRound($round, $height, 51, $this, $validator->public_key, $validator->public_key);
 
-    expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);
+    $component = Livewire::test(ValidatorDataBoxes::class)
+        ->call('setIsReady');
 
-    Livewire::test(ValidatorDataBoxes::class)
-        ->call('setIsReady')
-        ->call('pollStatistics')
+    expect($component->instance()->getValidatorsPerformance())->toHaveKeys(['forging', 'missed', 'missing']);
+    expect($component->instance()->getValidatorPerformance($validator->public_key))->toBe(ValidatorForgingStatus::missed);
+
+    expect((new WalletViewModel($validator))->performance())->toBe([true, false]);
+
+    $component->call('pollStatistics')
         ->assertSeeHtmlInOrder([
             'Forging',
             '<span>52</span>',
@@ -369,11 +282,17 @@ it('should calculate missed correctly for previous rounds', function () {
         ],
     ], $this);
 
-    expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);
+    $validator = $validators->get(4);
 
-    Livewire::test(ValidatorDataBoxes::class)
-        ->call('setIsReady')
-        ->call('pollStatistics')
+    $component = Livewire::test(ValidatorDataBoxes::class)
+        ->call('setIsReady');
+
+    expect($component->instance()->getValidatorsPerformance())->toHaveKeys(['forging', 'missed', 'missing']);
+    expect($component->instance()->getValidatorPerformance($validator->public_key))->toBe(ValidatorForgingStatus::missed);
+
+    expect((new WalletViewModel($validator))->performance())->toBe([true, false]);
+
+    $component->call('pollStatistics')
         ->assertSeeHtmlInOrder([
             'Forging',
             '<span>52</span>',
@@ -425,13 +344,19 @@ it('should calculate not forging correctly with current round', function () {
         ], $this);
     }
 
-    createPartialRound($round, $height, 51, $this, $validators->get(4)->public_key, $validators->get(4)->public_key);
+    $validator = $validators->get(4);
 
-    expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, false]);
+    createPartialRound($round, $height, 51, $this, $validator->public_key, $validator->public_key);
 
-    Livewire::test(ValidatorDataBoxes::class)
-        ->call('setIsReady')
-        ->call('pollStatistics')
+    $component = Livewire::test(ValidatorDataBoxes::class)
+        ->call('setIsReady');
+
+    expect($component->instance()->getValidatorsPerformance())->toHaveKeys(['forging', 'missed', 'missing']);
+    expect($component->instance()->getValidatorPerformance($validator->public_key))->toBe(ValidatorForgingStatus::missing);
+
+    expect((new WalletViewModel($validator))->performance())->toBe([false, false]);
+
+    $component->call('pollStatistics')
         ->assertSeeHtmlInOrder([
             'Forging',
             '<span>52</span>',
@@ -466,11 +391,17 @@ it('should calculate not forging correctly for previous rounds', function () {
         ],
     ], $this);
 
-    expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, false]);
+    $validator = $validators->get(4);
 
-    Livewire::test(ValidatorDataBoxes::class)
-        ->call('setIsReady')
-        ->call('pollStatistics')
+    $component = Livewire::test(ValidatorDataBoxes::class)
+        ->call('setIsReady');
+
+    expect($component->instance()->getValidatorsPerformance())->toHaveKeys(['forging', 'missed', 'missing']);
+    expect($component->instance()->getValidatorPerformance($validator->public_key))->toBe(ValidatorForgingStatus::missing);
+
+    expect((new WalletViewModel($validator))->performance())->toBe([false, false]);
+
+    $component->call('pollStatistics')
         ->assertSeeHtmlInOrder([
             'Forging',
             '<span>52</span>',

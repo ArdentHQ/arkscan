@@ -12,7 +12,9 @@ use App\Services\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 use function Tests\faker;
@@ -20,7 +22,9 @@ use function Tests\faker;
 beforeEach(function () {
     State::factory()->create();
 
-    ForgingStats::truncate();
+    if (Schema::hasTable('forging_stats')) {
+        ForgingStats::truncate();
+    }
 });
 
 it('should render', function () {

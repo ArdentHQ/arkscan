@@ -228,6 +228,8 @@ function createRealisticRound(array $performances, $context, bool $cachePerforma
         expect(Block::count())->toBe(Network::validatorCount() + (($index + 1) * Network::validatorCount()));
     }
 
+    createRoundEntry($round, $height, $validatorWallets);
+
     (new NetworkCache())->setHeight(fn (): int => $height - 1);
 
     if ($cachePerformance) {
