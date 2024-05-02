@@ -21,7 +21,7 @@
                 class="text-sm font-semibold text-theme-secondary-500 dark:text-theme-dark-500"
                 disabled
             >
-                @lang('pages.wallet.delegate.vote')
+                @lang('actions.vote')
             </button>
         </div>
     @endif

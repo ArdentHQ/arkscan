@@ -8,7 +8,7 @@
     @else
         <x-ark-external-link
             :url="$model->voteUrl()"
-            :text="trans('pages.wallet.delegate.vote')"
+            :text="trans('actions.vote')"
             inner-class="text-sm"
             no-icon
         />

@@ -1,6 +1,6 @@
 @if (config('arkscan.arkconnect.enabled'))
     <div
-        :class="{ '!hidden': isVotedDelegateResigned === false }"
+        :class="{ '!hidden': isVotedDelegateResigned !== true }"
         class="mb-4 sm:mb-3"
         x-cloak
     >

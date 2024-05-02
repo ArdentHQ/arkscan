@@ -209,7 +209,6 @@ return [
             'votes_title'           => 'Votes',
             'productivity_title'    => 'Productivity',
             'not_registered_text'   => 'This address is not a registered delegate',
-            'vote'                  => 'Vote',
             'vote_for_delegate'     => 'Vote for Delegate',
             'unvote_delegate'       => 'Unvote Delegate',
             'resigned_vote_tooltip' => 'Cannot vote for resigned delegates.',
