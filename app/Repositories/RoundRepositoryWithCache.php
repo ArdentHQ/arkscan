@@ -25,6 +25,11 @@ final class RoundRepositoryWithCache implements RoundRepository
         return $this->rounds->current();
     }
 
+    public function previous(): ?Round
+    {
+        return $this->rounds->previous();
+    }
+
     public function byRound(int $round): Round
     {
         return $this->remember(fn () => $this->rounds->byRound($round));

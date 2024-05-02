@@ -89,7 +89,19 @@ trait ValidatorData
         $this->cacheLastBlocks($validators);
 
         if (! $this->hasRoundStarted($heightRange[0])) {
-            return [];
+            $currentRound = Rounds::previous();
+            if ($currentRound === null) {
+                return [];
+            }
+
+            $heightRange   = Monitor::heightRangeByRound($currentRound);
+            $validators    = $currentRound->validators;
+
+            $this->cacheLastBlocks($validators);
+
+            if (! $this->hasRoundStarted($heightRange[0])) {
+                return [];
+            }
         }
 
         $tracking        = ValidatorTracker::execute($validators, $heightRange[0]);

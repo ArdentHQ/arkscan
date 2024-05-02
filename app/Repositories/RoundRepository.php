@@ -19,6 +19,13 @@ final class RoundRepository implements Contract
         return Round::orderBy('round', 'desc')->firstOrFail();
     }
 
+    public function previous(): ?Round
+    {
+        return Round::orderBy('round', 'desc')
+            ->offset(1)
+            ->first();
+    }
+
     public function byRound(int $round): Round
     {
         return Round::findOrFail($round);

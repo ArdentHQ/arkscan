@@ -11,6 +11,8 @@ interface RoundRepository
 {
     public function current(): Round;
 
+    public function previous(): ?Round;
+
     public function byRound(int $round): Round;
 
     public function validators(bool $withBlock = true): SupportCollection;
