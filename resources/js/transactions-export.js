@@ -11,10 +11,7 @@ import {
     getDateRange,
     queryTimestamp,
 } from "./includes/helpers";
-import {
-    ExportStatus,
-    TransactionType,
-} from "./includes/enums";
+import { ExportStatus, TransactionType } from "./includes/enums";
 
 import { TransactionsApi } from "./api/transactions";
 

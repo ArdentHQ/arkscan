@@ -201,9 +201,10 @@ const Wallet = (network, xData = {}) => {
                 this.network.delegateCount;
             this.isVotedValidatorResigned =
                 this.votingFor.attributes?.delegate?.resigned === true;
-            this.isVotedValidatorResignedIgnored = this.getIgnoredToastAddresses(
-                "resigned"
-            ).includes(this.votingFor.address);
+            this.isVotedValidatorResignedIgnored =
+                this.getIgnoredToastAddresses("resigned").includes(
+                    this.votingFor.address
+                );
             this.isVotedValidatorOnStandbyIgnored =
                 this.getIgnoredToastAddresses("standby").includes(
                     this.votingFor.address

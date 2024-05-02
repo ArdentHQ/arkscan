@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
+use App\Contracts\RoundRepository as ContractsRoundRepository;
 use App\Enums\ValidatorForgingStatus;
 use App\Facades\Network;
 use App\Http\Livewire\ValidatorDataBoxes;
 use App\Models\Block;
-use App\Models\Round;
 use App\Models\Wallet;
+use App\Repositories\RoundRepository;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Artisan;
 use Livewire\Livewire;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
@@ -20,7 +20,12 @@ use function Tests\createRoundEntry;
 use function Tests\getRoundValidators;
 
 beforeEach(function () {
+    $this->app->bind(ContractsRoundRepository::class, function (): RoundRepository {
+        return new RoundRepository();
+    });
+
     $this->travelTo(Carbon::parse('2022-08-22 00:00'));
+    $this->freezeTime();
 });
 
 function createRoundWithValidatorsAndPerformances(array $performances = null, bool $addBlockForNextRound = true, int $walletCount = 53, int $baseIndex = 0): void
@@ -114,12 +119,11 @@ it('should determine if validators are forging based on their round history', fu
     $validatorWallet = Wallet::first();
     $validator       = new WalletViewModel($validatorWallet);
 
-    expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBeString();
     expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBe(ValidatorForgingStatus::forging);
 });
 
 it('should determine if validators are not forging based on their round history', function () {
-    createRoundWithValidatorsAndPerformances([false, false], false);
+    createRoundWithValidatorsAndPerformances([false, false]);
 
     $component = Livewire::test(ValidatorDataBoxes::class)
         ->call('setIsReady');
@@ -131,7 +135,6 @@ it('should determine if validators are not forging based on their round history'
 
     expect($validator->performance())->toBe([false, false]);
 
-    expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBeString();
     expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBe(ValidatorForgingStatus::missing);
 });
 
@@ -146,7 +149,6 @@ it('should determine if validators just missed based on their round history', fu
     $validatorWallet = Wallet::first();
     $validator       = new WalletViewModel($validatorWallet);
 
-    expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBeString();
     expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBe(ValidatorForgingStatus::missed);
 });
 
@@ -161,7 +163,6 @@ it('should determine if validators are forging after missing 4 slots based on th
     $validatorWallet = Wallet::first();
     $validator       = new WalletViewModel($validatorWallet);
 
-    expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBeString();
     expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBe(ValidatorForgingStatus::forging);
 });
 
@@ -245,6 +246,7 @@ it('should calculate forged correctly with current round', function () {
     ], $this);
 
     for ($i = 0; $i < 3; $i++) {
+        createRoundEntry($round, $height, $validators);
         $validatorsOrder = getRoundValidators(false, $round);
         $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['publicKey'] === $validators->get(4)->public_key);
         if ($validatorIndex < 51) {
@@ -322,6 +324,7 @@ it('should calculate missed correctly with current round', function () {
     ], $this);
 
     for ($i = 0; $i < 3; $i++) {
+        createRoundEntry($round, $height, $validators);
         $validatorsOrder = getRoundValidators(false, $round);
         $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['publicKey'] === $validators->get(4)->public_key);
         if ($validatorIndex < 51) {
@@ -364,7 +367,6 @@ it('should calculate missed correctly for previous rounds', function () {
             false,
             ...array_fill(0, 48, true),
         ],
-        array_fill(0, 53, true),
     ], $this);
 
     expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);
@@ -407,6 +409,7 @@ it('should calculate not forging correctly with current round', function () {
     ], $this);
 
     for ($i = 0; $i < 3; $i++) {
+        createRoundEntry($round, $height, $validators);
         $validatorsOrder = getRoundValidators(false, $round);
         $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['publicKey'] === $validators->get(4)->public_key);
         if ($validatorIndex < 51) {
