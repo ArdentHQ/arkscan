@@ -7,23 +7,23 @@
 <div class="flex flex-col">
     <div class="flex justify-center mb-6">
         <div x-show="exportStatus === ExportStatus.PendingDownload">
-            <img src="{{ mix('images/modals/export/loading.svg') }}" class="dark:hidden" />
-            <img src="{{ mix('images/modals/export/loading-dark.svg') }}" class="hidden dark:block" />
+            <img src="{{ Vite::image('modals/export/loading.svg') }}" class="dark:hidden" />
+            <img src="{{ Vite::image('modals/export/loading-dark.svg') }}" class="hidden dark:block" />
         </div>
 
         <div x-show="exportStatus === ExportStatus.Done">
-            <img src="{{ mix('images/modals/export/success.svg') }}" class="dark:hidden" />
-            <img src="{{ mix('images/modals/export/success-dark.svg') }}" class="hidden dark:block" />
+            <img src="{{ Vite::image('modals/export/success.svg') }}" class="dark:hidden" />
+            <img src="{{ Vite::image('modals/export/success-dark.svg') }}" class="hidden dark:block" />
         </div>
 
         <div x-show="exportStatus === ExportStatus.Error">
-            <img src="{{ mix('images/modals/export/error.svg') }}" class="dark:hidden" />
-            <img src="{{ mix('images/modals/export/error-dark.svg') }}" class="hidden dark:block" />
+            <img src="{{ Vite::image('modals/export/error.svg') }}" class="dark:hidden" />
+            <img src="{{ Vite::image('modals/export/error-dark.svg') }}" class="hidden dark:block" />
         </div>
 
         <div x-show="exportStatus === ExportStatus.Warning">
-            <img src="{{ mix('images/modals/export/warning.svg') }}" class="dark:hidden" />
-            <img src="{{ mix('images/modals/export/warning-dark.svg') }}" class="hidden dark:block" />
+            <img src="{{ Vite::image('modals/export/warning.svg') }}" class="dark:hidden" />
+            <img src="{{ Vite::image('modals/export/warning-dark.svg') }}" class="hidden dark:block" />
         </div>
     </div>
 

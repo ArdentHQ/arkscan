@@ -12,6 +12,10 @@
     />
 
     <div id="validator-table-list">
+        <div class="hidden sm:block">
+            <x-validators.resigned-validator-notice />
+        </div>
+
         <x-validators.tables.validators />
 
         <x-validators.tables.missed-blocks x-cloak />

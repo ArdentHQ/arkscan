@@ -14,6 +14,7 @@
                 'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700' => ! $validator->isResigned(),
             ])"
             expandable
+            :content-class="config('arkscan.arkconnect.enabled') ? '!pb-0 sm:!pb-3' : ''"
         >
             <x-slot name="header">
                 <div class="flex flex-1 min-w-0 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
@@ -33,7 +34,7 @@
                             without-label
                         />
 
-                        <div class="flex items-center sm:space-x-3 sm:divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
+                        <div class="flex items-center">
                             <x-tables.rows.mobile.encapsulated.validators.status
                                 :model="$validator"
                                 class="hidden sm:block"
@@ -42,7 +43,7 @@
 
                             <x-tables.rows.mobile.encapsulated.validators.vote-link
                                 :model="$validator"
-                                class="sm:pl-3"
+                                class="sm:pl-3 sm:ml-3 sm:border-l border-theme-secondary-300 dark:border-theme-dark-700"
                             />
                         </div>
                     </div>
@@ -61,6 +62,12 @@
             <x-tables.rows.mobile.encapsulated.validators.votes-percentage :model="$validator" />
 
             <x-tables.rows.mobile.encapsulated.validators.missed-blocks :model="$validator" />
+
+            @if (config('arkscan.arkconnect.enabled'))
+                <div class="sm:hidden">
+                    <x-tables.rows.mobile.encapsulated.validators.voting-for :model="$validator" />
+                </div>
+            @endif
         </x-tables.rows.mobile>
     @endforeach
 </x-tables.mobile.includes.encapsulated>
