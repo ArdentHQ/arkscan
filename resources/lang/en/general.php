@@ -77,6 +77,14 @@ return [
             'my_address'   => 'My Address:',
             'copy_address' => 'Copy Address',
             'disconnect'   => 'Disconnect',
+
+            'modal' => [
+                'install_title' => 'Install ARK Connect',
+                'install_subtitle' => 'To link up on ARK Scan using ARK Connect, you must initially install the extension.',
+                'install_arkconnect' => 'Install ARK Connect',
+                'unsupported_browser_title' => 'Unsupported Browser for ARK Connect',
+                'unsupported_browser_warning' => 'ARK Connect is not compatible with your current browser. To install the ARK Connect extension, please switch to a browser based on Chrome or Firefox.',
+            ],
         ],
     ],
 
