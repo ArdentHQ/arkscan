@@ -55,8 +55,8 @@ return [
         'view_delegates'                => 'View Delegates.',
 
         'wrong_network' => [
-            'mainnet' => 'Wrong network, please switch to Testnet to enable this action.',
-            'devnet'  => 'Wrong network, please switch to Mainnet to enable this action.',
+            'mainnet' => 'You\'re connected with a testnet address. Switch to test.arkscan.io to enable this action.',
+            'devnet'  => 'You\'re connected with a mainnet address. Switch to live.arkscan.io to enable this action.',
         ],
     ],
 
