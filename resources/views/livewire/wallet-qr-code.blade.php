@@ -125,9 +125,7 @@
                     @php ($arkconnectEnabled = config('arkscan.arkconnect.enabled'))
 
                     @if ($arkconnectEnabled)
-                        <div
-                            class="flex flex-col w-full"
-                        >
+                        <div class="flex flex-col w-full">
                             <div
                                 x-show="isOnSameNetwork"
                                 wire:key="arkconnect:amount:{{ $this->hasAmount ? 'enabled' : 'disabled' }}"
@@ -147,10 +145,7 @@
                                 </button>
                             </div>
 
-                            <div
-                                x-show="!isOnSameNetwork"
-                                data-tippy-content="@lang('general.arkconnect.wrong_network.'.Network::alias())"
-                            >
+                            <x-arkconnect.disabled-action>
                                 <button
                                     type="button"
                                     class="w-full button-primary"
@@ -158,7 +153,7 @@
                                 >
                                     @lang('brands.arkconnect')
                                 </button>
-                            </div>
+                            </x-arkconnect.disabled-action>
 
                             <x-ark-external-link
                                 :url="$this->walletUri"

@@ -54,6 +54,8 @@ return [
         'delegate_standby'              => 'The delegate you are voting for <span class="font-semibold">(<span x-text="votedDelegateName"></span>)</span> is not in an active forging position at the moment.',
         'view_delegates'                => 'View Delegates.',
 
+        'connect_wallet_tooltip' => 'Connect Wallet to enable this action.',
+
         'wrong_network' => [
             'mainnet' => 'You\'re connected with a testnet address. Switch to test.arkscan.io to enable this action.',
             'devnet'  => 'You\'re connected with a mainnet address. Switch to live.arkscan.io to enable this action.',
