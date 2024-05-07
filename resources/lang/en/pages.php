@@ -386,9 +386,9 @@ return [
         'next'               => 'Next',
         'now'                => 'Now',
         'monitor'            => 'Monitor',
+
         'arkconnect'         => [
             'voting_for_tooltip'     => 'You\'re voting for this delegate',
-            'resigned_delegate'      => ', the delegate you are voting for, has resigned.',
             'recommend_switch_votes' => 'We recommend switching your vote to an active delegate.',
         ],
 
