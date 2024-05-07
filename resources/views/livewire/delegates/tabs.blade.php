@@ -13,7 +13,8 @@
 
     <div id="delegate-table-list">
         <div class="hidden sm:block">
-            <x-delegates.resigned-delegate-notice />
+            <x-delegates.arkconnect.resigned-delegate-notice />
+            <x-delegates.arkconnect.standby-delegate-notice />
         </div>
 
         <x-delegates.tables.delegates />

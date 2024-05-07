@@ -2,7 +2,8 @@
     <x-tables.toolbars.delegates.list-table :delegates="$delegates" />
 
     <div class="sm:hidden">
-        <x-delegates.resigned-delegate-notice />
+        <x-delegates.arkconnect.resigned-delegate-notice />
+        <x-delegates.arkconnect.standby-delegate-notice />
     </div>
 
     <x-skeletons.delegates.list-table
