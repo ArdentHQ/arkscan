@@ -126,7 +126,6 @@
 
                     @if ($arkconnectEnabled)
                         <div
-                            x-show="showOptions"
                             class="flex flex-col w-full"
                         >
                             <div
@@ -168,21 +167,17 @@
                                 @lang('brands.arkvault')
                             </x-ark-external-link>
                         </div>
+                    @else
+                        <div>
+                            <x-ark-external-link
+                                :url="$this->walletUri"
+                                class="w-full button-primary"
+                                icon-class="inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-primary-400 dim:text-theme-dim-blue-300 dark:text-theme-dark-blue-300"
+                            >
+                                @lang('brands.arkvault')
+                            </x-ark-external-link>
+                        </div>
                     @endif
-
-                    <div
-                        @if ($arkconnectEnabled)
-                            x-show="! showOptions"
-                        @endif
-                    >
-                        <x-ark-external-link
-                            :url="$this->walletUri"
-                            class="w-full button-primary"
-                            icon-class="inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-primary-400 dim:text-theme-dim-blue-300 dark:text-theme-dark-blue-300"
-                        >
-                            @lang('brands.arkvault')
-                        </x-ark-external-link>
-                    </div>
                 </div>
             </div>
         </div>
