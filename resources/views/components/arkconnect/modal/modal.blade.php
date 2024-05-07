@@ -19,7 +19,7 @@
     </x-slot>
 
     <x-slot name="description">
-        <div {{ $description->attributes->class('flex items-center justify-center border-y border-theme-secondary-300 my-4 py-4 sm:mt-6 sm:py-6') }}>
+        <div {{ $description->attributes->class('flex items-center -mx-6 px-6 justify-center border-y border-theme-secondary-300 dark:border-theme-dark-700 my-4 py-4 sm:mt-6 sm:py-6') }}>
             {{ $description }}
         </div>
     </x-slot>
