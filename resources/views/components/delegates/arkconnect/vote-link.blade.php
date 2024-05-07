@@ -77,10 +77,7 @@
                         :text="trans('brands.arkvault')"
                     />
 
-                    <div
-                        x-show="!isOnSameNetwork"
-                        data-tippy-content="@lang('general.arkconnect.wrong_network.'.Network::alias())"
-                    >
+                    <x-arkconnect.disabled-action>
                         <button
                             type="button"
                             class="flex items-center py-3 space-x-2 font-semibold leading-5 text-theme-secondary-500 dark:text-theme-dark-500"
@@ -89,7 +86,7 @@
                         >
                             @lang('brands.arkconnect')
                         </button>
-                    </div>
+                    </x-arkconnect.disabled-action>
 
                     <button
                         x-show="isOnSameNetwork"

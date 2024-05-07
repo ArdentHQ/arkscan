@@ -147,10 +147,7 @@
                                 </button>
                             </div>
 
-                            <div
-                                x-show="!isOnSameNetwork"
-                                data-tippy-content="@lang('general.arkconnect.wrong_network.'.Network::alias())"
-                            >
+                            <x-arkconnect.disabled-action>
                                 <button
                                     type="button"
                                     class="w-full button-primary"
@@ -158,7 +155,7 @@
                                 >
                                     @lang('brands.arkconnect')
                                 </button>
-                            </div>
+                            </x-arkconnect.disabled-action>
 
                             <x-ark-external-link
                                 :url="$this->walletUri"
