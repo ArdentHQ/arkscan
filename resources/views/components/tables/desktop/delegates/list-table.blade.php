@@ -73,11 +73,24 @@
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>
-                    <x-tables.rows.desktop.encapsulated.address
-                        :model="$delegate"
-                        without-clipboard
-                        delegate-name-class="md:w-[100px] md-lg:w-auto"
-                    />
+                    <div class="flex items-center space-x-2">
+                        <x-tables.rows.desktop.encapsulated.address
+                            :model="$delegate"
+                            without-clipboard
+                            delegate-name-class="md:w-[100px] md-lg:w-auto"
+                        />
+
+                        @if (config('arkscan.arkconnect.enabled'))
+                            <div x-show="votingForAddress === '{{ $delegate->address() }}'">
+                                <div data-tippy-content="@lang('pages.delegates.arkconnect.voting_for_tooltip')">
+                                    <x-ark-icon
+                                        name="check-mark-box"
+                                        size="sm"
+                                    />
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>

@@ -10,7 +10,7 @@
 
             <div class="xl:mt-6">
                 <h2 class="text-lg font-semibold sm:text-2xl text-theme-secondary-900">
-                    <span>@lang('general.arkvault') </span>
+                    <span>@lang('brands.arkvault') </span>
                     <span class="text-theme-secondary-500 dark:text-theme-dark-500">
                         (@lang('pages.compatible-wallets.arkvault.web_wallet'))
                     </span>
@@ -24,9 +24,9 @@
             <x-compatible-wallets.learn-more />
         </div>
         <div class="flex flex-1 pt-2 pr-3 md:py-2 grow">
-            <img src="{{ mix('images/wallets/arkvault.svg') }}" class="dark:hidden" />
-            <img src="{{ mix('images/wallets/arkvault-dark.svg') }}" class="hidden dark:block dim:hidden" />
-            <img src="{{ mix('images/wallets/arkvault-dim.svg') }}" class="hidden dim:block" />
+            <img src="{{ Vite::image('wallets/arkvault.svg') }}" class="dark:hidden" />
+            <img src="{{ Vite::image('wallets/arkvault-dark.svg') }}" class="hidden dark:block dim:hidden" />
+            <img src="{{ Vite::image('wallets/arkvault-dim.svg') }}" class="hidden dim:block" />
         </div>
     </div>
 </x-general.card>

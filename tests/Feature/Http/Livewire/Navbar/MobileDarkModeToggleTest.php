@@ -8,7 +8,7 @@ use Livewire\ComponentChecksumManager;
 use Livewire\Livewire;
 
 beforeEach(function () {
-    $this->options   = [
+    $this->themeOptions   = [
         [
             'icon'  => 'sun',
             'value' => 'light',
@@ -24,13 +24,13 @@ beforeEach(function () {
     ];
 
     $this->component = Livewire::test(MobileDarkModeToggle::class, [
-        'options' => $this->options,
+        'options' => $this->themeOptions,
         'setting' => 'theme',
     ]);
 });
 
 it('should render', function () {
-    $this->component->assertSet('options', $this->options)
+    $this->component->assertSet('options', $this->themeOptions)
         ->assertSet('setting', 'theme')
         ->assertSet('currentValue', null)
         ->assertSee('svg');
@@ -87,7 +87,7 @@ it('should handle 404 and not spam livewire requests', function () {
             'errors'   => [],
             'htmlHash' => '19fb4fd4',
             'data'     => [
-                'options'      => $this->options,
+                'options'      => $this->themeOptions,
                 'setting'      => 'theme',
                 'currentValue' => 'light',
             ],
