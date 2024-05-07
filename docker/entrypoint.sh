@@ -2,9 +2,10 @@
 
 sudo chown -R arkscan:www-data /var/www/arkscan
 touch database/database.sqlite
-#--- run installs
+#--- run installs & build files
 composer install --ignore-platform-reqs
-yarn install
+yarn install --ignore-scripts
+yarn build
 #--- fire up services
 sudo supervisord &
 sudo chmod -R 775 /var/www/arkscan/database
