@@ -55,8 +55,8 @@ return [
         'view_delegates'                => 'View Delegates.',
 
         'wrong_network' => [
-            'mainnet' => 'Wrong network, please switch to [Testnet] to enable this action.',
-            'devnet'  => 'Wrong network, please switch to [Mainnet] to enable this action.',
+            'mainnet' => 'Wrong network, please switch to Testnet to enable this action.',
+            'devnet'  => 'Wrong network, please switch to Mainnet to enable this action.',
         ],
     ],
 
