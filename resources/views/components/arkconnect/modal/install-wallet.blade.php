@@ -1,5 +1,5 @@
 <div
-    x-show="! hasExtension"
+    x-show="! hasExtension && isSupported"
     x-data="Modal.alpine({ shown: false })"
     x-cloak
 >
