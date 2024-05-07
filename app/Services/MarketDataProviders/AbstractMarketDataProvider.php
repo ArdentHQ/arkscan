@@ -9,15 +9,23 @@ use Illuminate\Support\Facades\Cache;
 
 abstract class AbstractMarketDataProvider implements MarketDataProvider
 {
-    final protected function isAcceptableResponse(?array $data, string $cacheKey, int $threshold, string $message, callable $errorCheck): bool
-    {
+    final protected function isAcceptableResponse(
+        ?array $data,
+        string $cacheKey,
+        int $threshold,
+        string $message,
+        callable $errorCheck,
+        bool $throwException = true,
+    ): bool {
         $hasError = $errorCheck($data);
 
         if ($hasError || $data === null) {
             if (Cache::increment($cacheKey) > $threshold) {
                 Cache::forget($cacheKey);
 
-                throw new \Exception($message);
+                if ($throwException) {
+                    throw new \Exception($message);
+                }
             }
 
             return true;

@@ -93,4 +93,17 @@ final class WalletQrCode extends Component
             Fill::uniformColor(new Alpha(0, new Gray(0)), new Gray(0)),
         );
     }
+
+    public function getHasAmountProperty(): bool
+    {
+        if ($this->amount === null) {
+            return false;
+        }
+
+        if ($this->amount === '') {
+            return false;
+        }
+
+        return floatval($this->amount) > 0;
+    }
 }

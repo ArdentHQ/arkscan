@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cookie;
 use Livewire\Livewire;
 
 beforeEach(function () {
-    $this->options   = [
+    $this->themeOptions   = [
         [
             'icon'  => 'sun',
             'value' => 'light',
@@ -24,7 +24,7 @@ beforeEach(function () {
     ];
 
     $this->component = Livewire::test(MobileToggle::class, [
-        'options' => $this->options,
+        'options' => $this->themeOptions,
         'setting' => 'theme',
     ]);
 });
@@ -32,7 +32,7 @@ beforeEach(function () {
 it('should render', function () {
     expect(Settings::get('priceChart'))->toBeTrue();
 
-    $this->component->assertSet('options', $this->options)
+    $this->component->assertSet('options', $this->themeOptions)
         ->assertSet('setting', 'theme')
         ->assertSet('currentValue', null)
         ->assertSee('svg');

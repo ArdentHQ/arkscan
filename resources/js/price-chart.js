@@ -1,6 +1,6 @@
 import { Chart, registerables } from "chart.js";
 import "chartjs-adapter-date-fns";
-import { en } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 
 Chart.register(...registerables);
 
@@ -98,7 +98,7 @@ const PriceChart = (values, labels, isPlaceholder, darkMode, isPositive) => {
                         type: "time",
                         adapters: {
                             date: {
-                                locale: en,
+                                locale: enUS,
                             },
                         },
                         ticks: {
