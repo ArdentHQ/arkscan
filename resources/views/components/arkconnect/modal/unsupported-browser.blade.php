@@ -10,8 +10,8 @@
         >
             <div class="h-[104px]">
                 <img src="{{ Vite::image('modals/arkconnect/unsupported.svg') }}" class="dark:hidden" />
-                <img src="{{ Vite::image('modals/arkconnect/install-dark.svg') }}" class="hidden dark:block dim:hidden" />
-                <img src="{{ Vite::image('modals/arkconnect/install-dim.svg') }}" class="hidden dim:block" />
+                <img src="{{ Vite::image('modals/arkconnect/unsupported-dark.svg') }}" class="hidden dark:block dim:hidden" />
+                <img src="{{ Vite::image('modals/arkconnect/unsupported-dim.svg') }}" class="hidden dim:block" />
             </div>
 
             <x-ark-alert type="warning">
