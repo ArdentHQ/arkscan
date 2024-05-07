@@ -130,6 +130,7 @@
                         >
                             <div
                                 x-show="isOnSameNetwork"
+                                wire:key="arkconnect:amount:{{ $this->hasAmount ? 'enabled' : 'disabled' }}"
                                 @if (! $this->hasAmount)
                                     data-tippy-content="@lang('pages.wallet.qrcode.arkconnect_specify_amount_tooltip')"
                                 @endif
