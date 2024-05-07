@@ -47,16 +47,18 @@ return [
     'vote_with'           => 'Vote With',
 
     'arkconnect' => [
-        'mainnet_network'               => 'You\'re viewing data from the main network, but your wallet is connected to test network (ARK Testnet). To use ARKScan, please switch to <a class="link font-semibold" href="https://test.arkscan.io/">test.arkscan.io</a>.',
-        'testnet_network'               => 'You\'re viewing data from the test network, but your wallet is connected to main network (ARK Mainnet). To use ARKScan, please switch to <a class="link font-semibold" href="https://live.arkscan.io/">live.arkscan.io</a>.',
-        'delegate_resigned'             => '<span class="font-semibold" x-text="votedDelegateName"></span>, the delegate you are voting for, has resigned.',
-        'delegate_resigned_switch_vote' => 'We recommend switching your vote to an active delegate.',
-        'delegate_standby'              => 'The delegate you are voting for <span class="font-semibold">(<span x-text="votedDelegateName"></span>)</span> is not in an active forging position at the moment.',
-        'view_delegates'                => 'View Delegates.',
+        'mainnet_network'                => 'You\'re viewing data from the main network, but your wallet is connected to test network (ARK Testnet). To use ARKScan, please switch to <a class="link font-semibold" href="https://test.arkscan.io/">test.arkscan.io</a>.',
+        'testnet_network'                => 'You\'re viewing data from the test network, but your wallet is connected to main network (ARK Mainnet). To use ARKScan, please switch to <a class="link font-semibold" href="https://live.arkscan.io/">live.arkscan.io</a>.',
+        'validator_resigned'             => '<span class="font-semibold" x-text="votedValidatorName"></span>, the validator you are voting for, has resigned.',
+        'validator_resigned_switch_vote' => 'We recommend switching your vote to an active validator.',
+        'validator_standby'              => 'The validator you are voting for <span class="font-semibold">(<span x-text="votedValidatorName"></span>)</span> is not in an active forging position at the moment.',
+        'view_validators'                => 'View Validators.',
+
+        'connect_wallet_tooltip' => 'Connect Wallet to enable this action.',
 
         'wrong_network' => [
-            'mainnet' => 'Wrong network, please switch to [Testnet] to enable this action.',
-            'devnet'  => 'Wrong network, please switch to [Mainnet] to enable this action.',
+            'mainnet' => 'You\'re connected with a testnet address. Switch to test.arkscan.io to enable this action.',
+            'devnet'  => 'You\'re connected with a mainnet address. Switch to live.arkscan.io to enable this action.',
         ],
     ],
 
@@ -77,6 +79,14 @@ return [
             'my_address'   => 'My Address:',
             'copy_address' => 'Copy Address',
             'disconnect'   => 'Disconnect',
+
+            'modal' => [
+                'install_title'               => 'Install ARK Connect',
+                'install_subtitle'            => 'To link up on ARK Scan using ARK Connect, you must initially install the extension.',
+                'install_arkconnect'          => 'Install ARK Connect',
+                'unsupported_browser_title'   => 'Unsupported Browser for ARK Connect',
+                'unsupported_browser_warning' => 'ARK Connect is not compatible with your current browser. To install the ARK Connect extension, please switch to a browser based on Chrome or Firefox.',
+            ],
         ],
     ],
 

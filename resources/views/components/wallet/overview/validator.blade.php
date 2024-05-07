@@ -5,7 +5,7 @@
         @if (! $wallet->isResigned() && config('arkscan.arkconnect.enabled'))
             <x-slot name="titleExtra">
                 <div x-cloak>
-                    <x-validators.vote-link
+                    <x-validators.arkconnect.vote-link
                         :model="$wallet"
                         button-class="font-semibold hover:underline"
                     >
@@ -28,7 +28,7 @@
                                 @lang('pages.wallet.validator.unvote_validator')
                             </span>
                         </x-slot>
-                    </x-validators.vote-link>
+                    </x-validators.arkconnect.vote-link>
                 </div>
             </x-slot>
         @endif

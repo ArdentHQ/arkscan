@@ -65,7 +65,7 @@
             </x-slot>
 
             <div class="overflow-hidden rounded-t-xl">
-                <div class="flex py-2 px-6 text-sm font-semibold bg-theme-secondary-200 leading-4.25 dark:text-theme-dark-200 dark:bg-theme-dark-950">
+                <div class="flex py-2 px-6 text-sm font-semibold bg-theme-secondary-200 leading-4.25 dark:bg-theme-dark-950">
                     @lang('general.vote_with')
                 </div>
 
@@ -77,10 +77,7 @@
                         :text="trans('brands.arkvault')"
                     />
 
-                    <div
-                        x-show="!isOnSameNetwork"
-                        data-tippy-content="@lang('general.arkconnect.wrong_network.'.Network::alias())"
-                    >
+                    <x-arkconnect.disabled-action>
                         <button
                             type="button"
                             class="flex items-center py-3 space-x-2 font-semibold leading-5 text-theme-secondary-500 dark:text-theme-dark-500"
@@ -89,7 +86,7 @@
                         >
                             @lang('brands.arkconnect')
                         </button>
-                    </div>
+                    </x-arkconnect.disabled-action>
 
                     <button
                         x-show="isOnSameNetwork"

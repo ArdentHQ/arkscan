@@ -387,11 +387,12 @@ return [
         'next'               => 'Next',
         'now'                => 'Now',
         'monitor'            => 'Monitor',
+
         'arkconnect'         => [
             'voting_for_tooltip'     => 'You\'re voting for this validator',
-            'resigned_validator'     => ', the validator you are voting for, has resigned.',
             'recommend_switch_votes' => 'We recommend switching your vote to an active validator.',
         ],
+
         'statistics' => [
             'validator_registrations' => 'Validator Registrations',
             'block_reward'            => 'Block Reward',
