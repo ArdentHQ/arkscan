@@ -402,6 +402,22 @@ const Wallet = (network, xData = {}) => {
 
             window.arkconnect.disconnect();
         },
+
+        get isSupported() {
+            // If the user has the extension installed, we can assume they are on a supported browser
+            if (window.arkconnect !== undefined) {
+                return true;
+            }
+
+            const isCompatible = /chrome|firefox/.test(
+                navigator.userAgent.toLowerCase()
+            );
+            const isMobile = /android|iphone|ipad|ipod/.test(
+                navigator.userAgent.toLowerCase()
+            );
+
+            return isCompatible && !isMobile;
+        },
     });
 };
 
