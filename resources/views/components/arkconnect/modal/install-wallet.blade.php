@@ -7,7 +7,7 @@
         <x-slot name="title">
             @lang('general.navbar.arkconnect.modal.install_title')
 
-            <div class="text-sm font-normal text-theme-secondary-700 leading-5.25 mt-1.5">
+            <div class="mt-1.5 text-sm font-normal text-theme-secondary-700 leading-5.25">
                 @lang('general.navbar.arkconnect.modal.install_subtitle')
             </div>
         </x-slot>
@@ -40,7 +40,7 @@
     </x-arkconnect.modal.modal>
 
     <button
-        class="py-1.5 px-4 whitespace-nowrap button-secondary w-full md:w-auto"
+        class="py-1.5 px-4 w-full whitespace-nowrap md:w-auto button-secondary"
         @click="shown = true"
     >
         @lang('general.navbar.connect_wallet')

@@ -32,7 +32,7 @@
     </x-arkconnect.modal.modal>
 
     <button
-        class="py-1.5 px-4 whitespace-nowrap button-secondary w-full md:w-auto"
+        class="py-1.5 px-4 w-full whitespace-nowrap md:w-auto button-secondary"
         @click="shown = true"
     >
         @lang('general.navbar.connect_wallet')

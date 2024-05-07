@@ -28,7 +28,7 @@
         <button
             type="button"
             x-on:click="hide"
-            class="button-secondary mt-3 sm:mt-0"
+            class="mt-3 sm:mt-0 button-secondary"
         >
             @lang('actions.cancel')
         </button>
