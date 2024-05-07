@@ -409,8 +409,12 @@ const Wallet = (network, xData = {}) => {
                 return true;
             }
 
-            const isCompatible = /chrome|firefox/.test(navigator.userAgent.toLowerCase());
-            const isMobile = /android|iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+            const isCompatible = /chrome|firefox/.test(
+                navigator.userAgent.toLowerCase()
+            );
+            const isMobile = /android|iphone|ipad|ipod/.test(
+                navigator.userAgent.toLowerCase()
+            );
 
             return isCompatible && !isMobile;
         },
