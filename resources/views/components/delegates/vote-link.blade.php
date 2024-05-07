@@ -65,7 +65,7 @@
             </x-slot>
 
             <div class="overflow-hidden rounded-t-xl">
-                <div class="flex py-2 px-6 text-sm font-semibold bg-theme-secondary-200 leading-4.25 dark:bg-theme-dark-950">
+                <div class="flex py-2 px-6 text-sm dark:text-theme-dark-200 font-semibold bg-theme-secondary-200 leading-4.25 dark:bg-theme-dark-950">
                     @lang('general.vote_with')
                 </div>
 
