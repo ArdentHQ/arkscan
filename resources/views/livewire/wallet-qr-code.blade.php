@@ -125,9 +125,7 @@
                     @php ($arkconnectEnabled = config('arkscan.arkconnect.enabled'))
 
                     @if ($arkconnectEnabled)
-                        <div
-                            class="flex flex-col w-full"
-                        >
+                        <div class="flex flex-col w-full">
                             <div
                                 x-show="isOnSameNetwork"
                                 wire:key="arkconnect:amount:{{ $this->hasAmount ? 'enabled' : 'disabled' }}"
