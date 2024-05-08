@@ -14,7 +14,6 @@ use Livewire\Livewire;
 use function Tests\createBlock;
 use function Tests\createRealisticRound;
 use function Tests\createRoundEntry;
-use function Tests\getRoundValidators;
 
 beforeEach(function () {
     $this->activeValidators = require dirname(dirname(dirname(dirname(__DIR__)))).'/fixtures/forgers.php';
