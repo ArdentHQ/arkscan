@@ -234,6 +234,12 @@ it('should defer loading', function () {
         ->assertSee('4,234,212');
 });
 
+function getDelegateForgingPosition(int $round, string $publicKey)
+{
+    return delegatesForRound(false, $round)
+        ->search(fn ($delegate) => $delegate['publicKey'] === $publicKey);
+}
+
 it('should calculate forged correctly with current round', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
     $this->freezeTime();
@@ -247,13 +253,8 @@ it('should calculate forged correctly with current round', function () {
         ],
     ], $this);
 
-    for ($i = 0; $i < 3; $i++) {
-        $delegatesOrder = delegatesForRound(false, $round);
-        $delegateIndex  = $delegatesOrder->search(fn ($delegate) => $delegate['publicKey'] === $delegates->get(4)->public_key);
-        if ($delegateIndex < 49) {
-            break;
-        }
-
+    $publicKey = $delegates->get(4)->public_key;
+    while (getDelegateForgingPosition($round, $publicKey) > 48) {
         [$delegates, $round, $height] = createRealisticRound([
             array_fill(0, 51, true),
             [
@@ -264,7 +265,7 @@ it('should calculate forged correctly with current round', function () {
         ], $this);
     }
 
-    createPartialRound($round, $height, 49, $this, null, $delegates->get(4)->public_key);
+    createPartialRound($round, $height, 49, $this, null, $publicKey);
 
     expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, true]);
 
@@ -324,19 +325,14 @@ it('should calculate missed correctly with current round', function () {
         array_fill(0, 51, true),
     ], $this);
 
-    for ($i = 0; $i < 3; $i++) {
-        $delegatesOrder = delegatesForRound(false, $round);
-        $delegateIndex  = $delegatesOrder->search(fn ($delegate) => $delegate['publicKey'] === $delegates->get(4)->public_key);
-        if ($delegateIndex < 49) {
-            break;
-        }
-
+    $publicKey = $delegates->get(4)->public_key;
+    while (getDelegateForgingPosition($round, $publicKey) > 48) {
         [$delegates, $round, $height] = createRealisticRound([
             array_fill(0, 51, true),
         ], $this);
     }
 
-    createPartialRound($round, $height, 49, $this, $delegates->get(4)->public_key, $delegates->get(4)->public_key);
+    createPartialRound($round, $height, 49, $this, $publicKey, $publicKey);
 
     expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([true, false]);
 
@@ -409,13 +405,8 @@ it('should calculate not forging correctly with current round', function () {
         ],
     ], $this);
 
-    for ($i = 0; $i < 3; $i++) {
-        $delegatesOrder = delegatesForRound(false, $round);
-        $delegateIndex  = $delegatesOrder->search(fn ($delegate) => $delegate['publicKey'] === $delegates->get(4)->public_key);
-        if ($delegateIndex < 49) {
-            break;
-        }
-
+    $publicKey = $delegates->get(4)->public_key;
+    while (getDelegateForgingPosition($round, $publicKey) > 48) {
         [$delegates, $round, $height] = createRealisticRound([
             [
                 ...array_fill(0, 4, true),
@@ -425,7 +416,7 @@ it('should calculate not forging correctly with current round', function () {
         ], $this);
     }
 
-    createPartialRound($round, $height, 49, $this, $delegates->get(4)->public_key, $delegates->get(4)->public_key);
+    createPartialRound($round, $height, 49, $this, $publicKey, $publicKey);
 
     expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, false]);
 

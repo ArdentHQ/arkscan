@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\Console\Commands\CacheDelegatePerformance;
+use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Round;
@@ -190,41 +191,46 @@ function createRoundEntry(int $round, string $publicKey)
 // This is to ensure the SAME delegate misses or forges per round
 function createRealisticRound(array $performances, $context)
 {
-    Round::truncate();
-    Block::truncate();
-    Wallet::truncate();
-
-    $context->travel(-(51 * 8 * (count($performances) + 1)))->seconds();
-
-    $height = 1;
-    $cache  = new WalletCache();
+    $cache = new WalletCache();
 
     // Create initial round
-    $round           = 1;
-    $delegateWallets = Wallet::factory(51)
-        ->activeDelegate()
-        ->create()
-        ->each(function ($delegate) use (&$height, $cache, $round) {
-            $cache->setDelegate($delegate->public_key, $delegate);
+    $round  = (Block::count() / Network::delegateCount()) + 1;
+    $height = (($round - 1) * Network::delegateCount()) + 1;
+    if ($round === 1) {
+        Round::truncate();
+        Block::truncate();
+        Wallet::truncate();
 
-            createRoundEntry($round, $delegate->public_key);
+        $context->travel(-(Network::delegateCount() * 8 * (count($performances) + 1)))->seconds();
 
-            createBlock($height, $delegate->public_key);
+        $delegateWallets = Wallet::factory(Network::delegateCount())
+            ->activeDelegate()
+            ->create()
+            ->each(function ($delegate) use (&$height, $cache, $round) {
+                $cache->setDelegate($delegate->public_key, $delegate);
 
-            $height++;
-        });
+                createRoundEntry($round, $delegate->public_key);
 
-    $round++;
+                createBlock($height, $delegate->public_key);
 
-    expect(Block::count())->toBe(51);
-    expect($height - 1)->toBe(51);
+                $height++;
+            });
+
+        $round++;
+    } else {
+        $delegateWallets = Wallet::all();
+    }
+
+    expect($delegateWallets)->toHaveCount(Network::delegateCount());
 
     // Loop through performances and generate rounds for each - requires 51 entries (blocks per round) to work correctly
-    foreach ($performances as $index => $didForge) {
+    foreach ($performances as $didForge) {
         createFullRound($round, $height, $delegateWallets, $context, $didForge);
-
-        expect(Block::count())->toBe(51 + (($index + 1) * 51));
     }
+
+    expect($round - 1)->toBe(Block::count() / Network::delegateCount());
+    expect(Block::count())->toBe(($round - 1) * Network::delegateCount());
+    expect($height - 1)->toBe(($round - 1) * Network::delegateCount());
 
     (new NetworkCache())->setHeight(fn (): int => $height - 1);
 
