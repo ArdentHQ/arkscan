@@ -12,10 +12,7 @@ final class ArkVaultUrlBuilder
 {
     public static function get(): UrlBuilder
     {
-        $urlBuilder = new UrlBuilder(config('arkscan.vault_url'));
-
-        $urlBuilder->setNetwork(Network::alias() === 'mainnet' ? Networks::ARKMainnet : Networks::ARKDevnet);
-
-        return $urlBuilder;
+        return (new UrlBuilder(config('arkscan.vault_url')))
+            ->setNetwork(Network::nethash());
     }
 }
