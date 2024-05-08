@@ -1,10 +1,10 @@
 @props(['model'])
 
 @if (config('arkscan.arkconnect.enabled', false))
-    <x-validators.vote-link :model="$model" />
+    <x-validators.arkconnect.vote-link :model="$model" />
 @else
     @if (config('arkscan.arkconnect.enabled', false))
-        <x-validators.vote-link :model="$model" />
+        <x-validators.arkconnect.vote-link :model="$model" />
     @else
         <x-ark-external-link
             :url="$model->voteUrl()"

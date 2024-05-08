@@ -2,7 +2,8 @@
     <x-tables.toolbars.validators.list-table :validators="$validators" />
 
     <div class="sm:hidden">
-        <x-validators.resigned-validator-notice />
+        <x-validators.arkconnect.resigned-validator-notice />
+        <x-validators.arkconnect.standby-validator-notice />
     </div>
 
     <x-skeletons.validators.list-table

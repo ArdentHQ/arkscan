@@ -1,7 +1,7 @@
 @props(['model'])
 
 @if (config('arkscan.arkconnect.enabled', false))
-    <x-validators.vote-link
+    <x-validators.arkconnect.vote-link
         :model="$model"
         :attributes="$attributes"
         without-resigned-vote
