@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Facades\Network;
-use Ardenthq\UrlBuilder\Enums\Networks;
 use Ardenthq\UrlBuilder\UrlBuilder;
 
 final class ArkVaultUrlBuilder
