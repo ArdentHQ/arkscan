@@ -76,14 +76,4 @@ final class ForgingStats extends Model
     {
         return $query->whereNot('missed_height', null);
     }
-
-    // /**
-    //  * Get the current connection name for the model.
-    //  *
-    //  * @return string
-    //  */
-    // public function getConnectionName()
-    // {
-    //     return config('database.default');
-    // }
 }
