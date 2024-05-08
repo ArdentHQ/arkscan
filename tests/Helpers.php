@@ -19,9 +19,9 @@ use ArkEcosystem\Crypto\Identities\PublicKey;
 use Faker\Generator;
 use FurqanSiddiqui\BIP39\BIP39;
 use Illuminate\Support\Collection as SupportCollection;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use Tests\Stubs\FullPartialRoundException;
 
 function faker(): Generator
 {
@@ -174,6 +174,10 @@ function createBlock(int $height, string $publicKey)
 
 function createRoundEntry(int $round, int $height, SupportCollection $wallets)
 {
+    if (Round::where('round', $round)->exists()) {
+        return;
+    }
+
     Round::factory()->create([
         'round'        => $round,
         'round_height' => $height,
@@ -185,24 +189,26 @@ function createRoundEntry(int $round, int $height, SupportCollection $wallets)
 // This is to ensure the SAME validator misses or forges per round
 function createRealisticRound(array $performances, $context, bool $cachePerformance = true)
 {
-    Round::truncate();
-    Block::truncate();
-    Wallet::truncate();
-
-    $context->travel(-(Network::validatorCount() * 8 * (count($performances) + 1)))->seconds();
-
-    $height = 1;
-    $cache  = new WalletCache();
+    $cache = new WalletCache();
 
     // Create initial round
-    $round            = 1;
+    $round  = Round::count() + 1;
+    $height = (($round - 1) * Network::validatorCount()) + 1;
+    if ($round === 1) {
+        Round::truncate();
+        Block::truncate();
+        Wallet::truncate();
+
+        $context->travel(-(Network::validatorCount() * 8 * (count($performances) + 1)))->seconds();
+    }
+
     $validatorWallets = Wallet::factory(Network::validatorCount())
         ->activeValidator()
         ->create();
 
     createRoundEntry($round, $height, $validatorWallets);
 
-    $validatorWallets->each(function ($validator) use (&$height, $cache, $round) {
+    $validatorWallets->each(function ($validator) use (&$height, $cache) {
         $cache->setValidator($validator->public_key, $validator);
 
         createBlock($height, $validator->public_key);
@@ -301,10 +307,6 @@ function createPartialRound(
 
             break;
         }
-
-        if ($requiredIndex >= $blocks) {
-            throw new FullPartialRoundException();
-        }
     }
 
     $round++;
@@ -332,7 +334,9 @@ function createPartialRound(
 
     $height += $blockCount;
 
-    if ($requiredIndex && $requiredIndex === 50) {
+    if ($requiredIndex && ($requiredIndex === Network::validatorCount() - 1 || $requiredIndex >= $blocks)) {
+        Artisan::call('cache:clear');
+
         return createPartialRound($round, $height, $blocks, $context, $missedPublicKey, $requiredPublicKey);
     }
 

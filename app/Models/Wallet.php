@@ -23,6 +23,7 @@ use Laravel\Scout\Searchable;
  * @property BigNumber $balance
  * @property BigNumber $nonce
  * @property array $attributes
+ * @property int $updated_at
  * @property string $validator_username (only available when indexed by scout)
  * @property string $timestamp (only available when indexed by scout)
  * @property int $missed_blocks (only available when sorting validators by missed blocks)
@@ -50,6 +51,18 @@ final class Wallet extends Model
      */
     public $keyType = 'string';
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * The column name of the primary key.
+     *
+     * @var string
+     */
     protected $primaryKey = 'address';
 
     /**
@@ -114,7 +127,7 @@ final class Wallet extends Model
                 'wallets.address',
                 'wallets.attributes',
                 'wallets.balance',
-                DB::raw('CAST(EXTRACT(epoch from wallets.updated_at) as integer) as timestamp'),
+                DB::raw('wallets.updated_at as timestamp'),
             ])
             ->when(true, function ($query) use ($self) {
                 $self->makeAllSearchableUsing($query);

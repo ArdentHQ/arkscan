@@ -1,5 +1,5 @@
-import * as dayjs from "dayjs";
-import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
+import dayjs from "dayjs/esm/index.js";
+import dayjsLocalizedFormat from "dayjs/esm/plugin/localizedFormat/index.js";
 
 import {
     FailedExportRequest,
@@ -11,8 +11,7 @@ import {
     queryTimestamp,
 } from "./includes/helpers";
 
-import { BlocksApi } from "./blocks-api";
-import { ValidatorsApi } from "./validators-api";
+import { BlocksApi } from "./api/blocks";
 import { ExportStatus } from "./includes/enums";
 
 window.ExportStatus = ExportStatus;

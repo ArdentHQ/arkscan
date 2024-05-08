@@ -1,19 +1,23 @@
 <div
-    x-data="Wallet()"
     class="flex flex-col py-3 px-6 md:py-0 md:px-0 dark:border-transparent dark:text-theme-dark-200 dark:bg-theme-dark-900"
     :class="{
         'border-t bg-theme-secondary-200 border-theme-secondary-300 md:border-0 md:bg-transparent': isConnected,
     }"
 >
-    <button
-        x-show="! isConnected"
-        class="py-1.5 px-4 whitespace-nowrap button-secondary"
-        @click="connect"
-        :disabled="! hasExtension"
-        disabled
-    >
-        @lang('general.navbar.connect_wallet')
-    </button>
+    <div x-show="hasExtension && isSupported">
+        <button
+            x-show="! isConnected"
+            class="py-1.5 px-4 whitespace-nowrap button-secondary"
+            @click="connect"
+            :disabled="! hasExtension"
+            disabled
+        >
+            @lang('general.navbar.connect_wallet')
+        </button>
+    </div>
+
+    <x-arkconnect.modal.install-wallet />
+    <x-arkconnect.modal.unsupported-browser />
 
     <div
         x-show="isConnected"
@@ -63,7 +67,7 @@
             >
                 <x-slot name="button">
                     <div
-                        x-text="truncateMiddle(await address())"
+                        x-text="truncateMiddle(address)"
                         class="text-sm font-semibold md:leading-3.75"
                     ></div>
 

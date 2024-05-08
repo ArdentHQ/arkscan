@@ -6,7 +6,6 @@ namespace App\Jobs;
 
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 
 final class IndexWallets extends IndexModel
 {
@@ -17,6 +16,6 @@ final class IndexWallets extends IndexModel
 
     protected function elementsToIndexQuery(int $latestIndexedTimestamp): Builder
     {
-        return Wallet::getSearchableQuery()->where(DB::raw('(CAST(EXTRACT(epoch from wallets.updated_at) as integer))'), '>', $latestIndexedTimestamp);
+        return Wallet::getSearchableQuery()->where('wallets.updated_at', '>', $latestIndexedTimestamp);
     }
 }

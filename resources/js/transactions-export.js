@@ -1,6 +1,6 @@
-import * as dayjs from "dayjs";
-import * as dayjsLocalizedFormat from "dayjs/plugin/localizedFormat";
-import * as dayjsQuarterOfYear from "dayjs/plugin/quarterOfYear";
+import dayjs from "dayjs/esm/index.js";
+import dayjsLocalizedFormat from "dayjs/esm/plugin/localizedFormat/index.js";
+import dayjsQuarterOfYear from "dayjs/esm/plugin/quarterOfYear/index.js";
 
 import {
     FailedExportRequest,
@@ -11,13 +11,9 @@ import {
     getDateRange,
     queryTimestamp,
 } from "./includes/helpers";
-import {
-    ExportStatus,
-    TransactionType,
-    TransactionTypeGroup,
-} from "./includes/enums";
+import { ExportStatus, TransactionType } from "./includes/enums";
 
-import { TransactionsApi } from "./transactions-api";
+import { TransactionsApi } from "./api/transactions";
 
 window.ExportStatus = ExportStatus;
 
