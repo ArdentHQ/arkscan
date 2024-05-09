@@ -7,7 +7,7 @@
 <x-ark-js-modal
     :init="false"
     padding="p-6"
-    title-class="text-lg font-semibold pr-10"
+    title-class="pr-10 text-lg font-semibold"
     width-class="max-w-full sm:max-w-[448px]"
     buttons-style="!mt-4 sm:!mt-6 sm:space-x-3 flex flex-col-reverse sm:flex-row justify-end"
     breakpoint="sm"
