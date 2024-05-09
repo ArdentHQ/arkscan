@@ -24,7 +24,7 @@ final class CoinGecko extends AbstractMarketDataProvider
         return $cache->setHistorical($source, $target, $format, function () use ($source, $target, $format, $cache): Collection {
             $params = [
                 'vs_currency' => Str::lower($target),
-                'days'        => Network::epoch()->diffInDays() + 1, // +1 to handle edge case where first day is not returned in full depending on time of day
+                'days'        => min(365, Network::epoch()->diffInDays() + 1), // +1 to handle edge case where first day is not returned in full depending on time of day
                 'interval'    => 'daily',
             ];
 
@@ -173,9 +173,10 @@ final class CoinGecko extends AbstractMarketDataProvider
         return $this->isAcceptableResponse(
             $data,
             'coingecko_response_error',
-            (int) config('arkscan.coingecko_exception_frequency', 60),
+            (int) config('arkscan.market_data.coingecko.exception_frequency', 60),
             'Too many empty CoinGecko responses',
             fn ($data) => Arr::get($data, 'status.error_code') !== null,
+            config('arkscan.market_data.coingecko.ignore_errors', false) === false,
         );
     }
 
@@ -184,9 +185,10 @@ final class CoinGecko extends AbstractMarketDataProvider
         return $this->isAcceptableResponse(
             $data,
             'coingecko_response_throttled',
-            (int) config('arkscan.coingecko_exception_frequency', 60),
+            (int) config('arkscan.market_data.coingecko.exception_frequency', 60),
             'CoinGecko requests are being throttled',
             fn ($data) => Arr::get($data, 'status.error_code') !== null,
+            config('arkscan.market_data.coingecko.ignore_errors', false) === false,
         );
     }
 }

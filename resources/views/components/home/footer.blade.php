@@ -10,17 +10,17 @@
         class="left-0 right-auto max-w-none sm:right-0 sm:left-auto"
     >
         <img
-            src="{{ mix('images/home/footer-bg.svg') }}"
+            src="{{ Vite::image('home/footer-bg.svg') }}"
             class="max-w-none sm:block dark:hidden"
         />
 
         <img
-            src="{{ mix('images/home/footer-bg-dark.svg') }}"
+            src="{{ Vite::image('home/footer-bg-dark.svg') }}"
             class="hidden max-w-none dark:block dim:hidden"
         />
 
         <img
-            src="{{ mix('images/home/footer-bg-dim.svg') }}"
+            src="{{ Vite::image('home/footer-bg-dim.svg') }}"
             class="hidden max-w-none dim:block"
         />
     </x-slot>
@@ -29,9 +29,9 @@
 
     <div class="flex relative z-30 flex-col flex-1 items-center h-full sm:flex-row sm:justify-between">
         <div class="hidden -ml-24 h-full sm:block md:-ml-16 lg:ml-0">
-            <img src="{{ mix('images/home/footer.svg') }}" class="h-full dark:hidden" />
-            <img src="{{ mix('images/home/footer-dark.svg') }}" class="hidden h-full dark:block dim:hidden" />
-            <img src="{{ mix('images/home/footer-dim.svg') }}" class="hidden h-full dim:block" />
+            <img src="{{ Vite::image('home/footer.svg') }}" class="h-full dark:hidden" />
+            <img src="{{ Vite::image('home/footer-dark.svg') }}" class="hidden h-full dark:block dim:hidden" />
+            <img src="{{ Vite::image('home/footer-dim.svg') }}" class="hidden h-full dim:block" />
         </div>
 
         <div class="flex flex-col flex-1 w-full sm:ml-6 sm:w-auto md:ml-2 lg:ml-6 md-lg:pl-8">
@@ -52,7 +52,6 @@
                 title-color="text-theme-primary-900 dark:text-theme-dark-50"
                 subtitle-color="text-theme-secondary-800 dark:text-theme-dark-200 text-xs"
                 icon-size="w-11 h-11"
-                arrows-breakpoint="xl"
                 home
             />
         </div>

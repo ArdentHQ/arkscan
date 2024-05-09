@@ -176,13 +176,15 @@ return [
         'address_copied'        => 'Address Copied',
 
         'qrcode'                => [
-            'title'            => 'Send Funds',
-            'description'      => 'Enter the amount you wish to transfer to this address and confirm.',
-            'automatic_notice' => 'The QR-code is updated automatically, you do not need to press anything.',
-            'specify_amount'   => 'Specify Amount',
-            'send_from_wallet' => 'Send From Wallet',
-            'currency_amount'  => ':currency Amount',
-            'memo_optional'    => 'Memo (optional)',
+            'title'                             => 'Send Funds',
+            'description'                       => 'Enter the amount you wish to transfer to this address and confirm.',
+            'automatic_notice'                  => 'The QR-code is updated automatically, you do not need to press anything.',
+            'or_send_with'                      => 'or send with',
+            'specify_amount'                    => 'Specify Amount',
+            'send_from_wallet'                  => 'Send From Wallet',
+            'currency_amount'                   => ':currency Amount',
+            'memo_optional'                     => 'Memo (optional)',
+            'arkconnect_specify_amount_tooltip' => 'Specify amount to send with ARK Connect',
         ],
 
         'public_key'            => [
@@ -207,8 +209,8 @@ return [
             'votes_title'           => 'Votes',
             'productivity_title'    => 'Productivity',
             'not_registered_text'   => 'This address is not a registered delegate',
-            'vote'                  => 'Vote',
             'vote_for_delegate'     => 'Vote for Delegate',
+            'unvote_delegate'       => 'Unvote Delegate',
             'resigned_vote_tooltip' => 'Cannot vote for resigned delegates.',
         ],
 
@@ -369,21 +371,27 @@ return [
             'recent_votes'  => 'Recent Votes',
         ],
 
-        'active'     => 'Active',
-        'standby'    => 'Standby',
-        'resigned'   => 'Resigned',
-        'order'      => 'Order',
-        'name'       => 'Delegate Name',
-        'forging_at' => 'Time to Forge',
-        'status'     => 'Status',
-        'block_id'   => 'Block ID',
-        'success'    => 'Block Generated',
-        'warning'    => 'Block Missed',
-        'danger'     => ':0 Blocks Missed',
-        'completed'  => 'Completed',
-        'next'       => 'Next',
-        'now'        => 'Now',
-        'monitor'    => 'Monitor',
+        'active'             => 'Active',
+        'standby'            => 'Standby',
+        'resigned'           => 'Resigned',
+        'order'              => 'Order',
+        'name'               => 'Delegate Name',
+        'forging_at'         => 'Time to Forge',
+        'status'             => 'Status',
+        'block_id'           => 'Block ID',
+        'success'            => 'Block Generated',
+        'warning'            => 'Block Missed',
+        'danger'             => ':0 Blocks Missed',
+        'completed'          => 'Completed',
+        'next'               => 'Next',
+        'now'                => 'Now',
+        'monitor'            => 'Monitor',
+
+        'arkconnect'         => [
+            'voting_for_tooltip'     => 'You\'re voting for this delegate',
+            'recommend_switch_votes' => 'We recommend switching your vote to an active delegate.',
+        ],
+
         'statistics' => [
             'delegate_registrations' => 'Delegate Registrations',
             'block_reward'           => 'Block Reward',
@@ -406,8 +414,9 @@ return [
     ],
 
     'delegate-monitor' => [
-        'title'    => 'Delegate Monitor',
-        'subtitle' => 'Delegate block production observer tool.',
+        'title'                 => 'Delegate Monitor',
+        'subtitle'              => 'Delegate block production observer tool.',
+        'missed_blocks_tooltip' => 'Delegate last forged :blocks blocks ago (:time)',
 
         'stats' => [
             'forging'        => 'Forging',
@@ -599,7 +608,12 @@ return [
             'web_wallet'  => 'Web Wallet',
             'description' => 'ARKVault is the native web-wallet solution developed by the team behind ARK Core. It was built from the ground up to be the best ARK wallet possible and we highly recommend you give it a try!',
             'subtitle'    => 'Control Your Assets',
-            'url'         => 'https://arkvault.io',
+        ],
+
+        'arkconnect' => [
+            'title'       => 'ARKConnect',
+            'title_extra' => '(Browser Extension)',
+            'subtitle'    => 'Web3 Browser Extension',
         ],
 
         'wallets' => [

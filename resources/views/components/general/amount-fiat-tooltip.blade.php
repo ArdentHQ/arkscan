@@ -24,7 +24,7 @@
 
 <span {{ $attributes->merge(['class' => $class]) }}>
     @if($amountForItself !== null && $amountForItself > 0)
-        <span class="fiat-hint" data-tippy-content="{{ trans('general.fiat_excluding_itself', [
+        <span class="fiat-hint" data-tippy-content="{{ trans('general.fiat_excluding_self', [
             'amount' => ExplorerNumberFormatter::currency($amountForItself, Network::currency())
         ]) }}">
             <x-ark-icon name="hint-small" size="xs" />

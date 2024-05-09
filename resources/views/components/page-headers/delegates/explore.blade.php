@@ -4,32 +4,32 @@
 >
     <x-slot name="background" class="left-0 right-auto sm:right-0 sm:left-auto">
         <img
-            src="{{ mix('images/delegates/header-bg.svg') }}"
+            src="{{ Vite::image('delegates/header-bg.svg') }}"
             class="hidden max-w-none sm:block dark:hidden"
         />
 
         <img
-            src="{{ mix('images/delegates/header-bg-mobile.svg') }}"
+            src="{{ Vite::image('delegates/header-bg-mobile.svg') }}"
             class="max-w-none sm:hidden dark:hidden"
         />
 
         <img
-            src="{{ mix('images/delegates/header-bg-dark.svg') }}"
+            src="{{ Vite::image('delegates/header-bg-dark.svg') }}"
             class="hidden max-w-none dim:sm:hidden dark:sm:block"
         />
 
         <img
-            src="{{ mix('images/delegates/header-bg-mobile-dark.svg') }}"
+            src="{{ Vite::image('delegates/header-bg-mobile-dark.svg') }}"
             class="hidden max-w-none dark:block dim:hidden dark:sm:hidden"
         />
 
         <img
-            src="{{ mix('images/delegates/header-bg-dim.svg') }}"
+            src="{{ Vite::image('delegates/header-bg-dim.svg') }}"
             class="hidden max-w-none dark:hidden dim:sm:block"
         />
 
         <img
-            src="{{ mix('images/delegates/header-bg-mobile-dim.svg') }}"
+            src="{{ Vite::image('delegates/header-bg-mobile-dim.svg') }}"
             class="hidden max-w-none dark:hidden dim:block dim:sm:hidden"
         />
     </x-slot>

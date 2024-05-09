@@ -2,9 +2,10 @@
 
 sudo chown -R arkscan:www-data /var/www/arkscan
 touch database/database.sqlite
-#--- run installs
+#--- run installs & build files
 composer install --ignore-platform-reqs
 yarn install
+yarn build
 #--- fire up services
 sudo supervisord &
 sudo chmod -R 775 /var/www/arkscan/database
@@ -23,7 +24,6 @@ php artisan explorer:cache-transactions
 php artisan explorer:cache-prices
 php artisan explorer:cache-volume
 php artisan explorer:cache-currencies-data
-php artisan explorer:cache-currencies-history --no-delay
 php artisan explorer:cache-delegate-aggregates
 php artisan explorer:cache-delegate-performance
 php artisan explorer:cache-delegate-productivity

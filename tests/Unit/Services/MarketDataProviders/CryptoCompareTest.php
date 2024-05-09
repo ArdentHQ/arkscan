@@ -78,12 +78,13 @@ it('should reset exception trigger for empty responses', function ($attempt) {
         'cryptocompare.com/*' => Http::response(null, 200),
     ]);
 
-    Config::set('arkscan.cryptocompare_exception_frequency', 6);
+    Config::set('arkscan.market_data.cryptocompare.ignore_errors', false);
+    Config::set('arkscan.market_data.cryptocompare.exception_frequency', 6);
 
     Cache::set('cryptocompare_response_error', (($attempt - 1) % 6) + 1);
 
     if (($attempt % 6) === 0) {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
     } else {
         $this->expectNotToPerformAssertions();
     }
@@ -98,17 +99,38 @@ it('should trigger exception for throttled requests', function ($attempt) {
         ], 500),
     ]);
 
-    Config::set('arkscan.cryptocompare_exception_frequency', 6);
+    Config::set('arkscan.market_data.cryptocompare.ignore_errors', false);
+    Config::set('arkscan.market_data.cryptocompare.exception_frequency', 6);
 
     Cache::set('cryptocompare_response_error', (($attempt - 1) % 6) + 1);
 
     if (($attempt % 6) === 0) {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
     } else {
         $this->expectNotToPerformAssertions();
     }
 
     (new CryptoCompare())->historicalHourly('ARK', 'USD');
+})->with(range(1, 12));
+
+it('should not throw exception if ignored', function ($attempt) {
+    Http::fake([
+        'cryptocompare.com/*' => Http::response([
+            'status' => [
+                'error_code' => 1,
+            ],
+        ], 500),
+    ]);
+
+    Config::set('arkscan.market_data.cryptocompare.ignore_errors', true);
+    Config::set('arkscan.market_data.cryptocompare.exception_frequency', 6);
+
+    Cache::set('cryptocompare_response_error', (($attempt - 1) % 6) + 1);
+
+    (new CryptoCompare())->historicalHourly('ARK', 'USD');
+
+    // We shouldn't receive any exceptions
+    expect(true)->toBe(true);
 })->with(range(1, 12));
 
 it('should throw an exception if the API response indicates throttling for exchange details', function () {

@@ -25,14 +25,15 @@ it('should convert resource to hex', function () {
 it('should parse vendor field value', function ($content, $expected) {
     expect(VendorField::parse($content))->toBe($expected);
 })->with([
-    ['3078524b656f495a394b6832673448736c6765487235423979626c48626e77575967666546674f33366e30', '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0'],
-    ['31', '1'],
-    ['3231', '21'],
+    ['3078524b656f495a394b6832673448736c6765487235423979626c48626e77575967666546674f33366e30', '3078524b656f495a394b6832673448736c6765487235423979626c48626e77575967666546674f33366e30'],
+    ['31', '31'],
+    ['3231', '3231'],
     [184, '184'],
     ['0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0', '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0'],
     ['Random vendorfield value', 'Random vendorfield value'],
     [null, null],
     [1.4, null],
+    ['1.4', '1.4'],
     [true, null],
     ['', null],
 ]);
@@ -42,9 +43,9 @@ it('should parse resource', function ($content, $expected) {
 
     expect(VendorField::parse($resource))->toBe($expected);
 })->with([
-    ['3078524b656f495a394b6832673448736c6765487235423979626c48626e77575967666546674f33366e30', '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0'],
-    ['31', '1'],
-    ['3231', '21'],
+    ['3078524b656f495a394b6832673448736c6765487235423979626c48626e77575967666546674f33366e30', '3078524b656f495a394b6832673448736c6765487235423979626c48626e77575967666546674f33366e30'],
+    ['31', '31'],
+    ['3231', '3231'],
     ['0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0', '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0'],
     ['Random vendorfield value', 'Random vendorfield value'],
 ]);

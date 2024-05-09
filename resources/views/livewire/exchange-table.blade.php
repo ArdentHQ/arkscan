@@ -1,4 +1,8 @@
-<div id="exchange-list" class="w-full">
+<div
+    x-data="TableSorting('header-volume', 'desc')"
+    id="exchange-list"
+    class="w-full"
+>
     <x-skeletons.exchanges>
         <x-tables.desktop.exchanges :exchanges="$exchanges" />
 

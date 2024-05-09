@@ -121,9 +121,9 @@ it('should not update prices if coingecko throws an exception', function () {
     $priceCache->getCache()->flush();
 
     Http::fake([
-        'api.coingecko.com/*' => function () {
+        'api.coingecko.com/*' => Http::response(function () {
             throw new ConnectionException();
-        },
+        }),
     ]);
 
     $cryptoCache->setPrices('USD.day', collect([1, 2, 3]));
@@ -241,9 +241,9 @@ it('should not update prices if cryptocompare throws an exception', function () 
     $priceCache->getCache()->flush();
 
     Http::fake([
-        'cryptocompare.com/*' => function () {
+        'cryptocompare.com/*' => Http::response(function () {
             throw new ConnectionException();
-        },
+        }),
     ]);
 
     $cryptoCache->setPrices('USD.day', collect([1, 2, 3]));

@@ -14,10 +14,6 @@ return [
 
     'market_data_provider_service'      => env('ARKSCAN_MARKET_DATA_PROVIDER_SERVICE', CoinGecko::class),
 
-    'coingecko_exception_frequency'     => env('COINGECKO_EXCEPTION_FREQUENCY', 60),
-
-    'cryptocompare_exception_frequency' => env('CRYPTOCOMPARE_EXCEPTION_FREQUENCY', 60),
-
     'networks'                          => [
         'production'  => [
             'name'               => env('ARKSCAN_NETWORK_NAME', 'ARK Public Network'),
@@ -94,6 +90,22 @@ return [
 
     'scout' => [
         'run_jobs' => env('SCOUT_RUN_JOBS', false),
+    ],
+
+    'arkconnect' => [
+        'enabled' => env('ARKCONNECT_ENABLED', false),
+    ],
+
+    'market_data' => [
+        'coingecko' => [
+            'exception_frequency' => env('COINGECKO_EXCEPTION_FREQUENCY', 60),
+            'ignore_errors'       => env('COINGECKO_EXCEPTION_IGNORE_ERRORS', false),
+        ],
+
+        'cryptocompare' => [
+            'exception_frequency' => env('CRYPTOCOMPARE_EXCEPTION_FREQUENCY', 60),
+            'ignore_errors'       => env('CRYPTOCOMPARE_EXCEPTION_IGNORE_ERRORS', false),
+        ],
     ],
 
     'webhooks' => [

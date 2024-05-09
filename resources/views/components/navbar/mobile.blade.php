@@ -157,6 +157,10 @@
                                 </div>
                             </div>
                         </div>
+
+                        @if (config('arkscan.arkconnect.enabled', false))
+                            <x-navbar.arkconnect />
+                        @endif
                     </div>
                 </div>
             </div>

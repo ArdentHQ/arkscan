@@ -101,3 +101,11 @@
     ) {
     @apply dark:bg-theme-dark-800;
 }
+
+/* ARKConnect Toast */
+.arkconnect-toast .input-checkbox {
+    @apply dark:border-theme-secondary-600 dim:border-theme-dim-400;
+}
+.arkconnect-toast .input-checkbox:checked {
+    @apply border-transparent;
+}

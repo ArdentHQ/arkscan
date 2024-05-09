@@ -1,17 +1,21 @@
 import "focus-visible";
+import "@ui/js/clipboard.js";
 import "@ui/js/tippy.js";
 import "@ui/js/page-scroll";
 import "@ui/js/reposition-dropdown";
+
+// Load images into the vite build
+import.meta.glob(["../images/**"]);
 
 import "./includes/page-scroll-handler";
 
 import Pusher from "pusher-js";
 import Echo from "laravel-echo";
-import * as dayjs from "dayjs";
-import * as dayjsRelativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs/esm/index.js";
+import dayjsRelativeTime from "dayjs/esm/plugin/relativeTime/index.js";
 
-// @see https://laravel-mix.com/docs/6.0/upgrade#unused-library-extraction
 import Alpine from "alpinejs";
+import Wallet from "./wallet.js";
 import BlocksExport from "./blocks-export.js";
 import { Chart } from "chart.js";
 import CustomChart from "@ui/js/chart.js";
@@ -31,11 +35,13 @@ import MobileSorting from "./mobile-sorting.js";
 import TransactionsExport from "./transactions-export.js";
 import Tabs from "./tabs";
 import makeBlockie from "ethereum-blockies-base64";
+import { truncateMiddle, TruncateDynamic } from "./truncate.js";
 
 import "./livewire-exception-handler.js";
 
 window.makeBlockie = makeBlockie;
 window.Alpine = Alpine;
+window.Wallet = Wallet;
 window.BlocksExport = BlocksExport;
 window.Chart = Chart;
 window.Dropdown = Dropdown;
@@ -57,24 +63,26 @@ window.ThemeManager = ThemeManager;
 window.MobileSorting = MobileSorting;
 window.TransactionsExport = TransactionsExport;
 window.Search = Search;
+window.truncateMiddle = truncateMiddle;
+window.TruncateDynamic = TruncateDynamic;
 
 const options = {
     broadcaster: "pusher",
-    key: process.env.MIX_PUSHER_APP_KEY,
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
     cluster: "",
     encrypted: true,
-    wsHost: process.env.MIX_PUSHER_APP_HOST,
-    wsPort: process.env.MIX_PUSHER_APP_PORT,
+    wsHost: import.meta.env.VITE_PUSHER_APP_HOST,
+    wsPort: import.meta.env.VITE_PUSHER_APP_PORT,
     forceTLS: false,
     disableStats: true,
     enabledTransports: ["ws"],
 };
 
-if (process.env.MIX_APP_ENV === "production") {
+if (import.meta.env.VITE_APP_ENV === "production") {
     options.enabledTransports = ["ws", "wss"];
-    options.authEndpoint = process.env.MIX_PUSHER_APP_AUTH_ENDPOINT;
+    options.authEndpoint = import.meta.env.VITE_PUSHER_APP_AUTH_ENDPOINT;
     options.forceTLS = true;
-    options.wsPath = process.env.MIX_PUSHER_APP_PATH;
+    options.wsPath = import.meta.env.VITE_PUSHER_APP_PATH;
 }
 
 window.Echo = new Echo(options);

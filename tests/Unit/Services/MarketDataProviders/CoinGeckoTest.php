@@ -79,12 +79,13 @@ it('should reset exception trigger for empty responses', function ($attempt) {
         'api.coingecko.com/*' => Http::response(null, 200),
     ]);
 
-    Config::set('arkscan.coingecko_exception_frequency', 6);
+    Config::set('arkscan.market_data.coingecko.ignore_errors', false);
+    Config::set('arkscan.market_data.coingecko.exception_frequency', 6);
 
     Cache::set('coingecko_response_error', (($attempt - 1) % 6) + 1);
 
     if (($attempt % 6) === 0) {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
     } else {
         $this->expectNotToPerformAssertions();
     }
@@ -101,17 +102,38 @@ it('should trigger exception for throttled requests', function ($attempt) {
         ], 500),
     ]);
 
-    Config::set('arkscan.coingecko_exception_frequency', 6);
+    Config::set('arkscan.market_data.coingecko.ignore_errors', false);
+    Config::set('arkscan.market_data.coingecko.exception_frequency', 6);
 
     Cache::set('coingecko_response_error', (($attempt - 1) % 6) + 1);
 
     if (($attempt % 6) === 0) {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
     } else {
         $this->expectNotToPerformAssertions();
     }
 
     (new CoinGecko())->historicalHourly('ARK', 'USD');
+})->with(range(1, 12));
+
+it('should not throw exception if ignored', function ($attempt) {
+    Http::fake([
+        'api.coingecko.com/*' => Http::response([
+            'status' => [
+                'error_code' => 1,
+            ],
+        ], 500),
+    ]);
+
+    Config::set('arkscan.market_data.coingecko.ignore_errors', true);
+    Config::set('arkscan.market_data.coingecko.exception_frequency', 6);
+
+    Cache::set('coingecko_response_error', (($attempt - 1) % 6) + 1);
+
+    (new CoinGecko())->historicalHourly('ARK', 'USD');
+
+    // We shouldn't receive any exceptions
+    expect(true)->toBe(true);
 })->with(range(1, 12));
 
 it('should fetch exchange details for the given exchange', function () {
@@ -190,7 +212,7 @@ it('should throw an exception if the API response throws an exception', function
     Artisan::call('migrate:fresh');
 
     Http::fake([
-        'api.coingecko.com/*' => fn () => throw new \Exception('Test'),
+        'api.coingecko.com/*' => Http::response(fn () => throw new Exception('Test')),
     ]);
 
     $exchange = Exchange::factory()->create([
@@ -252,7 +274,7 @@ it('should throw an exception if the API response is empty for volume', function
 
 it('should throw an exception if the API response throws an exception for volume', function () {
     Http::fake([
-        'api.coingecko.com/*' => fn () => throw new \Exception('Test'),
+        'api.coingecko.com/*' => Http::response(fn () => throw new Exception('Test')),
     ]);
 
     (new CoinGecko())->volume('ARK');

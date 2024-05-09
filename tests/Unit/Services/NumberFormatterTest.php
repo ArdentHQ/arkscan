@@ -22,7 +22,7 @@ it('should format a number with a currency symbol', function () {
     assertMatchesSnapshot(NumberFormatter::currency(1e8, 'ARK'));
 });
 
-it('should format a number with a currency symbol if it has a [.]', function () {
+it('should format a number with a currency symbol if it has a decimal', function () {
     assertMatchesSnapshot(NumberFormatter::currency(123.456, 'ARK'));
     assertMatchesSnapshot(NumberFormatter::currency('0.000003', 'ARK'));
 });
@@ -54,7 +54,7 @@ it('should format a number with decimals and without a suffix', function () {
     assertMatchesSnapshot(NumberFormatter::currencyWithDecimalsWithoutSuffix(1.001, 'USD'));
 });
 
-it('should format a number with a currency symbol if it has a [,]', function () {
+it('should format a number with a currency symbol if it has a comma', function () {
     assertMatchesSnapshot(NumberFormatter::currency('123,456', 'ARK'));
 });
 

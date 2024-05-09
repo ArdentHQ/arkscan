@@ -27,7 +27,7 @@ it('should execute the command', function () {
 
     $crypto = app(CryptoDataCache::class);
 
-    app(CacheVolume::class)->handle($crypto, new Coingecko());
+    app(CacheVolume::class)->handle($crypto, new CoinGecko());
 
     expect($crypto->getVolume('USD'))->toBe('16232625');
     expect($crypto->getVolume('EUR'))->toBe('13740690');
@@ -46,7 +46,7 @@ it('should execute the command and exit early when network cannot be exchanged',
     $crypto = app(CryptoDataCache::class);
     $crypto->getCache()->flush();
 
-    app(CacheVolume::class)->handle($crypto, new Coingecko());
+    app(CacheVolume::class)->handle($crypto, new CoinGecko());
 
     expect($crypto->getVolume('USD'))->toBe(null);
     expect($crypto->getVolume('EUR'))->toBe(null);
@@ -80,9 +80,9 @@ it('should not update prices if coingecko throws an exception', function () {
     $crypto->getCache()->flush();
 
     Http::fake([
-        'api.coingecko.com/*' => function () {
+        'api.coingecko.com/*' => Http::response(function () {
             throw new ConnectionException();
-        },
+        }),
     ]);
 
     $crypto->setVolume('USD', '123');
@@ -108,7 +108,7 @@ it('should update prices if coingecko does return a response', function () {
 
     expect($crypto->getVolume('USD'))->toBe('123');
 
-    app(CacheVolume::class)->handle($crypto, new Coingecko());
+    app(CacheVolume::class)->handle($crypto, new CoinGecko());
 
     expect($crypto->getVolume('USD'))->toBe('16232625');
     expect($crypto->getVolume('EUR'))->toBe('13740690');

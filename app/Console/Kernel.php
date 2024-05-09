@@ -9,7 +9,6 @@ use App\Console\Commands\CacheAddressStatistics;
 use App\Console\Commands\CacheAnnualStatistics;
 use App\Console\Commands\CacheBlocks;
 use App\Console\Commands\CacheCurrenciesData;
-use App\Console\Commands\CacheCurrenciesHistory;
 use App\Console\Commands\CacheDelegateAggregates;
 use App\Console\Commands\CacheDelegatePerformance;
 use App\Console\Commands\CacheDelegateProductivity;
@@ -30,6 +29,7 @@ use App\Console\Commands\FetchExchangesDetails;
 use App\Console\Commands\GenerateVoteReport;
 use App\Console\Commands\LoadExchanges;
 use App\Console\Commands\ScoutIndexModels;
+use App\Facades\Network;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -56,8 +56,6 @@ final class Kernel extends ConsoleKernel
         $schedule->command(CachePrices::class)->everyMinute();
 
         $schedule->command(CacheCurrenciesData::class)->everyMinute()->withoutOverlapping();
-
-        $schedule->command(CacheCurrenciesHistory::class)->hourly();
 
         $schedule->command(CacheVolume::class)->hourly();
 
@@ -103,7 +101,9 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(LoadExchanges::class)->daily();
 
-        $schedule->command(FetchExchangesDetails::class)->hourly();
+        if (Network::canBeExchanged()) {
+            $schedule->command(FetchExchangesDetails::class)->hourly();
+        }
 
         if (config('arkscan.scout.run_jobs', false) === true) {
             $schedule->command(ScoutIndexModels::class)->everyMinute();
