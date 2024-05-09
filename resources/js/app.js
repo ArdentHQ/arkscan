@@ -67,22 +67,18 @@ window.truncateMiddle = truncateMiddle;
 window.TruncateDynamic = TruncateDynamic;
 
 const options = {
-    broadcaster: "pusher",
-    key: import.meta.env.VITE_PUSHER_APP_KEY,
-    cluster: "",
-    encrypted: true,
-    wsHost: import.meta.env.VITE_PUSHER_APP_HOST,
-    wsPort: import.meta.env.VITE_PUSHER_APP_PORT,
+    broadcaster: "reverb",
+    key: import.meta.env.VITE_REVERB_APP_KEY,
+    wsHost: import.meta.env.VITE_REVERB_HOST,
+    wsPort: import.meta.env.VITE_REVERB_PORT,
     forceTLS: false,
-    disableStats: true,
     enabledTransports: ["ws"],
 };
 
-if (import.meta.env.VITE_APP_ENV === "production") {
+if ((import.meta.env.VITE_REVERB_SCHEME ?? "https") === "https") {
     options.enabledTransports = ["ws", "wss"];
-    options.authEndpoint = import.meta.env.VITE_PUSHER_APP_AUTH_ENDPOINT;
     options.forceTLS = true;
-    options.wsPath = import.meta.env.VITE_PUSHER_APP_PATH;
+    options.wssPort = options.wsPort;
 }
 
 window.Echo = new Echo(options);
