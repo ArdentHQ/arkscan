@@ -78,7 +78,7 @@ const options = {
 if ((import.meta.env.VITE_REVERB_SCHEME ?? "https") === "https") {
     options.enabledTransports = ["ws", "wss"];
     options.forceTLS = true;
-    options.wssPort = options.wsPort;
+    options.wssPort = import.meta.env.VITE_REVERB_PORT_TLS;
 }
 
 window.Echo = new Echo(options);
