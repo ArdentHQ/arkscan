@@ -57,7 +57,6 @@ window.PriceChart = PriceChart;
 window.Pusher = Pusher;
 window.Navbar = Navbar;
 window.CustomChart = CustomChart;
-window.CustomChart = CustomChart;
 window.TableSorting = TableSorting;
 window.ThemeManager = ThemeManager;
 window.MobileSorting = MobileSorting;
