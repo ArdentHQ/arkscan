@@ -24,8 +24,7 @@ final class WebhooksController
 
     private function handleBlockApplied(): void
     {
-        $lock = Cache::lock('foo', config('arkscan.webhooks.block-applied.ttl', 8));
-
+        $lock = Cache::lock('webhooks:block:applied', config('arkscan.webhooks.block-applied.ttl', 8));
         if ($lock->get() === false) {
             return;
         }
