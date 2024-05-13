@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Facade;
 
 /**
+ * @method static string coin()
  * @method static string name()
  * @method static string alias()
  * @method static string api()

@@ -9,6 +9,8 @@ use Carbon\Carbon;
 
 interface Network
 {
+    public function coin(): string;
+    
     public function name(): string;
 
     public function alias(): string;

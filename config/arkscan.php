@@ -16,6 +16,7 @@ return [
 
     'networks'                          => [
         'production'  => [
+            'coin'                => env('ARKSCAN_NETWORK_COIN', 'Mainsail'),
             'name'                => env('ARKSCAN_NETWORK_NAME', 'ARK Public Network'),
             'alias'               => env('ARKSCAN_NETWORK_ALIAS', 'mainnet'),
             'api'                 => env('ARKSCAN_NETWORK_API', 'https://wallets.mainsailhq.com/api'),
@@ -34,6 +35,7 @@ return [
             'base58Prefix'        => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 23)),
         ],
         'development' => [
+            'coin'                => env('ARKSCAN_NETWORK_COIN', 'Mainsail'),
             'name'                => env('ARKSCAN_NETWORK_NAME', 'ARK Development Network'),
             'api'                 => env('ARKSCAN_NETWORK_API', 'https://dwallets.mainsailhq.com/api'),
             'alias'               => env('ARKSCAN_NETWORK_ALIAS', 'devnet'),
