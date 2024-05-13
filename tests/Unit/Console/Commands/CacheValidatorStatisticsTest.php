@@ -10,6 +10,8 @@ use App\Services\Cache\StatisticsCache;
 use Carbon\Carbon;
 
 it('should cache validator statistics', function () {
+    $this->freezeTime();
+
     $cache = new StatisticsCache();
 
     $mostVoters   = Wallet::factory()->activeValidator()->create();
