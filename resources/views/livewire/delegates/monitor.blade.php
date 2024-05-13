@@ -2,10 +2,12 @@
     id="delegate-monitor-list"
     class="w-full"
     wire:init="monitorIsReady"
-    @if ($this->isReady && $this->hasDelegates)
-        wire:poll.1s="pollDelegates"
-    @elseif ($this->isReady)
-        wire:poll.8s="pollDelegates"
+    @if (config('broadcasting.default') !== 'reverb')
+        @if ($this->isReady && $this->hasDelegates)
+            wire:poll.1s="pollDelegates"
+        @elseif ($this->isReady)
+            wire:poll.8s="pollDelegates"
+        @endif
     @endif
 >
     <x-skeletons.delegates.monitor>
