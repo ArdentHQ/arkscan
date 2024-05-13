@@ -102,7 +102,7 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "Upgrade";
 
-        proxy_pass http://0.0.0.0:8082;
+        proxy_pass http://0.0.0.0:8080;
     }
 
     ...
