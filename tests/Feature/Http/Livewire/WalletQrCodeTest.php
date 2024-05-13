@@ -30,7 +30,7 @@ it('generates correct url for QR Code', function () {
 
     Livewire::test(WalletQrCode::class, ['address' => $wallet->address])
         ->call('toggleQrCode')
-        ->assertSeeHtml('href="https://app.arkvault.io/#/?coin=ARK&amp;nethash='.config('arkscan.networks.development.nethash').'&amp;method=transfer&amp;recipient=DRgF3PvzeGWndQjET7dZsSmnrc6uAy23ES"');
+        ->assertSeeHtml('href="https://app.arkvault.io/#/?coin=Mainsail&amp;nethash='.config('arkscan.networks.development.nethash').'&amp;method=transfer&amp;recipient=DRgF3PvzeGWndQjET7dZsSmnrc6uAy23ES"');
 });
 
 it('generates correct url for QR Code on mainnet', function () {
@@ -40,7 +40,7 @@ it('generates correct url for QR Code on mainnet', function () {
 
     Livewire::test(WalletQrCode::class, ['address' => $wallet->address])
         ->call('toggleQrCode')
-        ->assertSeeHtml('href="https://app.arkvault.io/#/?coin=ARK&amp;nethash='.config('arkscan.networks.production.nethash').'&amp;method=transfer&amp;recipient=AWkBFnqvCF4jhqPSdE2HBPJiwaf67tgfGR"');
+        ->assertSeeHtml('href="https://app.arkvault.io/#/?coin=Mainsail&amp;nethash='.config('arkscan.networks.production.nethash').'&amp;method=transfer&amp;recipient=AWkBFnqvCF4jhqPSdE2HBPJiwaf67tgfGR"');
 });
 
 it('should allow class property', function () {
