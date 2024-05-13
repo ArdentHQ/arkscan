@@ -107,4 +107,10 @@ return [
             'ignore_errors'       => env('CRYPTOCOMPARE_EXCEPTION_IGNORE_ERRORS', false),
         ],
     ],
+
+    'webhooks' => [
+        'block-applied' => [
+            'ttl' => env('ARKSCAN_WEBHOOKS_BLOCK_APPLIED_TTL', 8),
+        ],
+    ],
 ];
