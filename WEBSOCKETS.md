@@ -76,6 +76,10 @@ In devtools, the websocket should connected and there should be no errors.
 
 In the tinker window, run `NewBlock::dispatch()` which should trigger a reload of the Blocks table.
 
+## Webhooks
+
+Once this is all setup and running correctly, you will need to then setup webhooks, which can be found [here](./WEBHOOKS.md).
+
 ## Troubleshooting
 
 ### Valet HTTPS Failed Connection
