@@ -136,7 +136,7 @@ const Wallet = (network, xData = {}) => {
                 return null;
             }
 
-            const username = this.votingFor.attributes?.username;
+            const username = this.votingFor.attributes?.delegate?.username;
             if (username) {
                 return username;
             }
