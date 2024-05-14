@@ -6,6 +6,7 @@ namespace App\Console\Commands\Webhooks;
 
 use App\Models\Webhook;
 use Illuminate\Console\Command;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
@@ -66,32 +67,45 @@ final class SetupWebhook extends Command
             $corePort
         );
 
-        $response = Http::post($url, [
-            'event'      => $event,
-            'target'     => URL::signedRoute('webhooks'),
-            'enabled'    => true,
-            'conditions' => [],
-        ]);
+        try {
+            $response = Http::post($url, [
+                'event'      => $event,
+                'target'     => URL::signedRoute('webhooks'),
+                'enabled'    => true,
+                'conditions' => [],
+            ]);
 
-        $data = json_decode($response->body(), true);
+            $data = json_decode($response->body(), true);
 
-        if (Arr::get($data, 'statusCode') === 403) {
-            $this->error('Could not connect to core webhooks endpoint.');
+            $error = Arr::get($data, 'message');
+            if ($error !== null) {
+                $this->error('Could not connect to core webhooks endpoint: '.$error);
+
+                return Command::FAILURE;
+            }
+
+            if (str_starts_with((string) $response->status(), '2') === false) {
+                $this->error('There was a problem with the webhook request: '.$response->status());
+
+                return Command::FAILURE;
+            }
+
+            $this->info('ID: '.$data['data']['id']);
+            $this->info('Token: '.$data['data']['token']);
+
+            Webhook::create([
+                'id'    => $data['data']['id'],
+                'token' => $data['data']['token'],
+                'host'  => $coreHost,
+                'port'  => $corePort,
+                'event' => $event,
+            ]);
+
+            return Command::SUCCESS;
+        } catch (\Exception $e) {
+            $this->error('Could not connect to core webhooks endpoint: '.$e->getMessage());
 
             return Command::FAILURE;
         }
-
-        $this->info('ID: '.$data['data']['id']);
-        $this->info('Token: '.$data['data']['token']);
-
-        Webhook::create([
-            'id'    => $data['data']['id'],
-            'token' => $data['data']['token'],
-            'host'  => $coreHost,
-            'port'  => $corePort,
-            'event' => $event,
-        ]);
-
-        return Command::SUCCESS;
     }
 }

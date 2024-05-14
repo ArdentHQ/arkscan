@@ -7,6 +7,7 @@ namespace App\Console\Commands\Webhooks;
 use App\Models\Webhook;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 
 final class FlushWebhooks extends Command
@@ -47,23 +48,11 @@ final class FlushWebhooks extends Command
                 $corePort = $webhook->port;
             }
 
-            $response = Http::delete(sprintf(
-                'http://%s:%d/api/webhooks/%s',
-                $coreHost,
-                $corePort,
-                $webhook->id
-            ));
-
-            $data = json_decode($response->body(), true);
-            if ($data !== null) {
-                $this->error(sprintf(
-                    'There was a problem removing webhook [%s]: %s',
-                    $webhook->id,
-                    Arr::get($data, 'message', 'Unknown')
-                ));
-            }
-
-            $webhook->delete();
+            Artisan::call('ark:webhook:delete', [
+                '--host' => $coreHost,
+                '--port' => $corePort,
+                '--id'   => $webhook->id,
+            ], $this->output->getOutput());
         }
 
         return Command::SUCCESS;

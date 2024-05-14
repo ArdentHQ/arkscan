@@ -69,25 +69,32 @@ final class DeleteWebhook extends Command
             $corePort = $webhook->port;
         }
 
-        $response = Http::delete(sprintf(
-            'http://%s:%d/api/webhooks/%s',
-            $coreHost,
-            $corePort,
-            $webhook->id
-        ));
-
-        $data = json_decode($response->body(), true);
-        if ($data !== null) {
-            $this->error(sprintf(
-                'There was a problem removing the webhook: %s',
-                Arr::get($data, 'message', 'Unknown')
+        try {
+            $response = Http::delete(sprintf(
+                'http://%s:%d/api/webhooks/%s',
+                $coreHost,
+                $corePort,
+                $webhook->id
             ));
+
+            $data = json_decode($response->body(), true);
+            if ($data !== null || str_starts_with((string) $response->status(), '2') === false) {
+                $this->info(serialize($data));
+                $this->error(sprintf(
+                    'There was a problem removing the webhook: %s',
+                    Arr::get($data, 'message', 'Unknown')
+                ));
+
+                return Command::FAILURE;
+            }
+
+            $webhook->delete();
+
+            return Command::SUCCESS;
+        } catch (\Exception $e) {
+            $this->error('Could not connect to core webhooks endpoint: '.$e->getMessage());
 
             return Command::FAILURE;
         }
-
-        $webhook->delete();
-
-        return Command::SUCCESS;
     }
 }
