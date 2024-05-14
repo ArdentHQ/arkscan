@@ -418,6 +418,10 @@ const Wallet = (network, xData = {}) => {
 
             return isCompatible && !isMobile;
         },
+
+        get addressUrl() {
+            return `/addresses/${this.address}`;
+        },
     });
 };
 

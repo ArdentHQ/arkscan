@@ -26,12 +26,24 @@
     >
         <div class="flex items-center space-x-1 min-w-0 text-sm font-semibold">
             <span class="whitespace-nowrap">
-                @lang('general.navbar.arkconnect.my_address')
+                @lang('general.navbar.arkconnect.my_address'):
             </span>
 
-            <div class="flex-1 min-w-0">
+            <a
+                x-bind:href="addressUrl"
+                class="link flex-1 min-w-0"
+                x-show="isOnSameNetwork"
+            >
                 <x-truncate-dynamic />
-            </div>
+            </a>
+
+            <a
+                data-tippy-content="@lang('general.arkconnect.wrong_network.'.Network::alias())"
+                class="flex-1 min-w-0"
+                x-show="! isOnSameNetwork"
+            >
+                <x-truncate-dynamic />
+            </a>
         </div>
 
         <div class="flex space-x-4 md:hidden dark:text-theme-dark-300">
@@ -78,6 +90,21 @@
                         />
                     </div>
                 </x-slot>
+
+                <x-general.dropdown.list-item
+                    x-show="isOnSameNetwork"
+                    x-bind:href="addressUrl"
+                >
+                    @lang('general.navbar.arkconnect.my_address')
+                </x-general.dropdown.list-item>
+
+                <x-general.dropdown.list-item
+                    x-show="!isOnSameNetwork"
+                    :data-tippy-content="trans('general.arkconnect.wrong_network.'.Network::alias())"
+                    disabled
+                >
+                    @lang('general.navbar.arkconnect.my_address')
+                </x-general.dropdown.list-item>
 
                 <x-general.dropdown.list-item x-on:click="copy">
                     @lang('general.navbar.arkconnect.copy_address')
