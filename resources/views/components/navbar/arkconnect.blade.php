@@ -31,7 +31,7 @@
 
             <a
                 x-bind:href="addressUrl"
-                class="link flex-1 min-w-0"
+                class="flex-1 min-w-0 link"
                 x-show="isOnSameNetwork"
             >
                 <x-truncate-dynamic />
