@@ -22,13 +22,6 @@ final class Webhook extends Model
     use SearchesCaseInsensitive;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'core_webhooks';
-
-    /**
      * The "type" of the primary key ID.
      *
      * @var string
@@ -48,6 +41,13 @@ final class Webhook extends Model
      * @var bool
      */
     public $incrementing = false;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'core_webhooks';
 
     /**
      * The attributes that are mass assignable.

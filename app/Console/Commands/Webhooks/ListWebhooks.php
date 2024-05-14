@@ -41,12 +41,13 @@ final class ListWebhooks extends Command
             ['ID', 'Host', 'Event', 'Token'],
             $webhooks->map(function (Webhook $webhook) {
                 return [
-                    'id' => $webhook->id,
-                    'host' => sprintf('%s:%d', $webhook->host, $webhook->port),
+                    'id'    => $webhook->id,
+                    'host'  => sprintf('%s:%d', $webhook->host, $webhook->port),
                     'event' => $webhook->event,
                     'token' => $webhook->token,
                 ];
-            }));
+            })
+        );
 
         return Command::SUCCESS;
     }
