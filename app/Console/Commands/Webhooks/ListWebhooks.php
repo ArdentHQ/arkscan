@@ -38,9 +38,10 @@ final class ListWebhooks extends Command
         }
 
         $this->table(
-            ['Host', 'Event', 'Token'],
+            ['ID', 'Host', 'Event', 'Token'],
             $webhooks->map(function (Webhook $webhook) {
                 return [
+                    'id' => $webhook->id,
                     'host' => sprintf('%s:%d', $webhook->host, $webhook->port),
                     'event' => $webhook->event,
                     'token' => $webhook->token,

@@ -6,6 +6,7 @@ namespace App\Console\Commands\Webhooks;
 
 use App\Models\Webhook;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 
@@ -74,10 +75,17 @@ final class SetupWebhook extends Command
 
         $data = json_decode($response->body(), true);
 
+        if (Arr::get($data, 'statusCode') === 403) {
+            $this->error('Could not connect to core webhooks endpoint.');
+
+            return Command::FAILURE;
+        }
+
         $this->info('ID: '.$data['data']['id']);
         $this->info('Token: '.$data['data']['token']);
 
         Webhook::create([
+            'id'    => $data['data']['id'],
             'token' => $data['data']['token'],
             'host'  => $coreHost,
             'port'  => $corePort,

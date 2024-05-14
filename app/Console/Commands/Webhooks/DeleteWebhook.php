@@ -6,6 +6,7 @@ namespace App\Console\Commands\Webhooks;
 
 use App\Models\Webhook;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 
 final class DeleteWebhook extends Command
@@ -15,7 +16,7 @@ final class DeleteWebhook extends Command
      *
      * @var string
      */
-    protected $signature = 'ark:webhook:delete {--host=} {--port=4004} {--token=}';
+    protected $signature = 'ark:webhook:delete {--host=} {--port=4004} {--token=} {--id=}';
 
     /**
      * The console command description.
@@ -31,50 +32,61 @@ final class DeleteWebhook extends Command
      */
     public function handle()
     {
+        /** @var string|null $token */
+        $token = $this->option('token');
+
+        /** @var string|null $id */
+        $id = $this->option('id');
+
+        if ($token === null && $id === null) {
+            $this->error('Missing [token] or [id] argument.');
+
+            return Command::FAILURE;
+        }
+
+        $webhook = Webhook::find($id);
+        if ($webhook === null) {
+            $webhook = Webhook::firstWhere('token', $token);
+        }
+
+        if ($webhook === null) {
+            $this->error('Webhook does not exist.');
+
+            return Command::FAILURE;
+        }
+
         /** @var string|null $coreHost */
         $coreHost = $this->option('host');
 
         /** @var string|null $corePort */
         $corePort = $this->option('port');
 
-        /** @var string|null $token */
-        $token = $this->option('token');
-
         if ($coreHost === null) {
-            $this->error('Missing [host] argument.');
-
-            return Command::FAILURE;
+            $coreHost = $webhook->host;
         }
 
         if ($corePort === null) {
-            $this->error('Missing [port] argument.');
-
-            return Command::FAILURE;
-        }
-
-        if ($token === null) {
-            $this->error('Missing [token] argument.');
-
-            return Command::FAILURE;
-        }
-
-        $webhook = Webhook::find($token);
-        if ($webhook === null) {
-            $this->error('Token does not exist.');
-
-            return Command::FAILURE;
+            $corePort = $webhook->port;
         }
 
         $response = Http::delete(sprintf(
             'http://%s:%d/api/webhooks/%s',
             $coreHost,
             $corePort,
-            $token
+            $webhook->id
         ));
 
         $data = json_decode($response->body(), true);
+        if ($data !== null) {
+            $this->error(sprintf(
+                'There was a problem removing the webhook: %s',
+                Arr::get($data, 'message', 'Unknown')
+            ));
 
-        dd($data);
+            return Command::FAILURE;
+        }
+
+        $webhook->delete();
 
         return Command::SUCCESS;
     }

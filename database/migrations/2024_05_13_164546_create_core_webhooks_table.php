@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('core_webhooks', function (Blueprint $table) {
-            $table->string('token')->primary();
+            $table->string('id')->primary();
+            $table->string('token');
             $table->string('host');
             $table->integer('port');
             $table->string('event');
