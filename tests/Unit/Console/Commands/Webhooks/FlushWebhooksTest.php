@@ -73,3 +73,18 @@ it('should override port', function () {
         });
     }
 });
+
+it('should forward output from deletion', function () {
+    Http::fake(Http::response(function () {
+        throw new \Exception('Oops');
+    }, 200));
+
+    Webhook::factory()->create();
+
+    Artisan::call('ark:webhook:flush', [
+        '--host' => '1.2.3.4',
+    ]);
+
+    expect(Webhook::count())->toBe(1);
+    expect(Artisan::output())->toContain('Could not connect to core webhooks endpoint: Oops');
+});

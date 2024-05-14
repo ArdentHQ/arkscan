@@ -14,7 +14,7 @@ it('should execute the command', function () {
             'id'    => 'responseId',
             'token' => 'random-token',
         ],
-    ], 200));
+    ], 201));
 
     Artisan::call('ark:webhook:setup', [
         '--host'  => '1.2.3.4',
@@ -53,4 +53,61 @@ it('should require port', function () {
     $output = Artisan::output();
 
     expect($output)->toContain('Missing [port] argument.');
+});
+
+it('should require event', function () {
+    Artisan::call('ark:webhook:setup', [
+        '--host' => '1.2.3.4',
+        '--port' => 1234,
+    ]);
+
+    $output = Artisan::output();
+
+    expect($output)->toContain('Missing [event] argument.');
+});
+
+it('should error if webhook request fails with a message', function () {
+    Http::fake(Http::response([
+        'message' => 'unknown error',
+    ], 403));
+
+    Artisan::call('ark:webhook:setup', [
+        '--host' => '1.2.3.4',
+        '--port' => 1234,
+        '--event' => 'test.event',
+    ]);
+
+    $output = Artisan::output();
+
+    expect($output)->toContain('Could not connect to core webhooks endpoint: unknown error');
+});
+
+it('should error if webhook request fails with a non-2xx status code', function () {
+    Http::fake(Http::response(null, 403));
+
+    Artisan::call('ark:webhook:setup', [
+        '--host' => '1.2.3.4',
+        '--port' => 1234,
+        '--event' => 'test.event',
+    ]);
+
+    $output = Artisan::output();
+
+    expect($output)->toContain('There was a problem with the webhook request: 403');
+});
+
+it('should error if webhook request throws an exception', function () {
+    Http::fake(Http::response(function () {
+        throw new \Exception('Oops');
+    }, 403));
+
+    Artisan::call('ark:webhook:setup', [
+        '--host' => '1.2.3.4',
+        '--port' => 1234,
+        '--event' => 'test.event',
+    ]);
+
+    $output = Artisan::output();
+
+    expect($output)->toContain('Could not connect to core webhooks endpoint: Oops');
 });
