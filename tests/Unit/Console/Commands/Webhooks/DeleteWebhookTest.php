@@ -131,7 +131,7 @@ it('should error if webhook request fails with a non-200 status code', function 
 
 it('should error if webhook request throws an exception', function () {
     Http::fake(Http::response(function () {
-        throw new \Exception('Oops');
+        throw new Exception('Oops');
     }, 403));
 
     $webhook = Webhook::factory()->create();

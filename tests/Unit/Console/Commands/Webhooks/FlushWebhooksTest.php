@@ -76,7 +76,7 @@ it('should override port', function () {
 
 it('should forward output from deletion', function () {
     Http::fake(Http::response(function () {
-        throw new \Exception('Oops');
+        throw new Exception('Oops');
     }, 200));
 
     Webhook::factory()->create();

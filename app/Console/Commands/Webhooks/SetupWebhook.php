@@ -6,7 +6,6 @@ namespace App\Console\Commands\Webhooks;
 
 use App\Models\Webhook;
 use Illuminate\Console\Command;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;

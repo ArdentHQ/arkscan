@@ -72,8 +72,8 @@ it('should error if webhook request fails with a message', function () {
     ], 403));
 
     Artisan::call('ark:webhook:setup', [
-        '--host' => '1.2.3.4',
-        '--port' => 1234,
+        '--host'  => '1.2.3.4',
+        '--port'  => 1234,
         '--event' => 'test.event',
     ]);
 
@@ -86,8 +86,8 @@ it('should error if webhook request fails with a non-2xx status code', function 
     Http::fake(Http::response(null, 403));
 
     Artisan::call('ark:webhook:setup', [
-        '--host' => '1.2.3.4',
-        '--port' => 1234,
+        '--host'  => '1.2.3.4',
+        '--port'  => 1234,
         '--event' => 'test.event',
     ]);
 
@@ -98,12 +98,12 @@ it('should error if webhook request fails with a non-2xx status code', function 
 
 it('should error if webhook request throws an exception', function () {
     Http::fake(Http::response(function () {
-        throw new \Exception('Oops');
+        throw new Exception('Oops');
     }, 403));
 
     Artisan::call('ark:webhook:setup', [
-        '--host' => '1.2.3.4',
-        '--port' => 1234,
+        '--host'  => '1.2.3.4',
+        '--port'  => 1234,
         '--event' => 'test.event',
     ]);
 
