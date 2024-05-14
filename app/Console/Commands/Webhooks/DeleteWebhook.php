@@ -16,7 +16,7 @@ final class DeleteWebhook extends Command
      *
      * @var string
      */
-    protected $signature = 'ark:webhook:delete {--host=} {--port=4004} {--token=} {--id=}';
+    protected $signature = 'ark:webhook:delete {--host=} {--port=} {--token=} {--id=}';
 
     /**
      * The console command description.

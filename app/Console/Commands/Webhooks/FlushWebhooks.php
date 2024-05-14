@@ -16,7 +16,7 @@ final class FlushWebhooks extends Command
      *
      * @var string
      */
-    protected $signature = 'ark:webhook:flush {--host=} {--port=4004}';
+    protected $signature = 'ark:webhook:flush {--host=} {--port=}';
 
     /**
      * The console command description.
