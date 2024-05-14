@@ -17,7 +17,7 @@ it('should execute the command', function () {
     ], 200));
 
     Artisan::call('ark:webhook:setup', [
-        '--host' => '1.2.3.4',
+        '--host'  => '1.2.3.4',
         '--event' => 'test.event',
     ]);
 
