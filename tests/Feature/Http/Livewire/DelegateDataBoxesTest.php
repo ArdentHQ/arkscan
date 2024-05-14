@@ -505,8 +505,8 @@ it('should reload on new block event', function () {
         ],
     ], $this);
 
-    $component = Livewire::test(DelegateDataBoxes::class);
-    $component->call('setIsReady')
+    Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady')
         ->assertDontSeeHtml('<span>50</span>')
         ->assertDontSeeHtml('<span>0</span>')
         ->assertDontSeeHtml('<span>1</span>')
@@ -545,8 +545,8 @@ it('should should poll when component is ready', function () {
         ],
     ], $this);
 
-    $component = Livewire::test(DelegateDataBoxes::class);
-    $component->assertDontSeeHtml('<span>50</span>')
+    Livewire::test(DelegateDataBoxes::class)
+        ->assertDontSeeHtml('<span>50</span>')
         ->assertDontSeeHtml('<span>0</span>')
         ->assertDontSeeHtml('<span>1</span>')
         ->call('componentIsReady')
