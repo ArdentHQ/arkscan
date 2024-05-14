@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Webhooks;
 
+use App\Models\Webhook;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
@@ -31,8 +32,14 @@ final class SetupWebhook extends Command
      */
     public function handle()
     {
+        /** @var string|null $coreHost */
         $coreHost = $this->option('host');
+
+        /** @var string|null $corePort */
         $corePort = $this->option('port');
+
+        /** @var string|null $event */
+        $event = $this->option('event');
 
         if ($coreHost === null) {
             $this->error('Missing [host] argument.');
@@ -46,6 +53,12 @@ final class SetupWebhook extends Command
             return Command::FAILURE;
         }
 
+        if ($event === null) {
+            $this->error('Missing [event] argument.');
+
+            return Command::FAILURE;
+        }
+
         $url = sprintf(
             'http://%s:%d/api/webhooks',
             $coreHost,
@@ -53,7 +66,7 @@ final class SetupWebhook extends Command
         );
 
         $response = Http::post($url, [
-            'event'      => $this->option('event'),
+            'event'      => $event,
             'target'     => URL::signedRoute('webhooks'),
             'enabled'    => true,
             'conditions' => [],
@@ -63,6 +76,13 @@ final class SetupWebhook extends Command
 
         $this->info('ID: '.$data['data']['id']);
         $this->info('Token: '.$data['data']['token']);
+
+        Webhook::create([
+            'token' => $data['data']['token'],
+            'host'  => $coreHost,
+            'port'  => $corePort,
+            'event' => $event,
+        ]);
 
         return Command::SUCCESS;
     }
