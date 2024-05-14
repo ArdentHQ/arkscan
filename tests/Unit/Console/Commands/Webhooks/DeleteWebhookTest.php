@@ -55,7 +55,7 @@ it('should override host', function () {
     $webhook = Webhook::factory()->create();
 
     Artisan::call('ark:webhook:delete', [
-        '--host' => '1.2.3.4',
+        '--host'  => '1.2.3.4',
         '--token' => $webhook->token,
     ]);
 
