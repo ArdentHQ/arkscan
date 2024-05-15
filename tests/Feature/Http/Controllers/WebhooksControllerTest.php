@@ -205,6 +205,60 @@ describe('wallet', function () {
         });
     });
 
+    it('should handle only a vote', function () {
+        Event::fake();
+
+        $this->vote = [
+            'event' => 'wallet.vote',
+            'data'  => [
+                'asset' => [
+                    'votes' => [
+                        '+12345',
+                    ],
+                ],
+            ],
+        ];
+
+        $secureUrl = URL::signedRoute('webhooks');
+
+        $this
+            ->post($secureUrl, $this->vote)
+            ->assertOk();
+
+        Event::assertDispatchedTimes(WalletVote::class, 1);
+
+        Event::assertDispatched(WalletVote::class, function ($event) {
+            return $event->broadcastOn()->name === 'wallet-vote.12345';
+        });
+    });
+
+    it('should handle only an unvote', function () {
+        Event::fake();
+
+        $this->vote = [
+            'event' => 'wallet.vote',
+            'data'  => [
+                'asset' => [
+                    'votes' => [
+                        '-98765',
+                    ],
+                ],
+            ],
+        ];
+
+        $secureUrl = URL::signedRoute('webhooks');
+
+        $this
+            ->post($secureUrl, $this->vote)
+            ->assertOk();
+
+        Event::assertDispatchedTimes(WalletVote::class, 1);
+
+        Event::assertDispatched(WalletVote::class, function ($event) {
+            return $event->broadcastOn()->name === 'wallet-vote.98765';
+        });
+    });
+
     it('should not dispatch multiple times', function () {
         Event::fake();
 
