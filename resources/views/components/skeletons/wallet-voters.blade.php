@@ -16,6 +16,7 @@
     <x-loading.visible
         wire:key="skeleton:voters:ready"
         display-type="block"
+        wire:target="setPage,gotoPage"
     >
         <x-tables.desktop.skeleton.wallet-voters
             :row-count="$rowCount"
@@ -26,7 +27,7 @@
     </x-loading.visible>
 
     <div wire:key="skeleton:voters:hidden">
-        <x-loading.hidden>
+        <x-loading.hidden wire:target="setPage,gotoPage">
             {{ $slot }}
         </x-loading.hidden>
     </div>
