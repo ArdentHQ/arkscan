@@ -22,7 +22,7 @@ trait HandlesBlockWebhooks
     private function handleGeneratorBlockApplied(): void
     {
         $generatorPublicKey = request()->input('data.generatorPublicKey');
-        $lock = Cache::lock('webhooks:block:applied:'.$generatorPublicKey, config('arkscan.webhooks.block-applied.ttl', 8));
+        $lock               = Cache::lock('webhooks:block:applied:'.$generatorPublicKey, config('arkscan.webhooks.block-applied.ttl', 8));
         if ($lock->get() === false) {
             return;
         }

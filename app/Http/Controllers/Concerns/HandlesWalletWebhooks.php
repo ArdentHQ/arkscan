@@ -21,7 +21,6 @@ trait HandlesWalletWebhooks
             return;
         }
 
-
         WalletVote::dispatch($publicKey);
     }
 
@@ -37,7 +36,6 @@ trait HandlesWalletWebhooks
         if ($lock->get() === false) {
             return;
         }
-
 
         WalletVote::dispatch($publicKey);
     }
