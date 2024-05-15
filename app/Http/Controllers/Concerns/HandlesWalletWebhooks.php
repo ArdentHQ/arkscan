@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Concerns;
 
 use App\Events\WalletVote;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 trait HandlesWalletWebhooks
@@ -42,7 +43,7 @@ trait HandlesWalletWebhooks
 
     private function getVote(): ?string
     {
-        return collect(request()->input('data.asset.votes'))
+        return (new Collection(request()->input('data.asset.votes')))
             ->filter(fn ($vote) => str_starts_with($vote, '+'))
             ->map(fn ($vote) => trim($vote, '+'))
             ->first();
@@ -50,7 +51,7 @@ trait HandlesWalletWebhooks
 
     private function getUnvote(): ?string
     {
-        return collect(request()->input('data.asset.votes'))
+        return (new Collection(request()->input('data.asset.votes')))
             ->filter(fn ($vote) => str_starts_with($vote, '-'))
             ->map(fn ($vote) => trim($vote, '-'))
             ->first();
