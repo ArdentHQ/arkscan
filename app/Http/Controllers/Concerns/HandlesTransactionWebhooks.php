@@ -33,7 +33,7 @@ trait HandlesTransactionWebhooks
 
     private function handleRecipientTransactionApplied(): void
     {
-        $address = request()->input('data.recipient');
+        $address = request()->input('data.recipient_id');
 
         $lock = Cache::lock('webhooks:transaction:applied:'.$address, config('arkscan.webhooks.transaction-applied.ttl', 8));
         if ($lock->get() === false) {
