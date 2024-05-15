@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Events\NewBlock;
-use Illuminate\Support\Facades\Cache;
+use App\Enums\WebhookEvents;
+use App\Http\Controllers\Concerns\HandlesBlockWebhooks;
+use App\Http\Controllers\Concerns\HandlesTransactionWebhooks;
+use App\Http\Controllers\Concerns\HandlesWalletWebhooks;
 
 final class WebhooksController
 {
+    use HandlesBlockWebhooks;
+    use HandlesTransactionWebhooks;
+    use HandlesWalletWebhooks;
+
     public function __invoke(): void
     {
         // @phpstan-ignore-next-line
@@ -17,18 +23,27 @@ final class WebhooksController
         }
 
         $event = request()->input('event');
-        if ($event === 'block.applied') {
-            $this->handleBlockApplied();
-        }
-    }
 
-    private function handleBlockApplied(): void
-    {
-        $lock = Cache::lock('webhooks:block:applied', config('arkscan.webhooks.block-applied.ttl', 8));
-        if ($lock->get() === false) {
+        if ($event === WebhookEvents::BlockApplied) {
+            $this->handleBlockApplied();
+            $this->handleGeneratorBlockApplied();
+
             return;
         }
 
-        NewBlock::dispatch();
+        if ($event === WebhookEvents::TransactionApplied) {
+            $this->handleTransactionApplied();
+            $this->handleSenderTransactionApplied();
+            $this->handleRecipientTransactionApplied();
+
+            return;
+        }
+
+        if ($event === WebhookEvents::WalletVote) {
+            $this->handleWalletVote();
+            $this->handleWalletUnvote();
+
+            return;
+        }
     }
 }
