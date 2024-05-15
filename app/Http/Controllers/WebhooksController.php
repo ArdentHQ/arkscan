@@ -24,14 +24,14 @@ final class WebhooksController
 
         $event = request()->input('event');
 
-        if ($event === WebhookEvents::BlockApplied) {
+        if ($event === WebhookEvents::BlockApplied->value) {
             $this->handleBlockApplied();
             $this->handleGeneratorBlockApplied();
 
             return;
         }
 
-        if ($event === WebhookEvents::TransactionApplied) {
+        if ($event === WebhookEvents::TransactionApplied->value) {
             $this->handleTransactionApplied();
             $this->handleSenderTransactionApplied();
             $this->handleRecipientTransactionApplied();
@@ -39,7 +39,7 @@ final class WebhooksController
             return;
         }
 
-        if ($event === WebhookEvents::WalletVote) {
+        if ($event === WebhookEvents::WalletVote->value) {
             $this->handleWalletVote();
             $this->handleWalletUnvote();
 
