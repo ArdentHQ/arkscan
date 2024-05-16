@@ -21,7 +21,7 @@ trait HandlesTransactionWebhooks
 
     private function handleSenderTransactionApplied(): void
     {
-        $publicKey = request()->input('data.sender_public_key');
+        $publicKey = request()->input('data.senderPublicKey');
 
         $lock = Cache::lock('webhooks:transaction:applied:'.$publicKey, config('arkscan.webhooks.transaction-applied.ttl', 8));
         if ($lock->get() === false) {
@@ -33,7 +33,7 @@ trait HandlesTransactionWebhooks
 
     private function handleRecipientTransactionApplied(): void
     {
-        $address = request()->input('data.recipient_id');
+        $address = request()->input('data.recipientId');
 
         $lock = Cache::lock('webhooks:transaction:applied:'.$address, config('arkscan.webhooks.transaction-applied.ttl', 8));
         if ($lock->get() === false) {
