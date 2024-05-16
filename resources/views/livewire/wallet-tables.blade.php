@@ -23,12 +23,7 @@
 
         @if($wallet->isDelegate())
             <x-wallet.tables.voters :wallet="$wallet" x-cloak />
-
             <x-wallet.tables.blocks :wallet="$wallet" x-cloak />
-
-            <x-webhooks.reload-transactions :wallet="$wallet" />
-            <x-webhooks.reload-blocks :public-key="$wallet->publicKey()" />
-            <x-webhooks.reload-voters :public-key="$wallet->publicKey()" />
         @endif
 
         <x-script.onload-scroll-to-query selector="#wallet-table-list" />
