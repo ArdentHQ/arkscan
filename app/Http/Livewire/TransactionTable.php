@@ -34,6 +34,7 @@ final class TransactionTable extends Component
     /** @var mixed */
     protected $listeners = [
         'currencyChanged' => '$refresh',
+        'echo:transactions,NewTransaction' => '$refresh',
     ];
 
     public function queryString(): array
