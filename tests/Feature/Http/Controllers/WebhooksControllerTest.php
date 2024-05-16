@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Events\NewBlock;
 use App\Events\NewTransaction;
 use App\Events\WalletVote;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 
@@ -72,6 +73,8 @@ describe('block', function () {
     it('should not dispatch multiple times', function () {
         Event::fake();
 
+        Config::set('arkscan.webhooks.block-applied.ttl', 4);
+
         $secureUrl = URL::signedRoute('webhooks');
 
         $this->post($secureUrl, $this->block)
@@ -83,7 +86,7 @@ describe('block', function () {
         $this->post($secureUrl, $this->block)
             ->assertOk();
 
-        $this->travel(8)->seconds();
+        $this->travel(4)->seconds();
 
         $this->post($secureUrl, $this->block)
             ->assertOk();
@@ -138,6 +141,8 @@ describe('transaction', function () {
     it('should not dispatch multiple times', function () {
         Event::fake();
 
+        Config::set('arkscan.webhooks.transaction-applied.ttl', 4);
+
         $secureUrl = URL::signedRoute('webhooks');
 
         $this->post($secureUrl, $this->transaction)
@@ -149,7 +154,7 @@ describe('transaction', function () {
         $this->post($secureUrl, $this->transaction)
             ->assertOk();
 
-        $this->travel(8)->seconds();
+        $this->travel(4)->seconds();
 
         $this->post($secureUrl, $this->transaction)
             ->assertOk();
@@ -268,6 +273,8 @@ describe('wallet', function () {
     it('should not dispatch multiple times', function () {
         Event::fake();
 
+        Config::set('arkscan.webhooks.wallet-vote.ttl', 4);
+
         $secureUrl = URL::signedRoute('webhooks');
 
         $this->post($secureUrl, $this->vote)
@@ -279,7 +286,7 @@ describe('wallet', function () {
         $this->post($secureUrl, $this->vote)
             ->assertOk();
 
-        $this->travel(8)->seconds();
+        $this->travel(4)->seconds();
 
         $this->post($secureUrl, $this->vote)
             ->assertOk();
