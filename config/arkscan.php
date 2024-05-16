@@ -112,5 +112,11 @@ return [
         'block-applied' => [
             'ttl' => env('ARKSCAN_WEBHOOKS_BLOCK_APPLIED_TTL', 8),
         ],
+        'transaction-applied' => [
+            'ttl' => env('ARKSCAN_WEBHOOKS_TRANSACTION_APPLIED_TTL', 8),
+        ],
+        'wallet-vote' => [
+            'ttl' => env('ARKSCAN_WEBHOOKS_WALLET_VOTE_TTL', 8),
+        ],
     ],
 ];
