@@ -19,7 +19,7 @@ final class CacheAnnualStatistics extends Command
      *
      * @var string
      */
-    protected $signature = 'explorer:cache-annual-statistics {--all}}';
+    protected $signature = 'explorer:cache-annual-statistics {--all}';
 
     /**
      * The console command description.
