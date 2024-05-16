@@ -481,3 +481,82 @@ it('should calculate not forging correctly for previous rounds', function () {
             'Current Height',
         ]);
 });
+
+it('should reload on new block event', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this);
+
+    Livewire::test(DelegateDataBoxes::class)
+        ->call('setIsReady')
+        ->assertDontSeeHtml('<span>50</span>')
+        ->assertDontSeeHtml('<span>0</span>')
+        ->assertDontSeeHtml('<span>1</span>')
+        ->emit('echo:blocks,NewBlock')
+        ->assertSeeHtmlInOrder([
+            'Forging',
+            '<span>50</span>',
+            'Missed',
+            '<span>0</span>',
+            'Not Forging',
+            '<span>1</span>',
+            'Current Height',
+        ]);
+});
+
+it('should should poll when component is ready', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this);
+
+    Livewire::test(DelegateDataBoxes::class)
+        ->assertDontSeeHtml('<span>50</span>')
+        ->assertDontSeeHtml('<span>0</span>')
+        ->assertDontSeeHtml('<span>1</span>')
+        ->call('componentIsReady')
+        ->assertSeeHtmlInOrder([
+            'Forging',
+            '<span>50</span>',
+            'Missed',
+            '<span>0</span>',
+            'Not Forging',
+            '<span>1</span>',
+            'Current Height',
+        ]);
+});

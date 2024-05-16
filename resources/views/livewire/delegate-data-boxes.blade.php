@@ -4,8 +4,8 @@
     id="statistics-list"
     class="grid grid-cols-1 gap-2 w-full sm:grid-cols-2 md:gap-3 xl:grid-cols-4"
     wire:key="poll_statistics"
-    wire:init="setIsReady"
-    @if ($this->isReady)
+    wire:init="componentIsReady"
+    @if ($this->isReady && config('broadcasting.default') !== 'reverb')
         wire:poll.1s="pollStatistics"
     @endif
 >
