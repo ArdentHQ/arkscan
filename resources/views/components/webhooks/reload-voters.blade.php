@@ -3,7 +3,7 @@
 @push('scripts')
     <script>
         window.addEventListener('DOMContentLoaded', function() {
-            Webhook.livewire('voters.{{ $publicKey }}', 'NewVote', 'reloadVoters');
+            Webhook.livewire('wallet-vote.{{ $publicKey }}', 'WalletVote', 'reloadVoters');
         });
     </script>
 @endpush
