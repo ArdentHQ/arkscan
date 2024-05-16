@@ -43,7 +43,7 @@ trait HandlesWalletWebhooks
 
     private function getVote(): ?string
     {
-        return (new Collection(request()->input('data.asset.votes')))
+        return (new Collection(request()->input('data.transaction.asset.votes')))
             ->filter(fn ($vote) => str_starts_with($vote, '+'))
             ->map(fn ($vote) => trim($vote, '+'))
             ->first();
@@ -51,7 +51,7 @@ trait HandlesWalletWebhooks
 
     private function getUnvote(): ?string
     {
-        return (new Collection(request()->input('data.asset.votes')))
+        return (new Collection(request()->input('data.transaction.asset.votes')))
             ->filter(fn ($vote) => str_starts_with($vote, '-'))
             ->map(fn ($vote) => trim($vote, '-'))
             ->first();
