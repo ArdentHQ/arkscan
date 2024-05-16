@@ -105,8 +105,8 @@ describe('transaction', function () {
         $this->transaction = [
             'event' => 'transaction.applied',
             'data'  => [
-                'recipient_id'      => 'address',
-                'sender_public_key' => 'public-key',
+                'recipientId'     => 'address',
+                'senderPublicKey' => 'public-key',
             ],
         ];
     });
@@ -175,10 +175,12 @@ describe('wallet', function () {
         $this->vote = [
             'event' => 'wallet.vote',
             'data'  => [
-                'asset' => [
-                    'votes' => [
-                        '-98765',
-                        '+12345',
+                'transaction' => [
+                    'asset' => [
+                        'votes' => [
+                            '-98765',
+                            '+12345',
+                        ],
                     ],
                 ],
             ],
@@ -211,9 +213,11 @@ describe('wallet', function () {
         $this->vote = [
             'event' => 'wallet.vote',
             'data'  => [
-                'asset' => [
-                    'votes' => [
-                        '+12345',
+                'transaction' => [
+                    'asset' => [
+                        'votes' => [
+                            '+12345',
+                        ],
                     ],
                 ],
             ],
@@ -238,9 +242,11 @@ describe('wallet', function () {
         $this->vote = [
             'event' => 'wallet.vote',
             'data'  => [
-                'asset' => [
-                    'votes' => [
-                        '-98765',
+                'transaction' => [
+                    'asset' => [
+                        'votes' => [
+                            '-98765',
+                        ],
                     ],
                 ],
             ],
