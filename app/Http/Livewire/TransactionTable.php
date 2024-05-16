@@ -33,7 +33,7 @@ final class TransactionTable extends Component
 
     /** @var mixed */
     protected $listeners = [
-        'currencyChanged' => '$refresh',
+        'currencyChanged'                  => '$refresh',
         'echo:transactions,NewTransaction' => '$refresh',
     ];
 
