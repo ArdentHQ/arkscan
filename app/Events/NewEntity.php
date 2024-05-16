@@ -20,8 +20,21 @@ abstract class NewEntity implements ShouldBroadcast
 
     public const CHANNEL = 'channel';
 
+    public function __construct(protected ?string $id = null)
+    {
+        //
+    }
+
     final public function broadcastOn()
     {
+        if ($this->id !== null) {
+            return new Channel(sprintf(
+                '%s.%s',
+                static::CHANNEL,
+                $this->id
+            ));
+        }
+
         return new Channel(static::CHANNEL);
     }
 }

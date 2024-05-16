@@ -10,6 +10,7 @@ export default ({ mode }) => defineConfig({
             'resources/css/app.css',
             'resources/js/app.js',
             'resources/js/chart-tooltip.js',
+            'resources/js/webhooks.js',
         ]),
     ],
     resolve: {
