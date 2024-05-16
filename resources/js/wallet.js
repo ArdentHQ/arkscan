@@ -136,7 +136,12 @@ const Wallet = (network, xData = {}) => {
                 return null;
             }
 
-            return this.votingFor.attributes?.delegate?.username;
+            const username = this.votingFor.attributes?.delegate?.username;
+            if (username) {
+                return username;
+            }
+
+            return truncateMiddle(this.votingForAddress);
         },
 
         async storeData() {
