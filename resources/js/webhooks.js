@@ -2,7 +2,7 @@ window.Webhook = {
     listeners: {},
 
     listen(channel, event, emit) {
-        console.log('listen', channel, event, emit);
+        console.log("listen", channel, event, emit);
         if (this.listeners[channel] === undefined) {
             this.listeners[channel] = {};
         }
@@ -38,11 +38,17 @@ window.Webhook = {
             return;
         }
 
-        Echo.channel(channel).stopListening(event, this.listeners[channel][event][emit]);
+        Echo.channel(channel).stopListening(
+            event,
+            this.listeners[channel][event][emit]
+        );
 
         // The best way I could find to see if there were any events remaining.
         // We don't need to be subscribed if we're not listening for anything.
-        if (Object.keys(Echo.channel(channel).subscription.callbacks._callbacks).length === 0) {
+        if (
+            Object.keys(Echo.channel(channel).subscription.callbacks._callbacks)
+                .length === 0
+        ) {
             Echo.channel(channel).unsubscribe();
         }
 
