@@ -41,6 +41,8 @@
 
             <livewire:search-modal />
 
+            <livewire:webhooks.currency-update />
+
             @if (config('arkscan.arkconnect.enabled'))
                 <x-arkconnect.delegate-toasts />
             @endif
