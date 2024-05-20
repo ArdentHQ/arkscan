@@ -3,7 +3,7 @@
 @push('scripts')
     <script>
         window.addEventListener('DOMContentLoaded', function() {
-            Webhook.livewire('blocks.{{ $publicKey }}', 'NewBlock', 'reloadBlocks');
+            Webhook.listen('blocks.{{ $publicKey }}', 'NewBlock', 'reloadBlocks');
         });
     </script>
 @endpush

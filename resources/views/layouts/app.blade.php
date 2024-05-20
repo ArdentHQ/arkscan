@@ -5,6 +5,10 @@
         x-data="Wallet({{ json_encode(Network::toArray()) }})"
     @endif
 >
+    @push('scripts')
+        @vite('resources/js/webhooks.js')
+    @endpush
+
     <x-ark-pages-includes-layout-head
         :default-name="trans('metatags.home.title')"
         mask-icon-color="#de5846"
