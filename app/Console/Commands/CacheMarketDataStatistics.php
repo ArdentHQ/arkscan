@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Console\Commands\Concerns\DispatchesStatisticsEvents;
 use App\Contracts\MarketDataProvider;
+use App\Events\Statistics\MarketData;
 use App\Facades\Network;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\StatisticsCache;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 final class CacheMarketDataStatistics extends Command
 {
+    use DispatchesStatisticsEvents;
+
     /**
      * The name and signature of the console command.
      *
@@ -52,6 +57,8 @@ final class CacheMarketDataStatistics extends Command
             $this->cacheVolumeStats($currency, $allTimeData, $cache);
             $this->cacheMarketCapStats($currency, $allTimeData, $cache);
         });
+
+        $this->dispatchEvent(MarketData::class);
     }
 
     /**
@@ -71,10 +78,28 @@ final class CacheMarketDataStatistics extends Command
         $priceAth = $pricesSorted->last();
 
         if ($priceAtl['value'] !== null) {
+            if (! $this->hasChanges) {
+                $existingValue = $cache->getPriceAtl($currency) ?? [];
+                if (Arr::get($existingValue, 'timestamp') !== $priceAtl['timestamp'] / 1000) {
+                    $this->hasChanges = true;
+                } else if (Arr::get($existingValue, 'value') !== $priceAtl['value']) {
+                    $this->hasChanges = true;
+                }
+            }
+
             $cache->setPriceAtl($currency, $priceAtl['timestamp'] / 1000, $priceAtl['value']);
         }
 
         if ($priceAth['value'] !== null) {
+            if (! $this->hasChanges) {
+                $existingValue = $cache->getPriceAth($currency) ?? [];
+                if (Arr::get($existingValue, 'timestamp') !== $priceAth['timestamp'] / 1000) {
+                    $this->hasChanges = true;
+                } else if (Arr::get($existingValue, 'value') !== $priceAth['value']) {
+                    $this->hasChanges = true;
+                }
+            }
+
             $cache->setPriceAth($currency, $priceAth['timestamp'] / 1000, $priceAth['value']);
         }
 
@@ -96,6 +121,15 @@ final class CacheMarketDataStatistics extends Command
         /** @var array{timestamp: int, value: float} $priceHigh52 */
         $priceHigh52 = $pricesSorted->last();
 
+        if (! $this->hasChanges) {
+            $existingValue = $cache->getPriceRange52($currency) ?? [];
+            if (Arr::get($existingValue, 'low') !== $priceLow52['value']) {
+                $this->hasChanges = true;
+            } else if (Arr::get($existingValue, 'high') !== $priceHigh52['value']) {
+                $this->hasChanges = true;
+            }
+        }
+
         $cache->setPriceRange52($currency, $priceLow52['value'], $priceHigh52['value']);
     }
 
@@ -113,6 +147,15 @@ final class CacheMarketDataStatistics extends Command
         $priceDailyLow  = $priceSorted->first();
         /** @var array{timestamp: int, value: float} $priceDailyHigh */
         $priceDailyHigh = $priceSorted->last();
+
+        if (! $this->hasChanges) {
+            $existingValue = $cache->getPriceRangeDaily($currency) ?? [];
+            if (Arr::get($existingValue, 'low') !== $priceDailyLow['value']) {
+                $this->hasChanges = true;
+            } else if (Arr::get($existingValue, 'high') !== $priceDailyHigh['value']) {
+                $this->hasChanges = true;
+            }
+        }
 
         $cache->setPriceRangeDaily($currency, $priceDailyLow['value'], $priceDailyHigh['value']);
     }
@@ -133,10 +176,28 @@ final class CacheMarketDataStatistics extends Command
         $volumeAth = $volumeSorted->last();
 
         if ($volumeAtl['value'] !== null) {
+            if (! $this->hasChanges) {
+                $existingValue = $cache->getVolumeAtl($currency) ?? [];
+                if (Arr::get($existingValue, 'timestamp') !== $volumeAtl['timestamp'] / 1000) {
+                    $this->hasChanges = true;
+                } else if (Arr::get($existingValue, 'value') !== $volumeAtl['value']) {
+                    $this->hasChanges = true;
+                }
+            }
+
             $cache->setVolumeAtl($currency, $volumeAtl['timestamp'] / 1000, $volumeAtl['value']);
         }
 
         if ($volumeAth['value'] !== null) {
+            if (! $this->hasChanges) {
+                $existingValue = $cache->getVolumeAth($currency) ?? [];
+                if (Arr::get($existingValue, 'timestamp') !== $volumeAth['timestamp'] / 1000) {
+                    $this->hasChanges = true;
+                } else if (Arr::get($existingValue, 'value') !== $volumeAth['value']) {
+                    $this->hasChanges = true;
+                }
+            }
+
             $cache->setVolumeAth($currency, $volumeAth['timestamp'] / 1000, $volumeAth['value']);
         }
     }
@@ -157,10 +218,28 @@ final class CacheMarketDataStatistics extends Command
         $marketCapAth = $marketCapSorted->last();
 
         if ($marketCapAtl['value'] !== null) {
+            if (! $this->hasChanges) {
+                $existingValue = $cache->getMarketCapAtl($currency) ?? [];
+                if (Arr::get($existingValue, 'timestamp') !== $marketCapAtl['timestamp'] / 1000) {
+                    $this->hasChanges = true;
+                } else if (Arr::get($existingValue, 'value') !== $marketCapAtl['value']) {
+                    $this->hasChanges = true;
+                }
+            }
+
             $cache->setMarketCapAtl($currency, $marketCapAtl['timestamp'] / 1000, $marketCapAtl['value']);
         }
 
         if ($marketCapAth['value'] !== null) {
+            if (! $this->hasChanges) {
+                $existingValue = $cache->getMarketCapAth($currency) ?? [];
+                if (Arr::get($existingValue, 'timestamp') !== $marketCapAth['timestamp'] / 1000) {
+                    $this->hasChanges = true;
+                } else if (Arr::get($existingValue, 'value') !== $marketCapAth['value']) {
+                    $this->hasChanges = true;
+                }
+            }
+
             $cache->setMarketCapAth($currency, $marketCapAth['timestamp'] / 1000, $marketCapAth['value']);
         }
     }

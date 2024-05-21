@@ -290,7 +290,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'year': int, 'transactions': int, 'volume': float, 'fees': float, 'blocks': int}
+     * @return array{'year': int, 'transactions': int, 'volume': string, 'fees': float, 'blocks': int}
      */
     public function getAnnualData(int $year): ?array
     {
