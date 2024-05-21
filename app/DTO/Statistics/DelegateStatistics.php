@@ -92,12 +92,10 @@ final class DelegateStatistics implements Wireable
             $value['mostUniqueVoters'] !== null ? Wallet::firstWhere('address', $value['mostUniqueVoters']) : null,
             $value['leastUniqueVoters'] !== null ? Wallet::firstWhere('address', $value['leastUniqueVoters']) : null,
             $value['mostBlocksForged'] !== null ? Wallet::firstWhere('address', $value['mostBlocksForged']) : null,
-
             $oldestActiveDelegate !== null ? WalletWithValue::make(
                 $oldestActiveDelegate,
                 Carbon::parse($value['oldestActiveDelegate']['timestamp']),
             ) : null,
-
             $newestActiveDelegate !== null ? WalletWithValue::make(
                 $newestActiveDelegate,
                 Carbon::parse($value['newestActiveDelegate']['timestamp']),

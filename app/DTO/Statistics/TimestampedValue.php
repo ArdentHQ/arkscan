@@ -24,7 +24,7 @@ final class TimestampedValue
     {
         return [
             'timestamp' => $this->timestamp,
-            'value' => $this->value,
+            'value'     => $this->value,
         ];
     }
 }
