@@ -77,6 +77,18 @@ function createRoundWithDelegatesAndPerformances(array $performances = null, boo
     });
 }
 
+function createPartialTestRounds(int $round, int $height, string $requiredPublicKey, array $didForge, $context, string $missedPublicKey = null): void
+{
+    $delegateForgingPosition = getDelegateForgingPosition($round, $requiredPublicKey);
+    while ($delegateForgingPosition >= 48 || $delegateForgingPosition === 0) {
+        [$delegates, $round, $height] = createRealisticRound($didForge, $context);
+
+        $delegateForgingPosition = getDelegateForgingPosition($round, $requiredPublicKey);
+    }
+
+    createPartialRound($round, $height, 49, $context, $requiredPublicKey, $missedPublicKey);
+}
+
 it('should render without errors', function () {
     createRoundWithDelegatesAndPerformances();
 
@@ -339,18 +351,6 @@ it('should calculate missed correctly with current round', function () {
             'Current Height',
         ]);
 });
-
-function createPartialTestRounds(int $round, int $height, string $requiredPublicKey, array $didForge, $context, string $missedPublicKey = null)
-{
-    $delegateForgingPosition = getDelegateForgingPosition($round, $requiredPublicKey);
-    while ($delegateForgingPosition >= 48 || $delegateForgingPosition === 0) {
-        [$delegates, $round, $height] = createRealisticRound($didForge, $context);
-
-        $delegateForgingPosition = getDelegateForgingPosition($round, $requiredPublicKey);
-    }
-
-    createPartialRound($round, $height, 49, $context, $requiredPublicKey, $missedPublicKey);
-}
 
 it('should calculate missed correctly for previous rounds', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
