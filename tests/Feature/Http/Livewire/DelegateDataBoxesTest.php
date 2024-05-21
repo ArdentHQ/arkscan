@@ -16,7 +16,7 @@ use Carbon\Carbon;
 use Livewire\Livewire;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
-use function Tests\delegatesForRound;
+use function Tests\getDelegateForgingPosition;
 
 beforeEach(function () {
     $this->app->bind(ContractsRoundRepository::class, function (): RoundRepository {
@@ -72,6 +72,18 @@ function createRoundWithDelegatesAndPerformances(array $performances = null, boo
             'height' => $block->height->toNumber(),
         ]);
     });
+}
+
+function createPartialTestRounds(int $round, int $height, string $requiredPublicKey, array $didForge, $context, string $missedPublicKey = null): void
+{
+    $delegateForgingPosition = getDelegateForgingPosition($round, $requiredPublicKey);
+    while ($delegateForgingPosition >= 48 || $delegateForgingPosition === 0) {
+        [$delegates, $round, $height] = createRealisticRound($didForge, $context);
+
+        $delegateForgingPosition = getDelegateForgingPosition($round, $requiredPublicKey);
+    }
+
+    createPartialRound($round, $height, 49, $context, $requiredPublicKey, $missedPublicKey);
 }
 
 it('should render without errors', function () {
@@ -234,12 +246,6 @@ it('should defer loading', function () {
         ->assertSee('4,234,212');
 });
 
-function getDelegateForgingPosition(int $round, string $publicKey)
-{
-    return delegatesForRound(false, $round)
-        ->search(fn ($delegate) => $delegate['publicKey'] === $publicKey);
-}
-
 it('should calculate forged correctly with current round', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
     $this->freezeTime();
@@ -254,18 +260,14 @@ it('should calculate forged correctly with current round', function () {
     ], $this);
 
     $publicKey = $delegates->get(4)->public_key;
-    while (getDelegateForgingPosition($round, $publicKey) > 48) {
-        [$delegates, $round, $height] = createRealisticRound([
-            array_fill(0, 51, true),
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 46, true),
-            ],
-        ], $this);
-    }
-
-    createPartialRound($round, $height, 49, $this, null, $publicKey);
+    createPartialTestRounds($round, $height, $publicKey, [
+        array_fill(0, 51, true),
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this);
 
     expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, true]);
 
@@ -326,13 +328,10 @@ it('should calculate missed correctly with current round', function () {
     ], $this);
 
     $publicKey = $delegates->get(4)->public_key;
-    while (getDelegateForgingPosition($round, $publicKey) > 48) {
-        [$delegates, $round, $height] = createRealisticRound([
-            array_fill(0, 51, true),
-        ], $this);
-    }
 
-    createPartialRound($round, $height, 49, $this, $publicKey, $publicKey);
+    createPartialTestRounds($round, $height, $publicKey, [
+        array_fill(0, 51, true),
+    ], $this, $publicKey);
 
     expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([true, false]);
 
@@ -406,17 +405,13 @@ it('should calculate not forging correctly with current round', function () {
     ], $this);
 
     $publicKey = $delegates->get(4)->public_key;
-    while (getDelegateForgingPosition($round, $publicKey) > 48) {
-        [$delegates, $round, $height] = createRealisticRound([
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 46, true),
-            ],
-        ], $this);
-    }
-
-    createPartialRound($round, $height, 49, $this, $publicKey, $publicKey);
+    createPartialTestRounds($round, $height, $publicKey, [
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this, $publicKey);
 
     expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, false]);
 
