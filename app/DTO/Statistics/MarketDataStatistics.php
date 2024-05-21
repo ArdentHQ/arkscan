@@ -57,13 +57,11 @@ final class MarketDataStatistics implements Wireable
                 LowHighValue::fromArray($value['prices']['daily']),
                 LowHighValue::fromArray($value['prices']['year']),
             ),
-
             MarketDataVolumeStatistics::make(
                 $value['volume']['today'],
                 TimestampedValue::fromArray($value['volume']['atl']),
                 TimestampedValue::fromArray($value['volume']['ath']),
             ),
-
             MarketDataRecordStatistics::make(
                 $value['caps']['today'],
                 TimestampedValue::fromArray($value['caps']['atl']),
