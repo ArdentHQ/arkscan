@@ -14,11 +14,8 @@ use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Livewire\Livewire;
-
-use function Tests\createFullRound;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
-use function Tests\delegatesForRound;
 use function Tests\getDelegateForgingPosition;
 
 beforeEach(function () {
