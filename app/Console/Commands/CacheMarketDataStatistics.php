@@ -82,7 +82,7 @@ final class CacheMarketDataStatistics extends Command
                 $existingValue = $cache->getPriceAtl($currency) ?? [];
                 if (Arr::get($existingValue, 'timestamp') !== $priceAtl['timestamp'] / 1000) {
                     $this->hasChanges = true;
-                } else if (Arr::get($existingValue, 'value') !== $priceAtl['value']) {
+                } elseif (Arr::get($existingValue, 'value') !== $priceAtl['value']) {
                     $this->hasChanges = true;
                 }
             }
@@ -95,7 +95,7 @@ final class CacheMarketDataStatistics extends Command
                 $existingValue = $cache->getPriceAth($currency) ?? [];
                 if (Arr::get($existingValue, 'timestamp') !== $priceAth['timestamp'] / 1000) {
                     $this->hasChanges = true;
-                } else if (Arr::get($existingValue, 'value') !== $priceAth['value']) {
+                } elseif (Arr::get($existingValue, 'value') !== $priceAth['value']) {
                     $this->hasChanges = true;
                 }
             }
@@ -125,7 +125,7 @@ final class CacheMarketDataStatistics extends Command
             $existingValue = $cache->getPriceRange52($currency) ?? [];
             if (Arr::get($existingValue, 'low') !== $priceLow52['value']) {
                 $this->hasChanges = true;
-            } else if (Arr::get($existingValue, 'high') !== $priceHigh52['value']) {
+            } elseif (Arr::get($existingValue, 'high') !== $priceHigh52['value']) {
                 $this->hasChanges = true;
             }
         }
@@ -152,7 +152,7 @@ final class CacheMarketDataStatistics extends Command
             $existingValue = $cache->getPriceRangeDaily($currency) ?? [];
             if (Arr::get($existingValue, 'low') !== $priceDailyLow['value']) {
                 $this->hasChanges = true;
-            } else if (Arr::get($existingValue, 'high') !== $priceDailyHigh['value']) {
+            } elseif (Arr::get($existingValue, 'high') !== $priceDailyHigh['value']) {
                 $this->hasChanges = true;
             }
         }
@@ -180,7 +180,7 @@ final class CacheMarketDataStatistics extends Command
                 $existingValue = $cache->getVolumeAtl($currency) ?? [];
                 if (Arr::get($existingValue, 'timestamp') !== $volumeAtl['timestamp'] / 1000) {
                     $this->hasChanges = true;
-                } else if (Arr::get($existingValue, 'value') !== $volumeAtl['value']) {
+                } elseif (Arr::get($existingValue, 'value') !== $volumeAtl['value']) {
                     $this->hasChanges = true;
                 }
             }
@@ -193,7 +193,7 @@ final class CacheMarketDataStatistics extends Command
                 $existingValue = $cache->getVolumeAth($currency) ?? [];
                 if (Arr::get($existingValue, 'timestamp') !== $volumeAth['timestamp'] / 1000) {
                     $this->hasChanges = true;
-                } else if (Arr::get($existingValue, 'value') !== $volumeAth['value']) {
+                } elseif (Arr::get($existingValue, 'value') !== $volumeAth['value']) {
                     $this->hasChanges = true;
                 }
             }
@@ -222,7 +222,7 @@ final class CacheMarketDataStatistics extends Command
                 $existingValue = $cache->getMarketCapAtl($currency) ?? [];
                 if (Arr::get($existingValue, 'timestamp') !== $marketCapAtl['timestamp'] / 1000) {
                     $this->hasChanges = true;
-                } else if (Arr::get($existingValue, 'value') !== $marketCapAtl['value']) {
+                } elseif (Arr::get($existingValue, 'value') !== $marketCapAtl['value']) {
                     $this->hasChanges = true;
                 }
             }
@@ -235,7 +235,7 @@ final class CacheMarketDataStatistics extends Command
                 $existingValue = $cache->getMarketCapAth($currency) ?? [];
                 if (Arr::get($existingValue, 'timestamp') !== $marketCapAth['timestamp'] / 1000) {
                     $this->hasChanges = true;
-                } else if (Arr::get($existingValue, 'value') !== $marketCapAth['value']) {
+                } elseif (Arr::get($existingValue, 'value') !== $marketCapAth['value']) {
                     $this->hasChanges = true;
                 }
             }

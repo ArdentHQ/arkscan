@@ -153,10 +153,10 @@ final class CacheAnnualStatistics extends Command
             ->count();
 
         $transactionCount = (int) $transactionData?->transactions;
-        $volume = BigNumber::new($transactionData?->amount ?? '0')->plus($multipaymentAmount)->__toString();
-        $fees = (string) ($transactionData?->fees ?? '0');
+        $volume           = BigNumber::new($transactionData?->amount ?? '0')->plus($multipaymentAmount)->__toString();
+        $fees             = (string) ($transactionData?->fees ?? '0');
 
-        $hasUpdated = false;
+        $hasUpdated   = false;
         $existingData = $cache->getAnnualData($year) ?? [];
         if (Arr::get($existingData, 'transactions') !== $transactionCount) {
             $hasUpdated = true;
