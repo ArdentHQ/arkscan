@@ -19,4 +19,12 @@ final class TimestampedValue
 
         return new self($data['timestamp'], $data['value']);
     }
+
+    public function toArray(): array
+    {
+        return [
+            'timestamp' => $this->timestamp,
+            'value' => $this->value,
+        ];
+    }
 }
