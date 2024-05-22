@@ -40,6 +40,8 @@ final class CacheAnnualStatistics extends Command
         } else {
             $this->cacheCurrentYear($cache);
         }
+
+        $this->dispatchEvent(AnnualData::class);
     }
 
     private function cacheAllYears(StatisticsCache $cache): void
@@ -117,7 +119,6 @@ final class CacheAnnualStatistics extends Command
             );
         });
 
-        $this->dispatchEvent(AnnualData::class);
     }
 
     private function cacheCurrentYear(StatisticsCache $cache): void
@@ -156,22 +157,23 @@ final class CacheAnnualStatistics extends Command
         $volume           = BigNumber::new($transactionData?->amount ?? '0')->plus($multipaymentAmount)->__toString();
         $fees             = (string) ($transactionData?->fees ?? '0');
 
-        $hasUpdated   = false;
-        $existingData = $cache->getAnnualData($year) ?? [];
-        if (Arr::get($existingData, 'transactions') !== $transactionCount) {
-            $hasUpdated = true;
-        }
+        if (! $this->hasChanges) {
+            $existingData = $cache->getAnnualData($year) ?? [];
+            if (Arr::get($existingData, 'transactions', 0) !== $transactionCount) {
+                $this->hasChanges = true;
+            }
 
-        if (! $hasUpdated && Arr::get($existingData, 'volume') !== $volume) {
-            $hasUpdated = true;
-        }
+            if (! $this->hasChanges && Arr::get($existingData, 'volume', '0') !== $volume) {
+                $this->hasChanges = true;
+            }
 
-        if (! $hasUpdated && Arr::get($existingData, 'fees') !== $fees) {
-            $hasUpdated = true;
-        }
+            if (! $this->hasChanges && Arr::get($existingData, 'fees', '0') !== $fees) {
+                $this->hasChanges = true;
+            }
 
-        if (! $hasUpdated && Arr::get($existingData, 'blocks') !== $blocksData) {
-            $hasUpdated = true;
+            if (! $this->hasChanges && Arr::get($existingData, 'blocks', 0) !== $blocksData) {
+                $this->hasChanges = true;
+            }
         }
 
         $cache->setAnnualData(
@@ -181,9 +183,5 @@ final class CacheAnnualStatistics extends Command
             $fees,
             $blocksData,
         );
-
-        if ($hasUpdated) {
-            AnnualData::dispatch();
-        }
     }
 }
