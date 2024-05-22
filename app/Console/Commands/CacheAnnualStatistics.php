@@ -97,14 +97,6 @@ final class CacheAnnualStatistics extends Command
                     $this->hasChanges = true;
                 }
 
-                if (! $this->hasChanges && Arr::get($existingData, 'volume') !== $volume) {
-                    $this->hasChanges = true;
-                }
-
-                if (! $this->hasChanges && Arr::get($existingData, 'fees') !== $item->fees) {
-                    $this->hasChanges = true;
-                }
-
                 if (! $this->hasChanges && Arr::get($existingData, 'blocks') !== $blocksData->get($key)->blocks) {
                     $this->hasChanges = true;
                 }
@@ -159,14 +151,6 @@ final class CacheAnnualStatistics extends Command
         if (! $this->hasChanges) {
             $existingData = $cache->getAnnualData($year) ?? [];
             if (Arr::get($existingData, 'transactions', 0) !== $transactionCount) {
-                $this->hasChanges = true;
-            }
-
-            if (! $this->hasChanges && Arr::get($existingData, 'volume', '0') !== $volume) {
-                $this->hasChanges = true;
-            }
-
-            if (! $this->hasChanges && Arr::get($existingData, 'fees', '0') !== $fees) {
                 $this->hasChanges = true;
             }
 
