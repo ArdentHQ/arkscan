@@ -7,7 +7,6 @@ namespace App\Console\Commands;
 use App\Console\Commands\Concerns\DispatchesStatisticsEvents;
 use App\Enums\CoreTransactionTypeEnum;
 use App\Events\Statistics\DelegateDetails;
-use App\Events\StatisticsUpdate;
 use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
@@ -55,7 +54,7 @@ final class CacheDelegateStatistics extends Command
             if (! $this->hasChanges) {
                 if ($cache->getLeastUniqueVoters() !== $leastVotedDelegate['public_key']) {
                     $this->hasChanges = true;
-                } else if ($leastVotedDelegate['public_key'] !== null && $walletCache->getVoterCount($leastVotedDelegate['public_key']) !== $leastVotedDelegate['voter_count']) {
+                } elseif ($leastVotedDelegate['public_key'] !== null && $walletCache->getVoterCount($leastVotedDelegate['public_key']) !== $leastVotedDelegate['voter_count']) {
                     $this->hasChanges = true;
                 }
             }

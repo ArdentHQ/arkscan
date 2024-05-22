@@ -80,7 +80,7 @@ final class CacheAddressStatistics extends Command
                 $currentValue = $cache->getGenesisAddress() ?? [];
                 if (Arr::get($currentValue, 'address') !== $genesis->sender->address) {
                     $this->hasChanges = true;
-                } else if (Arr::get($currentValue, 'value') !== $genesisDate) {
+                } elseif (Arr::get($currentValue, 'value') !== $genesisDate) {
                     $this->hasChanges = true;
                 }
             }
@@ -157,7 +157,7 @@ final class CacheAddressStatistics extends Command
                 $currentValue = $cache->getMostTransactions() ?? [];
                 if (Arr::get($currentValue, 'address') !== $mostTransactions['address']) {
                     $this->hasChanges = true;
-                } else if (Arr::get($currentValue, 'value') !== $mostTransactions['tx_count']) {
+                } elseif (Arr::get($currentValue, 'value') !== $mostTransactions['tx_count']) {
                     $this->hasChanges = true;
                 }
             }
@@ -178,7 +178,7 @@ final class CacheAddressStatistics extends Command
                 $currentValue = $cache->getLargestAddress() ?? [];
                 if (Arr::get($currentValue, 'address') !== $largest->address) {
                     $this->hasChanges = true;
-                } else if (Arr::get($currentValue, 'value') !== $largest->balance->toFloat()) {
+                } elseif (Arr::get($currentValue, 'value') !== $largest->balance->toFloat()) {
                     $this->hasChanges = true;
                 }
             }
