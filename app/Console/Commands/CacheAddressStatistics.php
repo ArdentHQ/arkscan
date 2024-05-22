@@ -77,7 +77,7 @@ final class CacheAddressStatistics extends Command
             $genesisDate = Carbon::createFromTimestamp(Network::epoch()->timestamp)->format(DateFormat::DATE);
 
             if (! $this->hasChanges) {
-                $currentValue = $cache->getAddressHoldings();
+                $currentValue = $cache->getGenesisAddress() ?? [];
                 if (Arr::get($currentValue, 'address') !== $genesis->sender->address) {
                     $this->hasChanges = true;
                 } else if (Arr::get($currentValue, 'value') !== $genesisDate) {
