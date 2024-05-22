@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Events\Statistics\AddressHoldings;
-use App\Events\Statistics\StatisticsUpdate;
 use App\Events\Statistics\UniqueAddresses;
 use App\Facades\Network;
 use App\Models\Transaction;
@@ -81,7 +80,7 @@ it('should cache unique addresses', function () {
     ]);
 
     $newest = Wallet::factory()->create([
-        'balance' => BigNumber::new(10 * 1e8),
+        'balance'    => BigNumber::new(10 * 1e8),
         'address'    => 'newest-address',
         'public_key' => 'newest-public_key',
     ]);
@@ -162,7 +161,7 @@ it('should not dispatch events if nothing changed', function () {
     ]);
 
     $newest = Wallet::factory()->create([
-        'balance' => BigNumber::new(10 * 1e8),
+        'balance'    => BigNumber::new(10 * 1e8),
         'address'    => 'newest-address',
         'public_key' => 'newest-public_key',
     ]);
