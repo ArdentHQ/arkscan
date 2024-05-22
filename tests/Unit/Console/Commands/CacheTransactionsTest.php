@@ -2,34 +2,15 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\CacheVolume;
 use App\Contracts\Network as NetworkContract;
-use App\DTO\Statistics\TransactionAveragesStatistics;
-use App\DTO\Statistics\TransactionRecordsStatistics;
-use App\DTO\Statistics\TransactionStatistics;
 use App\Enums\StatsPeriods;
 use App\Enums\StatsTransactionType;
 use App\Events\Statistics\TransactionDetails;
-use App\Facades\Settings;
-use App\Http\Livewire\Stats\Insights;
-use App\Models\Block;
 use App\Models\Transaction;
-use App\Models\Wallet;
-use App\Services\BigNumber;
-use App\Services\Blockchain\Network as Blockchain;
-use App\Services\Cache\BlockCache;
-use App\Services\Cache\CryptoDataCache;
-use App\Services\Cache\NetworkCache;
-use App\Services\Cache\NetworkStatusBlockCache;
-use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\TransactionCache;
-use App\Services\MarketDataProviders\CoinGecko;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Http;
-use Livewire\Livewire;
 use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
 it('should cache data', function (): void {
@@ -86,16 +67,16 @@ it('should cache data', function (): void {
 
     expect($cache->getHistorical(StatsPeriods::DAY))->toEqual([
         'labels' => [
-            0 => '16',
-            1 => '17',
-            2 => '18',
-            3 => '19',
-            4 => '20',
-            5 => '21',
-            6 => '22',
-            7 => '23',
-            8 => '00',
-            9 => '01',
+            0  => '16',
+            1  => '17',
+            2  => '18',
+            3  => '19',
+            4  => '20',
+            5  => '21',
+            6  => '22',
+            7  => '23',
+            8  => '00',
+            9  => '01',
             10 => '02',
             11 => '03',
             12 => '04',
@@ -112,16 +93,16 @@ it('should cache data', function (): void {
             23 => '15',
         ],
         'datasets' => [
-            0 => 0,
-            1 => 0,
-            2 => 0,
-            3 => 0,
-            4 => 0,
-            5 => 0,
-            6 => 0,
-            7 => 0,
-            8 => 0,
-            9 => 0,
+            0  => 0,
+            1  => 0,
+            2  => 0,
+            3  => 0,
+            4  => 0,
+            5  => 0,
+            6  => 0,
+            7  => 0,
+            8  => 0,
+            9  => 0,
             10 => 0,
             11 => 0,
             12 => 0,
