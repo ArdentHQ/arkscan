@@ -118,7 +118,6 @@ final class CacheAnnualStatistics extends Command
                 $blocksData->get($key)->blocks, // We assume to have the same amount of entries for blocks and transactions (years)
             );
         });
-
     }
 
     private function cacheCurrentYear(StatisticsCache $cache): void
