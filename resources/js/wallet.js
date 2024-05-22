@@ -311,11 +311,11 @@ const Wallet = (network, xData = {}) => {
                 return null;
             }
 
-            if (typeof this.extension().version !== 'function') {
-                return '1.0.0';
+            if (typeof this.extension().version !== "function") {
+                return "1.0.0";
             }
 
-            return this.extension().version() || '1.0.0';
+            return this.extension().version() || "1.0.0";
         },
 
         get delegateAddressKey() {
