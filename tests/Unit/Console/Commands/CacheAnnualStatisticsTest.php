@@ -2,13 +2,17 @@
 
 declare(strict_types=1);
 
+use App\Events\Statistics\AnnualData;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Cache\StatisticsCache;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Event;
 
 it('should cache annual data for current year', function () {
+    Event::fake();
+
     $cache       = new StatisticsCache();
     $currentTime = Carbon::now();
     $currentYear = $currentTime->year;
@@ -32,9 +36,13 @@ it('should cache annual data for current year', function () {
         'fees'         => '0.50000000000000000000',
         'blocks'       => 5,
     ]);
+
+    Event::assertDispatchedTimes(AnnualData::class, 1);
 });
 
 it('should cache annual data for all time', function () {
+    Event::fake();
+
     $this->travelTo(Carbon::parse('2023-08-12'));
 
     $cache       = new StatisticsCache();
@@ -93,20 +101,30 @@ it('should cache annual data for all time', function () {
         'fees'         => '0.60000000000000000000',
         'blocks'       => 5,
     ]);
+
+    Event::assertDispatchedTimes(AnnualData::class, 1);
 });
 
 it('should handle null scenarios for annual data for current year', function () {
+    Event::fake();
+
     $cache = new StatisticsCache();
 
     $this->artisan('explorer:cache-annual-statistics');
 
     expect($cache->getAnnualData(2017))->toBeNull();
+
+    Event::assertDispatchedTimes(AnnualData::class, 0);
 });
 
 it('should handle null scenarios for annual data for all time', function () {
+    Event::fake();
+
     $cache = new StatisticsCache();
 
     $this->artisan('explorer:cache-annual-statistics --all');
 
     expect($cache->getAnnualData(2017))->toBeNull();
+
+    Event::assertDispatchedTimes(AnnualData::class, 0);
 });
