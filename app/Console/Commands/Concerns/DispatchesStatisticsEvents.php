@@ -21,5 +21,7 @@ trait DispatchesStatisticsEvents
         }
 
         $event::dispatch();
+
+        $this->hasChanges = false;
     }
 }
