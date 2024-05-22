@@ -307,19 +307,19 @@ const Wallet = (network, xData = {}) => {
         },
 
         get version() {
-            if (! this.hasExtension) {
+            if (!this.hasExtension) {
                 return null;
             }
 
-            return this.extension().version() || '1.0.0';
+            return this.extension().version() || "1.0.0";
         },
 
         get delegateAddressKey() {
-            if (['1.8.0', '1.0.0', null].includes(this.version)) {
-                return 'delegateAddress';
+            if (["1.8.0", "1.0.0", null].includes(this.version)) {
+                return "delegateAddress";
             }
 
-            return 'address';
+            return "address";
         },
 
         async performVote(address) {
