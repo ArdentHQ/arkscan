@@ -80,8 +80,6 @@ final class CacheAddressStatistics extends Command
                 $currentValue = $cache->getGenesisAddress() ?? [];
                 if (Arr::get($currentValue, 'address') !== $genesis->sender->address) {
                     $this->hasChanges = true;
-                } elseif (Arr::get($currentValue, 'value') !== $genesisDate) {
-                    $this->hasChanges = true;
                 }
             }
 
