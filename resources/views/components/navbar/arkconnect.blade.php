@@ -39,7 +39,7 @@
 
             <a
                 data-tippy-content="@lang('general.arkconnect.wrong_network.'.Network::alias())"
-                class="flex-1 min-w-0"
+                class="flex-1 min-w-0 text-theme-secondary-500 dark:text-theme-dark-500"
                 x-show="! isOnSameNetwork"
             >
                 <x-truncate-dynamic />
