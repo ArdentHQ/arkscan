@@ -7,7 +7,7 @@
         <x-slot name="title">
             @lang('general.navbar.arkconnect.modal.install_title')
 
-            <div class="mt-1.5 text-sm font-normal text-theme-secondary-700 leading-5.25">
+            <div class="mt-1.5 text-sm font-normal text-theme-secondary-700 leading-5.25 dark:text-theme-dark-200">
                 @lang('general.navbar.arkconnect.modal.install_subtitle')
             </div>
         </x-slot>

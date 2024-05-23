@@ -19,7 +19,7 @@ final class CacheAnnualStatistics extends Command
      *
      * @var string
      */
-    protected $signature = 'explorer:cache-annual-statistics {--all}}';
+    protected $signature = 'explorer:cache-annual-statistics {--all}';
 
     /**
      * The console command description.
@@ -30,15 +30,21 @@ final class CacheAnnualStatistics extends Command
 
     public function handle(StatisticsCache $cache): void
     {
-        if ($this->option('all')) {
-            $this->cacheAllYears($cache);
-        } else {
-            $this->cacheCurrentYear($cache);
-        }
+        $this->cacheAllYears($cache);
+        $this->cacheCurrentYear($cache);
+    }
+
+    private function hasCachedAll(StatisticsCache $cache): bool
+    {
+        return $cache->getAnnualData(Network::epoch()->year) !== null;
     }
 
     private function cacheAllYears(StatisticsCache $cache): void
     {
+        if ($this->hasCachedAll($cache) && $this->option('all') === false) {
+            return;
+        }
+
         $epoch           = Network::epoch()->timestamp;
         $transactionData = DB::connection('explorer')
             ->query()
