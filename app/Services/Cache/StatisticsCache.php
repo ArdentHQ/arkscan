@@ -128,7 +128,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'address': string, 'value': Carbon}
+     * @return ?array{'address': string, 'value': Carbon}
      */
     public function getGenesisAddress(): ?array
     {
@@ -141,7 +141,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'address': string, 'timestamp': int, 'value': Carbon}
+     * @return ?array{'address': string, 'timestamp': int, 'value': Carbon}
      */
     public function getNewestAddress(): ?array
     {
@@ -154,7 +154,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'address': string, 'value': int}
+     * @return ?array{'address': string, 'value': int}
      */
     public function getMostTransactions(): ?array
     {
@@ -167,7 +167,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'address': string, 'value': BigNumber}
+     * @return ?array{'address': string, 'value': BigNumber}
      */
     public function getLargestAddress(): ?array
     {
@@ -180,7 +180,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'low': float, 'high': float}
+     * @return ?array{'low': float, 'high': float}
      */
     public function getPriceRangeDaily(string $currency): ?array
     {
@@ -193,7 +193,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'low': float, 'high': float}
+     * @return ?array{'low': float, 'high': float}
      */
     public function getPriceRange52(string $currency): ?array
     {
@@ -206,7 +206,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'timestamp': int, 'value': float}
+     * @return ?array{'timestamp': int, 'value': float}
      */
     public function getPriceAth(string $currency): ?array
     {
@@ -219,7 +219,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'timestamp': int, 'value': float}
+     * @return ?array{'timestamp': int, 'value': float}
      */
     public function getPriceAtl(string $currency): ?array
     {
@@ -232,7 +232,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'timestamp': int, 'value': float}
+     * @return ?array{'timestamp': int, 'value': float}
      */
     public function getVolumeAth(string $currency): ?array
     {
@@ -245,7 +245,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'timestamp': int, 'value': float}
+     * @return ?array{'timestamp': int, 'value': float}
      */
     public function getVolumeAtl(string $currency): ?array
     {
@@ -258,7 +258,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'timestamp': int, 'value': float}
+     * @return ?array{'timestamp': int, 'value': float}
      */
     public function getMarketCapAth(string $currency): ?array
     {
@@ -271,7 +271,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'timestamp': int, 'value': float}
+     * @return ?array{'timestamp': int, 'value': float}
      */
     public function getMarketCapAtl(string $currency): ?array
     {
@@ -290,7 +290,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'year': int, 'transactions': int, 'volume': string, 'fees': float, 'blocks': int}
+     * @return ?array{'year': int, 'transactions': int, 'volume': string, 'fees': float, 'blocks': int}
      */
     public function getAnnualData(int $year): ?array
     {

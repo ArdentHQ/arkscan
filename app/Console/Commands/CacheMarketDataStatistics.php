@@ -212,7 +212,7 @@ final class CacheMarketDataStatistics extends Command
 
         $marketCapSorted = $marketcaps->sortBy('value');
 
-        /** @var array{timestamp: int, value: float|null} $marketCapAtl */
+        /** @var array{timestamp: int, value: int|float|null} $marketCapAtl */
         $marketCapAtl = $marketCapSorted->first();
         /** @var array{timestamp: int, value: float|null} $marketCapAth */
         $marketCapAth = $marketCapSorted->last();
@@ -222,7 +222,7 @@ final class CacheMarketDataStatistics extends Command
                 $existingValue = $cache->getMarketCapAtl($currency) ?? [];
                 if (Arr::get($existingValue, 'timestamp') !== $marketCapAtl['timestamp'] / 1000) {
                     $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== $marketCapAtl['value']) {
+                } elseif (Arr::get($existingValue, 'value') !== (float) $marketCapAtl['value']) {
                     $this->hasChanges = true;
                 }
             }
