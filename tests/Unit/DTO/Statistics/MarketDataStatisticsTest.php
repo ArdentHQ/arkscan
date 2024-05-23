@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\DTO\Statistics\LowHighValue;
 use App\DTO\Statistics\MarketDataPriceStatistics;
 use App\DTO\Statistics\MarketDataRecordStatistics;
@@ -82,7 +84,7 @@ it('should convert to and from wireable array', function () {
 
         'volume' => [
             'today' => strval(10 * 1e8),
-            'atl' => [
+            'atl'   => [
                 'timestamp' => $timestamp,
                 'value'     => 0.2345,
             ],
@@ -94,7 +96,7 @@ it('should convert to and from wireable array', function () {
 
         'caps'   => [
             'today' => 20 * 1e8,
-            'atl' => [
+            'atl'   => [
                 'timestamp' => $timestamp,
                 'value'     => 0.2345,
             ],

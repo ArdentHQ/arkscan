@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\DTO\Statistics\TransactionAveragesStatistics;
 use App\DTO\Statistics\TransactionRecordsStatistics;
 use App\DTO\Statistics\TransactionStatistics;
@@ -9,14 +11,14 @@ use App\Models\Transaction;
 use App\Services\Cache\TransactionCache;
 
 it('should convert to and from wireable array', function () {
-    $cache = new TransactionCache();
+    $cache   = new TransactionCache();
     $details = StatsTransactionType::all()
         ->mapWithKeys(fn ($type) => [$type => $cache->getHistoricalByType($type)])
         ->toArray();
 
-    $transaction  = Transaction::factory()->create();
-    $largestBlock = Block::factory()->create();
-    $highestFeeBlock = Block::factory()->create();
+    $transaction           = Transaction::factory()->create();
+    $largestBlock          = Block::factory()->create();
+    $highestFeeBlock       = Block::factory()->create();
     $mostTransactionsBlock = Block::factory()->create();
 
     $averages = TransactionAveragesStatistics::make([
