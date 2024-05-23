@@ -31,15 +31,9 @@ final class MarketDataStatistics implements Wireable
     public function toLivewire(): array
     {
         return [
-            'prices' => [
-                'atl'   => $this->prices->atl->toArray(),
-                'ath'   => $this->prices->ath->toArray(),
-                'daily' => $this->prices->daily->toArray(),
-                'year'  => $this->prices->year->toArray(),
-            ],
-
-            'volume' => $this->volume,
-            'caps'   => $this->caps,
+            'prices' => $this->prices->toArray(),
+            'volume' => $this->volume->toArray(),
+            'caps'   => $this->caps->toArray(),
         ];
     }
 
