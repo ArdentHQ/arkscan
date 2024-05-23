@@ -43,7 +43,7 @@ final class CacheDelegateStatistics extends Command
             $publicKey = $mostVotedDelegate['public_key'];
             if ($cache->getMostUniqueVoters() !== $publicKey) {
                 $this->hasChanges = true;
-            } else if ($publicKey !== null && $walletCache->getVoterCount($publicKey) !== $mostVotedDelegate['voter_count']) {
+            } elseif ($publicKey !== null && $walletCache->getVoterCount($publicKey) !== $mostVotedDelegate['voter_count']) {
                 $this->hasChanges = true;
             }
 
