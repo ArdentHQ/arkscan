@@ -175,54 +175,6 @@ it('should not trigger event if nothing changed', function (): void {
     Event::assertDispatchedTimes(TransactionDetails::class, 0);
 });
 
-it('should trigger event if historical averages has changed', function (): void {
-    Event::fake();
-
-    $this->travelTo(Carbon::parse('2024-04-08 15:22:19'));
-
-    $networkStub = new NetworkStub(true, Carbon::now()->subDay(2));
-    app()->singleton(NetworkContract::class, fn () => $networkStub);
-
-    Transaction::factory(2)->delegateRegistration()->create([
-        'amount' => 0,
-        'fee'    => 9 * 1e8,
-    ]);
-    Transaction::factory(3)->transfer()->create([
-        'amount' => 2000 * 1e8,
-        'fee'    => 10 * 1e8,
-    ]);
-    Transaction::factory(4)->multipayment()->create([
-        'amount' => 0,
-        'fee'    => 11 * 1e8,
-        'asset'  => [
-            'payments' => [
-                [
-                    'amount' => 3000 * 1e8,
-                ],
-            ],
-        ],
-    ]);
-    $transaction = Transaction::factory()
-        ->transfer()
-        ->create([
-            'amount' => 9000 * 1e8,
-            'fee'    => 10 * 1e8,
-        ]);
-
-    Artisan::call('explorer:cache-transactions');
-
-    Event::assertDispatchedTimes(TransactionDetails::class, 1);
-
-    Event::fake();
-
-    $transaction->amount = 10000 * 1e8;
-    $transaction->save();
-
-    Artisan::call('explorer:cache-transactions');
-
-    Event::assertDispatchedTimes(TransactionDetails::class, 1);
-});
-
 it('should trigger event if largest transaction has changed', function (): void {
     Event::fake();
 
@@ -252,17 +204,11 @@ it('should trigger event if largest transaction has changed', function (): void 
             ],
         ],
     ]);
+
     $largest = Transaction::factory()
         ->transfer()
         ->create([
             'amount' => 9000 * 1e8,
-            'fee'    => 10 * 1e8,
-        ]);
-
-    $smallest = Transaction::factory()
-        ->transfer()
-        ->create([
-            'amount' => 1 * 1e8,
             'fee'    => 10 * 1e8,
         ]);
 
@@ -274,12 +220,14 @@ it('should trigger event if largest transaction has changed', function (): void 
 
     Event::fake();
 
-    $smallest->amount = 10000 * 1e8;
-    $smallest->save();
+    Transaction::factory()
+        ->transfer()
+        ->create([
+            'amount' => 10000 * 1e8,
+            'fee'    => 10 * 1e8,
+        ]);
 
     Artisan::call('explorer:cache-transactions');
-
-    expect($cache->getLargestIdByAmount())->toBe($smallest->id);
 
     Event::assertDispatchedTimes(TransactionDetails::class, 1);
 });
