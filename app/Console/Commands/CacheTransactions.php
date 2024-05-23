@@ -53,20 +53,8 @@ final class CacheTransactions extends Command
 
         StatsTransactionType::all()
             ->each(function ($type) use ($cache) {
-                $value = HistoricalAggregateFactory::type($type)->aggregate();
-                if (! $this->hasChanges && $cache->getHistoricalByType($type) !== $value) {
-                    $this->hasChanges = true;
-                }
-
-                $cache->setHistoricalByType($type, $value);
+                $cache->setHistoricalByType($type, HistoricalAggregateFactory::type($type)->aggregate());
             });
-
-        $averagesValue = HistoricalAggregateFactory::averages()->aggregate();
-        if (! $this->hasChanges && $cache->getHistoricalAverages() !== $averagesValue) {
-            $this->hasChanges = true;
-        }
-
-        $cache->setHistoricalAverages($averagesValue);
 
         $largestTransaction = (new LargestTransactionAggregate())->aggregate();
         if ($largestTransaction !== null) {
@@ -76,6 +64,13 @@ final class CacheTransactions extends Command
 
             $cache->setLargestIdByAmount($largestTransaction->id);
         }
+
+        $averagesValue = HistoricalAggregateFactory::averages()->aggregate();
+        if (! $this->hasChanges && $cache->getHistoricalAverages() !== $averagesValue) {
+            $this->hasChanges = true;
+        }
+
+        $cache->setHistoricalAverages($averagesValue);
 
         $this->dispatchEvent(TransactionDetails::class);
     }
