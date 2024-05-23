@@ -74,18 +74,9 @@ final class CacheAddressStatistics extends Command
         $genesis = Transaction::orderBy('block_height', 'asc')->limit(1)->first();
 
         if ($genesis !== null) {
-            $genesisDate = Carbon::createFromTimestamp(Network::epoch()->timestamp)->format(DateFormat::DATE);
-
-            if (! $this->hasChanges) {
-                $currentValue = $cache->getGenesisAddress() ?? [];
-                if (Arr::get($currentValue, 'address') !== $genesis->sender->address) {
-                    $this->hasChanges = true;
-                }
-            }
-
             $cache->setGenesisAddress([
                 'address' => $genesis->sender->address,
-                'value'   => $genesisDate,
+                'value'   => Carbon::createFromTimestamp(Network::epoch()->timestamp)->format(DateFormat::DATE),
             ]);
         }
     }
