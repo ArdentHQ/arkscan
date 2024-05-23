@@ -44,6 +44,7 @@ final class CacheTransactions extends Command
             StatsPeriods::ALL,
         ])->each(function ($period) use ($cache) {
             $value = HistoricalAggregateFactory::period($period)->aggregate();
+            // This covers all changes to transactions
             if (! $this->hasChanges && $cache->getHistorical($period) !== $this->chartjs($value)) {
                 $this->hasChanges = true;
             }
@@ -58,17 +59,10 @@ final class CacheTransactions extends Command
 
         $largestTransaction = (new LargestTransactionAggregate())->aggregate();
         if ($largestTransaction !== null) {
-            if (! $this->hasChanges && $cache->getLargestIdByAmount() !== $largestTransaction->id) {
-                $this->hasChanges = true;
-            }
-
             $cache->setLargestIdByAmount($largestTransaction->id);
         }
 
         $averagesValue = HistoricalAggregateFactory::averages()->aggregate();
-        if (! $this->hasChanges && $cache->getHistoricalAverages() !== $averagesValue) {
-            $this->hasChanges = true;
-        }
 
         $cache->setHistoricalAverages($averagesValue);
 
