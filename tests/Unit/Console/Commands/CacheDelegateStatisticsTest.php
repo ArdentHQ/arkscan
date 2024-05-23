@@ -382,3 +382,66 @@ it('should dispatch event if delegate with most blocks forged changed', function
 
     Event::assertDispatchedTimes(DelegateDetails::class, 1);
 });
+
+it('should not dispatch event if nothing changed', function () {
+    Event::fake();
+
+    $cache = new StatisticsCache();
+
+    $mostVoters   = Wallet::factory()->activeDelegate()->create();
+    $leastVoters  = Wallet::factory()->activeDelegate()->create();
+    $oldestActive = Wallet::factory()->activeDelegate()->create();
+    $newestActive = Wallet::factory()->activeDelegate()->create();
+    $mostBlocks   = Wallet::factory()->activeDelegate()->create();
+
+    Round::factory()->create([
+        'round'      => 1,
+        'public_key' => $oldestActive->public_key,
+    ]);
+    Round::factory()->create([
+        'round'      => 1,
+        'public_key' => $newestActive->public_key,
+    ]);
+
+    Wallet::factory()->count(5)->create([
+        'attributes' => ['vote' => $mostVoters->public_key],
+    ]);
+
+    Wallet::factory()->count(1)->create([
+        'attributes' => ['vote' => $leastVoters->public_key],
+    ]);
+
+    Transaction::factory()->delegateRegistration()->create([
+        'timestamp'         => 1,
+        'sender_public_key' => $oldestActive->public_key,
+    ]);
+
+    Transaction::factory()->delegateRegistration()->create([
+        'timestamp'         => 100,
+        'sender_public_key' => $newestActive->public_key,
+    ]);
+
+    Block::factory()->count(10)->create([
+        'generator_public_key' => $mostBlocks->public_key,
+    ]);
+
+    Block::factory()->count(6)->create([
+        'generator_public_key' => $newestActive->public_key,
+    ]);
+
+    $this->artisan('explorer:cache-delegate-statistics');
+
+    expect($cache->getMostUniqueVoters())->toBe($mostVoters->public_key);
+    expect($cache->getLeastUniqueVoters())->toBe($leastVoters->public_key);
+    expect($cache->getOldestActiveDelegate())->toBe(['publicKey' => $oldestActive->public_key, 'timestamp' => Network::epoch()->timestamp + 1]);
+    expect($cache->getNewestActiveDelegate())->toBe(['publicKey' => $newestActive->public_key, 'timestamp' => Network::epoch()->timestamp + 100]);
+    expect($cache->getMostBlocksForged())->toBe($mostBlocks->public_key);
+
+    Event::assertDispatchedTimes(DelegateDetails::class, 1);
+
+    Event::fake();
+
+    $this->artisan('explorer:cache-delegate-statistics');
+
+    Event::assertDispatchedTimes(DelegateDetails::class, 0);
+});
