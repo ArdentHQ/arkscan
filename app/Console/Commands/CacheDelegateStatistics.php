@@ -40,13 +40,16 @@ final class CacheDelegateStatistics extends Command
     {
         $mostVotedDelegate = (new UniqueVotersAggregate())->aggregate();
         if ($mostVotedDelegate !== null) {
-            if ($cache->getMostUniqueVoters() !== $mostVotedDelegate['public_key']) {
+            $publicKey = $mostVotedDelegate['public_key'];
+            if ($cache->getMostUniqueVoters() !== $publicKey) {
+                $this->hasChanges = true;
+            } else if ($publicKey !== null && $walletCache->getVoterCount($publicKey) !== $mostVotedDelegate['voter_count']) {
                 $this->hasChanges = true;
             }
 
-            $cache->setMostUniqueVoters($mostVotedDelegate['public_key']);
+            $cache->setMostUniqueVoters($publicKey);
 
-            $walletCache->setVoterCount($mostVotedDelegate['public_key'], $mostVotedDelegate['voter_count']);
+            $walletCache->setVoterCount($publicKey, $mostVotedDelegate['voter_count']);
         }
 
         $leastVotedDelegate = (new UniqueVotersAggregate())->aggregate(sortDescending: false);
@@ -73,7 +76,7 @@ final class CacheDelegateStatistics extends Command
             ->first();
 
         if ($newestActiveDelegateTx !== null) {
-            if (! $this->hasChanges && Arr::get($cache->getNewestActiveDelegate() ?? [], 'public_key') !== $newestActiveDelegateTx->sender_public_key) {
+            if (! $this->hasChanges && Arr::get($cache->getNewestActiveDelegate() ?? [], 'publicKey') !== $newestActiveDelegateTx->sender_public_key) {
                 $this->hasChanges = true;
             }
 
@@ -87,10 +90,6 @@ final class CacheDelegateStatistics extends Command
             ->first();
 
         if ($oldestActiveDelegateTx !== null) {
-            if (! $this->hasChanges && Arr::get($cache->getOldestActiveDelegate() ?? [], 'public_key') !== $oldestActiveDelegateTx->sender_public_key) {
-                $this->hasChanges = true;
-            }
-
             $cache->setOldestActiveDelegate($oldestActiveDelegateTx->sender_public_key, (int) Network::epoch()->timestamp + $oldestActiveDelegateTx->timestamp);
         }
 
