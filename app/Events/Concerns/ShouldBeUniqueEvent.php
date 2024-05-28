@@ -10,8 +10,6 @@ trait ShouldBeUniqueEvent
 {
     public const UNIQUE_KEY = 'webhooks:event';
 
-    abstract protected function uniqueTimeout(): int;
-
     final public function broadcastWhen(): bool
     {
         $lock = Cache::lock(
@@ -33,6 +31,8 @@ trait ShouldBeUniqueEvent
 
         return true;
     }
+
+    abstract protected function uniqueTimeout(): int;
 
     private function uniqueKey(): string
     {
