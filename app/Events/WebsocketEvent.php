@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace App\Events;
 
+use App\Events\Concerns\ShouldBeUniqueEvent;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithBroadcasting;
-use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
 
-abstract class NewEntity implements ShouldBroadcast
+abstract class WebsocketEvent implements ShouldBroadcast
 {
     use Dispatchable;
-    use InteractsWithBroadcasting;
-    use InteractsWithSockets;
-    use SerializesModels;
+    use ShouldBeUniqueEvent;
 
     public const CHANNEL = 'channel';
 
@@ -27,14 +23,19 @@ abstract class NewEntity implements ShouldBroadcast
 
     final public function broadcastOn()
     {
+        return new Channel($this->channelName());
+    }
+
+    private function channelName(): string
+    {
         if ($this->id !== null) {
-            return new Channel(sprintf(
+            return sprintf(
                 '%s.%s',
                 static::CHANNEL,
                 $this->id
-            ));
+            );
         }
 
-        return new Channel(static::CHANNEL);
+        return static::CHANNEL;
     }
 }
