@@ -39,14 +39,14 @@ it('should update exchange details for coingecko exchanges once per hour', funct
 
     $coingeckoExchange = Exchange::factory()->create([
         'coingecko_id' => 'binance',
-        'volume' => null,
-        'price' => null,
+        'volume'       => null,
+        'price'        => null,
     ]);
 
     $genericExchange = Exchange::factory()->create([
         'coingecko_id' => null,
-        'volume' => null,
-        'price' => null,
+        'volume'       => null,
+        'price'        => null,
     ]);
 
     $this->artisan('exchanges:fetch-details');
@@ -81,14 +81,14 @@ it('should do nothing if there is a coingecko error', function () {
 
     $coingeckoExchange = Exchange::factory()->create([
         'coingecko_id' => 'binance',
-        'volume' => null,
-        'price' => null,
+        'volume'       => null,
+        'price'        => null,
     ]);
 
     $genericExchange = Exchange::factory()->create([
         'coingecko_id' => null,
-        'volume' => null,
-        'price' => null,
+        'volume'       => null,
+        'price'        => null,
     ]);
 
     $this->artisan('exchanges:fetch-details');
