@@ -17,14 +17,6 @@ trait ShouldBeUniqueEvent
             $this->uniqueTimeout()
         );
 
-        // dump(
-        //     // $lock,
-        //     // $lock->get(),
-        //     $this->uniqueKey(),
-        //     now()->format('Y-m-d H:i:s'),
-        //     // debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 8),
-        // );
-
         if ($lock->get() === false) {
             return false;
         }
