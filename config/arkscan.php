@@ -118,5 +118,8 @@ return [
         'wallet-vote' => [
             'ttl' => env('ARKSCAN_WEBHOOKS_WALLET_VOTE_TTL', 8),
         ],
+        'currency-update' => [
+            'ttl' => env('ARKSCAN_WEBHOOKS_CURRENCY_UPDATE_TTL', 8),
+        ],
     ],
 ];
