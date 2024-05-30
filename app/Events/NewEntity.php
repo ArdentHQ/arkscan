@@ -37,4 +37,9 @@ abstract class NewEntity implements ShouldBroadcast
 
         return new Channel(static::CHANNEL);
     }
+
+    final public function getId(): ?string
+    {
+        return $this->id;
+    }
 }
