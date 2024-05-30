@@ -6,8 +6,10 @@ namespace App\DTO\Statistics;
 
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
+use Carbon\Carbon;
+use Livewire\Wireable;
 
-final class DelegateStatistics
+final class DelegateStatistics implements Wireable
 {
     public ?WalletViewModel $mostUniqueVoters = null;
 
@@ -48,6 +50,56 @@ final class DelegateStatistics
             $mostBlocksForged,
             $oldestActiveDelegate,
             $newestActiveDelegate,
+        );
+    }
+
+    public function toLivewire(): array
+    {
+        return [
+            'mostUniqueVoters'  => $this->mostUniqueVoters?->address(),
+            'leastUniqueVoters' => $this->leastUniqueVoters?->address(),
+            'mostBlocksForged'  => $this->mostBlocksForged?->address(),
+
+            'oldestActiveDelegate' => [
+                'wallet'    => $this->oldestActiveDelegate?->wallet->address,
+                'timestamp' => $this->oldestActiveDelegate?->timestamp->toISOString(),
+            ],
+            'newestActiveDelegate' => [
+                'wallet'    => $this->newestActiveDelegate?->wallet->address,
+                'timestamp' => $this->newestActiveDelegate?->timestamp->toISOString(),
+            ],
+        ];
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return self
+     */
+    public static function fromLivewire($value)
+    {
+        $oldestActiveDelegate = null;
+        if ($value['oldestActiveDelegate']['wallet'] !== null) {
+            $oldestActiveDelegate = Wallet::firstWhere('address', $value['oldestActiveDelegate']['wallet']);
+        }
+
+        $newestActiveDelegate = null;
+        if ($value['newestActiveDelegate']['wallet'] !== null) {
+            $newestActiveDelegate = Wallet::firstWhere('address', $value['newestActiveDelegate']['wallet']);
+        }
+
+        return new self(
+            $value['mostUniqueVoters'] !== null ? Wallet::firstWhere('address', $value['mostUniqueVoters']) : null,
+            $value['leastUniqueVoters'] !== null ? Wallet::firstWhere('address', $value['leastUniqueVoters']) : null,
+            $value['mostBlocksForged'] !== null ? Wallet::firstWhere('address', $value['mostBlocksForged']) : null,
+            $oldestActiveDelegate !== null ? WalletWithValue::make(
+                $oldestActiveDelegate,
+                Carbon::parse($value['oldestActiveDelegate']['timestamp']),
+            ) : null,
+            $newestActiveDelegate !== null ? WalletWithValue::make(
+                $newestActiveDelegate,
+                Carbon::parse($value['newestActiveDelegate']['timestamp']),
+            ) : null,
         );
     }
 }

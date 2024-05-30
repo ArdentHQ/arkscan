@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Console\Commands\Concerns\DispatchesStatisticsEvents;
 use App\Enums\CoreTransactionTypeEnum;
+use App\Events\Statistics\AnnualData;
 use App\Facades\Network;
 use App\Services\BigNumber;
 use App\Services\Cache\StatisticsCache;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 final class CacheAnnualStatistics extends Command
 {
+    use DispatchesStatisticsEvents;
+
     /**
      * The name and signature of the console command.
      *
@@ -35,6 +40,8 @@ final class CacheAnnualStatistics extends Command
         } else {
             $this->cacheCurrentYear($cache);
         }
+
+        $this->dispatchEvent(AnnualData::class);
     }
 
     private function cacheAllYears(StatisticsCache $cache): void
@@ -82,10 +89,23 @@ final class CacheAnnualStatistics extends Command
                 return $value->year === $item->year;
             })?->amount ?? '0';
 
+            $volume = BigNumber::new($item->amount)->plus($multipaymentAmount)->__toString();
+
+            if (! $this->hasChanges) {
+                $existingData = $cache->getAnnualData((int) $item->year) ?? [];
+                if (Arr::get($existingData, 'transactions') !== $item->transactions) {
+                    $this->hasChanges = true;
+                }
+
+                if (! $this->hasChanges && Arr::get($existingData, 'blocks') !== $blocksData->get($key)->blocks) {
+                    $this->hasChanges = true;
+                }
+            }
+
             $cache->setAnnualData(
                 (int) $item->year,
                 (int) $item->transactions,
-                BigNumber::new($item->amount)->plus($multipaymentAmount)->__toString(),
+                $volume,
                 $item->fees,
                 $blocksData->get($key)->blocks, // We assume to have the same amount of entries for blocks and transactions (years)
             );
@@ -98,6 +118,7 @@ final class CacheAnnualStatistics extends Command
         $startOfYear = (int) Carbon::now()->startOfYear()->timestamp;
         $year        = Carbon::now()->year;
 
+        /** @var ?object{transactions: int, amount: int, volume: string, fees: float} $transactionData */
         $transactionData = DB::connection('explorer')
             ->query()
             ->select([
@@ -123,14 +144,26 @@ final class CacheAnnualStatistics extends Command
             ->where('timestamp', '>=', $startOfYear - $epoch)
             ->count();
 
+        $transactionCount = (int) $transactionData?->transactions;
+        $volume           = BigNumber::new($transactionData?->amount ?? '0')->plus($multipaymentAmount)->__toString();
+        $fees             = (string) ($transactionData?->fees ?? '0');
+
+        if (! $this->hasChanges) {
+            $existingData = $cache->getAnnualData($year) ?? [];
+            if (Arr::get($existingData, 'transactions', 0) !== $transactionCount) {
+                $this->hasChanges = true;
+            }
+
+            if (! $this->hasChanges && Arr::get($existingData, 'blocks', 0) !== $blocksData) {
+                $this->hasChanges = true;
+            }
+        }
+
         $cache->setAnnualData(
             $year,
-            // @phpstan-ignore-next-line
-            (int) $transactionData?->transactions,
-            // @phpstan-ignore-next-line
-            BigNumber::new($transactionData?->amount ?? '0')->plus($multipaymentAmount)->__toString(),
-            // @phpstan-ignore-next-line
-            $transactionData?->fees ?? '0',
+            $transactionCount,
+            $volume,
+            $fees,
             $blocksData,
         );
     }
