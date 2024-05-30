@@ -38,4 +38,9 @@ abstract class WebsocketEvent implements ShouldBroadcast
 
         return static::CHANNEL;
     }
+
+    final public function getId(): ?string
+    {
+        return $this->id;
+    }
 }
