@@ -26,6 +26,11 @@ abstract class WebsocketEvent implements ShouldBroadcast
         return new Channel($this->channelName());
     }
 
+    final public function getId(): ?string
+    {
+        return $this->id;
+    }
+
     private function channelName(): string
     {
         if ($this->id !== null) {
@@ -37,10 +42,5 @@ abstract class WebsocketEvent implements ShouldBroadcast
         }
 
         return static::CHANNEL;
-    }
-
-    final public function getId(): ?string
-    {
-        return $this->id;
     }
 }
