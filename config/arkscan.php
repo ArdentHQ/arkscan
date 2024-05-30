@@ -121,5 +121,8 @@ return [
         'currency-update' => [
             'ttl' => env('ARKSCAN_WEBHOOKS_CURRENCY_UPDATE_TTL', 8),
         ],
+        'statistics-update' => [
+            'ttl' => env('ARKSCAN_WEBHOOKS_STATISTICS_UPDATE_TTL', 8),
+        ],
     ],
 ];
