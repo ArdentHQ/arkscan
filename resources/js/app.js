@@ -77,12 +77,14 @@ window.onpageshow = function (event) {
 };
 
 window.hideTableTooltipsOnLivewireEvent = (regex) => {
-    Livewire.hook("message.processed", (message, component) => {
-        if (!regex.test(component.name)) {
-            return;
-        }
+    Livewire.hook("commit", ({ component, succeed }) => {
+        succeed(() => {
+            if (!regex.test(component.name)) {
+                return;
+            }
 
-        window.hideAllTooltips();
+            window.hideAllTooltips();
+        });
     });
 };
 

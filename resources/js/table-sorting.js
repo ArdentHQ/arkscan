@@ -23,21 +23,23 @@ const TableSorting = (
             window.addEventListener("updateTableSorting", this.windowEvent);
 
             if (typeof Livewire !== "undefined") {
-                Livewire.hook("message.processed", () => {
-                    if (!this.$refs[this.sortBy]) {
-                        if (this.windowEvent) {
-                            window.removeEventListener(
-                                "updateTableSorting",
-                                this.windowEvent
-                            );
+                Livewire.hook("commit", ({ component, fail, succeed }) => {
+                    succeed(() => {
+                        if (!this.$refs[this.sortBy]) {
+                            if (this.windowEvent) {
+                                window.removeEventListener(
+                                    "updateTableSorting",
+                                    this.windowEvent
+                                );
 
-                            this.windowEvent = null;
+                                this.windowEvent = null;
+                            }
+
+                            return;
                         }
 
-                        return;
-                    }
-
-                    this.update();
+                        this.update();
+                    });
                 });
             }
         },

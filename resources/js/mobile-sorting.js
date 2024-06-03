@@ -21,8 +21,10 @@ const MobileSorting = (
             window.addEventListener("updateTableSorting", this.windowEvent);
 
             if (typeof Livewire !== "undefined") {
-                this.livewireHook = Livewire.hook("message.processed", () => {
-                    this.update();
+                this.livewireHook = Livewire.hook("commit", ({ succeed }) => {
+                    succeed(() => {
+                        this.update();
+                    });
                 });
             }
         },

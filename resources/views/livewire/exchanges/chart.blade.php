@@ -192,9 +192,12 @@
 @push('scripts')
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            Livewire.hook('message.processed', () => {
-                let pos = sessionStorage.getItem('scrollPos');
-                setTimeout(() => window.scrollTo(0, parseInt(pos)), 50);
+            Livewire.hook("commit", ({ component, fail, succeed }) => {
+                succeed(() => {
+                    let pos = sessionStorage.getItem('scrollPos');
+
+                    setTimeout(() => window.scrollTo(0, parseInt(pos)), 50);
+                });
             });
         });
 
