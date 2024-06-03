@@ -7,7 +7,7 @@ namespace App\Livewire\Controllers;
 use Illuminate\Http\Response;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Str;
-use Livewire\Controllers\HttpConnectionHandler as Base;
+use Livewire\Mechanisms\PersistentMiddleware\PersistentMiddleware as Base;
 use Livewire\Livewire;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
