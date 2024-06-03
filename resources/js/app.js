@@ -12,8 +12,6 @@ import "./includes/page-scroll-handler";
 import dayjs from "dayjs/esm/index.js";
 import dayjsRelativeTime from "dayjs/esm/plugin/relativeTime/index.js";
 
-import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
-
 import Wallet from "./wallet.js";
 import BlocksExport from "./blocks-export.js";
 import { Chart } from "chart.js";
@@ -87,5 +85,3 @@ window.hideTableTooltipsOnLivewireEvent = (regex) => {
         });
     });
 };
-
-Livewire.start();
