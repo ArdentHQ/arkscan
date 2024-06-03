@@ -87,25 +87,25 @@ it('should throttle submissions', function () {
         ->set('pairs', 'BTC, USD')
         ->set('message', 'Exciting new universal exchange')
         ->call('submit')
-        ->assertNotEmitted('toastMessage', [trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
+        ->assertNotDispatched('toastMessage', [trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
         ->set('name', 'Potato Exchange')
         ->set('website', 'https://potato.exchange')
         ->set('pairs', 'BTC, USD')
         ->set('message', 'Exciting new universal exchange')
         ->call('submit')
-        ->assertNotEmitted('toastMessage', [trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
+        ->assertNotDispatched('toastMessage', [trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
         ->set('name', 'Potato Exchange')
         ->set('website', 'https://potato.exchange')
         ->set('pairs', 'BTC, USD')
         ->set('message', 'Exciting new universal exchange')
         ->call('submit')
-        ->assertNotEmitted('toastMessage', [trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
+        ->assertNotDispatched('toastMessage', [trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
         ->set('name', 'Potato Exchange')
         ->set('website', 'https://potato.exchange')
         ->set('pairs', 'BTC, USD')
         ->set('message', 'Exciting new universal exchange')
         ->call('submit')
-        ->assertEmitted('toastMessage', [trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']), 'warning']);
+        ->assertDispatched('toastMessage', [trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']), 'warning']);
 
     Mail::assertQueued(ExchangeFormSubmitted::class, 3);
 });

@@ -80,22 +80,22 @@ it('should throttle submissions', function () {
         ->set('website', 'https://potato.wallet')
         ->set('message', 'Exciting new universal wallet')
         ->call('submit')
-        ->assertNotEmitted('toastMessage', [trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
+        ->assertNotDispatched('toastMessage', [trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
         ->set('name', 'Potato Wallet')
         ->set('website', 'https://potato.wallet')
         ->set('message', 'Exciting new universal wallet')
         ->call('submit')
-        ->assertNotEmitted('toastMessage', [trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
+        ->assertNotDispatched('toastMessage', [trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
         ->set('name', 'Potato Wallet')
         ->set('website', 'https://potato.wallet')
         ->set('message', 'Exciting new universal wallet')
         ->call('submit')
-        ->assertNotEmitted('toastMessage', [trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
+        ->assertNotDispatched('toastMessage', [trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
         ->set('name', 'Potato Wallet')
         ->set('website', 'https://potato.wallet')
         ->set('message', 'Exciting new universal wallet')
         ->call('submit')
-        ->assertEmitted('toastMessage', [trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']), 'warning']);
+        ->assertDispatched('toastMessage', [trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']), 'warning']);
 
     Mail::assertQueued(WalletFormSubmitted::class, 3);
 });
