@@ -15,7 +15,7 @@
 @endphp
 
 <div x-data="{
-    selected: @entangle($model ?? 'filter.'.$name),
+    selected: @entangle($model ?? 'filter.'.$name).live,
 }">
     <x-tables.filters.includes.item
         :attributes="$attributes->class('table-filter-item__checkbox')"
