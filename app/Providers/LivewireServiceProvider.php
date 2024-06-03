@@ -10,10 +10,10 @@ use Livewire\LivewireServiceProvider as Base;
 
 final class LivewireServiceProvider extends Base
 {
-    protected function registerRoutes(): void
-    {
-        Route::post('/livewire/message/{name}', HttpConnectionHandler::class)
-            ->name('livewire.message')
-            ->middleware(config('livewire.middleware_group', ''));
-    }
+    // protected function registerRoutes(): void
+    // {
+    //     Route::post('/livewire/message/{name}', HttpConnectionHandler::class)
+    //         ->name('livewire.message')
+    //         ->middleware(config('livewire.middleware_group', ''));
+    // }
 }
