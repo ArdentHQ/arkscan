@@ -1,5 +1,3 @@
-import Alpine from "alpinejs";
-
 function FavoriteDelegates() {
     const favorites =
         JSON.parse(localStorage.getItem("favorite-delegates")) ?? [];
