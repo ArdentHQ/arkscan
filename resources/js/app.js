@@ -65,8 +65,6 @@ window.TruncateDynamic = TruncateDynamic;
 
 dayjs.extend(dayjsRelativeTime);
 
-Alpine.start();
-
 /**
  * If browser back button was used, flush cache
  * This ensures that user will always see an accurate, up-to-date view based on their state
@@ -87,3 +85,5 @@ window.hideTableTooltipsOnLivewireEvent = (regex) => {
         window.hideAllTooltips();
     });
 };
+
+Livewire.start();
