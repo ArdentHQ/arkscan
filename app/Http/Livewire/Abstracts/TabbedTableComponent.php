@@ -6,7 +6,6 @@ namespace App\Http\Livewire\Abstracts;
 
 use App\Http\Livewire\Concerns\HasTablePagination;
 use Livewire\Component;
-use Livewire\Livewire;
 use Livewire\Mechanisms\HandleRequests\HandleRequests;
 
 abstract class TabbedTableComponent extends Component

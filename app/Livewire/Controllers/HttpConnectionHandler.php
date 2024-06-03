@@ -7,8 +7,8 @@ namespace App\Livewire\Controllers;
 use Illuminate\Http\Response;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Str;
-use Livewire\Mechanisms\PersistentMiddleware\PersistentMiddleware as Base;
 use Livewire\Livewire;
+use Livewire\Mechanisms\PersistentMiddleware\PersistentMiddleware as Base;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 // Livewire made a change a few months ago which introduced issues. It tries to generate a request
