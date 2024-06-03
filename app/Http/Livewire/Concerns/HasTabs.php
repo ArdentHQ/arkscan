@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 
 trait HasTabs
 {
+    use HasTablePagination;
+
     public array $tabQueryData = [];
 
     public array $savedQueryData = [];
@@ -109,6 +111,12 @@ trait HasTabs
         // Reset the querystring data on view change to clear the URL
         $queryStringData = $this->queryString();
         foreach ($this->tabQueryData[$this->view] as $key => $value) {
+            if ($key === 'page') {
+                $this->setPage(1);
+
+                continue;
+            }
+
             // @phpstan-ignore-next-line
             $this->{$key} = $queryStringData[$key]['except'];
         }
@@ -123,7 +131,7 @@ trait HasTabs
 
     private function resolvePage(): int
     {
-        return (int) request()->get('page', $this->page);
+        return (int) request()->get('page', $this->getPage());
     }
 
     private function resolvePerPage(): int

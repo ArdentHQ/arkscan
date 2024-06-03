@@ -15,10 +15,10 @@ abstract class TabbedTableComponent extends Component
     final public function resolvePage(): int
     {
         if (! Livewire::isDefinitelyLivewireRequest()) {
-            return $this->page;
+            return $this->getPage();
         }
 
-        return (int) $this->query('page', $this->page);
+        return (int) $this->query('page', $this->getPage());
     }
 
     final public function resolvePerPage(): int
