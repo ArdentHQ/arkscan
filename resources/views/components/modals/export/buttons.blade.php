@@ -60,7 +60,7 @@
                 disabled: dataUri === null
             }"
             download="{{ $filename }}.csv"
-            x-on:click="Livewire.emit('toastMessage', ['{{ $successToast }}', 'success'])"
+            x-on:click="Livewire.dispatch('toastMessage', ['{{ $successToast }}', 'success'])"
         >
             <div class="flex justify-center items-center space-x-2 h-full">
                 <x-ark-icon

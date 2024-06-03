@@ -63,7 +63,7 @@ trait HasTabs
             }
         }
 
-        $this->emit('set'.Str::studly($view).'Ready');
+        $this->dispatch('set'.Str::studly($view).'Ready');
 
         $this->alreadyLoadedViews[$view] = true;
     }

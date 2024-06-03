@@ -45,7 +45,7 @@ final class PriceTicker extends Component
 
         $this->to = Settings::currency();
 
-        $this->dispatchBrowserEvent('has-loaded-price-data');
+        $this->dispatch('has-loaded-price-data');
     }
 
     public function render(): View
@@ -64,7 +64,7 @@ final class PriceTicker extends Component
         if ($originalCurrency !== $newCurrency) {
             $this->saveSetting('currency', $newCurrency);
 
-            $this->emit('currencyChanged', $newCurrency);
+            $this->dispatch('currencyChanged', $newCurrency);
         }
     }
 

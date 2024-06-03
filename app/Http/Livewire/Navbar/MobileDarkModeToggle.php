@@ -18,7 +18,7 @@ final class MobileDarkModeToggle extends MobileToggle
 
             $this->save(false);
 
-            $this->emit('themeChanged', $newValue);
+            $this->dispatch('themeChanged', $newValue);
         }
     }
 
@@ -27,7 +27,7 @@ final class MobileDarkModeToggle extends MobileToggle
         parent::save();
 
         if ($dispatchEvent) {
-            $this->dispatchBrowserEvent('setThemeMode', [
+            $this->dispatch('setThemeMode', [
                 'theme' => $this->currentValue,
             ]);
         }
