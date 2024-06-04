@@ -62,7 +62,8 @@ final class WalletTables extends Component
         ];
     }
 
-    public function boot(): void
+    // Constructor is used as Livewire seems to now try to manipulate query string properties before the first hook is called.
+    public function __construct()
     {
         if ($this->tabQueryData === []) {
             $this->tabQueryData = [

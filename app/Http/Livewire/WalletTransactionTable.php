@@ -48,12 +48,12 @@ final class WalletTransactionTable extends TabbedTableComponent
     public function queryString(): array
     {
         return [
-            'outgoing'      => ['except' => true],
-            'incoming'      => ['except' => true],
-            'transfers'     => ['except' => true],
-            'votes'         => ['except' => true],
-            'multipayments' => ['except' => true],
-            'others'        => ['except' => true],
+            'filter.outgoing'      => ['as' => 'outgoing', 'except' => true],
+            'filter.incoming'      => ['as' => 'incoming', 'except' => true],
+            'filter.transfers'     => ['as' => 'transfers', 'except' => true],
+            'filter.votes'         => ['as' => 'votes', 'except' => true],
+            'filter.multipayments' => ['as' => 'multipayments', 'except' => true],
+            'filter.others'        => ['as' => 'others', 'except' => true],
         ];
     }
 
