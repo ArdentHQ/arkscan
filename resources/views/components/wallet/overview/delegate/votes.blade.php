@@ -17,7 +17,7 @@
                 x-data="{}"
                 type="button"
                 x-on:click="() => {
-                    Livewire.dispatch('showWalletView', 'voters');
+                    Livewire.dispatch('showWalletView', {view: 'voters'});
                     scrollToQuery('#wallet-table-list');
                 }"
                 class="link"
