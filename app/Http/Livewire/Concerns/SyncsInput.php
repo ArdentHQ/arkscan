@@ -15,7 +15,7 @@ trait SyncsInput
         $hook->setComponent($this);
         $updatedHook = $hook->update($property, $property, $value);
 
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         $this->{$property} = $value;
 
         $updatedHook();

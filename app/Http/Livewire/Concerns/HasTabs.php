@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Concerns;
 
+use App\Livewire\SupportQueryString;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use App\Livewire\SupportQueryString;
 
 trait HasTabs
 {
