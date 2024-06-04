@@ -30,11 +30,11 @@ final class SupportQueryString extends Base
 
         Collection::make($componentQueryString)
             ->mapWithKeys(function ($value, $key) {
-                $key = is_string($key) ? $key : $value;
-                $alias = $value['as'] ?? $key;
+                $key     = is_string($key) ? $key : $value;
+                $alias   = $value['as'] ?? $key;
                 $history = $value['history'] ?? true;
-                $keep = $value['alwaysShow'] ?? $value['keep'] ?? false;
-                $except = $value['except'] ?? null;
+                $keep    = $value['alwaysShow'] ?? $value['keep'] ?? false;
+                $except  = $value['except'] ?? null;
 
                 $baseUrl = new BaseUrl(as: $alias, history: $history, keep: $keep, except: $except);
 

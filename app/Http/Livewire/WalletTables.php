@@ -13,7 +13,6 @@ use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
-use Livewire\Features\SupportLifecycleHooks\SupportLifecycleHooks;
 
 /**
  * @property int $page
