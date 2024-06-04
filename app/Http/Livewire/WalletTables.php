@@ -36,31 +36,6 @@ final class WalletTables extends Component
         'voters'       => false,
     ];
 
-    public function queryString(): array
-    {
-        $params = [
-            'paginators.page' => ['except' => 1, 'as' => 'page'],
-            'perPage'         => ['except' => intval(config('arkscan.pagination.per_page'))],
-        ];
-
-        // We need to pass in the transaction filters for previous view so we can hide it from the URL
-        if ($this->view !== 'transactions' && $this->previousView !== 'transactions') {
-            return $params;
-        }
-
-        return [
-            ...$params,
-
-            // Transaction Filters
-            'outgoing'      => ['except' => true],
-            'incoming'      => ['except' => true],
-            'transfers'     => ['except' => true],
-            'votes'         => ['except' => true],
-            'multipayments' => ['except' => true],
-            'others'        => ['except' => true],
-        ];
-    }
-
     // Constructor is used as Livewire seems to now try to manipulate query string properties before the first hook is called.
     public function __construct()
     {
@@ -97,6 +72,31 @@ final class WalletTables extends Component
 
             $this->tabQueryData[$view]['perPage'] = $this->resolvePerPage();
         }
+    }
+
+    public function queryString(): array
+    {
+        $params = [
+            'paginators.page' => ['except' => 1, 'as' => 'page'],
+            'perPage'         => ['except' => intval(config('arkscan.pagination.per_page'))],
+        ];
+
+        // We need to pass in the transaction filters for previous view so we can hide it from the URL
+        if ($this->view !== 'transactions' && $this->previousView !== 'transactions') {
+            return $params;
+        }
+
+        return [
+            ...$params,
+
+            // Transaction Filters
+            'outgoing'      => ['except' => true],
+            'incoming'      => ['except' => true],
+            'transfers'     => ['except' => true],
+            'votes'         => ['except' => true],
+            'multipayments' => ['except' => true],
+            'others'        => ['except' => true],
+        ];
     }
 
     public function mount(WalletViewModel $wallet): void
