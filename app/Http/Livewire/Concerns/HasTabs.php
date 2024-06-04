@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Concerns;
 
-use App\Livewire\SupportBrowserHistoryWrapper;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use App\Livewire\SupportQueryString;
 
 trait HasTabs
 {
@@ -89,9 +89,15 @@ trait HasTabs
     public function updatedView(): void
     {
         if (array_key_exists($this->view, $this->savedQueryData)) {
+            /** @var string $key */
             foreach ($this->savedQueryData[$this->view] as $key => $value) {
-                // @phpstan-ignore-next-line
-                $this->{$key} = $value;
+                // if ($key === 'paginators.page') {
+                //     $this->setPage($value);
+
+                //     continue;
+                // }
+
+                $this->syncInput($key, $value);
             }
         }
     }
@@ -100,7 +106,9 @@ trait HasTabs
 
     private function saveViewData(?string $newView = null): void
     {
-        SupportBrowserHistoryWrapper::init()->mergeRequestQueryStringWithComponent($this);
+        $queryStringSupport = new SupportQueryString();
+        $queryStringSupport->setComponent($this);
+        $queryStringSupport->mergeQueryStringWithRequest();
 
         $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
 
@@ -109,16 +117,17 @@ trait HasTabs
         }
 
         // Reset the querystring data on view change to clear the URL
-        $queryStringData = $this->queryString();
-        foreach ($this->tabQueryData[$this->view] as $key => $value) {
-            if ($key === 'page') {
-                $this->setPage(1);
+        $queryStringData = $queryStringSupport->getQueryString();
 
-                continue;
-            }
+        /** @var string $key */
+        foreach (array_keys($this->tabQueryData[$this->view]) as $key) {
+            // if ($key === 'paginators.page') {
+            //     $this->setPage($queryStringData[$key]['except']);
 
-            // @phpstan-ignore-next-line
-            $this->{$key} = $queryStringData[$key]['except'];
+            //     continue;
+            // }
+
+            $this->syncInput($key, $queryStringData[$key]['except']);
         }
 
         $this->triggerViewIsReady($newView);

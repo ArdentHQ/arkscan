@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Delegates;
 
 use App\Http\Livewire\Concerns\HasTabs;
+use App\Http\Livewire\Concerns\SyncsInput;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
@@ -15,6 +16,7 @@ use Livewire\Component;
 final class Tabs extends Component
 {
     use HasTabs;
+    use SyncsInput;
 
     public string $view = 'delegates';
 
