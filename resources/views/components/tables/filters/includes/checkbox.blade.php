@@ -38,6 +38,11 @@
             }"
             class=""
             wrapper-class="flex-1"
+            x-on:click="(e) => {
+                Alpine.nextTick(() => {
+                    e.target.checked = selected;
+                });
+            }"
         />
     </x-tables.filters.includes.item>
 </div>
