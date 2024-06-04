@@ -18,7 +18,7 @@ final class MobileDarkModeToggle extends MobileToggle
 
             $this->save(false);
 
-            $this->dispatch('themeChanged', $newValue);
+            $this->dispatch('themeChanged', newValue: $newValue);
         }
     }
 
