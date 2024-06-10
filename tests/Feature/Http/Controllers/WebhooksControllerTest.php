@@ -5,8 +5,11 @@ declare(strict_types=1);
 use App\Events\NewBlock;
 use App\Events\NewTransaction;
 use App\Events\WalletVote;
+use Carbon\Carbon;
+use Illuminate\Broadcasting\BroadcastEvent;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\URL;
 
 it('should not dispatch any event if insecure url', function () {
@@ -71,7 +74,7 @@ describe('block', function () {
     });
 
     it('should not dispatch multiple times', function () {
-        Event::fake();
+        Queue::fake();
 
         Config::set('arkscan.webhooks.block-applied.ttl', 4);
 
@@ -91,14 +94,14 @@ describe('block', function () {
         $this->post($secureUrl, $this->block)
             ->assertOk();
 
-        Event::assertDispatchedTimes(NewBlock::class, 4);
+        Queue::assertPushed(BroadcastEvent::class, 4);
 
-        Event::assertDispatched(NewBlock::class, function ($event) {
-            return $event->broadcastOn()->name === 'blocks';
+        Queue::assertPushed(BroadcastEvent::class, function ($event) {
+            return $event->event->broadcastOn()->name === 'blocks';
         });
 
-        Event::assertDispatched(NewBlock::class, function ($event) {
-            return $event->broadcastOn()->name === 'blocks.public-key';
+        Queue::assertPushed(BroadcastEvent::class, function ($event) {
+            return $event->event->broadcastOn()->name === 'blocks.public-key';
         });
     });
 });
@@ -139,7 +142,7 @@ describe('transaction', function () {
     });
 
     it('should not dispatch multiple times', function () {
-        Event::fake();
+        Queue::fake();
 
         Config::set('arkscan.webhooks.transaction-applied.ttl', 4);
 
@@ -159,18 +162,18 @@ describe('transaction', function () {
         $this->post($secureUrl, $this->transaction)
             ->assertOk();
 
-        Event::assertDispatchedTimes(NewTransaction::class, 6);
+        Queue::assertPushed(BroadcastEvent::class, 6);
 
-        Event::assertDispatched(NewTransaction::class, function ($event) {
-            return $event->broadcastOn()->name === 'transactions';
+        Queue::assertPushed(BroadcastEvent::class, function ($event) {
+            return $event->event->broadcastOn()->name === 'transactions';
         });
 
-        Event::assertDispatched(NewTransaction::class, function ($event) {
-            return $event->broadcastOn()->name === 'transactions.public-key';
+        Queue::assertPushed(BroadcastEvent::class, function ($event) {
+            return $event->event->broadcastOn()->name === 'transactions.public-key';
         });
 
-        Event::assertDispatched(NewTransaction::class, function ($event) {
-            return $event->broadcastOn()->name === 'transactions.address';
+        Queue::assertPushed(BroadcastEvent::class, function ($event) {
+            return $event->event->broadcastOn()->name === 'transactions.address';
         });
     });
 });
@@ -270,8 +273,12 @@ describe('wallet', function () {
         });
     });
 
-    it('should not dispatch multiple times', function () {
-        Event::fake();
+    it('wshould not dispatch multiple times', function () {
+        $this->freezeTime();
+
+        $this->travelTo(Carbon::parse('2024-04-14 12:25:04'));
+
+        Queue::fake();
 
         Config::set('arkscan.webhooks.wallet-vote.ttl', 4);
 
@@ -291,14 +298,14 @@ describe('wallet', function () {
         $this->post($secureUrl, $this->vote)
             ->assertOk();
 
-        Event::assertDispatchedTimes(WalletVote::class, 4);
+        Queue::assertPushed(BroadcastEvent::class, 4);
 
-        Event::assertDispatched(WalletVote::class, function ($event) {
-            return $event->broadcastOn()->name === 'wallet-vote.98765';
+        Queue::assertPushed(BroadcastEvent::class, function ($event) {
+            return $event->event->broadcastOn()->name === 'wallet-vote.98765';
         });
 
-        Event::assertDispatched(WalletVote::class, function ($event) {
-            return $event->broadcastOn()->name === 'wallet-vote.12345';
+        Queue::assertPushed(BroadcastEvent::class, function ($event) {
+            return $event->event->broadcastOn()->name === 'wallet-vote.12345';
         });
     });
 });

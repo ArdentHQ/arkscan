@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Concerns;
 
 use App\Events\WalletVote;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 
 trait HandlesWalletWebhooks
 {
@@ -14,11 +13,6 @@ trait HandlesWalletWebhooks
     {
         $publicKey = $this->getVote();
         if ($publicKey === null) {
-            return;
-        }
-
-        $lock = Cache::lock('webhooks:wallet:vote:'.$publicKey, config('arkscan.webhooks.wallet-vote.ttl', 8));
-        if ($lock->get() === false) {
             return;
         }
 
@@ -30,11 +24,6 @@ trait HandlesWalletWebhooks
     {
         $publicKey = $this->getUnvote();
         if ($publicKey === null) {
-            return;
-        }
-
-        $lock = Cache::lock('webhooks:wallet:vote:'.$publicKey, config('arkscan.webhooks.wallet-vote.ttl', 8));
-        if ($lock->get() === false) {
             return;
         }
 

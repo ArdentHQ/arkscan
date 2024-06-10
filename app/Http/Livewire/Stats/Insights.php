@@ -34,47 +34,111 @@ use Livewire\Component;
 
 final class Insights extends Component
 {
+    public TransactionStatistics $transactionDetails;
+
+    public MarketDataStatistics $marketData;
+
+    public DelegateStatistics $delegateDetails;
+
+    public AddressHoldingStatistics $addressHoldings;
+
+    public UniqueAddressesStatistics $uniqueAddresses;
+
+    public array $annualData;
+
     /** @var mixed */
-    protected $listeners = ['currencyChanged' => '$refresh'];
+    protected $listeners = [
+        'echo:statistics-update,TransactionDetails' => 'updateTransactionDetails',
+        'echo:statistics-update,MarketData'         => 'updateMarketData',
+        'echo:statistics-update,DelegateDetails'    => 'updateDelegateDetails',
+        'echo:statistics-update,AddressHoldings'    => 'updateAddressHoldings',
+        'echo:statistics-update,UniqueAddresses'    => 'updateUniqueAddresses',
+        'echo:statistics-update,AnnualData'         => 'updateAnnualData',
+    ];
+
+    public function mount(): void
+    {
+        $this->updateData();
+    }
+
+    public function updateData(): void
+    {
+        $this->updateTransactionDetails();
+        $this->updateMarketData();
+        $this->updateDelegateDetails();
+        $this->updateAddressHoldings();
+        $this->updateUniqueAddresses();
+        $this->updateAnnualData();
+    }
+
+    public function updateTransactionDetails(): void
+    {
+        $transactionCache = new TransactionCache();
+
+        $this->transactionDetails = TransactionStatistics::make(
+            $this->getTransactionDetails($transactionCache),
+            $this->getTransactionAverages($transactionCache),
+            $this->getTransactionRecords($transactionCache),
+        );
+    }
+
+    public function updateMarketData(): void
+    {
+        $statisticsCache = new StatisticsCache();
+
+        $this->marketData = MarketDataStatistics::make(
+            $this->getMarketDataPrice($statisticsCache),
+            $this->getMarketDataVolume($statisticsCache),
+            $this->getMarketDataCap($statisticsCache),
+        );
+    }
+
+    public function updateDelegateDetails(): void
+    {
+        $statisticsCache = new StatisticsCache();
+
+        $this->delegateDetails = $this->getDelegateDetails($statisticsCache);
+    }
+
+    public function updateAddressHoldings(): void
+    {
+        $statisticsCache = new StatisticsCache();
+
+        $this->addressHoldings = $this->getAddressHoldings($statisticsCache);
+    }
+
+    public function updateUniqueAddresses(): void
+    {
+        $statisticsCache = new StatisticsCache();
+
+        $this->uniqueAddresses = $this->getUniqueAddresses($statisticsCache);
+    }
+
+    public function updateAnnualData(): void
+    {
+        $statisticsCache = new StatisticsCache();
+
+        $this->annualData = $this->getAnnualData($statisticsCache);
+    }
 
     public function render(): View
     {
-        $transactionCache = new TransactionCache();
-        $statisticsCache  = new StatisticsCache();
-
-        return view('livewire.stats.insights', [
-            'transactionDetails' => TransactionStatistics::make(
-                $this->transactionDetails($transactionCache),
-                $this->transactionAverages($transactionCache),
-                $this->transactionRecords($transactionCache),
-            ),
-
-            'marketData' => MarketDataStatistics::make(
-                $this->marketDataPrice($statisticsCache),
-                $this->marketDataVolume($statisticsCache),
-                $this->marketDataCap($statisticsCache),
-            ),
-
-            'delegateDetails'    => $this->delegateDetails($statisticsCache),
-            'addressHoldings'    => $this->addressHoldings($statisticsCache),
-            'uniqueAddresses'    => $this->uniqueAddresses($statisticsCache),
-            'annualData'         => $this->annualData($statisticsCache),
-        ]);
+        return view('livewire.stats.insights');
     }
 
-    private function transactionDetails(TransactionCache $cache): array
+    private function getTransactionDetails(TransactionCache $cache): array
     {
         return StatsTransactionType::all()
             ->mapWithKeys(fn ($type) => [$type => $cache->getHistoricalByType($type)])
             ->toArray();
     }
 
-    private function transactionAverages(TransactionCache $cache): TransactionAveragesStatistics
+    private function getTransactionAverages(TransactionCache $cache): TransactionAveragesStatistics
     {
         return TransactionAveragesStatistics::make($cache->getHistoricalAverages());
     }
 
-    private function transactionRecords(TransactionCache $transactionCache): TransactionRecordsStatistics
+    private function getTransactionRecords(TransactionCache $transactionCache): TransactionRecordsStatistics
     {
         $blockCache = new BlockCache();
 
@@ -86,7 +150,7 @@ final class Insights extends Component
         );
     }
 
-    private function marketDataPrice(StatisticsCache $cache): MarketDataPriceStatistics
+    private function getMarketDataPrice(StatisticsCache $cache): MarketDataPriceStatistics
     {
         $currency = Settings::currency();
 
@@ -98,7 +162,7 @@ final class Insights extends Component
         );
     }
 
-    private function marketDataVolume(StatisticsCache $cache): MarketDataVolumeStatistics
+    private function getMarketDataVolume(StatisticsCache $cache): MarketDataVolumeStatistics
     {
         $currency  = Settings::currency();
 
@@ -109,7 +173,7 @@ final class Insights extends Component
         );
     }
 
-    private function marketDataCap(StatisticsCache $cache): MarketDataRecordStatistics
+    private function getMarketDataCap(StatisticsCache $cache): MarketDataRecordStatistics
     {
         $currency = Settings::currency();
 
@@ -120,7 +184,7 @@ final class Insights extends Component
         );
     }
 
-    private function delegateDetails(StatisticsCache $cache): DelegateStatistics
+    private function getDelegateDetails(StatisticsCache $cache): DelegateStatistics
     {
         $mostUniqueVoters  = Wallet::firstWhere('public_key', $cache->getMostUniqueVoters());
         $leastUniqueVoters = Wallet::firstWhere('public_key', $cache->getLeastUniqueVoters());
@@ -151,7 +215,7 @@ final class Insights extends Component
         );
     }
 
-    private function addressHoldings(StatisticsCache $cache): AddressHoldingStatistics
+    private function getAddressHoldings(StatisticsCache $cache): AddressHoldingStatistics
     {
         $holdings = $cache->getAddressHoldings();
 
@@ -168,7 +232,7 @@ final class Insights extends Component
         return AddressHoldingStatistics::make($summedValues);
     }
 
-    private function uniqueAddresses(StatisticsCache $cache): UniqueAddressesStatistics
+    private function getUniqueAddresses(StatisticsCache $cache): UniqueAddressesStatistics
     {
         return UniqueAddressesStatistics::make(
             $cache->getGenesisAddress(),
@@ -178,7 +242,7 @@ final class Insights extends Component
         );
     }
 
-    private function annualData(StatisticsCache $cache): array
+    private function getAnnualData(StatisticsCache $cache): array
     {
         $startYear   = Carbon::parse(Network::epoch())->year;
         $currentYear = Carbon::now()->year;
