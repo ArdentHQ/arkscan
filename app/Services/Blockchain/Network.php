@@ -19,6 +19,11 @@ final class Network implements Contract
     {
     }
 
+    public function coin(): string
+    {
+        return $this->config['coin'];
+    }
+
     public function name(): string
     {
         return $this->config['name'];
