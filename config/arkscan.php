@@ -110,13 +110,19 @@ return [
 
     'webhooks' => [
         'block-applied' => [
-            'ttl' => env('ARKSCAN_WEBHOOKS_BLOCK_APPLIED_TTL', 8),
+            'ttl' => (int) env('ARKSCAN_WEBHOOKS_BLOCK_APPLIED_TTL', 8),
         ],
         'transaction-applied' => [
-            'ttl' => env('ARKSCAN_WEBHOOKS_TRANSACTION_APPLIED_TTL', 8),
+            'ttl' => (int) env('ARKSCAN_WEBHOOKS_TRANSACTION_APPLIED_TTL', 8),
         ],
         'wallet-vote' => [
-            'ttl' => env('ARKSCAN_WEBHOOKS_WALLET_VOTE_TTL', 8),
+            'ttl' => (int) env('ARKSCAN_WEBHOOKS_WALLET_VOTE_TTL', 8),
+        ],
+        'currency-update' => [
+            'ttl' => (int) env('ARKSCAN_WEBHOOKS_CURRENCY_UPDATE_TTL', 8),
+        ],
+        'statistics-update' => [
+            'ttl' => (int) env('ARKSCAN_WEBHOOKS_STATISTICS_UPDATE_TTL', 8),
         ],
     ],
 ];
