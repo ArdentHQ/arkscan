@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Concerns;
 
-use App\Livewire\SupportQueryString;
 use Livewire\Attribute;
 use Livewire\Features\SupportAttributes\AttributeLevel;
 use Livewire\Features\SupportLifecycleHooks\SupportLifecycleHooks;
-use Reflection;
 use ReflectionClass;
-use ReflectionMethod;
 use ReflectionNamedType;
-use ReflectionType;
 
 trait SyncsInput
 {
@@ -63,7 +59,7 @@ trait SyncsInput
             return $value;
         }
 
-        if ($type->getName() == 'bool') {
+        if ($type->getName() === 'bool') {
             $value = in_array($value, [true, 'true', 1], true);
         }
 
