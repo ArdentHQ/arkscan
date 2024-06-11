@@ -11,7 +11,6 @@ use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 
 /**
@@ -25,7 +24,6 @@ final class WalletTables extends Component
 
     public string $address;
 
-    #[Url(except: 'transactions')]
     public string $view = 'transactions';
 
     public string $previousView = 'transactions';
@@ -35,6 +33,18 @@ final class WalletTables extends Component
         'blocks'       => false,
         'voters'       => false,
     ];
+
+    public bool $outgoing = true;
+
+    public bool $incoming = true;
+
+    public bool $transfers = true;
+
+    public bool $votes = true;
+
+    public bool $multipayments = true;
+
+    public bool $others = true;
 
     // Constructor is used as Livewire seems to now try to manipulate query string properties before the first hook is called.
     public function __construct()
@@ -79,6 +89,7 @@ final class WalletTables extends Component
         $params = [
             'paginators.page' => ['except' => 1, 'as' => 'page'],
             'perPage'         => ['except' => intval(config('arkscan.pagination.per_page'))],
+            'view'            => ['except' => 'transactions', 'history' => true],
         ];
 
         // We need to pass in the transaction filters for previous view so we can hide it from the URL
@@ -90,12 +101,12 @@ final class WalletTables extends Component
             ...$params,
 
             // Transaction Filters
-            'outgoing'      => ['except' => true],
-            'incoming'      => ['except' => true],
-            'transfers'     => ['except' => true],
-            'votes'         => ['except' => true],
-            'multipayments' => ['except' => true],
-            'others'        => ['except' => true],
+            'outgoing'      => ['except' => true, 'history' => true],
+            'incoming'      => ['except' => true, 'history' => true],
+            'transfers'     => ['except' => true, 'history' => true],
+            'votes'         => ['except' => true, 'history' => true],
+            'multipayments' => ['except' => true, 'history' => true],
+            'others'        => ['except' => true, 'history' => true],
         ];
     }
 

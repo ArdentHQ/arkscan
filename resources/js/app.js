@@ -85,3 +85,7 @@ window.hideTableTooltipsOnLivewireEvent = (regex) => {
         });
     });
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+    Livewire.start();
+});

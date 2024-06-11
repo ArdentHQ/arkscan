@@ -7,6 +7,7 @@ namespace App\Http\Livewire\Concerns;
 use App\Livewire\SupportQueryString;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Livewire\Features\SupportAttributes\AttributeLevel;
 
 trait HasTabs
 {
@@ -91,11 +92,9 @@ trait HasTabs
         if (array_key_exists($this->view, $this->savedQueryData)) {
             /** @var string $key */
             foreach ($this->savedQueryData[$this->view] as $key => $value) {
-                // if ($key === 'paginators.page') {
-                //     $this->setPage($value);
-
-                //     continue;
-                // }
+                if ($key === 'paginators.page') {
+                    $this->setPage($value);
+                }
 
                 $this->syncInput($key, $value);
             }
@@ -119,15 +118,28 @@ trait HasTabs
         // Reset the querystring data on view change to clear the URL
         $queryStringData = $queryStringSupport->getQueryString();
 
+        $properties = $this->getAttributes()
+            ->filter(fn ($attribute) => $attribute->getLevel() === AttributeLevel::PROPERTY)
+            ->keyBy('getName');
+
         /** @var string $key */
         foreach (array_keys($this->tabQueryData[$this->view]) as $key) {
-            // if ($key === 'paginators.page') {
-            //     $this->setPage($queryStringData[$key]['except']);
+            $except = null;
 
-            //     continue;
-            // }
+            $property = $properties->get($key);
+            if ($property) {
+                $except = $property->except;
+            } elseif (array_key_exists($key, $queryStringData)) {
+                $except = $queryStringData[$key]['except'];
+            } else {
+                continue;
+            }
 
-            $this->syncInput($key, $queryStringData[$key]['except']);
+            if ($key === 'paginators.page') {
+                $this->setPage($except);
+            }
+
+            $this->syncInput($key, $except);
         }
 
         $this->triggerViewIsReady($newView);
