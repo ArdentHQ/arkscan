@@ -1,5 +1,5 @@
 import { WalletsApi } from "./api/wallets";
-import { Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
+import { Alpine } from "../../vendor/livewire/livewire/dist/livewire.esm";
 
 Object.defineProperties(window, {
     _arkconnect: {
