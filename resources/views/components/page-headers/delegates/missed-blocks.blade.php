@@ -27,7 +27,7 @@
             type="link"
             class="pl-3 link text-sm md:text-base !leading-5"
             x-on:click="() => {
-                Livewire.dispatch('showDelegatesView', 'missed-blocks');
+                Livewire.dispatch('showDelegatesView', {view: 'missed-blocks'});
                 scrollToQuery('#missed-blocks-list');
             }"
         >
