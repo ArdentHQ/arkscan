@@ -32,7 +32,7 @@ trait SyncsInput
     {
         return $this->getAttributes()
             ->filter(fn ($attribute) => $attribute->getLevel() === AttributeLevel::PROPERTY)
-            ->keyBy('getName')
+            ->mapWithKeys(fn ($attribute) => [$attribute->getName() => $attribute])
             ->get($property);
     }
 }
