@@ -14,26 +14,24 @@ trait HasTableSorting
 
     public function mountHasTableSorting(): void
     {
-        $this->sortKey = static::defaultSortKey();
-
-        if (request()->has('sort-direction')) {
-            $sortDirection = request()->get('sort-direction');
-            if ($sortDirection === SortDirection::DESC->value) {
-                $this->sortDirection = SortDirection::DESC;
-            } else {
-                $this->sortDirection = SortDirection::ASC;
-            }
-        } else {
-            $this->sortDirection = static::defaultSortDirection();
-        }
+        $this->sortKey       = static::defaultSortKey();
+        $this->sortDirection = $this->resolveSortDirection();
     }
 
     public function queryStringHasTableSorting(): array
     {
-        return [
-            'sortKey'            => ['as' => 'sort', 'except' => static::defaultSortKey()],
-            'sortDirectionQuery' => ['as' => 'sort-direction', 'except' => static::defaultSortDirection()->value],
+        $queryString = [
+            'sortKey' => ['as' => 'sort', 'except' => static::defaultSortKey()],
         ];
+
+        if (request()->has('sort-direction')) {
+            $sortDirection = request()->get('sort-direction');
+            if (in_array($sortDirection, [SortDirection::ASC->value, SortDirection::DESC->value])) {
+                $queryString['sortDirection'] = ['as' => 'sort-direction', 'except' => static::defaultSortDirection()->value];
+            }
+        }
+
+        return $queryString;
     }
 
     public function sortBy(string $key): void
@@ -65,5 +63,19 @@ trait HasTableSorting
     public function getSortDirectionQueryProperty(): string
     {
         return $this->sortDirection->value;
+    }
+
+    private function resolveSortDirection()
+    {
+        if (request()->has('sort-direction')) {
+            $sortDirection = request()->get('sort-direction');
+            if ($sortDirection === SortDirection::DESC->value) {
+                return SortDirection::DESC;
+            }
+
+            return SortDirection::ASC;
+        }
+
+        return static::defaultSortDirection();
     }
 }
