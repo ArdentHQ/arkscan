@@ -65,7 +65,7 @@ trait HasTableSorting
         return $this->sortDirection->value;
     }
 
-    private function resolveSortDirection()
+    private function resolveSortDirection(): SortDirection
     {
         if (request()->has('sort-direction')) {
             $sortDirection = request()->get('sort-direction');

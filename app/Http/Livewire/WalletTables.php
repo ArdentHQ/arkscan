@@ -15,7 +15,7 @@ use Livewire\Component;
 
 /**
  * @property int $page
- * @property int $perPage
+ * @property ?int $perPage
  */
 final class WalletTables extends Component
 {
