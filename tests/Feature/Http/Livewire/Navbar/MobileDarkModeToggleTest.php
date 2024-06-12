@@ -56,10 +56,10 @@ it('should store theme from an event only on first load', function () {
     Cookie::shouldReceive('queue')
         ->once();
 
-    $this->component->emit('themeChanged', 'dark')
-        ->assertNotDispatchedBrowserEvent('setThemeMode')
-        ->emit('themeChanged', 'dark')
-        ->assertNotDispatchedBrowserEvent('setThemeMode');
+    $this->component->dispatch('themeChanged', 'dark')
+        ->assertNotDispatched('setThemeMode')
+        ->dispatch('themeChanged', 'dark')
+        ->assertNotDispatched('setThemeMode');
 });
 
 it('should dispatch event on save', function () {
@@ -67,7 +67,7 @@ it('should dispatch event on save', function () {
         ->once();
 
     $this->component->call('setValue', 'dark')
-        ->assertDispatchedBrowserEvent('setThemeMode', [
+        ->assertDispatched('setThemeMode', [
             'theme' => 'dark',
         ]);
 });

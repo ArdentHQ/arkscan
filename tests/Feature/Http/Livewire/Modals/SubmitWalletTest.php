@@ -80,22 +80,34 @@ it('should throttle submissions', function () {
         ->set('website', 'https://potato.wallet')
         ->set('message', 'Exciting new universal wallet')
         ->call('submit')
-        ->assertNotDispatched('toastMessage', [trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
+        ->assertNotDispatched('toastMessage', [
+            'message' => trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']),
+            'type' => 'warning',
+        ])
         ->set('name', 'Potato Wallet')
         ->set('website', 'https://potato.wallet')
         ->set('message', 'Exciting new universal wallet')
         ->call('submit')
-        ->assertNotDispatched('toastMessage', [trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
+        ->assertNotDispatched('toastMessage', [
+            'message' => trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']),
+            'type' => 'warning',
+        ])
         ->set('name', 'Potato Wallet')
         ->set('website', 'https://potato.wallet')
         ->set('message', 'Exciting new universal wallet')
         ->call('submit')
-        ->assertNotDispatched('toastMessage', [trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']), 'warning'])
+        ->assertNotDispatched('toastMessage', [
+            'message' => trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']),
+            'type' => 'warning',
+        ])
         ->set('name', 'Potato Wallet')
         ->set('website', 'https://potato.wallet')
         ->set('message', 'Exciting new universal wallet')
         ->call('submit')
-        ->assertDispatched('toastMessage', [trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']), 'warning']);
+        ->assertDispatched('toastMessage', [
+            'message' => trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']),
+            'type' => 'warning',
+    ]);
 
     Mail::assertQueued(WalletFormSubmitted::class, 3);
 });

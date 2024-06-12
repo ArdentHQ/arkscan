@@ -62,7 +62,7 @@ it('should update the records fiat tooltip when currency changed', function () {
     Settings::shouldReceive('all')->andReturn($settings);
     Settings::shouldReceive('currency')->andReturn('BTC');
 
-    $component->emit('currencyChanged', 'BTC');
+    $component->dispatch('currencyChanged', 'BTC');
 
     $component->assertDontSeeHtml('data-tippy-content="'.$expectedValue.'"');
     $component->assertSeeHtml('data-tippy-content="61.6048933 BTC"');

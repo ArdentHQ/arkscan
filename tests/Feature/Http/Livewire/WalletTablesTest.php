@@ -8,6 +8,7 @@ use App\Http\Livewire\WalletTransactionTable;
 use App\Http\Livewire\WalletVoterTable;
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
+use Livewire\Features\SupportLifecycleHooks\SupportLifecycleHooks;
 use Livewire\Livewire;
 
 it('should render all tabs for delegates', function () {
@@ -33,11 +34,11 @@ it('should change view with event', function () {
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->assertSet('view', 'transactions')
-        ->emit('showWalletView', 'voters')
+        ->dispatch('showWalletView', 'voters')
         ->assertSet('view', 'voters')
-        ->emit('showWalletView', 'blocks')
+        ->dispatch('showWalletView', 'blocks')
         ->assertSet('view', 'blocks')
-        ->emit('showWalletView', 'transactions')
+        ->dispatch('showWalletView', 'transactions')
         ->assertSet('view', 'transactions');
 });
 
@@ -49,55 +50,56 @@ it('should track querystring between tabs', function () {
 
         ->assertSet('tabQueryData', [
             'transactions' => [
-                'page'          => 1,
-                'perPage'       => WalletTransactionTable::defaultPerPage(),
-                'outgoing'      => true,
-                'incoming'      => true,
-                'transfers'     => true,
-                'votes'         => true,
-                'multipayments' => true,
-                'others'        => true,
+                'paginators.page' => 1,
+                'perPage'         => WalletTransactionTable::defaultPerPage(),
+                'outgoing'        => true,
+                'incoming'        => true,
+                'transfers'       => true,
+                'votes'           => true,
+                'multipayments'   => true,
+                'others'          => true,
             ],
 
             'blocks' => [
-                'page'    => 1,
-                'perPage' => WalletBlockTable::defaultPerPage(),
+                'paginators.page' => 1,
+                'perPage'         => WalletBlockTable::defaultPerPage(),
             ],
 
             'voters' => [
-                'page'    => 1,
-                'perPage' => WalletVoterTable::defaultPerPage(),
+                'paginators.page' => 1,
+                'perPage'         => WalletVoterTable::defaultPerPage(),
             ],
         ])
 
         ->set('tabQueryData.transactions.outgoing', false)
         ->assertSet('outgoing', false)
-        ->set('tabQueryData.transactions.page', 2)
+        ->set('tabQueryData.transactions.paginators.page', 2)
 
         ->set('view', 'blocks')
-        ->assertSet('tabQueryData.blocks.page', 1)
-        ->assertSet('page', 1)
-        ->set('tabQueryData.blocks.page', 3)
-        ->assertSet('page', 3)
+        ->assertSet('tabQueryData.blocks.paginators.page', 1)
+        ->assertSet('paginators.page', 1)
+        ->set('tabQueryData.blocks.paginators.page', 3)
+        ->assertSet('paginators.page', 3)
 
         ->set('view', 'voters')
-        ->assertSet('tabQueryData.voters.page', 1)
-        ->assertSet('page', 1)
-        ->set('tabQueryData.voters.page', 4)
-        ->assertSet('page', 4)
+        ->assertSet('tabQueryData.voters.paginators.page', 1)
+        ->assertSet('paginators.page', 1)
+        ->set('tabQueryData.voters.paginators.page', 4)
+        ->assertSet('paginators.page', 4)
 
         ->assertSet('savedQueryData.transactions.outgoing', false)
         ->assertSet('outgoing', null)
 
         ->set('view', 'transactions')
-        ->assertSet('tabQueryData.transactions.page', 2)
-        ->assertSet('page', 2);
+        ->assertSet('tabQueryData.transactions.paginators.page', 2)
+        ->assertSet('paginators.page', 2);
 });
 
 it('should be able to get the property of the previous view', function () {
     $wallet = Wallet::factory()->activeDelegate()->create();
 
     $instance = Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
+        ->set('view', 'transactions')
         ->instance();
 
     $instance->outgoing = false;
@@ -179,28 +181,30 @@ it('should not update initial page if view does not exist', function () {
         ->set('tabQueryData', [])
         ->instance();
 
-    $instance->boot();
+    $support = new SupportLifecycleHooks();
+    $support->setComponent($instance);
+    $support->mount([new WalletViewModel($wallet)]);
 
     expect($instance->tabQueryData)->toBe([
         'transactions' => [
-            'page'          => 1,
-            'perPage'       => WalletTransactionTable::defaultPerPage(),
-            'outgoing'      => true,
-            'incoming'      => true,
-            'transfers'     => true,
-            'votes'         => true,
-            'multipayments' => true,
-            'others'        => true,
+            'paginators.page' => 1,
+            'perPage'         => WalletTransactionTable::defaultPerPage(),
+            'outgoing'        => true,
+            'incoming'        => true,
+            'transfers'       => true,
+            'votes'           => true,
+            'multipayments'   => true,
+            'others'          => true,
         ],
 
         'blocks' => [
-            'page'    => 1,
-            'perPage' => WalletBlockTable::defaultPerPage(),
+            'paginators.page' => 1,
+            'perPage'         => WalletBlockTable::defaultPerPage(),
         ],
 
         'voters' => [
-            'page'    => 1,
-            'perPage' => WalletVoterTable::defaultPerPage(),
+            'paginators.page' => 1,
+            'perPage'         => WalletVoterTable::defaultPerPage(),
         ],
     ]);
 });
