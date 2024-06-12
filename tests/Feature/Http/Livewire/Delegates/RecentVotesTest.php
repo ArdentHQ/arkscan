@@ -10,7 +10,6 @@ use App\Services\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Compilers\BladeCompiler;
-use Livewire\Features\SupportLifecycleHooks\SupportLifecycleHooks;
 use Livewire\Livewire;
 
 it('should render', function () {
