@@ -6,9 +6,9 @@ use App\Http\Livewire\WalletBlockTable;
 use App\Http\Livewire\WalletTables;
 use App\Http\Livewire\WalletTransactionTable;
 use App\Http\Livewire\WalletVoterTable;
+use App\Livewire\SupportQueryString;
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
-use Illuminate\Support\Arr;
 use Livewire\Features\SupportLifecycleHooks\SupportLifecycleHooks;
 use Livewire\Livewire;
 
@@ -213,4 +213,47 @@ it('should not update initial page if view does not exist', function () {
             'paginators' => ['page' => 1],
         ],
     ]);
+});
+
+it('should parse perPage from URL', function () {
+    $wallet = Wallet::factory()->activeDelegate()->create();
+
+    Livewire::withQueryParams(['perPage' => 10])
+        ->test(WalletTables::class, [new WalletViewModel($wallet)])
+        ->assertSet('perPage', 10)
+        ->assertSet('tabQueryData.transactions.perPage', 10);
+});
+
+it('should apply url values to component', function () {
+    $wallet = Wallet::factory()->activeDelegate()->create();
+
+    $instance = Livewire::withUrlParams(['view' => 'blocks', 'page' => 3])
+        ->test(WalletTables::class, [new WalletViewModel($wallet)])
+        ->assertSet('view', 'blocks')
+        ->instance();
+
+    $support = new SupportQueryString();
+    $support->setComponent($instance);
+    $support->mergeQueryStringWithRequest();
+
+    expect($instance->view)->toBe('blocks');
+    expect($instance->getPage())->toBe(3);
+    expect($instance->paginators['page'])->toBe(3);
+});
+
+it('should run hooks when property is updated with syncInput', function () {
+    $wallet = Wallet::factory()->activeDelegate()->create();
+
+    $component = Livewire::test(WalletTables::class, [new WalletViewModel($wallet)]);
+    $instance  = $component->instance();
+
+    $support = new SupportLifecycleHooks();
+    $support->setComponent($instance);
+    $support->mount([new WalletViewModel($wallet)]);
+
+    expect($instance->alreadyLoadedViews['voters'])->toBeFalse();
+
+    $instance->syncInput('view', 'voters');
+
+    expect($instance->alreadyLoadedViews['voters'])->toBeTrue();
 });
