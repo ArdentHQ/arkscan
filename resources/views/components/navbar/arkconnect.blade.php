@@ -4,15 +4,20 @@
         'border-t bg-theme-secondary-200 border-theme-secondary-300 md:border-0 md:bg-transparent': isConnected,
     }"
 >
-    <button
-        x-show="! isConnected"
-        class="py-1.5 px-4 whitespace-nowrap button-secondary"
-        @click="connect"
-        :disabled="! hasExtension"
-        disabled
-    >
-        @lang('general.navbar.connect_wallet')
-    </button>
+    <div x-show="hasExtension && isSupported">
+        <button
+            x-show="! isConnected"
+            class="py-1.5 px-4 whitespace-nowrap button-secondary"
+            @click="connect"
+            :disabled="! hasExtension"
+            disabled
+        >
+            @lang('general.navbar.connect_wallet')
+        </button>
+    </div>
+
+    <x-arkconnect.modal.install-wallet />
+    <x-arkconnect.modal.unsupported-browser />
 
     <div
         x-show="isConnected"

@@ -2,7 +2,6 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "preinstall": "npx only-allow pnpm",
         "dev": "vite",
         "build": "vite build"
     },
