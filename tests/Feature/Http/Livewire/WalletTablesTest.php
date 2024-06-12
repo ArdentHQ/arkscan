@@ -8,7 +8,6 @@ use App\Http\Livewire\WalletTransactionTable;
 use App\Http\Livewire\WalletVoterTable;
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
-use Illuminate\Support\Arr;
 use Livewire\Features\SupportLifecycleHooks\SupportLifecycleHooks;
 use Livewire\Livewire;
 

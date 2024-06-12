@@ -142,6 +142,7 @@ trait HasTabs
 
             if ($key === 'paginators.page') {
                 $this->setPage($except);
+
                 continue;
             }
 
