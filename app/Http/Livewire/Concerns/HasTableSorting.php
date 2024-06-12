@@ -26,7 +26,7 @@ trait HasTableSorting
 
         if (request()->has('sort-direction')) {
             $sortDirection = request()->get('sort-direction');
-            if (in_array($sortDirection, [SortDirection::ASC->value, SortDirection::DESC->value])) {
+            if (in_array($sortDirection, [SortDirection::ASC->value, SortDirection::DESC->value], true)) {
                 $queryString['sortDirection'] = ['as' => 'sort-direction', 'except' => static::defaultSortDirection()->value];
             }
         }

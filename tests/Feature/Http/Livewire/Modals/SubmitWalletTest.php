@@ -82,7 +82,7 @@ it('should throttle submissions', function () {
         ->call('submit')
         ->assertNotDispatched('toastMessage', [
             'message' => trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']),
-            'type' => 'warning',
+            'type'    => 'warning',
         ])
         ->set('name', 'Potato Wallet')
         ->set('website', 'https://potato.wallet')
@@ -90,7 +90,7 @@ it('should throttle submissions', function () {
         ->call('submit')
         ->assertNotDispatched('toastMessage', [
             'message' => trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']),
-            'type' => 'warning',
+            'type'    => 'warning',
         ])
         ->set('name', 'Potato Wallet')
         ->set('website', 'https://potato.wallet')
@@ -98,7 +98,7 @@ it('should throttle submissions', function () {
         ->call('submit')
         ->assertNotDispatched('toastMessage', [
             'message' => trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']),
-            'type' => 'warning',
+            'type'    => 'warning',
         ])
         ->set('name', 'Potato Wallet')
         ->set('website', 'https://potato.wallet')
@@ -106,7 +106,7 @@ it('should throttle submissions', function () {
         ->call('submit')
         ->assertDispatched('toastMessage', [
             'message' => trans('pages.compatible-wallets.submit-modal.throttle_error', ['time' => '1 hour']),
-            'type' => 'warning',
+            'type'    => 'warning',
     ]);
 
     Mail::assertQueued(WalletFormSubmitted::class, 3);
