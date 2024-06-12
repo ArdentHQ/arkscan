@@ -53,7 +53,7 @@ final class Tabs extends Component
         ];
     }
 
-    public function boot(): void
+    public function mount(): void
     {
         if ($this->tabQueryData === []) {
             $this->tabQueryData = [

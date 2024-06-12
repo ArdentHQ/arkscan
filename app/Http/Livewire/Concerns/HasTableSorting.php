@@ -12,7 +12,7 @@ trait HasTableSorting
 
     public SortDirection $sortDirection;
 
-    public function bootHasTableSorting(): void
+    public function mountHasTableSorting(): void
     {
         $this->sortKey = static::defaultSortKey();
 
