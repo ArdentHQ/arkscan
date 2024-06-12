@@ -67,7 +67,6 @@ final class WalletTables extends Component
         if ($this->tabQueryData === []) {
             $this->tabQueryData = [
                 'transactions' => [
-                    'paginators.page' => 1,
                     'perPage'         => WalletTransactionTable::defaultPerPage(),
                     'outgoing'        => true,
                     'incoming'        => true,
@@ -75,16 +74,26 @@ final class WalletTables extends Component
                     'votes'           => true,
                     'multipayments'   => true,
                     'others'          => true,
+
+                    'paginators'      => [
+                        'page' => 1,
+                    ],
                 ],
 
                 'blocks' => [
-                    'paginators.page' => 1,
-                    'perPage'         => WalletBlockTable::defaultPerPage(),
+                    'perPage'  => WalletBlockTable::defaultPerPage(),
+
+                    'paginators' => [
+                        'page' => 1,
+                    ],
                 ],
 
                 'voters' => [
-                    'paginators.page' => 1,
-                    'perPage'         => WalletVoterTable::defaultPerPage(),
+                    'perPage'    => WalletVoterTable::defaultPerPage(),
+
+                    'paginators' => [
+                        'page' => 1,
+                    ],
                 ],
             ];
 
@@ -93,9 +102,12 @@ final class WalletTables extends Component
                 return;
             }
 
-            $this->tabQueryData[$view]['paginators.page'] = $this->resolvePage();
+            $this->tabQueryData[$view]['paginators']['page'] = $this->resolvePage();
 
-            $this->tabQueryData[$view]['perPage'] = $this->resolvePerPage();
+            $perPage = $this->resolvePerPage();
+            if ($perPage !== null) {
+                $this->tabQueryData[$view]['perPage'] = $perPage;
+            }
         }
     }
 

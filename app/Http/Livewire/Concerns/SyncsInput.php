@@ -26,8 +26,7 @@ trait SyncsInput
         if ($propertyAttribute !== null) {
             $propertyAttribute->setValue($value);
         } else {
-            /* @phpstan-ignore-next-line */
-            $this->{$property} = $value;
+            data_set($this, $property, $value);
         }
 
         $updatedHook();

@@ -11,6 +11,7 @@ use Livewire\Features\SupportAttributes\AttributeLevel;
 
 trait HasTabs
 {
+    use SyncsInput;
     use HasTablePagination;
 
     public array $tabQueryData = [];
@@ -92,8 +93,8 @@ trait HasTabs
         if (array_key_exists($this->view, $this->savedQueryData)) {
             /** @var string $key */
             foreach ($this->savedQueryData[$this->view] as $key => $value) {
-                if ($key === 'paginators.page') {
-                    $this->setPage($value);
+                if ($key === 'paginators') {
+                    $this->setPage($value['page']);
                 }
 
                 $this->syncInput($key, $value);
@@ -126,6 +127,10 @@ trait HasTabs
         foreach (array_keys($this->tabQueryData[$this->view]) as $key) {
             $except = null;
 
+            if ($key === 'paginators') {
+                $key = 'paginators.page';
+            }
+
             $property = $properties->get($key);
             if ($property) {
                 $except = $property->except;
@@ -137,6 +142,7 @@ trait HasTabs
 
             if ($key === 'paginators.page') {
                 $this->setPage($except);
+                continue;
             }
 
             $this->syncInput($key, $except);
@@ -155,8 +161,8 @@ trait HasTabs
         return (int) request()->get('page', $this->getPage());
     }
 
-    private function resolvePerPage(): int
+    private function resolvePerPage(): ?int
     {
-        return (int) request()->get('perPage', $this->perPage);
+        return request()->get('perPage', $this->perPage);
     }
 }
