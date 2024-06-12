@@ -34,21 +34,36 @@ final class WalletTables extends Component
         'voters'       => false,
     ];
 
-    public bool $outgoing = true;
-
-    public bool $incoming = true;
-
-    public bool $transfers = true;
-
-    public bool $votes = true;
-
-    public bool $multipayments = true;
-
-    public bool $others = true;
-
-    // Constructor is used as Livewire seems to now try to manipulate query string properties before the first hook is called.
-    public function __construct()
+    public function queryString(): array
     {
+        $params = [
+            'paginators.page' => ['except' => 1, 'as' => 'page'],
+            'perPage'         => ['except' => intval(config('arkscan.pagination.per_page'))],
+            'view'            => ['except' => 'transactions', 'history' => true],
+        ];
+
+        // We need to pass in the transaction filters for previous view so we can hide it from the URL
+        if ($this->view !== 'transactions' && $this->previousView !== 'transactions') {
+            return $params;
+        }
+
+        return [
+            ...$params,
+
+            // Transaction Filters
+            'outgoing'      => ['except' => true, 'history' => true],
+            'incoming'      => ['except' => true, 'history' => true],
+            'transfers'     => ['except' => true, 'history' => true],
+            'votes'         => ['except' => true, 'history' => true],
+            'multipayments' => ['except' => true, 'history' => true],
+            'others'        => ['except' => true, 'history' => true],
+        ];
+    }
+
+    public function mount(WalletViewModel $wallet): void
+    {
+        $this->address = $wallet->address();
+
         if ($this->tabQueryData === []) {
             $this->tabQueryData = [
                 'transactions' => [
@@ -82,37 +97,6 @@ final class WalletTables extends Component
 
             $this->tabQueryData[$view]['perPage'] = $this->resolvePerPage();
         }
-    }
-
-    public function queryString(): array
-    {
-        $params = [
-            'paginators.page' => ['except' => 1, 'as' => 'page'],
-            'perPage'         => ['except' => intval(config('arkscan.pagination.per_page'))],
-            'view'            => ['except' => 'transactions', 'history' => true],
-        ];
-
-        // We need to pass in the transaction filters for previous view so we can hide it from the URL
-        if ($this->view !== 'transactions' && $this->previousView !== 'transactions') {
-            return $params;
-        }
-
-        return [
-            ...$params,
-
-            // Transaction Filters
-            'outgoing'      => ['except' => true, 'history' => true],
-            'incoming'      => ['except' => true, 'history' => true],
-            'transfers'     => ['except' => true, 'history' => true],
-            'votes'         => ['except' => true, 'history' => true],
-            'multipayments' => ['except' => true, 'history' => true],
-            'others'        => ['except' => true, 'history' => true],
-        ];
-    }
-
-    public function mount(WalletViewModel $wallet): void
-    {
-        $this->address = $wallet->address();
     }
 
     public function render(): View
