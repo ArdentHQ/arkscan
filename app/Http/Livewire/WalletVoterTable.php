@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
 use App\ViewModels\ViewModelFactory;
@@ -16,8 +15,6 @@ use Illuminate\View\View;
 /** @property LengthAwarePaginator $wallets */
 final class WalletVoterTable extends TabbedTableComponent
 {
-    use DeferLoading;
-
     public string $publicKey;
 
     /** @var mixed */

@@ -119,9 +119,7 @@ trait HasTabs
         // Reset the querystring data on view change to clear the URL
         $queryStringData = $queryStringSupport->getQueryString();
 
-        $properties = $this->getAttributes()
-            ->filter(fn ($attribute) => $attribute->getLevel() === AttributeLevel::PROPERTY)
-            ->keyBy('getName');
+        $properties = $this->getAttributesByName();
 
         /** @var string $key */
         foreach (array_keys($this->tabQueryData[$this->view]) as $key) {
@@ -134,10 +132,8 @@ trait HasTabs
             $property = $properties->get($key);
             if ($property) {
                 $except = $property->except;
-            } elseif (array_key_exists($key, $queryStringData)) {
-                $except = $queryStringData[$key]['except'];
             } else {
-                continue;
+                $except = $queryStringData[$key]['except'];
             }
 
             if ($key === 'paginators.page') {

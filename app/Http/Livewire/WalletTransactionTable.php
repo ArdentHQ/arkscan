@@ -6,7 +6,6 @@ namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
@@ -23,7 +22,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * */
 final class WalletTransactionTable extends TabbedTableComponent
 {
-    use DeferLoading;
     use HasTableFilter;
 
     public string $address;

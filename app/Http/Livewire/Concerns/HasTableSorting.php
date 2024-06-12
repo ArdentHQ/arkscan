@@ -60,11 +60,6 @@ trait HasTableSorting
         return constant(static::class.'::INITIAL_SORT_DIRECTION');
     }
 
-    public function getSortDirectionQueryProperty(): string
-    {
-        return $this->sortDirection->value;
-    }
-
     private function resolveSortDirection(): SortDirection
     {
         if (request()->has('sort-direction')) {
