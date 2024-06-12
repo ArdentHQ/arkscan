@@ -248,10 +248,10 @@ it('should set the filter values via a setter', function () {
         ])
         ->instance();
 
-    $instance->transfers = true;
-    $instance->votes = true;
+    $instance->transfers     = true;
+    $instance->votes         = true;
     $instance->multipayments = true;
-    $instance->others = true;
+    $instance->others        = true;
 
     expect($instance->transfers)->toBeTrue();
     expect($instance->votes)->toBeTrue();

@@ -7,7 +7,6 @@ namespace App\Http\Livewire\Concerns;
 use App\Livewire\SupportQueryString;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Livewire\Features\SupportAttributes\AttributeLevel;
 
 trait HasTabs
 {
