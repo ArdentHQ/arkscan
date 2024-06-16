@@ -19,7 +19,7 @@
         "doctrine/dbal": "^3.0",
         "http-interop/http-factory-guzzle": "^1.2",
         "huddledigital/zendesk-laravel": "^3.9",
-        "laravel/framework": "^10.8",
+        "laravel/framework": "^10.10",
         "laravel/horizon": "^5.24",
         "laravel/scout": "^10.9",
         "laravel/tinker": "^2.9",
@@ -28,7 +28,7 @@
         "meilisearch/meilisearch-php": "^1.8",
         "nyholm/psr7": "^1.8",
         "savvot/random": "^0.3",
-        "sentry/sentry-laravel": "^4.5",
+        "sentry/sentry-laravel": "^4.6",
         "symfony/psr-http-message-bridge": "^2.1"
     },
     "require-dev": {
@@ -36,7 +36,7 @@
         "furqansiddiqui/bip39-mnemonic-php": "^0.1",
         "laravel/dusk": "^8.2",
         "phpdocumentor/reflection-docblock": "^5.4",
-        "spatie/laravel-ignition": "^2.7",
+        "spatie/laravel-ignition": "^2.8",
         "wnx/laravel-stats": "^2.13"
     },
     "config": {
