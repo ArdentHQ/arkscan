@@ -263,7 +263,7 @@ it('should calculate forged correctly with current round', function () {
         ], $this);
     }
 
-    createPartialRound($round, $height, 51, $this, null, $validators->get(4)->public_key);
+    createPartialRound($round, $height, 51, $this, [], [$validators->get(4)->public_key]);
 
     expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, true]);
 
@@ -336,7 +336,7 @@ it('should calculate missed correctly with current round', function () {
         ], $this);
     }
 
-    createPartialRound($round, $height, 51, $this, $validators->get(4)->public_key, $validators->get(4)->public_key);
+    createPartialRound($round, $height, 51, $this, [$validators->get(4)->public_key], [$validators->get(4)->public_key]);
 
     expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);
 
@@ -425,7 +425,7 @@ it('should calculate not forging correctly with current round', function () {
         ], $this);
     }
 
-    createPartialRound($round, $height, 51, $this, $validators->get(4)->public_key, $validators->get(4)->public_key);
+    createPartialRound($round, $height, 51, $this, [$validators->get(4)->public_key], [$validators->get(4)->public_key]);
 
     expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, false]);
 

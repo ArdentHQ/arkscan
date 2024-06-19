@@ -270,19 +270,20 @@ function createFullRound(&$round, &$height, $validatorWallets, $context, $didFor
 function createPartialRound(
     int &$round,
     int &$height,
-    int $blocks,
+    ?int $blocks,
     $context,
-    string $missedPublicKey = null,
-    string $requiredPublicKey = null,
+    array $missedPublicKeys = [],
+    array $requiredPublicKeys = [],
     bool $cachePerformance = true,
+    ?int $slots = null,
 ) {
     createRoundEntry($round, $height, Wallet::all());
     $validators = getRoundValidators(false, $round);
 
-    if ($missedPublicKey) {
+    if (count($missedPublicKeys) > 0) {
         $hasPublicKey = false;
         foreach ($validators as $validator) {
-            if ($validator['publicKey'] !== $missedPublicKey) {
+            if (! in_array($validator['publicKey'], $missedPublicKeys)) {
                 continue;
             }
 
@@ -297,9 +298,9 @@ function createPartialRound(
     }
 
     $requiredIndex = null;
-    if ($requiredPublicKey) {
+    if ($requiredPublicKeys) {
         foreach ($validators as $index => $validator) {
-            if ($validator['publicKey'] !== $requiredPublicKey) {
+            if (! in_array($validator['publicKey'], $requiredPublicKeys)) {
                 continue;
             }
 
@@ -311,15 +312,21 @@ function createPartialRound(
 
     $round++;
 
+    $slotCount  = 0;
     $blockCount = 0;
     while ($blockCount < Network::validatorCount()) {
         foreach ($validators as $validator) {
-            if ($blockCount === $blocks) {
+            if ($blocks !== null && $blockCount === $blocks) {
                 break 2;
             }
 
-            if ($missedPublicKey && $validator['publicKey'] === $missedPublicKey) {
+            if ($slots !== null && $slotCount === $slots) {
+                break 2;
+            }
+
+            if (count($missedPublicKeys) > 0 && in_array($validator['publicKey'], $missedPublicKeys)) {
                 $context->travel(8)->seconds();
+                $slotCount++;
 
                 continue;
             }
@@ -329,15 +336,16 @@ function createPartialRound(
             $context->travel(8)->seconds();
 
             $blockCount++;
+            $slotCount++;
         }
     }
 
     $height += $blockCount;
 
-    if ($requiredIndex && ($requiredIndex === Network::validatorCount() - 1 || $requiredIndex >= $blocks)) {
+    if ($requiredIndex && ($requiredIndex === Network::validatorCount() - 1 || ($blocks !== null && $requiredIndex >= $blocks))) {
         Artisan::call('cache:clear');
 
-        return createPartialRound($round, $height, $blocks, $context, $missedPublicKey, $requiredPublicKey);
+        return createPartialRound($round, $height, $blocks, $context, $missedPublicKeys, $requiredPublicKeys, $cachePerformance, $slots);
     }
 
     (new NetworkCache())->setHeight(fn (): int => $height - 1);
