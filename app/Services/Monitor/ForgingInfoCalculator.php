@@ -29,8 +29,8 @@ final class ForgingInfoCalculator
         }
 
         $currentTimestamp = Carbon::now()->getTimestamp();
-        $expectedSlot = (int) floor(($currentTimestamp - $roundBlockTimestamp) / Network::blockTime());
-        $actualSlot = $currentHeight - $roundHeight;
+        $expectedSlot     = (int) floor(($currentTimestamp - $roundBlockTimestamp) / Network::blockTime());
+        $actualSlot       = $currentHeight - $roundHeight;
 
         return $actualSlot - $expectedSlot + 1;
     }
