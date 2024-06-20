@@ -283,7 +283,7 @@ function createPartialRound(
     if (count($missedPublicKeys) > 0) {
         $hasPublicKey = false;
         foreach ($validators as $validator) {
-            if (! in_array($validator['publicKey'], $missedPublicKeys)) {
+            if (! in_array($validator['publicKey'], $missedPublicKeys, true)) {
                 continue;
             }
 
@@ -300,7 +300,7 @@ function createPartialRound(
     $requiredIndex = null;
     if ($requiredPublicKeys) {
         foreach ($validators as $index => $validator) {
-            if (! in_array($validator['publicKey'], $requiredPublicKeys)) {
+            if (! in_array($validator['publicKey'], $requiredPublicKeys, true)) {
                 continue;
             }
 
@@ -324,7 +324,7 @@ function createPartialRound(
                 break 2;
             }
 
-            if (count($missedPublicKeys) > 0 && in_array($validator['publicKey'], $missedPublicKeys)) {
+            if (count($missedPublicKeys) > 0 && in_array($validator['publicKey'], $missedPublicKeys, true)) {
                 $context->travel(8)->seconds();
                 $slotCount++;
 
