@@ -9,7 +9,6 @@ use App\Http\Livewire\ValidatorDataBoxes;
 use App\Models\Block;
 use App\Models\Wallet;
 use App\Repositories\RoundRepository;
-use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
