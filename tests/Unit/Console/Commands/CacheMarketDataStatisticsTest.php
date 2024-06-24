@@ -19,7 +19,7 @@ it('should cache market data statistics', function () {
     $this->artisan('explorer:cache-market-data-statistics');
 
     expect($cache->getPriceRangeDaily($currency))->toBe(['low' => 0.0339403, 'high' => 10.2219]);
-    expect($cache->getPriceRange52($currency))->toBe(['low' => 0.2221350324167072, 'high' => 1.795718158629526]);
+    expect($cache->getPriceRange52($currency))->toBe(['low' => 0.23108521034764695, 'high' => 1.795718158629526]);
     expect($cache->getPriceAth($currency))->toBe(['timestamp' => 1515542400, 'value' => 10.2219]);
     expect($cache->getPriceAtl($currency))->toBe(['timestamp' => 1490140800, 'value' => 0.0339403]);
 

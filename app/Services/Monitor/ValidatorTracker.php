@@ -32,40 +32,46 @@ final class ValidatorTracker
 
         return collect($validators)
             ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $validatorCount) {
-                // Determine forging order based on the original offset
-                $difference      = $forgingInfo['currentForger'];
-                $normalizedOrder = $difference >= 0 ? $difference : $validatorCount + $difference;
-
-                if ($index === $normalizedOrder) {
-                    return [
-                        'publicKey' => $publicKey,
-                        'status'    => 'next',
-                        'time'      => Network::blockTime() * 1000,
-                        'order'     => $index,
-                    ];
-                }
-
-                if ($index > $normalizedOrder) {
-                    $nextTime = (($forgingIndex) * Network::blockTime() * 1000);
-
-                    $forgingIndex++;
-
-                    return [
-                        'publicKey' => $publicKey,
-                        'status'    => 'pending',
-                        'time'      => $nextTime,
-                        'order'     => $index,
-                    ];
-                }
-
-                // TODO: we need to handle missed blocks by moving "done" states back to pending when needed
-                return [
-                    'publicKey' => $publicKey,
-                    'status'    => 'done',
-                    'time'      => 0,
-                    'order'     => $index,
-                ];
+                return static::determineSlot($publicKey, $index, $forgingIndex, $forgingInfo, $validatorCount);
             })
             ->toArray();
+    }
+
+    private static function determineSlot($publicKey, $index, &$forgingIndex, $forgingInfo, $validatorCount): array
+    {
+        // Determine forging order based on the original offset
+        $difference       = $forgingInfo['currentForger'] - $forgingInfo['slotOffset'];
+        $normalizedOrder  = $difference >= 0 ? $difference : $validatorCount + $difference;
+        $secondsUntilSlot = Network::blockTime() * 1000;
+
+        if ($index === $normalizedOrder) {
+            return [
+                'publicKey' => $publicKey,
+                'status'    => 'next',
+                'time'      => $secondsUntilSlot,
+                'order'     => $index,
+            ];
+        }
+
+        if ($index > $normalizedOrder) {
+            $nextTime = (($forgingIndex) * $secondsUntilSlot);
+
+            $forgingIndex++;
+
+            return [
+                'publicKey' => $publicKey,
+                'status'    => 'pending',
+                'time'      => $nextTime,
+                'order'     => $index,
+            ];
+        }
+
+        // TODO: we need to handle missed blocks by moving "done" states back to pending when needed
+        return [
+            'publicKey' => $publicKey,
+            'status'    => 'done',
+            'time'      => 0,
+            'order'     => $index,
+        ];
     }
 }
