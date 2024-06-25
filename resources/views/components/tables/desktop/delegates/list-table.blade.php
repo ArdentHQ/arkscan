@@ -81,7 +81,10 @@
                         />
 
                         @if (config('arkscan.arkconnect.enabled'))
-                            <div x-show="votingForAddress === '{{ $delegate->address() }}'">
+                            <div
+                                x-data="{}"
+                                x-show="votingForAddress === '{{ $delegate->address() }}'"
+                            >
                                 <div data-tippy-content="@lang('pages.delegates.arkconnect.voting_for_tooltip')">
                                     <x-ark-icon
                                         name="check-mark-box"

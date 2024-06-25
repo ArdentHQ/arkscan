@@ -364,3 +364,125 @@ it('should dispatch event for current year when the block count changes', functi
 
     Event::assertDispatchedTimes(AnnualData::class, 1);
 });
+
+it('should get all annual data if not already set', function () {
+    $cache = new StatisticsCache();
+
+    expect($cache->getAnnualData(2017))->toBeNull();
+
+    // 2017
+    Transaction::factory()->count(6)->create([
+        'timestamp' => 1,
+        'amount'    => 10 * 1e8,
+        'fee'       => 0.1 * 1e8,
+    ]);
+    Block::factory()->count(6)->create([
+        'timestamp' => 1,
+    ]);
+
+    $this->artisan('explorer:cache-annual-statistics');
+
+    expect($cache->getAnnualData(2017))->toBe([
+        'year'         => 2017,
+        'transactions' => 6,
+        'volume'       => '60.0000000000000000',
+        'fees'         => '0.60000000000000000000',
+        'blocks'       => 6,
+    ]);
+});
+
+it('should not cache all annual data if already set', function () {
+    $cache = new StatisticsCache();
+
+    expect($cache->getAnnualData(2017))->toBeNull();
+    expect($cache->getAnnualData(2018))->toBeNull();
+    expect($cache->getAnnualData(2019))->toBeNull();
+    expect($cache->getAnnualData(2020))->toBeNull();
+    expect($cache->getAnnualData(2021))->toBeNull();
+    expect($cache->getAnnualData(2022))->toBeNull();
+    expect($cache->getAnnualData(2023))->toBeNull();
+
+    $cache->setAnnualData(2017, 6, '60.0000000000000000', '0.60000000000000000000', 6);
+
+    expect($cache->getAnnualData(2017))->not->toBeNull();
+    expect($cache->getAnnualData(2018))->toBeNull();
+    expect($cache->getAnnualData(2019))->toBeNull();
+    expect($cache->getAnnualData(2020))->toBeNull();
+    expect($cache->getAnnualData(2021))->toBeNull();
+    expect($cache->getAnnualData(2022))->toBeNull();
+    expect($cache->getAnnualData(2023))->toBeNull();
+
+    // 2020, default timestamp. Needed as transaction factory will create blocks in addition
+    Transaction::factory()->count(3)->create();
+    Block::factory()->create();
+    Transaction::factory()->multiPayment()->count(3)->create([
+        'amount' => 0,
+        'asset'  => ['payments' => [['amount' => 10 * 1e8, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipientId' => 'Wallet2']]],
+    ]);
+
+    $this->artisan('explorer:cache-annual-statistics');
+
+    expect($cache->getAnnualData(2017))->not->toBeNull();
+    expect($cache->getAnnualData(2018))->toBeNull();
+    expect($cache->getAnnualData(2019))->toBeNull();
+    expect($cache->getAnnualData(2020))->toBeNull();
+    expect($cache->getAnnualData(2021))->toBeNull();
+    expect($cache->getAnnualData(2022))->toBeNull();
+    expect($cache->getAnnualData(2023))->toBeNull();
+
+    expect($cache->getAnnualData(2024))->toBe([
+        'year'         => 2024,
+        'transactions' => 0,
+        'volume'       => '0',
+        'fees'         => '0',
+        'blocks'       => 0,
+    ]);
+});
+
+it('should cache all annual data with flag even if not already set', function () {
+    $cache = new StatisticsCache();
+
+    expect($cache->getAnnualData(2017))->toBeNull();
+    expect($cache->getAnnualData(2018))->toBeNull();
+    expect($cache->getAnnualData(2019))->toBeNull();
+    expect($cache->getAnnualData(2020))->toBeNull();
+    expect($cache->getAnnualData(2021))->toBeNull();
+    expect($cache->getAnnualData(2022))->toBeNull();
+    expect($cache->getAnnualData(2023))->toBeNull();
+
+    $cache->setAnnualData(2017, 6, '60.0000000000000000', '0.60000000000000000000', 6);
+
+    expect($cache->getAnnualData(2017))->not->toBeNull();
+    expect($cache->getAnnualData(2018))->toBeNull();
+    expect($cache->getAnnualData(2019))->toBeNull();
+    expect($cache->getAnnualData(2020))->toBeNull();
+    expect($cache->getAnnualData(2021))->toBeNull();
+    expect($cache->getAnnualData(2022))->toBeNull();
+    expect($cache->getAnnualData(2023))->toBeNull();
+
+    // 2020, default timestamp. Needed as transaction factory will create blocks in addition
+    Transaction::factory()->count(3)->create();
+    Block::factory()->create();
+    Transaction::factory()->multiPayment()->count(3)->create([
+        'amount' => 0,
+        'asset'  => ['payments' => [['amount' => 10 * 1e8, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipientId' => 'Wallet2']]],
+    ]);
+
+    $this->artisan('explorer:cache-annual-statistics --all');
+
+    expect($cache->getAnnualData(2017))->not->toBeNull();
+    expect($cache->getAnnualData(2018))->toBeNull();
+    expect($cache->getAnnualData(2019))->toBeNull();
+    expect($cache->getAnnualData(2020))->not->toBeNull();
+    expect($cache->getAnnualData(2021))->toBeNull();
+    expect($cache->getAnnualData(2022))->toBeNull();
+    expect($cache->getAnnualData(2023))->toBeNull();
+
+    expect($cache->getAnnualData(2024))->toBe([
+        'year'         => 2024,
+        'transactions' => 0,
+        'volume'       => '0',
+        'fees'         => '0',
+        'blocks'       => 0,
+    ]);
+});

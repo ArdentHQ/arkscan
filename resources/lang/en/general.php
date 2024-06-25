@@ -76,7 +76,7 @@ return [
         ],
 
         'arkconnect' => [
-            'my_address'   => 'My Address:',
+            'my_address'   => 'My Address',
             'copy_address' => 'Copy Address',
             'disconnect'   => 'Disconnect',
 
