@@ -32,7 +32,6 @@ final class CacheBlocks implements ShouldQueue
         if ($largestBlockByAmount !== null) {
             if ($cache->getLargestIdByAmount() !== $largestBlockByAmount->id) {
                 $hasChanges = true;
-                dump(__LINE__);
             }
 
             $cache->setLargestIdByAmount($largestBlockByAmount->id);
@@ -41,7 +40,6 @@ final class CacheBlocks implements ShouldQueue
         if ($largestBlockByFees !== null) {
             if (! $hasChanges && $cache->getLargestIdByFees() !== $largestBlockByFees->id) {
                 $hasChanges = true;
-                dump(__LINE__);
             }
 
             $cache->setLargestIdByFees($largestBlockByFees->id);
@@ -50,7 +48,6 @@ final class CacheBlocks implements ShouldQueue
         if ($largestBlockByTransactionCount !== null) {
             if (! $hasChanges && $cache->getLargestIdByTransactionCount() !== $largestBlockByTransactionCount->id) {
                 $hasChanges = true;
-                dump(__LINE__);
             }
 
             $cache->setLargestIdByTransactionCount($largestBlockByTransactionCount->id);
