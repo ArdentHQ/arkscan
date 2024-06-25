@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Concerns;
 
 use App\Events\NewTransaction;
 use App\Events\Statistics\UniqueAddresses;
-use App\Models\Wallet;
 use App\Services\Addresses\Aggregates\LatestWalletAggregate;
 
 trait HandlesTransactionWebhooks
@@ -20,7 +19,7 @@ trait HandlesTransactionWebhooks
     {
         NewTransaction::dispatch(request()->input('data.senderPublicKey'));
 
-        if ((new LatestWalletAggregate)->aggregate() !== null) {
+        if ((new LatestWalletAggregate())->aggregate() !== null) {
             UniqueAddresses::dispatch();
         }
     }
