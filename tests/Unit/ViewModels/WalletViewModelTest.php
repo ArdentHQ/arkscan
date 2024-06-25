@@ -661,25 +661,18 @@ it('should get the validator user name', function () {
     expect($this->subject->username())->toBe('john');
 });
 
-it('should get the vote url with public key', function () {
-    expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?coin=Mainsail&nethash=');
-    expect($this->subject->voteUrl())->toContain('&method=vote');
-    expect($this->subject->voteUrl())->toContain('&publicKey=');
-    expect($this->subject->voteUrl())->not->toContain('&delegate=');
-});
-
 it('should get the vote url with validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'public_key' => 'wallet-public-key',
         'attributes' => [
-            'validatorPublicKey' => 'publickey',
+            'validatorPublicKey' => 'validator-public-key',
             'username'           => 'john',
         ],
     ]));
 
     expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?coin=Mainsail&nethash=');
     expect($this->subject->voteUrl())->toContain('&method=vote');
-    expect($this->subject->voteUrl())->not->toContain('&publicKey=');
-    expect($this->subject->voteUrl())->toContain('&delegate=john');
+    expect($this->subject->voteUrl())->toContain('&validator=wallet-public-key');
 });
 
 it('should get whether validator is standby', function () {
