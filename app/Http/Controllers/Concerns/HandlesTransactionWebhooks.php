@@ -13,15 +13,15 @@ trait HandlesTransactionWebhooks
     private function handleTransactionApplied(): void
     {
         NewTransaction::dispatch();
+
+        if ((new LatestWalletAggregate())->aggregate() !== null) {
+            UniqueAddresses::dispatch();
+        }
     }
 
     private function handleSenderTransactionApplied(): void
     {
         NewTransaction::dispatch(request()->input('data.senderPublicKey'));
-
-        if ((new LatestWalletAggregate())->aggregate() !== null) {
-            UniqueAddresses::dispatch();
-        }
     }
 
     private function handleRecipientTransactionApplied(): void

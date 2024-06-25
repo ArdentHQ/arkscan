@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 use App\Events\NewBlock;
 use App\Events\NewTransaction;
+use App\Events\Statistics\UniqueAddresses;
 use App\Events\WalletVote;
+use App\Facades\Network;
+use App\Models\Transaction;
+use App\Services\Addresses\Aggregates\LatestWalletAggregate;
+use App\Services\Cache\StatisticsCache;
+use App\Services\Timestamp;
+use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
 use Illuminate\Broadcasting\BroadcastEvent;
 use Illuminate\Support\Facades\Config;
@@ -176,6 +183,57 @@ describe('transaction', function () {
             return $event->event->broadcastOn()->name === 'transactions.address';
         });
     });
+
+    it('should dispatch statistics event if there is a new wallet', function () {
+        Event::fake();
+
+        $this->travelTo('2024-04-19 00:15:44');
+
+        $transaction = Transaction::factory()->create([
+            'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
+        ]);
+
+        (new LatestWalletAggregate())->aggregate();
+
+        $secureUrl = URL::signedRoute('webhooks');
+
+        $cache = new StatisticsCache();
+
+        expect($cache->getNewestAddress())->toEqual([
+            'address'   => $transaction->sender->address,
+            'timestamp' => $transaction->timestamp,
+            'value'     => Carbon::createFromTimestamp((int) $transaction->timestamp + (int) Network::epoch()->timestamp)->format(DateFormat::DATE),
+        ]);
+
+        $this
+            ->post($secureUrl, $this->transaction)
+            ->assertOk();
+
+        Event::assertDispatchedTimes(NewTransaction::class, 3);
+        Event::assertDispatchedTimes(UniqueAddresses::class, 0);
+
+        Event::assertDispatched(NewTransaction::class, function ($event) {
+            return $event->broadcastOn()->name === 'transactions';
+        });
+
+        Event::assertDispatched(NewTransaction::class, function ($event) {
+            return $event->broadcastOn()->name === 'transactions.public-key';
+        });
+
+        Event::assertDispatched(NewTransaction::class, function ($event) {
+            return $event->broadcastOn()->name === 'transactions.address';
+        });
+
+        $transaction = Transaction::factory()->create([
+            'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-20 00:15:44')->unix())->unix(),
+        ]);
+
+        $this
+            ->post($secureUrl, $this->transaction)
+            ->assertOk();
+
+        Event::assertDispatchedTimes(UniqueAddresses::class, 1);
+    });
 });
 
 describe('wallet', function () {
@@ -273,7 +331,7 @@ describe('wallet', function () {
         });
     });
 
-    it('wshould not dispatch multiple times', function () {
+    it('should not dispatch multiple times', function () {
         $this->freezeTime();
 
         $this->travelTo(Carbon::parse('2024-04-14 12:25:04'));
