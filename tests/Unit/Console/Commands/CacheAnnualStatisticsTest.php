@@ -250,7 +250,7 @@ it('should dispatch event for all data when the block count changes', function (
     Event::fake();
 
     Block::factory()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2020-01-01 01:01:01')->unix())->unix(),
+        'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-01-01 01:01:01')->unix())->unix(),
     ]);
 
     $this->artisan('explorer:cache-annual-statistics --all');
