@@ -53,6 +53,8 @@ final class CacheBlocks implements ShouldQueue
             $cache->setLargestIdByTransactionCount($largestBlockByTransactionCount->id);
         }
 
-        TransactionDetails::dispatch();
+        if ($hasChanges) {
+            TransactionDetails::dispatch();
+        }
     }
 }
