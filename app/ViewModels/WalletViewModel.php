@@ -16,7 +16,6 @@ use App\ViewModels\Concerns\Wallet\CanHaveUsername;
 use App\ViewModels\Concerns\Wallet\CanVote;
 use App\ViewModels\Concerns\Wallet\HasType;
 use App\ViewModels\Concerns\Wallet\HasVoters;
-use Ardenthq\UrlBuilder\Enums\Methods;
 use Mattiasgeniar\Percentage\Percentage;
 
 final class WalletViewModel implements ViewModel
@@ -80,11 +79,9 @@ final class WalletViewModel implements ViewModel
 
     public function voteUrl(): string
     {
-        $options = [
-            'method'    => Methods::Vote->name(),
-            'validator' => $this->publicKey(),
-        ];
+        /** @var string $subject */
+        $subject = $this->publicKey();
 
-        return ArkVaultUrlBuilder::get()->generateUrl($options);
+        return ArkVaultUrlBuilder::get()->generateVote($subject);
     }
 }
