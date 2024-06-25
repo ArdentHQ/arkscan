@@ -12,7 +12,6 @@ use App\Jobs\CacheBlocks;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Addresses\Aggregates\LatestWalletAggregate;
-use App\Services\Cache\BlockCache;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\TransactionCache;
 use App\Services\Timestamp;

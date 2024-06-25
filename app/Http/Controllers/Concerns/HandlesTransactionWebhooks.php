@@ -44,7 +44,7 @@ trait HandlesTransactionWebhooks
 
     private function checkLargestTransaction(): void
     {
-        $cache = new TransactionCache();
+        $cache              = new TransactionCache();
         $largestTransaction = (new LargestTransactionAggregate())->aggregate();
         if ($largestTransaction === null) {
             return;
