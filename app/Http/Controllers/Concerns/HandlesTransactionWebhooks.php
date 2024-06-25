@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Concerns;
 
 use App\Events\NewTransaction;
+use App\Events\Statistics\UniqueAddresses;
+use App\Models\Wallet;
+use App\Services\Addresses\Aggregates\LatestWalletAggregate;
 
 trait HandlesTransactionWebhooks
 {
@@ -16,6 +19,10 @@ trait HandlesTransactionWebhooks
     private function handleSenderTransactionApplied(): void
     {
         NewTransaction::dispatch(request()->input('data.senderPublicKey'));
+
+        if ((new LatestWalletAggregate)->aggregate() !== null) {
+            UniqueAddresses::dispatch();
+        }
     }
 
     private function handleRecipientTransactionApplied(): void

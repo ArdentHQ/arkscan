@@ -11,12 +11,12 @@ use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Addresses\Aggregates\HoldingsAggregate;
+use App\Services\Addresses\Aggregates\LatestWalletAggregate;
 use App\Services\Cache\StatisticsCache;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 final class CacheAddressStatistics extends Command
@@ -42,7 +42,7 @@ final class CacheAddressStatistics extends Command
         $hasAddressHoldings = $this->cacheHoldings($cache);
 
         $this->cacheGenesis($cache);
-        $this->cacheNewest($cache);
+        $this->cacheNewest();
         $this->cacheMostTransactions($cache);
         $this->cacheLargest($cache);
 
@@ -81,48 +81,14 @@ final class CacheAddressStatistics extends Command
         }
     }
 
-    private function cacheNewest(StatisticsCache $cache): void
+    private function cacheNewest(): void
     {
-        $cacheKey = 'commands:cache_address_statistics/last_run';
-
-        $newestQuery = Wallet::query()
-            ->select('wallets.address', DB::raw('MIN(transactions.timestamp) as timestamp'))
-            ->leftJoin('transactions', function ($join) {
-                $join->on('wallets.public_key', '=', 'transactions.sender_public_key')
-                    ->orOn('wallets.address', '=', 'transactions.recipient_id');
-            })
-            ->whereNotNull('transactions.sender_public_key')
-            ->whereNotNull('transactions.recipient_id')
-            ->groupBy('wallets.address')
-            ->orderBy('timestamp', 'desc')
-            ->limit(1);
-
-        $lastRun = Cache::get($cacheKey, null);
-
-        if ($lastRun !== null) {
-            $newestQuery->where('wallets.updated_at', '>', $lastRun);
+        $newest = (new LatestWalletAggregate())->aggregate();
+        if ($newest === null) {
+            return;
         }
 
-        $newest = $newestQuery->first();
-
-        if ($newest !== null) {
-            $currentAddress = $cache->getNewestAddress();
-            // Only store if later wallet is actually newer than previously cached wallet
-            if ($currentAddress === null || $currentAddress['timestamp'] < $newest->timestamp) {
-                $this->hasChanges = true;
-
-                $cache->setNewestAddress([
-                    'address'   => $newest->address,
-                    'timestamp' => $newest->timestamp,
-                    'value'     => Carbon::createFromTimestamp((int) $newest->timestamp + (int) Network::epoch()->timestamp)->format(DateFormat::DATE),
-                ]);
-            }
-        }
-
-        // Cache last run timestamp for newest wallet query
-        Cache::rememberForever($cacheKey, function () {
-            return Carbon::now();
-        });
+        $this->hasChanges = true;
     }
 
     private function cacheMostTransactions(StatisticsCache $cache): void
