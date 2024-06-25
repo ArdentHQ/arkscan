@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Events\Statistics\TransactionDetails;
+use App\Jobs\CacheBlocks;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Cache\BlockCache;
@@ -23,7 +24,7 @@ it('should cache largest block by amount', function () {
 
     Transaction::factory()->create(['amount' => 0]);
 
-    $this->artisan('explorer:cache-blocks');
+    (new CacheBlocks())->handle($cache);
 
     expect($cache->getLargestIdByAmount())->toBe($largestBlock->id);
 
@@ -41,7 +42,7 @@ it('should cache largest block by fee', function () {
 
     Block::factory()->create(['total_fee' => 0]);
 
-    $this->artisan('explorer:cache-blocks');
+    (new CacheBlocks())->handle($cache);
 
     expect($cache->getLargestIdByFees())->toBe($largestBlock->id);
 
@@ -59,7 +60,7 @@ it('should cache largest block by transaction count', function () {
 
     Block::factory()->create(['number_of_transactions' => 3]);
 
-    $this->artisan('explorer:cache-blocks');
+    (new CacheBlocks())->handle($cache);
 
     expect($cache->getLargestIdByTransactionCount())->toBe($largestBlock->id);
 
@@ -77,7 +78,7 @@ it('should not trigger event if no change', function () {
 
     Block::factory()->create(['number_of_transactions' => 3]);
 
-    $this->artisan('explorer:cache-blocks');
+    (new CacheBlocks())->handle($cache);
 
     expect($cache->getLargestIdByTransactionCount())->toBe($largestBlock->id);
 
@@ -85,7 +86,7 @@ it('should not trigger event if no change', function () {
 
     Event::fake();
 
-    $this->artisan('explorer:cache-blocks');
+    (new CacheBlocks())->handle($cache);
 
     Event::assertDispatchedTimes(TransactionDetails::class, 0);
 });
@@ -114,7 +115,7 @@ it('should trigger event if largest block by amount changes', function () {
         'number_of_transactions' => 3,
     ]);
 
-    $this->artisan('explorer:cache-blocks');
+    (new CacheBlocks())->handle($cache);
 
     expect($cache->getLargestIdByAmount())->toBe($largestByAmount->id);
     expect($cache->getLargestIdByFees())->toBe($largestByFees->id);
@@ -124,7 +125,7 @@ it('should trigger event if largest block by amount changes', function () {
 
     Event::fake();
 
-    $this->artisan('explorer:cache-blocks');
+    (new CacheBlocks())->handle($cache);
 
     Event::assertDispatchedTimes(TransactionDetails::class, 0);
 
@@ -137,7 +138,7 @@ it('should trigger event if largest block by amount changes', function () {
         'block_id' => $updatedLargestByAmount->id,
     ]);
 
-    $this->artisan('explorer:cache-blocks');
+    (new CacheBlocks())->handle($cache);
 
     expect($cache->getLargestIdByAmount())->toBe($updatedLargestByAmount->id);
 
@@ -168,7 +169,7 @@ it('should trigger event if largest block by fee changes', function () {
         'number_of_transactions' => 3,
     ]);
 
-    $this->artisan('explorer:cache-blocks');
+    (new CacheBlocks())->handle($cache);
 
     expect($cache->getLargestIdByAmount())->toBe($largestByAmount->id);
     expect($cache->getLargestIdByFees())->toBe($largestByFees->id);
@@ -178,7 +179,7 @@ it('should trigger event if largest block by fee changes', function () {
 
     Event::fake();
 
-    $this->artisan('explorer:cache-blocks');
+    (new CacheBlocks())->handle($cache);
 
     Event::assertDispatchedTimes(TransactionDetails::class, 0);
 
@@ -187,7 +188,7 @@ it('should trigger event if largest block by fee changes', function () {
         'number_of_transactions' => 1,
     ]);
 
-    $this->artisan('explorer:cache-blocks');
+    (new CacheBlocks())->handle($cache);
 
     expect($cache->getLargestIdByFees())->toBe($updatedLargestByFees->id);
 
@@ -218,7 +219,7 @@ it('should trigger event if largest block by transaction count changes', functio
         'number_of_transactions' => 3,
     ]);
 
-    $this->artisan('explorer:cache-blocks');
+    (new CacheBlocks())->handle($cache);
 
     expect($cache->getLargestIdByAmount())->toBe($largestByAmount->id);
     expect($cache->getLargestIdByFees())->toBe($largestByFees->id);
@@ -228,7 +229,7 @@ it('should trigger event if largest block by transaction count changes', functio
 
     Event::fake();
 
-    $this->artisan('explorer:cache-blocks');
+    (new CacheBlocks())->handle($cache);
 
     Event::assertDispatchedTimes(TransactionDetails::class, 0);
 
@@ -237,7 +238,7 @@ it('should trigger event if largest block by transaction count changes', functio
         'number_of_transactions' => 5,
     ]);
 
-    $this->artisan('explorer:cache-blocks');
+    (new CacheBlocks())->handle($cache);
 
     expect($cache->getLargestIdByTransactionCount())->toBe($updatedLargestByTransactions->id);
 
