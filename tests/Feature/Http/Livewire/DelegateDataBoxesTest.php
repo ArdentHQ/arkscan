@@ -16,7 +16,7 @@ use Carbon\Carbon;
 use Livewire\Livewire;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
-use function Tests\delegatesForRound;
+use function Tests\getDelegateForgingPosition;
 
 beforeEach(function () {
     $this->app->bind(ContractsRoundRepository::class, function (): RoundRepository {
@@ -72,6 +72,18 @@ function createRoundWithDelegatesAndPerformances(array $performances = null, boo
             'height' => $block->height->toNumber(),
         ]);
     });
+}
+
+function createPartialTestRounds(int $round, int $height, string $requiredPublicKey, array $didForge, $context, string $missedPublicKey = null): void
+{
+    $delegateForgingPosition = getDelegateForgingPosition($round, $requiredPublicKey);
+    while ($delegateForgingPosition >= 48 || $delegateForgingPosition === 0) {
+        [$delegates, $round, $height] = createRealisticRound($didForge, $context);
+
+        $delegateForgingPosition = getDelegateForgingPosition($round, $requiredPublicKey);
+    }
+
+    createPartialRound($round, $height, 49, $context, $requiredPublicKey, $missedPublicKey);
 }
 
 it('should render without errors', function () {
@@ -247,24 +259,15 @@ it('should calculate forged correctly with current round', function () {
         ],
     ], $this);
 
-    for ($i = 0; $i < 3; $i++) {
-        $delegatesOrder = delegatesForRound(false, $round);
-        $delegateIndex  = $delegatesOrder->search(fn ($delegate) => $delegate['publicKey'] === $delegates->get(4)->public_key);
-        if ($delegateIndex < 49) {
-            break;
-        }
-
-        [$delegates, $round, $height] = createRealisticRound([
-            array_fill(0, 51, true),
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 46, true),
-            ],
-        ], $this);
-    }
-
-    createPartialRound($round, $height, 49, $this, null, $delegates->get(4)->public_key);
+    $publicKey = $delegates->get(4)->public_key;
+    createPartialTestRounds($round, $height, $publicKey, [
+        array_fill(0, 51, true),
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this);
 
     expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, true]);
 
@@ -324,19 +327,11 @@ it('should calculate missed correctly with current round', function () {
         array_fill(0, 51, true),
     ], $this);
 
-    for ($i = 0; $i < 3; $i++) {
-        $delegatesOrder = delegatesForRound(false, $round);
-        $delegateIndex  = $delegatesOrder->search(fn ($delegate) => $delegate['publicKey'] === $delegates->get(4)->public_key);
-        if ($delegateIndex < 49) {
-            break;
-        }
+    $publicKey = $delegates->get(4)->public_key;
 
-        [$delegates, $round, $height] = createRealisticRound([
-            array_fill(0, 51, true),
-        ], $this);
-    }
-
-    createPartialRound($round, $height, 49, $this, $delegates->get(4)->public_key, $delegates->get(4)->public_key);
+    createPartialTestRounds($round, $height, $publicKey, [
+        array_fill(0, 51, true),
+    ], $this, $publicKey);
 
     expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([true, false]);
 
@@ -409,23 +404,14 @@ it('should calculate not forging correctly with current round', function () {
         ],
     ], $this);
 
-    for ($i = 0; $i < 3; $i++) {
-        $delegatesOrder = delegatesForRound(false, $round);
-        $delegateIndex  = $delegatesOrder->search(fn ($delegate) => $delegate['publicKey'] === $delegates->get(4)->public_key);
-        if ($delegateIndex < 49) {
-            break;
-        }
-
-        [$delegates, $round, $height] = createRealisticRound([
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 46, true),
-            ],
-        ], $this);
-    }
-
-    createPartialRound($round, $height, 49, $this, $delegates->get(4)->public_key, $delegates->get(4)->public_key);
+    $publicKey = $delegates->get(4)->public_key;
+    createPartialTestRounds($round, $height, $publicKey, [
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this, $publicKey);
 
     expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, false]);
 
