@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 use App\Events\NewBlock;
 use App\Events\NewTransaction;
+use App\Events\Statistics\TransactionDetails;
 use App\Events\Statistics\UniqueAddresses;
 use App\Events\WalletVote;
 use App\Facades\Network;
+use App\Jobs\CacheBlocks;
+use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Addresses\Aggregates\LatestWalletAggregate;
+use App\Services\Cache\BlockCache;
 use App\Services\Cache\StatisticsCache;
+use App\Services\Cache\TransactionCache;
 use App\Services\Timestamp;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
@@ -111,6 +116,46 @@ describe('block', function () {
             return $event->event->broadcastOn()->name === 'blocks.public-key';
         });
     });
+
+    it('should dispatch statistics event if there is a change to block statistics', function () {
+        Event::fake();
+        Queue::fake();
+
+        $secureUrl = URL::signedRoute('webhooks');
+
+        $this
+            ->post($secureUrl, $this->block)
+            ->assertOk();
+
+        Event::assertDispatchedTimes(NewBlock::class, 2);
+        Queue::assertPushed(CacheBlocks::class, 1);
+
+        Event::assertDispatched(NewBlock::class, function ($event) {
+            return $event->broadcastOn()->name === 'blocks';
+        });
+
+        Event::assertDispatched(NewBlock::class, function ($event) {
+            return $event->broadcastOn()->name === 'blocks.public-key';
+        });
+
+        $block = Block::factory()->create([
+            'total_amount' => 123 * 1e8,
+        ]);
+
+        Transaction::factory()->create([
+            'block_id' => $block->id,
+            'amount'   => 123 * 1e8,
+            'fee'      => 0.123 * 1e8,
+        ]);
+
+        $secureUrl = URL::signedRoute('webhooks');
+
+        $this
+            ->post($secureUrl, $this->block)
+            ->assertOk();
+
+        Queue::assertPushed(CacheBlocks::class, 2);
+    });
 });
 
 describe('transaction', function () {
@@ -189,7 +234,7 @@ describe('transaction', function () {
 
         $this->travelTo('2024-04-19 00:15:44');
 
-        $transaction = Transaction::factory()->create([
+        $transaction = Transaction::factory()->transfer()->create([
             'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
         ]);
 
@@ -233,6 +278,57 @@ describe('transaction', function () {
             ->assertOk();
 
         Event::assertDispatchedTimes(UniqueAddresses::class, 1);
+    });
+
+    it('should dispatch statistics event if there is a new largest transaction', function () {
+        Event::fake();
+
+        $cache = new TransactionCache();
+
+        $this->travelTo('2024-04-19 00:15:44');
+
+        $transaction = Transaction::factory()->transfer()->create([
+            'amount'    => 1 * 1e8,
+            'fee'       => 0.1 * 1e8,
+            'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
+        ]);
+
+        $cache->setLargestIdByAmount($transaction->id);
+
+        $secureUrl = URL::signedRoute('webhooks');
+
+        expect($cache->getLargestIdByAmount())->toEqual($transaction->id);
+
+        $this
+            ->post($secureUrl, $this->transaction)
+            ->assertOk();
+
+        Event::assertDispatchedTimes(NewTransaction::class, 3);
+        Event::assertDispatchedTimes(TransactionDetails::class, 0);
+
+        Event::assertDispatched(NewTransaction::class, function ($event) {
+            return $event->broadcastOn()->name === 'transactions';
+        });
+
+        Event::assertDispatched(NewTransaction::class, function ($event) {
+            return $event->broadcastOn()->name === 'transactions.public-key';
+        });
+
+        Event::assertDispatched(NewTransaction::class, function ($event) {
+            return $event->broadcastOn()->name === 'transactions.address';
+        });
+
+        $transaction = Transaction::factory()->transfer()->create([
+            'amount'    => 20 * 1e8,
+            'fee'       => 0.2 * 1e8,
+            'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-20 00:15:44')->unix())->unix(),
+        ]);
+
+        $this
+            ->post($secureUrl, $this->transaction)
+            ->assertOk();
+
+        Event::assertDispatchedTimes(TransactionDetails::class, 1);
     });
 });
 
