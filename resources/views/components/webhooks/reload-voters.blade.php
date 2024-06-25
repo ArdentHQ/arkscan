@@ -1,9 +1,9 @@
 @props(['publicKey'])
 
-@push('scripts')
-    <script>
-        window.addEventListener('DOMContentLoaded', function() {
+<div
+    x-data="{
+        init() {
             Webhook.listen('wallet-vote.{{ $publicKey }}', 'WalletVote', 'reloadVoters');
-        });
-    </script>
-@endpush
+        },
+    }"
+></div>

@@ -2,7 +2,6 @@ window.Webhook = {
     listeners: {},
 
     listen(channel, event, emit) {
-        console.log("listen", channel, event, emit);
         if (this.listeners[channel] === undefined) {
             this.listeners[channel] = {};
         }

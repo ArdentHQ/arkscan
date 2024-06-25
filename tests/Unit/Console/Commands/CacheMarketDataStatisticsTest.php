@@ -187,9 +187,11 @@ it('should should dispatch event if 52 week range changes', function () {
 
     Event::assertDispatchedTimes(MarketData::class, 1);
 
+    $baseValues = $cache->getPriceRange52($currency);
+
     Event::fake();
 
-    $cache->setPriceRange52($currency, 0.2221350324167072, 2.795718158629526);
+    $cache->setPriceRange52($currency, 0.2221350324167072, $baseValues['high']);
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -197,7 +199,7 @@ it('should should dispatch event if 52 week range changes', function () {
 
     Event::fake();
 
-    $cache->setPriceRange52($currency, 0.3221350324167072, 1.795718158629526);
+    $cache->setPriceRange52($currency, $baseValues['low'], 2.795718158629526);
 
     $this->artisan('explorer:cache-market-data-statistics');
 
