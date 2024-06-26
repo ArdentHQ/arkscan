@@ -59,6 +59,6 @@ final class ExchangeTableFilter extends Component
             $this->pair = $value;
         }
 
-        $this->emit('filterChanged', $param, $value);
+        $this->dispatch('filterChanged', $param, $value);
     }
 }

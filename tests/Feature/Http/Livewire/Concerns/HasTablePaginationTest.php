@@ -11,7 +11,7 @@ it('should use PER_PAGE constant if exists', function () {
 
     expect($instance->perPage)->toBeNull();
 
-    $instance->bootHasTablePagination();
+    $instance->mountHasTablePagination();
 
     expect($instance->perPage)->toBe(HasTablePaginationStub::PER_PAGE);
 });
@@ -23,7 +23,7 @@ it('should use config if constant does not exist', function () {
 
     expect($instance->perPage)->toBeNull();
 
-    $instance->bootHasTablePagination();
+    $instance->mountHasTablePagination();
 
     expect($instance->perPage)->toBe(100);
 });

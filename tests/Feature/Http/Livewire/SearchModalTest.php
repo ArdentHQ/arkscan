@@ -16,7 +16,7 @@ it('should search for a wallet', function () {
     Transaction::factory()->create(['block_id' => $block->id]);
 
     Livewire::test(SearchModal::class)
-        ->emit('openSearchModal')
+        ->dispatch('openSearchModal')
         ->set('query', $wallet->address)
         ->assertSee($wallet->address)
         ->assertDontSee($otherWallet->address);
@@ -36,7 +36,7 @@ it('should search for a wallet username over a block generator', function () {
     Transaction::factory()->create(['block_id' => $block->id]);
 
     Livewire::test(SearchModal::class)
-        ->emit('openSearchModal')
+        ->dispatch('openSearchModal')
         ->set('query', $wallet->address)
         ->assertSee($wallet->address);
 });
@@ -48,7 +48,7 @@ it('should search for a transaction', function () {
     $transaction = Transaction::factory()->create();
 
     Livewire::test(SearchModal::class)
-        ->emit('openSearchModal')
+        ->dispatch('openSearchModal')
         ->set('query', $transaction->id)
         ->assertSee($transaction->id);
 });
@@ -57,7 +57,7 @@ it('should search for a block', function () {
     $block = Block::factory()->create();
 
     Livewire::test(SearchModal::class)
-        ->emit('openSearchModal')
+        ->dispatch('openSearchModal')
         ->set('query', $block->id)
         ->assertSee($block->id);
 });
@@ -66,7 +66,7 @@ it('should clear search when modal is closed', function () {
     $block = Block::factory()->create();
 
     Livewire::test(SearchModal::class)
-        ->emit('openSearchModal')
+        ->dispatch('openSearchModal')
         ->set('query', $block->id)
         ->call('closeModal')
         ->assertSet('query', '');

@@ -6,7 +6,6 @@ namespace App\Http\Livewire\Delegates;
 
 use App\Enums\SortDirection;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTableSorting;
 use App\Models\Transaction;
@@ -22,7 +21,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * */
 final class RecentVotes extends TabbedTableComponent
 {
-    use DeferLoading;
     use HasTableFilter;
     use HasTableSorting;
 

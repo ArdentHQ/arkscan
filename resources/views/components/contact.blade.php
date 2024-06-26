@@ -185,7 +185,10 @@
                             error: {{ (flash()->level === 'error') ? 'true' : 'false' }}
                         }"
                         @if(flash()->message)
-                            x-init="livewire.emit('toastMessage', ['{{ flash()->message }}', '{{ flash()->level }}'])"
+                            x-init="livewire.dispatch('toastMessage', {
+                            message: '{{ flash()->message }}',
+                            type: '{{ flash()->level }}',
+                        })"
                         @endif
                         x-cloak
                         class="button-primary"

@@ -25,10 +25,10 @@ it('sets the filter', function () {
     Livewire::test(ExchangeTableFilter::class)
         ->call('setFilter', 'type', 'exchanges')
         ->assertSet('type', 'exchanges')
-        ->assertEmitted('filterChanged', 'type', 'exchanges')
+        ->assertDispatched('filterChanged', 'type', 'exchanges')
         ->call('setFilter', 'pair', 'btc')
         ->assertSet('pair', 'btc')
-        ->assertEmitted('filterChanged', 'pair', 'btc');
+        ->assertDispatched('filterChanged', 'pair', 'btc');
 });
 
 it('uses the query string', function () {

@@ -62,7 +62,7 @@ it('should update the records fiat tooltip when currency changed', function () {
     Settings::shouldReceive('all')->andReturn($settings);
     Settings::shouldReceive('currency')->andReturn('BTC');
 
-    $component->emit('currencyChanged', 'BTC');
+    $component->dispatch('currencyChanged', 'BTC');
 
     $component->assertDontSeeHtml('data-tippy-content="'.$expectedValue.'"');
     $component->assertSeeHtml('data-tippy-content="61.6048933 BTC"');
@@ -218,4 +218,43 @@ it('should show no transactions if no type filter', function () {
         ->assertDontSee($delegateRegistration->id)
         ->assertDontSee($entityRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_filters'));
+});
+
+it('should get the filter values via a getter', function () {
+    $instance = Livewire::test(TransactionTable::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'transfers'     => false,
+            'votes'         => true,
+            'multipayments' => false,
+            'others'        => true,
+        ])
+        ->instance();
+
+    expect($instance->transfers)->toBeFalse();
+    expect($instance->votes)->toBeTrue();
+    expect($instance->multipayments)->toBeFalse();
+    expect($instance->others)->toBeTrue();
+});
+
+it('should set the filter values via a setter', function () {
+    $instance = Livewire::test(TransactionTable::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'transfers'     => false,
+            'votes'         => false,
+            'multipayments' => false,
+            'others'        => false,
+        ])
+        ->instance();
+
+    $instance->transfers     = true;
+    $instance->votes         = true;
+    $instance->multipayments = true;
+    $instance->others        = true;
+
+    expect($instance->transfers)->toBeTrue();
+    expect($instance->votes)->toBeTrue();
+    expect($instance->multipayments)->toBeTrue();
+    expect($instance->others)->toBeTrue();
 });

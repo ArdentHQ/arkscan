@@ -46,7 +46,7 @@ final class BlockTransactionsTable extends Component
         return $this->getBlock()
             ->transactions()
             ->withScope(OrderByTimestampScope::class)
-            ->limit($this->perPage * $this->page)
+            ->limit($this->perPage * $this->getPage())
             ->get();
     }
 }

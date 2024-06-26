@@ -44,7 +44,7 @@ final class Tables extends Component
             return;
         }
 
-        $this->emit('set'.ucfirst($view).'Ready');
+        $this->dispatch('set'.ucfirst($view).'Ready');
 
         $this->alreadyLoadedViews[$view] = true;
     }

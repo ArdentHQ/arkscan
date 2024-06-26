@@ -52,7 +52,7 @@ it('should update the price if the currency changes', function () {
         ->assertDontSee('N/A')
         ->assertSee('USD')
         ->assertSee(0.29)
-        ->emit('currencyChanged')
+        ->dispatch('currencyChanged')
         ->assertDontSee('N/A')
         ->assertSee('MXN')
         ->assertSee(0.23);

@@ -478,17 +478,17 @@ it('should alternate sorting direction', function () {
 it('should reset page on sorting change', function () {
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
-        ->assertSet('page', 1)
+        ->assertSet('paginators.page', 1)
         ->assertSet('sortKey', 'age')
         ->assertSet('sortDirection', SortDirection::DESC)
-        ->set('page', 12)
+        ->call('gotoPage', 12)
         ->call('sortBy', 'age')
-        ->assertSet('page', 1)
+        ->assertSet('paginators.page', 1)
         ->assertSet('sortKey', 'age')
         ->assertSet('sortDirection', SortDirection::ASC)
-        ->set('page', 12)
+        ->call('gotoPage', 12)
         ->call('sortBy', 'age')
-        ->assertSet('page', 1)
+        ->assertSet('paginators.page', 1)
         ->assertSet('sortKey', 'age')
         ->assertSet('sortDirection', SortDirection::DESC);
 });

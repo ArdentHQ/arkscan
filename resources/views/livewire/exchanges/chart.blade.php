@@ -96,7 +96,7 @@
                 </div>
 
                 <x-stats.periods-selector
-                    wire:model="period"
+                    wire:model.live="period"
                     :selected="$period"
                     :options="$options"
                     class="hidden sm:block"
@@ -105,7 +105,7 @@
 
             <div class="p-4 -mx-4 -mb-4 rounded-b sm:hidden md:-mx-6 md:-mb-6 md:rounded-b-xl bg-theme-secondary-100 dark:bg-theme-dark-950">
                 <x-stats.periods-selector
-                    wire:model="period"
+                    wire:model.live="period"
                     :selected="$period"
                     :options="$options"
                     class="sm:hidden"
@@ -192,9 +192,12 @@
 @push('scripts')
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            Livewire.hook('message.processed', () => {
-                let pos = sessionStorage.getItem('scrollPos');
-                setTimeout(() => window.scrollTo(0, parseInt(pos)), 50);
+            Livewire.hook("commit", ({ component, fail, succeed }) => {
+                succeed(() => {
+                    let pos = sessionStorage.getItem('scrollPos');
+
+                    setTimeout(() => window.scrollTo(0, parseInt(pos)), 50);
+                });
             });
         });
 

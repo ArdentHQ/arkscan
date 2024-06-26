@@ -2,7 +2,7 @@
     'tooltip',
 ])
 
-<div 
+<div
     class="min-w-0"
     @if ($tooltip !== null && $tooltip !== '')
         x-data="{
@@ -26,6 +26,10 @@
             dynamicallyShowTooltip() {
                 const el = this.$root;
                 const tippyTooltip = el._tippy;
+                if (el._tippy === undefined) {
+                    return;
+                }
+
                 const childEl = el.firstElementChild;
 
                 if (childEl.offsetWidth < childEl.scrollWidth) {

@@ -89,14 +89,14 @@ it('should handle events', function () {
         ->assertDontSee(route('exchanges'));
 
     $networkStub->canBeExchanged = true;
-    $component->emit('currencyChanged')
+    $component->dispatch('currencyChanged')
         ->assertSee(route('exchanges'));
 
     $networkStub->canBeExchanged = false;
-    $component->emit('themeChanged')
+    $component->dispatch('themeChanged')
         ->assertDontSee(route('exchanges'));
 
     $networkStub->canBeExchanged = true;
-    $component->emit('updateChart')
+    $component->dispatch('updateChart')
         ->assertSee(route('exchanges'));
 });

@@ -19,7 +19,7 @@ it('should trigger is ready event for current tab view', function () {
 
     Livewire::test(Tables::class)
         ->call('triggerViewIsReady')
-        ->assertEmitted('setTransactionsReady');
+        ->assertDispatched('setTransactionsReady');
 });
 
 it('should trigger is ready event when changing tab view', function () {
@@ -27,9 +27,9 @@ it('should trigger is ready event when changing tab view', function () {
 
     Livewire::test(Tables::class)
         ->call('triggerViewIsReady')
-        ->assertEmitted('setTransactionsReady')
+        ->assertDispatched('setTransactionsReady')
         ->set('view', 'blocks')
-        ->assertEmitted('setBlocksReady');
+        ->assertDispatched('setBlocksReady');
 });
 
 it('should not trigger is ready event if tab view does not exist', function () {
@@ -37,7 +37,7 @@ it('should not trigger is ready event if tab view does not exist', function () {
 
     Livewire::test(Tables::class)
         ->set('view', 'testing')
-        ->assertNotEmitted('setTestingReady');
+        ->assertNotDispatched('setTestingReady');
 });
 
 it('should not trigger is ready event more than once', function () {
@@ -45,21 +45,21 @@ it('should not trigger is ready event more than once', function () {
 
     Livewire::test(Tables::class)
         ->call('triggerViewIsReady')
-        ->assertEmitted('setTransactionsReady')
+        ->assertDispatched('setTransactionsReady')
         ->call('triggerViewIsReady')
-        ->assertNotEmitted('setTransactionsReady')
+        ->assertNotDispatched('setTransactionsReady')
         ->call('triggerViewIsReady')
-        ->assertNotEmitted('setTransactionsReady')
+        ->assertNotDispatched('setTransactionsReady')
         ->set('view', 'blocks')
-        ->assertEmitted('setBlocksReady')
+        ->assertDispatched('setBlocksReady')
         ->set('view', 'transactions')
-        ->assertNotEmitted('setTransactionsReady');
+        ->assertNotDispatched('setTransactionsReady');
 });
 
 it('should not trigger is ready if same view is loaded', function () {
     Livewire::test(Tables::class)
         ->set('view', 'blocks')
-        ->assertEmitted('setBlocksReady')
+        ->assertDispatched('setBlocksReady')
         ->set('view', 'blocks')
-        ->assertNotEmitted('setBlocksReady');
+        ->assertNotDispatched('setBlocksReady');
 });

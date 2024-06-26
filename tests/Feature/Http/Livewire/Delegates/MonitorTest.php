@@ -176,7 +176,7 @@ it('should set it ready on event', function () {
 
     Livewire::test(Monitor::class)
         ->assertSet('isReady', false)
-        ->emit('monitorIsReady')
+        ->dispatch('monitorIsReady')
         ->assertSet('isReady', true);
 });
 

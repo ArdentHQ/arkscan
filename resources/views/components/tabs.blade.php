@@ -15,8 +15,6 @@
         class="hidden mb-3 md:inline-flex"
         :default-selected="$default"
         on-selected="function (value) {
-            this.$wire.set('view', value);
-
             this.tab = value;
         }"
     >

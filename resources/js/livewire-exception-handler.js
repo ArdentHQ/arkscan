@@ -4,12 +4,18 @@ class LivewireExceptionHandler {
     failures = {};
 
     constructor() {
-        Livewire.hook("message.failed", this.handleFailure.bind(this));
+        Livewire.hook("commit", ({ component, fail, succeed }) => {
+            succeed(() => {
+                this.handleSuccess(component);
+            });
 
-        Livewire.hook("message.processed", this.handleSuccess.bind(this));
+            fail(() => {
+                this.handleFailure(component);
+            });
+        });
     }
 
-    handleFailure(message, component) {
+    handleFailure(component) {
         if (typeof this.failures[component.id] === "undefined") {
             this.failures[component.id] = 0;
         }
@@ -21,7 +27,7 @@ class LivewireExceptionHandler {
         }
     }
 
-    handleSuccess(message, component) {
+    handleSuccess(component) {
         if (typeof this.failures[component.id] === "undefined") {
             return;
         }

@@ -3,7 +3,7 @@
         <div
             x-ref="modal"
             x-data="Modal.livewire({
-                query: @entangle('query'),
+                query: @entangle('query').live,
                 searching: false,
                 initSearch() {
                     this.$nextTick(() => {

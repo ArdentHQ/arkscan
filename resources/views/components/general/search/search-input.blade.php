@@ -13,7 +13,7 @@
             x-ref="input"
             type="text"
             class="block py-2 w-full h-full text-theme-secondary-900 overflow-ellipsis dim:text-theme-dark-50 dark:bg-theme-dark-900 dark:text-theme-dark-200"
-            wire:model.debounce.500ms="query"
+            wire:model.live.debounce.500ms="query"
             wire:keydown.enter="goToFirstResult"
             placeholder="@lang('general.navbar.search_placeholder')"
         />

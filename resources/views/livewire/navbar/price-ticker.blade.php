@@ -12,7 +12,7 @@
     class="w-full md:w-auto"
     :class="{ 'opacity-50': busy }"
     x-data="{ busy: false }"
-    x-init="livewire.on('currencyChanged', () => busy = true);"
+    x-init="Livewire.on('currencyChanged', () => busy = true);"
     @has-loaded-price-data="busy = false"
 >
     <div @class([

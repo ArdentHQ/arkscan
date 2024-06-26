@@ -1,5 +1,5 @@
 <div
-    x-data="{ tab: @entangle('view') }"
+    x-data="{ tab: @entangle('view').live }"
     wire:init="triggerViewIsReady"
 >
     <x-tabs
