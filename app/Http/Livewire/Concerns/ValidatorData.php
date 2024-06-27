@@ -121,7 +121,8 @@ trait ValidatorData
                 lastBlock: (new WalletCache())->getLastBlock($validator['publicKey']),
                 status: $validator['status'],
                 roundBlockCount: $roundBlockCount,
-                roundNumber: $currentRound->round
+                roundNumber: $currentRound->round,
+                secondsUntilForge: $validator['time'],
             );
         }
 
