@@ -88,7 +88,7 @@ final class Monitor extends Component
                     return count($blocks);
                 });
 
-            $additional = 0;
+            $additional          = 0;
             $lastSlotForgedIndex = null;
             /** @var int $index */
             /** @var Slot $slot */

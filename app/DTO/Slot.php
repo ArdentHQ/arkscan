@@ -150,8 +150,7 @@ final class Slot
         ?Collection $roundBlockCount = null,
         ?int $roundNumber = null,
         ?int $secondsUntilForge = null,
-    ): self
-    {
+    ): self {
         return new self(
             publicKey: $publicKey ?? $this->publicKey,
             order: $order ?? $this->order,
