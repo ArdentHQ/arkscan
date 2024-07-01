@@ -208,7 +208,7 @@ final class Monitor extends Component
             }
 
             $status = 'pending';
-            if (! $hasHitLastForger && $forgingAt < Carbon::now()) {
+            if (! $hasHitLastForger) {
                 $status = 'done';
             } elseif ($previousStatus === 'done') {
                 $status = 'next';
