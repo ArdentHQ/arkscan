@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Services\Monitor;
 
 use App\Facades\Network;
-use App\Models\Block;
-use Carbon\Carbon;
 
 final class ForgingInfoCalculator
 {
