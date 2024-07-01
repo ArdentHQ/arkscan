@@ -250,15 +250,21 @@ function createFullRound(&$round, &$height, $validatorWallets, $context, $didFor
 
     $blockCount = 0;
     while ($blockCount < Network::validatorCount()) {
+        $justMissedCount = 0;
         foreach ($validators as $validator) {
             $validatorIndex = $validatorWallets->search(fn ($wallet) => $wallet->public_key === $validator['publicKey']);
-            if ($didForge && isset($didForge[$validatorIndex]) && ! $didForge[$validatorIndex]) {
+            if ($didForge && isset($didForge[$validatorIndex]) && $didForge[$validatorIndex] === false) {
                 $context->travel(Network::blockTime())->seconds();
+                $context->travel($justMissedCount * 2)->seconds();
+
+                $justMissedCount++;
 
                 continue;
             }
 
             createBlock($height + $blockCount, $validator['publicKey'], $context);
+
+            $justMissedCount = 0;
 
             $blockCount++;
             if ($blockCount === Network::validatorCount()) {
@@ -317,6 +323,7 @@ function createPartialRound(
     $slotCount  = 0;
     $blockCount = 0;
     while ($blockCount < Network::validatorCount()) {
+        $justMissedCount = 0;
         foreach ($validators as $validator) {
             if ($blocks !== null && $blockCount === $blocks) {
                 break 2;
@@ -328,12 +335,17 @@ function createPartialRound(
 
             if (count($missedPublicKeys) > 0 && in_array($validator['publicKey'], $missedPublicKeys, true)) {
                 $context->travel(Network::blockTime())->seconds();
+                $context->travel($justMissedCount * 2)->seconds();
                 $slotCount++;
+
+                $justMissedCount++;
 
                 continue;
             }
 
             createBlock($height + $blockCount, $validator['publicKey'], $context);
+
+            $justMissedCount = 0;
 
             $blockCount++;
             $slotCount++;

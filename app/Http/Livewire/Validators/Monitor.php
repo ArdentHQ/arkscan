@@ -27,6 +27,8 @@ final class Monitor extends Component
     use DeferLoading;
     use ValidatorData;
 
+    const MISSED_INCREMENT_SECONDS = 2;
+
     /** @var mixed */
     protected $listeners = [
         'monitorIsReady',
@@ -70,12 +72,18 @@ final class Monitor extends Component
             return [];
         }
 
+        /** @var Block $lastBlock */
+        $lastBlock = Block::query()
+            ->orderBy('height', 'desc')
+            ->first();
+
         if ($previousSlot->status() !== 'done') {
             return $this->getOverflowSlots(
                 $missedCount,
                 $previousStatus,
                 $previousSlot,
-                $previousSlot->forgingAt()->getTimestamp(),
+                $lastBlock,
+                0,
                 Network::blockTime(),
             );
         }
@@ -90,7 +98,7 @@ final class Monitor extends Component
             ->orderBy('height', 'desc')
             ->get();
 
-        $roundBlockCount = $overflowBlocks->groupBy('generator_public_key')
+        $overflowBlockCount = $overflowBlocks->groupBy('generator_public_key')
             ->map(function ($blocks) {
                 return count($blocks);
             });
@@ -103,22 +111,26 @@ final class Monitor extends Component
          * @var Slot $slot
         */
         foreach ($this->validators as $index => $slot) {
-            if ($slot->lastBlock()['id'] === $lastRoundBlock['id']) {
-                $lastSlotForgedIndex = $index;
+            if ($slot->lastBlock()['id'] !== $lastRoundBlock['id']) {
+                continue;
             }
+
+            $lastSlotForgedIndex = $index;
         }
 
         if ($lastSlotForgedIndex !== null) {
             $lastTimestamp = $lastRoundBlock['timestamp'] + ((Network::validatorCount() - $lastSlotForgedIndex) * Network::blockTime());
+            // $lastTimestamp = $lastBlock->timestamp; // + ((Network::validatorCount() - $lastSlotForgedIndex) * Network::blockTime());
         }
 
         $overflowSlots = $this->getOverflowSlots(
             $missedCount,
             $previousStatus,
             $previousSlot,
+            $lastBlock,
             $lastTimestamp,
             0,
-            $roundBlockCount,
+            $overflowBlockCount,
         );
 
         $additional = 0;
@@ -130,6 +142,8 @@ final class Monitor extends Component
             $additional++;
         }
 
+        // $lastTimestamp += $additional * Network::blockTime();
+
         if ($additional === 0) {
             return $overflowSlots;
         }
@@ -138,9 +152,10 @@ final class Monitor extends Component
             $missedCount + $additional,
             $previousStatus,
             $previousSlot,
+            $lastBlock,
             $lastTimestamp,
             0,
-            $roundBlockCount,
+            $overflowBlockCount,
         );
     }
 
@@ -151,46 +166,68 @@ final class Monitor extends Component
         int $missedCount,
         string $previousStatus,
         Slot $previousSlot,
+        Block $lastBlock,
         int $lastTimestamp,
         int $secondsUntilOverflow = 0,
-        ?Collection $roundBlockCount = null,
+        ?Collection $overflowBlockCount = null,
     ): array
     {
-        if ($roundBlockCount === null) {
-            $roundBlockCount = new Collection();
+        if ($overflowBlockCount === null) {
+            $overflowBlockCount = new Collection();
         }
 
-        return collect($this->validators)
-            ->take($missedCount)
-            ->map(function (Slot $validator, $index) use (&$previousStatus, &$previousSlot, $roundBlockCount, $lastTimestamp, $secondsUntilOverflow) {
+        $justMissedCount = 0;
+
+        $lastForger = $overflowBlockCount->keys()->last();
+        $hasHitLastForger = false;
+
+        $overflowSlots = [];
+        foreach (collect($this->validators)->take($missedCount) as $index => $validator) {
+            // if ($overflowBlockCount->isEmpty()) {
                 $secondsUntilForge = $secondsUntilOverflow + ($index * Network::blockTime());
-                // $secondsUntilForge = $previousSlot->secondsUntilForge() + Network::blockTime(); //$secondsUntilOverflow + ($index * Network::blockTime());
-                // if ($previousSlot->justMissed()) {
-                //     $secondsUntilForge += Network::blockTime();
-                // }
 
                 $forgingAt = Timestamp::fromUnix($lastTimestamp)->addSeconds($secondsUntilForge);
+            // } else {
+            //     $secondsUntilForge = Network::blockTime() + ($justMissedCount * Network::blockTime());
+            //     //$secondsUntilForge = $previousSlot->secondsUntilForge() + ($overflowBlockCount->count() * Network::blockTime());
+            //     $secondsUntilForge += $justMissedCount * self::MISSED_INCREMENT_SECONDS;
 
-                $status = 'pending';
-                if ($forgingAt < Carbon::now()) {
-                    $status = 'done';
-                } elseif ($previousStatus === 'done') {
-                    $status = 'next';
-                }
+            //     $forgingAt = Timestamp::fromUnix($lastBlock->timestamp)->addSeconds($secondsUntilForge);
+            // }
 
-                $slot = $validator->clone(
-                    secondsUntilForge: $secondsUntilForge,
-                    forgingAt: $forgingAt,
-                    status: $status,
-                    roundBlockCount: $roundBlockCount,
-                );
+            $status = 'pending';
+            if (! $hasHitLastForger && $forgingAt < Carbon::now()) {
+                $status = 'done';
+            } elseif ($previousStatus === 'done') {
+                $status = 'next';
+            }
 
-                $previousStatus = $status;
-                $previousSlot   = $slot;
+            $slot = $validator->clone(
+                secondsUntilForge: $secondsUntilForge,
+                forgingAt: $forgingAt,
+                status: $status,
+                roundBlockCount: $overflowBlockCount,
+            );
 
-                return $slot;
-            })
-            ->toArray();
+            if ($slot->justMissed()) {
+                $justMissedCount++;
+            } else {
+                $justMissedCount = 0;
+            }
+
+            if ($validator->publicKey() === $lastBlock->generator_public_key) {
+                $hasHitLastForger = true;
+            }
+
+            // dump($hasHitLastForger);
+
+            $previousStatus = $status;
+
+            $overflowSlots[] = $slot;
+
+        }
+
+        return $overflowSlots;
     }
 
     public function pollValidators(): void

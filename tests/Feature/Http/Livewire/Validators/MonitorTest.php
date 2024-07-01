@@ -300,7 +300,7 @@ it('should show not overflow validators if no missed blocks', function () {
 
     $this->freezeTime();
 
-    [0 => $validators] = createRealisticRound([
+    createRealisticRound([
         array_fill(0, 53, true),
     ], $this);
 
@@ -322,20 +322,19 @@ it('should show overflow validators', function () {
 
     $this->freezeTime();
 
-    // TODO - why do so many blocks get added when 5 miss??
     createRealisticRound([
         [
-            ...array_fill(0, 4, true),
+            ...array_fill(0, 8, true),
             false,
             false,
             false,
-            // false,
             false,
-            ...array_fill(0, 44, true),
+            false,
+            ...array_fill(0, 40, true),
         ],
     ], $this);
 
-    // dd(now());
+    expect(Carbon::now()->format('Y-m-d H:i:s'))->toBe('2024-02-01 14:01:00');
 
     $component = Livewire::test(Monitor::class)
         ->call('setIsReady')
@@ -345,11 +344,11 @@ it('should show overflow validators', function () {
 
     $overflowValidators = $instance->getOverflowValidatorsProperty();
 
-    expect($overflowValidators)->toHaveCount(4);
+    expect($overflowValidators)->toHaveCount(5);
     expect(collect($overflowValidators)->map(fn ($validator) => $validator->status())->toArray())->toBe([
         'done',
         'done',
-        // 'done',
+        'done',
         'done',
         'done',
     ]);
@@ -364,7 +363,7 @@ it('should show overflow validators for partial round', function () {
         array_fill(0, 53, true),
     ], $this);
 
-    createPartialRound($round, $height, 5, $this, [
+    createPartialRound($round, $height, 52, $this, [
         $validators->get(4)->public_key,
         $validators->get(5)->public_key,
         $validators->get(6)->public_key,
@@ -388,11 +387,11 @@ it('should show overflow validators for partial round', function () {
 
     expect($overflowValidators)->toHaveCount(5);
     expect(collect($overflowValidators)->map(fn ($validator) => $validator->status())->toArray())->toBe([
-        'pending',
-        'pending',
-        'pending',
-        'pending',
-        'pending',
+        'done',
+        'done',
+        'done',
+        'done',
+        'next',
     ]);
 });
 
@@ -494,3 +493,26 @@ it('should handle when an overflow validator misses a block', function () {
         'pending',
     ]);
 });
+
+it('should extend forge time when missed before overflow (testing Helper)', function (int $count, string $expected) {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            ...array_fill(0, $count, false),
+            ...array_fill(0, 49 - $count, true),
+        ],
+    ], $this);
+
+    expect(Carbon::now()->format('Y-m-d H:i:s'))->toBe($expected);
+})->with([
+    1 => [1, '2024-02-01 14:00:08'],
+    2 => [2, '2024-02-01 14:00:18'],
+    3 => [3, '2024-02-01 14:00:30'],
+    4 => [4, '2024-02-01 14:00:44'],
+    5 => [5, '2024-02-01 14:02:00'], // doubles up because we hit the batch of missing validators on the second passthrough
+    6 => [6, '2024-02-01 14:02:36'],
+]);

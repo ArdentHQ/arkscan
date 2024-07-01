@@ -44,6 +44,7 @@ final class ValidatorTracker
     {
         // Determine forging order based on the original offset
         $difference       = $forgingInfo['currentForger'] + $slotOffset;
+        // $difference       = $forgingInfo['currentForger'];// - $forgingInfo['slotOffset'];
         $normalizedOrder  = $difference >= 0 ? $difference : $validatorCount + $difference;
         $secondsUntilSlot = Network::blockTime() * 1000;
 
@@ -102,9 +103,12 @@ final class ValidatorTracker
             ->get()
             ->pluck('count', 'generator_public_key');
 
+        // dump($lastForger->generator_public_key);
+
         $offset = 0;
         foreach ($validators as $publicKey) {
             if ($publicKey === $lastForger->generator_public_key) {
+                // dd('bro');
                 break;
             }
 
@@ -116,6 +120,7 @@ final class ValidatorTracker
 
                 continue;
             }
+            // dump($publicKey);
 
             $offset++;
         }
@@ -123,6 +128,8 @@ final class ValidatorTracker
         if ($roundBlockCount->count() > 0) {
             $offset = Network::validatorCount() - $roundBlockCount->sum();
         }
+
+        // dd($validators, $roundBlockCount);
 
         return $offset + 1;
     }
