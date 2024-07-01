@@ -17,6 +17,7 @@
         <x-validators.time-to-forge
             :model="$model"
             class="text-sm font-semibold leading-4.25"
+            :wire:key="$model->publicKey().'-'.$model->forgingAt()->format('U')"
         />
     @endif
 </div>
