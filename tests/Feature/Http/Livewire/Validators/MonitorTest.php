@@ -317,7 +317,7 @@ it('should show not overflow validators if no missed blocks', function () {
     expect($overflowValidators)->toHaveCount(0);
 });
 
-it('should show overflow validators', function () {
+it('should show overflow validators with a full round', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
     $this->freezeTime();
