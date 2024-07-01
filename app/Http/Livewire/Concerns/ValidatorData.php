@@ -102,8 +102,6 @@ trait ValidatorData
                 return count($blocks);
             });
 
-        // dump($roundBlocks->last());
-
         for ($i = 0; $i < count($tracking); $i++) {
             $validator = array_values($tracking)[$i];
 
@@ -114,9 +112,6 @@ trait ValidatorData
 
             /** @var WalletViewModel $walletViewModel */
             $walletViewModel = ViewModelFactory::make($validatorWallet);
-
-            // dump(Timestamp::fromUnix($blockTimestamp)->addMilliseconds($validator['time']));
-            // dump($validator['time']);
 
             $validators[] = new Slot(
                 publicKey: $validator['publicKey'],

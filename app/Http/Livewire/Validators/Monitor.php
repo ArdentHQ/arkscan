@@ -59,7 +59,6 @@ final class Monitor extends Component
 
     public function getOverflowValidatorsProperty(): array
     {
-        // TODO: cater for missed blocks in overflow
         $missedCount = collect($this->validators)
             ->filter(fn ($validator) => $validator->justMissed())
             ->count();
@@ -81,7 +80,6 @@ final class Monitor extends Component
             return $this->getOverflowSlots(
                 $missedCount,
                 $previousStatus,
-                $previousSlot,
                 $lastBlock,
                 0,
                 Network::blockTime(),
@@ -120,13 +118,11 @@ final class Monitor extends Component
 
         if ($lastSlotForgedIndex !== null) {
             $lastTimestamp = $lastRoundBlock['timestamp'] + ((Network::validatorCount() - $lastSlotForgedIndex) * Network::blockTime());
-            // $lastTimestamp = $lastBlock->timestamp; // + ((Network::validatorCount() - $lastSlotForgedIndex) * Network::blockTime());
         }
 
         $overflowSlots = $this->getOverflowSlots(
             $missedCount,
             $previousStatus,
-            $previousSlot,
             $lastBlock,
             $lastTimestamp,
             0,
@@ -142,8 +138,6 @@ final class Monitor extends Component
             $additional++;
         }
 
-        // $lastTimestamp += $additional * Network::blockTime();
-
         if ($additional === 0) {
             return $overflowSlots;
         }
@@ -151,7 +145,6 @@ final class Monitor extends Component
         return $this->getOverflowSlots(
             $missedCount + $additional,
             $previousStatus,
-            $previousSlot,
             $lastBlock,
             $lastTimestamp,
             0,
@@ -187,7 +180,6 @@ final class Monitor extends Component
     private function getOverflowSlots(
         int $missedCount,
         string $previousStatus,
-        Slot $previousSlot,
         Block $lastBlock,
         int $lastTimestamp,
         int $secondsUntilOverflow = 0,
@@ -200,22 +192,20 @@ final class Monitor extends Component
 
         $justMissedCount = 0;
 
-        $lastForger = $overflowBlockCount->keys()->last();
         $hasHitLastForger = false;
 
         $overflowSlots = [];
         foreach (collect($this->validators)->take($missedCount) as $index => $validator) {
-            // if ($overflowBlockCount->isEmpty()) {
+            if ($overflowBlockCount->isEmpty()) {
                 $secondsUntilForge = $secondsUntilOverflow + ($index * Network::blockTime());
 
                 $forgingAt = Timestamp::fromUnix($lastTimestamp)->addSeconds($secondsUntilForge);
-            // } else {
-            //     $secondsUntilForge = Network::blockTime() + ($justMissedCount * Network::blockTime());
-            //     //$secondsUntilForge = $previousSlot->secondsUntilForge() + ($overflowBlockCount->count() * Network::blockTime());
-            //     $secondsUntilForge += $justMissedCount * self::MISSED_INCREMENT_SECONDS;
+            } else {
+                $secondsUntilForge = Network::blockTime() + ($justMissedCount * Network::blockTime());
+                $secondsUntilForge += $justMissedCount * self::MISSED_INCREMENT_SECONDS;
 
-            //     $forgingAt = Timestamp::fromUnix($lastBlock->timestamp)->addSeconds($secondsUntilForge);
-            // }
+                $forgingAt = Timestamp::fromUnix($lastBlock->timestamp)->addSeconds($secondsUntilForge);
+            }
 
             $status = 'pending';
             if (! $hasHitLastForger && $forgingAt < Carbon::now()) {
@@ -240,8 +230,6 @@ final class Monitor extends Component
             if ($validator->publicKey() === $lastBlock->generator_public_key) {
                 $hasHitLastForger = true;
             }
-
-            // dump($hasHitLastForger);
 
             $previousStatus = $status;
 
