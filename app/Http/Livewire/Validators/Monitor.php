@@ -109,7 +109,7 @@ final class Monitor extends Component
         /**
          * @var int $index
          * @var Slot $slot
-        */
+         */
         foreach ($this->validators as $index => $slot) {
             if ($slot->lastBlock()['id'] !== $lastRoundBlock['id']) {
                 continue;
@@ -157,6 +157,28 @@ final class Monitor extends Component
             0,
             $overflowBlockCount,
         );
+    }
+
+    public function pollValidators(): void
+    {
+        if (! $this->isReady) {
+            return;
+        }
+
+        try {
+            $this->validators = $this->fetchValidators();
+
+            Cache::forget('poll-validators-exception-occurrence');
+        } catch (Throwable $e) {
+            $occurrences = Cache::increment('poll-validators-exception-occurrence');
+
+            if ($occurrences >= 3) {
+                throw $e;
+            }
+
+            // @README: If any errors occur we want to keep polling until we have a list of validators
+            $this->pollValidators();
+        }
     }
 
     /**
@@ -228,27 +250,5 @@ final class Monitor extends Component
         }
 
         return $overflowSlots;
-    }
-
-    public function pollValidators(): void
-    {
-        if (! $this->isReady) {
-            return;
-        }
-
-        try {
-            $this->validators = $this->fetchValidators();
-
-            Cache::forget('poll-validators-exception-occurrence');
-        } catch (Throwable $e) {
-            $occurrences = Cache::increment('poll-validators-exception-occurrence');
-
-            if ($occurrences >= 3) {
-                throw $e;
-            }
-
-            // @README: If any errors occur we want to keep polling until we have a list of validators
-            $this->pollValidators();
-        }
     }
 }
