@@ -104,17 +104,21 @@ final class ValidatorTracker
 
         $offset = 0;
         foreach ($validators as $publicKey) {
-            if ($publicKey === $lastForger->generator_public_key) {
-                // dd('bro');
-                break;
-            }
-
+            $hadBlock = false;
             if ($roundBlockCount->has($publicKey)) {
                 $count = $roundBlockCount->get($publicKey) - 1;
                 if ($count <= 0) {
                     $roundBlockCount = $roundBlockCount->except($publicKey);
                 }
 
+                $hadBlock = true;
+            }
+
+            if ($publicKey === $lastForger->generator_public_key) {
+                break;
+            }
+
+            if ($hadBlock) {
                 continue;
             }
 
