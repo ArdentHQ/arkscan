@@ -27,7 +27,7 @@ final class Monitor extends Component
     use DeferLoading;
     use ValidatorData;
 
-    const MISSED_INCREMENT_SECONDS = 2;
+    public const MISSED_INCREMENT_SECONDS = 2;
 
     /** @var mixed */
     protected $listeners = [
@@ -192,23 +192,22 @@ final class Monitor extends Component
         int $lastTimestamp,
         int $secondsUntilOverflow = 0,
         ?Collection $overflowBlockCount = null,
-    ): array
-    {
+    ): array {
         if ($overflowBlockCount === null) {
             $overflowBlockCount = new Collection();
         }
 
         $justMissedCount = 0;
 
-        $lastForger = $overflowBlockCount->keys()->last();
+        $lastForger       = $overflowBlockCount->keys()->last();
         $hasHitLastForger = false;
 
         $overflowSlots = [];
         foreach (collect($this->validators)->take($missedCount) as $index => $validator) {
             // if ($overflowBlockCount->isEmpty()) {
-                $secondsUntilForge = $secondsUntilOverflow + ($index * Network::blockTime());
+            $secondsUntilForge = $secondsUntilOverflow + ($index * Network::blockTime());
 
-                $forgingAt = Timestamp::fromUnix($lastTimestamp)->addSeconds($secondsUntilForge);
+            $forgingAt = Timestamp::fromUnix($lastTimestamp)->addSeconds($secondsUntilForge);
             // } else {
             //     $secondsUntilForge = Network::blockTime() + ($justMissedCount * Network::blockTime());
             //     //$secondsUntilForge = $previousSlot->secondsUntilForge() + ($overflowBlockCount->count() * Network::blockTime());
@@ -246,7 +245,6 @@ final class Monitor extends Component
             $previousStatus = $status;
 
             $overflowSlots[] = $slot;
-
         }
 
         return $overflowSlots;
