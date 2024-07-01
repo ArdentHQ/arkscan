@@ -15,24 +15,9 @@ final class ForgingInfoCalculator
         [$currentForger, $nextForger] = static::findIndex($roundHeight, $currentHeight);
 
         return [
-            'currentForger'  => $currentForger,
-            'nextForger'     => $nextForger,
-            'slotOffset'     => static::slotOffset($roundHeight, $currentHeight),
+            'currentForger' => $currentForger,
+            'nextForger'    => $nextForger,
         ];
-    }
-
-    private static function slotOffset(int $roundHeight, int $currentHeight): int
-    {
-        $roundBlockTimestamp = Block::where('height', $roundHeight)->first()?->timestamp;
-        if ($roundBlockTimestamp === null) {
-            return 0;
-        }
-
-        $currentTimestamp = Carbon::now()->getTimestamp();
-        $expectedSlot     = (int) floor(($currentTimestamp - $roundBlockTimestamp) / Network::blockTime());
-        $actualSlot       = $currentHeight - $roundHeight;
-
-        return $actualSlot - $expectedSlot + 1;
     }
 
     private static function findIndex(int $roundHeight, int $currentHeight): array

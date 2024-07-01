@@ -7,6 +7,7 @@ namespace App\Services\Monitor;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
+use Illuminate\Support\Facades\DB;
 
 final class ValidatorTracker
 {
@@ -30,17 +31,19 @@ final class ValidatorTracker
         // Note: static order will be found by shifting the index based on the forging data from above
         $validatorCount    = Network::validatorCount();
 
+        $slotOffset = static::slotOffset($startHeight, $validators);
+
         return collect($validators)
-            ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $validatorCount) {
-                return static::determineSlot($publicKey, $index, $forgingIndex, $forgingInfo, $validatorCount);
+            ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $validatorCount, $slotOffset) {
+                return static::determineSlot($publicKey, $index, $forgingIndex, $forgingInfo, $validatorCount, $slotOffset);
             })
             ->toArray();
     }
 
-    private static function determineSlot($publicKey, $index, &$forgingIndex, $forgingInfo, $validatorCount): array
+    private static function determineSlot($publicKey, $index, &$forgingIndex, $forgingInfo, $validatorCount, $slotOffset): array
     {
         // Determine forging order based on the original offset
-        $difference       = $forgingInfo['currentForger'] - $forgingInfo['slotOffset'];
+        $difference       = $forgingInfo['currentForger'] + $slotOffset;
         $normalizedOrder  = $difference >= 0 ? $difference : $validatorCount + $difference;
         $secondsUntilSlot = Network::blockTime() * 1000;
 
@@ -66,12 +69,61 @@ final class ValidatorTracker
             ];
         }
 
-        // TODO: we need to handle missed blocks by moving "done" states back to pending when needed
         return [
             'publicKey' => $publicKey,
             'status'    => 'done',
             'time'      => 0,
             'order'     => $index,
         ];
+    }
+
+    private static function slotOffset(int $roundHeight, array $validators): int
+    {
+        $lastForger = DB::connection('explorer')
+            ->table('blocks')
+            ->select('generator_public_key')
+            ->where('height', '>=', $roundHeight)
+            ->orderBy('height', 'desc')
+            ->limit(1)
+            ->first();
+
+        if ($lastForger === null) {
+            return 0;
+        }
+
+        $roundBlockCount = DB::connection('explorer')
+            ->table('blocks')
+            ->select([
+                DB::raw('COUNT(*) as count'),
+                'generator_public_key',
+            ])
+            ->where('height', '>=', $roundHeight)
+            ->groupBy('generator_public_key')
+            ->get()
+            ->pluck('count', 'generator_public_key');
+
+        $offset = 0;
+        foreach ($validators as $publicKey) {
+            if ($publicKey === $lastForger->generator_public_key) {
+                break;
+            }
+
+            if ($roundBlockCount->has($publicKey)) {
+                $count = $roundBlockCount->get($publicKey) - 1;
+                if ($count <= 0) {
+                    $roundBlockCount = $roundBlockCount->except($publicKey);
+                }
+
+                continue;
+            }
+
+            $offset++;
+        }
+
+        if ($roundBlockCount->count() > 0) {
+            $offset = Network::validatorCount() - $roundBlockCount->sum();
+        }
+
+        return $offset + 1;
     }
 }
