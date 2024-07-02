@@ -215,7 +215,7 @@ it('should show warning icon for validators missing blocks - minutes', function 
         ->call('pollValidators')
         ->assertSeeInOrder([
             $validator->username(),
-            'Validator last forged 207 blocks ago (~ 22 min)',
+            'Validator last forged 207 blocks ago (~ 29 min)',
         ]);
 });
 
@@ -253,7 +253,7 @@ it('should show warning icon for validators missing blocks - hours', function ()
         ->call('pollValidators')
         ->assertSeeInOrder([
             $validator->username(),
-            'Validator last forged 207 blocks ago (~ 1h 29 min)',
+            'Validator last forged 207 blocks ago (~ 1h 28 min)',
         ]);
 });
 
