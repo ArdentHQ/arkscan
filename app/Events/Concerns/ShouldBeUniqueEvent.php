@@ -26,7 +26,7 @@ trait ShouldBeUniqueEvent
 
     abstract protected function uniqueTimeout(): int;
 
-    private function uniqueKey(): string
+    protected function uniqueKey(): string
     {
         return sprintf(
             '%s:%s',
