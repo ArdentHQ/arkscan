@@ -295,6 +295,24 @@ it('should show warning icon for validators missing blocks - days', function () 
         ]);
 });
 
+it('should cache last blocks', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    createRealisticRound([
+        array_fill(0, 53, true),
+    ], $this);
+
+    expect(Cache::has('monitor:last-blocks'))->toBeFalse();
+
+    Livewire::test(Monitor::class)
+        ->call('setIsReady')
+        ->call('pollValidators');
+
+    expect(Cache::has('monitor:last-blocks'))->toBeTrue();
+});
+
 it('should show not overflow validators if no missed blocks', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
