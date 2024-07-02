@@ -15,7 +15,7 @@ abstract class StatisticsUpdate extends WebsocketEvent
         return config('arkscan.webhooks.statistics-update.ttl', 8);
     }
 
-    protected function uniqueKey(): string
+    final protected function uniqueKey(): string
     {
         return sprintf(
             '%s:%s:%s',

@@ -26,6 +26,7 @@ trait ShouldBeUniqueEvent
 
     abstract protected function uniqueTimeout(): int;
 
+    // @phpstan-ignore-next-line
     protected function uniqueKey(): string
     {
         return sprintf(
