@@ -24,21 +24,37 @@ trait ValidatorData
     {
         $ttl = (int) ceil(Network::blockTime() / 2);
 
-        Cache::remember('monitor:last-blocks', $ttl, function () use ($validators): void {
+        Cache::remember('monitor:last-blocks', $ttl, function () use ($validators): bool {
             $blocks = Block::query()
                 ->orderBy('height', 'desc')
                 ->limit(Network::validatorCount() * 2)
                 ->get();
+
+            $lastBlockIds = DB::connection('explorer')
+                ->table('wallets')
+                ->whereIn('public_key', $validators)
+                ->select([
+                    'public_key',
+                    'last_block_id' => function ($query) {
+                        $query->select('id')
+                            ->from('blocks')
+                            ->whereColumn('generator_public_key', 'public_key')
+                            ->orderBy('height', 'desc')
+                            ->limit(1);
+                    },
+                ]);
+
+            /** @var Collection $lastBlocks */
+            $lastBlocks = Block::whereIn('id', $lastBlockIds->pluck('last_block_id'))
+                ->get()
+                ->groupBy('generator_public_key');
 
             foreach ($validators as $validator) {
                 $block = $blocks->firstWhere('generator_public_key', $validator);
 
                 // The validator hasn't forged in some rounds.
                 if (is_null($block)) {
-                    $block = Block::query()
-                        ->where('generator_public_key', $validator)
-                        ->orderBy('height', 'desc')
-                        ->limit(1)
+                    $block = $lastBlocks->get($validator)
                         ->first();
                 }
 
@@ -54,6 +70,8 @@ trait ValidatorData
                     'generator_public_key' => $block->generator_public_key,
                 ]);
             }
+
+            return true;
         });
     }
 
