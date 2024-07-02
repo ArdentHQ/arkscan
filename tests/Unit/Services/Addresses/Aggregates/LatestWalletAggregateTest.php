@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Addresses\Aggregates\LatestWalletAggregate;
@@ -13,7 +15,7 @@ it('should refresh the latest wallet', function () {
     expect($cache->getNewestAddress())->toBeNull();
 
     $genesisWallet = Wallet::factory()->create();
-    $newestWallet = Wallet::factory()->create();
+    $newestWallet  = Wallet::factory()->create();
 
     $genesisTimestamp = Timestamp::fromUnix(Carbon::parse('2021-01-01 13:24:44')->unix())->unix();
 
