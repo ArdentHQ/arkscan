@@ -54,7 +54,7 @@ trait ValidatorData
                 $block = $blocks->firstWhere('generator_public_key', $validator);
 
                 // The validator hasn't forged in some rounds.
-                if (is_null($block)) {
+                if (is_null($block) && $lastBlocks->has($validator)) {
                     $block = $lastBlocks->get($validator)
                         ->first();
                 }
