@@ -17,7 +17,7 @@ it('should refresh the latest wallet - A > B', function () {
 
     expect($cache->getNewestAddress())->toBeNull();
 
-    $walletA = Wallet::factory()->create(['address' => 'wallet-a']);
+    $walletA  = Wallet::factory()->create(['address' => 'wallet-a']);
     $walletB  = Wallet::factory()->create(['address' => 'wallet-b']);
 
     Transaction::factory()->transfer()->create([
@@ -53,7 +53,7 @@ it('should refresh the latest wallet - A > B > C', function () {
 
     expect($cache->getNewestAddress())->toBeNull();
 
-    $walletA = Wallet::factory()->create(['address' => 'wallet-a']);
+    $walletA  = Wallet::factory()->create(['address' => 'wallet-a']);
     $walletB  = Wallet::factory()->create(['address' => 'wallet-b']);
     $walletC  = Wallet::factory()->create(['address' => 'wallet-c']);
 
@@ -108,7 +108,7 @@ it('should refresh the latest wallet - A > B > existing C', function () {
 
     expect($cache->getNewestAddress())->toBeNull();
 
-    $walletA = Wallet::factory()->create(['address' => 'wallet-a']);
+    $walletA  = Wallet::factory()->create(['address' => 'wallet-a']);
     $walletB  = Wallet::factory()->create(['address' => 'wallet-b']);
     $walletC  = Wallet::factory()->create(['address' => 'wallet-c']);
 
@@ -171,7 +171,7 @@ it('should refresh the latest wallet - A > multipayment B', function () {
 
     expect($cache->getNewestAddress())->toBeNull();
 
-    $walletA = Wallet::factory()->create(['address' => 'wallet-a']);
+    $walletA  = Wallet::factory()->create(['address' => 'wallet-a']);
     $walletB  = Wallet::factory()->create(['address' => 'wallet-b']);
 
     Transaction::factory()->transfer()->create([
