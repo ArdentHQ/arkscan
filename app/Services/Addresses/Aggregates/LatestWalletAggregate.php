@@ -21,7 +21,7 @@ final class LatestWalletAggregate
         $newestQuery = Wallet::query()
             ->select('wallets.address', DB::raw('MIN(transactions.timestamp) as timestamp'))
             ->leftJoin('transactions', function ($join) {
-                $join->orOn('wallets.address', '=', 'transactions.recipient_id');
+                $join->on('wallets.address', '=', 'transactions.recipient_id');
             })
             ->whereNotNull('transactions.sender_public_key')
             ->whereNotNull('transactions.recipient_id')
