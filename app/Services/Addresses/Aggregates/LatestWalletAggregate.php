@@ -48,19 +48,21 @@ final class LatestWalletAggregate
             $newestMultipaymentQuery->whereRaw(sprintf('timestamp + %d > ?', Network::epoch()->timestamp), [$lastRun->timestamp]);
         }
 
-        $newest             = null;
-        $newestStandard     = $newestQuery->first();
+        $newest = null;
+
+        /** @var ?Wallet $newestStandard */
+        $newestStandard = $newestQuery->first();
+
+        /** @var ?Wallet $newestMultipayment */
         $newestMultipayment = $newestMultipaymentQuery->first();
-        // dd($newestStandard, $newestMultipayment);
-        if ($newestStandard === null && $newestMultipayment === null) {
-            return null;
-        } elseif ($newestStandard !== null && $newestMultipayment === null) {
+
+        if ($newestStandard !== null) {
             $newest = $newestStandard;
-        } elseif ($newestStandard === null && $newestMultipayment !== null) {
-            $newest = $newestMultipayment;
-        } elseif ($newestStandard->timestamp > $newestMultipayment->timestamp) {
-            $newest = $newestStandard;
-        } else {
+
+            if ($newestMultipayment !== null && $newestMultipayment->timestamp > $newestStandard->timestamp) {
+                $newest = $newestMultipayment;
+            }
+        } else if ($newestMultipayment !== null) {
             $newest = $newestMultipayment;
         }
 
