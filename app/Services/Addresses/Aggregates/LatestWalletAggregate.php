@@ -83,7 +83,7 @@ final class LatestWalletAggregate
             if ($newestMultipayment !== null && $newestMultipayment->timestamp > $newestStandard->timestamp) {
                 $newest = $newestMultipayment;
             }
-        } else if ($newestMultipayment !== null) {
+        } elseif ($newestMultipayment !== null) {
             $newest = $newestMultipayment;
         }
 
