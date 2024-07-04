@@ -182,7 +182,7 @@ it('should refresh the latest wallet - A > multipayment B', function () {
 
     $genesisTimestamp = Timestamp::fromUnix(Carbon::parse('2021-01-01 13:24:44')->unix())->unix();
 
-    Transaction::factory()->transfer()->create([
+    Transaction::factory()->multiPayment()->create([
         'sender_public_key' => $walletA->public_key,
         'recipient_id'      => $walletA->address,
         'timestamp'         => $genesisTimestamp,
@@ -206,4 +206,53 @@ it('should refresh the latest wallet - A > multipayment B', function () {
         'timestamp' => $genesisTimestamp,
         'value'     => '01 Jan 2021',
     ]);
-})->skip('This test is not yet implemented.');
+});
+
+it('should refresh the latest wallet - A > multipayment B or multipayment C', function () {
+    $this->travelTo('2021-01-01 11:24:44');
+
+    $cache     = new StatisticsCache();
+    $aggregate = new LatestWalletAggregate();
+
+    expect($cache->getNewestAddress())->toBeNull();
+
+    $walletA  = Wallet::factory()->create(['address' => 'wallet-a']);
+    $walletB  = Wallet::factory()->create(['address' => 'wallet-b']);
+    $walletC  = Wallet::factory()->create(['address' => 'wallet-c']);
+
+    Transaction::factory()->transfer()->create([
+        'sender_public_key' => $walletA->public_key,
+        'recipient_id'      => $walletA->address,
+        'timestamp'         => 0,
+    ]);
+
+    $genesisTimestamp = Timestamp::fromUnix(Carbon::parse('2021-01-01 13:24:44')->unix())->unix();
+
+    Transaction::factory()->multiPayment()->create([
+        'sender_public_key' => $walletA->public_key,
+        'recipient_id'      => $walletA->address,
+        'timestamp'         => $genesisTimestamp,
+
+        'asset' => [
+            'payments' => [
+                [
+                    'recipientId' => $walletB->address,
+                    'amount'      => 1 * 1e8,
+                ],
+                [
+                    'recipientId' => $walletC->address,
+                    'amount'      => 1 * 1e8,
+                ],
+            ],
+        ],
+    ]);
+
+    $result = $aggregate->aggregate();
+    expect($result)->not->toBeNull();
+    expect(in_array($result->address, [$walletB->address, $walletC->address], true))->toBeTrue();
+
+    $newestAddress = $cache->getNewestAddress();
+    expect(in_array($newestAddress['address'], [$walletB->address, $walletC->address], true))->toBeTrue();
+    expect($newestAddress['timestamp'])->toBe($genesisTimestamp);
+    expect($newestAddress['value'])->toBe('01 Jan 2021');
+});
