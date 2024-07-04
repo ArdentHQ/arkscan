@@ -48,12 +48,12 @@ final class Insights extends Component
 
     /** @var mixed */
     protected $listeners = [
-        'echo:statistics-update,TransactionDetails' => 'updateTransactionDetails',
-        'echo:statistics-update,MarketData'         => 'updateMarketData',
-        'echo:statistics-update,DelegateDetails'    => 'updateDelegateDetails',
-        'echo:statistics-update,AddressHoldings'    => 'updateAddressHoldings',
-        'echo:statistics-update,UniqueAddresses'    => 'updateUniqueAddresses',
-        'echo:statistics-update,AnnualData'         => 'updateAnnualData',
+        'echo:statistics-update,Statistics\\TransactionDetails' => 'updateTransactionDetails',
+        'echo:statistics-update,Statistics\\MarketData'         => 'updateMarketData',
+        'echo:statistics-update,Statistics\\DelegateDetails'    => 'updateDelegateDetails',
+        'echo:statistics-update,Statistics\\AddressHoldings'    => 'updateAddressHoldings',
+        'echo:statistics-update,Statistics\\UniqueAddresses'    => 'updateUniqueAddresses',
+        'echo:statistics-update,Statistics\\AnnualData'         => 'updateAnnualData',
     ];
 
     public function mount(): void

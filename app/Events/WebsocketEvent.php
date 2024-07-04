@@ -31,7 +31,7 @@ abstract class WebsocketEvent implements ShouldBroadcast
         return $this->id;
     }
 
-    private function channelName(): string
+    final protected function channelName(): string
     {
         if ($this->id !== null) {
             return sprintf(
