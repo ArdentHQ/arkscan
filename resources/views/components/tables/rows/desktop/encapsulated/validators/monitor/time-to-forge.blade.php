@@ -1,6 +1,9 @@
 @props(['model'])
 
-<div class="font-semibold !leading-4.25 text-sm text-theme-secondary-900 dark:text-theme-dark-50">
+<div
+    :wire:key="$model->publicKey().'-'.$model->forgingAt()->format('U')"
+    class="font-semibold !leading-4.25 text-sm text-theme-secondary-900 dark:text-theme-dark-50"
+>
     @if ($model->hasForged())
         <div>
             @lang('tables.validator-monitor.completed')
@@ -17,7 +20,6 @@
         <x-validators.time-to-forge
             :model="$model"
             class="text-sm font-semibold leading-4.25"
-            :wire:key="$model->publicKey().'-'.$model->forgingAt()->format('U')"
         />
     @endif
 </div>
