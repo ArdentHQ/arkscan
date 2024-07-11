@@ -84,15 +84,15 @@ final class AppServiceProvider extends ServiceProvider
     {
         DataBag::register('metatags', [
             'delegates' => [
-                'title'       => 'Delegate Monitor | ARKScan | Cryptocurrency Block Explorer',
+                'title'       => 'Delegate Monitor | ARK Scan | Cryptocurrency Block Explorer',
                 'description' => 'Monitor Delegate activity for the ARK Public Network. See Delegate rankings and track Voting Power in the ARK Blockchain.',
             ],
             'wallets'   => [
-                'title'       => 'Wallet Addresses | ARKScan | Cryptocurrency Block Explorer',
-                'description' => 'See wallet addresses on the ARKScan. Track balances and see transaction activity for wallet addresses on the ARK Public Nework',
+                'title'       => 'Wallet Addresses | ARK Scan | Cryptocurrency Block Explorer',
+                'description' => 'See wallet addresses on the ARK Scan. Track balances and see transaction activity for wallet addresses on the ARK Public Nework',
             ],
             '*'         => [
-                'title'       => 'ARKScan | Cryptocurrency Block Explorer',
+                'title'       => 'ARK Scan | Cryptocurrency Block Explorer',
                 'description' => 'View cryptocurrency transactions and track cryptocurrency balances. A simple block explorer to monitor Blockchain activity on the ARK Public Network.',
             ],
         ]);
