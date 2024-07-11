@@ -2,7 +2,7 @@
     <img src="{{ Vite::image('logo.svg') }}" class="h-8" />
 
     <span class="hidden ml-4 md:flex md:items-center text-theme-secondary-900 dark:text-theme-dark-50">
-        <span class="text-lg">
+        <span class="inline-flex text-lg">
             <span class="font-bold">
                 @if(config('app.navbar_name'))
                     {{ config('app.navbar_name') }}
