@@ -1,4 +1,4 @@
-# ARKScan
+# ARK Scan
 
 <p align="center">
     <img src="./banner.png" />
