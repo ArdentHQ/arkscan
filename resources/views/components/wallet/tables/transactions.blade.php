@@ -6,4 +6,6 @@
     {{ $attributes->class('w-full') }}
 >
     <livewire:wallet-transaction-table :wallet="$wallet" />
+
+    <x-webhooks.reload-transactions :wallet="$wallet" />
 </div>

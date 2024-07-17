@@ -25,6 +25,7 @@ final class WalletBlockTable extends TabbedTableComponent
     protected $listeners = [
         'setBlocksReady'  => 'setIsReady',
         'currencyChanged' => '$refresh',
+        'reloadBlocks'    => '$refresh',
     ];
 
     public function mount(WalletViewModel $wallet): void

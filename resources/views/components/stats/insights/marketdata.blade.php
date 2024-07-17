@@ -31,6 +31,7 @@
                                 @if($item === 'daily')
                                     <x-loading.text
                                         wire:loading
+                                        wire:target="updateData"
                                         wrapper-class="flex"
                                         width="w-[100px]"
                                     />
@@ -38,6 +39,7 @@
                                     <span
                                         class="text-theme-secondary-900 dark:text-theme-dark-50"
                                         wire:loading.remove
+                                        wire:target="updateData"
                                     >
                                         {{ $data->prices->dailyLow() }}
                                         -
@@ -46,12 +48,14 @@
                                 @else
                                     <x-loading.text
                                         wire:loading
+                                        wire:target="updateData"
                                         wrapper-class="flex"
                                     />
 
                                     <span
                                         class="text-theme-secondary-900 dark:text-theme-dark-50"
                                         wire:loading.remove
+                                        wire:target="updateData"
                                     >
                                         {{ $data->prices->{$item.'Value'}() }}
                                     </span>
@@ -69,11 +73,15 @@
                                 <span class="flex text-theme-secondary-900 dark:text-theme-dark-50">
                                     <x-loading.text
                                         wire:loading
+                                        wire:target="updateData"
                                         wrapper-class="flex"
                                         width="w-[100px]"
                                     />
 
-                                    <span wire:loading.remove>
+                                    <span
+                                        wire:loading.remove
+                                        wire:target="updateData"
+                                    >
                                         {{ $data->prices->yearLow() }}
                                         -
                                         {{ $data->prices->yearHigh() }}
@@ -87,10 +95,14 @@
                                 <div class="flex text-theme-secondary-900 dark:text-theme-dark-50">
                                     <x-loading.text
                                         wire:loading
+                                        wire:target="updateData"
                                         wrapper-class="flex"
                                     />
 
-                                    <span wire:loading.remove>
+                                    <span
+                                        wire:loading.remove
+                                        wire:target="updateData"
+                                    >
                                         {{ $data->prices->{$item.'Date'}() }}
                                     </span>
                                 </div>
@@ -120,11 +132,15 @@
                             @if($item === 'daily' || $item === 'year')
                                 <x-loading.text
                                     wire:loading
+                                    wire:target="updateData"
                                     wrapper-class="flex"
                                     width="w-[120px]"
                                 />
 
-                                <span wire:loading.remove>
+                                <span
+                                    wire:loading.remove
+                                    wire:target="updateData"
+                                >
                                     {{ $data->prices->{$item.'Low'}() }}
                                     -
                                     {{ $data->prices->{$item.'High'}() }}
@@ -132,10 +148,14 @@
                             @else
                                 <x-loading.text
                                     wire:loading
+                                    wire:target="updateData"
                                     wrapper-class="flex"
                                 />
 
-                                <span wire:loading.remove>
+                                <span
+                                    wire:loading.remove
+                                    wire:target="updateData"
+                                >
                                     {{ $data->prices->{$item.'Value'}() }}
                                 </span>
                             @endif
@@ -150,11 +170,15 @@
                                 <div class="flex text-theme-secondary-900 dark:text-theme-dark-50">
                                     <x-loading.text
                                         wire:loading
+                                        wire:target="updateData"
                                         wrapper-class="flex"
                                         width="w-[100px]"
                                     />
 
-                                    <span wire:loading.remove>
+                                    <span
+                                        wire:loading.remove
+                                        wire:target="updateData"
+                                    >
                                         {{ $data->prices->{$item.'Date'}() }}
                                     </span>
                                 </div>
@@ -178,11 +202,15 @@
                             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                                 <x-loading.text
                                     wire:loading
+                                    wire:target="updateData"
                                     wrapper-class="flex"
                                     width="w-[100px]"
                                 />
 
-                                <span wire:loading.remove>
+                                <span
+                                    wire:loading.remove
+                                    wire:target="updateData"
+                                >
                                     {{ $data->volume->{Str::camel($item.'Value')}() }}
                                 </span>
                             </span>
@@ -197,10 +225,14 @@
                                 <div class="flex text-theme-secondary-900 dark:text-theme-dark-50">
                                     <x-loading.text
                                         wire:loading
+                                        wire:target="updateData"
                                         wrapper-class="flex"
                                     />
 
-                                    <span wire:loading.remove>
+                                    <span
+                                        wire:loading.remove
+                                        wire:target="updateData"
+                                    >
                                         {{ $data->volume->{$item.'Date'}() }}
                                     </span>
                                 </div>
@@ -227,11 +259,15 @@
                         <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
                             <x-loading.text
                                 wire:loading
+                                wire:target="updateData"
                                 wrapper-class="flex"
                                 width="w-[120px]"
                             />
 
-                            <span wire:loading.remove>
+                            <span
+                                wire:loading.remove
+                                wire:target="updateData"
+                            >
                                 {{ $data->volume->{Str::camel($item.'Value')}() }}
                             </span>
                         </div>
@@ -245,11 +281,15 @@
                                 <div class="flex text-theme-secondary-900 dark:text-theme-dark-50">
                                     <x-loading.text
                                         wire:loading
+                                        wire:target="updateData"
                                         wrapper-class="flex"
                                         width="w-[100px]"
                                     />
 
-                                    <span wire:loading.remove>
+                                    <span
+                                        wire:loading.remove
+                                        wire:target="updateData"
+                                    >
                                         {{ $data->volume->{$item.'Date'}() }}
                                     </span>
                                 </div>
@@ -273,11 +313,15 @@
                             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                                 <x-loading.text
                                     wire:loading
+                                    wire:target="updateData"
                                     wrapper-class="flex"
                                     width="w-[100px]"
                                 />
 
-                                <span wire:loading.remove>
+                                <span
+                                    wire:loading.remove
+                                    wire:target="updateData"
+                                >
                                     {{ $data->caps->{Str::camel($item.'Value')}() }}
                                 </span>
                             </span>
@@ -292,10 +336,14 @@
                                 <div class="flex text-theme-secondary-900 dark:text-theme-dark-50">
                                     <x-loading.text
                                         wire:loading
+                                        wire:target="updateData"
                                         wrapper-class="flex"
                                     />
 
-                                    <span wire:loading.remove>
+                                    <span
+                                        wire:loading.remove
+                                        wire:target="updateData"
+                                    >
                                         {{ $data->caps->{$item.'Date'}() }}
                                     </span>
                                 </div>
@@ -322,11 +370,15 @@
                         <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
                             <x-loading.text
                                 wire:loading
+                                wire:target="updateData"
                                 wrapper-class="flex"
                                 width="w-[140px]"
                             />
 
-                            <span wire:loading.remove>
+                            <span
+                                wire:loading.remove
+                                wire:target="updateData"
+                            >
                                 {{ $data->caps->{Str::camel($item.'Value')}() }}
                             </span>
                         </div>
@@ -340,11 +392,15 @@
                                 <div class="flex text-theme-secondary-900 dark:text-theme-dark-50">
                                     <x-loading.text
                                         wire:loading
+                                        wire:target="updateData"
                                         wrapper-class="flex"
                                         width="w-[100px]"
                                     />
 
-                                    <span wire:loading.remove>
+                                    <span
+                                        wire:loading.remove
+                                        wire:target="updateData"
+                                    >
                                         {{ $data->caps->{$item.'Date'}() }}
                                     </span>
                                 </div>

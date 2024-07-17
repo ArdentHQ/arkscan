@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Console\Commands\CachePrices;
 use App\Contracts\MarketDataProvider;
 use App\Contracts\Network;
+use App\Events\CurrencyUpdate;
 use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\PriceCache;
@@ -15,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use function Tests\fakeCryptoCompare;
 
@@ -340,6 +342,8 @@ it('should update prices if cryptocompare does return a response', function () {
 });
 
 it('should stop updating prices if a response fails', function () {
+    Event::fake();
+
     Config::set('currencies', [
         'usd' => [
             'currency' => 'USD',
@@ -410,9 +414,16 @@ it('should stop updating prices if a response fails', function () {
             ],
         ]);
     }
+
+    Event::assertDispatchedTimes(CurrencyUpdate::class, 1);
+    Event::assertDispatched(CurrencyUpdate::class, function ($event) {
+        return $event->getId() === 'USD';
+    });
 });
 
 it('should update oldest currencies first', function () {
+    Event::fake();
+
     Config::set('currencies', [
         'usd' => [
             'currency' => 'USD',
@@ -487,6 +498,11 @@ it('should update oldest currencies first', function () {
 
     expect($cryptoCache->getPrices('EUR.day'))->toEqual(collect([]));
     expect($chartsCache->getHistorical('EUR', 'day'))->toEqual([]);
+
+    Event::assertDispatchedTimes(CurrencyUpdate::class, 1);
+    Event::assertDispatched(CurrencyUpdate::class, function ($event) {
+        return $event->getId() === 'GBP';
+    });
 });
 
 it('should not update if updated within 10 minutes', function () {
