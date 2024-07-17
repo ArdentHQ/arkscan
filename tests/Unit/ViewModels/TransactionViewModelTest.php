@@ -1115,3 +1115,12 @@ it('should determine a non-legacy transaction', function ($transaction) {
     'usernameRegistration',
     'usernameResignation',
 ]);
+
+it('should determine a legacy transaction', function () {
+    $transaction = new TransactionViewModel(Transaction::factory()->create([
+        'type'       => '12345',
+        'type_group' => '55555',
+    ]));
+
+    expect($transaction->isLegacy())->toBeTrue();
+});

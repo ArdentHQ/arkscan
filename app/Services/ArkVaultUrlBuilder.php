@@ -12,6 +12,7 @@ final class ArkVaultUrlBuilder
     public static function get(): UrlBuilder
     {
         return (new UrlBuilder(config('arkscan.vault_url')))
-            ->setNetwork(Network::nethash());
+            ->setNetwork(Network::nethash())
+            ->setCoin(Network::coin());
     }
 }

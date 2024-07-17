@@ -4,30 +4,30 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b4f42617441beab7cdd9dac698325613",
+    "content-hash": "c07496ca011c331b922718335978f2ec",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
-            "version": "1.1.0",
+            "version": "dev-feat/mainsail",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArdentHQ/arkvault-url-php.git",
-                "reference": "eda4c3dde21b99c827b85b5db16ea9b07c9f4de9"
+                "reference": "eb031293dfb9c77d79f382bf6659e58802a2eb43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArdentHQ/arkvault-url-php/zipball/eda4c3dde21b99c827b85b5db16ea9b07c9f4de9",
-                "reference": "eda4c3dde21b99c827b85b5db16ea9b07c9f4de9",
+                "url": "https://api.github.com/repos/ArdentHQ/arkvault-url-php/zipball/eb031293dfb9c77d79f382bf6659e58802a2eb43",
+                "reference": "eb031293dfb9c77d79f382bf6659e58802a2eb43",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.11",
-                "pestphp/pest": "^1.22",
-                "phpstan/phpstan": "^1.8",
-                "rector/rector": "^0.14"
+                "friendsofphp/php-cs-fixer": "^3.34",
+                "pestphp/pest": "^1.21",
+                "phpstan/phpstan": "^1.10",
+                "rector/rector": "^0.18"
             },
             "type": "library",
             "autoload": {
@@ -48,9 +48,9 @@
             "description": "Deeplink URL generator for ARK based networks",
             "support": {
                 "issues": "https://github.com/ArdentHQ/arkvault-url-php/issues",
-                "source": "https://github.com/ArdentHQ/arkvault-url-php/tree/1.1.0"
+                "source": "https://github.com/ArdentHQ/arkvault-url-php/tree/feat/mainsail"
             },
-            "time": "2022-09-16T08:06:48+00:00"
+            "time": "2024-05-29T12:09:00+00:00"
         },
         {
             "name": "arkecosystem/crypto",
@@ -15974,7 +15974,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "ardenthq/arkvault-url": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
