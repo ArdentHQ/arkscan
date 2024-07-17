@@ -99,7 +99,7 @@ final class Kernel extends ConsoleKernel
         $schedule->command(LoadExchanges::class)->daily();
 
         if (Network::canBeExchanged()) {
-            $schedule->command(FetchExchangesDetails::class)->hourly();
+            $schedule->command(FetchExchangesDetails::class)->everyMinute();
         }
 
         if (config('arkscan.scout.run_jobs', false) === true) {

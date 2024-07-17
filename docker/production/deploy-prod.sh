@@ -76,7 +76,7 @@ else
     OLD="blue"
 fi
 
-info "Deploying $(exp) ARKscan container ..."
+info "Deploying $(exp) ARK Scan container ..."
 docker-compose --env-file prod.env -f docker-compose-prod.yml pull
 docker-compose --env-file prod.env -f docker-compose-prod.yml --project-name=$LATEST up -d
 
@@ -86,8 +86,8 @@ do
    info "Waiting for deployment to finish ..."
 done
 
-success "Done! - $(exp) ARKscan container started!"
-info "Sending checks to make sure $(exp) ARKscan is UP ..."
+success "Done! - $(exp) ARK Scan container started!"
+info "Sending checks to make sure $(exp) ARK Scan is UP ..."
 
 latest_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$LATEST"_arkscan_1)
 latest_alive=$(curl -LI http://$latest_ip:8898 -o /dev/null -w '%{http_code}\n' -s)
@@ -95,13 +95,13 @@ latest_alive=$(curl -LI http://$latest_ip:8898 -o /dev/null -w '%{http_code}\n' 
 sleep 5
 
 if [[ $latest_alive -eq 200  ]]; then
-    success "Done! - $(exp) ARKscan container successfully deployed!"
-    warning "Removing $(old) ARKscan container ..."
+    success "Done! - $(exp) ARK Scan container successfully deployed!"
+    warning "Removing $(old) ARK Scan container ..."
     docker-compose --env-file prod.env -f docker-compose-prod.yml --project-name=$OLD down -v
     success "Done! - You can safely remove arkscan-$(old) folder!"
 else
-    warning "Seems like $(exp) container is UP but ARKscan was slow to respond checks - please check your logs ..."
-    warning "Removing $(old) ARKscan container ..."
+    warning "Seems like $(exp) container is UP but ARK Scan was slow to respond checks - please check your logs ..."
+    warning "Removing $(old) ARK Scan container ..."
     docker-compose --env-file prod.env -f docker-compose-prod.yml --project-name=$OLD down -v
     success "Done!"
     exit 0
