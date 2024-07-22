@@ -11,7 +11,7 @@
         "php": "^8.1",
         "ext-gmp": "*",
         "ardenthq/arkvault-url": "dev-feat/mainsail",
-        "arkecosystem/crypto": "^1.8",
+        "arkecosystem/crypto": "dev-feat/mainsail",
         "arkecosystem/foundation": "^16.2",
         "blade-ui-kit/blade-icons": "^1.6",
         "brick/math": "^0.12",
