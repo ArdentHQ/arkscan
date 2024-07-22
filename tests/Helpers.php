@@ -44,7 +44,7 @@ function fakeKnownWallets(): void
                 'type'    => 'exchange',
                 'name'    => 'Altilly',
                 'address' => '0xe7dd7E34d2F24966C3C7AA89FC30ACA65760F6B5',
-            ]
+            ],
         ],
     ]);
 }
