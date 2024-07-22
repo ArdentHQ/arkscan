@@ -6,5 +6,5 @@ namespace App\Enums;
 
 final class Constants
 {
-    const ADDRESS_LENGTH = 42;
+    public const ADDRESS_LENGTH = 42;
 }
