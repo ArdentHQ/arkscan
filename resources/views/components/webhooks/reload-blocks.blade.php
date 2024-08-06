@@ -1,9 +1,11 @@
 @props(['publicKey'])
 
-<div
-    x-data="{
-        init() {
-            Webhook.listen('blocks.{{ $publicKey }}', 'NewBlock', 'reloadBlocks');
-        },
-    }"
-></div>
+@if (config('broadcasting.default') === 'reverb')
+    <div
+        x-data="{
+            init() {
+                Webhook.listen('blocks.{{ $publicKey }}', 'NewBlock', 'reloadBlocks');
+            },
+        }"
+    ></div>
+@endif
