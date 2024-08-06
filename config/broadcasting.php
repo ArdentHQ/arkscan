@@ -32,14 +32,21 @@ return [
 
     'connections' => [
 
-        'pusher' => [
-            'driver'  => 'pusher',
-            'key'     => env('PUSHER_APP_KEY'),
-            'secret'  => env('PUSHER_APP_SECRET'),
-            'app_id'  => env('PUSHER_APP_ID'),
+        'reverb' => [
+            'driver'  => 'reverb',
+            'key'     => env('REVERB_APP_KEY'),
+            'secret'  => env('REVERB_APP_SECRET'),
+            'app_id'  => env('REVERB_APP_ID'),
             'options' => [
-                'cluster' => env('PUSHER_APP_CLUSTER'),
-                'useTLS'  => true,
+                'host'   => env('REVERB_HOST'),
+                'port'   => env('REVERB_SCHEME', 'https') === 'https' ? env('REVERB_PORT_TLS', 443) : env('REVERB_PORT', 443),
+                'scheme' => env('REVERB_SCHEME', 'https'),
+                'useTLS' => env('REVERB_SCHEME', 'https') === 'https',
+            ],
+            'client_options' => [
+                'verify' => env('REVERB_VERIFY_PEERS', true),
+
+                // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html
             ],
         ],
 
