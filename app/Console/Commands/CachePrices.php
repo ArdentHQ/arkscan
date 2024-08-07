@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Contracts\MarketDataProvider;
 use App\Enums\StatsPeriods;
+use App\Events\CurrencyUpdate;
 use App\Facades\Network;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\PriceCache;
@@ -67,6 +68,7 @@ final class CachePrices extends Command
             $prices       = $marketDataProvider->historical(Network::currency(), $currency);
             $hourlyPrices = $marketDataProvider->historicalHourly(Network::currency(), $currency);
 
+            $dispatchEvent = false;
             foreach (self::PERIODS as $period) {
                 $periodPrices = $prices;
                 if ($period === StatsPeriods::DAY) {
@@ -82,6 +84,12 @@ final class CachePrices extends Command
                 $cache->setHistoricalRaw($currency, $period, $this->statsByPeriodRaw($period, $periodPrices));
 
                 $currencyLastUpdated[$currency] = Carbon::now()->unix();
+
+                $dispatchEvent = true;
+            }
+
+            if ($dispatchEvent) {
+                CurrencyUpdate::dispatch($currency);
             }
         }
 

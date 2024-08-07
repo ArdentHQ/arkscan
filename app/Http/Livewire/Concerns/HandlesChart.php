@@ -22,9 +22,10 @@ trait HandlesChart
     public function getListeners(): array
     {
         return [
-            'currencyChanged' => '$refresh',
-            'themeChanged'    => '$refresh',
-            'updateChart'     => '$refresh',
+            'currencyChanged'   => '$refresh',
+            'themeChanged'      => '$refresh',
+            'updateChart'       => '$refresh',
+            'reloadPriceTicker' => '$refresh',
         ];
     }
 

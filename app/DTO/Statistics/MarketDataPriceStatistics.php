@@ -106,6 +106,16 @@ final class MarketDataPriceStatistics
         return $this->formatCurrency($this->year->high);
     }
 
+    public function toArray(): array
+    {
+        return [
+            'atl'   => $this->atl->toArray(),
+            'ath'   => $this->ath->toArray(),
+            'daily' => $this->daily->toArray(),
+            'year'  => $this->year->toArray(),
+        ];
+    }
+
     /**
      * @param string|int|float $value
      */
