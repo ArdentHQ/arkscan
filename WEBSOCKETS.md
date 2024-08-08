@@ -80,6 +80,15 @@ In the tinker window, run `NewBlock::dispatch()` which should trigger a reload o
 
 Once this is all setup and running correctly, you will need to then setup webhooks, which can be found [here](./WEBHOOKS.md).
 
+## Setup on Forge
+
+> A short overview on what to do when setting up websockets on Forge with Laravel Reverb
+
+-   Ensure that you run PHP 8.2+
+-   Click the `Reverb` toggle on the site's page in Forge to enable the Reverb setup. Use port `8080` and the URL on which you want the websockets to run (e.g. a `ws` subdomain)
+-   Go to the SSL tab in Forge and issue a new certificate for the domain + the subdomain on which the websockets run
+-   Ensure `BROADCAST_DRIVER=reverb` is set in your `.env`, and possibly set `REVERB_PORT=443` and `REVERB_SCHEME="https"` if not done automatically yet.
+
 ## Troubleshooting
 
 ### Valet HTTPS Failed Connection
@@ -118,3 +127,13 @@ Then update your .env to reflect this:
 ```bash
 REVERB_PORT_TLS=443
 ```
+
+### Swoole in PHP 8.2+
+
+If you run into an issue where you cannot connect to a PostgreSQL database after updating to PHP 8.2, [it may have to do with the swoole extension in PHP 8.2+](https://github.com/php/php-src/issues/14665). The error will be something along the lines of
+
+```
+SQLSTATE[08006] [7] could not send SSL negotiation packet: Resource temporarily unavailable (Connection: pgsql, SQL: (select * from ........)
+```
+
+You can get around this by removing (or renaming) the configuration file, e.g. `sudo mv /etc/php/8.2/mods-available/swoole.ini /etc/php/8.2/mods-available/swoole-backup.ini`
