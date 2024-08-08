@@ -102,6 +102,11 @@ final class Slot
         return (new WalletCache())->getMissedBlocks($this->publicKey);
     }
 
+    /**
+     * Get how many blocks the forger has forged in the current round.
+     *
+     * @return integer
+     */
     public function currentRoundBlocks(): int
     {
         return $this->currentRoundBlocks;
@@ -140,6 +145,21 @@ final class Slot
         return false;
     }
 
+    /**
+     * Clone the slot with the given overridden properties.
+     *
+     * @param string|null $publicKey
+     * @param int|null $order
+     * @param WalletViewModel|null $wallet
+     * @param Carbon|null $forgingAt
+     * @param array|null $lastBlock
+     * @param string|null $status
+     * @param Collection|null $roundBlockCount
+     * @param int|null $roundNumber
+     * @param int|null $secondsUntilForge
+     *
+     * @return Slot
+     */
     public function clone(
         ?string $publicKey = null,
         ?int $order = null,

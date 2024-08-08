@@ -77,6 +77,14 @@ final class ValidatorTracker
         ];
     }
 
+    /**
+     * Calculate the slot offset based on missed blocks.
+     *
+     * @param int $roundHeight
+     * @param array $validators
+     *
+     * @return int
+     */
     private static function slotOffset(int $roundHeight, array $validators): int
     {
         $lastForger = DB::connection('explorer')

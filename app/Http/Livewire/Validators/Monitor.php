@@ -56,6 +56,11 @@ final class Monitor extends Component
         return count($this->validators) > 0;
     }
 
+    /**
+     * Calculate final overflow of validators based on missed blocks for current round.
+     *
+     * @return array<Slot>
+     */
     public function getOverflowValidatorsProperty(): array
     {
         $missedCount = collect($this->validators)
@@ -174,6 +179,9 @@ final class Monitor extends Component
     }
 
     /**
+     * Get overflow slots based on current round data.
+     * Used multiple times to determine if an overflow slot has been missed.
+     *
      * @return array<Slot>
      */
     private function getOverflowSlots(
