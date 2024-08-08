@@ -87,10 +87,10 @@ final class Monitor extends Component
                 $lastBlock,
                 0,
                 Network::blockTime(),
+                hasHitLastForger: true,
             );
         }
 
-        $lastRoundBlock = null;
         $lastRoundBlock = collect($this->validators)
             ->filter(fn (Slot $validator) => $validator->hasForged())
             ->last()
@@ -191,14 +191,14 @@ final class Monitor extends Component
         int $lastTimestamp,
         int $secondsUntilOverflow = 0,
         ?Collection $overflowBlockCount = null,
+        bool $hasHitLastForger = false,
     ): array {
         if ($overflowBlockCount === null) {
             $overflowBlockCount = new Collection();
         }
 
-        $justMissedCount  = 0;
-        $hasHitLastForger = false;
-        $overflowSlots    = [];
+        $justMissedCount = 0;
+        $overflowSlots   = [];
         foreach (collect($this->validators)->take($missedCount) as $index => $validator) {
             if ($overflowBlockCount->isEmpty()) {
                 $secondsUntilForge = $secondsUntilOverflow + ($index * Network::blockTime());
