@@ -9,8 +9,12 @@
     x-init="
         updateOutput = () => {
             seconds = datetime.diff(dayjs(), 'second');
-            if (seconds < 60) {
-                output = `${seconds} seconds`;
+            if (seconds < -60) {
+                output = dayjs().to(datetime);
+            } else if (seconds < 0) {
+                output = `~ ${Math.abs(seconds)} seconds ago`;
+            } else if (seconds < 60) {
+                output = `~ ${seconds} seconds`;
             } else {
                 output = dayjs().to(datetime);
             }

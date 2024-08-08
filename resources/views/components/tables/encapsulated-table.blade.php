@@ -3,6 +3,8 @@
     'paginator' => null,
     'noResultsMessage' => null,
     'withPagination' => false,
+    'withHeader' => true,
+    'withBottomBorder' => true,
 ])
 
 @php
@@ -25,9 +27,12 @@
 <div {{ $attributes->class([
     'border border-theme-secondary-300 dark:border-theme-dark-700 overflow-hidden',
     'rounded-t-xl' => $rounded,
-    'rounded-b-xl' => $paginatorIsEmpty,
+    'rounded-b-xl' => $withBottomBorder && $paginatorIsEmpty,
 ]) }}>
-    <div class="px-6 table-container table-encapsulated encapsulated-table-header-gradient">
+    <div @class([
+        'px-6 table-container table-encapsulated',
+        'encapsulated-table-header-gradient' => $withHeader,
+    ])">
         <table>
             {{ $slot }}
         </table>
