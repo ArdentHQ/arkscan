@@ -512,6 +512,37 @@ it('should handle when an overflow validator misses a block', function () {
     ]);
 });
 
+it('should correctly show if only a single block was missed', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    [$validators, $round, $height] = createRealisticRound([
+        array_fill(0, 53, true),
+    ], $this);
+
+    [$validators, $round, $height] = createPartialRound($round, $height, null, $this, [
+        $validators->get(44)->public_key,
+    ], [
+        $validators->get(44)->public_key,
+    ], true, Network::validatorCount() - 2);
+
+    expect($height)->toBe((3 * Network::validatorCount()) - 2);
+
+    $component = Livewire::test(Monitor::class)
+        ->call('setIsReady')
+        ->call('pollValidators');
+
+    $instance = $component->instance();
+
+    $overflowValidators = $instance->getOverflowValidatorsProperty();
+
+    expect($overflowValidators)->toHaveCount(1);
+    expect(collect($overflowValidators)->map(fn ($validator) => $validator->status())->toArray())->toBe([
+        'pending',
+    ]);
+});
+
 it('should extend forge time when missed before overflow (testing Helper)', function (int $count, string $expected) {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
