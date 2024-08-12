@@ -105,7 +105,7 @@ final class Slot
     /**
      * Get how many blocks the forger has forged in the current round.
      *
-     * @return integer
+     * @return int
      */
     public function currentRoundBlocks(): int
     {
