@@ -85,8 +85,8 @@ final class Monitor extends Component
                 $missedCount,
                 $previousStatus,
                 $lastBlock,
-                0,
-                Network::blockTime(),
+                $previousSlot->forgingAt()->unix(),
+                secondsUntilOverflow: Network::blockTime(),
                 hasHitLastForger: true,
             );
         }
