@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\DTO\Slot;
 use App\Facades\Network;
 use App\Http\Livewire\Validators\Monitor;
 use App\Models\Block;
@@ -535,9 +536,13 @@ it('should correctly show if only a single block was missed', function () {
 
     $instance = $component->instance();
 
+    /** @var Slot[] */
     $overflowValidators = $instance->getOverflowValidatorsProperty();
 
+    $overflowForgeTime = Carbon::parse('2024-02-01 14:00:00Z')->addSeconds(Network::blockTime() * Network::validatorCount());
+
     expect($overflowValidators)->toHaveCount(1);
+    expect($overflowValidators[0]->forgingAt()->format('Y-m-d H:i:s'))->toBe($overflowForgeTime->format('Y-m-d H:i:s'));
     expect(collect($overflowValidators)->map(fn ($validator) => $validator->status())->toArray())->toBe([
         'pending',
     ]);
