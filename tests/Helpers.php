@@ -228,8 +228,8 @@ function createPartialRound(
         }
     }
 
-    $slotCount  = 0;
-    $blockCount = 0;
+    $slotCount          = 0;
+    $blockCount         = 0;
     $totalMissedSeconds = 0;
     while ($blockCount < Network::validatorCount()) {
         $justMissedCount = 0;
