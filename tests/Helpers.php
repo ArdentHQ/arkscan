@@ -230,6 +230,7 @@ function createPartialRound(
 
     $slotCount  = 0;
     $blockCount = 0;
+    $totalMissedSeconds = 0;
     while ($blockCount < Network::validatorCount()) {
         $justMissedCount = 0;
         foreach ($validators as $validator) {
@@ -244,6 +245,7 @@ function createPartialRound(
             if (count($missedPublicKeys) > 0 && in_array($validator['publicKey'], $missedPublicKeys, true)) {
                 $context->travel(Network::blockTime())->seconds();
                 $context->travel($justMissedCount * 2)->seconds();
+                $totalMissedSeconds += $justMissedCount * 2;
                 $slotCount++;
 
                 $justMissedCount++;
@@ -280,6 +282,7 @@ function createPartialRound(
         $validators,
         $round,
         $height,
+        $totalMissedSeconds,
     ];
 }
 

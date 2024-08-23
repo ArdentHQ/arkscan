@@ -314,7 +314,7 @@ it('should cache last blocks', function () {
     expect(Cache::has('monitor:last-blocks'))->toBeTrue();
 });
 
-it('should show not overflow validators if no missed blocks', function () {
+it('should show no overflow validators if no missed blocks', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
     $this->freezeTime();
@@ -370,6 +370,47 @@ it('should show overflow validators with a full round', function () {
         'done',
         'done',
         'done',
+    ]);
+});
+
+it('should show overflow validators at the end of all initial slots', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    [$validators, $round, $height] = createRealisticRound([
+        array_fill(0, 53, true),
+    ], $this);
+
+    createPartialRound($round, $height, null, $this, [
+        $validators->get(4)->public_key,
+        $validators->get(5)->public_key,
+        $validators->get(6)->public_key,
+        $validators->get(7)->public_key,
+        $validators->get(8)->public_key,
+    ], [
+        $validators->get(4)->public_key,
+        $validators->get(5)->public_key,
+        $validators->get(6)->public_key,
+        $validators->get(7)->public_key,
+        $validators->get(8)->public_key,
+    ], true, 53);
+
+    $component = Livewire::test(Monitor::class)
+        ->call('setIsReady')
+        ->call('pollValidators');
+
+    $instance = $component->instance();
+
+    $overflowValidators = $instance->getOverflowValidatorsProperty();
+
+    // expect($overflowValidators)->toHaveCount(5);
+    expect(collect($overflowValidators)->map(fn ($validator) => $validator->status())->toArray())->toBe([
+        'next',
+        'pending',
+        'pending',
+        'pending',
+        'pending',
     ]);
 });
 
@@ -469,7 +510,7 @@ it('should handle when an overflow validator misses a block', function () {
         array_fill(0, 53, true),
     ], $this);
 
-    [$validators, $round, $height] = createPartialRound($round, $height, null, $this, [
+    [$validators, $round, $height, $totalMissedSeconds] = createPartialRound($round, $height, null, $this, [
         $validators->get(4)->public_key,
         $validators->get(5)->public_key,
         $validators->get(6)->public_key,
@@ -494,6 +535,8 @@ it('should handle when an overflow validator misses a block', function () {
     // Overflow slot 3
     createBlock($height + 1, $validators->get(2)['publicKey'], $this);
 
+    $overflowForgeTime = Carbon::parse('2024-02-01 14:00:00Z')->addSeconds((Network::blockTime() * (Network::validatorCount() + 3)) + $totalMissedSeconds);
+
     $component = Livewire::test(Monitor::class)
         ->call('setIsReady')
         ->call('pollValidators');
@@ -510,6 +553,15 @@ it('should handle when an overflow validator misses a block', function () {
         'next',
         'pending',
         'pending',
+    ]);
+
+    expect(collect($overflowValidators)->map(fn ($validator) => $validator->forgingAt()->format('Y-m-d H:i:s'))->toArray())->toBe([
+        $overflowForgeTime->format('Y-m-d H:i:s'),
+        $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
+        $overflowForgeTime->addSeconds(Network::blockTime() + 2)->format('Y-m-d H:i:s'), // Missed overflow block
+        $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
+        $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
+        $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
     ]);
 });
 
