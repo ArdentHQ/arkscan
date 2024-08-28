@@ -90,7 +90,7 @@ final class ValidatorTracker
     {
         $lastForger = DB::connection('explorer')
             ->table('blocks')
-            ->select('generator_public_key')
+            ->select('generator_public_key', 'timestamp')
             ->where('height', '>=', $roundHeight)
             ->orderBy('height', 'desc')
             ->limit(1)
@@ -135,7 +135,26 @@ final class ValidatorTracker
         }
 
         if ($roundBlockCount->count() > 0) {
-            $offset = Network::validatorCount() - $roundBlockCount->sum();
+            $offset = Network::validatorCount() - $roundBlockCount->sum() + 1;
+        }
+
+        $lastForgedTimestamp = $lastForger->timestamp / 1000;
+        $secondsSinceLastBlock = (Carbon::now()->unix() - $lastForgedTimestamp);
+
+        if ($secondsSinceLastBlock >= Network::blockTime()) {
+            $secondsSinceLastBlock = floor($secondsSinceLastBlock / Network::blockTime()) * Network::blockTime();
+            if ($secondsSinceLastBlock >= Network::blockTime()) {
+                $missedCount = 0;
+                $slotsMissed = 0;
+
+                for ($increment = 0; $increment < $secondsSinceLastBlock; $increment += Network::blockTime()) {
+                    $missedCount++;
+                    $slotsMissed++;
+                    $increment += $missedCount * 2;
+                }
+
+                $offset += $slotsMissed;
+            }
         }
 
         return $offset + 1;
