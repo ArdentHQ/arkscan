@@ -77,10 +77,7 @@
         >
             <tbody x-ref="tbody">
                 @foreach($overflowValidators as $validator)
-                    <x-tables.rows.desktop.validators.monitor-row
-                        :validator="$validator"
-                        wire-key="validator-{{ $validator->order() }}-{{ $validator->wallet()->address() }}-{{ $validator->roundNumber() }}-overflow"
-                    />
+                    <x-tables.rows.desktop.validators.monitor-row :validator="$validator" />
                 @endforeach
             </tbody>
         </x-ark-tables.table>

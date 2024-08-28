@@ -5,7 +5,6 @@
 
 <x-ark-tables.row
     x-data="Validator('{{ $validator->publicKey() }}')"
-    :wire:key="$wireKey ?? 'validator-'.$validator->order().'-'.$validator->wallet()->address().'-'.$validator->roundNumber()"
     ::class="{
         'validator-monitor-favorite': isFavorite === true,
     }"
