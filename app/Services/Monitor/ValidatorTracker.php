@@ -7,6 +7,7 @@ namespace App\Services\Monitor;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 final class ValidatorTracker
@@ -57,7 +58,7 @@ final class ValidatorTracker
         }
 
         if ($index > $normalizedOrder) {
-            $nextTime = (($forgingIndex) * $secondsUntilSlot);
+            $nextTime = (($forgingIndex - 1) * $secondsUntilSlot);
 
             $forgingIndex++;
 
