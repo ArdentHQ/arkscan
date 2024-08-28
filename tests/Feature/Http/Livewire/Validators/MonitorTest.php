@@ -216,7 +216,7 @@ it('should show warning icon for validators missing blocks - minutes', function 
         ->call('pollValidators')
         ->assertSeeInOrder([
             $validator->username(),
-            'Validator last forged 207 blocks ago (~ 29 min)',
+            'Validator last forged 207 blocks ago (~ 28 min)',
         ]);
 });
 
@@ -530,12 +530,12 @@ it('should handle when an overflow validator misses a block', function () {
     createBlock($height, $validators->get(0)['publicKey'], $this);
 
     // Overflow slot 2
-    $this->travel(Network::blockTime())->seconds();
+    $this->travel(Network::blockTime() + 2)->seconds();
 
     // Overflow slot 3
     createBlock($height + 1, $validators->get(2)['publicKey'], $this);
 
-    $overflowForgeTime = Carbon::parse('2024-02-01 14:00:00Z')->addSeconds((Network::blockTime() * (Network::validatorCount() + 3)) + $totalMissedSeconds);
+    $overflowForgeTime = Carbon::parse('2024-02-01 14:00:00Z')->addSeconds((Network::blockTime() * (Network::validatorCount() + 4)) + $totalMissedSeconds + 2);
 
     $component = Livewire::test(Monitor::class)
         ->call('setIsReady')
@@ -578,15 +578,24 @@ it('should correctly show if only a single block was missed', function () {
         $validators->get(44)->public_key,
     ], [
         $validators->get(44)->public_key,
-    ], true, Network::validatorCount() - 2);
+    ], true, 49);
 
-    expect($height)->toBe((3 * Network::validatorCount()) - 2);
+    expect($height)->toBe((3 * Network::validatorCount()) - 4);
 
     $component = Livewire::test(Monitor::class)
         ->call('setIsReady')
         ->call('pollValidators');
 
     $instance = $component->instance();
+
+    $validatorsProperty = new ReflectionProperty($instance, 'validators');
+    $validatorsProperty->setAccessible(true);
+
+    $slots = collect($validatorsProperty->getValue($instance))->groupBy(fn ($validator) => $validator->status());
+
+    expect($slots['done'])->toHaveCount(49);
+    expect($slots['pending'])->toHaveCount(3);
+    expect($slots['next'])->toHaveCount(1);
 
     /** @var Slot[] */
     $overflowValidators = $instance->getOverflowValidatorsProperty();

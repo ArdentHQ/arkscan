@@ -68,6 +68,10 @@ function bip39(): string
 
 function createBlock(int $height, string $publicKey, mixed $context = null)
 {
+    if ($context !== null) {
+        $context->travel(Network::blockTime())->seconds();
+    }
+
     $block = Block::factory()->create([
         'timestamp'              => Timestamp::now()->getTimestampMs(),
         'previous_block'         => $height - 1,
@@ -78,10 +82,6 @@ function createBlock(int $height, string $publicKey, mixed $context = null)
         'reward'                 => 2 * 1e8,
         'generator_public_key'   => $publicKey,
     ]);
-
-    if ($context !== null) {
-        $context->travel(Network::blockTime())->seconds();
-    }
 
     return $block;
 }
