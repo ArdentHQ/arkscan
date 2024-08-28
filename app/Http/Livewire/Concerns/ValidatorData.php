@@ -21,11 +21,14 @@ use Illuminate\Support\Facades\DB;
 
 trait ValidatorData
 {
+    private function cacheTtl(): int
+    {
+        return (int) ceil(Network::blockTime() / 2);
+    }
+
     private function cacheLastBlocks(array $validators): void
     {
-        $ttl = (int) ceil(Network::blockTime() / 2);
-
-        Cache::remember('monitor:last-blocks', $ttl, function () use ($validators): bool {
+        Cache::remember('monitor:last-blocks', $this->cacheTtl(), function () use ($validators): bool {
             $blocks = Block::query()
                 ->orderBy('height', 'desc')
                 ->limit(Network::validatorCount() * 2)
@@ -78,23 +81,18 @@ trait ValidatorData
 
     private function getBlocksByRange(array $publicKeys, array $heightRange): Collection
     {
-        $key = 'monitor:last-blocks:'.md5(implode(',', $publicKeys)).':'.$heightRange[0].'-'.$heightRange[1];
-        $ttl = (int) ceil(Network::blockTime() / 2);
-
-        return Cache::remember($key, $ttl, function () use ($publicKeys, $heightRange) {
-            return Block::query()
-                    ->whereIn('generator_public_key', $publicKeys)
-                    ->whereBetween('height', $heightRange)
-                    ->orderBy('height', 'asc')
-                    ->get();
-        });
+        return Block::query()
+                ->whereIn('generator_public_key', $publicKeys)
+                ->whereBetween('height', $heightRange)
+                ->orderBy('height', 'asc')
+                ->get();
     }
 
     private function hasRoundStarted(int $height): bool
     {
         return Cache::remember(
             'delegate:round:'.$height,
-            Network::blockTime() / 2,
+            $this->cacheTtl(),
             fn () => Block::where('height', $height)->exists()
         );
     }
