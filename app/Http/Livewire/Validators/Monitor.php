@@ -184,6 +184,7 @@ final class Monitor extends Component
         }
 
         $justMissedCount = 0;
+        $missedSeconds = 0;
         $overflowSlots   = [];
         foreach (collect($this->validators)->take($missedCount) as $index => $validator) {
             if ($overflowBlockCount->isEmpty()) {
@@ -192,7 +193,7 @@ final class Monitor extends Component
                 $forgingAt = Timestamp::fromUnix($lastTimestamp)->addSeconds($secondsUntilForge);
             } else {
                 $secondsUntilForge = Network::blockTime();
-                $secondsUntilForge += $justMissedCount * self::MISSED_INCREMENT_SECONDS;
+                $secondsUntilForge += $missedSeconds;
 
                 $forgingAt = Timestamp::fromUnix($lastTimestamp)->addSeconds($secondsUntilForge);
             }
@@ -213,8 +214,10 @@ final class Monitor extends Component
 
             if ($slot->justMissed()) {
                 $justMissedCount++;
+                $missedSeconds = $justMissedCount * self::MISSED_INCREMENT_SECONDS;
             } else {
                 $justMissedCount = 0;
+                $missedSeconds = 0;
             }
 
             if ($validator->publicKey() === $lastBlock->generator_public_key) {
