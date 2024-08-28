@@ -138,7 +138,7 @@ final class ValidatorTracker
             $offset = Network::validatorCount() - $roundBlockCount->sum() + 1;
         }
 
-        $lastForgedTimestamp = $lastForger->timestamp / 1000;
+        $lastForgedTimestamp   = $lastForger->timestamp / 1000;
         $secondsSinceLastBlock = (Carbon::now()->unix() - $lastForgedTimestamp);
 
         if ($secondsSinceLastBlock >= Network::blockTime()) {

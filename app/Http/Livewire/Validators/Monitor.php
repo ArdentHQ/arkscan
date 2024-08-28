@@ -184,7 +184,7 @@ final class Monitor extends Component
         }
 
         $justMissedCount = 0;
-        $missedSeconds = 0;
+        $missedSeconds   = 0;
         $overflowSlots   = [];
         foreach (collect($this->validators)->take($missedCount) as $index => $validator) {
             if ($overflowBlockCount->isEmpty()) {
@@ -217,7 +217,7 @@ final class Monitor extends Component
                 $missedSeconds = $justMissedCount * self::MISSED_INCREMENT_SECONDS;
             } else {
                 $justMissedCount = 0;
-                $missedSeconds = 0;
+                $missedSeconds   = 0;
             }
 
             if ($validator->publicKey() === $lastBlock->generator_public_key) {
