@@ -180,6 +180,6 @@ final class NumberFormatter
             return false;
         }
 
-        return config('currencies.'.strtolower($currency).'.symbol') !== null;
+        return config('currencies.currencies.'.strtolower($currency).'.symbol') !== null;
     }
 }

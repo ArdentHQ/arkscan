@@ -75,7 +75,7 @@
                 </div>
             </x-slot>
 
-            @foreach (config('currencies') as $currency)
+            @foreach (config('currencies.currencies') as $currency)
                 <x-general.dropdown.list-item
                     :is-active="$currency['currency'] === $to"
                     wire:click="setCurrency('{{ $currency['currency'] }}')"

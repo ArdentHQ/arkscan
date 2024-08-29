@@ -44,7 +44,7 @@ class Settings
     {
         // Since sometimes the key exists (crypto values) but returns `null`, we need another default value
         // in the end to handle that case
-        return Arr::get(config('currencies'), strtolower($this->currency()).'.locale', 'en_US') ?? 'en_US';
+        return Arr::get(config('currencies.currencies'), strtolower($this->currency()).'.locale', 'en_US') ?? 'en_US';
     }
 
     public function priceChart(): bool

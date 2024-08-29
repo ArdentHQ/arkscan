@@ -52,7 +52,7 @@ final class CachePrices extends Command
 
         $currencyLastUpdated = $priceCache->getLastUpdated();
 
-        $currencies = (new Collection(config('currencies')))
+        $currencies = (new Collection(config('currencies.currencies')))
             ->pluck('currency')
             // Only update currency prices if they're 10+ minutes old
             ->filter(fn ($currency) => Arr::get($currencyLastUpdated, $currency, 0) < Carbon::now()->sub('minutes', 10)->unix())

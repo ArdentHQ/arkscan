@@ -375,7 +375,7 @@ it('should stop updating prices if a response fails', function () {
         ->push(null, 200)
         ->push(null, 200);
 
-    foreach (config('currencies') as $currency) {
+    foreach (config('currencies.currencies') as $currency) {
         $cryptoCache->setPrices($currency['currency'].'.day', collect([1, 2, 3]));
         $chartsCache->setHistorical($currency['currency'], 'day', collect([
             '12:00' => 1,

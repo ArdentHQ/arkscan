@@ -39,7 +39,7 @@ final class CacheVolume extends Command
         }
 
         /** @var array<string, array<string, string>> */
-        $currencies = config('currencies');
+        $currencies = config('currencies.currencies');
 
         try {
             $result = $marketDataProvider->volume(Network::currency());
