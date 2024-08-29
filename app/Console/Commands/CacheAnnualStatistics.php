@@ -43,8 +43,8 @@ final class CacheAnnualStatistics extends Command
             ->select([
                 DB::raw('DATE_PART(\'year\', TO_TIMESTAMP((transactions.timestamp) / 1000)) AS year'),
                 DB::raw('COUNT(DISTINCT(transactions.id)) AS transactions'),
-                DB::raw('SUM(amount) / 1e8 AS amount'),
-                DB::raw('SUM(fee) / 1e8 AS fees'),
+                DB::raw(sprintf('SUM(amount) / 1e%d AS amount', config('currencies.decimals.crypto', 18))),
+                DB::raw(sprintf('SUM(fee) / 1e%d AS fees', config('currencies.decimals.crypto', 18))),
             ])
             ->from('transactions')
             ->groupBy('year')
@@ -55,7 +55,7 @@ final class CacheAnnualStatistics extends Command
             ->query()
             ->select([
                 DB::raw('DATE_PART(\'year\', TO_TIMESTAMP((transactions.timestamp) / 1000)) AS year'),
-                DB::raw('SUM((payment->>\'amount\')::bigint) / 1e8 AS amount'),
+                DB::raw(sprintf('SUM((payment->>\'amount\')::bigint) / 1e%d AS amount', config('currencies.decimals.crypto', 18))),
             ])
             ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
             ->where('transactions.type', '=', TransactionTypeEnum::MULTI_PAYMENT)
@@ -98,8 +98,8 @@ final class CacheAnnualStatistics extends Command
             ->query()
             ->select([
                 DB::raw('COUNT(*) as transactions'),
-                DB::raw('SUM(amount) / 1e8 as amount'),
-                DB::raw('SUM(fee) / 1e8 as fees'),
+                DB::raw(sprintf('SUM(amount) / 1e%d as amount', config('currencies.decimals.crypto', 18))),
+                DB::raw(sprintf('SUM(fee) / 1e%d as fees', config('currencies.decimals.crypto', 18))),
             ])
             ->from('transactions')
             ->where('timestamp', '>=', $startOfYear)
@@ -107,7 +107,7 @@ final class CacheAnnualStatistics extends Command
 
         $multipaymentAmount = DB::connection('explorer')
             ->query()
-            ->select(DB::raw('SUM((payment->>\'amount\')::bigint) / 1e8 AS amount'))
+            ->select(DB::raw(sprintf('SUM((payment->>\'amount\')::bigint) / 1e%d AS amount', config('currencies.decimals.crypto', 18))))
             ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
             ->where('transactions.type', '=', TransactionTypeEnum::MULTI_PAYMENT)
             ->where('timestamp', '>=', $startOfYear)

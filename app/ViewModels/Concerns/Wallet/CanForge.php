@@ -16,7 +16,7 @@ trait CanForge
 {
     public function totalForged(): float
     {
-        return ($this->feesForged() + $this->rewardsForged()) / 1e8;
+        return ($this->feesForged() + $this->rewardsForged()) / config('currencies.notation.crypto', 1e18);
     }
 
     public function amountForged(): int

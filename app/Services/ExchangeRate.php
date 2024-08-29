@@ -47,7 +47,7 @@ final class ExchangeRate
         $exchangeRate = $toValue / $fromValue;
 
         if (! NumberFormatter::isFiat($to)) {
-            $decimals = 8;
+            $decimals = config('currencies.decimals.crypto', 18);
         }
 
         return NumberFormatter::currencyWithDecimals($amount * $exchangeRate, Settings::currency(), $decimals);

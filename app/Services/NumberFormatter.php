@@ -12,10 +12,6 @@ use ReflectionClass;
 
 final class NumberFormatter
 {
-    public const CRYPTO_DECIMALS = 8;
-
-    public const CRYPTO_DECIMALS_SMALL = 8;
-
     public const FIAT_DECIMALS = 2;
 
     public const FIAT_DECIMALS_SMALL = 4;
@@ -77,14 +73,18 @@ final class NumberFormatter
             return $formatter->formatCurrency(floatval(number_format((float) $value, $decimals ?? 4, '.', '')), $currency);
         }
 
-        return $formatter->formatWithCurrencyCustom($value, $currency, $decimals ?? 8);
+        return $formatter->formatWithCurrencyCustom($value, $currency, $decimals ?? config('currencies.decimals.crypto', 18));
     }
 
     /**
      * @param string|int|float $value
      */
-    public static function networkCurrency($value, int $decimals = 8, bool $withSuffix = false): string
+    public static function networkCurrency($value, ?int $decimals = null, bool $withSuffix = false): string
     {
+        if ($decimals === null) {
+            $decimals = config('currencies.decimals.crypto', 18);
+        }
+
         $value = BetterNumberFormatter::new()
             ->withLocale('en-US')
             ->withFractionDigits($decimals)
@@ -154,7 +154,7 @@ final class NumberFormatter
             ->formatWithCurrencyCustom(
                 $value,
                 $currency,
-                self::CRYPTO_DECIMALS
+                config('currencies.decimals.crypto', 18)
             );
     }
 
@@ -171,7 +171,7 @@ final class NumberFormatter
             return $isSmallValue ? self::FIAT_DECIMALS_SMALL : self::FIAT_DECIMALS;
         }
 
-        return $isSmallValue ? self::CRYPTO_DECIMALS_SMALL : self::CRYPTO_DECIMALS;
+        return $isSmallValue ? config('currencies.decimals.crypto_small', 18) : config('currencies.decimals.crypto', 18);
     }
 
     public static function hasSymbol(string $currency): bool

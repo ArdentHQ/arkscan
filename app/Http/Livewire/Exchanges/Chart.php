@@ -87,7 +87,7 @@ final class Chart extends Component
                 ->formatWithCurrencyCustom(
                     $price,
                     $currency,
-                    ServiceNumberFormatter::CRYPTO_DECIMALS
+                    config('currencies.decimals.crypto', 18)
                 );
     }
 

@@ -28,7 +28,7 @@ final class Statistics extends Component
         return view('livewire.home.statistics', [
             'height'    => CacheNetworkHeight::execute(),
             'volume'    => NumberFormatter::currencyForViews($volume ?? 0, Settings::currency()),
-            'supply'    => CacheNetworkSupply::execute() / 1e8,
+            'supply'    => CacheNetworkSupply::execute() / config('currencies.notation.crypto', 1e18),
             'marketCap' => MarketCap::getFormatted(Network::currency(), Settings::currency()),
         ]);
     }
