@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'decimals' => [
-        'crypto' => env('CURRENCY_DECIMALS_CRYPTO', 18),
+        'crypto'       => env('CURRENCY_DECIMALS_CRYPTO', 18),
         'crypto_small' => env('CURRENCY_DECIMALS_CRYPTO_SMALL', 18),
     ],
 
