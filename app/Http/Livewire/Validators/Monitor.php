@@ -56,6 +56,28 @@ final class Monitor extends Component
         return count($this->validators) > 0;
     }
 
+    public function pollValidators(): void
+    {
+        if (! $this->isReady) {
+            return;
+        }
+
+        try {
+            $this->validators = $this->fetchValidators();
+
+            Cache::forget('poll-validators-exception-occurrence');
+        } catch (Throwable $e) {
+            $occurrences = Cache::increment('poll-validators-exception-occurrence');
+
+            if ($occurrences >= 3) {
+                throw $e;
+            }
+
+            // @README: If any errors occur we want to keep polling until we have a list of validators
+            $this->pollValidators();
+        }
+    }
+
     /**
      * Calculate final overflow of validators based on missed blocks for current round.
      *
@@ -141,28 +163,6 @@ final class Monitor extends Component
             overflowBlockCount: $overflowBlockCount,
             hasReachedFinalSlot: $hasReachedFinalSlot,
         );
-    }
-
-    public function pollValidators(): void
-    {
-        if (! $this->isReady) {
-            return;
-        }
-
-        try {
-            $this->validators = $this->fetchValidators();
-
-            Cache::forget('poll-validators-exception-occurrence');
-        } catch (Throwable $e) {
-            $occurrences = Cache::increment('poll-validators-exception-occurrence');
-
-            if ($occurrences >= 3) {
-                throw $e;
-            }
-
-            // @README: If any errors occur we want to keep polling until we have a list of validators
-            $this->pollValidators();
-        }
     }
 
     /**
