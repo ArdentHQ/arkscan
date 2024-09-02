@@ -396,6 +396,8 @@ it('should show overflow validators at the end of all initial slots', function (
         $validators->get(8)->public_key,
     ], true, 53);
 
+    expect($height)->toBe((3 * Network::validatorCount()) - 4);
+
     $component = Livewire::test(Monitor::class)
         ->call('setIsReady')
         ->call('pollValidators');
@@ -404,7 +406,7 @@ it('should show overflow validators at the end of all initial slots', function (
 
     $overflowValidators = $instance->getOverflowValidatorsProperty();
 
-    // expect($overflowValidators)->toHaveCount(5);
+    expect($overflowValidators)->toHaveCount(5);
     expect(collect($overflowValidators)->map(fn ($validator) => $validator->status())->toArray())->toBe([
         'next',
         'pending',
@@ -565,7 +567,7 @@ it('should handle when an overflow validator misses a block', function () {
     ]);
 });
 
-it('should correctly show if only a single block was missed', function () {
+it('should correctly show overflow if only a single block was missed', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
     $this->freezeTime();
