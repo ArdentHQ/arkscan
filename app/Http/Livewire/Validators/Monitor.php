@@ -133,7 +133,7 @@ final class Monitor extends Component
             ->get();
 
         if ($lastStatus !== 'done' || $overflowBlocks->isEmpty()) {
-            return [];
+            // return [];
 
             return $this->getOverflowSlots(
                 $missedCount,
@@ -187,7 +187,7 @@ final class Monitor extends Component
             return $overflowSlots;
         }
 
-        return [];
+        // return [];
 
         return $this->getOverflowSlots(
             $missedCount + $additional,
