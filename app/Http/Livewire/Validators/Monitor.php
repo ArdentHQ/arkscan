@@ -137,11 +137,11 @@ final class Monitor extends Component
         $hasReachedFinalSlot = $lastTimestamp === $lastRoundBlock['timestamp'];
 
         Log::debug([
-            'lastBlock' => $lastBlock,
-            'missedCount' => $missedCount,
-            'lastStatus' => $lastStatus,
-            'lastTimestamp' => $lastTimestamp,
-            'overflowBlockCount' => collect($overflowBlockCount)->toArray(),
+            'lastBlock'           => $lastBlock,
+            'missedCount'         => $missedCount,
+            'lastStatus'          => $lastStatus,
+            'lastTimestamp'       => $lastTimestamp,
+            'overflowBlockCount'  => collect($overflowBlockCount)->toArray(),
             'hasReachedFinalSlot' => $hasReachedFinalSlot,
         ]);
 
