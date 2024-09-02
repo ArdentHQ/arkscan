@@ -14,7 +14,6 @@ use App\Services\Monitor\Monitor as MonitorService;
 use App\Services\Timestamp;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Livewire\Component;
 use Throwable;
@@ -133,8 +132,6 @@ final class Monitor extends Component
             ->get();
 
         if ($lastStatus !== 'done' || $overflowBlocks->isEmpty()) {
-            // return [];
-
             return $this->getOverflowSlots(
                 $missedCount,
                 $lastStatus,
@@ -155,15 +152,6 @@ final class Monitor extends Component
             });
 
         $hasReachedFinalSlot = $lastTimestamp === $lastRoundBlock->timestamp;
-
-        Log::debug([
-            'lastBlock'           => $lastBlock,
-            'missedCount'         => $missedCount,
-            'lastStatus'          => $lastStatus,
-            'lastTimestamp'       => $lastTimestamp,
-            'overflowBlockCount'  => collect($overflowBlockCount)->toArray(),
-            'hasReachedFinalSlot' => $hasReachedFinalSlot,
-        ]);
 
         $overflowSlots = $this->getOverflowSlots(
             $missedCount,
@@ -186,8 +174,6 @@ final class Monitor extends Component
         if ($additional === 0) {
             return $overflowSlots;
         }
-
-        // return [];
 
         return $this->getOverflowSlots(
             $missedCount + $additional,
