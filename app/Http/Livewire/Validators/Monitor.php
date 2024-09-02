@@ -102,16 +102,6 @@ final class Monitor extends Component
             ->orderBy('height', 'desc')
             ->first();
 
-        if ($lastStatus !== 'done') {
-            return $this->getOverflowSlots(
-                $missedCount,
-                $lastStatus,
-                $lastBlock,
-                $lastSlot->forgingAt()->unix(),
-                hasReachedFinalSlot: true,
-            );
-        }
-
         $lastRoundBlock = collect($this->validators)
             ->filter(fn (Slot $validator) => $validator->hasForged())
             ->last()
@@ -120,6 +110,18 @@ final class Monitor extends Component
         $overflowBlocks = Block::where('height', '>', $lastRoundBlock['height'])
             ->orderBy('height', 'asc')
             ->get();
+
+        if ($lastStatus !== 'done' || $overflowBlocks->isEmpty()) {
+            return [];
+
+            return $this->getOverflowSlots(
+                $missedCount,
+                $lastStatus,
+                $lastBlock,
+                $lastSlot->forgingAt()->unix(),
+                hasReachedFinalSlot: true,
+            );
+        }
 
         $lastTimestamp = $lastRoundBlock['timestamp'];
         if ($overflowBlocks->isNotEmpty() && $overflowBlocks->last() !== null) {
