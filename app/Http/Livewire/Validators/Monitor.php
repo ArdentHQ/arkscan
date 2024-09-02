@@ -10,6 +10,7 @@ use App\Facades\Rounds;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\ValidatorData;
 use App\Models\Block;
+use App\Services\Monitor\Monitor as MonitorService;
 use App\Services\Timestamp;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -103,12 +104,31 @@ final class Monitor extends Component
             ->orderBy('height', 'desc')
             ->first();
 
-        $lastRoundBlock = collect($this->validators)
-            ->filter(fn (Slot $validator) => $validator->hasForged())
-            ->last()
-            ->lastBlock();
+        $heightRange = MonitorService::heightRangeByRound(Rounds::current());
 
-        $overflowBlocks = Block::where('height', '>', $lastRoundBlock['height'])
+        $lastRoundBlock = Block::query()
+            ->where('generator_public_key', $lastSlot->publicKey())
+            ->where('height', '>=', $heightRange[0])
+            ->orderBy('height', 'desc')
+            ->first();
+
+        if ($lastRoundBlock === null) {
+            $lastSuccessfulForger = collect($this->validators)
+                ->filter(fn (Slot $validator) => $validator->hasForged())
+                ->last();
+
+            $lastRoundBlock = Block::query()
+                ->where('generator_public_key', $lastSuccessfulForger->publicKey())
+                ->where('height', '>=', $heightRange[0])
+                ->orderBy('height', 'desc')
+                ->first();
+        }
+
+        if ($lastRoundBlock === null) {
+            return [];
+        }
+
+        $overflowBlocks = Block::where('height', '>', $lastRoundBlock->height)
             ->orderBy('height', 'asc')
             ->get();
 
@@ -124,7 +144,7 @@ final class Monitor extends Component
             );
         }
 
-        $lastTimestamp = $lastRoundBlock['timestamp'];
+        $lastTimestamp = $lastRoundBlock->timestamp;
         if ($overflowBlocks->isNotEmpty() && $overflowBlocks->last() !== null) {
             $lastTimestamp = $overflowBlocks->last()['timestamp'];
         }
@@ -134,7 +154,7 @@ final class Monitor extends Component
                 return count($blocks);
             });
 
-        $hasReachedFinalSlot = $lastTimestamp === $lastRoundBlock['timestamp'];
+        $hasReachedFinalSlot = $lastTimestamp === $lastRoundBlock->timestamp;
 
         Log::debug([
             'lastBlock' => $lastBlock,
