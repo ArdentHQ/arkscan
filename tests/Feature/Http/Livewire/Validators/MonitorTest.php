@@ -83,7 +83,7 @@ describe('Monitor', function () {
             ->shouldReceive('increment')
             ->andReturn(1, 2, 3);
 
-        $instance = Livewire::test(Monitor::class)->instance();
+        $instance          = Livewire::test(Monitor::class)->instance();
         $instance->isReady = true;
         $instance->pollValidators();
     });
