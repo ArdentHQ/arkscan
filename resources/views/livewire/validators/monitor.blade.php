@@ -12,6 +12,7 @@
         <x-tables.desktop.validators.monitor
             :validators="$validators"
             :round="$round"
+            :overflow-validators="$overflowValidators"
         />
 
         <div
