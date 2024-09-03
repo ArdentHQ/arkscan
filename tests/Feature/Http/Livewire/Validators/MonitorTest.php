@@ -881,12 +881,13 @@ describe('Data Boxes', function () {
 
         Livewire::test(Monitor::class)
             ->call('pollData')
-            ->assertViewHas('height', 53 * 2)
+            ->assertViewHas('height', 0)
             ->assertViewHas('statistics', [])
             ->assertDontSee('106')
             ->call('setIsReady')
             ->assertDontSee('106')
             ->call('pollData')
+            ->assertViewHas('height', 53 * 2)
             ->assertSee('106');
     });
 
