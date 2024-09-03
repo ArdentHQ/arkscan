@@ -105,6 +105,7 @@ final class Monitor extends Component
 
         $heightRange = MonitorService::heightRangeByRound(Rounds::current());
 
+        /** @var ?Block $lastRoundBlock */
         $lastRoundBlock = Block::query()
             ->where('generator_public_key', $lastSlot->publicKey())
             ->where('height', '>=', $heightRange[0])
@@ -116,15 +117,12 @@ final class Monitor extends Component
                 ->filter(fn (Slot $validator) => $validator->hasForged())
                 ->last();
 
+            /** @var Block $lastRoundBlock */
             $lastRoundBlock = Block::query()
                 ->where('generator_public_key', $lastSuccessfulForger->publicKey())
                 ->where('height', '>=', $heightRange[0])
                 ->orderBy('height', 'desc')
                 ->first();
-        }
-
-        if ($lastRoundBlock === null) {
-            return [];
         }
 
         $overflowBlocks = Block::where('height', '>', $lastRoundBlock->height)
