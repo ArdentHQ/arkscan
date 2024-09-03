@@ -336,6 +336,30 @@ it('should show no overflow validators if no missed blocks', function () {
     expect($overflowValidators)->toHaveCount(0);
 });
 
+it('should show no overflow validators at the start of a round', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    [$validators, $round, $height] = createRealisticRound([
+        array_fill(0, 53, true),
+    ], $this);
+
+    createRoundEntry($round, $height, Wallet::all());
+
+    $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
+
+    $component = Livewire::test(Monitor::class)
+        ->call('setIsReady')
+        ->call('pollValidators');
+
+    $instance = $component->instance();
+
+    $overflowValidators = $instance->getOverflowValidatorsProperty();
+
+    expect($overflowValidators)->toHaveCount(0);
+});
+
 it('should show overflow validators with a full round', function () {
     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
