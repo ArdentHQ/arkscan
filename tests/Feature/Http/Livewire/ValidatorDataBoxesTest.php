@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Contracts\RoundRepository as ContractsRoundRepository;
 use App\Enums\ValidatorForgingStatus;
 use App\Facades\Network;
-use App\Http\Livewire\ValidatorDataBoxes;
+use App\Http\Livewire\Validators\Monitor;
 use App\Models\Block;
 use App\Models\Wallet;
 use App\Repositories\RoundRepository;

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Validators;
 
+use App\Actions\CacheNetworkHeight;
 use App\DTO\Slot;
 use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\ValidatorData;
+use App\Http\Livewire\Validators\Concerns\HandlesMonitorDataBoxes;
 use App\Models\Block;
 use App\Services\Monitor\Monitor as MonitorService;
 use App\Services\Timestamp;
@@ -25,6 +27,7 @@ use Throwable;
 final class Monitor extends Component
 {
     use DeferLoading;
+    use HandlesMonitorDataBoxes;
     use ValidatorData;
 
     public const MISSED_INCREMENT_SECONDS = 2;
@@ -41,7 +44,9 @@ final class Monitor extends Component
         return view('livewire.validators.monitor', [
             'round'              => Rounds::current()->round,
             'validators'         => $this->validators,
-            'overflowValidators' => $this->getOverflowValidatorsProperty(),
+            'overflowValidators' => $this->overflowValidators,
+            'height'             => CacheNetworkHeight::execute(),
+            'statistics'         => $this->statistics,
         ]);
     }
 
@@ -50,11 +55,18 @@ final class Monitor extends Component
         $this->setIsReady();
 
         $this->pollValidators();
+        $this->pollStatistics();
     }
 
     public function getHasValidatorsProperty(): bool
     {
         return count($this->validators) > 0;
+    }
+
+    public function pollData(): void
+    {
+        $this->pollValidators();
+        $this->pollStatistics();
     }
 
     public function pollValidators(): void
