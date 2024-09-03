@@ -41,11 +41,16 @@ final class Monitor extends Component
 
     public function render(): View
     {
+        $height = 0;
+        if ($this->isReady) {
+            $height = CacheNetworkHeight::execute();
+        }
+
         return view('livewire.validators.monitor', [
             'round'              => Rounds::current()->round,
             'validators'         => $this->validators,
             'overflowValidators' => $this->overflowValidators,
-            'height'             => CacheNetworkHeight::execute(),
+            'height'             => $height,
             'statistics'         => $this->statistics,
         ]);
     }

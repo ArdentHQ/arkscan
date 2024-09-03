@@ -73,21 +73,19 @@ describe('Monitor', function () {
             ->assertSeeHtml('pollData');
     });
 
-    // Failed asserting that exception message 'Method Mockery_0_Illuminate_Cache_CacheManager::tags() does not exist on this mock object (View: /media/alexbarnsley/data/projects/work/ardent/arkscan-3/vendor/livewire/livewire/src/views/mount-component.blade.php)' contains 'Something went wrong!'.
-
     it('should throw an exception after 3 tries', function () {
         createRoundWithValidators();
 
         $this->expectExceptionMessage('Something went wrong!');
 
-        Cache::shouldReceive('tags')
+        Cache::shouldReceive('remember')
             ->andThrow(new Exception('Something went wrong!'))
             ->shouldReceive('increment')
             ->andReturn(1, 2, 3);
 
-        Livewire::test(Monitor::class)
-            ->call('setIsReady')
-            ->call('pollValidators');
+        $instance = Livewire::test(Monitor::class)->instance();
+        $instance->isReady = true;
+        $instance->pollValidators();
     });
 
     it('should not throw an exception if only fails 2 times', function () {
