@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Search\Traits;
 
-use App\Enums\Constants;
-
 trait ValidatesTerm
 {
     private function couldBeTransactionID(string $term): bool
@@ -20,12 +18,12 @@ trait ValidatesTerm
 
     private function couldBeAddress(string $term): bool
     {
-        return strlen($term) === Constants::ADDRESS_LENGTH;
+        return strlen($term) === 34;
     }
 
     private function couldntBeAddress(string $term): bool
     {
-        return strlen($term) > Constants::ADDRESS_LENGTH;
+        return strlen($term) > 34;
     }
 
     private function couldBePublicKey(string $term): bool

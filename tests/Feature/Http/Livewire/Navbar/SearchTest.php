@@ -256,25 +256,25 @@ it('should search for known wallets addresses with meilisearch', function () {
         [
             'type'    => 'team',
             'name'    => 'Alfys hot Wallet',
-            'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
         ],
         [
             'type'    => 'team',
             'name'    => 'other wallet',
-            'address' => '0x8eD03985e78c92E4506979cAAf7671275FFd953d',
+            'address' => 'Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d',
         ],
         [
             'type'    => 'team',
             'name'    => 'the alf wallet',
-            'address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
+            'address' => 'AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk',
         ],
     ], 200));
 
     $knownWallet = Wallet::factory()->create([
-        'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
     ]);
     $knownWallet2 = Wallet::factory()->create([
-        'address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
+        'address' => 'AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk',
     ]);
 
     $this->mock(MeilisearchEngine::class)
@@ -307,9 +307,9 @@ it('should search for known wallets addresses with meilisearch', function () {
 
     Livewire::test(Search::class)
         ->set('query', 'alf')
-        ->assertSee('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
-        ->assertSee('0x38b4a84773bC55e88D07cBFC76444C2A37600084')
-        ->assertDontSee('0x8eD03985e78c92E4506979cAAf7671275FFd953d');
+        ->assertSee('AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67')
+        ->assertSee('AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk')
+        ->assertDontSee('Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d');
 });
 
 it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisearch', function () {
@@ -330,17 +330,17 @@ it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisear
         [
             'type'    => 'team',
             'name'    => 'a1',
-            'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
         ],
         [
             'type'    => 'team',
             'name'    => 'a2',
-            'address' => '0x8eD03985e78c92E4506979cAAf7671275FFd953d',
+            'address' => 'Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d',
         ],
         [
             'type'    => 'team',
             'name'    => 'a3',
-            'address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
+            'address' => 'AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk',
         ],
         [
             'type'    => 'team',
@@ -360,13 +360,13 @@ it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisear
     ], 200));
 
     $knownWallet = Wallet::factory()->create([
-        'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
     ]);
     $knownWallet2 = Wallet::factory()->create([
-        'address' => '0x8eD03985e78c92E4506979cAAf7671275FFd953d',
+        'address' => 'Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d',
     ]);
     $knownWallet3 = Wallet::factory()->create([
-        'address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
+        'address' => 'AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk',
     ]);
     $knownWallet4 = Wallet::factory()->create([
         'address' => 'AZiS7KXBJ8o8JgdhPo2m4t8MGpGt1Ucxe7',
@@ -411,7 +411,7 @@ it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisear
 
     Livewire::test(Search::class)
         ->set('query', 'a')
-        ->assertSee('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
-        ->assertSee('0x38b4a84773bC55e88D07cBFC76444C2A37600084')
+        ->assertSee('AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67')
+        ->assertSee('AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk')
         ->assertDontSee('AKT8ji4purNoocKybdb3aHZYiVkaFimho9');
 });
