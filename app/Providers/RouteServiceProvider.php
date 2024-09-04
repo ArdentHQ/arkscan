@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Enums\Constants;
 use App\Exceptions\BlockNotFoundException;
 use App\Exceptions\TransactionNotFoundException;
 use App\Exceptions\WalletNotFoundException;
@@ -50,12 +49,12 @@ final class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('wallet', function (string $walletID): Wallet {
-            if (strlen($walletID) === Constants::ADDRESS_LENGTH) {
+            if (strlen($walletID) === 34) {
                 abort_unless(Address::validate($walletID, Network::config()), 404);
             }
 
             try {
-                return strlen($walletID) === Constants::ADDRESS_LENGTH
+                return strlen($walletID) === 34
                         ? Wallets::findByAddress($walletID)
                         : Wallets::findByUsername($walletID);
             } catch (Throwable) {
