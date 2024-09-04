@@ -133,6 +133,7 @@ final class CacheAddressStatistics extends Command
     {
         $largest = Wallet::orderBy('balance', 'desc')->limit(1)->first();
         if ($largest !== null) {
+            /** @var Wallet $largest */
             $cache->setLargestAddress([
                 'address' => $largest->address,
                 'value'   => $largest->balance->toFloat(),
