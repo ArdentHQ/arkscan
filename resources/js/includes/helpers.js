@@ -10,7 +10,7 @@ const delimiters = {
     pipe: "|",
 };
 
-export const arktoshiToNumber = (value) => value / 1e8;
+export const arktoshiToNumber = (value) => value / 1e18;
 
 export const queryTimestamp = (date) => {
     return date.unix() * 1000;
