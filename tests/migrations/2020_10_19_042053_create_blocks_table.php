@@ -13,7 +13,7 @@ final class CreateBlocksTable extends Migration
     public function up()
     {
         PostgresGrammar::macro('typeNumeric', function (Fluent $column) {
-            return "numeric";
+            return 'numeric';
         });
 
         Schema::create('blocks', function (Blueprint $table) {
