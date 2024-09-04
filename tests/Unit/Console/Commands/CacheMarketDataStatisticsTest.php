@@ -7,6 +7,10 @@ use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\StatisticsCache;
 use Illuminate\Support\Facades\Config;
 
+beforeEach(function () {
+    $this->travelTo('2024-08-01 01:00:00');
+});
+
 it('should cache market data statistics', function () {
     Config::set('arkscan.networks.development.canBeExchanged', true);
     $cache  = new StatisticsCache();

@@ -59,7 +59,9 @@ it('should handle no missed block', function () {
 
     $order = ValidatorTracker::execute($validators->pluck('public_key')->toArray(), $roundHeight);
 
-    expect(collect($order)->where('status', 'pending')->count())->toBe(2);
+    expect(collect($order)->where('status', 'done')->count())->toBe(51);
+    expect(collect($order)->where('status', 'next')->count())->toBe(1);
+    expect(collect($order)->where('status', 'pending')->count())->toBe(1);
 });
 
 it('should handle one missed block', function () {
@@ -113,7 +115,9 @@ it('should handle one missed block', function () {
 
     $order = ValidatorTracker::execute($validators->pluck('public_key')->toArray(), $roundHeight);
 
-    expect(collect($order)->where('status', 'pending')->count())->toBe(2);
+    expect(collect($order)->where('status', 'done')->count())->toBe(51);
+    expect(collect($order)->where('status', 'next')->count())->toBe(1);
+    expect(collect($order)->where('status', 'pending')->count())->toBe(1);
 });
 
 it('should handle missed blocks', function () {
@@ -177,5 +181,7 @@ it('should handle missed blocks', function () {
 
     $order = ValidatorTracker::execute($validators->pluck('public_key')->toArray(), $roundHeight);
 
-    expect(collect($order)->where('status', 'pending')->count())->toBe(2);
+    expect(collect($order)->where('status', 'done')->count())->toBe(51);
+    expect(collect($order)->where('status', 'next')->count())->toBe(1);
+    expect(collect($order)->where('status', 'pending')->count())->toBe(1);
 });

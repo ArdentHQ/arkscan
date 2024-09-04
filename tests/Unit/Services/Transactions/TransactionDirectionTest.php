@@ -33,7 +33,7 @@ it('should determine if the transaction is received', function () {
     ]);
 
     expect((new TransactionDirection($transaction))->isReceived('recipient'))->toBeTrue();
-    expect((new TransactionDirection($transaction))->isReceived('D6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax'))->toBeFalse();
+    expect((new TransactionDirection($transaction))->isReceived('0x6E4C6817a95263B758bbC52e87Ce8e759eD0B084'))->toBeFalse();
     expect((new TransactionDirection($transaction))->isReceived('unknown'))->toBeFalse();
 });
 
