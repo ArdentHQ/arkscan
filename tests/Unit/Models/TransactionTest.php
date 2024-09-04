@@ -13,8 +13,8 @@ use Meilisearch\Endpoints\Indexes;
 beforeEach(function () {
     $this->recipient = Wallet::factory()->create();
     $this->subject   = Transaction::factory()->create([
-        'fee'          => '100000000',
-        'amount'       => '200000000',
+        'fee'          => 1 * 1e18,
+        'amount'       => 2 * 1e18,
         'recipient_id' => $this->recipient,
     ]);
 });
@@ -89,8 +89,8 @@ it('should get vote recipient if vote combination', function () {
 it('should get vendorfield value multiple times despite resource', function () {
     $transaction = Transaction::factory()->transfer()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
-        'fee'          => '10000000', // 0.1
-        'amount'       => '200000000', // 2
+        'fee'          => 0.1 * 1e18, // 0.1
+        'amount'       => 2 * 1e18, // 2
         'vendor_field' => '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0',
     ]);
 

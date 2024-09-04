@@ -29,8 +29,8 @@ beforeEach(function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create([
         'block_id'          => $this->block->id,
         'block_height'      => 1,
-        'fee'               => '100000000',
-        'amount'            => '200000000',
+        'fee'               => 1 * 1e18,
+        'amount'            => 2 * 1e18,
         'sender_public_key' => $this->sender->public_key,
         'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]));
@@ -156,19 +156,19 @@ it('should get the amount for multi payments', function () {
         'asset' => [
             'payments' => [
                 [
-                    'amount'      => '1000000000',
+                    'amount'      => 10 * 1e18,
                     'recipientId' => 'A',
                 ], [
-                    'amount'      => '2000000000',
+                    'amount'      => 20 * 1e18,
                     'recipientId' => 'B',
                 ], [
-                    'amount'      => '3000000000',
+                    'amount'      => 30 * 1e18,
                     'recipientId' => 'C',
                 ], [
-                    'amount'      => '4000000000',
+                    'amount'      => 40 * 1e18,
                     'recipientId' => 'D',
                 ], [
-                    'amount'      => '5000000000',
+                    'amount'      => 50 * 1e18,
                     'recipientId' => 'E',
                 ],
             ],
@@ -188,22 +188,22 @@ it('should get the amount for multi payments excluding payment to the same addre
         'asset'             => [
             'payments' => [
                 [
-                    'amount'      => '1000000000',
+                    'amount'      => 10 * 1e18,
                     'recipientId' => 'A',
                 ], [
-                    'amount'      => '2000000000',
+                    'amount'      => 20 * 1e18,
                     'recipientId' => 'B',
                 ], [
-                    'amount'      => '3000000000',
+                    'amount'      => 30 * 1e18,
                     'recipientId' => 'C',
                 ], [
-                    'amount'      => '5000000000',
+                    'amount'      => 50 * 1e18,
                     'recipientId' => $sender->address,
                 ], [
-                    'amount'      => '4000000000',
+                    'amount'      => 40 * 1e18,
                     'recipientId' => 'D',
                 ], [
-                    'amount'      => '6000000000',
+                    'amount'      => 60 * 1e18,
                     'recipientId' => 'E',
                 ],
             ],
@@ -221,22 +221,22 @@ it('should get the amount in fiat for multi payments excluding payment to the sa
         'asset'             => [
             'payments' => [
                 [
-                    'amount'      => '1000000000',
+                    'amount'      => 10 * 1e18,
                     'recipientId' => 'A',
                 ], [
-                    'amount'      => '2000000000',
+                    'amount'      => 20 * 1e18,
                     'recipientId' => 'B',
                 ], [
-                    'amount'      => '3000000000',
+                    'amount'      => 30 * 1e18,
                     'recipientId' => 'C',
                 ], [
-                    'amount'      => '5000000000',
+                    'amount'      => 50 * 1e18,
                     'recipientId' => $sender->address,
                 ], [
-                    'amount'      => '4000000000',
+                    'amount'      => 40 * 1e18,
                     'recipientId' => 'D',
                 ], [
-                    'amount'      => '6000000000',
+                    'amount'      => 60 * 1e18,
                     'recipientId' => 'E',
                 ],
             ],
@@ -258,22 +258,22 @@ it('should get the amount for itself on multi payments', function () {
         'asset'             => [
             'payments' => [
                 [
-                    'amount'      => '1000000000',
+                    'amount'      => 10 * 1e18,
                     'recipientId' => 'A',
                 ], [
-                    'amount'      => '2000000000',
+                    'amount'      => 20 * 1e18,
                     'recipientId' => 'B',
                 ], [
-                    'amount'      => '3000000000',
+                    'amount'      => 30 * 1e18,
                     'recipientId' => 'C',
                 ], [
-                    'amount'      => '5000000000',
+                    'amount'      => 50 * 1e18,
                     'recipientId' => $sender->address,
                 ], [
-                    'amount'      => '4000000000',
+                    'amount'      => 40 * 1e18,
                     'recipientId' => 'D',
                 ], [
-                    'amount'      => '6000000000',
+                    'amount'      => 60 * 1e18,
                     'recipientId' => 'E',
                 ],
             ],
@@ -288,22 +288,22 @@ it('should get the specific multi payment amount for a wallet recipient', functi
         'asset' => [
             'payments' => [
                 [
-                    'amount'      => '1000000000',
+                    'amount'      => 10 * 1e18,
                     'recipientId' => 'A',
                 ], [
-                    'amount'      => '2000000000',
+                    'amount'      => 20 * 1e18,
                     'recipientId' => 'B',
                 ], [
-                    'amount'      => '3000000000',
+                    'amount'      => 30 * 1e18,
                     'recipientId' => 'C',
                 ], [
-                    'amount'      => '4000000000',
+                    'amount'      => 40 * 1e18,
                     'recipientId' => 'D',
                 ], [
-                    'amount'      => '5000000000',
+                    'amount'      => 50 * 1e18,
                     'recipientId' => 'E',
                 ], [
-                    'amount'      => '5000000000',
+                    'amount'      => 50 * 1e18,
                     'recipientId' => 'B',
                 ],
             ],
@@ -320,22 +320,22 @@ it('should get multi payment amount with fee', function () {
         'asset' => [
             'payments' => [
                 [
-                    'amount'      => '1000000000',
+                    'amount'      => 10 * 1e18,
                     'recipientId' => 'A',
                 ], [
-                    'amount'      => '2000000000',
+                    'amount'      => 20 * 1e18,
                     'recipientId' => 'B',
                 ], [
-                    'amount'      => '3000000000',
+                    'amount'      => 30 * 1e18,
                     'recipientId' => 'C',
                 ], [
-                    'amount'      => '4000000000',
+                    'amount'      => 40 * 1e18,
                     'recipientId' => 'D',
                 ], [
-                    'amount'      => '5000000000',
+                    'amount'      => 50 * 1e18,
                     'recipientId' => 'E',
                 ], [
-                    'amount'      => '5000000000',
+                    'amount'      => 50 * 1e18,
                     'recipientId' => 'B',
                 ],
             ],
@@ -352,19 +352,19 @@ it('should get the amount as fiat', function () {
         'asset' => [
             'payments' => [
                 [
-                    'amount'      => '1000000000',
+                    'amount'      => 10 * 1e18,
                     'recipientId' => 'A',
                 ], [
-                    'amount'      => '2000000000',
+                    'amount'      => 20 * 1e18,
                     'recipientId' => 'B',
                 ], [
-                    'amount'      => '3000000000',
+                    'amount'      => 30 * 1e18,
                     'recipientId' => 'C',
                 ], [
-                    'amount'      => '4000000000',
+                    'amount'      => 40 * 1e18,
                     'recipientId' => 'D',
                 ], [
-                    'amount'      => '5000000000',
+                    'amount'      => 50 * 1e18,
                     'recipientId' => 'E',
                 ],
             ],
@@ -385,22 +385,22 @@ it('should get the specific multi payment fiat amount for a wallet recipient', f
         'asset' => [
             'payments' => [
                 [
-                    'amount'      => '1000000000',
+                    'amount'      => 10 * 1e18,
                     'recipientId' => 'A',
                 ], [
-                    'amount'      => '2000000000',
+                    'amount'      => 20 * 1e18,
                     'recipientId' => 'B',
                 ], [
-                    'amount'      => '3000000000',
+                    'amount'      => 30 * 1e18,
                     'recipientId' => 'C',
                 ], [
-                    'amount'      => '4000000000',
+                    'amount'      => 40 * 1e18,
                     'recipientId' => 'D',
                 ], [
-                    'amount'      => '5000000000',
+                    'amount'      => 50 * 1e18,
                     'recipientId' => 'E',
                 ], [
-                    'amount'      => '5000000000',
+                    'amount'      => 50 * 1e18,
                     'recipientId' => 'B',
                 ],
             ],
@@ -718,19 +718,19 @@ it('should get the payments', function () {
         'asset' => [
             'payments' => [
                 [
-                    'amount'      => '1000000000',
+                    'amount'      => 10 * 1e18,
                     'recipientId' => $A->address,
                 ], [
-                    'amount'      => '2000000000',
+                    'amount'      => 20 * 1e18,
                     'recipientId' => $B->address,
                 ], [
-                    'amount'      => '3000000000',
+                    'amount'      => 30 * 1e18,
                     'recipientId' => $C->address,
                 ], [
-                    'amount'      => '4000000000',
+                    'amount'      => 40 * 1e18,
                     'recipientId' => $D->address,
                 ], [
-                    'amount'      => '5000000000',
+                    'amount'      => 50 * 1e18,
                     'recipientId' => $E->address,
                 ],
             ],
@@ -741,27 +741,27 @@ it('should get the payments', function () {
 
     $payments = $this->subject->payments();
     expect($payments[0])->toEqual(new Payment((int) $model->timestamp, [
-        'amount'      => '1000000000',
+        'amount'      => 10 * 1e18,
         'recipientId' => $A->address,
     ]));
 
     expect($payments[1])->toEqual(new Payment((int) $model->timestamp, [
-        'amount'      => '2000000000',
+        'amount'      => 20 * 1e18,
         'recipientId' => $B->address,
     ]));
 
     expect($payments[2])->toEqual(new Payment((int) $model->timestamp, [
-        'amount'      => '3000000000',
+        'amount'      => 30 * 1e18,
         'recipientId' => $C->address,
     ]));
 
     expect($payments[3])->toEqual(new Payment((int) $model->timestamp, [
-        'amount'      => '4000000000',
+        'amount'      => 40 * 1e18,
         'recipientId' => $D->address,
     ]));
 
     expect($payments[4])->toEqual(new Payment((int) $model->timestamp, [
-        'amount'      => '5000000000',
+        'amount'      => 50 * 1e18,
         'recipientId' => $E->address,
     ]));
 });
@@ -783,19 +783,19 @@ it('should get the payments in descending order', function () {
         'asset' => [
             'payments' => [
                 [
-                    'amount'      => '1000000000',
+                    'amount'      => 10 * 1e18,
                     'recipientId' => $A->address,
                 ], [
-                    'amount'      => '2000000000',
+                    'amount'      => 20 * 1e18,
                     'recipientId' => $B->address,
                 ], [
-                    'amount'      => '3000000000',
+                    'amount'      => 30 * 1e18,
                     'recipientId' => $C->address,
                 ], [
-                    'amount'      => '4000000000',
+                    'amount'      => 40 * 1e18,
                     'recipientId' => $D->address,
                 ], [
-                    'amount'      => '5000000000',
+                    'amount'      => 50 * 1e18,
                     'recipientId' => $E->address,
                 ],
             ],
@@ -806,27 +806,27 @@ it('should get the payments in descending order', function () {
 
     $payments = array_values($this->subject->payments(true));
     expect($payments[0])->toEqual(new Payment((int) $model->timestamp, [
-        'amount'      => '5000000000',
+        'amount'      => 50 * 1e18,
         'recipientId' => $E->address,
     ]));
 
     expect($payments[1])->toEqual(new Payment((int) $model->timestamp, [
-        'amount'      => '4000000000',
+        'amount'      => 40 * 1e18,
         'recipientId' => $D->address,
     ]));
 
     expect($payments[2])->toEqual(new Payment((int) $model->timestamp, [
-        'amount'      => '3000000000',
+        'amount'      => 30 * 1e18,
         'recipientId' => $C->address,
     ]));
 
     expect($payments[3])->toEqual(new Payment((int) $model->timestamp, [
-        'amount'      => '2000000000',
+        'amount'      => 20 * 1e18,
         'recipientId' => $B->address,
     ]));
 
     expect($payments[4])->toEqual(new Payment((int) $model->timestamp, [
-        'amount'      => '1000000000',
+        'amount'      => 10 * 1e18,
         'recipientId' => $A->address,
     ]));
 });

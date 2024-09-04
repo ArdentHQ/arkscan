@@ -8,6 +8,7 @@ use App\Http\Livewire\Validators\Validators;
 use App\Models\ForgingStats;
 use App\Models\State;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
 use Carbon\Carbon;
@@ -963,7 +964,11 @@ it('should handle sorting several pages of validators without cached data', func
         $aValue = Arr::get($a, $modelSortBy);
 
         if (is_numeric($bValue) && is_numeric($aValue)) {
-            return (int) $aValue - (int) $bValue;
+            if ($aValue > $bValue) {
+                return 1;
+            }
+
+            return $aValue < $bValue ? -1 : 0;
         }
 
         return strcmp($aValue, $bValue);
@@ -1073,7 +1078,11 @@ it('should handle sorting several pages of validators with cached data', functio
         }
 
         if (is_numeric($bValue) && is_numeric($aValue)) {
-            return (int) $aValue - (int) $bValue;
+            if ($aValue > $bValue) {
+                return 1;
+            }
+
+            return $aValue < $bValue ? -1 : 0;
         }
 
         return strcmp($aValue, $bValue);
