@@ -55,7 +55,7 @@ final class CacheAnnualStatistics extends Command
             ->query()
             ->select([
                 DB::raw('DATE_PART(\'year\', TO_TIMESTAMP((transactions.timestamp) / 1000)) AS year'),
-                DB::raw(sprintf('SUM((payment->>\'amount\')::bigint) / 1e%d AS amount', config('currencies.decimals.crypto', 18))),
+                DB::raw(sprintf('SUM((payment->>\'amount\')::numeric) / 1e%d AS amount', config('currencies.decimals.crypto', 18))),
             ])
             ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
             ->where('transactions.type', '=', TransactionTypeEnum::MULTI_PAYMENT)
@@ -107,7 +107,7 @@ final class CacheAnnualStatistics extends Command
 
         $multipaymentAmount = DB::connection('explorer')
             ->query()
-            ->select(DB::raw(sprintf('SUM((payment->>\'amount\')::bigint) / 1e%d AS amount', config('currencies.decimals.crypto', 18))))
+            ->select(DB::raw(sprintf('SUM((payment->>\'amount\')::numeric) / 1e%d AS amount', config('currencies.decimals.crypto', 18))))
             ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
             ->where('transactions.type', '=', TransactionTypeEnum::MULTI_PAYMENT)
             ->where('timestamp', '>=', $startOfYear)
