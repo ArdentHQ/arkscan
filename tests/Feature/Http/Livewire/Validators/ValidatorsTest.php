@@ -8,7 +8,6 @@ use App\Http\Livewire\Validators\Validators;
 use App\Models\ForgingStats;
 use App\Models\State;
 use App\Models\Wallet;
-use App\Services\BigNumber;
 use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
 use Carbon\Carbon;
