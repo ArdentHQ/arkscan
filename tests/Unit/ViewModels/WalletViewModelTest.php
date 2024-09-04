@@ -462,7 +462,7 @@ it('should get the vote weight as percentage', function () {
     ]);
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'balance'    => 1e8,
+        'balance'    => 1e18,
         'attributes' => [
             'vote' => $vote->public_key,
         ],
@@ -504,12 +504,12 @@ it('should handle vote weight percentage with 1 arktoshi vote balance', function
 
     $vote = Wallet::factory()->create([
         'attributes' => [
-            'validatorVoteBalance' => 1e8,
+            'validatorVoteBalance' => 1e18,
         ],
     ]);
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'balance'    => 1e8,
+        'balance'    => 1e18,
         'attributes' => ['vote' => $vote->public_key],
     ]));
 
@@ -531,7 +531,7 @@ it('should fail to get the vote weight as percentage if the wallet has no public
 
 it('should get the productivity if the wallet is a validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'balance'    => 1e8,
+        'balance'    => 1e18,
         'attributes' => [
             'validatorPublicKey' => 'publickey',
         ],

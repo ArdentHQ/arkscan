@@ -48,9 +48,9 @@ it('should update cache on each run', function () {
 
     Block::factory()->create([
         'generator_public_key' => $wallet->public_key,
-        'total_amount'         => 123 * 1e8,
-        'total_fee'            => 3 * 1e8,
-        'reward'               => 8 * 1e8,
+        'total_amount'         => 123 * 1e18,
+        'total_fee'            => 3 * 1e18,
+        'reward'               => 8 * 1e18,
     ]);
 
     expect($cache->getCache()->has(md5('total_amounts')))->toBeTrue();
@@ -61,9 +61,9 @@ it('should update cache on each run', function () {
 
     (new CacheValidatorAggregates())->handle($cache = new ValidatorCache());
 
-    expect($cache->getTotalAmounts())->toBe([$wallet->public_key => (string) intval(123 * 1e8)]);
-    expect($cache->getTotalFees())->toBe([$wallet->public_key => (string) intval(3 * 1e8)]);
-    expect($cache->getTotalRewards())->toBe([$wallet->public_key => (string) intval(8 * 1e8)]);
+    expect($cache->getTotalAmounts())->toBe([$wallet->public_key => (string) intval(123 * 1e18)]);
+    expect($cache->getTotalFees())->toBe([$wallet->public_key => (string) intval(3 * 1e18)]);
+    expect($cache->getTotalRewards())->toBe([$wallet->public_key => (string) intval(8 * 1e18)]);
     expect($cache->getTotalBlocks())->toBe([$wallet->public_key => 1]);
 
     expect($cache->getCache()->has(md5('total_amounts')))->toBeTrue();

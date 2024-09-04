@@ -12,7 +12,7 @@ it('should cache largest block by amount', function () {
     Transaction::factory()->create(['amount' => 0]);
 
     $largestBlock = Block::factory()->create([
-        'total_amount' => 1000 * 1e8,
+        'total_amount' => 1000 * 1e18,
     ]);
 
     Block::factory()->create([
@@ -29,7 +29,7 @@ it('should cache largest block by fee', function () {
 
     Block::factory()->create(['total_fee' => 0]);
 
-    $largestBlock = Block::factory()->create(['total_fee' => 100 * 1e8]);
+    $largestBlock = Block::factory()->create(['total_fee' => 100 * 1e18]);
 
     Block::factory()->create(['total_fee' => 0]);
 

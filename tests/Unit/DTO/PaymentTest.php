@@ -10,7 +10,7 @@ it('should make an instance that has all properties', function () {
     $wallet = Wallet::factory()->create();
 
     $subject = new Payment(123, [
-        'amount'      => 1e8,
+        'amount'      => 1e18,
         'recipientId' => $wallet->address,
     ]);
 

@@ -426,7 +426,7 @@ it('should handle 256 recipients in a multipayment', function () {
             'asset' => [
                 'payments' => $addresses
                     ->map(fn ($value) => ([
-                        'amount'      => (256 - $value) * 1e8,
+                        'amount'      => (256 - $value) * 1e18,
                         'recipientId' => 'address-'.$value,
                     ]))
                     ->toArray(),

@@ -25,7 +25,7 @@ it('should cache the voter count for the public key', function () {
 
 it('should cache voter counts', function () {
     $wallet = Wallet::factory()->create([
-        'balance'    => 123 * 1e8,
+        'balance'    => 123 * 1e18,
         'attributes' => [
             'vote' => Wallet::factory()->activeValidator()->create()->public_key,
         ],
