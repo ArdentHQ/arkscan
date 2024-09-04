@@ -45,7 +45,8 @@ it('should make an instance that has all properties', function (string $status) 
         ],
         status: $status,
         roundBlockCount: $roundBlockCount,
-        roundNumber: 1
+        roundNumber: 1,
+        secondsUntilForge: 0,
     );
 
     expect($subject->publicKey())->toBeString();
@@ -61,6 +62,8 @@ it('should make an instance that has all properties', function (string $status) 
     expect($subject->isNext())->toBeBool();
     expect($subject->isPending())->toBeBool();
     expect($subject->status())->toBeString();
+    expect($subject->secondsUntilForge())->toBeInt();
+    expect($subject->currentRoundBlocks())->toBeInt();
 })->with([
     'done',
     'next',
@@ -85,7 +88,8 @@ it('should not be marked as missing if it never had a block', function () {
         lastBlock: [],
         status: 'done',
         roundBlockCount: $roundBlockCount,
-        roundNumber: 1
+        roundNumber: 1,
+        secondsUntilForge: 0,
     );
 
     expect($subject->keepsMissing())->toBeFalse();
@@ -93,6 +97,7 @@ it('should not be marked as missing if it never had a block', function () {
         'public_key' => $wallet->public_key,
     ]);
     expect($subject->missedCount())->toBe(0);
+    expect($subject->currentRoundBlocks())->toBe(0);
 });
 
 it('should show the correct missed blocks amount when spanning multiple rounds', function () {
@@ -116,7 +121,8 @@ it('should show the correct missed blocks amount when spanning multiple rounds',
         ],
         status: 'done',
         roundBlockCount: $roundBlockCount,
-        roundNumber: 10
+        roundNumber: 10,
+        secondsUntilForge: 0,
     );
 
     expect(ForgingStats::where('public_key', $wallet->public_key)->exists())->toBeFalse();
@@ -149,4 +155,5 @@ it('should show the correct missed blocks amount when spanning multiple rounds',
     );
 
     expect($subject->missedCount())->toBe(2);
+    expect($subject->currentRoundBlocks())->toBe(0);
 });

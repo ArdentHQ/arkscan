@@ -2,15 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Validators\Concerns;
 
-use App\Actions\CacheNetworkHeight;
 use App\DTO\Slot;
 use App\Enums\ValidatorForgingStatus;
 use App\Facades\Network;
 use App\Facades\Rounds;
-use App\Http\Livewire\Concerns\DeferLoading;
-use App\Http\Livewire\Concerns\ValidatorData;
 use App\Models\Block;
 use App\Models\Wallet;
 use App\Services\Cache\MonitorCache;
@@ -18,27 +15,10 @@ use App\Services\Cache\WalletCache;
 use App\Services\Monitor\Monitor;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
-use Illuminate\View\View;
-use Livewire\Component;
 
-final class ValidatorDataBoxes extends Component
+trait HandlesMonitorDataBoxes
 {
-    use DeferLoading;
-    use ValidatorData;
-
-    private array $validators = [];
-
     private array $statistics = [];
-
-    public function render(): View
-    {
-        $this->validators = $this->fetchValidators();
-
-        return view('livewire.validator-data-boxes', [
-            'height'     => CacheNetworkHeight::execute(),
-            'statistics' => $this->statistics,
-        ]);
-    }
 
     public function pollStatistics(): void
     {
@@ -104,9 +84,12 @@ final class ValidatorDataBoxes extends Component
 
     public function getNextValidator(): ? WalletViewModel
     {
-        $this->validators = $this->fetchValidators();
+        $validators = [
+            ...$this->validators,
+            ...$this->overflowValidators,
+        ];
 
-        return (new MonitorCache())->setNextValidator(fn () => optional($this->getSlotsByStatus($this->validators, 'pending'))->wallet());
+        return (new MonitorCache())->setNextValidator(fn () => optional($this->getSlotsByStatus($validators, 'pending'))->wallet());
     }
 
     private function getSlotsByStatus(array $slots, string $status): ?Slot
