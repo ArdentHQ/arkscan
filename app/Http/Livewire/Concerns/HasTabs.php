@@ -129,7 +129,7 @@ trait HasTabs
             }
 
             $property = $properties->get($key);
-            if ($property) {
+            if ($property !== null) {
                 $except = $property->except;
             } else {
                 $except = $queryStringData[$key]['except'];
