@@ -80,7 +80,50 @@ it('should handle 404 and not spam livewire requests', function () {
     $payload = [
         'components' => [
             [
-                'snapshot' => '{"data":{"options":[[[{"icon":"sun","value":"light"},{"s":"arr"}],[{"icon":"moon","value":"dark"},{"s":"arr"}],[{"icon":"moon-stars","value":"dim"},{"s":"arr"}]],{"s":"arr"}],"setting":"theme","currentValue":"dark"},"memo":{"id":"x379QXjQDbJVacXZUrKA","name":"navbar.mobile-dark-mode-toggle","path":"delegates","method":"GET","children":[],"scripts":[],"assets":[],"errors":[],"locale":"en"},"checksum":"d0d8b6bf20ba442262d305eff05183949e6510c7be8a0ad11311fa92db4a5739"}',
+                'snapshot' => json_encode([
+                    'data' => [
+                        'options' => [
+                            [
+                                [
+                                    [
+                                        'icon'  => 'sun',
+                                        'value' => 'light',
+                                    ],
+                                    ['s' => 'arr'],
+                                ],
+                                [
+                                    [
+                                        'icon'  => 'moon',
+                                        'value' => 'dark',
+                                    ],
+                                    ['s' => 'arr'],
+                                ],
+                                [
+                                    [
+                                        'icon'  => 'moon-stars',
+                                        'value' => 'dim',
+                                    ],
+                                    ['s' => 'arr'],
+                                ],
+                            ],
+                            ['s' => 'arr'],
+                        ],
+                        'setting' => 'theme',
+                        'currentValue' => 'dark'
+                    ],
+                    'memo' => [
+                        'id'      => 'x379QXjQDbJVacXZUrKA',
+                        'name'    => 'navbar.mobile-dark-mode-toggle',
+                        'path'    => 'delegates',
+                        'method'  => 'GET',
+                        'children' => [],
+                        'scripts' => [],
+                        'assets'  => [],
+                        'errors'  => [],
+                        'locale'  => 'en',
+                    ],
+                    'checksum' => 'd0d8b6bf20ba442262d305eff05183949e6510c7be8a0ad11311fa92db4a5739',
+                ]),
                 'updates'  => [],
                 'calls'    => [
                     [
