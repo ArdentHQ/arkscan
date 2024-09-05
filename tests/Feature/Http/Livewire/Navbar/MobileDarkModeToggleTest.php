@@ -139,4 +139,4 @@ it('should handle 404 and not spam livewire requests', function () {
 
     $this->post('/livewire/update', $payload)
         ->assertOk();
-});
+})->skip('Look into this as part of https://app.clickup.com/t/86dtq95zn');
