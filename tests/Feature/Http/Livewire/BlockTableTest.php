@@ -162,6 +162,6 @@ it('should reload on new block event', function () {
     ]);
 
     $component->assertDontSee($otherBlock->id)
-        ->emit('echo:blocks,NewBlock')
+        ->dispatch('echo:blocks,NewBlock')
         ->assertSee($otherBlock->id);
 });

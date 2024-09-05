@@ -277,7 +277,7 @@ it('should reload on new transaction event', function () {
         $component->assertDontSee('0.48');
     }
 
-    $component->emit('echo:transactions,NewTransaction');
+    $component->dispatch('echo:transactions,NewTransaction');
 
     foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {
         $component->assertSee($transaction->id());
