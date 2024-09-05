@@ -134,7 +134,7 @@ it('should handle 404 and not spam livewire requests', function () {
                 ],
             ],
         ],
-        '_token' => '123',
+        '_token' => 'XJHUxjJngW4RnCyVFdo2Kj1kxMzFffORMh35tQ9B',
     ];
 
     $this->post('/livewire/update', $payload)
