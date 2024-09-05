@@ -1,4 +1,8 @@
-<div wire:poll.30s>
+<div
+    @if (config('broadcasting.default') !== 'reverb')
+        wire:poll.30s
+    @endif
+>
     <x-home.stat
         :title="trans('pages.home.statistics.currency_price', ['currency' => Network::currency()])"
         class="md:hidden"

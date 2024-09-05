@@ -428,3 +428,39 @@ it('should show warning icon for delegates missing blocks - days', function () {
             'Delegate last forged 199 blocks ago (more than a day)',
         ]);
 });
+
+it('should reload on new block event', function () {
+    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    $this->freezeTime();
+
+    [0 => $delegates] = createRealisticRound([
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+        [
+            ...array_fill(0, 4, true),
+            false,
+            ...array_fill(0, 46, true),
+        ],
+    ], $this);
+
+    $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
+
+    $delegate = (new WalletViewModel($delegates->get(4)));
+
+    Livewire::test(Monitor::class)
+        ->call('setIsReady')
+        ->emit('echo:blocks,NewBlock')
+        ->assertSeeInOrder([
+            $delegate->username(),
+            'Delegate last forged 199 blocks ago (more than a day)',
+        ]);
+});

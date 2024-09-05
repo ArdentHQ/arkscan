@@ -585,7 +585,7 @@ return [
 
     'support'          => [
         'title'          => 'Support',
-        'description'    => 'We are here to help. Get the answers to your ARKScan-related questions below.',
+        'description'    => 'We are here to help. Get the answers to your ARK Scan related questions below.',
         'let_us_help'    => [
             'description' => "Can't find what you're looking for? Many support-related questions can be answered by checking out our extensive documentation.",
         ],

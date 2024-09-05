@@ -5,6 +5,10 @@
         x-data="Wallet({{ json_encode(Network::toArray()) }})"
     @endif
 >
+    @push('scripts')
+        @vite('resources/js/webhooks.js')
+    @endpush
+
     <x-ark-pages-includes-layout-head
         :default-name="trans('metatags.home.title')"
         mask-icon-color="#de5846"
@@ -36,6 +40,8 @@
             </x-ark-footer>
 
             <livewire:search-modal />
+
+            <x-webhooks.currency-update :currency="Settings::currency()" />
 
             @if (config('arkscan.arkconnect.enabled'))
                 <x-arkconnect.delegate-toasts />

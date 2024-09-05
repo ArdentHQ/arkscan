@@ -41,6 +41,7 @@ final class WalletTransactionTable extends TabbedTableComponent
     protected $listeners = [
         'setTransactionsReady' => 'setIsReady',
         'currencyChanged'      => '$refresh',
+        'reloadTransactions'   => '$refresh',
     ];
 
     public function queryString(): array

@@ -258,3 +258,33 @@ it('should set the filter values via a setter', function () {
     expect($instance->multipayments)->toBeTrue();
     expect($instance->others)->toBeTrue();
 });
+
+it('should reload on new transaction event', function () {
+    $component = Livewire::test(TransactionTable::class)
+        ->call('setIsReady');
+
+    Transaction::factory(5)->transfer()->create([
+        'amount' => 481 * 1e8,
+        'fee'    => 0.481 * 1e8,
+    ]);
+
+    foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {
+        $component->assertDontSee($transaction->id());
+        $component->assertDontSee($transaction->timestamp());
+        $component->assertDontSee($transaction->sender()->address());
+        $component->assertDontSee($transaction->recipient()->address());
+        $component->assertDontSee('481.00');
+        $component->assertDontSee('0.48');
+    }
+
+    $component->emit('echo:transactions,NewTransaction');
+
+    foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {
+        $component->assertSee($transaction->id());
+        $component->assertSee($transaction->timestamp());
+        $component->assertSee($transaction->sender()->address());
+        $component->assertSee($transaction->recipient()->address());
+        $component->assertSee('481.00');
+        $component->assertSee('0.48');
+    }
+});

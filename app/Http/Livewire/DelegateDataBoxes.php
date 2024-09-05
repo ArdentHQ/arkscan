@@ -25,6 +25,11 @@ final class DelegateDataBoxes extends Component
     use DeferLoading;
     use DelegateData;
 
+    /** @var mixed */
+    protected $listeners = [
+        'echo:blocks,NewBlock' => 'pollStatistics',
+    ];
+
     private array $delegates = [];
 
     private array $statistics = [];
@@ -37,6 +42,13 @@ final class DelegateDataBoxes extends Component
             'height'     => CacheNetworkHeight::execute(),
             'statistics' => $this->statistics,
         ]);
+    }
+
+    public function componentIsReady(): void
+    {
+        $this->setIsReady();
+
+        $this->pollStatistics();
     }
 
     public function pollStatistics(): void
