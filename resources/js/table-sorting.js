@@ -32,7 +32,11 @@ const TableSorting = (
                         return;
                     }
 
-                    if (! toEl.getAttribute('wire:id') && toEl.getAttribute('id') !== tableId && ! toEl.classList.contains('table-container')) {
+                    if (
+                        !toEl.getAttribute("wire:id") &&
+                        toEl.getAttribute("id") !== tableId &&
+                        !toEl.classList.contains("table-container")
+                    ) {
                         return;
                     }
 
@@ -49,7 +53,7 @@ const TableSorting = (
                         return;
                     }
 
-                    toEl.querySelectorAll('table tbody').forEach((tbody) => {
+                    toEl.querySelectorAll("table tbody").forEach((tbody) => {
                         Alpine.morph(
                             tbody,
                             this.update(tbody.cloneNode(true)).outerHTML
@@ -72,15 +76,12 @@ const TableSorting = (
             }
 
             this.getTableRows().forEach((row, index) => {
-                if (typeof row.dataset["rowIndex"] === 'undefined') {
+                if (typeof row.dataset["rowIndex"] === "undefined") {
                     row.dataset["rowIndex"] = index;
                 }
             });
 
-            return this.sort(
-                this.$refs[this.sortBy],
-                table,
-            );
+            return this.sort(this.$refs[this.sortBy], table);
         },
 
         sortByColumn($event) {
@@ -97,7 +98,7 @@ const TableSorting = (
         },
 
         table() {
-            return this.$el.closest(`#${tableId}`).querySelector('tbody');
+            return this.$el.closest(`#${tableId}`).querySelector("tbody");
         },
 
         sort(element, table) {

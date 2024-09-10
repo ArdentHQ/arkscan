@@ -30,16 +30,22 @@ const MobileSorting = (
                         return;
                     }
 
-                    if (! toEl.getAttribute('wire:id') && toEl.getAttribute('id') !== tableId && ! toEl.classList.contains('table-container')) {
+                    if (
+                        !toEl.getAttribute("wire:id") &&
+                        toEl.getAttribute("id") !== tableId &&
+                        !toEl.classList.contains("table-container")
+                    ) {
                         return;
                     }
 
-                    toEl.querySelectorAll('.table-list-mobile').forEach((tbody) => {
-                        Alpine.morph(
-                            tbody,
-                            this.update(tbody.cloneNode(true)).outerHTML
-                        );
-                    });
+                    toEl.querySelectorAll(".table-list-mobile").forEach(
+                        (tbody) => {
+                            Alpine.morph(
+                                tbody,
+                                this.update(tbody.cloneNode(true)).outerHTML
+                            );
+                        }
+                    );
                 });
             }
         },
@@ -53,7 +59,9 @@ const MobileSorting = (
         },
 
         table() {
-            return this.$el.closest(`#${tableId}`).querySelector('.table-list-mobile');
+            return this.$el
+                .closest(`#${tableId}`)
+                .querySelector(".table-list-mobile");
         },
 
         sort(table) {
