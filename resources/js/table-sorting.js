@@ -2,6 +2,8 @@ import { sortRow } from "./includes/sorting";
 
 // Variation of https://codepen.io/ryangjchandler/pen/WNQQKeR
 const TableSorting = (
+    tableId,
+    componentId,
     sortBy = "",
     sortDirection = "asc",
     secondarySortBy = null,
@@ -18,33 +20,46 @@ const TableSorting = (
                 this.update();
             });
 
-            this.windowEvent = this.update.bind(this);
+            this.windowEvent = () => {
+                this.update();
+            };
 
             window.addEventListener("updateTableSorting", this.windowEvent);
 
             if (typeof Livewire !== "undefined") {
-                Livewire.hook("commit", ({ component, fail, succeed }) => {
-                    succeed(() => {
-                        if (!this.$refs[this.sortBy]) {
-                            if (this.windowEvent) {
-                                window.removeEventListener(
-                                    "updateTableSorting",
-                                    this.windowEvent
-                                );
+                Livewire.hook("morph.updating", ({ component, toEl }) => {
+                    if (component.name !== componentId) {
+                        return;
+                    }
 
-                                this.windowEvent = null;
-                            }
+                    if (! toEl.getAttribute('wire:id') && toEl.getAttribute('id') !== tableId && ! toEl.classList.contains('table-container')) {
+                        return;
+                    }
 
-                            return;
+                    if (!this.$refs[this.sortBy]) {
+                        if (this.windowEvent) {
+                            window.removeEventListener(
+                                "updateTableSorting",
+                                this.windowEvent
+                            );
+
+                            this.windowEvent = null;
                         }
 
-                        this.update();
+                        return;
+                    }
+
+                    toEl.querySelectorAll('table tbody').forEach((tbody) => {
+                        Alpine.morph(
+                            tbody,
+                            this.update(tbody.cloneNode(true)).outerHTML
+                        );
                     });
                 });
             }
         },
 
-        update() {
+        update(table) {
             this.secondarySortIndex = null;
             if (secondarySortBy) {
                 const secondaryElement = this.$refs[secondarySortBy];
@@ -57,10 +72,15 @@ const TableSorting = (
             }
 
             this.getTableRows().forEach((row, index) => {
-                row.dataset["rowIndex"] = index;
+                if (typeof row.dataset["rowIndex"] === 'undefined') {
+                    row.dataset["rowIndex"] = index;
+                }
             });
 
-            this.sort(this.$refs[this.sortBy]);
+            return this.sort(
+                this.$refs[this.sortBy],
+                table,
+            );
         },
 
         sortByColumn($event) {
@@ -76,20 +96,34 @@ const TableSorting = (
             this.sort(header);
         },
 
-        sort(element) {
-            this.getTableRows()
+        table() {
+            return this.$el.closest(`#${tableId}`).querySelector('tbody');
+        },
+
+        sort(element, table) {
+            if (table === undefined) {
+                table = this.table();
+            }
+
+            this.getTableRows(table)
                 .sort(
                     this.sortCallback(
                         Array.from(element.parentNode.children).indexOf(element)
                     )
                 )
                 .forEach((tr) => {
-                    this.$refs.tbody.appendChild(tr);
+                    table.appendChild(tr);
                 });
+
+            return table;
         },
 
-        getTableRows() {
-            return Array.from(this.$refs.tbody.querySelectorAll("tr"));
+        getTableRows(tbody) {
+            if (tbody !== undefined) {
+                return Array.from(tbody.querySelectorAll("tr"));
+            }
+
+            return Array.from(this.table().querySelectorAll("tbody tr"));
         },
 
         getCellValue(row, index) {
@@ -108,6 +142,7 @@ const TableSorting = (
                     index,
                     this.sortAsc
                 );
+
                 if (sortResult === 0 && this.secondarySortIndex !== null) {
                     return this.sortRows(
                         row1,
