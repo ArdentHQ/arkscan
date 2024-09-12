@@ -54,7 +54,7 @@ final class Chart extends Component
 
     public function updatedPeriod(): void
     {
-        $this->dispatchBrowserEvent('stats-period-updated', []);
+        $this->dispatch('stats-period-updated', []);
     }
 
     public function getDateUnitProperty(): ?string

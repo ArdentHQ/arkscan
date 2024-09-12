@@ -871,17 +871,17 @@ it('should handle sorting an empty table', function () {
 it('should reset page on sorting change', function () {
     Livewire::test(Delegates::class)
         ->call('setIsReady')
-        ->assertSet('page', 1)
+        ->assertSet('paginators.page', 1)
         ->assertSet('sortKey', 'rank')
         ->assertSet('sortDirection', SortDirection::ASC)
-        ->set('page', 12)
+        ->call('gotoPage', 12)
         ->call('sortBy', 'rank')
-        ->assertSet('page', 1)
+        ->assertSet('paginators.page', 1)
         ->assertSet('sortKey', 'rank')
         ->assertSet('sortDirection', SortDirection::DESC)
-        ->set('page', 12)
+        ->call('gotoPage', 12)
         ->call('sortBy', 'rank')
-        ->assertSet('page', 1)
+        ->assertSet('paginators.page', 1)
         ->assertSet('sortKey', 'rank')
         ->assertSet('sortDirection', SortDirection::ASC);
 });

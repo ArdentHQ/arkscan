@@ -51,7 +51,7 @@
                     <div class="flex justify-end">
                         <div class="flex items-center space-x-1">
                             <x-navbar.mobile.button
-                                @click="Livewire.emit('openSearchModal')"
+                                @click="Livewire.dispatch('openSearchModal')"
                                 dusk="navigation-search-modal-trigger"
                                 :disabled="app()->isDownForMaintenance()"
                             >
