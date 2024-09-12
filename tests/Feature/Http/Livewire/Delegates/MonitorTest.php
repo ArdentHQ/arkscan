@@ -11,7 +11,6 @@ use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Repositories\RoundRepository;
-use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\ForgingInfoCalculator;
@@ -20,7 +19,6 @@ use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
-
 use function Tests\createBlock;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
@@ -763,7 +761,7 @@ describe('Data Boxes', function () {
 
         for ($i = 0; $i < 3; $i++) {
             createRoundEntry($round, $height, $delegates);
-            $delegatesOrder = getRoundDelegates(false, $round);
+            $delegatesOrder  = getRoundDelegates(false, $round);
             $validatorIndex  = $delegatesOrder->search(fn ($validator) => $validator['publicKey'] === $delegates->get(4)->public_key);
             if ($validatorIndex < Network::delegateCount() - 2) {
                 break;
@@ -841,7 +839,7 @@ describe('Data Boxes', function () {
 
         for ($i = 0; $i < 3; $i++) {
             createRoundEntry($round, $height, $delegates);
-            $delegatesOrder = getRoundDelegates(false, $round);
+            $delegatesOrder  = getRoundDelegates(false, $round);
             $validatorIndex  = $delegatesOrder->search(fn ($validator) => $validator['publicKey'] === $delegates->get(4)->public_key);
             if ($validatorIndex < Network::delegateCount() - 2) {
                 break;
@@ -926,7 +924,7 @@ describe('Data Boxes', function () {
 
         for ($i = 0; $i < 3; $i++) {
             createRoundEntry($round, $height, $delegates);
-            $delegatesOrder = getRoundDelegates(false, $round);
+            $delegatesOrder  = getRoundDelegates(false, $round);
             $validatorIndex  = $delegatesOrder->search(fn ($validator) => $validator['publicKey'] === $delegates->get(4)->public_key);
             if ($validatorIndex < Network::delegateCount() - 2) {
                 break;

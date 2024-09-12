@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Delegates;
 
+use App\Actions\CacheNetworkHeight;
 use App\DTO\Slot;
 use App\Facades\Network;
-use App\Actions\CacheNetworkHeight;
 use App\Facades\Rounds;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\DelegateData;
+use App\Http\Livewire\Delegates\Concerns\HandlesMonitorDataBoxes;
 use App\Models\Block;
 use App\Services\Monitor\Monitor as MonitorService;
-use App\Services\Timestamp;
-use Illuminate\Support\Collection;
-use App\Http\Livewire\Delegates\Concerns\HandlesMonitorDataBoxes;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Component;
