@@ -1,13 +1,14 @@
+@props([
+    'statistics',
+    'height',
+])
+
 @php ($isLoading = ! $this->isReady || count($statistics) === 0)
 
 <div
     id="statistics-list"
     class="grid grid-cols-1 gap-2 w-full sm:grid-cols-2 md:gap-3 xl:grid-cols-4"
     wire:key="poll_statistics"
-    wire:init="componentIsReady"
-    @if ($this->isReady && config('broadcasting.default') !== 'reverb')
-        wire:poll.1s="pollStatistics"
-    @endif
 >
     <x-general.card class="flex items-center space-x-6">
         <x-delegates.monitor.stat
