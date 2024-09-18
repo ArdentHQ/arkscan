@@ -10,7 +10,6 @@ use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Repositories\RoundRepository;
-use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\ForgingInfoCalculator;
@@ -19,7 +18,6 @@ use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
-
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
 use function Tests\getDelegateForgingPosition;
