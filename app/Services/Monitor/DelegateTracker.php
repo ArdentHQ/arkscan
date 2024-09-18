@@ -64,8 +64,8 @@ final class DelegateTracker
     private static function determineSlot($publicKey, $index, &$forgingIndex, $forgingInfo, $delegateCount, $originalOrder): array
     {
         // Determine forging order based on the original offset
-        $difference      = $forgingInfo['currentForger'] - $originalOrder['currentForger'];
-        $normalizedOrder = $difference >= 0 ? $difference : $delegateCount + $difference;
+        $difference       = $forgingInfo['currentForger'] - $originalOrder['currentForger'];
+        $normalizedOrder  = $difference >= 0 ? $difference : $delegateCount + $difference;
         $secondsUntilSlot = Network::blockTime() * 1000;
 
         if ($index === $normalizedOrder) {
