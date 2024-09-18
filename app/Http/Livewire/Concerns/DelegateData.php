@@ -34,10 +34,6 @@ trait DelegateData
                 ->limit(Network::delegateCount() * 2)
                 ->get();
 
-            // UPDATE THIS????????
-            // UPDATE THIS????????
-            // UPDATE THIS????????
-            // UPDATE THIS????????
             foreach ($delegates as $delegate) {
                 $block = $blocks->firstWhere('generator_public_key', $delegate);
 
