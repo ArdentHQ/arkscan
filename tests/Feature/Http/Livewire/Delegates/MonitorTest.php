@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Contracts\RoundRepository as ContractsRoundRepository;
 use App\Enums\DelegateForgingStatus;
-use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Http\Livewire\Delegates\Monitor;
 use App\Models\Block;
@@ -21,10 +20,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
 
-use function Tests\createBlock;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
-use function Tests\createRoundEntry;
 use function Tests\getDelegateForgingPosition;
 
 describe('Monitor', function () {
@@ -81,9 +78,9 @@ describe('Monitor', function () {
     it('should render without errors', function () {
         createRoundWithDelegates();
 
-        $component = Livewire::test(Monitor::class)
+        Livewire::test(Monitor::class)
             ->call('setIsReady')
-            ->assertSeeHtml('pollDelegates');
+            ->assertSeeHtml('pollData');
     });
 
     it('should throw an exception after 3 tries', function () {
@@ -92,7 +89,6 @@ describe('Monitor', function () {
         $this->expectExceptionMessage('Something went wrong!');
 
         Cache::shouldReceive('tags')
-            ->with('rounds')
             ->andThrow(new Exception('Something went wrong!'))
             ->shouldReceive('increment')
             ->andReturn(1, 2, 3);
@@ -360,7 +356,7 @@ describe('Monitor', function () {
             ->call('pollDelegates')
             ->assertSeeInOrder([
                 $delegate->username(),
-                'Delegate last forged 199 blocks ago (~ 21 min)',
+                'Delegate last forged 199 blocks ago (~ 27 min)',
             ]);
     });
 
@@ -398,7 +394,7 @@ describe('Monitor', function () {
             ->call('pollDelegates')
             ->assertSeeInOrder([
                 $delegate->username(),
-                'Delegate last forged 199 blocks ago (~ 1h 28 min)',
+                'Delegate last forged 199 blocks ago (~ 1h 27 min)',
             ]);
     });
 
@@ -477,7 +473,7 @@ describe('Monitor', function () {
     });
 });
 
-describe('Data Boxes', function () {
+describe('Data Boxes', function() {
     beforeEach(function () {
         $this->app->bind(ContractsRoundRepository::class, function (): RoundRepository {
             return new RoundRepository();
@@ -534,16 +530,33 @@ describe('Data Boxes', function () {
         });
     }
 
-    function createPartialTestRounds(int $round, int $height, string $requiredPublicKey, array $didForge, $context, string $missedPublicKey = null): void
+    function createPartialTestRounds(
+        int &$round,
+        int &$height,
+        string $requiredPublicKey,
+        array $didForge,
+        $context,
+        string $missedPublicKey = null,
+        int $blocks = 49,
+        ?int $slots = null,
+    ): void
     {
         $delegateForgingPosition = getDelegateForgingPosition($round, $requiredPublicKey);
-        while ($delegateForgingPosition >= 48 || $delegateForgingPosition === 0) {
-            [$delegates, $round, $height] = createRealisticRound($didForge, $context);
+        while ($delegateForgingPosition >= $blocks - 2 || $delegateForgingPosition === 0) {
+            [1 => $round, 2 => $height] = createRealisticRound($didForge, $context);
 
             $delegateForgingPosition = getDelegateForgingPosition($round, $requiredPublicKey);
         }
 
-        createPartialRound($round, $height, 49, $context, [$requiredPublicKey], [$missedPublicKey]);
+        createPartialRound(
+            $round,
+            $height,
+            $blocks,
+            $context,
+            [$requiredPublicKey],
+            [$missedPublicKey],
+            slots: $slots,
+        );
     }
 
     it('should render without errors', function () {
@@ -552,7 +565,7 @@ describe('Data Boxes', function () {
         $component = Livewire::test(Monitor::class)
             ->call('setIsReady');
 
-        $component->call('pollStatistics');
+        $component->call('pollData');
 
         $component->assertHasNoErrors();
         $component->assertViewIs('livewire.delegates.monitor');
@@ -564,7 +577,7 @@ describe('Data Boxes', function () {
         $component = Livewire::test(Monitor::class)
             ->call('setIsReady');
 
-        $component->call('pollStatistics');
+        $component->call('pollData');
 
         $component->assertHasNoErrors();
 
@@ -577,7 +590,7 @@ describe('Data Boxes', function () {
         $component = Livewire::test(Monitor::class)
             ->call('setIsReady');
 
-        $component->call('pollStatistics');
+        $component->call('pollData');
 
         expect($component->instance()->getDelegatesPerformance())->toBeArray();
         expect($component->instance()->getDelegatesPerformance())->toHaveKeys(['forging', 'missed', 'missing']);
@@ -589,7 +602,7 @@ describe('Data Boxes', function () {
         $component = Livewire::test(Monitor::class)
             ->call('setIsReady');
 
-        $component->call('pollStatistics');
+        $component->call('pollData');
 
         $delegateWallet = Wallet::first();
         $delegate       = new WalletViewModel($delegateWallet);
@@ -598,28 +611,31 @@ describe('Data Boxes', function () {
     });
 
     it('should determine if delegates are not forging based on their round history', function () {
-        [$validators] = createRealisticRound([
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-        ], $this);
+        createRoundWithDelegatesAndPerformances([false, false], false);
 
         $component = Livewire::test(Monitor::class)
             ->call('setIsReady');
 
-        $component->call('pollStatistics');
+        $component->call('pollData');
 
-        $delegateWallet = $validators->get(4);
+        $delegateWallet = Wallet::first();
         $delegate       = new WalletViewModel($delegateWallet);
 
         expect($component->instance()->getDelegatePerformance($delegate->publicKey()))->toBe(DelegateForgingStatus::missing);
+    });
+
+    it('should determine if delegates just missed based on their round history', function () {
+        createRoundWithDelegatesAndPerformances([true, false], false);
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady');
+
+        $component->call('pollData');
+
+        $delegateWallet = Wallet::first();
+        $delegate       = new WalletViewModel($delegateWallet);
+
+        expect($component->instance()->getDelegatePerformance($delegate->publicKey()))->toBe(DelegateForgingStatus::missed);
     });
 
     it('should determine if delegates are forging after missing 4 slots based on their round history', function () {
@@ -628,7 +644,7 @@ describe('Data Boxes', function () {
         $component = Livewire::test(Monitor::class)
             ->call('setIsReady');
 
-        $component->call('pollStatistics');
+        $component->call('pollData');
 
         $delegateWallet = Wallet::first();
         $delegate       = new WalletViewModel($delegateWallet);
@@ -646,140 +662,89 @@ describe('Data Boxes', function () {
     });
 
     it('should return the next delegate', function () {
-        [$delegates, $round, $height] = createRealisticRound([array_fill(0, Network::blockCount(), true)], $this);
-
-        createPartialRound($round, $height, 12, $this);
+        createRoundWithDelegatesAndPerformances();
 
         $component = Livewire::test(Monitor::class)
             ->call('setIsReady')
             ->call('pollData');
 
-        expect($component->instance()->getNextValidator())->toBeInstanceOf(WalletViewModel::class);
-    });
-
-    it('should return the next validator when in overflow', function () {
-        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
-
-        $this->freezeTime();
-
-        [$delegates, $round, $height] = createRealisticRound([
-            array_fill(0, Network::blockCount(), true),
-        ], $this);
-
-        [$delegates, $round, $height] = createPartialRound($round, $height, null, $this, [
-            $delegates->get(4)->public_key,
-            $delegates->get(5)->public_key,
-            $delegates->get(6)->public_key,
-            $delegates->get(7)->public_key,
-            $delegates->get(8)->public_key,
-        ], [
-            $delegates->get(4)->public_key,
-            $delegates->get(5)->public_key,
-            $delegates->get(6)->public_key,
-            $delegates->get(7)->public_key,
-            $delegates->get(8)->public_key,
-        ], true, Network::blockCount());
-
-        $delegates = getRoundDelegates(false, $round - 1);
-
-        // Overflow slot 1
-        createBlock($height, $delegates->get(0)['publicKey'], $this);
-
-        // Overflow slot 2
-        $this->travel(Network::blockTime() + 2)->seconds();
-
-        // Overflow slot 3
-        createBlock($height + 1, $delegates->get(2)['publicKey'], $this);
-
-        $component = Livewire::test(Monitor::class)
-            ->call('setIsReady')
-            ->call('pollValidators');
-
-        $instance = $component->instance();
-
-        expect($instance->getNextValidator())->toBeInstanceOf(WalletViewModel::class);
-        expect($instance->getNextValidator()->publicKey())->toBe($delegates->get(4)['publicKey']);
+        expect($component->instance()->getNextdelegate())->toBeInstanceOf(WalletViewModel::class);
     });
 
     it('should not error if no cached delegate data', function () {
-        $wallets = Wallet::factory(Network::validatorCount())
-            ->activeValidator()
-            ->create();
+        $wallets = Wallet::factory(51)
+            ->activeDelegate()
+            ->create()
+            ->each(function ($wallet) {
+                $block = Block::factory()->create([
+                    'height'               => 5720529,
+                    'timestamp'            => 113620904,
+                    'generator_public_key' => $wallet->public_key,
+                ]);
 
-        createRoundEntry(112168, 5944904, $wallets);
+                Block::factory()->create([
+                    'height'               => 5720518,
+                    'timestamp'            => 113620904,
+                    'generator_public_key' => $wallet->public_key,
+                ]);
 
-        $wallets->each(function ($wallet) {
-            Block::factory()->create([
-                'height'               => 5944900,
-                'timestamp'            => 113620904,
-                'generator_public_key' => $wallet->public_key,
-            ]);
-
-            Block::factory()->create([
-                'height'               => 5944904,
-                'timestamp'            => 113620904,
-                'generator_public_key' => $wallet->public_key,
-            ]);
-        });
+                Round::factory()->create([
+                    'round'      => '112168',
+                    'public_key' => $wallet->public_key,
+                ]);
+            });
 
         foreach ($wallets as $wallet) {
-            expect((new WalletCache())->getValidator($wallet->public_key))->toBeNull();
+            expect((new WalletCache())->getDelegate($wallet->public_key))->toBeNull();
         }
 
         Livewire::test(Monitor::class)
             ->call('setIsReady')
             ->assertSeeHtml('rounded-sm-md animate-pulse bg-theme-secondary-300 dark:bg-theme-dark-800 w-[70px] h-5')
-            ->assertSet('statistics.nextValidator', null);
+            ->assertSet('statistics.nextDelegate', null);
     });
 
     it('should defer loading', function () {
-        createRealisticRound([array_fill(0, Network::delegateCount(), true)], $this);
+        createRoundWithDelegatesAndPerformances();
+
+        (new NetworkCache())->setHeight(fn (): int => 4234212);
 
         Livewire::test(Monitor::class)
             ->call('pollData')
             ->assertViewHas('height', 0)
             ->assertViewHas('statistics', [])
-            ->assertDontSee('102')
+            ->assertDontSee('4,234,212')
             ->call('setIsReady')
-            ->assertDontSee('102')
+            ->assertViewHas('height', 4234212)
+            ->assertDontSee('4,234,212')
             ->call('pollData')
-            ->assertViewHas('height', Network::delegateCount() * 2)
-            ->assertSee('102');
+            ->assertSee('4,234,212');
     });
 
     it('should calculate forged correctly with current round', function () {
         $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
-
         $this->freezeTime();
 
         [$delegates, $round, $height] = createRealisticRound([
-            array_fill(0, Network::delegateCount(), true),
+            array_fill(0, 51, true),
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
             ],
+            array_fill(0, 51, true),
         ], $this);
 
-        for ($i = 0; $i < 3; $i++) {
-            createRoundEntry($round, $height, $delegates);
-            $delegatesOrder = getRoundDelegates(false, $round);
-            $validatorIndex  = $delegatesOrder->search(fn ($validator) => $validator['publicKey'] === $delegates->get(4)->public_key);
-            if ($validatorIndex < Network::delegateCount() - 2) {
-                break;
-            }
-
-            [$delegates, $round, $height] = createRealisticRound([
-                array_fill(0, Network::delegateCount(), true),
-                [
-                    ...array_fill(0, 4, true),
-                    false,
-                    ...array_fill(0, Network::delegateCount() - 5, true),
-                ],
-            ], $this);
-        }
-
-        createPartialRound($round, $height, Network::delegateCount() - 2, $this, [], [$delegates->get(4)->public_key]);
+        $publicKey = $delegates->get(4)->public_key;
+        createPartialTestRounds($round, $height, $publicKey, [
+            array_fill(0, 51, true),
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            array_fill(0, 51, true),
+        ], $this, null, 51);
 
         expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, true]);
 
@@ -788,7 +753,7 @@ describe('Data Boxes', function () {
             ->call('pollData')
             ->assertSeeHtmlInOrder([
                 'Forging',
-                '<span>'.Network::delegateCount().'</span>',
+                '<span>51</span>',
                 'Missed',
                 '<span>0</span>',
                 'Not Forging',
@@ -806,20 +771,19 @@ describe('Data Boxes', function () {
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
             ],
-            array_fill(0, Network::delegateCount(), true),
-            array_fill(0, Network::delegateCount(), true),
+            array_fill(0, 51, true),
         ], $this);
 
-        expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([true, true]);
+        expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, true]);
 
         Livewire::test(Monitor::class)
             ->call('setIsReady')
             ->call('pollData')
             ->assertSeeHtmlInOrder([
                 'Forging',
-                '<span>'.Network::delegateCount().'</span>',
+                '<span>51</span>',
                 'Missed',
                 '<span>0</span>',
                 'Not Forging',
@@ -834,25 +798,16 @@ describe('Data Boxes', function () {
         $this->freezeTime();
 
         [$delegates, $round, $height] = createRealisticRound([
-            array_fill(0, Network::delegateCount(), true),
-            array_fill(0, Network::delegateCount(), true),
-            array_fill(0, Network::delegateCount(), true),
+            array_fill(0, 51, true),
+            array_fill(0, 51, true),
+            array_fill(0, 51, true),
         ], $this);
 
-        for ($i = 0; $i < 3; $i++) {
-            createRoundEntry($round, $height, $delegates);
-            $delegatesOrder = getRoundDelegates(false, $round);
-            $validatorIndex  = $delegatesOrder->search(fn ($validator) => $validator['publicKey'] === $delegates->get(4)->public_key);
-            if ($validatorIndex < Network::delegateCount() - 2) {
-                break;
-            }
+        $publicKey = $delegates->get(4)->public_key;
 
-            [$delegates, $round, $height] = createRealisticRound([
-                array_fill(0, Network::delegateCount(), true),
-            ], $this);
-        }
-
-        createPartialRound($round, $height, Network::delegateCount() - 2, $this, [$delegates->get(4)->public_key], [$delegates->get(4)->public_key]);
+        createPartialTestRounds($round, $height, $publicKey, [
+            array_fill(0, 51, true),
+        ], $this, $publicKey, 50, 51);
 
         expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([true, false]);
 
@@ -861,7 +816,7 @@ describe('Data Boxes', function () {
             ->call('pollData')
             ->assertSeeHtmlInOrder([
                 'Forging',
-                '<span>'.(Network::delegateCount() - 1).'</span>',
+                '<span>50</span>',
                 'Missed',
                 '<span>1</span>',
                 'Not Forging',
@@ -876,12 +831,16 @@ describe('Data Boxes', function () {
         $this->freezeTime();
 
         [0 => $delegates] = createRealisticRound([
-            array_fill(0, Network::delegateCount(), true),
-            array_fill(0, Network::delegateCount(), true),
+            array_fill(0, 51, true),
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
             ],
         ], $this);
 
@@ -892,7 +851,7 @@ describe('Data Boxes', function () {
             ->call('pollData')
             ->assertSeeHtmlInOrder([
                 'Forging',
-                '<span>'.(Network::delegateCount() - 1).'</span>',
+                '<span>50</span>',
                 'Missed',
                 '<span>1</span>',
                 'Not Forging',
@@ -910,38 +869,28 @@ describe('Data Boxes', function () {
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
             ],
         ], $this);
 
-        for ($i = 0; $i < 3; $i++) {
-            createRoundEntry($round, $height, $delegates);
-            $delegatesOrder = getRoundDelegates(false, $round);
-            $validatorIndex  = $delegatesOrder->search(fn ($validator) => $validator['publicKey'] === $delegates->get(4)->public_key);
-            if ($validatorIndex < Network::delegateCount() - 2) {
-                break;
-            }
-
-            [$delegates, $round, $height] = createRealisticRound([
-                [
-                    ...array_fill(0, 4, true),
-                    false,
-                    ...array_fill(0, Network::delegateCount() - 5, true),
-                ],
-            ], $this);
-        }
-
-        createPartialRound($round, $height, Network::delegateCount() - 2, $this, [$delegates->get(4)->public_key], [$delegates->get(4)->public_key]);
+        $publicKey = $delegates->get(4)->public_key;
+        createPartialTestRounds($round, $height, $publicKey, [
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this, $publicKey, 51);
 
         expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, false]);
 
@@ -950,7 +899,7 @@ describe('Data Boxes', function () {
             ->call('pollData')
             ->assertSeeHtmlInOrder([
                 'Forging',
-                '<span>'.(Network::delegateCount() - 1).'</span>',
+                '<span>50</span>',
                 'Missed',
                 '<span>0</span>',
                 'Not Forging',
@@ -968,17 +917,17 @@ describe('Data Boxes', function () {
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
             ],
         ], $this);
 
@@ -989,7 +938,7 @@ describe('Data Boxes', function () {
             ->call('pollData')
             ->assertSeeHtmlInOrder([
                 'Forging',
-                '<span>'.(Network::delegateCount() - 1).'</span>',
+                '<span>50</span>',
                 'Missed',
                 '<span>0</span>',
                 'Not Forging',
@@ -1007,29 +956,29 @@ describe('Data Boxes', function () {
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
             ],
         ], $this);
 
         Livewire::test(Monitor::class)
             ->call('setIsReady')
-            ->assertDontSeeHtml('<span>'.(Network::delegateCount() - 1).'</span>')
+            ->assertDontSeeHtml('<span>50</span>')
             ->assertDontSeeHtml('<span>0</span>')
             ->assertDontSeeHtml('<span>1</span>')
             ->dispatch('echo:blocks,NewBlock')
             ->assertSeeHtmlInOrder([
                 'Forging',
-                '<span>'.(Network::delegateCount() - 1).'</span>',
+                '<span>50</span>',
                 'Missed',
                 '<span>0</span>',
                 'Not Forging',
@@ -1047,28 +996,28 @@ describe('Data Boxes', function () {
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, Network::delegateCount() - 5, true),
+                ...array_fill(0, 46, true),
             ],
         ], $this);
 
         Livewire::test(Monitor::class)
-            ->assertDontSeeHtml('<span>'.(Network::delegateCount() - 1).'</span>')
+            ->assertDontSeeHtml('<span>50</span>')
             ->assertDontSeeHtml('<span>0</span>')
             ->assertDontSeeHtml('<span>1</span>')
             ->call('componentIsReady')
             ->assertSeeHtmlInOrder([
                 'Forging',
-                '<span>'.(Network::delegateCount() - 1).'</span>',
+                '<span>50</span>',
                 'Missed',
                 '<span>0</span>',
                 'Not Forging',
