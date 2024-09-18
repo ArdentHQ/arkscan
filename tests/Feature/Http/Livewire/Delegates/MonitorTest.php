@@ -471,7 +471,7 @@ describe('Monitor', function () {
     });
 });
 
-describe('Data Boxes', function() {
+describe('Data Boxes', function () {
     beforeEach(function () {
         $this->app->bind(ContractsRoundRepository::class, function (): RoundRepository {
             return new RoundRepository();
@@ -537,8 +537,7 @@ describe('Data Boxes', function() {
         string $missedPublicKey = null,
         int $blocks = 49,
         ?int $slots = null,
-    ): void
-    {
+    ): void {
         $delegateForgingPosition = getDelegateForgingPosition($round, $requiredPublicKey);
         while ($delegateForgingPosition >= $blocks - 2 || $delegateForgingPosition === 0) {
             [1 => $round, 2 => $height] = createRealisticRound($didForge, $context);
