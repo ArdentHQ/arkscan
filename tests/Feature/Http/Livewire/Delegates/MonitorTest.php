@@ -10,6 +10,7 @@ use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Repositories\RoundRepository;
+use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\ForgingInfoCalculator;
