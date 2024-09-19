@@ -13,6 +13,7 @@ use App\Http\Livewire\Concerns\DelegateData;
 use App\Http\Livewire\Delegates\Concerns\HandlesMonitorDataBoxes;
 use App\Models\Block;
 use App\Services\Monitor\Monitor as MonitorService;
+use App\Services\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -104,6 +105,8 @@ final class Monitor extends Component
      */
     public function getOverflowDelegatesProperty(): array
     {
+        dump(collect($this->delegates)->map(fn ($d) => $d->publicKey())->toArray());
+
         $missedCount = collect($this->delegates)
             ->filter(fn ($delegate) => $delegate->justMissed())
             ->count();
@@ -111,6 +114,8 @@ final class Monitor extends Component
         /** @var ?Slot $lastSlot */
         $lastSlot   = collect($this->delegates)->last();
         $lastStatus = $lastSlot?->status() ?? 'pending';
+
+        dump('missedCount', $missedCount);
 
         if ($lastSlot === null) {
             return [];
@@ -130,7 +135,16 @@ final class Monitor extends Component
             ->orderBy('height', 'desc')
             ->first();
 
+        dump('lastRoundBlock', $lastRoundBlock?->height);
+
+        collect($this->delegates)
+            ->each(fn (Slot $delegate, $index) => dump($index.': '.$delegate->status().': '.$delegate->order().'-'.$delegate->publicKey().'-'.($delegate?->lastBlock()['height'] ?? null)));
+            // ->dump();
+
+        // $lastRoundBlock = null;
         if ($lastRoundBlock === null) {
+            dump('yo');
+
             $lastSuccessfulForger = collect($this->delegates)
                 ->filter(fn (Slot $delegate) => $delegate->hasForged())
                 ->last();
@@ -151,6 +165,9 @@ final class Monitor extends Component
             ->orderBy('height', 'asc')
             ->get();
 
+        dump('lastStatus', $lastStatus);
+        dump('overflowBlocks', $overflowBlocks->count(), $lastRoundBlock->height, $heightRange);
+
         if ($lastStatus !== 'done' || $overflowBlocks->isEmpty()) {
             return $this->getOverflowSlots(
                 $missedCount,
@@ -165,6 +182,7 @@ final class Monitor extends Component
         if ($overflowBlocks->isNotEmpty() && $overflowBlocks->last() !== null) {
             $lastTimestamp = $overflowBlocks->last()['timestamp'];
         }
+        // dd($lastTimestamp);
 
         $overflowBlockCount = $overflowBlocks->groupBy('generator_public_key')
             ->map(function ($blocks) {
@@ -224,18 +242,16 @@ final class Monitor extends Component
         }
 
         $justMissedCount = 0;
-        $missedSeconds   = 0;
         $overflowSlots   = [];
-        foreach (collect($this->delegates)->take($missedCount) as $index => $delegate) {
+        foreach (collect($this->delegates)->take($missedCount) as $delegate) {
             if ($overflowBlockCount->isEmpty()) {
                 $secondsUntilForge = Network::blockTime();
 
-                $forgingAt = Carbon::createFromTimestamp($lastTimestamp)->addSeconds($secondsUntilForge);
+                $forgingAt = Timestamp::fromGenesis($lastTimestamp)->addSeconds($secondsUntilForge);
             } else {
                 $secondsUntilForge = Network::blockTime();
-                $secondsUntilForge += $missedSeconds;
 
-                $forgingAt = Carbon::createFromTimestamp($lastTimestamp)->addSeconds($secondsUntilForge);
+                $forgingAt = Timestamp::fromGenesis($lastTimestamp)->addSeconds($secondsUntilForge);
             }
 
             $status = 'pending';
@@ -254,10 +270,8 @@ final class Monitor extends Component
 
             if ($slot->justMissed()) {
                 $justMissedCount++;
-                $missedSeconds = $justMissedCount * self::MISSED_INCREMENT_SECONDS;
             } else {
                 $justMissedCount = 0;
-                $missedSeconds   = 0;
             }
 
             if ($delegate->publicKey() === $lastBlock->generator_public_key) {

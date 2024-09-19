@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 use App\Contracts\RoundRepository as ContractsRoundRepository;
 use App\Enums\DelegateForgingStatus;
+use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Http\Livewire\Delegates\Monitor;
 use App\Models\Block;
 use App\Models\Round;
+use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Wallet;
 use App\Repositories\RoundRepository;
 use App\Services\Cache\NetworkCache;
@@ -19,9 +21,82 @@ use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
+
+use function Tests\createFullRound;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
+use function Tests\createRoundEntry;
 use function Tests\getDelegateForgingPosition;
+use function Tests\getDelegateWallets;
+use function Tests\getHighestDelegateForgingPosition;
+use function Tests\getRoundDelegates;
+
+// function hasInvalidForgingPosition(int $round, int $positionCheck, array $requiredPublicKeys)
+// {
+//     foreach ($requiredPublicKeys as $publicKey) {
+//         $delegateForgingPosition = getDelegateForgingPosition($round, $publicKey);
+//         if ($delegateForgingPosition >= $positionCheck || $delegateForgingPosition === 0) {
+//             return true;
+//         }
+//     }
+
+//     return false;
+// }
+
+// function createPartialTestRounds(
+//     int &$round,
+//     int &$height,
+//     array|string $requiredPublicKey,
+//     array $didForge,
+//     $context,
+//     array|string $missedPublicKey = null,
+//     ?int $blocks = 49,
+//     ?int $slots = null,
+// ): void {
+//     $requiredPublicKeys = is_array($requiredPublicKey) ? $requiredPublicKey : [$requiredPublicKey];
+//     $positionCheck = $blocks ?? $slots ?? (Network::delegateCount() - 2);
+
+//     // $delegateForgingPosition = getHighestDelegateForgingPosition($round, $requiredPublicKeys);
+//     // while ($delegateForgingPosition >= $positionCheck || $delegateForgingPosition === 0) {
+//     // while (hasInvalidForgingPosition($round, $positionCheck, $requiredPublicKeys)) {
+//     //     // [1 => $round, 2 => $height] = createRealisticRound($didForge, $context);
+//     //     // createFullRound($round, $height, getDelegateWallets(), $context, $didForge);
+
+//     //     // $delegateForgingPosition = getHighestDelegateForgingPosition($round, $requiredPublicKeys);
+//     // }
+
+//     // $missedPublicKeys = [];
+//     // if ($missedPublicKey !== null) {
+//     //     $missedPublicKeys = is_array($missedPublicKey) ? $missedPublicKey : [$missedPublicKey];
+//     // }
+
+//     // dd([
+//     //     'round' => $round,
+//     //     'height' => $height,
+//     //     'blocks' => $blocks,
+//     //     // 'context' => $this,
+//     //     'missedPublicKeys' => $missedPublicKeys,
+//     //     'requiredPublicKeys' => $requiredPublicKeys,
+//     //     'cachePerformance' => true,
+//     //     'slots' => $slots,
+//     // ]);
+
+//     // getDelegateForgingPosition($round, $requiredPublicKeys[0]);
+//     getRoundDelegates(false, $round - 1);
+
+//     createPartialRound($round, $height, $blocks, $context, $missedPublicKey, $requiredPublicKey, true, $slots);
+
+//     // createPartialRound(
+//     //     $round,
+//     //     $height,
+//     //     $blocks,
+//     //     $context,
+//     //     $missedPublicKeys,
+//     //     is_array($requiredPublicKey) ? $requiredPublicKey : [$requiredPublicKey],
+//     //     true,
+//     //     $slots,
+//     // );
+// }
 
 describe('Monitor', function () {
     beforeEach(function () {
@@ -470,6 +545,149 @@ describe('Monitor', function () {
                 'Delegate last forged 199 blocks ago (more than a day)',
             ]);
     });
+
+    // it('should show no overflow delegates if no missed blocks', function () {
+    //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    //     $this->freezeTime();
+
+    //     createRealisticRound([
+    //         array_fill(0, 51, true),
+    //     ], $this);
+
+    //     // dd(getRoundDelegates(false)->pluck('status', 'order'));
+
+    //     $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
+
+    //     $component = Livewire::test(Monitor::class)
+    //         ->call('setIsReady')
+    //         ->call('pollDelegates');
+
+    //     $instance = $component->instance();
+
+    //     $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+    //     expect($overflowDelegates)->toHaveCount(0);
+    // });
+
+    // it('should show no overflow delegates at the start of a round', function () {
+    //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    //     $this->freezeTime();
+
+    //     [$delegates, $round] = createRealisticRound([
+    //         array_fill(0, 51, true),
+    //     ], $this);
+
+    //     foreach ($delegates as $delegate) {
+    //         createRoundEntry($round, $delegate->public_key);
+    //     }
+
+    //     $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
+
+    //     $component = Livewire::test(Monitor::class)
+    //         ->call('setIsReady')
+    //         ->call('pollDelegates');
+
+    //     $instance = $component->instance();
+
+    //     $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+    //     expect($overflowDelegates)->toHaveCount(0);
+    // });
+
+    // it('should show overflow delegates with a full round', function () {
+    //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    //     $this->freezeTime();
+
+    //     [2 => $height] = createRealisticRound([
+    //         [
+    //             ...array_fill(0, 8, true),
+    //             false,
+    //             false,
+    //             false,
+    //             false,
+    //             false,
+    //             ...array_fill(0, 38, true),
+    //         ],
+    //     ], $this);
+
+    //     expect($height)->toBe(103);
+
+    //     expect(Carbon::now())->toEqual(Carbon::parse('2024-02-01 14:00:00Z')->addSeconds(5 * Network::blockTime()));
+
+    //     $component = Livewire::test(Monitor::class)
+    //         ->call('setIsReady')
+    //         ->call('pollDelegates');
+
+    //     $instance = $component->instance();
+
+    //     $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+    //     expect($overflowDelegates)->toHaveCount(5);
+    //     expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([
+    //         'done',
+    //         'done',
+    //         'done',
+    //         'done',
+    //         'done',
+    //     ]);
+    // });
+
+    it('should show overflow delegates at the end of all initial slots', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [$delegates, $round, $height] = createRealisticRound([
+            array_fill(0, 51, true),
+        ], $this);
+
+        $requiredPublicKeys = [
+            $delegates->get(4)->public_key,
+            $delegates->get(5)->public_key,
+            $delegates->get(6)->public_key,
+            $delegates->get(7)->public_key,
+            $delegates->get(8)->public_key,
+        ];
+        // dd([
+        //     'round' => $round,
+        //     'height' => $height,
+        //     'blocks' => null,
+        //     // 'context' => $this,
+        //     'missedPublicKeys' => $requiredPublicKeys,
+        //     'requiredPublicKeys' => $requiredPublicKeys,
+        //     'cachePerformance' => true,
+        //     'slots' => 51,
+        // ]);
+
+        createPartialRound($round, $height, null, $this, $requiredPublicKeys, $requiredPublicKeys, true, 51);
+
+        // createPartialTestRounds($round, $height, $requiredPublicKeys, [
+        //     array_fill(0, 51, true),
+        // ], $this, $requiredPublicKeys, null, 51);
+
+        // expect($round - 1)->toBe(2);
+        // expect($height - 1)->toBe((3 * Network::delegateCount()) - 5);
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollDelegates');
+
+        $instance = $component->instance();
+
+        $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+        // expect($overflowDelegates)->toHaveCount(5);
+        expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([
+            'next',
+            'pending',
+            'pending',
+            'pending',
+            'pending',
+        ]);
+    });
 });
 
 describe('Data Boxes', function () {
@@ -527,34 +745,6 @@ describe('Data Boxes', function () {
                 'height' => $block->height->toNumber(),
             ]);
         });
-    }
-
-    function createPartialTestRounds(
-        int &$round,
-        int &$height,
-        string $requiredPublicKey,
-        array $didForge,
-        $context,
-        string $missedPublicKey = null,
-        int $blocks = 49,
-        ?int $slots = null,
-    ): void {
-        $delegateForgingPosition = getDelegateForgingPosition($round, $requiredPublicKey);
-        while ($delegateForgingPosition >= $blocks - 2 || $delegateForgingPosition === 0) {
-            [1 => $round, 2 => $height] = createRealisticRound($didForge, $context);
-
-            $delegateForgingPosition = getDelegateForgingPosition($round, $requiredPublicKey);
-        }
-
-        createPartialRound(
-            $round,
-            $height,
-            $blocks,
-            $context,
-            [$requiredPublicKey],
-            [$missedPublicKey],
-            slots: $slots,
-        );
     }
 
     it('should render without errors', function () {

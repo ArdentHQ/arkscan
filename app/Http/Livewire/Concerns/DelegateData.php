@@ -17,6 +17,7 @@ use App\ViewModels\WalletViewModel;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 trait DelegateData
 {
@@ -33,15 +34,31 @@ trait DelegateData
                 ->limit(Network::delegateCount() * 2)
                 ->get();
 
+            $lastBlockIds = DB::connection('explorer')
+                ->table('wallets')
+                ->whereIn('public_key', $delegates)
+                ->select([
+                    'public_key',
+                    'last_block_id' => function ($query) {
+                        $query->select('id')
+                            ->from('blocks')
+                            ->whereColumn('generator_public_key', 'public_key')
+                            ->orderBy('height', 'desc')
+                            ->limit(1);
+                    },
+                ]);
+
+            /** @var Collection $lastBlocks */
+            $lastBlocks = Block::whereIn('id', $lastBlockIds->pluck('last_block_id'))
+                ->get()
+                ->groupBy('generator_public_key');
+
             foreach ($delegates as $delegate) {
                 $block = $blocks->firstWhere('generator_public_key', $delegate);
 
                 // The delegate hasn't forged in some rounds.
-                if (is_null($block)) {
-                    $block = Block::query()
-                        ->where('generator_public_key', $delegate)
-                        ->orderBy('height', 'desc')
-                        ->limit(1)
+                if (is_null($block) && $lastBlocks->has($delegate)) {
+                    $block = $lastBlocks->get($delegate)
                         ->first();
                 }
 
@@ -53,12 +70,39 @@ trait DelegateData
                 (new WalletCache())->setLastBlock($delegate, [
                     'id'                   => $block->id,
                     'height'               => $block->height->toNumber(),
-                    'timestamp'            => Timestamp::fromGenesis($block->timestamp)->unix(),
+                    'timestamp'            => $block->timestamp,
                     'generator_public_key' => $block->generator_public_key,
                 ]);
             }
 
             return true;
+
+            // foreach ($delegates as $delegate) {
+            //     $block = $blocks->firstWhere('generator_public_key', $delegate);
+
+            //     // The delegate hasn't forged in some rounds.
+            //     if (is_null($block)) {
+            //         $block = Block::query()
+            //             ->where('generator_public_key', $delegate)
+            //             ->orderBy('height', 'desc')
+            //             ->limit(1)
+            //             ->first();
+            //     }
+
+            //     // The delegate has never forged.
+            //     if (is_null($block)) {
+            //         continue;
+            //     }
+
+            //     (new WalletCache())->setLastBlock($delegate, [
+            //         'id'                   => $block->id,
+            //         'height'               => $block->height->toNumber(),
+            //         'timestamp'            => Timestamp::fromGenesis($block->timestamp)->unix(),
+            //         'generator_public_key' => $block->generator_public_key,
+            //     ]);
+            // }
+
+            // return true;
         });
     }
 

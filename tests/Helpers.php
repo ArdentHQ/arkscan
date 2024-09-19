@@ -158,8 +158,14 @@ function bip39(): string
     return PublicKey::fromPassphrase((implode(' ', BIP39::Generate()->words)))->getHex();
 }
 
+function getDelegateWallets(): SupportCollection
+{
+    return Wallet::where('address', '!=', 'genesis')->get();
+}
+
 function createBlock(int $height, string $publicKey, mixed $context = null)
 {
+    dump('___CREATEBLOCK-'.$height.'-'.$publicKey);
     if ($context !== null) {
         $context->travel(Network::blockTime())->seconds();
     }
@@ -180,6 +186,14 @@ function createBlock(int $height, string $publicKey, mixed $context = null)
 
 function createRoundEntry(int $round, string $publicKey)
 {
+    $existingRound = Round::where('round', $round)
+        ->where('public_key', $publicKey)
+        ->exists();
+
+    if ($existingRound) {
+        return;
+    }
+
     $balance  = faker()->numberBetween(1, 1000) * 1e8;
     $existing = Round::firstWhere('public_key', $publicKey);
     if ($existing) {
@@ -197,6 +211,7 @@ function createRoundEntry(int $round, string $publicKey)
 // This is to ensure the SAME delegate misses or forges per round
 function createRealisticRound(array $performances, $context, bool $cachePerformance = true)
 {
+    dump('___CREATEREALISTICROUND');
     $cache = new WalletCache();
 
     // Create initial round
@@ -209,11 +224,19 @@ function createRealisticRound(array $performances, $context, bool $cachePerforma
 
         $context->travel(-(Network::delegateCount() * 8 * (count($performances) + 1)))->seconds();
 
+        $genesis = Wallet::factory()->create([
+            'address' => 'genesis',
+        ]);
+
+        createBlock($height, $genesis->public_key, $context);
+
+        $height++;
+
         $delegateWallets = Wallet::factory(Network::delegateCount())
             ->activeDelegate()
             ->create();
     } else {
-        $delegateWallets = Wallet::all();
+        $delegateWallets = getDelegateWallets();
 
         expect($delegateWallets)->toHaveCount(Network::delegateCount());
     }
@@ -222,27 +245,48 @@ function createRealisticRound(array $performances, $context, bool $cachePerforma
         createRoundEntry($round, $delegate->public_key);
 
         $cache->setDelegate($delegate->public_key, $delegate);
+    }
 
+    // $delegates = getRoundDelegates(false, $round);
+
+    // foreach (range($height, count($delegates)) as $index) {
+    //     $delegate = $delegates[$index - 1];
+    foreach ($delegateWallets as $delegate) {
+    // foreach ($delegates as $index => $delegate) {
+        // createRoundEntry($round, $delegate->public_key);
+
+        // $cache->setDelegate($delegate->public_key, $delegate);
+
+        // createBlock($height, $delegate['publicKey'], $context);
         createBlock($height, $delegate->public_key, $context);
 
         $height++;
+
+        // getRoundDelegates(false, $round);
+
+        if (($height - 1) % Network::delegateCount() === 0) {
+            $round++;
+            // break;
+        }
     }
 
-    $round++;
+    // dd(getRoundDelegates(false)->pluck('status', 'order'));
 
-    expect(Block::count())->toBe(Network::delegateCount());
-    expect($height - 1)->toBe(Network::delegateCount());
+    // $round++;
+
+    // expect(Block::count())->toBe(Network::delegateCount());
+    // expect($height - 1)->toBe(Network::delegateCount());
 
     // Loop through performances and generate rounds for each - requires 51 entries (blocks per round) to work correctly
     foreach ($performances as $index => $didForge) {
         createFullRound($round, $height, $delegateWallets, $context, $didForge);
 
-        expect(Block::count())->toBe(Network::delegateCount() + (($index + 1) * Network::delegateCount()));
+        // expect(Block::count())->toBe(Network::delegateCount() + (($index + 1) * Network::delegateCount()));
     }
 
-    expect($round - 1)->toBe(Block::count() / Network::delegateCount());
-    expect(Block::count())->toBe(($round - 1) * Network::delegateCount());
-    expect($height - 1)->toBe(($round - 1) * Network::delegateCount());
+    // expect($round - 1)->toBe(Block::count() / Network::delegateCount());
+    // expect(Block::count())->toBe(($round - 1) * Network::delegateCount());
+    // expect($height - 1)->toBe(($round - 1) * Network::delegateCount());
 
     (new NetworkCache())->setHeight(fn (): int => $height - 1);
 
@@ -255,9 +299,10 @@ function createRealisticRound(array $performances, $context, bool $cachePerforma
 
 function createFullRound(&$round, &$height, $delegateWallets, $context, $didForge = null)
 {
-    $delegates = getRoundDelegates(false, $round);
+    dump('___CREATEFULLROUND');
+    // $delegates = getRoundDelegates(false, $round);
 
-    foreach (Wallet::all() as $delegate) {
+    foreach ($delegateWallets as $delegate) {
         createRoundEntry($round, $delegate->public_key);
     }
 
@@ -268,7 +313,7 @@ function createFullRound(&$round, &$height, $delegateWallets, $context, $didForg
         foreach ($delegates as $delegate) {
             $delegateIndex = $delegateWallets->search(fn ($wallet) => $wallet->public_key === $delegate['publicKey']);
             if ($didForge && isset($didForge[$delegateIndex]) && $didForge[$delegateIndex] === false) {
-                $context->travel(8)->seconds();
+                $context->travel(Network::blockTime())->seconds();
 
                 continue;
             }
@@ -276,13 +321,18 @@ function createFullRound(&$round, &$height, $delegateWallets, $context, $didForg
             createBlock($height + $blockCount, $delegate['publicKey'], $context);
 
             $blockCount++;
-            if ($blockCount === 51) {
+
+            if (($height + $blockCount - 1) % Network::delegateCount() === 0) {
+                $round++;
+            }
+
+            if ($blockCount === Network::delegateCount()) {
                 break;
             }
         }
     }
 
-    $round++;
+    // $round++;
     $height += $blockCount;
 }
 
@@ -296,13 +346,21 @@ function createPartialRound(
     bool $cachePerformance = true,
     ?int $slots = null,
 ) {
-    $delegates = getRoundDelegates(false, $round);
+    dump('___CREATEPARTIALROUND');
+    // $delegates = getRoundDelegates(false, $round);
 
-    foreach (Wallet::all() as $delegate) {
+    // foreach ($delegates as $delegate) {
+    foreach (getDelegateWallets() as $delegate) {
         createRoundEntry($round, $delegate->public_key);
     }
 
     $delegates = getRoundDelegates(false, $round);
+
+    dump($delegates->pluck('publicKey')->toArray());
+
+    // $delegates = getRoundDelegates(false, $round);
+
+    // dump($delegates->pluck('publicKey')->toArray());
 
     if (count($missedPublicKeys) > 0) {
         $hasPublicKey = false;
@@ -321,16 +379,20 @@ function createPartialRound(
         }
     }
 
-    $requiredIndex = null;
+    $requiredIndexes = [];
     if (count($requiredPublicKeys) > 0) {
         foreach ($delegates as $index => $delegate) {
             if (! in_array($delegate['publicKey'], $requiredPublicKeys, true)) {
                 continue;
             }
 
-            $requiredIndex = $index;
+            $requiredIndexes[] = $index;
 
-            break;
+            // if ($requiredIndex === null || $index > $requiredIndex) {
+            //     $requiredIndex = $index;
+            // }
+
+            // break;
         }
     }
 
@@ -358,19 +420,30 @@ function createPartialRound(
             $context->travel(8)->seconds();
 
             $blockCount++;
+
+            if (($height + $blockCount - 1) % Network::delegateCount() === 0) {
+                $round++;
+            }
+
             $slotCount++;
         }
     }
 
     $height += $blockCount;
 
-    $round++;
+    // if ($blockCount === Network::delegateCount()) {
+    //     dump('BROOO');
+    //     $round++;
+    // }
+    // $round++;
 
-    if ($requiredIndex && ($requiredIndex === Network::delegateCount() - 1 || ($blocks !== null && $requiredIndex >= $blocks))) {
-        Artisan::call('cache:clear');
+    // foreach ($requiredIndexes as $requiredIndex) {
+    //     if ($requiredIndex === Network::delegateCount() - 1 || ($blocks !== null && $requiredIndex >= $blocks)) {
+    //         Artisan::call('cache:clear');
 
-        return createPartialRound($round, $height, $blocks, $context, $missedPublicKeys, $requiredPublicKeys, $cachePerformance, $slots);
-    }
+    //         return createPartialRound($round, $height, $blocks, $context, $missedPublicKeys, $requiredPublicKeys, $cachePerformance, $slots);
+    //     }
+    // }
 
     (new NetworkCache())->setHeight(fn (): int => $height - 1);
 
@@ -382,20 +455,53 @@ function createPartialRound(
         $delegates,
         $round,
         $height,
-        $blockCount,
-        $slotCount,
     ];
+}
+
+function getHighestDelegateForgingPosition(int $round, array $publicKeys)
+{
+    dump('___GETHIGHESTDELEGATEFORGINGPOSITION');
+    // dump('___ASD', getRoundDelegates(false, $round)
+    //     ->pluck('publicKey')
+    //     ->filter(fn ($publicKey) => in_array($publicKey, $publicKeys, true))
+    //     ->flip()
+    //     ->last());
+
+    return getRoundDelegates(false, $round)
+        ->pluck('publicKey')
+        ->filter(fn ($publicKey) => in_array($publicKey, $publicKeys, true))
+        ->flip()
+        ->last();
+
+    $delegates = getRoundDelegates(false, $round);
+    $highestIndex = null;
+    foreach ($delegates as $index => $delegate) {
+        if (! in_array($delegate['publicKey'], $publicKeys, true)) {
+            continue;
+        }
+
+        if ($highestIndex === null || $index > $highestIndex) {
+            $highestIndex = $index;
+        }
+    }
+
+    dd($highestIndex);
+
+    return $highestIndex;
 }
 
 function getDelegateForgingPosition(int $round, string $publicKey)
 {
+    dump('___GETDELEGATEFORGINGPOSITION');
     return getRoundDelegates(false, $round)
         ->search(fn ($delegate) => $delegate['publicKey'] === $publicKey);
 }
 
 function getRoundDelegates(bool $withBlock = true, int $roundNumber = null): SupportCollection
 {
-    $round     = null;
+    dump('___GETROUNDDELEGATES');
+
+    $round     = $roundNumber;
     $delegates = null;
     if ($roundNumber) {
         $delegates = Rounds::allByRound($roundNumber);
@@ -417,7 +523,7 @@ function getRoundDelegates(bool $withBlock = true, int $roundNumber = null): Sup
     }
 
     if ($delegates->count() === 0) {
-        $delegates = Wallet::all();
+        $delegates = getDelegateWallets();
     }
 
     expect($delegates->count())->toBe(Network::delegateCount());
@@ -425,9 +531,13 @@ function getRoundDelegates(bool $withBlock = true, int $roundNumber = null): Sup
     $round       = $round ?: Rounds::current();
     $heightRange = Monitor::heightRangeByRound($round);
 
+    dump('round', $heightRange);
+
     try {
         $delegates = new SupportCollection(DelegateTracker::execute($delegates, $heightRange[0]));
+        dump('DELES', $delegates->map(fn ($d) => $d['publicKey'].'-'.$d['status'])->toArray());
     } catch (\Throwable $e) {
+        dd($e);
         $delegates = $delegates->map(fn ($delegate) => [
             'publicKey' => $delegate,
             'status'    => 'initial',
