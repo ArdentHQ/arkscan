@@ -9,7 +9,6 @@ use App\Facades\Rounds;
 use App\Http\Livewire\Delegates\Monitor;
 use App\Models\Block;
 use App\Models\Round;
-use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Wallet;
 use App\Repositories\RoundRepository;
 use App\Services\Cache\NetworkCache;
@@ -21,7 +20,6 @@ use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
-
 use function Tests\createFullRound;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;

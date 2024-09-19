@@ -14,7 +14,6 @@ use App\Http\Livewire\Delegates\Concerns\HandlesMonitorDataBoxes;
 use App\Models\Block;
 use App\Services\Monitor\Monitor as MonitorService;
 use App\Services\Timestamp;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
@@ -139,7 +138,7 @@ final class Monitor extends Component
 
         collect($this->delegates)
             ->each(fn (Slot $delegate, $index) => dump($index.': '.$delegate->status().': '.$delegate->order().'-'.$delegate->publicKey().'-'.($delegate?->lastBlock()['height'] ?? null)));
-            // ->dump();
+        // ->dump();
 
         // $lastRoundBlock = null;
         if ($lastRoundBlock === null) {

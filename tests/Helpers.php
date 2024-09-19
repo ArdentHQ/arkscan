@@ -252,7 +252,7 @@ function createRealisticRound(array $performances, $context, bool $cachePerforma
     // foreach (range($height, count($delegates)) as $index) {
     //     $delegate = $delegates[$index - 1];
     foreach ($delegateWallets as $delegate) {
-    // foreach ($delegates as $index => $delegate) {
+        // foreach ($delegates as $index => $delegate) {
         // createRoundEntry($round, $delegate->public_key);
 
         // $cache->setDelegate($delegate->public_key, $delegate);
@@ -473,7 +473,7 @@ function getHighestDelegateForgingPosition(int $round, array $publicKeys)
         ->flip()
         ->last();
 
-    $delegates = getRoundDelegates(false, $round);
+    $delegates    = getRoundDelegates(false, $round);
     $highestIndex = null;
     foreach ($delegates as $index => $delegate) {
         if (! in_array($delegate['publicKey'], $publicKeys, true)) {
@@ -493,6 +493,7 @@ function getHighestDelegateForgingPosition(int $round, array $publicKeys)
 function getDelegateForgingPosition(int $round, string $publicKey)
 {
     dump('___GETDELEGATEFORGINGPOSITION');
+
     return getRoundDelegates(false, $round)
         ->search(fn ($delegate) => $delegate['publicKey'] === $publicKey);
 }
