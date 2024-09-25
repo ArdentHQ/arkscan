@@ -23,6 +23,16 @@
                 63,185
             </x-tables.rows.mobile.encapsulated.cell>
         </x-tables.rows.mobile>
+
+        <x-tables.rows.mobile>
+            <x-slot name="header" class="font-semibold">
+                @lang('pages.transaction.other_attributes')
+            </x-slot>
+
+            <x-tables.rows.mobile.encapsulated.cell :label="trans('pages.transaction.header.position_in_block')">
+                137
+            </x-tables.rows.mobile.encapsulated.cell>
+        </x-tables.rows.mobile>
     </x-general.page-section.container>
 
     <x-ark-container
