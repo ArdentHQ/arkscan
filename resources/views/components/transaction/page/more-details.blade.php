@@ -5,7 +5,7 @@
 <div>
     <x-general.page-section.container
         :title="trans('pages.transaction.more_details')"
-        class="sm:hidden mt-6"
+        class="mt-6 sm:hidden"
     >
         <x-tables.rows.mobile content-class="divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800 !space-y-3">
             <x-slot name="header" class="font-semibold">
@@ -30,7 +30,7 @@
         container-class="flex flex-col !py-0"
     >
         <div>
-            <div class="font-semibold leading-5 text-theme-secondary-900 dark:text-theme-dark-50 dim:text-theme-dim-50">
+            <div class="font-semibold leading-5 text-theme-secondary-900 dim:text-theme-dim-50 dark:text-theme-dark-50">
                 @lang('pages.transaction.more_details')
             </div>
 
