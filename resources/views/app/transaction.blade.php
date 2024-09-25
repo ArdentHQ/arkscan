@@ -4,7 +4,9 @@
     @section('content')
         <x-page-headers.transaction :transaction="$transaction" />
 
-        <div>
+        <div @class([
+            'mb-8' => ! $transaction->isContract(),
+        ])>
             <x-transaction.page.details :transaction="$transaction" />
 
             <x-transaction.page.transaction-type :transaction="$transaction" />
@@ -25,5 +27,11 @@
                 <x-transaction.page.participant-list :transaction="$transaction" />
             @endif
         </div>
+
+        @if ($transaction->isContract())
+            <div class="mb-8">
+                <x-transaction.page.more-details :transaction="$transaction" />
+            </div>
+        @endif
     @endsection
 @endcomponent

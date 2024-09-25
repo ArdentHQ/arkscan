@@ -9,7 +9,9 @@
 
 @php
     $headerWidth = 'w-[87px]';
-    if ($transaction->isVoteCombination()) {
+    if ($transaction->isContract()) {
+        $headerWidth = 'w-[132px]';
+    } elseif ($transaction->isVoteCombination()) {
         $headerWidth = 'w-[109px]';
     } elseif ($transaction->isLegacy()) {
         $headerWidth = 'w-[110px]';
