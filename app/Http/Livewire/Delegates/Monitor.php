@@ -179,7 +179,7 @@ final class Monitor extends Component
 
         $lastTimestamp = $lastRoundBlock->timestamp;
         if ($overflowBlocks->isNotEmpty() && $overflowBlocks->last() !== null) {
-            $lastTimestamp = $overflowBlocks->last()['timestamp'];
+            $lastTimestamp = Timestamp::fromGenesis($overflowBlocks->last()['timestamp'])->unix();
         }
 
         $overflowBlockCount = $overflowBlocks->groupBy('generator_public_key')
