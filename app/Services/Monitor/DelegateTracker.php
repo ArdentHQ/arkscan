@@ -57,7 +57,7 @@ final class DelegateTracker
             $delegateCount
         );
 
-        $slotOffset = static::slotOffset($startHeight, $delegates->toArray());
+        $slotOffset = static::slotOffset($startHeight, $delegates);
         // $slotOffset = null;
 
         return collect($delegatesOrdered)
@@ -114,7 +114,7 @@ final class DelegateTracker
      *
      * @return int
      */
-    private static function slotOffset(int $roundHeight, array $delegates): int
+    private static function slotOffset(int $roundHeight, Collection $delegates): int
     {
         $lastForger = DB::connection('explorer')
             ->table('blocks')
@@ -140,18 +140,18 @@ final class DelegateTracker
             ->pluck('count', 'generator_public_key');
 
         $offset = 0;
-        foreach ($delegates as $publicKey) {
+        foreach ($delegates as $delegate) {
             $hadBlock = false;
-            if ($roundBlockCount->has($publicKey)) {
-                $count = $roundBlockCount->get($publicKey) - 1;
+            if ($roundBlockCount->has($delegate->public_key)) {
+                $count = $roundBlockCount->get($delegate->public_key) - 1;
                 if ($count <= 0) {
-                    $roundBlockCount = $roundBlockCount->except($publicKey);
+                    $roundBlockCount = $roundBlockCount->except($delegate->public_key);
                 }
 
                 $hadBlock = true;
             }
 
-            if ($publicKey === $lastForger->generator_public_key) {
+            if ($delegate->public_key === $lastForger->generator_public_key) {
                 break;
             }
 

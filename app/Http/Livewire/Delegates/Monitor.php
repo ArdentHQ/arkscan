@@ -104,7 +104,7 @@ final class Monitor extends Component
      */
     public function getOverflowDelegatesProperty(): array
     {
-        dump(collect($this->delegates)->map(fn ($d) => $d->publicKey())->toArray());
+        // dump(collect($this->delegates)->map(fn ($d) => $d->publicKey())->toArray());
 
         $missedCount = collect($this->delegates)
             ->filter(fn ($delegate) => $delegate->justMissed())
@@ -114,7 +114,7 @@ final class Monitor extends Component
         $lastSlot   = collect($this->delegates)->last();
         $lastStatus = $lastSlot?->status() ?? 'pending';
 
-        dump('missedCount', $missedCount);
+        // dump('missedCount', $missedCount);
 
         if ($lastSlot === null) {
             return [];
@@ -134,15 +134,14 @@ final class Monitor extends Component
             ->orderBy('height', 'desc')
             ->first();
 
-        dump('lastRoundBlock', $lastRoundBlock?->height);
+        // dump('lastRoundBlock', $lastRoundBlock?->height);
 
-        collect($this->delegates)
-            ->each(fn (Slot $delegate, $index) => dump($index.': '.$delegate->status().': '.$delegate->order().'-'.$delegate->publicKey().'-'.($delegate?->lastBlock()['height'] ?? null)));
-        // ->dump();
+        // collect($this->delegates)
+        //     ->each(fn (Slot $delegate, $index) => dump($index.': '.$delegate->status().': '.$delegate->order().'-'.$delegate->publicKey().'-'.($delegate?->lastBlock()['height'] ?? null)));
 
         // $lastRoundBlock = null;
         if ($lastRoundBlock === null) {
-            dump('yo');
+            // dump('yo');
 
             $lastSuccessfulForger = collect($this->delegates)
                 ->filter(fn (Slot $delegate) => $delegate->hasForged())
@@ -164,8 +163,8 @@ final class Monitor extends Component
             ->orderBy('height', 'asc')
             ->get();
 
-        dump('lastStatus', $lastStatus);
-        dump('overflowBlocks', $overflowBlocks->count(), $lastRoundBlock->height, $heightRange);
+        // dump('lastStatus', $lastStatus);
+        // dump('overflowBlocks', $overflowBlocks->count(), $lastRoundBlock->height, $heightRange);
 
         if ($lastStatus !== 'done' || $overflowBlocks->isEmpty()) {
             return $this->getOverflowSlots(
@@ -181,7 +180,6 @@ final class Monitor extends Component
         if ($overflowBlocks->isNotEmpty() && $overflowBlocks->last() !== null) {
             $lastTimestamp = $overflowBlocks->last()['timestamp'];
         }
-        // dd($lastTimestamp);
 
         $overflowBlockCount = $overflowBlocks->groupBy('generator_public_key')
             ->map(function ($blocks) {
