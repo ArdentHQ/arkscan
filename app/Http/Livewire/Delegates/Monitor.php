@@ -14,6 +14,7 @@ use App\Http\Livewire\Delegates\Concerns\HandlesMonitorDataBoxes;
 use App\Models\Block;
 use App\Services\Monitor\Monitor as MonitorService;
 use App\Services\Timestamp;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
@@ -244,11 +245,11 @@ final class Monitor extends Component
             if ($overflowBlockCount->isEmpty()) {
                 $secondsUntilForge = Network::blockTime();
 
-                $forgingAt = Timestamp::fromGenesis($lastTimestamp)->addSeconds($secondsUntilForge);
+                $forgingAt = Carbon::createFromTimestamp($lastTimestamp)->addSeconds($secondsUntilForge);
             } else {
                 $secondsUntilForge = Network::blockTime();
 
-                $forgingAt = Timestamp::fromGenesis($lastTimestamp)->addSeconds($secondsUntilForge);
+                $forgingAt = Carbon::createFromTimestamp($lastTimestamp)->addSeconds($secondsUntilForge);
             }
 
             $status = 'pending';
