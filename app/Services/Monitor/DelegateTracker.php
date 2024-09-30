@@ -28,7 +28,7 @@ final class DelegateTracker
         $activeDelegates = self::shuffleDelegates($activeDelegates, $startHeight);
 
         // Act
-        $forgingInfo = ForgingInfoCalculator::calculate(null, $height);
+        $forgingInfo = ForgingInfoCalculator::calculateCurrentOrder($startHeight, $height);
 
         // // Determine Next Forgers...
         // $nextForgers = [];
@@ -44,7 +44,7 @@ final class DelegateTracker
         $forgingIndex = 2; // We start at 2 to skip 0 which results in 0 as time and 1 which would be the next forger.
 
         // Get the original forging info to determine the actual first
-        $originalOrder = ForgingInfoCalculator::calculate(
+        $originalOrder = ForgingInfoCalculator::calculateOriginalOrder(
             Block::where('height', $startHeight)->first()?->timestamp,
             $startHeight
         );
@@ -57,8 +57,7 @@ final class DelegateTracker
             $delegateCount
         );
 
-        $slotOffset = static::slotOffset($startHeight, $delegates);
-        // $slotOffset = null;
+        $slotOffset = static::slotOffset($startHeight, $delegatesOrdered);
 
         return collect($delegatesOrdered)
             ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $originalOrder, $delegateCount, $slotOffset) {
@@ -70,8 +69,7 @@ final class DelegateTracker
     private static function determineSlot($publicKey, $index, &$forgingIndex, $forgingInfo, $delegateCount, $originalOrder, $slotOffset): array
     {
         // Determine forging order based on the original offset
-        $difference       = $forgingInfo['currentForger'] - $originalOrder['currentForger'];
-        // $difference       = $forgingInfo['currentForger'] + $slotOffset;
+        $difference       = $forgingInfo['currentForger'] + $slotOffset;
         $normalizedOrder  = $difference >= 0 ? $difference : $delegateCount + $difference;
         $secondsUntilSlot = Network::blockTime() * 1000;
 
@@ -114,7 +112,7 @@ final class DelegateTracker
      *
      * @return int
      */
-    private static function slotOffset(int $roundHeight, Collection $delegates): int
+    private static function slotOffset(int $roundHeight, array $delegates): int
     {
         $lastForger = DB::connection('explorer')
             ->table('blocks')
@@ -140,18 +138,20 @@ final class DelegateTracker
             ->pluck('count', 'generator_public_key');
 
         $offset = 0;
-        foreach ($delegates as $delegate) {
+        foreach ($delegates as $publicKey) {
             $hadBlock = false;
-            if ($roundBlockCount->has($delegate->public_key)) {
-                $count = $roundBlockCount->get($delegate->public_key) - 1;
+            if ($roundBlockCount->has($publicKey)) {
+                $count = $roundBlockCount->get($publicKey) - 1;
                 if ($count <= 0) {
-                    $roundBlockCount = $roundBlockCount->except($delegate->public_key);
+                    $roundBlockCount = $roundBlockCount->except($publicKey);
+                } else {
+                    $roundBlockCount->put($publicKey, $count);
                 }
 
                 $hadBlock = true;
             }
 
-            if ($delegate->public_key === $lastForger->generator_public_key) {
+            if ($publicKey === $lastForger->generator_public_key) {
                 break;
             }
 
@@ -163,10 +163,10 @@ final class DelegateTracker
         }
 
         if ($roundBlockCount->count() > 0) {
-            $offset = Network::delegateCount() - $roundBlockCount->sum() + 1;
+            $offset = Network::delegateCount() - $roundBlockCount->sum();
         }
 
-        return $offset + 1;
+        return $offset;
     }
 
     private static function getActiveDelegates(Collection $delegates): array
