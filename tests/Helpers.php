@@ -19,7 +19,6 @@ use ArkEcosystem\Crypto\Identities\PublicKey;
 use Faker\Generator;
 use FurqanSiddiqui\BIP39\BIP39;
 use Illuminate\Support\Collection as SupportCollection;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
