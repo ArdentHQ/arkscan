@@ -20,6 +20,8 @@ use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
+
+use function Tests\createBlock;
 use function Tests\createFullRound;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
@@ -669,6 +671,224 @@ describe('Monitor', function () {
             'pending',
         ]);
     });
+
+    // it('should show overflow delegates for partial round', function () {
+    //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    //     $this->freezeTime();
+
+    //     [$delegates, $round, $height] = createRealisticRound([
+    //         array_fill(0, Network::delegateCount(), true),
+    //     ], $this);
+
+    //     createPartialRound($round, $height, Network::delegateCount() - 1, $this, [
+    //         $delegates->get(4)->public_key,
+    //         $delegates->get(5)->public_key,
+    //         $delegates->get(6)->public_key,
+    //         $delegates->get(7)->public_key,
+    //         $delegates->get(8)->public_key,
+    //     ], [
+    //         $delegates->get(4)->public_key,
+    //         $delegates->get(5)->public_key,
+    //         $delegates->get(6)->public_key,
+    //         $delegates->get(7)->public_key,
+    //         $delegates->get(8)->public_key,
+    //     ]);
+
+    //     $component = Livewire::test(Monitor::class)
+    //         ->call('setIsReady')
+    //         ->call('pollData');
+
+    //     $instance = $component->instance();
+
+    //     $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+    //     // expect($overflowDelegates)->toHaveCount(5);
+    //     expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([
+    //         'done',
+    //         'done',
+    //         'done',
+    //         'done',
+    //         'next',
+    //     ]);
+    // });
+
+    // it('should track overflow slots correctly', function () {
+    //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    //     $this->freezeTime();
+
+    //     [$delegates, $round, $height] = createRealisticRound([
+    //         array_fill(0, Network::delegateCount(), true),
+    //     ], $this);
+
+    //     [$delegates, $round, $height] = createPartialRound($round, $height, null, $this, [
+    //         $delegates->get(4)->public_key,
+    //         $delegates->get(5)->public_key,
+    //         $delegates->get(6)->public_key,
+    //         $delegates->get(7)->public_key,
+    //         $delegates->get(8)->public_key,
+    //     ], [
+    //         $delegates->get(4)->public_key,
+    //         $delegates->get(5)->public_key,
+    //         $delegates->get(6)->public_key,
+    //         $delegates->get(7)->public_key,
+    //         $delegates->get(8)->public_key,
+    //     ], true, Network::delegateCount());
+
+    //     $delegates = getRoundDelegates(false, $round - 1);
+
+    //     createBlock($height, $delegates->get(0)['publicKey'], $this);
+    //     createBlock($height + 1, $delegates->get(1)['publicKey'], $this);
+
+    //     $component = Livewire::test(Monitor::class)
+    //         ->call('setIsReady')
+    //         ->call('pollData');
+
+    //     $instance = $component->instance();
+
+    //     $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+    //     // expect($overflowDelegates)->toHaveCount(5);
+    //     expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([
+    //         'done',
+    //         'done',
+    //         'next',
+    //         'pending',
+    //         'pending',
+    //     ]);
+    // });
+
+    // it('should handle when an overflow delegate misses a block', function () {
+    //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    //     $this->freezeTime();
+
+    //     [$delegates, $round, $height] = createRealisticRound([
+    //         array_fill(0, Network::delegateCount(), true),
+    //     ], $this);
+
+    //     [$delegates, $round, $height] = createPartialRound($round, $height, null, $this, [
+    //         $delegates->get(4)->public_key,
+    //         $delegates->get(5)->public_key,
+    //         $delegates->get(6)->public_key,
+    //         $delegates->get(7)->public_key,
+    //         $delegates->get(8)->public_key,
+    //     ], [
+    //         $delegates->get(4)->public_key,
+    //         $delegates->get(5)->public_key,
+    //         $delegates->get(6)->public_key,
+    //         $delegates->get(7)->public_key,
+    //         $delegates->get(8)->public_key,
+    //     ], true, Network::delegateCount());
+
+    //     $delegates = getRoundDelegates(false, $round - 1);
+
+    //     // Overflow slot 1
+    //     createBlock($height, $delegates->get(0)['publicKey'], $this);
+
+    //     // Overflow slot 2
+    //     $this->travel(Network::blockTime() + 2)->seconds();
+
+    //     // Overflow slot 3
+    //     createBlock($height + 1, $delegates->get(2)['publicKey'], $this);
+
+    //     $overflowForgeTime = Carbon::parse('2024-02-01 14:00:00Z')->addSeconds((Network::blockTime() * (Network::delegateCount() + 4)));
+
+    //     $component = Livewire::test(Monitor::class)
+    //         ->call('setIsReady')
+    //         ->call('pollData');
+
+    //     $instance = $component->instance();
+
+    //     $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+    //     // expect($overflowDelegates)->toHaveCount(6);
+    //     expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([
+    //         'done',
+    //         'done',
+    //         'done',
+    //         'next',
+    //         'pending',
+    //         'pending',
+    //     ]);
+
+    //     expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->forgingAt()->format('Y-m-d H:i:s'))->toArray())->toBe([
+    //         $overflowForgeTime->format('Y-m-d H:i:s'),
+    //         $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
+    //         $overflowForgeTime->addSeconds(Network::blockTime() + 2)->format('Y-m-d H:i:s'), // Missed overflow block
+    //         $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
+    //         $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
+    //         $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
+    //     ]);
+    // });
+
+    // it('should correctly show overflow if only a single block was missed', function () {
+    //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    //     $this->freezeTime();
+
+    //     [$delegates, $round, $height] = createRealisticRound([
+    //         array_fill(0, Network::delegateCount(), true),
+    //     ], $this);
+
+    //     createPartialRound($round, $height, null, $this, [
+    //         $delegates->get(40)->public_key,
+    //     ], [
+    //         $delegates->get(40)->public_key,
+    //     ], true, Network::delegateCount() - 4);
+
+    //     expect($height)->toBe((3 * Network::delegateCount()) - 4 + 1);
+
+    //     $component = Livewire::test(Monitor::class)
+    //         ->call('setIsReady')
+    //         ->call('pollData');
+
+    //     $instance = $component->instance();
+
+    //     $delegatesProperty = new ReflectionProperty($instance, 'delegates');
+    //     $delegatesProperty->setAccessible(true);
+
+    //     $slots = collect($delegatesProperty->getValue($instance))->groupBy(fn ($delegate) => $delegate->status());
+
+    //     // expect($slots['done'])->toHaveCount(Network::delegateCount() - 4);
+    //     // expect($slots['pending'])->toHaveCount(3);
+    //     // expect($slots['next'])->toHaveCount(1);
+
+    //     /** @var Slot[] */
+    //     $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+    //     $overflowForgeTime = Carbon::parse('2024-02-01 14:00:00Z')->addSeconds(Network::blockTime() * Network::delegateCount());
+
+    //     // expect($overflowDelegates)->toHaveCount(1);
+    //     // expect($overflowDelegates[0]->forgingAt()->format('Y-m-d H:i:s'))->toBe($overflowForgeTime->format('Y-m-d H:i:s'));
+    //     expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([
+    //         'pending',
+    //     ]);
+    // });
+
+    // // it('should extend forge time when missed before overflow (testing Helper)', function (int $count, string $expected) {
+    // //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    // //     $this->freezeTime();
+
+    // //     createRealisticRound([
+    // //         [
+    // //             ...array_fill(0, 4, true),
+    // //             ...array_fill(0, $count, false),
+    // //             ...array_fill(0, 49 - $count, true),
+    // //         ],
+    // //     ], $this);
+
+    // //     expect(Carbon::now()->format('Y-m-d H:i:s'))->toBe($expected);
+    // // })->with([
+    // //     1 => [1, '2024-02-01 14:00:08'],
+    // //     2 => [2, '2024-02-01 14:00:18'],
+    // //     3 => [3, '2024-02-01 14:00:30'],
+    // //     4 => [4, '2024-02-01 14:00:44'],
+    // //     5 => [5, '2024-02-01 14:02:00'], // doubles up because we hit the batch of missing delegates on the second passthrough
+    // //     6 => [6, '2024-02-01 14:02:36'],
+    // // ]);
 });
 
 describe('Data Boxes', function () {
