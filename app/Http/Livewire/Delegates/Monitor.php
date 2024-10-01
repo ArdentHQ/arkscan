@@ -189,7 +189,7 @@ final class Monitor extends Component
 
         $hasReachedFinalSlot = $lastTimestamp === $lastRoundBlock->timestamp;
 
-        $additional = null;
+        $additional         = null;
         $previousAdditional = null;
         while ($additional === null || $additional > 0) {
             if ($additional === null) {
