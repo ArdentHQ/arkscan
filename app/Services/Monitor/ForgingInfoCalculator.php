@@ -18,16 +18,6 @@ final class ForgingInfoCalculator
         ];
     }
 
-    private static function findCurrentIndex(int $roundHeight, int $currentHeight): array
-    {
-        $activeDelegates    = Network::delegateCount();
-
-        $currentForger = ($currentHeight - $roundHeight) % $activeDelegates;
-        $nextForger    = ($currentForger + 1) % $activeDelegates;
-
-        return [$currentForger, $nextForger];
-    }
-
     public static function calculateOriginalOrder(?int $timestamp, int $height): array
     {
         $slotInfo = (new Slots())->getSlotInfo($timestamp, $height);
@@ -40,6 +30,16 @@ final class ForgingInfoCalculator
             'blockTimestamp' => $slotInfo['startTime'],
             'canForge'       => $slotInfo['forgingStatus'],
         ];
+    }
+
+    private static function findCurrentIndex(int $roundHeight, int $currentHeight): array
+    {
+        $activeDelegates    = Network::delegateCount();
+
+        $currentForger = ($currentHeight - $roundHeight) % $activeDelegates;
+        $nextForger    = ($currentForger + 1) % $activeDelegates;
+
+        return [$currentForger, $nextForger];
     }
 
     private static function findOriginalIndex(int $slotNumber): array
