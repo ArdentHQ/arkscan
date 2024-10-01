@@ -83,7 +83,7 @@ final class DelegateTracker
         }
 
         if ($index > $normalizedOrder) {
-            $nextTime = $forgingIndex * $secondsUntilSlot;
+            $nextTime = ($forgingIndex - 1) * $secondsUntilSlot;
 
             $forgingIndex++;
 

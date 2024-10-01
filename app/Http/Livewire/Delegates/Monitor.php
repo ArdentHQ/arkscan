@@ -13,6 +13,7 @@ use App\Http\Livewire\Concerns\DelegateData;
 use App\Http\Livewire\Delegates\Concerns\HandlesMonitorDataBoxes;
 use App\Models\Block;
 use App\Services\Monitor\Monitor as MonitorService;
+use App\Services\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -188,22 +189,36 @@ final class Monitor extends Component
 
         $hasReachedFinalSlot = $lastTimestamp === $lastRoundBlock->timestamp;
 
-        $overflowSlots = $this->getOverflowSlots(
-            $missedCount,
-            $lastStatus,
-            $lastBlock,
-            $lastTimestamp,
-            overflowBlockCount: $overflowBlockCount,
-            hasReachedFinalSlot: $hasReachedFinalSlot,
-        );
-
-        $additional = 0;
-        foreach ($overflowSlots as $slot) {
-            if (! $slot->justMissed()) {
-                continue;
+        $additional = null;
+        $previousAdditional = null;
+        while ($additional === null || $additional > 0) {
+            if ($additional === null) {
+                $additional = 0;
             }
 
-            $additional++;
+            $overflowSlots = $this->getOverflowSlots(
+                $missedCount + $additional,
+                $lastStatus,
+                $lastBlock,
+                $lastTimestamp,
+                overflowBlockCount: $overflowBlockCount,
+                hasReachedFinalSlot: $hasReachedFinalSlot,
+            );
+
+            $additional = 0;
+            foreach ($overflowSlots as $slot) {
+                if (! $slot->justMissed()) {
+                    continue;
+                }
+
+                $additional++;
+            }
+
+            if ($additional === $previousAdditional) {
+                break;
+            }
+
+            $previousAdditional = $additional;
         }
 
         if ($additional === 0) {
@@ -238,7 +253,6 @@ final class Monitor extends Component
             $overflowBlockCount = new Collection();
         }
 
-        $justMissedCount = 0;
         $overflowSlots   = [];
         foreach (collect($this->delegates)->take($missedCount) as $delegate) {
             if ($overflowBlockCount->isEmpty()) {
@@ -264,12 +278,6 @@ final class Monitor extends Component
                 status: $status,
                 roundBlockCount: $overflowBlockCount,
             );
-
-            if ($slot->justMissed()) {
-                $justMissedCount++;
-            } else {
-                $justMissedCount = 0;
-            }
 
             if ($delegate->publicKey() === $lastBlock->generator_public_key) {
                 $hasReachedFinalSlot = true;
