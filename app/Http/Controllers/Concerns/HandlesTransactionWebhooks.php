@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Concerns;
 
 use App\Events\NewTransaction;
-use App\Jobs\Webhooks\CheckLatestWallet;
 use App\Jobs\Webhooks\CheckLargestTransaction;
+use App\Jobs\Webhooks\CheckLatestWallet;
 
 trait HandlesTransactionWebhooks
 {
