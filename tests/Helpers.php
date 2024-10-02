@@ -225,9 +225,6 @@ function createRealisticRound(array $performances, $context, bool $cachePerforma
 
         $context->travel(-(Network::delegateCount() * 8 * (count($performances) + 1)))->seconds();
 
-
-
-
         $genesis = Wallet::factory()->create([
             'address' => 'genesis',
         ]);
@@ -235,9 +232,6 @@ function createRealisticRound(array $performances, $context, bool $cachePerforma
         createBlock($height, $genesis->public_key, $context);
 
         $height++;
-
-
-
 
         $delegateWallets = Wallet::factory(Network::delegateCount())
             ->activeDelegate()
