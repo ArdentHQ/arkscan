@@ -39,6 +39,7 @@ final class AnalysisTest extends TestCase
             'Tests\createPartialRound',
             'Tests\getRoundValidators',
             'Tests\validatorsForRound',
+            'Tests\getValidatorForgingPosition',
         ];
     }
 }

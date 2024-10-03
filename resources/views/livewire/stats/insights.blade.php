@@ -15,4 +15,12 @@
     <x-stats.insights.annual
         :years="$annualData"
     />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            Livewire.on('currencyChanged', () => {
+                @this.updateData();
+            });
+        });
+    </script>
 </div>

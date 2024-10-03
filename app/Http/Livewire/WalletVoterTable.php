@@ -24,6 +24,7 @@ final class WalletVoterTable extends TabbedTableComponent
     protected $listeners = [
         'setVotersReady'  => 'setIsReady',
         'currencyChanged' => '$refresh',
+        'reloadVoters'    => '$refresh',
     ];
 
     public function mount(WalletViewModel $wallet): void

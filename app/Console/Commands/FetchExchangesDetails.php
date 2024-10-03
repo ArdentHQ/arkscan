@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Jobs\FetchExchangeDetails;
+use App\Contracts\MarketDataProvider;
+use App\Exceptions\CoinGeckoThrottledException;
 use App\Models\Exchange;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 
 final class FetchExchangesDetails extends Command
 {
@@ -26,9 +29,27 @@ final class FetchExchangesDetails extends Command
 
     public function handle(): int
     {
-        Exchange::coingecko()->each(function ($exchange) {
-            FetchExchangeDetails::dispatch($exchange);
-        });
+        $exchanges = Exchange::coingecko()
+            ->orderBy('volume', 'desc')
+            ->get()
+            ->filter(fn ($exchange) => $exchange->updated_at < Carbon::now()->subHours(1))
+            ->sort(fn ($a, $b) => ($a->updated_at?->unix() ?? 0) - ($b->updated_at?->unix() ?? 0));
+
+        foreach ($exchanges as $exchange) {
+            try {
+                $result = app(MarketDataProvider::class)->exchangeDetails($exchange);
+            } catch (CoinGeckoThrottledException) {
+                continue;
+            }
+
+            $exchange->price  = Arr::get($result, 'price', $exchange->price);
+            $exchange->volume = Arr::get($result, 'volume', $exchange->volume);
+
+            $exchange->save();
+
+            // We touch to make sure the updated_at was changed to prevent unnecessary updates.
+            $exchange->touch();
+        }
 
         return Command::SUCCESS;
     }

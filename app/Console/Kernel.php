@@ -7,7 +7,6 @@ namespace App\Console;
 use App\Console\Commands\BuildForgingStats;
 use App\Console\Commands\CacheAddressStatistics;
 use App\Console\Commands\CacheAnnualStatistics;
-use App\Console\Commands\CacheBlocks;
 use App\Console\Commands\CacheCurrenciesData;
 use App\Console\Commands\CacheFees;
 use App\Console\Commands\CacheMarketDataStatistics;
@@ -85,8 +84,6 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(CacheTransactions::class)->everyFiveMinutes();
 
-        $schedule->command(CacheBlocks::class)->everyFiveMinutes();
-
         $schedule->command(CacheAddressStatistics::class)->everyFiveMinutes();
 
         $schedule->command(CacheValidatorStatistics::class)->everyFiveMinutes();
@@ -102,7 +99,7 @@ final class Kernel extends ConsoleKernel
         $schedule->command(LoadExchanges::class)->daily();
 
         if (Network::canBeExchanged()) {
-            $schedule->command(FetchExchangesDetails::class)->hourly();
+            $schedule->command(FetchExchangesDetails::class)->everyMinute();
         }
 
         if (config('arkscan.scout.run_jobs', false) === true) {

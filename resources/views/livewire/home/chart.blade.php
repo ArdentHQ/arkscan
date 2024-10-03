@@ -1,6 +1,8 @@
 <div
     class="flex-col h-full"
-    wire:poll.{{ $refreshInterval }}s
+    @if (config('broadcasting.default') !== 'reverb')
+        wire:poll.{{ $refreshInterval }}s
+    @endif
 >
     <div @class([
         'flex-row justify-between h-full sm:flex-col',

@@ -12,7 +12,7 @@ use Livewire\Livewire;
 use function Tests\createRoundEntry;
 
 beforeEach(function () {
-    $this->wallets = Wallet::factory(51)
+    $this->wallets = Wallet::factory(Network::validatorCount())
         ->activeValidator()
         ->create();
 

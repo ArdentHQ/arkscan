@@ -1,6 +1,8 @@
 <div
     class="mt-2 space-y-2 md:mt-6"
-    wire:poll.{{ $refreshInterval }}s
+    @if (config('broadcasting.default') !== 'reverb')
+        wire:poll.{{ $refreshInterval }}s
+    @endif
 >
     <x-general.card class="flex flex-col py-4 md:pb-6">
         <div class="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
