@@ -124,7 +124,7 @@ it('should sum up the rewards forged', function () {
 it('should determine if the wallet is known', function () {
     fakeKnownWallets();
 
-    $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B']));
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67']));
 
     expect($subject->isKnown())->toBeTrue();
 
@@ -136,7 +136,7 @@ it('should determine if the wallet is known', function () {
 it('should determine if the wallet is owned by the team', function () {
     fakeKnownWallets();
 
-    $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B']));
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67']));
 
     expect($subject->isOwnedByTeam())->toBeTrue();
 
@@ -148,7 +148,7 @@ it('should determine if the wallet is owned by the team', function () {
 it('should determine if the wallet is owned by an exchange', function () {
     fakeKnownWallets();
 
-    $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0xe7dd7E34d2F24966C3C7AA89FC30ACA65760F6B5']));
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'ANvR7ny44GrLy4NTfuVqjGYr4EAwK7vnkW']));
 
     expect($subject->isOwnedByExchange())->toBeTrue();
 
@@ -162,7 +162,7 @@ it('should determine if the wallet has a special type when known', function () {
 
     $subject = new WalletViewModel(Wallet::factory()
         ->activeValidator()
-        ->create(['address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B']));
+        ->create(['address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67']));
 
     expect($subject->isKnown())->toBeTrue();
     expect($subject->hasMultiSignature())->toBeFalse();
@@ -182,7 +182,7 @@ it('should determine if the wallet has a special type if multisignature', functi
 
     $subject = new WalletViewModel(Wallet::factory()
         ->multiSignature()
-        ->create(['address' => '0x946BF38f53aE753371BDC9583e68865643876320']));
+        ->create(['address' => 'AHLAT5XDfzZ1gkQVCrW8pKfYdfyMQ9t7ra']));
 
     expect($subject->isKnown())->toBeFalse();
     expect($subject->hasMultiSignature())->toBeTrue();
@@ -199,7 +199,7 @@ it('should determine if the wallet has a special type if multisignature', functi
 it('should determine if the wallet has a special type if second signature', function () {
     fakeKnownWallets();
 
-    $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0x946BF38f53aE753371BDC9583e68865643876320']));
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AHLAT5XDfzZ1gkQVCrW8pKfYdfyMQ9t7ra']));
 
     expect($subject->isKnown())->toBeFalse();
     expect($subject->hasSecondSignature())->toBeTrue();
@@ -216,7 +216,7 @@ it('should determine if the wallet has a special type if second signature', func
 it('should determine if the wallet has a special type if exchange', function () {
     fakeKnownWallets();
 
-    $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF']));
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AFrPtEmzu6wdVpa2CnRDEKGQQMWgq8nE9V']));
 
     expect($subject->isKnown())->toBeTrue();
     expect($subject->isOwnedByExchange())->toBeTrue();
@@ -608,7 +608,7 @@ it('should get the known wallet name before username', function () {
     fakeKnownWallets();
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'address'    => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
         'attributes' => [
             'validatorPublicKey' => 'publicKey',
             'username'           => 'john',

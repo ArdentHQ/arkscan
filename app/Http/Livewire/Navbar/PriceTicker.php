@@ -24,7 +24,8 @@ final class PriceTicker extends Component
 
     /** @var mixed */
     protected $listeners = [
-        'currencyChanged' => 'setValues',
+        'currencyChanged'   => 'setValues',
+        'reloadPriceTicker' => 'setValues',
     ];
 
     public function mount(): void

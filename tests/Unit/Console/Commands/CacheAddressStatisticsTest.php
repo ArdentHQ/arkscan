@@ -2,16 +2,22 @@
 
 declare(strict_types=1);
 
+use App\Events\Statistics\AddressHoldings;
+use App\Events\Statistics\UniqueAddresses;
 use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\StatisticsCache;
+use App\Services\Timestamp;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Event;
 
 it('should cache address holdings', function () {
+    Event::fake();
+
     $cache = new StatisticsCache();
 
     Wallet::factory()->create([
@@ -49,9 +55,14 @@ it('should cache address holdings', function () {
         ['grouped' => 1000, 'count' => 3],
         ['grouped' => 1000000, 'count' => 2],
     ]);
+
+    Event::assertDispatchedTimes(AddressHoldings::class, 2);
+    Event::assertDispatchedTimes(UniqueAddresses::class, 2);
 });
 
 it('should cache unique addresses', function () {
+    Event::fake();
+
     $cache = new StatisticsCache();
 
     $newestWallet1 = Wallet::factory()->create([
@@ -67,6 +78,26 @@ it('should cache unique addresses', function () {
 
     $largest = Wallet::factory()->create([
         'balance' => BigNumber::new(1000000 * 1e18),
+    ]);
+
+    $newest = Wallet::factory()->create([
+        'balance'    => BigNumber::new(10 * 1e18),
+        'address'    => 'newest-address',
+        'public_key' => 'newest-public_key',
+    ]);
+
+    $newestTimestamp = Timestamp::fromUnix(Carbon::parse('2024-04-01 15:04:13')->unix())->unix();
+    Transaction::factory()->transfer()->create([
+        'block_height'      => 143,
+        'sender_public_key' => $newest->public_key,
+        'recipient_id'      => $newest->address,
+        'timestamp'         => $newestTimestamp,
+    ]);
+    Transaction::factory()->transfer()->create([
+        'block_height'      => 144,
+        'sender_public_key' => $newest->public_key,
+        'recipient_id'      => $newest->address,
+        'timestamp'         => $newestTimestamp + 1,
     ]);
 
     $this->artisan('explorer:cache-address-statistics');
@@ -113,6 +144,8 @@ it('should cache unique addresses', function () {
 });
 
 it('should handle null scenarios for unique addresses', function () {
+    Event::fake();
+
     $cache = new StatisticsCache();
 
     $this->artisan('explorer:cache-address-statistics');
@@ -121,6 +154,203 @@ it('should handle null scenarios for unique addresses', function () {
     expect($cache->getNewestAddress())->toBeNull();
     expect($cache->getMostTransactions())->toBeNull();
     expect($cache->getLargestAddress())->toBeNull();
+
+    Event::assertDispatchedTimes(AddressHoldings::class, 0);
+    Event::assertDispatchedTimes(UniqueAddresses::class, 0);
+});
+
+it('should should dispatch event if most transactions has changed', function () {
+    Event::fake();
+
+    $genesisWallet = Wallet::factory()->create([
+        'address'    => 'genesis-address',
+        'public_key' => 'genesis-public_key',
+    ]);
+    Transaction::factory()->transfer()->create([
+        'block_height'      => 1,
+        'sender_public_key' => $genesisWallet->public_key,
+        'recipient_id'      => $genesisWallet->address,
+        'timestamp'         => Timestamp::fromUnix(Carbon::parse('2023-04-01 15:04:13')->unix())->unix(),
+    ]);
+
+    Wallet::factory()->create([
+        'balance' => BigNumber::new(1000000 * 1e18),
+    ]);
+
+    $newest = Wallet::factory()->create([
+        'balance'    => BigNumber::new(10 * 1e18),
+        'address'    => 'newest-address',
+        'public_key' => 'newest-public_key',
+    ]);
+
+    $newestTimestamp = Timestamp::fromUnix(Carbon::parse('2024-04-01 15:04:13')->unix())->unix();
+    Transaction::factory()->transfer()->create([
+        'block_height'      => 143,
+        'sender_public_key' => $newest->public_key,
+        'recipient_id'      => $newest->address,
+        'timestamp'         => $newestTimestamp,
+    ]);
+    Transaction::factory()->transfer()->create([
+        'block_height'      => 144,
+        'sender_public_key' => $newest->public_key,
+        'recipient_id'      => $newest->address,
+        'timestamp'         => $newestTimestamp + 1,
+    ]);
+
+    $this->artisan('explorer:cache-address-statistics');
+
+    Event::assertDispatchedTimes(AddressHoldings::class, 1);
+    Event::assertDispatchedTimes(UniqueAddresses::class, 1);
+
+    Event::fake();
+
+    Transaction::factory()->transfer()->create([
+        'block_height'      => 145,
+        'sender_public_key' => $newest->public_key,
+        'recipient_id'      => $newest->address,
+        'timestamp'         => $newestTimestamp + 1,
+    ]);
+
+    $this->artisan('explorer:cache-address-statistics');
+
+    Event::assertDispatchedTimes(AddressHoldings::class, 1);
+    Event::assertDispatchedTimes(UniqueAddresses::class, 1);
+
+    Event::fake();
+
+    $mostTransactionsWallet = Wallet::factory()->create([
+        'balance'    => BigNumber::new(10 * 1e18),
+        'address'    => 'most-transactions_address',
+        'public_key' => 'most-transactions_public_key',
+    ]);
+
+    Transaction::factory(5)->transfer()->create([
+        'block_height'      => 146,
+        'sender_public_key' => $mostTransactionsWallet->public_key,
+        'recipient_id'      => $mostTransactionsWallet->address,
+        'timestamp'         => $newestTimestamp,
+    ]);
+
+    $this->artisan('explorer:cache-address-statistics');
+
+    Event::assertDispatchedTimes(AddressHoldings::class, 1);
+    Event::assertDispatchedTimes(UniqueAddresses::class, 1);
+});
+
+it('should should dispatch event if largest has changed', function () {
+    Event::fake();
+
+    $genesisWallet = Wallet::factory()->create([
+        'address'    => 'genesis-address',
+        'public_key' => 'genesis-public_key',
+    ]);
+    Transaction::factory()->transfer()->create([
+        'block_height'      => 1,
+        'sender_public_key' => $genesisWallet->public_key,
+        'recipient_id'      => $genesisWallet->address,
+        'timestamp'         => Timestamp::fromUnix(Carbon::parse('2023-04-01 15:04:13')->unix())->unix(),
+    ]);
+
+    $largest = Wallet::factory()->create([
+        'balance' => BigNumber::new(1000000 * 1e18),
+    ]);
+
+    $newest = Wallet::factory()->create([
+        'balance'    => BigNumber::new(10 * 1e18),
+        'address'    => 'newest-address',
+        'public_key' => 'newest-public_key',
+    ]);
+
+    $newestTimestamp = Timestamp::fromUnix(Carbon::parse('2024-04-01 15:04:13')->unix())->unix();
+    Transaction::factory()->transfer()->create([
+        'block_height'      => 143,
+        'sender_public_key' => $newest->public_key,
+        'recipient_id'      => $newest->address,
+        'timestamp'         => $newestTimestamp,
+    ]);
+    Transaction::factory()->transfer()->create([
+        'block_height'      => 144,
+        'sender_public_key' => $newest->public_key,
+        'recipient_id'      => $newest->address,
+        'timestamp'         => $newestTimestamp + 1,
+    ]);
+
+    $this->artisan('explorer:cache-address-statistics');
+
+    Event::assertDispatchedTimes(AddressHoldings::class, 1);
+    Event::assertDispatchedTimes(UniqueAddresses::class, 1);
+
+    Event::fake();
+
+    $largest->balance = BigNumber::new(2000000 * 1e18);
+    $largest->save();
+
+    $this->artisan('explorer:cache-address-statistics');
+
+    Event::assertDispatchedTimes(AddressHoldings::class, 1);
+    Event::assertDispatchedTimes(UniqueAddresses::class, 1);
+
+    Event::fake();
+
+    Wallet::factory()->create([
+        'balance' => BigNumber::new(4000000 * 1e18),
+    ]);
+
+    $this->artisan('explorer:cache-address-statistics');
+
+    Event::assertDispatchedTimes(AddressHoldings::class, 1);
+    Event::assertDispatchedTimes(UniqueAddresses::class, 1);
+});
+
+it('should not dispatch events if nothing changed', function () {
+    Event::fake();
+
+    $genesisWallet = Wallet::factory()->create([
+        'address'    => 'genesis-address',
+        'public_key' => 'genesis-public_key',
+    ]);
+    Transaction::factory()->transfer()->create([
+        'block_height'      => 1,
+        'sender_public_key' => $genesisWallet->public_key,
+        'recipient_id'      => $genesisWallet->address,
+        'timestamp'         => Timestamp::fromUnix(Carbon::parse('2023-04-01 15:04:13')->unix())->unix(),
+    ]);
+
+    Wallet::factory()->create([
+        'balance' => BigNumber::new(1000000 * 1e18),
+    ]);
+
+    $newest = Wallet::factory()->create([
+        'balance'    => BigNumber::new(10 * 1e18),
+        'address'    => 'newest-address',
+        'public_key' => 'newest-public_key',
+    ]);
+
+    $newestTimestamp = Timestamp::fromUnix(Carbon::parse('2024-04-01 15:04:13')->unix())->unix();
+    Transaction::factory()->transfer()->create([
+        'block_height'      => 143,
+        'sender_public_key' => $newest->public_key,
+        'recipient_id'      => $newest->address,
+        'timestamp'         => $newestTimestamp,
+    ]);
+    Transaction::factory()->transfer()->create([
+        'block_height'      => 144,
+        'sender_public_key' => $newest->public_key,
+        'recipient_id'      => $newest->address,
+        'timestamp'         => $newestTimestamp + 1,
+    ]);
+
+    $this->artisan('explorer:cache-address-statistics');
+
+    Event::assertDispatchedTimes(AddressHoldings::class, 1);
+    Event::assertDispatchedTimes(UniqueAddresses::class, 1);
+
+    Event::fake();
+
+    $this->artisan('explorer:cache-address-statistics');
+
+    Event::assertDispatchedTimes(AddressHoldings::class, 0);
+    Event::assertDispatchedTimes(UniqueAddresses::class, 0);
 });
 
 it('should cache newest address only since last run', function () {

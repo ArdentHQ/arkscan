@@ -16,7 +16,8 @@ final class PriceTicker extends Component
 
     /** @var mixed */
     protected $listeners = [
-        'currencyChanged' => '$refresh',
+        'currencyChanged'   => '$refresh',
+        'reloadPriceTicker' => '$refresh',
     ];
 
     public function render(): View
