@@ -57,9 +57,18 @@ final class BigNumber implements Stringable
         return intval($this->toFloat());
     }
 
-    public function toFloat(): float
+    /**
+     * @param float|null $divisor Defaults to 1e18 if not provided
+     *
+     * @return float
+     */
+    public function toFloat(?float $divisor = null): float
     {
-        return $this->value->exactlyDividedBy(1e8)->toFloat();
+        if ($divisor === null) {
+            $divisor = config('currencies.notation.crypto', 1e18);
+        }
+
+        return $this->value->exactlyDividedBy($divisor)->toFloat();
     }
 
     public function valueOf(): BigDecimal

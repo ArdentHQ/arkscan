@@ -79,7 +79,7 @@ function createBlock(int $height, string $publicKey, mixed $context = null)
         'number_of_transactions' => 0,
         'total_amount'           => 0,
         'total_fee'              => 0,
-        'reward'                 => 2 * 1e8,
+        'reward'                 => 2 * 1e18,
         'generator_public_key'   => $publicKey,
     ]);
 

@@ -15,8 +15,8 @@ it('should cache annual data for current year', function () {
 
     Transaction::factory()->count(5)->create([
         'timestamp' => $timestamp,
-        'amount'    => 10 * 1e8,
-        'fee'       => 0.1 * 1e8,
+        'amount'    => 10 * 1e18,
+        'fee'       => 0.1 * 1e18,
     ]);
     Block::factory()->count(5)->create([
         'timestamp' => $timestamp,
@@ -45,8 +45,8 @@ it('should cache annual data for all time', function () {
     $initialDate = Carbon::parse('2017-03-21 13:00:00');
     Transaction::factory()->count(6)->create([
         'timestamp' => $initialDate->getTimestampMs(),
-        'amount'    => 10 * 1e8,
-        'fee'       => 0.1 * 1e8,
+        'amount'    => 10 * 1e18,
+        'fee'       => 0.1 * 1e18,
     ]);
     Block::factory()->count(6)->create([
         'timestamp' => $initialDate->getTimestampMs(),
@@ -57,20 +57,20 @@ it('should cache annual data for all time', function () {
     Block::factory()->create();
     Transaction::factory()->multiPayment()->count(3)->create([
         'amount' => 0,
-        'asset'  => ['payments' => [['amount' => 10 * 1e8, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipientId' => 'Wallet2']]],
+        'asset'  => ['payments' => [['amount' => 10 * 1e18, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e18, 'recipientId' => 'Wallet2']]],
     ]);
 
     // Current year
     Transaction::factory()->count(5)->create([
         'timestamp' => $timestamp,
-        'amount'    => 10 * 1e8,
-        'fee'       => 0.1 * 1e8,
+        'amount'    => 10 * 1e18,
+        'fee'       => 0.1 * 1e18,
     ]);
     Transaction::factory()->multiPayment()->create([
         'timestamp' => $timestamp,
         'amount'    => 0,
-        'asset'     => ['payments' => [['amount' => 10 * 1e8, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipientId' => 'Wallet2']]],
-        'fee'       => 0.1 * 1e8,
+        'asset'     => ['payments' => [['amount' => 10 * 1e18, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e18, 'recipientId' => 'Wallet2']]],
+        'fee'       => 0.1 * 1e18,
     ]);
     Block::factory()->count(5)->create([
         'timestamp' => $timestamp,

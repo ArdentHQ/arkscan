@@ -6,6 +6,7 @@ namespace App\ViewModels\Concerns\Wallet;
 
 use App\Actions\CacheNetworkHeight;
 use App\Facades\Rounds;
+use App\Services\BigNumber;
 use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
 use Carbon\Carbon;
@@ -16,22 +17,22 @@ trait CanForge
 {
     public function totalForged(): float
     {
-        return ($this->feesForged() + $this->rewardsForged()) / 1e8;
+        return $this->feesForged()->plus($this->rewardsForged()->valueOf())->toFloat();
     }
 
-    public function amountForged(): int
+    public function amountForged(): BigNumber
     {
-        return (int) Arr::get((new ValidatorCache())->getTotalAmounts(), $this->wallet->public_key, 0);
+        return BigNumber::new(Arr::get((new ValidatorCache())->getTotalAmounts(), $this->wallet->public_key, 0));
     }
 
-    public function feesForged(): int
+    public function feesForged(): BigNumber
     {
-        return (int) Arr::get((new ValidatorCache())->getTotalFees(), $this->wallet->public_key, 0);
+        return BigNumber::new(Arr::get((new ValidatorCache())->getTotalFees(), $this->wallet->public_key, 0));
     }
 
-    public function rewardsForged(): int
+    public function rewardsForged(): BigNumber
     {
-        return (int) Arr::get((new ValidatorCache())->getTotalRewards(), $this->wallet->public_key, 0);
+        return BigNumber::new(Arr::get((new ValidatorCache())->getTotalRewards(), $this->wallet->public_key, 0));
     }
 
     public function productivity(): float

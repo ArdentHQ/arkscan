@@ -18,7 +18,7 @@ final class UniqueVotersAggregate
         // phpstan-ignore-next-line
         $result = Wallet::query()
             ->select(DB::raw('attributes->>\'vote\' as public_key, COUNT(*) as voter_count'))
-            ->where('balance', '>=', 1 * 1e8)
+            ->where('balance', '>=', 1 * config('currencies.notation.crypto', 1e18))
             ->whereRaw('attributes->>\'vote\' IS NOT NULL')
             ->groupByRaw('attributes->>\'vote\'')
             ->orderBy('voter_count', $sortDescending ? 'desc' : 'asc')

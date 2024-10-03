@@ -151,7 +151,7 @@ it('should not update prices if coingecko throws an exception', function () {
 });
 
 it('should update prices if coingecko does return a response', function () {
-    Config::set('currencies', [
+    Config::set('currencies.currencies', [
         'usd' => [
             'currency' => 'USD',
             'locale'   => 'en_US',
@@ -271,7 +271,7 @@ it('should not update prices if cryptocompare throws an exception', function () 
 });
 
 it('should update prices if cryptocompare does return a response', function () {
-    Config::set('currencies', [
+    Config::set('currencies.currencies', [
         'usd' => [
             'currency' => 'USD',
             'locale'   => 'en_US',
@@ -340,7 +340,7 @@ it('should update prices if cryptocompare does return a response', function () {
 });
 
 it('should stop updating prices if a response fails', function () {
-    Config::set('currencies', [
+    Config::set('currencies.currencies', [
         'usd' => [
             'currency' => 'USD',
             'locale'   => 'en_US',
@@ -375,7 +375,7 @@ it('should stop updating prices if a response fails', function () {
         ->push(null, 200)
         ->push(null, 200);
 
-    foreach (config('currencies') as $currency) {
+    foreach (config('currencies.currencies') as $currency) {
         $cryptoCache->setPrices($currency['currency'].'.day', collect([1, 2, 3]));
         $chartsCache->setHistorical($currency['currency'], 'day', collect([
             '12:00' => 1,
@@ -413,7 +413,7 @@ it('should stop updating prices if a response fails', function () {
 });
 
 it('should update oldest currencies first', function () {
-    Config::set('currencies', [
+    Config::set('currencies.currencies', [
         'usd' => [
             'currency' => 'USD',
             'locale'   => 'en_US',
@@ -490,7 +490,7 @@ it('should update oldest currencies first', function () {
 });
 
 it('should not update if updated within 10 minutes', function () {
-    Config::set('currencies', [
+    Config::set('currencies.currencies', [
         'usd' => [
             'currency' => 'USD',
             'locale'   => 'en_US',

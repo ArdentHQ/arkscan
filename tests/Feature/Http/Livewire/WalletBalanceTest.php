@@ -12,7 +12,7 @@ use Livewire\Livewire;
 it('should show the balance of the wallet', function () {
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 10);
 
-    $wallet = Wallet::factory()->create(['balance' => 125456]);
+    $wallet = Wallet::factory()->create(['balance' => 0.00125456 * 1e18]);
 
     Livewire::test(WalletBalance::class, ['wallet' => $wallet])
         ->assertSee(NumberFormatter::currency(0.01, 'USD'));
@@ -23,7 +23,7 @@ it('updates the balance when currency changes', function () {
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'BTC', 0.1234567);
 
-    $wallet = Wallet::factory()->create(['balance' => 125456]);
+    $wallet = Wallet::factory()->create(['balance' => 0.00125456 * 1e18]);
 
     $component = Livewire::test(WalletBalance::class, ['wallet' => $wallet])
         ->assertSee(NumberFormatter::currency(0.01, 'USD'));

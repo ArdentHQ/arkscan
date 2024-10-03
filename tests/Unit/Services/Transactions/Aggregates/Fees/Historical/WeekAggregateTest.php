@@ -12,12 +12,12 @@ it('should aggregate the fees for 7 days', function () {
     Carbon::setTestNow('2021-01-01 00:00:00');
 
     Transaction::factory(10)->create([
-        'fee'       => '100000000',
+        'fee'       => 1 * 1e18,
         'timestamp' => Carbon::now()->subWeek()->getTimestampMs(),
     ])->sortByDesc('timestamp');
 
     Transaction::factory(10)->create([
-        'fee'       => '100000000',
+        'fee'       => 1 * 1e18,
         'timestamp' => Carbon::now()->subMinutes(10)->getTimestampMs(),
     ])->sortByDesc('timestamp');
 
