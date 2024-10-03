@@ -222,8 +222,6 @@ function createRealisticRound(array $performances, $context, bool $cachePerforma
         $height++;
     });
 
-    $round++;
-
     expect(Block::count())->toBe(Network::validatorCount());
     expect($height - 1)->toBe(Network::validatorCount());
 
@@ -376,6 +374,12 @@ function createPartialRound(
         $height,
         $totalMissedSeconds,
     ];
+}
+
+function getValidatorForgingPosition(int $round, string $publicKey)
+{
+    return getRoundValidators(false, $round)
+        ->search(fn ($validator) => $validator['publicKey'] === $publicKey);
 }
 
 function getRoundValidators(bool $withBlock = true, int $roundNumber = null): SupportCollection

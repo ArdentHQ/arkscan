@@ -1,3 +1,6 @@
-<div class="w-full" wire:loading.remove>
+<div
+    {{ $attributes->class('w-full') }}
+    wire:loading.remove
+>
     {{ $slot }}
 </div>
