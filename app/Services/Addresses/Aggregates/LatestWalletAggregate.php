@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Addresses\Aggregates;
 
-use App\Facades\Network;
 use App\Models\Wallet;
 use App\Services\Cache\StatisticsCache;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;

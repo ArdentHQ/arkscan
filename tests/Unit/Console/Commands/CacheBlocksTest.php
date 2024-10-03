@@ -21,7 +21,7 @@ it('should run job', function () {
     Block::factory()->create([
         'total_amount' => 0,
     ]);
-    
+
     expect($cache->getLargestIdByAmount())->toBeNull();
 
     $this->artisan('explorer:cache-blocks');
