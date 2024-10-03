@@ -30,12 +30,12 @@ it('should render', function () {
 });
 
 it('should render with validators', function () {
-    Wallet::factory(51)->activeValidator()->create();
+    Wallet::factory(Network::validatorCount())->activeValidator()->create();
 
     Livewire::test(Validators::class)
         ->assertSee('Showing 0 results')
         ->call('setIsReady')
-        ->assertSee('Showing 51 results');
+        ->assertSee('Showing '.Network::validatorCount().' results');
 });
 
 it('should not defer loading if disabled', function () {
@@ -645,12 +645,12 @@ it('should sort missed blocks in ascending order grouped by rank', function () {
         ],
     ]);
 
-    $wallet51 = Wallet::factory()->activeValidator()->create([
-        'address'    => 'wallet-51',
+    $walletLast = Wallet::factory()->activeValidator()->create([
+        'address'    => 'wallet-last',
         'attributes' => [
-            'validatorRank'           => 51,
-            'username'                => 'validator-51',
-            'validatorVoteBalance'    => 4000 * 1e18,
+            'validatorRank'           => Network::validatorCount(),
+            'username'                => 'validator-last',
+            'validatorVoteBalance'    => 4000 * 1e8,
             'validatorPublicKey'      => 'publicKey',
         ],
     ]);
@@ -670,13 +670,13 @@ it('should sort missed blocks in ascending order grouped by rank', function () {
         ->assertSeeInOrder([
             $wallet1->address,
             $walletWithoutMissedBlocks->address,
-            $wallet51->address,
+            $walletLast->address,
             $wallet2->address,
             $wallet3->address,
             ...$inactiveWallets->pluck('address'),
             $wallet1->address,
             $walletWithoutMissedBlocks->address,
-            $wallet51->address,
+            $walletLast->address,
             $wallet2->address,
             $wallet3->address,
             ...$inactiveWallets->pluck('address'),
@@ -736,12 +736,12 @@ it('should sort missed blocks in descending order grouped by rank', function () 
         ],
     ]);
 
-    $wallet51 = Wallet::factory()->activeValidator()->create([
-        'address'    => 'wallet-51',
+    $walletLast = Wallet::factory()->activeValidator()->create([
+        'address'    => 'wallet-last',
         'attributes' => [
-            'validatorRank'           => 51,
-            'username'                => 'validator-51',
-            'validatorVoteBalance'    => 4000 * 1e18,
+            'validatorRank'           => Network::validatorCount(),
+            'username'                => 'validator-last',
+            'validatorVoteBalance'    => 4000 * 1e8,
             'validatorPublicKey'      => 'publicKey',
         ],
     ]);
@@ -763,13 +763,13 @@ it('should sort missed blocks in descending order grouped by rank', function () 
             $wallet2->address,
             $wallet1->address,
             $walletWithoutMissedBlocks->address,
-            $wallet51->address,
+            $walletLast->address,
             ...$inactiveWallets->pluck('address'),
             $wallet3->address,
             $wallet2->address,
             $wallet1->address,
             $walletWithoutMissedBlocks->address,
-            $wallet51->address,
+            $walletLast->address,
             ...$inactiveWallets->pluck('address'),
         ]);
 });
@@ -777,7 +777,7 @@ it('should sort missed blocks in descending order grouped by rank', function () 
 it('should alternate sorting direction', function () {
     $validatorCache = new ValidatorCache();
     $validatorCache->setAllVoterCounts(
-        Wallet::factory(51)
+        Wallet::factory(Network::validatorCount())
             ->activeValidator()
             ->create()
             ->mapWithKeys(fn ($validator) => [$validator->public_key => 1])
@@ -807,7 +807,7 @@ it('should alternate sorting direction', function () {
 it('should handle sorting an empty table', function () {
     $validatorCache = new ValidatorCache();
     $validatorCache->setAllVoterCounts(
-        Wallet::factory(51)
+        Wallet::factory(Network::validatorCount())
             ->activeValidator()
             ->create()
             ->mapWithKeys(fn ($validator) => [$validator->public_key => 1])

@@ -63,7 +63,7 @@ it('should map meilisearch results array', function () {
 });
 
 it('should produce the right meilisearch query when possibly address', function () {
-    $query = BlockSearch::buildSearchQueryForIndex('0x6E4C6817a95263B758bbC52e87Ce8e759eD0B084', 5);
+    $query = BlockSearch::buildSearchQueryForIndex('D6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax', 5);
 
     expect($query)->toBeNull();
 });

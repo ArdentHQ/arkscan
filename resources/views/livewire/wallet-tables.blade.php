@@ -23,10 +23,13 @@
 
         @if($wallet->isValidator())
             <x-wallet.tables.voters :wallet="$wallet" x-cloak />
-
             <x-wallet.tables.blocks :wallet="$wallet" x-cloak />
         @endif
 
         <x-script.onload-scroll-to-query selector="#wallet-table-list" />
     </div>
 </div>
+
+@push('scripts')
+    @vite('resources/js/webhooks.js')
+@endpush

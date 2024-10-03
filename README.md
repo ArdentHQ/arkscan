@@ -1,4 +1,4 @@
-# ARKScan
+# ARK Scan
 
 <p align="center">
     <img src="./banner.png" />
@@ -17,6 +17,12 @@
 -   [Composer](https://getcomposer.org)
 -   [Valet](https://laravel.com/docs/8.x/valet) or [Homestead](https://laravel.com/docs/8.x/homestead)
 
+### Websockets
+
+Websockets and Webhooks are required in order for information to be updated without reloading a page. You can find the installation steps below:
+
+- [Websockets](./WEBSOCKETS.md)
+- [Webhooks](./WEBHOOKS.md)
 
 ## Development
 

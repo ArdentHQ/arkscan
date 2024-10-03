@@ -8,7 +8,7 @@ return [
     'beta_uppercase'      => 'BETA',
     'optional'            => 'Optional',
     'or'                  => 'or',
-    'arkscan'             => 'ARKScan',
+    'arkscan'             => 'ARK Scan',
     'scan'                => 'Scan',
     'height'              => 'Height',
     'network'             => 'Network',
@@ -47,8 +47,8 @@ return [
     'vote_with'           => 'Vote With',
 
     'arkconnect' => [
-        'mainnet_network'                => 'You\'re viewing data from the main network, but your wallet is connected to test network (ARK Testnet). To use ARKScan, please switch to <a class="link font-semibold" href="https://test.arkscan.io/">test.arkscan.io</a>.',
-        'testnet_network'                => 'You\'re viewing data from the test network, but your wallet is connected to main network (ARK Mainnet). To use ARKScan, please switch to <a class="link font-semibold" href="https://live.arkscan.io/">live.arkscan.io</a>.',
+        'mainnet_network'                => 'You\'re viewing data from the main network, but your wallet is connected to test network (ARK Testnet). To use ARK Scan, please switch to <a class="link font-semibold" href="https://test.arkscan.io/">test.arkscan.io</a>.',
+        'testnet_network'                => 'You\'re viewing data from the test network, but your wallet is connected to main network (ARK Mainnet). To use ARK Scan, please switch to <a class="link font-semibold" href="https://live.arkscan.io/">live.arkscan.io</a>.',
         'validator_resigned'             => '<span class="font-semibold" x-text="votedValidatorName"></span>, the validator you are voting for, has resigned.',
         'validator_resigned_switch_vote' => 'We recommend switching your vote to an active validator.',
         'validator_standby'              => 'The validator you are voting for <span class="font-semibold">(<span x-text="votedValidatorName"></span>)</span> is not in an active forging position at the moment.',
@@ -76,7 +76,7 @@ return [
         ],
 
         'arkconnect' => [
-            'my_address'   => 'My Address:',
+            'my_address'   => 'My Address',
             'copy_address' => 'Copy Address',
             'disconnect'   => 'Disconnect',
 

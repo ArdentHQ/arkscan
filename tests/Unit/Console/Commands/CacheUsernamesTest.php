@@ -36,12 +36,12 @@ it('should cache the known wallet name if defined', function () {
         [
             'type'    => 'team',
             'name'    => 'Hot Wallet',
-            'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
         ],
     ], 200));
 
     $knownWallet = Wallet::factory()->create([
-        'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
     ]);
 
     $regularWallet = Wallet::factory()->create([
@@ -63,12 +63,12 @@ it('should cache the known wallet name if doesnt have validator name', function 
         [
             'type'    => 'team',
             'name'    => 'Hot Wallet',
-            'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
         ],
     ], 200));
 
     $wallet = Wallet::factory()->create([
-        'address'              => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'address'              => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
         'attributes->username' => null,
     ]);
 
@@ -80,7 +80,7 @@ it('should cache the known wallet name if doesnt have validator name', function 
 it('should forget wallets with resigned usernames', function () {
     $cache  = new WalletCache();
     $wallet = Wallet::factory()->create([
-        'address'              => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'address'              => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
         'attributes->username' => 'joeblogs',
     ]);
 

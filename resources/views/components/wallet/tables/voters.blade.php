@@ -6,4 +6,6 @@
     {{ $attributes->class('w-full') }}
 >
     <livewire:wallet-voter-table :wallet="$wallet" />
+
+    <x-webhooks.reload-voters :public-key="$wallet->publicKey()" />
 </div>
