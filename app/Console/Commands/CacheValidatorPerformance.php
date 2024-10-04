@@ -30,53 +30,56 @@ final class CacheValidatorPerformance extends Command
 
     public function handle(): void
     {
-        $maxRounds = 3;
+        // TODO: remove when we can handle the monitor with the EVM changes
+        return;
 
-        $mostRecentRounds = Round::query()
-            ->orderBy('round', 'DESC')
-            ->limit($maxRounds)
-            ->get();
+        // $maxRounds = 3;
 
-        /**
-         * @var Round $mostRecentRound
-         */
-        $mostRecentRound = $mostRecentRounds->first();
+        // $mostRecentRounds = Round::query()
+        //     ->orderBy('round', 'DESC')
+        //     ->limit($maxRounds)
+        //     ->get();
 
-        $query = Wallet::query()
-            ->select([
-                'wallets.public_key',
-                DB::raw('MAX(wallets.balance) as balance'),
-            ])
-            ->whereIn('wallets.public_key', $mostRecentRound->validators)
-            ->join('blocks', 'blocks.generator_public_key', '=', 'wallets.public_key');
+        // /**
+        //  * @var Round $mostRecentRound
+        //  */
+        // $mostRecentRound = $mostRecentRounds->first();
 
-        $actualNumberOfRounds = min($maxRounds, $mostRecentRounds->count());
+        // $query = Wallet::query()
+        //     ->select([
+        //         'wallets.public_key',
+        //         DB::raw('MAX(wallets.balance) as balance'),
+        //     ])
+        //     ->whereIn('wallets.public_key', $mostRecentRound->validators)
+        //     ->join('blocks', 'blocks.generator_public_key', '=', 'wallets.public_key');
 
-        $mostRecentRounds
-            ->slice(1)
-            ->reverse()
-            ->each(function ($round, int $index) use ($actualNumberOfRounds, $query) : void {
-                [$start, $end] = Monitor::heightRangeByRound($round);
+        // $actualNumberOfRounds = min($maxRounds, $mostRecentRounds->count());
 
-                // `bool_or` is equivalent to `some` in PGSQL and is used here to
-                // check if there is at least one block on the range.
-                $query->addSelect(DB::raw(sprintf('bool_or(blocks.height BETWEEN %s AND %s) round_%s', $start, $end, ($actualNumberOfRounds - $index - 1))));
-            });
+        // $mostRecentRounds
+        //     ->slice(1)
+        //     ->reverse()
+        //     ->each(function ($round, int $index) use ($actualNumberOfRounds, $query) : void {
+        //         [$start, $end] = Monitor::heightRangeByRound($round);
 
-        /**
-         * @var Collection $results
-         */
-        $results = $query
-            ->orderBy('balance', 'desc')
-            ->orderBy('wallets.public_key', 'asc')
-            ->groupBy('wallets.public_key')
-            ->get();
+        //         // `bool_or` is equivalent to `some` in PGSQL and is used here to
+        //         // check if there is at least one block on the range.
+        //         $query->addSelect(DB::raw(sprintf('bool_or(blocks.height BETWEEN %s AND %s) round_%s', $start, $end, ($actualNumberOfRounds - $index - 1))));
+        //     });
 
-        $results->each(function ($row) : void {
-            (new WalletCache())->setPerformance($row['public_key'], [
-                $row['round_0'],
-                $row['round_1'],
-            ]);
-        });
+        // /**
+        //  * @var Collection $results
+        //  */
+        // $results = $query
+        //     ->orderBy('balance', 'desc')
+        //     ->orderBy('wallets.public_key', 'asc')
+        //     ->groupBy('wallets.public_key')
+        //     ->get();
+
+        // $results->each(function ($row) : void {
+        //     (new WalletCache())->setPerformance($row['public_key'], [
+        //         $row['round_0'],
+        //         $row['round_1'],
+        //     ]);
+        // });
     }
 }

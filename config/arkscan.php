@@ -96,10 +96,6 @@ return [
         'enabled' => env('ARKCONNECT_ENABLED', false),
     ],
 
-    'monitor' => [
-        'enabled' => env('ARKSCAN_MONITOR_ENABLED', true),
-    ],
-
     'market_data' => [
         'coingecko' => [
             'exception_frequency' => env('COINGECKO_EXCEPTION_FREQUENCY', 60),

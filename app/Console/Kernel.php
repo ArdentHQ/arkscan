@@ -78,9 +78,8 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(BuildForgingStats::class)->everyMinute();
 
-        if (config('arkscan.monitor.enabled', true) === true) {
-            $schedule->command(CacheValidatorPerformance::class)->everyMinute();
-        }
+        // TODO: enable when the monitor is fixed
+        // $schedule->command(CacheValidatorPerformance::class)->everyMinute();
 
         $schedule->command(CacheValidatorProductivity::class)->everyMinute();
 
