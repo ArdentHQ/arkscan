@@ -46,11 +46,11 @@ final class CacheValidatorPerformance extends Command
 
         // $query = Wallet::query()
         //     ->select([
-        //         'wallets.public_key',
+        //         'wallets.address',
         //         DB::raw('MAX(wallets.balance) as balance'),
         //     ])
         //     ->whereIn('wallets.public_key', $mostRecentRound->validators)
-        //     ->join('blocks', 'blocks.generator_public_key', '=', 'wallets.public_key');
+        //     ->join('blocks', 'blocks.generator_address', '=', 'wallets.address');
 
         // $actualNumberOfRounds = min($maxRounds, $mostRecentRounds->count());
 

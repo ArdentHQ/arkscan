@@ -151,9 +151,9 @@ it('should get the validator username', function () {
 
 it('should fail to get the validator username', function () {
     $this->subject = new BlockViewModel(Block::factory()->create([
-        'generator_public_key' => Wallet::factory()->create([
+        'generator_address' => Wallet::factory()->create([
             'attributes' => [],
-        ])->public_key,
+        ])->address,
     ]));
 
     expect($this->subject->username())->toBeString();

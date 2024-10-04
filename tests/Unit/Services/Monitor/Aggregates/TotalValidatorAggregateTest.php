@@ -20,72 +20,72 @@ beforeEach(function () {
 
 it('should aggregate the total amount forged', function () {
     Block::factory(10)->create([
-        'generator_public_key' => 'generator',
+        'generator_address' => 'generator',
         'total_amount'         => 1 * 1e18,
-    ])->pluck('generator_public_key')->toArray();
+    ])->pluck('generator_address')->toArray();
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
-    expect($result->toArray()[0]['generator_public_key'])->toBe('generator');
+    expect($result->toArray()[0]['generator_address'])->toBe('generator');
     expect($result->toArray()[0]['total_amount'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
 });
 
 it('should aggregate the total fee forged', function () {
     Block::factory(10)->create([
-        'generator_public_key' => 'generator',
+        'generator_address' => 'generator',
         'total_fee'            => 1 * 1e18,
-    ])->pluck('generator_public_key')->toArray();
+    ])->pluck('generator_address')->toArray();
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
-    expect($result->toArray()[0]['generator_public_key'])->toBe('generator');
+    expect($result->toArray()[0]['generator_address'])->toBe('generator');
     expect($result->toArray()[0]['total_fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
 });
 
 it('should aggregate the total count forged', function () {
     Block::factory(10)->create([
-        'generator_public_key' => 'generator',
-    ])->pluck('generator_public_key')->toArray();
+        'generator_address' => 'generator',
+    ])->pluck('generator_address')->toArray();
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
-    expect($result->toArray()[0]['generator_public_key'])->toBe('generator');
+    expect($result->toArray()[0]['generator_address'])->toBe('generator');
     expect($result->toArray()[0]['count'])->toBe(10);
 });
 
 it('should aggregate the total rewards forged', function () {
     Block::factory(10)->create([
-        'generator_public_key' => 'generator',
+        'generator_address' => 'generator',
         'reward'               => 1 * 1e18,
-    ])->pluck('generator_public_key')->toArray();
+    ])->pluck('generator_address')->toArray();
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
-    expect($result->toArray()[0]['generator_public_key'])->toBe('generator');
+    expect($result->toArray()[0]['generator_address'])->toBe('generator');
     expect($result->toArray()[0]['reward'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
 });
 
 it('should aggregate all the forged data', function () {
     Block::factory(10)->create([
-        'generator_public_key' => 'generator',
+        'generator_address' => 'generator',
         'total_fee'            => 1 * 1e18,
         'total_amount'         => 2 * 1e18,
         'reward'               => 3 * 1e18,
-    ])->pluck('generator_public_key')->toArray();
+    ])->pluck('generator_address')->toArray();
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
-    expect($result->toArray()[0]['generator_public_key'])->toBe('generator');
+    expect($result->toArray()[0]['generator_address'])->toBe('generator');
     expect($result->toArray()[0]['count'])->toBe(10);
     expect($result->toArray()[0]['total_fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
     expect($result->toArray()[0]['total_amount'])->toBe(BigNumber::new(20)->valueOf()->multipliedBy(1e18)->__toString());
