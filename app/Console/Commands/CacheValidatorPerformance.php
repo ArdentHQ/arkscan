@@ -31,7 +31,6 @@ final class CacheValidatorPerformance extends Command
     public function handle(): void
     {
         // TODO: remove when we can handle the monitor with the EVM changes
-        return;
 
         // $maxRounds = 3;
 
