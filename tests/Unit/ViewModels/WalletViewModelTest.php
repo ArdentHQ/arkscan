@@ -40,7 +40,7 @@ beforeEach(function () {
         'total_amount'         => 10 * 1e18,
         'total_fee'            => 8 * 1e18,
         'reward'               => 2 * 1e18,
-        'generator_address' => $this->wallet->address,
+        'generator_address'    => $this->wallet->address,
     ]);
 });
 
@@ -839,7 +839,7 @@ it('should return count for blocks since last forged', function () {
     ]));
 
     $block = Block::factory()->create([
-        'generator_address' => $wallet->address(),
+        'generator_address'    => $wallet->address(),
         'height'               => 10,
     ]);
 
@@ -883,7 +883,7 @@ it('should return count for time since last forged', function () {
 
     $block = Block::factory()->create([
         'timestamp'            => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'generator_address' => $wallet->address(),
+        'generator_address'    => $wallet->address(),
         'height'               => 10,
     ]);
 

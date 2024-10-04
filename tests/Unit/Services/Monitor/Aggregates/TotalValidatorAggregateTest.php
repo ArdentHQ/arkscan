@@ -20,7 +20,7 @@ beforeEach(function () {
 
 it('should aggregate the total amount forged', function () {
     Block::factory(10)->create([
-        'generator_address' => 'generator',
+        'generator_address'    => 'generator',
         'total_amount'         => 1 * 1e18,
     ])->pluck('generator_address')->toArray();
 
@@ -34,7 +34,7 @@ it('should aggregate the total amount forged', function () {
 
 it('should aggregate the total fee forged', function () {
     Block::factory(10)->create([
-        'generator_address' => 'generator',
+        'generator_address'    => 'generator',
         'total_fee'            => 1 * 1e18,
     ])->pluck('generator_address')->toArray();
 
@@ -61,7 +61,7 @@ it('should aggregate the total count forged', function () {
 
 it('should aggregate the total rewards forged', function () {
     Block::factory(10)->create([
-        'generator_address' => 'generator',
+        'generator_address'    => 'generator',
         'reward'               => 1 * 1e18,
     ])->pluck('generator_address')->toArray();
 
@@ -75,7 +75,7 @@ it('should aggregate the total rewards forged', function () {
 
 it('should aggregate all the forged data', function () {
     Block::factory(10)->create([
-        'generator_address' => 'generator',
+        'generator_address'    => 'generator',
         'total_fee'            => 1 * 1e18,
         'total_amount'         => 2 * 1e18,
         'reward'               => 3 * 1e18,
