@@ -43,7 +43,7 @@ it('should get the url', function () {
 
 it('should determine if the transaction is incoming', function () {
     expect($this->subject->isReceived('recipient'))->toBeTrue();
-    expect($this->subject->isReceived('D6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax'))->toBeFalse();
+    expect($this->subject->isReceived('0x6E4C6817a95263B758bbC52e87Ce8e759eD0B084'))->toBeFalse();
 });
 
 it('should determine if the transaction is outgoing', function () {
@@ -633,14 +633,14 @@ it('should derive the correct multisignature address', function () {
         ],
     ]));
 
-    expect($this->subject->multiSignatureAddress())->toBe('DMNBBtYt1teAKxA2BpiTW9PA3gX3Ad5dyk');
+    expect($this->subject->multiSignatureAddress())->toBe('0x8246206ef20b95D0a3C16704Ee971a605cb7E33E');
 
     Config::set('arkscan.network', 'production');
 
     $network = NetworkFactory::make(config('arkscan.network'));
     NetworkConfiguration::set($network->config());
 
-    expect($this->subject->multiSignatureAddress())->toBe('AXzxJ8Ts3dQ2bvBR1tPE7GUee9iSEJb8HX');
+    expect($this->subject->multiSignatureAddress())->toBe('0x8246206ef20b95D0a3C16704Ee971a605cb7E33E');
 
     Config::set('arkscan.network', 'development');
 });
@@ -949,12 +949,12 @@ it('should get the multi signature wallet', function () {
         ],
     ]));
 
-    Wallet::factory()->create(['address' => 'DMNBBtYt1teAKxA2BpiTW9PA3gX3Ad5dyk']);
+    Wallet::factory()->create(['address' => '0x8246206ef20b95D0a3C16704Ee971a605cb7E33E']);
 
     $result = $this->subject->multiSignatureWallet();
 
     expect($result)->toBeInstanceOf(WalletViewModel::class);
-    expect($result->address())->toBe('DMNBBtYt1teAKxA2BpiTW9PA3gX3Ad5dyk');
+    expect($result->address())->toBe('0x8246206ef20b95D0a3C16704Ee971a605cb7E33E');
 });
 
 it('should fail to get the multi signature wallet if the transaction is not a multi signature registrations', function () {
