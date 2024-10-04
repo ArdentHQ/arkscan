@@ -158,7 +158,7 @@ function bip39(): string
     return PublicKey::fromPassphrase((implode(' ', BIP39::Generate()->words)))->getHex();
 }
 
-function createBlock(int $height, string $publicKey, mixed $context = null)
+function createBlock(int $height, string $address, mixed $context = null)
 {
     if ($context !== null) {
         $context->travel(Network::blockTime())->seconds();
@@ -172,7 +172,7 @@ function createBlock(int $height, string $publicKey, mixed $context = null)
         'total_amount'           => 0,
         'total_fee'              => 0,
         'reward'                 => 2 * 1e18,
-        'generator_public_key'   => $publicKey,
+        'generator_address'      => $address,
     ]);
 
     return $block;
@@ -343,7 +343,7 @@ function createPartialRound(
                 continue;
             }
 
-            createBlock($height + $blockCount, $validator['publicKey'], $context);
+            createBlock($height + $blockCount, $validator['address'], $context);
 
             $justMissedCount = 0;
 
@@ -419,7 +419,7 @@ function getRoundValidators(bool $withBlock = true, int $roundNumber = null): Su
     }
 
     if ($withBlock) {
-        $blocks = Block::whereBetween('height', $heightRange)->get()->keyBy('generator_public_key');
+        $blocks = Block::whereBetween('height', $heightRange)->get()->keyBy('generator_address');
 
         $validators = $validators->map(fn ($validator) => [
             ...$validator,
