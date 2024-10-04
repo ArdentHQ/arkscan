@@ -124,9 +124,9 @@ it('should handle a lot of blocks', function () {
         $this->travel(8)->seconds();
 
         Block::factory()->create([
-            'generator_public_key' => $wallet->public_key,
-            'timestamp'            => Carbon::now()->timestamp,
-            'height'               => $index,
+            'generator_address' => $wallet->address,
+            'timestamp'         => Carbon::now()->timestamp,
+            'height'            => $index,
         ]);
     }
 

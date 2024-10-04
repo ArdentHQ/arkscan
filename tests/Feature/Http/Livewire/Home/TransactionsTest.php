@@ -10,8 +10,8 @@ use Livewire\Livewire;
 
 it('should list the first page of transactions', function () {
     Transaction::factory(30)->transfer()->create([
-        'amount' => 143.2232 * 1e8,
-        'fee'    => 0.128373 * 1e8,
+        'amount' => 143.2232 * 1e18,
+        'fee'    => 0.128373 * 1e18,
     ]);
 
     $component = Livewire::test(Transactions::class)

@@ -14,7 +14,7 @@ final class CreateWalletsTable extends Migration
             $table->string('id');
             $table->string('address');
             $table->string('public_key')->nullable();
-            $table->unsignedBigInteger('balance');
+            $table->addColumn('numeric', 'balance');
             $table->unsignedBigInteger('nonce');
             $table->json('attributes')->nullable();
             $table->timestamps();

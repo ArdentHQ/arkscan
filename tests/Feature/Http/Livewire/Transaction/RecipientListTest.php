@@ -17,15 +17,15 @@ it('should list the first page of records', function () {
             'payments' => [
                 [
                     'recipientId' => $recipient1->address,
-                    'amount'      => 1 * 1e8,
+                    'amount'      => 1 * 1e18,
                 ],
                 [
                     'recipientId' => $recipient2->address,
-                    'amount'      => 2 * 1e8,
+                    'amount'      => 2 * 1e18,
                 ],
                 [
                     'recipientId' => $recipient3->address,
-                    'amount'      => 3 * 1e8,
+                    'amount'      => 3 * 1e18,
                 ],
             ],
         ],
@@ -50,15 +50,15 @@ it('should defer loading', function () {
             'payments' => [
                 [
                     'recipientId' => $recipient1->address,
-                    'amount'      => 1 * 1e8,
+                    'amount'      => 1 * 1e18,
                 ],
                 [
                     'recipientId' => $recipient2->address,
-                    'amount'      => 2 * 1e8,
+                    'amount'      => 2 * 1e18,
                 ],
                 [
                     'recipientId' => $recipient3->address,
-                    'amount'      => 3 * 1e8,
+                    'amount'      => 3 * 1e18,
                 ],
             ],
         ],

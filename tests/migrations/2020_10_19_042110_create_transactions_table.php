@@ -19,8 +19,8 @@ final class CreateTransactionsTable extends Migration
             $table->string('sender_public_key');
             $table->string('recipient_id')->nullable();
             $table->unsignedBigInteger('timestamp');
-            $table->unsignedBigInteger('amount');
-            $table->unsignedBigInteger('fee');
+            $table->addColumn('numeric', 'amount');
+            $table->addColumn('numeric', 'fee');
             $table->unsignedBigInteger('nonce');
             $table->binary('vendor_field')->nullable();
             $table->jsonb('asset')->nullable();

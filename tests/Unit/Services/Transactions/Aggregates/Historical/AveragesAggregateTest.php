@@ -20,7 +20,7 @@ it('should return count', function () {
 
     Transaction::factory(12)->validatorRegistration()->create([
         'amount' => 0,
-        'fee'    => 25 * 1e8,
+        'fee'    => 25 * 1e18,
     ]);
 
     expect((new AveragesAggregate())->aggregate())->toBe([

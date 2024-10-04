@@ -43,7 +43,7 @@ it('should search for a wallet username over a block generator', function () {
         ],
     ]);
     $block = Block::factory()->create([
-        'generator_public_key' => $wallet->public_key,
+        'generator_address' => $wallet->address,
     ]);
 
     Transaction::factory()

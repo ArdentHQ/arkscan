@@ -110,7 +110,7 @@ final class TransactionViewModel implements ViewModel
 
                 return $sender !== null && $sender->address === $payment['recipientId'];
             })
-            ->sum('amount') / 1e8;
+            ->sum('amount') / config('currencies.notation.crypto', 1e18);
     }
 
     public function amountExcludingItself(): float
@@ -124,7 +124,7 @@ final class TransactionViewModel implements ViewModel
 
                 return $sender === null || $sender->address !== $payment['recipientId'];
             })
-            ->sum('amount') / 1e8;
+            ->sum('amount') / config('currencies.notation.crypto', 1e18);
     }
 
     public function amount(): float
@@ -134,7 +134,7 @@ final class TransactionViewModel implements ViewModel
             $payments = Arr::get($this->transaction, 'asset.payments', []);
 
             return collect($payments)
-                ->sum('amount') / 1e8;
+                ->sum('amount') / config('currencies.notation.crypto', 1e18);
         }
 
         return $this->transaction->amount->toFloat();
@@ -148,7 +148,7 @@ final class TransactionViewModel implements ViewModel
             $payments = Arr::get($this->transaction, 'asset.payments', []);
 
             return collect($payments)
-                ->sum('amount') / 1e8;
+                ->sum('amount') / config('currencies.notation.crypto', 1e18);
         }
 
         return $amount + $this->fee();
@@ -162,7 +162,7 @@ final class TransactionViewModel implements ViewModel
 
             return collect($payments)
                 ->where('recipientId', $wallet)
-                ->sum('amount') / 1e8;
+                ->sum('amount') / config('currencies.notation.crypto', 1e18);
         }
 
         return $this->amount();

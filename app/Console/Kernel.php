@@ -78,7 +78,8 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(BuildForgingStats::class)->everyMinute();
 
-        $schedule->command(CacheValidatorPerformance::class)->everyMinute();
+        // TODO: enable when the monitor is fixed
+        // $schedule->command(CacheValidatorPerformance::class)->everyMinute();
 
         $schedule->command(CacheValidatorProductivity::class)->everyMinute();
 

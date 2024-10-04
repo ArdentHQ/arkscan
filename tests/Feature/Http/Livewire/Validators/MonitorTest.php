@@ -57,7 +57,7 @@ describe('Monitor', function () {
 
     function forgeBlock(string $publicKey, int $height): void
     {
-        $block = createBlock($height, $publicKey);
+        $block = createBlock($height, $publicKey); // TODO: adjust to address
 
         (new WalletCache())->setLastBlock($publicKey, [
             'id'     => $block->id,

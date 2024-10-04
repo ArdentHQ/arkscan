@@ -32,31 +32,31 @@ it('should render transaction details', function (): void {
     Transaction::factory(12)->validatorRegistration()->create();
     Transaction::factory(13)->validatorResignation()->create();
     Transaction::factory(14)->transfer()->create([
-        'amount' => 1 * 1e8,
+        'amount' => 1 * 1e18,
     ]);
     Transaction::factory(15)->vote()->create();
     Transaction::factory(16)->unvote()->create();
     Transaction::factory(17)->voteCombination()->create();
 
     $largest = Transaction::factory()->multiPayment()->create([
-        'amount' => 99 * 1e8,
-        'fee'    => 11 * 1e8,
+        'amount' => 99 * 1e18,
+        'fee'    => 11 * 1e18,
         'asset'  => [
             'payments' => [
                 [
-                    'amount' => 99 * 1e8,
+                    'amount' => 99 * 1e18,
                 ],
             ],
         ],
     ]);
 
     Transaction::factory(17)->multiPayment()->create([
-        'amount' => 2 * 1e8,
-        'fee'    => 11 * 1e8,
+        'amount' => 2 * 1e18,
+        'fee'    => 11 * 1e18,
         'asset'  => [
             'payments' => [
                 [
-                    'amount' => 2 * 1e8,
+                    'amount' => 2 * 1e18,
                 ],
             ],
         ],
@@ -111,19 +111,19 @@ it('should render transaction daily average', function (): void {
 
     Transaction::factory(2)->validatorRegistration()->create([
         'amount' => 0,
-        'fee'    => 9 * 1e8,
+        'fee'    => 9 * 1e18,
     ]);
     Transaction::factory(3)->transfer()->create([
-        'amount' => 2000 * 1e8,
-        'fee'    => 10 * 1e8,
+        'amount' => 2000 * 1e18,
+        'fee'    => 10 * 1e18,
     ]);
     Transaction::factory(4)->multipayment()->create([
-        'amount' => 3000 * 1e8,
-        'fee'    => 11 * 1e8,
+        'amount' => 3000 * 1e18,
+        'fee'    => 11 * 1e18,
         'asset'  => [
             'payments' => [
                 [
-                    'amount' => 3000 * 1e8,
+                    'amount' => 3000 * 1e18,
                 ],
             ],
         ],
@@ -302,7 +302,7 @@ it('should render marketdata statistics for fiat', function (): void {
     $cache->setMarketCapAth($currency, $currentDate->timestamp, 30000);
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 1.234);
-    (new NetworkCache())->setSupply(fn () => 4.567 * 1e8);
+    (new NetworkCache())->setSupply(fn () => 4.567 * 1e18);
 
     Livewire::test(Insights::class)
         ->assertSeeInOrder([
@@ -361,7 +361,7 @@ it('should render marketdata statistics for crypto', function (): void {
     $cache->setMarketCapAth($currency, $currentDate->timestamp, 0.0003);
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'BTC', 0.00001234);
-    (new NetworkCache())->setSupply(fn () => 4.567 * 1e8);
+    (new NetworkCache())->setSupply(fn () => 4.567 * 1e18);
 
     Livewire::test(Insights::class)
         ->assertSeeInOrder([

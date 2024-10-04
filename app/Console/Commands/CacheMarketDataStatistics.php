@@ -40,7 +40,7 @@ final class CacheMarketDataStatistics extends Command
         }
 
         /** @var array<string, array<string, string>> */
-        $allCurrencies = config('currencies');
+        $allCurrencies = config('currencies.currencies');
 
         $currencies = collect($allCurrencies)->pluck('currency');
 
