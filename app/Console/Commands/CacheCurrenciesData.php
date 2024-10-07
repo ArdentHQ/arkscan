@@ -35,7 +35,7 @@ final class CacheCurrenciesData extends Command
         $baseCurrency = Network::currency();
 
         /** @var array<string, array<string, string>> */
-        $allCurrencies = config('currencies');
+        $allCurrencies = config('currencies.currencies');
 
         $targetCurrencies = collect($allCurrencies)->pluck('currency');
 

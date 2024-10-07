@@ -12,10 +12,10 @@ use Meilisearch\Endpoints\Indexes;
 beforeEach(function () {
     $this->subject = Wallet::factory()->create([
         'updated_at' => 148373,
-        'balance'    => '100000000000',
+        'balance'    => 1000 * 1e18,
         'attributes' => [
             'username'             => 'test',
-            'validatorVoteBalance' => '200000000000',
+            'validatorVoteBalance' => 2000 * 1e18,
         ],
     ]);
 });

@@ -13,13 +13,9 @@ it('should format a number with a percentage symbol', function () {
     assertMatchesSnapshot(NumberFormatter::percentage(10, '10%'));
 });
 
-it('should format a number without a currency symbol from a satoshi value', function () {
-    assertMatchesSnapshot(NumberFormatter::satoshi('12300000000', 'ARK'));
-});
-
 it('should format a number with a currency symbol', function () {
     assertMatchesSnapshot(NumberFormatter::currency(123, 'ARK'));
-    assertMatchesSnapshot(NumberFormatter::currency(1e8, 'ARK'));
+    assertMatchesSnapshot(NumberFormatter::currency(1e18, 'ARK'));
 });
 
 it('should format a number with a currency symbol if it has a decimal', function () {
@@ -45,7 +41,7 @@ it('should format crypto currency with the correct decimal places', function () 
 
 it('should format a number without a suffix', function () {
     assertMatchesSnapshot(NumberFormatter::currencyWithoutSuffix(123, 'ARK'));
-    assertMatchesSnapshot(NumberFormatter::currencyWithoutSuffix(1e8, 'ARK'));
+    assertMatchesSnapshot(NumberFormatter::currencyWithoutSuffix(1e18, 'ARK'));
 });
 
 it('should format a number with decimals and without a suffix', function () {

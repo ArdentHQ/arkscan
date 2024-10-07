@@ -10,7 +10,7 @@ trait HasValidator
 {
     public function validator(): MemoryWallet
     {
-        return MemoryWallet::fromPublicKey($this->block->generator_public_key);
+        return MemoryWallet::fromAddress($this->block->generator_address);
     }
 
     public function address(): string

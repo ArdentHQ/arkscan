@@ -43,7 +43,7 @@ it('should search for a wallet username over a block generator', function () {
         ],
     ]);
     $block = Block::factory()->create([
-        'generator_public_key' => $wallet->public_key,
+        'generator_address' => $wallet->address,
     ]);
 
     Transaction::factory()
@@ -256,25 +256,25 @@ it('should search for known wallets addresses with meilisearch', function () {
         [
             'type'    => 'team',
             'name'    => 'Alfys hot Wallet',
-            'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
+            'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
         ],
         [
             'type'    => 'team',
             'name'    => 'other wallet',
-            'address' => 'Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d',
+            'address' => '0x8eD03985e78c92E4506979cAAf7671275FFd953d',
         ],
         [
             'type'    => 'team',
             'name'    => 'the alf wallet',
-            'address' => 'AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk',
+            'address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
         ],
     ], 200));
 
     $knownWallet = Wallet::factory()->create([
-        'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
+        'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
     ]);
     $knownWallet2 = Wallet::factory()->create([
-        'address' => 'AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk',
+        'address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
     ]);
 
     $this->mock(MeilisearchEngine::class)
@@ -307,9 +307,9 @@ it('should search for known wallets addresses with meilisearch', function () {
 
     Livewire::test(Search::class)
         ->set('query', 'alf')
-        ->assertSee('AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67')
-        ->assertSee('AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk')
-        ->assertDontSee('Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d');
+        ->assertSee('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->assertSee('0x38b4a84773bC55e88D07cBFC76444C2A37600084')
+        ->assertDontSee('0x8eD03985e78c92E4506979cAAf7671275FFd953d');
 });
 
 it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisearch', function () {
@@ -330,17 +330,17 @@ it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisear
         [
             'type'    => 'team',
             'name'    => 'a1',
-            'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
+            'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
         ],
         [
             'type'    => 'team',
             'name'    => 'a2',
-            'address' => 'Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d',
+            'address' => '0x8eD03985e78c92E4506979cAAf7671275FFd953d',
         ],
         [
             'type'    => 'team',
             'name'    => 'a3',
-            'address' => 'AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk',
+            'address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
         ],
         [
             'type'    => 'team',
@@ -360,13 +360,13 @@ it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisear
     ], 200));
 
     $knownWallet = Wallet::factory()->create([
-        'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
+        'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
     ]);
     $knownWallet2 = Wallet::factory()->create([
-        'address' => 'Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d',
+        'address' => '0x8eD03985e78c92E4506979cAAf7671275FFd953d',
     ]);
     $knownWallet3 = Wallet::factory()->create([
-        'address' => 'AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk',
+        'address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
     ]);
     $knownWallet4 = Wallet::factory()->create([
         'address' => 'AZiS7KXBJ8o8JgdhPo2m4t8MGpGt1Ucxe7',
@@ -411,7 +411,7 @@ it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisear
 
     Livewire::test(Search::class)
         ->set('query', 'a')
-        ->assertSee('AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67')
-        ->assertSee('AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk')
+        ->assertSee('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->assertSee('0x38b4a84773bC55e88D07cBFC76444C2A37600084')
         ->assertDontSee('AKT8ji4purNoocKybdb3aHZYiVkaFimho9');
 });

@@ -29,7 +29,7 @@ it('should render the component with fiat value', function () {
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 1.4);
 
-    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
+    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e18);
 
     Livewire::test(Chart::class)
         ->set('period', 'day')
@@ -51,7 +51,7 @@ it('should render the component with non fiat value', function () {
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'BTC', 15);
 
-    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
+    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e18);
 
     Livewire::test(Chart::class)
         ->set('period', 'day')

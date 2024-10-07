@@ -7,7 +7,7 @@ use App\Models\Wallet;
 
 beforeEach(function () {
     Wallet::factory(10)->create([
-        'balance'    => 1e8,
+        'balance'    => 1e18,
         'attributes' => ['vote' => 'pubkey'],
     ]);
 

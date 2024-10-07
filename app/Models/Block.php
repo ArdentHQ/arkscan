@@ -25,7 +25,7 @@ use Laravel\Scout\Searchable;
  * @property int $timestamp
  * @property BigNumber $total_amount
  * @property BigNumber $total_fee
- * @property string $generator_public_key
+ * @property string $generator_address
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Block extends Model
@@ -75,7 +75,7 @@ final class Block extends Model
         return [
             'id'     => $this->id,
             // used to get the validator
-            'generator_public_key' => $this->generator_public_key,
+            'generator_address' => $this->generator_address,
             // shown on the results
             'number_of_transactions' => $this->number_of_transactions,
             // sortable attribute
@@ -93,7 +93,7 @@ final class Block extends Model
         return $self->newQuery()
             ->select([
                 'id',
-                'generator_public_key',
+                'generator_address',
                 'number_of_transactions',
                 'timestamp',
             ])
@@ -134,7 +134,7 @@ final class Block extends Model
      */
     public function validator(): BelongsTo
     {
-        return $this->belongsTo(Wallet::class, 'generator_public_key', 'public_key');
+        return $this->belongsTo(Wallet::class, 'generator_address', 'address');
     }
 
     /**

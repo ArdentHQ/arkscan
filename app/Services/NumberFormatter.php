@@ -39,14 +39,6 @@ final class NumberFormatter
     /**
      * @param string|int|float $value
      */
-    public static function satoshi($value): string
-    {
-        return BetterNumberFormatter::new()->formatWithDecimal(BigNumber::new($value)->toFloat());
-    }
-
-    /**
-     * @param string|int|float $value
-     */
     public static function currency($value, string $currency, bool $showSmallAmounts = false): string
     {
         $isSmallAmount = $value < 1;
@@ -180,6 +172,6 @@ final class NumberFormatter
             return false;
         }
 
-        return config('currencies.'.strtolower($currency).'.symbol') !== null;
+        return config('currencies.currencies.'.strtolower($currency).'.symbol') !== null;
     }
 }

@@ -18,7 +18,7 @@ it('should render with a height, volume, supply and not available market cap', f
     Config::set('arkscan.networks.development.canBeExchanged', false);
 
     Block::factory()->create(['height' => 5651290]);
-    State::factory()->create(['supply' => '13628098200000000']);
+    State::factory()->create(['supply' => 136280982 * 1e18]);
 
     Livewire::test(Statistics::class)
         ->assertSeeInOrder([
@@ -33,12 +33,12 @@ it('should render with a height, volume, supply and market cap', function () {
     Config::set('arkscan.network', 'production');
 
     Block::factory()->create(['height' => 5651290]);
-    State::factory()->create(['supply' => '13628098200000000']);
+    State::factory()->create(['supply' => 136280982 * 1e18]);
 
     $transaction = Transaction::factory()->transfer()->create([
         'timestamp' => Carbon::now()->getTimestampMs(),
-        'amount'    => 18204 * 1e8,
-        'fee'       => 0.99 * 1e8,
+        'amount'    => 18204 * 1e18,
+        'fee'       => 0.99 * 1e18,
     ]);
 
     $transaction->sender->balance           = 0;
@@ -67,12 +67,12 @@ it('should render with a height, volume, supply and market cap for BTC', functio
     Settings::shouldReceive('usesDarkTheme')->andReturn(false);
 
     Block::factory()->create(['height' => 5651290]);
-    State::factory()->create(['supply' => '13628098200000000']);
+    State::factory()->create(['supply' => 136280982 * 1e18]);
 
     $transaction = Transaction::factory()->transfer()->create([
         'timestamp' => Carbon::now()->getTimestampMs(),
-        'amount'    => 18204 * 1e8,
-        'fee'       => 0.99 * 1e8,
+        'amount'    => 18204 * 1e18,
+        'fee'       => 0.99 * 1e18,
     ]);
 
     $transaction->sender->balance           = 0;

@@ -21,13 +21,13 @@ it('should cache address holdings', function () {
     $cache = new StatisticsCache();
 
     Wallet::factory()->create([
-        'balance' => 1.1 * 1e8,
+        'balance' => 1.1 * 1e18,
     ]);
     Wallet::factory()->count(1)->create([
-        'balance' => 1 * 1e8,
+        'balance' => 1 * 1e18,
     ]);
     Wallet::factory()->count(4)->create([
-        'balance' => 0.9 * 1e8,
+        'balance' => 0.9 * 1e18,
     ]);
 
     $this->artisan('explorer:cache-address-statistics');
@@ -38,13 +38,13 @@ it('should cache address holdings', function () {
     ]);
 
     Wallet::factory()->count(5)->create([
-        'balance' => 10.1 * 1e8,
+        'balance' => 10.1 * 1e18,
     ]);
     Wallet::factory()->count(3)->create([
-        'balance' => 1000.1 * 1e8,
+        'balance' => 1000.1 * 1e18,
     ]);
     Wallet::factory()->count(2)->create([
-        'balance' => BigNumber::new(1000000.1 * 1e8),
+        'balance' => BigNumber::new(1000000.1 * 1e18),
     ]);
 
     $this->artisan('explorer:cache-address-statistics');
@@ -77,11 +77,11 @@ it('should cache unique addresses', function () {
     ]);
 
     $largest = Wallet::factory()->create([
-        'balance' => BigNumber::new(1000000 * 1e8),
+        'balance' => BigNumber::new(1000000 * 1e18),
     ]);
 
     $newest = Wallet::factory()->create([
-        'balance'    => BigNumber::new(10 * 1e8),
+        'balance'    => BigNumber::new(10 * 1e18),
         'address'    => 'newest-address',
         'public_key' => 'newest-public_key',
     ]);
@@ -174,11 +174,11 @@ it('should should dispatch event if most transactions has changed', function () 
     ]);
 
     Wallet::factory()->create([
-        'balance' => BigNumber::new(1000000 * 1e8),
+        'balance' => BigNumber::new(1000000 * 1e18),
     ]);
 
     $newest = Wallet::factory()->create([
-        'balance'    => BigNumber::new(10 * 1e8),
+        'balance'    => BigNumber::new(10 * 1e18),
         'address'    => 'newest-address',
         'public_key' => 'newest-public_key',
     ]);
@@ -219,7 +219,7 @@ it('should should dispatch event if most transactions has changed', function () 
     Event::fake();
 
     $mostTransactionsWallet = Wallet::factory()->create([
-        'balance'    => BigNumber::new(10 * 1e8),
+        'balance'    => BigNumber::new(10 * 1e18),
         'address'    => 'most-transactions_address',
         'public_key' => 'most-transactions_public_key',
     ]);
@@ -252,11 +252,11 @@ it('should should dispatch event if largest has changed', function () {
     ]);
 
     $largest = Wallet::factory()->create([
-        'balance' => BigNumber::new(1000000 * 1e8),
+        'balance' => BigNumber::new(1000000 * 1e18),
     ]);
 
     $newest = Wallet::factory()->create([
-        'balance'    => BigNumber::new(10 * 1e8),
+        'balance'    => BigNumber::new(10 * 1e18),
         'address'    => 'newest-address',
         'public_key' => 'newest-public_key',
     ]);
@@ -282,7 +282,7 @@ it('should should dispatch event if largest has changed', function () {
 
     Event::fake();
 
-    $largest->balance = BigNumber::new(2000000 * 1e8);
+    $largest->balance = BigNumber::new(2000000 * 1e18);
     $largest->save();
 
     $this->artisan('explorer:cache-address-statistics');
@@ -293,7 +293,7 @@ it('should should dispatch event if largest has changed', function () {
     Event::fake();
 
     Wallet::factory()->create([
-        'balance' => BigNumber::new(4000000 * 1e8),
+        'balance' => BigNumber::new(4000000 * 1e18),
     ]);
 
     $this->artisan('explorer:cache-address-statistics');
@@ -317,11 +317,11 @@ it('should not dispatch events if nothing changed', function () {
     ]);
 
     Wallet::factory()->create([
-        'balance' => BigNumber::new(1000000 * 1e8),
+        'balance' => BigNumber::new(1000000 * 1e18),
     ]);
 
     $newest = Wallet::factory()->create([
-        'balance'    => BigNumber::new(10 * 1e8),
+        'balance'    => BigNumber::new(10 * 1e18),
         'address'    => 'newest-address',
         'public_key' => 'newest-public_key',
     ]);

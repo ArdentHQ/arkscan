@@ -21,12 +21,12 @@ final class BlockFactory extends Factory
             'previous_block'         => 1,
             'height'                 => $this->faker->numberBetween(1, 10000),
             'number_of_transactions' => $this->faker->numberBetween(1, 100),
-            'total_amount'           => $this->faker->numberBetween(1, 100) * 1e8,
-            'total_fee'              => $this->faker->numberBetween(1, 100) * 1e8,
-            'reward'                 => $this->faker->numberBetween(1, 100) * 1e8,
+            'total_amount'           => $this->faker->numberBetween(1, 100) * 1e18,
+            'total_fee'              => $this->faker->numberBetween(1, 100) * 1e18,
+            'reward'                 => $this->faker->numberBetween(1, 100) * 1e18,
             'payload_length'         => $this->faker->numberBetween(1, 100),
             'payload_hash'           => $this->faker->payloadHash,
-            'generator_public_key'   => fn () => Wallet::factory()->create()->public_key,
+            'generator_address'      => fn () => Wallet::factory()->create()->address,
             'block_signature'        => $this->faker->blockSignature,
         ];
     }

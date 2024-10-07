@@ -31,7 +31,7 @@ it('should render the component with fiat value', function () {
     Artisan::call('explorer:cache-currencies-data');
     Artisan::call('explorer:cache-prices');
 
-    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
+    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e18);
 
     Livewire::test(Chart::class)
         ->set('period', 'day')
@@ -64,7 +64,7 @@ it('should render the component with non fiat value', function () {
     Artisan::call('explorer:cache-currencies-data');
     Artisan::call('explorer:cache-prices');
 
-    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
+    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e18);
 
     Livewire::test(Chart::class)
         ->set('period', 'day')
@@ -93,7 +93,7 @@ it('should not render the component', function () {
     Artisan::call('explorer:cache-currencies-data');
     Artisan::call('explorer:cache-prices');
 
-    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
+    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e18);
 
     Livewire::test(Chart::class)
         ->set('period', 'day')
@@ -122,7 +122,7 @@ it('should filter by year', function () {
     Artisan::call('explorer:cache-currencies-data');
     Artisan::call('explorer:cache-prices');
 
-    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
+    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e18);
 
     Livewire::test(Chart::class)
         ->set('period', 'year')
@@ -151,7 +151,7 @@ it('should render min max price and percentage', function () {
     Artisan::call('explorer:cache-currencies-data');
     Artisan::call('explorer:cache-prices');
 
-    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
+    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e18);
 
     Livewire::test(Chart::class)
         ->set('period', 'year')
@@ -184,7 +184,7 @@ it('should show fiat data', function () {
     Artisan::call('explorer:cache-currencies-data');
     Artisan::call('explorer:cache-prices');
 
-    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e8);
+    (new NetworkCache())->setSupply(fn () => 456748578.342 * 1e18);
 
     Livewire::test(Chart::class)
         ->set('period', 'year')

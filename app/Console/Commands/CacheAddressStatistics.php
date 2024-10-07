@@ -129,6 +129,7 @@ final class CacheAddressStatistics extends Command
         $largest = Wallet::orderBy('balance', 'desc')->limit(1)->first();
 
         if ($largest !== null) {
+            /** @var Wallet $largest */
             if (! $this->hasChanges) {
                 $currentValue = $cache->getLargestAddress() ?? [];
                 if (Arr::get($currentValue, 'address') !== $largest->address) {

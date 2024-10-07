@@ -9,6 +9,7 @@ use App\Models\Block;
 use App\Models\Round;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Blockchain\NetworkFactory;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\ValidatorCache;
@@ -25,10 +26,10 @@ beforeEach(function () {
     $this->app->singleton(Contract::class, fn () => NetworkFactory::make('production'));
 
     $this->wallet = Wallet::factory()->create([
-        'balance'    => '100000000000',
+        'balance'    => 1000 * 1e18,
         'nonce'      => 1000,
         'attributes' => [
-            'validatorVoteBalance' => '100000000000',
+            'validatorVoteBalance' => 1000 * 1e18,
             'validatorPublicKey'   => 'publickey',
         ],
     ]);
@@ -36,10 +37,10 @@ beforeEach(function () {
     $this->subject = new WalletViewModel($this->wallet);
 
     Block::factory()->create([
-        'total_amount'         => '1000000000',
-        'total_fee'            => '800000000',
-        'reward'               => '200000000',
-        'generator_public_key' => $this->wallet->public_key,
+        'total_amount'         => 10 * 1e18,
+        'total_fee'            => 8 * 1e18,
+        'reward'               => 2 * 1e18,
+        'generator_address'    => $this->wallet->address,
     ]);
 });
 
@@ -68,7 +69,7 @@ it('should get the nonce', function () {
 });
 
 it('should get the balance as percentage from supply', function () {
-    (new NetworkCache())->setSupply(fn () => '1000000000000');
+    (new NetworkCache())->setSupply(fn () => 10000 * 1e18);
 
     expect($this->subject->balancePercentage())->toBeFloat();
     expect($this->subject->balancePercentage())->toBe(10.0);
@@ -81,15 +82,15 @@ it('should get the votes', function () {
 });
 
 it('should get the votes as percentage from supply', function () {
-    (new NetworkCache())->setSupply(fn () => '1000000000000');
+    (new NetworkCache())->setSupply(fn () => 10000 * 1e18);
 
     expect($this->subject->votesPercentage())->toBeFloat();
     expect($this->subject->votesPercentage())->toBe(10.0);
 });
 
 it('should sum up the total forged', function () {
-    (new ValidatorCache())->setTotalFees([$this->subject->publicKey() => '1000000000']);
-    (new ValidatorCache())->setTotalRewards([$this->subject->publicKey() => '1000000000']);
+    (new ValidatorCache())->setTotalFees([$this->subject->publicKey() => 10 * 1e18]);
+    (new ValidatorCache())->setTotalRewards([$this->subject->publicKey() => 10 * 1e18]);
 
     expect($this->subject->totalForged())->toBeFloat();
 
@@ -97,33 +98,33 @@ it('should sum up the total forged', function () {
 });
 
 it('should sum up the amount forged', function () {
-    (new ValidatorCache())->setTotalAmounts([$this->subject->publicKey() => '1000000000']);
+    (new ValidatorCache())->setTotalAmounts([$this->subject->publicKey() => 10 * 1e18]);
 
-    expect($this->subject->amountForged())->toBeInt();
+    expect($this->subject->amountForged())->toBeInstanceOf(BigNumber::class);
 
-    assertMatchesSnapshot($this->subject->amountForged());
+    assertMatchesSnapshot($this->subject->amountForged()->valueOf()->__toString());
 });
 
 it('should sum up the fees forged', function () {
-    (new ValidatorCache())->setTotalFees([$this->subject->publicKey() => '800000000']);
+    (new ValidatorCache())->setTotalFees([$this->subject->publicKey() => 8 * 1e18]);
 
-    expect($this->subject->feesForged())->toBeInt();
+    expect($this->subject->feesForged())->toBeInstanceOf(BigNumber::class);
 
-    assertMatchesSnapshot($this->subject->feesForged());
+    assertMatchesSnapshot($this->subject->feesForged()->valueOf()->__toString());
 });
 
 it('should sum up the rewards forged', function () {
-    (new ValidatorCache())->setTotalRewards([$this->subject->publicKey() => '200000000']);
+    (new ValidatorCache())->setTotalRewards([$this->subject->publicKey() => 2 * 1e18]);
 
-    expect($this->subject->rewardsForged())->toBeInt();
+    expect($this->subject->rewardsForged())->toBeInstanceOf(BigNumber::class);
 
-    assertMatchesSnapshot($this->subject->rewardsForged());
+    assertMatchesSnapshot($this->subject->rewardsForged()->valueOf()->__toString());
 });
 
 it('should determine if the wallet is known', function () {
     fakeKnownWallets();
 
-    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67']));
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B']));
 
     expect($subject->isKnown())->toBeTrue();
 
@@ -135,7 +136,7 @@ it('should determine if the wallet is known', function () {
 it('should determine if the wallet is owned by the team', function () {
     fakeKnownWallets();
 
-    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67']));
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B']));
 
     expect($subject->isOwnedByTeam())->toBeTrue();
 
@@ -147,7 +148,7 @@ it('should determine if the wallet is owned by the team', function () {
 it('should determine if the wallet is owned by an exchange', function () {
     fakeKnownWallets();
 
-    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'ANvR7ny44GrLy4NTfuVqjGYr4EAwK7vnkW']));
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0xe7dd7E34d2F24966C3C7AA89FC30ACA65760F6B5']));
 
     expect($subject->isOwnedByExchange())->toBeTrue();
 
@@ -161,7 +162,7 @@ it('should determine if the wallet has a special type when known', function () {
 
     $subject = new WalletViewModel(Wallet::factory()
         ->activeValidator()
-        ->create(['address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67']));
+        ->create(['address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B']));
 
     expect($subject->isKnown())->toBeTrue();
     expect($subject->hasMultiSignature())->toBeFalse();
@@ -181,7 +182,7 @@ it('should determine if the wallet has a special type if multisignature', functi
 
     $subject = new WalletViewModel(Wallet::factory()
         ->multiSignature()
-        ->create(['address' => 'AHLAT5XDfzZ1gkQVCrW8pKfYdfyMQ9t7ra']));
+        ->create(['address' => '0x946BF38f53aE753371BDC9583e68865643876320']));
 
     expect($subject->isKnown())->toBeFalse();
     expect($subject->hasMultiSignature())->toBeTrue();
@@ -198,7 +199,7 @@ it('should determine if the wallet has a special type if multisignature', functi
 it('should determine if the wallet has a special type if second signature', function () {
     fakeKnownWallets();
 
-    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AHLAT5XDfzZ1gkQVCrW8pKfYdfyMQ9t7ra']));
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0x946BF38f53aE753371BDC9583e68865643876320']));
 
     expect($subject->isKnown())->toBeFalse();
     expect($subject->hasSecondSignature())->toBeTrue();
@@ -215,7 +216,7 @@ it('should determine if the wallet has a special type if second signature', func
 it('should determine if the wallet has a special type if exchange', function () {
     fakeKnownWallets();
 
-    $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'AFrPtEmzu6wdVpa2CnRDEKGQQMWgq8nE9V']));
+    $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF']));
 
     expect($subject->isKnown())->toBeTrue();
     expect($subject->isOwnedByExchange())->toBeTrue();
@@ -304,7 +305,7 @@ it('should get the performance if the wallet is a validator', function () {
     $wallet = Wallet::factory()
         ->activeValidator()
         ->create([
-            'balance'      => '100000000000',
+            'balance'      => 1000 * 1e18,
             'nonce'        => 1000,
             'attributes'   => [
                 'validatorPublicKey' => 'publicKey',
@@ -323,7 +324,7 @@ it('should get the performance if the wallet is a validator', function () {
 
 it('should fail to get the performance if the wallet is not a validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'balance'      => '100000000000',
+        'balance'      => 1000 * 1e18,
         'nonce'        => 1000,
         'attributes'   => [],
     ]));
@@ -344,7 +345,7 @@ it('should fail to get the performance if the wallet has no public key', functio
 
 it('should determine if a new validator has forged', function () {
     $block = Block::factory()->create([
-        'generator_public_key' => $this->wallet->public_key,
+        'generator_address' => $this->wallet->address,
     ]);
 
     Rounds::swap(new RoundsMock());
@@ -372,7 +373,7 @@ it('should determine if a new validator has forged', function () {
 
 it('should determine if the validator just missed a block', function () {
     $block = Block::factory()->create([
-        'generator_public_key' => $this->wallet->public_key,
+        'generator_address' => $this->wallet->address,
     ]);
 
     Rounds::swap(new RoundsMock($block));
@@ -416,7 +417,7 @@ it('should determine if the validator is missing blocks', function () {
 
 it('should get the resignation id', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'balance'      => '100000000000',
+        'balance'      => 1000 * 1e18,
         'nonce'        => 1000,
         'attributes'   => [
             'validatorResigned' => true,
@@ -434,7 +435,7 @@ it('should get the resignation id', function () {
 
 it('should fail to get the resignation id if the validator is not resigned', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'balance'      => '100000000000',
+        'balance'      => 1000 * 1e18,
         'nonce'        => 1000,
         'attributes'   => [
             'validator' => [],
@@ -457,12 +458,12 @@ it('should get the vote weight as percentage', function () {
 
     $vote = Wallet::factory()->create([
         'attributes' => [
-            'validatorVoteBalance' => 10e8,
+            'validatorVoteBalance' => 10 * 1e18,
         ],
     ]);
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'balance'    => 1e8,
+        'balance'    => 1e18,
         'attributes' => [
             'vote' => $vote->public_key,
         ],
@@ -504,12 +505,12 @@ it('should handle vote weight percentage with 1 arktoshi vote balance', function
 
     $vote = Wallet::factory()->create([
         'attributes' => [
-            'validatorVoteBalance' => 1e8,
+            'validatorVoteBalance' => 1e18,
         ],
     ]);
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'balance'    => 1e8,
+        'balance'    => 1e18,
         'attributes' => ['vote' => $vote->public_key],
     ]));
 
@@ -531,7 +532,7 @@ it('should fail to get the vote weight as percentage if the wallet has no public
 
 it('should get the productivity if the wallet is a validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'balance'    => 1e8,
+        'balance'    => 1e18,
         'attributes' => [
             'validatorPublicKey' => 'publickey',
         ],
@@ -607,7 +608,7 @@ it('should get the known wallet name before username', function () {
     fakeKnownWallets();
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'address'    => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
+        'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
         'attributes' => [
             'validatorPublicKey' => 'publicKey',
             'username'           => 'john',
@@ -782,7 +783,7 @@ it('should get no name if a standard wallet', function () {
 
 it('should get forged block count for validator', function () {
     $wallet = new WalletViewModel(Wallet::factory()->create([
-        'balance'    => '100000000000',
+        'balance'    => 1000 * 1e18,
         'nonce'      => 1000,
         'attributes' => [
             'validatorProducedBlocks' => 54321,
@@ -801,7 +802,7 @@ it('should get missed block count for validator', function () {
 it('should return zero if validator has no public key', function () {
     $wallet = new WalletViewModel(Wallet::factory()->create([
         'public_key' => null,
-        'balance'    => '100000000000',
+        'balance'    => 1000 * 1e18,
         'nonce'      => 1000,
         'attributes' => [
             'validatorProducedBlocks' => 54321,
@@ -814,7 +815,7 @@ it('should return zero if validator has no public key', function () {
 it('should return null for blocks since last forged if not forged', function () {
     $wallet = new WalletViewModel(Wallet::factory()->create([
         'public_key'   => null,
-        'balance'      => '100000000000',
+        'balance'      => 1000 * 1e18,
         'nonce'        => 1000,
         'attributes'   => [
             'validator' => [
@@ -828,7 +829,7 @@ it('should return null for blocks since last forged if not forged', function () 
 
 it('should return count for blocks since last forged', function () {
     $wallet = new WalletViewModel(Wallet::factory()->create([
-        'balance'      => '100000000000',
+        'balance'      => 1000 * 1e18,
         'nonce'        => 1000,
         'attributes'   => [
             'validator' => [
@@ -838,7 +839,7 @@ it('should return count for blocks since last forged', function () {
     ]));
 
     $block = Block::factory()->create([
-        'generator_public_key' => $wallet->publicKey(),
+        'generator_address'    => $wallet->address(),
         'height'               => 10,
     ]);
 
@@ -859,7 +860,7 @@ it('should return count for blocks since last forged', function () {
 it('should return null for time since last forged if not forged', function () {
     $wallet = new WalletViewModel(Wallet::factory()->create([
         'public_key'   => null,
-        'balance'      => '100000000000',
+        'balance'      => 1000 * 1e18,
         'nonce'        => 1000,
         'attributes'   => [
             'validator' => [
@@ -873,7 +874,7 @@ it('should return null for time since last forged if not forged', function () {
 
 it('should return count for time since last forged', function () {
     $wallet = new WalletViewModel(Wallet::factory()->create([
-        'balance'      => '100000000000',
+        'balance'      => 1000 * 1e18,
         'nonce'        => 1000,
         'attributes'   => [
             'validatorProducedBlocks' => 54321,
@@ -882,7 +883,7 @@ it('should return count for time since last forged', function () {
 
     $block = Block::factory()->create([
         'timestamp'            => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'generator_public_key' => $wallet->publicKey(),
+        'generator_address'    => $wallet->address(),
         'height'               => 10,
     ]);
 

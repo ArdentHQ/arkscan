@@ -33,7 +33,7 @@ final class MarketCap
 
     private static function getSupply(): float
     {
-        return CacheNetworkSupply::execute() / 1e8;
+        return CacheNetworkSupply::execute() / config('currencies.notation.crypto', 1e18);
     }
 
     private static function getPrice(string $source, string $target): ? float

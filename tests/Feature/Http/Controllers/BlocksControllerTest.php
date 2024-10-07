@@ -11,8 +11,8 @@ beforeEach(fn () => ForgingStats::truncate());
 it('should render the page without any errors', function () {
     Block::factory()->create([
         'timestamp'    => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'reward'       => 2 * 1e8,
-        'total_amount' => 904 * 1e8,
+        'reward'       => 2 * 1e18,
+        'total_amount' => 904 * 1e18,
     ]);
 
     $this
@@ -32,20 +32,20 @@ it('should get the block stats for the last 24 hours', function () {
 
     Block::factory(147)->create([
         'timestamp'    => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'reward'       => 2 * 1e8,
-        'total_amount' => 13 * 1e8,
+        'reward'       => 2 * 1e18,
+        'total_amount' => 13 * 1e18,
     ]);
 
     Block::factory()->create([
         'timestamp'    => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'reward'       => 2 * 1e8,
-        'total_amount' => 904 * 1e8,
+        'reward'       => 2 * 1e18,
+        'total_amount' => 904 * 1e18,
     ]);
 
     Block::factory(12)->create([
         'timestamp'    => Carbon::parse('2021-04-13 13:02:04')->getTimestampMs(),
-        'reward'       => 2 * 1e8,
-        'total_amount' => 123 * 1e8,
+        'reward'       => 2 * 1e18,
+        'total_amount' => 123 * 1e18,
     ]);
 
     $this
@@ -97,8 +97,8 @@ it('should show the correct decimal places for the stats', function ($decimalPla
 
     Block::factory()->create([
         'timestamp'    => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'reward'       => $totalRewards * 1e8,
-        'total_amount' => $largestAmount * 1e8,
+        'reward'       => $totalRewards * 1e18,
+        'total_amount' => $largestAmount * 1e18,
     ]);
 
     $this
@@ -146,8 +146,8 @@ it('should cache the transaction stats for 5 minutes', function () {
 
     Block::factory(148)->create([
         'timestamp'    => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'reward'       => 2 * 1e8,
-        'total_amount' => 13 * 1e8,
+        'reward'       => 2 * 1e18,
+        'total_amount' => 13 * 1e18,
     ]);
 
     foreach (range(1, 19) as $seconds) {
@@ -169,8 +169,8 @@ it('should cache the transaction stats for 5 minutes', function () {
 
     Block::factory(12)->create([
         'timestamp'    => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
-        'reward'       => 2 * 1e8,
-        'total_amount' => 14 * 1e8,
+        'reward'       => 2 * 1e18,
+        'total_amount' => 14 * 1e18,
     ]);
 
     foreach (range(1, 2) as $seconds) {
