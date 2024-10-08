@@ -14,12 +14,12 @@ it('should aggregate the fees for 12 months', function () {
     $endTime   = Carbon::now()->subMinutes(10);
 
     Transaction::factory(10)->create([
-        'fee'       => '100000000',
+        'fee'       => 1 * 1e18,
         'timestamp' => $startTime->getTimestampMs(),
     ])->sortByDesc('timestamp');
 
     Transaction::factory(10)->create([
-        'fee'       => '100000000',
+        'fee'       => 1 * 1e18,
         'timestamp' => $endTime->getTimestampMs(),
     ]);
 

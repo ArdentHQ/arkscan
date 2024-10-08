@@ -18,7 +18,7 @@ final class Payment
 
     public function __construct(private int $timestamp, array $payment)
     {
-        $this->amount      = $payment['amount'] / 1e8;
+        $this->amount      = $payment['amount'] / config('currencies.notation.crypto', 1e18);
         $this->address     = $payment['recipientId'];
         $this->username    = Arr::get(Wallets::findByAddress($payment['recipientId']), 'attributes.username');
     }

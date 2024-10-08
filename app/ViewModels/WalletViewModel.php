@@ -69,7 +69,7 @@ final class WalletViewModel implements ViewModel
 
     public function balancePercentage(): float
     {
-        return Percentage::calculate($this->wallet->balance->toNumber(), CacheNetworkSupply::execute());
+        return Percentage::calculate($this->wallet->balance->valueOf()->toBigInteger()->toFloat(), CacheNetworkSupply::execute());
     }
 
     public function nonce(): int

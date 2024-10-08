@@ -14,12 +14,12 @@ it('should aggregate the fees for the given range', function () {
     $endTime   = Carbon::now()->addDays(200);
 
     $start = Transaction::factory(10)->create([
-        'fee'       => '100000000',
+        'fee'       => 1 * 1e18,
         'timestamp' => $startTime->getTimestampMs(),
     ])->sortByDesc('timestamp');
 
     $end = Transaction::factory(10)->create([
-        'fee'       => '100000000',
+        'fee'       => 1 * 1e18,
         'timestamp' => $endTime->getTimestampMs(),
     ])->sortByDesc('timestamp');
 

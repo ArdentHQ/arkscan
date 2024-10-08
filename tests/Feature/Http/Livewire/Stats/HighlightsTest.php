@@ -11,7 +11,7 @@ use App\Services\Cache\ValidatorCache;
 use Livewire\Livewire;
 
 it('should render the component', function (): void {
-    State::factory()->create(['supply' => 13628098200000000 * 10]);
+    State::factory()->create(['supply' => 1362809820 * 1e18]);
 
     Wallet::factory()->count(10)->create();
 

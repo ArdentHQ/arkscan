@@ -18,9 +18,9 @@ beforeEach(function () {
     $this->subject = Block::factory()->create([
         'previous_block' => $previousBlock->id,
         'height'         => 10000,
-        'total_amount'   => '5000000000',
-        'total_fee'      => '4800000000',
-        'reward'         => '200000000',
+        'total_amount'   => 50 * 1e18,
+        'total_fee'      => 48 * 1e18,
+        'reward'         => 2 * 1e18,
     ]);
 });
 
@@ -30,7 +30,7 @@ it('should have transactions', function () {
 });
 
 it('should have a validator that forged the block', function () {
-    Wallet::factory()->create(['public_key' => $this->subject->generator_public_key]);
+    Wallet::factory()->create(['address' => $this->subject->generator_address]);
 
     expect($this->subject->validator())->toBeInstanceOf(BelongsTo::class);
     expect($this->subject->validator)->toBeInstanceOf(Wallet::class);

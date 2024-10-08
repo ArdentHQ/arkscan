@@ -19,4 +19,12 @@ final class LowHighValue
 
         return new self($data['low'], $data['high']);
     }
+
+    public function toArray(): array
+    {
+        return [
+            'low'  => $this->low,
+            'high' => $this->high,
+        ];
+    }
 }

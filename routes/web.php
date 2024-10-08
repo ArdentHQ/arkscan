@@ -10,6 +10,8 @@ use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\ShowWalletController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\WebhooksController;
+use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -29,7 +31,9 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 
 Route::get('/', HomeController::class)->name('home');
 Route::view('/validators', 'app.validators')->name('validators');
-Route::view('/validator-monitor', 'app.validator-monitor')->name('validator-monitor');
+
+// TODO: enable when the monitor is ready
+//Route::view('/validator-monitor', 'app.validator-monitor')->name('validator-monitor');
 
 Route::get('/blocks', BlocksController::class)->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
@@ -71,3 +75,7 @@ Route::get('/wallet/{wallet}', fn (Wallet $wallet) => redirect()->route('wallet'
 
 Route::view('/compatible-wallets', 'app.compatible-wallets')->name('compatible-wallets');
 Route::get('/exchanges', ExchangesController::class)->name('exchanges');
+
+Route::post('/webhooks', WebhooksController::class)
+    ->withoutMiddleware([VerifyCsrfToken::class])
+    ->name('webhooks');

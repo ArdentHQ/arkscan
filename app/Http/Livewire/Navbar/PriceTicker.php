@@ -24,7 +24,8 @@ final class PriceTicker extends Component
 
     /** @var mixed */
     protected $listeners = [
-        'currencyChanged' => 'setValues',
+        'currencyChanged'   => 'setValues',
+        'reloadPriceTicker' => 'setValues',
     ];
 
     public function mount(): void
@@ -35,7 +36,7 @@ final class PriceTicker extends Component
     public function setValues(): void
     {
         $cache = new NetworkStatusBlockCache();
-        foreach (config('currencies') as $currency) {
+        foreach (config('currencies.currencies') as $currency) {
             if (! $cache->getIsAvailable(Network::currency(), $currency['currency'])) {
                 continue;
             }

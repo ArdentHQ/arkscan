@@ -176,7 +176,7 @@ final class Wallet extends Model
      */
     public function blocks(): HasMany
     {
-        return $this->hasMany(Block::class, 'generator_public_key', 'public_key');
+        return $this->hasMany(Block::class, 'generator_address', 'address');
     }
 
     /**

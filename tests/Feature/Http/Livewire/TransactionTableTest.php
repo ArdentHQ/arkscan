@@ -16,8 +16,8 @@ use Livewire\Livewire;
 
 it('should list the first page of records', function () {
     Transaction::factory(30)->transfer()->create([
-        'amount' => 481 * 1e8,
-        'fee'    => 0.481 * 1e8,
+        'amount' => 481 * 1e18,
+        'fee'    => 0.481 * 1e18,
     ]);
 
     $component = Livewire::test(TransactionTable::class)
@@ -46,7 +46,7 @@ it('should update the records fiat tooltip when currency changed', function () {
 
     Transaction::factory()->transfer()->create([
         'timestamp' => Carbon::parse('2020-10-19 05:54:16')->getTimestampMs(),
-        'amount'    => 499 * 1e8,
+        'amount'    => 499 * 1e18,
     ]);
 
     $component = Livewire::test(TransactionTable::class)
@@ -221,4 +221,34 @@ it('should show no transactions if no type filter', function () {
         ->assertDontSee($validatorRegistration->id)
         ->assertDontSee($usernameRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_filters'));
+});
+
+it('should reload on new transaction event', function () {
+    $component = Livewire::test(TransactionTable::class)
+        ->call('setIsReady');
+
+    Transaction::factory(5)->transfer()->create([
+        'amount' => 481 * 1e18,
+        'fee'    => 0.481 * 1e18,
+    ]);
+
+    foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {
+        $component->assertDontSee($transaction->id());
+        $component->assertDontSee($transaction->timestamp());
+        $component->assertDontSee($transaction->sender()->address());
+        $component->assertDontSee($transaction->recipient()->address());
+        $component->assertDontSee('481.00');
+        $component->assertDontSee('0.48');
+    }
+
+    $component->emit('echo:transactions,NewTransaction');
+
+    foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {
+        $component->assertSee($transaction->id());
+        $component->assertSee($transaction->timestamp());
+        $component->assertSee($transaction->sender()->address());
+        $component->assertSee($transaction->recipient()->address());
+        $component->assertSee('481.00');
+        $component->assertSee('0.48');
+    }
 });

@@ -25,8 +25,8 @@ final class AveragesAggregate
 
         return [
             'count'  => (int) round($data['count'] / $daysSinceEpoch),
-            'amount' => (int) round(($data['amount'] / 1e8) / $daysSinceEpoch),
-            'fee'    => (int) round(($data['fee'] / 1e8) / $daysSinceEpoch),
+            'amount' => (int) round(($data['amount'] / config('currencies.notation.crypto', 1e18)) / $daysSinceEpoch),
+            'fee'    => (int) round(($data['fee'] / config('currencies.notation.crypto', 1e18)) / $daysSinceEpoch),
         ];
     }
 }

@@ -14,6 +14,6 @@ final class VoteCountAggregate implements Aggregate
         return (string) (Wallet::query()
             ->where('balance', '>', 0)
             ->whereNotNull('attributes->vote')
-            ->sum('balance') / 1e8);
+            ->sum('balance') / config('currencies.notation.crypto', 1e18));
     }
 }

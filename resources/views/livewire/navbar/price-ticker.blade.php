@@ -6,9 +6,9 @@
 
         https://app.clickup.com/t/86dqjdxjm
     --}}
-    @unless ($isDisabled)
+    @if (! $isDisabled && config('broadcasting.default') !== 'reverb')
         wire:poll.visible.30s
-    @endunless
+    @endif
     class="w-full md:w-auto"
     :class="{ 'opacity-50': busy }"
     x-data="{ busy: false }"
@@ -75,7 +75,7 @@
                 </div>
             </x-slot>
 
-            @foreach (config('currencies') as $currency)
+            @foreach (config('currencies.currencies') as $currency)
                 <x-general.dropdown.list-item
                     :is-active="$currency['currency'] === $to"
                     wire:click="setCurrency('{{ $currency['currency'] }}')"

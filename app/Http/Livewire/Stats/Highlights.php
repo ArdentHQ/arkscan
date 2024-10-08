@@ -39,7 +39,7 @@ final class Highlights extends Component
 
     private function getTotalSupply(): string
     {
-        $supply = CacheNetworkSupply::execute() / 1e8;
+        $supply = CacheNetworkSupply::execute() / config('currencies.notation.crypto', 1e18);
 
         return NumberFormatter::number($supply);
     }

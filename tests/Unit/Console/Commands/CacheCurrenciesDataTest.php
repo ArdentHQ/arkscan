@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Http;
 use function Tests\fakeCryptoCompare;
 
 it('should execute the command', function () {
-    Config::set('currencies', [
+    Config::set('currencies.currencies', [
         'usd' => [
             'currency' => 'USD',
             'locale'   => 'en_US',
@@ -39,7 +39,7 @@ it('should execute the command', function () {
 });
 
 it('should ignore the cache for development network', function () {
-    Config::set('currencies', [
+    Config::set('currencies.currencies', [
         'usd' => [
             'currency' => 'USD',
             'locale'   => 'en_US',

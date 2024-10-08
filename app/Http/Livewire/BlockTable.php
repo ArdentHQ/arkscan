@@ -23,7 +23,8 @@ final class BlockTable extends Component
 
     /** @var mixed */
     protected $listeners = [
-        'currencyChanged' => '$refresh',
+        'currencyChanged'      => '$refresh',
+        'echo:blocks,NewBlock' => '$refresh',
     ];
 
     public function render(): View

@@ -30,12 +30,12 @@ it('should render', function () {
 });
 
 it('should render with validators', function () {
-    Wallet::factory(51)->activeValidator()->create();
+    Wallet::factory(Network::validatorCount())->activeValidator()->create();
 
     Livewire::test(Validators::class)
         ->assertSee('Showing 0 results')
         ->call('setIsReady')
-        ->assertSee('Showing 51 results');
+        ->assertSee('Showing '.Network::validatorCount().' results');
 });
 
 it('should not defer loading if disabled', function () {
@@ -186,7 +186,7 @@ it('should show the correct styling for "success" on missed blocks', function ()
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -206,7 +206,7 @@ it('should show the correct styling for "warning" on missed blocks', function ()
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -226,7 +226,7 @@ it('should show the correct styling for "danger" on missed blocks', function () 
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -246,7 +246,7 @@ it('should sort by rank by default', function () {
         'attributes' => [
             'validatorRank'           => 2,
             'username'                => 'validator-2',
-            'validatorVoteBalance'    => 4000 * 1e8,
+            'validatorVoteBalance'    => 4000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -256,7 +256,7 @@ it('should sort by rank by default', function () {
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -279,7 +279,7 @@ it('should sort rank in descending order', function () {
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -289,7 +289,7 @@ it('should sort rank in descending order', function () {
         'attributes' => [
             'validatorRank'           => 2,
             'username'                => 'validator-2',
-            'validatorVoteBalance'    => 4000 * 1e8,
+            'validatorVoteBalance'    => 4000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -312,7 +312,7 @@ it('should sort name in ascending order', function () {
         'attributes' => [
             'validatorRank'           => 2,
             'username'                => 'validator-2',
-            'validatorVoteBalance'    => 4000 * 1e8,
+            'validatorVoteBalance'    => 4000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -322,7 +322,7 @@ it('should sort name in ascending order', function () {
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -345,7 +345,7 @@ it('should sort name in descending order', function () {
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -355,7 +355,7 @@ it('should sort name in descending order', function () {
         'attributes' => [
             'validatorRank'           => 2,
             'username'                => 'validator-2',
-            'validatorVoteBalance'    => 4000 * 1e8,
+            'validatorVoteBalance'    => 4000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -378,7 +378,7 @@ it('should sort number of voters in ascending order', function () {
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -388,7 +388,7 @@ it('should sort number of voters in ascending order', function () {
         'attributes' => [
             'validatorRank'           => 2,
             'username'                => 'validator-2',
-            'validatorVoteBalance'    => 4000 * 1e8,
+            'validatorVoteBalance'    => 4000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -429,7 +429,7 @@ it('should sort number of voters in descending order', function () {
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -439,7 +439,7 @@ it('should sort number of voters in descending order', function () {
         'attributes' => [
             'validatorRank'           => 2,
             'username'                => 'validator-2',
-            'validatorVoteBalance'    => 4000 * 1e8,
+            'validatorVoteBalance'    => 4000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -480,7 +480,7 @@ it('should handle no cached votes when sorting by number of voters', function ()
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -490,7 +490,7 @@ it('should handle no cached votes when sorting by number of voters', function ()
         'attributes' => [
             'validatorRank'           => 2,
             'username'                => 'validator-2',
-            'validatorVoteBalance'    => 4000 * 1e8,
+            'validatorVoteBalance'    => 4000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -525,7 +525,7 @@ it('should sort votes & percentage in ascending order', function (string $sortKe
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -535,7 +535,7 @@ it('should sort votes & percentage in ascending order', function (string $sortKe
         'attributes' => [
             'validatorRank'           => 2,
             'username'                => 'validator-2',
-            'validatorVoteBalance'    => 4000 * 1e8,
+            'validatorVoteBalance'    => 4000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -561,7 +561,7 @@ it('should sort votes & percentage in descending order', function (string $sortK
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -571,7 +571,7 @@ it('should sort votes & percentage in descending order', function (string $sortK
         'attributes' => [
             'validatorRank'           => 2,
             'username'                => 'validator-2',
-            'validatorVoteBalance'    => 4000 * 1e8,
+            'validatorVoteBalance'    => 4000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -598,7 +598,7 @@ it('should sort missed blocks in ascending order grouped by rank', function () {
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
         ],
     ]);
@@ -608,7 +608,7 @@ it('should sort missed blocks in ascending order grouped by rank', function () {
         'attributes' => [
             'validatorRank'           => 2,
             'username'                => 'validator-2',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
         ],
     ]);
@@ -618,7 +618,7 @@ it('should sort missed blocks in ascending order grouped by rank', function () {
         'attributes' => [
             'validatorRank'           => 3,
             'username'                => 'validator-3',
-            'validatorVoteBalance'    => 4000 * 1e8,
+            'validatorVoteBalance'    => 4000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
         ],
     ]);
@@ -645,11 +645,11 @@ it('should sort missed blocks in ascending order grouped by rank', function () {
         ],
     ]);
 
-    $wallet51 = Wallet::factory()->activeValidator()->create([
-        'address'    => 'wallet-51',
+    $walletLast = Wallet::factory()->activeValidator()->create([
+        'address'    => 'wallet-last',
         'attributes' => [
-            'validatorRank'           => 51,
-            'username'                => 'validator-51',
+            'validatorRank'           => Network::validatorCount(),
+            'username'                => 'validator-last',
             'validatorVoteBalance'    => 4000 * 1e8,
             'validatorPublicKey'      => 'publicKey',
         ],
@@ -670,13 +670,13 @@ it('should sort missed blocks in ascending order grouped by rank', function () {
         ->assertSeeInOrder([
             $wallet1->address,
             $walletWithoutMissedBlocks->address,
-            $wallet51->address,
+            $walletLast->address,
             $wallet2->address,
             $wallet3->address,
             ...$inactiveWallets->pluck('address'),
             $wallet1->address,
             $walletWithoutMissedBlocks->address,
-            $wallet51->address,
+            $walletLast->address,
             $wallet2->address,
             $wallet3->address,
             ...$inactiveWallets->pluck('address'),
@@ -689,7 +689,7 @@ it('should sort missed blocks in descending order grouped by rank', function () 
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
         ],
     ]);
@@ -699,7 +699,7 @@ it('should sort missed blocks in descending order grouped by rank', function () 
         'attributes' => [
             'validatorRank'           => 2,
             'username'                => 'validator-2',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
         ],
     ]);
@@ -709,7 +709,7 @@ it('should sort missed blocks in descending order grouped by rank', function () 
         'attributes' => [
             'validatorRank'           => 3,
             'username'                => 'validator-3',
-            'validatorVoteBalance'    => 4000 * 1e8,
+            'validatorVoteBalance'    => 4000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
         ],
     ]);
@@ -736,11 +736,11 @@ it('should sort missed blocks in descending order grouped by rank', function () 
         ],
     ]);
 
-    $wallet51 = Wallet::factory()->activeValidator()->create([
-        'address'    => 'wallet-51',
+    $walletLast = Wallet::factory()->activeValidator()->create([
+        'address'    => 'wallet-last',
         'attributes' => [
-            'validatorRank'           => 51,
-            'username'                => 'validator-51',
+            'validatorRank'           => Network::validatorCount(),
+            'username'                => 'validator-last',
             'validatorVoteBalance'    => 4000 * 1e8,
             'validatorPublicKey'      => 'publicKey',
         ],
@@ -763,13 +763,13 @@ it('should sort missed blocks in descending order grouped by rank', function () 
             $wallet2->address,
             $wallet1->address,
             $walletWithoutMissedBlocks->address,
-            $wallet51->address,
+            $walletLast->address,
             ...$inactiveWallets->pluck('address'),
             $wallet3->address,
             $wallet2->address,
             $wallet1->address,
             $walletWithoutMissedBlocks->address,
-            $wallet51->address,
+            $walletLast->address,
             ...$inactiveWallets->pluck('address'),
         ]);
 });
@@ -777,7 +777,7 @@ it('should sort missed blocks in descending order grouped by rank', function () 
 it('should alternate sorting direction', function () {
     $validatorCache = new ValidatorCache();
     $validatorCache->setAllVoterCounts(
-        Wallet::factory(51)
+        Wallet::factory(Network::validatorCount())
             ->activeValidator()
             ->create()
             ->mapWithKeys(fn ($validator) => [$validator->public_key => 1])
@@ -807,7 +807,7 @@ it('should alternate sorting direction', function () {
 it('should handle sorting an empty table', function () {
     $validatorCache = new ValidatorCache();
     $validatorCache->setAllVoterCounts(
-        Wallet::factory(51)
+        Wallet::factory(Network::validatorCount())
             ->activeValidator()
             ->create()
             ->mapWithKeys(fn ($validator) => [$validator->public_key => 1])
@@ -861,7 +861,7 @@ it('should parse sorting direction from query string', function () {
         'attributes' => [
             'validatorRank'           => 2,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -871,7 +871,7 @@ it('should parse sorting direction from query string', function () {
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-2',
-            'validatorVoteBalance'    => 4000 * 1e8,
+            'validatorVoteBalance'    => 4000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -899,7 +899,7 @@ it('should force ascending if invalid query string value', function () {
         'attributes' => [
             'validatorRank'           => 2,
             'username'                => 'validator-1',
-            'validatorVoteBalance'    => 10000 * 1e8,
+            'validatorVoteBalance'    => 10000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -909,7 +909,7 @@ it('should force ascending if invalid query string value', function () {
         'attributes' => [
             'validatorRank'           => 1,
             'username'                => 'validator-2',
-            'validatorVoteBalance'    => 4000 * 1e8,
+            'validatorVoteBalance'    => 4000 * 1e18,
             'validatorPublicKey'      => 'publicKey',
             'validatorProducedBlocks' => 1000,
         ],
@@ -934,11 +934,11 @@ it('should handle sorting several pages of validators without cached data', func
         $wallet          = faker()->wallet;
         $validatorData[] = [
             'id'                => faker()->uuid,
-            'balance'           => faker()->numberBetween(1, 1000) * 1e8,
+            'balance'           => faker()->numberBetween(1, 1000) * 1e18,
             'nonce'             => faker()->numberBetween(1, 1000),
             'attributes'        => [
                 'username'                => faker()->userName,
-                'validatorVoteBalance'    => faker()->numberBetween(1, 1000) * 1e8,
+                'validatorVoteBalance'    => faker()->numberBetween(1, 1000) * 1e18,
                 'validatorPublicKey'      => 'publicKey',
                 'validatorProducedBlocks' => faker()->numberBetween(1, 1000),
                 'validatorMissedBlocks'   => faker()->numberBetween(1, 1000),
@@ -950,7 +950,7 @@ it('should handle sorting several pages of validators without cached data', func
             'attributes' => json_encode([
                 'validatorRank'           => $rank,
                 'username'                => 'validator-'.$rank,
-                'validatorVoteBalance'    => random_int(1000, 10000) * 1e8,
+                'validatorVoteBalance'    => random_int(1000, 10000) * 1e18,
                 'validatorPublicKey'      => 'publicKey',
             ]),
         ];
@@ -963,7 +963,11 @@ it('should handle sorting several pages of validators without cached data', func
         $aValue = Arr::get($a, $modelSortBy);
 
         if (is_numeric($bValue) && is_numeric($aValue)) {
-            return (int) $aValue - (int) $bValue;
+            if ($aValue > $bValue) {
+                return 1;
+            }
+
+            return $aValue < $bValue ? -1 : 0;
         }
 
         return strcmp($aValue, $bValue);
@@ -998,7 +1002,7 @@ it('should handle sorting several pages of validators with cached data', functio
         $wallet          = faker()->wallet;
         $validatorData[] = [
             'id'                => faker()->uuid,
-            'balance'           => faker()->numberBetween(1, 1000) * 1e8,
+            'balance'           => faker()->numberBetween(1, 1000) * 1e18,
             'nonce'             => faker()->numberBetween(1, 1000),
             'updated_at'        => faker()->numberBetween(1, 1000),
 
@@ -1007,7 +1011,7 @@ it('should handle sorting several pages of validators with cached data', functio
             'attributes' => json_encode([
                 'validatorRank'           => $rank,
                 'username'                => 'validator-'.$rank,
-                'validatorVoteBalance'    => random_int(1000, 10000) * 1e8,
+                'validatorVoteBalance'    => random_int(1000, 10000) * 1e18,
                 'validatorPublicKey'      => 'publicKey',
                 'validatorProducedBlocks' => faker()->numberBetween(1, 1000),
                 'validatorMissedBlocks'   => faker()->numberBetween(1, 1000),
@@ -1073,7 +1077,11 @@ it('should handle sorting several pages of validators with cached data', functio
         }
 
         if (is_numeric($bValue) && is_numeric($aValue)) {
-            return (int) $aValue - (int) $bValue;
+            if ($aValue > $bValue) {
+                return 1;
+            }
+
+            return $aValue < $bValue ? -1 : 0;
         }
 
         return strcmp($aValue, $bValue);

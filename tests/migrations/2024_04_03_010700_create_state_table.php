@@ -13,7 +13,7 @@ final class CreateStateTable extends Migration
         Schema::create('state', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->unsignedBigInteger('height');
-            $table->unsignedBigInteger('supply');
+            $table->addColumn('numeric', 'supply');
         });
     }
 }
