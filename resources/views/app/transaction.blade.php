@@ -5,7 +5,7 @@
         <x-page-headers.transaction :transaction="$transaction" />
 
         <div @class([
-            'mb-8' => ! $transaction->isContract(),
+            'mb-8' => ! $transaction->isEvm(),
         ])>
             <x-transaction.page.details :transaction="$transaction" />
 
@@ -28,7 +28,7 @@
             @endif
         </div>
 
-        @if ($transaction->isContract())
+        @if ($transaction->isEvm())
             <div class="mb-8">
                 <x-transaction.page.more-details :transaction="$transaction" />
             </div>

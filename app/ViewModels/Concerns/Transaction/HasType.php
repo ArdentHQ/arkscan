@@ -64,7 +64,7 @@ trait HasType
     }
 
     // TODO: implement method correctly - https://app.clickup.com/t/86dur8fj6
-    public function isContract(): bool
+    public function isEvm(): bool
     {
         return true;
     }
