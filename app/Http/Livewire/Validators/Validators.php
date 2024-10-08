@@ -121,7 +121,7 @@ final class Validators extends TabbedTableComponent
 
         return Wallet::query()
             ->whereNotNull('attributes->validatorPublicKey');
-            // ->where(fn ($query) => $query->when($this->hasFilters(), function ($query) {
+        // ->where(fn ($query) => $query->when($this->hasFilters(), function ($query) {
             //     $query->where(fn ($query) => $query->when($this->filter['active'] === true, fn ($query) => $query->where(function ($query) {
             //         $query->where('attributes->validatorResigned', null)
             //             ->orWhere('attributes->validatorResigned', false);
@@ -133,12 +133,12 @@ final class Validators extends TabbedTableComponent
             //             $query->whereRaw('(attributes->>\'validatorRank\')::int > ?', Network::validatorCount());
             //         })))
             //         ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->validatorResigned', true)));
-            // }))
-            // ->when($this->sortKey === 'rank', fn ($query) => $query->sortByRank($sortDirection))
-            // ->when($this->sortKey === 'name', fn ($query) => $query->sortByUsername($sortDirection))
-            // ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', fn ($query) => $query->sortByVoteCount($sortDirection))
-            // ->when($this->sortKey === 'no_of_voters', fn ($query) => $query->sortByNumberOfVoters($sortDirection))
-            // ->when($this->sortKey === 'missed_blocks', fn ($query) => $query->sortByMissedBlocks($sortDirection))
-            // ->dd();
+        // }))
+        // ->when($this->sortKey === 'rank', fn ($query) => $query->sortByRank($sortDirection))
+        // ->when($this->sortKey === 'name', fn ($query) => $query->sortByUsername($sortDirection))
+        // ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', fn ($query) => $query->sortByVoteCount($sortDirection))
+        // ->when($this->sortKey === 'no_of_voters', fn ($query) => $query->sortByNumberOfVoters($sortDirection))
+        // ->when($this->sortKey === 'missed_blocks', fn ($query) => $query->sortByMissedBlocks($sortDirection))
+        // ->dd();
     }
 }
