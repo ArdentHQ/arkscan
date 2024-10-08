@@ -13,12 +13,12 @@ trait HasVoters
 {
     public function votes(): float
     {
-        return BigNumber::new($this->wallet->attributes['validatorVoteBalance'])->toFloat();
+        return BigNumber::new($this->wallet->attributes['validatorVoteBalance'] ?? 0)->toFloat();
     }
 
     public function votesPercentage(): float
     {
-        $voteBalance = (float) $this->wallet->attributes['validatorVoteBalance'];
+        $voteBalance = (float) ($this->wallet->attributes['validatorVoteBalance'] ?? 0);
 
         return Percentage::calculate($voteBalance, CacheNetworkSupply::execute());
     }
