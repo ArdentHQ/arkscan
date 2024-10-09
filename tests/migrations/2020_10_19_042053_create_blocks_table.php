@@ -25,6 +25,7 @@ final class CreateBlocksTable extends Migration
             $table->unsignedBigInteger('number_of_transactions');
             $table->addColumn('numeric', 'total_amount');
             $table->addColumn('numeric', 'total_fee');
+            $table->integer('total_gas_used');
             $table->addColumn('numeric', 'reward');
             $table->unsignedBigInteger('payload_length');
             $table->string('payload_hash');
