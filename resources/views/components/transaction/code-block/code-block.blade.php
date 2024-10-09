@@ -9,13 +9,13 @@
         }
     }"
 >
-    <div class="rounded-t-lg flex flex-col sm:flex-row justify-between space-y-3 sm:space-y-0 sm:items-center bg-theme-secondary-900 dark:bg-theme-dark-800 text-theme-secondary-200 dark:text-theme-dark-200 pt-3 sm:pt-0 sm:h-10 px-4 shadow-code-block">
+    <div class="flex flex-col justify-between px-4 pt-3 space-y-3 rounded-t-lg sm:flex-row sm:items-center sm:pt-0 sm:space-y-0 sm:h-10 bg-theme-secondary-900 text-theme-secondary-200 shadow-code-block dark:bg-theme-dark-800 dark:text-theme-dark-200">
         <div>
             @lang('pages.transaction.input_data')
         </div>
 
-        <div class="flex sm:justify-between sm:items-center h-full">
-            <div class="dark:text-theme-dark-200 leading-3.75 pr-1.5">
+        <div class="flex h-full sm:justify-between sm:items-center">
+            <div class="pr-1.5 leading-3.75 dark:text-theme-dark-200">
                 <span>@lang('pages.transaction.code-block.view_input_as')</span>
             </div>
 
