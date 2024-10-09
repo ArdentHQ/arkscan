@@ -1,15 +1,19 @@
 @props(['transaction'])
 
 <div
-    class="flex flex-col text-sm code-block"
+    class="flex flex-col"
     x-data="{
         view: 'default',
+        get content() {
+            return this.$refs[`code-${this.view}`].innerText;
+        },
         changeView(view) {
             this.view = view;
-        }
+        },
     }"
+    x-init="changeView('default')"
 >
-    <div class="flex flex-col justify-between px-4 pt-3 space-y-3 rounded-t-lg sm:flex-row sm:items-center sm:pt-0 sm:space-y-0 sm:h-10 bg-theme-secondary-900 text-theme-secondary-200 shadow-code-block dark:bg-theme-dark-800 dark:text-theme-dark-200">
+    <div class="flex flex-col justify-between px-4 pt-3 space-y-3 rounded-t-lg sm:flex-row sm:items-center sm:pt-0 sm:space-y-0 sm:h-10 bg-theme-secondary-900 text-theme-secondary-200 shadow-code-block dark:bg-theme-dark-800 dark:text-theme-dark-200 text-sm">
         <div>
             @lang('pages.transaction.input_data')
         </div>
@@ -26,8 +30,16 @@
     </div>
 
     <div class="bg-black text-[#C3B6FD] text-[13px] font-normal flex flex-1 rounded-b-lg overflow-x-auto p-4 shadow-code-block">
-        <pre x-show="view == 'default'">{{ $transaction->formattedPayload() }}</pre>
-        <pre x-show="view == 'utf-8'">{{ $transaction->utf8Payload() }}</pre>
-        <pre x-show="view == 'original'">{{ $transaction->rawPayload() }}</pre>
+        <pre x-ref="code-default" x-show="view == 'default'">{{ $transaction->formattedPayload() }}</pre>
+        <pre x-ref="code-utf-8" x-show="view == 'utf-8'">{{ $transaction->utf8Payload() }}</pre>
+        <pre x-ref="code-original" x-show="view == 'original'">{{ $transaction->rawPayload() }}</pre>
     </div>
+
+    <x-ark-clipboard
+        class="mt-4 w-full sm:w-auto button button-secondary flex items-center space-x-2"
+        alpine-property="content"
+        no-styling
+    >
+        <span>@lang('pages.transaction.code-block.copy_code')</span>
+    </x-ark-clipboard>
 </div>
