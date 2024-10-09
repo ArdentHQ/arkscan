@@ -13,7 +13,7 @@
     }"
     x-init="changeView('default')"
 >
-    <div class="flex flex-col justify-between px-4 pt-3 space-y-3 rounded-t-lg sm:flex-row sm:items-center sm:pt-0 sm:space-y-0 sm:h-10 bg-theme-secondary-900 text-theme-secondary-200 shadow-code-block dark:bg-theme-dark-800 dark:text-theme-dark-200 text-sm">
+    <div class="flex flex-col justify-between px-4 pt-3 space-y-3 text-sm rounded-t-lg sm:flex-row sm:items-center sm:pt-0 sm:space-y-0 sm:h-10 bg-theme-secondary-900 text-theme-secondary-200 shadow-code-block dark:bg-theme-dark-800 dark:text-theme-dark-200">
         <div>
             @lang('pages.transaction.input_data')
         </div>
@@ -36,7 +36,7 @@
     </div>
 
     <x-ark-clipboard
-        class="mt-4 w-full sm:w-auto button button-secondary flex items-center space-x-2"
+        class="flex items-center mt-4 space-x-2 w-full sm:w-auto button button-secondary"
         alpine-property="content"
         no-styling
     >
