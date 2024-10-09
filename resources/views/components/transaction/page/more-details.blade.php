@@ -7,7 +7,7 @@
     <x-general.page-section.container
         :title="trans('pages.transaction.more_details')"
         class="mt-6 sm:hidden"
-        wrapper-class="flex flex-col flex-1 space-y-3 whitespace-nowrap w-full"
+        wrapper-class="flex flex-col flex-1 space-y-3 w-full whitespace-nowrap"
     >
         <x-tables.rows.mobile content-class="divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800 !space-y-3">
             <x-slot name="header" class="font-semibold">
@@ -38,7 +38,7 @@
 
         @if ($transaction->hasPayload())
             <div
-                class="w-full space-y-3"
+                class="space-y-3 w-full"
                 x-data="{
                     isExpanded: false,
                     toggle() {
@@ -55,7 +55,7 @@
                 </div>
 
                 <button
-                    class="link border-b border-dashed border-theme-primary-500 hover:no-underline hover:border-theme-primary-700 leading-5"
+                    class="leading-5 border-b border-dashed hover:no-underline link border-theme-primary-500 hover:border-theme-primary-700"
                     @click="toggle"
                 >
                     <span x-show="!isExpanded">
@@ -142,7 +142,7 @@
                         no-border
                     >
                         <button
-                            class="link border-b border-dashed border-theme-primary-500 hover:no-underline hover:border-theme-primary-700 leading-5"
+                            class="leading-5 border-b border-dashed hover:no-underline link border-theme-primary-500 hover:border-theme-primary-700"
                             @click="toggle"
                         >
                             <span x-show="!isExpanded">
