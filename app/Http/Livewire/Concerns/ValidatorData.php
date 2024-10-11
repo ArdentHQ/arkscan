@@ -8,6 +8,7 @@ use App\DTO\Slot;
 use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
+use App\Services\Cache\RequestScopedCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\Monitor;
 use App\Services\Monitor\ValidatorTracker;
@@ -81,11 +82,13 @@ trait ValidatorData
 
     private function getBlocksByRange(array $addresses, array $heightRange): Collection
     {
-        return Block::query()
+        return RequestScopedCache::remember('monitor:blocks-by-range', function () use ($addresses, $heightRange): Collection {
+            return Block::query()
                 ->whereIn('generator_address', $addresses)
                 ->whereBetween('height', $heightRange)
                 ->orderBy('height', 'asc')
                 ->get();
+        });
     }
 
     private function hasRoundStarted(int $height): bool
