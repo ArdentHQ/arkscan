@@ -8,7 +8,6 @@ use App\Facades\Wallets;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 
 final class CacheValidatorWallets extends Command
 {

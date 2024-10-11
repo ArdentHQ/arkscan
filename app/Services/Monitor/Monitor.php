@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 
 final class Monitor
 {
-    const ROUND_FOR_HEIGHT_TTL = 600; // 10 minutes - the round number should never change for a given height
+    public const ROUND_FOR_HEIGHT_TTL = 600; // 10 minutes - the round number should never change for a given height
 
     public static function roundNumber(): int
     {
