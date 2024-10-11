@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Console\Commands\CacheValidatorProductivity;
 use App\Facades\Network;
-use App\Jobs\CacheProductivityByPublicKey;
+use App\Jobs\CacheProductivityByAddress;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Queue;
 use function Tests\createRoundEntry;
@@ -18,5 +18,5 @@ it('should execute the command', function () {
 
     (new CacheValidatorProductivity())->handle();
 
-    Queue::assertPushed(CacheProductivityByPublicKey::class, 53);
+    Queue::assertPushed(CacheProductivityByAddress::class, 53);
 });
