@@ -36,13 +36,13 @@ trait ValidatorData
 
             $lastBlockIds = DB::connection('explorer')
                 ->table('wallets')
-                ->whereIn('public_key', $validators)
+                ->whereIn('address', $validators)
                 ->select([
-                    'public_key',
+                    'address',
                     'last_block_id' => function ($query) {
                         $query->select('id')
                             ->from('blocks')
-                            ->whereColumn('generator_public_key', 'public_key')
+                            ->whereColumn('generator_address', 'address')
                             ->orderBy('height', 'desc')
                             ->limit(1);
                     },
@@ -51,14 +51,14 @@ trait ValidatorData
             /** @var Collection $lastBlocks */
             $lastBlocks = Block::whereIn('id', $lastBlockIds->pluck('last_block_id'))
                 ->get()
-                ->groupBy('generator_public_key');
+                ->groupBy('generator_address');
 
-            foreach ($validators as $validator) {
-                $block = $blocks->firstWhere('generator_public_key', $validator);
+            foreach ($validators as $address) {
+                $block = $blocks->firstWhere('generator_address', $address);
 
                 // The validator hasn't forged in some rounds.
-                if (is_null($block) && $lastBlocks->has($validator)) {
-                    $block = $lastBlocks->get($validator)
+                if (is_null($block) && $lastBlocks->has($address)) {
+                    $block = $lastBlocks->get($address)
                         ->first();
                 }
 
@@ -67,11 +67,11 @@ trait ValidatorData
                     continue;
                 }
 
-                (new WalletCache())->setLastBlock($validator, [
+                (new WalletCache())->setLastBlock($address, [
                     'id'                   => $block->id,
                     'height'               => $block->height->toNumber(),
                     'timestamp'            => $block->timestamp,
-                    'generator_public_key' => $block->generator_public_key,
+                    'generator_address' => $block->generator_address,
                 ]);
             }
 
@@ -79,10 +79,10 @@ trait ValidatorData
         });
     }
 
-    private function getBlocksByRange(array $publicKeys, array $heightRange): Collection
+    private function getBlocksByRange(array $addresses, array $heightRange): Collection
     {
         return Block::query()
-                ->whereIn('generator_public_key', $publicKeys)
+                ->whereIn('generator_address', $addresses)
                 ->whereBetween('height', $heightRange)
                 ->orderBy('height', 'asc')
                 ->get();
@@ -110,11 +110,11 @@ trait ValidatorData
         }
 
         $tracking        = ValidatorTracker::execute($validators, $heightRange[0]);
-        $roundBlocks     = $this->getBlocksByRange(Arr::pluck($tracking, 'publicKey'), $heightRange);
+        $roundBlocks     = $this->getBlocksByRange(Arr::pluck($tracking, 'address'), $heightRange);
         $blockTimestamp  = $roundBlocks->last()->timestamp;
         $validators      = [];
 
-        $roundBlockCount = $roundBlocks->groupBy('generator_public_key')
+        $roundBlockCount = $roundBlocks->groupBy('generator_address')
             ->map(function ($blocks) {
                 return count($blocks);
             });
@@ -122,7 +122,7 @@ trait ValidatorData
         for ($i = 0; $i < count($tracking); $i++) {
             $validator = array_values($tracking)[$i];
 
-            $validatorWallet = (new WalletCache())->getValidator($validator['publicKey']);
+            $validatorWallet = (new WalletCache())->getValidator($validator['address']);
             if ($validatorWallet === null) {
                 continue;
             }
@@ -131,11 +131,11 @@ trait ValidatorData
             $walletViewModel = ViewModelFactory::make($validatorWallet);
 
             $validators[] = new Slot(
-                publicKey: $validator['publicKey'],
+                address: $validator['address'],
                 order: $i + 1,
                 wallet: $walletViewModel,
                 forgingAt: Timestamp::fromUnix($blockTimestamp)->addMilliseconds($validator['time']),
-                lastBlock: (new WalletCache())->getLastBlock($validator['publicKey']),
+                lastBlock: (new WalletCache())->getLastBlock($validator['address']),
                 status: $validator['status'],
                 roundBlockCount: $roundBlockCount,
                 roundNumber: $currentRound->round,

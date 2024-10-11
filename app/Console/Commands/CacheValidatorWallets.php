@@ -33,15 +33,7 @@ final class CacheValidatorWallets extends Command
             ->chunk(200, function ($wallets) use ($cache): void {
                 /** @var Wallet $wallet */
                 foreach ($wallets as $wallet) {
-                    /** @var string $publicKey */
-                    $publicKey = $wallet->public_key;
-
-                    $cache->setValidator($publicKey, $wallet);
-
-                    $validatorPublicKey = Arr::get($wallet, 'attributes.validatorPublicKey');
-                    if ($validatorPublicKey !== null) {
-                        $cache->setValidatorPublicKeyByAddress($wallet->address, $validatorPublicKey);
-                    }
+                    $cache->setValidator($wallet->address, $wallet);
                 }
             });
     }

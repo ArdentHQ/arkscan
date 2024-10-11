@@ -16,7 +16,7 @@ final class ForgingStatsFactory extends Factory
     {
         return [
             'timestamp'     => $this->faker->dateTimeBetween('-1 year', 'now')->getTimestamp(),
-            'public_key'    => fn () => Wallet::factory()->create()->public_key,
+            'address'       => fn () => Wallet::factory()->create()->address,
             'forged'        => $this->faker->boolean(),
             'missed_height' => $this->faker->numberBetween(1, 10000),
         ];

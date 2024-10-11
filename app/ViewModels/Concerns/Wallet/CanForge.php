@@ -41,13 +41,13 @@ trait CanForge
             return 0;
         }
 
-        $publicKey = $this->publicKey();
+        $address = $this->address();
 
-        if (is_null($publicKey)) {
+        if (is_null($address)) {
             return 0;
         }
 
-        $productivity = (new WalletCache())->getProductivity($publicKey);
+        $productivity = (new WalletCache())->getProductivity($address);
         if ($productivity <= 0) {
             return 0;
         }
@@ -61,13 +61,13 @@ trait CanForge
             return [];
         }
 
-        $publicKey = $this->publicKey();
+        $address = $this->address();
 
-        if (is_null($publicKey)) {
+        if (is_null($address)) {
             return [];
         }
 
-        $performance = (new WalletCache())->getPerformance($publicKey);
+        $performance = (new WalletCache())->getPerformance($address);
 
         $currentRound = $this->currentSlot();
         if ($currentRound['status'] === 'done') {
@@ -109,13 +109,13 @@ trait CanForge
             return $this->wallet->missed_blocks;
         }
 
-        $publicKey = $this->publicKey();
+        $address = $this->address();
 
-        if (is_null($publicKey)) {
+        if (is_null($address)) {
             return 0;
         }
 
-        return (new WalletCache())->getMissedBlocks($publicKey);
+        return (new WalletCache())->getMissedBlocks($address);
     }
 
     public function blocksSinceLastForged(): ?int
@@ -159,17 +159,21 @@ trait CanForge
 
     public function currentSlot(): array
     {
-        return Rounds::validators()->firstWhere('publicKey', $this->publicKey());
+        $validators = Cache::remember('wallet:validators', 3, function () {
+            return Rounds::validators();
+        });
+
+        return $validators->firstWhere('address', $this->address());
     }
 
     private function lastBlock(): ?array
     {
-        $publicKey = $this->publicKey();
-        if (is_null($publicKey)) {
+        $address = $this->address();
+        if (is_null($address)) {
             return null;
         }
 
-        $lastBlock = (new WalletCache())->getLastBlock($publicKey);
+        $lastBlock = (new WalletCache())->getLastBlock($address);
         if ($lastBlock === []) {
             return null;
         }

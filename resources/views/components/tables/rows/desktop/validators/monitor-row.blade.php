@@ -4,7 +4,7 @@
 ])
 
 <x-ark-tables.row
-    x-data="Validator('{{ $validator->publicKey() }}')"
+    x-data="Validator('{{ $validator->address() }}')"
     ::class="{
         'validator-monitor-favorite': isFavorite === true,
     }"
