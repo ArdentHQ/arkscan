@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 /**
  * Used to cache values for the duration of a single request.
  */
-class RequestScopedCache
+final class RequestScopedCache
 {
     /**
      * @template TCacheValue

@@ -44,10 +44,6 @@ trait CanForge
 
         $address = $this->address();
 
-        if (is_null($address)) {
-            return 0;
-        }
-
         $productivity = (new WalletCache())->getProductivity($address);
         if ($productivity <= 0) {
             return 0;
@@ -63,10 +59,6 @@ trait CanForge
         }
 
         $address = $this->address();
-
-        if (is_null($address)) {
-            return [];
-        }
 
         $performance = (new WalletCache())->getPerformance($address);
 
@@ -111,10 +103,6 @@ trait CanForge
         }
 
         $address = $this->address();
-
-        if (is_null($address)) {
-            return 0;
-        }
 
         return (new WalletCache())->getMissedBlocks($address);
     }
@@ -170,9 +158,6 @@ trait CanForge
     private function lastBlock(): ?array
     {
         $address = $this->address();
-        if (is_null($address)) {
-            return null;
-        }
 
         $lastBlock = (new WalletCache())->getLastBlock($address);
         if ($lastBlock === []) {
