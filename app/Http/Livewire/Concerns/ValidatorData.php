@@ -72,7 +72,7 @@ trait ValidatorData
                     'id'                   => $block->id,
                     'height'               => $block->height->toNumber(),
                     'timestamp'            => $block->timestamp,
-                    'generator_address' => $block->generator_address,
+                    'generator_address'    => $block->generator_address,
                 ]);
             }
 
