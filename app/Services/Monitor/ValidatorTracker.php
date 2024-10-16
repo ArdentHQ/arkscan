@@ -87,28 +87,28 @@ final class ValidatorTracker
      */
     private static function slotOffset(int $roundHeight, array $validators): int
     {
-        $lastForger = DB::connection('explorer')
+        $roundValidators = DB::connection('explorer')
             ->table('blocks')
-            ->select('generator_address', 'timestamp')
+            ->select('generator_address')
             ->where('height', '>=', $roundHeight)
-            ->orderBy('height', 'desc')
-            ->limit(1)
-            ->first();
+            ->orderBy('height', 'asc')
+            ->get();
 
-        if ($lastForger === null) {
+        if ($roundValidators->isEmpty()) {
             return 0;
         }
 
-        $roundBlockCount = DB::connection('explorer')
-            ->table('blocks')
-            ->select([
-                DB::raw('COUNT(*) as count'),
-                'generator_address',
-            ])
-            ->where('height', '>=', $roundHeight)
-            ->groupBy('generator_address')
-            ->get()
-            ->pluck('count', 'generator_address');
+        $lastForgerAddress = $roundValidators->last()->generator_address;
+
+        $roundBlockCount = $roundValidators->reduce(function ($carry, $item) {
+                if ($carry->has($item->generator_address)) {
+                    $carry[$item->generator_address]++;
+                } else {
+                    $carry[$item->generator_address] = 1;
+                }
+
+                return $carry;
+            }, collect());
 
         $offset = 0;
         foreach ($validators as $address) {
@@ -122,7 +122,7 @@ final class ValidatorTracker
                 $hadBlock = true;
             }
 
-            if ($address === $lastForger->generator_address) {
+            if ($address === $lastForgerAddress) {
                 break;
             }
 
