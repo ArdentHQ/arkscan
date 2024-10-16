@@ -9,9 +9,9 @@ use App\Services\Monitor\MissedBlocksCalculator;
 use Carbon\Carbon;
 
 it('should calculate the missed blocks', function () {
-    $expectedStats                  = []; // expected { forged, missed } by validator public key
+    $expectedStats                  = []; // expected { forged, missed } by validator address
     $heightIterator                 = 0;
-    $validatorPublicKeysBalanceDesc = [
+    $validatorAddressesBalanceDesc = [
         '03931feebc4cc63b508d991e21023564e612072cf026fd0f9f2dd091a064d544c1',
         '035334916d9adeae7ddf937fe9a72488206dc73d3deabaa82419bced7a4bdb7e09',
         '02762c0f72250a6bfb1e744d2ef94a565e01a4838fa0ca6bfed126598fb859adf4',
@@ -138,39 +138,39 @@ it('should calculate the missed blocks', function () {
     $round = Round::factory()->create([
         'round'        => 7103,
         'round_height' => (7103 - 1) * Network::validatorCount() + 1,
-        'validators'   => $validatorPublicKeysBalanceDesc,
+        'validators'   => $validatorAddressesBalanceDesc,
     ]);
 
     $this->travelTo(Carbon::parse('2023-03-14 12:44:32'));
 
-    foreach ($validatorOrderForRound as $publicKey) {
-        if (! in_array($publicKey, $validatorsWhoMissed, true)) {
+    foreach ($validatorOrderForRound as $address) {
+        if (! in_array($address, $validatorsWhoMissed, true)) {
             // Start height for round 7103 is 376407
             Block::factory()->create([
-                'generator_public_key' => $publicKey,
+                'generator_address' => $address,
                 'height'               => 376407 + $heightIterator,
                 'timestamp'            => Carbon::now()->getTimestampMs(),
             ]);
 
             $heightIterator++;
 
-            if (! isset($expectedStats[$publicKey])) {
-                $expectedStats[$publicKey] = [
+            if (! isset($expectedStats[$address])) {
+                $expectedStats[$address] = [
                     'forged'=> 0,
                     'missed'=> 0,
                 ];
             }
 
-            $expectedStats[$publicKey]['forged']++;
+            $expectedStats[$address]['forged']++;
         } else {
-            if (! isset($expectedStats[$publicKey])) {
-                $expectedStats[$publicKey] = [
+            if (! isset($expectedStats[$address])) {
+                $expectedStats[$address] = [
                     'forged'=> 0,
                     'missed'=> 0,
                 ];
             }
 
-            $expectedStats[$publicKey]['missed']++;
+            $expectedStats[$address]['missed']++;
         }
 
         $this->travel(8)->seconds();
@@ -184,17 +184,17 @@ it('should calculate the missed blocks', function () {
     $blocksInfo     = MissedBlocksCalculator::calculateForRound($round, $round->round_height + Network::validatorCount()); // any height in the round
     $validatorStats = [];
     foreach ($blocksInfo as $blockInfo) {
-        if (! isset($validatorStats[$blockInfo['publicKey']])) {
-            $validatorStats[$blockInfo['publicKey']] = [
+        if (! isset($validatorStats[$blockInfo['address']])) {
+            $validatorStats[$blockInfo['address']] = [
                 'forged' => 0,
                 'missed' => 0,
             ];
         }
 
         if ($blockInfo['forged']) {
-            $validatorStats[$blockInfo['publicKey']]['forged']++;
+            $validatorStats[$blockInfo['address']]['forged']++;
         } else {
-            $validatorStats[$blockInfo['publicKey']]['missed']++;
+            $validatorStats[$blockInfo['address']]['missed']++;
         }
     }
 

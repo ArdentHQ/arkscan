@@ -48,11 +48,11 @@ it('should cache validator statistics', function () {
     ]);
 
     Block::factory()->count(10)->create([
-        'generator_public_key' => $mostBlocks->public_key,
+        'generator_address' => $mostBlocks->address,
     ]);
 
     Block::factory()->count(6)->create([
-        'generator_public_key' => $newestActive->public_key,
+        'generator_address' => $newestActive->address,
     ]);
 
     $this->artisan('explorer:cache-validator-statistics');
