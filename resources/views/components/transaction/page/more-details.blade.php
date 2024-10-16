@@ -3,9 +3,11 @@
 @php ($vendorField = $transaction->vendorField())
 
 <div>
+    {{-- Mobile --}}
     <x-general.page-section.container
         :title="trans('pages.transaction.more_details')"
         class="mt-6 sm:hidden"
+        wrapper-class="flex flex-col flex-1 space-y-3 w-full whitespace-nowrap"
     >
         <x-tables.rows.mobile content-class="divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800 !space-y-3">
             <x-slot name="header" class="font-semibold">
@@ -33,8 +35,42 @@
                 137
             </x-tables.rows.mobile.encapsulated.cell>
         </x-tables.rows.mobile>
+
+        @if ($transaction->hasPayload())
+            <div
+                class="space-y-3 w-full"
+                x-data="{
+                    isExpanded: false,
+                    toggle() {
+                        this.isExpanded = !this.isExpanded;
+                    }
+                }"
+            >
+                <div
+                    class="w-full"
+                    x-show="isExpanded"
+                    x-cloak
+                >
+                    <x-transaction.code-block.code-block :transaction="$transaction" />
+                </div>
+
+                <button
+                    class="leading-5 border-b border-dashed hover:no-underline link border-theme-primary-500 hover:border-theme-primary-700"
+                    @click="toggle"
+                >
+                    <span x-show="!isExpanded">
+                        @lang('actions.view_all')
+                    </span>
+
+                    <span x-show="isExpanded" x-cloak>
+                        @lang('actions.hide')
+                    </span>
+                </button>
+            </div>
+        @endif
     </x-general.page-section.container>
 
+    {{-- Desktop --}}
     <x-ark-container
         class="hidden sm:block"
         container-class="flex flex-col !py-0"
@@ -84,6 +120,42 @@
                     :transaction="$transaction"
                 />
             </x-general.page-section.container>
+
+            @if ($transaction->hasPayload())
+                <div x-data="{
+                    isExpanded: false,
+                    toggle() {
+                        this.isExpanded = !this.isExpanded;
+                    }
+                }">
+                    <x-general.page-section.container
+                        class="!px-0"
+                        x-show="isExpanded"
+                        x-cloak
+                    >
+                        <x-transaction.code-block.code-block :transaction="$transaction" />
+                    </x-general.page-section.container>
+
+                    <x-general.page-section.container
+                        wrapper-class="max-w-full"
+                        class="!px-0"
+                        no-border
+                    >
+                        <button
+                            class="leading-5 border-b border-dashed hover:no-underline link border-theme-primary-500 hover:border-theme-primary-700"
+                            @click="toggle"
+                        >
+                            <span x-show="!isExpanded">
+                                @lang('actions.view_all')
+                            </span>
+
+                            <span x-show="isExpanded" x-cloak>
+                                @lang('actions.hide')
+                            </span>
+                        </button>
+                    </x-general.page-section.container>
+                </div>
+            @endif
         </div>
     </x-ark-container>
 </div>

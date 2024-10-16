@@ -65,7 +65,7 @@ module.exports = {
                 // We don't have a dark-blue-950 so create a dim version to not confuse it
                 "theme-dim-blue-950": "var(--theme-color-dim-blue-950)",
 
-                black: "var(--theme-color-dark-950, var(--theme-color-secondary-900))",
+                black: "var(--theme-color-dark-950, #121213)",
             },
 
             borderRadius: {
@@ -132,6 +132,7 @@ module.exports = {
                 "search-subtle":
                     "0 10px 15px -3px rgba(0,0,0,.03), 0 4px 6px -2px rgba(0,0,0,.03)",
                 "px": "0 0 1px 1px var(--tw-shadow-color) inset",
+                "code-block": "0px 2px 3px 0px #18181B30, 0px 6px 6px 0px #18181B29, 0px 14px 8px 0px #18181B1A, 0px 25px 10px 0px #18181B08, 0px 39px 11px 0px #18181B00",
             },
 
             zIndex: {
