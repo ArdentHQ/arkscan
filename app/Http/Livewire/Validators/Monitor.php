@@ -138,12 +138,16 @@ final class Monitor extends Component
                 return [];
             }
 
-            /** @var Block $lastRoundBlock */
+            /** @var ?Block $lastRoundBlock */
             $lastRoundBlock = Block::query()
                 ->where('generator_address', $lastSuccessfulForger->address())
                 ->where('height', '>=', $heightRange[0])
                 ->orderBy('height', 'desc')
                 ->first();
+        }
+
+        if ($lastRoundBlock === null) {
+            return [];
         }
 
         $overflowBlocks = Block::where('height', '>', $lastRoundBlock->height)
