@@ -25,7 +25,7 @@
         </span>
     </x-ark-tables.cell>
 
-    <x-ark-tables.cell width="190">
+    <x-ark-tables.cell>
         <div class="flex items-center space-x-2">
             <x-tables.rows.desktop.encapsulated.address
                 :model="$validator->wallet()"
@@ -62,11 +62,12 @@
     <x-ark-tables.cell
         breakpoint="md-lg"
         responsive
+        width="160"
     >
         <x-tables.rows.desktop.encapsulated.validators.monitor.time-to-forge :model="$validator" />
     </x-ark-tables.cell>
 
-    <x-ark-tables.cell class="text-right">
+    <x-ark-tables.cell class="text-right" width="100">
         <x-tables.rows.desktop.encapsulated.validators.monitor.block-height :model="$validator" />
     </x-ark-tables.cell>
 </x-ark-tables.row>
