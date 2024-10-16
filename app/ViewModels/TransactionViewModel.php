@@ -13,6 +13,7 @@ use App\Services\Transactions\TransactionDirection;
 use App\Services\Transactions\TransactionState;
 use App\Services\Transactions\TransactionType;
 use App\ViewModels\Concerns\Transaction\HasDirection;
+use App\ViewModels\Concerns\Transaction\HasPayload;
 use App\ViewModels\Concerns\Transaction\HasState;
 use App\ViewModels\Concerns\Transaction\HasType;
 use App\ViewModels\Concerns\Transaction\InteractsWithMultiPayment;
@@ -27,6 +28,7 @@ use Illuminate\Support\Arr;
 final class TransactionViewModel implements ViewModel
 {
     use HasDirection;
+    use HasPayload;
     use HasState;
     use HasType;
     use InteractsWithMultiPayment;

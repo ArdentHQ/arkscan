@@ -98,6 +98,7 @@ return [
         'more_details'          => 'More Details',
         'gas_information'       => 'Gas Information',
         'other_attributes'      => 'Other Attributes',
+        'input_data'            => 'Input Data',
 
         'header' => [
             'timestamp'            => 'Timestamp',
@@ -132,6 +133,16 @@ return [
             'legacy-business-registration'        => 'Business Registration',
             'legacy-business-resignation'         => 'Business Resignation',
             'legacy-business-update'              => 'Business Update',
+        ],
+
+        'code-block' => [
+            'view_input_as' => 'View Input As',
+
+            'tab' => [
+                'default'  => 'Default',
+                'utf-8'    => 'UTF-8',
+                'original' => 'Original',
+            ],
         ],
     ],
 
