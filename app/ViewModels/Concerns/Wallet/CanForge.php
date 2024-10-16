@@ -7,6 +7,7 @@ namespace App\ViewModels\Concerns\Wallet;
 use App\Actions\CacheNetworkHeight;
 use App\Facades\Rounds;
 use App\Services\BigNumber;
+use App\Services\Cache\RequestScopedCache;
 use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
 use Carbon\Carbon;
@@ -159,7 +160,7 @@ trait CanForge
 
     public function currentSlot(): array
     {
-        $validators = Cache::remember('wallet:validators', 3, function () {
+        $validators = RequestScopedCache::remember('wallet:validators', function () {
             return Rounds::validators();
         });
 
