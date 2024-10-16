@@ -101,14 +101,14 @@ final class ValidatorTracker
         $lastForgerAddress = $roundValidators->last()->generator_address;
 
         $roundBlockCount = $roundValidators->reduce(function ($carry, $item) {
-                if ($carry->has($item->generator_address)) {
-                    $carry[$item->generator_address]++;
-                } else {
-                    $carry[$item->generator_address] = 1;
-                }
+            if ($carry->has($item->generator_address)) {
+                $carry[$item->generator_address]++;
+            } else {
+                $carry[$item->generator_address] = 1;
+            }
 
-                return $carry;
-            }, collect());
+            return $carry;
+        }, collect());
 
         $offset = 0;
         foreach ($validators as $address) {

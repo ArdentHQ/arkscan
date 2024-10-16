@@ -11,7 +11,7 @@ use Carbon\Carbon;
 it('should calculate the missed blocks', function () {
     $expectedStats                  = []; // expected { forged, missed } by validator address
     $heightIterator                 = 0;
-    $validatorAddressesBalanceDesc = [
+    $validatorAddressesBalanceDesc  = [
         '03931feebc4cc63b508d991e21023564e612072cf026fd0f9f2dd091a064d544c1',
         '035334916d9adeae7ddf937fe9a72488206dc73d3deabaa82419bced7a4bdb7e09',
         '02762c0f72250a6bfb1e744d2ef94a565e01a4838fa0ca6bfed126598fb859adf4',
@@ -147,7 +147,7 @@ it('should calculate the missed blocks', function () {
         if (! in_array($address, $validatorsWhoMissed, true)) {
             // Start height for round 7103 is 376407
             Block::factory()->create([
-                'generator_address' => $address,
+                'generator_address'    => $address,
                 'height'               => 376407 + $heightIterator,
                 'timestamp'            => Carbon::now()->getTimestampMs(),
             ]);
