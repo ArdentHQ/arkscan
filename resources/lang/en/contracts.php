@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'a9059cbb' => 'transfer(address,uint256)',
     '23b872dd' => 'transferFrom(address,address,uint256)',

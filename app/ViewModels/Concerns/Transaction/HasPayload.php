@@ -49,8 +49,8 @@ trait HasPayload
         $methodId = substr($payload, 0, 8);
 
         return trans('contracts.formatted', [
-            'function' => trans('contracts.'.$methodId),
-            'methodId' => $methodId,
+            'function'  => trans('contracts.'.$methodId),
+            'methodId'  => $methodId,
             'arguments' => $this->payloadArguments()->map(fn ($argument, $index) => trans('contracts.argument', [
                 'index' => $index,
                 'value' => $argument,
@@ -66,7 +66,7 @@ trait HasPayload
         }
 
         $argumentsPayload = substr($payload, 8);
-        $arguments = collect(explode(' ', trim(chunk_split($argumentsPayload, 64, ' '))));
+        $arguments        = collect(explode(' ', trim(chunk_split($argumentsPayload, 64, ' '))));
 
         return collect($arguments);
     }
