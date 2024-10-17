@@ -46,8 +46,8 @@ trait HasPayload
             return null;
         }
 
-        $methodId = substr($payload, 0, 8);
-        $arguments = $this->payloadArguments();
+        $methodId       = substr($payload, 0, 8);
+        $arguments      = $this->payloadArguments();
         $argumentOutput = '';
         if ($arguments !== null) {
             $argumentOutput = $arguments->map(function ($argument, $index) {
