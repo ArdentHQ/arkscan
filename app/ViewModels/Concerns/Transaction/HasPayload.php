@@ -51,10 +51,10 @@ trait HasPayload
         return trans('contracts.formatted', [
             'function'  => trans('contracts.'.$methodId),
             'methodId'  => $methodId,
-            'arguments' => $this->payloadArguments()->map(fn ($argument, $index) => trans('contracts.argument', [
+            'arguments' => $this->payloadArguments()?->map(fn ($argument, $index) => trans('contracts.argument', [
                 'index' => $index,
                 'value' => $argument,
-            ]))->implode("\n"),
+            ]))->implode("\n") ?? '',
         ]);
     }
 
