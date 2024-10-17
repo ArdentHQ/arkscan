@@ -65,12 +65,12 @@ it('should sort height in ascending order', function () {
     ]);
 
     ForgingStats::factory()->create([
-        'public_key'    => $wallet1->public_key,
+        'address'       => $wallet1->address,
         'missed_height' => 100,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key'    => $wallet2->public_key,
+        'address'       => $wallet2->address,
         'missed_height' => 134,
     ]);
 
@@ -102,12 +102,12 @@ it('should sort height in descending order', function () {
     ]);
 
     ForgingStats::factory()->create([
-        'public_key'    => $wallet1->public_key,
+        'address'       => $wallet1->address,
         'missed_height' => 100,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key'    => $wallet2->public_key,
+        'address'       => $wallet2->address,
         'missed_height' => 134,
     ]);
 
@@ -140,12 +140,12 @@ it('should sort by age by default', function () {
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'address'    => $wallet1->address,
         'timestamp'  => 100,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet2->public_key,
+        'address'    => $wallet2->address,
         'timestamp'  => 134,
     ]);
 
@@ -177,12 +177,12 @@ it('should sort age in ascending order', function () {
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'address'    => $wallet1->address,
         'timestamp'  => 100,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet2->public_key,
+        'address'    => $wallet2->address,
         'timestamp'  => 134,
     ]);
 
@@ -215,11 +215,11 @@ it('should sort name in ascending order', function () {
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'address'    => $wallet1->address,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet2->public_key,
+        'address'    => $wallet2->address,
     ]);
 
     Livewire::test(MissedBlocks::class)
@@ -250,11 +250,11 @@ it('should sort name in descending order', function () {
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'address'    => $wallet1->address,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet2->public_key,
+        'address'    => $wallet2->address,
     ]);
 
     Livewire::test(MissedBlocks::class)
@@ -292,15 +292,15 @@ it('should sort number of voters in ascending order', function () {
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'address'    => $wallet1->address,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet2->public_key,
+        'address'    => $wallet2->address,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $walletWithoutVoters->public_key,
+        'address'    => $walletWithoutVoters->address,
     ]);
 
     (new ValidatorCache())->setAllVoterCounts([
@@ -345,15 +345,15 @@ it('should sort number of voters in descending order', function () {
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'address'    => $wallet1->address,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet2->public_key,
+        'address'    => $wallet2->address,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $walletWithoutVoters->public_key,
+        'address'    => $walletWithoutVoters->address,
     ]);
 
     (new ValidatorCache())->setAllVoterCounts([
@@ -399,15 +399,15 @@ it('should handle no cached votes when sorting by number of voters', function ()
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'address'    => $wallet1->address,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet2->public_key,
+        'address'    => $wallet2->address,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $walletWithoutVoters->public_key,
+        'address'    => $walletWithoutVoters->address,
     ]);
 
     Livewire::test(MissedBlocks::class)
@@ -440,11 +440,11 @@ it('should sort votes & percentage in ascending order', function (string $sortKe
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'address'    => $wallet1->address,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet2->public_key,
+        'address'    => $wallet2->address,
     ]);
 
     Livewire::test(MissedBlocks::class)
@@ -478,11 +478,11 @@ it('should sort votes & percentage in descending order', function (string $sortK
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'address'    => $wallet1->address,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet2->public_key,
+        'address'    => $wallet2->address,
     ]);
 
     Livewire::test(MissedBlocks::class)
@@ -509,7 +509,7 @@ it('should alternate sorting direction', function () {
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'address'    => $wallet1->address,
     ]);
 
     (new ValidatorCache())->setAllVoterCounts([
@@ -591,12 +591,12 @@ it('should parse sorting direction from query string', function () {
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'address'    => $wallet1->address,
         'timestamp'  => 100,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet2->public_key,
+        'address'    => $wallet2->address,
         'timestamp'  => 134,
     ]);
 
@@ -637,12 +637,12 @@ it('should force ascending if invalid query string value', function () {
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'address'    => $wallet1->address,
         'timestamp'  => 100,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet2->public_key,
+        'address'    => $wallet2->address,
         'timestamp'  => 134,
     ]);
 
@@ -869,18 +869,18 @@ it('should not sort for sqlite databases', function ($sortBy) {
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet1->public_key,
+        'address'    => $wallet1->address,
         'timestamp'  => 100,
     ]);
 
     ForgingStats::factory()->create([
-        'public_key' => $wallet2->public_key,
+        'address'    => $wallet2->address,
         'timestamp'  => 134,
     ]);
 
     // Not missed
     ForgingStats::factory()->create([
-        'public_key'    => $wallet2->public_key,
+        'address'       => $wallet2->address,
         'timestamp'     => 151,
         'missed_height' => null,
     ]);

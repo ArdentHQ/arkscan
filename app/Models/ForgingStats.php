@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property int $missed_height
  * @property int $timestamp
- * @property string $public_key
+ * @property string $address
  * @property bool $forged
  * @property int $count (only available when sorting validators by missed blocks)
  */
@@ -53,7 +53,7 @@ final class ForgingStats extends Model
     protected $casts = [
         'missed_height' => 'int',
         'timestamp'     => 'int',
-        'public_key'    => 'string',
+        'address'       => 'string',
         'forged'        => 'bool',
     ];
 
@@ -64,7 +64,7 @@ final class ForgingStats extends Model
      */
     public function validator(): BelongsTo
     {
-        return $this->belongsTo(Wallet::class, 'public_key', 'public_key');
+        return $this->belongsTo(Wallet::class, 'address', 'address');
     }
 
     /**

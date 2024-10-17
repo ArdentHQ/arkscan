@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Facades\Rounds;
-use App\Jobs\CacheProductivityByPublicKey;
+use App\Jobs\CacheProductivityByAddress;
 use Illuminate\Console\Command;
 
 final class CacheValidatorProductivity extends Command
@@ -27,8 +27,8 @@ final class CacheValidatorProductivity extends Command
     public function handle(): void
     {
         collect(Rounds::current()->validators)
-            ->each(function ($publicKey) {
-                return (bool) CacheProductivityByPublicKey::dispatch($publicKey)->onQueue('productivity');
+            ->each(function ($address) {
+                return (bool) CacheProductivityByAddress::dispatch($address)->onQueue('productivity');
             });
     }
 }

@@ -46,19 +46,19 @@ trait CanBeSorted
         return $query->selectRaw('voting_stats.count AS no_of_voters')
             ->selectRaw('wallets.*')
             ->join(DB::raw(sprintf(
-                '(values %s) as voting_stats (public_key, count)',
+                '(values %s) as voting_stats (address, count)',
                 collect($voterCounts)
                     ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
                     ->join(','),
-            )), 'wallets.public_key', '=', 'voting_stats.public_key', 'left outer')
+            )), 'wallets.address', '=', 'voting_stats.address', 'left outer')
             ->orderByRaw(sprintf('no_of_voters %s NULLS LAST', $sortDirection->value))
             ->orderByRaw('("attributes"->>\'validatorRank\')::numeric ASC');
     }
 
     public function scopeSortByMissedBlocks(mixed $query, SortDirection $sortDirection): Builder
     {
-        $missedBlocks = ForgingStats::selectRaw('public_key, COUNT(*) as count')
-            ->groupBy('public_key')
+        $missedBlocks = ForgingStats::selectRaw('address, COUNT(*) as count')
+            ->groupBy('address')
             ->whereNot('missed_height', null)
             ->get();
 
@@ -70,10 +70,10 @@ trait CanBeSorted
         return $query->selectRaw('COALESCE(forging_stats.count, 0) AS missed_blocks')
             ->selectRaw('wallets.*')
             ->join(DB::raw(sprintf(
-                '(values %s) as forging_stats (public_key, count)',
-                $missedBlocks->map(fn ($forgingStat) => sprintf('(\'%s\',%d)', $forgingStat->public_key, $forgingStat->count))
+                '(values %s) as forging_stats (address, count)',
+                $missedBlocks->map(fn ($forgingStat) => sprintf('(\'%s\',%d)', $forgingStat->address, $forgingStat->count))
                     ->join(','),
-            )), 'wallets.public_key', '=', 'forging_stats.public_key', 'left outer')
+            )), 'wallets.address', '=', 'forging_stats.address', 'left outer')
             ->when($sortDirection === SortDirection::ASC, fn ($query) => $query->orderByRaw(sprintf(
                 'CASE WHEN ("attributes"->>\'validatorRank\')::numeric <= %d THEN 0 ELSE 1 END ASC',
                 Network::validatorCount(),

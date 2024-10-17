@@ -25,7 +25,17 @@ trait HasPayload
 
     public function utf8Payload(): ?string
     {
-        return hex2bin($this->rawPayload());
+        $payload = $this->rawPayload();
+        if ($payload === null) {
+            return null;
+        }
+
+        $utf8 = hex2bin($payload);
+        if ($utf8 === false) {
+            return null;
+        }
+
+        return $utf8;
     }
 
     public function formattedPayload(): ?string

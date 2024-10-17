@@ -45,6 +45,6 @@ final class MemoryWallet
 
     public function isValidator(): bool
     {
-        return (new WalletCache())->getValidatorPublicKeyByAddress($this->address) !== null;
+        return (new WalletCache())->getValidator($this->address) !== null;
     }
 }

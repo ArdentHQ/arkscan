@@ -16,7 +16,7 @@ final class Slot
     private int $currentRoundBlocks;
 
     public function __construct(
-        private string $publicKey,
+        private string $address,
         private int $order,
         private WalletViewModel $wallet,
         private Carbon $forgingAt,
@@ -27,12 +27,12 @@ final class Slot
         private int $secondsUntilForge,
     ) {
         $this->currentRoundBlocks = $this->roundBlockCount
-            ->get($this->publicKey, 0);
+            ->get($this->address, 0);
     }
 
-    public function publicKey(): string
+    public function address(): string
     {
-        return $this->publicKey;
+        return $this->address;
     }
 
     public function order(): int
@@ -99,7 +99,7 @@ final class Slot
 
     public function missedCount(): int
     {
-        return (new WalletCache())->getMissedBlocks($this->publicKey);
+        return (new WalletCache())->getMissedBlocks($this->address);
     }
 
     /**
@@ -148,7 +148,7 @@ final class Slot
     /**
      * Clone the slot with the given overridden properties.
      *
-     * @param string|null $publicKey
+     * @param string|null $address
      * @param int|null $order
      * @param WalletViewModel|null $wallet
      * @param Carbon|null $forgingAt
@@ -161,7 +161,7 @@ final class Slot
      * @return Slot
      */
     public function clone(
-        ?string $publicKey = null,
+        ?string $address = null,
         ?int $order = null,
         ?WalletViewModel $wallet = null,
         ?Carbon $forgingAt = null,
@@ -172,7 +172,7 @@ final class Slot
         ?int $secondsUntilForge = null,
     ): self {
         return new self(
-            publicKey: $publicKey ?? $this->publicKey,
+            address: $address ?? $this->address,
             order: $order ?? $this->order,
             wallet: $wallet ?? $this->wallet,
             forgingAt: $forgingAt ?? $this->forgingAt,

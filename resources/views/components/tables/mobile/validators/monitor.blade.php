@@ -12,7 +12,7 @@
 >
     @foreach ($validators as $validator)
         <x-tables.rows.mobile
-            x-data="Validator('{{ $validator->publicKey() }}', {
+            x-data="Validator('{{ $validator->address() }}', {
                 isExpanded: false,
             })"
             wire:key="{{ Helpers::generateId('validator-mobile', $validator->order(), $validator->wallet()->address(), $validator->roundNumber()) }}"

@@ -48,10 +48,10 @@ it('should update cache on each run', function () {
         ]);
 
     Block::factory()->create([
-        'generator_public_key' => $wallet->public_key,
-        'total_amount'         => 123 * 1e18,
-        'total_fee'            => 3 * 1e18,
-        'reward'               => 8 * 1e18,
+        'generator_address' => $wallet->address,
+        'total_amount'      => 123 * 1e18,
+        'total_fee'         => 3 * 1e18,
+        'reward'            => 8 * 1e18,
     ]);
 
     expect($cache->getCache()->has(md5('total_amounts')))->toBeTrue();
