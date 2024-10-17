@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\ViewModels\Concerns\Transaction;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 
 trait HasPayload
 {
@@ -47,16 +46,6 @@ trait HasPayload
         }
 
         $methodId = substr($payload, 0, 8);
-        $arguments = $this->payloadArguments();
-        $argumentOutput = '';
-        if ($arguments !== null) {
-            $argumentOutput = $arguments->map(function ($argument, $index) {
-                return trans('contracts.argument', [
-                    'index' => $index,
-                    'value' => $argument,
-                ]);
-            })->join("\n");
-        }
 
         $functionName = null;
         if (app('translator')->has('contracts.'.$methodId)) {
@@ -66,25 +55,23 @@ trait HasPayload
         return trim(view('components.transaction.code-block.formatted-contract', [
             'function'  => $functionName,
             'methodId'  => $methodId,
-            'arguments' => $argumentOutput,
+            'arguments' => $this->payloadArguments(),
         ])->render());
     }
 
-    private function payloadArguments(): ?Collection
+    private function payloadArguments(): ?array
     {
         $payload = $this->rawPayload();
         if ($payload === null) {
-            return null;
+            return [];
         }
 
         $argumentsPayload   = substr($payload, 8);
         $separatedArguments = trim(chunk_split($argumentsPayload, 64, ' '));
         if (strlen($separatedArguments) === 0) {
-            return null;
+            return [];
         }
 
-        $arguments = collect(explode(' ', $separatedArguments));
-
-        return collect($arguments);
+        return explode(' ', $separatedArguments);
     }
 }

@@ -3,4 +3,9 @@ Function: {{ $function }}
 
 @endif
 MethodID: 0x{{ $methodId }}
-{{ $arguments }}
+@foreach ($arguments as $index => $argument)
+@lang('contracts.argument', [
+    'index' => $index,
+    'value' => $argument,
+])
+@endforeach
