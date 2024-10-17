@@ -1190,4 +1190,16 @@ MethodID: 0x6dd7d8ea
 
 MethodID: 0x6dd7d8ea');
     });
+
+    it('should get formatted payload without a valid function name', function () {
+        $transaction = new TransactionViewModel(Transaction::factory()->create([
+            'asset' => [
+                'evmCall' => [
+                    'payload' => '12341234',
+                ],
+            ],
+        ]));
+
+        expect($transaction->formattedPayload())->toBe('MethodID: 0x12341234');
+    });
 });
