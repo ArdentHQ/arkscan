@@ -48,14 +48,14 @@ trait HasPayload
 
         $methodId = substr($payload, 0, 8);
 
-        return trans('contracts.formatted', [
+        return trim(trans('contracts.formatted', [
             'function'  => trans('contracts.'.$methodId),
             'methodId'  => $methodId,
             'arguments' => $this->payloadArguments()?->map(fn ($argument, $index) => trans('contracts.argument', [
                 'index' => $index,
                 'value' => $argument,
             ]))->implode("\n") ?? '',
-        ]);
+        ]));
     }
 
     private function payloadArguments(): ?Collection
@@ -65,8 +65,13 @@ trait HasPayload
             return null;
         }
 
-        $argumentsPayload = substr($payload, 8);
-        $arguments        = collect(explode(' ', trim(chunk_split($argumentsPayload, 64, ' '))));
+        $argumentsPayload   = substr($payload, 8);
+        $separatedArguments = trim(chunk_split($argumentsPayload, 64, ' '));
+        if (strlen($separatedArguments) === 0) {
+            return null;
+        }
+
+        $arguments = collect(explode(' ', $separatedArguments));
 
         return collect($arguments);
     }
