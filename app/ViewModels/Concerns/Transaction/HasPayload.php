@@ -47,15 +47,27 @@ trait HasPayload
         }
 
         $methodId = substr($payload, 0, 8);
+        $arguments = $this->payloadArguments();
+        $argumentOutput = '';
+        if ($arguments !== null) {
+            $argumentOutput = $arguments->map(function ($argument, $index) {
+                return trans('contracts.argument', [
+                    'index' => $index,
+                    'value' => $argument,
+                ]);
+            })->join("\n");
+        }
 
-        return trim(trans('contracts.formatted', [
-            'function'  => trans('contracts.'.$methodId),
+        $functionName = null;
+        if (app('translator')->has('contracts.'.$methodId)) {
+            $functionName = trans('contracts.'.$methodId);
+        }
+
+        return trim(view('components.transaction.code-block.formatted-contract', [
+            'function'  => $functionName,
             'methodId'  => $methodId,
-            'arguments' => $this->payloadArguments()?->map(fn ($argument, $index) => trans('contracts.argument', [
-                'index' => $index,
-                'value' => $argument,
-            ]))->implode("\n") ?? '',
-        ]));
+            'arguments' => $argumentOutput,
+        ])->render());
     }
 
     private function payloadArguments(): ?Collection

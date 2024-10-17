@@ -18,8 +18,4 @@ return [
     '095ea7b3' => 'approve(address,uint256)',
 
     'argument'  => '[:index]: :value',
-    'formatted' => 'Function: :function
-
-MethodID: 0x:methodId
-:arguments',
 ];
