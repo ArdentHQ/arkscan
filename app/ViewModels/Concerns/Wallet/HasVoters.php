@@ -25,12 +25,6 @@ trait HasVoters
 
     public function voterCount(): int
     {
-        $publicKey = $this->publicKey();
-
-        if (is_null($publicKey)) {
-            return 0;
-        }
-
-        return (new WalletCache())->getVoterCount($publicKey);
+        return (new WalletCache())->getVoterCount($this->address);
     }
 }

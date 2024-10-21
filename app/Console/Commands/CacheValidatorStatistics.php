@@ -36,14 +36,14 @@ final class CacheValidatorStatistics extends Command
         if ($mostVotedValidator !== null) {
             $cache->setMostUniqueVoters($mostVotedValidator['public_key']);
 
-            $walletCache->setVoterCount($mostVotedValidator['public_key'], $mostVotedValidator['voter_count']);
+            $walletCache->setVoterCount($mostVotedValidator['address'], $mostVotedValidator['voter_count']);
         }
 
         $leastVotedValidator = (new UniqueVotersAggregate())->aggregate(sortDescending: false);
         if ($leastVotedValidator !== null) {
             $cache->setLeastUniqueVoters($leastVotedValidator['public_key']);
 
-            $walletCache->setVoterCount($leastVotedValidator['public_key'], $leastVotedValidator['voter_count']);
+            $walletCache->setVoterCount($leastVotedValidator['address'], $leastVotedValidator['voter_count']);
         }
 
         $activeValidators = Rounds::current()->validators;

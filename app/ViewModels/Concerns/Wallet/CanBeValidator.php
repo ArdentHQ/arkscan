@@ -48,7 +48,7 @@ trait CanBeValidator
             return null;
         }
 
-        return (new WalletCache())->getResignationId($this->wallet->public_key);
+        return (new WalletCache())->getResignationId($this->wallet->address);
     }
 
     public function rank(): ?int
