@@ -23,17 +23,17 @@ trait CanForge
 
     public function amountForged(): BigNumber
     {
-        return BigNumber::new(Arr::get((new ValidatorCache())->getTotalAmounts(), $this->wallet->public_key, 0));
+        return BigNumber::new(Arr::get((new ValidatorCache())->getTotalAmounts(), $this->wallet->address, 0));
     }
 
     public function feesForged(): BigNumber
     {
-        return BigNumber::new(Arr::get((new ValidatorCache())->getTotalFees(), $this->wallet->public_key, 0));
+        return BigNumber::new(Arr::get((new ValidatorCache())->getTotalFees(), $this->wallet->address, 0));
     }
 
     public function rewardsForged(): BigNumber
     {
-        return BigNumber::new(Arr::get((new ValidatorCache())->getTotalRewards(), $this->wallet->public_key, 0));
+        return BigNumber::new(Arr::get((new ValidatorCache())->getTotalRewards(), $this->wallet->address, 0));
     }
 
     public function productivity(): float
