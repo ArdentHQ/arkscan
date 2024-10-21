@@ -25,6 +25,6 @@ trait HasVoters
 
     public function voterCount(): int
     {
-        return (new WalletCache())->getVoterCount($this->address);
+        return (new WalletCache())->getVoterCount($this->address());
     }
 }

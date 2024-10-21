@@ -1130,7 +1130,7 @@ describe('HasPayload trait', function () {
         $transaction = new TransactionViewModel(Transaction::factory()->create([
             'asset' => [
                 'evmCall' => [
-                    'payload' => '0x1234567890',
+                    'payload' => '1234567890',
                 ],
             ],
         ]));
@@ -1142,12 +1142,12 @@ describe('HasPayload trait', function () {
         $transaction = new TransactionViewModel(Transaction::factory()->create([
             'asset' => [
                 'evmCall' => [
-                    'payload' => '0x1234567890',
+                    'payload' => '1234567890',
                 ],
             ],
         ]));
 
-        expect($transaction->rawPayload())->toBe('0x1234567890');
+        expect($transaction->rawPayload())->toBe('1234567890');
     });
 
     it('should get utf-8 formatted payload', function () {
@@ -1166,11 +1166,40 @@ describe('HasPayload trait', function () {
         $transaction = new TransactionViewModel(Transaction::factory()->create([
             'asset' => [
                 'evmCall' => [
-                    'payload' => '0x1234567890',
+                    'payload' => '6dd7d8ea00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de',
                 ],
             ],
         ]));
 
-        expect($transaction->formattedPayload())->toBe('0x1234567890');
-    })->skip('This functionality is not yet implemented.');
+        expect($transaction->formattedPayload())->toBe('Function: vote(address)
+
+MethodID: 0x6dd7d8ea
+[0]: 00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de');
+    });
+
+    it('should get formatted payload without arguments', function () {
+        $transaction = new TransactionViewModel(Transaction::factory()->create([
+            'asset' => [
+                'evmCall' => [
+                    'payload' => '6dd7d8ea',
+                ],
+            ],
+        ]));
+
+        expect($transaction->formattedPayload())->toBe('Function: vote(address)
+
+MethodID: 0x6dd7d8ea');
+    });
+
+    it('should get formatted payload without a valid function name', function () {
+        $transaction = new TransactionViewModel(Transaction::factory()->create([
+            'asset' => [
+                'evmCall' => [
+                    'payload' => '12341234',
+                ],
+            ],
+        ]));
+
+        expect($transaction->formattedPayload())->toBe('MethodID: 0x12341234');
+    });
 });
