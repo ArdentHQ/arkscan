@@ -48,7 +48,7 @@ trait CanBeSorted
             ->join(DB::raw(sprintf(
                 '(values %s) as voting_stats (address, count)',
                 collect($voterCounts)
-                    ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
+                    ->map(fn ($count, $address) => sprintf('(\'%s\',%d)', $address, $count))
                     ->join(','),
             )), 'wallets.address', '=', 'voting_stats.address', 'left outer')
             ->orderByRaw(sprintf('no_of_voters %s NULLS LAST', $sortDirection->value))
