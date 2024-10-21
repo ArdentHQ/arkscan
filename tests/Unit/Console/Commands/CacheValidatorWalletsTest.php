@@ -11,5 +11,5 @@ it('should execute the command', function () {
 
     (new CacheValidatorWallets())->handle($cache = new WalletCache());
 
-    expect($cache->getValidator($wallet->public_key))->toBeInstanceOf(Wallet::class);
+    expect($cache->getValidator($wallet->address))->toBeInstanceOf(Wallet::class);
 });

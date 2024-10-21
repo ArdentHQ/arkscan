@@ -192,8 +192,8 @@ it('should show the correct styling for "success" on missed blocks', function ()
         ],
     ]);
 
-    (new WalletCache())->setProductivity($wallet->public_key, (1 - (1 / 1001)) * 100);
-    (new WalletCache())->setMissedBlocks($wallet->public_key, 1);
+    (new WalletCache())->setProductivity($wallet->address, (1 - (1 / 1001)) * 100);
+    (new WalletCache())->setMissedBlocks($wallet->address, 1);
 
     Livewire::test(Validators::class)
         ->call('setIsReady')
@@ -212,8 +212,8 @@ it('should show the correct styling for "warning" on missed blocks', function ()
         ],
     ]);
 
-    (new WalletCache())->setProductivity($wallet->public_key, (1 - (10 / 1001)) * 100);
-    (new WalletCache())->setMissedBlocks($wallet->public_key, 10);
+    (new WalletCache())->setProductivity($wallet->address, (1 - (10 / 1001)) * 100);
+    (new WalletCache())->setMissedBlocks($wallet->address, 10);
 
     Livewire::test(Validators::class)
         ->call('setIsReady')
@@ -232,8 +232,8 @@ it('should show the correct styling for "danger" on missed blocks', function () 
         ],
     ]);
 
-    (new WalletCache())->setProductivity($wallet->public_key, (1 - (50 / 1001)) * 100);
-    (new WalletCache())->setMissedBlocks($wallet->public_key, 50);
+    (new WalletCache())->setProductivity($wallet->address, (1 - (50 / 1001)) * 100);
+    (new WalletCache())->setMissedBlocks($wallet->address, 50);
 
     Livewire::test(Validators::class)
         ->call('setIsReady')

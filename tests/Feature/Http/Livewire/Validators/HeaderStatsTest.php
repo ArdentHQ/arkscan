@@ -28,7 +28,7 @@ it('should render without errors', function () {
 
 it('should not error if no validator data', function () {
     foreach ($this->wallets as $wallet) {
-        expect((new WalletCache())->getValidator($wallet->public_key))->toBeNull();
+        expect((new WalletCache())->getValidator($wallet->address))->toBeNull();
     }
 
     Livewire::test(HeaderStats::class)

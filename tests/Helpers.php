@@ -123,7 +123,7 @@ function createRealisticRound(array $performances, $context, bool $cachePerforma
     createRoundEntry($round, $height, $validatorWallets);
 
     $validatorWallets->each(function ($validator) use (&$height, $cache, $context) {
-        $cache->setValidator($validator->public_key, $validator);
+        $cache->setValidator($validator->address, $validator);
 
         createBlock($height, $validator->public_key, $context);
 
