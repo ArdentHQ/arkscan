@@ -55,17 +55,12 @@ final class CacheUsernames extends Command
 
                 if (! is_null($username)) {
                     $cache->setUsernameByAddress($wallet->address, $username);
-
-                    if (! is_null($wallet->public_key)) {
-                        $cache->setUsernameByPublicKey($wallet->public_key, $username);
-                    }
                 }
             });
 
         Transaction::withScope(UsernameResignationScope::class)
             ->each(function (Transaction $transaction) use ($cache): void {
                 $cache->forgetUsernameByAddress($transaction->sender->address);
-                $cache->forgetUsernameByPublicKey($transaction->sender_public_key);
             });
     }
 }

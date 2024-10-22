@@ -19,10 +19,10 @@ it('should render the page without any errors', function () {
 
     (new NetworkCache())->setSupply(fn () => 100 * 1e18);
 
-    ((new ValidatorCache())->setTotalAmounts([$wallet->public_key => 10 * 1e18]));
-    ((new ValidatorCache())->setTotalFees([$wallet->public_key => 10 * 1e18]));
-    ((new ValidatorCache())->setTotalRewards([$wallet->public_key => 10 * 1e18]));
-    ((new ValidatorCache())->setTotalBlocks([$wallet->public_key => 10 * 1e18]));
+    ((new ValidatorCache())->setTotalAmounts([$wallet->address => 10 * 1e18]));
+    ((new ValidatorCache())->setTotalFees([$wallet->address => 10 * 1e18]));
+    ((new ValidatorCache())->setTotalRewards([$wallet->address => 10 * 1e18]));
+    ((new ValidatorCache())->setTotalBlocks([$wallet->address => 10 * 1e18]));
 
     $this
         ->get(route('wallet', $wallet))
@@ -37,10 +37,10 @@ it('can lookup wallets by the username', function () {
 
     (new NetworkCache())->setSupply(fn () => 100 * 1e18);
 
-    ((new ValidatorCache())->setTotalAmounts([$wallet->public_key => 10 * 1e18]));
-    ((new ValidatorCache())->setTotalFees([$wallet->public_key => 10 * 1e18]));
-    ((new ValidatorCache())->setTotalRewards([$wallet->public_key => 10 * 1e18]));
-    ((new ValidatorCache())->setTotalBlocks([$wallet->public_key => 10 * 1e18]));
+    ((new ValidatorCache())->setTotalAmounts([$wallet->address => 10 * 1e18]));
+    ((new ValidatorCache())->setTotalFees([$wallet->address => 10 * 1e18]));
+    ((new ValidatorCache())->setTotalRewards([$wallet->address => 10 * 1e18]));
+    ((new ValidatorCache())->setTotalBlocks([$wallet->address => 10 * 1e18]));
 
     expect($username)->not->toBeEmpty();
 
@@ -189,8 +189,8 @@ it('should not trim 0 at the end of votes or total forged', function () {
         ],
     ]);
 
-    (new ValidatorCache())->setTotalFees([$wallet->public_key => 2340.37456741 * 1e18]);
-    (new ValidatorCache())->setTotalRewards([$wallet->public_key => 10000.00000001 * 1e18]);
+    (new ValidatorCache())->setTotalFees([$wallet->address => 2340.37456741 * 1e18]);
+    (new ValidatorCache())->setTotalRewards([$wallet->address => 10000.00000001 * 1e18]);
 
     $this
         ->get(route('wallet', $wallet))

@@ -47,9 +47,9 @@ final class StatisticsCache implements Contract
         return $this->get('validator/mostUniqueVoters');
     }
 
-    public function setMostUniqueVoters(string $publicKey): void
+    public function setMostUniqueVoters(string $address): void
     {
-        $this->put('validator/mostUniqueVoters', $publicKey);
+        $this->put('validator/mostUniqueVoters', $address);
     }
 
     public function getLeastUniqueVoters(): ?string
@@ -57,35 +57,35 @@ final class StatisticsCache implements Contract
         return $this->get('validator/leastUniqueVoters');
     }
 
-    public function setLeastUniqueVoters(string $publicKey): void
+    public function setLeastUniqueVoters(string $address): void
     {
-        $this->put('validator/leastUniqueVoters', $publicKey);
+        $this->put('validator/leastUniqueVoters', $address);
     }
 
     /**
-     * @return array{'publicKey': string, 'timestamp': int}
+     * @return array{'address': string, 'timestamp': int}
      */
     public function getOldestActiveValidator(): ?array
     {
         return $this->get('validator/oldestActiveValidator');
     }
 
-    public function setOldestActiveValidator(string $publicKey, int $timestamp): void
+    public function setOldestActiveValidator(string $address, int $timestamp): void
     {
-        $this->put('validator/oldestActiveValidator', ['publicKey' => $publicKey, 'timestamp' => $timestamp]);
+        $this->put('validator/oldestActiveValidator', ['address' => $address, 'timestamp' => $timestamp]);
     }
 
     /**
-     * @return array{'publicKey': string, 'timestamp': int}
+     * @return array{'address': string, 'timestamp': int}
      */
     public function getNewestActiveValidator(): ?array
     {
         return $this->get('validator/newestActiveValidator');
     }
 
-    public function setNewestActiveValidator(string $publicKey, int $timestamp): void
+    public function setNewestActiveValidator(string $address, int $timestamp): void
     {
-        $this->put('validator/newestActiveValidator', ['publicKey' => $publicKey, 'timestamp' => $timestamp]);
+        $this->put('validator/newestActiveValidator', ['address' => $address, 'timestamp' => $timestamp]);
     }
 
     public function getMostBlocksForged(): ?string
@@ -93,9 +93,9 @@ final class StatisticsCache implements Contract
         return $this->get('validator/mostBlocksForged');
     }
 
-    public function setMostBlocksForged(string $publicKey): void
+    public function setMostBlocksForged(string $address): void
     {
-        $this->put('validator/mostBlocksForged', $publicKey);
+        $this->put('validator/mostBlocksForged', $address);
     }
 
     public function setAddressHoldings(array $value): void

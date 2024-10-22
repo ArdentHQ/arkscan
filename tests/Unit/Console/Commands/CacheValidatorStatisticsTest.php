@@ -57,17 +57,17 @@ it('should cache validator statistics', function () {
 
     $this->artisan('explorer:cache-validator-statistics');
 
-    expect($cache->getMostUniqueVoters())->toBe($mostVoters->public_key);
-    expect($cache->getLeastUniqueVoters())->toBe($leastVoters->public_key);
+    expect($cache->getMostUniqueVoters())->toBe($mostVoters->address);
+    expect($cache->getLeastUniqueVoters())->toBe($leastVoters->address);
     expect($cache->getOldestActiveValidator())->toBe([
-        'publicKey' => $oldestActive->public_key,
+        'address'   => $oldestActive->address,
         'timestamp' => Carbon::now()->addSecond(1)->unix(),
     ]);
     expect($cache->getNewestActiveValidator())->toBe([
-        'publicKey' => $newestActive->public_key,
+        'address'   => $newestActive->address,
         'timestamp' => Carbon::now()->addSecond(100)->unix(),
     ]);
-    expect($cache->getMostBlocksForged())->toBe($mostBlocks->public_key);
+    expect($cache->getMostBlocksForged())->toBe($mostBlocks->address);
 });
 
 it('should handle null scenarios for statistics', function () {

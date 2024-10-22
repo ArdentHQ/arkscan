@@ -20,5 +20,5 @@ it('should execute the command', function () {
 
     (new CacheValidatorsWithVoters())->handle($cache = new WalletCache());
 
-    expect($cache->getVote($validator->public_key)->is($validator))->toBeTrue();
+    expect($cache->getVote($validator->address)->is($validator))->toBeTrue();
 });

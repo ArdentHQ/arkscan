@@ -46,20 +46,20 @@ describe('Monitor', function () {
                 'generator_address' => $wallet->address,
             ]);
 
-            (new WalletCache())->setValidator($wallet->public_key, $wallet);
+            (new WalletCache())->setValidator($wallet->address, $wallet);
 
-            (new WalletCache())->setLastBlock($wallet->public_key, [
+            (new WalletCache())->setLastBlock($wallet->address, [
                 'id'     => $block->id,
                 'height' => $block->height->toNumber(),
             ]);
         });
     }
 
-    function forgeBlock(string $publicKey, int $height): void
+    function forgeBlock(string $address, int $height): void
     {
-        $block = createBlock($height, $publicKey); // TODO: adjust to address
+        $block = createBlock($height, $address);
 
-        (new WalletCache())->setLastBlock($publicKey, [
+        (new WalletCache())->setLastBlock($address, [
             'id'     => $block->id,
             'height' => $block->height->toNumber(),
         ]);
@@ -124,7 +124,7 @@ describe('Monitor', function () {
                 ]);
             }
 
-            (new WalletCache())->setValidator($wallet->public_key, $wallet);
+            (new WalletCache())->setValidator($wallet->address, $wallet);
         });
 
         $wallets->first()->blocks()->delete();
@@ -136,7 +136,7 @@ describe('Monitor', function () {
         expect((new WalletCache())->getLastBlock($wallets->first()->public_key))->toBe([]);
 
         foreach ($wallets->skip(1) as $wallet) {
-            expect((new WalletCache())->getLastBlock($wallet->public_key))->not()->toBe([]);
+            expect((new WalletCache())->getLastBlock($wallet->address))->not()->toBe([]);
         }
     });
 
@@ -699,7 +699,7 @@ describe('Data Boxes', function () {
                 ]);
             }
 
-            (new WalletCache())->setValidator($wallet->public_key, $wallet);
+            (new WalletCache())->setValidator($wallet->address, $wallet);
 
             if (is_null($performances)) {
                 for ($i = 0; $i < 2; $i++) {
@@ -707,9 +707,9 @@ describe('Data Boxes', function () {
                 }
             }
 
-            (new WalletCache())->setPerformance($wallet->public_key, $performances);
+            (new WalletCache())->setPerformance($wallet->address, $performances);
 
-            (new WalletCache())->setLastBlock($wallet->public_key, [
+            (new WalletCache())->setLastBlock($wallet->address, [
                 'id'     => $block->id,
                 'height' => $block->height->toNumber(),
             ]);
@@ -867,7 +867,7 @@ describe('Data Boxes', function () {
         });
 
         foreach ($wallets as $wallet) {
-            expect((new WalletCache())->getValidator($wallet->public_key))->toBeNull();
+            expect((new WalletCache())->getValidator($wallet->address))->toBeNull();
         }
 
         Livewire::test(Monitor::class)

@@ -89,8 +89,8 @@ it('should get the votes as percentage from supply', function () {
 });
 
 it('should sum up the total forged', function () {
-    (new ValidatorCache())->setTotalFees([$this->subject->publicKey() => 10 * 1e18]);
-    (new ValidatorCache())->setTotalRewards([$this->subject->publicKey() => 10 * 1e18]);
+    (new ValidatorCache())->setTotalFees([$this->subject->address() => 10 * 1e18]);
+    (new ValidatorCache())->setTotalRewards([$this->subject->address() => 10 * 1e18]);
 
     expect($this->subject->totalForged())->toBeFloat();
 
@@ -98,7 +98,7 @@ it('should sum up the total forged', function () {
 });
 
 it('should sum up the amount forged', function () {
-    (new ValidatorCache())->setTotalAmounts([$this->subject->publicKey() => 10 * 1e18]);
+    (new ValidatorCache())->setTotalAmounts([$this->subject->address() => 10 * 1e18]);
 
     expect($this->subject->amountForged())->toBeInstanceOf(BigNumber::class);
 
@@ -106,7 +106,7 @@ it('should sum up the amount forged', function () {
 });
 
 it('should sum up the fees forged', function () {
-    (new ValidatorCache())->setTotalFees([$this->subject->publicKey() => 8 * 1e18]);
+    (new ValidatorCache())->setTotalFees([$this->subject->address() => 8 * 1e18]);
 
     expect($this->subject->feesForged())->toBeInstanceOf(BigNumber::class);
 
@@ -114,7 +114,7 @@ it('should sum up the fees forged', function () {
 });
 
 it('should sum up the rewards forged', function () {
-    (new ValidatorCache())->setTotalRewards([$this->subject->publicKey() => 2 * 1e18]);
+    (new ValidatorCache())->setTotalRewards([$this->subject->address() => 2 * 1e18]);
 
     expect($this->subject->rewardsForged())->toBeInstanceOf(BigNumber::class);
 
@@ -268,7 +268,7 @@ it('should get the wallet of the vote', function () {
         ],
     ]));
 
-    (new WalletCache())->setVote($vote->public_key, $vote);
+    (new WalletCache())->setVote($vote->address, $vote);
 
     expect($this->subject->vote())->toBeInstanceOf(WalletViewModel::class);
 });
@@ -312,7 +312,7 @@ it('should get the performance if the wallet is a validator', function () {
             ],
         ]);
 
-    (new WalletCache())->setPerformance($wallet->public_key, [true, true]);
+    (new WalletCache())->setPerformance($wallet->address, [true, true]);
 
     $this->subject = new WalletViewModel($wallet);
 
@@ -350,7 +350,7 @@ it('should determine if a new validator has forged', function () {
 
     Rounds::swap(new RoundsMock());
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, false]);
+    (new WalletCache())->setPerformance($this->subject->address(), [false, false]);
 
     expect($this->subject->hasForged())->toBeFalse();
 
@@ -358,7 +358,7 @@ it('should determine if a new validator has forged', function () {
 
     Rounds::swap(new RoundsMock($block));
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, true]);
+    (new WalletCache())->setPerformance($this->subject->address(), [false, true]);
 
     expect($this->subject->hasForged())->toBeTrue();
 
@@ -366,7 +366,7 @@ it('should determine if a new validator has forged', function () {
 
     Rounds::swap(new RoundsMock());
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, false]);
+    (new WalletCache())->setPerformance($this->subject->address(), [false, false]);
 
     expect($this->subject->hasForged())->toBeFalse();
 });
@@ -378,13 +378,13 @@ it('should determine if the validator just missed a block', function () {
 
     Rounds::swap(new RoundsMock($block));
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, true]);
+    (new WalletCache())->setPerformance($this->subject->address(), [true, true]);
 
     expect($this->subject->justMissed())->toBeFalse();
 
     Cache::flush();
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [false, true]);
+    (new WalletCache())->setPerformance($this->subject->address(), [false, true]);
 
     expect($this->subject->justMissed())->toBeFalse();
 
@@ -392,7 +392,7 @@ it('should determine if the validator just missed a block', function () {
 
     Rounds::swap(new RoundsMock());
 
-    (new WalletCache())->setPerformance($this->subject->publicKey(), [true, false]);
+    (new WalletCache())->setPerformance($this->subject->address(), [true, false]);
 
     expect($this->subject->justMissed())->toBeTrue();
 });
@@ -428,7 +428,7 @@ it('should get the resignation id', function () {
         'sender_public_key' => $this->subject->publicKey(),
     ]);
 
-    (new WalletCache())->setResignationId($this->subject->publicKey(), $transaction->id);
+    (new WalletCache())->setResignationId($this->subject->address(), $transaction->id);
 
     expect($this->subject->resignationId())->toBeString();
 });
@@ -471,7 +471,7 @@ it('should get the vote weight as percentage', function () {
 
     expect($this->subject->votePercentage())->toBeNull();
 
-    (new WalletCache())->setVote($vote->public_key, $vote);
+    (new WalletCache())->setVote($vote->address, $vote);
 
     expect($this->subject->votePercentage())->toBeFloat();
     expect($this->subject->votePercentage())->toBe(10.0);
@@ -495,7 +495,7 @@ it('should handle vote weight percentage with 0 vote balance', function () {
 
     expect($this->subject->votePercentage())->toBeNull();
 
-    (new WalletCache())->setVote($vote->public_key, $vote);
+    (new WalletCache())->setVote($vote->address, $vote);
 
     expect($this->subject->votePercentage())->toBeNull();
 });
@@ -516,7 +516,7 @@ it('should handle vote weight percentage with 1 arktoshi vote balance', function
 
     expect($this->subject->votePercentage())->toBeNull();
 
-    (new WalletCache())->setVote($vote->public_key, $vote);
+    (new WalletCache())->setVote($vote->address, $vote);
 
     expect($this->subject->votePercentage())->toBeFloat();
     expect($this->subject->votePercentage())->toBe(100.0);
@@ -541,7 +541,7 @@ it('should get the productivity if the wallet is a validator', function () {
     expect($this->subject->productivity())->toBeFloat();
     expect($this->subject->productivity())->toBe(0.0);
 
-    (new WalletCache())->setProductivity($this->subject->publicKey(), 10);
+    (new WalletCache())->setProductivity($this->subject->address(), 10);
 
     expect($this->subject->productivity())->toBeFloat();
     expect($this->subject->productivity())->toBe(10.0);
@@ -572,7 +572,7 @@ it('should return 0 for productivity if the cached value is less than 0', functi
         ->activeValidator()
         ->create());
 
-    (new WalletCache())->setProductivity($this->subject->publicKey(), -1);
+    (new WalletCache())->setProductivity($this->subject->address(), -1);
 
     expect($this->subject->productivity())->toBeFloat();
     expect($this->subject->productivity())->toBe(0.0);
@@ -591,7 +591,7 @@ it('should determine if the wallet is cold', function () {
 it('should get the voter count', function () {
     $wallet = Wallet::factory()->create();
 
-    (new WalletCache())->setVoterCount($wallet->public_key, 5);
+    (new WalletCache())->setVoterCount($wallet->address, 5);
 
     $this->subject = new WalletViewModel($wallet);
 
@@ -794,7 +794,7 @@ it('should get forged block count for validator', function () {
 });
 
 it('should get missed block count for validator', function () {
-    (new WalletCache())->setMissedBlocks($this->subject->publicKey(), 12345);
+    (new WalletCache())->setMissedBlocks($this->subject->address(), 12345);
 
     expect($this->subject->missedBlocks())->toBe(12345);
 });
@@ -843,7 +843,7 @@ it('should return count for blocks since last forged', function () {
         'height'               => 10,
     ]);
 
-    (new WalletCache())->setLastBlock($wallet->publicKey(), [
+    (new WalletCache())->setLastBlock($wallet->address(), [
         'id'     => $block->id,
         'height' => $block->height->toNumber(),
     ]);
@@ -852,7 +852,7 @@ it('should return count for blocks since last forged', function () {
 
     expect($wallet->blocksSinceLastForged())->toBe(90);
 
-    (new WalletCache())->setLastBlock($wallet->publicKey(), []);
+    (new WalletCache())->setLastBlock($wallet->address(), []);
 
     expect($wallet->blocksSinceLastForged())->toBe(null);
 });
@@ -887,7 +887,7 @@ it('should return count for time since last forged', function () {
         'height'               => 10,
     ]);
 
-    (new WalletCache())->setLastBlock($wallet->publicKey(), [
+    (new WalletCache())->setLastBlock($wallet->address(), [
         'id'        => $block->id,
         'height'    => $block->height->toNumber(),
         'timestamp' => $block->timestamp,
