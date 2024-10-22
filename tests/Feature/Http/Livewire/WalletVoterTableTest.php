@@ -21,7 +21,7 @@ it('should list all voters for the given public key', function () {
 
     $voters = Wallet::factory(10)->create([
         'attributes' => [
-            'vote' => $wallet->public_key,
+            'vote' => $wallet->address,
         ],
     ]);
 
@@ -45,7 +45,7 @@ it('should show no data if not ready', function () {
 
     $voter = Wallet::factory()->create([
         'attributes' => [
-            'vote' => $wallet->public_key,
+            'vote' => $wallet->address,
         ],
     ]);
 
