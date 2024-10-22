@@ -7,7 +7,6 @@ namespace App\ViewModels\Concerns\Wallet;
 use App\Services\Cache\WalletCache;
 use Brick\Math\RoundingMode;
 use Illuminate\Support\Arr;
-use Mattiasgeniar\Percentage\Percentage;
 
 trait CanVote
 {

@@ -122,17 +122,17 @@ final class Validators extends TabbedTableComponent
         return Wallet::query()
             ->whereNotNull('attributes->validatorPublicKey')
             ->where(fn ($query) => $query->when($this->hasFilters(), function ($query) {
-                    $query->where(fn ($query) => $query->when($this->filter['active'] === true, fn ($query) => $query->where(function ($query) {
+                $query->where(fn ($query) => $query->when($this->filter['active'] === true, fn ($query) => $query->where(function ($query) {
+                    $query->where('attributes->validatorResigned', null)
+                        ->orWhere('attributes->validatorResigned', false);
+                })->whereRaw('(attributes->>\'validatorRank\')::int <= ?', Network::validatorCount())))
+                    ->orWhere(fn ($query) => $query->when($this->filter['standby'] === true, fn ($query) => $query->where(function ($query) {
                         $query->where('attributes->validatorResigned', null)
                             ->orWhere('attributes->validatorResigned', false);
-                    })->whereRaw('(attributes->>\'validatorRank\')::int <= ?', Network::validatorCount())))
-                        ->orWhere(fn ($query) => $query->when($this->filter['standby'] === true, fn ($query) => $query->where(function ($query) {
-                            $query->where('attributes->validatorResigned', null)
-                                ->orWhere('attributes->validatorResigned', false);
-                        })->where(function ($query) {
-                            $query->whereRaw('(attributes->>\'validatorRank\')::int > ?', Network::validatorCount());
-                        })))
-                        ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->validatorResigned', true)));
+                    })->where(function ($query) {
+                        $query->whereRaw('(attributes->>\'validatorRank\')::int > ?', Network::validatorCount());
+                    })))
+                    ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->validatorResigned', true)));
             }))
             ->when($this->sortKey === 'rank', fn ($query) => $query->sortByRank($sortDirection))
             ->when($this->sortKey === 'name', fn ($query) => $query->sortByUsername($sortDirection))
