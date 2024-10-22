@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Console\Commands\CacheValidatorsWithVoters;
 use App\Facades\Network;
 use App\Http\Livewire\WalletVoterTable;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
+use App\Services\Cache\WalletCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
@@ -24,6 +26,8 @@ it('should list all voters for the given public key', function () {
             'vote' => $wallet->address,
         ],
     ]);
+
+    (new CacheValidatorsWithVoters())->handle(new WalletCache());
 
     (new NetworkCache())->setSupply(fn () => 10 * 1e18);
 
