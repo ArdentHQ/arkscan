@@ -2,11 +2,16 @@
 
 declare(strict_types=1);
 
+use App\Contracts\RoundRepository as ContractsRoundRepository;
+use App\Enums\DelegateForgingStatus;
+use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Http\Livewire\Delegates\Monitor;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
+use App\Repositories\RoundRepository;
+use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\ForgingInfoCalculator;
@@ -15,452 +20,1397 @@ use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
+use function Tests\createBlock;
+use function Tests\createFullRound;
+use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
+use function Tests\createRoundEntry;
+use function Tests\getDelegateForgingPosition;
+use function Tests\getDelegateWallets;
+use function Tests\getHighestDelegateForgingPosition;
+use function Tests\getRoundDelegates;
 
-beforeEach(function () {
-    $this->activeDelegates = require dirname(dirname(dirname(dirname(__DIR__)))).'/fixtures/forgers.php';
-});
+// function hasInvalidForgingPosition(int $round, int $positionCheck, array $requiredPublicKeys)
+// {
+//     foreach ($requiredPublicKeys as $publicKey) {
+//         $delegateForgingPosition = getDelegateForgingPosition($round, $publicKey);
+//         if ($delegateForgingPosition >= $positionCheck || $delegateForgingPosition === 0) {
+//             return true;
+//         }
+//     }
 
-function createRoundWithDelegates(): void
-{
-    Wallet::factory(51)->create()->each(function ($wallet) {
+//     return false;
+// }
+
+// function createPartialTestRounds(
+//     int &$round,
+//     int &$height,
+//     array|string $requiredPublicKey,
+//     array $didForge,
+//     $context,
+//     array|string $missedPublicKey = null,
+//     ?int $blocks = 49,
+//     ?int $slots = null,
+// ): void {
+//     $requiredPublicKeys = is_array($requiredPublicKey) ? $requiredPublicKey : [$requiredPublicKey];
+//     $positionCheck = $blocks ?? $slots ?? (Network::delegateCount() - 2);
+
+//     // $delegateForgingPosition = getHighestDelegateForgingPosition($round, $requiredPublicKeys);
+//     // while ($delegateForgingPosition >= $positionCheck || $delegateForgingPosition === 0) {
+//     // while (hasInvalidForgingPosition($round, $positionCheck, $requiredPublicKeys)) {
+//     //     // [1 => $round, 2 => $height] = createRealisticRound($didForge, $context);
+//     //     // createFullRound($round, $height, getDelegateWallets(), $context, $didForge);
+
+//     //     // $delegateForgingPosition = getHighestDelegateForgingPosition($round, $requiredPublicKeys);
+//     // }
+
+//     // $missedPublicKeys = [];
+//     // if ($missedPublicKey !== null) {
+//     //     $missedPublicKeys = is_array($missedPublicKey) ? $missedPublicKey : [$missedPublicKey];
+//     // }
+
+//     // dd([
+//     //     'round' => $round,
+//     //     'height' => $height,
+//     //     'blocks' => $blocks,
+//     //     // 'context' => $this,
+//     //     'missedPublicKeys' => $missedPublicKeys,
+//     //     'requiredPublicKeys' => $requiredPublicKeys,
+//     //     'cachePerformance' => true,
+//     //     'slots' => $slots,
+//     // ]);
+
+//     // getDelegateForgingPosition($round, $requiredPublicKeys[0]);
+//     getRoundDelegates(false, $round - 1);
+
+//     createPartialRound($round, $height, $blocks, $context, $missedPublicKey, $requiredPublicKey, true, $slots);
+
+//     // createPartialRound(
+//     //     $round,
+//     //     $height,
+//     //     $blocks,
+//     //     $context,
+//     //     $missedPublicKeys,
+//     //     is_array($requiredPublicKey) ? $requiredPublicKey : [$requiredPublicKey],
+//     //     true,
+//     //     $slots,
+//     // );
+// }
+
+describe('Monitor', function () {
+    beforeEach(function () {
+        $this->activeDelegates = require dirname(dirname(dirname(dirname(__DIR__)))).'/fixtures/forgers.php';
+    });
+
+    function createRoundWithDelegates(): void
+    {
+        Wallet::factory(51)->create()->each(function ($wallet) {
+            $block = Block::factory()->create([
+                'height'               => 5720529,
+                'timestamp'            => 113620904,
+                'generator_public_key' => $wallet->public_key,
+            ]);
+
+            // Start height for round 112168
+            Block::factory()->create([
+                'height'               => 5720518,
+                'timestamp'            => 113620904,
+                'generator_public_key' => $wallet->public_key,
+            ]);
+
+            Round::factory()->create([
+                'round'      => '112168',
+                'public_key' => $wallet->public_key,
+            ]);
+
+            (new WalletCache())->setDelegate($wallet->public_key, $wallet);
+
+            (new WalletCache())->setLastBlock($wallet->public_key, [
+                'id'     => $block->id,
+                'height' => $block->height->toNumber(),
+            ]);
+        });
+    }
+
+    function forgeBlock(string $publicKey, int &$height): void
+    {
         $block = Block::factory()->create([
-            'height'               => 5720529,
-            'timestamp'            => 113620904,
-            'generator_public_key' => $wallet->public_key,
+            'height'               => $height,
+            'generator_public_key' => $publicKey,
+            'timestamp'            => (new Slots())->getTime(),
         ]);
 
-        // Start height for round 112168
-        Block::factory()->create([
-            'height'               => 5720518,
-            'timestamp'            => 113620904,
-            'generator_public_key' => $wallet->public_key,
-        ]);
-
-        Round::factory()->create([
-            'round'      => '112168',
-            'public_key' => $wallet->public_key,
-        ]);
-
-        (new WalletCache())->setDelegate($wallet->public_key, $wallet);
-
-        (new WalletCache())->setLastBlock($wallet->public_key, [
+        (new WalletCache())->setLastBlock($publicKey, [
             'id'     => $block->id,
             'height' => $block->height->toNumber(),
         ]);
+
+        $height++;
+    }
+
+    it('should render without errors', function () {
+        createRoundWithDelegates();
+
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->assertSeeHtml('pollData');
     });
-}
 
-function forgeBlock(string $publicKey, int &$height): void
-{
-    $block = Block::factory()->create([
-        'height'               => $height,
-        'generator_public_key' => $publicKey,
-        'timestamp'            => (new Slots())->getTime(),
-    ]);
+    it('should throw an exception after 3 tries', function () {
+        createRoundWithDelegates();
 
-    (new WalletCache())->setLastBlock($publicKey, [
-        'id'     => $block->id,
-        'height' => $block->height->toNumber(),
-    ]);
+        $this->expectExceptionMessage('Something went wrong!');
 
-    $height++;
-}
+        Cache::shouldReceive('tags')
+            ->andThrow(new Exception('Something went wrong!'))
+            ->shouldReceive('increment')
+            ->andReturn(1, 2, 3);
 
-it('should render without errors', function () {
-    createRoundWithDelegates();
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollDelegates');
+    });
 
-    $component = Livewire::test(Monitor::class)
-        ->call('setIsReady')
-        ->assertSeeHtml('pollDelegates');
-});
+    it('shouldnt throw an exception if only fails 2 times', function () {
+        createRoundWithDelegates();
 
-it('should throw an exception after 3 tries', function () {
-    createRoundWithDelegates();
+        $taggedCache = Cache::tags('tags');
 
-    $this->expectExceptionMessage('Something went wrong!');
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady');
 
-    Cache::shouldReceive('tags')
-        ->with('rounds')
-        ->andThrow(new Exception('Something went wrong!'))
-        ->shouldReceive('increment')
-        ->andReturn(1, 2, 3);
+        Cache::shouldReceive('tags')
+            ->with('rounds')
+            ->once()
+            ->andThrow(new Exception('Something went wrong!'))
+            ->shouldReceive('increment')
+            ->andReturn(1, 2, 3)
+            ->shouldReceive('remember')
+            ->andReturnUsing(fn ($tag, $time, $closure) => $closure())
+            ->shouldReceive('tags')
+            ->andReturn($taggedCache)
+            ->shouldReceive('forget')
+            ->andReturn(null);
 
-    Livewire::test(Monitor::class)
-        ->call('setIsReady')
-        ->call('pollDelegates');
-});
+        $component->call('pollDelegates');
+    });
 
-it('shouldnt throw an exception if only fails 2 times', function () {
-    createRoundWithDelegates();
+    it('should get the last blocks from the last 2 rounds and beyond', function () {
+        $wallets = Wallet::factory(51)->create()->each(function ($wallet) {
+            Round::factory()->create([
+                'round'      => '1',
+                'public_key' => $wallet->public_key,
+            ]);
 
-    $taggedCache = Cache::tags('tags');
+            for ($i = 0; $i < 3; $i++) {
+                Block::factory()->create([
+                    'height'               => $i,
+                    'generator_public_key' => $wallet->public_key,
+                ]);
+            }
 
-    $component = Livewire::test(Monitor::class)
-        ->call('setIsReady');
+            (new WalletCache())->setDelegate($wallet->public_key, $wallet);
+        });
 
-    Cache::shouldReceive('tags')
-        ->with('rounds')
-        ->once()
-        ->andThrow(new Exception('Something went wrong!'))
-        ->shouldReceive('increment')
-        ->andReturn(1, 2, 3)
-        ->shouldReceive('remember')
-        ->andReturnUsing(fn ($tag, $time, $closure) => $closure())
-        ->shouldReceive('tags')
-        ->andReturn($taggedCache)
-        ->shouldReceive('forget')
-        ->andReturn(null);
+        $wallets->first()->blocks()->delete();
 
-    $component->call('pollDelegates');
-});
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')->call('pollDelegates');
 
-it('should get the last blocks from the last 2 rounds and beyond', function () {
-    $wallets = Wallet::factory(51)->create()->each(function ($wallet) {
-        Round::factory()->create([
-            'round'      => '1',
-            'public_key' => $wallet->public_key,
+        expect((new WalletCache())->getLastBlock($wallets->first()->public_key))->toBe([]);
+
+        foreach ($wallets->skip(1) as $wallet) {
+            expect((new WalletCache())->getLastBlock($wallet->public_key))->not()->toBe([]);
+        }
+    });
+
+    it('should do nothing if no rounds', function () {
+        Wallet::factory(51)->create()->each(function ($wallet) {
+            Round::factory()->create([
+                'round'      => '1',
+                'public_key' => $wallet->public_key,
+            ]);
+        });
+
+        // Mark component delegate property as public & update monitor data
+        $delegateProperty = new ReflectionProperty(Monitor::class, 'delegates');
+        $delegateProperty->setAccessible(true);
+
+        $component = Livewire::test(Monitor::class);
+        $component->call('setIsReady');
+
+        expect($delegateProperty->getValue($component->instance()))->toBe([]);
+
+        $component->call('pollDelegates');
+
+        expect($delegateProperty->getValue($component->instance()))->toBe([]);
+    });
+
+    it('should set it ready on event', function () {
+        Wallet::factory(51)->create()->each(function ($wallet) {
+            Round::factory()->create([
+                'round'      => '1',
+                'public_key' => $wallet->public_key,
+            ]);
+        });
+
+        Livewire::test(Monitor::class)
+            ->assertSet('isReady', false)
+            ->dispatch('monitorIsReady')
+            ->assertSet('isReady', true);
+    });
+
+    it('should not poll if not ready', function () {
+        Wallet::factory(51)->create()->each(function ($wallet) {
+            Round::factory()->create([
+                'round'      => '1',
+                'public_key' => $wallet->public_key,
+            ]);
+        });
+
+        // Mark component delegate property as public & update monitor data
+        $delegateProperty = new ReflectionProperty(Monitor::class, 'delegates');
+        $delegateProperty->setAccessible(true);
+
+        $component = Livewire::test(Monitor::class);
+
+        expect($delegateProperty->getValue($component->instance()))->toBe([]);
+
+        $component->instance()->pollDelegates();
+
+        expect($delegateProperty->getValue($component->instance()))->toBe([]);
+    });
+
+    it('should correctly show the block is missed', function () {
+        // Force round time
+        $this->travelTo(new Carbon('2021-01-01 00:04:00'));
+
+        // Create wallets for each delegate
+        $this->activeDelegates->each(function ($delegate) use (&$wallets) {
+            $wallet = Wallet::factory()->create(['public_key' => $delegate->public_key]);
+
+            Round::factory()->create([
+                'round'      => '1',
+                'public_key' => $delegate->public_key,
+                'balance'    => 0,
+            ]);
+
+            (new WalletCache())->setDelegate($delegate->public_key, $wallet);
+        });
+
+        // Store delegate record for each Round object
+        $wallets = Rounds::allByRound(1)->map(fn ($round) => $round->delegate);
+
+        // Make methods public for fetching forging order
+        $activeDelegatesMethod  = new ReflectionMethod(DelegateTracker::class, 'getActiveDelegates');
+        $shuffleDelegatesMethod = new ReflectionMethod(DelegateTracker::class, 'shuffleDelegates');
+        $orderDelegatesMethod   = new ReflectionMethod(DelegateTracker::class, 'orderDelegates');
+        $activeDelegatesMethod->setAccessible(true);
+        $shuffleDelegatesMethod->setAccessible(true);
+        $orderDelegatesMethod->setAccessible(true);
+
+        // Get delegate order so we can forge in the correct order
+        $originalOrder     = ForgingInfoCalculator::calculate((new Slots())->getTime(), 1);
+        $activeDelegates   = $activeDelegatesMethod->invokeArgs(null, [$wallets]);
+        $shuffledDelegates = $shuffleDelegatesMethod->invokeArgs(null, [$activeDelegates, 1]);
+        $delegatesInOrder  = collect($orderDelegatesMethod->invokeArgs(null, [
+            $shuffledDelegates,
+            $originalOrder['currentForger'],
+            51,
+        ]));
+
+        // Forge blocks for first 5 delegates
+        $height = 1;
+        $delegatesInOrder->take(5)->each(function ($publicKey) use (&$height) {
+            forgeBlock($publicKey, $height);
+
+            $this->travel(8)->seconds();
+        });
+
+        // Mark component delegate property as public & update monitor data
+        $delegateProperty = new ReflectionProperty(Monitor::class, 'delegates');
+        $delegateProperty->setAccessible(true);
+
+        $component = Livewire::test(Monitor::class);
+
+        expect($delegateProperty->getValue($component->instance()))->toBe([]);
+
+        $component->call('setIsReady');
+
+        $instance  = $component->instance();
+        $instance->pollDelegates();
+
+        $delegates = collect($delegateProperty->getValue($instance));
+
+        expect($delegates)->toHaveCount(51);
+
+        // Split up delegate slot data to check
+        $forgedDelegates  = $delegates->splice(0, 5);
+        $waitingDelegates = $delegates->splice(0, 1);
+        $missedDelegates  = $delegates->splice(0, 5);
+
+        $forgedDelegates->each(fn ($delegate) => expect($delegate->hasForged())->toBeTrue());
+        $waitingDelegates->each(fn ($delegate) => expect($delegate->isNext())->toBeTrue());
+        $missedDelegates->each(fn ($delegate) => expect($delegate->isPending())->toBeTrue());
+
+        // Progress time by 15 delegate slots
+        $this->travel(14 * 8)->seconds();
+
+        // Forge block with 20th delegate
+        forgeBlock($delegatesInOrder->get(20), $height);
+        $this->travel(8)->seconds();
+
+        // Update delegate data again
+        $instance->pollDelegates();
+
+        $delegates = collect($delegateProperty->getValue($instance));
+
+        expect($delegates)->toHaveCount(51);
+
+        // Check delegate data is correct after 15 missed blocks
+        $forgedDelegates  = $delegates->splice(0, 5);
+        $missedDelegates  = $delegates->splice(0, 15);
+        $waitingDelegates = $delegates->splice(0, 1);
+
+        $forgedDelegates->each(fn ($delegate) => expect($delegate->isWaiting())->toBeFalse());
+        $forgedDelegates->each(fn ($delegate) => expect($delegate->hasForged())->toBeTrue());
+        $missedDelegates->each(fn ($delegate) => expect($delegate->isWaiting())->toBeFalse());
+        $missedDelegates->each(fn ($delegate) => expect($delegate->justMissed())->toBeTrue());
+        $waitingDelegates->each(fn ($delegate) => expect($delegate->isNext())->toBeTrue());
+
+        $outputData = [];
+        $forgedDelegates->each(function ($delegate) use (&$outputData) {
+            $outputData[] = $delegate->wallet()->username();
+            $outputData[] = 'Completed';
+        });
+        $missedDelegates->each(function ($delegate) use (&$outputData) {
+            $outputData[] = $delegate->wallet()->username();
+            $outputData[] = 'Missed';
+        });
+        $waitingDelegates->each(function ($delegate) use (&$outputData) {
+            $outputData[] = $delegate->wallet()->username();
+            $outputData[] = 'Now';
+        });
+
+        $component
+            ->call('pollDelegates')
+            ->assertSeeInOrder($outputData);
+    });
+
+    it('should show warning icon for delegates missing blocks - minutes', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [0 => $delegates] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
+
+        $delegate = (new WalletViewModel($delegates->get(4)));
+
+        expect($delegate->performance())->toBe([false, false]);
+
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollDelegates')
+            ->assertSeeInOrder([
+                $delegate->username(),
+                'Delegate last forged 199 blocks ago (~ 27 min)',
+            ]);
+    });
+
+    it('should show warning icon for delegates missing blocks - hours', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [0 => $delegates] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
+
+        $this->travelTo(Carbon::parse('2024-02-01 15:00:00Z'));
+
+        $delegate = (new WalletViewModel($delegates->get(4)));
+
+        expect($delegate->performance())->toBe([false, false]);
+
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollDelegates')
+            ->assertSeeInOrder([
+                $delegate->username(),
+                'Delegate last forged 199 blocks ago (~ 1h 27 min)',
+            ]);
+    });
+
+    it('should show warning icon for delegates missing blocks - days', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [0 => $delegates] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
+
+        $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
+
+        $delegate = (new WalletViewModel($delegates->get(4)));
+
+        expect($delegate->performance())->toBe([false, false]);
+
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollDelegates')
+            ->assertSeeInOrder([
+                $delegate->username(),
+                'Delegate last forged 199 blocks ago (more than a day)',
+            ]);
+    });
+
+    it('should reload on new block event', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [0 => $delegates] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
+
+        $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
+
+        $delegate = (new WalletViewModel($delegates->get(4)));
+
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->dispatch('echo:blocks,NewBlock')
+            ->assertSeeInOrder([
+                $delegate->username(),
+                'Delegate last forged 199 blocks ago (more than a day)',
+            ]);
+    });
+
+    it('should show no overflow delegates if no missed blocks', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        createRealisticRound([
+            array_fill(0, 51, true),
+        ], $this);
+
+        // dd(getRoundDelegates(false)->pluck('status', 'order'));
+
+        $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollDelegates');
+
+        $instance = $component->instance();
+
+        $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+        expect($overflowDelegates)->toHaveCount(0);
+    });
+
+    it('should show no overflow delegates at the start of a round', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [$delegates, $round] = createRealisticRound([
+            array_fill(0, 51, true),
+        ], $this);
+
+        // foreach ($delegates as $delegate) {
+        //     createRoundEntry($round, $delegate->public_key);
+        // }
+
+        $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollDelegates');
+
+        $instance = $component->instance();
+
+        $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+        expect($overflowDelegates)->toHaveCount(0);
+    });
+
+    it('should show overflow delegates with a full round', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [2 => $height] = createRealisticRound([
+            [
+                ...array_fill(0, 8, true),
+                false,
+                false,
+                false,
+                false,
+                false,
+                ...array_fill(0, 38, true),
+            ],
+        ], $this);
+
+        // dump($height);
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollDelegates');
+
+        $instance = $component->instance();
+
+        $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+        // expect($overflowDelegates)->toHaveCount(5);
+        expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([
+            'done',
+            'done',
+            'done',
+            'done',
+            'done',
         ]);
+    });
 
-        for ($i = 0; $i < 3; $i++) {
-            Block::factory()->create([
-                'height'               => $i,
+    it('should show overflow delegates at the end of all initial slots', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [$delegates, $round, $height] = createRealisticRound([
+            array_fill(0, 51, true),
+        ], $this);
+
+        $requiredPublicKeys = [
+            $delegates->get(4)->public_key,
+            $delegates->get(5)->public_key,
+            $delegates->get(6)->public_key,
+            $delegates->get(7)->public_key,
+            $delegates->get(8)->public_key,
+        ];
+
+        createPartialRound($round, $height, null, $this, $requiredPublicKeys, $requiredPublicKeys, true, 51);
+
+        // dump($round, $height);
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollDelegates');
+
+        $instance = $component->instance();
+
+        $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+        // expect($overflowDelegates)->toHaveCount(5);
+        expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([
+            'next',
+            'pending',
+            'pending',
+            'pending',
+            'pending',
+        ]);
+    });
+
+    // it('should show overflow delegates for partial round', function () {
+    //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    //     $this->freezeTime();
+
+    //     [$delegates, $round, $height] = createRealisticRound([
+    //         array_fill(0, Network::delegateCount(), true),
+    //     ], $this);
+
+    //     createPartialRound($round, $height, Network::delegateCount() - 1, $this, [
+    //         $delegates->get(4)->public_key,
+    //         $delegates->get(5)->public_key,
+    //         $delegates->get(6)->public_key,
+    //         $delegates->get(7)->public_key,
+    //         $delegates->get(8)->public_key,
+    //     ], [
+    //         $delegates->get(4)->public_key,
+    //         $delegates->get(5)->public_key,
+    //         $delegates->get(6)->public_key,
+    //         $delegates->get(7)->public_key,
+    //         $delegates->get(8)->public_key,
+    //     ]);
+
+    //     $component = Livewire::test(Monitor::class)
+    //         ->call('setIsReady')
+    //         ->call('pollData');
+
+    //     $instance = $component->instance();
+
+    //     $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+    //     // expect($overflowDelegates)->toHaveCount(5);
+    //     expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([
+    //         'done',
+    //         'done',
+    //         'done',
+    //         'done',
+    //         'next',
+    //     ]);
+    // });
+
+    // it('should track overflow slots correctly', function () {
+    //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    //     $this->freezeTime();
+
+    //     [$delegates, $round, $height] = createRealisticRound([
+    //         array_fill(0, Network::delegateCount(), true),
+    //     ], $this);
+
+    //     [$delegates, $round, $height] = createPartialRound($round, $height, null, $this, [
+    //         $delegates->get(4)->public_key,
+    //         $delegates->get(5)->public_key,
+    //         $delegates->get(6)->public_key,
+    //         $delegates->get(7)->public_key,
+    //         $delegates->get(8)->public_key,
+    //     ], [
+    //         $delegates->get(4)->public_key,
+    //         $delegates->get(5)->public_key,
+    //         $delegates->get(6)->public_key,
+    //         $delegates->get(7)->public_key,
+    //         $delegates->get(8)->public_key,
+    //     ], true, Network::delegateCount());
+
+    //     $delegates = getRoundDelegates(false, $round - 1);
+
+    //     createBlock($height, $delegates->get(0)['publicKey'], $this);
+    //     createBlock($height + 1, $delegates->get(1)['publicKey'], $this);
+
+    //     $component = Livewire::test(Monitor::class)
+    //         ->call('setIsReady')
+    //         ->call('pollData');
+
+    //     $instance = $component->instance();
+
+    //     $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+    //     // expect($overflowDelegates)->toHaveCount(5);
+    //     expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([
+    //         'done',
+    //         'done',
+    //         'next',
+    //         'pending',
+    //         'pending',
+    //     ]);
+    // });
+
+    // it('should handle when an overflow delegate misses a block', function () {
+    //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    //     $this->freezeTime();
+
+    //     [$delegates, $round, $height] = createRealisticRound([
+    //         array_fill(0, Network::delegateCount(), true),
+    //     ], $this);
+
+    //     [$delegates, $round, $height] = createPartialRound($round, $height, null, $this, [
+    //         $delegates->get(4)->public_key,
+    //         $delegates->get(5)->public_key,
+    //         $delegates->get(6)->public_key,
+    //         $delegates->get(7)->public_key,
+    //         $delegates->get(8)->public_key,
+    //     ], [
+    //         $delegates->get(4)->public_key,
+    //         $delegates->get(5)->public_key,
+    //         $delegates->get(6)->public_key,
+    //         $delegates->get(7)->public_key,
+    //         $delegates->get(8)->public_key,
+    //     ], true, Network::delegateCount());
+
+    //     $delegates = getRoundDelegates(false, $round - 1);
+
+    //     // Overflow slot 1
+    //     createBlock($height, $delegates->get(0)['publicKey'], $this);
+
+    //     // Overflow slot 2
+    //     $this->travel(Network::blockTime() + 2)->seconds();
+
+    //     // Overflow slot 3
+    //     createBlock($height + 1, $delegates->get(2)['publicKey'], $this);
+
+    //     $overflowForgeTime = Carbon::parse('2024-02-01 14:00:00Z')->addSeconds((Network::blockTime() * (Network::delegateCount() + 4)));
+
+    //     $component = Livewire::test(Monitor::class)
+    //         ->call('setIsReady')
+    //         ->call('pollData');
+
+    //     $instance = $component->instance();
+
+    //     $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+    //     // expect($overflowDelegates)->toHaveCount(6);
+    //     expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([
+    //         'done',
+    //         'done',
+    //         'done',
+    //         'next',
+    //         'pending',
+    //         'pending',
+    //     ]);
+
+    //     expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->forgingAt()->format('Y-m-d H:i:s'))->toArray())->toBe([
+    //         $overflowForgeTime->format('Y-m-d H:i:s'),
+    //         $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
+    //         $overflowForgeTime->addSeconds(Network::blockTime() + 2)->format('Y-m-d H:i:s'), // Missed overflow block
+    //         $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
+    //         $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
+    //         $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
+    //     ]);
+    // });
+
+    // it('should correctly show overflow if only a single block was missed', function () {
+    //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    //     $this->freezeTime();
+
+    //     [$delegates, $round, $height] = createRealisticRound([
+    //         array_fill(0, Network::delegateCount(), true),
+    //     ], $this);
+
+    //     createPartialRound($round, $height, null, $this, [
+    //         $delegates->get(40)->public_key,
+    //     ], [
+    //         $delegates->get(40)->public_key,
+    //     ], true, Network::delegateCount() - 4);
+
+    //     expect($height)->toBe((3 * Network::delegateCount()) - 4 + 1);
+
+    //     $component = Livewire::test(Monitor::class)
+    //         ->call('setIsReady')
+    //         ->call('pollData');
+
+    //     $instance = $component->instance();
+
+    //     $delegatesProperty = new ReflectionProperty($instance, 'delegates');
+    //     $delegatesProperty->setAccessible(true);
+
+    //     $slots = collect($delegatesProperty->getValue($instance))->groupBy(fn ($delegate) => $delegate->status());
+
+    //     // expect($slots['done'])->toHaveCount(Network::delegateCount() - 4);
+    //     // expect($slots['pending'])->toHaveCount(3);
+    //     // expect($slots['next'])->toHaveCount(1);
+
+    //     /** @var Slot[] */
+    //     $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
+    //     $overflowForgeTime = Carbon::parse('2024-02-01 14:00:00Z')->addSeconds(Network::blockTime() * Network::delegateCount());
+
+    //     // expect($overflowDelegates)->toHaveCount(1);
+    //     // expect($overflowDelegates[0]->forgingAt()->format('Y-m-d H:i:s'))->toBe($overflowForgeTime->format('Y-m-d H:i:s'));
+    //     expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([
+    //         'pending',
+    //     ]);
+    // });
+
+    // // it('should extend forge time when missed before overflow (testing Helper)', function (int $count, string $expected) {
+    // //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+    // //     $this->freezeTime();
+
+    // //     createRealisticRound([
+    // //         [
+    // //             ...array_fill(0, 4, true),
+    // //             ...array_fill(0, $count, false),
+    // //             ...array_fill(0, 49 - $count, true),
+    // //         ],
+    // //     ], $this);
+
+    // //     expect(Carbon::now()->format('Y-m-d H:i:s'))->toBe($expected);
+    // // })->with([
+    // //     1 => [1, '2024-02-01 14:00:08'],
+    // //     2 => [2, '2024-02-01 14:00:18'],
+    // //     3 => [3, '2024-02-01 14:00:30'],
+    // //     4 => [4, '2024-02-01 14:00:44'],
+    // //     5 => [5, '2024-02-01 14:02:00'], // doubles up because we hit the batch of missing delegates on the second passthrough
+    // //     6 => [6, '2024-02-01 14:02:36'],
+    // // ]);
+});
+
+describe('Data Boxes', function () {
+    beforeEach(function () {
+        $this->app->bind(ContractsRoundRepository::class, function (): RoundRepository {
+            return new RoundRepository();
+        });
+
+        $this->travelTo(Carbon::parse('2022-08-22 00:00'));
+        $this->freezeTime();
+    });
+
+    function createRoundWithDelegatesAndPerformances(array $performances = null, bool $addBlockForNextRound = true, int $wallets = 51, int $baseIndex = 0): void
+    {
+        Wallet::factory($wallets)->create()->each(function ($wallet, $index) use ($performances, $addBlockForNextRound, $baseIndex) {
+            $timestamp = Carbon::now()->add(($baseIndex + $index) * 8, 'seconds')->timestamp;
+
+            $block = Block::factory()->create([
+                'height'               => 5720529,
+                'timestamp'            => $timestamp,
                 'generator_public_key' => $wallet->public_key,
             ]);
+
+            // Start height for round 112168
+            if ($addBlockForNextRound) {
+                Block::factory()->create([
+                    'height'               => 5720518,
+                    'timestamp'            => $timestamp,
+                    'generator_public_key' => $wallet->public_key,
+                ]);
+            }
+
+            Round::factory()->create([
+                'round'      => '112167',
+                'public_key' => $wallet->public_key,
+            ]);
+
+            Round::factory()->create([
+                'round'      => '112168',
+                'public_key' => $wallet->public_key,
+            ]);
+
+            (new WalletCache())->setDelegate($wallet->public_key, $wallet);
+
+            if (is_null($performances)) {
+                for ($i = 0; $i < 2; $i++) {
+                    $performances[] = (bool) mt_rand(0, 1);
+                }
+            }
+
+            (new WalletCache())->setPerformance($wallet->public_key, $performances);
+
+            (new WalletCache())->setLastBlock($wallet->public_key, [
+                'id'     => $block->id,
+                'height' => $block->height->toNumber(),
+            ]);
+        });
+    }
+
+    it('should render without errors', function () {
+        createRoundWithDelegatesAndPerformances();
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady');
+
+        $component->call('pollData');
+
+        $component->assertHasNoErrors();
+        $component->assertViewIs('livewire.delegates.monitor');
+    });
+
+    it('should handle case no block yet', function () {
+        createRoundWithDelegatesAndPerformances(null, false);
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady');
+
+        $component->call('pollData');
+
+        $component->assertHasNoErrors();
+
+        $component->assertViewIs('livewire.delegates.monitor');
+    });
+
+    it('should get the performances of active delegates and parse it into a readable array', function () {
+        createRoundWithDelegatesAndPerformances();
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady');
+
+        $component->call('pollData');
+
+        expect($component->instance()->getDelegatesPerformance())->toBeArray();
+        expect($component->instance()->getDelegatesPerformance())->toHaveKeys(['forging', 'missed', 'missing']);
+    });
+
+    it('should determine if delegates are forging based on their round history', function () {
+        createRoundWithDelegatesAndPerformances([true, true], false);
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady');
+
+        $component->call('pollData');
+
+        $delegateWallet = Wallet::first();
+        $delegate       = new WalletViewModel($delegateWallet);
+
+        expect($component->instance()->getDelegatePerformance($delegate->publicKey()))->toBe(DelegateForgingStatus::forging);
+    });
+
+    it('should determine if delegates are not forging based on their round history', function () {
+        createRoundWithDelegatesAndPerformances([false, false], false);
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady');
+
+        $component->call('pollData');
+
+        $delegateWallet = Wallet::first();
+        $delegate       = new WalletViewModel($delegateWallet);
+
+        expect($component->instance()->getDelegatePerformance($delegate->publicKey()))->toBe(DelegateForgingStatus::missing);
+    });
+
+    it('should determine if delegates just missed based on their round history', function () {
+        createRoundWithDelegatesAndPerformances([true, false], false);
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady');
+
+        $component->call('pollData');
+
+        $delegateWallet = Wallet::first();
+        $delegate       = new WalletViewModel($delegateWallet);
+
+        expect($component->instance()->getDelegatePerformance($delegate->publicKey()))->toBe(DelegateForgingStatus::missed);
+    });
+
+    it('should determine if delegates are forging after missing 4 slots based on their round history', function () {
+        createRoundWithDelegatesAndPerformances([false, true], false);
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady');
+
+        $component->call('pollData');
+
+        $delegateWallet = Wallet::first();
+        $delegate       = new WalletViewModel($delegateWallet);
+
+        expect($component->instance()->getDelegatePerformance($delegate->publicKey()))->toBe(DelegateForgingStatus::forging);
+    });
+
+    it('should return the block count', function () {
+        createRoundWithDelegatesAndPerformances();
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady');
+
+        expect($component->instance()->getBlockCount())->toBeString();
+    });
+
+    it('should return the next delegate', function () {
+        createRoundWithDelegatesAndPerformances();
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollData');
+
+        expect($component->instance()->getNextdelegate())->toBeInstanceOf(WalletViewModel::class);
+    });
+
+    it('should not error if no cached delegate data', function () {
+        $wallets = Wallet::factory(51)
+            ->activeDelegate()
+            ->create()
+            ->each(function ($wallet) {
+                $block = Block::factory()->create([
+                    'height'               => 5720529,
+                    'timestamp'            => 113620904,
+                    'generator_public_key' => $wallet->public_key,
+                ]);
+
+                Block::factory()->create([
+                    'height'               => 5720518,
+                    'timestamp'            => 113620904,
+                    'generator_public_key' => $wallet->public_key,
+                ]);
+
+                Round::factory()->create([
+                    'round'      => '112168',
+                    'public_key' => $wallet->public_key,
+                ]);
+            });
+
+        foreach ($wallets as $wallet) {
+            expect((new WalletCache())->getDelegate($wallet->public_key))->toBeNull();
         }
 
-        (new WalletCache())->setDelegate($wallet->public_key, $wallet);
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->assertSeeHtml('rounded-sm-md animate-pulse bg-theme-secondary-300 dark:bg-theme-dark-800 w-[70px] h-5')
+            ->assertSet('statistics.nextDelegate', null);
     });
 
-    $wallets->first()->blocks()->delete();
+    it('should defer loading', function () {
+        createRoundWithDelegatesAndPerformances();
 
-    Livewire::test(Monitor::class)
-        ->call('setIsReady')->call('pollDelegates');
+        (new NetworkCache())->setHeight(fn (): int => 4234212);
 
-    expect((new WalletCache())->getLastBlock($wallets->first()->public_key))->toBe([]);
-
-    foreach ($wallets->skip(1) as $wallet) {
-        expect((new WalletCache())->getLastBlock($wallet->public_key))->not()->toBe([]);
-    }
-});
-
-it('should do nothing if no rounds', function () {
-    Wallet::factory(51)->create()->each(function ($wallet) {
-        Round::factory()->create([
-            'round'      => '1',
-            'public_key' => $wallet->public_key,
-        ]);
+        Livewire::test(Monitor::class)
+            ->call('pollData')
+            ->assertViewHas('height', 0)
+            ->assertViewHas('statistics', [])
+            ->assertDontSee('4,234,212')
+            ->call('setIsReady')
+            ->assertViewHas('height', 4234212)
+            ->assertDontSee('4,234,212')
+            ->call('pollData')
+            ->assertSee('4,234,212');
     });
 
-    // Mark component delegate property as public & update monitor data
-    $delegateProperty = new ReflectionProperty(Monitor::class, 'delegates');
-    $delegateProperty->setAccessible(true);
+    it('should calculate forged correctly with current round', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+        $this->freezeTime();
 
-    $component = Livewire::test(Monitor::class);
-    $component->call('setIsReady');
+        [$delegates, $round, $height] = createRealisticRound([
+            array_fill(0, 51, true),
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            array_fill(0, 51, true),
+        ], $this);
 
-    expect($delegateProperty->getValue($component->instance()))->toBe([]);
+        $publicKey = $delegates->get(4)->public_key;
+        createPartialTestRounds($round, $height, $publicKey, [
+            array_fill(0, 51, true),
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            array_fill(0, 51, true),
+        ], $this, null, 51);
 
-    $component->call('pollDelegates');
+        expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, true]);
 
-    expect($delegateProperty->getValue($component->instance()))->toBe([]);
-});
-
-it('should set it ready on event', function () {
-    Wallet::factory(51)->create()->each(function ($wallet) {
-        Round::factory()->create([
-            'round'      => '1',
-            'public_key' => $wallet->public_key,
-        ]);
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollData')
+            ->assertSeeHtmlInOrder([
+                'Forging',
+                '<span>51</span>',
+                'Missed',
+                '<span>0</span>',
+                'Not Forging',
+                '<span>0</span>',
+                'Current Height',
+            ]);
     });
 
-    Livewire::test(Monitor::class)
-        ->assertSet('isReady', false)
-        ->dispatch('monitorIsReady')
-        ->assertSet('isReady', true);
-});
+    it('should calculate forged correctly for previous rounds', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
-it('should not poll if not ready', function () {
-    Wallet::factory(51)->create()->each(function ($wallet) {
-        Round::factory()->create([
-            'round'      => '1',
-            'public_key' => $wallet->public_key,
-        ]);
+        $this->freezeTime();
+
+        [0 => $delegates] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            array_fill(0, 51, true),
+        ], $this);
+
+        expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, true]);
+
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollData')
+            ->assertSeeHtmlInOrder([
+                'Forging',
+                '<span>51</span>',
+                'Missed',
+                '<span>0</span>',
+                'Not Forging',
+                '<span>0</span>',
+                'Current Height',
+            ]);
     });
 
-    // Mark component delegate property as public & update monitor data
-    $delegateProperty = new ReflectionProperty(Monitor::class, 'delegates');
-    $delegateProperty->setAccessible(true);
+    it('should calculate missed correctly with current round', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
-    $component = Livewire::test(Monitor::class);
+        $this->freezeTime();
 
-    expect($delegateProperty->getValue($component->instance()))->toBe([]);
+        [$delegates, $round, $height] = createRealisticRound([
+            array_fill(0, 51, true),
+            array_fill(0, 51, true),
+            array_fill(0, 51, true),
+        ], $this);
 
-    $component->instance()->pollDelegates();
+        $publicKey = $delegates->get(4)->public_key;
 
-    expect($delegateProperty->getValue($component->instance()))->toBe([]);
-});
+        createPartialTestRounds($round, $height, $publicKey, [
+            array_fill(0, 51, true),
+        ], $this, $publicKey, 50, 51);
 
-it('should correctly show the block is missed', function () {
-    // Force round time
-    $this->travelTo(new Carbon('2021-01-01 00:04:00'));
+        expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([true, false]);
 
-    // Create wallets for each delegate
-    $this->activeDelegates->each(function ($delegate) use (&$wallets) {
-        $wallet = Wallet::factory()->create(['public_key' => $delegate->public_key]);
-
-        Round::factory()->create([
-            'round'      => '1',
-            'public_key' => $delegate->public_key,
-            'balance'    => 0,
-        ]);
-
-        (new WalletCache())->setDelegate($delegate->public_key, $wallet);
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollData')
+            ->assertSeeHtmlInOrder([
+                'Forging',
+                '<span>50</span>',
+                'Missed',
+                '<span>1</span>',
+                'Not Forging',
+                '<span>0</span>',
+                'Current Height',
+            ]);
     });
 
-    // Store delegate record for each Round object
-    $wallets = Rounds::allByRound(1)->map(fn ($round) => $round->delegate);
+    it('should calculate missed correctly for previous rounds', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
-    // Make methods public for fetching forging order
-    $activeDelegatesMethod  = new ReflectionMethod(DelegateTracker::class, 'getActiveDelegates');
-    $shuffleDelegatesMethod = new ReflectionMethod(DelegateTracker::class, 'shuffleDelegates');
-    $orderDelegatesMethod   = new ReflectionMethod(DelegateTracker::class, 'orderDelegates');
-    $activeDelegatesMethod->setAccessible(true);
-    $shuffleDelegatesMethod->setAccessible(true);
-    $orderDelegatesMethod->setAccessible(true);
+        $this->freezeTime();
 
-    // Get delegate order so we can forge in the correct order
-    $originalOrder     = ForgingInfoCalculator::calculate((new Slots())->getTime(), 1);
-    $activeDelegates   = $activeDelegatesMethod->invokeArgs(null, [$wallets]);
-    $shuffledDelegates = $shuffleDelegatesMethod->invokeArgs(null, [$activeDelegates, 1]);
-    $delegatesInOrder  = collect($orderDelegatesMethod->invokeArgs(null, [
-        $shuffledDelegates,
-        $originalOrder['currentForger'],
-        51,
-    ]));
+        [0 => $delegates] = createRealisticRound([
+            array_fill(0, 51, true),
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
 
-    // Forge blocks for first 5 delegates
-    $height = 1;
-    $delegatesInOrder->take(5)->each(function ($publicKey) use (&$height) {
-        forgeBlock($publicKey, $height);
+        expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([true, false]);
 
-        $this->travel(8)->seconds();
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollData')
+            ->assertSeeHtmlInOrder([
+                'Forging',
+                '<span>50</span>',
+                'Missed',
+                '<span>1</span>',
+                'Not Forging',
+                '<span>0</span>',
+                'Current Height',
+            ]);
     });
 
-    // Mark component delegate property as public & update monitor data
-    $delegateProperty = new ReflectionProperty(Monitor::class, 'delegates');
-    $delegateProperty->setAccessible(true);
+    it('should calculate not forging correctly with current round', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
-    $component = Livewire::test(Monitor::class);
+        $this->freezeTime();
 
-    expect($delegateProperty->getValue($component->instance()))->toBe([]);
+        [$delegates, $round, $height] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
 
-    $component->call('setIsReady');
+        $publicKey = $delegates->get(4)->public_key;
+        createPartialTestRounds($round, $height, $publicKey, [
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this, $publicKey, 51);
 
-    $instance  = $component->instance();
-    $instance->pollDelegates();
+        expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, false]);
 
-    $delegates = collect($delegateProperty->getValue($instance));
-
-    expect($delegates)->toHaveCount(51);
-
-    // Split up delegate slot data to check
-    $forgedDelegates  = $delegates->splice(0, 5);
-    $waitingDelegates = $delegates->splice(0, 1);
-    $missedDelegates  = $delegates->splice(0, 5);
-
-    $forgedDelegates->each(fn ($delegate) => expect($delegate->hasForged())->toBeTrue());
-    $waitingDelegates->each(fn ($delegate) => expect($delegate->isNext())->toBeTrue());
-    $missedDelegates->each(fn ($delegate) => expect($delegate->isPending())->toBeTrue());
-
-    // Progress time by 15 delegate slots
-    $this->travel(14 * 8)->seconds();
-
-    // Forge block with 20th delegate
-    forgeBlock($delegatesInOrder->get(20), $height);
-    $this->travel(8)->seconds();
-
-    // Update delegate data again
-    $instance->pollDelegates();
-
-    $delegates = collect($delegateProperty->getValue($instance));
-
-    expect($delegates)->toHaveCount(51);
-
-    // Check delegate data is correct after 15 missed blocks
-    $forgedDelegates  = $delegates->splice(0, 5);
-    $missedDelegates  = $delegates->splice(0, 15);
-    $waitingDelegates = $delegates->splice(0, 1);
-
-    $forgedDelegates->each(fn ($delegate) => expect($delegate->isWaiting())->toBeFalse());
-    $forgedDelegates->each(fn ($delegate) => expect($delegate->hasForged())->toBeTrue());
-    $missedDelegates->each(fn ($delegate) => expect($delegate->isWaiting())->toBeFalse());
-    $missedDelegates->each(fn ($delegate) => expect($delegate->justMissed())->toBeTrue());
-    $waitingDelegates->each(fn ($delegate) => expect($delegate->isNext())->toBeTrue());
-
-    $outputData = [];
-    $forgedDelegates->each(function ($delegate) use (&$outputData) {
-        $outputData[] = $delegate->wallet()->username();
-        $outputData[] = 'Completed';
-    });
-    $missedDelegates->each(function ($delegate) use (&$outputData) {
-        $outputData[] = $delegate->wallet()->username();
-        $outputData[] = 'Missed';
-    });
-    $waitingDelegates->each(function ($delegate) use (&$outputData) {
-        $outputData[] = $delegate->wallet()->username();
-        $outputData[] = 'Now';
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollData')
+            ->assertSeeHtmlInOrder([
+                'Forging',
+                '<span>50</span>',
+                'Missed',
+                '<span>0</span>',
+                'Not Forging',
+                '<span>1</span>',
+                'Current Height',
+            ]);
     });
 
-    $component
-        ->call('pollDelegates')
-        ->assertSeeInOrder($outputData);
-});
+    it('should calculate not forging correctly for previous rounds', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
-it('should show warning icon for delegates missing blocks - minutes', function () {
-    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+        $this->freezeTime();
 
-    $this->freezeTime();
+        [0 => $delegates] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
 
-    [0 => $delegates] = createRealisticRound([
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-    ], $this);
+        expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, false]);
 
-    $delegate = (new WalletViewModel($delegates->get(4)));
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollData')
+            ->assertSeeHtmlInOrder([
+                'Forging',
+                '<span>50</span>',
+                'Missed',
+                '<span>0</span>',
+                'Not Forging',
+                '<span>1</span>',
+                'Current Height',
+            ]);
+    });
 
-    expect($delegate->performance())->toBe([false, false]);
+    it('should reload on new block event', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
-    Livewire::test(Monitor::class)
-        ->call('setIsReady')
-        ->call('pollDelegates')
-        ->assertSeeInOrder([
-            $delegate->username(),
-            'Delegate last forged 199 blocks ago (~ 21 min)',
-        ]);
-});
+        $this->freezeTime();
 
-it('should show warning icon for delegates missing blocks - hours', function () {
-    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+        createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
 
-    $this->freezeTime();
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->assertDontSeeHtml('<span>50</span>')
+            ->assertDontSeeHtml('<span>0</span>')
+            ->assertDontSeeHtml('<span>1</span>')
+            ->dispatch('echo:blocks,NewBlock')
+            ->assertSeeHtmlInOrder([
+                'Forging',
+                '<span>50</span>',
+                'Missed',
+                '<span>0</span>',
+                'Not Forging',
+                '<span>1</span>',
+                'Current Height',
+            ]);
+    });
 
-    [0 => $delegates] = createRealisticRound([
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-    ], $this);
+    it('should should poll when component is ready', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
-    $this->travelTo(Carbon::parse('2024-02-01 15:00:00Z'));
+        $this->freezeTime();
 
-    $delegate = (new WalletViewModel($delegates->get(4)));
+        createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
 
-    expect($delegate->performance())->toBe([false, false]);
-
-    Livewire::test(Monitor::class)
-        ->call('setIsReady')
-        ->call('pollDelegates')
-        ->assertSeeInOrder([
-            $delegate->username(),
-            'Delegate last forged 199 blocks ago (~ 1h 28 min)',
-        ]);
-});
-
-it('should show warning icon for delegates missing blocks - days', function () {
-    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
-
-    $this->freezeTime();
-
-    [0 => $delegates] = createRealisticRound([
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-    ], $this);
-
-    $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
-
-    $delegate = (new WalletViewModel($delegates->get(4)));
-
-    expect($delegate->performance())->toBe([false, false]);
-
-    Livewire::test(Monitor::class)
-        ->call('setIsReady')
-        ->call('pollDelegates')
-        ->assertSeeInOrder([
-            $delegate->username(),
-            'Delegate last forged 199 blocks ago (more than a day)',
-        ]);
-});
-
-it('should reload on new block event', function () {
-    $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
-
-    $this->freezeTime();
-
-    [0 => $delegates] = createRealisticRound([
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-        [
-            ...array_fill(0, 4, true),
-            false,
-            ...array_fill(0, 46, true),
-        ],
-    ], $this);
-
-    $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
-
-    $delegate = (new WalletViewModel($delegates->get(4)));
-
-    Livewire::test(Monitor::class)
-        ->call('setIsReady')
-        ->dispatch('echo:blocks,NewBlock')
-        ->assertSeeInOrder([
-            $delegate->username(),
-            'Delegate last forged 199 blocks ago (more than a day)',
-        ]);
+        Livewire::test(Monitor::class)
+            ->assertDontSeeHtml('<span>50</span>')
+            ->assertDontSeeHtml('<span>0</span>')
+            ->assertDontSeeHtml('<span>1</span>')
+            ->call('componentIsReady')
+            ->assertSeeHtmlInOrder([
+                'Forging',
+                '<span>50</span>',
+                'Missed',
+                '<span>0</span>',
+                'Not Forging',
+                '<span>1</span>',
+                'Current Height',
+            ]);
+    });
 });
