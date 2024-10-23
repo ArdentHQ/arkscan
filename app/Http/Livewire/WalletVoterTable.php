@@ -18,7 +18,7 @@ final class WalletVoterTable extends TabbedTableComponent
 {
     use DeferLoading;
 
-    public string $publicKey;
+    public string $address;
 
     /** @var mixed */
     protected $listeners = [
@@ -29,10 +29,7 @@ final class WalletVoterTable extends TabbedTableComponent
 
     public function mount(WalletViewModel $wallet): void
     {
-        /** @var string $publicKey */
-        $publicKey = $wallet->publicKey();
-
-        $this->publicKey = $publicKey;
+        $this->address = $wallet->address();
     }
 
     public function render(): View
@@ -57,7 +54,7 @@ final class WalletVoterTable extends TabbedTableComponent
             return new LengthAwarePaginator([], 0, $this->perPage);
         }
 
-        return Wallet::where('attributes->vote', $this->publicKey)
+        return Wallet::where('attributes->vote', $this->address)
             ->withScope(OrderByBalanceScope::class)
             ->paginate($this->perPage);
     }

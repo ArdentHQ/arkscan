@@ -213,12 +213,12 @@ final class Transaction extends Model
             return Wallet::where('address', $recipientId)->firstOrFail();
         }
 
-        $votePublicKey = Arr::get($this, 'asset.votes.0');
-        if (is_null($votePublicKey)) {
-            $votePublicKey = Arr::get($this, 'asset.unvotes.0');
+        $vote = Arr::get($this, 'asset.votes.0');
+        if (is_null($vote)) {
+            $vote = Arr::get($this, 'asset.unvotes.0');
         }
 
-        return Wallet::where('public_key', $votePublicKey)->firstOrFail();
+        return Wallet::where('address', $vote)->firstOrFail();
     }
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder
