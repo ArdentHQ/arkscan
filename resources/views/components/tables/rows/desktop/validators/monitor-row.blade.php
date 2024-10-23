@@ -31,8 +31,7 @@
             <x-tables.rows.desktop.encapsulated.address
                 :model="$validator->wallet()"
                 without-clipboard
-                :validator-name-class="Arr::toCssClasses([
-                    'md-lg:w-auto',
+                :validator-name-class="Arr::toCssClasses(['md-lg:w-auto',
                     'md:w-[200px]' => ! $validator->keepsMissing(),
                 ])"
             />

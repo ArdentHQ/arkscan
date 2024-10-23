@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <div class="bg-black text-[#C3B6FD] text-[13px] font-normal flex flex-1 rounded-b-lg overflow-x-auto p-4 shadow-code-block">
+    <div class="flex overflow-x-auto flex-1 p-4 font-normal bg-black rounded-b-lg text-[#C3B6FD] text-[13px] shadow-code-block">
         <pre x-show="view == 'default'">{{ $transaction->formattedPayload() }}</pre>
         <pre x-show="view == 'utf-8'">{{ $transaction->utf8Payload() }}</pre>
         <pre x-show="view == 'original'">{{ $transaction->rawPayload() }}</pre>
