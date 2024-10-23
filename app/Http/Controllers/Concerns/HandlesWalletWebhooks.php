@@ -11,23 +11,23 @@ trait HandlesWalletWebhooks
 {
     private function handleWalletVote(): void
     {
-        $publicKey = $this->getVote();
-        if ($publicKey === null) {
+        $address = $this->getVote();
+        if ($address === null) {
             return;
         }
 
-        WalletVote::dispatch($publicKey);
+        WalletVote::dispatch($address);
     }
 
     /** We use the same vote key/event so we can prevent repeat events for the same public key */
     private function handleWalletUnvote(): void
     {
-        $publicKey = $this->getUnvote();
-        if ($publicKey === null) {
+        $address = $this->getUnvote();
+        if ($address === null) {
             return;
         }
 
-        WalletVote::dispatch($publicKey);
+        WalletVote::dispatch($address);
     }
 
     private function getVote(): ?string

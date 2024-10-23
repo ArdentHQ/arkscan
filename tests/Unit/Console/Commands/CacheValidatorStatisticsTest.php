@@ -30,11 +30,11 @@ it('should cache validator statistics', function () {
     ]);
 
     Wallet::factory()->count(5)->create([
-        'attributes' => ['vote' => $mostVoters->public_key],
+        'attributes' => ['vote' => $mostVoters->address],
     ]);
 
     Wallet::factory()->count(1)->create([
-        'attributes' => ['vote' => $leastVoters->public_key],
+        'attributes' => ['vote' => $leastVoters->address],
     ]);
 
     $t = Transaction::factory()->validatorRegistration()->create([

@@ -48,9 +48,9 @@ trait CanBeSorted
 
     public function scopeSortByVoteCount(mixed $query, SortDirection $sortDirection): Builder
     {
-        $missedBlockPublicKeys = ForgingStats::groupBy('address')->pluck('address');
+        $missedBlockAddresses = ForgingStats::groupBy('address')->pluck('address');
 
-        $validatorVotes = Wallet::whereIn('address', $missedBlockPublicKeys)
+        $validatorVotes = Wallet::whereIn('address', $missedBlockAddresses)
             ->get()
             ->pluck('attributes.validatorVoteBalance', 'address');
 
@@ -63,7 +63,7 @@ trait CanBeSorted
             ->selectRaw('forging_stats.*')
             ->join(DB::raw(sprintf(
                 '(values %s) as wallets (address, votes)',
-                $validatorVotes->map(fn ($votes, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $votes))
+                $validatorVotes->map(fn ($votes, $address) => sprintf('(\'%s\',%d)', $address, $votes))
                     ->join(','),
             )), 'forging_stats.address', '=', 'wallets.address', 'left outer')
             ->orderByRaw('votes '.$sortDirection->value.', timestamp DESC');
@@ -82,7 +82,7 @@ trait CanBeSorted
             ->join(DB::raw(sprintf(
                 '(values %s) as voting_stats (address, count)',
                 collect($voterCounts)
-                    ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
+                    ->map(fn ($count, $address) => sprintf('(\'%s\',%d)', $address, $count))
                     ->join(','),
             )), 'forging_stats.address', '=', 'voting_stats.address', 'left outer')
             ->orderByRaw(sprintf('no_of_voters %s NULLS LAST, timestamp DESC', $sortDirection->value));
