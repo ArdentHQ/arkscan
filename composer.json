@@ -12,7 +12,7 @@
         "ext-gmp": "*",
         "ardenthq/arkvault-url": "^1.1",
         "arkecosystem/crypto": "^1.8",
-        "arkecosystem/foundation": "dev-chore/update-laravel",
+        "arkecosystem/foundation": "^19.0",
         "blade-ui-kit/blade-icons": "^1.6",
         "brick/math": "^0.12",
         "danharrin/livewire-rate-limiting": "^1.3",
