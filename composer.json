@@ -21,6 +21,7 @@
         "huddledigital/zendesk-laravel": "^3.9",
         "laravel/framework": "^11.0",
         "laravel/horizon": "^5.29",
+        "laravel/reverb": "^1.4",
         "laravel/scout": "^10.9",
         "laravel/tinker": "^2.9",
         "leigh/mt-rand": "^0.1",
