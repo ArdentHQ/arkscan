@@ -14,7 +14,6 @@ import Echo from "laravel-echo";
 import dayjs from "dayjs/esm/index.js";
 import dayjsRelativeTime from "dayjs/esm/plugin/relativeTime/index.js";
 
-import Alpine from "alpinejs";
 import Wallet from "./wallet.js";
 import BlocksExport from "./blocks-export.js";
 import { Chart } from "chart.js";
@@ -40,7 +39,6 @@ import { truncateMiddle, TruncateDynamic } from "./truncate.js";
 import "./livewire-exception-handler.js";
 
 window.makeBlockie = makeBlockie;
-window.Alpine = Alpine;
 window.Wallet = Wallet;
 window.BlocksExport = BlocksExport;
 window.Chart = Chart;
@@ -86,8 +84,6 @@ if (import.meta.env.VITE_BROADCAST_DRIVER === "reverb") {
 
 dayjs.extend(dayjsRelativeTime);
 
-Alpine.start();
-
 /**
  * If browser back button was used, flush cache
  * This ensures that user will always see an accurate, up-to-date view based on their state
@@ -100,11 +96,17 @@ window.onpageshow = function (event) {
 };
 
 window.hideTableTooltipsOnLivewireEvent = (regex) => {
-    Livewire.hook("message.processed", (message, component) => {
-        if (!regex.test(component.name)) {
-            return;
-        }
+    Livewire.hook("commit", ({ component, succeed }) => {
+        succeed(() => {
+            if (!regex.test(component.name)) {
+                return;
+            }
 
-        window.hideAllTooltips();
+            window.hideAllTooltips();
+        });
     });
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+    Livewire.start();
+});

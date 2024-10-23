@@ -108,7 +108,7 @@ final class BuildForgingStats implements ShouldQueue
     {
         $timeRange = intval($this->numberOfDays * 24 * 60 * 60);
         if ($timeRange === 0) {
-            $lastForgingInfoTs = (int) ForgingStats::orderBy('timestamp', 'DESC')
+            $lastForgingInfoTs = ForgingStats::orderBy('timestamp', 'DESC')
                 ->limit(1)
                 ->firstOr(function (): ForgingStats {
                     // by default if forging_stats table is not initialized we just build stats for past 30 days

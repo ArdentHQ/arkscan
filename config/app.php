@@ -179,7 +179,6 @@ return [
         App\Providers\ArkscanServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\DevelopmentServiceProvider::class,
-        App\Providers\LivewireServiceProvider::class,
         App\Testing\ParallelTestingServiceProvider::class,
         ARKEcosystem\Foundation\Providers\TelescopeServiceProvider::class,
 

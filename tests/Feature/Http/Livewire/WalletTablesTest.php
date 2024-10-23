@@ -6,8 +6,10 @@ use App\Http\Livewire\WalletBlockTable;
 use App\Http\Livewire\WalletTables;
 use App\Http\Livewire\WalletTransactionTable;
 use App\Http\Livewire\WalletVoterTable;
+use App\Livewire\SupportQueryString;
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
+use Livewire\Features\SupportLifecycleHooks\SupportLifecycleHooks;
 use Livewire\Livewire;
 
 it('should render all tabs for validators', function () {
@@ -33,11 +35,11 @@ it('should change view with event', function () {
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->assertSet('view', 'transactions')
-        ->emit('showWalletView', 'voters')
+        ->dispatch('showWalletView', 'voters')
         ->assertSet('view', 'voters')
-        ->emit('showWalletView', 'blocks')
+        ->dispatch('showWalletView', 'blocks')
         ->assertSet('view', 'blocks')
-        ->emit('showWalletView', 'transactions')
+        ->dispatch('showWalletView', 'transactions')
         ->assertSet('view', 'transactions');
 });
 
@@ -49,55 +51,61 @@ it('should track querystring between tabs', function () {
 
         ->assertSet('tabQueryData', [
             'transactions' => [
-                'page'          => 1,
-                'perPage'       => WalletTransactionTable::defaultPerPage(),
-                'outgoing'      => true,
-                'incoming'      => true,
-                'transfers'     => true,
-                'votes'         => true,
-                'multipayments' => true,
-                'others'        => true,
+                'paginators'      => ['page' => 1],
+                'perPage'         => WalletTransactionTable::defaultPerPage(),
+                'outgoing'        => true,
+                'incoming'        => true,
+                'transfers'       => true,
+                'votes'           => true,
+                'multipayments'   => true,
+                'others'          => true,
             ],
 
             'blocks' => [
-                'page'    => 1,
-                'perPage' => WalletBlockTable::defaultPerPage(),
+                'paginators'      => ['page' => 1],
+                'perPage'         => WalletBlockTable::defaultPerPage(),
             ],
 
             'voters' => [
-                'page'    => 1,
-                'perPage' => WalletVoterTable::defaultPerPage(),
+                'paginators'      => ['page' => 1],
+                'perPage'         => WalletVoterTable::defaultPerPage(),
             ],
         ])
 
         ->set('tabQueryData.transactions.outgoing', false)
         ->assertSet('outgoing', false)
-        ->set('tabQueryData.transactions.page', 2)
+        ->set('tabQueryData.transactions.paginators.page', 2)
 
         ->set('view', 'blocks')
-        ->assertSet('tabQueryData.blocks.page', 1)
-        ->assertSet('page', 1)
-        ->set('tabQueryData.blocks.page', 3)
-        ->assertSet('page', 3)
+        ->assertSet('tabQueryData.blocks.paginators.page', 1)
+        ->assertSet('paginators.page', 1)
+        ->set('tabQueryData.blocks.paginators.page', 3)
+        ->set('view', 'transactions')
+        ->set('view', 'blocks')
+        ->assertSet('paginators.page', 3)
 
         ->set('view', 'voters')
-        ->assertSet('tabQueryData.voters.page', 1)
-        ->assertSet('page', 1)
-        ->set('tabQueryData.voters.page', 4)
-        ->assertSet('page', 4)
+        ->assertSet('tabQueryData.voters.paginators.page', 1)
+        ->assertSet('paginators.page', 1)
+        ->set('tabQueryData.voters.paginators.page', 4)
+        ->set('view', 'transactions')
+        ->set('view', 'voters')
+        ->assertSet('paginators.page', 4)
 
         ->assertSet('savedQueryData.transactions.outgoing', false)
+        ->set('view', 'transactions')
         ->assertSet('outgoing', null)
 
         ->set('view', 'transactions')
-        ->assertSet('tabQueryData.transactions.page', 2)
-        ->assertSet('page', 2);
+        ->assertSet('tabQueryData.transactions.paginators.page', 2)
+        ->assertSet('paginators.page', 2);
 });
 
 it('should be able to get the property of the previous view', function () {
     $wallet = Wallet::factory()->activeValidator()->create();
 
     $instance = Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
+        ->set('view', 'transactions')
         ->instance();
 
     $instance->outgoing = false;
@@ -125,7 +133,7 @@ it('should trigger is ready event for current tab view', function () {
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->call('triggerViewIsReady')
-        ->assertEmitted('setTransactionsReady');
+        ->assertDispatched('setTransactionsReady');
 });
 
 it('should trigger is ready event when changing tab view', function () {
@@ -133,9 +141,9 @@ it('should trigger is ready event when changing tab view', function () {
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->call('triggerViewIsReady')
-        ->assertEmitted('setTransactionsReady')
+        ->assertDispatched('setTransactionsReady')
         ->set('view', 'blocks')
-        ->assertEmitted('setBlocksReady');
+        ->assertDispatched('setBlocksReady');
 });
 
 it('should not trigger is ready event if tab view does not exist', function () {
@@ -143,7 +151,7 @@ it('should not trigger is ready event if tab view does not exist', function () {
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->set('view', 'testing')
-        ->assertNotEmitted('setTestingReady');
+        ->assertNotDispatched('setTestingReady');
 });
 
 it('should not trigger is ready event more than once', function () {
@@ -151,15 +159,15 @@ it('should not trigger is ready event more than once', function () {
 
     Livewire::test(WalletTables::class, [new WalletViewModel($wallet)])
         ->call('triggerViewIsReady')
-        ->assertEmitted('setTransactionsReady')
+        ->assertDispatched('setTransactionsReady')
         ->call('triggerViewIsReady')
-        ->assertNotEmitted('setTransactionsReady')
+        ->assertNotDispatched('setTransactionsReady')
         ->call('triggerViewIsReady')
-        ->assertNotEmitted('setTransactionsReady')
+        ->assertNotDispatched('setTransactionsReady')
         ->set('view', 'blocks')
-        ->assertEmitted('setBlocksReady')
+        ->assertDispatched('setBlocksReady')
         ->set('view', 'transactions')
-        ->assertNotEmitted('setTransactionsReady');
+        ->assertNotDispatched('setTransactionsReady');
 });
 
 it('should not allow invalid per page value', function () {
@@ -179,11 +187,12 @@ it('should not update initial page if view does not exist', function () {
         ->set('tabQueryData', [])
         ->instance();
 
-    $instance->boot();
+    $support = new SupportLifecycleHooks();
+    $support->setComponent($instance);
+    $support->mount([new WalletViewModel($wallet)]);
 
     expect($instance->tabQueryData)->toBe([
         'transactions' => [
-            'page'          => 1,
             'perPage'       => WalletTransactionTable::defaultPerPage(),
             'outgoing'      => true,
             'incoming'      => true,
@@ -191,16 +200,60 @@ it('should not update initial page if view does not exist', function () {
             'votes'         => true,
             'multipayments' => true,
             'others'        => true,
+            'paginators'    => ['page' => 1],
         ],
 
         'blocks' => [
-            'page'    => 1,
-            'perPage' => WalletBlockTable::defaultPerPage(),
+            'perPage'    => WalletBlockTable::defaultPerPage(),
+            'paginators' => ['page' => 1],
         ],
 
         'voters' => [
-            'page'    => 1,
-            'perPage' => WalletVoterTable::defaultPerPage(),
+            'perPage'    => WalletVoterTable::defaultPerPage(),
+            'paginators' => ['page' => 1],
         ],
     ]);
+});
+
+it('should parse perPage from URL', function () {
+    $wallet = Wallet::factory()->activeValidator()->create();
+
+    Livewire::withQueryParams(['perPage' => 10])
+        ->test(WalletTables::class, [new WalletViewModel($wallet)])
+        ->assertSet('perPage', 10)
+        ->assertSet('tabQueryData.transactions.perPage', 10);
+});
+
+it('should apply url values to component', function () {
+    $wallet = Wallet::factory()->activeValidator()->create();
+
+    $instance = Livewire::withUrlParams(['view' => 'blocks', 'page' => 3])
+        ->test(WalletTables::class, [new WalletViewModel($wallet)])
+        ->assertSet('view', 'blocks')
+        ->instance();
+
+    $support = new SupportQueryString();
+    $support->setComponent($instance);
+    $support->mergeQueryStringWithRequest();
+
+    expect($instance->view)->toBe('blocks');
+    expect($instance->getPage())->toBe(3);
+    expect($instance->paginators['page'])->toBe(3);
+});
+
+it('should run hooks when property is updated with syncInput', function () {
+    $wallet = Wallet::factory()->activeValidator()->create();
+
+    $component = Livewire::test(WalletTables::class, [new WalletViewModel($wallet)]);
+    $instance  = $component->instance();
+
+    $support = new SupportLifecycleHooks();
+    $support->setComponent($instance);
+    $support->mount([new WalletViewModel($wallet)]);
+
+    expect($instance->alreadyLoadedViews['voters'])->toBeFalse();
+
+    $instance->syncInput('view', 'voters');
+
+    expect($instance->alreadyLoadedViews['voters'])->toBeTrue();
 });

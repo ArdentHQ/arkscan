@@ -94,7 +94,7 @@ trait ValidatorData
     private function hasRoundStarted(int $height): bool
     {
         return Cache::remember(
-            'delegate:round:'.$height,
+            'validator:round:'.$height,
             $this->cacheTtl(),
             fn () => Block::where('height', $height)->exists()
         );

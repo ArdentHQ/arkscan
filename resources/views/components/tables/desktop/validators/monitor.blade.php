@@ -7,7 +7,8 @@
 
 <div>
     <x-tables.encapsulated-table
-        x-data="TableSorting('header-favorite', 'desc', 'header-order', 'asc')"
+        id="validator-monitor"
+        x-data="TableSorting('validator-monitor', 'validators.monitor', 'header-favorite', 'desc', 'header-order', 'asc')"
         wire:key="{{ Helpers::generateId('validator-monitor', $round) }}"
         class="hidden w-full md:block validator-monitor"
         :with-bottom-border="count($overflowValidators) === 0"

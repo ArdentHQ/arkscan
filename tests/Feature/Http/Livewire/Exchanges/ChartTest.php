@@ -216,14 +216,14 @@ it('should handle events', function () {
         ->assertSee(trans('pages.exchanges.chart.current_price'));
 
     $networkStub->canBeExchanged = false;
-    $component->emit('currencyChanged')
+    $component->dispatch('currencyChanged')
         ->assertDontSee(trans('pages.exchanges.chart.current_price'));
 
     $networkStub->canBeExchanged = true;
-    $component->emit('themeChanged')
+    $component->dispatch('themeChanged')
         ->assertSee(trans('pages.exchanges.chart.current_price'));
 
     $networkStub->canBeExchanged = false;
-    $component->emit('updateChart')
+    $component->dispatch('updateChart')
         ->assertDontSee(trans('pages.exchanges.chart.current_price'));
 });

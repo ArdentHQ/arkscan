@@ -644,7 +644,7 @@ it('should reset pagination when filtering', function () {
         ->call('setPage', 2)
         ->assertSee($vote->id)
         ->set('filter.transfers', false)
-        ->assertSet('page', 1)
+        ->assertSet('paginators.page', 1)
         ->assertSee($vote->id);
 });
 

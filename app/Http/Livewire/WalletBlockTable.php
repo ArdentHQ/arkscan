@@ -6,7 +6,6 @@ namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
 use App\ViewModels\ViewModelFactory;
@@ -17,8 +16,6 @@ use Illuminate\View\View;
 /** @property LengthAwarePaginator $blocks */
 final class WalletBlockTable extends TabbedTableComponent
 {
-    use DeferLoading;
-
     public string $address;
 
     /** @var mixed */
