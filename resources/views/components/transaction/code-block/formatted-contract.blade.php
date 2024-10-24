@@ -8,4 +8,5 @@ MethodID: 0x{{ $methodId }}
     'index' => $index,
     'value' => $argument,
 ])
+
 @endforeach

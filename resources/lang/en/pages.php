@@ -137,6 +137,7 @@ return [
 
         'code-block' => [
             'view_input_as' => 'View Input As',
+            'copy_code'     => 'Copy Code',
 
             'tab' => [
                 'default'  => 'Default',
