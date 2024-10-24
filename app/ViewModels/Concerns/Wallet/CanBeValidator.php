@@ -17,7 +17,7 @@ trait CanBeValidator
 
     public function isResigned(): bool
     {
-        return Arr::has($this->wallet, 'attributes.validatorResigned');
+        return Arr::get($this->wallet, 'attributes.validatorResigned', false) === true;
     }
 
     public function isStandby(): bool
@@ -44,7 +44,7 @@ trait CanBeValidator
             return null;
         }
 
-        if (! Arr::has($this->wallet, 'attributes.validatorResigned')) {
+        if (! $this->isResigned()) {
             return null;
         }
 
