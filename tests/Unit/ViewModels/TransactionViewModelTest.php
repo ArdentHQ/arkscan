@@ -1166,7 +1166,7 @@ describe('HasPayload trait', function () {
         $transaction = new TransactionViewModel(Transaction::factory()->create([
             'asset' => [
                 'evmCall' => [
-                    'payload' => '6dd7d8ea00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de',
+                    'payload' => '6dd7d8ea00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de',
                 ],
             ],
         ]));
@@ -1174,7 +1174,8 @@ describe('HasPayload trait', function () {
         expect($transaction->formattedPayload())->toBe('Function: vote(address)
 
 MethodID: 0x6dd7d8ea
-[0]: 00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de');
+[0]: 00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de
+[1]: 00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de');
     });
 
     it('should get formatted payload without arguments', function () {
