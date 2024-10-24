@@ -5,6 +5,7 @@
 
 <x-ark-tables.row
     x-data="Validator('{{ $validator->address() }}')"
+    wire:key="validator-{{ $validator->order() }}-{{ $validator->wallet()->address() }}-{{ $validator->roundNumber() }}-{{ microtime(true) }}"
     ::class="{
         'validator-monitor-favorite': isFavorite === true,
     }"

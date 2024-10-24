@@ -6,7 +6,6 @@ namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
@@ -23,7 +22,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * */
 final class WalletTransactionTable extends TabbedTableComponent
 {
-    use DeferLoading;
     use HasTableFilter;
 
     public string $address;
@@ -49,12 +47,12 @@ final class WalletTransactionTable extends TabbedTableComponent
     public function queryString(): array
     {
         return [
-            'outgoing'      => ['except' => true],
-            'incoming'      => ['except' => true],
-            'transfers'     => ['except' => true],
-            'votes'         => ['except' => true],
-            'multipayments' => ['except' => true],
-            'others'        => ['except' => true],
+            'filter.outgoing'      => ['as' => 'outgoing', 'except' => true],
+            'filter.incoming'      => ['as' => 'incoming', 'except' => true],
+            'filter.transfers'     => ['as' => 'transfers', 'except' => true],
+            'filter.votes'         => ['as' => 'votes', 'except' => true],
+            'filter.multipayments' => ['as' => 'multipayments', 'except' => true],
+            'filter.others'        => ['as' => 'others', 'except' => true],
         ];
     }
 

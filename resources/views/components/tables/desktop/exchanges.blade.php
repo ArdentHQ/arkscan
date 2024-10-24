@@ -1,6 +1,7 @@
 @props(['exchanges'])
 
 <x-tables.encapsulated-table
+    id="exchange-list"
     class="hidden w-full rounded-b-xl md:block"
     sticky
 >
@@ -34,7 +35,7 @@
         </tr>
     </thead>
 
-    <tbody x-ref="tbody">
+    <tbody>
         @foreach($exchanges as $exchange)
             <x-ark-tables.row
                 wire:key="exchange-{{ $exchange->name }}"

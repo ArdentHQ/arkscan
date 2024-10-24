@@ -37,7 +37,7 @@ final class State extends Model
     /**
      * The table associated with the model.
      *
-     * @var string
+     * @var string|null
      */
     protected $table = 'state';
 

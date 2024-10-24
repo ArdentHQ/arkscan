@@ -1,5 +1,5 @@
 <div
-    x-data="TableSorting('header-volume', 'desc')"
+    x-data="TableSorting('exchange-list', 'exchange-table', 'header-volume', 'desc')"
     id="exchange-list"
     class="w-full"
 >

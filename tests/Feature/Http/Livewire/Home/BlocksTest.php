@@ -49,7 +49,7 @@ it('should refresh blocks when currency changed', function () {
     Settings::shouldReceive('currency')
         ->andReturn('GBP');
 
-    $component->emit('currencyChanged')
+    $component->dispatch('currencyChanged')
         ->assertSee('Value (GBP)');
 });
 

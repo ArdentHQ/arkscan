@@ -88,15 +88,15 @@ it('should not go past the last page', function () {
     ]);
 
     Livewire::test(BlockTransactionsTable::class, ['block' => new BlockViewModel($block)])
-        ->assertSet('page', 1)
+        ->assertSet('paginators.page', 1)
         ->assertCount('lazyLoadedData', 25)
         ->call('nextPage')
-        ->assertSet('page', 2)
+        ->assertSet('paginators.page', 2)
         ->assertCount('lazyLoadedData', 27)
         ->call('nextPage')
-        ->assertSet('page', 2)
+        ->assertSet('paginators.page', 2)
         ->assertCount('lazyLoadedData', 27)
         ->call('nextPage')
-        ->assertSet('page', 2)
+        ->assertSet('paginators.page', 2)
         ->assertCount('lazyLoadedData', 27);
 });
