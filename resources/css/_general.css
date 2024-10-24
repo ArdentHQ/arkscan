@@ -405,3 +405,20 @@ input.qr-code-amount[type="number"] {
         background-image: url("/resources/images/home/arrows-dim.svg") !important;
     }
 }
+
+/* Code Block */
+/* Note: I've copied most of the `.custom-scroll` class here. Some of the existing 
+   class makes the scrollbar "thick", like it would be on any other website. */
+.code-block-custom-scroll::-webkit-scrollbar {
+    @apply rounded-lg;
+    width: 6px;
+    height: 4px;
+}
+
+.code-block-custom-scroll::-webkit-scrollbar-track-piece:start {
+    background: transparent;
+}
+
+.code-block-custom-scroll::-webkit-scrollbar-thumb {
+    @apply rounded-lg bg-theme-primary-200;
+}

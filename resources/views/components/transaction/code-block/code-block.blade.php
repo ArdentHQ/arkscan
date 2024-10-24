@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <div class="flex overflow-x-auto flex-1 p-4 font-normal bg-black rounded-b-lg text-[#C3B6FD] text-[13px] shadow-code-block">
+    <div class="flex overflow-x-auto code-block-custom-scroll flex-1 p-4 font-normal bg-black rounded-b-lg text-[#C3B6FD] text-[13px] shadow-code-block">
         <pre x-ref="code-default" x-show="view == 'default'">{{ $transaction->formattedPayload() }}</pre>
         <pre x-ref="code-utf-8" x-show="view == 'utf-8'">{{ $transaction->utf8Payload() }}</pre>
         <pre x-ref="code-original" x-show="view == 'original'">{{ $transaction->rawPayload() }}</pre>
