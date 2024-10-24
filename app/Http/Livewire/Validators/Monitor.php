@@ -165,7 +165,7 @@ final class Monitor extends Component
         }
 
         $lastTimestamp = $lastRoundBlock->timestamp;
-        if ($overflowBlocks->isNotEmpty() && $overflowBlocks->last() !== null) {
+        if ($overflowBlocks->isNotEmpty()) {
             $lastTimestamp = $overflowBlocks->last()['timestamp'];
         }
 
