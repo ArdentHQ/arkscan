@@ -90,9 +90,9 @@ it('should go to page 1 when changing per page', function () {
     Livewire::test(TopAccountsTable::class)
         ->call('setIsReady')
         ->call('gotoPage', 2)
-        ->assertSet('page', 2)
+        ->assertSet('paginators.page', 2)
         ->call('setPerPage', 25)
-        ->assertSet('page', 1);
+        ->assertSet('paginators.page', 1);
 });
 
 it('should defer loading', function () {

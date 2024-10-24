@@ -34,5 +34,5 @@ it('updates the balance when currency changes', function () {
     Settings::shouldReceive('all')->andReturn($settings);
     Settings::shouldReceive('currency')->andReturn('BTC');
 
-    $component->emit('currencyChanged', 'BTC')->assertSee('0.00015488 BTC');
+    $component->dispatch('currencyChanged', 'BTC')->assertSee('0.00015488 BTC');
 });

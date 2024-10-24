@@ -3,8 +3,8 @@
 <div
     x-ref="search"
     x-data="Search.setup({
-        query: @entangle('query'),
-        dropdownOpen: @entangle('query'),
+        query: @entangle('query').live,
+        dropdownOpen: @entangle('query').live,
     })"
     class="w-full"
 >

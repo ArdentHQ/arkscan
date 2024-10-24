@@ -166,7 +166,7 @@ describe('Monitor', function () {
 
         Livewire::test(Monitor::class)
             ->assertSet('isReady', false)
-            ->emit('monitorIsReady')
+            ->dispatch('monitorIsReady')
             ->assertSet('isReady', true);
     });
 
@@ -297,6 +297,42 @@ describe('Monitor', function () {
             ->assertSeeInOrder([
                 $validator->username(),
                 'Validator last forged 207 blocks ago (more than a day)',
+            ]);
+    });
+
+    it('should reload on new block event', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [0 => $validators] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
+
+        $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
+
+        $validator = (new WalletViewModel($validators->get(4)));
+
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->dispatch('echo:blocks,NewBlock')
+            ->assertSeeInOrder([
+                $validator->username(),
+                'Validator last forged 199 blocks ago (more than a day)',
             ]);
     });
 
@@ -1134,6 +1170,85 @@ describe('Data Boxes', function () {
             ->assertSeeHtmlInOrder([
                 'Forging',
                 '<span>52</span>',
+                'Missed',
+                '<span>0</span>',
+                'Not Forging',
+                '<span>1</span>',
+                'Current Height',
+            ]);
+    });
+
+    it('should reload on new block event', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
+
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->assertDontSeeHtml('<span>50</span>')
+            ->assertDontSeeHtml('<span>0</span>')
+            ->assertDontSeeHtml('<span>1</span>')
+            ->dispatch('echo:blocks,NewBlock')
+            ->assertSeeHtmlInOrder([
+                'Forging',
+                '<span>50</span>',
+                'Missed',
+                '<span>0</span>',
+                'Not Forging',
+                '<span>1</span>',
+                'Current Height',
+            ]);
+    });
+
+    it('should should poll when component is ready', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ],
+        ], $this);
+
+        Livewire::test(Monitor::class)
+            ->assertDontSeeHtml('<span>50</span>')
+            ->assertDontSeeHtml('<span>0</span>')
+            ->assertDontSeeHtml('<span>1</span>')
+            ->call('setIsReady')
+            ->assertSeeHtmlInOrder([
+                'Forging',
+                '<span>50</span>',
                 'Missed',
                 '<span>0</span>',
                 'Not Forging',
