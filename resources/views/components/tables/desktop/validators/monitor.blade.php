@@ -29,7 +29,6 @@
 
                 <x-tables.headers.desktop.address
                     name="tables.validator-monitor.validator"
-                    width="190"
                 />
 
                 <x-tables.headers.desktop.status
@@ -51,11 +50,13 @@
                     class="whitespace-nowrap"
                     breakpoint="md-lg"
                     responsive
+                    width="160"
                 />
 
                 <x-tables.headers.desktop.number
                     name="tables.validator-monitor.block_height"
                     class="whitespace-nowrap"
+                    width="100"
                 />
             </tr>
         </thead>

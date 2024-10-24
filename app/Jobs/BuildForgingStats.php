@@ -55,19 +55,19 @@ final class BuildForgingStats implements ShouldQueue
             $data[] = [
                 'missed_height' => $missedHeight,
                 'timestamp'     => $timestamp,
-                'public_key'    => $statsForTimestamp['publicKey'],
+                'address'       => $statsForTimestamp['address'],
                 'forged'        => $statsForTimestamp['forged'],
             ];
 
             if (count($data) > 1000) {
-                DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp'], ['public_key', 'forged']), attempts: 2);
+                DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp'], ['address', 'forged']), attempts: 2);
 
                 $data = [];
             }
         }
 
         if (count($data) > 0) {
-            DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp'], ['public_key', 'forged']), attempts: 2);
+            DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp'], ['address', 'forged']), attempts: 2);
         }
 
         // clean up old stats entries

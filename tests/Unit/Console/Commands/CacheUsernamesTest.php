@@ -87,7 +87,6 @@ it('should forget wallets with resigned usernames', function () {
     (new CacheUsernames())->handle();
 
     expect($cache->getUsernameByAddress($wallet->address))->toBe('joeblogs');
-    expect($cache->getUsernameByPublicKey($wallet->public_key))->toBe('joeblogs');
 
     Transaction::factory()->usernameResignation()->create([
         'sender_public_key' => $wallet->public_key,
@@ -96,5 +95,4 @@ it('should forget wallets with resigned usernames', function () {
     (new CacheUsernames())->handle();
 
     expect($cache->getUsernameByAddress($wallet->address))->toBeNull();
-    expect($cache->getUsernameByPublicKey($wallet->public_key))->toBeNull();
 });

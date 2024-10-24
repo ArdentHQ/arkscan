@@ -30,11 +30,11 @@ it('should cache validator statistics', function () {
     ]);
 
     Wallet::factory()->count(5)->create([
-        'attributes' => ['vote' => $mostVoters->public_key],
+        'attributes' => ['vote' => $mostVoters->address],
     ]);
 
     Wallet::factory()->count(1)->create([
-        'attributes' => ['vote' => $leastVoters->public_key],
+        'attributes' => ['vote' => $leastVoters->address],
     ]);
 
     $t = Transaction::factory()->validatorRegistration()->create([
@@ -48,26 +48,26 @@ it('should cache validator statistics', function () {
     ]);
 
     Block::factory()->count(10)->create([
-        'generator_public_key' => $mostBlocks->public_key,
+        'generator_address' => $mostBlocks->address,
     ]);
 
     Block::factory()->count(6)->create([
-        'generator_public_key' => $newestActive->public_key,
+        'generator_address' => $newestActive->address,
     ]);
 
     $this->artisan('explorer:cache-validator-statistics');
 
-    expect($cache->getMostUniqueVoters())->toBe($mostVoters->public_key);
-    expect($cache->getLeastUniqueVoters())->toBe($leastVoters->public_key);
+    expect($cache->getMostUniqueVoters())->toBe($mostVoters->address);
+    expect($cache->getLeastUniqueVoters())->toBe($leastVoters->address);
     expect($cache->getOldestActiveValidator())->toBe([
-        'publicKey' => $oldestActive->public_key,
+        'address'   => $oldestActive->address,
         'timestamp' => Carbon::now()->addSecond(1)->unix(),
     ]);
     expect($cache->getNewestActiveValidator())->toBe([
-        'publicKey' => $newestActive->public_key,
+        'address'   => $newestActive->address,
         'timestamp' => Carbon::now()->addSecond(100)->unix(),
     ]);
-    expect($cache->getMostBlocksForged())->toBe($mostBlocks->public_key);
+    expect($cache->getMostBlocksForged())->toBe($mostBlocks->address);
 });
 
 it('should handle null scenarios for statistics', function () {

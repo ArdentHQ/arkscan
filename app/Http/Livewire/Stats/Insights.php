@@ -186,13 +186,13 @@ final class Insights extends Component
 
     private function validatorDetails(StatisticsCache $cache): ValidatorStatistics
     {
-        $mostUniqueVoters  = Wallet::firstWhere('public_key', $cache->getMostUniqueVoters());
-        $leastUniqueVoters = Wallet::firstWhere('public_key', $cache->getLeastUniqueVoters());
-        $mostBlocksForged  = Wallet::firstWhere('public_key', $cache->getMostBlocksForged());
+        $mostUniqueVoters  = Wallet::firstWhere('address', $cache->getMostUniqueVoters());
+        $leastUniqueVoters = Wallet::firstWhere('address', $cache->getLeastUniqueVoters());
+        $mostBlocksForged  = Wallet::firstWhere('address', $cache->getMostBlocksForged());
 
         $oldestActiveValidatorData = $cache->getOldestActiveValidator();
         if ($oldestActiveValidatorData !== null) {
-            $oldestActiveValidator = Wallet::firstWhere('public_key', $oldestActiveValidatorData['publicKey']);
+            $oldestActiveValidator = Wallet::firstWhere('address', $oldestActiveValidatorData['address']);
             if ($oldestActiveValidator !== null) {
                 $oldestActiveValidator = WalletWithValue::make($oldestActiveValidator, Carbon::createFromTimestamp($oldestActiveValidatorData['timestamp']));
             }
@@ -200,7 +200,7 @@ final class Insights extends Component
 
         $newestActiveValidatorData = $cache->getNewestActiveValidator();
         if ($newestActiveValidatorData !== null) {
-            $newestActiveValidator = Wallet::firstWhere('public_key', $newestActiveValidatorData['publicKey']);
+            $newestActiveValidator = Wallet::firstWhere('address', $newestActiveValidatorData['address']);
             if ($newestActiveValidator !== null) {
                 $newestActiveValidator = WalletWithValue::make($newestActiveValidator, Carbon::createFromTimestamp($newestActiveValidatorData['timestamp']));
             }

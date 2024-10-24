@@ -12,12 +12,11 @@
 >
     @foreach ($validators as $validator)
         <x-tables.rows.mobile
-            x-data="Validator('{{ $validator->publicKey() }}', {
+            x-data="Validator('{{ $validator->address() }}', {
                 isExpanded: false,
             })"
             wire:key="{{ Helpers::generateId('validator-mobile', $validator->order(), $validator->wallet()->address(), $validator->roundNumber()) }}"
-            :expand-class="Arr::toCssClasses([
-                'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700' => ! $validator->wallet()->isResigned(),
+            :expand-class="Arr::toCssClasses(['space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700' => ! $validator->wallet()->isResigned(),
             ])"
             ::class="{
                 'validator-monitor-favorite': isFavorite === true,

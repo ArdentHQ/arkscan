@@ -39,11 +39,11 @@ it('should get the slot data for the current round using cache', function () {
 
     $wallet = $validators->first();
 
-    expect($validators->firstWhere(fn ($validator) => $validator['publicKey'] === $wallet['publicKey'])['block'])->toBeNull();
+    expect($validators->firstWhere(fn ($validator) => $validator['address'] === $wallet['address'])['block'])->toBeNull();
 
     Block::factory()->create([
         'height'               => 5944853,
-        'generator_public_key' => $wallet['publicKey'],
+        'generator_address'    => $wallet['address'],
     ]);
 
     $validators = $this->subject->validators();
@@ -51,7 +51,7 @@ it('should get the slot data for the current round using cache', function () {
     expect($validators)->toHaveCount(Network::validatorCount());
     expect(Rounds::current()->round)->toBe(112168);
 
-    expect($validators->firstWhere(fn ($validator) => $validator['publicKey'] === $wallet['publicKey'])['block'])->toBeNull();
+    expect($validators->firstWhere(fn ($validator) => $validator['address'] === $wallet['address'])['block'])->toBeNull();
 
     $wallet = $validators->first();
 
@@ -59,5 +59,5 @@ it('should get the slot data for the current round using cache', function () {
 
     $validators = $this->subject->validators();
 
-    expect($validators->firstWhere(fn ($validator) => $validator['publicKey'] === $wallet['publicKey'])['block'])->not->toBeNull();
+    expect($validators->firstWhere(fn ($validator) => $validator['address'] === $wallet['address'])['block'])->not->toBeNull();
 });

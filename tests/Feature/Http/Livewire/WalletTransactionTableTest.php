@@ -437,7 +437,7 @@ it('should filter by transfer transactions', function () {
     $vote = Transaction::factory()->vote()->create([
         'sender_public_key' => $this->subject->public_key,
         'asset'             => [
-            'votes' => [$this->subject->public_key],
+            'votes' => [$this->subject->address],
         ],
     ]);
 
@@ -463,7 +463,7 @@ it('should filter by vote transactions', function () {
     $vote = Transaction::factory()->vote()->create([
         'sender_public_key' => $this->subject->public_key,
         'asset'             => [
-            'votes' => [$this->subject->public_key],
+            'votes' => [$this->subject->address],
         ],
     ]);
 
@@ -630,7 +630,7 @@ it('should reset pagination when filtering', function () {
         'sender_public_key' => $this->subject->public_key,
         'timestamp'         => 102982050, // oldest transaction
         'asset'             => [
-            'votes' => [$this->subject->public_key],
+            'votes' => [$this->subject->address],
         ],
     ]);
 

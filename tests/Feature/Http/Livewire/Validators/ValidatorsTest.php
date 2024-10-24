@@ -192,8 +192,8 @@ it('should show the correct styling for "success" on missed blocks', function ()
         ],
     ]);
 
-    (new WalletCache())->setProductivity($wallet->public_key, (1 - (1 / 1001)) * 100);
-    (new WalletCache())->setMissedBlocks($wallet->public_key, 1);
+    (new WalletCache())->setProductivity($wallet->address, (1 - (1 / 1001)) * 100);
+    (new WalletCache())->setMissedBlocks($wallet->address, 1);
 
     Livewire::test(Validators::class)
         ->call('setIsReady')
@@ -212,8 +212,8 @@ it('should show the correct styling for "warning" on missed blocks', function ()
         ],
     ]);
 
-    (new WalletCache())->setProductivity($wallet->public_key, (1 - (10 / 1001)) * 100);
-    (new WalletCache())->setMissedBlocks($wallet->public_key, 10);
+    (new WalletCache())->setProductivity($wallet->address, (1 - (10 / 1001)) * 100);
+    (new WalletCache())->setMissedBlocks($wallet->address, 10);
 
     Livewire::test(Validators::class)
         ->call('setIsReady')
@@ -232,8 +232,8 @@ it('should show the correct styling for "danger" on missed blocks', function () 
         ],
     ]);
 
-    (new WalletCache())->setProductivity($wallet->public_key, (1 - (50 / 1001)) * 100);
-    (new WalletCache())->setMissedBlocks($wallet->public_key, 50);
+    (new WalletCache())->setProductivity($wallet->address, (1 - (50 / 1001)) * 100);
+    (new WalletCache())->setMissedBlocks($wallet->address, 50);
 
     Livewire::test(Validators::class)
         ->call('setIsReady')
@@ -656,11 +656,11 @@ it('should sort missed blocks in ascending order grouped by rank', function () {
     ]);
 
     ForgingStats::factory(2)->create([
-        'public_key' => $wallet2->public_key,
+        'address' => $wallet2->address,
     ]);
 
     ForgingStats::factory(5)->create([
-        'public_key' => $wallet3->public_key,
+        'address' => $wallet3->address,
     ]);
 
     Livewire::test(Validators::class)
@@ -747,11 +747,11 @@ it('should sort missed blocks in descending order grouped by rank', function () 
     ]);
 
     ForgingStats::factory(2)->create([
-        'public_key' => $wallet2->public_key,
+        'address' => $wallet2->address,
     ]);
 
     ForgingStats::factory(5)->create([
-        'public_key' => $wallet3->public_key,
+        'address' => $wallet3->address,
     ]);
 
     Livewire::test(Validators::class)
@@ -1034,7 +1034,7 @@ it('should handle sorting several pages of validators with cached data', functio
         foreach (range(1, $missedBlockCount) as $_) {
             $missedBlocksData[] = [
                 'timestamp'     => Carbon::now()->subHours($missedBlockCounter)->getTimestampMs(),
-                'public_key'    => $validator->public_key,
+                'public_key'    => $validator->address,
                 'forged'        => faker()->boolean(),
                 'missed_height' => faker()->numberBetween(1, 10000),
             ];
@@ -1042,12 +1042,12 @@ it('should handle sorting several pages of validators with cached data', functio
             $missedBlockCounter++;
         }
 
-        $voterCounts[$validator->public_key] = random_int(10, 100);
+        $voterCounts[$validator->address] = random_int(10, 100);
     }
 
     ForgingStats::insert($missedBlocksData);
 
-    $missedBlocks = ForgingStats::all()->groupBy('public_key');
+    $missedBlocks = ForgingStats::all()->groupBy('address');
 
     $validatorCache = new ValidatorCache();
     $validatorCache->setAllVoterCounts($voterCounts);
@@ -1062,15 +1062,15 @@ it('should handle sorting several pages of validators with cached data', functio
                 return 1;
             }
 
-            $aValue = count($missedBlocks[$a->public_key]);
-            $bValue = count($missedBlocks[$b->public_key]);
+            $aValue = count($missedBlocks[$a->address]);
+            $bValue = count($missedBlocks[$b->address]);
 
             if ($aValue === $bValue) {
                 return $aRank - $bRank;
             }
         } elseif ($modelSortBy === 'no_of_voters') {
-            $aValue = $voterCounts[$a->public_key];
-            $bValue = $voterCounts[$b->public_key];
+            $aValue = $voterCounts[$a->address];
+            $bValue = $voterCounts[$b->address];
         } else {
             $aValue = Arr::get($a, $modelSortBy);
             $bValue = Arr::get($b, $modelSortBy);

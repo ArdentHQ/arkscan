@@ -31,9 +31,7 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 
 Route::get('/', HomeController::class)->name('home');
 Route::view('/validators', 'app.validators')->name('validators');
-
-// TODO: enable when the monitor is ready
-//Route::view('/validator-monitor', 'app.validator-monitor')->name('validator-monitor');
+Route::view('/validator-monitor', 'app.validator-monitor')->name('validator-monitor');
 
 Route::get('/blocks', BlocksController::class)->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');

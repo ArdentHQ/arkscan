@@ -29,7 +29,7 @@ it('should make an instance that has all properties', function (string $status) 
 
     $roundBlockCount = Block::whereBetween('height', [1, 5])
         ->get()
-        ->groupBy('generator_public_key')
+        ->groupBy('generator_address')
         ->map(function ($blocks) {
             return count($blocks);
         });
@@ -75,7 +75,7 @@ it('should not be marked as missing if it never had a block', function () {
 
     $roundBlockCount = Block::whereBetween('height', [1, 5])
         ->get()
-        ->groupBy('generator_public_key')
+        ->groupBy('generator_address')
         ->map(function ($blocks) {
             return count($blocks);
         });
@@ -105,7 +105,7 @@ it('should show the correct missed blocks amount when spanning multiple rounds',
 
     $roundBlockCount = Block::whereBetween('height', [1, 5])
         ->get()
-        ->groupBy('generator_public_key')
+        ->groupBy('generator_address')
         ->map(function ($blocks) {
             return count($blocks);
         });

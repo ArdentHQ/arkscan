@@ -25,11 +25,11 @@ trait CanBeSorted
 
     public function scopeSortByUsername(mixed $query, SortDirection $sortDirection): Builder
     {
-        $missedBlockPublicKeys = ForgingStats::groupBy('public_key')->pluck('public_key');
+        $missedBlockPublicKeys = ForgingStats::groupBy('address')->pluck('address');
 
-        $validatorNames = Wallet::whereIn('public_key', $missedBlockPublicKeys)
+        $validatorNames = Wallet::whereIn('address', $missedBlockPublicKeys)
             ->get()
-            ->pluck('attributes.username', 'public_key');
+            ->pluck('attributes.username', 'address');
 
         if (count($validatorNames) === 0) {
             return $query->selectRaw('NULL AS validator_name')
@@ -39,20 +39,20 @@ trait CanBeSorted
         return $query->selectRaw('wallets.name AS validator_name')
             ->selectRaw('forging_stats.*')
             ->join(DB::raw(sprintf(
-                '(values %s) as wallets (public_key, name)',
+                '(values %s) as wallets (address, name)',
                 $validatorNames->map(fn ($name, $publicKey) => sprintf('(\'%s\',\'%s\')', $publicKey, $name))
                     ->join(','),
-            )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
+            )), 'forging_stats.address', '=', 'wallets.address', 'left outer')
             ->orderByRaw('validator_name '.$sortDirection->value.', timestamp DESC');
     }
 
     public function scopeSortByVoteCount(mixed $query, SortDirection $sortDirection): Builder
     {
-        $missedBlockPublicKeys = ForgingStats::groupBy('public_key')->pluck('public_key');
+        $missedBlockAddresses = ForgingStats::groupBy('address')->pluck('address');
 
-        $validatorVotes = Wallet::whereIn('public_key', $missedBlockPublicKeys)
+        $validatorVotes = Wallet::whereIn('address', $missedBlockAddresses)
             ->get()
-            ->pluck('attributes.validatorVoteBalance', 'public_key');
+            ->pluck('attributes.validatorVoteBalance', 'address');
 
         if (count($validatorVotes) === 0) {
             return $query->selectRaw('0 AS votes')
@@ -62,10 +62,10 @@ trait CanBeSorted
         return $query->selectRaw('wallets.votes AS votes')
             ->selectRaw('forging_stats.*')
             ->join(DB::raw(sprintf(
-                '(values %s) as wallets (public_key, votes)',
-                $validatorVotes->map(fn ($votes, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $votes))
+                '(values %s) as wallets (address, votes)',
+                $validatorVotes->map(fn ($votes, $address) => sprintf('(\'%s\',%d)', $address, $votes))
                     ->join(','),
-            )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
+            )), 'forging_stats.address', '=', 'wallets.address', 'left outer')
             ->orderByRaw('votes '.$sortDirection->value.', timestamp DESC');
     }
 
@@ -80,11 +80,11 @@ trait CanBeSorted
         return $query->selectRaw('voting_stats.count AS no_of_voters')
             ->selectRaw('forging_stats.*')
             ->join(DB::raw(sprintf(
-                '(values %s) as voting_stats (public_key, count)',
+                '(values %s) as voting_stats (address, count)',
                 collect($voterCounts)
-                    ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
+                    ->map(fn ($count, $address) => sprintf('(\'%s\',%d)', $address, $count))
                     ->join(','),
-            )), 'forging_stats.public_key', '=', 'voting_stats.public_key', 'left outer')
+            )), 'forging_stats.address', '=', 'voting_stats.address', 'left outer')
             ->orderByRaw(sprintf('no_of_voters %s NULLS LAST, timestamp DESC', $sortDirection->value));
     }
 }
