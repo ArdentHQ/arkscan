@@ -41,6 +41,9 @@ trait HasPayload
     public function formattedPayload(): ?string
     {
         $payload = $this->rawPayload();
+        if ($payload === null) {
+            return null;
+        }
 
         $methodId = substr($payload, 0, 8);
 
