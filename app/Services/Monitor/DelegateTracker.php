@@ -9,6 +9,7 @@ use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Services\Monitor\Actions\ShuffleDelegates;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 final class DelegateTracker
 {
@@ -18,6 +19,8 @@ final class DelegateTracker
         $lastBlock = Block::withScope(OrderByHeightScope::class)->firstOrFail();
         $height    = $lastBlock->height->toNumber();
 
+        // $height = Block::withScope(OrderByHeightScope::class)->first()?->height->toNumber() ?? $startHeight;
+
         // Arrange Delegates
         $activeDelegates = self::getActiveDelegates($delegates);
 
@@ -25,7 +28,7 @@ final class DelegateTracker
         $activeDelegates = self::shuffleDelegates($activeDelegates, $startHeight);
 
         // Act
-        $forgingInfo = ForgingInfoCalculator::calculate(null, $height);
+        $forgingInfo = ForgingInfoCalculator::calculateCurrentOrder($startHeight, $height);
 
         // // Determine Next Forgers...
         // $nextForgers = [];
@@ -41,7 +44,7 @@ final class DelegateTracker
         $forgingIndex = 2; // We start at 2 to skip 0 which results in 0 as time and 1 which would be the next forger.
 
         // Get the original forging info to determine the actual first
-        $originalOrder = ForgingInfoCalculator::calculate(
+        $originalOrder = ForgingInfoCalculator::calculateOriginalOrder(
             Block::where('height', $startHeight)->first()?->timestamp,
             $startHeight
         );
@@ -54,43 +57,116 @@ final class DelegateTracker
             $delegateCount
         );
 
+        $slotOffset = static::slotOffset($startHeight, $delegatesOrdered);
+
         return collect($delegatesOrdered)
-            ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $originalOrder, $delegateCount) {
-                // Determine forging order based on the original offset
-                $difference      = $forgingInfo['currentForger'] - $originalOrder['currentForger'];
-                $normalizedOrder = $difference >= 0 ? $difference : $delegateCount + $difference;
-
-                if ($index === $normalizedOrder) {
-                    return [
-                        'publicKey' => $publicKey,
-                        'status'    => 'next',
-                        'time'      => Network::blockTime() * 1000,
-                        'order'     => $index,
-                    ];
-                }
-
-                if ($index > $normalizedOrder) {
-                    $nextTime = (($forgingIndex) * Network::blockTime() * 1000);
-
-                    $forgingIndex++;
-
-                    return [
-                        'publicKey' => $publicKey,
-                        'status'    => 'pending',
-                        'time'      => $nextTime,
-                        'order'     => $index,
-                    ];
-                }
-
-                // TODO: we need to handle missed blocks by moving "done" states back to pending when needed
-                return [
-                    'publicKey' => $publicKey,
-                    'status'    => 'done',
-                    'time'      => 0,
-                    'order'     => $index,
-                ];
+            ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $originalOrder, $delegateCount, $slotOffset) {
+                return static::determineSlot($publicKey, $index, $forgingIndex, $forgingInfo, $delegateCount, $originalOrder, $slotOffset);
             })
             ->toArray();
+    }
+
+    private static function determineSlot($publicKey, $index, &$forgingIndex, $forgingInfo, $delegateCount, $originalOrder, $slotOffset): array
+    {
+        // Determine forging order based on the original offset
+        $difference       = $forgingInfo['currentForger'] + $slotOffset;
+        $normalizedOrder  = $difference >= 0 ? $difference : $delegateCount + $difference;
+        $secondsUntilSlot = Network::blockTime() * 1000;
+
+        if ($index === $normalizedOrder) {
+            return [
+                'publicKey' => $publicKey,
+                'status'    => 'next',
+                'time'      => $secondsUntilSlot,
+                'order'     => $index,
+            ];
+        }
+
+        if ($index > $normalizedOrder) {
+            $nextTime = ($forgingIndex - 1) * $secondsUntilSlot;
+
+            $forgingIndex++;
+
+            return [
+                'publicKey' => $publicKey,
+                'status'    => 'pending',
+                'time'      => $nextTime,
+                'order'     => $index,
+            ];
+        }
+
+        // TODO: we need to handle missed blocks by moving "done" states back to pending when needed
+        return [
+            'publicKey' => $publicKey,
+            'status'    => 'done',
+            'time'      => 0,
+            'order'     => $index,
+        ];
+    }
+
+    /**
+     * Calculate the slot offset based on missed blocks.
+     *
+     * @param int $roundHeight
+     * @param array $validators
+     *
+     * @return int
+     */
+    private static function slotOffset(int $roundHeight, array $delegates): int
+    {
+        $lastForger = DB::connection('explorer')
+            ->table('blocks')
+            ->select('generator_public_key', 'timestamp')
+            ->where('height', '>=', $roundHeight)
+            ->orderBy('height', 'desc')
+            ->limit(1)
+            ->first();
+
+        if ($lastForger === null) {
+            return 0;
+        }
+
+        $roundBlockCount = DB::connection('explorer')
+            ->table('blocks')
+            ->select([
+                DB::raw('COUNT(*) as count'),
+                'generator_public_key',
+            ])
+            ->where('height', '>=', $roundHeight)
+            ->groupBy('generator_public_key')
+            ->get()
+            ->pluck('count', 'generator_public_key');
+
+        $offset = 0;
+        foreach ($delegates as $publicKey) {
+            $hadBlock = false;
+            if ($roundBlockCount->has($publicKey)) {
+                $count = $roundBlockCount->get($publicKey) - 1;
+                if ($count <= 0) {
+                    $roundBlockCount = $roundBlockCount->except($publicKey);
+                } else {
+                    $roundBlockCount->put($publicKey, $count);
+                }
+
+                $hadBlock = true;
+            }
+
+            if ($publicKey === $lastForger->generator_public_key) {
+                break;
+            }
+
+            if ($hadBlock) {
+                continue;
+            }
+
+            $offset++;
+        }
+
+        if ($roundBlockCount->count() > 0) {
+            $offset = Network::delegateCount() - $roundBlockCount->sum();
+        }
+
+        return $offset;
     }
 
     private static function getActiveDelegates(Collection $delegates): array
