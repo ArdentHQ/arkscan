@@ -410,9 +410,7 @@ input.qr-code-amount[type="number"] {
 /* Note: I've copied most of the `.custom-scroll` class here. Some of the existing 
    class makes the scrollbar "thick", like it would be on any other website. */
 .code-block-custom-scroll::-webkit-scrollbar {
-    @apply rounded-lg;
-    width: 6px;
-    height: 4px;
+    @apply rounded-lg w-1.5 h-1;
 }
 
 .code-block-custom-scroll::-webkit-scrollbar-track-piece:start {
