@@ -1,7 +1,7 @@
 @props(['value'])
 
 <div
-    class="flex items-center px-1.5 h-full transition-default group/tab first:pl-0 sm:first:pl-1.5"
+    class="flex items-center px-1.5 h-full first:pl-0 transition-default group/tab sm:first:pl-1.5"
     :class="{
         'text-theme-primary-500 dark:text-theme-dark-blue-500 cursor-default': view === '{{ $value }}',
         'text-theme-secondary-500 hover:text-theme-secondary-50 dark:text-theme-dark-200 dark:hover:text-theme-dark-50 cursor-pointer': view !== '{{ $value }}',
