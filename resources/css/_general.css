@@ -416,7 +416,7 @@ input.qr-code-amount[type="number"] {
 }
 
 .code-block-custom-scroll::-webkit-scrollbar-track-piece:start {
-    background: transparent;
+    @apply bg-transparent;
 }
 
 .code-block-custom-scroll::-webkit-scrollbar-thumb {
