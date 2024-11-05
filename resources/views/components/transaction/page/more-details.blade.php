@@ -129,6 +129,7 @@
                     }
                 }">
                     <x-general.page-section.container
+                        wrapper-class="w-full"
                         class="!px-0"
                         x-show="isExpanded"
                         x-cloak
