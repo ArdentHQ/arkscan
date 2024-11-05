@@ -19,10 +19,6 @@
         </div>
 
         <div class="flex h-full sm:justify-between sm:items-center">
-            <div class="pr-1.5 leading-3.75 dark:text-theme-dark-200">
-                <span>@lang('pages.transaction.code-block.view_input_as')</span>
-            </div>
-
             <x-transaction.code-block.tab value="default" />
             <x-transaction.code-block.tab value="utf-8" />
             <x-transaction.code-block.tab value="original" />
