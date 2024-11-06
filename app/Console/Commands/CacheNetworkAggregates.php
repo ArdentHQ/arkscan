@@ -40,7 +40,8 @@ final class CacheNetworkAggregates extends Command
 
         $cache->setVotesPercentage((new VotePercentageAggregate())->aggregate());
 
-        $cache->setValidatorRegistrationCount(Transaction::withScope(ValidatorRegistrationScope::class)->count());
+        // TODO: re-add validator registration scope - https://app.clickup.com/t/86duufu8e
+        $cache->setValidatorRegistrationCount(Transaction::count());
 
         $cache->setFeesCollected((new DailyFeeAggregate())->aggregate());
     }
