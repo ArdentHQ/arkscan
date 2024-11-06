@@ -142,10 +142,7 @@ final class WalletTransactionTable extends TabbedTableComponent
         return Transaction::query()
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['outgoing'], fn ($query) => $query->where('sender_public_key', $this->publicKey)))
-                    ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query->where('recipient_id', $this->address)))
-                    ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query
-                        ->where('type', Types::MULTI_PAYMENT)
-                        ->whereJsonContains('asset->payments', [['recipientId' => $this->address]])));
+                    ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query->where('recipient_address', $this->address)));
             });
     }
 }
