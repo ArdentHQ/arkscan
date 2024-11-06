@@ -9,7 +9,6 @@ use App\Aggregates\TransactionCountAggregate;
 use App\Aggregates\TransactionVolumeAggregate;
 use App\Aggregates\VoteCountAggregate;
 use App\Aggregates\VotePercentageAggregate;
-use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Transaction;
 use App\Services\Cache\NetworkCache;
 use Illuminate\Console\Command;
