@@ -15,10 +15,10 @@ trait InteractsWithWallets
 
     public function recipient(): ?MemoryWallet
     {
-        if (is_null($this->transaction->recipient_id)) {
+        if (is_null($this->transaction->recipient_address)) {
             return $this->sender();
         }
 
-        return MemoryWallet::fromAddress($this->transaction->recipient_id);
+        return MemoryWallet::fromAddress($this->transaction->recipient_address);
     }
 }

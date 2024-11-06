@@ -198,9 +198,9 @@ final class Transaction extends Model
      */
     public function recipient(): Wallet
     {
-        $recipientId = $this->recipient_id;
-        if (! is_null($recipientId)) {
-            return Wallet::where('address', $recipientId)->firstOrFail();
+        $recipient = $this->recipient_address;
+        if (! is_null($recipient)) {
+            return Wallet::where('address', $recipient)->firstOrFail();
         }
 
         $vote = Arr::get($this, 'asset.votes.0');
