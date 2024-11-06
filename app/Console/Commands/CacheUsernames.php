@@ -58,6 +58,6 @@ final class CacheUsernames extends Command
                 }
             });
 
-        // TODO: re-add username resignation scope to forget usernames which have resigned
+        // TODO: re-add username resignation scope to forget usernames which have resigned - https://app.clickup.com/t/86duvqbd4
     }
 }
