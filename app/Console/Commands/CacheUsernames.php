@@ -6,8 +6,6 @@ namespace App\Console\Commands;
 
 use App\Facades\Network;
 use App\Facades\Wallets;
-use App\Models\Scopes\UsernameResignationScope;
-use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
