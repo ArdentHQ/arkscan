@@ -58,11 +58,6 @@ final class CacheUsernames extends Command
                 }
             });
 
-        /** @var Transaction[] $transactions */
-        $transactions = Transaction::withScope(UsernameResignationScope::class)->get();
-
-        foreach ($transactions as $transaction) {
-            $cache->forgetUsernameByAddress($transaction->sender->address);
-        }
+        // TODO: re-add username resignation scope to forget usernames which have resigned
     }
 }
