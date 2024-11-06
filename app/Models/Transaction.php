@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\TransactionTypeEnum;
 use App\Models\Casts\BigInteger;
 use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
