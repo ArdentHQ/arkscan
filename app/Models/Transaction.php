@@ -31,12 +31,11 @@ use Laravel\Scout\Searchable;
  * @property string $id
  * @property array|null $asset
  * @property BigNumber $amount
- * @property BigNumber $fee
  * @property int $timestamp
  * @property int $type
  * @property int $type_group
  * @property string $block_id
- * @property string|null $recipient_id
+ * @property string|null $recipient_address
  * @property string $sender_public_key
  * @property int $block_height
  * @property resource|string|null $vendor_field
@@ -121,21 +120,14 @@ final class Transaction extends Model
             // Searchable id and used to link the transaction
             'id' => $this->id,
             // Used to get the recipient wallet
-            'recipient_id' => $this->recipient_id,
+            'recipient_address' => $this->recipient_address,
 
             // Used to get the sender wallets
             'sender_public_key' => $this->sender_public_key,
 
-            // Used to show the transaction type
-            'type'       => $this->type,
-            'type_group' => $this->type_group,
-
             // To get the amount for single payments
             // Using `__toString` since are instances of `BigNumber`
             'amount' => $this->amount->__toString(),
-            'fee'    => $this->fee->__toString(),
-            // Contains the multipayments payments and vote related data
-            'asset' => $this->asset,
             // used to build the payments and sortable
             'timestamp' => $this->timestamp,
         ];
@@ -152,12 +144,8 @@ final class Transaction extends Model
             ->select([
                 'id',
                 'sender_public_key',
-                'recipient_id',
-                'type',
-                'type_group',
+                'recipient_address',
                 'amount',
-                'fee',
-                'asset',
                 'timestamp',
             ])
             ->when(true, function ($query) use ($self) {
