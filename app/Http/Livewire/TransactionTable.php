@@ -78,8 +78,7 @@ final class TransactionTable extends Component
             return $emptyResults;
         }
 
-        return Transaction::withTypeFilter($this->filter)
-            ->withScope(OrderByTimestampScope::class)
+        return Transaction::withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage);
     }
 
