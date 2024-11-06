@@ -221,25 +221,6 @@ final class Transaction extends Model
         return Wallet::where('address', $vote)->firstOrFail();
     }
 
-    public function scopeWithTypeFilter(Builder $query, array $filter): Builder
-    {
-        return $query
-            ->where(function ($query) use ($filter) {
-                $query->where(fn ($query) => $query->when($filter['transfers'] === true, fn ($query) => $query->where('type', TransactionTypeEnum::TRANSFER)))
-                    ->orWhere(fn ($query) => $query->when($filter['votes'] === true, fn ($query) => $query->where('type', TransactionTypeEnum::VOTE)))
-                    ->orWhere(fn ($query) => $query->when($filter['multipayments'] === true, fn ($query) => $query->where('type', TransactionTypeEnum::MULTI_PAYMENT)))
-                    ->orWhere(fn ($query) => $query->when($filter['others'] === true, fn ($query) => $query
-                        ->orWhere(
-                            fn ($query) => $query
-                                ->whereNotIn('type', [
-                                    TransactionTypeEnum::TRANSFER,
-                                    TransactionTypeEnum::VOTE,
-                                    TransactionTypeEnum::MULTI_PAYMENT,
-                                ])
-                        )));
-            });
-    }
-
     public function vendorField(): string|null
     {
         if (is_bool($this->vendorFieldContent)) {
