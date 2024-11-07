@@ -93,7 +93,7 @@ final class TransactionViewModel implements ViewModel
 
     public function fee(): float
     {
-        return $this->transaction->gas_price->toFloat();
+        return $this->transaction->gas_price->toFloat(); // TODO: https://app.clickup.com/t/86dv41828
     }
 
     public function feeFiat(bool $showSmallAmounts = false): string
