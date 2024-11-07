@@ -20,6 +20,6 @@ final class TransactionDirection
 
     public function isReceived(string $address): bool
     {
-        return $this->transaction->recipient_id === $address;
+        return $this->transaction->recipient_address === $address;
     }
 }
