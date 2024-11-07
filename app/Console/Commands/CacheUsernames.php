@@ -6,8 +6,6 @@ namespace App\Console\Commands;
 
 use App\Facades\Network;
 use App\Facades\Wallets;
-use App\Models\Scopes\UsernameResignationScope;
-use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
@@ -58,11 +56,6 @@ final class CacheUsernames extends Command
                 }
             });
 
-        /** @var Transaction[] $transactions */
-        $transactions = Transaction::withScope(UsernameResignationScope::class)->get();
-
-        foreach ($transactions as $transaction) {
-            $cache->forgetUsernameByAddress($transaction->sender->address);
-        }
+        // TODO: re-add username resignation scope to forget usernames which have resigned - https://app.clickup.com/t/86duvqbd4
     }
 }
