@@ -20,10 +20,12 @@ use App\Models\Scopes\VoteCombinationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
 use App\Services\VendorField;
+use Brick\Math\BigDecimal;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 
@@ -192,6 +194,16 @@ final class Transaction extends Model
     }
 
     /**
+     * A receipt belongs to a transaction.
+     *
+     * @return HasOne
+     */
+    public function receipt(): HasOne
+    {
+        return $this->hasOne(Receipt::class, 'id', 'id');
+    }
+
+    /**
      * A transaction belongs to a recipient.
      *
      * @return Wallet
@@ -218,6 +230,15 @@ final class Transaction extends Model
         }
 
         return $this->vendorFieldContent;
+    }
+
+    public function fee(): BigNumber
+    {
+        if ($this->receipt === null) {
+            return $this->gas_price;
+        }
+
+        return $this->gas_price->multipliedBy($this->receipt->gas_used->valueOf());
     }
 
     /**
