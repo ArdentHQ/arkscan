@@ -27,10 +27,10 @@ final class StatisticsCache implements Contract
                 ->table('transactions')
                 ->selectRaw('COUNT(*) as transaction_count')
                 ->selectRaw('SUM(amount) as volume')
-                // TODO: Calculate fee using gas_price and gas_used - https://app.clickup.com/t/86dv41828
-                ->selectRaw('SUM(gas_price) as total_fees')
-                ->selectRaw('AVG(gas_price) as average_fee')
+                ->selectRaw('SUM(gas_price * COALESCE(receipts.gas_used, 0)) as total_fees')
+                ->selectRaw('AVG(gas_price * COALESCE(receipts.gas_used, 0)) as average_fee')
                 ->from('transactions')
+                ->join('receipts', 'transactions.id', '=', 'receipts.id')
                 ->where('timestamp', '>', $timestamp)
                 ->first();
 
