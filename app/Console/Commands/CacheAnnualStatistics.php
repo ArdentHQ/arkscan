@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Console\Commands\Concerns\DispatchesStatisticsEvents;
-use App\Enums\TransactionTypeEnum;
 use App\Events\Statistics\AnnualData;
 use App\Facades\Network;
 use App\Services\BigNumber;
