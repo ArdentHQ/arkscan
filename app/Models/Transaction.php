@@ -107,6 +107,10 @@ final class Transaction extends Model
         'block_height' => 'int',
     ];
 
+    protected $with = [
+        'receipt',
+    ];
+
     private bool|string|null $vendorFieldContent = false;
 
     /**
