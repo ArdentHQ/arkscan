@@ -237,7 +237,7 @@ final class Transaction extends Model
 
     public function fee(): BigNumber
     {
-        $gasPrice = BigNumber::new($this->gas_price->valueOf());
+        $gasPrice = clone $this->gas_price;
         if ($this->receipt === null) {
             return $gasPrice;
         }
