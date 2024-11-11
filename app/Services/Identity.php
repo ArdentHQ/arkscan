@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Facades\Network;
 use ArkEcosystem\Crypto\Identities\Address;
 use Illuminate\Support\Facades\Cache;
 

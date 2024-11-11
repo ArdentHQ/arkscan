@@ -8,7 +8,6 @@ use App\Enums\Constants;
 use App\Exceptions\BlockNotFoundException;
 use App\Exceptions\TransactionNotFoundException;
 use App\Exceptions\WalletNotFoundException;
-use App\Facades\Network;
 use App\Facades\Wallets;
 use App\Models\Block;
 use App\Models\Transaction;
