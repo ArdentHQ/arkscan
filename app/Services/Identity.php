@@ -15,7 +15,7 @@ final class Identity
         return Cache::tags('identity')->remember(
             $publicKey,
             now()->addMinutes(10),
-            fn () => Address::fromPublicKey($publicKey, Network::config())
+            fn () => Address::fromPublicKey($publicKey)
         );
     }
 }
