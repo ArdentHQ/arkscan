@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Enums\TransactionTypeEnum;
 use App\Models\Block;
+use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -31,6 +32,11 @@ final class TransactionFactory extends Factory
             'amount'            => $this->faker->numberBetween(1, 100) * 1e18,
             'nonce'             => 1,
         ];
+    }
+
+    public function withReceipt(int $gasUsed = 21000): Factory
+    {
+        return $this->has(Receipt::factory()->state(fn () => ['gas_used' => $gasUsed]));
     }
 
     public function transfer(): Factory
