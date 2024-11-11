@@ -27,7 +27,7 @@ it('should get fees', function () {
             $totalFees->plus(BigNumber::new($transaction->gas_price->valueOf())->multipliedBy(21000)->valueOf());
 
             Receipt::factory()->create([
-                'id' => $transaction->id,
+                'id'       => $transaction->id,
                 'gas_used' => 21000,
             ]);
         });
