@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Block;
+use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -131,4 +132,25 @@ it('makes transactions searchable', function () {
 
     // Expect no exception to be thrown
     expect(true)->toBeTrue();
+});
+
+it('should calculate fee with receipt', function () {
+    $transaction = Transaction::factory()->create([
+        'gas_price' => 54,
+    ]);
+
+    Receipt::factory()->create([
+        'id' => $transaction->id,
+        'gas_used' => 21000,
+    ]);
+
+    expect($transaction->fresh()->fee()->toNumber())->toBe(1134000);
+});
+
+it('should return gas price if no receipt', function () {
+    $transaction = Transaction::factory()->create([
+        'gas_price' => 54,
+    ]);
+
+    expect($transaction->fresh()->fee()->toNumber())->toBe(54);
 });
