@@ -237,11 +237,12 @@ final class Transaction extends Model
 
     public function fee(): BigNumber
     {
+        $gasPrice = BigNumber::new($this->gas_price->valueOf());
         if ($this->receipt === null) {
-            return $this->gas_price;
+            return $gasPrice;
         }
 
-        return $this->gas_price->multipliedBy($this->receipt->gas_used->valueOf());
+        return $gasPrice->multipliedBy($this->receipt->gas_used->valueOf());
     }
 
     /**

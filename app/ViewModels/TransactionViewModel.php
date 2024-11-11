@@ -22,6 +22,7 @@ use App\ViewModels\Concerns\Transaction\InteractsWithUsernames;
 use App\ViewModels\Concerns\Transaction\InteractsWithVendorField;
 use App\ViewModels\Concerns\Transaction\InteractsWithVotes;
 use App\ViewModels\Concerns\Transaction\InteractsWithWallets;
+use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
@@ -93,7 +94,7 @@ final class TransactionViewModel implements ViewModel
 
     public function fee(): float
     {
-        return $this->transaction->fee()->toFloat();
+        return UnitConverter::formatUnits((string) $this->transaction->fee(), 'gwei');
     }
 
     public function feeFiat(bool $showSmallAmounts = false): string
