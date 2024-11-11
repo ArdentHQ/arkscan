@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Events\Statistics\AnnualData;
 use App\Models\Block;
-use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Timestamp;
