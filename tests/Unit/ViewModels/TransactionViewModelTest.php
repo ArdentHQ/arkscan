@@ -1212,7 +1212,7 @@ it('should calculate fee with receipt', function () {
     ]);
 
     Receipt::factory()->create([
-        'id' => $transaction->id,
+        'id'       => $transaction->id,
         'gas_used' => 21000,
     ]);
 
