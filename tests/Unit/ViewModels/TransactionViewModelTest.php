@@ -29,7 +29,7 @@ beforeEach(function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create([
         'block_id'          => $this->block->id,
         'block_height'      => 1,
-        'fee'               => 1 * 1e18,
+        'gas_price'         => 1,
         'amount'            => 2 * 1e18,
         'sender_public_key' => $this->sender->public_key,
         'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
