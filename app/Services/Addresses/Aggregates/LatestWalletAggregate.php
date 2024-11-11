@@ -25,10 +25,10 @@ final class LatestWalletAggregate
             )
             ->leftJoin('transactions', function ($join) {
                 $join->on('wallets.public_key', '=', 'transactions.sender_public_key')
-                    ->orOn('wallets.address', '=', 'transactions.recipient_id');
+                    ->orOn('wallets.address', '=', 'transactions.recipient_address');
             })
             ->whereNotNull('transactions.sender_public_key')
-            ->whereNotNull('transactions.recipient_id')
+            ->whereNotNull('transactions.recipient_address')
             ->groupBy('wallets.address')
             ->orderBy('timestamp', 'desc')
             ->limit(1);
