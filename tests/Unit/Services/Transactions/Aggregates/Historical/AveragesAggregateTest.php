@@ -10,7 +10,7 @@ use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
 it('should return count', function () {
     $daysSinceEpoch = 2;
-    $networkStub = new NetworkStub(true, Carbon::now()->subDay($daysSinceEpoch));
+    $networkStub    = new NetworkStub(true, Carbon::now()->subDay($daysSinceEpoch));
 
     app()->singleton(NetworkContract::class, fn () => $networkStub);
 
