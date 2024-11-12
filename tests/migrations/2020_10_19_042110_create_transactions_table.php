@@ -20,7 +20,7 @@ final class CreateTransactionsTable extends Migration
             $table->string('recipient_id')->nullable();
             $table->unsignedBigInteger('timestamp');
             $table->addColumn('numeric', 'amount');
-            $table->addColumn('numeric', 'fee');
+            $table->addColumn('numeric', 'gas_price');
             $table->unsignedBigInteger('nonce');
             $table->binary('vendor_field')->nullable();
             $table->jsonb('asset')->nullable();

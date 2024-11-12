@@ -8,6 +8,7 @@ use App\Contracts\Cache as Contract;
 use App\Services\BigNumber;
 use App\Services\Cache\Concerns\ManagesCache;
 use App\Services\Timestamp;
+use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Facades\Cache;
@@ -22,23 +23,23 @@ final class StatisticsCache implements Contract
     public function getTransactionData(): array
     {
         return $this->remember('transactions', self::STATS_TTL, function () {
-            $timestamp = Timestamp::fromUnix(Carbon::now()->subDays(1)->unix())->unix() * 1000;
+            $timestamp = Carbon::now()->subDays(1)->getTimestampMs();
             $data      = (array) DB::connection('explorer')
                 ->table('transactions')
                 ->selectRaw('COUNT(*) as transaction_count')
                 ->selectRaw('SUM(amount) as volume')
-                // TODO: Calculate fee using gas_price and gas_used - https://app.clickup.com/t/86dv41828
-                ->selectRaw('SUM(gas_price) as total_fees')
-                ->selectRaw('AVG(gas_price) as average_fee')
+                ->selectRaw('SUM(gas_price * COALESCE(receipts.gas_used, 0)) as total_fees')
+                ->selectRaw('AVG(gas_price * COALESCE(receipts.gas_used, 0)) as average_fee')
                 ->from('transactions')
+                ->join('receipts', 'transactions.id', '=', 'receipts.id')
                 ->where('timestamp', '>', $timestamp)
                 ->first();
 
             return [
                 'transaction_count' => $data['transaction_count'],
                 'volume'            => $data['volume'] ?? 0,
-                'total_fees'        => $data['total_fees'] ?? 0,
-                'average_fee'       => $data['average_fee'] ?? 0,
+                'total_fees'        => UnitConverter::parseUnits($data['total_fees'] ?? 0, 'gwei'),
+                'average_fee'       => UnitConverter::parseUnits($data['average_fee'] ?? 0, 'gwei'),
             ];
         });
     }

@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 
@@ -104,6 +105,10 @@ final class Transaction extends Model
         'type_group'   => 'int',
         'type'         => 'int',
         'block_height' => 'int',
+    ];
+
+    protected $with = [
+        'receipt',
     ];
 
     private bool|string|null $vendorFieldContent = false;
@@ -192,6 +197,16 @@ final class Transaction extends Model
     }
 
     /**
+     * A receipt belongs to a transaction.
+     *
+     * @return HasOne
+     */
+    public function receipt(): HasOne
+    {
+        return $this->hasOne(Receipt::class, 'id', 'id');
+    }
+
+    /**
      * A transaction belongs to a recipient.
      *
      * @return Wallet
@@ -218,6 +233,16 @@ final class Transaction extends Model
         }
 
         return $this->vendorFieldContent;
+    }
+
+    public function fee(): BigNumber
+    {
+        $gasPrice = clone $this->gas_price;
+        if ($this->receipt === null) {
+            return $gasPrice;
+        }
+
+        return $gasPrice->multipliedBy($this->receipt->gas_used->valueOf());
     }
 
     /**

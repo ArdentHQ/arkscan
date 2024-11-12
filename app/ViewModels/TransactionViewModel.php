@@ -22,6 +22,7 @@ use App\ViewModels\Concerns\Transaction\InteractsWithUsernames;
 use App\ViewModels\Concerns\Transaction\InteractsWithVendorField;
 use App\ViewModels\Concerns\Transaction\InteractsWithVotes;
 use App\ViewModels\Concerns\Transaction\InteractsWithWallets;
+use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
@@ -93,12 +94,12 @@ final class TransactionViewModel implements ViewModel
 
     public function fee(): float
     {
-        return $this->transaction->gas_price->toFloat(); // TODO: https://app.clickup.com/t/86dv41828
+        return UnitConverter::formatUnits((string) $this->transaction->fee(), 'gwei');
     }
 
     public function feeFiat(bool $showSmallAmounts = false): string
     {
-        return ExchangeRate::convert($this->transaction->gas_price->toFloat(), $this->transaction->timestamp, $showSmallAmounts); // TODO: https://app.clickup.com/t/86dv41828
+        return ExchangeRate::convert($this->fee(), $this->transaction->timestamp, $showSmallAmounts);
     }
 
     public function amountForItself(): float

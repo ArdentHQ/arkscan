@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8af0dbad52a3cbafefe4813e35589742",
+    "content-hash": "380607006bf22c16e6a7f2940c056d21",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -58,12 +58,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/php-crypto.git",
-                "reference": "d7fcebcb4fc20bb9b87816b3ba2d5bd02f0a179e"
+                "reference": "adaac60fa128987b57590804053c74e39f04d40d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/php-crypto/zipball/d7fcebcb4fc20bb9b87816b3ba2d5bd02f0a179e",
-                "reference": "d7fcebcb4fc20bb9b87816b3ba2d5bd02f0a179e",
+                "url": "https://api.github.com/repos/ArkEcosystem/php-crypto/zipball/adaac60fa128987b57590804053c74e39f04d40d",
+                "reference": "adaac60fa128987b57590804053c74e39f04d40d",
                 "shasum": ""
             },
             "require": {
@@ -96,9 +96,9 @@
             ],
             "authors": [
                 {
-                    "name": "Brian Faust",
-                    "email": "hello@brianfaust.me",
-                    "homepage": "https://github.com/faustbrian"
+                    "name": "ARK Ecosystem",
+                    "email": "info@arkscic.com",
+                    "homepage": "https://arkscic.com"
                 }
             ],
             "description": "A simple PHP Cryptography Implementation for the Ark Blockchain.",
@@ -113,7 +113,7 @@
                 "issues": "https://github.com/ArkEcosystem/php-crypto/issues",
                 "source": "https://github.com/ArkEcosystem/php-crypto/tree/feat/mainsail"
             },
-            "time": "2024-07-19T13:02:22+00:00"
+            "time": "2024-10-31T13:39:12+00:00"
         },
         {
             "name": "arkecosystem/foundation",
@@ -308,16 +308,16 @@
         },
         {
             "name": "blade-ui-kit/blade-icons",
-            "version": "1.6.0",
+            "version": "1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/blade-ui-kit/blade-icons.git",
-                "reference": "89660d93f9897d231e9113ba203cd17f4c5efade"
+                "reference": "75a54a3f5a2810fcf6574ab23e91b6cc229a1b53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/blade-ui-kit/blade-icons/zipball/89660d93f9897d231e9113ba203cd17f4c5efade",
-                "reference": "89660d93f9897d231e9113ba203cd17f4c5efade",
+                "url": "https://api.github.com/repos/blade-ui-kit/blade-icons/zipball/75a54a3f5a2810fcf6574ab23e91b6cc229a1b53",
+                "reference": "75a54a3f5a2810fcf6574ab23e91b6cc229a1b53",
                 "shasum": ""
             },
             "require": {
@@ -385,7 +385,7 @@
                     "type": "paypal"
                 }
             ],
-            "time": "2024-02-07T16:09:20+00:00"
+            "time": "2024-10-17T17:38:00+00:00"
         },
         {
             "name": "brianium/paratest",

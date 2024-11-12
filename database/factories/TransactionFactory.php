@@ -27,7 +27,7 @@ final class TransactionFactory extends Factory
             'sender_public_key' => fn () => $wallet->public_key,
             'recipient_id'      => fn () => $wallet->address,
             'timestamp'         => 1603083256000,
-            'fee'               => $this->faker->numberBetween(1, 100) * 1e18,
+            'gas_price'         => $this->faker->numberBetween(1, 100),
             'amount'            => $this->faker->numberBetween(1, 100) * 1e18,
             'nonce'             => 1,
         ];

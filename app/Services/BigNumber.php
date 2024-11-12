@@ -47,6 +47,16 @@ final class BigNumber implements Stringable
         return $this;
     }
 
+    /**
+     * @param BigDecimal|int|float|string $value
+     */
+    public function multipliedBy($value): self
+    {
+        $this->value = $this->value->multipliedBy($value);
+
+        return $this;
+    }
+
     public function toNumber(): int
     {
         return $this->value->toInt();

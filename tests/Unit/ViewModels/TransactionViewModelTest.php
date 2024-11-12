@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\DTO\Payment;
 use App\Facades\Settings;
 use App\Models\Block;
+use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Blockchain\NetworkFactory;
@@ -29,7 +30,7 @@ beforeEach(function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create([
         'block_id'          => $this->block->id,
         'block_height'      => 1,
-        'fee'               => 1 * 1e18,
+        'gas_price'         => 1,
         'amount'            => 2 * 1e18,
         'sender_public_key' => $this->sender->public_key,
         'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
@@ -1203,4 +1204,29 @@ MethodID: 0x6dd7d8ea');
 
         expect($transaction->formattedPayload())->toBe('MethodID: 0x12341234');
     });
+});
+
+it('should calculate fee with receipt', function () {
+    $transaction = Transaction::factory()->create([
+        'gas_price' => 54,
+    ]);
+
+    Receipt::factory()->create([
+        'id'       => $transaction->id,
+        'gas_used' => 21000,
+    ]);
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->fee())->toEqual(0.001134);
+});
+
+it('should return gas price if no receipt', function () {
+    $transaction = Transaction::factory()->create([
+        'gas_price' => 54,
+    ]);
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->fee())->toEqual(0.000000054);
 });
