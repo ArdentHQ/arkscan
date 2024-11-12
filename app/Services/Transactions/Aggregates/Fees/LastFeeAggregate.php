@@ -14,13 +14,6 @@ final class LastFeeAggregate
 
     private int $limit = 20;
 
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
     public function setLimit(int $limit): self
     {
         $this->limit = $limit;
