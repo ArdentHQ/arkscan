@@ -46,7 +46,6 @@ final class CacheFees extends Command
         collect(Forms::getTransactionOptions())->except(['all'])->keys()->each(function (string $type) use ($cache): void {
             $result = (new LastFeeAggregate())
                 ->setLimit(self::LIMIT_COUNT)
-                ->setType($type)
                 ->aggregate();
 
             $cache->setMinimum($type, $result['minimum']);
