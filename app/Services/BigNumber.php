@@ -37,6 +37,11 @@ final class BigNumber implements Stringable
         return new static($value);
     }
 
+    public static function zero(): self
+    {
+        return new static(0);
+    }
+
     /**
      * @param BigDecimal|int|string $value
      */
