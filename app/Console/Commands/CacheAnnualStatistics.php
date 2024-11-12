@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Console\Commands\Concerns\DispatchesStatisticsEvents;
-use App\Enums\TransactionTypeEnum;
 use App\Events\Statistics\AnnualData;
 use App\Facades\Network;
 use App\Services\BigNumber;
 use App\Services\Cache\StatisticsCache;
+use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
@@ -58,24 +58,15 @@ final class CacheAnnualStatistics extends Command
                 DB::raw('DATE_PART(\'year\', TO_TIMESTAMP((transactions.timestamp) / 1000)) AS year'),
                 DB::raw('COUNT(DISTINCT(transactions.id)) AS transactions'),
                 DB::raw(sprintf('SUM(amount) / 1e%d AS amount', config('currencies.decimals.crypto', 18))),
-                DB::raw(sprintf('SUM(fee) / 1e%d AS fees', config('currencies.decimals.crypto', 18))),
+                DB::raw(sprintf('SUM(gas_price * COALESCE(receipts.gas_used, 0)) AS fees')),
             ])
             ->from('transactions')
+            ->join('receipts', 'transactions.id', '=', 'receipts.id')
             ->groupBy('year')
             ->orderBy('year')
             ->get();
 
-        $multipaymentData = DB::connection('explorer')
-            ->query()
-            ->select([
-                DB::raw('DATE_PART(\'year\', TO_TIMESTAMP((transactions.timestamp) / 1000)) AS year'),
-                DB::raw(sprintf('SUM((payment->>\'amount\')::numeric) / 1e%d AS amount', config('currencies.decimals.crypto', 18))),
-            ])
-            ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
-            ->where('transactions.type', '=', TransactionTypeEnum::MULTI_PAYMENT)
-            ->groupBy('year')
-            ->orderBy('year')
-            ->get();
+        // TODO: handle multipayment transactions
 
         $blocksData = DB::connection('explorer')
             ->query()
@@ -88,13 +79,7 @@ final class CacheAnnualStatistics extends Command
             ->orderBy('year')
             ->get();
 
-        $transactionData->each(function ($item, $key) use ($blocksData, $multipaymentData, $cache) {
-            $multipaymentAmount = $multipaymentData->first(function ($value) use ($item) {
-                return $value->year === $item->year;
-            })?->amount ?? '0';
-
-            $volume = BigNumber::new($item->amount)->plus($multipaymentAmount)->__toString();
-
+        $transactionData->each(function ($item, $key) use ($blocksData, $cache) {
             if (! $this->hasChanges) {
                 $existingData = $cache->getAnnualData((int) $item->year) ?? [];
                 if (Arr::get($existingData, 'transactions') !== $item->transactions) {
@@ -109,8 +94,8 @@ final class CacheAnnualStatistics extends Command
             $cache->setAnnualData(
                 (int) $item->year,
                 (int) $item->transactions,
-                $volume,
-                $item->fees,
+                (string) BigNumber::new($item->amount),
+                (string) UnitConverter::formatUnits($item->fees, 'gwei'),
                 $blocksData->get($key)->blocks, // We assume to have the same amount of entries for blocks and transactions (years)
             );
         });
@@ -127,19 +112,14 @@ final class CacheAnnualStatistics extends Command
             ->select([
                 DB::raw('COUNT(*) as transactions'),
                 DB::raw(sprintf('SUM(amount) / 1e%d as amount', config('currencies.decimals.crypto', 18))),
-                DB::raw(sprintf('SUM(fee) / 1e%d as fees', config('currencies.decimals.crypto', 18))),
+                DB::raw(sprintf('SUM(gas_price * COALESCE(receipts.gas_used, 0)) as fees')),
             ])
             ->from('transactions')
+            ->join('receipts', 'transactions.id', '=', 'receipts.id')
             ->where('timestamp', '>=', $startOfYear)
             ->first();
 
-        $multipaymentAmount = DB::connection('explorer')
-            ->query()
-            ->select(DB::raw(sprintf('SUM((payment->>\'amount\')::numeric) / 1e%d AS amount', config('currencies.decimals.crypto', 18))))
-            ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
-            ->where('transactions.type', '=', TransactionTypeEnum::MULTI_PAYMENT)
-            ->where('timestamp', '>=', $startOfYear)
-            ->first()?->amount ?? '0';
+        // TODO: handle multipayment transactions
 
         $blocksData = DB::connection('explorer')
             ->query()
@@ -148,7 +128,7 @@ final class CacheAnnualStatistics extends Command
             ->count();
 
         $transactionCount = (int) $transactionData?->transactions;
-        $volume           = BigNumber::new($transactionData?->amount ?? '0')->plus($multipaymentAmount)->__toString();
+        $volume           = (string) BigNumber::new($transactionData?->amount ?? '0');
         $fees             = (string) ($transactionData?->fees ?? '0');
 
         if (! $this->hasChanges) {
@@ -166,7 +146,7 @@ final class CacheAnnualStatistics extends Command
             $year,
             $transactionCount,
             $volume,
-            $fees,
+            (string) BigNumber::new(UnitConverter::formatUnits($fees, 'gwei')),
             $blocksData,
         );
     }
