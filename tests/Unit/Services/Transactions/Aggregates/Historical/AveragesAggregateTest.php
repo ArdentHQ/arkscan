@@ -9,7 +9,9 @@ use Carbon\Carbon;
 use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
 it('should return count', function () {
-    $networkStub = new NetworkStub(true, Carbon::now()->subDay(2));
+    $daysSinceEpoch = 2;
+    $networkStub    = new NetworkStub(true, Carbon::now()->subDay($daysSinceEpoch));
+
     app()->singleton(NetworkContract::class, fn () => $networkStub);
 
     expect((new AveragesAggregate())->aggregate())->toBe([
@@ -18,14 +20,18 @@ it('should return count', function () {
         'fee'    => 0,
     ]);
 
-    Transaction::factory(12)->validatorRegistration()->create([
-        'amount' => 0,
-        'fee'    => 25 * 1e18,
-    ]);
+    $transactionCount = 12;
+
+    Transaction::factory($transactionCount)
+        ->withReceipt()
+        ->create([
+            'amount'    => 10 * 1e18,
+            'gas_price' => 25,
+        ]);
 
     expect((new AveragesAggregate())->aggregate())->toBe([
-        'count'  => 12 / 2,
-        'amount' => 0,
-        'fee'    => (25 * 12) / 2,
+        'count'  => $transactionCount / $daysSinceEpoch,
+        'amount' => 60,
+        'fee'    => (((25 * 21000) * $transactionCount) / $daysSinceEpoch) / 1e9,
     ]);
 });
