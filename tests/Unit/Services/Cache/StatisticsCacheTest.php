@@ -10,8 +10,8 @@ use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
 
 it('should get fees', function () {
-    $volume    = BigNumber::new(0);
-    $totalFees = BigNumber::new(0);
+    $volume    = BigNumber::zero();
+    $totalFees = BigNumber::zero();
 
     $transactionCount = 7;
 

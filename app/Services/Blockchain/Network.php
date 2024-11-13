@@ -110,7 +110,12 @@ final class Network implements Contract
 
     public function supply(): BigNumber
     {
-        return State::latest()->supply;
+        $latestState = State::first();
+        if ($latestState === null) {
+            return BigNumber::zero();
+        }
+
+        return $latestState->supply;
     }
 
     public function config(): AbstractNetwork

@@ -65,7 +65,7 @@ final class CacheValidatorVoterCounts extends Command
             return;
         }
 
-        $totalVoted = BigNumber::new(0);
+        $totalVoted = BigNumber::zero();
         foreach ($wallets as $wallet) {
             $totalVoted->plus($wallet['balance']->valueOf());
         }

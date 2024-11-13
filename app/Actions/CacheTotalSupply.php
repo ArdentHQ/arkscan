@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Models\State;
+use App\Facades\Network;
 use App\Services\Cache\NetworkCache;
 
 final class CacheTotalSupply
@@ -12,7 +12,7 @@ final class CacheTotalSupply
     public static function execute(): float
     {
         return (new NetworkCache())->setTotalSupply(function (): float {
-            return State::latest()->supply->toFloat();
+            return Network::supply()->toFloat();
         });
     }
 }
