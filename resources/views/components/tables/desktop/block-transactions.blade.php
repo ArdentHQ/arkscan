@@ -14,7 +14,7 @@
                 class="whitespace-nowrap md-lg:w-[130px] lg:w-[150px]"
             />
             <x-tables.headers.desktop.text
-                name="tables.transactions.type"
+                name="tables.transactions.method"
                 class="md-lg:w-[100px] lg:w-[150px]"
             />
             <x-tables.headers.desktop.text name="tables.transactions.addressing" />

@@ -11,7 +11,7 @@ return [
     'transactions' => [
         'id'         => 'Tx ID',
         'age'        => 'Age',
-        'type'       => 'Type',
+        'method'     => 'Method',
         'addressing' => 'Addressing',
         'amount'     => 'Amount (:currency)',
         'fee'        => 'Fee (:currency)',

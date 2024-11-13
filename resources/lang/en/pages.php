@@ -86,7 +86,7 @@ return [
     ],
 
     'transaction'      => [
-        'transaction_type'      => 'Transaction Type',
+        'transaction_method'    => 'Transaction Method',
         'transaction_id'        => 'Transaction ID',
         'transaction_id_copied' => 'Transaction ID Copied',
         'transaction_details'   => 'Transaction Details',

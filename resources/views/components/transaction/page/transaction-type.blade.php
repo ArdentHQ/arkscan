@@ -1,6 +1,6 @@
 @props(['transaction'])
 
-<x-general.page-section.container :title="trans('pages.transaction.transaction_type')">
+<x-general.page-section.container :title="trans('pages.transaction.transaction_method')">
     <x-transaction.page.section-detail.row
         :title="trans('pages.transaction.header.category')"
         :transaction="$transaction"

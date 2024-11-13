@@ -27,7 +27,7 @@ return [
         'term_placeholder'        => 'Find a block, transaction, address or validator ...',
         'term_placeholder_mobile' => 'Search ...',
         'type'                    => 'Search Type',
-        'transaction_type'        => 'Transaction Type',
+        'transaction_method'      => 'Transaction Method',
         'transaction_types'       => [
             'all'                   => 'All',
             'validatorRegistration' => 'Validator Registration',
