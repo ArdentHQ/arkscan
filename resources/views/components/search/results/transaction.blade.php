@@ -36,7 +36,7 @@
                     @lang('general.search.from')
                 </x-general.encapsulated.transaction-direction-badge>
 
-                @if ($transaction->isVote() || $transaction->isUnvote() || $transaction->isVoteCombination())
+                @if ($transaction->isVote() || $transaction->isUnvote())
                     <x-general.identity
                         :model="$transaction->isUnvote() ? $transaction->unvoted() : $transaction->voted()"
                         without-link
@@ -59,12 +59,6 @@
                 @if ($transaction->isTransfer())
                     <x-general.identity
                         :model="$transaction->recipient()"
-                        without-link
-                        class="text-theme-secondary-900 dark:text-theme-dark-50"
-                    />
-                @elseif ($transaction->isVoteCombination())
-                    <x-general.identity
-                        :model="$transaction->voted()"
                         without-link
                         class="text-theme-secondary-900 dark:text-theme-dark-50"
                     />

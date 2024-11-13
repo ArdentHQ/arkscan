@@ -84,24 +84,21 @@ it('should toggle all filters when "select all" is selected', function () {
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
         ->assertSet('filter', [
-            'vote'      => true,
-            'unvote'    => true,
-            'vote-swap' => true,
+            'vote'   => true,
+            'unvote' => true,
         ])
         ->assertSet('selectAllFilters', true)
         ->set('filter.vote', true)
         ->assertSet('selectAllFilters', true)
         ->set('selectAllFilters', false)
         ->assertSet('filter', [
-            'vote'      => false,
-            'unvote'    => false,
-            'vote-swap' => false,
+            'vote'   => false,
+            'unvote' => false,
         ])
         ->set('selectAllFilters', true)
         ->assertSet('filter', [
-            'vote'      => true,
-            'unvote'    => true,
-            'vote-swap' => true,
+            'vote'   => true,
+            'unvote' => true,
         ]);
 });
 
@@ -109,9 +106,8 @@ it('should toggle "select all" when all filters are selected', function () {
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
         ->assertSet('filter', [
-            'vote'      => true,
-            'unvote'    => true,
-            'vote-swap' => true,
+            'vote'   => true,
+            'unvote' => true,
         ])
         ->assertSet('selectAllFilters', true)
         ->set('filter.vote', false)
@@ -143,25 +139,14 @@ it('should filter vote transactions', function () {
         ],
     ]);
 
-    $voteSwap = Transaction::factory()->voteCombination()->create([
-        'sender_public_key' => $sender->public_key,
-        'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
-        'asset'             => [
-            'votes'   => [$otherValidator->public_key],
-            'unvotes' => [$validator->public_key],
-        ],
-    ]);
-
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
         ->set('filter', [
-            'vote'      => true,
-            'unvote'    => false,
-            'vote-swap' => false,
+            'vote'   => true,
+            'unvote' => false,
         ])
         ->assertSee($vote->id)
-        ->assertDontSee($unvote->id)
-        ->assertDontSee($voteSwap->id);
+        ->assertDontSee($unvote->id);
 });
 
 it('should filter unvote transactions', function () {
@@ -187,76 +172,22 @@ it('should filter unvote transactions', function () {
         ],
     ]);
 
-    $voteSwap = Transaction::factory()->voteCombination()->create([
-        'sender_public_key' => $sender->public_key,
-        'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
-        'asset'             => [
-            'votes'   => [$otherValidator->public_key],
-            'unvotes' => [$validator->public_key],
-        ],
-    ]);
-
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
         ->set('filter', [
-            'vote'      => false,
-            'unvote'    => true,
-            'vote-swap' => false,
+            'vote'   => false,
+            'unvote' => true,
         ])
         ->assertSee($unvote->id)
-        ->assertDontSee($vote->id)
-        ->assertDontSee($voteSwap->id);
-});
-
-it('should filter vote swap transactions', function () {
-    $sender         = Wallet::factory()->create();
-    $validator      = Wallet::factory()->activeValidator()->create();
-    $otherValidator = Wallet::factory()->activeValidator()->create();
-
-    $vote = Transaction::factory()->vote()->create([
-        'sender_public_key' => $sender->public_key,
-        'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
-        'asset'             => [
-            'votes' => [$validator->public_key],
-        ],
-    ]);
-
-    $unvote = Transaction::factory()->unvote()->create([
-        'sender_public_key' => $sender->public_key,
-        'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
-        'asset'             => [
-            'unvotes' => [$validator->public_key],
-        ],
-    ]);
-
-    $voteSwap = Transaction::factory()->voteCombination()->create([
-        'sender_public_key' => $sender->public_key,
-        'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
-        'asset'             => [
-            'votes'   => [$otherValidator->public_key],
-            'unvotes' => [$validator->public_key],
-        ],
-    ]);
-
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
-        ->set('filter', [
-            'vote'      => false,
-            'unvote'    => false,
-            'vote-swap' => true,
-        ])
-        ->assertSee($voteSwap->id)
-        ->assertDontSee($vote->id)
-        ->assertDontSee($unvote->id);
+        ->assertDontSee($vote->id);
 });
 
 it('should show correct message when no filters are selected', function () {
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
         ->set('filter', [
-            'vote'      => false,
-            'unvote'    => false,
-            'vote-swap' => false,
+            'vote'   => false,
+            'unvote' => false,
         ])
         ->assertSee(trans('tables.recent-votes.no_results.no_filters'));
 });
@@ -304,21 +235,12 @@ function generateTransactions(): array
         ],
     ]);
 
-    $voteSwapTransaction = Transaction::factory()->voteCombination()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 05:41:04')->unix())->unix(),
-        'asset'     => [
-            'votes'   => [$validator3->public_key],
-            'unvotes' => [$validator1->public_key],
-        ],
-    ]);
-
     return [
         'validator1'           => $validator1,
         'validator2'           => $validator2,
         'validator3'           => $validator3,
         'voteTransaction'      => $voteTransaction,
         'unvoteTransaction'    => $unvoteTransaction,
-        'voteSwapTransaction'  => $voteSwapTransaction,
     ];
 };
 
@@ -330,10 +252,8 @@ it('should sort by age descending by default', function () {
         ->assertSet('sortKey', 'age')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            $data['voteSwapTransaction']->address,
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,
-            $data['voteSwapTransaction']->address,
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,
         ]);
@@ -349,10 +269,8 @@ it('should sort age in ascending order', function () {
         ->assertSeeInOrder([
             $data['voteTransaction']->address,
             $data['unvoteTransaction']->address,
-            $data['voteSwapTransaction']->address,
             $data['voteTransaction']->address,
             $data['unvoteTransaction']->address,
-            $data['voteSwapTransaction']->address,
         ]);
 });
 
@@ -366,10 +284,8 @@ it('should sort name in ascending order', function () {
         ->assertSeeInOrder([
             $data['voteTransaction']->address,
             $data['unvoteTransaction']->address,
-            $data['voteSwapTransaction']->address,
             $data['voteTransaction']->address,
             $data['unvoteTransaction']->address,
-            $data['voteSwapTransaction']->address,
         ]);
 });
 
@@ -382,10 +298,8 @@ it('should sort name in descending order', function () {
         ->call('sortBy', 'name')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            $data['voteSwapTransaction']->address,
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,
-            $data['voteSwapTransaction']->address,
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,
         ]);
@@ -399,10 +313,8 @@ it('should sort address in ascending order', function () {
         ->call('sortBy', 'address')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            $data['voteSwapTransaction']->address,
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,
-            $data['voteSwapTransaction']->address,
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,
         ]);
@@ -419,10 +331,8 @@ it('should sort address in descending order', function () {
         ->assertSeeInOrder([
             $data['voteTransaction']->address,
             $data['unvoteTransaction']->address,
-            $data['voteSwapTransaction']->address,
             $data['voteTransaction']->address,
             $data['unvoteTransaction']->address,
-            $data['voteSwapTransaction']->address,
         ]);
 });
 
@@ -436,10 +346,8 @@ it('should sort type in ascending order', function () {
         ->assertSeeInOrder([
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,
-            $data['voteSwapTransaction']->address,
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,
-            $data['voteSwapTransaction']->address,
         ]);
 });
 
@@ -452,10 +360,8 @@ it('should sort type in descending order', function () {
         ->call('sortBy', 'type')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            $data['voteSwapTransaction']->address,
             $data['voteTransaction']->address,
             $data['unvoteTransaction']->address,
-            $data['voteSwapTransaction']->address,
             $data['voteTransaction']->address,
             $data['unvoteTransaction']->address,
         ]);
@@ -509,18 +415,14 @@ it('should parse sorting direction from query string', function () {
         ->assertSeeInOrder([
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,
-            $data['voteSwapTransaction']->address,
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,
-            $data['voteSwapTransaction']->address,
         ]);
 
     $this->get('/test-validators?sort=type&sort-direction=desc')
         ->assertSeeInOrder([
-            $data['voteSwapTransaction']->address,
             $data['voteTransaction']->address,
             $data['unvoteTransaction']->address,
-            $data['voteSwapTransaction']->address,
             $data['voteTransaction']->address,
             $data['unvoteTransaction']->address,
         ]);
@@ -535,10 +437,8 @@ it('should force default sort direction if invalid query string value', function
 
     $this->get('/test-validators?sort=type&sort-direction=desc')
         ->assertSeeInOrder([
-            $data['voteSwapTransaction']->address,
             $data['voteTransaction']->address,
             $data['unvoteTransaction']->address,
-            $data['voteSwapTransaction']->address,
             $data['voteTransaction']->address,
             $data['unvoteTransaction']->address,
         ]);
@@ -547,9 +447,7 @@ it('should force default sort direction if invalid query string value', function
         ->assertSeeInOrder([
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,
-            $data['voteSwapTransaction']->address,
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,
-            $data['voteSwapTransaction']->address,
         ]);
 });

@@ -16,8 +16,6 @@ enum StatsTransactionType
 
     public const UNVOTE = 'unvote';
 
-    public const SWITCH_VOTE = 'switch_vote';
-
     public const VALIDATOR_REGISTRATION = 'validator_registration';
 
     public const VALIDATOR_RESIGNATION = 'validator_resignation';
@@ -29,7 +27,6 @@ enum StatsTransactionType
             self::MULTIPAYMENT,
             self::VOTE,
             self::UNVOTE,
-            self::SWITCH_VOTE,
             self::VALIDATOR_REGISTRATION,
             self::VALIDATOR_RESIGNATION,
         ]);

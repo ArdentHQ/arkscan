@@ -81,18 +81,6 @@ final class TransactionFactory extends Factory
         ]);
     }
 
-    public function voteCombination(): Factory
-    {
-        return $this->state(fn () => [
-            'type'       => TransactionTypeEnum::VOTE,
-            'type_group' => 1,
-            'asset'      => [
-                'votes'   => ['address'],
-                'unvotes' => ['address'],
-            ],
-        ]);
-    }
-
     public function multiSignature(): Factory
     {
         return $this->state(fn () => [

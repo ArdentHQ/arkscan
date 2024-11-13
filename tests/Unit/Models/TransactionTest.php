@@ -70,23 +70,6 @@ it('should get recipient if unvote', function () {
     expect($transaction->recipient())->toEqual($validator->fresh());
 });
 
-it('should get vote recipient if vote combination', function () {
-    $validator    = Wallet::factory()->activeValidator()->create();
-    $oldValidator = Wallet::factory()->activeValidator()->create();
-
-    $transaction = Transaction::factory()
-        ->voteCombination()
-        ->create([
-            'recipient_id' => null,
-            'asset'        => [
-                'votes'   => [$validator->public_key],
-                'unvotes' => [$oldValidator->public_key],
-            ],
-        ]);
-
-    expect($transaction->recipient())->toEqual($validator->fresh());
-});
-
 it('should get vendorfield value multiple times despite resource', function () {
     $transaction = Transaction::factory()->transfer()->create([
         'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',

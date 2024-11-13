@@ -12,21 +12,7 @@
         />
     </x-transaction.page.section-detail.row>
 
-    @if ($transaction->isVoteCombination())
-        <x-transaction.page.section-detail.row
-            :title="trans('pages.transaction.header.old_validator')"
-            :transaction="$transaction"
-        >
-            {{-- <x-general.page-section.data.validator :validator="$transaction->unvoted()" /> --}}
-        </x-transaction.page.section-detail.row>
-
-        <x-transaction.page.section-detail.row
-            :title="trans('pages.transaction.header.new_validator')"
-            :transaction="$transaction"
-        >
-            {{-- <x-general.page-section.data.validator :validator="$transaction->voted()" /> --}}
-        </x-transaction.page.section-detail.row>
-    @elseif ($transaction->isVote() || $transaction->isUnvote())
+    @if ($transaction->isVote() || $transaction->isUnvote())
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.validator')"
             :transaction="$transaction"

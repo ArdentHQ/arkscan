@@ -21,7 +21,6 @@ final class TransactionMethod
         'isValidatorRegistration' => 'validator-registration',
         // 'isUsernameRegistration'  => 'username-registration',
         // 'isUsernameResignation'   => 'username-resignation',
-        // 'isVoteCombination'       => 'vote-combination',
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
         // 'isMultiSignature'        => 'multi-signature',
@@ -69,13 +68,6 @@ final class TransactionMethod
         return $this->methodHash === PayloadSignature::UNVOTE->value;
     }
 
-    // public function isVoteCombination(): bool
-    // {
-    //     [$containsVote, $containsUnvote] = $this->determineVoteTypes();
-
-    //     return $containsVote && $containsUnvote;
-    // }
-
     // public function isMultiSignature(): bool
     // {
     //     return $this->transaction->type === TransactionTypeEnum::MULTI_SIGNATURE;
@@ -110,10 +102,6 @@ final class TransactionMethod
         if ($this->isValidatorRegistration()) {
             return false;
         }
-
-        // if ($this->isVoteCombination()) {
-        //     return false;
-        // }
 
         if ($this->isUnvote()) {
             return false;

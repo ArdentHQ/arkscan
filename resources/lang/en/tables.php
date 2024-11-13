@@ -165,7 +165,6 @@ return [
             'select_all' => 'Select All',
             'vote'       => 'Vote',
             'unvote'     => 'Unvote',
-            'vote_swap'  => 'Vote Swap',
         ],
     ],
 ];

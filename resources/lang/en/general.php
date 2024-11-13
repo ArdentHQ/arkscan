@@ -117,13 +117,11 @@ return [
         'voting_validator'         => '<span class="font-semibold text-theme-secondary-500">Voting for <span class="text-white">:validator</span></span>',
         'vote_validator'           => '<span class="font-semibold text-theme-secondary-500">Vote: <span class="text-white">:validator</span></span>',
         'unvote_validator'         => '<span class="font-semibold text-theme-secondary-500">Unvote: <span class="text-white">:validator</span></span>',
-        'vote_swap_validator'      => '<span class="font-semibold text-theme-secondary-500">Unvote: <span class="text-white">:validator_unvote</span> | Vote: <span class="text-white">:validator_vote</span></span>',
 
         'types'                   => [
             'validator-registration' => 'Registration',
             'validator-resignation'  => 'Resignation',
             'multi-payment'          => 'Multipayment',
-            'vote-combination'       => 'Vote Swap',
             'multi-signature'        => 'Multisignature',
             'username-registration'  => 'Username Registration',
             'username-resignation'   => 'Username Resignation',

@@ -16,7 +16,6 @@ use App\Services\Transactions\Aggregates\Type\UnvoteAggregate;
 use App\Services\Transactions\Aggregates\Type\ValidatorRegistrationAggregate;
 use App\Services\Transactions\Aggregates\Type\ValidatorResignationAggregate;
 use App\Services\Transactions\Aggregates\Type\VoteAggregate;
-use App\Services\Transactions\Aggregates\Type\VoteCombinationAggregate;
 
 it('should create an instance that matches the period', function (string $type, string $class) {
     expect(HistoricalAggregateFactory::period($type))->toBeInstanceOf($class);
@@ -40,7 +39,6 @@ it('should create an instance that matches the type', function (string $type, st
     [StatsTransactionType::MULTIPAYMENT, MultipaymentAggregate::class],
     [StatsTransactionType::VOTE, VoteAggregate::class],
     [StatsTransactionType::UNVOTE, UnvoteAggregate::class],
-    [StatsTransactionType::SWITCH_VOTE, VoteCombinationAggregate::class],
     [StatsTransactionType::VALIDATOR_REGISTRATION, ValidatorRegistrationAggregate::class],
     [StatsTransactionType::VALIDATOR_RESIGNATION, ValidatorResignationAggregate::class],
 ]);

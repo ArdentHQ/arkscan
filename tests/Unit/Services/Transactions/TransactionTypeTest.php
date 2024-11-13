@@ -29,10 +29,6 @@ it('should determine the type', function (string $type, string $expected) {
         'unvote',
     ],
     [
-        'voteCombination',
-        'vote-combination',
-    ],
-    [
         'multiSignature',
         'multi-signature',
     ],
@@ -74,7 +70,6 @@ it('should play through every scenario of an unknown type', function (string $ty
     ['validatorRegistration'],
     ['vote'],
     ['unvote'],
-    ['voteCombination'],
     ['multiSignature'],
     ['validatorResignation'],
     ['multiPayment'],

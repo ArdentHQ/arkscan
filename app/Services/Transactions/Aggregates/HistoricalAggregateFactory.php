@@ -18,7 +18,6 @@ use App\Services\Transactions\Aggregates\Type\UnvoteAggregate;
 use App\Services\Transactions\Aggregates\Type\ValidatorRegistrationAggregate;
 use App\Services\Transactions\Aggregates\Type\ValidatorResignationAggregate;
 use App\Services\Transactions\Aggregates\Type\VoteAggregate;
-use App\Services\Transactions\Aggregates\Type\VoteCombinationAggregate;
 use InvalidArgumentException;
 
 final class HistoricalAggregateFactory
@@ -52,7 +51,7 @@ final class HistoricalAggregateFactory
         throw new InvalidArgumentException('Invalid aggregate period.');
     }
 
-    public static function type(string $type): TransferAggregate | MultipaymentAggregate | VoteAggregate | UnvoteAggregate | VoteCombinationAggregate | ValidatorRegistrationAggregate | ValidatorResignationAggregate
+    public static function type(string $type): TransferAggregate | MultipaymentAggregate | VoteAggregate | UnvoteAggregate | ValidatorRegistrationAggregate | ValidatorResignationAggregate
     {
         if ($type === StatsTransactionType::TRANSFER) {
             return new TransferAggregate();
@@ -68,10 +67,6 @@ final class HistoricalAggregateFactory
 
         if ($type === StatsTransactionType::UNVOTE) {
             return new UnvoteAggregate();
-        }
-
-        if ($type === StatsTransactionType::SWITCH_VOTE) {
-            return new VoteCombinationAggregate();
         }
 
         if ($type === StatsTransactionType::VALIDATOR_REGISTRATION) {

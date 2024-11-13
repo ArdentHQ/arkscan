@@ -36,7 +36,6 @@ it('should render transaction details', function (): void {
     ]);
     Transaction::factory(15)->vote()->create();
     Transaction::factory(16)->unvote()->create();
-    Transaction::factory(17)->voteCombination()->create();
 
     $largest = Transaction::factory()->multiPayment()->create([
         'amount' => 99 * 1e18,
@@ -75,7 +74,6 @@ it('should render transaction details', function (): void {
             'multipayment'           => 18,
             'vote'                   => 15,
             'unvote'                 => 16,
-            'switch_vote'            => 17,
             'validator_registration' => 12,
             'validator_resignation'  => 13,
         ],
@@ -94,8 +92,6 @@ it('should render transaction details', function (): void {
             '15',
             trans('pages.statistics.insights.transactions.header.unvote'),
             '16',
-            trans('pages.statistics.insights.transactions.header.switch_vote'),
-            '17',
             trans('pages.statistics.insights.transactions.header.validator_registration'),
             '12',
             trans('pages.statistics.insights.transactions.header.validator_resignation'),
@@ -152,7 +148,6 @@ it('should render transaction daily average', function (): void {
             trans('pages.statistics.insights.transactions.header.multipayment'),
             trans('pages.statistics.insights.transactions.header.vote'),
             trans('pages.statistics.insights.transactions.header.unvote'),
-            trans('pages.statistics.insights.transactions.header.switch_vote'),
             trans('pages.statistics.insights.transactions.header.validator_registration'),
             trans('pages.statistics.insights.transactions.header.validator_resignation'),
             trans('pages.statistics.insights.transactions.header.transactions'),

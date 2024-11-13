@@ -9,7 +9,6 @@ trait ManagesTransactionTypes
     private array $typesGeneric = [
         'isTransfer'              => 'transfer',
         'isValidatorRegistration' => 'validator-registration',
-        'isVoteCombination'       => 'vote-combination',
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
         'isMultiSignature'        => 'multi-signature',
@@ -22,7 +21,6 @@ trait ManagesTransactionTypes
     private array $typesExact = [
         'isTransfer'              => 'transfer',
         'isValidatorRegistration' => 'validator-registration',
-        'isVoteCombination'       => 'vote-combination',
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
         'isMultiSignature'        => 'multi-signature',

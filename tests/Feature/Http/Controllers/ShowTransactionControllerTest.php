@@ -41,20 +41,3 @@ it('should render the page for a vote/unvote transaction without any errors', fu
     'vote',
     'unvote',
 ]);
-
-it('should render the page for a vote combination transaction without any errors', function () {
-    $this->withoutExceptionHandling();
-
-    $oldValidator = Wallet::factory()->activeValidator()->create();
-    $newValidator = Wallet::factory()->activeValidator()->create();
-    $transaction  = Transaction::factory()->voteCombination()->create([
-        'asset' => [
-            'unvotes' => [$oldValidator->address, '+'.$newValidator->address],
-        ],
-    ]);
-
-    $this
-        ->get(route('transaction', $transaction))
-        ->assertOk()
-        ->assertSee($transaction->id);
-});

@@ -511,7 +511,6 @@ return [
                     'multipayment'                => 'Multipayments',
                     'vote'                        => 'Votes',
                     'unvote'                      => 'Unvotes',
-                    'switch_vote'                 => 'Switch Votes',
                     'validator_registration'      => 'Validator Registrations',
                     'validator_resignation'       => 'Validator Resignations',
                     'transactions'                => 'Transactions',

@@ -4,7 +4,6 @@
     $isVoteType = in_array($transaction->typeName(), [
         'vote',
         'unvote',
-        'vote-combination',
     ]);
 @endphp
 

@@ -16,7 +16,6 @@ use App\Models\Scopes\UsernameRegistrationScope;
 use App\Models\Scopes\UsernameResignationScope;
 use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Scopes\ValidatorResignationScope;
-use App\Models\Scopes\VoteCombinationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
 use App\Services\VendorField;
@@ -68,7 +67,6 @@ final class Transaction extends Model
         'usernameResignation'           => UsernameResignationScope::class,
         'transfer'                      => TransferScope::class,
         'vote'                          => VoteScope::class,
-        'voteCombination'               => VoteCombinationScope::class,
     ];
 
     /**

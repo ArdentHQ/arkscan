@@ -38,7 +38,6 @@ return [
             'multiSignature'        => 'Multisignature',
             'transfer'              => 'Transfer',
             'vote'                  => 'Vote',
-            'voteCombination'       => 'Switch Vote',
         ],
 
     ],

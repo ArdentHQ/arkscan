@@ -33,13 +33,6 @@ trait HasMethod
         return $this->method->isUnvote();
     }
 
-    public function isVoteCombination(): bool
-    {
-        return false;
-
-        return $this->method->isVoteCombination();
-    }
-
     public function isMultiSignature(): bool
     {
         return false;
@@ -95,10 +88,6 @@ trait HasMethod
         //     return false;
         // }
 
-        // if ($this->isVoteCombination()) {
-        //     return false;
-        // }
-
         if ($this->isVote()) {
             return false;
         }
@@ -132,10 +121,6 @@ trait HasMethod
         if ($this->isValidatorResignation()) {
             return true;
         }
-
-        // if ($this->isVoteCombination()) {
-        //     return true;
-        // }
 
         if ($this->isVote()) {
             return true;
