@@ -11,11 +11,11 @@ use App\Services\ExchangeRate;
 use App\Services\Timestamp;
 use App\Services\Transactions\TransactionDirection;
 use App\Services\Transactions\TransactionState;
-use App\Services\Transactions\TransactionType;
+use App\Services\Transactions\TransactionMethod;
 use App\ViewModels\Concerns\Transaction\HasDirection;
 use App\ViewModels\Concerns\Transaction\HasPayload;
 use App\ViewModels\Concerns\Transaction\HasState;
-use App\ViewModels\Concerns\Transaction\HasType;
+use App\ViewModels\Concerns\Transaction\HasMethod;
 use App\ViewModels\Concerns\Transaction\InteractsWithMultiPayment;
 use App\ViewModels\Concerns\Transaction\InteractsWithMultiSignature;
 use App\ViewModels\Concerns\Transaction\InteractsWithUsernames;
@@ -31,7 +31,7 @@ final class TransactionViewModel implements ViewModel
     use HasDirection;
     use HasPayload;
     use HasState;
-    use HasType;
+    use HasMethod;
     use InteractsWithMultiPayment;
     use InteractsWithMultiSignature;
     use InteractsWithUsernames;
@@ -39,7 +39,7 @@ final class TransactionViewModel implements ViewModel
     use InteractsWithVotes;
     use InteractsWithWallets;
 
-    private TransactionType $type;
+    private TransactionMethod $method;
 
     private TransactionState $state;
 
@@ -47,7 +47,7 @@ final class TransactionViewModel implements ViewModel
 
     public function __construct(private Transaction $transaction)
     {
-        $this->type        = new TransactionType($transaction);
+        $this->method      = new TransactionMethod($transaction);
         $this->state       = new TransactionState($transaction);
         $this->direction   = new TransactionDirection($transaction);
     }

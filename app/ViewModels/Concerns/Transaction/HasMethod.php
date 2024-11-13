@@ -4,69 +4,73 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use App\Services\Transactions\TransactionType;
+use App\Services\Transactions\TransactionMethod;
 
-trait HasType
+trait HasMethod
 {
     public function typeName(): string
     {
-        return (new TransactionType($this->transaction))->name();
+        return (new TransactionMethod($this->transaction))->name();
     }
 
     public function isTransfer(): bool
     {
-        return $this->type->isTransfer();
+        return $this->method->isTransfer();
     }
 
     public function isValidatorRegistration(): bool
     {
-        return $this->type->isValidatorRegistration();
+        return $this->method->isValidatorRegistration();
     }
 
     public function isVote(): bool
     {
-        return $this->type->isVote();
+        return $this->method->isVote();
     }
 
     public function isUnvote(): bool
     {
-        return $this->type->isUnvote();
+        return $this->method->isUnvote();
     }
 
     public function isVoteCombination(): bool
     {
-        return $this->type->isVoteCombination();
+        return false;
+
+        return $this->method->isVoteCombination();
     }
 
     public function isMultiSignature(): bool
     {
-        return $this->type->isMultiSignature();
+        return false;
+
+        return $this->method->isMultiSignature();
     }
 
     public function isValidatorResignation(): bool
     {
-        return $this->type->isValidatorResignation();
+        return $this->method->isValidatorResignation();
     }
 
     public function isMultiPayment(): bool
     {
-        return $this->type->isMultiPayment();
+        return false;
+
+        return $this->method->isMultiPayment();
     }
 
     public function isUsernameRegistration(): bool
     {
-        return $this->type->isUsernameRegistration();
+        return false;
+
+        return $this->method->isUsernameRegistration();
     }
 
     public function isUsernameResignation(): bool
     {
-        return $this->type->isUsernameResignation();
-    }
+        return false;
 
-    // TODO: implement method correctly - https://app.clickup.com/t/86dur8fj6
-    public function isEvm(): bool
-    {
-        return true;
+        return $this->method->isUsernameResignation();
     }
 
     public function isLegacy(): bool
@@ -79,21 +83,21 @@ trait HasType
             return false;
         }
 
-        if ($this->isUsernameRegistration()) {
-            return false;
-        }
+        // if ($this->isUsernameRegistration()) {
+        //     return false;
+        // }
 
-        if ($this->isUsernameResignation()) {
-            return false;
-        }
+        // if ($this->isUsernameResignation()) {
+        //     return false;
+        // }
 
-        if ($this->isMultiPayment()) {
-            return false;
-        }
+        // if ($this->isMultiPayment()) {
+        //     return false;
+        // }
 
-        if ($this->isVoteCombination()) {
-            return false;
-        }
+        // if ($this->isVoteCombination()) {
+        //     return false;
+        // }
 
         if ($this->isVote()) {
             return false;
@@ -107,16 +111,16 @@ trait HasType
             return false;
         }
 
-        if ($this->isMultiSignature()) {
-            return false;
-        }
+        // if ($this->isMultiSignature()) {
+        //     return false;
+        // }
 
         return true;
     }
 
     public function isUnknown(): bool
     {
-        return $this->type->isUnknown();
+        return $this->method->isUnknown();
     }
 
     public function isSelfReceiving(): bool
@@ -129,9 +133,9 @@ trait HasType
             return true;
         }
 
-        if ($this->isVoteCombination()) {
-            return true;
-        }
+        // if ($this->isVoteCombination()) {
+        //     return true;
+        // }
 
         if ($this->isVote()) {
             return true;
@@ -141,13 +145,13 @@ trait HasType
             return true;
         }
 
-        if ($this->isUsernameRegistration()) {
-            return true;
-        }
+        // if ($this->isUsernameRegistration()) {
+        //     return true;
+        // }
 
-        if ($this->isUsernameResignation()) {
-            return true;
-        }
+        // if ($this->isUsernameResignation()) {
+        //     return true;
+        // }
 
         return false;
     }
