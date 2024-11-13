@@ -1,15 +1,19 @@
 @props(['transaction'])
 
 @if($transaction->isVote())
+    @php($votedValidator = $transaction->voted())
+
     <span
-        {{-- data-tippy-html-content="{{ trans('general.transaction.vote_validator', ['validator' => $transaction->voted()->username()]) }}" --}}
+        @if ($votedValidator && $votedValidator->hasUsername())
+            data-tippy-html-content="{{ trans('general.transaction.vote_validator', ['validator' => $votedValidator->username()]) }}"
+        @elseif ($votedValidator)
+            data-tippy-html-content="{{ trans('general.transaction.vote_validator', ['validator' => $votedValidator->address()]) }}"
+        @endif
     >
-        @lang('general.transaction.types.'.$transaction->typeName())
+        {{ $transaction->typeName() }}
     </span>
 @else
-    <span
-        {{-- data-tippy-html-content="{{ trans('general.transaction.unvote_validator', ['validator' => $transaction->unvoted()->username()]) }}" --}}
-    >
-        @lang('general.transaction.types.'.$transaction->typeName())
+    <span>
+        {{ $transaction->typeName() }}
     </span>
 @endif

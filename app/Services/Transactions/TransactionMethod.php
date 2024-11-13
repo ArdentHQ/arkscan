@@ -37,11 +37,11 @@ final class TransactionMethod
     {
         foreach ($this->types as $method => $name) {
             if ((bool) call_user_func_safe([$this, $method])) {
-                return $name;
+                return trans('general.transaction.types.'.$name);
             }
         }
 
-        return 'unknown';
+        return '0x'.$this->methodHash;
     }
 
     public function isTransfer(): bool

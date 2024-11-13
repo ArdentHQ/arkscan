@@ -2,13 +2,13 @@
 
 @php
     $isVoteType = in_array($transaction->typeName(), [
-        'vote',
-        'unvote',
+        'Vote',
+        'Unvote',
     ]);
 @endphp
 
 @if ($isVoteType)
     <x-general.encapsulated.vote-type :transaction="$transaction" />
 @else
-    @lang('general.transaction.types.'.$transaction->typeName())
+    {{ $transaction->typeName() }}
 @endif

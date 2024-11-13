@@ -86,7 +86,7 @@ return [
     ],
 
     'transaction'      => [
-        'transaction_method'    => 'Transaction Method',
+        'action'                => 'Action',
         'transaction_id'        => 'Transaction ID',
         'transaction_id_copied' => 'Transaction ID Copied',
         'transaction_details'   => 'Transaction Details',
@@ -104,7 +104,7 @@ return [
             'timestamp'            => 'Timestamp',
             'block'                => 'Block',
             'nonce'                => 'Nonce',
-            'category'             => 'Category',
+            'method'               => 'Method',
             'validator'            => 'Validator',
             'username'             => 'Name',
             'old_validator'        => 'Old Validator',

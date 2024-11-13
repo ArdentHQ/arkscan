@@ -1,8 +1,8 @@
 @props(['transaction'])
 
-<x-general.page-section.container :title="trans('pages.transaction.transaction_method')">
+<x-general.page-section.container :title="trans('pages.transaction.action')">
     <x-transaction.page.section-detail.row
-        :title="trans('pages.transaction.header.category')"
+        :title="trans('pages.transaction.header.method')"
         :transaction="$transaction"
         valueClass="inline"
     >
@@ -12,12 +12,16 @@
         />
     </x-transaction.page.section-detail.row>
 
-    @if ($transaction->isVote() || $transaction->isUnvote())
+    @if ($transaction->isVote())
+        @php($votedValidator = $transaction->voted())
+
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.validator')"
             :transaction="$transaction"
         >
-            {{-- <x-general.page-section.data.validator :validator="$transaction->isVote() ? $transaction->voted() : $transaction->unvoted()" /> --}}
+            @if ($votedValidator)
+                <x-general.page-section.data.validator :validator="$transaction->voted()" />
+            @endif
         </x-transaction.page.section-detail.row>
     @elseif ($transaction->isMultisignature())
         <x-transaction.page.section-detail.row
