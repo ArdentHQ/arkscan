@@ -1098,31 +1098,6 @@ it('should get the minimum for legacy multi signature transactions', function ()
     expect($this->subject->multiSignatureMinimum())->toBe(3);
 });
 
-it('should determine a non-legacy transaction', function ($transaction) {
-    $transaction = new TransactionViewModel(Transaction::factory()->{$transaction}()->create());
-
-    expect($transaction->isLegacy())->toBeFalse();
-})->with([
-    'transfer',
-    'validatorRegistration',
-    'validatorResignation',
-    'multisignature',
-    'multiPayment',
-    'vote',
-    'unvote',
-    'usernameRegistration',
-    'usernameResignation',
-]);
-
-it('should determine a legacy transaction', function () {
-    $transaction = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => '12345',
-        'type_group' => '55555',
-    ]));
-
-    expect($transaction->isLegacy())->toBeTrue();
-});
-
 describe('HasPayload trait', function () {
     it('should determine if a transaction has a payload', function () {
         $transaction = new TransactionViewModel(Transaction::factory()->create([

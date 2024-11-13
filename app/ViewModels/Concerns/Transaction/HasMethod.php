@@ -66,47 +66,6 @@ trait HasMethod
         return $this->method->isUsernameResignation();
     }
 
-    public function isLegacy(): bool
-    {
-        if ($this->isValidatorRegistration()) {
-            return false;
-        }
-
-        if ($this->isValidatorResignation()) {
-            return false;
-        }
-
-        // if ($this->isUsernameRegistration()) {
-        //     return false;
-        // }
-
-        // if ($this->isUsernameResignation()) {
-        //     return false;
-        // }
-
-        // if ($this->isMultiPayment()) {
-        //     return false;
-        // }
-
-        if ($this->isVote()) {
-            return false;
-        }
-
-        if ($this->isUnvote()) {
-            return false;
-        }
-
-        if ($this->isTransfer()) {
-            return false;
-        }
-
-        // if ($this->isMultiSignature()) {
-        //     return false;
-        // }
-
-        return true;
-    }
-
     public function isUnknown(): bool
     {
         return $this->method->isUnknown();

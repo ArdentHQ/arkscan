@@ -7,12 +7,8 @@
     ]);
 @endphp
 
-@unless ($transaction->isLegacy())
-    @if ($isVoteType)
-        <x-general.encapsulated.vote-type :transaction="$transaction" />
-    @else
-        @lang('general.transaction.types.'.$transaction->typeName())
-    @endif
+@if ($isVoteType)
+    <x-general.encapsulated.vote-type :transaction="$transaction" />
 @else
-    @lang('general.transaction.types.legacy')
-@endunless
+    @lang('general.transaction.types.'.$transaction->typeName())
+@endif

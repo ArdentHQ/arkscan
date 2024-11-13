@@ -47,11 +47,5 @@
             :value="$transaction->username()"
             :transaction="$transaction"
         />
-    @elseif ($transaction->isLegacy())
-        <x-transaction.page.section-detail.row
-            :title="trans('pages.transaction.header.sub_category')"
-            :value="trans('pages.transaction.types.'.$transaction->typeName())"
-            :transaction="$transaction"
-        />
     @endif
 </x-general.page-section.container>

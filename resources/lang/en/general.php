@@ -129,7 +129,6 @@ return [
             'unvote'                 => 'Unvote',
             'vote'                   => 'Vote',
             'unknown'                => 'Unknown',
-            'legacy'                 => 'Legacy',
         ],
     ],
 

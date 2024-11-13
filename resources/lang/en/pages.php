@@ -112,7 +112,6 @@ return [
             'address'              => 'Address',
             'signatures'           => 'Signatures',
             'hash'                 => 'Hash',
-            'sub_category'         => 'Sub-Category',
             'from'                 => 'From',
             'to'                   => 'To',
             'amount'               => 'Amount',
@@ -125,14 +124,6 @@ return [
 
         'value' => [
             'multiple_x' => 'Multiple (<button type="link" data-link-scroll-to="#recipients-list" class="link">:count</button>)',
-        ],
-
-        'types' => [
-            ...trans('general.transaction.types'),
-
-            'legacy-business-registration'        => 'Business Registration',
-            'legacy-business-resignation'         => 'Business Resignation',
-            'legacy-business-update'              => 'Business Update',
         ],
 
         'code-block' => [

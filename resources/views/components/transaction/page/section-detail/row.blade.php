@@ -11,8 +11,6 @@
     $headerWidth = 'w-[87px]';
     if ($transaction->hasPayload()) {
         $headerWidth = 'w-[132px]';
-    } elseif ($transaction->isLegacy()) {
-        $headerWidth = 'w-[110px]';
     }
 @endphp
 
