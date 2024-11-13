@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use Illuminate\Support\Arr;
-
 trait HasPayload
 {
     public function hasPayload(): bool
@@ -15,7 +13,12 @@ trait HasPayload
 
     public function rawPayload(): ?string
     {
-        $payload = Arr::get($this->transaction, 'asset.evmCall.payload');
+        $payload = $this->transaction->data;
+        if ($payload === null) {
+            return null;
+        }
+
+        $payload = bin2hex(stream_get_contents($payload, offset: 0));
         if (is_string($payload) && strlen($payload) === 0) {
             return null;
         }
@@ -38,14 +41,19 @@ trait HasPayload
         return $utf8;
     }
 
-    public function formattedPayload(): ?string
+    public function methodHash(): ?string
     {
         $payload = $this->rawPayload();
         if ($payload === null) {
             return null;
         }
 
-        $methodId = substr($payload, 0, 8);
+        return substr($payload, 0, 8);
+    }
+
+    public function formattedPayload(): ?string
+    {
+        $methodId = $this->methodHash();
 
         $functionName = null;
         if (app('translator')->has('contracts.'.$methodId)) {
