@@ -16,13 +16,15 @@ trait InteractsWithVotes
             return null;
         }
 
-        /** @var array<int, string> */
-        $votes = Arr::get($this->transaction->asset ?? [], 'votes');
+        return null;
 
-        /** @var string */
-        $address = collect($votes)->firstOrFail();
+        // /** @var array<int, string> */
+        // $votes = Arr::get($this->transaction->asset ?? [], 'votes');
 
-        return new WalletViewModel(Wallets::findByPublicKey($address));
+        // /** @var string */
+        // $address = collect($votes)->firstOrFail();
+
+        // return new WalletViewModel(Wallets::findByPublicKey($address));
     }
 
     public function unvoted(): ?WalletViewModel
@@ -31,12 +33,14 @@ trait InteractsWithVotes
             return null;
         }
 
-        /** @var array<int, string> */
-        $votes = Arr::get($this->transaction->asset ?? [], 'unvotes');
+        return null;
 
-        /** @var string */
-        $address = collect($votes)->firstOrFail();
+        // /** @var array<int, string> */
+        // $votes = Arr::get($this->transaction->asset ?? [], 'unvotes');
 
-        return new WalletViewModel(Wallets::findByPublicKey($address));
+        // /** @var string */
+        // $address = collect($votes)->firstOrFail();
+
+        // return new WalletViewModel(Wallets::findByPublicKey($address));
     }
 }
