@@ -115,8 +115,7 @@ return [
         'block_id'                 => 'Block ID',
         'well-confirmed'           => 'Well Confirmed',
         'voting_validator'         => '<span class="font-semibold text-theme-secondary-500">Voting for <span class="text-white">:validator</span></span>',
-        'vote_validator'           => '<span class="font-semibold text-theme-secondary-500">Vote: <span class="text-white">:validator</span></span>',
-        'unvote_validator'         => '<span class="font-semibold text-theme-secondary-500">Unvote: <span class="text-white">:validator</span></span>',
+        'vote_validator'           => '<span class="font-semibold text-theme-secondary-500 break-words"><span>Vote:</span><span class="text-white ml-1">:validator</span></span>',
 
         'types'                   => [
             'validator-registration' => 'Registration',
