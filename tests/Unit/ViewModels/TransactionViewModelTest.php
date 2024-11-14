@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\DTO\Payment;
 use App\Facades\Settings;
 use App\Models\Block;
 use App\Models\Receipt;
