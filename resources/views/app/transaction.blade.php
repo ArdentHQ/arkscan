@@ -15,10 +15,6 @@
 
             <x-transaction.page.summary :transaction="$transaction" />
 
-            @if ($transaction->isTransfer() || $transaction->isMultiPayment())
-                <x-transaction.page.memo :transaction="$transaction" />
-            @endif
-
             <x-general.page-section.confirmations :model="$transaction" />
 
             @if ($transaction->isMultiPayment())

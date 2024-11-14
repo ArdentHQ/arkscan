@@ -1,7 +1,5 @@
 @props(['transaction'])
 
-@php ($vendorField = $transaction->vendorField())
-
 <div>
     {{-- Mobile --}}
     <x-general.page-section.container

@@ -989,34 +989,6 @@ it('should return null for username if not specified', function () {
     expect($subject->username())->toBeNull();
 });
 
-it('should get the vendor field', function () {
-    $transaction = Transaction::factory()->create([]);
-
-    DB::connection('explorer')->update('UPDATE transactions SET vendor_field = ? WHERE id = ?', ['Hello World', $transaction->id]);
-
-    $this->subject = new TransactionViewModel($transaction->fresh());
-
-    expect($this->subject->vendorField())->toBe('Hello World');
-});
-
-it('should fail to get the vendor field if it is empty', function () {
-    $transaction = Transaction::factory()->create(['vendor_field' => null]);
-
-    $this->subject = new TransactionViewModel($transaction->fresh());
-
-    expect($this->subject->vendorField())->toBeNull();
-});
-
-it('should fail to get the vendor field if it is empty after reading it', function () {
-    $transaction = Transaction::factory()->create([]);
-
-    DB::connection('explorer')->update('UPDATE transactions SET vendor_field = ? WHERE id = ?', ['', $transaction->id]);
-
-    $this->subject = new TransactionViewModel($transaction->fresh());
-
-    expect($this->subject->vendorField())->toBeNull();
-});
-
 it('should get the address of legacy multi signature transactions', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->multiSignature()->create([
         'sender_public_key' => $this->sender->public_key,

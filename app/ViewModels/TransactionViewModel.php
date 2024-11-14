@@ -19,7 +19,6 @@ use App\ViewModels\Concerns\Transaction\HasState;
 use App\ViewModels\Concerns\Transaction\InteractsWithMultiPayment;
 use App\ViewModels\Concerns\Transaction\InteractsWithMultiSignature;
 use App\ViewModels\Concerns\Transaction\InteractsWithUsernames;
-use App\ViewModels\Concerns\Transaction\InteractsWithVendorField;
 use App\ViewModels\Concerns\Transaction\InteractsWithVotes;
 use App\ViewModels\Concerns\Transaction\InteractsWithWallets;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
@@ -35,7 +34,6 @@ final class TransactionViewModel implements ViewModel
     use InteractsWithMultiPayment;
     use InteractsWithMultiSignature;
     use InteractsWithUsernames;
-    use InteractsWithVendorField;
     use InteractsWithVotes;
     use InteractsWithWallets;
 
