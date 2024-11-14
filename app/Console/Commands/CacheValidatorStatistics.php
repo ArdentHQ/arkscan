@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Enums\TransactionTypeEnum;
-use App\Facades\Rounds;
 use App\Models\Block;
-use App\Models\Transaction;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Wallets\Aggregates\UniqueVotersAggregate;
@@ -44,34 +41,6 @@ final class CacheValidatorStatistics extends Command
             $cache->setLeastUniqueVoters($leastVotedValidator['address']);
 
             $walletCache->setVoterCount($leastVotedValidator['address'], $leastVotedValidator['voter_count']);
-        }
-
-        $activeValidators = Rounds::current()->validators;
-
-        $newestActiveValidatorTx = Transaction::where('type', '=', TransactionTypeEnum::VALIDATOR_REGISTRATION)
-            ->whereIn('sender_public_key', $activeValidators)
-            ->orderBy('timestamp', 'desc')
-            ->limit(1)
-            ->first();
-
-        if ($newestActiveValidatorTx !== null) {
-            $cache->setNewestActiveValidator(
-                $newestActiveValidatorTx->sender_public_key,
-                $newestActiveValidatorTx->timestamp
-            );
-        }
-
-        $oldestActiveValidatorTx = Transaction::where('type', '=', TransactionTypeEnum::VALIDATOR_REGISTRATION)
-            ->whereIn('sender_public_key', $activeValidators)
-            ->orderBy('timestamp', 'asc')
-            ->limit(1)
-            ->first();
-
-        if ($oldestActiveValidatorTx !== null) {
-            $cache->setOldestActiveValidator(
-                $oldestActiveValidatorTx->sender_public_key,
-                $oldestActiveValidatorTx->timestamp
-            );
         }
 
         $mostBlocksForged = Block::select(DB::raw('COUNT(*), generator_address'))

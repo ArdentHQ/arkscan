@@ -11,7 +11,7 @@ import {
     getDateRange,
     queryTimestamp,
 } from "./includes/helpers";
-import { ExportStatus, TransactionType } from "./includes/enums";
+import { ExportStatus } from "./includes/enums";
 
 import { TransactionsApi } from "./api/transactions";
 
@@ -54,15 +54,7 @@ const TransactionsExport = ({
         timestamp: (transaction) =>
             dayjs(parseInt(transaction.timestamp)).format("L LTS"),
         recipient: (transaction) => {
-            if (transaction.type === TransactionType.Transfer) {
-                return transaction.recipient;
-            }
-
-            if (transaction.type === TransactionType.Vote) {
-                return "Vote Transaction";
-            }
-
-            return "Other";
+            return transaction.recipient;
         },
         amount: getTransactionAmount,
         fee: (transaction) => {
@@ -224,7 +216,7 @@ const TransactionsExport = ({
             return getDateRange(this.dateRange);
         },
 
-        requestData(withoutTransactionTypes = false) {
+        requestData() {
             const [dateFrom, dateTo] = this.getDateRange();
 
             const data = {
@@ -235,21 +227,6 @@ const TransactionsExport = ({
             if (dateFrom) {
                 data["timestamp.from"] = queryTimestamp(dateFrom);
                 data["timestamp.to"] = queryTimestamp(dateTo);
-            }
-
-            if (this.types.transfers) {
-                data.type.push(TransactionType.Transfer);
-            }
-
-            if (this.types.votes) {
-                data.type.push(TransactionType.Vote);
-            }
-
-            if (this.types.others) {
-                data.type.push(
-                    TransactionType.ValidatorRegistration,
-                    TransactionType.ValidatorResignation
-                );
             }
 
             data.type = data.type.join(",");
