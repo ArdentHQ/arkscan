@@ -10,10 +10,7 @@
     @foreach ($wallets as $wallet)
         <x-tables.rows.mobile wire:key="{{ Helpers::generateId('voters-mobile-row', $wallet->id()) }}">
             <x-slot name="header">
-                <x-tables.headers.mobile.encapsulated.address
-                    :model="$wallet"
-                    :without-username="false"
-                />
+                <x-tables.headers.mobile.encapsulated.address :model="$wallet" />
             </x-slot>
 
             <x-tables.rows.mobile.encapsulated.balance :model="$wallet" class="sm:flex-1" />

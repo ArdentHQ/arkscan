@@ -10,13 +10,9 @@ enum StatsTransactionType
 {
     public const TRANSFER = 'transfer';
 
-    public const MULTIPAYMENT = 'multipayment';
-
     public const VOTE = 'vote';
 
     public const UNVOTE = 'unvote';
-
-    public const SWITCH_VOTE = 'switch_vote';
 
     public const VALIDATOR_REGISTRATION = 'validator_registration';
 
@@ -26,10 +22,8 @@ enum StatsTransactionType
     {
         return new Collection([
             self::TRANSFER,
-            self::MULTIPAYMENT,
             self::VOTE,
             self::UNVOTE,
-            self::SWITCH_VOTE,
             self::VALIDATOR_REGISTRATION,
             self::VALIDATOR_RESIGNATION,
         ]);

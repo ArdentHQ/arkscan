@@ -45,11 +45,6 @@
             />
 
             <x-tables.filters.includes.checkbox
-                name="multipayments"
-                :label="trans('tables.filters.transactions.multipayments')"
-            />
-
-            <x-tables.filters.includes.checkbox
                 name="others"
                 :label="trans('tables.filters.transactions.others')"
             />

@@ -11,14 +11,13 @@ return [
     'transactions' => [
         'id'         => 'Tx ID',
         'age'        => 'Age',
-        'type'       => 'Type',
+        'method'     => 'Method',
         'addressing' => 'Addressing',
         'amount'     => 'Amount (:currency)',
         'fee'        => 'Fee (:currency)',
         'to'         => 'To',
         'from'       => 'From',
         'contract'   => 'Contract',
-        'multiple'   => 'Multiple',
         'address'    => 'Address',
         'return'     => 'Return',
 
@@ -141,17 +140,16 @@ return [
 
     'filters' => [
         'transactions' => [
-            'addressing'    => 'Addressing',
-            'types'         => 'Types',
-            'select_all'    => 'Select All',
-            'outgoing'      => 'Outgoing',
-            'incoming'      => 'Incoming',
-            'to'            => 'To',
-            'from'          => 'From',
-            'transfers'     => 'Transfers',
-            'votes'         => 'Votes',
-            'multipayments' => 'Multipayments',
-            'others'        => 'Others',
+            'addressing'=> 'Addressing',
+            'types'     => 'Types',
+            'select_all'=> 'Select All',
+            'outgoing'  => 'Outgoing',
+            'incoming'  => 'Incoming',
+            'to'        => 'To',
+            'from'      => 'From',
+            'transfers' => 'Transfers',
+            'votes'     => 'Votes',
+            'others'    => 'Others',
         ],
 
         'validators' => [
@@ -165,7 +163,6 @@ return [
             'select_all' => 'Select All',
             'vote'       => 'Vote',
             'unvote'     => 'Unvote',
-            'vote_swap'  => 'Vote Swap',
         ],
     ],
 ];

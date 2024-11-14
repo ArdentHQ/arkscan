@@ -10,22 +10,14 @@
             @lang('tables.transactions.from')
         </x-general.badge>
 
-        <x-dynamic-tooltip tooltip="{{ $transactionWallet->hasUsername() ? $transactionWallet->username() : null }}">
-            <div
-                class="min-w-0 truncate"
+        <div class="min-w-0 truncate">
+            <a
+                class="whitespace-nowrap link"
+                href="{{ route('wallet', $transactionWallet->address()) }}"
             >
-                <a
-                    class="whitespace-nowrap link"
-                    href="{{ route('wallet', $transactionWallet->address()) }}"
-                >
-                    @if ($transactionWallet->hasUsername())
-                        {{ $transactionWallet->username() }}
-                    @else
-                        <x-truncate-middle>{{ $transactionWallet->address }}</x-truncate-middle>
-                    @endif
-                </a>
-            </div>
-        </x-dynamic-tooltip>
+                <x-truncate-middle>{{ $transactionWallet->address }}</x-truncate-middle>
+            </a>
+        </div>
     </div>
 
     <div class="flex items-center space-x-2">
@@ -35,33 +27,21 @@
 
         @php ($recipient = $model->recipient())
 
-        <x-dynamic-tooltip tooltip="{{$model->isTransfer() && $recipient->hasUsername() ? $recipient->username() : null}}">
-            <div
-                class="min-w-0 truncate"
-            >
-                @if ($model->isTransfer())
-                    <a
-                        class="whitespace-nowrap link"
-                        href="{{ route('wallet', $recipient->address()) }}"
-                    >
-                        @if ($recipient->hasUsername())
-                            {{ $recipient->username() }}
-                        @else
-                            <x-truncate-middle>{{ $recipient->address }}</x-truncate-middle>
-                        @endif
-                    </a>
-                @elseif ($model->isMultiPayment())
-                    <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                        @lang('tables.transactions.multiple')
-
-                        ({{ $model->recipientsCount() }})
-                    </span>
-                @else
-                    <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                        @lang('tables.transactions.contract')
-                    </span>
-                @endif
-            </div>
-        </x-dynamic-tooltip>
+        <div
+            class="min-w-0 truncate"
+        >
+            @if ($model->isTransfer())
+                <a
+                    class="whitespace-nowrap link"
+                    href="{{ route('wallet', $recipient->address()) }}"
+                >
+                    <x-truncate-middle>{{ $recipient->address }}</x-truncate-middle>
+                </a>
+            @else
+                <span class="text-theme-secondary-900 dark:text-theme-dark-50">
+                    @lang('tables.transactions.contract')
+                </span>
+            @endif
+        </div>
     </div>
 </div>

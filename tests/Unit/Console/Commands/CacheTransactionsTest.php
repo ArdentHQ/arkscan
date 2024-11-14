@@ -61,7 +61,6 @@ it('should cache data', function (): void {
     expect($cache->getHistoricalByType(StatsTransactionType::TRANSFER))->toBe(4);
     expect($cache->getHistoricalByType(StatsTransactionType::MULTIPAYMENT))->toBe(4);
     expect($cache->getHistoricalByType(StatsTransactionType::VALIDATOR_RESIGNATION))->toBe(0);
-    expect($cache->getHistoricalByType(StatsTransactionType::SWITCH_VOTE))->toBe(0);
     expect($cache->getHistoricalByType(StatsTransactionType::UNVOTE))->toBe(0);
     expect($cache->getHistoricalByType(StatsTransactionType::VOTE))->toBe(0);
 

@@ -14,11 +14,6 @@ final class Forms
         'validatorRegistration',
         'validatorResignation',
         'vote',
-        'voteCombination',
-        'multiSignature',
-        'multiPayment',
-        'usernameRegistration',
-        'usernameResignation',
     ];
 
     /**

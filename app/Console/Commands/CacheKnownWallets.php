@@ -5,27 +5,26 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Facades\Network;
-use App\Facades\Wallets;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 
-final class CacheUsernames extends Command
+final class CacheKnownWallets extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'explorer:cache-usernames';
+    protected $signature = 'explorer:cache-known-wallets';
 
     /**
      * The console command description.
      *
      * @var string|null
      */
-    protected $description = 'Cache all usernames by their address and public key.';
+    protected $description = 'Cache all known wallets by their address.';
 
     public function handle(): void
     {
@@ -33,11 +32,9 @@ final class CacheUsernames extends Command
 
         $knownWallets = collect(Network::knownWallets());
 
-        Wallets::allWithUsername()
-            ->orWhereIn('address', $knownWallets->pluck('address'))
+        Wallet::whereIn('address', $knownWallets->pluck('address'))
             ->select([
                 'address',
-                'public_key',
                 'attributes',
             ])
             ->get()
@@ -45,17 +42,14 @@ final class CacheUsernames extends Command
                 /** @var Wallet $wallet */
                 $knownWallet = $knownWallets->firstWhere('address', $wallet->address);
 
+                $username = null;
                 if (! is_null($knownWallet)) {
                     $username = $knownWallet['name'];
-                } else {
-                    $username = $wallet->username();
                 }
 
                 if (! is_null($username)) {
-                    $cache->setUsernameByAddress($wallet->address, $username);
+                    $cache->setWalletNameByAddress($wallet->address, $username);
                 }
             });
-
-        // TODO: re-add username resignation scope to forget usernames which have resigned - https://app.clickup.com/t/86duvqbd4
     }
 }

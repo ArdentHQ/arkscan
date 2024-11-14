@@ -9,12 +9,8 @@
 
 @php
     $headerWidth = 'w-[87px]';
-    if ($transaction->isEvm()) {
+    if ($transaction->hasPayload()) {
         $headerWidth = 'w-[132px]';
-    } elseif ($transaction->isVoteCombination()) {
-        $headerWidth = 'w-[109px]';
-    } elseif ($transaction->isLegacy()) {
-        $headerWidth = 'w-[110px]';
     }
 @endphp
 

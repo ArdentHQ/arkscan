@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use App\Facades\Wallets;
+use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
-use Illuminate\Support\Arr;
+use ArkEcosystem\Crypto\Utils\AbiDecoder;
 
 trait InteractsWithVotes
 {
@@ -16,27 +16,25 @@ trait InteractsWithVotes
             return null;
         }
 
-        /** @var array<int, string> */
-        $votes = Arr::get($this->transaction->asset ?? [], 'votes');
-
-        /** @var string */
-        $address = collect($votes)->firstOrFail();
-
-        return new WalletViewModel(Wallets::findByPublicKey($address));
-    }
-
-    public function unvoted(): ?WalletViewModel
-    {
-        if (! $this->isUnvote()) {
+        $payload = $this->rawPayload();
+        if ($payload === null) {
             return null;
         }
 
-        /** @var array<int, string> */
-        $votes = Arr::get($this->transaction->asset ?? [], 'unvotes');
+        $method = (new AbiDecoder())->decodeFunctionData($payload);
 
-        /** @var string */
-        $address = collect($votes)->firstOrFail();
+        if (count($method['args']) === 0) {
+            return null;
+        }
 
-        return new WalletViewModel(Wallets::findByPublicKey($address));
+        /** @var string $address */
+        $address = $method['args'][0];
+
+        $wallet = Wallet::where('address', $address)->first();
+        if ($wallet === null) {
+            return null;
+        }
+
+        return new WalletViewModel($wallet);
     }
 }

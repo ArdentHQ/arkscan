@@ -23,29 +23,6 @@ trait CanBeSorted
         return $query->orderByRaw('timestamp '.$sortDirection->value);
     }
 
-    public function scopeSortByUsername(mixed $query, SortDirection $sortDirection): Builder
-    {
-        $missedBlockPublicKeys = ForgingStats::groupBy('address')->pluck('address');
-
-        $validatorNames = Wallet::whereIn('address', $missedBlockPublicKeys)
-            ->get()
-            ->pluck('attributes.username', 'address');
-
-        if (count($validatorNames) === 0) {
-            return $query->selectRaw('NULL AS validator_name')
-                ->selectRaw('forging_stats.*');
-        }
-
-        return $query->selectRaw('wallets.name AS validator_name')
-            ->selectRaw('forging_stats.*')
-            ->join(DB::raw(sprintf(
-                '(values %s) as wallets (address, name)',
-                $validatorNames->map(fn ($name, $publicKey) => sprintf('(\'%s\',\'%s\')', $publicKey, $name))
-                    ->join(','),
-            )), 'forging_stats.address', '=', 'wallets.address', 'left outer')
-            ->orderByRaw('validator_name '.$sortDirection->value.', timestamp DESC');
-    }
-
     public function scopeSortByVoteCount(mixed $query, SortDirection $sortDirection): Builder
     {
         $missedBlockAddresses = ForgingStats::groupBy('address')->pluck('address');

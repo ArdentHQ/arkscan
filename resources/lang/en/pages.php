@@ -86,14 +86,12 @@ return [
     ],
 
     'transaction'      => [
-        'transaction_type'      => 'Transaction Type',
+        'action'                => 'Action',
         'transaction_id'        => 'Transaction ID',
         'transaction_id_copied' => 'Transaction ID Copied',
         'transaction_details'   => 'Transaction Details',
         'addressing'            => 'Addressing',
         'memo'                  => 'Memo (SmartBridge)',
-        'recipients_list'       => 'Recipients List',
-        'participants'          => 'Participants',
         'transaction_summary'   => 'Transaction Summary',
         'more_details'          => 'More Details',
         'gas_information'       => 'Gas Information',
@@ -104,15 +102,13 @@ return [
             'timestamp'            => 'Timestamp',
             'block'                => 'Block',
             'nonce'                => 'Nonce',
-            'category'             => 'Category',
+            'method'               => 'Method',
             'validator'            => 'Validator',
-            'username'             => 'Name',
             'old_validator'        => 'Old Validator',
             'new_validator'        => 'New Validator',
             'address'              => 'Address',
             'signatures'           => 'Signatures',
             'hash'                 => 'Hash',
-            'sub_category'         => 'Sub-Category',
             'from'                 => 'From',
             'to'                   => 'To',
             'amount'               => 'Amount',
@@ -121,18 +117,6 @@ return [
             'gas_limit'            => 'Gas Limit',
             'usage_by_transaction' => 'Usage By Txn',
             'position_in_block'    => 'Position In Block',
-        ],
-
-        'value' => [
-            'multiple_x' => 'Multiple (<button type="link" data-link-scroll-to="#recipients-list" class="link">:count</button>)',
-        ],
-
-        'types' => [
-            ...trans('general.transaction.types'),
-
-            'legacy-business-registration'        => 'Business Registration',
-            'legacy-business-resignation'         => 'Business Resignation',
-            'legacy-business-update'              => 'Business Update',
         ],
 
         'code-block' => [
@@ -284,10 +268,9 @@ return [
             ],
 
             'types-options' => [
-                'transfers'     => 'Transfers',
-                'votes'         => 'Votes',
-                'multipayments' => 'Multipayments',
-                'others'        => 'Others',
+                'transfers' => 'Transfers',
+                'votes'     => 'Votes',
+                'others'    => 'Others',
             ],
 
             'columns-options' => [
@@ -314,7 +297,7 @@ return [
             'include_header_row'  => 'Include Header Row',
             'types_placeholder'   => 'Select Types',
             'columns_placeholder' => 'Select Columns',
-            'success_toast'       => '<span class=\\\'font-semibold\\\'>:username.csv</span> has been saved successfully',
+            'success_toast'       => '<span class=\\\'font-semibold\\\'>:address.csv</span> has been saved successfully',
 
             'columns_x_selected' => [
                 'singular' => 'Column Selected',
@@ -508,10 +491,8 @@ return [
 
                 'header' => [
                     'transfer'                    => 'Transfers',
-                    'multipayment'                => 'Multipayments',
                     'vote'                        => 'Votes',
                     'unvote'                      => 'Unvotes',
-                    'switch_vote'                 => 'Switch Votes',
                     'validator_registration'      => 'Validator Registrations',
                     'validator_resignation'       => 'Validator Resignations',
                     'transactions'                => 'Transactions',

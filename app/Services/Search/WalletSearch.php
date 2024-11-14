@@ -8,7 +8,6 @@ use App\Contracts\Search;
 use App\Models\Wallet;
 use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Meilisearch\Contracts\SearchQuery;
 
@@ -39,14 +38,7 @@ final class WalletSearch implements Search
 
     public static function mapMeilisearchResults(array $rawResults): Collection
     {
-        return collect($rawResults)->map(fn ($item) => new Wallet([
-            ...$item,
-            'attributes' => [
-                'validator' => [
-                    'username' => Arr::get($item, 'username'),
-                ],
-            ],
-        ]));
+        return collect($rawResults)->map(fn ($item) => new Wallet($item));
     }
 
     public static function buildSearchQueryForIndex(string $query, int $limit): ?SearchQuery

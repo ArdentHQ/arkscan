@@ -24,7 +24,6 @@ final class WalletFactory extends Factory
             'nonce'      => $this->faker->numberBetween(1, 1000),
             'attributes' => [
                 'secondPublicKey'         => $this->faker->publicKey,
-                'username'                => $this->faker->userName,
                 'validatorVoteBalance'    => $this->faker->numberBetween(1, 1000) * 1e18,
                 'validatorProducedBlocks' => $this->faker->numberBetween(1, 1000),
                 'validatorMissedBlocks'   => $this->faker->numberBetween(1, 1000),
@@ -38,7 +37,6 @@ final class WalletFactory extends Factory
         return $this->state(function () {
             return [
                 'attributes' => [
-                    'username'                => $this->faker->userName,
                     'validatorPublicKey'      => $this->faker->publicKey,
                     'validatorRank'           => $this->faker->numberBetween(1, Network::validatorCount()),
                     'validatorApproval'       => $this->faker->randomFloat(2, 0, 2),
@@ -59,7 +57,6 @@ final class WalletFactory extends Factory
             if ($isResigned) {
                 return [
                     'attributes' => [
-                        'username'             => $this->faker->userName,
                         'validatorResigned'    => true,
                         'validatorPublicKey'   => $this->faker->publicKey,
                         'validatorVoteBalance' => $this->faker->numberBetween(1, 100) * 1e18,
@@ -69,7 +66,6 @@ final class WalletFactory extends Factory
 
             return [
                 'attributes' => [
-                    'username'                => $this->faker->userName,
                     'validatorRank'           => $this->faker->numberBetween(Network::validatorCount() + 1, (Network::validatorCount() * 2) - 1),
                     'validatorApproval'       => $this->faker->randomFloat(2, 0, 2),
                     'validatorPublicKey'      => $this->faker->publicKey,
@@ -78,23 +74,6 @@ final class WalletFactory extends Factory
                     'validatorVoteBalance'    => $this->faker->numberBetween(1, 100) * 1e18,
                     'validatorForgedRewards'  => $this->faker->numberBetween(1, 100) * 1e18,
                     'validatorProducedBlocks' => $this->faker->numberBetween(1, 1000),
-                ],
-            ];
-        });
-    }
-
-    public function multiSignature()
-    {
-        return $this->state(function () {
-            return [
-                'attributes' => [
-                    'multiSignature' => [
-                        'min'        => 2,
-                        'publicKeys' => [
-                            '022a40ea35d53eedf0341ffa17574fca844d69665ce35f224e9a6b1385575044fd',
-                            '037fde73baaa48eb75c013fe9ff52a74a096d48b9978351bdcb5b72331ca37487c',
-                        ],
-                    ],
                 ],
             ];
         });

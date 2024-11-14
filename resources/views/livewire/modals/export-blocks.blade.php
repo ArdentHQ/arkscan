@@ -59,9 +59,9 @@
 
                         <div x-show="hasStartedExport">
                             <x-modals.export.status
-                                :filename="$this->username"
+                                :filename="$this->address"
                                 type="blocks"
-                                :partial-download-toast="trans('pages.wallet.export-blocks-modal.success_toast', ['username' => $this->username.'-partial'])"
+                                :partial-download-toast="trans('pages.wallet.export-blocks-modal.success_toast', ['address' => $this->address.'-partial'])"
                             />
                         </div>
                     </div>
@@ -69,8 +69,8 @@
 
                 <x-slot name="buttons">
                     <x-modals.export.buttons
-                        :filename="$this->username"
-                        :success-toast="trans('pages.wallet.export-blocks-modal.success_toast', ['username' => $this->username])"
+                        :filename="$this->address"
+                        :success-toast="trans('pages.wallet.export-blocks-modal.success_toast', ['address' => $this->address])"
                     />
                 </x-slot>
             </x-ark-modal>

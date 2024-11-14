@@ -5,18 +5,14 @@
         href="{{ route('wallet', $validator->address()) }}"
         class="link"
     >
-        @if ($validator->hasUsername())
-            {{ $validator->username() }}
-        @else
-            <div class="hidden md:inline">
-                {{ $validator->address() }}
-            </div>
+        <div class="hidden md:inline">
+            {{ $validator->address() }}
+        </div>
 
-            <div class="md:hidden">
-                <x-truncate-middle>
-                    {{ $validator->address() }}
-                </x-truncate-middle>
-            </div>
-        @endif
+        <div class="md:hidden">
+            <x-truncate-middle>
+                {{ $validator->address() }}
+            </x-truncate-middle>
+        </div>
     </a>
 </span>

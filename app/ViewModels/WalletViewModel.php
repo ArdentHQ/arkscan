@@ -10,9 +10,9 @@ use App\Models\Wallet;
 use App\Services\ArkVaultUrlBuilder;
 use App\Services\ExchangeRate;
 use App\ViewModels\Concerns\Wallet\CanBeCold;
+use App\ViewModels\Concerns\Wallet\CanBeKnownWallet;
 use App\ViewModels\Concerns\Wallet\CanBeValidator;
 use App\ViewModels\Concerns\Wallet\CanForge;
-use App\ViewModels\Concerns\Wallet\CanHaveUsername;
 use App\ViewModels\Concerns\Wallet\CanVote;
 use App\ViewModels\Concerns\Wallet\HasType;
 use App\ViewModels\Concerns\Wallet\HasVoters;
@@ -21,9 +21,9 @@ use Mattiasgeniar\Percentage\Percentage;
 final class WalletViewModel implements ViewModel
 {
     use CanBeCold;
+    use CanBeKnownWallet;
     use CanBeValidator;
     use CanForge;
-    use CanHaveUsername;
     use CanVote;
     use HasType;
     use HasVoters;

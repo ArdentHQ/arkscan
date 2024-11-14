@@ -75,31 +75,6 @@ final class WalletCache implements Contract
         $this->put(sprintf('vote/%s', $address), $value);
     }
 
-    public function getMultiSignatureAddress(int $min, array $publicKeys): ?string
-    {
-        return $this->get(sprintf('multi_signature/%s/%s', $min, serialize($publicKeys)));
-    }
-
-    public function setMultiSignatureAddress(int $min, array $publicKeys, Closure $callback): void
-    {
-        $this->remember(sprintf('multi_signature/%s/%s', $min, serialize($publicKeys)), now()->addHour(), $callback);
-    }
-
-    public function getUsernameByAddress(string $address): ?string
-    {
-        return $this->get(sprintf('username_by_address/%s', $address));
-    }
-
-    public function setUsernameByAddress(string $address, string $username): void
-    {
-        $this->put(sprintf('username_by_address/%s', $address), $username);
-    }
-
-    public function forgetUsernameByAddress(string $address): void
-    {
-        $this->forget(sprintf('username_by_address/%s', $address));
-    }
-
     public function getValidator(string $address): ?Wallet
     {
         return $this->get(sprintf('validator/%s', $address));
@@ -108,6 +83,16 @@ final class WalletCache implements Contract
     public function setValidator(string $address, Wallet $wallet): void
     {
         $this->put(sprintf('validator/%s', $address), $wallet);
+    }
+
+    public function getWalletNameByAddress(string $address): ?string
+    {
+        return $this->get(sprintf('name_by_address/%s', $address));
+    }
+
+    public function setWalletNameByAddress(string $address, string $name): void
+    {
+        $this->put(sprintf('name_by_address/%s', $address), $name);
     }
 
     public function getVoterCount(string $address): int

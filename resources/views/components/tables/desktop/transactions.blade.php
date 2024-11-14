@@ -22,7 +22,7 @@
                 breakpoint="xl"
                 responsive
             />
-            <x-tables.headers.desktop.text name="tables.transactions.type" />
+            <x-tables.headers.desktop.text name="tables.transactions.method" />
             <x-tables.headers.desktop.text name="tables.transactions.addressing" />
             <x-tables.headers.desktop.number
                 name="tables.transactions.amount"

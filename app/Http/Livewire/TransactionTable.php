@@ -25,10 +25,9 @@ final class TransactionTable extends Component
     use HasTablePagination;
 
     public array $filter = [
-        'transfers'     => true,
-        'votes'         => true,
-        'multipayments' => true,
-        'others'        => true,
+        'transfers' => true,
+        'votes'     => true,
+        'others'    => true,
     ];
 
     /** @var mixed */
@@ -40,10 +39,9 @@ final class TransactionTable extends Component
     public function queryString(): array
     {
         return [
-            'transfers'     => ['except' => true],
-            'votes'         => ['except' => true],
-            'multipayments' => ['except' => true],
-            'others'        => ['except' => true],
+            'transfers' => ['except' => true],
+            'votes'     => ['except' => true],
+            'others'    => ['except' => true],
         ];
     }
 
@@ -89,10 +87,6 @@ final class TransactionTable extends Component
         }
 
         if ($this->filter['votes'] === true) {
-            return true;
-        }
-
-        if ($this->filter['multipayments'] === true) {
             return true;
         }
 

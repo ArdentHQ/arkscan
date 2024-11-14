@@ -51,14 +51,13 @@ it('should track querystring between tabs', function () {
 
         ->assertSet('tabQueryData', [
             'transactions' => [
-                'paginators'      => ['page' => 1],
-                'perPage'         => WalletTransactionTable::defaultPerPage(),
-                'outgoing'        => true,
-                'incoming'        => true,
-                'transfers'       => true,
-                'votes'           => true,
-                'multipayments'   => true,
-                'others'          => true,
+                'paginators' => ['page' => 1],
+                'perPage'    => WalletTransactionTable::defaultPerPage(),
+                'outgoing'   => true,
+                'incoming'   => true,
+                'transfers'  => true,
+                'votes'      => true,
+                'others'     => true,
             ],
 
             'blocks' => [
@@ -193,14 +192,13 @@ it('should not update initial page if view does not exist', function () {
 
     expect($instance->tabQueryData)->toBe([
         'transactions' => [
-            'perPage'       => WalletTransactionTable::defaultPerPage(),
-            'outgoing'      => true,
-            'incoming'      => true,
-            'transfers'     => true,
-            'votes'         => true,
-            'multipayments' => true,
-            'others'        => true,
-            'paginators'    => ['page' => 1],
+            'perPage'    => WalletTransactionTable::defaultPerPage(),
+            'outgoing'   => true,
+            'incoming'   => true,
+            'transfers'  => true,
+            'votes'      => true,
+            'others'     => true,
+            'paginators' => ['page' => 1],
         ],
 
         'blocks' => [

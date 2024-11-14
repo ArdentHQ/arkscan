@@ -9,26 +9,16 @@ trait ManagesTransactionTypes
     private array $typesGeneric = [
         'isTransfer'              => 'transfer',
         'isValidatorRegistration' => 'validator-registration',
-        'isVoteCombination'       => 'vote-combination',
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
-        'isMultiSignature'        => 'multi-signature',
         'isValidatorResignation'  => 'validator-resignation',
-        'isMultiPayment'          => 'multi-payment',
-        'isUsernameRegistration'  => 'username-registration',
-        'isUsernameResignation'   => 'username-resignation',
     ];
 
     private array $typesExact = [
         'isTransfer'              => 'transfer',
         'isValidatorRegistration' => 'validator-registration',
-        'isVoteCombination'       => 'vote-combination',
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
-        'isMultiSignature'        => 'multi-signature',
         'isValidatorResignation'  => 'validator-resignation',
-        'isMultiPayment'          => 'multi-payment',
-        'isUsernameRegistration'  => 'username-registration',
-        'isUsernameResignation'   => 'username-resignation',
     ];
 }

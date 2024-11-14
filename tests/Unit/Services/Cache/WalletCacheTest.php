@@ -55,22 +55,6 @@ it('should get and set the vote', function () {
     expect($this->subject->getVote('address'))->toBeInstanceOf(Wallet::class);
 });
 
-it('should get and set the multi signature address', function () {
-    expect($this->subject->getMultiSignatureAddress(3, [1, 2, 3]))->toBeNull();
-
-    $this->subject->setMultiSignatureAddress(3, [1, 2, 3], fn () => '123');
-
-    expect($this->subject->getMultiSignatureAddress(3, [1, 2, 3]))->toBeString();
-});
-
-it('should get and set the username by address', function () {
-    expect($this->subject->getUsernameByAddress('address'))->toBeNull();
-
-    $this->subject->setUsernameByAddress('address', 'username');
-
-    expect($this->subject->getUsernameByAddress('address'))->toBeString();
-});
-
 it('should get and set the missed blocks by address', function () {
     expect($this->subject->getMissedBlocks('address'))->toBe(0);
 

@@ -9,17 +9,7 @@ use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
-use App\Models\Scopes\MultiPaymentScope;
-use App\Models\Scopes\MultiSignatureScope;
-use App\Models\Scopes\TransferScope;
-use App\Models\Scopes\UsernameRegistrationScope;
-use App\Models\Scopes\UsernameResignationScope;
-use App\Models\Scopes\ValidatorRegistrationScope;
-use App\Models\Scopes\ValidatorResignationScope;
-use App\Models\Scopes\VoteCombinationScope;
-use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
-use App\Services\VendorField;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -40,7 +30,7 @@ use Laravel\Scout\Searchable;
  * @property string|null $recipient_address
  * @property string $sender_public_key
  * @property int $block_height
- * @property resource|string|null $vendor_field
+ * @property resource|null $data
  * @property int $nonce
  * @property Wallet $sender
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
@@ -52,24 +42,6 @@ final class Transaction extends Model
     use SearchesCaseInsensitive;
     use HasEmptyScope;
     use Searchable;
-
-    /**
-     * A list of transaction scopes used for filtering based on type.
-     *
-     * Exposed through the model to keep its usage consistent across
-     * all places that need to filter transactions by their type.
-     */
-    public const TYPE_SCOPES = [
-        'validatorRegistration'         => ValidatorRegistrationScope::class,
-        'validatorResignation'          => ValidatorResignationScope::class,
-        'multiPayment'                  => MultiPaymentScope::class,
-        'multiSignature'                => MultiSignatureScope::class,
-        'usernameRegistration'          => UsernameRegistrationScope::class,
-        'usernameResignation'           => UsernameResignationScope::class,
-        'transfer'                      => TransferScope::class,
-        'vote'                          => VoteScope::class,
-        'voteCombination'               => VoteCombinationScope::class,
-    ];
 
     /**
      * The "type" of the primary key ID.
@@ -110,8 +82,6 @@ final class Transaction extends Model
     protected $with = [
         'receipt',
     ];
-
-    private bool|string|null $vendorFieldContent = false;
 
     /**
      * Get the indexable data array for the model.
@@ -224,15 +194,6 @@ final class Transaction extends Model
         }
 
         return Wallet::where('address', $vote)->firstOrFail();
-    }
-
-    public function vendorField(): string|null
-    {
-        if (is_bool($this->vendorFieldContent)) {
-            $this->vendorFieldContent = VendorField::parse($this->vendor_field);
-        }
-
-        return $this->vendorFieldContent;
     }
 
     public function fee(): BigNumber
