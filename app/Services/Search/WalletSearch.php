@@ -8,7 +8,6 @@ use App\Contracts\Search;
 use App\Models\Wallet;
 use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Meilisearch\Contracts\SearchQuery;
 

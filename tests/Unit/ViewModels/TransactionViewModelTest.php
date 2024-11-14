@@ -8,15 +8,11 @@ use App\Models\Block;
 use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Services\Blockchain\NetworkFactory;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
-use ArkEcosystem\Crypto\Configuration\Network as NetworkConfiguration;
-use ArkEcosystem\Crypto\Identities\Address;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 

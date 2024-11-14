@@ -9,7 +9,6 @@ use App\Models\Wallet;
 use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 final class WalletRepository implements Contract
 {

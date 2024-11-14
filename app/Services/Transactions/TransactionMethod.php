@@ -8,7 +8,6 @@ use App\Enums\PayloadSignature;
 use App\Enums\TransactionTypeEnum;
 use App\Models\Transaction;
 use App\ViewModels\Concerns\Transaction\HasPayload;
-use Illuminate\Support\Arr;
 
 final class TransactionMethod
 {
