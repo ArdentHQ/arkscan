@@ -38,11 +38,6 @@ trait HasMethod
         return $this->method->isValidatorResignation();
     }
 
-    public function isUnknown(): bool
-    {
-        return $this->method->isUnknown();
-    }
-
     public function isSelfReceiving(): bool
     {
         if ($this->isValidatorRegistration()) {
