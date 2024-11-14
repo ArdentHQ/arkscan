@@ -18,8 +18,13 @@ trait HasPayload
             return null;
         }
 
-        $payload = bin2hex(stream_get_contents($payload, offset: 0));
-        if (is_string($payload) && strlen($payload) === 0) {
+        $payloadContent = stream_get_contents($payload, offset: 0);
+        if ($payloadContent === false) {
+            return null;
+        }
+
+        $payload = bin2hex($payloadContent);
+        if (strlen($payload) === 0) {
             return null;
         }
 

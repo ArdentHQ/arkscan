@@ -14,7 +14,6 @@ use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
-use App\Services\VendorField;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,7 +34,7 @@ use Laravel\Scout\Searchable;
  * @property string|null $recipient_address
  * @property string $sender_public_key
  * @property int $block_height
- * @property resource|string|null $vendor_field
+ * @property resource|null $data
  * @property int $nonce
  * @property Wallet $sender
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
@@ -100,8 +99,6 @@ final class Transaction extends Model
     protected $with = [
         'receipt',
     ];
-
-    private bool|string|null $vendorFieldContent = false;
 
     /**
      * Get the indexable data array for the model.
@@ -214,15 +211,6 @@ final class Transaction extends Model
         }
 
         return Wallet::where('address', $vote)->firstOrFail();
-    }
-
-    public function vendorField(): string|null
-    {
-        if (is_bool($this->vendorFieldContent)) {
-            $this->vendorFieldContent = VendorField::parse($this->vendor_field);
-        }
-
-        return $this->vendorFieldContent;
     }
 
     public function fee(): BigNumber

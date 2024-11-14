@@ -70,27 +70,6 @@ it('should get recipient if unvote', function () {
     expect($transaction->recipient())->toEqual($validator->fresh());
 });
 
-it('should get vendorfield value multiple times despite resource', function () {
-    $transaction = Transaction::factory()->transfer()->create([
-        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
-        'fee'          => 0.1 * 1e18, // 0.1
-        'amount'       => 2 * 1e18, // 2
-        'vendor_field' => '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0',
-    ]);
-
-    expect($transaction->vendor_field)->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
-    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
-
-    $transaction = Transaction::find($transaction->id);
-
-    expect(is_resource($transaction->vendor_field))->toBeTrue();
-    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
-    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
-    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
-    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
-    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
-});
-
 it('makes transactions searchable', function () {
     $transaction = Transaction::factory()->create();
 

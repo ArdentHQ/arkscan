@@ -16,7 +16,16 @@ trait InteractsWithVotes
             return null;
         }
 
-        $method = (new AbiDecoder())->decodeFunctionData($this->rawPayload());
+        $payload = $this->rawPayload();
+        if ($payload === null) {
+            return null;
+        }
+
+        $method = (new AbiDecoder())->decodeFunctionData($payload);
+
+        if (count($method['args']) === 0) {
+            return null;
+        }
 
         /** @var string $address */
         $address = $method['args'][0];

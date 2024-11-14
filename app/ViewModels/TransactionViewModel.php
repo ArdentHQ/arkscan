@@ -16,7 +16,6 @@ use App\ViewModels\Concerns\Transaction\HasDirection;
 use App\ViewModels\Concerns\Transaction\HasMethod;
 use App\ViewModels\Concerns\Transaction\HasPayload;
 use App\ViewModels\Concerns\Transaction\HasState;
-use App\ViewModels\Concerns\Transaction\InteractsWithVendorField;
 use App\ViewModels\Concerns\Transaction\InteractsWithVotes;
 use App\ViewModels\Concerns\Transaction\InteractsWithWallets;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
@@ -29,7 +28,6 @@ final class TransactionViewModel implements ViewModel
     use HasPayload;
     use HasState;
     use HasMethod;
-    use InteractsWithVendorField;
     use InteractsWithVotes;
     use InteractsWithWallets;
 
