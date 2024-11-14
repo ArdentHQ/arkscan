@@ -22,7 +22,6 @@ final class TransactionMethod
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
         'isValidatorResignation'  => 'validator-resignation',
-        // 'isMultiPayment'          => 'multi-payment',
     ];
 
     public function __construct(private Transaction $transaction)
@@ -68,43 +67,5 @@ final class TransactionMethod
     public function isValidatorResignation(): bool
     {
         return $this->methodHash === PayloadSignature::VALIDATOR_RESIGNATION->value;
-    }
-
-    // public function isMultiPayment(): bool
-    // {
-    //     return $this->transaction->type === TransactionTypeEnum::MULTI_PAYMENT;
-    // }
-
-    public function isUnknown(): bool
-    {
-        if ($this->isTransfer()) {
-            return false;
-        }
-
-        if ($this->isValidatorRegistration()) {
-            return false;
-        }
-
-        if ($this->isUnvote()) {
-            return false;
-        }
-
-        if ($this->isVote()) {
-            return false;
-        }
-
-        // if ($this->isMultiSignature()) {
-        //     return false;
-        // }
-
-        if ($this->isValidatorResignation()) {
-            return false;
-        }
-
-        // if ($this->isMultiPayment()) {
-        //     return false;
-        // }
-
-        return true;
     }
 }

@@ -62,12 +62,6 @@
                         without-link
                         class="text-theme-secondary-900 dark:text-theme-dark-50"
                     />
-                @elseif ($transaction->isMultiPayment())
-                    <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                        @lang('tables.transactions.multiple')
-
-                        ({{ $transaction->recipientsCount() }})
-                    </span>
                 @else
                     <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                         @lang('general.search.contract')

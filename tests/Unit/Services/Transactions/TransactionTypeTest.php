@@ -32,33 +32,4 @@ it('should determine the type', function (string $type, string $expected) {
         'validatorResignation',
         'validator-resignation',
     ],
-    [
-        'multiPayment',
-        'multi-payment',
-    ],
-]);
-
-it('should determine is unknown type', function () {
-    $transaction = Transaction::factory()->create([
-        'type'  => 1234,
-        'asset' => [],
-    ]);
-    $transactionType = new TransactionType($transaction);
-
-    expect($transactionType->isUnknown())->toBeTrue();
-    expect($transactionType->name())->toBe('unknown');
-});
-
-it('should play through every scenario of an unknown type', function (string $type) {
-    $transaction = Transaction::factory()->{$type}()->create();
-
-    expect((new TransactionType($transaction))->isUnknown())->toBeFalse();
-})->with([
-    ['transfer'],
-    ['validatorRegistration'],
-    ['vote'],
-    ['unvote'],
-    ['multiSignature'],
-    ['validatorResignation'],
-    ['multiPayment'],
 ]);

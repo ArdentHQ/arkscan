@@ -18,7 +18,6 @@ return [
         'to'         => 'To',
         'from'       => 'From',
         'contract'   => 'Contract',
-        'multiple'   => 'Multiple',
         'address'    => 'Address',
         'return'     => 'Return',
 
@@ -141,17 +140,16 @@ return [
 
     'filters' => [
         'transactions' => [
-            'addressing'    => 'Addressing',
-            'types'         => 'Types',
-            'select_all'    => 'Select All',
-            'outgoing'      => 'Outgoing',
-            'incoming'      => 'Incoming',
-            'to'            => 'To',
-            'from'          => 'From',
-            'transfers'     => 'Transfers',
-            'votes'         => 'Votes',
-            'multipayments' => 'Multipayments',
-            'others'        => 'Others',
+            'addressing'=> 'Addressing',
+            'types'     => 'Types',
+            'select_all'=> 'Select All',
+            'outgoing'  => 'Outgoing',
+            'incoming'  => 'Incoming',
+            'to'        => 'To',
+            'from'      => 'From',
+            'transfers' => 'Transfers',
+            'votes'     => 'Votes',
+            'others'    => 'Others',
         ],
 
         'validators' => [

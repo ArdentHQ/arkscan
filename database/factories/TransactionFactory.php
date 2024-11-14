@@ -89,13 +89,4 @@ final class TransactionFactory extends Factory
             'asset'      => [],
         ]);
     }
-
-    public function multiPayment(): Factory
-    {
-        return $this->state(fn () => [
-            'type'       => TransactionTypeEnum::MULTI_PAYMENT,
-            'type_group' => 1,
-            'asset'      => [],
-        ]);
-    }
 }

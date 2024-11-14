@@ -1,7 +1,7 @@
 @props(['transaction'])
 
 <x-general.page-section.container :title="trans('pages.transaction.transaction_summary')">
-    @if ($transaction->isTransfer() || $transaction->isMultiPayment())
+    @if ($transaction->isTransfer())
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.amount')"
             :value="ExplorerNumberFormatter::networkCurrency($transaction->amount(), withSuffix: true)"

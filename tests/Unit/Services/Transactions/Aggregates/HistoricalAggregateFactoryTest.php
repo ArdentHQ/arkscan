@@ -10,7 +10,6 @@ use App\Services\Transactions\Aggregates\Historical\QuarterAggregate;
 use App\Services\Transactions\Aggregates\Historical\WeekAggregate;
 use App\Services\Transactions\Aggregates\Historical\YearAggregate;
 use App\Services\Transactions\Aggregates\HistoricalAggregateFactory;
-use App\Services\Transactions\Aggregates\Type\MultipaymentAggregate;
 use App\Services\Transactions\Aggregates\Type\TransferAggregate;
 use App\Services\Transactions\Aggregates\Type\UnvoteAggregate;
 use App\Services\Transactions\Aggregates\Type\ValidatorRegistrationAggregate;
@@ -36,7 +35,6 @@ it('should create an instance that matches the type', function (string $type, st
     expect(HistoricalAggregateFactory::type($type))->toBeInstanceOf($class);
 })->with([
     [StatsTransactionType::TRANSFER, TransferAggregate::class],
-    [StatsTransactionType::MULTIPAYMENT, MultipaymentAggregate::class],
     [StatsTransactionType::VOTE, VoteAggregate::class],
     [StatsTransactionType::UNVOTE, UnvoteAggregate::class],
     [StatsTransactionType::VALIDATOR_REGISTRATION, ValidatorRegistrationAggregate::class],

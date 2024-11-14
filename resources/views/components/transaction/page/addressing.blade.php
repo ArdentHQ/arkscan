@@ -21,15 +21,5 @@
                 class="inline-block"
             />
         </x-transaction.page.section-detail.row>
-    @elseif ($transaction->isMultiPayment())
-        <x-transaction.page.section-detail.row
-            :title="trans('pages.transaction.header.to')"
-            :transaction="$transaction"
-        >
-            <x-transaction.page.section-detail.recipients
-                :transaction="$transaction"
-                class="inline-block"
-            />
-        </x-transaction.page.section-detail.row>
     @endif
 </x-general.page-section.container>

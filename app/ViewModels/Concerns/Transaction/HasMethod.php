@@ -38,13 +38,6 @@ trait HasMethod
         return $this->method->isValidatorResignation();
     }
 
-    public function isMultiPayment(): bool
-    {
-        return false;
-
-        return $this->method->isMultiPayment();
-    }
-
     public function isUnknown(): bool
     {
         return $this->method->isUnknown();

@@ -31,7 +31,6 @@ return [
             'all'                   => 'All',
             'validatorRegistration' => 'Validator Registration',
             'validatorResignation'  => 'Validator Resignation',
-            'multiPayment'          => 'Multipayment',
             'transfer'              => 'Transfer',
             'vote'                  => 'Vote',
         ],

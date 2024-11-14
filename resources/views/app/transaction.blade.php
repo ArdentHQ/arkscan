@@ -15,15 +15,11 @@
 
             <x-transaction.page.summary :transaction="$transaction" />
 
-            @if ($transaction->isTransfer() || $transaction->isMultiPayment())
+            @if ($transaction->isTransfer())
                 <x-transaction.page.memo :transaction="$transaction" />
             @endif
 
             <x-general.page-section.confirmations :model="$transaction" />
-
-            @if ($transaction->isMultiPayment())
-                <livewire:transaction.recipient-list :transaction-id="$transaction->id()" />
-            @endif
         </div>
 
         @if ($transaction->hasPayload())

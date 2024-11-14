@@ -92,8 +92,6 @@ return [
         'transaction_details'   => 'Transaction Details',
         'addressing'            => 'Addressing',
         'memo'                  => 'Memo (SmartBridge)',
-        'recipients_list'       => 'Recipients List',
-        'participants'          => 'Participants',
         'transaction_summary'   => 'Transaction Summary',
         'more_details'          => 'More Details',
         'gas_information'       => 'Gas Information',
@@ -119,10 +117,6 @@ return [
             'gas_limit'            => 'Gas Limit',
             'usage_by_transaction' => 'Usage By Txn',
             'position_in_block'    => 'Position In Block',
-        ],
-
-        'value' => [
-            'multiple_x' => 'Multiple (<button type="link" data-link-scroll-to="#recipients-list" class="link">:count</button>)',
         ],
 
         'code-block' => [
@@ -274,10 +268,9 @@ return [
             ],
 
             'types-options' => [
-                'transfers'     => 'Transfers',
-                'votes'         => 'Votes',
-                'multipayments' => 'Multipayments',
-                'others'        => 'Others',
+                'transfers' => 'Transfers',
+                'votes'     => 'Votes',
+                'others'    => 'Others',
             ],
 
             'columns-options' => [
@@ -498,7 +491,6 @@ return [
 
                 'header' => [
                     'transfer'                    => 'Transfers',
-                    'multipayment'                => 'Multipayments',
                     'vote'                        => 'Votes',
                     'unvote'                      => 'Unvotes',
                     'validator_registration'      => 'Validator Registrations',

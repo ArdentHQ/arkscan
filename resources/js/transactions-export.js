@@ -43,25 +43,6 @@ const TransactionsExport = ({
 
     const getTransactionAmount = (transaction) => {
         let amount = arktoshiToNumber(transaction.amount);
-        if (transaction.type === TransactionType.MultiPayment) {
-            return transaction.asset.payments.reduce(
-                (totalAmount, recipientData) => {
-                    if (recipientData.recipientId === address) {
-                        if (totalAmount < 0) {
-                            totalAmount = 0;
-                        }
-
-                        totalAmount += arktoshiToNumber(recipientData.amount);
-                    } else if (totalAmount <= 0) {
-                        totalAmount -= arktoshiToNumber(recipientData.amount);
-                    }
-
-                    return totalAmount;
-                },
-                0
-            );
-        }
-
         if (transaction.sender === address) {
             return -amount;
         }
@@ -79,10 +60,6 @@ const TransactionsExport = ({
 
             if (transaction.type === TransactionType.Vote) {
                 return "Vote Transaction";
-            }
-
-            if (transaction.type === TransactionType.MultiPayment) {
-                return `Multiple (${transaction.asset.payments.length})`;
             }
 
             return "Other";
@@ -142,7 +119,6 @@ const TransactionsExport = ({
         types: {
             transfers: false,
             votes: false,
-            multipayments: false,
             others: false,
         },
 
@@ -267,10 +243,6 @@ const TransactionsExport = ({
 
             if (this.types.votes) {
                 data.type.push(TransactionType.Vote);
-            }
-
-            if (this.types.multipayments) {
-                data.type.push(TransactionType.MultiPayment);
             }
 
             if (this.types.others) {
