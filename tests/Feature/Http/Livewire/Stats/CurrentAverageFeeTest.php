@@ -25,16 +25,6 @@ it('should render the component', function () {
         ))
         ->create();
 
-    Transaction::factory(5)
-        ->state(new Sequence(
-            ['fee' => 2 * 1e18, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
-            ['fee' => 24 * 1e18, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
-            ['fee' => 50 * 1e18, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
-            ['fee' => 71 * 1e18, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
-            ['fee' => 99 * 1e18, 'type' => TransactionTypeEnum::MULTI_SIGNATURE],
-        ))
-        ->create();
-
     Artisan::call('explorer:cache-fees');
 
     Livewire::test(CurrentAverageFee::class)

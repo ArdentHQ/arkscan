@@ -39,7 +39,6 @@ final class CacheDevelopmentData extends Command
             'explorer:cache-validator-wallets',
             'explorer:cache-validators-with-voters',
             'explorer:cache-validator-voter-counts',
-            'explorer:cache-multi-signature-addresses',
             'explorer:cache-blocks',
             'explorer:cache-transactions',
             'explorer:cache-address-statistics',
