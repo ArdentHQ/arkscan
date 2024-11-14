@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\Transactions;
 
 use App\Enums\PayloadSignature;
-use App\Enums\TransactionTypeEnum;
 use App\Models\Transaction;
 use App\ViewModels\Concerns\Transaction\HasPayload;
 
