@@ -107,24 +107,4 @@ final class TransactionFactory extends Factory
             'asset'      => [],
         ]);
     }
-
-    public function usernameRegistration(): Factory
-    {
-        return $this->state(fn () => [
-            'type'       => TransactionTypeEnum::USERNAME_REGISTRATION,
-            'type_group' => 1,
-            'asset'      => [
-                'username' => 'bob',
-            ],
-        ]);
-    }
-
-    public function usernameResignation(): Factory
-    {
-        return $this->state(fn () => [
-            'type'       => TransactionTypeEnum::USERNAME_RESIGNATION,
-            'type_group' => 1,
-            'asset'      => [],
-        ]);
-    }
 }

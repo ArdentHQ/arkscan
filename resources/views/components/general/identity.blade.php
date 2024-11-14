@@ -6,7 +6,6 @@
     'suffix'          => false,
     'withoutTruncate' => false,
     'truncateLength'  => null,
-    'withoutUsername' => false,
     'addressVisible'  => false,
     'containerClass'  => null,
     'contentClass'    => null,
@@ -33,37 +32,16 @@
                     @class(['font-semibold sm:hidden md:flex link', $linkClass])
                 >
             @endif
-                @if ($model->username() && !$withoutUsername)
-                    @if ($prefix)
-                        <div @class([
-                            'validator-name-truncate-prefix',
-                            $validatorNameClass,
-                        ])>
-                    @elseif ($isListing)
-                        <div @class([
-                            'validator-name-truncate-listing',
-                            $validatorNameClass,
-                        ])>
-                    @else
-                        <div @class([
-                            'validator-name-truncate',
-                            $validatorNameClass,
-                        ])>
-                    @endif
-                        {{ $model->username() }}
-                    </div>
+                @if ($address)
+                    {{ $address }}
                 @else
-                    @if ($address)
-                        {{ $address }}
+                    @if($withoutTruncate)
+                        {{ $model->address() }}
                     @else
-                        @if($withoutTruncate)
+                        <x-truncate-middle :length="$truncateLength">
                             {{ $model->address() }}
-                        @else
-                            <x-truncate-middle :length="$truncateLength">
-                                {{ $model->address() }}
-                            </x-truncate-middle>
-                        @endisset
-                    @endif
+                        </x-truncate-middle>
+                    @endisset
                 @endif
             @if ($withoutLink)
                 </div>
@@ -79,21 +57,11 @@
                     @class(['hidden font-semibold sm:flex md:hidden link', $linkClass])
                 >
             @endif
-                @if ($model->username() && !$withoutUsername)
-                    {{ $model->username() }}
-                @else
-                    {{ $model->address() }}
-                @endif
+                {{ $model->address() }}
             @if ($withoutLink)
                 </div>
             @else
                 </a>
-            @endif
-
-            @if ($model->username() && !$withoutUsername && $addressVisible)
-                <span class="ml-1 truncate">
-                    {{ $model->address() }}
-                </span>
             @endif
 
             @if ($suffix)

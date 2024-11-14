@@ -14,8 +14,6 @@ trait ManagesTransactionTypes
         'isMultiSignature'        => 'multi-signature',
         'isValidatorResignation'  => 'validator-resignation',
         'isMultiPayment'          => 'multi-payment',
-        'isUsernameRegistration'  => 'username-registration',
-        'isUsernameResignation'   => 'username-resignation',
     ];
 
     private array $typesExact = [
@@ -26,7 +24,5 @@ trait ManagesTransactionTypes
         'isMultiSignature'        => 'multi-signature',
         'isValidatorResignation'  => 'validator-resignation',
         'isMultiPayment'          => 'multi-payment',
-        'isUsernameRegistration'  => 'username-registration',
-        'isUsernameResignation'   => 'username-resignation',
     ];
 }

@@ -13,11 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 trait CanBeSorted
 {
-    public function scopeSortByUsername(mixed $query, SortDirection $sortDirection): Builder
-    {
-        return $query->orderByRaw("(\"attributes\"->>'username')::text ".$sortDirection->value.', ("attributes"->>\'validatorRank\')::numeric ASC');
-    }
-
     public function scopeSortByRank(mixed $query, SortDirection $sortDirection): Builder
     {
         return $query->orderByRaw("(\"attributes\"->>'validatorRank')::numeric ".$sortDirection->value);

@@ -39,9 +39,7 @@
                     class="link"
                     href="{{ route('wallet', $transactionWallet->address()) }}"
                 >
-                    @if ($transactionWallet->hasUsername())
-                        {{ $transactionWallet->username() }}
-                    @elseif ($withoutTruncate)
+                    @if ($withoutTruncate)
                         {{ $transactionWallet->address }}
                     @else
                         <x-truncate-middle>{{ $transactionWallet->address }}</x-truncate-middle>
@@ -49,9 +47,7 @@
                 </a>
             @else
                 <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                    @if ($transactionWallet->hasUsername())
-                        {{ $transactionWallet->username() }}
-                    @elseif ($withoutTruncate)
+                    @if ($withoutTruncate)
                         {{ $transactionWallet->address }}
                     @else
                         <x-truncate-middle>{{ $transactionWallet->address }}</x-truncate-middle>

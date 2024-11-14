@@ -85,21 +85,6 @@ final class WalletCache implements Contract
         $this->remember(sprintf('multi_signature/%s/%s', $min, serialize($publicKeys)), now()->addHour(), $callback);
     }
 
-    public function getUsernameByAddress(string $address): ?string
-    {
-        return $this->get(sprintf('username_by_address/%s', $address));
-    }
-
-    public function setUsernameByAddress(string $address, string $username): void
-    {
-        $this->put(sprintf('username_by_address/%s', $address), $username);
-    }
-
-    public function forgetUsernameByAddress(string $address): void
-    {
-        $this->forget(sprintf('username_by_address/%s', $address));
-    }
-
     public function getValidator(string $address): ?Wallet
     {
         return $this->get(sprintf('validator/%s', $address));

@@ -28,7 +28,6 @@ php artisan explorer:cache-validator-aggregates
 php artisan explorer:cache-validator-performance
 php artisan explorer:cache-validator-productivity
 php artisan explorer:cache-validator-resignation-ids
-php artisan explorer:cache-usernames
 php artisan explorer:cache-validator-wallets
 php artisan explorer:cache-validators-with-voters
 php artisan explorer:cache-validator-voter-counts

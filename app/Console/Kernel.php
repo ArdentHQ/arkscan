@@ -14,7 +14,6 @@ use App\Console\Commands\CacheMultiSignatureAddresses;
 use App\Console\Commands\CacheNetworkAggregates;
 use App\Console\Commands\CachePrices;
 use App\Console\Commands\CacheTransactions;
-use App\Console\Commands\CacheUsernames;
 use App\Console\Commands\CacheValidatorAggregates;
 use App\Console\Commands\CacheValidatorPerformance;
 use App\Console\Commands\CacheValidatorProductivity;
@@ -65,8 +64,6 @@ final class Kernel extends ConsoleKernel
         $schedule->command(CacheValidatorAggregates::class)->everyMinute();
 
         $schedule->command(CacheFees::class)->everyFiveMinutes();
-
-        $schedule->command(CacheUsernames::class)->everyMinute();
 
         $schedule->command(CacheMultiSignatureAddresses::class)->everyMinute();
 

@@ -52,20 +52,6 @@ trait HasMethod
         return $this->method->isMultiPayment();
     }
 
-    public function isUsernameRegistration(): bool
-    {
-        return false;
-
-        return $this->method->isUsernameRegistration();
-    }
-
-    public function isUsernameResignation(): bool
-    {
-        return false;
-
-        return $this->method->isUsernameResignation();
-    }
-
     public function isUnknown(): bool
     {
         return $this->method->isUnknown();
@@ -88,14 +74,6 @@ trait HasMethod
         if ($this->isUnvote()) {
             return true;
         }
-
-        // if ($this->isUsernameRegistration()) {
-        //     return true;
-        // }
-
-        // if ($this->isUsernameResignation()) {
-        //     return true;
-        // }
 
         return false;
     }

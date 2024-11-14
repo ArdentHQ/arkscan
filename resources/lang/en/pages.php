@@ -106,7 +106,6 @@ return [
             'nonce'                => 'Nonce',
             'method'               => 'Method',
             'validator'            => 'Validator',
-            'username'             => 'Name',
             'old_validator'        => 'Old Validator',
             'new_validator'        => 'New Validator',
             'address'              => 'Address',
@@ -305,7 +304,7 @@ return [
             'include_header_row'  => 'Include Header Row',
             'types_placeholder'   => 'Select Types',
             'columns_placeholder' => 'Select Columns',
-            'success_toast'       => '<span class=\\\'font-semibold\\\'>:username.csv</span> has been saved successfully',
+            'success_toast'       => '<span class=\\\'font-semibold\\\'>:address.csv</span> has been saved successfully',
 
             'columns_x_selected' => [
                 'singular' => 'Column Selected',

@@ -24,7 +24,6 @@ use Laravel\Scout\Searchable;
  * @property BigNumber $nonce
  * @property array $attributes
  * @property int $updated_at
- * @property string $validator_username (only available when indexed by scout)
  * @property string $timestamp (only available when indexed by scout)
  * @property int $missed_blocks (only available when sorting validators by missed blocks)
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
@@ -76,13 +75,6 @@ final class Wallet extends Model
         'attributes' => 'array',
     ];
 
-    public function username(): ?string
-    {
-        $attributes = json_decode($this->attributes['attributes'], true);
-
-        return Arr::get($attributes, 'username', null);
-    }
-
     /**
      * Get the value used to index the model.
      */
@@ -108,7 +100,6 @@ final class Wallet extends Model
     {
         return [
             'address'   => $this->address,
-            'username'  => $this->username(),
             'balance'   => $this->balance->__toString(),
             'timestamp' => $this->timestamp,
         ];
@@ -123,7 +114,6 @@ final class Wallet extends Model
 
         return $self->newQuery()
             ->select([
-                DB::raw("wallets.attributes->>'username' AS validator_username"),
                 'wallets.address',
                 'wallets.attributes',
                 'wallets.balance',

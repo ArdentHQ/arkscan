@@ -16,8 +16,6 @@ final class Forms
         'vote',
         'multiSignature',
         'multiPayment',
-        'usernameRegistration',
-        'usernameResignation',
     ];
 
     /**

@@ -40,14 +40,6 @@ it('should determine the type', function (string $type, string $expected) {
         'multiPayment',
         'multi-payment',
     ],
-    [
-        'usernameRegistration',
-        'username-registration',
-    ],
-    [
-        'usernameResignation',
-        'username-resignation',
-    ],
 ]);
 
 it('should determine is unknown type', function () {
@@ -73,6 +65,4 @@ it('should play through every scenario of an unknown type', function (string $ty
     ['multiSignature'],
     ['validatorResignation'],
     ['multiPayment'],
-    ['usernameRegistration'],
-    ['usernameResignation'],
 ]);

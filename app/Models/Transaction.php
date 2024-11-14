@@ -12,8 +12,6 @@ use App\Models\Concerns\Transaction\CanBeSorted;
 use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\MultiSignatureScope;
 use App\Models\Scopes\TransferScope;
-use App\Models\Scopes\UsernameRegistrationScope;
-use App\Models\Scopes\UsernameResignationScope;
 use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Scopes\VoteScope;
@@ -63,8 +61,6 @@ final class Transaction extends Model
         'validatorResignation'          => ValidatorResignationScope::class,
         'multiPayment'                  => MultiPaymentScope::class,
         'multiSignature'                => MultiSignatureScope::class,
-        'usernameRegistration'          => UsernameRegistrationScope::class,
-        'usernameResignation'           => UsernameResignationScope::class,
         'transfer'                      => TransferScope::class,
         'vote'                          => VoteScope::class,
     ];

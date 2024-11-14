@@ -5,21 +5,17 @@
         @endif
 
         <a href="{{ route('wallet', $model->address()) }}" class="max-w-full font-semibold link">
-            @if ($model->username())
-                {{ $model->username() }}
+            @isset($withoutTruncate)
+                {{ $model->address() }}
             @else
-                @isset($withoutTruncate)
-                    {{ $model->address() }}
+                @isset($dynamicTruncate)
+                    <x-truncate-dynamic>{{ $model->address() }}</x-truncate-dynamic>
                 @else
-                    @isset($dynamicTruncate)
-                        <x-truncate-dynamic>{{ $model->address() }}</x-truncate-dynamic>
-                    @else
-                      <x-truncate-middle length="{{ $length ?? 8 }}">
-                          {{ $model->address() }}
-                      </x-truncate-middle>
-                    @endif
-                @endisset
-            @endif
+                    <x-truncate-middle length="{{ $length ?? 8 }}">
+                        {{ $model->address() }}
+                    </x-truncate-middle>
+                @endif
+            @endisset
         </a>
     </div>
 </div>

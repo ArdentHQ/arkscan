@@ -12,7 +12,6 @@ use App\Services\ExchangeRate;
 use App\ViewModels\Concerns\Wallet\CanBeCold;
 use App\ViewModels\Concerns\Wallet\CanBeValidator;
 use App\ViewModels\Concerns\Wallet\CanForge;
-use App\ViewModels\Concerns\Wallet\CanHaveUsername;
 use App\ViewModels\Concerns\Wallet\CanVote;
 use App\ViewModels\Concerns\Wallet\HasType;
 use App\ViewModels\Concerns\Wallet\HasVoters;
@@ -23,7 +22,6 @@ final class WalletViewModel implements ViewModel
     use CanBeCold;
     use CanBeValidator;
     use CanForge;
-    use CanHaveUsername;
     use CanVote;
     use HasType;
     use HasVoters;

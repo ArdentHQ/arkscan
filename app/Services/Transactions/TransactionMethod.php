@@ -19,8 +19,6 @@ final class TransactionMethod
     private array $types = [
         'isTransfer'              => 'transfer',
         'isValidatorRegistration' => 'validator-registration',
-        // 'isUsernameRegistration'  => 'username-registration',
-        // 'isUsernameResignation'   => 'username-resignation',
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
         // 'isMultiSignature'        => 'multi-signature',
@@ -83,16 +81,6 @@ final class TransactionMethod
     //     return $this->transaction->type === TransactionTypeEnum::MULTI_PAYMENT;
     // }
 
-    // public function isUsernameRegistration(): bool
-    // {
-    //     return $this->transaction->type === TransactionTypeEnum::USERNAME_REGISTRATION;
-    // }
-
-    // public function isUsernameResignation(): bool
-    // {
-    //     return $this->transaction->type === TransactionTypeEnum::USERNAME_RESIGNATION;
-    // }
-
     public function isUnknown(): bool
     {
         if ($this->isTransfer()) {
@@ -123,33 +111,6 @@ final class TransactionMethod
         //     return false;
         // }
 
-        // if ($this->isUsernameRegistration()) {
-        //     return false;
-        // }
-
-        // if ($this->isUsernameResignation()) {
-        //     return false;
-        // }
-
         return true;
     }
-
-    // private function determineVoteTypes(): array
-    // {
-    //     $containsVote   = false;
-    //     $containsUnvote = false;
-
-    //     if ($this->transaction->type !== TransactionTypeEnum::VOTE) {
-    //         return [$containsVote, $containsUnvote];
-    //     }
-
-    //     if (! is_array($this->transaction->asset)) {
-    //         return [$containsVote, $containsUnvote];
-    //     }
-
-    //     $containsVote   = count(Arr::get($this->transaction->asset, 'votes', [])) !== 0;
-    //     $containsUnvote = count(Arr::get($this->transaction->asset, 'unvotes', [])) !== 0;
-
-    //     return [$containsVote, $containsUnvote];
-    // }
 }

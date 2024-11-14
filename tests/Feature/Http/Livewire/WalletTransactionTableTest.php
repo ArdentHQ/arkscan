@@ -513,10 +513,6 @@ it('should filter by other transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $usernameRegistration = Transaction::factory()->usernameRegistration()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
-
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
         ->set('filter', [
@@ -528,7 +524,6 @@ it('should filter by other transactions', function () {
             'others'        => true,
         ])
         ->assertSee($validatorRegistration->id)
-        ->assertSee($usernameRegistration->id)
         ->assertDontSee($transfer->id);
 });
 
@@ -538,10 +533,6 @@ it('should show no transactions if no filters', function () {
     ]);
 
     $validatorRegistration = Transaction::factory()->validatorRegistration()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
-
-    $usernameRegistration = Transaction::factory()->usernameRegistration()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
@@ -557,7 +548,6 @@ it('should show no transactions if no filters', function () {
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($validatorRegistration->id)
-        ->assertDontSee($usernameRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_filters'));
 });
 
@@ -567,10 +557,6 @@ it('should show no transactions if no addressing filter', function () {
     ]);
 
     $validatorRegistration = Transaction::factory()->validatorRegistration()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
-
-    $usernameRegistration = Transaction::factory()->usernameRegistration()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
@@ -586,7 +572,6 @@ it('should show no transactions if no addressing filter', function () {
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($validatorRegistration->id)
-        ->assertDontSee($usernameRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_addressing_filters'));
 });
 
@@ -596,10 +581,6 @@ it('should show no transactions if no type filter', function () {
     ]);
 
     $validatorRegistration = Transaction::factory()->validatorRegistration()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
-
-    $usernameRegistration = Transaction::factory()->usernameRegistration()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
@@ -615,7 +596,6 @@ it('should show no transactions if no type filter', function () {
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($validatorRegistration->id)
-        ->assertDontSee($usernameRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_results'));
 });
 

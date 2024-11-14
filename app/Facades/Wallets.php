@@ -11,7 +11,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static Builder allWithUsername()
  * @method static Builder allWithValidatorPublicKey()
  * @method static Builder allWithVote()
  * @method static Builder allWithPublicKey()
@@ -19,7 +18,6 @@ use Illuminate\Support\Facades\Facade;
  * @method static Wallet findByAddress(string $address)
  * @method static Wallet findByPublicKey(string $publicKey)
  * @method static Collection findByPublicKeys(array $publicKey)
- * @method static Wallet findByUsername(string $username)
  * @method static Wallet findByIdentifier(string $identifier)
  */
 final class Wallets extends Facade

@@ -39,14 +39,7 @@ final class WalletSearch implements Search
 
     public static function mapMeilisearchResults(array $rawResults): Collection
     {
-        return collect($rawResults)->map(fn ($item) => new Wallet([
-            ...$item,
-            'attributes' => [
-                'validator' => [
-                    'username' => Arr::get($item, 'username'),
-                ],
-            ],
-        ]));
+        return collect($rawResults)->map(fn ($item) => new Wallet($item));
     }
 
     public static function buildSearchQueryForIndex(string $query, int $limit): ?SearchQuery

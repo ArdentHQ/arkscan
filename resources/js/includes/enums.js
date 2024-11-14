@@ -5,8 +5,6 @@ export const TransactionType = {
     MultiSignature: 4,
     MultiPayment: 6,
     ValidatorResignation: 7,
-    UsernameRegistration: 8,
-    UsernameResignation: 9,
 };
 
 export const ExportStatus = {

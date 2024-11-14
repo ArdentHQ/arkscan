@@ -42,13 +42,7 @@
     @elseif ($transaction->isValidatorRegistration() || $transaction->isValidatorResignation())
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.validator')"
-            :value="$transaction->sender()->username()"
-            :transaction="$transaction"
-        />
-    @elseif ($transaction->isUsernameRegistration() || $transaction->isUsernameResignation())
-        <x-transaction.page.section-detail.row
-            :title="trans('pages.transaction.header.username')"
-            :value="$transaction->username()"
+            :value="$transaction->sender()->address()"
             :transaction="$transaction"
         />
     @endif

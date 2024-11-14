@@ -278,8 +278,6 @@ const TransactionsExport = ({
                     TransactionType.ValidatorRegistration,
                     TransactionType.MultiSignature,
                     TransactionType.ValidatorResignation,
-                    TransactionType.UsernameRegistration,
-                    TransactionType.UsernameResignation
                 );
             }
 

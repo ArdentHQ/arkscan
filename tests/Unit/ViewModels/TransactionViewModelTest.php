@@ -499,8 +499,6 @@ it('should determine the transaction type', function (string $type) {
     ['multiSignature'],
     ['validatorResignation'],
     ['multiPayment'],
-    ['usernameRegistration'],
-    ['usernameResignation'],
 ]);
 
 it('should determine if the transaction is self-receiving', function (string $type) {
@@ -521,8 +519,6 @@ it('should determine if the transaction is self-receiving', function (string $ty
     ['vote'],
     ['unvote'],
     ['validatorResignation'],
-    ['usernameRegistration'],
-    ['usernameResignation'],
 ]);
 
 it('should fallback to the sender if no recipient exists', function () {

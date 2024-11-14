@@ -13,7 +13,5 @@ it('should get all transaction options', function () {
         'vote',
         'multiSignature',
         'multiPayment',
-        'usernameRegistration',
-        'usernameResignation',
     ]);
 });

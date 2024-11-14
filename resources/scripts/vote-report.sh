@@ -24,11 +24,11 @@ function GetVotersCount {
 
 function PrintJsonData {
 
-        echo $1 | jq -c -r '.data[] | { rank, username, votes, address, publicKey, production }' | while read Line; do
+        echo $1 | jq -c -r '.data[] | { rank, votes, address, publicKey, production }' | while read Line; do
 
                 Rank=$( printf %02d $( echo $Line | jq -r '.rank' ) )
 
-                Validator=$( printf %-25s $( echo $Line | jq -r '.username' ) )
+                Validator=$( printf %-25s $( echo $Line | jq -r '.address' ) )
                 Approval=$( printf %0.2f $( echo $Line | jq -r '.production.approval' ) )
 
                 Vote=$( expr $( echo $Line | jq -r '.votes' ) / 100000000 )
@@ -58,7 +58,7 @@ function PrintTotalVotingWeightData {
                 Voters=$( GetVotersCount $PublicKey )
                 TotalVoters=$( expr $TotalVoters + $Voters )
 
-        done <<< "$( echo $1 | jq -c -r '.data[] | { rank, username, votes, address, publicKey, production }' )"
+        done <<< "$( echo $1 | jq -c -r '.data[] | { rank, votes, address, publicKey, production }' )"
 
         Percentage=$( bc <<< "scale=2; $TotalVote * 100 / $TotalArk" )
 

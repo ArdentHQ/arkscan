@@ -17,8 +17,4 @@ final class TransactionTypeEnum
     public const MULTI_PAYMENT = 6;
 
     public const VALIDATOR_RESIGNATION = 7;
-
-    public const USERNAME_REGISTRATION = 8;
-
-    public const USERNAME_RESIGNATION = 9;
 }

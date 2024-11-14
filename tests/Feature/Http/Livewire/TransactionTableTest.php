@@ -187,8 +187,6 @@ it('should filter by other transactions', function () {
 
     $validatorRegistration = Transaction::factory()->validatorRegistration()->create();
 
-    $usernameRegistration = Transaction::factory()->usernameRegistration()->create();
-
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
@@ -198,7 +196,6 @@ it('should filter by other transactions', function () {
             'others'        => true,
         ])
         ->assertSee($validatorRegistration->id)
-        ->assertSee($usernameRegistration->id)
         ->assertDontSee($transfer->id);
 });
 
@@ -206,8 +203,6 @@ it('should show no transactions if no type filter', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
     $validatorRegistration = Transaction::factory()->validatorRegistration()->create();
-
-    $usernameRegistration = Transaction::factory()->usernameRegistration()->create();
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
@@ -219,7 +214,6 @@ it('should show no transactions if no type filter', function () {
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($validatorRegistration->id)
-        ->assertDontSee($usernameRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_filters'));
 });
 
