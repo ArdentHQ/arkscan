@@ -37,10 +37,6 @@ trait HasType
             return true;
         }
 
-        if ($this->hasSecondSignature()) {
-            return true;
-        }
-
         return $this->isOwnedByExchange();
     }
 
