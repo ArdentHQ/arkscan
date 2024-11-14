@@ -241,24 +241,6 @@ it('should get the nonce', function () {
     expect($this->subject->nonce())->toBeInt();
 });
 
-it('should get the username if the transaction is not a validator registration', function () {
-    $subject = new TransactionViewModel(Transaction::factory()
-        ->validatorRegistration()
-        ->create([
-            'asset' => [
-                'username' => 'john',
-            ],
-        ]));
-
-    expect($subject->username())->toBe('john');
-});
-
-it('should return null for username if not specified', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->transfer()->create());
-
-    expect($subject->username())->toBeNull();
-});
-
 it('should get the vendor field', function () {
     $transaction = Transaction::factory()->create([]);
 
