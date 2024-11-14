@@ -39,6 +39,7 @@ use Laravel\Scout\Searchable;
  * @property string|null $recipient_address
  * @property string $sender_public_key
  * @property int $block_height
+ * @property resource|null $data
  * @property resource|string|null $vendor_field
  * @property int $nonce
  * @property Wallet $sender
