@@ -165,7 +165,6 @@ it('should determine if the wallet has a special type when known', function () {
         ->create(['address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B']));
 
     expect($subject->isKnown())->toBeTrue();
-    expect($subject->hasSecondSignature())->toBeFalse();
     expect($subject->isOwnedByExchange())->toBeFalse();
     expect($subject->hasSpecialType())->toBeTrue();
 
@@ -182,7 +181,6 @@ it('should determine if the wallet has a special type if second signature', func
     $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0x946BF38f53aE753371BDC9583e68865643876320']));
 
     expect($subject->isKnown())->toBeFalse();
-    expect($subject->hasSecondSignature())->toBeTrue();
     expect($subject->isOwnedByExchange())->toBeFalse();
     expect($subject->hasSpecialType())->toBeTrue();
 
@@ -610,10 +608,6 @@ it('should get username if wallet not know', function () {
     ]));
 
     expect($this->subject->walletName())->toBe('john');
-});
-
-it('should determine if the wallet has a second signature', function () {
-    expect($this->subject->hasSecondSignature())->toBeBool();
 });
 
 it('should get the vote url with validator', function () {

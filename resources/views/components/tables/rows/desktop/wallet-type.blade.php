@@ -10,10 +10,4 @@
             <x-ark-icon name="app-exchange" size="sm" />
         </div>
     @endif
-
-    @if ($model->hasSecondSignature())
-        <div data-tippy-content="@lang('labels.second_signature')">
-            <x-ark-icon name="app-second-signature" size="sm" />
-        </div>
-    @endif
 </div>
