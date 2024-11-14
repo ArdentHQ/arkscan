@@ -6,7 +6,7 @@ use App\Models\Transaction;
 use App\Services\Transactions\TransactionMethod;
 
 it('should determine the type', function (string $type, string $expected) {
-    $transaction     = Transaction::factory()->{$type}()->create();
+    $transaction       = Transaction::factory()->{$type}()->create();
     $transactionMethod = new TransactionMethod($transaction);
 
     expect($transactionMethod->{'is'.ucfirst($type)}())->toBeTrue();
