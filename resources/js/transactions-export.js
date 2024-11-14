@@ -276,7 +276,7 @@ const TransactionsExport = ({
             if (this.types.others) {
                 data.type.push(
                     TransactionType.ValidatorRegistration,
-                    TransactionType.ValidatorResignation,
+                    TransactionType.ValidatorResignation
                 );
             }
 
