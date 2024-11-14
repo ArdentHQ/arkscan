@@ -35,11 +35,6 @@ final class WalletRepositoryWithCache implements WalletRepository
         return $this->wallets->allWithPublicKey();
     }
 
-    public function allWithMultiSignature(): Builder
-    {
-        return $this->wallets->allWithMultiSignature();
-    }
-
     public function findByAddress(string $address): Wallet
     {
         return $this->remember(fn () => $this->wallets->findByAddress($address));

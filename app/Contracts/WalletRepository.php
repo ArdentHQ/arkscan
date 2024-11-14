@@ -16,8 +16,6 @@ interface WalletRepository
 
     public function allWithPublicKey(): Builder;
 
-    public function allWithMultiSignature(): Builder;
-
     public function findByAddress(string $address): Wallet;
 
     public function findByPublicKey(string $publicKey): Wallet;

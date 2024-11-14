@@ -11,7 +11,6 @@ it('should get all transaction options', function () {
         'validatorRegistration',
         'validatorResignation',
         'vote',
-        'multiSignature',
         'multiPayment',
     ]);
 });

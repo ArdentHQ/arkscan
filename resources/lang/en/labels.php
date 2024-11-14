@@ -30,7 +30,6 @@ return [
     'verified_address'        => 'Verified Address',
     'votes'                   => 'Votes',
     'wallet_type'             => 'Info',
-    'multi_signature'         => 'Multisignature',
     'second_signature'        => 'Second Signature',
     'percentage'              => 'Percentage',
 ];

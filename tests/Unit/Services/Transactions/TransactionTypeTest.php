@@ -29,10 +29,6 @@ it('should determine the type', function (string $type, string $expected) {
         'unvote',
     ],
     [
-        'multiSignature',
-        'multi-signature',
-    ],
-    [
         'validatorResignation',
         'validator-resignation',
     ],

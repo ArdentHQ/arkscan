@@ -2,7 +2,6 @@ export const TransactionType = {
     Transfer: 0,
     ValidatorRegistration: 2,
     Vote: 3,
-    MultiSignature: 4,
     MultiPayment: 6,
     ValidatorResignation: 7,
 };

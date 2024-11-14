@@ -10,7 +10,6 @@ use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
 use App\Models\Scopes\MultiPaymentScope;
-use App\Models\Scopes\MultiSignatureScope;
 use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Scopes\ValidatorResignationScope;
@@ -60,7 +59,6 @@ final class Transaction extends Model
         'validatorRegistration'         => ValidatorRegistrationScope::class,
         'validatorResignation'          => ValidatorResignationScope::class,
         'multiPayment'                  => MultiPaymentScope::class,
-        'multiSignature'                => MultiSignatureScope::class,
         'transfer'                      => TransferScope::class,
         'vote'                          => VoteScope::class,
     ];

@@ -21,7 +21,6 @@ final class TransactionMethod
         'isValidatorRegistration' => 'validator-registration',
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
-        // 'isMultiSignature'        => 'multi-signature',
         'isValidatorResignation'  => 'validator-resignation',
         // 'isMultiPayment'          => 'multi-payment',
     ];
@@ -65,11 +64,6 @@ final class TransactionMethod
     {
         return $this->methodHash === PayloadSignature::UNVOTE->value;
     }
-
-    // public function isMultiSignature(): bool
-    // {
-    //     return $this->transaction->type === TransactionTypeEnum::MULTI_SIGNATURE;
-    // }
 
     public function isValidatorResignation(): bool
     {

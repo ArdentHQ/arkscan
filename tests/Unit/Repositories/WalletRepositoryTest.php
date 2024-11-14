@@ -22,10 +22,6 @@ it('should create a query for all wallets with a public key', function () {
     expect($this->subject->allWithPublicKey())->toBeInstanceOf(Builder::class);
 });
 
-it('should create a query for all wallets with a multi signature', function () {
-    expect($this->subject->allWithMultiSignature())->toBeInstanceOf(Builder::class);
-});
-
 it('should find a wallet by address', function () {
     $wallet = Wallet::factory()->create();
 

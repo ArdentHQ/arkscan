@@ -32,7 +32,6 @@ return [
             'validatorRegistration' => 'Validator Registration',
             'validatorResignation'  => 'Validator Resignation',
             'multiPayment'          => 'Multipayment',
-            'multiSignature'        => 'Multisignature',
             'transfer'              => 'Transfer',
             'vote'                  => 'Vote',
         ],

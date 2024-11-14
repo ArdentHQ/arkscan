@@ -23,8 +23,6 @@
 
             @if ($transaction->isMultiPayment())
                 <livewire:transaction.recipient-list :transaction-id="$transaction->id()" />
-            @elseif ($transaction->isMultisignature())
-                <x-transaction.page.participant-list :transaction="$transaction" />
             @endif
         </div>
 

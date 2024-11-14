@@ -33,13 +33,6 @@ trait HasMethod
         return $this->method->isUnvote();
     }
 
-    public function isMultiSignature(): bool
-    {
-        return false;
-
-        return $this->method->isMultiSignature();
-    }
-
     public function isValidatorResignation(): bool
     {
         return $this->method->isValidatorResignation();

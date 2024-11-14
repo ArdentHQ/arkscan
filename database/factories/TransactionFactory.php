@@ -81,15 +81,6 @@ final class TransactionFactory extends Factory
         ]);
     }
 
-    public function multiSignature(): Factory
-    {
-        return $this->state(fn () => [
-            'type'       => TransactionTypeEnum::MULTI_SIGNATURE,
-            'type_group' => 1,
-            'asset'      => [],
-        ]);
-    }
-
     public function validatorResignation(): Factory
     {
         return $this->state(fn () => [

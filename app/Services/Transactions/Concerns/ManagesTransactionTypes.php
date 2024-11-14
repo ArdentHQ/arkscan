@@ -11,7 +11,6 @@ trait ManagesTransactionTypes
         'isValidatorRegistration' => 'validator-registration',
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
-        'isMultiSignature'        => 'multi-signature',
         'isValidatorResignation'  => 'validator-resignation',
         'isMultiPayment'          => 'multi-payment',
     ];
@@ -21,7 +20,6 @@ trait ManagesTransactionTypes
         'isValidatorRegistration' => 'validator-registration',
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
-        'isMultiSignature'        => 'multi-signature',
         'isValidatorResignation'  => 'validator-resignation',
         'isMultiPayment'          => 'multi-payment',
     ];

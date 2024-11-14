@@ -12,8 +12,6 @@ final class TransactionTypeEnum
 
     public const VOTE = 3;
 
-    public const MULTI_SIGNATURE = 4;
-
     public const MULTI_PAYMENT = 6;
 
     public const VALIDATOR_RESIGNATION = 7;

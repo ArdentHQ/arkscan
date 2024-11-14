@@ -17,7 +17,6 @@ it('should render the page without any errors', function ($type) {
 })->with([
     'transfer',
     'validatorRegistration',
-    'multiSignature',
     'validatorResignation',
 ]);
 

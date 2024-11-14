@@ -165,27 +165,7 @@ it('should determine if the wallet has a special type when known', function () {
         ->create(['address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B']));
 
     expect($subject->isKnown())->toBeTrue();
-    expect($subject->hasMultiSignature())->toBeFalse();
     expect($subject->hasSecondSignature())->toBeFalse();
-    expect($subject->isOwnedByExchange())->toBeFalse();
-    expect($subject->hasSpecialType())->toBeTrue();
-
-    $subject = new WalletViewModel(Wallet::factory()
-        ->activeValidator()
-        ->create(['address' => 'unknown']));
-
-    expect($subject->hasSpecialType())->toBeFalse();
-});
-
-it('should determine if the wallet has a special type if multisignature', function () {
-    fakeKnownWallets();
-
-    $subject = new WalletViewModel(Wallet::factory()
-        ->multiSignature()
-        ->create(['address' => '0x946BF38f53aE753371BDC9583e68865643876320']));
-
-    expect($subject->isKnown())->toBeFalse();
-    expect($subject->hasMultiSignature())->toBeTrue();
     expect($subject->isOwnedByExchange())->toBeFalse();
     expect($subject->hasSpecialType())->toBeTrue();
 
@@ -646,10 +626,6 @@ it('should get the username if the wallet is a validator', function () {
 
 it('should determine if the wallet has a second signature', function () {
     expect($this->subject->hasSecondSignature())->toBeBool();
-});
-
-it('should determine if the wallet has a multi signature', function () {
-    expect($this->subject->hasMultiSignature())->toBeBool();
 });
 
 it('should get the validator user name', function () {
