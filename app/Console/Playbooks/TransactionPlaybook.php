@@ -24,10 +24,6 @@ final class TransactionPlaybook extends Playbook
 
         Transaction::factory(10)->vote()->create();
 
-        Transaction::factory(10)->multiSignature()->create();
-
-        Transaction::factory(10)->multiPayment()->create();
-
         Transaction::factory(10)->validatorResignation()->create();
 
         foreach (range(1, 365) as $day) {

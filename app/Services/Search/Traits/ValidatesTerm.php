@@ -33,25 +33,6 @@ trait ValidatesTerm
         return strlen($term) === 66 && $this->isHexadecimalString($term);
     }
 
-    /**
-     * Check if the query can be a username
-     * Regex source: https://github.com/ArkEcosystem/core/blob/4e149f039b59da97d224db1c593059dbc8e0f385/packages/core-api/src/handlers/shared/schemas/username.ts.
-     *
-     * @return bool
-     */
-    private function couldBeUsername(string $term): bool
-    {
-        // "Known wallets" are not related to anything on-chain, they are set by ARK team and can be seen here: https://github.com/ArkEcosystem/common/tree/master/mainnet
-        // They are not related to validator usernames that are registered on-chain, meaning that they can be anything.
-        // Therefore 30 character restriction is not something that's actively enforced for those names
-
-        $regex = '/^[a-zA-Z0-9!@$&_.()\[\] ]+$/';
-
-        return strlen($term) >= 1
-            && strlen($term) <= 30
-            && preg_match($regex, $term, $matches) > 0;
-    }
-
     private function is64CharsHexadecimalString(string $term): bool
     {
         return $this->isOnlyNumbers($term)

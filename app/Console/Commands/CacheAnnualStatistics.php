@@ -66,8 +66,6 @@ final class CacheAnnualStatistics extends Command
             ->orderBy('year')
             ->get();
 
-        // TODO: handle multipayment transactions
-
         $blocksData = DB::connection('explorer')
             ->query()
             ->select([
@@ -118,8 +116,6 @@ final class CacheAnnualStatistics extends Command
             ->join('receipts', 'transactions.id', '=', 'receipts.id')
             ->where('timestamp', '>=', $startOfYear)
             ->first();
-
-        // TODO: handle multipayment transactions
 
         $blocksData = DB::connection('explorer')
             ->query()

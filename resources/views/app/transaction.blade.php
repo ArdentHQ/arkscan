@@ -16,12 +16,6 @@
             <x-transaction.page.summary :transaction="$transaction" />
 
             <x-general.page-section.confirmations :model="$transaction" />
-
-            @if ($transaction->isMultiPayment())
-                <livewire:transaction.recipient-list :transaction-id="$transaction->id()" />
-            @elseif ($transaction->isMultisignature())
-                <x-transaction.page.participant-list :transaction="$transaction" />
-            @endif
         </div>
 
         @if ($transaction->hasPayload())

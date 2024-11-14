@@ -9,14 +9,6 @@ use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
-use App\Models\Scopes\MultiPaymentScope;
-use App\Models\Scopes\MultiSignatureScope;
-use App\Models\Scopes\TransferScope;
-use App\Models\Scopes\UsernameRegistrationScope;
-use App\Models\Scopes\UsernameResignationScope;
-use App\Models\Scopes\ValidatorRegistrationScope;
-use App\Models\Scopes\ValidatorResignationScope;
-use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -50,23 +42,6 @@ final class Transaction extends Model
     use SearchesCaseInsensitive;
     use HasEmptyScope;
     use Searchable;
-
-    /**
-     * A list of transaction scopes used for filtering based on type.
-     *
-     * Exposed through the model to keep its usage consistent across
-     * all places that need to filter transactions by their type.
-     */
-    public const TYPE_SCOPES = [
-        'validatorRegistration'         => ValidatorRegistrationScope::class,
-        'validatorResignation'          => ValidatorResignationScope::class,
-        'multiPayment'                  => MultiPaymentScope::class,
-        'multiSignature'                => MultiSignatureScope::class,
-        'usernameRegistration'          => UsernameRegistrationScope::class,
-        'usernameResignation'           => UsernameResignationScope::class,
-        'transfer'                      => TransferScope::class,
-        'vote'                          => VoteScope::class,
-    ];
 
     /**
      * The "type" of the primary key ID.

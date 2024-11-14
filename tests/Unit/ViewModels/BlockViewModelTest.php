@@ -144,20 +144,20 @@ it('should get the validator', function () {
     expect($this->subject->validator())->toBeInstanceOf(MemoryWallet::class);
 });
 
-it('should get the validator username', function () {
-    expect($this->subject->username())->toBeString();
-    expect($this->subject->username())->toBe('Genesis');
+it('should get the validator wallet name', function () {
+    expect($this->subject->walletName())->toBeString();
+    expect($this->subject->walletName())->toBe('Genesis');
 });
 
-it('should fail to get the validator username', function () {
+it('should fail to get the validator wallet name', function () {
     $this->subject = new BlockViewModel(Block::factory()->create([
         'generator_address' => Wallet::factory()->create([
             'attributes' => [],
         ])->address,
     ]));
 
-    expect($this->subject->username())->toBeString();
-    expect($this->subject->username())->toBe('Genesis');
+    expect($this->subject->walletName())->toBeString();
+    expect($this->subject->walletName())->toBe('Genesis');
 });
 
 it('should get the previous block url', function () {

@@ -18,8 +18,8 @@ trait HasValidator
         return $this->validator()->address() ?? 'Genesis';
     }
 
-    public function username(): string
+    public function walletName(): string
     {
-        return $this->validator()->username() ?? 'Genesis';
+        return $this->validator()->walletName() ?? 'Genesis';
     }
 }

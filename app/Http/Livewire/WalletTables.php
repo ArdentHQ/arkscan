@@ -55,7 +55,6 @@ final class WalletTables extends Component
             'incoming'      => ['except' => true, 'history' => true],
             'transfers'     => ['except' => true, 'history' => true],
             'votes'         => ['except' => true, 'history' => true],
-            'multipayments' => ['except' => true, 'history' => true],
             'others'        => ['except' => true, 'history' => true],
         ];
     }
@@ -72,7 +71,6 @@ final class WalletTables extends Component
                     'incoming'        => true,
                     'transfers'       => true,
                     'votes'           => true,
-                    'multipayments'   => true,
                     'others'          => true,
 
                     'paginators'      => [

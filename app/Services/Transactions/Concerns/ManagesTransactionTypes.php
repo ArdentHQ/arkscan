@@ -11,11 +11,7 @@ trait ManagesTransactionTypes
         'isValidatorRegistration' => 'validator-registration',
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
-        'isMultiSignature'        => 'multi-signature',
         'isValidatorResignation'  => 'validator-resignation',
-        'isMultiPayment'          => 'multi-payment',
-        'isUsernameRegistration'  => 'username-registration',
-        'isUsernameResignation'   => 'username-resignation',
     ];
 
     private array $typesExact = [
@@ -23,10 +19,6 @@ trait ManagesTransactionTypes
         'isValidatorRegistration' => 'validator-registration',
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
-        'isMultiSignature'        => 'multi-signature',
         'isValidatorResignation'  => 'validator-resignation',
-        'isMultiPayment'          => 'multi-payment',
-        'isUsernameRegistration'  => 'username-registration',
-        'isUsernameResignation'   => 'username-resignation',
     ];
 }

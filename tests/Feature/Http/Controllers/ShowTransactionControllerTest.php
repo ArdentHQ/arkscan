@@ -17,10 +17,7 @@ it('should render the page without any errors', function ($type) {
 })->with([
     'transfer',
     'validatorRegistration',
-    'multiSignature',
     'validatorResignation',
-    'usernameRegistration',
-    'usernameResignation',
 ]);
 
 it('should render the page for a vote/unvote transaction without any errors', function ($type) {

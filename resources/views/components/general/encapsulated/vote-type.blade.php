@@ -4,9 +4,7 @@
     @php($votedValidator = $transaction->voted())
 
     <span
-        @if ($votedValidator && $votedValidator->hasUsername())
-            data-tippy-html-content="{{ trans('general.transaction.vote_validator', ['validator' => $votedValidator->username()]) }}"
-        @elseif ($votedValidator)
+        @if ($votedValidator)
             data-tippy-html-content="{{ trans('general.transaction.vote_validator', ['validator' => $votedValidator->address()]) }}"
         @endif
     >

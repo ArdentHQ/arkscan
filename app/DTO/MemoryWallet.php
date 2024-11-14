@@ -35,12 +35,12 @@ final class MemoryWallet
 
     public function hasUsername(): bool
     {
-        return $this->username() !== null;
+        return $this->walletName() !== null;
     }
 
-    public function username(): ?string
+    public function walletName(): ?string
     {
-        return (new WalletCache())->getUsernameByAddress($this->address);
+        return (new WalletCache())->getWalletNameByAddress($this->address);
     }
 
     public function isValidator(): bool

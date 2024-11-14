@@ -92,8 +92,6 @@ return [
         'transaction_details'   => 'Transaction Details',
         'addressing'            => 'Addressing',
         'memo'                  => 'Memo (SmartBridge)',
-        'recipients_list'       => 'Recipients List',
-        'participants'          => 'Participants',
         'transaction_summary'   => 'Transaction Summary',
         'more_details'          => 'More Details',
         'gas_information'       => 'Gas Information',
@@ -106,7 +104,6 @@ return [
             'nonce'                => 'Nonce',
             'method'               => 'Method',
             'validator'            => 'Validator',
-            'username'             => 'Name',
             'old_validator'        => 'Old Validator',
             'new_validator'        => 'New Validator',
             'address'              => 'Address',
@@ -120,10 +117,6 @@ return [
             'gas_limit'            => 'Gas Limit',
             'usage_by_transaction' => 'Usage By Txn',
             'position_in_block'    => 'Position In Block',
-        ],
-
-        'value' => [
-            'multiple_x' => 'Multiple (<button type="link" data-link-scroll-to="#recipients-list" class="link">:count</button>)',
         ],
 
         'code-block' => [
@@ -275,10 +268,9 @@ return [
             ],
 
             'types-options' => [
-                'transfers'     => 'Transfers',
-                'votes'         => 'Votes',
-                'multipayments' => 'Multipayments',
-                'others'        => 'Others',
+                'transfers' => 'Transfers',
+                'votes'     => 'Votes',
+                'others'    => 'Others',
             ],
 
             'columns-options' => [
@@ -305,7 +297,7 @@ return [
             'include_header_row'  => 'Include Header Row',
             'types_placeholder'   => 'Select Types',
             'columns_placeholder' => 'Select Columns',
-            'success_toast'       => '<span class=\\\'font-semibold\\\'>:username.csv</span> has been saved successfully',
+            'success_toast'       => '<span class=\\\'font-semibold\\\'>:address.csv</span> has been saved successfully',
 
             'columns_x_selected' => [
                 'singular' => 'Column Selected',
@@ -499,7 +491,6 @@ return [
 
                 'header' => [
                     'transfer'                    => 'Transfers',
-                    'multipayment'                => 'Multipayments',
                     'vote'                        => 'Votes',
                     'unvote'                      => 'Unvotes',
                     'validator_registration'      => 'Validator Registrations',

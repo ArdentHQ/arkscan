@@ -23,32 +23,10 @@
                 <x-general.page-section.data.validator :validator="$transaction->voted()" />
             @endif
         </x-transaction.page.section-detail.row>
-    @elseif ($transaction->isMultisignature())
-        <x-transaction.page.section-detail.row
-            :title="trans('pages.transaction.header.address')"
-            :transaction="$transaction"
-        >
-            <x-transaction.page.section-detail.address :address="$transaction->multiSignatureWallet()->address()" />
-        </x-transaction.page.section-detail.row>
-
-        <x-transaction.page.section-detail.row
-            :title="trans('pages.transaction.header.signatures')"
-            :value="trans('general.x_of_y', [
-                $transaction->multiSignatureMinimum(),
-                $transaction->multiSignatureParticipantCount(),
-            ])"
-            :transaction="$transaction"
-        />
     @elseif ($transaction->isValidatorRegistration() || $transaction->isValidatorResignation())
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.validator')"
-            :value="$transaction->sender()->username()"
-            :transaction="$transaction"
-        />
-    @elseif ($transaction->isUsernameRegistration() || $transaction->isUsernameResignation())
-        <x-transaction.page.section-detail.row
-            :title="trans('pages.transaction.header.username')"
-            :value="$transaction->username()"
+            :value="$transaction->sender()->walletName()"
             :transaction="$transaction"
         />
     @endif

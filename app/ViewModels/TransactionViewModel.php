@@ -16,9 +16,6 @@ use App\ViewModels\Concerns\Transaction\HasDirection;
 use App\ViewModels\Concerns\Transaction\HasMethod;
 use App\ViewModels\Concerns\Transaction\HasPayload;
 use App\ViewModels\Concerns\Transaction\HasState;
-use App\ViewModels\Concerns\Transaction\InteractsWithMultiPayment;
-use App\ViewModels\Concerns\Transaction\InteractsWithMultiSignature;
-use App\ViewModels\Concerns\Transaction\InteractsWithUsernames;
 use App\ViewModels\Concerns\Transaction\InteractsWithVotes;
 use App\ViewModels\Concerns\Transaction\InteractsWithWallets;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
@@ -31,9 +28,6 @@ final class TransactionViewModel implements ViewModel
     use HasPayload;
     use HasState;
     use HasMethod;
-    use InteractsWithMultiPayment;
-    use InteractsWithMultiSignature;
-    use InteractsWithUsernames;
     use InteractsWithVotes;
     use InteractsWithWallets;
 
@@ -130,42 +124,16 @@ final class TransactionViewModel implements ViewModel
 
     public function amount(): float
     {
-        if ($this->isMultiPayment()) {
-            /** @var array<int, array<string, mixed>> */
-            $payments = Arr::get($this->transaction, 'asset.payments', []);
-
-            return collect($payments)
-                ->sum('amount') / config('currencies.notation.crypto', 1e18);
-        }
-
         return $this->transaction->amount->toFloat();
     }
 
     public function amountWithFee(): float
     {
-        $amount = $this->transaction->amount->toFloat();
-        if ($this->isMultiPayment()) {
-            /** @var array<int, array<string, mixed>> */
-            $payments = Arr::get($this->transaction, 'asset.payments', []);
-
-            return collect($payments)
-                ->sum('amount') / config('currencies.notation.crypto', 1e18);
-        }
-
-        return $amount + $this->fee();
+        return $this->transaction->amount->toFloat() + $this->fee();
     }
 
     public function amountReceived(?string $wallet = null): float
     {
-        if ($this->isMultiPayment() && $wallet !== null) {
-            /** @var array<int, array<string, mixed>> */
-            $payments = Arr::get($this->transaction, 'asset.payments', []);
-
-            return collect($payments)
-                ->where('recipientId', $wallet)
-                ->sum('amount') / config('currencies.notation.crypto', 1e18);
-        }
-
         return $this->amount();
     }
 

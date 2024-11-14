@@ -61,11 +61,7 @@
                     href="{{ route('wallet', $statistics['nextValidator']->model()) }}"
                     class="link"
                 >
-                    @if ($statistics['nextValidator']->hasUsername())
-                        {{ $statistics['nextValidator']->username() }}
-                    @else
-                        <x-truncate-middle>{{ $statistics['nextValidator']->address() }}</x-truncate-middle>
-                    @endif
+                    <x-truncate-middle>{{ $statistics['nextValidator']->address() }}</x-truncate-middle>
                 </a>
             @else
                 <span class="text-theme-secondary-500 dark:text-theme-dark-700">

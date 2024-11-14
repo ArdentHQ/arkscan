@@ -135,7 +135,6 @@ final class Validators extends TabbedTableComponent
                     ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->validatorResigned', true)));
             }))
             ->when($this->sortKey === 'rank', fn ($query) => $query->sortByRank($sortDirection))
-            ->when($this->sortKey === 'name', fn ($query) => $query->sortByUsername($sortDirection))
             ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', fn ($query) => $query->sortByVoteCount($sortDirection))
             ->when($this->sortKey === 'no_of_voters', fn ($query) => $query->sortByNumberOfVoters($sortDirection))
             ->when($this->sortKey === 'missed_blocks', fn ($query) => $query->sortByMissedBlocks($sortDirection));

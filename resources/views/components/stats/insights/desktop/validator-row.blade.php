@@ -20,7 +20,7 @@
                     href="{{ route('wallet', $model->model()) }}"
                     class="link"
                 >
-                    {{ $model->username() }}
+                    {{ $model->address() }}
                 </a>
             @endif
         </div>

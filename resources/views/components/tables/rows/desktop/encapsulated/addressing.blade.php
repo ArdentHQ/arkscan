@@ -39,9 +39,7 @@
                     class="link"
                     href="{{ route('wallet', $transactionWallet->address()) }}"
                 >
-                    @if ($transactionWallet->hasUsername())
-                        {{ $transactionWallet->username() }}
-                    @elseif ($withoutTruncate)
+                    @if ($withoutTruncate)
                         {{ $transactionWallet->address }}
                     @else
                         <x-truncate-middle>{{ $transactionWallet->address }}</x-truncate-middle>
@@ -49,36 +47,13 @@
                 </a>
             @else
                 <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                    @if ($transactionWallet->hasUsername())
-                        {{ $transactionWallet->username() }}
-                    @elseif ($withoutTruncate)
+                    @if ($withoutTruncate)
                         {{ $transactionWallet->address }}
                     @else
                         <x-truncate-middle>{{ $transactionWallet->address }}</x-truncate-middle>
                     @endif
                 </span>
             @endunless
-        @elseif ($model->isMultiPayment())
-            @if ($isSent)
-                <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                    @lang('tables.transactions.multiple')
-
-                    ({{ count($model->payments()) }})
-                </span>
-            @else
-                <a
-                    class="link"
-                    href="{{ route('wallet', $model->sender()->address()) }}"
-                >
-                    @if ($model->sender()->hasUsername())
-                        {{ $model->sender()->username() }}
-                    @elseif ($withoutTruncate)
-                        {{ $model->sender()->address }}
-                    @else
-                        <x-truncate-middle>{{ $model->sender()->address }}</x-truncate-middle>
-                    @endif
-                </a>
-            @endif
         @else
             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                 @lang('tables.transactions.contract')

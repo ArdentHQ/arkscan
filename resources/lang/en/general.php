@@ -120,10 +120,6 @@ return [
         'types'                   => [
             'validator-registration' => 'Registration',
             'validator-resignation'  => 'Resignation',
-            'multi-payment'          => 'Multipayment',
-            'multi-signature'        => 'Multisignature',
-            'username-registration'  => 'Username Registration',
-            'username-resignation'   => 'Username Resignation',
             'transfer'               => 'Transfer',
             'unvote'                 => 'Unvote',
             'vote'                   => 'Vote',

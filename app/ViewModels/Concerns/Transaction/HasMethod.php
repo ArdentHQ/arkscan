@@ -33,42 +33,9 @@ trait HasMethod
         return $this->method->isUnvote();
     }
 
-    public function isMultiSignature(): bool
-    {
-        return false;
-
-        return $this->method->isMultiSignature();
-    }
-
     public function isValidatorResignation(): bool
     {
         return $this->method->isValidatorResignation();
-    }
-
-    public function isMultiPayment(): bool
-    {
-        return false;
-
-        return $this->method->isMultiPayment();
-    }
-
-    public function isUsernameRegistration(): bool
-    {
-        return false;
-
-        return $this->method->isUsernameRegistration();
-    }
-
-    public function isUsernameResignation(): bool
-    {
-        return false;
-
-        return $this->method->isUsernameResignation();
-    }
-
-    public function isUnknown(): bool
-    {
-        return $this->method->isUnknown();
     }
 
     public function isSelfReceiving(): bool
@@ -88,14 +55,6 @@ trait HasMethod
         if ($this->isUnvote()) {
             return true;
         }
-
-        // if ($this->isUsernameRegistration()) {
-        //     return true;
-        // }
-
-        // if ($this->isUsernameResignation()) {
-        //     return true;
-        // }
 
         return false;
     }

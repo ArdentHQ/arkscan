@@ -13,7 +13,6 @@ final class StandbyValidatorScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        $builder->whereNotNull('attributes->validator->username');
         $builder->whereRaw("(\"attributes\"->'validator'->>'rank')::numeric > ?", [Network::validatorCount()]);
         $builder->orderByRaw("(\"attributes\"->'validator'->>'rank')::numeric ASC");
     }

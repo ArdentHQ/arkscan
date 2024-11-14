@@ -18,8 +18,6 @@ final class ExportBlocks extends Component
 
     public string $publicKey;
 
-    public ?string $username = null;
-
     public bool $hasForgedBlocks = false;
 
     public function mount(WalletViewModel $wallet): void
@@ -28,10 +26,6 @@ final class ExportBlocks extends Component
         $publicKey = $wallet->publicKey();
 
         $this->publicKey = $publicKey;
-
-        if ($wallet->hasUsername()) {
-            $this->username = $wallet->username();
-        }
     }
 
     public function render(): View
