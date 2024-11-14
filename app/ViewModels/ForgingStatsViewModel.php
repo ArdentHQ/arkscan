@@ -29,6 +29,11 @@ final class ForgingStatsViewModel implements ViewModel
         return $this->validator()?->address();
     }
 
+    public function walletName(): ?string
+    {
+        return $this->validator()?->walletName();
+    }
+
     public function timestamp(): string
     {
         return Timestamp::fromUnixHuman($this->forgingStats->timestamp);

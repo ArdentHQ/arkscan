@@ -36,6 +36,7 @@ final class CacheDevelopmentData extends Command
             'explorer:cache-validator-performance',
             'explorer:cache-validator-productivity',
             'explorer:cache-validator-resignation-ids',
+            'explorer:cache-known-wallets',
             'explorer:cache-validator-wallets',
             'explorer:cache-validators-with-voters',
             'explorer:cache-validator-voter-counts',

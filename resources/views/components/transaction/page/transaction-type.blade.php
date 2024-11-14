@@ -26,7 +26,7 @@
     @elseif ($transaction->isValidatorRegistration() || $transaction->isValidatorResignation())
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.validator')"
-            :value="$transaction->sender()->address()"
+            :value="$transaction->sender()->walletName()"
             :transaction="$transaction"
         />
     @endif

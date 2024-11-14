@@ -595,7 +595,7 @@ it('should get the known wallet name before username', function () {
         ],
     ]));
 
-    expect($this->subject->usernameIfNotKnown())->toBe('ACF Hot Wallet');
+    expect($this->subject->walletName())->toBe('ACF Hot Wallet');
 });
 
 it('should get username if wallet not know', function () {
@@ -609,33 +609,11 @@ it('should get username if wallet not know', function () {
         ],
     ]));
 
-    expect($this->subject->usernameIfNotKnown())->toBe('john');
-});
-
-it('should get the username if the wallet is a validator', function () {
-    fakeKnownWallets();
-
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'attributes'   => [
-            'username' => 'John',
-        ],
-    ]));
-
-    expect($this->subject->username())->toBe('John');
+    expect($this->subject->walletName())->toBe('john');
 });
 
 it('should determine if the wallet has a second signature', function () {
     expect($this->subject->hasSecondSignature())->toBeBool();
-});
-
-it('should get the validator user name', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'attributes' => [
-            'username' => 'john',
-        ],
-    ]));
-
-    expect($this->subject->username())->toBe('john');
 });
 
 it('should get the vote url with validator', function () {
@@ -693,17 +671,6 @@ it('should get that non validator is not an active validator', function () {
     expect($this->subject->isActive())->toBeFalse();
 });
 
-it('should get validator name for wallet name', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'attributes'   => [
-            'username'      => 'John',
-            'validatorRank' => 50,
-        ],
-    ]));
-
-    expect($this->subject->usernameBeforeKnown())->toBe('John');
-});
-
 it('should get known wallet name for wallet name', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [],
@@ -721,30 +688,7 @@ it('should get known wallet name for wallet name', function () {
 
     $this->subject = new WalletViewModel($wallet);
 
-    expect($this->subject->usernameBeforeKnown())->toBe('Test Wallet');
-});
-
-it('should get validator name before known wallet name for a wallet', function () {
-    $wallet = Wallet::factory()->create([
-        'attributes' => [
-            'username'      => 'John',
-            'validatorRank' => 50,
-        ],
-    ]);
-
-    Http::fake([
-        'githubusercontent.com/*' => [
-            [
-                'type'    => 'exchange',
-                'name'    => 'Test Wallet',
-                'address' => $wallet->address,
-            ],
-        ],
-    ]);
-
-    $this->subject = new WalletViewModel($wallet);
-
-    expect($this->subject->usernameBeforeKnown())->toBe('John');
+    expect($this->subject->walletName())->toBe('Test Wallet');
 });
 
 it('should get no name if a standard wallet', function () {
@@ -754,7 +698,7 @@ it('should get no name if a standard wallet', function () {
         'attributes' => [],
     ]));
 
-    expect($this->subject->usernameBeforeKnown())->toBeNull();
+    expect($this->subject->walletName())->toBeNull();
 });
 
 it('should get forged block count for validator', function () {

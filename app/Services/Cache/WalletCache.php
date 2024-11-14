@@ -85,6 +85,16 @@ final class WalletCache implements Contract
         $this->put(sprintf('validator/%s', $address), $wallet);
     }
 
+    public function getWalletNameByAddress(string $address): ?string
+    {
+        return $this->get(sprintf('name_by_address/%s', $address));
+    }
+
+    public function setWalletNameByAddress(string $address, string $name): void
+    {
+        $this->put(sprintf('name_by_address/%s', $address), $name);
+    }
+
     public function getVoterCount(string $address): int
     {
         return (int) $this->get(sprintf('voter_count/%s', $address), 0);

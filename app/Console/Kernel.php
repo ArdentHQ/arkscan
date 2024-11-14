@@ -9,6 +9,7 @@ use App\Console\Commands\CacheAddressStatistics;
 use App\Console\Commands\CacheAnnualStatistics;
 use App\Console\Commands\CacheCurrenciesData;
 use App\Console\Commands\CacheFees;
+use App\Console\Commands\CacheKnownWallets;
 use App\Console\Commands\CacheMarketDataStatistics;
 use App\Console\Commands\CacheNetworkAggregates;
 use App\Console\Commands\CachePrices;
@@ -63,6 +64,8 @@ final class Kernel extends ConsoleKernel
         $schedule->command(CacheValidatorAggregates::class)->everyMinute();
 
         $schedule->command(CacheFees::class)->everyFiveMinutes();
+
+        $schedule->command(CacheKnownWallets::class)->everyMinute();
 
         $schedule->command(CacheValidatorsWithVoters::class)->everyMinute();
 

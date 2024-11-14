@@ -1,5 +1,5 @@
 @component('layouts.app')
-    <x-metadata page="wallet" :detail="['address' => $wallet->address()]" />
+    <x-metadata page="wallet" :detail="['address' => $wallet->isKnownWallet() ? $wallet->walletName() : $wallet->address()]" />
 
     @section('content')
         <x-page-headers.wallet :wallet="$wallet" />
