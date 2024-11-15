@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
+use ArkEcosystem\Crypto\Utils\AbiDecoder;
+
 trait HasPayload
 {
     public function hasPayload(): bool
@@ -46,11 +48,13 @@ trait HasPayload
         return $utf8;
     }
 
-    public function methodHash(): ?string
+    public function methodHash(?string $payload = null): ?string
     {
-        $payload = $this->rawPayload();
         if ($payload === null) {
-            return null;
+            $payload = $this->rawPayload();
+            if ($payload === null) {
+                return null;
+            }
         }
 
         return substr($payload, 0, 8);
@@ -58,33 +62,26 @@ trait HasPayload
 
     public function formattedPayload(): ?string
     {
-        $methodId = $this->methodHash();
+        $payload = $this->rawPayload();
+        if ($payload === null) {
+            return null;
+        }
+
+        $method = (new AbiDecoder())->decodeFunctionData($payload);
+
+        $methodId = $this->methodHash($payload);
 
         $functionName = null;
         if (app('translator')->has('contracts.'.$methodId)) {
             $functionName = trans('contracts.'.$methodId);
+        } else {
+            $functionName = $method['functionName'];
         }
 
         return trim(view('components.transaction.code-block.formatted-contract', [
             'function'  => $functionName,
             'methodId'  => $methodId,
-            'arguments' => $this->payloadArguments(),
+            'arguments' => $method['args'],
         ])->render());
-    }
-
-    private function payloadArguments(): ?array
-    {
-        $payload = $this->rawPayload();
-        if ($payload === null) {
-            return [];
-        }
-
-        $argumentsPayload   = substr($payload, 8);
-        $separatedArguments = trim(chunk_split($argumentsPayload, 64, ' '));
-        if (strlen($separatedArguments) === 0) {
-            return [];
-        }
-
-        return explode(' ', $separatedArguments);
     }
 }
