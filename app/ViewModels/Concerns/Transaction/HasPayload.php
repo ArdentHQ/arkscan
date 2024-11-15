@@ -63,6 +63,10 @@ trait HasPayload
     public function formattedPayload(): ?string
     {
         $payload = $this->rawPayload();
+        if ($payload === null) {
+            return null;
+        }
+
         $method = (new AbiDecoder())->decodeFunctionData($payload);
 
         $methodId = $this->methodHash($payload);
