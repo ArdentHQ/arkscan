@@ -18,7 +18,7 @@ trait HasVoters
 
     public function votesPercentage(): float
     {
-        $voteBalance = (float) ($this->wallet->attributes['validatorVoteBalance'] ?? 0);
+        $voteBalance   = (float) ($this->wallet->attributes['validatorVoteBalance'] ?? 0);
         $networkSupply = CacheNetworkSupply::execute();
 
         if ($networkSupply <= 0) {
