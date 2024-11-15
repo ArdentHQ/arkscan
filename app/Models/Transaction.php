@@ -20,12 +20,11 @@ use Laravel\Scout\Searchable;
 
 /**
  * @property string $id
- * @property array|null $asset
  * @property BigNumber $amount
+ * @property BigNumber $gas_limit
  * @property BigNumber $gas_price
  * @property int $timestamp
- * @property int $type
- * @property int $type_group
+ * @property int $sequence
  * @property string $block_id
  * @property string|null $recipient_address
  * @property string $sender_public_key
@@ -71,11 +70,10 @@ final class Transaction extends Model
      */
     protected $casts = [
         'amount'       => BigInteger::class,
-        'asset'        => 'array',
         'gas_price'    => BigInteger::class,
+        'gas_limit'    => BigInteger::class,
         'timestamp'    => UnixSeconds::class,
-        'type_group'   => 'int',
-        'type'         => 'int',
+        'sequence'     => 'int',
         'block_height' => 'int',
     ];
 

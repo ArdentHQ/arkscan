@@ -13,14 +13,14 @@
             </x-slot>
 
             <x-tables.rows.mobile.encapsulated.cell :label="trans('pages.transaction.header.gas_limit')">
-                64,004
+                {{ ExplorerNumberFormatter::number($transaction->gasLimit()) }}
             </x-tables.rows.mobile.encapsulated.cell>
 
             <x-tables.rows.mobile.encapsulated.cell
                 :label="trans('pages.transaction.header.usage_by_transaction')"
                 class="pt-3"
             >
-                63,185
+                {{ ExplorerNumberFormatter::number($transaction->gasUsed()) }}
             </x-tables.rows.mobile.encapsulated.cell>
         </x-tables.rows.mobile>
 
@@ -30,7 +30,7 @@
             </x-slot>
 
             <x-tables.rows.mobile.encapsulated.cell :label="trans('pages.transaction.header.position_in_block')">
-                137
+                {{ $transaction->sequence() }}
             </x-tables.rows.mobile.encapsulated.cell>
         </x-tables.rows.mobile>
 
@@ -90,16 +90,17 @@
 
                 <x-transaction.page.section-detail.row
                     :title="trans('pages.transaction.header.gas_limit')"
-                    value="64,004"
+                    :value="ExplorerNumberFormatter::number($transaction->gasLimit())"
                     :transaction="$transaction"
+                    allow-empty
                 />
 
                 <x-transaction.page.section-detail.row
                     :title="trans('pages.transaction.header.usage_by_transaction')"
+                    :value="ExplorerNumberFormatter::number($transaction->gasUsed())"
                     :transaction="$transaction"
-                >
-                    63,185
-                </x-transaction.page.section-detail.row>
+                    allow-empty
+                />
             </x-general.page-section.container>
 
             <x-general.page-section.container
@@ -114,8 +115,9 @@
 
                 <x-transaction.page.section-detail.row
                     :title="trans('pages.transaction.header.position_in_block')"
-                    value="137"
+                    :value="$transaction->sequence()"
                     :transaction="$transaction"
+                    allow-empty
                 />
             </x-general.page-section.container>
 
