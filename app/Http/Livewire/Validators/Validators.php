@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Validators;
 
 use App\Enums\SortDirection;
-use App\Facades\Network;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
@@ -62,7 +61,7 @@ final class Validators extends TabbedTableComponent
     public function render(): View
     {
         return view('livewire.validators.validators', [
-            'validators'  => ViewModelFactory::paginate($this->validators),
+            'validators' => ViewModelFactory::paginate($this->validators),
         ]);
     }
 
@@ -125,12 +124,10 @@ final class Validators extends TabbedTableComponent
                 $query->where(fn ($query) => $query->when($this->filter['active'] === true, fn ($query) => $query->where(function ($query) {
                     $query->where('attributes->validatorResigned', null)
                         ->orWhere('attributes->validatorResigned', false);
-                })->whereRaw('(attributes->>\'validatorRank\')::int <= ?', Network::validatorCount())))
+                })))
                     ->orWhere(fn ($query) => $query->when($this->filter['standby'] === true, fn ($query) => $query->where(function ($query) {
                         $query->where('attributes->validatorResigned', null)
                             ->orWhere('attributes->validatorResigned', false);
-                    })->where(function ($query) {
-                        $query->whereRaw('(attributes->>\'validatorRank\')::int > ?', Network::validatorCount());
                     })))
                     ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->validatorResigned', true)));
             }))
