@@ -67,21 +67,44 @@ trait HasPayload
             return null;
         }
 
-        $method = (new AbiDecoder())->decodeFunctionData($payload);
-
         $methodId = $this->methodHash($payload);
 
         $functionName = null;
         if (app('translator')->has('contracts.'.$methodId)) {
             $functionName = trans('contracts.'.$methodId);
-        } else {
-            $functionName = $method['functionName'];
+        }
+
+        try {
+            $method = (new AbiDecoder())->decodeFunctionData($payload);
+            if ($functionName === null) {
+                $functionName = $method['functionName'];
+            }
+
+            $arguments = $method['args'];
+        } catch (\Throwable) {
+            $arguments = $this->payloadArguments();
         }
 
         return trim(view('components.transaction.code-block.formatted-contract', [
             'function'  => $functionName,
             'methodId'  => $methodId,
-            'arguments' => $method['args'],
+            'arguments' => $arguments,
         ])->render());
+    }
+
+    private function payloadArguments(): ?array
+    {
+        $payload = $this->rawPayload();
+        if ($payload === null) {
+            return [];
+        }
+
+        $argumentsPayload   = substr($payload, 8);
+        $separatedArguments = trim(chunk_split($argumentsPayload, 64, ' '));
+        if (strlen($separatedArguments) === 0) {
+            return [];
+        }
+
+        return explode(' ', $separatedArguments);
     }
 }
