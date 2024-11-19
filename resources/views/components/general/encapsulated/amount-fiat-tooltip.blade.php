@@ -73,7 +73,6 @@
             @if ($transaction)
                 <x-transaction.amount
                     :transaction="$transaction"
-                    :small-amount="0.0001"
                     hide-tooltip
                 />
             @else
