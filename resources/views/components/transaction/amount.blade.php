@@ -1,13 +1,23 @@
-@props(['transaction'])
+@props([
+    'transaction',
+    'smallAmount' => 0.01,
+    'hideTooltip' => false,
+])
 
-@if ($transaction->amount() < 0.01)
-    <span data-tippy-content="{{ ExplorerNumberFormatter::currencyWithDecimals($transaction->amount(), Network::currency(), 18) }}">
-        &lt;0.01 {{ Network::currency() }}
-    </span>
+@unless ($hideTooltip)
+    @if ($transaction->amount() < $smallAmount)
+        <span data-tippy-content="{{ ExplorerNumberFormatter::currencyWithDecimals($transaction->amount(), Network::currency(), 18) }}">
+            &lt;{{ $smallAmount }} {{ Network::currency() }}
+        </span>
+    @else
+        <span data-tippy-content="{{ ExplorerNumberFormatter::currencyWithDecimals($transaction->amount(), Network::currency(), 18) }}">
+            {{ ExplorerNumberFormatter::currencyWithDecimals($transaction->amount(), Network::currency(), 2) }}
+        </span>
+    @endif
 @else
-    <span data-tippy-content="{{ ExplorerNumberFormatter::currencyWithDecimals($transaction->amount(), Network::currency(), 18) }}">
+    @if ($transaction->amount() < $smallAmount)
+        &lt;{{ $smallAmount }} {{ Network::currency() }}
+    @else
         {{ ExplorerNumberFormatter::currencyWithDecimals($transaction->amount(), Network::currency(), 2) }}
-    </span>
-
-    {{-- {{ ExplorerNumberFormatter::networkCurrency($transaction->amount(), withSuffix: true) }} --}}
+    @endif
 @endif
