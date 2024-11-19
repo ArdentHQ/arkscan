@@ -37,7 +37,7 @@ return [
         'development' => [
             'coin'                => env('ARKSCAN_NETWORK_COIN', 'Mainsail'),
             'name'                => env('ARKSCAN_NETWORK_NAME', 'ARK Development Network'),
-            'api'                 => env('ARKSCAN_NETWORK_API', 'https://dwallets.mainsailhq.com/api'),
+            'api'                 => env('ARKSCAN_NETWORK_API', 'https://dwallets-evm.ihost.org/api'),
             'alias'               => env('ARKSCAN_NETWORK_ALIAS', 'devnet'),
             'nethash'             => env('ARKSCAN_NETHASH', '7b9a7c6a14d3f8fb3f47c434b8c6ef0843d5622f6c209ffeec5411aabbf4bf1c'),
             'mainnetExplorerUrl'  => $mainnetExplorer,
