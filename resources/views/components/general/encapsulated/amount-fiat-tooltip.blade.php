@@ -70,7 +70,14 @@
         {{ $isSent && ! $isSentToSelf ? '-' : ($isReceived ? '+' : '')}}
 
         @if (is_numeric($amount))
-            {{ ExplorerNumberFormatter::networkCurrency($amount) }}
+            @if ($transaction)
+                <x-transaction.amount
+                    :transaction="$transaction"
+                    hide-tooltip
+                />
+            @else
+                {{ ExplorerNumberFormatter::networkCurrency($amount) }}
+            @endif
         @else
             {{ $amount }}
         @endif

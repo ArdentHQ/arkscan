@@ -4,9 +4,10 @@
     @if ($transaction->isTransfer())
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.amount')"
-            :value="ExplorerNumberFormatter::networkCurrency($transaction->amount(), withSuffix: true)"
             :transaction="$transaction"
-        />
+        >
+            <x-transaction.amount :transaction="$transaction" />
+        </x-transaction.page.section-detail.row>
     @endif
 
     <x-transaction.page.section-detail.row
