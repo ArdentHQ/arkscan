@@ -35,6 +35,10 @@ final class TransactionMethod
             }
         }
 
+        if (app('translator')->has('contracts.'.$this->methodHash)) {
+            return preg_replace('/\(.+\)$/', '', trans('contracts.'.$this->methodHash));
+        }
+
         return '0x'.$this->methodHash;
     }
 
