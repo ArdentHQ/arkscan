@@ -146,8 +146,6 @@ final class TransactionViewModel implements ViewModel
     public function amount(): float
     {
         return UnitConverter::formatUnits((string) $this->transaction->amount, 'ark');
-
-        return $this->transaction->amount->toFloat();
     }
 
     public function amountWithFee(): float
