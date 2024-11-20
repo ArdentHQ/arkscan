@@ -117,16 +117,16 @@
         },
         {
             "name": "arkecosystem/foundation",
-            "version": "19.0.0",
+            "version": "19.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-foundation.git",
-                "reference": "89daa75e6a2d48766f8a725747c59de76f6d9a6a"
+                "reference": "797ca72fa24e67a1fff3c23ebcf7f6c2400f11af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/89daa75e6a2d48766f8a725747c59de76f6d9a6a",
-                "reference": "89daa75e6a2d48766f8a725747c59de76f6d9a6a",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/797ca72fa24e67a1fff3c23ebcf7f6c2400f11af",
+                "reference": "797ca72fa24e67a1fff3c23ebcf7f6c2400f11af",
                 "shasum": ""
             },
             "require": {
@@ -202,9 +202,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by Tailwind CSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-foundation/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/19.0.0"
+                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/19.1.0"
             },
-            "time": "2024-10-23T08:37:26+00:00"
+            "time": "2024-11-20T09:47:02+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
