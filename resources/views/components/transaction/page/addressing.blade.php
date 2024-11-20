@@ -17,6 +17,7 @@
     >
         <x-transaction.page.section-detail.address
             :address="$transaction->recipient()->address()"
+            :is-contract="$transaction->recipient()->isContract()"
             class="inline-block"
         />
     </x-transaction.page.section-detail.row>
