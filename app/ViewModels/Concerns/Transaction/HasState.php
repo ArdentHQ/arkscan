@@ -14,7 +14,7 @@ trait HasState
     public function hasFailedStatus(): bool
     {
         if ($this->transaction->receipt === null) {
-            return false;
+            return true;
         }
 
         return $this->transaction->receipt->success === false;
