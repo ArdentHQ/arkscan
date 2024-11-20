@@ -38,9 +38,12 @@
                     <x-truncate-middle>{{ $recipient->address }}</x-truncate-middle>
                 </a>
             @else
-                <span class="text-theme-secondary-900 dark:text-theme-dark-50">
+                <a
+                    class="whitespace-nowrap link"
+                    href="{{ route('wallet', $recipient->address()) }}"
+                >
                     @lang('tables.transactions.contract')
-                </span>
+                </a>
             @endif
         </div>
     </div>
