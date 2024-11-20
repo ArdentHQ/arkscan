@@ -420,3 +420,8 @@ input.qr-code-amount[type="number"] {
 .code-block-custom-scroll::-webkit-scrollbar-thumb {
     @apply rounded-lg bg-theme-primary-200;
 }
+
+/** Tooltips */
+.tippy-box {
+    @apply break-words;
+}
