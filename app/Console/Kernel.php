@@ -7,6 +7,7 @@ namespace App\Console;
 use App\Console\Commands\BuildForgingStats;
 use App\Console\Commands\CacheAddressStatistics;
 use App\Console\Commands\CacheAnnualStatistics;
+use App\Console\Commands\CacheContractAddresses;
 use App\Console\Commands\CacheCurrenciesData;
 use App\Console\Commands\CacheFees;
 use App\Console\Commands\CacheKnownWallets;
@@ -74,6 +75,8 @@ final class Kernel extends ConsoleKernel
         $schedule->command(CacheNetworkAggregates::class)->everyMinute();
 
         $schedule->command(BuildForgingStats::class)->everyMinute();
+
+        $schedule->command(CacheContractAddresses::class)->everyMinute();
 
         // TODO: enable when the monitor is fixed
         // $schedule->command(CacheValidatorPerformance::class)->everyMinute();

@@ -115,6 +115,16 @@ final class WalletCache implements Contract
         $this->put(sprintf('missed_blocks/%s', $address), $value);
     }
 
+    public function getContractAddresses(): array
+    {
+        return $this->get('contract_addresses', []);
+    }
+
+    public function setContractAddresses(array $addresses): void
+    {
+        $this->put('contract_addresses', $addresses);
+    }
+
     public function getCache(): TaggedCache
     {
         return Cache::tags('wallet');

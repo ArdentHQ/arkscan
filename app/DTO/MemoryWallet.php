@@ -30,7 +30,11 @@ final class MemoryWallet
 
     public function isContract(): bool
     {
-        return in_array($this->address(), config('contracts.addresses'), true);
+        if (in_array($this->address(), config('contracts.addresses'), true)) {
+            return true;
+        }
+
+        return in_array($this->address(), (new WalletCache())->getContractAddresses(), true);
     }
 
     public function publicKey(): ?string
