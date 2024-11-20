@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Validators;
 
 use App\Enums\SortDirection;
+use App\Facades\Network;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
