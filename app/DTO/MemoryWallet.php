@@ -28,6 +28,11 @@ final class MemoryWallet
         return $this->address;
     }
 
+    public function isContract(): bool
+    {
+        return in_array($this->address(), config('contracts.addresses'));
+    }
+
     public function publicKey(): ?string
     {
         return $this->publicKey;
