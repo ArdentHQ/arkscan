@@ -31,6 +31,10 @@ final class MainsailApi
             return $cache->getFees();
         }
 
+        if (! Arr::has($data, 'data.evmCall')) {
+            return $cache->getFees();
+        }
+
         $fees = collect(Arr::get($data, 'data.evmCall', []))
             ->map(fn ($fee) => UnitConverter::parseUnits($fee, 'gwei'))
             ->toArray();
