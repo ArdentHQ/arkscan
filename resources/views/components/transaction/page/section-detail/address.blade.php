@@ -25,9 +25,9 @@
     />
 
     @if ($isContract)
-        <div class="border-l border-theme-secondary-300 dark:border-theme-dark-700 h-[17px] mx-2"></div>
+        <div class="mx-2 border-l border-theme-secondary-300 h-[17px] dark:border-theme-dark-700"></div>
 
-        <div class="text-xs px-1 h-[21px] bg-theme-secondary-200 dark:bg-theme-dark-950 rounded flex space-x-1.5 items-center leading-3.75 text-theme-secondary-700 dark:text-theme-dark-200">
+        <div class="flex items-center px-1 space-x-1.5 text-xs rounded h-[21px] bg-theme-secondary-200 leading-3.75 text-theme-secondary-700 dark:bg-theme-dark-950 dark:text-theme-dark-200">
             <x-ark-icon name="transaction.contract" size="xs" />
 
             <span>@lang('general.contract')</span>
