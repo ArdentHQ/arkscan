@@ -10,4 +10,9 @@ trait HasState
     {
         return $this->state->isConfirmed();
     }
+
+    public function hasFailedStatus(): bool
+    {
+        return $this->transaction->receipt->success === false;
+    }
 }
