@@ -25,6 +25,6 @@ final class CacheGasTrackerData extends Command
 
     public function handle(): void
     {
-        dump(MainsailApi::fees());
+        MainsailApi::fees();
     }
 }
