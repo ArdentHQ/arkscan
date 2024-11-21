@@ -13,8 +13,7 @@
 <x-general.page-section.container
     :title="trans('general.confirmations_only')"
     wrapper-class="flex flex-col flex-1 whitespace-nowrap"
-    :wrapper-container-class="Arr::toCssClasses([
-        'py-2 mx-2 rounded-lg border sm:mx-0 sm:py-4',
+    :wrapper-container-class="Arr::toCssClasses(['py-2 mx-2 rounded-lg border sm:mx-0 sm:py-4',
         'bg-theme-success-100 dark:bg-theme-success-900 border-theme-success-200 dark:border-theme-success-500' => ! $hasFailedStatus,
         'bg-theme-danger-50 dark:bg-transparent border-theme-danger-200 dark:border-theme-danger-400' => $hasFailedStatus,
     ])"
@@ -53,14 +52,14 @@
         </div>
 
         @if ($hasFailedStatus)
-            <div class="pl-2 sm:pl-3 hidden md-lg:block">
+            <div class="hidden pl-2 sm:pl-3 md-lg:block">
                 @lang('pages.transaction.status.failed_message')
             </div>
         @endif
     </div>
 
     @if ($hasFailedStatus)
-        <div class="md-lg:hidden whitespace-normal border-t mt-2 pt-2 border-theme-danger-200 dark:border-theme-dark-700 px-3 sm:pl-6 sm:mt-3 sm:pt-3">
+        <div class="px-3 pt-2 mt-2 whitespace-normal border-t sm:pt-3 sm:pl-6 sm:mt-3 border-theme-danger-200 md-lg:hidden dark:border-theme-dark-700">
             @lang('pages.transaction.status.failed_message')
         </div>
     @endif
