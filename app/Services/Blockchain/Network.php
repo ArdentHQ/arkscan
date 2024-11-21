@@ -83,6 +83,11 @@ final class Network implements Contract
         return (new WalletCache())->setKnown(fn () => Http::get($this->config['knownWallets'])->json());
     }
 
+    public function knownContracts(): array
+    {
+        return $this->config['contract_addresses'];
+    }
+
     public function canBeExchanged(): bool
     {
         return $this->config['canBeExchanged'];
