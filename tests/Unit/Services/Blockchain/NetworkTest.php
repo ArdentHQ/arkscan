@@ -31,6 +31,7 @@ it('should have all required properties', function (array $config) {
     expect($subject->currencySymbol())->toBe($config['currencySymbol']);
     expect($subject->confirmations())->toBe($config['confirmations']);
     expect($subject->knownWallets())->toBeArray();
+    expect($subject->knownContracts())->toBeArray();
     expect($subject->canBeExchanged())->toBe($config['canBeExchanged']);
     expect($subject->epoch())->toBeInstanceOf(Carbon::class);
     expect($subject->validatorCount())->toBe($config['validatorCount']);
@@ -55,6 +56,7 @@ it('should have all required properties', function (array $config) {
         'base58Prefix'        => 23,
         'mainnetExplorerUrl'  => 'https://mainnet.ark.io/',
         'testnetExplorerUrl'  => 'https://testnet.ark.io/',
+        'contract_addresses'  => [],
     ]],
     [[
         'name'                => 'ARK Development Network',
@@ -71,5 +73,6 @@ it('should have all required properties', function (array $config) {
         'base58Prefix'        => 30,
         'mainnetExplorerUrl'  => 'https://mainnet.dark.io/',
         'testnetExplorerUrl'  => 'https://testnet.dark.io/',
+        'contract_addresses'  => [],
     ]],
 ]);

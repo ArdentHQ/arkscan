@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static string nethash()
  * @method static int confirmations()
  * @method static array knownWallets()
+ * @method static array knownContracts()
  * @method static bool canBeExchanged()
  * @method static Carbon epoch()
  * @method static int validatorCount()

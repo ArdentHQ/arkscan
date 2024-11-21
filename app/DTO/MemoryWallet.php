@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
+use App\Facades\Network;
 use App\Services\Cache\WalletCache;
 use App\Services\Identity;
 
@@ -30,7 +31,7 @@ final class MemoryWallet
 
     public function isContract(): bool
     {
-        if (in_array($this->address(), config('contracts.addresses'), true)) {
+        if (in_array($this->address(), Network::knownContracts(), true)) {
             return true;
         }
 
