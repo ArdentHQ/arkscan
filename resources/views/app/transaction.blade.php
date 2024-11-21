@@ -13,7 +13,7 @@
 
             <x-transaction.page.summary :transaction="$transaction" />
 
-            <x-general.page-section.confirmations :model="$transaction" />
+            <x-transaction.page.status :model="$transaction" />
         </div>
 
         <div class="mb-8">

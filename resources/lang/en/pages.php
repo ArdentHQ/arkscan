@@ -128,6 +128,10 @@ return [
                 'original' => 'Original',
             ],
         ],
+
+        'status' => [
+            'failed_message' => 'Error encountered during contract execution',
+        ],
     ],
 
     'transactions'     => [
