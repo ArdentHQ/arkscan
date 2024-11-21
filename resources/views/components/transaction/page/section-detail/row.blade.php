@@ -7,15 +7,8 @@
     'allowEmpty' => false,
 ])
 
-@php
-    $headerWidth = 'w-[87px]';
-    if ($transaction->hasPayload()) {
-        $headerWidth = 'w-[132px]';
-    }
-@endphp
-
 <x-general.page-section.row
-    :header-width="$headerWidth"
+    header-width="w-[132px]"
     :title="$title"
     :value="$value"
     :value-class="$valueClass"
