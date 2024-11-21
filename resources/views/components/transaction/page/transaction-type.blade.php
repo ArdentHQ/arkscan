@@ -1,6 +1,9 @@
 @props(['transaction'])
 
-<x-general.page-section.container :title="trans('pages.transaction.action')">
+<x-general.page-section.container
+    :title="trans('pages.transaction.action')"
+    wrapper-class="flex flex-col flex-1 space-y-3 w-full whitespace-nowrap"
+>
     <x-transaction.page.section-detail.row
         :title="trans('pages.transaction.header.method')"
         :transaction="$transaction"
@@ -23,11 +26,13 @@
                 <x-general.page-section.data.validator :validator="$transaction->voted()" />
             @endif
         </x-transaction.page.section-detail.row>
-    @elseif ($transaction->isValidatorRegistration() || $transaction->isValidatorResignation())
+    @elseif ($transaction->isValidatorRegistration())
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.validator')"
-            :value="$transaction->sender()->walletName()"
             :transaction="$transaction"
-        />
+            value-class="min-w-0"
+        >
+            <x-truncate-dynamic>{{ $transaction->validatorPublicKey() }}</x-truncate-dynamic>
+        </x-transaction.page.section-detail.row>
     @endif
 </x-general.page-section.container>
