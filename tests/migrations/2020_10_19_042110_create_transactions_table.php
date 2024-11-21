@@ -14,15 +14,13 @@ final class CreateTransactionsTable extends Migration
             $table->string('id');
             $table->string('block_id');
             $table->string('block_height');
-            $table->unsignedBigInteger('type');
-            $table->unsignedBigInteger('type_group');
             $table->string('sender_public_key');
             $table->string('recipient_id')->nullable();
             $table->unsignedBigInteger('timestamp');
             $table->addColumn('numeric', 'amount');
             $table->addColumn('numeric', 'gas_price');
             $table->unsignedBigInteger('nonce');
-            $table->binary('vendor_field')->nullable();
+            $table->binary('data')->nullable();
             $table->jsonb('asset')->nullable();
             $table->timestamps();
         });

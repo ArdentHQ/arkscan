@@ -21,7 +21,7 @@ beforeEach(function () {
     (new NetworkCache())->setHeight(fn () => 5000000);
 
     $this->sender  = Wallet::factory()->create();
-    $this->subject = new TransactionViewModel(Transaction::factory()->transfer()->create([
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'block_id'          => $this->block->id,
         'block_height'      => 1,
         'gas_price'         => 1,
@@ -48,7 +48,6 @@ it('should determine if the transaction is outgoing', function () {
 
 it('should determine if transfer transaction is sent to self', function () {
     $transaction = new TransactionViewModel(Transaction::factory()
-        ->transfer()
         ->create([
             'sender_public_key' => $this->sender->public_key,
             'recipient_id'      => $this->sender->address,
@@ -338,4 +337,38 @@ it('should return gas price if no receipt', function () {
     $viewModel = new TransactionViewModel($transaction->fresh());
 
     expect($viewModel->fee())->toEqual(0.000000054);
+});
+
+it('should should determine if transaction failed', function () {
+    $transaction = Transaction::factory()->create();
+
+    Receipt::factory()->create([
+        'id'      => $transaction->id,
+        'success' => false,
+    ]);
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->hasFailedStatus())->toBeTrue();
+});
+
+it('should should determine if transaction failed if no receipt', function () {
+    $transaction = Transaction::factory()->create();
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->hasFailedStatus())->toBeTrue();
+});
+
+it('should should determine transaction has not failed', function () {
+    $transaction = Transaction::factory()->create();
+
+    Receipt::factory()->create([
+        'id'      => $transaction->id,
+        'success' => true,
+    ]);
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->hasFailedStatus())->toBeFalse();
 });
