@@ -37,6 +37,7 @@ return [
     'coming_soon'         => 'Coming Soon',
     'select_all'          => 'Select All',
     'success'             => 'Success',
+    'failed'              => 'Failed',
     'information'         => 'Information',
     'error'               => 'Error',
     'warning'             => 'Warning',
