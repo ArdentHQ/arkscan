@@ -62,6 +62,17 @@ trait HasPayload
 
     public function formattedPayload(): ?string
     {
+        [$functionName, $methodId, $arguments] = $this->getMethodData();
+
+        return trim(view('components.transaction.code-block.formatted-contract', [
+            'function'  => $functionName,
+            'methodId'  => $methodId,
+            'arguments' => $arguments,
+        ])->render());
+    }
+
+    private function getMethodData(): ?array
+    {
         $payload = $this->rawPayload();
         if ($payload === null) {
             return null;
@@ -82,23 +93,14 @@ trait HasPayload
 
             $arguments = $method['args'];
         } catch (\Throwable) {
-            $arguments = $this->payloadArguments();
+            $arguments = $this->payloadArguments($payload);
         }
 
-        return trim(view('components.transaction.code-block.formatted-contract', [
-            'function'  => $functionName,
-            'methodId'  => $methodId,
-            'arguments' => $arguments,
-        ])->render());
+        return [$functionName, $methodId, $arguments];
     }
 
-    private function payloadArguments(): ?array
+    private function payloadArguments(string $payload): ?array
     {
-        $payload = $this->rawPayload();
-        if ($payload === null) {
-            return [];
-        }
-
         $argumentsPayload   = substr($payload, 8);
         $separatedArguments = trim(chunk_split($argumentsPayload, 64, ' '));
         if (strlen($separatedArguments) === 0) {
