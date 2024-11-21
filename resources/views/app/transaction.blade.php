@@ -4,9 +4,7 @@
     @section('content')
         <x-page-headers.transaction :transaction="$transaction" />
 
-        <div @class([
-            'mb-8' => ! $transaction->hasPayload(),
-        ])>
+        <div>
             <x-transaction.page.details :transaction="$transaction" />
 
             <x-transaction.page.transaction-type :transaction="$transaction" />
@@ -18,10 +16,8 @@
             <x-general.page-section.confirmations :model="$transaction" />
         </div>
 
-        @if ($transaction->hasPayload())
-            <div class="mb-8">
-                <x-transaction.page.more-details :transaction="$transaction" />
-            </div>
-        @endif
+        <div class="mb-8">
+            <x-transaction.page.more-details :transaction="$transaction" />
+        </div>
     @endsection
 @endcomponent
