@@ -34,7 +34,7 @@ return [
             'blockReward'         => intval(env('ARKSCAN_NETWORK_BLOCK_REWARD', 2)),
             'base58Prefix'        => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 23)),
 
-            'contract_addresses' => []
+            'contract_addresses' => [],
         ],
         'development' => [
             'coin'                => env('ARKSCAN_NETWORK_COIN', 'Mainsail'),
@@ -55,7 +55,7 @@ return [
             'blockReward'         => intval(env('ARKSCAN_NETWORK_BLOCK_REWARD', 2)),
             'base58Prefix'        => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 30)),
 
-            'contract_addresses' => []
+            'contract_addresses' => [],
         ],
     ],
 
