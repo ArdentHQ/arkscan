@@ -9,6 +9,9 @@ use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
+use App\Models\Scopes\OtherTransactionTypesScope;
+use App\Models\Scopes\TransferScope;
+use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -192,6 +195,56 @@ final class Transaction extends Model
         }
 
         return Wallet::where('address', $vote)->firstOrFail();
+    }
+
+    public function scopeWithTypeFilter(Builder $query, array $filter): Builder
+    {
+        $hasDisabledAFilter = in_array(false, $filter, true);
+
+        return $query
+            ->when($hasDisabledAFilter, function ($query) use ($filter) {
+                $query->where(function ($query) use ($filter) {
+                    $query->where(function ($query) use ($filter) {
+                        $query->when($filter['transfers'] === true, function ($query) {
+                            $query->withScope(TransferScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['votes'] === true, function ($query) {
+                            $query->withScope(VoteScope::class);
+                        });
+                    })
+                    // ->orWhere(function ($query) use ($filter) {
+                    //     $query->when($filter['unvotes'] === true, function ($query) {
+                    //         $query->withContract(PayloadSignature::UNVOTE);
+                    //     });
+                    // })
+                    // ->orWhere(function ($query) use ($filter) {
+                    //     $query->when($filter['validator_registration'] === true, function ($query) {
+                    //         $query->withContract(PayloadSignature::VALIDATOR_REGISTRATION);
+                    //     });
+                    // })
+                    // ->orWhere(function ($query) use ($filter) {
+                    //     $query->when($filter['validator_resignation'] === true, function ($query) {
+                    //         $query->withContract(PayloadSignature::VALIDATOR_RESIGNATION);
+                    //     });
+                    // })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['others'] === true, function ($query) {
+                            $query->withScope(OtherTransactionTypesScope::class);
+                        });
+                    });
+                        // ->orWhere(fn ($query) => $query->when($filter['others'] === true, fn ($query) => $query
+                        //     ->orWhere(
+                        //         fn ($query) => $query
+                        //             ->whereNotIn('type', [
+                        //                 TransactionTypeEnum::TRANSFER,
+                        //                 TransactionTypeEnum::VOTE,
+                        //                 TransactionTypeEnum::MULTI_PAYMENT,
+                        //             ])
+                        //     )));
+                });
+            });
     }
 
     public function fee(): BigNumber
