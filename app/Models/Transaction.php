@@ -234,7 +234,7 @@ final class Transaction extends Model
                             $query->withScope(OtherTransactionTypesScope::class);
                         });
                     });
-                        // ->orWhere(fn ($query) => $query->when($filter['others'] === true, fn ($query) => $query
+                    // ->orWhere(fn ($query) => $query->when($filter['others'] === true, fn ($query) => $query
                         //     ->orWhere(
                         //         fn ($query) => $query
                         //             ->whereNotIn('type', [
