@@ -25,7 +25,7 @@ final class ContractScope implements Scope
 
     public function apply(Builder $builder, Model $model)
     {
-        return $builder->where('recipient_address', Network::knownContract('consensus'))
+        $builder->where('recipient_address', Network::knownContract('consensus'))
             ->whereRaw('SUBSTRING(encode(data, \'hex\'), 1, 8) = ?', [$this->contract]);
     }
 }
