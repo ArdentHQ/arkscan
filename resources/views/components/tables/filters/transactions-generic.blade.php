@@ -26,6 +26,21 @@
             />
 
             <x-tables.filters.includes.checkbox
+                name="unvotes"
+                :label="trans('tables.filters.transactions.unvotes')"
+            />
+
+            <x-tables.filters.includes.checkbox
+                name="validator_registration"
+                :label="trans('tables.filters.transactions.validator_registration')"
+            />
+
+            <x-tables.filters.includes.checkbox
+                name="validator_resignation"
+                :label="trans('tables.filters.transactions.validator_resignation')"
+            />
+
+            <x-tables.filters.includes.checkbox
                 name="others"
                 :label="trans('tables.filters.transactions.others')"
             />

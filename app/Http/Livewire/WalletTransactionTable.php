@@ -28,11 +28,14 @@ final class WalletTransactionTable extends TabbedTableComponent
     public ?string $publicKey = null;
 
     public array $filter = [
-        'outgoing'      => true,
-        'incoming'      => true,
-        'transfers'     => true,
-        'votes'         => true,
-        'others'        => true,
+        'outgoing'               => true,
+        'incoming'               => true,
+        'transfers'              => true,
+        'votes'                  => true,
+        'unvotes'                => true,
+        'validator_registration' => true,
+        'validator_resignation'  => true,
+        'others'                 => true,
     ];
 
     /** @var mixed */
@@ -45,11 +48,14 @@ final class WalletTransactionTable extends TabbedTableComponent
     public function queryString(): array
     {
         return [
-            'filter.outgoing'      => ['as' => 'outgoing', 'except' => true],
-            'filter.incoming'      => ['as' => 'incoming', 'except' => true],
-            'filter.transfers'     => ['as' => 'transfers', 'except' => true],
-            'filter.votes'         => ['as' => 'votes', 'except' => true],
-            'filter.others'        => ['as' => 'others', 'except' => true],
+            'filter.outgoing'               => ['as' => 'outgoing', 'except' => true],
+            'filter.incoming'               => ['as' => 'incoming', 'except' => true],
+            'filter.transfers'              => ['as' => 'transfers', 'except' => true],
+            'filter.votes'                  => ['as' => 'votes', 'except' => true],
+            'filter.unvotes'                => ['as' => 'unvotes', 'except' => true],
+            'filter.validator_registration' => ['as' => 'validator-registration', 'except' => true],
+            'filter.validator_resignation'  => ['as' => 'validator-resignation', 'except' => true],
+            'filter.others'                 => ['as' => 'others', 'except' => true],
         ];
     }
 
@@ -104,6 +110,7 @@ final class WalletTransactionTable extends TabbedTableComponent
         }
 
         return $this->getTransactionsQuery()
+            ->withTypeFilter($this->filter)
             ->withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage);
     }
@@ -124,6 +131,18 @@ final class WalletTransactionTable extends TabbedTableComponent
         }
 
         if ($this->filter['votes'] === true) {
+            return true;
+        }
+
+        if ($this->filter['unvotes'] === true) {
+            return true;
+        }
+
+        if ($this->filter['validator_registration'] === true) {
+            return true;
+        }
+
+        if ($this->filter['validator_resignation'] === true) {
             return true;
         }
 

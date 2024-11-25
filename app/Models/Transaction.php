@@ -11,6 +11,9 @@ use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
 use App\Models\Scopes\OtherTransactionTypesScope;
 use App\Models\Scopes\TransferScope;
+use App\Models\Scopes\UnvoteScope;
+use App\Models\Scopes\ValidatorRegistrationScope;
+use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Builder;
@@ -214,21 +217,21 @@ final class Transaction extends Model
                             $query->withScope(VoteScope::class);
                         });
                     })
-                    // ->orWhere(function ($query) use ($filter) {
-                    //     $query->when($filter['unvotes'] === true, function ($query) {
-                    //         $query->withContract(PayloadSignature::UNVOTE);
-                    //     });
-                    // })
-                    // ->orWhere(function ($query) use ($filter) {
-                    //     $query->when($filter['validator_registration'] === true, function ($query) {
-                    //         $query->withContract(PayloadSignature::VALIDATOR_REGISTRATION);
-                    //     });
-                    // })
-                    // ->orWhere(function ($query) use ($filter) {
-                    //     $query->when($filter['validator_resignation'] === true, function ($query) {
-                    //         $query->withContract(PayloadSignature::VALIDATOR_RESIGNATION);
-                    //     });
-                    // })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['unvotes'] === true, function ($query) {
+                            $query->withScope(UnvoteScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['validator_registration'] === true, function ($query) {
+                            $query->withScope(ValidatorRegistrationScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['validator_resignation'] === true, function ($query) {
+                            $query->withScope(ValidatorResignationScope::class);
+                        });
+                    })
                     ->orWhere(function ($query) use ($filter) {
                         $query->when($filter['others'] === true, function ($query) {
                             $query->withScope(OtherTransactionTypesScope::class);
