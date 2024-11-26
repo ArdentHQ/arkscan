@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
 use App\Http\Livewire\WalletTransactionTable;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -401,12 +402,15 @@ it('should filter by validator resignation transactions', function () {
         ->assertSee($resignation->id);
 });
 
-it('should filter by other transactions', function () {
+it('should filter by other transactions to consensus address', function () {
     $transfer = Transaction::factory()->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $other = Transaction::factory()->withPayload('12345678')->create();
+    $other = Transaction::factory()->withPayload('12345678')->create([
+        'sender_public_key' => $this->subject->public_key,
+        'recipient_address' => Network::knownContract('consensus'),
+    ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
@@ -421,6 +425,58 @@ it('should filter by other transactions', function () {
             'others'                 => true,
         ])
         ->assertSee($other->id)
+        ->assertDontSee($transfer->id);
+});
+
+it('should filter by other transactions to non-consensus address', function () {
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    $other = Transaction::factory()->withPayload('12345678')->create([
+        'sender_public_key' => $this->subject->public_key,
+        'recipient_address' => 'not consensus address',
+    ]);
+
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->set('filter', [
+            'outgoing'               => true,
+            'incoming'               => false,
+            'transfers'              => false,
+            'votes'                  => false,
+            'unvotes'                => false,
+            'validator_registration' => false,
+            'validator_resignation'  => false,
+            'others'                 => true,
+        ])
+        ->assertSee($other->id)
+        ->assertDontSee($transfer->id);
+});
+
+it('should not filter transfers to consensus as "other"', function () {
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    $other = Transaction::factory()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'recipient_address' => Network::knownContract('consensus'),
+    ]);
+
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->set('filter', [
+            'outgoing'               => true,
+            'incoming'               => false,
+            'transfers'              => false,
+            'votes'                  => false,
+            'unvotes'                => false,
+            'validator_registration' => false,
+            'validator_resignation'  => false,
+            'others'                 => true,
+        ])
+        ->assertDontSee($other->id)
         ->assertDontSee($transfer->id);
 });
 
