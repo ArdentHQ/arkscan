@@ -10,6 +10,8 @@ enum StatsTransactionType
 {
     public const TRANSFER = 'transfer';
 
+    public const BATCH_TRANSFER = 'batch_transfer';
+
     public const VOTE = 'vote';
 
     public const UNVOTE = 'unvote';
@@ -22,6 +24,7 @@ enum StatsTransactionType
     {
         return new Collection([
             self::TRANSFER,
+            self::BATCH_TRANSFER,
             self::VOTE,
             self::UNVOTE,
             self::VALIDATOR_REGISTRATION,

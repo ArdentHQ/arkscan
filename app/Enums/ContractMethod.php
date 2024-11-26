@@ -13,6 +13,11 @@ final class ContractMethod
         return Network::contractMethod('transfer', 'a9059cbb');
     }
 
+    public static function batchTransfer(): ?string
+    {
+        return Network::contractMethod('batch_transfer', '88d695b2');
+    }
+
     public static function validatorRegistration(): ?string
     {
         return Network::contractMethod('validator_registration', '602a9eee');

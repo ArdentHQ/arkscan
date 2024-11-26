@@ -286,6 +286,32 @@ it('should filter by transfer transactions', function () {
         ->assertDontSee($vote->id);
 });
 
+it('should filter by batch transfer transactions', function () {
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    $batchTransfer = Transaction::factory()->batchTransfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->set('filter', [
+            'outgoing'               => true,
+            'incoming'               => false,
+            'transfers'              => false,
+            'batch_transfers'        => true,
+            'votes'                  => false,
+            'unvotes'                => false,
+            'validator_registration' => false,
+            'validator_resignation'  => false,
+            'others'                 => false,
+        ])
+        ->assertSee($batchTransfer->id)
+        ->assertDontSee($transfer->id);
+});
+
 it('should filter by vote transactions', function () {
     $vote = Transaction::factory()->vote($this->subject->address)->create([
         'sender_public_key' => $this->subject->public_key,

@@ -46,6 +46,16 @@ final class TransactionFactory extends Factory
         ]);
     }
 
+    public function batchTransfer(): Factory
+    {
+        $method = ContractMethod::batchTransfer();
+
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('consensus'),
+            ]);
+    }
+
     public function vote(string $address): Factory
     {
         $method = ContractMethod::vote();

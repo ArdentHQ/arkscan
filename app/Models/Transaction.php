@@ -9,6 +9,7 @@ use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
+use App\Models\Scopes\BatchTransferScope;
 use App\Models\Scopes\OtherTransactionTypesScope;
 use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\UnvoteScope;
@@ -210,6 +211,11 @@ final class Transaction extends Model
                     $query->where(function ($query) use ($filter) {
                         $query->when($filter['transfers'] === true, function ($query) {
                             $query->withScope(TransferScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['batch_transfers'] === true, function ($query) {
+                            $query->withScope(BatchTransferScope::class);
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {

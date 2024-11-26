@@ -21,6 +21,11 @@
             />
 
             <x-tables.filters.includes.checkbox
+                name="batch_transfers"
+                :label="trans('tables.filters.transactions.batch_transfers')"
+            />
+
+            <x-tables.filters.includes.checkbox
                 name="votes"
                 :label="trans('tables.filters.transactions.votes')"
             />
