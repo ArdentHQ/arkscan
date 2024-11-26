@@ -203,10 +203,10 @@ final class Transaction extends Model
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder
     {
-        $hasDisabledAFilter = in_array(false, $filter, true);
+        $hasAdjustedFilters = in_array(false, $filter, true);
 
         return $query
-            ->when($hasDisabledAFilter, function ($query) use ($filter) {
+            ->when($hasAdjustedFilters, function ($query) use ($filter) {
                 $query->where(function ($query) use ($filter) {
                     $query->where(function ($query) use ($filter) {
                         $query->when($filter['transfers'] === true, function ($query) {
