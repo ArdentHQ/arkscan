@@ -407,9 +407,7 @@ it('should filter by other transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $validatorRegistration = Transaction::factory()->validatorRegistration()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
+    $other = Transaction::factory()->withPayload('12345678')->create();
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
@@ -423,7 +421,7 @@ it('should filter by other transactions', function () {
             'validator_resignation'  => false,
             'others'                 => true,
         ])
-        ->assertSee($validatorRegistration->id)
+        ->assertSee($other->id)
         ->assertDontSee($transfer->id);
 });
 
