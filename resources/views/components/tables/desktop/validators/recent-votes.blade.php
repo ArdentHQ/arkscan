@@ -76,17 +76,7 @@
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>
-                    @if ($vote->isVote())
-                        <x-tables.rows.desktop.encapsulated.address
-                            :model="$vote->voted()"
-                            without-clipboard
-                        />
-                    @else
-                        <x-tables.rows.desktop.encapsulated.address
-                            :model="$vote->unvoted()"
-                            without-clipboard
-                        />
-                    @endif
+
                 </x-ark-tables.cell>
             </x-ark-tables.row>
         @endforeach
