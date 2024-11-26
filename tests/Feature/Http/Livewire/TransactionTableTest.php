@@ -17,7 +17,6 @@ use Livewire\Livewire;
 it('should list the first page of records', function () {
     Transaction::factory(30)->transfer()->create([
         'amount' => 481 * 1e18,
-        'fee'    => 0.481 * 1e18,
     ]);
 
     $component = Livewire::test(TransactionTable::class)
@@ -29,7 +28,6 @@ it('should list the first page of records', function () {
         $component->assertSee($transaction->sender()->address());
         $component->assertSee($transaction->recipient()->address());
         $component->assertSee('481.00');
-        $component->assertSee('0.48');
     }
 });
 
@@ -73,24 +71,33 @@ it('should toggle all filters when "select all" is selected', function () {
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->assertSet('filter', [
-            'transfers' => true,
-            'votes'     => true,
-            'others'    => true,
+            'transfers'              => true,
+            'votes'                  => true,
+            'unvotes'                => true,
+            'validator_registration' => true,
+            'validator_resignation'  => true,
+            'others'                 => true,
         ])
         ->assertSet('selectAllFilters', true)
         ->set('filter.transfers', true)
         ->assertSet('selectAllFilters', true)
         ->set('selectAllFilters', false)
         ->assertSet('filter', [
-            'transfers' => false,
-            'votes'     => false,
-            'others'    => false,
+            'transfers'              => false,
+            'votes'                  => false,
+            'unvotes'                => false,
+            'validator_registration' => false,
+            'validator_resignation'  => false,
+            'others'                 => false,
         ])
         ->set('selectAllFilters', true)
         ->assertSet('filter', [
-            'transfers' => true,
-            'votes'     => true,
-            'others'    => true,
+            'transfers'              => true,
+            'votes'                  => true,
+            'unvotes'                => true,
+            'validator_registration' => true,
+            'validator_resignation'  => true,
+            'others'                 => true,
         ]);
 });
 
@@ -98,9 +105,12 @@ it('should toggle "select all" when all filters are selected', function () {
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->assertSet('filter', [
-            'transfers' => true,
-            'votes'     => true,
-            'others'    => true,
+            'transfers'              => true,
+            'votes'                  => true,
+            'unvotes'                => true,
+            'validator_registration' => true,
+            'validator_resignation'  => true,
+            'others'                 => true,
         ])
         ->assertSet('selectAllFilters', true)
         ->set('filter.transfers', false)
@@ -113,20 +123,19 @@ it('should filter by transfer transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
     $wallet = Wallet::factory()->activeValidator()->create();
-    $vote   = Transaction::factory()->vote()->create([
+    $vote   = Transaction::factory()->vote($wallet->address)->create([
         'sender_public_key' => $wallet->public_key,
-        'asset'             => [
-            'votes'   => [$wallet->address],
-            'unvotes' => [],
-        ],
     ]);
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers' => true,
-            'votes'     => false,
-            'others'    => false,
+            'transfers'              => true,
+            'votes'                  => false,
+            'unvotes'                => false,
+            'validator_registration' => false,
+            'validator_resignation'  => false,
+            'others'                 => false,
         ])
         ->assertSee($transfer->id)
         ->assertDontSee($vote->id);
@@ -136,38 +145,106 @@ it('should filter by vote transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
     $wallet = Wallet::factory()->activeValidator()->create();
-    $vote   = Transaction::factory()->vote()->create([
+    $vote   = Transaction::factory()->vote($wallet->address)->create([
         'sender_public_key' => $wallet->public_key,
-        'asset'             => [
-            'votes'   => [$wallet->address],
-            'unvotes' => [],
-        ],
     ]);
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers' => false,
-            'votes'     => true,
-            'others'    => false,
+            'transfers'              => false,
+            'votes'                  => true,
+            'unvotes'                => false,
+            'validator_registration' => false,
+            'validator_resignation'  => false,
+            'others'                 => false,
         ])
         ->assertSee($vote->id)
+        ->assertDontSee($transfer->id);
+});
+
+it('should filter by unvote transactions', function () {
+    $transfer = Transaction::factory()->transfer()->create();
+
+    $wallet = Wallet::factory()->activeValidator()->create();
+    $unvote = Transaction::factory()->unvote()->create([
+        'sender_public_key' => $wallet->public_key,
+    ]);
+
+    Livewire::test(TransactionTable::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'transfers'              => false,
+            'votes'                  => false,
+            'unvotes'                => true,
+            'validator_registration' => false,
+            'validator_resignation'  => false,
+            'others'                 => false,
+        ])
+        ->assertSee($unvote->id)
+        ->assertDontSee($transfer->id);
+});
+
+it('should filter by registration transactions', function () {
+    $transfer = Transaction::factory()->transfer()->create();
+
+    $wallet = Wallet::factory()->activeValidator()->create();
+    $registration = Transaction::factory()->validatorRegistration()->create([
+        'sender_public_key' => $wallet->public_key,
+    ]);
+
+    Livewire::test(TransactionTable::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'transfers'              => false,
+            'votes'                  => false,
+            'unvotes'                => false,
+            'validator_registration' => true,
+            'validator_resignation'  => false,
+            'others'                 => false,
+        ])
+        ->assertSee($registration->id)
+        ->assertDontSee($transfer->id);
+});
+
+it('should filter by resignation transactions', function () {
+    $transfer = Transaction::factory()->transfer()->create();
+
+    $wallet = Wallet::factory()->activeValidator()->create();
+    $resignation = Transaction::factory()->validatorResignation()->create([
+        'sender_public_key' => $wallet->public_key,
+    ]);
+
+    Livewire::test(TransactionTable::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'transfers'              => false,
+            'votes'                  => false,
+            'unvotes'                => false,
+            'validator_registration' => false,
+            'validator_resignation'  => true,
+            'others'                 => false,
+        ])
+        ->assertSee($resignation->id)
         ->assertDontSee($transfer->id);
 });
 
 it('should filter by other transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $validatorRegistration = Transaction::factory()->validatorRegistration()->create();
+    $other = Transaction::factory()->withPayload('12345678')->create();
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers' => false,
-            'votes'     => false,
-            'others'    => true,
+            'transfers'              => false,
+            'votes'                  => false,
+            'unvotes'                => false,
+            'validator_registration' => false,
+            'validator_resignation'  => false,
+            'others'                 => true,
         ])
-        ->assertSee($validatorRegistration->id)
+        ->assertSee($other->id)
         ->assertDontSee($transfer->id);
 });
 
@@ -179,9 +256,12 @@ it('should show no transactions if no type filter', function () {
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers' => false,
-            'votes'     => false,
-            'others'    => false,
+            'transfers'              => false,
+            'votes'                  => false,
+            'unvotes'                => false,
+            'validator_registration' => false,
+            'validator_resignation'  => false,
+            'others'                 => false,
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($validatorRegistration->id)
@@ -192,14 +272,20 @@ it('should get the filter values via a getter', function () {
     $instance = Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers' => false,
-            'votes'     => true,
-            'others'    => true,
+            'transfers'              => false,
+            'votes'                  => true,
+            'unvotes'                => false,
+            'validator_registration' => false,
+            'validator_resignation'  => false,
+            'others'                 => true,
         ])
         ->instance();
 
     expect($instance->transfers)->toBeFalse();
     expect($instance->votes)->toBeTrue();
+    expect($instance->unvotes)->toBeFalse();
+    expect($instance->validator_registration)->toBeFalse();
+    expect($instance->validator_resignation)->toBeFalse();
     expect($instance->others)->toBeTrue();
 });
 
@@ -207,18 +293,27 @@ it('should set the filter values via a setter', function () {
     $instance = Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers' => false,
-            'votes'     => false,
-            'others'    => false,
+            'transfers'              => false,
+            'votes'                  => false,
+            'unvotes'                => false,
+            'validator_registration' => false,
+            'validator_resignation'  => false,
+            'others'                 => false,
         ])
         ->instance();
 
-    $instance->transfers = true;
-    $instance->votes     = true;
-    $instance->others    = true;
+    $instance->transfers              = true;
+    $instance->votes                  = true;
+    $instance->unvotes                = true;
+    $instance->validator_registration = true;
+    $instance->validator_resignation  = true;
+    $instance->others                 = true;
 
     expect($instance->transfers)->toBeTrue();
     expect($instance->votes)->toBeTrue();
+    expect($instance->unvotes)->toBeTrue();
+    expect($instance->validator_registration)->toBeTrue();
+    expect($instance->validator_resignation)->toBeTrue();
     expect($instance->others)->toBeTrue();
 });
 
@@ -228,7 +323,6 @@ it('should reload on new transaction event', function () {
 
     Transaction::factory(5)->transfer()->create([
         'amount' => 481 * 1e18,
-        'fee'    => 0.481 * 1e18,
     ]);
 
     foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {
@@ -237,7 +331,6 @@ it('should reload on new transaction event', function () {
         $component->assertDontSee($transaction->sender()->address());
         $component->assertDontSee($transaction->recipient()->address());
         $component->assertDontSee('481.00');
-        $component->assertDontSee('0.48');
     }
 
     $component->dispatch('echo:transactions,NewTransaction');
@@ -248,6 +341,5 @@ it('should reload on new transaction event', function () {
         $component->assertSee($transaction->sender()->address());
         $component->assertSee($transaction->recipient()->address());
         $component->assertSee('481.00');
-        $component->assertSee('0.48');
     }
 });
