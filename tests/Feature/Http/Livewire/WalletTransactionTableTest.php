@@ -7,7 +7,6 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\NumberFormatter;
 use App\ViewModels\TransactionViewModel;
-use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Livewire\Livewire;
@@ -103,7 +102,7 @@ it('should list all transactions for cold wallet', function () {
 
 it('should show transfer without amount sent to self', function () {
     $sent = Transaction::factory()->transfer()->create([
-        'sender_public_key' => $this->subject->public_key,
+        'sender_public_key'      => $this->subject->public_key,
         'recipient_address'      => $this->subject->address,
     ])->fresh();
 
