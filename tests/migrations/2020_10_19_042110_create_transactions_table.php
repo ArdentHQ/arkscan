@@ -15,7 +15,7 @@ final class CreateTransactionsTable extends Migration
             $table->string('block_id');
             $table->string('block_height');
             $table->string('sender_public_key');
-            $table->string('recipient_id')->nullable();
+            $table->string('recipient_address')->nullable();
             $table->unsignedBigInteger('timestamp');
             $table->addColumn('numeric', 'amount');
             $table->addColumn('numeric', 'gas_price');
