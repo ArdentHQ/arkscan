@@ -188,7 +188,7 @@ it('should filter by unvote transactions', function () {
 it('should filter by registration transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $wallet = Wallet::factory()->activeValidator()->create();
+    $wallet       = Wallet::factory()->activeValidator()->create();
     $registration = Transaction::factory()->validatorRegistration()->create([
         'sender_public_key' => $wallet->public_key,
     ]);
@@ -210,7 +210,7 @@ it('should filter by registration transactions', function () {
 it('should filter by resignation transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $wallet = Wallet::factory()->activeValidator()->create();
+    $wallet      = Wallet::factory()->activeValidator()->create();
     $resignation = Transaction::factory()->validatorResignation()->create([
         'sender_public_key' => $wallet->public_key,
     ]);
