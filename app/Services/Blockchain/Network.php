@@ -93,6 +93,16 @@ final class Network implements Contract
         return Arr::get($this->knownContracts(), $name);
     }
 
+    public function contractMethod(string $name, string $default): string
+    {
+        $method = Arr::get($this->config['contract_methods'], $name);
+        if ($method === null) {
+            return $default;
+        }
+
+        return $method;
+    }
+
     public function canBeExchanged(): bool
     {
         return $this->config['canBeExchanged'];

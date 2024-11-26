@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Scopes;
 
-use App\Enums\PayloadSignature;
+use App\Enums\ContractMethod;
 use App\Facades\Network;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -25,11 +25,11 @@ final class OtherTransactionTypesScope implements Scope
                 ->orWhere(
                     fn ($query) => $query->where('recipient_address', Network::knownContract('consensus'))
                         ->whereNotIn(DB::raw('SUBSTRING(encode(data, \'hex\'), 1, 8)'), [
-                            PayloadSignature::TRANSFER->value,
-                            PayloadSignature::VOTE->value,
-                            PayloadSignature::UNVOTE->value,
-                            PayloadSignature::VALIDATOR_REGISTRATION->value,
-                            PayloadSignature::VALIDATOR_RESIGNATION->value,
+                            ContractMethod::transfer(),
+                            ContractMethod::vote(),
+                            ContractMethod::unvote(),
+                            ContractMethod::validatorRegistration(),
+                            ContractMethod::validatorResignation(),
                         ])
                 );
             });

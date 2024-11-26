@@ -31,6 +31,8 @@ interface Network
 
     public function knownContract(string $name): ?string;
 
+    public function contractMethod(string $name, string $default): ?string;
+
     public function canBeExchanged(): bool;
 
     public function epoch(): Carbon;

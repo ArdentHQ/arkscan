@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array knownWallets()
  * @method static array knownContracts()
  * @method static ?string knownContract(string $name)
+ * @method static ?string contractMethod(string $name, string $default)
  * @method static bool canBeExchanged()
  * @method static Carbon epoch()
  * @method static int validatorCount()

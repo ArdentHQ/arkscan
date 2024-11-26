@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\PayloadSignature;
+use App\Enums\ContractMethod;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Receipt;
@@ -48,7 +48,7 @@ final class TransactionFactory extends Factory
 
     public function vote(string $address): Factory
     {
-        $method = PayloadSignature::VOTE->value;
+        $method = ContractMethod::vote();
 
         return $this->withPayload($method.str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT))
             ->state(fn () => [
@@ -58,7 +58,7 @@ final class TransactionFactory extends Factory
 
     public function unvote(): Factory
     {
-        $method = PayloadSignature::UNVOTE->value;
+        $method = ContractMethod::unvote();
 
         return $this->withPayload($method)
             ->state(fn () => [
@@ -68,7 +68,7 @@ final class TransactionFactory extends Factory
 
     public function validatorRegistration(): Factory
     {
-        $method = PayloadSignature::VALIDATOR_REGISTRATION->value;
+        $method = ContractMethod::validatorRegistration();
 
         return $this->withPayload($method)
             ->state(fn () => [
@@ -78,7 +78,7 @@ final class TransactionFactory extends Factory
 
     public function validatorResignation(): Factory
     {
-        $method = PayloadSignature::VALIDATOR_RESIGNATION->value;
+        $method = ContractMethod::validatorResignation();
 
         return $this->withPayload($method)
             ->state(fn () => [
