@@ -50,40 +50,47 @@ final class TransactionFactory extends Factory
     {
         $method = PayloadSignature::VOTE->value;
 
-        return $this->state(fn () => [
-            'recipient_address' => Network::knownContract('consensus'),
-            // TODO: don't use a query for the encoding - https://app.clickup.com/t/86dv9e9nf
-            'data'              => DB::raw("decode('".$method.str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT)."', 'hex')"),
-        ]);
+        return $this->withPayload($method.str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT))
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('consensus'),
+            ]);
     }
 
     public function unvote(): Factory
     {
         $method = PayloadSignature::UNVOTE->value;
 
-        return $this->state(fn () => [
-            'recipient_address' => Network::knownContract('consensus'),
-            'data'              => DB::raw("decode('".$method."', 'hex')"),
-        ]);
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('consensus'),
+            ]);
     }
 
     public function validatorRegistration(): Factory
     {
         $method = PayloadSignature::VALIDATOR_REGISTRATION->value;
 
-        return $this->state(fn () => [
-            'recipient_address' => Network::knownContract('consensus'),
-            'data'              => DB::raw("decode('".$method."', 'hex')"),
-        ]);
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('consensus'),
+            ]);
     }
 
     public function validatorResignation(): Factory
     {
         $method = PayloadSignature::VALIDATOR_RESIGNATION->value;
 
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('consensus'),
+            ]);
+    }
+
+    public function withPayload(string $payload): Factory
+    {
+        // TODO: don't use a query for the encoding - https://app.clickup.com/t/86dv9e9nf
         return $this->state(fn () => [
-            'recipient_address' => Network::knownContract('consensus'),
-            'data'              => DB::raw("decode('".$method."', 'hex')"),
+            'data' => DB::raw("decode('".$payload."', 'hex')"),
         ]);
     }
 }
