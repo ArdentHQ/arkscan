@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Services\Cache\MainsailCache;
 use App\Services\GasTracker;
 
