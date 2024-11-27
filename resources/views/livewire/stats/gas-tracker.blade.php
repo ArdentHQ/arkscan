@@ -1,4 +1,4 @@
-<div class="flex flex-col space-y-2 sm:space-y-0 sm:space-x-3 sm:flex-row">
+<div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
     <x-stats.fee-card
         icon="app-gas.low"
         :title="trans('pages.statistics.gas.low')"
