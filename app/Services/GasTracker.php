@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
-use App\Services\Cache\MainsailCache;
-use Illuminate\Support\Arr;
 use App\Contracts\Services\GasTracker as Contract;
+use App\Services\Cache\MainsailCache;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
+use Illuminate\Support\Arr;
 
 final class GasTracker implements Contract
 {

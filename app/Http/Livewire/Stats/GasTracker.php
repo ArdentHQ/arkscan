@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Livewire\Stats;
 
 use App\Facades\Services\GasTracker as GasTrackerFacade;
