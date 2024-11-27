@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <div class="-mx-4 px-4 sm:-mx-6 py-3 mt-4 -mb-3 md:-mb-6 sm:px-6 bg-theme-secondary-100 dark:bg-theme-dark-950 dark:text-theme-dark-200 rounded-b-xl flex sm:items-center sm:space-x-3 font-semibold flex-col sm:flex-row space-y-2 sm:space-y-0">
+    <div class="flex flex-col py-3 px-4 -mx-4 mt-4 -mb-3 space-y-2 font-semibold rounded-b-xl sm:flex-row sm:items-center sm:px-6 sm:-mx-6 sm:space-y-0 sm:space-x-3 md:-mb-6 bg-theme-secondary-100 dark:bg-theme-dark-950 dark:text-theme-dark-200">
         <div class="text-sm">
             @lang('pages.statistics.gas-tracker.gas_tracker')
         </div>
@@ -47,8 +47,7 @@
             @foreach ($gasTracker as $title => $value)
                 <x-home.includes.gas-badge
                     :title="trans('pages.statistics.gas-tracker.'.$title)"
-                    :class="Arr::toCssClasses([
-                        'hidden sm:block' => $title !== 'average',
+                    :class="Arr::toCssClasses(['hidden sm:block' => $title !== 'average',
                     ])"
                 >
                     <x-slot name="value">
