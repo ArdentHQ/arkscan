@@ -15,15 +15,15 @@ class GasTracker extends Component
     {
         return view('livewire.stats.gas-tracker', [
             'lowFee' => [
-                'amount' => GasTrackerFacade::low(),
+                'amount'   => GasTrackerFacade::low(),
                 'duration' => MainsailApi::timeToForge(),
             ],
             'averageFee' => [
-                'amount' => GasTrackerFacade::average(),
+                'amount'   => GasTrackerFacade::average(),
                 'duration' => MainsailApi::timeToForge(),
             ],
             'highFee' => [
-                'amount' => GasTrackerFacade::high(),
+                'amount'   => GasTrackerFacade::high(),
                 'duration' => MainsailApi::timeToForge(),
             ],
         ]);
