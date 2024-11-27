@@ -6,9 +6,9 @@ namespace App\Contracts\Services;
 
 interface GasTracker
 {
-    public function low(); //: int;
+    public function low(): float;
 
-    public function average(); //: int;
+    public function average(): float;
 
-    public function high(); //: int;
+    public function high(): float;
 }

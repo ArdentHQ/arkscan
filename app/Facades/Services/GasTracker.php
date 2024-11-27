@@ -7,9 +7,9 @@ namespace App\Facades\Services;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static int low()
- * @method static int average()
- * @method static int high()
+ * @method static float low()
+ * @method static float average()
+ * @method static float high()
  */
 final class GasTracker extends Facade
 {

@@ -18,40 +18,28 @@ final class GasTracker implements Contract
         $this->cache = new MainsailCache();
     }
 
-    public function low() //: int
+    public function low(): float
     {
         return $this->getFee('min');
     }
 
-    public function average() //: int
+    public function average(): float
     {
         return $this->getFee('avg');
     }
 
-    public function high() //: int
+    public function high(): float
     {
         return $this->getFee('max');
     }
 
-    private function getFee(string $name) //: int
+    private function getFee(string $name): float
     {
-        // return BigNumber::new($this->cache->getFees()[$name] ?? 0);
-        // return Arr::get($this->cache->getFees(), $name, 0);
-
-        // dd($this->cache->getFees());
         $fee = Arr::get($this->cache->getFees(), $name);
         if ($fee === null) {
             return 0;
         }
 
-        $fee = BigNumber::new($fee);
-
-        return UnitConverter::formatUnits((string) $fee, 'ark');
-
-        return BigNumber::new(UnitConverter::formatUnits($fee, 'ark'));
-
-        dump(UnitConverter::formatUnits($fee, 'ark'));
-
-        return UnitConverter::formatUnits($fee, 'ark');
+        return UnitConverter::formatUnits((string) $fee, 'gwei');
     }
 }
