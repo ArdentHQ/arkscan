@@ -475,6 +475,13 @@ return [
             'fees'                    => 'Fees',
         ],
 
+        'gas' => [
+            'low'     => 'Low',
+            'high'    => 'High',
+            'average' => 'Average',
+            '30_sec'  => '~30 sec',
+        ],
+
         'insights' => [
             'title'    => 'Insights',
             'subtitle' => 'Explore interesting on-chain and market data for ARK.',
