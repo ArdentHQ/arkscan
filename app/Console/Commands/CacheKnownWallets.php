@@ -9,6 +9,7 @@ use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Http;
 
 final class CacheKnownWallets extends Command
 {
@@ -29,6 +30,8 @@ final class CacheKnownWallets extends Command
     public function handle(): void
     {
         $cache = app(WalletCache::class);
+
+        $cache->setKnown(fn () => Http::get(Network::knownWalletsUrl())->json());
 
         $knownWallets = collect(Network::knownWallets());
 
