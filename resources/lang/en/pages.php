@@ -475,7 +475,8 @@ return [
             'fees'                    => 'Fees',
         ],
 
-        'gas' => [
+        'gas-tracker' => [
+            'gas_tracker' => 'Gas Tracker',
             'low'     => 'Low',
             'high'    => 'High',
             'average' => 'Average',

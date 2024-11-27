@@ -49,7 +49,7 @@
         </div>
 
         <div class="flex flex-1 justify-end min-w-0 sm:justify-between sm:items-center">
-            <div class="hidden w-full sm:flex sm:mt-4 h-[140px] md:h-[116px] lg:mt-[1.125rem]">
+            <div class="hidden w-full sm:flex sm:mt-4 h-[140px] md:h-[157px] lg:mt-[1.125rem]">
                 <x-ark-chart
                     class="w-full h-auto"
                     canvas-class="max-w-full"
