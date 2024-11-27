@@ -2,9 +2,10 @@
     'icon',
     'title',
     'amount',
-    'fiat' => null,
-    'duration' => trans('pages.statistics.gas.30_sec'),
+    'duration',
 ])
+
+@php ($canBeExchanged = Network::canBeExchanged())
 
 <div class="flex flex-col flex-1 py-3 px-4 font-semibold rounded border md:rounded-xl border-theme-secondary-300 dark:border-theme-dark-700 dark:text-theme-dark-200">
     <div class="flex flex-1 justify-between items-center pb-3">
@@ -14,22 +15,24 @@
             <span>{{ $title }}</span>
         </div>
 
-        {{ $duration }}
+        {{ trans_choice('general.seconds_duration', $duration, ['duration' => $duration]) }}
     </div>
 
-    <div class="flex justify-between p-4 pt-3 -mx-4 -mb-3 text-sm rounded-b md:rounded-b-xl bg-theme-secondary-100 dark:bg-theme-dark-950">
-        <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-
-        </span>
+    <div @class([
+        'flex p-4 pt-3 -mx-4 -mb-3 text-sm rounded-b md:rounded-b-xl bg-theme-secondary-100 dark:bg-theme-dark-950',
+        'justify-between' => $canBeExchanged,
+        'justify-end' => ! $canBeExchanged,
+    ])>
+        @if ($canBeExchanged)
+            <span class="text-theme-secondary-900 dark:text-theme-dark-50">
+                ~ {{ ExchangeRate::convert($amount) }}
+            </span>
+        @endif
 
         <span>
-            {{-- {{ (string) $amount }} --}}
-            {{-- {{ ExplorerNumberFormatter::currency($amount, Network::currency()) }} --}}
-            <x-general.amount
-                :amount="$amount"
-                {{-- :small-amount="0.00000000001" --}}
-                hide-tooltip
-            />
+            {{ (string) $amount }}
+
+            @lang('general.gwei')
         </span>
     </div>
 </div>
