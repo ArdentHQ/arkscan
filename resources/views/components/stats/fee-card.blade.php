@@ -29,7 +29,7 @@
             </span>
         @endif
 
-        <span>
+        <span data-tippy-content="{{ ExplorerNumberFormatter::gweiToArk($amount) }}">
             {{ (string) $amount }}
 
             @lang('general.gwei')

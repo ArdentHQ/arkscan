@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Enums\CryptoCurrencies;
 use App\Facades\Network;
+use ArkEcosystem\Crypto\Utils\UnitConverter;
 use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 use ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation;
 use ReflectionClass;
@@ -173,5 +174,16 @@ final class NumberFormatter
         }
 
         return config('currencies.currencies.'.strtolower($currency).'.symbol') !== null;
+    }
+
+    public static function gweiToArk(float $value, bool $withSuffix = true): string
+    {
+        $convertedValue = (string) BigNumber::new(UnitConverter::formatUnits(UnitConverter::parseUnits($value, 'gwei'), 'ark'));
+
+        if ($withSuffix) {
+            return $convertedValue.' '.Network::currency();
+        }
+
+        return $convertedValue;
     }
 }
