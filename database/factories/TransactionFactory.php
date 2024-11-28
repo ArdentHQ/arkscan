@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\PayloadSignature;
+use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 
 final class TransactionFactory extends Factory
 {
@@ -23,7 +26,7 @@ final class TransactionFactory extends Factory
             'block_id'          => fn () => Block::factory(),
             'block_height'      => $this->faker->numberBetween(1, 10000),
             'sender_public_key' => fn () => $wallet->public_key,
-            'recipient_id'      => fn () => $wallet->address,
+            'recipient_address' => fn () => $wallet->address,
             'timestamp'         => 1603083256000,
             'gas_price'         => $this->faker->numberBetween(1, 100),
             'amount'            => $this->faker->numberBetween(1, 100) * 1e18,
@@ -34,5 +37,60 @@ final class TransactionFactory extends Factory
     public function withReceipt(int $gasUsed = 21000): Factory
     {
         return $this->has(Receipt::factory()->state(fn () => ['gas_used' => $gasUsed]));
+    }
+
+    public function transfer(): Factory
+    {
+        return $this->state(fn () => [
+            'recipient_address' => Network::knownContract('consensus'),
+        ]);
+    }
+
+    public function vote(string $address): Factory
+    {
+        $method = PayloadSignature::VOTE->value;
+
+        return $this->withPayload($method.str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT))
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('consensus'),
+            ]);
+    }
+
+    public function unvote(): Factory
+    {
+        $method = PayloadSignature::UNVOTE->value;
+
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('consensus'),
+            ]);
+    }
+
+    public function validatorRegistration(): Factory
+    {
+        $method = PayloadSignature::VALIDATOR_REGISTRATION->value;
+
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('consensus'),
+            ]);
+    }
+
+    public function validatorResignation(): Factory
+    {
+        $method = PayloadSignature::VALIDATOR_RESIGNATION->value;
+
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('consensus'),
+            ]);
+    }
+
+    public function withPayload(string $payload): Factory
+    {
+        // TODO: don't use a query for the encoding - https://app.clickup.com/t/86dv9e9nf
+        return $this->state(fn () => [
+            'data' => DB::raw("decode('".$payload."', 'hex')"),
+        ]);
     }
 }

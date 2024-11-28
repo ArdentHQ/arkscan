@@ -92,6 +92,11 @@ final class Network implements Contract
         return $this->config['contract_addresses'];
     }
 
+    public function knownContract(string $name): ?string
+    {
+        return Arr::get($this->knownContracts(), $name);
+    }
+
     public function canBeExchanged(): bool
     {
         return $this->config['canBeExchanged'];

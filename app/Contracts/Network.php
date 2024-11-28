@@ -29,6 +29,10 @@ interface Network
 
     public function knownWallets(): array;
 
+    public function knownContracts(): array;
+
+    public function knownContract(string $name): ?string;
+
     public function canBeExchanged(): bool;
 
     public function epoch(): Carbon;

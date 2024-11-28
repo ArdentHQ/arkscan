@@ -55,7 +55,9 @@ return [
             'blockReward'         => intval(env('ARKSCAN_NETWORK_BLOCK_REWARD', 2)),
             'base58Prefix'        => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 30)),
 
-            'contract_addresses' => [],
+            'contract_addresses' => [
+                'consensus' => env('ARKSCAN_CONSENSUS_CONTRACT_ADDRESS', '0x535B3D7A252fa034Ed71F0C53ec0C6F784cB64E1'),
+            ],
         ],
     ],
 
