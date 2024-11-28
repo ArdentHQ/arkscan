@@ -11,7 +11,6 @@ use App\Services\Cache\WalletCache;
 use ArkEcosystem\Crypto\Networks\AbstractNetwork;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Http;
 
 final class Network implements Contract
 {
@@ -74,13 +73,18 @@ final class Network implements Contract
         return $this->config['confirmations'];
     }
 
+    public function knownWalletsUrl(): string
+    {
+        return $this->config['knownWallets'];
+    }
+
     public function knownWallets(): array
     {
         if (is_null(Arr::get($this->config, 'knownWallets'))) {
             return [];
         }
 
-        return (new WalletCache())->setKnown(fn () => Http::get($this->config['knownWallets'])->json());
+        return (new WalletCache())->getKnown();
     }
 
     public function knownContracts(): array

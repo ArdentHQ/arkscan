@@ -25,6 +25,8 @@ interface Network
 
     public function confirmations(): int;
 
+    public function knownWalletsUrl(): string;
+
     public function knownWallets(): array;
 
     public function knownContracts(): array;

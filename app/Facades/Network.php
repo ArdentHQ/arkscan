@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static string currencySymbol()
  * @method static string nethash()
  * @method static int confirmations()
+ * @method static string knownWalletsUrl()
  * @method static array knownWallets()
  * @method static array knownContracts()
  * @method static ?string knownContract(string $name)
