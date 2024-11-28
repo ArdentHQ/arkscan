@@ -25,9 +25,12 @@ final class TransactionTable extends Component
     use HasTablePagination;
 
     public array $filter = [
-        'transfers' => true,
-        'votes'     => true,
-        'others'    => true,
+        'transfers'              => true,
+        'votes'                  => true,
+        'unvotes'                => true,
+        'validator_registration' => true,
+        'validator_resignation'  => true,
+        'others'                 => true,
     ];
 
     /** @var mixed */
@@ -39,16 +42,19 @@ final class TransactionTable extends Component
     public function queryString(): array
     {
         return [
-            'transfers' => ['except' => true],
-            'votes'     => ['except' => true],
-            'others'    => ['except' => true],
+            'transfers'              => ['except' => true],
+            'votes'                  => ['except' => true],
+            'unvotes'                => ['except' => true],
+            'validator_registration' => ['except' => true],
+            'validator_resignation'  => ['except' => true],
+            'others'                 => ['except' => true],
         ];
     }
 
     public function render(): View
     {
         return view('livewire.transaction-table', [
-            'transactions'  => ViewModelFactory::paginate($this->transactions),
+            'transactions' => ViewModelFactory::paginate($this->transactions),
         ]);
     }
 
@@ -76,7 +82,8 @@ final class TransactionTable extends Component
             return $emptyResults;
         }
 
-        return Transaction::withScope(OrderByTimestampScope::class)
+        return Transaction::withTypeFilter($this->filter)
+            ->withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage);
     }
 
@@ -87,6 +94,18 @@ final class TransactionTable extends Component
         }
 
         if ($this->filter['votes'] === true) {
+            return true;
+        }
+
+        if ($this->filter['unvotes'] === true) {
+            return true;
+        }
+
+        if ($this->filter['validator_registration'] === true) {
+            return true;
+        }
+
+        if ($this->filter['validator_resignation'] === true) {
             return true;
         }
 

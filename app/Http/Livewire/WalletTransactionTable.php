@@ -28,11 +28,14 @@ final class WalletTransactionTable extends TabbedTableComponent
     public ?string $publicKey = null;
 
     public array $filter = [
-        'outgoing'      => true,
-        'incoming'      => true,
-        'transfers'     => true,
-        'votes'         => true,
-        'others'        => true,
+        'outgoing'               => true,
+        'incoming'               => true,
+        'transfers'              => true,
+        'votes'                  => true,
+        'unvotes'                => true,
+        'validator_registration' => true,
+        'validator_resignation'  => true,
+        'others'                 => true,
     ];
 
     /** @var mixed */
@@ -45,11 +48,14 @@ final class WalletTransactionTable extends TabbedTableComponent
     public function queryString(): array
     {
         return [
-            'filter.outgoing'      => ['as' => 'outgoing', 'except' => true],
-            'filter.incoming'      => ['as' => 'incoming', 'except' => true],
-            'filter.transfers'     => ['as' => 'transfers', 'except' => true],
-            'filter.votes'         => ['as' => 'votes', 'except' => true],
-            'filter.others'        => ['as' => 'others', 'except' => true],
+            'filter.outgoing'               => ['as' => 'outgoing', 'except' => true],
+            'filter.incoming'               => ['as' => 'incoming', 'except' => true],
+            'filter.transfers'              => ['as' => 'transfers', 'except' => true],
+            'filter.votes'                  => ['as' => 'votes', 'except' => true],
+            'filter.unvotes'                => ['as' => 'unvotes', 'except' => true],
+            'filter.validator_registration' => ['as' => 'validator-registration', 'except' => true],
+            'filter.validator_resignation'  => ['as' => 'validator-resignation', 'except' => true],
+            'filter.others'                 => ['as' => 'others', 'except' => true],
         ];
     }
 
@@ -127,12 +133,25 @@ final class WalletTransactionTable extends TabbedTableComponent
             return true;
         }
 
+        if ($this->filter['unvotes'] === true) {
+            return true;
+        }
+
+        if ($this->filter['validator_registration'] === true) {
+            return true;
+        }
+
+        if ($this->filter['validator_resignation'] === true) {
+            return true;
+        }
+
         return $this->filter['others'] === true;
     }
 
     private function getTransactionsQuery(): Builder
     {
         return Transaction::query()
+            ->withTypeFilter($this->filter)
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['outgoing'], fn ($query) => $query->where('sender_public_key', $this->publicKey)))
                     ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query->where('recipient_address', $this->address)));

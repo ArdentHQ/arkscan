@@ -140,16 +140,19 @@ return [
 
     'filters' => [
         'transactions' => [
-            'addressing'=> 'Addressing',
-            'types'     => 'Types',
-            'select_all'=> 'Select All',
-            'outgoing'  => 'Outgoing',
-            'incoming'  => 'Incoming',
-            'to'        => 'To',
-            'from'      => 'From',
-            'transfers' => 'Transfers',
-            'votes'     => 'Votes',
-            'others'    => 'Others',
+            'addressing'             => 'Addressing',
+            'types'                  => 'Types',
+            'select_all'             => 'Select All',
+            'outgoing'               => 'Outgoing',
+            'incoming'               => 'Incoming',
+            'to'                     => 'To',
+            'from'                   => 'From',
+            'transfers'              => 'Transfers',
+            'votes'                  => 'Votes',
+            'unvotes'                => 'Unvotes',
+            'validator_registration' => 'Validator Registration',
+            'validator_resignation'  => 'Validator Resignation',
+            'others'                 => 'Others',
         ],
 
         'validators' => [

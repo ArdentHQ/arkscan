@@ -62,7 +62,12 @@ trait HasPayload
 
     public function formattedPayload(): ?string
     {
-        [$functionName, $methodId, $arguments] = $this->getMethodData();
+        $methodData = $this->getMethodData();
+        if ($methodData === null) {
+            return null;
+        }
+
+        [$functionName, $methodId, $arguments] = $methodData;
 
         return trim(view('components.transaction.code-block.formatted-contract', [
             'function'  => $functionName,
