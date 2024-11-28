@@ -230,13 +230,13 @@ const TransactionsExport = ({
             }
 
             if (this.types.transfers) {
-                requestData.data.push('0x');
+                requestData.data.push("0x");
             }
 
             if (this.types.votes) {
                 requestData.data.push(
                     network.contract_methods.vote,
-                    network.contract_methods.unvote,
+                    network.contract_methods.unvote
                 );
             }
 
@@ -247,7 +247,7 @@ const TransactionsExport = ({
             if (this.types.others) {
                 requestData.data.push(
                     network.contract_methods.validator_registration,
-                    network.contract_methods.validator_resignation,
+                    network.contract_methods.validator_resignation
                 );
             }
 
