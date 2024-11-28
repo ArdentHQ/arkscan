@@ -30,21 +30,19 @@ function faker(): Generator
 
 function fakeKnownWallets(): void
 {
-    Http::fake([
-        'githubusercontent.com/*' => [
-            [
-                'type'    => 'team',
-                'name'    => 'ACF Hot Wallet',
-                'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
-            ], [
-                'type'    => 'exchange',
-                'name'    => 'Binance',
-                'address' => '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF',
-            ], [
-                'type'    => 'exchange',
-                'name'    => 'Altilly',
-                'address' => '0xe7dd7E34d2F24966C3C7AA89FC30ACA65760F6B5',
-            ],
+    (new WalletCache())->setKnown(fn () => [
+        [
+            'type'    => 'team',
+            'name'    => 'ACF Hot Wallet',
+            'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        ], [
+            'type'    => 'exchange',
+            'name'    => 'Binance',
+            'address' => '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF',
+        ], [
+            'type'    => 'exchange',
+            'name'    => 'Altilly',
+            'address' => '0xe7dd7E34d2F24966C3C7AA89FC30ACA65760F6B5',
         ],
     ]);
 }

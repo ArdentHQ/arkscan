@@ -47,6 +47,8 @@ return [
     'now'                 => 'Now',
     'vote_with'           => 'Vote With',
     'contract'            => 'Contract',
+    'gwei'                => 'Gwei',
+    'seconds_duration'    => '[1] ~ :duration sec|~ :duration secs',
 
     'arkconnect' => [
         'mainnet_network'                => 'You\'re viewing data from the main network, but your wallet is connected to test network (ARK Testnet). To use ARK Scan, please switch to <a class="link font-semibold" href="https://test.arkscan.io/">test.arkscan.io</a>.',
