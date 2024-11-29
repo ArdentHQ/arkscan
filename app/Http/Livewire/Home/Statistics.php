@@ -7,6 +7,7 @@ namespace App\Http\Livewire\Home;
 use App\Actions\CacheNetworkHeight;
 use App\Actions\CacheNetworkSupply;
 use App\Facades\Network;
+use App\Facades\Services\GasTracker;
 use App\Facades\Settings;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\MarketCap;
@@ -30,6 +31,12 @@ final class Statistics extends Component
             'volume'    => NumberFormatter::currencyForViews($volume ?? 0, Settings::currency()),
             'supply'    => CacheNetworkSupply::execute() / config('currencies.notation.crypto', 1e18),
             'marketCap' => MarketCap::getFormatted(Network::currency(), Settings::currency()),
+
+            'gasTracker' => [
+                'low'     => GasTracker::low(),
+                'average' => GasTracker::average(),
+                'high'    => GasTracker::high(),
+            ],
         ]);
     }
 }
