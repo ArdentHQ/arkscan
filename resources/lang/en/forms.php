@@ -29,10 +29,12 @@ return [
         'action'                  => 'Action',
         'transaction_types'       => [
             'all'                   => 'All',
+            'batchTransfer'         => 'Batch Transfer',
             'validatorRegistration' => 'Validator Registration',
             'validatorResignation'  => 'Validator Resignation',
             'transfer'              => 'Transfer',
             'vote'                  => 'Vote',
+            'unvote'                => 'Unvote',
         ],
 
     ],
