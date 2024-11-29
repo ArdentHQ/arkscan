@@ -11,9 +11,11 @@ final class Forms
     protected static array $transactionOptionsValues = [
         'all',
         'transfer',
+        'batchTransfer',
         'validatorRegistration',
         'validatorResignation',
         'vote',
+        'unvote',
     ];
 
     /**
