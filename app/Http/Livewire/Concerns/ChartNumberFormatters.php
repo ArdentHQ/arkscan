@@ -9,8 +9,12 @@ use App\Services\NumberFormatter;
 
 trait ChartNumberFormatters
 {
-    private function asMoney(string | int | float $value): string
+    private function asMoney(string | int | float $value, bool $isGwei = true): string
     {
+        if (! $isGwei) {
+            return NumberFormatter::currency($value, Network::currency());
+        }
+
         return NumberFormatter::currency(
             NumberFormatter::gweiToArk($value),
             Network::currency(),
