@@ -6,7 +6,6 @@ namespace App\Services\Transactions\Aggregates\Fees;
 
 use App\Models\Transaction;
 use App\Services\Transactions\Aggregates\Concerns\HasQueries;
-use ArkEcosystem\Crypto\Utils\UnitConverter;
 
 final class LastFeeAggregate
 {
