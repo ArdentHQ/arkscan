@@ -480,7 +480,6 @@ return [
             'low'         => 'Low',
             'high'        => 'High',
             'average'     => 'Average',
-            '30_sec'      => '~30 sec',
         ],
 
         'insights' => [
