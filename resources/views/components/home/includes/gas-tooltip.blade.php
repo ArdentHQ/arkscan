@@ -1,6 +1,6 @@
 @props(['gasTracker'])
 
-<div class="font-semibold min-w-48 space-y-2 p-1 text-xs">
+<div class="p-1 space-y-2 text-xs font-semibold min-w-48">
     @foreach ($gasTracker as $title => $fee)
         <div class="flex justify-between items-center">
             <div class="flex items-center space-x-1">

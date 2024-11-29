@@ -61,7 +61,7 @@
                 </x-home.includes.gas-badge>
             @endforeach
 
-            <div class="sm:hidden ml-2">
+            <div class="ml-2 sm:hidden">
                 <x-ark-info
                     type="info"
                     :html-tooltip="view('components.home.includes.gas-tooltip', ['gasTracker' => $gasTracker])->render()"
