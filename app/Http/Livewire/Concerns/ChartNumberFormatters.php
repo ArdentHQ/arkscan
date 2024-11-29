@@ -11,7 +11,10 @@ trait ChartNumberFormatters
 {
     private function asMoney(string | int | float $value): string
     {
-        return NumberFormatter::currency($value, Network::currency());
+        return NumberFormatter::currency(
+            NumberFormatter::gweiToArk($value),
+            Network::currency(),
+        );
     }
 
     private function asNumber(string | int | float $value): string
