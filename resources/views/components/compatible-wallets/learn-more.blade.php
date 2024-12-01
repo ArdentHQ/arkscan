@@ -16,8 +16,7 @@
     :title-color="$titleColor"
     :subtitle-color="$subtitleColor"
     :icon-size="$iconSize"
-    :arrows-class="Arr::toCssClasses([
-        'md-lg:bg-none md-lg:dark:bg-none',
+    :arrows-class="Arr::toCssClasses(['md-lg:bg-none md-lg:dark:bg-none',
 
         'arkvault-arrows' => ! $home,
         'arkvault-arrows-home' => $home,
