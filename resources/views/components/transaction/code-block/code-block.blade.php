@@ -32,10 +32,10 @@
     </div>
 
     <x-ark-clipboard
-        class="flex items-center mt-4 space-x-2 w-full sm:w-auto button button-secondary"
+        class="flex items-center justify-center mt-4 px-4 h-8 space-x-2 w-full sm:w-auto button button-secondary text-base"
         alpine-property="content"
         no-styling
     >
-        <span>@lang('pages.transaction.code-block.copy_code')</span>
+        <div>@lang('pages.transaction.code-block.copy_code')</div>
     </x-ark-clipboard>
 </div>
