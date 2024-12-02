@@ -1,5 +1,5 @@
 <div wire:poll.{{ Network::blockTime() }}s>
-    <div class="flex flex-col space-y-3 divide-y sm:flex-row sm:space-y-0 sm:space-x-6 sm:divide-y-0 divide-theme-secondary-300 dark:divide-theme-dark-700 px-4 sm:px-6">
+    <div class="flex flex-col px-4 space-y-3 divide-y sm:flex-row sm:px-6 sm:space-y-0 sm:space-x-6 sm:divide-y-0 divide-theme-secondary-300 dark:divide-theme-dark-700">
         <div class="flex flex-col flex-1 space-y-3 divide-y divide-theme-secondary-300 dark:divide-theme-dark-700">
             <x-home.stat
                 :title="trans('pages.home.statistics.market_cap')"
@@ -96,19 +96,19 @@
         <div
             class="flex flex-col pl-4 mt-4 -mb-3 space-y-2 font-semibold rounded-b-xl sm:flex-row sm:items-center sm:pl-6 sm:space-y-0 sm:space-x-3 md:-mb-6 bg-theme-secondary-100 dark:bg-theme-dark-950 dark:text-theme-dark-200"
         >
-            <div class="text-sm whitespace-nowrap py-3">
+            <div class="py-3 text-sm whitespace-nowrap">
                 @lang('pages.statistics.gas-tracker.gas_tracker')
             </div>
 
-            <div class="flex-1 relative overflow-hidden">
+            <div class="overflow-hidden relative flex-1">
                 <div
                     x-ref="fade-start"
                     wire:key="gas-ticker:fade-start"
-                    class="from-[#F7FAFB00] to-theme-secondary-100 dark:from-[#191d2200] dim:from-[#10162700] dark:to-theme-dark-950 bg-gradient-to-l absolute left-0 h-full w-12 top-0 rounded-bl-xl hidden lg:block xl:hidden pointer-events-none opacity-0 z-5"
+                    class="hidden absolute top-0 left-0 w-12 h-full bg-gradient-to-l rounded-bl-xl opacity-0 pointer-events-none lg:block xl:hidden from-[#F7FAFB00] to-theme-secondary-100 dim:from-[#10162700] z-5 dark:from-[#191d2200] dark:to-theme-dark-950"
                     x-bind:style="startStyle"
                 ></div>
 
-                <div class="flex items-center sm:space-x-2 relative overflow-hidden select-none py-3 pr-4"
+                <div class="flex overflow-hidden relative items-center py-3 pr-4 select-none sm:space-x-2"
                 x-on:mousedown="startDragging"
                 x-on:touchstart="startDragging"
                 x-on:mouseup="stopDragging"
@@ -137,7 +137,7 @@
                 <div
                     x-ref="fade-end"
                     wire:key="gas-ticker:fade-end"
-                    class="from-[#F7FAFB00] to-theme-secondary-100 dark:from-[#191d2200] dim:from-[#10162700] dark:to-theme-dark-950 bg-gradient-to-r absolute right-0 h-full w-12 top-0 rounded-br-xl hidden lg:block xl:hidden pointer-events-none z-5"
+                    class="hidden absolute top-0 right-0 w-12 h-full bg-gradient-to-r rounded-br-xl pointer-events-none lg:block xl:hidden from-[#F7FAFB00] to-theme-secondary-100 dim:from-[#10162700] z-5 dark:from-[#191d2200] dark:to-theme-dark-950"
                     x-bind:style="endStyle"
                 ></div>
             </div>
