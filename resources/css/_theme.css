@@ -23,11 +23,11 @@
 }
 
 :root.dark {
-    --theme-failed-state-bg: #AA6868;
-    --theme-failed-state-text: #F39B9B;
+    --theme-failed-state-bg: #aa6868;
+    --theme-failed-state-text: #f39b9b;
 }
 
 :root.dim {
-    --theme-failed-state-bg: #AB8282;
-    --theme-failed-state-text: #CAA0A0;
+    --theme-failed-state-bg: #ab8282;
+    --theme-failed-state-text: #caa0a0;
 }
