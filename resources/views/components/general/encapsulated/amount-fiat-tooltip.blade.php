@@ -37,7 +37,8 @@
             $isSentToSelf = true;
         } else {
             if ($isSent) {
-                $class[] = 'fiat-tooltip-sent text-theme-orange-dark bg-theme-orange-light border-theme-orange-light dark:bg-transparent dark:border-[#AA6868] dark:text-[#F39B9B] dim:border-[#AB8282] dim:text-[#CAA0A0]';
+                $class[] = 'fiat-tooltip-sent text-theme-orange-dark bg-theme-orange-light border-theme-orange-light dark:bg-transparent';
+                $class[] = 'dark:border-theme-failed-state-bg dim:border-theme-failed-state-bg dark:text-theme-failed-state-text dim:text-theme-failed-state-text';
             }
 
             if ($isReceived) {
@@ -50,7 +51,7 @@
 <span {{ $attributes->class($class) }}>
     @if($amountForItself !== null && $amountForItself > 0)
         <div
-            class="flex items-center px-1.5 mr-1.5 h-full py-[4.5px] text-[#A56D4C] bg-[#F6DFB5] dim:bg-[#AB8282] dark:bg-[#AA6868] dark:text-theme-dark-50"
+            class="flex items-center px-1.5 mr-1.5 h-full py-[4.5px] text-theme-orange-dark bg-[#F6DFB5] dark:bg-theme-failed-state-bg dim:bg-theme-failed-state-bg dark:text-theme-dark-50"
             data-tippy-content="{{ trans('general.fiat_excluding_self', [
                 'amount' => ExplorerNumberFormatter::currency($amountForItself, Network::currency())
             ]) }}"
