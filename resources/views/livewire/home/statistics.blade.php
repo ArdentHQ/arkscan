@@ -71,8 +71,7 @@
                     left: this.$el.scrollLeft - moveX,
                 });
 
-                this.startStyle.opacity = this.$el.scrollLeft / (this.$el.scrollWidth - this.$el.clientWidth);
-                this.endStyle.opacity = 1 - (this.$el.scrollLeft / (this.$el.scrollWidth - this.$el.clientWidth));
+                this.adjustFade();
 
                 mouseDownStart = event.clientX;
                 if (event.type === 'touchmove') {
@@ -81,7 +80,16 @@
 
                 event.preventDefault();
             },
+
+            adjustFade: function() {
+                const scroller = this.$refs['gas-ticker'];
+
+                this.startStyle.opacity = scroller.scrollLeft / (scroller.scrollWidth - scroller.clientWidth);
+                this.endStyle.opacity = 1 - (scroller.scrollLeft / (scroller.scrollWidth - scroller.clientWidth));
+            }
         }"
+
+        @resize.window="adjustFade"
 
         class="relative"
     >
