@@ -32,7 +32,7 @@
     </div>
 
     <x-ark-clipboard
-        class="flex items-center justify-center mt-4 px-4 h-8 space-x-2 w-full sm:w-auto button button-secondary text-base"
+        class="flex justify-center items-center px-4 mt-4 space-x-2 w-full h-8 text-base sm:w-auto button button-secondary"
         alpine-property="content"
         no-styling
     >
