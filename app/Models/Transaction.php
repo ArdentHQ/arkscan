@@ -9,7 +9,7 @@ use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
-use App\Models\Scopes\BatchTransferScope;
+use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OtherTransactionTypesScope;
 use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\UnvoteScope;
@@ -214,8 +214,8 @@ final class Transaction extends Model
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['batch_transfers'] === true, function ($query) {
-                            $query->withScope(BatchTransferScope::class);
+                        $query->when($filter['multipayments'] === true, function ($query) {
+                            $query->withScope(MultiPaymentScope::class);
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {

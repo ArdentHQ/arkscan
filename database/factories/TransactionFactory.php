@@ -46,9 +46,9 @@ final class TransactionFactory extends Factory
         ]);
     }
 
-    public function batchTransfer(): Factory
+    public function multiPayment(): Factory
     {
-        $method = ContractMethod::batchTransfer();
+        $method = ContractMethod::multiPayment();
 
         return $this->withPayload($method)
             ->state(fn () => [

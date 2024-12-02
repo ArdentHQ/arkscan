@@ -63,7 +63,7 @@ return [
 
             'contract_methods' => [
                 'transfer'               => env('ARKSCAN_CONTRACT_TRANSFER_METHOD', 'a9059cbb'),
-                'batch_transfer'         => env('ARKSCAN_CONTRACT_BATCH_TRANSFER_METHOD', '88d695b2'),
+                'multipayment'           => env('ARKSCAN_CONTRACT_MULTIPAYMENT_METHOD', '084ce708'),
                 'validator_registration' => env('ARKSCAN_CONTRACT_VALIDATOR_REGISTRATION_METHOD', '602a9eee'),
                 'vote'                   => env('ARKSCAN_CONTRACT_VOTE_METHOD', '6dd7d8ea'),
                 'unvote'                 => env('ARKSCAN_CONTRACT_UNVOTE_METHOD', '3174b689'),

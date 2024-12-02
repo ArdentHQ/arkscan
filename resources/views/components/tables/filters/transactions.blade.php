@@ -40,8 +40,8 @@
             />
 
             <x-tables.filters.includes.checkbox
-                name="batch_transfers"
-                :label="trans('tables.filters.transactions.batch_transfers')"
+                name="multipayments"
+                :label="trans('tables.filters.transactions.multipayments')"
             />
 
             <x-tables.filters.includes.checkbox
