@@ -176,7 +176,7 @@ final class NumberFormatter
         return config('currencies.currencies.'.strtolower($currency).'.symbol') !== null;
     }
 
-    public static function gweiToArk(float $value, bool $withSuffix = true): string
+    public static function gweiToArk(string | int | float $value, bool $withSuffix = true): string
     {
         $convertedValue = (string) BigNumber::new(UnitConverter::formatUnits(UnitConverter::parseUnits($value, 'gwei'), 'ark'));
 
