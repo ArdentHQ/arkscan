@@ -502,7 +502,7 @@ return [
 
                 'header' => [
                     'transfer'                    => 'Transfers',
-                    'batch_transfer'              => 'Batch Transfers',
+                    'multipayment'                => 'Multipayments',
                     'vote'                        => 'Votes',
                     'unvote'                      => 'Unvotes',
                     'validator_registration'      => 'Validator Registrations',

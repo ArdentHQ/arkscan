@@ -241,7 +241,7 @@ const TransactionsExport = ({
             }
 
             if (this.types.multipayments) {
-                requestData.data.push(network.contract_methods.batch_transfer);
+                requestData.data.push(network.contract_methods.multipayment);
             }
 
             if (this.types.others) {
