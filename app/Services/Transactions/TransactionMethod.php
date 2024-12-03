@@ -16,6 +16,7 @@ final class TransactionMethod
 
     private array $types = [
         'isTransfer'              => 'transfer',
+        'isTokenTransfer'         => 'transfer',
         'isMultiPayment'          => 'multipayment',
         'isValidatorRegistration' => 'validator-registration',
         'isUnvote'                => 'unvote',
@@ -50,10 +51,11 @@ final class TransactionMethod
 
     public function isTransfer(): bool
     {
-        if ($this->methodHash === null) {
-            return true;
-        }
+        return $this->methodHash === null;
+    }
 
+    public function isTokenTransfer(): bool
+    {
         return $this->methodHash === ContractMethod::transfer();
     }
 

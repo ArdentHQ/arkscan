@@ -30,7 +30,7 @@
         <div
             class="min-w-0 truncate"
         >
-            @if ($model->isTransfer())
+            @if ($model->isTransfer() || $model->isTokenTransfer())
                 <a
                     class="whitespace-nowrap link"
                     href="{{ route('wallet', $recipient->address()) }}"

@@ -18,6 +18,11 @@ trait HasMethod
         return $this->method->isTransfer();
     }
 
+    public function isTokenTransfer(): bool
+    {
+        return $this->method->isTokenTransfer();
+    }
+
     public function isValidatorRegistration(): bool
     {
         return $this->method->isValidatorRegistration();
@@ -36,6 +41,21 @@ trait HasMethod
     public function isValidatorResignation(): bool
     {
         return $this->method->isValidatorResignation();
+    }
+
+    /**
+     * @return array
+     */
+    public function methodArguments(): array
+    {
+        $methodData = $this->getMethodData();
+        if ($methodData === null) {
+            return [];
+        }
+
+        [2 => $arguments] = $methodData;
+
+        return $arguments;
     }
 
     public function isSelfReceiving(): bool

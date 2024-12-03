@@ -1,14 +1,23 @@
 @props(['transaction'])
 
 <x-general.page-section.container :title="trans('pages.transaction.transaction_summary')">
-    @if ($transaction->isTransfer() || $transaction->isTokenTransfer())
-        <x-transaction.page.section-detail.row
-            :title="trans('pages.transaction.header.amount')"
-            :transaction="$transaction"
-        >
-            <x-transaction.amount :transaction="$transaction" />
-        </x-transaction.page.section-detail.row>
-    @endif
+    <x-transaction.page.section-detail.row
+        :title="trans('pages.transaction.header.to')"
+        :transaction="$transaction"
+    >
+        <x-transaction.page.section-detail.address
+            :address="\ArkEcosystem\Crypto\Utils\Address::toChecksumAddress(substr($transaction->methodArguments()[0], 22))"
+            class="inline-block"
+        />
+    </x-transaction.page.section-detail.row>
+
+    {{ dd($transaction->methodArguments()) }}
+    {{-- <x-transaction.page.section-detail.row
+        :title="trans('pages.transaction.header.amount')"
+        :transaction="$transaction"
+    >
+        <x-transaction.amount :transaction="$transaction" />
+    </x-transaction.page.section-detail.row> --}}
 
     <x-transaction.page.section-detail.row
         :title="trans('pages.transaction.header.fee')"
