@@ -61,6 +61,6 @@ final class AllTimeFees extends Component
 
         return $number > 10000
             ? sprintf('%s %s', $this->asNumber($number), Network::currency())
-            : $this->asMoney($number);
+            : $this->asMoney($number, false);
     }
 }

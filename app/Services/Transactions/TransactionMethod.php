@@ -16,7 +16,7 @@ final class TransactionMethod
 
     private array $types = [
         'isTransfer'              => 'transfer',
-        'isBatchTransfer'         => 'batch-transfer',
+        'isMultiPayment'          => 'multipayment',
         'isValidatorRegistration' => 'validator-registration',
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
@@ -57,9 +57,9 @@ final class TransactionMethod
         return $this->methodHash === ContractMethod::transfer();
     }
 
-    public function isBatchTransfer(): bool
+    public function isMultiPayment(): bool
     {
-        return $this->methodHash === ContractMethod::batchTransfer();
+        return $this->methodHash === ContractMethod::multiPayment();
     }
 
     public function isValidatorRegistration(): bool

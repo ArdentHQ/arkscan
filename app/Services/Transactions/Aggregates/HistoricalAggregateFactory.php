@@ -12,6 +12,7 @@ use App\Services\Transactions\Aggregates\Historical\MonthAggregate;
 use App\Services\Transactions\Aggregates\Historical\QuarterAggregate;
 use App\Services\Transactions\Aggregates\Historical\WeekAggregate;
 use App\Services\Transactions\Aggregates\Historical\YearAggregate;
+use App\Services\Transactions\Aggregates\Type\MultiPaymentAggregate;
 use App\Services\Transactions\Aggregates\Type\TransferAggregate;
 use App\Services\Transactions\Aggregates\Type\UnvoteAggregate;
 use App\Services\Transactions\Aggregates\Type\ValidatorRegistrationAggregate;
@@ -50,10 +51,14 @@ final class HistoricalAggregateFactory
         throw new InvalidArgumentException('Invalid aggregate period.');
     }
 
-    public static function type(string $type): TransferAggregate | VoteAggregate | UnvoteAggregate | ValidatorRegistrationAggregate | ValidatorResignationAggregate
+    public static function type(string $type): TransferAggregate | MultiPaymentAggregate | VoteAggregate | UnvoteAggregate | ValidatorRegistrationAggregate | ValidatorResignationAggregate
     {
         if ($type === StatsTransactionType::TRANSFER) {
             return new TransferAggregate();
+        }
+
+        if ($type === StatsTransactionType::MULTIPAYMENT) {
+            return new MultiPaymentAggregate();
         }
 
         if ($type === StatsTransactionType::VOTE) {

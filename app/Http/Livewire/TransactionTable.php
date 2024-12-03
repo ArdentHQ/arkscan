@@ -26,7 +26,7 @@ final class TransactionTable extends Component
 
     public array $filter = [
         'transfers'              => true,
-        'batch_transfers'        => true,
+        'multipayments'          => true,
         'votes'                  => true,
         'unvotes'                => true,
         'validator_registration' => true,
@@ -44,7 +44,7 @@ final class TransactionTable extends Component
     {
         return [
             'transfers'              => ['except' => true],
-            'batch_transfers'        => ['except' => true],
+            'multipayments'          => ['except' => true],
             'votes'                  => ['except' => true],
             'unvotes'                => ['except' => true],
             'validator_registration' => ['except' => true],
@@ -95,7 +95,7 @@ final class TransactionTable extends Component
             return true;
         }
 
-        if ($this->filter['batch_transfers'] === true) {
+        if ($this->filter['multipayments'] === true) {
             return true;
         }
 

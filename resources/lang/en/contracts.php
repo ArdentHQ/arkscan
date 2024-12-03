@@ -10,12 +10,12 @@ return [
     '06fdde03' => 'name()',
     '95d89b41' => 'symbol()',
     '6a911ccf' => 'deregisterValidator()',
-    '88d695b2' => 'batchTransfer(address[],uint256[])',
+    '084ce708' => 'pay(address[],uint256[])',
     '70a08231' => 'balanceOf(address)',
     'dd62ed3e' => 'allowance(address,address)',
     '095ea7b3' => 'approve(address,uint256)',
 
-    // Taken from https://github.com/ArkEcosystem/mainsail/blob/develop/packages/evm-contracts/source/abis/Consensus.json#L287-L304
+    // Taken from https://github.com/ArkEcosystem/mainsail/tree/develop/packages/evm-contracts/source/abis
     //
     // TODO: Possibly automate this with a job - https://app.clickup.com/t/86dv3hypu
     '0d2bd909' => 'activeValidatorsCount()',

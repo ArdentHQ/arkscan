@@ -475,6 +475,13 @@ return [
             'fees'                    => 'Fees',
         ],
 
+        'gas-tracker' => [
+            'gas_tracker' => 'Gas Tracker',
+            'low'         => 'Low',
+            'high'        => 'High',
+            'average'     => 'Average',
+        ],
+
         'insights' => [
             'title'    => 'Insights',
             'subtitle' => 'Explore interesting on-chain and market data for ARK.',
@@ -495,6 +502,7 @@ return [
 
                 'header' => [
                     'transfer'                    => 'Transfers',
+                    'batch_transfer'              => 'Batch Transfers',
                     'vote'                        => 'Votes',
                     'unvote'                      => 'Unvotes',
                     'validator_registration'      => 'Validator Registrations',

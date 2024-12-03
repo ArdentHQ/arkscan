@@ -148,7 +148,7 @@ return [
             'to'                     => 'To',
             'from'                   => 'From',
             'transfers'              => 'Transfers',
-            'batch_transfers'        => 'Batch Transfers',
+            'multipayments'          => 'Multipayments',
             'votes'                  => 'Votes',
             'unvotes'                => 'Unvotes',
             'validator_registration' => 'Validator Registration',

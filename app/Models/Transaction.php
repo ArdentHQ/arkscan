@@ -9,7 +9,7 @@ use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
-use App\Models\Scopes\BatchTransferScope;
+use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OtherTransactionTypesScope;
 use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\UnvoteScope;
@@ -48,6 +48,21 @@ final class Transaction extends Model
     use SearchesCaseInsensitive;
     use HasEmptyScope;
     use Searchable;
+
+    /**
+     * A list of transaction scopes used for filtering based on type.
+     *
+     * Exposed through the model to keep its usage consistent across
+     * all places that need to filter transactions by their type.
+     */
+    public const TYPE_SCOPES = [
+        'validatorRegistration' => ValidatorRegistrationScope::class,
+        'validatorResignation'  => ValidatorResignationScope::class,
+        'transfer'              => TransferScope::class,
+        'multipayment'          => MultiPaymentScope::class,
+        'vote'                  => VoteScope::class,
+        'unvote'                => UnvoteScope::class,
+    ];
 
     /**
      * The "type" of the primary key ID.
@@ -214,8 +229,8 @@ final class Transaction extends Model
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['batch_transfers'] === true, function ($query) {
-                            $query->withScope(BatchTransferScope::class);
+                        $query->when($filter['multipayments'] === true, function ($query) {
+                            $query->withScope(MultiPaymentScope::class);
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {
