@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-final class VoteScope implements Scope
+final class MultiPaymentScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        $builder->withScope(ContractScope::class, ContractMethod::vote());
+        $builder->withScope(ContractScope::class, ContractMethod::multiPayment());
     }
 }

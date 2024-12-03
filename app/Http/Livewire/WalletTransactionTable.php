@@ -31,6 +31,7 @@ final class WalletTransactionTable extends TabbedTableComponent
         'outgoing'               => true,
         'incoming'               => true,
         'transfers'              => true,
+        'multipayments'          => true,
         'votes'                  => true,
         'unvotes'                => true,
         'validator_registration' => true,
@@ -51,6 +52,7 @@ final class WalletTransactionTable extends TabbedTableComponent
             'filter.outgoing'               => ['as' => 'outgoing', 'except' => true],
             'filter.incoming'               => ['as' => 'incoming', 'except' => true],
             'filter.transfers'              => ['as' => 'transfers', 'except' => true],
+            'filter.multipayments'          => ['as' => 'multipayments', 'except' => true],
             'filter.votes'                  => ['as' => 'votes', 'except' => true],
             'filter.unvotes'                => ['as' => 'unvotes', 'except' => true],
             'filter.validator_registration' => ['as' => 'validator-registration', 'except' => true],
@@ -126,6 +128,10 @@ final class WalletTransactionTable extends TabbedTableComponent
     private function hasTransactionTypeFilters(): bool
     {
         if ($this->filter['transfers'] === true) {
+            return true;
+        }
+
+        if ($this->filter['multipayments'] === true) {
             return true;
         }
 

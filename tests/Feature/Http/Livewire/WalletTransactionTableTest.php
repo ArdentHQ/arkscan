@@ -133,6 +133,7 @@ it('should toggle all filters when "select all" is selected', function () {
             'outgoing'               => true,
             'incoming'               => true,
             'transfers'              => true,
+            'multipayment'           => true,
             'votes'                  => true,
             'unvotes'                => true,
             'validator_registration' => true,
@@ -147,6 +148,7 @@ it('should toggle all filters when "select all" is selected', function () {
             'outgoing'               => false,
             'incoming'               => false,
             'transfers'              => false,
+            'multipayment'           => false,
             'votes'                  => false,
             'unvotes'                => false,
             'validator_registration' => false,
@@ -158,6 +160,7 @@ it('should toggle all filters when "select all" is selected', function () {
             'outgoing'               => true,
             'incoming'               => true,
             'transfers'              => true,
+            'multipayment'           => true,
             'votes'                  => true,
             'unvotes'                => true,
             'validator_registration' => true,
@@ -173,6 +176,7 @@ it('should toggle "select all" when all filters are selected', function () {
             'outgoing'               => true,
             'incoming'               => true,
             'transfers'              => true,
+            'multipayment'           => true,
             'votes'                  => true,
             'unvotes'                => true,
             'validator_registration' => true,
@@ -201,6 +205,7 @@ it('should filter by outgoing transactions', function () {
             'outgoing'               => true,
             'incoming'               => false,
             'transfers'              => true,
+            'multipayment'           => false,
             'votes'                  => false,
             'unvotes'                => false,
             'validator_registration' => false,
@@ -226,6 +231,7 @@ it('should filter by incoming transactions', function () {
             'outgoing'               => false,
             'incoming'               => true,
             'transfers'              => true,
+            'multipayment'           => false,
             'votes'                  => false,
             'unvotes'                => false,
             'validator_registration' => false,
@@ -251,6 +257,7 @@ it('should filter by incoming and outgoing transactions', function () {
             'outgoing'               => true,
             'incoming'               => true,
             'transfers'              => true,
+            'multipayment'           => false,
             'votes'                  => false,
             'unvotes'                => false,
             'validator_registration' => false,
@@ -276,6 +283,7 @@ it('should filter by transfer transactions', function () {
             'outgoing'               => true,
             'incoming'               => false,
             'transfers'              => true,
+            'multipayment'           => false,
             'votes'                  => false,
             'unvotes'                => false,
             'validator_registration' => false,
@@ -284,6 +292,32 @@ it('should filter by transfer transactions', function () {
         ])
         ->assertSee($transfer->id)
         ->assertDontSee($vote->id);
+});
+
+it('should filter by batch transfer transactions', function () {
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    $multiPayment = Transaction::factory()->multiPayment()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->set('filter', [
+            'outgoing'               => true,
+            'incoming'               => false,
+            'transfers'              => false,
+            'multipayment'           => true,
+            'votes'                  => false,
+            'unvotes'                => false,
+            'validator_registration' => false,
+            'validator_resignation'  => false,
+            'others'                 => false,
+        ])
+        ->assertSee($multiPayment->id)
+        ->assertDontSee($transfer->id);
 });
 
 it('should filter by vote transactions', function () {
@@ -305,6 +339,7 @@ it('should filter by vote transactions', function () {
             'outgoing'               => true,
             'incoming'               => false,
             'transfers'              => false,
+            'multipayment'           => false,
             'votes'                  => true,
             'unvotes'                => false,
             'validator_registration' => false,
@@ -334,6 +369,7 @@ it('should filter by unvote transactions', function () {
             'outgoing'               => true,
             'incoming'               => false,
             'transfers'              => false,
+            'multipayment'           => false,
             'votes'                  => false,
             'unvotes'                => true,
             'validator_registration' => false,
@@ -363,6 +399,7 @@ it('should filter by validator registration transactions', function () {
             'outgoing'               => true,
             'incoming'               => false,
             'transfers'              => false,
+            'multipayment'           => false,
             'votes'                  => false,
             'unvotes'                => false,
             'validator_registration' => true,
@@ -392,6 +429,7 @@ it('should filter by validator resignation transactions', function () {
             'outgoing'               => true,
             'incoming'               => false,
             'transfers'              => false,
+            'multipayment'           => false,
             'votes'                  => false,
             'unvotes'                => false,
             'validator_registration' => false,
@@ -418,6 +456,7 @@ it('should filter by other transactions to consensus address', function () {
             'outgoing'               => true,
             'incoming'               => false,
             'transfers'              => false,
+            'multipayment'           => false,
             'votes'                  => false,
             'unvotes'                => false,
             'validator_registration' => false,
@@ -444,6 +483,7 @@ it('should filter by other transactions to non-consensus address', function () {
             'outgoing'               => true,
             'incoming'               => false,
             'transfers'              => false,
+            'multipayment'           => false,
             'votes'                  => false,
             'unvotes'                => false,
             'validator_registration' => false,
@@ -470,6 +510,7 @@ it('should not filter transfers to consensus as "other"', function () {
             'outgoing'               => true,
             'incoming'               => false,
             'transfers'              => false,
+            'multipayment'           => false,
             'votes'                  => false,
             'unvotes'                => false,
             'validator_registration' => false,
@@ -495,6 +536,7 @@ it('should show no transactions if no filters', function () {
             'outgoing'               => false,
             'incoming'               => false,
             'transfers'              => false,
+            'multipayment'           => false,
             'votes'                  => false,
             'unvotes'                => false,
             'validator_registration' => false,
@@ -521,6 +563,7 @@ it('should show no transactions if no addressing filter', function () {
             'outgoing'               => false,
             'incoming'               => false,
             'transfers'              => true,
+            'multipayment'           => true,
             'votes'                  => true,
             'unvotes'                => true,
             'validator_registration' => true,
@@ -547,6 +590,7 @@ it('should show no transactions if no type filter', function () {
             'outgoing'               => true,
             'incoming'               => true,
             'transfers'              => false,
+            'multipayment'           => false,
             'votes'                  => false,
             'unvotes'                => false,
             'validator_registration' => false,
@@ -586,6 +630,7 @@ it('should reset pagination when filtering', function () {
             'outgoing'               => true,
             'incoming'               => true,
             'transfers'              => false,
+            'multipayment'           => true,
             'votes'                  => true,
             'unvotes'                => true,
             'validator_registration' => true,

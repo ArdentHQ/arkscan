@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Transactions;
 
-use App\Enums\PayloadSignature;
+use App\Enums\ContractMethod;
 use App\Models\Transaction;
 use App\ViewModels\Concerns\Transaction\HasPayload;
 
@@ -16,6 +16,7 @@ final class TransactionMethod
 
     private array $types = [
         'isTransfer'              => 'transfer',
+        'isMultiPayment'          => 'multipayment',
         'isValidatorRegistration' => 'validator-registration',
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
@@ -53,26 +54,31 @@ final class TransactionMethod
             return true;
         }
 
-        return $this->methodHash === PayloadSignature::TRANSFER->value;
+        return $this->methodHash === ContractMethod::transfer();
+    }
+
+    public function isMultiPayment(): bool
+    {
+        return $this->methodHash === ContractMethod::multiPayment();
     }
 
     public function isValidatorRegistration(): bool
     {
-        return $this->methodHash === PayloadSignature::VALIDATOR_REGISTRATION->value;
+        return $this->methodHash === ContractMethod::validatorRegistration();
     }
 
     public function isVote(): bool
     {
-        return $this->methodHash === PayloadSignature::VOTE->value;
+        return $this->methodHash === ContractMethod::vote();
     }
 
     public function isUnvote(): bool
     {
-        return $this->methodHash === PayloadSignature::UNVOTE->value;
+        return $this->methodHash === ContractMethod::unvote();
     }
 
     public function isValidatorResignation(): bool
     {
-        return $this->methodHash === PayloadSignature::VALIDATOR_RESIGNATION->value;
+        return $this->methodHash === ContractMethod::validatorResignation();
     }
 }

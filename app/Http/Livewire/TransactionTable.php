@@ -26,6 +26,7 @@ final class TransactionTable extends Component
 
     public array $filter = [
         'transfers'              => true,
+        'multipayments'          => true,
         'votes'                  => true,
         'unvotes'                => true,
         'validator_registration' => true,
@@ -43,6 +44,7 @@ final class TransactionTable extends Component
     {
         return [
             'transfers'              => ['except' => true],
+            'multipayment'           => ['except' => true],
             'votes'                  => ['except' => true],
             'unvotes'                => ['except' => true],
             'validator_registration' => ['except' => true],
@@ -90,6 +92,10 @@ final class TransactionTable extends Component
     private function hasTransactionTypeFilters(): bool
     {
         if ($this->filter['transfers'] === true) {
+            return true;
+        }
+
+        if ($this->filter['multipayment'] === true) {
             return true;
         }
 

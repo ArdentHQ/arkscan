@@ -113,7 +113,7 @@ it('should render transaction daily average', function (): void {
         'amount' => 2000 * 1e18,
         'fee'    => 10 * 1e18,
     ]);
-    Transaction::factory(4)->multipayment()->create([
+    Transaction::factory(4)->multiPayment()->create([
         'amount' => 3000 * 1e18,
         'fee'    => 11 * 1e18,
         'asset'  => [

@@ -9,6 +9,7 @@ use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
+use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OtherTransactionTypesScope;
 use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\UnvoteScope;
@@ -202,14 +203,19 @@ final class Transaction extends Model
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder
     {
-        $hasDisabledAFilter = in_array(false, $filter, true);
+        $hasAdjustedFilters = in_array(false, $filter, true);
 
         return $query
-            ->when($hasDisabledAFilter, function ($query) use ($filter) {
+            ->when($hasAdjustedFilters, function ($query) use ($filter) {
                 $query->where(function ($query) use ($filter) {
                     $query->where(function ($query) use ($filter) {
                         $query->when($filter['transfers'] === true, function ($query) {
                             $query->withScope(TransferScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['multipayments'] === true, function ($query) {
+                            $query->withScope(MultiPaymentScope::class);
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {

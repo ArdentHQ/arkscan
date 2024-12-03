@@ -35,6 +35,8 @@ return [
             'base58Prefix'        => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 23)),
 
             'contract_addresses' => [],
+
+            'contract_methods' => [],
         ],
         'development' => [
             'coin'                => env('ARKSCAN_NETWORK_COIN', 'Mainsail'),
@@ -56,7 +58,16 @@ return [
             'base58Prefix'        => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 30)),
 
             'contract_addresses' => [
-                'consensus' => env('ARKSCAN_CONSENSUS_CONTRACT_ADDRESS', '0x535B3D7A252fa034Ed71F0C53ec0C6F784cB64E1'),
+                'consensus' => env('ARKSCAN_CONTRACT_CONSENSUS_ADDRESS', '0x535B3D7A252fa034Ed71F0C53ec0C6F784cB64E1'),
+            ],
+
+            'contract_methods' => [
+                'transfer'               => env('ARKSCAN_CONTRACT_TRANSFER_METHOD', 'a9059cbb'),
+                'multipayment'           => env('ARKSCAN_CONTRACT_MULTIPAYMENT_METHOD', '084ce708'),
+                'validator_registration' => env('ARKSCAN_CONTRACT_VALIDATOR_REGISTRATION_METHOD', '602a9eee'),
+                'vote'                   => env('ARKSCAN_CONTRACT_VOTE_METHOD', '6dd7d8ea'),
+                'unvote'                 => env('ARKSCAN_CONTRACT_UNVOTE_METHOD', '3174b689'),
+                'validator_resignation'  => env('ARKSCAN_CONTRACT_VALIDATOR_RESIGNATION_METHOD', 'b85f5da2'),
             ],
         ],
     ],

@@ -40,6 +40,11 @@
             />
 
             <x-tables.filters.includes.checkbox
+                name="multipayments"
+                :label="trans('tables.filters.transactions.multipayments')"
+            />
+
+            <x-tables.filters.includes.checkbox
                 name="votes"
                 :label="trans('tables.filters.transactions.votes')"
             />

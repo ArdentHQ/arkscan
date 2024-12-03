@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models\Scopes;
 
-use App\Enums\PayloadSignature;
 use App\Facades\Network;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -14,12 +13,8 @@ final class ContractScope implements Scope
 {
     private string $contract;
 
-    public function __construct(PayloadSignature | string $contract)
+    public function __construct(string $contract)
     {
-        if ($contract instanceof PayloadSignature) {
-            $contract = $contract->value;
-        }
-
         $this->contract = $contract;
     }
 
