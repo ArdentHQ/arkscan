@@ -10,6 +10,7 @@ use App\Facades\Network;
 use App\Facades\Services\GasTracker;
 use App\Facades\Settings;
 use App\Services\Cache\CryptoDataCache;
+use App\Services\MainsailApi;
 use App\Services\MarketCap;
 use App\Services\NumberFormatter;
 use Illuminate\View\View;
@@ -33,9 +34,18 @@ final class Statistics extends Component
             'marketCap' => MarketCap::getFormatted(Network::currency(), Settings::currency()),
 
             'gasTracker' => [
-                'low'     => GasTracker::low(),
-                'average' => GasTracker::average(),
-                'high'    => GasTracker::high(),
+                'low' => [
+                    'amount'   => GasTracker::low(),
+                    'duration' => MainsailApi::timeToForge(),
+                ],
+                'average' => [
+                    'amount'   => GasTracker::average(),
+                    'duration' => MainsailApi::timeToForge(),
+                ],
+                'high' => [
+                    'amount'   => GasTracker::high(),
+                    'duration' => MainsailApi::timeToForge(),
+                ],
             ],
         ]);
     }
