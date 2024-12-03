@@ -29,7 +29,7 @@ return [
         'action'                  => 'Action',
         'transaction_types'       => [
             'all'                   => 'All',
-            'batchTransfer'         => 'Batch Transfer',
+            'multipayment'          => 'Multipayment',
             'validatorRegistration' => 'Validator Registration',
             'validatorResignation'  => 'Validator Resignation',
             'transfer'              => 'Transfer',
