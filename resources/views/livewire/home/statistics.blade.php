@@ -93,9 +93,7 @@
 
         class="relative"
     >
-        <div
-            class="flex flex-col pl-4 mt-4 -mb-3 space-y-2 font-semibold rounded-b-xl sm:flex-row sm:items-center sm:pl-6 sm:space-y-0 sm:space-x-3 md:-mb-6 bg-theme-secondary-100 dark:bg-theme-dark-950 dark:text-theme-dark-200"
-        >
+        <div class="flex flex-col pl-4 mt-4 -mb-3 space-y-2 font-semibold rounded-b-xl sm:flex-row sm:items-center sm:pl-6 sm:space-y-0 sm:space-x-3 md:-mb-6 bg-theme-secondary-100 dark:bg-theme-dark-950 dark:text-theme-dark-200">
             <div class="py-3 text-sm whitespace-nowrap">
                 @lang('pages.statistics.gas-tracker.gas_tracker')
             </div>
@@ -108,14 +106,16 @@
                     x-bind:style="startStyle"
                 ></div>
 
-                <div class="flex overflow-hidden relative items-center py-3 pr-4 select-none sm:space-x-2"
-                x-on:mousedown="startDragging"
-                x-on:touchstart="startDragging"
-                x-on:mouseup="stopDragging"
-                x-on:touchend="stopDragging"
-                x-on:mousemove="scroll($event)"
-                x-on:touchmove="scroll($event)"
-                x-ref="gas-ticker">
+                <div
+                    class="flex overflow-hidden relative items-center py-3 pr-4 select-none sm:space-x-2"
+                    x-on:mousedown="startDragging"
+                    x-on:touchstart="startDragging"
+                    x-on:mouseup="stopDragging"
+                    x-on:touchend="stopDragging"
+                    x-on:mousemove="scroll($event)"
+                    x-on:touchmove="scroll($event)"
+                    x-ref="gas-ticker"
+                >
                     @foreach ($gasTracker as $title => $fee)
                         <x-home.includes.gas-badge
                             :title="trans('pages.statistics.gas-tracker.'.$title)"
