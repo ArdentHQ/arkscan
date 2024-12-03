@@ -1,7 +1,7 @@
 <div class="px-6 mt-8 md:px-10 md:mx-auto md:max-w-7xl md:border-0">
     <div class="flex flex-col space-y-3 lg:flex-row lg:space-y-0 lg:space-x-3">
-        <div class="flex flex-col flex-1 py-3 px-4 rounded-xl border sm:px-6 md:py-6 border-theme-secondary-300 dark:border-theme-dark-700">
-            <div class="flex justify-between items-center mb-3 md:mb-5">
+        <div class="flex flex-col flex-1 py-3 min-w-0 rounded-xl border md:py-6 border-theme-secondary-300 dark:border-theme-dark-700">
+            <div class="flex justify-between items-center px-4 mb-3 sm:px-6 md:mb-5">
                 <h2 class="mb-0 text-xl font-semibold md:text-2xl">
                     @lang('pages.home.statistics.title')
                 </h2>
