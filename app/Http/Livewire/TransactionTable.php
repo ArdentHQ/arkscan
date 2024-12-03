@@ -44,7 +44,7 @@ final class TransactionTable extends Component
     {
         return [
             'transfers'              => ['except' => true],
-            'multipayment'           => ['except' => true],
+            'multipayments'          => ['except' => true],
             'votes'                  => ['except' => true],
             'unvotes'                => ['except' => true],
             'validator_registration' => ['except' => true],
@@ -95,7 +95,7 @@ final class TransactionTable extends Component
             return true;
         }
 
-        if ($this->filter['multipayment'] === true) {
+        if ($this->filter['multipayments'] === true) {
             return true;
         }
 
