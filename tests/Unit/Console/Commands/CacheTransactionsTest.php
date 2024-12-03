@@ -31,7 +31,7 @@ it('should cache data', function (): void {
         'amount' => 2000 * 1e8,
         'fee'    => 10 * 1e8,
     ]);
-    Transaction::factory(4)->multipayment()->create([
+    Transaction::factory(4)->multiPayment()->create([
         'amount' => 0,
         'fee'    => 11 * 1e8,
         'asset'  => [
@@ -145,7 +145,7 @@ it('should not trigger event if nothing changed', function (): void {
         'amount' => 2000 * 1e8,
         'fee'    => 10 * 1e8,
     ]);
-    Transaction::factory(4)->multipayment()->create([
+    Transaction::factory(4)->multiPayment()->create([
         'amount' => 0,
         'fee'    => 11 * 1e8,
         'asset'  => [
@@ -192,7 +192,7 @@ it('should trigger event if largest transaction has changed', function (): void 
         'amount' => 2000 * 1e8,
         'fee'    => 10 * 1e8,
     ]);
-    Transaction::factory(4)->multipayment()->create([
+    Transaction::factory(4)->multiPayment()->create([
         'amount' => 0,
         'fee'    => 11 * 1e8,
         'asset'  => [

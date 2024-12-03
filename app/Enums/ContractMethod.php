@@ -13,9 +13,9 @@ final class ContractMethod
         return Network::contractMethod('transfer', 'a9059cbb');
     }
 
-    public static function batchTransfer(): ?string
+    public static function multiPayment(): ?string
     {
-        return Network::contractMethod('batch_transfer', '88d695b2');
+        return Network::contractMethod('multipayment', '084ce708');
     }
 
     public static function validatorRegistration(): ?string

@@ -26,7 +26,7 @@ final class OtherTransactionTypesScope implements Scope
                     fn ($query) => $query->where('recipient_address', Network::knownContract('consensus'))
                         ->whereNotIn(DB::raw('SUBSTRING(encode(data, \'hex\'), 1, 8)'), [
                             ContractMethod::transfer(),
-                            ContractMethod::batchTransfer(),
+                            ContractMethod::multiPayment(),
                             ContractMethod::vote(),
                             ContractMethod::unvote(),
                             ContractMethod::validatorRegistration(),

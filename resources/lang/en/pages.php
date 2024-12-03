@@ -475,11 +475,11 @@ return [
             'fees'                    => 'Fees',
         ],
 
-        'gas' => [
-            'low'     => 'Low',
-            'high'    => 'High',
-            'average' => 'Average',
-            '30_sec'  => '~30 sec',
+        'gas-tracker' => [
+            'gas_tracker' => 'Gas Tracker',
+            'low'         => 'Low',
+            'high'        => 'High',
+            'average'     => 'Average',
         ],
 
         'insights' => [
