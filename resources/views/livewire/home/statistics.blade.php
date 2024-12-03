@@ -44,23 +44,29 @@
         </div>
 
         <div class="flex items-center sm:space-x-2">
-            @foreach ($gasTracker as $title => $value)
+            @foreach ($gasTracker as $title => $fee)
                 <x-home.includes.gas-badge
                     :title="trans('pages.statistics.gas-tracker.'.$title)"
-                    :class="Arr::toCssClasses(['hidden sm:block' => $title !== 'average',
-                    ])"
+                    :class="Arr::toCssClasses(['hidden sm:block' => $title !== 'average'])"
                 >
                     <x-slot name="value">
                         @if (Network::canBeExchanged())
-                            <span>{{ ExchangeRate::convert($value) }}</span>
+                            <span>{{ ExchangeRate::convert($fee['amount']) }}</span>
                             <span>{{ Settings::currency() }}</span>
                         @else
-                            <span>{{ $value }}</span>
+                            <span>{{ $fee['amount'] }}</span>
                             <span>@lang('general.gwei')</span>
                         @endif
                     </x-slot>
                 </x-home.includes.gas-badge>
             @endforeach
+
+            <div class="ml-2 sm:hidden">
+                <x-ark-info
+                    type="info"
+                    :html-tooltip="view('components.home.includes.gas-tooltip', ['gasTracker' => $gasTracker])->render()"
+                />
+            </div>
         </div>
     </div>
 </div>
