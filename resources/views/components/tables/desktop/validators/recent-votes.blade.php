@@ -81,7 +81,7 @@
                     @if ($votedValidator)
                         <a
                             href="{{ route('wallet', $votedValidator->address()) }}"
-                            class="link text-sm font-semibold"
+                            class="text-sm font-semibold link"
                         >
                             <x-truncate-middle>
                                 {{ $votedValidator->address() }}
