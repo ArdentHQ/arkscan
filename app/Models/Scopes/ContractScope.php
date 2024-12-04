@@ -11,16 +11,20 @@ use Illuminate\Database\Eloquent\Scope;
 
 final class ContractScope implements Scope
 {
-    private string $contract;
+    private string $recipient;
 
-    public function __construct(string $contract)
+    public function __construct(private string $contract, ?string $recipient = null)
     {
-        $this->contract = $contract;
+        if ($recipient === null) {
+            $recipient = Network::knownContract('consensus');
+        }
+
+        $this->recipient = $recipient;
     }
 
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where('recipient_address', Network::knownContract('consensus'))
+        $builder->where('recipient_address', $this->recipient)
             ->whereRaw('SUBSTRING(encode(data, \'hex\'), 1, 8) = ?', [$this->contract]);
     }
 }

@@ -59,6 +59,7 @@ return [
 
             'contract_addresses' => [
                 'consensus' => env('ARKSCAN_CONTRACT_CONSENSUS_ADDRESS', '0x535B3D7A252fa034Ed71F0C53ec0C6F784cB64E1'),
+                'username'  => env('ARKSCAN_CONTRACT_USERNAME_ADDRESS', '0x2c1DE3b4Dbb4aDebEbB5dcECAe825bE2a9fc6eb6'),
             ],
 
             'contract_methods' => [
