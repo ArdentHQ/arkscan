@@ -41,6 +41,12 @@
                     generic
                 />
             </div>
+
+            <x-tables.rows.mobile.encapsulated.validators.vote-address
+                :transaction="$vote"
+                class="sm:text-right"
+                value-class="sm:justify-end"
+            />
         </x-tables.rows.mobile>
     @endforeach
 </x-tables.mobile.includes.encapsulated>
