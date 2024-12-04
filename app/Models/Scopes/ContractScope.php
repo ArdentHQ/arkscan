@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Scope;
 
 final class ContractScope implements Scope
 {
-    private string $recipient;
+    private ?string $recipient;
 
     public function __construct(private string $contract, ?string $recipient = null)
     {
