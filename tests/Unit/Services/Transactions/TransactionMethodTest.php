@@ -32,4 +32,12 @@ it('should determine the type', function (string $type, string $expected) {
         'validatorResignation',
         'validator-resignation',
     ],
+    [
+        'usernameRegistration',
+        'username-registration',
+    ],
+    [
+        'usernameResignation',
+        'username-resignation',
+    ],
 ]);
