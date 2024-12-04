@@ -14,6 +14,8 @@ return [
     '70a08231' => 'balanceOf(address)',
     'dd62ed3e' => 'allowance(address,address)',
     '095ea7b3' => 'approve(address,uint256)',
+    '36a94134' => 'registerUsername(string)',
+    'ebed6dab' => 'resignUsername()',
 
     // Taken from https://github.com/ArkEcosystem/mainsail/tree/develop/packages/evm-contracts/source/abis
     //

@@ -508,6 +508,8 @@ return [
                     'unvote'                      => 'Unvotes',
                     'validator_registration'      => 'Validator Registrations',
                     'validator_resignation'       => 'Validator Resignations',
+                    'username_registration'       => 'Username Registrations',
+                    'username_resignation'        => 'Username Resignations',
                     'transactions'                => 'Transactions',
                     'transaction_volume'          => 'Transaction Volume',
                     'transaction_fees'            => 'Transaction Fees',

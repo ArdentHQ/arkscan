@@ -43,6 +43,16 @@ trait HasMethod
         return $this->method->isValidatorResignation();
     }
 
+    public function isUsernameRegistration(): bool
+    {
+        return $this->method->isUsernameRegistration();
+    }
+
+    public function isUsernameResignation(): bool
+    {
+        return $this->method->isUsernameResignation();
+    }
+
     /**
      * @return array
      */

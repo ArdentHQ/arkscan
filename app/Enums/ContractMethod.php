@@ -37,4 +37,14 @@ final class ContractMethod
     {
         return Network::contractMethod('validator_resignation', 'b85f5da2');
     }
+
+    public static function usernameRegistration(): ?string
+    {
+        return Network::contractMethod('username_registration', '36a94134');
+    }
+
+    public static function usernameResignation(): ?string
+    {
+        return Network::contractMethod('username_resignation', 'ebed6dab');
+    }
 }

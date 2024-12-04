@@ -124,6 +124,8 @@ return [
         'types'                   => [
             'validator-registration' => 'Registration',
             'validator-resignation'  => 'Resignation',
+            'username-registration'  => 'Username Registration',
+            'username-resignation'   => 'Username Resignation',
             'transfer'               => 'Transfer',
             'multipayment'           => 'Multipayment',
             'unvote'                 => 'Unvote',

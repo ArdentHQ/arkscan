@@ -153,6 +153,8 @@ return [
             'unvotes'                => 'Unvotes',
             'validator_registration' => 'Validator Registration',
             'validator_resignation'  => 'Validator Resignation',
+            'username_registration'  => 'Username Registration',
+            'username_resignation'   => 'Username Resignation',
             'others'                 => 'Others',
         ],
 

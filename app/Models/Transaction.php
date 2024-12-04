@@ -13,6 +13,8 @@ use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OtherTransactionTypesScope;
 use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\UnvoteScope;
+use App\Models\Scopes\UsernameRegistrationScope;
+use App\Models\Scopes\UsernameResignationScope;
 use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Scopes\VoteScope;
@@ -251,6 +253,16 @@ final class Transaction extends Model
                     ->orWhere(function ($query) use ($filter) {
                         $query->when($filter['validator_resignation'] === true, function ($query) {
                             $query->withScope(ValidatorResignationScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['username_registration'] === true, function ($query) {
+                            $query->withScope(UsernameRegistrationScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['username_resignation'] === true, function ($query) {
+                            $query->withScope(UsernameResignationScope::class);
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {
