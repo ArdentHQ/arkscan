@@ -176,6 +176,17 @@ final class NumberFormatter
         return config('currencies.currencies.'.strtolower($currency).'.symbol') !== null;
     }
 
+    public static function weiToArk(string | int | float $value, bool $withSuffix = true): string
+    {
+        $convertedValue = (string) BigNumber::new(UnitConverter::formatUnits(UnitConverter::parseUnits($value, 'wei'), 'ark'));
+
+        if ($withSuffix) {
+            return $convertedValue.' '.Network::currency();
+        }
+
+        return $convertedValue;
+    }
+
     public static function gweiToArk(string | int | float $value, bool $withSuffix = true): string
     {
         $convertedValue = (string) BigNumber::new(UnitConverter::formatUnits(UnitConverter::parseUnits($value, 'gwei'), 'ark'));

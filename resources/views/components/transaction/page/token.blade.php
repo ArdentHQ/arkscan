@@ -6,24 +6,17 @@
         :transaction="$transaction"
     >
         <x-transaction.page.section-detail.address
-            :address="\ArkEcosystem\Crypto\Utils\Address::toChecksumAddress(substr($transaction->methodArguments()[0], 22))"
+            :address="\App\Services\ContractPayload::decodeAddress($transaction->methodArguments()[0])"
             class="inline-block"
         />
     </x-transaction.page.section-detail.row>
 
-    {{ dd($transaction->methodArguments()) }}
-    {{-- <x-transaction.page.section-detail.row
+    <x-transaction.page.section-detail.row
         :title="trans('pages.transaction.header.amount')"
-        :transaction="$transaction"
+        :value="ExplorerNumberFormatter::weiToArk(\App\Services\ContractPayload::decodeUnsignedInt($transaction->methodArguments()[1]))"
     >
         <x-transaction.amount :transaction="$transaction" />
-    </x-transaction.page.section-detail.row> --}}
-
-    <x-transaction.page.section-detail.row
-        :title="trans('pages.transaction.header.fee')"
-        :value="ExplorerNumberFormatter::networkCurrency($transaction->fee(), withSuffix: true)"
-        :transaction="$transaction"
-    />
+    </x-transaction.page.section-detail.row>
 
     @if (Network::canBeExchanged())
         @if (ExplorerNumberFormatter::isFiat(Settings::currency()) && ExchangeRate::convertNumerical($transaction->amountWithFee(), $transaction->model()->timestamp) < 0.01)
