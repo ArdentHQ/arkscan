@@ -66,6 +66,9 @@ module.exports = {
                 "theme-dim-blue-950": "var(--theme-color-dim-blue-950)",
 
                 black: "var(--theme-color-dark-950, #121213)",
+
+                "theme-failed-state-bg": "var(--theme-failed-state-bg)",
+                "theme-failed-state-text": "var(--theme-failed-state-text)",
             },
 
             borderRadius: {

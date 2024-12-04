@@ -29,10 +29,12 @@ return [
         'action'                  => 'Action',
         'transaction_types'       => [
             'all'                   => 'All',
+            'multipayment'          => 'Multipayment',
             'validatorRegistration' => 'Validator Registration',
             'validatorResignation'  => 'Validator Resignation',
             'transfer'              => 'Transfer',
             'vote'                  => 'Vote',
+            'unvote'                => 'Unvote',
         ],
 
     ],

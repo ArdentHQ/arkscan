@@ -125,6 +125,7 @@ return [
             'validator-registration' => 'Registration',
             'validator-resignation'  => 'Resignation',
             'transfer'               => 'Transfer',
+            'multipayment'           => 'Multipayment',
             'unvote'                 => 'Unvote',
             'vote'                   => 'Vote',
             'unknown'                => 'Unknown',

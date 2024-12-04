@@ -219,19 +219,41 @@ const TransactionsExport = ({
         requestData() {
             const [dateFrom, dateTo] = this.getDateRange();
 
-            const data = {
+            const requestData = {
                 address,
-                type: [],
+                data: [],
             };
 
             if (dateFrom) {
-                data["timestamp.from"] = queryTimestamp(dateFrom);
-                data["timestamp.to"] = queryTimestamp(dateTo);
+                requestData["timestamp.from"] = queryTimestamp(dateFrom);
+                requestData["timestamp.to"] = queryTimestamp(dateTo);
             }
 
-            data.type = data.type.join(",");
+            if (this.types.transfers) {
+                requestData.data.push("0x");
+            }
 
-            return data;
+            if (this.types.votes) {
+                requestData.data.push(
+                    network.contract_methods.vote,
+                    network.contract_methods.unvote
+                );
+            }
+
+            if (this.types.multipayments) {
+                requestData.data.push(network.contract_methods.multipayment);
+            }
+
+            if (this.types.others) {
+                requestData.data.push(
+                    network.contract_methods.validator_registration,
+                    network.contract_methods.validator_resignation
+                );
+            }
+
+            requestData.data = requestData.data.join(",");
+
+            return requestData;
         },
 
         getColumns() {

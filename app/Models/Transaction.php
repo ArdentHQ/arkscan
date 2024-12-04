@@ -50,6 +50,21 @@ final class Transaction extends Model
     use Searchable;
 
     /**
+     * A list of transaction scopes used for filtering based on type.
+     *
+     * Exposed through the model to keep its usage consistent across
+     * all places that need to filter transactions by their type.
+     */
+    public const TYPE_SCOPES = [
+        'validatorRegistration' => ValidatorRegistrationScope::class,
+        'validatorResignation'  => ValidatorResignationScope::class,
+        'transfer'              => TransferScope::class,
+        'multipayment'          => MultiPaymentScope::class,
+        'vote'                  => VoteScope::class,
+        'unvote'                => UnvoteScope::class,
+    ];
+
+    /**
      * The "type" of the primary key ID.
      *
      * @var string

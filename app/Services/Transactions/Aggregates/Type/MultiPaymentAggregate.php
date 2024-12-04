@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Services\Transactions\Aggregates\Type;
 
-use App\Models\Scopes\UnvoteScope;
+use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Transaction;
 
-final class UnvoteAggregate
+final class MultiPaymentAggregate
 {
     public function aggregate(): int
     {
-        return Transaction::withScope(UnvoteScope::class)
+        return Transaction::withScope(MultiPaymentScope::class)
             ->count();
     }
 }
