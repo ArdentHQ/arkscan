@@ -66,8 +66,7 @@
             'w-full sm:py-1.5 sm:px-4 md:p-2' => ! $withoutText,
         ])"
         active-button-class=""
-        :button-wrapper-class="Arr::toCssClasses(['w-full h-5 md:h-4' => ! $withoutText,
-        ])"
+        :button-wrapper-class="Arr::toCssClasses(['w-full h-5 md:h-4' => ! $withoutText])"
     >
         <x-slot name="button">
             <div class="inline-flex items-center mx-auto whitespace-nowrap">
