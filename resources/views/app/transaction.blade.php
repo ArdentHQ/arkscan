@@ -11,6 +11,10 @@
 
             <x-transaction.page.addressing :transaction="$transaction" />
 
+            @if ($transaction->isTokenTransfer())
+                <x-transaction.page.token :transaction="$transaction" />
+            @endif
+
             <x-transaction.page.summary :transaction="$transaction" />
 
             <x-transaction.page.status :model="$transaction" />

@@ -56,7 +56,7 @@
                     @lang('general.search.to')
                 </x-general.encapsulated.transaction-direction-badge>
 
-                @if ($transaction->isTransfer())
+                @if ($transaction->isTransfer() || $transaction->isTokenTransfer())
                     <x-general.identity
                         :model="$transaction->recipient()"
                         without-link

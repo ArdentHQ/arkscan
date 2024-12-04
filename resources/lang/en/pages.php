@@ -97,6 +97,7 @@ return [
         'gas_information'       => 'Gas Information',
         'other_attributes'      => 'Other Attributes',
         'input_data'            => 'Input Data',
+        'tokens_transferred'    => 'Tokens Transferred',
 
         'header' => [
             'timestamp'            => 'Timestamp',

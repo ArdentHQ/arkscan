@@ -1,7 +1,7 @@
 @props(['transaction'])
 
 <x-general.page-section.container :title="trans('pages.transaction.transaction_summary')">
-    @if ($transaction->isTransfer())
+    @if ($transaction->isTransfer() || $transaction->isTokenTransfer())
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.amount')"
             :transaction="$transaction"
