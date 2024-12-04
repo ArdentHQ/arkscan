@@ -53,7 +53,7 @@
     <x-general.dropdown.dropdown
         placement="right-start"
         :placement-fallbacks="['bottom', 'bottom-end', 'left-start']"
-        dropdown-class="px-6 w-full md:px-8 table-filter md:w-[293px]"
+        dropdown-class="px-6 w-full md:px-8 table-filter md:w-[303px]"
         :close-on-click="false"
         class=""
         :dropdown-wrapper-class="Arr::toCssClasses(['w-full',
