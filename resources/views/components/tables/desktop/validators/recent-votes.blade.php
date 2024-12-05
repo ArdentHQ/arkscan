@@ -76,7 +76,18 @@
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>
+                    @php($votedValidator = $vote->voted())
 
+                    @if ($votedValidator)
+                        <a
+                            href="{{ route('wallet', $votedValidator->address()) }}"
+                            class="text-sm font-semibold link"
+                        >
+                            <x-truncate-middle>
+                                {{ $votedValidator->address() }}
+                            </x-truncate-middle>
+                        </a>
+                    @endif
                 </x-ark-tables.cell>
             </x-ark-tables.row>
         @endforeach

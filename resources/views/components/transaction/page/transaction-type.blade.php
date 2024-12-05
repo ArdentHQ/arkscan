@@ -23,7 +23,7 @@
             :transaction="$transaction"
         >
             @if ($votedValidator)
-                <x-general.page-section.data.validator :validator="$transaction->voted()" />
+                <x-general.page-section.data.validator :validator="$votedValidator" />
             @endif
         </x-transaction.page.section-detail.row>
     @elseif ($transaction->isValidatorRegistration())

@@ -8,6 +8,8 @@ use App\Enums\SortDirection;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTableSorting;
+use App\Models\Scopes\UnvoteScope;
+use App\Models\Scopes\VoteScope;
 use App\Models\Transaction;
 use App\Services\Timestamp;
 use App\ViewModels\ViewModelFactory;
@@ -107,6 +109,14 @@ final class RecentVotes extends TabbedTableComponent
         // TODO: fetch only vote transaction types - https://app.clickup.com/t/86dv8nz3e
         return Transaction::query()
             ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix() * 1000)
+            ->where(function ($query) {
+                $query->where(fn ($query) => $query->when($this->filter['vote'], function ($query) {
+                    $query->withScope(VoteScope::class);
+                }))
+                ->orWhere(fn ($query) => $query->when($this->filter['unvote'], function ($query) {
+                    $query->withScope(UnvoteScope::class);
+                }));
+            })
             ->when($this->sortKey === 'age', fn ($query) => $query->sortByAge($sortDirection))
             ->when($this->sortKey === 'address', fn ($query) => $query->sortByAddress($sortDirection))
             ->when($this->sortKey === 'type', fn ($query) => $query->sortByType($sortDirection));
