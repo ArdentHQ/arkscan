@@ -15,10 +15,10 @@ use App\Services\Transactions\Aggregates\Historical\YearAggregate;
 use App\Services\Transactions\Aggregates\Type\MultiPaymentAggregate;
 use App\Services\Transactions\Aggregates\Type\TransferAggregate;
 use App\Services\Transactions\Aggregates\Type\UnvoteAggregate;
-use App\Services\Transactions\Aggregates\Type\ValidatorRegistrationAggregate;
-use App\Services\Transactions\Aggregates\Type\ValidatorResignationAggregate;
 use App\Services\Transactions\Aggregates\Type\UsernameRegistrationAggregate;
 use App\Services\Transactions\Aggregates\Type\UsernameResignationAggregate;
+use App\Services\Transactions\Aggregates\Type\ValidatorRegistrationAggregate;
+use App\Services\Transactions\Aggregates\Type\ValidatorResignationAggregate;
 use App\Services\Transactions\Aggregates\Type\VoteAggregate;
 use InvalidArgumentException;
 
