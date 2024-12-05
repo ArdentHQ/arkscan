@@ -76,6 +76,8 @@ it('should toggle all filters when "select all" is selected', function () {
             'unvotes'                => true,
             'validator_registration' => true,
             'validator_resignation'  => true,
+            'username_registration'  => true,
+            'username_resignation'   => true,
             'others'                 => true,
         ])
         ->assertSet('selectAllFilters', true)
@@ -88,6 +90,8 @@ it('should toggle all filters when "select all" is selected', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->set('selectAllFilters', true)
@@ -97,6 +101,8 @@ it('should toggle all filters when "select all" is selected', function () {
             'unvotes'                => true,
             'validator_registration' => true,
             'validator_resignation'  => true,
+            'username_registration'  => true,
+            'username_resignation'   => true,
             'others'                 => true,
         ]);
 });
@@ -110,6 +116,8 @@ it('should toggle "select all" when all filters are selected', function () {
             'unvotes'                => true,
             'validator_registration' => true,
             'validator_resignation'  => true,
+            'username_registration'  => true,
+            'username_resignation'   => true,
             'others'                 => true,
         ])
         ->assertSet('selectAllFilters', true)
@@ -135,6 +143,8 @@ it('should filter by transfer transactions', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertSee($transfer->id)
@@ -157,6 +167,8 @@ it('should filter by vote transactions', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertSee($vote->id)
@@ -179,6 +191,8 @@ it('should filter by unvote transactions', function () {
             'unvotes'                => true,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertSee($unvote->id)
@@ -201,6 +215,8 @@ it('should filter by registration transactions', function () {
             'unvotes'                => false,
             'validator_registration' => true,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertSee($registration->id)
@@ -223,6 +239,8 @@ it('should filter by resignation transactions', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => true,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertSee($resignation->id)
@@ -242,6 +260,8 @@ it('should filter by other transactions', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => true,
         ])
         ->assertSee($other->id)
@@ -261,6 +281,8 @@ it('should show no transactions if no type filter', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertDontSee($transfer->id)
@@ -277,6 +299,8 @@ it('should get the filter values via a getter', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => true,
         ])
         ->instance();
@@ -286,6 +310,8 @@ it('should get the filter values via a getter', function () {
     expect($instance->unvotes)->toBeFalse();
     expect($instance->validator_registration)->toBeFalse();
     expect($instance->validator_resignation)->toBeFalse();
+    expect($instance->username_registration)->toBeFalse();
+    expect($instance->username_resignation)->toBeFalse();
     expect($instance->others)->toBeTrue();
 });
 
@@ -298,6 +324,8 @@ it('should set the filter values via a setter', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->instance();
@@ -307,6 +335,8 @@ it('should set the filter values via a setter', function () {
     $instance->unvotes                = true;
     $instance->validator_registration = true;
     $instance->validator_resignation  = true;
+    $instance->username_registration  = true;
+    $instance->username_resignation   = true;
     $instance->others                 = true;
 
     expect($instance->transfers)->toBeTrue();
@@ -314,6 +344,8 @@ it('should set the filter values via a setter', function () {
     expect($instance->unvotes)->toBeTrue();
     expect($instance->validator_registration)->toBeTrue();
     expect($instance->validator_resignation)->toBeTrue();
+    expect($instance->username_registration)->toBeTrue();
+    expect($instance->username_resignation)->toBeTrue();
     expect($instance->others)->toBeTrue();
 });
 

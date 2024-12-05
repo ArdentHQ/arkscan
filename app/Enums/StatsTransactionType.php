@@ -20,6 +20,10 @@ enum StatsTransactionType
 
     public const VALIDATOR_RESIGNATION = 'validator_resignation';
 
+    public const USERNAME_REGISTRATION = 'username_registration';
+
+    public const USERNAME_RESIGNATION = 'username_resignation';
+
     public static function all(): Collection
     {
         return new Collection([
@@ -29,6 +33,8 @@ enum StatsTransactionType
             self::UNVOTE,
             self::VALIDATOR_REGISTRATION,
             self::VALIDATOR_RESIGNATION,
+            self::USERNAME_REGISTRATION,
+            self::USERNAME_RESIGNATION,
         ]);
     }
 }

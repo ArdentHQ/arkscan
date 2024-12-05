@@ -53,7 +53,7 @@
     <x-general.dropdown.dropdown
         placement="right-start"
         :placement-fallbacks="['bottom', 'bottom-end', 'left-start']"
-        dropdown-class="px-6 w-full md:px-8 table-filter md:w-[293px]"
+        dropdown-class="px-6 w-full md:px-8 table-filter md:w-[303px]"
         :close-on-click="false"
         class=""
         :dropdown-wrapper-class="Arr::toCssClasses(['w-full',
@@ -66,8 +66,7 @@
             'w-full sm:py-1.5 sm:px-4 md:p-2' => ! $withoutText,
         ])"
         active-button-class=""
-        :button-wrapper-class="Arr::toCssClasses(['w-full h-5 md:h-4' => ! $withoutText,
-        ])"
+        :button-wrapper-class="Arr::toCssClasses(['w-full h-5 md:h-4' => ! $withoutText])"
     >
         <x-slot name="button">
             <div class="inline-flex items-center mx-auto whitespace-nowrap">

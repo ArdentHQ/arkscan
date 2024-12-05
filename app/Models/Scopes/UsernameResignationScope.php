@@ -10,14 +10,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-final class MultiPaymentScope implements Scope
+final class UsernameResignationScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
         $builder->withScope(
             ContractScope::class,
-            ContractMethod::multiPayment(),
-            Network::knownContract('multipayment'),
+            ContractMethod::usernameResignation(),
+            Network::knownContract('username'),
         );
     }
 }

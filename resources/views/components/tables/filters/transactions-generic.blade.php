@@ -46,6 +46,16 @@
             />
 
             <x-tables.filters.includes.checkbox
+                name="username_registration"
+                :label="trans('tables.filters.transactions.username_registration')"
+            />
+
+            <x-tables.filters.includes.checkbox
+                name="username_resignation"
+                :label="trans('tables.filters.transactions.username_resignation')"
+            />
+
+            <x-tables.filters.includes.checkbox
                 name="others"
                 :label="trans('tables.filters.transactions.others')"
             />
