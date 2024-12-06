@@ -4,34 +4,33 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use ArkEcosystem\Crypto\Utils\Address;
+use ArkEcosystem\Crypto\Utils\AbiDecoder;
 
-final class ContractPayload
+final class PayloadArgument
 {
-    public static function decodeAddress(string $bytes, int $offset = 0): string
+    private string $bytes;
+
+    public function __construct(string $bytes)
     {
         $bytes = hex2bin($bytes);
         if ($bytes === false) {
-            return '';
+            $bytes = '';
         }
 
-        $data         = substr($bytes, $offset, 32);
-        $addressBytes = substr($data, 12, 20);
-        $address      = Address::toChecksumAddress('0x'.bin2hex($addressBytes));
-
-        return $address;
+        $this->bytes = $bytes;
     }
 
-    public static function decodeUnsignedInt(string $bytes, int $offset = 0): string
+    public function decodeAddress(): string
     {
-        $bytes = hex2bin($bytes);
-        if ($bytes === false) {
-            return '';
-        }
+        [$value] = AbiDecoder::decodeAddress($this->bytes, 0);
 
-        $data  = substr($bytes, $offset, 32);
-        $value = gmp_import($data, 1, GMP_MSW_FIRST | GMP_BIG_ENDIAN);
+        return $value;
+    }
 
-        return gmp_strval($value);
+    public function decodeUnsignedInt(): string
+    {
+        [$value] = AbiDecoder::decodeNumber($this->bytes, 0, 32, false);
+
+        return $value;
     }
 }
