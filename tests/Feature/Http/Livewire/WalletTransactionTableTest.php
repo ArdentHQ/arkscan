@@ -138,6 +138,8 @@ it('should toggle all filters when "select all" is selected', function () {
             'unvotes'                => true,
             'validator_registration' => true,
             'validator_resignation'  => true,
+            'username_registration'  => true,
+            'username_resignation'   => true,
             'others'                 => true,
         ])
         ->assertSet('selectAllFilters', true)
@@ -153,6 +155,8 @@ it('should toggle all filters when "select all" is selected', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->set('selectAllFilters', true)
@@ -165,6 +169,8 @@ it('should toggle all filters when "select all" is selected', function () {
             'unvotes'                => true,
             'validator_registration' => true,
             'validator_resignation'  => true,
+            'username_registration'  => true,
+            'username_resignation'   => true,
             'others'                 => true,
         ]);
 });
@@ -181,6 +187,8 @@ it('should toggle "select all" when all filters are selected', function () {
             'unvotes'                => true,
             'validator_registration' => true,
             'validator_resignation'  => true,
+            'username_registration'  => true,
+            'username_resignation'   => true,
             'others'                 => true,
         ])
         ->assertSet('selectAllFilters', true)
@@ -210,6 +218,8 @@ it('should filter by outgoing transactions', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertSee($sent->id)
@@ -236,6 +246,8 @@ it('should filter by incoming transactions', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertSee($received->id)
@@ -245,6 +257,7 @@ it('should filter by incoming transactions', function () {
 it('should filter by incoming and outgoing transactions', function () {
     $sent = Transaction::factory()->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
+        'recipient_address' => $this->subject->address,
     ]);
 
     $received = Transaction::factory()->transfer()->create([
@@ -262,6 +275,8 @@ it('should filter by incoming and outgoing transactions', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertSee($sent->id)
@@ -288,13 +303,15 @@ it('should filter by transfer transactions', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertSee($transfer->id)
         ->assertDontSee($vote->id);
 });
 
-it('should filter by batch transfer transactions', function () {
+it('should filter by multipayment transactions', function () {
     $transfer = Transaction::factory()->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
@@ -314,6 +331,8 @@ it('should filter by batch transfer transactions', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertSee($multiPayment->id)
@@ -344,6 +363,8 @@ it('should filter by vote transactions', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertDontSee($transfer->id)
@@ -374,6 +395,8 @@ it('should filter by unvote transactions', function () {
             'unvotes'                => true,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertDontSee($transfer->id)
@@ -404,6 +427,8 @@ it('should filter by validator registration transactions', function () {
             'unvotes'                => false,
             'validator_registration' => true,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertDontSee($transfer->id)
@@ -434,6 +459,72 @@ it('should filter by validator resignation transactions', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => true,
+            'username_registration'  => false,
+            'username_resignation'   => false,
+            'others'                 => false,
+        ])
+        ->assertDontSee($transfer->id)
+        ->assertSee($resignation->id);
+});
+
+it('should filter by username registration transactions', function () {
+    $registration = Transaction::factory()->usernameRegistration()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-03 11:33:44')->getTimestampMs(), // oldest transaction
+    ]);
+
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-04 11:33:44')->getTimestampMs(),
+    ]);
+
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->assertSee($transfer->id)
+        ->assertSee($registration->id)
+        ->set('filter', [
+            'outgoing'               => true,
+            'incoming'               => false,
+            'transfers'              => false,
+            'multipayments'          => false,
+            'votes'                  => false,
+            'unvotes'                => false,
+            'validator_registration' => false,
+            'validator_resignation'  => false,
+            'username_registration'  => true,
+            'username_resignation'   => false,
+            'others'                 => false,
+        ])
+        ->assertDontSee($transfer->id)
+        ->assertSee($registration->id);
+});
+
+it('should filter by username resignation transactions', function () {
+    $resignation = Transaction::factory()->usernameResignation()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-03 11:33:44')->getTimestampMs(), // oldest transaction
+    ]);
+
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-04 11:33:44')->getTimestampMs(),
+    ]);
+
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->assertSee($transfer->id)
+        ->assertSee($resignation->id)
+        ->set('filter', [
+            'outgoing'               => true,
+            'incoming'               => false,
+            'transfers'              => false,
+            'multipayments'          => false,
+            'votes'                  => false,
+            'unvotes'                => false,
+            'validator_registration' => false,
+            'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => true,
             'others'                 => false,
         ])
         ->assertDontSee($transfer->id)
@@ -461,6 +552,8 @@ it('should filter by other transactions to consensus address', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => true,
         ])
         ->assertSee($other->id)
@@ -488,6 +581,8 @@ it('should filter by other transactions to non-consensus address', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => true,
         ])
         ->assertSee($other->id)
@@ -515,6 +610,8 @@ it('should not filter transfers to consensus as "other"', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => true,
         ])
         ->assertDontSee($other->id)
@@ -541,6 +638,8 @@ it('should show no transactions if no filters', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertDontSee($transfer->id)
@@ -568,6 +667,8 @@ it('should show no transactions if no addressing filter', function () {
             'unvotes'                => true,
             'validator_registration' => true,
             'validator_resignation'  => true,
+            'username_registration'  => true,
+            'username_resignation'   => true,
             'others'                 => true,
         ])
         ->assertDontSee($transfer->id)
@@ -595,6 +696,8 @@ it('should show no transactions if no type filter', function () {
             'unvotes'                => false,
             'validator_registration' => false,
             'validator_resignation'  => false,
+            'username_registration'  => false,
+            'username_resignation'   => false,
             'others'                 => false,
         ])
         ->assertDontSee($transfer->id)
@@ -635,6 +738,8 @@ it('should reset pagination when filtering', function () {
             'unvotes'                => true,
             'validator_registration' => true,
             'validator_resignation'  => true,
+            'username_registration'  => true,
+            'username_resignation'   => true,
             'others'                 => true,
         ])
         ->assertSet('paginators.page', 1)
