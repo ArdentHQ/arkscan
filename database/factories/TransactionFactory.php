@@ -98,9 +98,15 @@ final class TransactionFactory extends Factory
 
     public function withPayload(string $payload): Factory
     {
-        // TODO: don't use a query for the encoding - https://app.clickup.com/t/86dv9e9nf
+        $binaryData = hex2bin($payload);
+
+        // In-memory stream 
+        $stream = fopen('php://temp', 'r+');
+        fwrite($stream, $binaryData);
+        rewind($stream);
+        
         return $this->state(fn () => [
-            'data' => DB::raw("decode('".$payload."', 'hex')"),
+            'data' => $stream,
         ]);
     }
 }

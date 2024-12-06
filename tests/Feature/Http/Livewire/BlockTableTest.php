@@ -67,19 +67,23 @@ it('should update the records fiat tooltip when currency changed', function () {
 
     $block = Block::factory()->create();
 
+    $wallet = Wallet::factory()->create();
+
     $transactions = Transaction::factory(10)
         ->transfer()
         ->create([
             'block_id'  => $block->id,
             'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
-        ])->concat(
+        ])
+        ->concat(
             Transaction::factory(10)
-                ->vote()
+                ->vote($wallet->address)
                 ->create([
                     'block_id'  => $block->id,
                     'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
                 ])
-        )->concat(
+        )
+        ->concat(
             Transaction::factory(10)
                 ->multiPayment()
                 ->create([
