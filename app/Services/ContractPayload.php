@@ -6,7 +6,7 @@ namespace App\Services;
 
 use ArkEcosystem\Crypto\Utils\AbiDecoder;
 
-final class PayloadArgument
+final class ContractPayload
 {
     private string $bytes;
 
