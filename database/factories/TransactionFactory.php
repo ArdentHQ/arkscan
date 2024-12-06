@@ -11,7 +11,6 @@ use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\DB;
 
 final class TransactionFactory extends Factory
 {
@@ -100,11 +99,11 @@ final class TransactionFactory extends Factory
     {
         $binaryData = hex2bin($payload);
 
-        // In-memory stream 
+        // In-memory stream
         $stream = fopen('php://temp', 'r+');
         fwrite($stream, $binaryData);
         rewind($stream);
-        
+
         return $this->state(fn () => [
             'data' => $stream,
         ]);
