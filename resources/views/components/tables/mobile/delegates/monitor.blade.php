@@ -20,8 +20,7 @@
                         isExpanded: false,
                     })"
                     wire:key="{{ Helpers::generateId('delegate-mobile', $delegate->order(), $delegate->wallet()->address(), $delegate->roundNumber(), microtime(true)) }}"
-                    :expand-class="Arr::toCssClasses([
-                        'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700' => ! $delegate->wallet()->isResigned(),
+                    :expand-class="Arr::toCssClasses(['space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700' => ! $delegate->wallet()->isResigned(),
                     ])"
                     ::class="{
                         'delegate-monitor-favorite': isFavorite === true,

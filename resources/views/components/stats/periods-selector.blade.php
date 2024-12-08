@@ -35,8 +35,7 @@
 
                 <x-tabs.tab
                     :name="$val"
-                    :class="Arr::toCssClasses([
-                        'pl-2' => ! $loop->first,
+                    :class="Arr::toCssClasses(['pl-2' => ! $loop->first,
                     ])"
                 >
                     {{ $label }}

@@ -56,20 +56,17 @@
         dropdown-class="px-6 w-full md:px-8 table-filter md:w-[284px]"
         :close-on-click="false"
         class=""
-        :dropdown-wrapper-class="Arr::toCssClasses([
-            'w-full',
+        :dropdown-wrapper-class="Arr::toCssClasses(['w-full',
             'hidden md:block' => ! $mobile,
         ])"
         dropdown-background="bg-white dark:bg-theme-dark-900 dark:border dark:border-theme-dark-800"
         dropdown-padding="py-1"
-        :button-class="Arr::toCssClasses([
-            'flex flex-1 justify-center items-center rounded sm:flex-none button-secondary',
+        :button-class="Arr::toCssClasses(['flex flex-1 justify-center items-center rounded sm:flex-none button-secondary',
             'h-8 w-8 p-0' => $withoutText,
             'w-full sm:py-1.5 sm:px-4 md:p-2' => ! $withoutText,
         ])"
         active-button-class=""
-        :button-wrapper-class="Arr::toCssClasses([
-            'w-full h-5 md:h-4' => ! $withoutText,
+        :button-wrapper-class="Arr::toCssClasses(['w-full h-5 md:h-4' => ! $withoutText,
         ])"
         >
         <x-slot name="button">
