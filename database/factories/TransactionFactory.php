@@ -51,7 +51,7 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($method)
             ->state(fn () => [
-                'recipient_address' => Network::knownContract('consensus'),
+                'recipient_address' => Network::knownContract('multipayment'),
             ]);
     }
 
@@ -92,6 +92,26 @@ final class TransactionFactory extends Factory
         return $this->withPayload($method)
             ->state(fn () => [
                 'recipient_address' => Network::knownContract('consensus'),
+            ]);
+    }
+
+    public function usernameRegistration(): Factory
+    {
+        $method = ContractMethod::usernameRegistration();
+
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('username'),
+            ]);
+    }
+
+    public function usernameResignation(): Factory
+    {
+        $method = ContractMethod::usernameResignation();
+
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('username'),
             ]);
     }
 
