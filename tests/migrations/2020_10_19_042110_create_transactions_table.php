@@ -19,6 +19,7 @@ final class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger('timestamp');
             $table->addColumn('numeric', 'amount');
             $table->addColumn('numeric', 'gas_price');
+            $table->integer('sequence');
             $table->unsignedBigInteger('nonce');
             $table->binary('data')->nullable();
             $table->jsonb('asset')->nullable();

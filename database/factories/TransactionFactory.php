@@ -30,6 +30,7 @@ final class TransactionFactory extends Factory
             'gas_price'         => $this->faker->numberBetween(1, 100),
             'amount'            => $this->faker->numberBetween(1, 100) * 1e18,
             'nonce'             => 1,
+            'sequence'          => $this->faker->numberBetween(1, 100),
         ];
     }
 
@@ -43,6 +44,18 @@ final class TransactionFactory extends Factory
         return $this->state(fn () => [
             'recipient_address' => Network::knownContract('consensus'),
         ]);
+    }
+
+    public function tokenTransfer(string $address, int $amount): Factory
+    {
+        $payload  = ContractMethod::transfer();
+        $payload .= str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT);
+        $payload .= str_pad(dechex($amount), 64, '0', STR_PAD_LEFT);
+
+        return $this->withPayload($payload)
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('consensus'),
+            ]);
     }
 
     public function multiPayment(): Factory
