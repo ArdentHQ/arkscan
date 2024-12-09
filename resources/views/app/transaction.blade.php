@@ -7,7 +7,7 @@
         <div>
             <x-transaction.page.details :transaction="$transaction" />
 
-            <x-transaction.page.transaction-type :transaction="$transaction" />
+            <x-transaction.page.action :transaction="$transaction" />
 
             <x-transaction.page.addressing :transaction="$transaction" />
 
