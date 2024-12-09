@@ -33,6 +33,7 @@ final class TransactionTable extends Component
         'validator_resignation'  => true,
         'username_registration'  => true,
         'username_resignation'   => true,
+        'contract_deployment'    => true,
         'others'                 => true,
     ];
 
@@ -53,6 +54,7 @@ final class TransactionTable extends Component
             'validator_resignation'  => ['except' => true],
             'username_registration'  => ['except' => true],
             'username_resignation'   => ['except' => true],
+            'contract_deployment'    => ['except' => true],
             'others'                 => ['except' => true],
         ];
     }
@@ -124,6 +126,10 @@ final class TransactionTable extends Component
         }
 
         if ($this->filter['username_resignation'] === true) {
+            return true;
+        }
+
+        if ($this->filter['contract_deployment'] === true) {
             return true;
         }
 

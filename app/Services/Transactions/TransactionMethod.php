@@ -24,6 +24,7 @@ final class TransactionMethod
         'isValidatorResignation'  => 'validator-resignation',
         'isUsernameRegistration'  => 'username-registration',
         'isUsernameResignation'   => 'username-resignation',
+        'isContractDeployment'    => 'contract-deployment',
     ];
 
     public function __construct(private Transaction $transaction)
@@ -94,5 +95,10 @@ final class TransactionMethod
     public function isUsernameResignation(): bool
     {
         return $this->methodHash === ContractMethod::usernameResignation();
+    }
+
+    public function isContractDeployment(): bool
+    {
+        return $this->methodHash === ContractMethod::contractDeployment();
     }
 }
