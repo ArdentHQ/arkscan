@@ -164,7 +164,7 @@ it('should filter by transfer transactions', function () {
 it('should filter by multipayment transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $wallet = Wallet::factory()->activeValidator()->create();
+    $wallet       = Wallet::factory()->activeValidator()->create();
     $multipayment = Transaction::factory()->multiPayment()->create([
         'sender_public_key' => $wallet->public_key,
     ]);
@@ -346,7 +346,7 @@ it('should filter by username resignation transactions', function () {
 it('should filter by contract deployment transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $wallet      = Wallet::factory()->activeValidator()->create();
+    $wallet             = Wallet::factory()->activeValidator()->create();
     $contractDeployment = Transaction::factory()->contractDeployment()->create([
         'sender_public_key' => $wallet->public_key,
     ]);
