@@ -17,7 +17,7 @@ trait CanHaveUsername
     {
         $methodArguments = $this->methodArguments();
         if (count($methodArguments) === 0) {
-            return null;
+            return;
         }
 
         return (new ArgumentDecoder(implode($methodArguments)))->decodeString();
