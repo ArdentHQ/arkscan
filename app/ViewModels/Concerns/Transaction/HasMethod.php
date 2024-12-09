@@ -53,21 +53,6 @@ trait HasMethod
         return $this->method->isUsernameResignation();
     }
 
-    /**
-     * @return array
-     */
-    public function methodArguments(): array
-    {
-        $methodData = $this->getMethodData();
-        if ($methodData === null) {
-            return [];
-        }
-
-        [2 => $arguments] = $methodData;
-
-        return $arguments;
-    }
-
     public function isSelfReceiving(): bool
     {
         if ($this->isValidatorRegistration()) {
@@ -87,5 +72,17 @@ trait HasMethod
         }
 
         return false;
+    }
+
+    public function methodArguments(): array
+    {
+        $methodData = $this->getMethodData();
+        if ($methodData === null) {
+            return [];
+        }
+
+        [2 => $arguments] = $methodData;
+
+        return $arguments;
     }
 }
