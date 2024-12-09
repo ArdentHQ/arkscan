@@ -24,7 +24,7 @@ it('should render the page for a vote transaction without any errors', function 
     $this->withoutExceptionHandling();
 
     $validator    = Wallet::factory()->activeValidator()->create();
-    
+
     $transaction  = Transaction::factory()->vote($validator->address)->create();
 
     $this
