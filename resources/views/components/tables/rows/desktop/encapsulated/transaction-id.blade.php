@@ -7,7 +7,8 @@
 
 <div class="flex flex-col md:space-y-1 xl:space-y-0">
     <div @class([
-        'flex space-x-2 items-center bg-theme-danger-50 dark:bg-transparent border border-transparent dark:border-theme-failed-state-bg py-0.5 px-1.5 rounded' => $hasFailedStatus,
+        'leading-4.25',
+        'flex space-x-2 box-border h-[21px] items-center bg-theme-danger-50 dark:bg-transparent border border-transparent dark:border-theme-failed-state-bg px-1.5 rounded' => $hasFailedStatus,
     ])>
         <a
             href="{{ $model->url() }}"
@@ -20,11 +21,13 @@
         </a>
 
         @if ($hasFailedStatus)
-            <x-ark-icon
-                name="cross-small"
-                size="w-3 h-3"
-                class="text-theme-danger-700 dark:text-theme-failed-state-text"
-            />
+            <div>
+                <x-ark-icon
+                    name="error"
+                    size="xs"
+                    class="text-theme-danger-700 dark:text-theme-failed-state-text"
+                />
+            </div>
         @endif
     </div>
 
