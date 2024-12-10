@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use App\Services\BigNumber;
+use App\Services\Cache\StatisticsCache;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 it('should render the page without any errors', function () {
     $this
@@ -15,16 +17,16 @@ it('should render the page without any errors', function () {
 it('should get the transaction stats for the last 24 hours', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
-    Transaction::factory(148)->create([
+    Transaction::factory(148)->withReceipt()->create([
         'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'amount'    => 123 * 1e18,
-        'fee'       => 0.99 * 1e18,
+        'gas_price' => 5,
     ]);
 
-    Transaction::factory(12)->create([
+    Transaction::factory(12)->withReceipt()->create([
         'timestamp' => Carbon::parse('2021-04-13 13:02:04')->getTimestampMs(),
         'amount'    => 123 * 1e18,
-        'fee'       => 0.99 * 1e18,
+        'gas_price'  => 5,
     ]);
 
     $this
@@ -33,8 +35,8 @@ it('should get the transaction stats for the last 24 hours', function () {
         ->assertViewHas([
             'transactionCount' => 148,
             'volume'           => 18204,
-            'totalFees'        => 146.52,
-            'averageFee'       => 0.99,
+            'totalFees'        => 0.01554,
+            'averageFee'       => 0.000105,
         ])
         ->assertSeeInOrder([
             'Transactions (24h)',
@@ -48,12 +50,12 @@ it('should get the transaction stats for the last 24 hours', function () {
         ])
         ->assertSeeInOrder([
             'Total Fees (24h)',
-            '146.52 DARK',
+            '0.01554 DARK',
             'Average Fee (24h)',
         ])
         ->assertSeeInOrder([
             'Average Fee (24h)',
-            '0.99 DARK',
+            '0.000105 DARK',
             'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
         ]);
 
