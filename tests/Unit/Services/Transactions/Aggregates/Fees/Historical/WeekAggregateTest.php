@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Services\Transactions\Aggregates\Fees\Historical\WeekAggregate;
 use Carbon\Carbon;
@@ -12,14 +13,21 @@ it('should aggregate the fees for 7 days', function () {
     Carbon::setTestNow('2021-01-01 00:00:00');
 
     Transaction::factory(10)->create([
-        'fee'       => 1 * 1e18,
+        'gas_price' => 1,
         'timestamp' => Carbon::now()->subWeek()->getTimestampMs(),
-    ])->sortByDesc('timestamp');
+    ]);
 
     Transaction::factory(10)->create([
-        'fee'       => 1 * 1e18,
+        'gas_price' => 1,
         'timestamp' => Carbon::now()->subMinutes(10)->getTimestampMs(),
-    ])->sortByDesc('timestamp');
+    ]);
+
+    foreach (Transaction::all() as $transaction) {
+        Receipt::factory()->create([
+            'id' => $transaction->id,
+            'gas_used' => 1 * 1e9,
+        ]);
+    }
 
     $result = (new WeekAggregate())->aggregate();
 
