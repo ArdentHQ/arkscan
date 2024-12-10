@@ -53,19 +53,9 @@ trait HasMethod
         return $this->method->isUsernameResignation();
     }
 
-    /**
-     * @return array
-     */
     public function methodArguments(): array
     {
-        $methodData = $this->getMethodData();
-        if ($methodData === null) {
-            return [];
-        }
-
-        [2 => $arguments] = $methodData;
-
-        return $arguments;
+        return $this->method->arguments();
     }
 
     public function isSelfReceiving(): bool

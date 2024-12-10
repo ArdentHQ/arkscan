@@ -95,4 +95,16 @@ final class TransactionMethod
     {
         return $this->methodHash === ContractMethod::usernameResignation();
     }
+
+    public function arguments(): array
+    {
+        $methodData = $this->getMethodData();
+        if ($methodData === null) {
+            return [];
+        }
+
+        [2 => $arguments] = $methodData;
+
+        return $arguments;
+    }
 }
