@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use App\Services\BigNumber;
-use App\Services\Cache\StatisticsCache;
+use App\Services\NumberFormatter;
+use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
 
 it('should render the page without any errors', function () {
     $this
@@ -75,11 +75,15 @@ it('should get the transaction stats for the last 24 hours', function () {
 it('should show the correct decimal places for the stats', function ($decimalPlaces, $amount, $fee) {
     $this->travelTo('2021-04-14 16:02:04');
 
-    Transaction::factory()->create([
+    $gasUsed = 21000;
+
+    Transaction::factory()->withReceipt(gasUsed: $gasUsed)->create([
         'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'amount'    => BigNumber::new($amount * 1e18),
-        'fee'       => $fee * 1e18,
+        'gas_price' => $fee,
     ]);
+
+    $fee = BigNumber::new(UnitConverter::parseUnits($fee * $gasUsed, 'gwei'))->toFloat();
 
     $this
         ->get(route('transactions'))
@@ -88,7 +92,7 @@ it('should show the correct decimal places for the stats', function ($decimalPla
             'transactionCount' => 1,
             'volume'           => $amount,
             'totalFees'        => $fee,
-            'averageFee'       => $fee,
+            'averageFee'       =>  $fee,
         ])
         ->assertSeeInOrder([
             'Transactions (24h)',
@@ -102,14 +106,15 @@ it('should show the correct decimal places for the stats', function ($decimalPla
         ])
         ->assertSeeInOrder([
             'Total Fees (24h)',
-            $fee.' DARK',
+            NumberFormatter::networkCurrency($fee, 8, withSuffix: true),
             'Average Fee (24h)',
         ])
         ->assertSeeInOrder([
             'Average Fee (24h)',
-            $fee.' DARK',
+            NumberFormatter::networkCurrency($fee, 8, withSuffix: true),
             'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
-        ]);
+        ])
+        ;
 })->with([
     8 => [8, 919123.48392049, 0.99184739],
     7 => [7, 919123.4839204, 0.9918473],
