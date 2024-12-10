@@ -27,7 +27,7 @@ beforeEach(function () {
         'gas_price'         => 1,
         'amount'            => 2 * 1e18,
         'sender_public_key' => $this->sender->public_key,
-        'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
+        'recipient_address'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]));
 });
 
@@ -50,7 +50,7 @@ it('should determine if transfer transaction is sent to self', function () {
     $transaction = new TransactionViewModel(Transaction::factory()
         ->create([
             'sender_public_key' => $this->sender->public_key,
-            'recipient_id'      => $this->sender->address,
+            'recipient_address'      => $this->sender->address,
         ]));
 
     expect($transaction->isSentToSelf($this->sender->address))->toBeTrue();
@@ -180,7 +180,7 @@ it('should determine if the transaction is self-receiving', function (string $ty
 
 it('should fallback to the sender if no recipient exists', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'recipient_id' => null,
+        'recipient_address' => null,
     ]));
 
     expect($this->subject->recipient())->toEqual($this->subject->sender());
