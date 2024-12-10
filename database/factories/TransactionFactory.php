@@ -100,13 +100,15 @@ final class TransactionFactory extends Factory
     {
         $binaryData = hex2bin($payload);
 
-        // In-memory stream
-        $stream = fopen('php://temp', 'r+');
-        fwrite($stream, $binaryData);
-        rewind($stream);
-
         return $this->state(fn () => [
-            'data' => $stream,
+            'data' => function () use ($binaryData) {
+                // In-memory stream
+                $stream = fopen('php://temp', 'r+');
+                fwrite($stream, $binaryData);
+                rewind($stream);
+
+                return $stream;
+            },
         ]);
     }
 }
