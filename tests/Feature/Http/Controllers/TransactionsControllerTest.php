@@ -128,54 +128,38 @@ it('should show the correct decimal places for the stats', function ($decimalPla
 it('should cache the transaction stats for 5 minutes', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
-    Transaction::factory(146)->create([
+    Transaction::factory(146)->withReceipt()->create([
         'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'amount'    => 123 * 1e18,
-        'fee'       => 0.99 * 1e18,
+        'gas_price'       => 5,
     ]);
 
-    Transaction::factory(2)->multiPayment()->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'amount'    => (432 + 42) * 1e18,
-        'fee'       => 0.99 * 1e18,
-        'asset'     => [
-            'payments' => [
-                [
-                    'amount' => 432 * 1e18,
-                ],
-                [
-                    'amount' => 42 * 1e18,
-                ],
-            ],
-        ],
-    ]);
-
-    $volume = (123 * 146) + ((432 + 42) * 2);
+    $volume = (123 * 146);
 
     $this
         ->get(route('transactions'))
         ->assertOk()
         ->assertViewHas([
-            'transactionCount' => 148,
+            'transactionCount' => 146,
             'volume'           => $volume,
-            'totalFees'        => 146.52,
-            'averageFee'       => 0.99,
+            'totalFees'        => 0.01533,
+            'averageFee'       => 0.000105,
         ]);
 
-    Transaction::factory(12)->create([
+    Transaction::factory(12)->withReceipt()->create([
         'timestamp' => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
         'amount'    => 123 * 1e18,
-        'fee'       => 0.99 * 1e18,
+        'gas_price'       => 5,
     ]);
 
     $this
         ->get(route('transactions'))
         ->assertOk()
         ->assertViewHas([
-            'transactionCount' => 148,
+            'transactionCount' => 146,
             'volume'           => $volume,
-            'totalFees'        => 146.52,
-            'averageFee'       => 0.99,
+            'totalFees'        => 0.01533,
+            'averageFee'       => 0.000105,
         ]);
 
     $this->travelTo('2021-04-14 16:09:04');
@@ -186,9 +170,9 @@ it('should cache the transaction stats for 5 minutes', function () {
         ->get(route('transactions'))
         ->assertOk()
         ->assertViewHas([
-            'transactionCount' => 160,
+            'transactionCount' => 158,
             'volume'           => $volume,
-            'totalFees'        => 158.4,
-            'averageFee'       => 0.99,
+            'totalFees'        => 0.01659,
+            'averageFee'       => 0.000105,
         ]);
 });
