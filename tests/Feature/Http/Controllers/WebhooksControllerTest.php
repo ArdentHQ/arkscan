@@ -288,8 +288,8 @@ describe('transaction', function () {
 
         $transaction = Transaction::factory()->transfer()->create([
             'amount'    => 1 * 1e8,
-            'fee'       => 0.1 * 1e8,
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
+            'gas_price'       => 5,
+            'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
         ]);
 
         $cache->setLargestIdByAmount($transaction->id);
@@ -319,8 +319,8 @@ describe('transaction', function () {
 
         $transaction = Transaction::factory()->transfer()->create([
             'amount'    => 20 * 1e8,
-            'fee'       => 0.2 * 1e8,
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-20 00:15:44')->unix())->unix(),
+            'gas_price' => 6,
+            'timestamp' => Carbon::parse('2024-04-20 00:15:44')->getTimestampMs(),
         ]);
 
         $this
