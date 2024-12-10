@@ -7,14 +7,12 @@ use App\Events\NewTransaction;
 use App\Events\Statistics\TransactionDetails;
 use App\Events\Statistics\UniqueAddresses;
 use App\Events\WalletVote;
-use App\Facades\Network;
 use App\Jobs\CacheBlocks;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Addresses\Aggregates\LatestWalletAggregate;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\TransactionCache;
-use App\Services\Timestamp;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
 use Illuminate\Broadcasting\BroadcastEvent;
@@ -142,8 +140,8 @@ describe('block', function () {
         ]);
 
         Transaction::factory()->create([
-            'block_id' => $block->id,
-            'amount'   => 123 * 1e8,
+            'block_id'       => $block->id,
+            'amount'         => 123 * 1e8,
             'gas_price'      => 5,
         ]);
 
@@ -234,9 +232,9 @@ describe('transaction', function () {
         $this->travelTo('2024-04-19 00:15:44');
 
         $transaction = Transaction::factory()->transfer()->create([
-            'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs()
+            'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
         ]);
-        
+
         (new LatestWalletAggregate())->aggregate();
 
         $secureUrl = URL::signedRoute('webhooks');
@@ -287,9 +285,9 @@ describe('transaction', function () {
         $this->travelTo('2024-04-19 00:15:44');
 
         $transaction = Transaction::factory()->transfer()->create([
-            'amount'    => 1 * 1e8,
+            'amount'          => 1 * 1e8,
             'gas_price'       => 5,
-            'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
+            'timestamp'       => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
         ]);
 
         $cache->setLargestIdByAmount($transaction->id);
