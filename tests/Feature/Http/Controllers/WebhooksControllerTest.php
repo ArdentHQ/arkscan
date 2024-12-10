@@ -144,7 +144,7 @@ describe('block', function () {
         Transaction::factory()->create([
             'block_id' => $block->id,
             'amount'   => 123 * 1e8,
-            'fee'      => 0.123 * 1e8,
+            'gas_price'      => 5,
         ]);
 
         $secureUrl = URL::signedRoute('webhooks');
@@ -234,9 +234,9 @@ describe('transaction', function () {
         $this->travelTo('2024-04-19 00:15:44');
 
         $transaction = Transaction::factory()->transfer()->create([
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
+            'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs()
         ]);
-
+        
         (new LatestWalletAggregate())->aggregate();
 
         $secureUrl = URL::signedRoute('webhooks');
@@ -245,8 +245,8 @@ describe('transaction', function () {
 
         expect($cache->getNewestAddress())->toEqual([
             'address'   => $transaction->sender->address,
-            'timestamp' => $transaction->timestamp,
-            'value'     => Carbon::createFromTimestamp((int) $transaction->timestamp + (int) Network::epoch()->timestamp)->format(DateFormat::DATE),
+            'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
+            'value'     => Carbon::createFromTimestamp($transaction->timestamp)->format(DateFormat::DATE),
         ]);
 
         $this
@@ -269,7 +269,7 @@ describe('transaction', function () {
         });
 
         $transaction = Transaction::factory()->create([
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-20 00:15:44')->unix())->unix(),
+            'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
         ]);
 
         $this
