@@ -26,7 +26,7 @@ it('should aggregate the fees for the given range', function () {
 
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
-            'id' => $transaction->id,
+            'id'       => $transaction->id,
             'gas_used' => 1 * 1e9,
         ]);
     }
