@@ -24,8 +24,8 @@ it('should get the transaction stats for the last 24 hours', function () {
     ]);
 
     Transaction::factory(12)->withReceipt()->create([
-        'timestamp' => Carbon::parse('2021-04-13 13:02:04')->getTimestampMs(),
-        'amount'    => 123 * 1e18,
+        'timestamp'  => Carbon::parse('2021-04-13 13:02:04')->getTimestampMs(),
+        'amount'     => 123 * 1e18,
         'gas_price'  => 5,
     ]);
 
@@ -92,7 +92,7 @@ it('should show the correct decimal places for the stats', function ($decimalPla
             'transactionCount' => 1,
             'volume'           => $amount,
             'totalFees'        => $fee,
-            'averageFee'       =>  $fee,
+            'averageFee'       => $fee,
         ])
         ->assertSeeInOrder([
             'Transactions (24h)',
@@ -113,8 +113,7 @@ it('should show the correct decimal places for the stats', function ($decimalPla
             'Average Fee (24h)',
             NumberFormatter::networkCurrency($fee, 8, withSuffix: true),
             'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
-        ])
-        ;
+        ]);
 })->with([
     8 => [8, 919123.48392049, 0.99184739],
     7 => [7, 919123.4839204, 0.9918473],
@@ -129,8 +128,8 @@ it('should cache the transaction stats for 5 minutes', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
     Transaction::factory(146)->withReceipt()->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'amount'    => 123 * 1e18,
+        'timestamp'       => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
+        'amount'          => 123 * 1e18,
         'gas_price'       => 5,
     ]);
 
@@ -147,8 +146,8 @@ it('should cache the transaction stats for 5 minutes', function () {
         ]);
 
     Transaction::factory(12)->withReceipt()->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
-        'amount'    => 123 * 1e18,
+        'timestamp'       => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
+        'amount'          => 123 * 1e18,
         'gas_price'       => 5,
     ]);
 
