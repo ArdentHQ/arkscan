@@ -20,21 +20,26 @@ it('should render the page without any errors', function ($type) {
     'validatorResignation',
 ]);
 
-it('should render the page for a vote/unvote transaction without any errors', function ($type) {
+it('should render the page for a vote transaction without any errors', function () {
     $this->withoutExceptionHandling();
 
     $validator    = Wallet::factory()->activeValidator()->create();
-    $transaction  = Transaction::factory()->{$type}()->create([
-        'asset' => [
-            'votes' => [$validator->address],
-        ],
-    ]);
+
+    $transaction  = Transaction::factory()->vote($validator->address)->create();
 
     $this
         ->get(route('transaction', $transaction))
         ->assertOk()
         ->assertSee($transaction->id);
-})->with([
-    'vote',
-    'unvote',
-]);
+});
+
+it('should render the page for a unvote transaction without any errors', function () {
+    $this->withoutExceptionHandling();
+
+    $transaction  = Transaction::factory()->unvote()->create();
+
+    $this
+        ->get(route('transaction', $transaction))
+        ->assertOk()
+        ->assertSee($transaction->id);
+});
