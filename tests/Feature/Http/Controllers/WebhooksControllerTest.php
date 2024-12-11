@@ -7,14 +7,12 @@ use App\Events\NewTransaction;
 use App\Events\Statistics\TransactionDetails;
 use App\Events\Statistics\UniqueAddresses;
 use App\Events\WalletVote;
-use App\Facades\Network;
 use App\Jobs\CacheBlocks;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Addresses\Aggregates\LatestWalletAggregate;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\TransactionCache;
-use App\Services\Timestamp;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
 use Illuminate\Broadcasting\BroadcastEvent;
@@ -142,9 +140,9 @@ describe('block', function () {
         ]);
 
         Transaction::factory()->create([
-            'block_id' => $block->id,
-            'amount'   => 123 * 1e8,
-            'fee'      => 0.123 * 1e8,
+            'block_id'       => $block->id,
+            'amount'         => 123 * 1e8,
+            'gas_price'      => 5,
         ]);
 
         $secureUrl = URL::signedRoute('webhooks');
@@ -234,7 +232,7 @@ describe('transaction', function () {
         $this->travelTo('2024-04-19 00:15:44');
 
         $transaction = Transaction::factory()->transfer()->create([
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
+            'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
         ]);
 
         (new LatestWalletAggregate())->aggregate();
@@ -245,8 +243,8 @@ describe('transaction', function () {
 
         expect($cache->getNewestAddress())->toEqual([
             'address'   => $transaction->sender->address,
-            'timestamp' => $transaction->timestamp,
-            'value'     => Carbon::createFromTimestamp((int) $transaction->timestamp + (int) Network::epoch()->timestamp)->format(DateFormat::DATE),
+            'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
+            'value'     => Carbon::createFromTimestamp($transaction->timestamp)->format(DateFormat::DATE),
         ]);
 
         $this
@@ -269,7 +267,7 @@ describe('transaction', function () {
         });
 
         $transaction = Transaction::factory()->create([
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-20 00:15:44')->unix())->unix(),
+            'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
         ]);
 
         $this
@@ -287,9 +285,9 @@ describe('transaction', function () {
         $this->travelTo('2024-04-19 00:15:44');
 
         $transaction = Transaction::factory()->transfer()->create([
-            'amount'    => 1 * 1e8,
-            'fee'       => 0.1 * 1e8,
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
+            'amount'          => 1 * 1e8,
+            'gas_price'       => 5,
+            'timestamp'       => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
         ]);
 
         $cache->setLargestIdByAmount($transaction->id);
@@ -319,8 +317,8 @@ describe('transaction', function () {
 
         $transaction = Transaction::factory()->transfer()->create([
             'amount'    => 20 * 1e8,
-            'fee'       => 0.2 * 1e8,
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-20 00:15:44')->unix())->unix(),
+            'gas_price' => 6,
+            'timestamp' => Carbon::parse('2024-04-20 00:15:44')->getTimestampMs(),
         ]);
 
         $this

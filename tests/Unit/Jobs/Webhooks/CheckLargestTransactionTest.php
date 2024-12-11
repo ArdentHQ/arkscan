@@ -19,7 +19,7 @@ it('should not dispatch transaction details event if no change', function () {
 
     $transaction = Transaction::factory()->transfer()->create([
         'amount'    => 1 * 1e8,
-        'fee'       => 0.1 * 1e8,
+        'gas_price' => 0.1,
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
     ]);
 
@@ -45,7 +45,7 @@ it('should dispatch transaction details event', function () {
 
     $transaction = Transaction::factory()->transfer()->create([
         'amount'    => 1 * 1e8,
-        'fee'       => 0.1 * 1e8,
+        'gas_price' => 0.1,
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
     ]);
 
@@ -59,7 +59,7 @@ it('should dispatch transaction details event', function () {
 
     $transaction = Transaction::factory()->transfer()->create([
         'amount'    => 20 * 1e8,
-        'fee'       => 0.2 * 1e8,
+        'gas_price' => 0.2,
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-20 00:15:44')->unix())->unix(),
     ]);
 

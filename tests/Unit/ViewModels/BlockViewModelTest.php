@@ -47,13 +47,15 @@ it('should get the height', function () {
 });
 
 it('should get the amount for different transaction types', function () {
+    $wallet = Wallet::factory()->activeValidator()->create();
+
     $transactions = Transaction::factory(10)
         ->transfer()
         ->create([
             'block_id' => $this->subject->id(),
         ])->concat(
             Transaction::factory(10)
-                ->vote()
+                ->vote($wallet->address)
                 ->create([
                     'block_id' => $this->subject->id(),
                 ])
@@ -80,6 +82,8 @@ it('should get the amount as fiat', function () {
         '2020-10-19' => $exchangeRate,
     ]));
 
+    $wallet = Wallet::factory()->activeValidator()->create();
+
     $transactions = Transaction::factory(10)
         ->transfer()
         ->create([
@@ -87,7 +91,7 @@ it('should get the amount as fiat', function () {
             'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
         ])->concat(
             Transaction::factory(10)
-                ->vote()
+                ->vote($wallet->address)
                 ->create([
                     'block_id'  => $this->subject->id(),
                     'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,

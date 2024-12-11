@@ -30,7 +30,7 @@ const csvColumns = {
 };
 
 const BlocksExport = ({
-    publicKey,
+    address,
     userCurrency,
     rates,
     network,
@@ -58,7 +58,7 @@ const BlocksExport = ({
     };
 
     return {
-        publicKey,
+        address,
         network,
         canBeExchanged,
         userCurrency,
@@ -111,7 +111,7 @@ const BlocksExport = ({
 
                     let blocks = await this.fetch({
                         query,
-                        publicKey,
+                        address,
                     });
 
                     if (blocks.length === 0) {
@@ -270,13 +270,13 @@ const BlocksExport = ({
             this.hasFinishedExport = false;
         },
 
-        async fetch({ query, publicKey, limit = 100 }) {
+        async fetch({ query, address, limit = 100 }) {
             return BlocksApi.fetchAll(
                 {
                     host: network.api,
                     limit,
                     query,
-                    publicKey,
+                    address,
                     height: query["height.to"],
                 },
                 this

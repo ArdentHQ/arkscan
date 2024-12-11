@@ -53,6 +53,11 @@ trait HasMethod
         return $this->method->isUsernameResignation();
     }
 
+    public function isContractDeployment(): bool
+    {
+        return $this->method->isContractDeployment();
+    }
+
     public function isSelfReceiving(): bool
     {
         if ($this->isValidatorRegistration()) {
@@ -76,13 +81,6 @@ trait HasMethod
 
     public function methodArguments(): array
     {
-        $methodData = $this->getMethodData();
-        if ($methodData === null) {
-            return [];
-        }
-
-        [2 => $arguments] = $methodData;
-
-        return $arguments;
+        return $this->method->arguments();
     }
 }
