@@ -93,7 +93,7 @@ function createRoundEntry(int $round, int $height, SupportCollection $wallets)
     Round::factory()->create([
         'round'        => $round,
         'round_height' => $height,
-        'validators'   => $wallets->pluck('public_key'),
+        'validators'   => $wallets->pluck('address'),
     ]);
 }
 
@@ -123,13 +123,15 @@ function createRealisticRound(array $performances, $context, bool $cachePerforma
     $validatorWallets->each(function ($validator) use (&$height, $cache, $context) {
         $cache->setValidator($validator->address, $validator);
 
-        createBlock($height, $validator->public_key, $context);
+        createBlock($height, $validator->address, $context);
 
         $height++;
     });
 
     expect(Block::count())->toBe(Network::validatorCount());
     expect($height - 1)->toBe(Network::validatorCount());
+
+    $round++;
 
     // Loop through performances and generate rounds for each - requires validator count entries (blocks per round) to work correctly
     foreach ($performances as $index => $didForge) {
@@ -156,7 +158,7 @@ function createFullRound(&$round, &$height, $validatorWallets, $context, $didFor
     while ($blockCount < Network::validatorCount()) {
         $justMissedCount = 0;
         foreach ($validators as $validator) {
-            $validatorIndex = $validatorWallets->search(fn ($wallet) => $wallet->public_key === $validator['publicKey']);
+            $validatorIndex = $validatorWallets->search(fn ($wallet) => $wallet->address === $validator['address']);
             if ($didForge && isset($didForge[$validatorIndex]) && $didForge[$validatorIndex] === false) {
                 $context->travel(Network::blockTime())->seconds();
                 $context->travel($justMissedCount * 2)->seconds();
@@ -166,7 +168,7 @@ function createFullRound(&$round, &$height, $validatorWallets, $context, $didFor
                 continue;
             }
 
-            createBlock($height + $blockCount, $validator['publicKey'], $context);
+            createBlock($height + $blockCount, $validator['address'], $context);
 
             $justMissedCount = 0;
 
@@ -186,35 +188,35 @@ function createPartialRound(
     int &$height,
     ?int $blocks,
     $context,
-    array $missedPublicKeys = [],
-    array $requiredPublicKeys = [],
+    array $missedAddresses = [],
+    array $requiredAddresses = [],
     bool $cachePerformance = true,
     ?int $slots = null,
 ) {
     createRoundEntry($round, $height, Wallet::all());
     $validators = getRoundValidators(false, $round);
 
-    if (count($missedPublicKeys) > 0) {
-        $hasPublicKey = false;
+    if (count($missedAddresses) > 0) {
+        $hasAddress = false;
         foreach ($validators as $validator) {
-            if (! in_array($validator['publicKey'], $missedPublicKeys, true)) {
+            if (! in_array($validator['address'], $missedAddresses, true)) {
                 continue;
             }
 
-            $hasPublicKey = true;
+            $hasAddress = true;
 
             break;
         }
 
-        if (! $hasPublicKey) {
-            throw new \Exception('Missed Public Key is not in list of validators');
+        if (! $hasAddress) {
+            throw new \Exception('Missed Address is not in list of validators');
         }
     }
 
     $requiredIndex = null;
-    if ($requiredPublicKeys) {
+    if ($requiredAddresses) {
         foreach ($validators as $index => $validator) {
-            if (! in_array($validator['publicKey'], $requiredPublicKeys, true)) {
+            if (! in_array($validator['address'], $requiredAddresses, true)) {
                 continue;
             }
 
@@ -238,7 +240,7 @@ function createPartialRound(
                 break 2;
             }
 
-            if (count($missedPublicKeys) > 0 && in_array($validator['publicKey'], $missedPublicKeys, true)) {
+            if (count($missedAddresses) > 0 && in_array($validator['address'], $missedAddresses, true)) {
                 $context->travel(Network::blockTime())->seconds();
                 $context->travel($justMissedCount * 2)->seconds();
                 $totalMissedSeconds += $justMissedCount * 2;
@@ -265,7 +267,7 @@ function createPartialRound(
     if ($requiredIndex && ($requiredIndex === Network::validatorCount() - 1 || ($blocks !== null && $requiredIndex >= $blocks))) {
         Artisan::call('cache:clear');
 
-        return createPartialRound($round, $height, $blocks, $context, $missedPublicKeys, $requiredPublicKeys, $cachePerformance, $slots);
+        return createPartialRound($round, $height, $blocks, $context, $missedAddresses, $requiredAddresses, $cachePerformance, $slots);
     }
 
     (new NetworkCache())->setHeight(fn (): int => $height - 1);
@@ -282,10 +284,10 @@ function createPartialRound(
     ];
 }
 
-function getValidatorForgingPosition(int $round, string $publicKey)
+function getValidatorForgingPosition(int $round, string $address)
 {
     return getRoundValidators(false, $round)
-        ->search(fn ($validator) => $validator['publicKey'] === $publicKey);
+        ->search(fn ($validator) => $validator['address'] === $address);
 }
 
 function getRoundValidators(bool $withBlock = true, int $roundNumber = null): SupportCollection
@@ -307,7 +309,7 @@ function getRoundValidators(bool $withBlock = true, int $roundNumber = null): Su
     }
 
     if ($validators->count() === 0) {
-        $validators = Wallet::all()->pluck('public_key');
+        $validators = Wallet::all()->pluck('address');
     }
 
     expect($validators->count())->toBe(Network::validatorCount());
@@ -319,8 +321,8 @@ function getRoundValidators(bool $withBlock = true, int $roundNumber = null): Su
         $validators = new SupportCollection(ValidatorTracker::execute($validators->toArray(), $heightRange[0]));
     } catch (\Throwable $e) {
         $validators = $validators->map(fn ($validator) => [
-            'publicKey' => $validator,
-            'status'    => 'initial',
+            'address' => $validator,
+            'status'  => 'initial',
         ]);
     }
 
