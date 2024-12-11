@@ -46,6 +46,19 @@ final class TransactionFactory extends Factory
         ]);
     }
 
+    public function tokenTransfer(string $address, int $amount): Factory
+    {
+        $payload  = ContractMethod::transfer();
+        $payload .= str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT);
+        $payload .= str_pad(dechex($amount), 64, '0', STR_PAD_LEFT);
+
+        return $this->withPayload($payload)
+            ->state(fn () => [
+                // TODO: update recipient - https://app.clickup.com/t/86dvdegme
+                'recipient_address' => Network::knownContract('consensus'),
+            ]);
+    }
+
     public function multiPayment(): Factory
     {
         $method = ContractMethod::multiPayment();
@@ -76,11 +89,11 @@ final class TransactionFactory extends Factory
             ]);
     }
 
-    public function validatorRegistration(): Factory
+    public function validatorRegistration(string $address): Factory
     {
         $method = ContractMethod::validatorRegistration();
 
-        return $this->withPayload($method)
+        return $this->withPayload($method.str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT))
             ->state(fn () => [
                 'recipient_address' => Network::knownContract('consensus'),
             ]);
