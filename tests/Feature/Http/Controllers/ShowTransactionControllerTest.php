@@ -6,19 +6,19 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use Carbon\Carbon;
 
-it('should render the page without any errors', function ($type) {
+it('should render the page without any errors', function ($type, $args) {
     $this->withoutExceptionHandling();
 
-    $transaction = Transaction::factory()->{$type}()->create();
+    $transaction = Transaction::factory()->{$type}(...$args)->create();
 
     $this
         ->get(route('transaction', $transaction))
         ->assertOk()
         ->assertSee($transaction->id);
 })->with([
-    'transfer',
-    'validatorRegistration',
-    'validatorResignation',
+    'transfer' => ['transfer', []],
+    'validatorRegistration' => ['validatorRegistration', ['30492624ED2db94EEfCD8E91d7218488658e972d']],
+    'validatorResignation' => ['validatorResignation', []],
 ]);
 
 it('should render the page for a vote transaction without any errors', function () {
