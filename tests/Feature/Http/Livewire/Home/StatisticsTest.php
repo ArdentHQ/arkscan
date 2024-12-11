@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Facades\Settings;
 use App\Http\Livewire\Home\Statistics;
 use App\Models\Block;
+use App\Models\Receipt;
 use App\Models\State;
 use App\Models\Transaction;
 use App\Services\Cache\CryptoDataCache;
@@ -38,7 +39,12 @@ it('should render with a height, volume, supply and market cap', function () {
     $transaction = Transaction::factory()->transfer()->create([
         'timestamp' => Carbon::now()->getTimestampMs(),
         'amount'    => 18204 * 1e18,
-        'fee'       => 0.99 * 1e18,
+        'gas_price' => 0.99,
+    ]);
+
+    Receipt::factory()->create([
+        'id'       => $transaction->id,
+        'gas_used' => 1e9,
     ]);
 
     $transaction->sender->balance           = 0;
@@ -72,7 +78,12 @@ it('should render with a height, volume, supply and market cap for BTC', functio
     $transaction = Transaction::factory()->transfer()->create([
         'timestamp' => Carbon::now()->getTimestampMs(),
         'amount'    => 18204 * 1e18,
-        'fee'       => 0.99 * 1e18,
+        'gas_price' => 0.99,
+    ]);
+
+    Receipt::factory()->create([
+        'id'       => $transaction->id,
+        'gas_used' => 1e9,
     ]);
 
     $transaction->sender->balance           = 0;

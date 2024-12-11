@@ -12,12 +12,12 @@ it('should execute the command', function () {
     Carbon::setTestNow('2021-01-01 00:00:00');
 
     $start = Transaction::factory(10)->create([
-        'fee'       => 1 * 1e18,
+        'gas_price' => 1,
         'timestamp' => Timestamp::now()->subDays(365)->unix(),
     ])->sortByDesc('timestamp');
 
     $end = Transaction::factory(10)->create([
-        'fee'       => 2 * 1e18,
+        'gas_price' => 2,
         'timestamp' => Timestamp::now()->endOfDay()->unix(),
     ])->sortByDesc('timestamp');
 

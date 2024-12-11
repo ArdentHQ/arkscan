@@ -122,15 +122,16 @@ return [
         'vote_validator'           => '<span class="font-semibold text-theme-secondary-500 break-words"><span>Vote:</span><span class="text-white ml-1">:validator</span></span>',
 
         'types'                   => [
-            'validator-registration' => 'Registration',
-            'validator-resignation'  => 'Resignation',
-            'username-registration'  => 'Username Registration',
-            'username-resignation'   => 'Username Resignation',
             'transfer'               => 'Transfer',
             'multipayment'           => 'Multipayment',
             'unvote'                 => 'Unvote',
             'vote'                   => 'Vote',
             'unknown'                => 'Unknown',
+            'validator-registration' => 'Registration',
+            'validator-resignation'  => 'Resignation',
+            'username-registration'  => 'Username Registration',
+            'username-resignation'   => 'Username Resignation',
+            'contract-deployment'    => 'Contract Deployment',
         ],
     ],
 

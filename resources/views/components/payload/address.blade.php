@@ -1,3 +1,3 @@
 @props(['argument'])
 
-{{ ArgumentDecoder::decodeAddress($argument) }}
+{{ (new ArgumentDecoder($argument))->decodeAddress() }}
