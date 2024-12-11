@@ -14,10 +14,6 @@ it('should execute the command', function () {
         'attributes' => ['validatorVoteBalance' => 100],
     ]);
 
-    Wallet::factory(10)->create([
-        'attributes' => ['vote' => $validator->public_key],
-    ]);
-
     (new CacheValidatorsWithVoters())->handle($cache = new WalletCache());
 
     expect($cache->getVote($validator->address)->is($validator))->toBeTrue();

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use App\Services\BigNumber;
+use App\Services\NumberFormatter;
+use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
 
 it('should render the page without any errors', function () {
@@ -15,16 +17,16 @@ it('should render the page without any errors', function () {
 it('should get the transaction stats for the last 24 hours', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
-    Transaction::factory(148)->create([
+    Transaction::factory(148)->withReceipt()->create([
         'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'amount'    => 123 * 1e18,
-        'fee'       => 0.99 * 1e18,
+        'gas_price' => 5,
     ]);
 
-    Transaction::factory(12)->create([
-        'timestamp' => Carbon::parse('2021-04-13 13:02:04')->getTimestampMs(),
-        'amount'    => 123 * 1e18,
-        'fee'       => 0.99 * 1e18,
+    Transaction::factory(12)->withReceipt()->create([
+        'timestamp'  => Carbon::parse('2021-04-13 13:02:04')->getTimestampMs(),
+        'amount'     => 123 * 1e18,
+        'gas_price'  => 5,
     ]);
 
     $this
@@ -33,8 +35,8 @@ it('should get the transaction stats for the last 24 hours', function () {
         ->assertViewHas([
             'transactionCount' => 148,
             'volume'           => 18204,
-            'totalFees'        => 146.52,
-            'averageFee'       => 0.99,
+            'totalFees'        => 0.01554,
+            'averageFee'       => 0.000105,
         ])
         ->assertSeeInOrder([
             'Transactions (24h)',
@@ -48,12 +50,12 @@ it('should get the transaction stats for the last 24 hours', function () {
         ])
         ->assertSeeInOrder([
             'Total Fees (24h)',
-            '146.52 DARK',
+            '0.01554 DARK',
             'Average Fee (24h)',
         ])
         ->assertSeeInOrder([
             'Average Fee (24h)',
-            '0.99 DARK',
+            '0.000105 DARK',
             'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
         ]);
 
@@ -73,11 +75,15 @@ it('should get the transaction stats for the last 24 hours', function () {
 it('should show the correct decimal places for the stats', function ($decimalPlaces, $amount, $fee) {
     $this->travelTo('2021-04-14 16:02:04');
 
-    Transaction::factory()->create([
+    $gasUsed = 21000;
+
+    Transaction::factory()->withReceipt(gasUsed: $gasUsed)->create([
         'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'amount'    => BigNumber::new($amount * 1e18),
-        'fee'       => $fee * 1e18,
+        'gas_price' => $fee,
     ]);
+
+    $fee = BigNumber::new(UnitConverter::parseUnits($fee * $gasUsed, 'gwei'))->toFloat();
 
     $this
         ->get(route('transactions'))
@@ -100,12 +106,12 @@ it('should show the correct decimal places for the stats', function ($decimalPla
         ])
         ->assertSeeInOrder([
             'Total Fees (24h)',
-            $fee.' DARK',
+            NumberFormatter::networkCurrency($fee, 8, withSuffix: true),
             'Average Fee (24h)',
         ])
         ->assertSeeInOrder([
             'Average Fee (24h)',
-            $fee.' DARK',
+            NumberFormatter::networkCurrency($fee, 8, withSuffix: true),
             'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
         ]);
 })->with([
@@ -121,54 +127,38 @@ it('should show the correct decimal places for the stats', function ($decimalPla
 it('should cache the transaction stats for 5 minutes', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
-    Transaction::factory(146)->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'amount'    => 123 * 1e18,
-        'fee'       => 0.99 * 1e18,
+    Transaction::factory(146)->withReceipt()->create([
+        'timestamp'       => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
+        'amount'          => 123 * 1e18,
+        'gas_price'       => 5,
     ]);
 
-    Transaction::factory(2)->multiPayment()->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'amount'    => (432 + 42) * 1e18,
-        'fee'       => 0.99 * 1e18,
-        'asset'     => [
-            'payments' => [
-                [
-                    'amount' => 432 * 1e18,
-                ],
-                [
-                    'amount' => 42 * 1e18,
-                ],
-            ],
-        ],
-    ]);
-
-    $volume = (123 * 146) + ((432 + 42) * 2);
+    $volume = (123 * 146);
 
     $this
         ->get(route('transactions'))
         ->assertOk()
         ->assertViewHas([
-            'transactionCount' => 148,
+            'transactionCount' => 146,
             'volume'           => $volume,
-            'totalFees'        => 146.52,
-            'averageFee'       => 0.99,
+            'totalFees'        => 0.01533,
+            'averageFee'       => 0.000105,
         ]);
 
-    Transaction::factory(12)->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
-        'amount'    => 123 * 1e18,
-        'fee'       => 0.99 * 1e18,
+    Transaction::factory(12)->withReceipt()->create([
+        'timestamp'       => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
+        'amount'          => 123 * 1e18,
+        'gas_price'       => 5,
     ]);
 
     $this
         ->get(route('transactions'))
         ->assertOk()
         ->assertViewHas([
-            'transactionCount' => 148,
+            'transactionCount' => 146,
             'volume'           => $volume,
-            'totalFees'        => 146.52,
-            'averageFee'       => 0.99,
+            'totalFees'        => 0.01533,
+            'averageFee'       => 0.000105,
         ]);
 
     $this->travelTo('2021-04-14 16:09:04');
@@ -179,9 +169,9 @@ it('should cache the transaction stats for 5 minutes', function () {
         ->get(route('transactions'))
         ->assertOk()
         ->assertViewHas([
-            'transactionCount' => 160,
+            'transactionCount' => 158,
             'volume'           => $volume,
-            'totalFees'        => 158.4,
-            'averageFee'       => 0.99,
+            'totalFees'        => 0.01659,
+            'averageFee'       => 0.000105,
         ]);
 });

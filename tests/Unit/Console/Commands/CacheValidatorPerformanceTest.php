@@ -10,7 +10,7 @@ use App\Services\Cache\WalletCache;
 use function Tests\createRealisticRound;
 use function Tests\createRoundEntry;
 
-it('should cache the past performance for a public key', function () {
+it('should cache the past performance for an address', function () {
     $currentRound = 16;
     $cache        = new WalletCache();
 
@@ -41,7 +41,7 @@ it('should cache the past performance for a public key', function () {
     ]);
 });
 
-it('should cache end of a round missed blocks for a public key', function () {
+it('should cache end of a round missed blocks for an address', function () {
     $this->freezeTime();
 
     [0 => $validators] = createRealisticRound([
