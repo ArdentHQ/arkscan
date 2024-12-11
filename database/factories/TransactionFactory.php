@@ -54,6 +54,7 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($payload)
             ->state(fn () => [
+                // TODO: update recipient - https://app.clickup.com/t/86dvdegme
                 'recipient_address' => Network::knownContract('consensus'),
             ]);
     }
