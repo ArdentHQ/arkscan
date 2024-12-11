@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 beforeEach(function () {
     Wallet::factory()->create([
-        'address' => 'generator',
+        'address'    => 'generator',
         'attributes' => [
             'validatorPublicKey' => 'publickey',
             'username'           => 'generator',
