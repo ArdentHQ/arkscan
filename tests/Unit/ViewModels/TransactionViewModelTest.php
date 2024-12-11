@@ -272,29 +272,20 @@ describe('HasPayload trait', function () {
     });
 
     it('should get formatted payload', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()->create([
-            'asset' => [
-                'evmCall' => [
-                    'payload' => '6dd7d8ea00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de',
-                ],
-            ],
-        ]));
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('6dd7d8ea00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de')
+            ->create());
 
         expect($transaction->formattedPayload())->toBe('Function: vote(address)
 
 MethodID: 0x6dd7d8ea
-[0]: 00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de
-[1]: 00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de');
+[0]: 0x44083669cf29374D548b71c558EBD1e2F5DCC4De');
     });
 
     it('should get formatted payload without arguments', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()->create([
-            'asset' => [
-                'evmCall' => [
-                    'payload' => '6dd7d8ea',
-                ],
-            ],
-        ]));
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('6dd7d8ea')
+            ->create());
 
         expect($transaction->formattedPayload())->toBe('Function: vote(address)
 
@@ -302,13 +293,9 @@ MethodID: 0x6dd7d8ea');
     });
 
     it('should get formatted payload without a valid function name', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()->create([
-            'asset' => [
-                'evmCall' => [
-                    'payload' => '12341234',
-                ],
-            ],
-        ]));
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('12341234')
+            ->create());
 
         expect($transaction->formattedPayload())->toBe('MethodID: 0x12341234');
     });
