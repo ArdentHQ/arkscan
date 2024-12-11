@@ -106,7 +106,7 @@ it('should get the total as fiat', function () {
         Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
     ]));
 
-    expect($this->subject->totalFiat())->toBe('$0.87');
+    expect($this->subject->totalFiat())->toBe('$0.58');
 });
 
 it('should get small total values as fiat', function () {
@@ -114,7 +114,7 @@ it('should get small total values as fiat', function () {
         Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
     ]));
 
-    expect($this->subject->totalFiat(true))->toBe('$0.8721');
+    expect($this->subject->totalFiat(true))->toBe('$0.5814');
 });
 
 it('should get the total as cryptocurrency', function () {
@@ -125,7 +125,7 @@ it('should get the total as cryptocurrency', function () {
         Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.000001,
     ]));
 
-    expect($this->subject->totalFiat())->toBe('0.000003 BTC');
+    expect($this->subject->totalFiat())->toBe('0.000002 BTC');
 });
 
 it('should get the confirmations', function () {
