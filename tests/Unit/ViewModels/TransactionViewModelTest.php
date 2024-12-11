@@ -170,14 +170,17 @@ it('should determine the transaction type ', function (string $type) {
 
 
 it('should determine if the transaction is self-receiving', function (string $type) {
-    $transaction = Transaction::factory()->{$type}()->create();
+    $wallet    = Wallet::factory()->activeValidator()->create();
+    $transaction = Transaction::factory()->{$type}(when(in_array($type, ['validatorRegistration', 'vote']), $wallet->address))->create();
     $subject     = new TransactionViewModel($transaction);
+    
+    ;
 
     expect($subject->isSelfReceiving())->toBeTrue();
 
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => 666,
-        'type_group' => 666,
+    $subject = new TransactionViewModel(Transaction::factory()
+    
+    ->create([
         'asset'      => $transaction->asset,
     ]));
 
