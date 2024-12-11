@@ -40,7 +40,7 @@ it('should make an instance that has all properties', function (string $status) 
         wallet: new WalletViewModel($wallet),
         forgingAt: Carbon::now(),
         lastBlock: [
-            'address' => $wallet->address,
+            'address'   => $wallet->address,
             'height'    => $lastBlockHeight,
         ],
         status: $status,
@@ -116,7 +116,7 @@ it('should show the correct missed blocks amount when spanning multiple rounds',
         wallet: ViewModelFactory::make($wallet),
         forgingAt: Timestamp::fromGenesis(1),
         lastBlock: [
-            'address' => $wallet->address,
+            'address'   => $wallet->address,
             'height'    => 1,
         ],
         status: 'done',
@@ -129,19 +129,19 @@ it('should show the correct missed blocks amount when spanning multiple rounds',
 
     ForgingStats::create([
         'timestamp'  => 1,
-        'address' => $wallet->address,
+        'address'    => $wallet->address,
         'forged'     => true,
     ]);
 
     ForgingStats::create([
         'timestamp'  => 2,
-        'address' => $wallet->address,
+        'address'    => $wallet->address,
         'forged'     => false,
     ]);
 
     ForgingStats::create([
         'timestamp'  => 3,
-        'address' => $wallet->address,
+        'address'    => $wallet->address,
         'forged'     => false,
     ]);
 
