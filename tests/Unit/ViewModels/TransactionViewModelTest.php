@@ -22,11 +22,11 @@ beforeEach(function () {
 
     $this->sender  = Wallet::factory()->create();
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'block_id'          => $this->block->id,
-        'block_height'      => 1,
-        'gas_price'         => 1,
-        'amount'            => 2 * 1e18,
-        'sender_public_key' => $this->sender->public_key,
+        'block_id'               => $this->block->id,
+        'block_height'           => 1,
+        'gas_price'              => 1,
+        'amount'                 => 2 * 1e18,
+        'sender_public_key'      => $this->sender->public_key,
         'recipient_address'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]));
 });
@@ -168,16 +168,15 @@ it('should determine the transaction type ', function (string $type) {
     ['validatorRegistration'],
 ]);
 
-
 it('should determine if the transaction is self-receiving', function (string $type) {
-    $wallet    = Wallet::factory()->activeValidator()->create();
-    $transaction = Transaction::factory()->{$type}(when(in_array($type, ['validatorRegistration', 'vote']), $wallet->address))->create();
+    $wallet      = Wallet::factory()->activeValidator()->create();
+    $transaction = Transaction::factory()->{$type}(when(in_array($type, ['validatorRegistration', 'vote'], true), $wallet->address))->create();
     $subject     = new TransactionViewModel($transaction);
 
     expect($subject->isSelfReceiving())->toBeTrue();
 
     $subject = new TransactionViewModel(Transaction::factory()
-    
+
     ->create([
         'asset'      => $transaction->asset,
     ]));
@@ -200,7 +199,7 @@ it('should fallback to the sender if no recipient exists', function () {
 
 it('should get the voted validator', function () {
     Wallet::factory()->create(['public_key' => 'publicKey']);
-    
+
     $validator    = Wallet::factory()->activeValidator()->create();
 
     $subject = new TransactionViewModel(Transaction::factory()->vote($validator->address)->create());

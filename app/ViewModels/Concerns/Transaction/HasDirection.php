@@ -16,7 +16,7 @@ trait HasDirection
         if (! $this->isTransfer() && ! $this->isTokenTransfer()) {
             return false;
         }
-        
+
         if ($this->sender() !== null && $address !== $this->sender()->address) {
             return false;
         }
