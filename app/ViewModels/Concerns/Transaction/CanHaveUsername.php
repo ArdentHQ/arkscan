@@ -8,16 +8,11 @@ use ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder;
 
 trait CanHaveUsername
 {
-    /**
-     * Get the username.
-     *
-     * @return string|null
-     */
-    public function username()
+    public function username(): ?string
     {
         $methodArguments = $this->methodArguments();
         if (count($methodArguments) === 0) {
-            return;
+            return null;
         }
 
         return (new ArgumentDecoder(implode($methodArguments)))->decodeString();
