@@ -22,12 +22,12 @@ beforeEach(function () {
 
     $this->sender  = Wallet::factory()->create();
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'block_id'          => $this->block->id,
-        'block_height'      => 1,
-        'gas_price'         => 1,
-        'amount'            => 2 * 1e18,
-        'sender_public_key' => $this->sender->public_key,
-        'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
+        'block_id'               => $this->block->id,
+        'block_height'           => 1,
+        'gas_price'              => 1,
+        'amount'                 => 2 * 1e18,
+        'sender_public_key'      => $this->sender->public_key,
+        'recipient_address'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]));
 });
 
@@ -50,7 +50,7 @@ it('should determine if transfer transaction is sent to self', function () {
     $transaction = new TransactionViewModel(Transaction::factory()
         ->create([
             'sender_public_key' => $this->sender->public_key,
-            'recipient_id'      => $this->sender->address,
+            'recipient_address' => $this->sender->address,
         ]));
 
     expect($transaction->isSentToSelf($this->sender->address))->toBeTrue();
@@ -106,7 +106,7 @@ it('should get the total as fiat', function () {
         Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
     ]));
 
-    expect($this->subject->totalFiat())->toBe('$0.87');
+    expect($this->subject->totalFiat())->toBe('$0.58');
 });
 
 it('should get small total values as fiat', function () {
@@ -114,7 +114,7 @@ it('should get small total values as fiat', function () {
         Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
     ]));
 
-    expect($this->subject->totalFiat(true))->toBe('$0.8721');
+    expect($this->subject->totalFiat(true))->toBe('$0.5814');
 });
 
 it('should get the total as cryptocurrency', function () {
@@ -125,7 +125,7 @@ it('should get the total as cryptocurrency', function () {
         Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.000001,
     ]));
 
-    expect($this->subject->totalFiat())->toBe('0.000003 BTC');
+    expect($this->subject->totalFiat())->toBe('0.000002 BTC');
 });
 
 it('should get the confirmations', function () {
@@ -143,30 +143,41 @@ it('should determine the transaction type', function (string $type) {
 
     expect($subject->{'is'.ucfirst($type)}())->toBeTrue();
 
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => 666,
-        'type_group' => 666,
-        'asset'      => $transaction->asset,
-    ]));
+    $subject = new TransactionViewModel(Transaction::factory()->withPayload('123456')->create());
 
     expect($subject->{'is'.ucfirst($type)}())->toBeFalse();
 })->with([
     ['transfer'],
-    ['validatorRegistration'],
-    ['vote'],
-    ['unvote'],
     ['validatorResignation'],
+    ['unvote'],
+]);
+
+it('should determine the transaction type ', function (string $type) {
+    $wallet    = Wallet::factory()->activeValidator()->create();
+
+    $transaction = Transaction::factory()->{$type}($wallet->address)->create();
+    $subject     = new TransactionViewModel($transaction);
+
+    expect($subject->{'is'.ucfirst($type)}())->toBeTrue();
+
+    $subject = new TransactionViewModel(Transaction::factory()->withPayload('123456')->create());
+
+    expect($subject->{'is'.ucfirst($type)}())->toBeFalse();
+})->with([
+    ['vote'],
+    ['validatorRegistration'],
 ]);
 
 it('should determine if the transaction is self-receiving', function (string $type) {
-    $transaction = Transaction::factory()->{$type}()->create();
+    $wallet      = Wallet::factory()->activeValidator()->create();
+    $transaction = Transaction::factory()->{$type}(when(in_array($type, ['validatorRegistration', 'vote'], true), $wallet->address))->create();
     $subject     = new TransactionViewModel($transaction);
 
     expect($subject->isSelfReceiving())->toBeTrue();
 
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => 666,
-        'type_group' => 666,
+    $subject = new TransactionViewModel(Transaction::factory()
+
+    ->create([
         'asset'      => $transaction->asset,
     ]));
 
@@ -180,7 +191,7 @@ it('should determine if the transaction is self-receiving', function (string $ty
 
 it('should fallback to the sender if no recipient exists', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'recipient_id' => null,
+        'recipient_address' => null,
     ]));
 
     expect($this->subject->recipient())->toEqual($this->subject->sender());
@@ -189,7 +200,9 @@ it('should fallback to the sender if no recipient exists', function () {
 it('should get the voted validator', function () {
     Wallet::factory()->create(['public_key' => 'publicKey']);
 
-    $subject = new TransactionViewModel(Transaction::factory()->vote()->create());
+    $validator    = Wallet::factory()->activeValidator()->create();
+
+    $subject = new TransactionViewModel(Transaction::factory()->vote($validator->address)->create());
 
     expect($subject->voted())->toBeInstanceOf(WalletViewModel::class);
 });
@@ -200,101 +213,50 @@ it('should fail to get the voted validator if the transaction is not an unvote',
     expect($subject->voted())->toBeNull();
 });
 
-it('should fail to get the voted validator if the transaction asset is empty', function ($asset) {
-    $subject = new TransactionViewModel(Transaction::factory()->vote()->create([
-        'asset' => $asset,
-    ]));
-
-    expect($subject->voted())->toBeNull();
-})->with([[[]], null]);
-
-it('should get the unvoted validator', function () {
-    Wallet::factory()->create(['public_key' => 'publicKey']);
-
-    $subject = new TransactionViewModel(Transaction::factory()->unvote()->create());
-
-    expect($subject->unvoted())->toBeInstanceOf(WalletViewModel::class);
-});
-
-it('should fail to get the unvoted validator if the transaction is not an unvote', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->vote()->create());
-
-    expect($subject->unvoted())->toBeNull();
-});
-
-it('should fail to get the unvoted validator if the transaction asset is empty', function ($asset) {
-    $subject = new TransactionViewModel(Transaction::factory()
-        ->vote()
-        ->create(['asset' => $asset]));
-
-    expect($subject->unvoted())->toBeNull();
-})->with([[[]], null]);
-
 it('should get the nonce', function () {
     expect($this->subject->nonce())->toBeInt();
 });
 
 describe('HasPayload trait', function () {
     it('should determine if a transaction has a payload', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()->create([
-            'asset' => [
-                'evmCall' => [
-                    'payload' => '1234567890',
-                ],
-            ],
-        ]));
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('1234567890')
+            ->create());
 
         expect($transaction->hasPayload())->toBeTrue();
     });
 
     it('should get raw payload', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()->create([
-            'asset' => [
-                'evmCall' => [
-                    'payload' => '1234567890',
-                ],
-            ],
-        ]));
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('1234567890')
+            ->create());
 
         expect($transaction->rawPayload())->toBe('1234567890');
     });
 
     it('should get utf-8 formatted payload', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()->create([
-            'asset' => [
-                'evmCall' => [
-                    'payload' => '74657374696e67',
-                ],
-            ],
-        ]));
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('74657374696e67')
+            ->create());
 
         expect($transaction->utf8Payload())->toBe('testing');
     });
 
     it('should get formatted payload', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()->create([
-            'asset' => [
-                'evmCall' => [
-                    'payload' => '6dd7d8ea00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de',
-                ],
-            ],
-        ]));
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('6dd7d8ea00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de')
+            ->create());
 
         expect($transaction->formattedPayload())->toBe('Function: vote(address)
 
 MethodID: 0x6dd7d8ea
-[0]: 00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de
-[1]: 00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de');
+[0]: 0x44083669cf29374D548b71c558EBD1e2F5DCC4De');
     });
 
     it('should get formatted payload without arguments', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()->create([
-            'asset' => [
-                'evmCall' => [
-                    'payload' => '6dd7d8ea',
-                ],
-            ],
-        ]));
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('6dd7d8ea')
+            ->create());
 
         expect($transaction->formattedPayload())->toBe('Function: vote(address)
 
@@ -302,13 +264,9 @@ MethodID: 0x6dd7d8ea');
     });
 
     it('should get formatted payload without a valid function name', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()->create([
-            'asset' => [
-                'evmCall' => [
-                    'payload' => '12341234',
-                ],
-            ],
-        ]));
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('12341234')
+            ->create());
 
         expect($transaction->formattedPayload())->toBe('MethodID: 0x12341234');
     });
