@@ -143,20 +143,31 @@ it('should determine the transaction type', function (string $type) {
 
     expect($subject->{'is'.ucfirst($type)}())->toBeTrue();
 
-    $subject = new TransactionViewModel(Transaction::factory()->create([
-        'type'       => 666,
-        'type_group' => 666,
-        'asset'      => $transaction->asset,
-    ]));
+    $subject = new TransactionViewModel(Transaction::factory()->withPayload('123456')->create());
 
     expect($subject->{'is'.ucfirst($type)}())->toBeFalse();
 })->with([
     ['transfer'],
-    ['validatorRegistration'],
-    ['vote'],
-    ['unvote'],
     ['validatorResignation'],
+    ['unvote'],
 ]);
+
+it('should determine the transaction type ', function (string $type) {
+    $wallet    = Wallet::factory()->activeValidator()->create();
+
+    $transaction = Transaction::factory()->{$type}($wallet->address)->create();
+    $subject     = new TransactionViewModel($transaction);
+
+    expect($subject->{'is'.ucfirst($type)}())->toBeTrue();
+
+    $subject = new TransactionViewModel(Transaction::factory()->withPayload('123456')->create());
+
+    expect($subject->{'is'.ucfirst($type)}())->toBeFalse();
+})->with([
+    ['vote'],
+    ['validatorRegistration'],
+]);
+
 
 it('should determine if the transaction is self-receiving', function (string $type) {
     $transaction = Transaction::factory()->{$type}()->create();
