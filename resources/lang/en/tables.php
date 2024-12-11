@@ -155,6 +155,7 @@ return [
             'validator_resignation'  => 'Validator Resignation',
             'username_registration'  => 'Username Registration',
             'username_resignation'   => 'Username Resignation',
+            'contract_deployment'    => 'Contract Deployment',
             'others'                 => 'Others',
         ],
 

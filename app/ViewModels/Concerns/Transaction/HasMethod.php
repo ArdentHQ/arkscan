@@ -53,6 +53,11 @@ trait HasMethod
         return $this->method->isUsernameResignation();
     }
 
+    public function isContractDeployment(): bool
+    {
+        return $this->method->isContractDeployment();
+    }
+
     public function methodArguments(): array
     {
         return $this->method->arguments();

@@ -1,3 +1,3 @@
 @props(['argument'])
 
-{{ ExplorerNumberFormatter::weiToArk(ContractPayload::decodeUnsignedInt($argument)) }}
+{{ ExplorerNumberFormatter::weiToArk(ArgumentDecoder::decodeUnsignedInt($argument)) }}

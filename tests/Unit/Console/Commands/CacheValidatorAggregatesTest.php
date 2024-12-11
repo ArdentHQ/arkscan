@@ -62,10 +62,10 @@ it('should update cache on each run', function () {
 
     (new CacheValidatorAggregates())->handle($cache = new ValidatorCache());
 
-    expect($cache->getTotalAmounts())->toBe([$wallet->public_key => BigNumber::new(123)->valueOf()->multipliedBy(1e18)->__toString()]);
-    expect($cache->getTotalFees())->toBe([$wallet->public_key => BigNumber::new(3)->valueOf()->multipliedBy(1e18)->__toString()]);
-    expect($cache->getTotalRewards())->toBe([$wallet->public_key => BigNumber::new(8)->valueOf()->multipliedBy(1e18)->__toString()]);
-    expect($cache->getTotalBlocks())->toBe([$wallet->public_key => 1]);
+    expect($cache->getTotalAmounts())->toBe([$wallet->address => BigNumber::new(123)->valueOf()->multipliedBy(1e18)->__toString()]);
+    expect($cache->getTotalFees())->toBe([$wallet->address => BigNumber::new(3)->valueOf()->multipliedBy(1e18)->__toString()]);
+    expect($cache->getTotalRewards())->toBe([$wallet->address => BigNumber::new(8)->valueOf()->multipliedBy(1e18)->__toString()]);
+    expect($cache->getTotalBlocks())->toBe([$wallet->address => 1]);
 
     expect($cache->getCache()->has(md5('total_amounts')))->toBeTrue();
     expect($cache->getCache()->has(md5('total_blocks')))->toBeTrue();
