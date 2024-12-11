@@ -131,6 +131,8 @@ function createRealisticRound(array $performances, $context, bool $cachePerforma
     expect(Block::count())->toBe(Network::validatorCount());
     expect($height - 1)->toBe(Network::validatorCount());
 
+    $round++;
+
     // Loop through performances and generate rounds for each - requires validator count entries (blocks per round) to work correctly
     foreach ($performances as $index => $didForge) {
         createFullRound($round, $height, $validatorWallets, $context, $didForge);
