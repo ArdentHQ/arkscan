@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\VoteArgument;
 use App\Models\Casts\BigInteger;
 use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
@@ -20,12 +21,12 @@ use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
+use App\Services\Transactions\TransactionMethod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 
 /**
@@ -211,9 +212,15 @@ final class Transaction extends Model
             return Wallet::where('address', $recipient)->firstOrFail();
         }
 
-        $vote = Arr::get($this, 'asset.votes.0');
-        if (is_null($vote)) {
-            $vote = Arr::get($this, 'asset.unvotes.0');
+        $vote   = null;
+        $method = new TransactionMethod($this);
+        if ($method->isVote()) {
+            $vote = $method->arguments()[VoteArgument::RECIPIENT];
+        }
+
+        // TODO: handle no recipient address - https://app.clickup.com/t/86dvd47da
+        if ($vote === null) {
+            throw new \Exception('Recipient address is not set.');
         }
 
         return Wallet::where('address', $vote)->firstOrFail();
