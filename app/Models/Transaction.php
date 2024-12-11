@@ -9,6 +9,7 @@ use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
+use App\Models\Scopes\ContractDeploymentScope;
 use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OtherTransactionTypesScope;
 use App\Models\Scopes\TransferScope;
@@ -263,6 +264,11 @@ final class Transaction extends Model
                     ->orWhere(function ($query) use ($filter) {
                         $query->when($filter['username_resignation'] === true, function ($query) {
                             $query->withScope(UsernameResignationScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['contract_deployment'] === true, function ($query) {
+                            $query->withScope(ContractDeploymentScope::class);
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {
