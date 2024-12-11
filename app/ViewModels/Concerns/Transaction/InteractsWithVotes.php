@@ -17,7 +17,10 @@ trait InteractsWithVotes
         }
 
         $payload = $this->rawPayload();
-        
+        if ($payload === null) {
+            return null;
+        }
+
         $method = (new AbiDecoder())->decodeFunctionData($payload);
 
         if (count($method['args']) === 0) {
