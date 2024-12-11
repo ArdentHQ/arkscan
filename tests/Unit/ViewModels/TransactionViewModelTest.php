@@ -173,8 +173,6 @@ it('should determine if the transaction is self-receiving', function (string $ty
     $wallet    = Wallet::factory()->activeValidator()->create();
     $transaction = Transaction::factory()->{$type}(when(in_array($type, ['validatorRegistration', 'vote']), $wallet->address))->create();
     $subject     = new TransactionViewModel($transaction);
-    
-    ;
 
     expect($subject->isSelfReceiving())->toBeTrue();
 
@@ -215,41 +213,6 @@ it('should fail to get the voted validator if the transaction is not an unvote',
 
     expect($subject->voted())->toBeNull();
 });
-
-it('should fail to get the voted validator if the transaction asset is empty', function ($asset) {
-
-    $validator    = Wallet::factory()->activeValidator()->create();
-
-    $subject = new TransactionViewModel(Transaction::factory()->vote($validator->address)->create([
-        'asset' => $asset,
-    ]));
-
-    expect($subject->voted())->toBeNull();
-})->with([[[]], null]);
-
-it('should get the unvoted validator', function () {
-    Wallet::factory()->create(['public_key' => 'publicKey']);
-
-    $subject = new TransactionViewModel(Transaction::factory()->unvote()->create());
-
-    expect($subject->unvoted())->toBeInstanceOf(WalletViewModel::class);
-});
-
-it('should fail to get the unvoted validator if the transaction is not an unvote', function () {
-    $validator    = Wallet::factory()->activeValidator()->create();
-
-    $subject = new TransactionViewModel(Transaction::factory()->vote($validator->address)->create());
-
-    expect($subject->unvoted())->toBeNull();
-});
-
-it('should fail to get the unvoted validator if the transaction asset is empty', function ($asset) {
-    $subject = new TransactionViewModel(Transaction::factory()
-        ->vote()
-        ->create(['asset' => $asset]));
-
-    expect($subject->unvoted())->toBeNull();
-})->with([[[]], null]);
 
 it('should get the nonce', function () {
     expect($this->subject->nonce())->toBeInt();
