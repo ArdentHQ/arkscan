@@ -61,7 +61,7 @@ final class Transaction extends Model
         'validatorRegistration' => ValidatorRegistrationScope::class,
         'validatorResignation'  => ValidatorResignationScope::class,
         'transfer'              => TransferScope::class,
-        'multipayment'          => MultiPaymentScope::class,
+        'multiPayment'          => MultiPaymentScope::class,
         'vote'                  => VoteScope::class,
         'unvote'                => UnvoteScope::class,
     ];
