@@ -16,9 +16,9 @@ it('should render the page without any errors', function ($type, $args) {
         ->assertOk()
         ->assertSee($transaction->id);
 })->with([
-    'transfer' => ['transfer', []],
+    'transfer'              => ['transfer', []],
     'validatorRegistration' => ['validatorRegistration', ['30492624ED2db94EEfCD8E91d7218488658e972d']],
-    'validatorResignation' => ['validatorResignation', []],
+    'validatorResignation'  => ['validatorResignation', []],
 ]);
 
 it('should render the page for a vote transaction without any errors', function () {
