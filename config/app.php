@@ -245,8 +245,8 @@ return [
         'Forms'                   => App\Services\Forms::class,
         'Zendesk'                 => Huddle\Zendesk\Facades\Zendesk::class,
         'SortDirection'           => App\Enums\SortDirection::class,
-        'ContractPayload'         => App\Services\ContractPayload::class,
         'TokenTransferArgument'   => App\Enums\TokenTransferArgument::class,
+        'ArgumentDecoder'         => ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder::class,
     ],
 
 ];

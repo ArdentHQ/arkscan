@@ -1,3 +1,3 @@
 @props(['argument'])
 
-{{ ContractPayload::decodeAddress($argument) }}
+{{ (new ArgumentDecoder($argument))->decodeAddress() }}

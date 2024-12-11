@@ -108,6 +108,7 @@ return [
             'old_validator'        => 'Old Validator',
             'new_validator'        => 'New Validator',
             'address'              => 'Address',
+            'username'             => 'Username',
             'signatures'           => 'Signatures',
             'hash'                 => 'Hash',
             'from'                 => 'From',

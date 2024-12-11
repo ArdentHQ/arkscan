@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Services\Transactions\Aggregates\Fees\Historical\RangeAggregate;
 use Carbon\Carbon;
@@ -14,14 +15,21 @@ it('should aggregate the fees for the given range', function () {
     $endTime   = Carbon::now()->addDays(200);
 
     $start = Transaction::factory(10)->create([
-        'fee'       => 1 * 1e18,
+        'gas_price' => 1,
         'timestamp' => $startTime->getTimestampMs(),
     ])->sortByDesc('timestamp');
 
     $end = Transaction::factory(10)->create([
-        'fee'       => 1 * 1e18,
+        'gas_price' => 1,
         'timestamp' => $endTime->getTimestampMs(),
     ])->sortByDesc('timestamp');
+
+    foreach (Transaction::all() as $transaction) {
+        Receipt::factory()->create([
+            'id'       => $transaction->id,
+            'gas_used' => 1 * 1e9,
+        ]);
+    }
 
     $result = (new RangeAggregate())->aggregate(
         Carbon::createFromTimestamp($start->last()->timestamp)->startOfDay(),

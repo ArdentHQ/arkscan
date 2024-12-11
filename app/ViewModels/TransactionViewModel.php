@@ -13,6 +13,7 @@ use App\Services\Transactions\TransactionDirection;
 use App\Services\Transactions\TransactionMethod;
 use App\Services\Transactions\TransactionState;
 use App\ViewModels\Concerns\Transaction\CanBeValidatorRegistration;
+use App\ViewModels\Concerns\Transaction\CanHaveUsername;
 use App\ViewModels\Concerns\Transaction\HasDirection;
 use App\ViewModels\Concerns\Transaction\HasMethod;
 use App\ViewModels\Concerns\Transaction\HasPayload;
@@ -26,6 +27,7 @@ use Illuminate\Support\Arr;
 final class TransactionViewModel implements ViewModel
 {
     use CanBeValidatorRegistration;
+    use CanHaveUsername;
     use HasDirection;
     use HasPayload;
     use HasState;

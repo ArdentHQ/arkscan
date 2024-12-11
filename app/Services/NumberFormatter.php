@@ -178,23 +178,21 @@ final class NumberFormatter
 
     public static function weiToArk(string | int | float $value, bool $withSuffix = true): string
     {
-        $convertedValue = (string) BigNumber::new(UnitConverter::formatUnits(UnitConverter::parseUnits($value, 'wei'), 'ark'));
-
+        $currency = null;
         if ($withSuffix) {
-            return $convertedValue.' '.Network::currency();
+            $currency = Network::currency();
         }
 
-        return $convertedValue;
+        return UnitConverter::weiToArk($value, $currency);
     }
 
     public static function gweiToArk(string | int | float $value, bool $withSuffix = true): string
     {
-        $convertedValue = (string) BigNumber::new(UnitConverter::formatUnits(UnitConverter::parseUnits($value, 'gwei'), 'ark'));
-
+        $currency = null;
         if ($withSuffix) {
-            return $convertedValue.' '.Network::currency();
+            $currency = Network::currency();
         }
 
-        return $convertedValue;
+        return UnitConverter::gweiToArk($value, $currency);
     }
 }

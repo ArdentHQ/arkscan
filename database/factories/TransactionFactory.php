@@ -46,13 +46,26 @@ final class TransactionFactory extends Factory
         ]);
     }
 
+    public function tokenTransfer(string $address, int $amount): Factory
+    {
+        $payload  = ContractMethod::transfer();
+        $payload .= str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT);
+        $payload .= str_pad(dechex($amount), 64, '0', STR_PAD_LEFT);
+
+        return $this->withPayload($payload)
+            ->state(fn () => [
+                // TODO: update recipient - https://app.clickup.com/t/86dvdegme
+                'recipient_address' => Network::knownContract('consensus'),
+            ]);
+    }
+
     public function multiPayment(): Factory
     {
         $method = ContractMethod::multiPayment();
 
         return $this->withPayload($method)
             ->state(fn () => [
-                'recipient_address' => Network::knownContract('consensus'),
+                'recipient_address' => Network::knownContract('multipayment'),
             ]);
     }
 
@@ -76,11 +89,11 @@ final class TransactionFactory extends Factory
             ]);
     }
 
-    public function validatorRegistration(): Factory
+    public function validatorRegistration(string $address): Factory
     {
         $method = ContractMethod::validatorRegistration();
 
-        return $this->withPayload($method)
+        return $this->withPayload($method.str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT))
             ->state(fn () => [
                 'recipient_address' => Network::knownContract('consensus'),
             ]);
@@ -96,17 +109,49 @@ final class TransactionFactory extends Factory
             ]);
     }
 
+    public function usernameRegistration(): Factory
+    {
+        $method = ContractMethod::usernameRegistration();
+
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('username'),
+            ]);
+    }
+
+    public function usernameResignation(): Factory
+    {
+        $method = ContractMethod::usernameResignation();
+
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('username'),
+            ]);
+    }
+
+    public function contractDeployment(): Factory
+    {
+        $method = ContractMethod::contractDeployment();
+
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => null,
+            ]);
+    }
+
     public function withPayload(string $payload): Factory
     {
         $binaryData = hex2bin($payload);
 
-        // In-memory stream
-        $stream = fopen('php://temp', 'r+');
-        fwrite($stream, $binaryData);
-        rewind($stream);
-
         return $this->state(fn () => [
-            'data' => $stream,
+            'data' => function () use ($binaryData) {
+                // In-memory stream
+                $stream = fopen('php://temp', 'r+');
+                fwrite($stream, $binaryData);
+                rewind($stream);
+
+                return $stream;
+            },
         ]);
     }
 }

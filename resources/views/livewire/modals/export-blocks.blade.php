@@ -23,7 +23,7 @@
     @if($this->modalShown)
         <div
             x-data="BlocksExport({
-                publicKey: '{{ $this->publicKey }}',
+                address: '{{ $this->address }}',
                 network: {{ json_encode(Network::toArray()) }},
                 userCurrency: '{{ Settings::currency() }}',
                 rates: {{ ExchangeRate::rates() ?? '{}' }},
