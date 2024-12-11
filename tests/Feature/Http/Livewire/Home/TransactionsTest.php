@@ -3,16 +3,24 @@
 declare(strict_types=1);
 
 use App\Http\Livewire\Home\Transactions;
+use App\Models\Receipt;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
 
 it('should list the first page of transactions', function () {
-    Transaction::factory(30)->transfer()->create([
-        'amount' => 143.2232 * 1e18,
-        'fee'    => 0.128373 * 1e18,
+    $transactions = Transaction::factory(30)->transfer()->create([
+        'amount'    => 143.2232 * 1e18,
+        'gas_price' => 0.128373,
     ]);
+
+    foreach ($transactions as $transaction) {
+        Receipt::factory()->create([
+            'id'       => $transaction->id,
+            'gas_used' => 1e9,
+        ]);
+    }
 
     $component = Livewire::test(Transactions::class)
         ->call('setIsReady');
@@ -22,7 +30,7 @@ it('should list the first page of transactions', function () {
         $component->assertSee($transaction->timestamp());
         $component->assertSee($transaction->sender()->address());
         $component->assertSee($transaction->recipient()->address());
-        $component->assertSee('143.2232');
+        $component->assertSee('143.22');
         $component->assertSee('0.128373');
     }
 });
