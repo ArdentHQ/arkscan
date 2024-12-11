@@ -12,7 +12,7 @@ it('should render', function () {
     $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Livewire::test(ExportBlocks::class, [$wallet])
-        ->assertSet('publicKey', $wallet->publicKey())
+        ->assertSet('address', $wallet->address())
         ->assertSee(trans('actions.export'))
         ->assertDontSee(trans('pages.wallet.export-blocks-modal.title'));
 });
@@ -21,7 +21,7 @@ it('should handle non-validators', function () {
     $wallet = new WalletViewModel(Wallet::factory()->create(['attributes' => []]));
 
     Livewire::test(ExportBlocks::class, [$wallet])
-        ->assertSet('publicKey', $wallet->publicKey())
+        ->assertSet('address', $wallet->address())
         ->assertSee(trans('actions.export'))
         ->assertDontSee(trans('pages.wallet.export-blocks-modal.title'));
 });
@@ -30,7 +30,7 @@ it('should open modal', function () {
     $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Livewire::test(ExportBlocks::class, [$wallet])
-        ->assertSet('publicKey', $wallet->publicKey())
+        ->assertSet('address', $wallet->address())
         ->assertSee(trans('actions.export'))
         ->assertDontSee(trans('pages.wallet.export-blocks-modal.title'))
         ->call('openModal')
@@ -41,7 +41,7 @@ it('should close modal', function () {
     $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Livewire::test(ExportBlocks::class, [$wallet])
-        ->assertSet('publicKey', $wallet->publicKey())
+        ->assertSet('address', $wallet->address())
         ->assertSee(trans('actions.export'))
         ->call('openModal')
         ->assertSee(trans('pages.wallet.export-blocks-modal.title'))
