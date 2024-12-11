@@ -58,11 +58,6 @@ trait HasMethod
         return $this->method->isContractDeployment();
     }
 
-    public function methodArguments(): array
-    {
-        return $this->method->arguments();
-    }
-
     public function isSelfReceiving(): bool
     {
         if ($this->isValidatorRegistration()) {
@@ -82,5 +77,10 @@ trait HasMethod
         }
 
         return false;
+    }
+
+    public function methodArguments(): array
+    {
+        return $this->method->arguments();
     }
 }

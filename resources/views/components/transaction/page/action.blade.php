@@ -34,5 +34,13 @@
         >
             <x-truncate-dynamic>{{ $transaction->validatorPublicKey() }}</x-truncate-dynamic>
         </x-transaction.page.section-detail.row>
+    @elseif ($transaction->isUsernameRegistration())
+        <x-transaction.page.section-detail.row
+            :title="trans('pages.transaction.header.username')"
+            :transaction="$transaction"
+            value-class="min-w-0"
+        >
+            {{ $transaction->username() }}
+        </x-transaction.page.section-detail.row>
     @endif
 </x-general.page-section.container>
