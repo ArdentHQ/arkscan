@@ -236,37 +236,25 @@ it('should get the nonce', function () {
 
 describe('HasPayload trait', function () {
     it('should determine if a transaction has a payload', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()->create([
-            'asset' => [
-                'evmCall' => [
-                    'payload' => '1234567890',
-                ],
-            ],
-        ]));
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('1234567890')
+            ->create());
 
         expect($transaction->hasPayload())->toBeTrue();
     });
 
     it('should get raw payload', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()->create([
-            'asset' => [
-                'evmCall' => [
-                    'payload' => '1234567890',
-                ],
-            ],
-        ]));
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('1234567890')
+            ->create());
 
         expect($transaction->rawPayload())->toBe('1234567890');
     });
 
     it('should get utf-8 formatted payload', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()->create([
-            'asset' => [
-                'evmCall' => [
-                    'payload' => '74657374696e67',
-                ],
-            ],
-        ]));
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('74657374696e67')
+            ->create());
 
         expect($transaction->utf8Payload())->toBe('testing');
     });
