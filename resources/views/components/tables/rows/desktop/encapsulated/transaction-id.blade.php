@@ -23,7 +23,7 @@
         @if ($hasFailedStatus)
             <div>
                 <x-ark-icon
-                    name="circle.small-minus"
+                    name="circle.minus-small"
                     size="xs"
                     class="text-theme-danger-700 dark:text-theme-failed-state-text"
                 />
