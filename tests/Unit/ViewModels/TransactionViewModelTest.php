@@ -50,7 +50,7 @@ it('should determine if transfer transaction is sent to self', function () {
     $transaction = new TransactionViewModel(Transaction::factory()
         ->create([
             'sender_public_key' => $this->sender->public_key,
-            'recipient_address'      => $this->sender->address,
+            'recipient_address' => $this->sender->address,
         ]));
 
     expect($transaction->isSentToSelf($this->sender->address))->toBeTrue();
