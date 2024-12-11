@@ -35,7 +35,7 @@ final class HeaderStats extends Component
 
         return [
             $stats->count(),
-            $stats->unique('public_key')->count(),
+            $stats->unique('address')->count(),
         ];
     }
 }

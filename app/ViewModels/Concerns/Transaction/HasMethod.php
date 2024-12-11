@@ -53,19 +53,9 @@ trait HasMethod
         return $this->method->isUsernameResignation();
     }
 
-    /**
-     * @return array
-     */
-    public function methodArguments(): array
+    public function isContractDeployment(): bool
     {
-        $methodData = $this->getMethodData();
-        if ($methodData === null) {
-            return [];
-        }
-
-        [2 => $arguments] = $methodData;
-
-        return $arguments;
+        return $this->method->isContractDeployment();
     }
 
     public function isSelfReceiving(): bool
@@ -87,5 +77,10 @@ trait HasMethod
         }
 
         return false;
+    }
+
+    public function methodArguments(): array
+    {
+        return $this->method->arguments();
     }
 }
