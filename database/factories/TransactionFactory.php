@@ -30,7 +30,14 @@ final class TransactionFactory extends Factory
             'gas_price'         => $this->faker->numberBetween(1, 100),
             'amount'            => $this->faker->numberBetween(1, 100) * 1e18,
             'nonce'             => 1,
-            'data'              => '',
+            'data'              => function () {
+                // In-memory stream
+                $stream = fopen('php://temp', 'r+');
+                fwrite($stream, '');
+                rewind($stream);
+
+                return $stream;
+            },
             'sequence'          => 1,
         ];
     }
