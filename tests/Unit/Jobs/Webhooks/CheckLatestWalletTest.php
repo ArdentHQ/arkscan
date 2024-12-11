@@ -3,11 +3,9 @@
 declare(strict_types=1);
 
 use App\Events\Statistics\UniqueAddresses;
-use App\Facades\Network;
 use App\Jobs\Webhooks\CheckLatestWallet;
 use App\Models\Transaction;
 use App\Services\Cache\StatisticsCache;
-use App\Services\Timestamp;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Event;
