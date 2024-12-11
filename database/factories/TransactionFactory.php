@@ -30,7 +30,7 @@ final class TransactionFactory extends Factory
             'gas_price'         => $this->faker->numberBetween(1, 100),
             'amount'            => $this->faker->numberBetween(1, 100) * 1e18,
             'nonce'             => 1,
-            'sequence'          => $this->faker->numberBetween(1, 100),
+            'sequence'          => 1,
         ];
     }
 
