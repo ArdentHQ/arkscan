@@ -84,7 +84,7 @@ final class CacheAnnualStatistics extends Command
                     $this->hasChanges = true;
                 }
 
-                if (! $this->hasChanges && Arr::get($existingData, 'blocks') !== $blocksData->get($key)->blocks) {
+                if (! $this->hasChanges && Arr::get($existingData, 'blocks') !== $blocksData->get($key)?->blocks) {
                     $this->hasChanges = true;
                 }
             }
@@ -94,7 +94,7 @@ final class CacheAnnualStatistics extends Command
                 (int) $item->transactions,
                 (string) BigNumber::new($item->amount),
                 (string) UnitConverter::formatUnits($item->fees, 'gwei'),
-                $blocksData->get($key)->blocks, // We assume to have the same amount of entries for blocks and transactions (years)
+                $blocksData->get($key)?->blocks, // We assume to have the same amount of entries for blocks and transactions (years)
             );
         });
     }
