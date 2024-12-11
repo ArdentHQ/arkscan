@@ -164,10 +164,7 @@ it('should filter by transfer transactions', function () {
 it('should filter by multipayment transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $wallet       = Wallet::factory()->activeValidator()->create();
-    $multipayment = Transaction::factory()->multiPayment()->create([
-        'sender_public_key' => $wallet->public_key,
-    ]);
+    $multipayment = Transaction::factory()->multiPayment()->create();
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
@@ -239,7 +236,7 @@ it('should filter by unvote transactions', function () {
         ->assertDontSee($transfer->id);
 });
 
-it('should filter by registration transactions', function () {
+it('should filter by validator registration transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
     $wallet       = Wallet::factory()->activeValidator()->create();
@@ -265,7 +262,7 @@ it('should filter by registration transactions', function () {
         ->assertDontSee($transfer->id);
 });
 
-it('should filter by resignation transactions', function () {
+it('should filter by validator resignation transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
     $wallet      = Wallet::factory()->activeValidator()->create();
@@ -294,10 +291,7 @@ it('should filter by resignation transactions', function () {
 it('should filter by username registration transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $wallet       = Wallet::factory()->activeValidator()->create();
-    $registration = Transaction::factory()->usernameRegistration()->create([
-        'sender_public_key' => $wallet->public_key,
-    ]);
+    $registration = Transaction::factory()->usernameRegistration()->create();
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
@@ -320,10 +314,7 @@ it('should filter by username registration transactions', function () {
 it('should filter by username resignation transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $wallet      = Wallet::factory()->activeValidator()->create();
-    $resignation = Transaction::factory()->usernameResignation()->create([
-        'sender_public_key' => $wallet->public_key,
-    ]);
+    $resignation = Transaction::factory()->usernameResignation()->create();
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
@@ -434,6 +425,7 @@ it('should get the filter values via a getter', function () {
         ->instance();
 
     expect($instance->transfers)->toBeFalse();
+    expect($instance->multipayments)->toBeFalse();
     expect($instance->votes)->toBeTrue();
     expect($instance->unvotes)->toBeFalse();
     expect($instance->validator_registration)->toBeFalse();
@@ -461,6 +453,7 @@ it('should set the filter values via a setter', function () {
         ->instance();
 
     $instance->transfers              = true;
+    $instance->multipayments          = true;
     $instance->votes                  = true;
     $instance->unvotes                = true;
     $instance->validator_registration = true;
@@ -470,6 +463,7 @@ it('should set the filter values via a setter', function () {
     $instance->others                 = true;
 
     expect($instance->transfers)->toBeTrue();
+    expect($instance->multipayments)->toBeTrue();
     expect($instance->votes)->toBeTrue();
     expect($instance->unvotes)->toBeTrue();
     expect($instance->validator_registration)->toBeTrue();
