@@ -30,6 +30,7 @@ final class TransactionFactory extends Factory
             'gas_price'         => $this->faker->numberBetween(1, 100),
             'amount'            => $this->faker->numberBetween(1, 100) * 1e18,
             'nonce'             => 1,
+            'sequence'          => 1,
         ];
     }
 
@@ -51,7 +52,7 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($method)
             ->state(fn () => [
-                'recipient_address' => Network::knownContract('consensus'),
+                'recipient_address' => Network::knownContract('multipayment'),
             ]);
     }
 
@@ -95,17 +96,49 @@ final class TransactionFactory extends Factory
             ]);
     }
 
+    public function usernameRegistration(): Factory
+    {
+        $method = ContractMethod::usernameRegistration();
+
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('username'),
+            ]);
+    }
+
+    public function usernameResignation(): Factory
+    {
+        $method = ContractMethod::usernameResignation();
+
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => Network::knownContract('username'),
+            ]);
+    }
+
+    public function contractDeployment(): Factory
+    {
+        $method = ContractMethod::contractDeployment();
+
+        return $this->withPayload($method)
+            ->state(fn () => [
+                'recipient_address' => null,
+            ]);
+    }
+
     public function withPayload(string $payload): Factory
     {
         $binaryData = hex2bin($payload);
 
-        // In-memory stream
-        $stream = fopen('php://temp', 'r+');
-        fwrite($stream, $binaryData);
-        rewind($stream);
-
         return $this->state(fn () => [
-            'data' => $stream,
+            'data' => function () use ($binaryData) {
+                // In-memory stream
+                $stream = fopen('php://temp', 'r+');
+                fwrite($stream, $binaryData);
+                rewind($stream);
+
+                return $stream;
+            },
         ]);
     }
 }

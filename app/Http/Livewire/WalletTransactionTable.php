@@ -38,6 +38,7 @@ final class WalletTransactionTable extends TabbedTableComponent
         'validator_resignation'  => true,
         'username_registration'  => true,
         'username_resignation'   => true,
+        'contract_deployment'    => true,
         'others'                 => true,
     ];
 
@@ -61,6 +62,7 @@ final class WalletTransactionTable extends TabbedTableComponent
             'filter.validator_resignation'  => ['as' => 'validator-resignation', 'except' => true],
             'filter.username_registration'  => ['as' => 'username-registration', 'except' => true],
             'filter.username_resignation'   => ['as' => 'username-resignation', 'except' => true],
+            'filter.contract_deployment'    => ['as' => 'contract-deployment', 'except' => true],
             'filter.others'                 => ['as' => 'others', 'except' => true],
         ];
     }
@@ -160,6 +162,10 @@ final class WalletTransactionTable extends TabbedTableComponent
         }
 
         if ($this->filter['username_resignation'] === true) {
+            return true;
+        }
+
+        if ($this->filter['contract_deployment'] === true) {
             return true;
         }
 

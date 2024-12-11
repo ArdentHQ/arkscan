@@ -56,6 +56,11 @@
             />
 
             <x-tables.filters.includes.checkbox
+                name="contract_deployment"
+                :label="trans('tables.filters.transactions.contract_deployment')"
+            />
+
+            <x-tables.filters.includes.checkbox
                 name="others"
                 :label="trans('tables.filters.transactions.others')"
             />

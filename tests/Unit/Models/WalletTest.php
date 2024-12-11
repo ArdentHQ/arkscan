@@ -43,7 +43,7 @@ it('has custom scout key name', function () {
     expect($this->subject->getScoutKeyName())->toBe('address');
 });
 
-it('adds the timestamp from the updated_at column and username when making searchable', function () {
+it('adds the timestamp from the updated_at column when making searchable', function () {
     $mock    = $this->mock(MeilisearchClient::class);
     $indexes = $this->mock(Indexes::class);
 
@@ -55,8 +55,7 @@ it('adds the timestamp from the updated_at column and username when making searc
         ->withArgs(function ($documents) {
             $document = collect($documents)->first(fn ($document) => $document['address'] === $this->subject->address);
 
-            return $document['username'] === 'test'
-                && $document['address'] === $this->subject->address
+            return $document['address'] === $this->subject->address
                 && $document['timestamp'] === 148373;
         });
 

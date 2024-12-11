@@ -14,9 +14,9 @@ use Meilisearch\Endpoints\Indexes;
 beforeEach(function () {
     $this->recipient = Wallet::factory()->create();
     $this->subject   = Transaction::factory()->create([
-        'gas_price'    => 1,
-        'amount'       => 2 * 1e18,
-        'recipient_id' => $this->recipient,
+        'gas_price'         => 1,
+        'amount'            => 2 * 1e18,
+        'recipient_address' => $this->recipient,
     ]);
 });
 
@@ -42,32 +42,24 @@ it('should get recipient if vote', function () {
     $validator = Wallet::factory()->activeValidator()->create();
 
     $transaction = Transaction::factory()
-        ->vote()
+        ->vote($validator->address)
         ->create([
-            'recipient_id' => null,
-            'asset'        => [
-                'votes'   => [$validator->public_key],
-                'unvotes' => [],
-            ],
+            'recipient_address' => null,
         ]);
 
-    expect($transaction->recipient())->toEqual($validator->fresh());
+    expect($transaction->recipient()->address)->toEqual($validator->address);
 });
 
-it('should get recipient if unvote', function () {
-    $validator = Wallet::factory()->activeValidator()->create();
-
+it('should throw an exception if the transaction has no recipient', function () {
     $transaction = Transaction::factory()
-        ->unvote()
+        ->vote('') // Invalid address
         ->create([
-            'recipient_id' => null,
-            'asset'        => [
-                'unvotes' => [$validator->public_key],
-                'votes'   => [],
-            ],
+            'recipient_address' => null,
         ]);
 
-    expect($transaction->recipient())->toEqual($validator->fresh());
+    $this->expectException(Exception::class);
+
+    $transaction->recipient();
 });
 
 it('makes transactions searchable', function () {

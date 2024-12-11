@@ -72,6 +72,7 @@ return [
                 'validator_resignation'  => env('ARKSCAN_CONTRACT_VALIDATOR_RESIGNATION_METHOD', 'b85f5da2'),
                 'username_registration'  => env('ARKSCAN_CONTRACT_USERNAME_REGISTRATION_METHOD', '36a94134'),
                 'username_resignation'   => env('ARKSCAN_CONTRACT_USERNAME_RESIGNATION_METHOD', 'ebed6dab'),
+                'contract_deployment'    => env('ARKSCAN_CONTRACT_DEPLOYMENT_METHOD', '60806040'),
             ],
         ],
     ],
