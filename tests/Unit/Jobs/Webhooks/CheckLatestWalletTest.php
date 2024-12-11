@@ -18,7 +18,7 @@ it('should not dispatch unique addresses event if no change', function () {
     $this->travelTo('2024-04-19 00:15:44');
 
     $transaction = Transaction::factory()->transfer()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
+        'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
     ]);
 
     (new CheckLatestWallet())->handle();
@@ -27,8 +27,8 @@ it('should not dispatch unique addresses event if no change', function () {
 
     expect($cache->getNewestAddress())->toEqual([
         'address'   => $transaction->sender->address,
-        'timestamp' => $transaction->timestamp,
-        'value'     => Carbon::createFromTimestamp((int) $transaction->timestamp + (int) Network::epoch()->timestamp)->format(DateFormat::DATE),
+        'timestamp' => $transaction->timestamp * 1000,
+        'value'     => Carbon::createFromTimestamp((int) $transaction->timestamp)->format(DateFormat::DATE),
     ]);
 
     Event::fake();
@@ -44,7 +44,7 @@ it('should dispatch unique addresses event', function () {
     $this->travelTo('2024-04-19 00:15:44');
 
     $transaction = Transaction::factory()->transfer()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
+        'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
     ]);
 
     (new CheckLatestWallet())->handle();
@@ -53,14 +53,14 @@ it('should dispatch unique addresses event', function () {
 
     expect($cache->getNewestAddress())->toEqual([
         'address'   => $transaction->sender->address,
-        'timestamp' => $transaction->timestamp,
-        'value'     => Carbon::createFromTimestamp((int) $transaction->timestamp + (int) Network::epoch()->timestamp)->format(DateFormat::DATE),
+        'timestamp' => $transaction->timestamp * 1000,
+        'value'     => Carbon::createFromTimestamp((int) $transaction->timestamp)->format(DateFormat::DATE),
     ]);
 
     Event::fake();
 
     $transaction = Transaction::factory()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-20 00:15:44')->unix())->unix(),
+        'timestamp' => Carbon::parse('2024-04-20 00:15:44')->getTimestampMs(),
     ]);
 
     (new CheckLatestWallet())->handle();
