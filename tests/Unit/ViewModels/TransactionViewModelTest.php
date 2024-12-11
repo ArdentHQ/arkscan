@@ -188,8 +188,10 @@ it('should fallback to the sender if no recipient exists', function () {
 
 it('should get the voted validator', function () {
     Wallet::factory()->create(['public_key' => 'publicKey']);
+    
+    $validator    = Wallet::factory()->activeValidator()->create();
 
-    $subject = new TransactionViewModel(Transaction::factory()->vote()->create());
+    $subject = new TransactionViewModel(Transaction::factory()->vote($validator->address)->create());
 
     expect($subject->voted())->toBeInstanceOf(WalletViewModel::class);
 });
@@ -201,7 +203,10 @@ it('should fail to get the voted validator if the transaction is not an unvote',
 });
 
 it('should fail to get the voted validator if the transaction asset is empty', function ($asset) {
-    $subject = new TransactionViewModel(Transaction::factory()->vote()->create([
+
+    $validator    = Wallet::factory()->activeValidator()->create();
+
+    $subject = new TransactionViewModel(Transaction::factory()->vote($validator->address)->create([
         'asset' => $asset,
     ]));
 
@@ -217,7 +222,9 @@ it('should get the unvoted validator', function () {
 });
 
 it('should fail to get the unvoted validator if the transaction is not an unvote', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->vote()->create());
+    $validator    = Wallet::factory()->activeValidator()->create();
+
+    $subject = new TransactionViewModel(Transaction::factory()->vote($validator->address)->create());
 
     expect($subject->unvoted())->toBeNull();
 });
