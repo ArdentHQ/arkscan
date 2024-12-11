@@ -74,11 +74,15 @@ final class MissedBlocks extends TabbedTableComponent
             $sortDirection = SortDirection::DESC;
         }
 
-        return ForgingStats::query()
+        $query = ForgingStats::query()
             ->when($this->sortKey === 'height', fn ($query) => $query->sortByHeight($sortDirection))
             ->when($this->sortKey === 'age', fn ($query) => $query->sortByAge($sortDirection))
             ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', fn ($query) => $query->sortByVoteCount($sortDirection))
             ->when($this->sortKey === 'no_of_voters', fn ($query) => $query->sortByNumberOfVoters($sortDirection))
             ->whereNotNull('missed_height');
+
+        // dump((clone $query)->get(), $query->toSql());
+
+        return $query;
     }
 }

@@ -36,7 +36,7 @@ trait CanBeSorted
                 ->selectRaw('forging_stats.*');
         }
 
-        return $query->selectRaw('wallets.votes AS votes')
+        $asd =  $query->selectRaw('wallets.votes AS votes')
             ->selectRaw('forging_stats.*')
             ->join(DB::raw(sprintf(
                 '(values %s) as wallets (address, votes)',
@@ -44,6 +44,10 @@ trait CanBeSorted
                     ->join(','),
             )), 'forging_stats.address', '=', 'wallets.address', 'left outer')
             ->orderByRaw('votes '.$sortDirection->value.', timestamp DESC');
+
+        dump($asd->toSql());
+
+        return $asd;
     }
 
     public function scopeSortByNumberOfVoters(mixed $query, SortDirection $sortDirection): Builder
