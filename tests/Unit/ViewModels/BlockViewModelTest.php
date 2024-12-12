@@ -6,6 +6,7 @@ use App\DTO\MemoryWallet;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\NumberFormatter;
@@ -61,7 +62,7 @@ it('should get the amount for different transaction types', function () {
                 ])
         )->concat(
             Transaction::factory(10)
-                ->multiPayment()
+                ->multiPayment(['0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86'], [BigNumber::new(3000 * 1e9)])
                 ->create([
                     'block_id' => $this->subject->id(),
                 ])
@@ -98,7 +99,7 @@ it('should get the amount as fiat', function () {
                 ])
         )->concat(
             Transaction::factory(10)
-                ->multiPayment()
+                ->multiPayment(['0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86'], [BigNumber::new(3000 * 1e9)])
                 ->create([
                     'block_id'  => $this->subject->id(),
                     'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
