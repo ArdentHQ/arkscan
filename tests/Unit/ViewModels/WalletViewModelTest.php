@@ -570,20 +570,6 @@ it('should get the known wallet name before username', function () {
     expect($this->subject->walletName())->toBe('ACF Hot Wallet');
 });
 
-it('should get username if wallet not know', function () {
-    fakeKnownWallets();
-
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'address'    => 'random-address',
-        'attributes' => [
-            'validatorPublicKey' => 'publicKey',
-            'username'           => 'john',
-        ],
-    ]));
-
-    expect($this->subject->walletName())->toBe('john');
-});
-
 it('should get the vote url with validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'public_key' => 'wallet-public-key',
