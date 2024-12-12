@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Contracts\Network as Contract;
 use App\Models\ForgingStats;
 use App\Models\Wallet;
+use App\Services\Blockchain\NetworkFactory;
 use App\ViewModels\ForgingStatsViewModel;
 use Carbon\Carbon;
-use App\Services\Blockchain\NetworkFactory;
-use App\Contracts\Network as Contract;
-
 use function Tests\fakeKnownWallets;
 
 beforeEach(function () {
