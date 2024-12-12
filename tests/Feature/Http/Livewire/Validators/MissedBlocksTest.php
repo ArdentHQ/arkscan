@@ -7,6 +7,7 @@ use App\Http\Livewire\Validators\MissedBlocks;
 use App\Models\ForgingStats;
 use App\Models\State;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Cache\ValidatorCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
@@ -53,14 +54,14 @@ it('should sort height in ascending order', function () {
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-1',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-2',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
@@ -79,10 +80,10 @@ it('should sort height in ascending order', function () {
         ->call('sortBy', 'height')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            'validator-1',
-            'validator-2',
-            'validator-1',
-            'validator-2',
+            $wallet1->address,
+            $wallet2->address,
+            $wallet1->address,
+            $wallet2->address,
         ]);
 });
 
