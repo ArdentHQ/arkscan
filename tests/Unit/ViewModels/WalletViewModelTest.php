@@ -17,7 +17,6 @@ use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeKnownWallets;
 use Tests\Stubs\RoundsMock;
@@ -175,22 +174,6 @@ it('should determine if the wallet has a special type when known', function () {
     expect($subject->hasSpecialType())->toBeFalse();
 });
 
-it('should determine if the wallet has a special type if second signature', function () {
-    fakeKnownWallets();
-
-    $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0x946BF38f53aE753371BDC9583e68865643876320']));
-
-    expect($subject->isKnown())->toBeFalse();
-    expect($subject->isOwnedByExchange())->toBeFalse();
-    expect($subject->hasSpecialType())->toBeTrue();
-
-    $subject = new WalletViewModel(Wallet::factory()
-        ->activeValidator()
-        ->create(['address' => 'unknown']));
-
-    expect($subject->hasSpecialType())->toBeFalse();
-});
-
 it('should determine if the wallet has a special type if exchange', function () {
     fakeKnownWallets();
 
@@ -228,7 +211,7 @@ it('should determine if the wallet is voting', function () {
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [
-            'vote' => Wallet::factory()->create()->public_key,
+            'vote' => Wallet::factory()->create()->address,
         ],
     ]));
 
@@ -242,7 +225,7 @@ it('should get the wallet of the vote', function () {
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [
-            'vote' => $vote->public_key,
+            'vote' => $vote->address,
         ],
     ]));
 
@@ -270,7 +253,7 @@ it('should fail to get the wallet of the vote if it is not cached', function () 
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [
-            'vote' => $vote->public_key,
+            'vote' => $vote->address,
         ],
     ]));
 
@@ -309,16 +292,6 @@ it('should fail to get the performance if the wallet is not a validator', functi
 
     expect($this->subject->performance())->toBeEmpty();
     expect($this->subject->hasForged())->toBeFalse();
-});
-
-it('should fail to get the performance if the wallet has no public key', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()
-        ->activeValidator()
-        ->create([
-            'public_key' => null,
-        ]));
-
-    expect($this->subject->performance())->toBeEmpty();
 });
 
 it('should determine if a new validator has forged', function () {
@@ -384,11 +357,11 @@ it('should determine if the validator is missing blocks', function () {
         'validators'   => [$this->wallet->public_key],
     ]);
 
-    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [false, true]);
+    Cache::tags('wallet')->put(md5("performance/{$this->subject->address()}"), [false, true]);
 
     expect($this->subject->keepsMissing())->toBeFalse();
 
-    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [false, false]);
+    Cache::tags('wallet')->put(md5("performance/{$this->subject->address()}"), [false, false]);
 
     expect($this->subject->keepsMissing())->toBeTrue();
 });
@@ -443,7 +416,7 @@ it('should get the vote weight as percentage', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'balance'    => 1e18,
         'attributes' => [
-            'vote' => $vote->public_key,
+            'vote' => $vote->address,
         ],
     ]));
 
@@ -467,7 +440,7 @@ it('should handle vote weight percentage with 0 vote balance', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'balance'    => 0,
         'attributes' => [
-            'vote' => $vote->public_key,
+            'vote' => $vote->address,
         ],
     ]));
 
@@ -489,7 +462,7 @@ it('should handle vote weight percentage with 1 arktoshi vote balance', function
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'balance'    => 1e18,
-        'attributes' => ['vote' => $vote->public_key],
+        'attributes' => ['vote' => $vote->address],
     ]));
 
     expect($this->subject->votePercentage())->toBeNull();
@@ -596,32 +569,12 @@ it('should get the known wallet name before username', function () {
     expect($this->subject->walletName())->toBe('ACF Hot Wallet');
 });
 
-it('should get username if wallet not know', function () {
-    fakeKnownWallets();
-
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'address'    => 'random-address',
-        'attributes' => [
-            'validatorPublicKey' => 'publicKey',
-            'username'           => 'john',
-        ],
-    ]));
-
-    expect($this->subject->walletName())->toBe('john');
-});
-
 it('should get the vote url with validator', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'public_key' => 'wallet-public-key',
-        'attributes' => [
-            'validatorPublicKey' => 'validator-public-key',
-            'username'           => 'john',
-        ],
-    ]));
+    $this->subject = new WalletViewModel(Wallet::factory()->create());
 
     expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?coin=Mainsail&nethash=');
     expect($this->subject->voteUrl())->toContain('&method=vote');
-    expect($this->subject->voteUrl())->toContain('&validator=wallet-public-key');
+    expect($this->subject->voteUrl())->toContain('&validator='.$this->subject->address());
 });
 
 it('should get whether validator is standby', function () {
@@ -666,23 +619,15 @@ it('should get that non validator is not an active validator', function () {
 });
 
 it('should get known wallet name for wallet name', function () {
-    $wallet = Wallet::factory()->create([
-        'attributes' => [],
-    ]);
+    fakeKnownWallets();
 
-    Http::fake([
-        'githubusercontent.com/*' => [
-            [
-                'type'    => 'exchange',
-                'name'    => 'Test Wallet',
-                'address' => $wallet->address,
-            ],
-        ],
+    $wallet = Wallet::factory()->create([
+        'address' => '0xe7dd7E34d2F24966C3C7AA89FC30ACA65760F6B5',
     ]);
 
     $this->subject = new WalletViewModel($wallet);
 
-    expect($this->subject->walletName())->toBe('Test Wallet');
+    expect($this->subject->walletName())->toBe('Altilly');
 });
 
 it('should get no name if a standard wallet', function () {
