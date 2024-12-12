@@ -571,17 +571,11 @@ it('should get the known wallet name before username', function () {
 });
 
 it('should get the vote url with validator', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create([
-        'public_key' => 'wallet-public-key',
-        'attributes' => [
-            'validatorPublicKey' => 'validator-public-key',
-            'username'           => 'john',
-        ],
-    ]));
+    $this->subject = new WalletViewModel(Wallet::factory()->create());
 
     expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?coin=Mainsail&nethash=');
     expect($this->subject->voteUrl())->toContain('&method=vote');
-    expect($this->subject->voteUrl())->toContain('&validator=wallet-public-key');
+    expect($this->subject->voteUrl())->toContain('&validator=' . $this->subject->address());
 });
 
 it('should get whether validator is standby', function () {
@@ -626,23 +620,15 @@ it('should get that non validator is not an active validator', function () {
 });
 
 it('should get known wallet name for wallet name', function () {
-    $wallet = Wallet::factory()->create([
-        'attributes' => [],
-    ]);
+    fakeKnownWallets();
 
-    Http::fake([
-        'githubusercontent.com/*' => [
-            [
-                'type'    => 'exchange',
-                'name'    => 'Test Wallet',
-                'address' => $wallet->address,
-            ],
-        ],
+    $wallet = Wallet::factory()->create([
+        'address' => '0xe7dd7E34d2F24966C3C7AA89FC30ACA65760F6B5',
     ]);
 
     $this->subject = new WalletViewModel($wallet);
 
-    expect($this->subject->walletName())->toBe('Test Wallet');
+    expect($this->subject->walletName())->toBe('Altilly');
 });
 
 it('should get no name if a standard wallet', function () {
