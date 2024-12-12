@@ -12,7 +12,6 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Factories\Factory;
-
 use function Tests\faker;
 
 final class TransactionFactory extends Factory
