@@ -42,8 +42,8 @@ trait CanBeSorted
             ->selectRaw('forging_stats.*')
             ->join(DB::raw(sprintf(
                 '(values %s) as wallets (address, votes)',
-                $validatorVotes->map(fn ($votes, $address) => sprintf('(\'%s\',%d)', $address, $votes))
-                    ->join(','),
+                $validatorVotes->map(fn ($votes, $address) => sprintf('(\'%s\', CAST(%s AS NUMERIC))', $address, $votes))
+                    ->join(',')
             )), 'forging_stats.address', '=', 'wallets.address', 'left outer')
             ->orderByRaw('votes '.$sortDirection->value.', timestamp DESC');
     }

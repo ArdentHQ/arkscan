@@ -382,14 +382,12 @@ it('should sort votes & percentage in ascending order', function (string $sortKe
 it('should sort votes & percentage in descending order', function (string $sortKey) {
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'username'             => 'validator-1',
             'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
         ],
     ]);
 
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'username'             => 'validator-2',
             'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
@@ -407,10 +405,10 @@ it('should sort votes & percentage in descending order', function (string $sortK
         ->call('sortBy', $sortKey)
         ->set('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            'validator-1',
-            'validator-2',
-            'validator-1',
-            'validator-2',
+            $wallet1->address,
+            $wallet2->address,
+            $wallet1->address,
+            $wallet2->address,
         ]);
 })->with([
     'votes',
