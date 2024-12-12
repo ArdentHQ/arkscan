@@ -12,7 +12,6 @@ final class TransferScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where('data', null)
-            ->orWhere('data', '');
+        $builder->whereRaw('SUBSTRING(data FROM 1 FOR 4) = \'\'');
     }
 }

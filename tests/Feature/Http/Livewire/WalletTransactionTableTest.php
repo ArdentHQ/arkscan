@@ -263,6 +263,7 @@ it('should filter by incoming transactions', function () {
 it('should filter by incoming and outgoing transactions', function () {
     $sent = Transaction::factory()->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
+        'recipient_address' => $this->subject->address,
     ]);
 
     $received = Transaction::factory()->transfer()->create([

@@ -16,12 +16,9 @@ final class OtherTransactionTypesScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         $builder
-            ->where('data', '!=', null)
-            ->where('data', '!=', '')
+            ->whereRaw('SUBSTRING(data FROM 1 FOR 4) != \'\'')
             ->where(function ($query) {
-                $query->where(function ($query) {
-                    $query->where('recipient_address', '!=', Network::knownContract('consensus'));
-                })
+                $query->whereNotIn('recipient_address', Network::knownContracts())
                 ->orWhere(
                     fn ($query) => $query->where('recipient_address', Network::knownContract('consensus'))
                         ->whereNotIn(DB::raw('SUBSTRING(encode(data, \'hex\'), 1, 8)'), [

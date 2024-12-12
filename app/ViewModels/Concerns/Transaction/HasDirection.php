@@ -13,11 +13,7 @@ trait HasDirection
 
     public function isSentToSelf(string $address): bool
     {
-        if (! $this->isTransfer()) {
-            return false;
-        }
-
-        if (! $this->isTokenTransfer()) {
+        if (! $this->isTransfer() && ! $this->isTokenTransfer()) {
             return false;
         }
 
