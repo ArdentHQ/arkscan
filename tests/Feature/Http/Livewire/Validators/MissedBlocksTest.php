@@ -301,31 +301,31 @@ it('should handle no cached votes when sorting by number of voters', function ()
     ]);
 
     $wallet2 = Wallet::factory()->activeValidator()->create([
-        
+
         'attributes' => [
             'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
     $walletWithoutVoters = Wallet::factory()->activeValidator()->create([
-        
+
         'attributes' => [
             'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
     ForgingStats::factory()->create([
-        'timestamp' => 100,
+        'timestamp'  => 100,
         'address'    => $wallet1->address,
     ]);
 
     ForgingStats::factory()->create([
-        'timestamp' => 101,
+        'timestamp'  => 101,
         'address'    => $wallet2->address,
     ]);
 
     ForgingStats::factory()->create([
-        'timestamp' => 102,
+        'timestamp'  => 102,
         'address'    => $walletWithoutVoters->address,
     ]);
 
@@ -592,11 +592,11 @@ it('should handle sorting several pages without cached data', function ($columnS
             'balance'           => faker()->numberBetween(1, 1000) * 1e18,
             'nonce'             => faker()->numberBetween(1, 1000),
             'updated_at'        => faker()->numberBetween(1, 1000),
-            'address'    => $wallet['address'],
-            'public_key' => $wallet['publicKey'],
-            'attributes' => json_encode([
+            'address'           => $wallet['address'],
+            'public_key'        => $wallet['publicKey'],
+            'attributes'        => json_encode([
                 'validatorRank'           => $rank,
-                'validatorVoteBalance' => (string) BigNumber::new($sortByVotesData[$wallet['address']]),
+                'validatorVoteBalance'    => (string) BigNumber::new($sortByVotesData[$wallet['address']]),
                 'validatorProducedBlocks' => faker()->numberBetween(1, 1000),
                 'validatorMissedBlocks'   => faker()->numberBetween(1, 1000),
             ]),
@@ -617,7 +617,7 @@ it('should handle sorting several pages without cached data', function ($columnS
         foreach (range(1, $missedBlockCount) as $_) {
             $missedBlocksData[] = [
                 'timestamp'     => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
-                'address'    => $validator->address,
+                'address'       => $validator->address,
                 'forged'        => faker()->boolean(),
                 'missed_height' => faker()->numberBetween(1, 10000),
             ];
@@ -625,7 +625,7 @@ it('should handle sorting several pages without cached data', function ($columnS
             $missedBlockCounter++;
         }
     }
-    
+
     ForgingStats::insert($missedBlocksData);
 
     $missedBlocks = ForgingStats::all();
@@ -638,7 +638,7 @@ it('should handle sorting several pages without cached data', function ($columnS
             $aValue = Arr::get($a, $modelSortBy);
             $bValue = Arr::get($b, $modelSortBy);
         }
-        
+
         if (is_numeric($bValue) && is_numeric($aValue)) {
             return (int) $aValue - (int) $bValue;
         }
@@ -677,17 +677,17 @@ it('should handle sorting several pages with cached data', function ($columnSort
         $wallet          = faker()->wallet;
 
         $sortByVotesData[$wallet['address']] = random_int(10, 100);
-        
+
         $validatorData[] = [
             'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e18,
             'nonce'             => faker()->numberBetween(1, 1000),
             'updated_at'        => faker()->numberBetween(1, 1000),
-            'address'    => $wallet['address'],
-            'public_key' => $wallet['publicKey'],
-            'attributes' => json_encode([
+            'address'           => $wallet['address'],
+            'public_key'        => $wallet['publicKey'],
+            'attributes'        => json_encode([
                 'validatorRank'           => $rank,
-                'validatorVoteBalance' => (string) BigNumber::new($sortByVotesData[$wallet['address']]),
+                'validatorVoteBalance'    => (string) BigNumber::new($sortByVotesData[$wallet['address']]),
                 'validatorProducedBlocks' => faker()->numberBetween(1, 1000),
                 'validatorMissedBlocks'   => faker()->numberBetween(1, 1000),
             ]),
@@ -703,13 +703,13 @@ it('should handle sorting several pages with cached data', function ($columnSort
     $missedBlocksData = [];
 
     $validators = Wallet::all();
-    
+
     foreach ($validators as $validator) {
         $missedBlockCount = random_int(2, 4);
         foreach (range(1, $missedBlockCount) as $_) {
             $missedBlocksData[] = [
                 'timestamp'     => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
-                'address'    => $validator->address,
+                'address'       => $validator->address,
                 'forged'        => faker()->boolean(),
                 'missed_height' => faker()->numberBetween(1, 10000),
             ];
@@ -721,7 +721,7 @@ it('should handle sorting several pages with cached data', function ($columnSort
 
         $voterCounts[$validator->address] = random_int(10, 100);
     }
-    
+
     ForgingStats::insert($missedBlocksData);
 
     $missedBlocks = ForgingStats::all();
@@ -740,7 +740,7 @@ it('should handle sorting several pages with cached data', function ($columnSort
             $aValue = Arr::get($a, $modelSortBy);
             $bValue = Arr::get($b, $modelSortBy);
         }
-        
+
         if (is_numeric($bValue) && is_numeric($aValue)) {
             return (int) $aValue - (int) $bValue;
         }
