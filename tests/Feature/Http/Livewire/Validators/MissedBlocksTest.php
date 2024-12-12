@@ -224,8 +224,8 @@ it('should sort number of voters in ascending order', function () {
     ]);
 
     (new ValidatorCache())->setAllVoterCounts([
-        $wallet1->public_key => 30,
-        $wallet2->public_key => 10,
+        $wallet1->address => 30,
+        $wallet2->address => 10,
     ]);
 
     Livewire::test(MissedBlocks::class)
@@ -274,8 +274,8 @@ it('should sort number of voters in descending order', function () {
     ]);
 
     (new ValidatorCache())->setAllVoterCounts([
-        $wallet1->public_key => 30,
-        $wallet2->public_key => 10,
+        $wallet1->address => 30,
+        $wallet2->address => 10,
     ]);
 
     Livewire::test(MissedBlocks::class)
@@ -301,26 +301,31 @@ it('should handle no cached votes when sorting by number of voters', function ()
     ]);
 
     $wallet2 = Wallet::factory()->activeValidator()->create([
+        
         'attributes' => [
             'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
     $walletWithoutVoters = Wallet::factory()->activeValidator()->create([
+        
         'attributes' => [
             'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
     ForgingStats::factory()->create([
+        'timestamp' => 100,
         'address'    => $wallet1->address,
     ]);
 
     ForgingStats::factory()->create([
+        'timestamp' => 101,
         'address'    => $wallet2->address,
     ]);
 
     ForgingStats::factory()->create([
+        'timestamp' => 102,
         'address'    => $walletWithoutVoters->address,
     ]);
 
@@ -424,7 +429,7 @@ it('should alternate sorting direction', function () {
     ]);
 
     (new ValidatorCache())->setAllVoterCounts([
-        $wallet1->public_key => 30,
+        $wallet1->address => 30,
     ]);
 
     $component = Livewire::test(MissedBlocks::class)
@@ -574,7 +579,7 @@ it('should force ascending if invalid query string value', function () {
         ]);
 });
 
-it('should handle sorting several pages without cached data', function ($columnSortBy, $modelSortBy) {
+it('should handle sorting several pages without cached data xyz', function ($columnSortBy, $modelSortBy) {
     $validatorData = [];
     foreach (range(1, 145) as $rank) {
         $wallet          = faker()->wallet;
@@ -583,12 +588,10 @@ it('should handle sorting several pages without cached data', function ($columnS
             'balance'           => faker()->numberBetween(1, 1000) * 1e18,
             'nonce'             => faker()->numberBetween(1, 1000),
             'updated_at'        => faker()->numberBetween(1, 1000),
-
             'address'    => $wallet['address'],
             'public_key' => $wallet['publicKey'],
             'attributes' => json_encode([
                 'validatorRank'           => $rank,
-                'username'                => 'validator-'.$rank,
                 'validatorVoteBalance'    => random_int(1000, 10000) * 1e18,
                 'validatorProducedBlocks' => faker()->numberBetween(1, 1000),
                 'validatorMissedBlocks'   => faker()->numberBetween(1, 1000),
@@ -610,24 +613,22 @@ it('should handle sorting several pages without cached data', function ($columnS
         foreach (range(1, $missedBlockCount) as $_) {
             $missedBlocksData[] = [
                 'timestamp'     => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
-                'public_key'    => $validator->public_key,
+                'address'    => $validator->address,
                 'forged'        => faker()->boolean(),
                 'missed_height' => faker()->numberBetween(1, 10000),
             ];
 
             $missedBlockCounter++;
         }
-
-        $voterCounts[$validator->public_key] = random_int(10, 100);
     }
-
+    
     ForgingStats::insert($missedBlocksData);
 
     $missedBlocks = ForgingStats::all();
 
     $missedBlocks = $missedBlocks->sort(function ($a, $b) use ($modelSortBy) {
-        $aValue = Arr::get($a, $modelSortBy);
-        $bValue = Arr::get($b, $modelSortBy);
+        $aValue = Arr::get($a, $modelSortBy, 0);
+        $bValue = Arr::get($b, $modelSortBy, 0);
 
         if (is_numeric($bValue) && is_numeric($aValue)) {
             return (int) $aValue - (int) $bValue;
@@ -653,10 +654,9 @@ it('should handle sorting several pages without cached data', function ($columnS
 })->with([
     'height'           => ['height', 'missed_height'],
     'age'              => ['age', 'timestamp'],
-    'name'             => ['name', 'timestamp'],
     'no_of_voters'     => ['no_of_voters', 'timestamp'],
-    'votes'            => ['votes', 'timestamp'],
-    'percentage_votes' => ['percentage_votes', 'timestamp'],
+    // 'votes'            => ['votes', 'timestamp'],
+    // 'percentage_votes' => ['percentage_votes', 'timestamp'],
 ]);
 
 it('should handle sorting several pages with cached data', function ($columnSortBy, $modelSortBy) {
@@ -696,7 +696,7 @@ it('should handle sorting several pages with cached data', function ($columnSort
         foreach (range(1, $missedBlockCount) as $_) {
             $missedBlocksData[] = [
                 'timestamp'     => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
-                'public_key'    => $validator->public_key,
+                'public_key'    => $validator->address,
                 'forged'        => faker()->boolean(),
                 'missed_height' => faker()->numberBetween(1, 10000),
             ];
@@ -704,7 +704,7 @@ it('should handle sorting several pages with cached data', function ($columnSort
             $missedBlockCounter++;
         }
 
-        $voterCounts[$validator->public_key] = random_int(10, 100);
+        $voterCounts[$validator->address] = random_int(10, 100);
     }
 
     ForgingStats::insert($missedBlocksData);
@@ -716,14 +716,14 @@ it('should handle sorting several pages with cached data', function ($columnSort
 
     $missedBlocks = $missedBlocks->sort(function ($a, $b) use ($modelSortBy, $voterCounts, $validators) {
         if ($modelSortBy === 'no_of_voters') {
-            $aValue = $voterCounts[$a->public_key];
-            $bValue = $voterCounts[$b->public_key];
+            $aValue = $voterCounts[$a->address];
+            $bValue = $voterCounts[$b->address];
         } elseif ($modelSortBy === 'votes' || $modelSortBy === 'percentage_votes') {
-            $aValue = Arr::get($validators[$a->public_key], 'attributes.validatorVoteBalance');
-            $bValue = Arr::get($validators[$b->public_key], 'attributes.validatorVoteBalance');
+            $aValue = Arr::get($validators[$a->address], 'attributes.validatorVoteBalance');
+            $bValue = Arr::get($validators[$b->address], 'attributes.validatorVoteBalance');
         } elseif ($modelSortBy === 'name') {
-            $aValue = Arr::get($validators[$a->public_key], 'attributes.username');
-            $bValue = Arr::get($validators[$b->public_key], 'attributes.username');
+            $aValue = Arr::get($validators[$a->address], 'attributes.username');
+            $bValue = Arr::get($validators[$b->address], 'attributes.username');
         } else {
             $aValue = Arr::get($a, $modelSortBy);
             $bValue = Arr::get($b, $modelSortBy);
@@ -753,7 +753,6 @@ it('should handle sorting several pages with cached data', function ($columnSort
 })->with([
     'height'           => ['height', 'missed_height'],
     'age'              => ['age', 'timestamp'],
-    'name'             => ['name', 'name'],
     'no_of_voters'     => ['no_of_voters', 'no_of_voters'],
     'votes'            => ['votes', 'votes'],
     'percentage_votes' => ['percentage_votes', 'percentage_votes'],

@@ -33,7 +33,9 @@ trait CanBeSorted
 
         if (count($validatorVotes) === 0) {
             return $query->selectRaw('0 AS votes')
-                ->selectRaw('forging_stats.*');
+                ->selectRaw('forging_stats.*')
+                // since votes is 0, we just sort by timestamp
+                ->orderByRaw('timestamp '.$sortDirection->value);
         }
 
         return $query->selectRaw('wallets.votes AS votes')
@@ -49,9 +51,12 @@ trait CanBeSorted
     public function scopeSortByNumberOfVoters(mixed $query, SortDirection $sortDirection): Builder
     {
         $voterCounts = (new ValidatorCache())->getAllVoterCounts();
+
         if (count($voterCounts) === 0) {
             return $query->selectRaw('0 AS no_of_voters')
-                ->selectRaw('forging_stats.*');
+                ->selectRaw('forging_stats.*')
+                // since no_of_voters is 0, we just sort by timestamp
+                ->orderByRaw('timestamp '.$sortDirection->value);
         }
 
         return $query->selectRaw('voting_stats.count AS no_of_voters')
