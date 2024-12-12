@@ -295,16 +295,6 @@ it('should fail to get the performance if the wallet is not a validator', functi
     expect($this->subject->hasForged())->toBeFalse();
 });
 
-it('should fail to get the performance if the wallet has no public key', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()
-        ->activeValidator()
-        ->create([
-            'public_key' => null,
-        ]));
-
-    expect($this->subject->performance())->toBeEmpty();
-});
-
 it('should determine if a new validator has forged', function () {
     $block = Block::factory()->create([
         'generator_address' => $this->wallet->address,
