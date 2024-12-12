@@ -577,10 +577,16 @@ it('should force ascending if invalid query string value', function () {
         ]);
 });
 
-it('should handle sorting several pages without cached data xyz', function ($columnSortBy, $modelSortBy) {
+it('should handle sorting several pages without cached data', function ($columnSortBy, $modelSortBy) {
     $validatorData = [];
+
+    $sortByVotesData = [];
+
     foreach (range(1, 145) as $rank) {
         $wallet          = faker()->wallet;
+
+        $sortByVotesData[$wallet['address']] = random_int(10, 100);
+
         $validatorData[] = [
             'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e18,
@@ -590,7 +596,7 @@ it('should handle sorting several pages without cached data xyz', function ($col
             'public_key' => $wallet['publicKey'],
             'attributes' => json_encode([
                 'validatorRank'           => $rank,
-                'validatorVoteBalance'    => random_int(1000, 10000) * 1e18,
+                'validatorVoteBalance' => (string) BigNumber::new($sortByVotesData[$wallet['address']]),
                 'validatorProducedBlocks' => faker()->numberBetween(1, 1000),
                 'validatorMissedBlocks'   => faker()->numberBetween(1, 1000),
             ]),
@@ -624,10 +630,15 @@ it('should handle sorting several pages without cached data xyz', function ($col
 
     $missedBlocks = ForgingStats::all();
 
-    $missedBlocks = $missedBlocks->sort(function ($a, $b) use ($modelSortBy) {
-        $aValue = Arr::get($a, $modelSortBy, 0);
-        $bValue = Arr::get($b, $modelSortBy, 0);
-
+    $missedBlocks = $missedBlocks->sort(function ($a, $b) use ($modelSortBy, $sortByVotesData) {
+        if ($modelSortBy === 'validatorVoteBalance') {
+            $aValue = $sortByVotesData[$a->address];
+            $bValue = $sortByVotesData[$b->address];
+        } else {
+            $aValue = Arr::get($a, $modelSortBy);
+            $bValue = Arr::get($b, $modelSortBy);
+        }
+        
         if (is_numeric($bValue) && is_numeric($aValue)) {
             return (int) $aValue - (int) $bValue;
         }
@@ -653,8 +664,8 @@ it('should handle sorting several pages without cached data xyz', function ($col
     'height'           => ['height', 'missed_height'],
     'age'              => ['age', 'timestamp'],
     'no_of_voters'     => ['no_of_voters', 'timestamp'],
-    // 'votes'            => ['votes', 'timestamp'],
-    // 'percentage_votes' => ['percentage_votes', 'timestamp'],
+    'votes'            => ['votes', 'validatorVoteBalance'],
+    'percentage_votes' => ['percentage_votes', 'validatorVoteBalance'],
 ]);
 
 it('should handle sorting several pages with cached data', function ($columnSortBy, $modelSortBy) {
