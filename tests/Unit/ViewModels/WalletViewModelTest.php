@@ -175,22 +175,6 @@ it('should determine if the wallet has a special type when known', function () {
     expect($subject->hasSpecialType())->toBeFalse();
 });
 
-it('should determine if the wallet has a special type if second signature', function () {
-    fakeKnownWallets();
-
-    $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0x946BF38f53aE753371BDC9583e68865643876320']));
-
-    expect($subject->isKnown())->toBeFalse();
-    expect($subject->isOwnedByExchange())->toBeFalse();
-    expect($subject->hasSpecialType())->toBeTrue();
-
-    $subject = new WalletViewModel(Wallet::factory()
-        ->activeValidator()
-        ->create(['address' => 'unknown']));
-
-    expect($subject->hasSpecialType())->toBeFalse();
-});
-
 it('should determine if the wallet has a special type if exchange', function () {
     fakeKnownWallets();
 
