@@ -17,7 +17,6 @@ use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeKnownWallets;
 use Tests\Stubs\RoundsMock;
@@ -575,7 +574,7 @@ it('should get the vote url with validator', function () {
 
     expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?coin=Mainsail&nethash=');
     expect($this->subject->voteUrl())->toContain('&method=vote');
-    expect($this->subject->voteUrl())->toContain('&validator=' . $this->subject->address());
+    expect($this->subject->voteUrl())->toContain('&validator='.$this->subject->address());
 });
 
 it('should get whether validator is standby', function () {
