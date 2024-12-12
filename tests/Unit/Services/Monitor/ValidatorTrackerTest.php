@@ -23,14 +23,14 @@ it('should calculate the forging order', function () {
 
     $roundHeight = Rounds::current()->round_height;
 
-    $order = ValidatorTracker::execute($validators->pluck('public_key')->toArray(), $roundHeight);
+    $order = ValidatorTracker::execute($validators->pluck('address')->toArray(), $roundHeight);
 
     expect($order)->toHaveCount(Network::validatorCount());
 
-    $publicKeys = $validators->pluck('public_key');
+    $addresses = $validators->pluck('address');
 
     foreach ($order as $validator) {
-        expect($publicKeys)->toContain($validator['publicKey']);
+        expect($addresses)->toContain($validator['address']);
     }
 });
 
@@ -57,7 +57,7 @@ it('should handle no missed block', function () {
 
     $roundHeight = Rounds::current()->round_height;
 
-    $order = ValidatorTracker::execute($validators->pluck('public_key')->toArray(), $roundHeight);
+    $order = ValidatorTracker::execute($validators->pluck('address')->toArray(), $roundHeight);
 
     expect(collect($order)->where('status', 'done')->count())->toBe(51);
     expect(collect($order)->where('status', 'next')->count())->toBe(1);
@@ -81,7 +81,7 @@ it('should handle one missed block', function () {
     for ($i = 0; $i < 3; $i++) {
         createRoundEntry($round, $height, $validators);
         $validatorsOrder = getRoundValidators(false, $round);
-        $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['publicKey'] === $validators->get(4)->public_key);
+        $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['address'] === $validators->get(4)->address);
         if ($validatorIndex < 51) {
             break;
         }
@@ -102,10 +102,10 @@ it('should handle one missed block', function () {
         null,
         $this,
         [
-            $validators->get(4)->public_key,
+            $validators->get(4)->address,
         ],
         [
-            $validators->get(4)->public_key,
+            $validators->get(4)->address,
         ],
         true,
         51,
@@ -113,7 +113,7 @@ it('should handle one missed block', function () {
 
     $roundHeight = Rounds::current()->round_height;
 
-    $order = ValidatorTracker::execute($validators->pluck('public_key')->toArray(), $roundHeight);
+    $order = ValidatorTracker::execute($validators->pluck('address')->toArray(), $roundHeight);
 
     expect(collect($order)->where('status', 'done')->count())->toBe(51);
     expect(collect($order)->where('status', 'next')->count())->toBe(1);
@@ -138,7 +138,7 @@ it('should handle missed blocks', function () {
         createRoundEntry($round, $height, $validators);
         $validatorsOrder = getRoundValidators(false, $round);
         foreach (range(4, 8) as $index) {
-            $validatorIndex = $validatorsOrder->search(fn ($validator) => $validator['publicKey'] === $validators->get($index)->public_key);
+            $validatorIndex = $validatorsOrder->search(fn ($validator) => $validator['address'] === $validators->get($index)->address);
             if ($validatorIndex < 51) {
                 break 2;
             }
@@ -160,18 +160,18 @@ it('should handle missed blocks', function () {
         null,
         $this,
         [
-            $validators->get(4)->public_key,
-            $validators->get(5)->public_key,
-            $validators->get(6)->public_key,
-            $validators->get(7)->public_key,
-            $validators->get(8)->public_key,
+            $validators->get(4)->address,
+            $validators->get(5)->address,
+            $validators->get(6)->address,
+            $validators->get(7)->address,
+            $validators->get(8)->address,
         ],
         [
-            $validators->get(4)->public_key,
-            $validators->get(5)->public_key,
-            $validators->get(6)->public_key,
-            $validators->get(7)->public_key,
-            $validators->get(8)->public_key,
+            $validators->get(4)->address,
+            $validators->get(5)->address,
+            $validators->get(6)->address,
+            $validators->get(7)->address,
+            $validators->get(8)->address,
         ],
         true,
         51,
@@ -179,7 +179,7 @@ it('should handle missed blocks', function () {
 
     $roundHeight = Rounds::current()->round_height;
 
-    $order = ValidatorTracker::execute($validators->pluck('public_key')->toArray(), $roundHeight);
+    $order = ValidatorTracker::execute($validators->pluck('address')->toArray(), $roundHeight);
 
     expect(collect($order)->where('status', 'done')->count())->toBe(51);
     expect(collect($order)->where('status', 'next')->count())->toBe(1);

@@ -10,6 +10,7 @@ use App\Models\Block;
 use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class TransactionFactory extends Factory
@@ -67,9 +68,16 @@ final class TransactionFactory extends Factory
             ]);
     }
 
-    public function multiPayment(): Factory
+    /**
+     * @param array{string} $recipients
+     * @param array{BigNumber} $amounts
+     * @return Factory
+     */
+    public function multiPayment(array $recipients, array $amounts): Factory
     {
-        $method = ContractMethod::multiPayment();
+        $method  = ContractMethod::multiPayment();
+        $method .= implode('', array_map(fn (string $recipient) => str_pad(preg_replace('/^0x/', '', $recipient), 64, '0', STR_PAD_LEFT), $recipients));
+        $method .= implode('', array_map(fn (BigNumber $amount) => str_pad(dechex($amount->toNumber()), 64, '0', STR_PAD_LEFT), $amounts));
 
         return $this->withPayload($method)
             ->state(fn () => [
