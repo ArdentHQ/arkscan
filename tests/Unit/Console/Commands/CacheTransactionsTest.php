@@ -3,57 +3,77 @@
 declare(strict_types=1);
 
 use App\Contracts\Network as NetworkContract;
+use App\Enums\ContractMethod;
 use App\Enums\StatsPeriods;
 use App\Enums\StatsTransactionType;
 use App\Events\Statistics\TransactionDetails;
+use App\Facades\Network;
+use App\Models\Receipt;
 use App\Models\Transaction;
+use App\Services\BigNumber;
 use App\Services\Cache\TransactionCache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Event;
 use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
+function stubNetwork(): void{
+    $networkStub = new NetworkStub(
+        true,
+        Carbon::parse('2024-04-06 15:22:19'),
+    );
+
+    app()->singleton(NetworkContract::class, fn () => $networkStub);
+
+    Network::swap($networkStub);
+}
+
 it('should cache data', function (): void {
     Event::fake();
 
     $this->travelTo(Carbon::parse('2024-04-08 15:22:19'));
 
-    $networkStub = new NetworkStub(true, Carbon::now()->subDay(2));
-    app()->singleton(NetworkContract::class, fn () => $networkStub);
+    stubNetwork();
 
     $cache = new TransactionCache();
 
-    Transaction::factory(2)->validatorRegistration()->create([
+    Transaction::factory(2)->validatorRegistration('0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86')->create([
         'amount' => 0,
-        'fee'    => 9 * 1e8,
+        'gas_price' => 9,
     ]);
+
     Transaction::factory(3)->transfer()->create([
-        'amount' => 2000 * 1e8,
-        'fee'    => 10 * 1e8,
+        'amount' => 2000 * 1e18,
+        'gas_price' => 10,
     ]);
-    Transaction::factory(4)->multiPayment()->create([
-        'amount' => 0,
-        'fee'    => 11 * 1e8,
-        'asset'  => [
-            'payments' => [
-                [
-                    'amount' => 3000 * 1e8,
-                ],
-            ],
-        ],
-    ]);
+
+    Transaction::factory(4)
+        ->multiPayment(['0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86'], [BigNumber::new(3000 * 1e9)])
+        ->create([
+            'amount'    => 0,
+            'gas_price' => 11,
+        ]);
+
     $largestTransaction = Transaction::factory()
         ->transfer()
         ->create([
-            'amount' => 9000 * 1e8,
-            'fee'    => 10 * 1e8,
+            'amount' => 9000 * 1e18,
+            'gas_price' => 10,
         ]);
+
+    foreach (Transaction::all() as $transaction) {
+        Receipt::factory()->create([
+            'id' => $transaction->id,
+            'gas_used' => 1e9,
+        ]);
+    }
 
     expect(Transaction::count())->toBe(10);
 
     $transactionCount = (int) round(10 / 2);
-    $totalAmount      = (int) round(((4 * 3000) + (3 * 2000) + 9000) / 2);
-    $totalFees        = (int) round(((9 * 2) + (10 * 3) + (11 * 4) + 10) / 2);
+    // TODO: include multipayment (4 * 3000) - https://app.clickup.com/t/86dvdvux1
+    $totalAmount      = (int) round(((3 * 2000) + 9000) / 2);
+    $totalFees        = round((9 * 2) + (10 * 3) + (11 * 4) + 10) / 2;
 
     Artisan::call('explorer:cache-transactions');
 
@@ -134,33 +154,30 @@ it('should not trigger event if nothing changed', function (): void {
 
     $this->travelTo(Carbon::parse('2024-04-08 15:22:19'));
 
-    $networkStub = new NetworkStub(true, Carbon::now()->subDay(2));
-    app()->singleton(NetworkContract::class, fn () => $networkStub);
+    stubNetwork();
 
-    Transaction::factory(2)->validatorRegistration()->create([
+    Transaction::factory(2)->validatorRegistration('0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86')->create([
         'amount' => 0,
-        'fee'    => 9 * 1e8,
+        'gas_price' => 9 * 1e8,
     ]);
+
     Transaction::factory(3)->transfer()->create([
         'amount' => 2000 * 1e8,
-        'fee'    => 10 * 1e8,
+        'gas_price' => 10 * 1e8,
     ]);
-    Transaction::factory(4)->multiPayment()->create([
-        'amount' => 0,
-        'fee'    => 11 * 1e8,
-        'asset'  => [
-            'payments' => [
-                [
-                    'amount' => 3000 * 1e8,
-                ],
-            ],
-        ],
-    ]);
+
+    Transaction::factory(4)
+        ->multiPayment(['0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86'], [BigNumber::new(3000 * 1e8)])
+        ->create([
+            'amount'    => 0,
+            'gas_price' => 11 * 1e8,
+        ]);
+
     Transaction::factory()
         ->transfer()
         ->create([
             'amount' => 9000 * 1e8,
-            'fee'    => 10 * 1e8,
+            'gas_price' => 10 * 1e8,
         ]);
 
     Artisan::call('explorer:cache-transactions');
@@ -179,36 +196,32 @@ it('should trigger event if largest transaction has changed', function (): void 
 
     $this->travelTo(Carbon::parse('2024-04-08 15:22:19'));
 
-    $networkStub = new NetworkStub(true, Carbon::now()->subDay(2));
-    app()->singleton(NetworkContract::class, fn () => $networkStub);
+    stubNetwork();
 
     $cache = new TransactionCache();
 
-    Transaction::factory(2)->validatorRegistration()->create([
+    Transaction::factory(2)->validatorRegistration('0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86')->create([
         'amount' => 0,
-        'fee'    => 9 * 1e8,
+        'gas_price' => 9 * 1e8,
     ]);
+
     Transaction::factory(3)->transfer()->create([
         'amount' => 2000 * 1e8,
-        'fee'    => 10 * 1e8,
+        'gas_price' => 10 * 1e8,
     ]);
-    Transaction::factory(4)->multiPayment()->create([
-        'amount' => 0,
-        'fee'    => 11 * 1e8,
-        'asset'  => [
-            'payments' => [
-                [
-                    'amount' => 3000 * 1e8,
-                ],
-            ],
-        ],
-    ]);
+
+    Transaction::factory(4)
+        ->multiPayment(['0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86'], [BigNumber::new(3000 * 1e8)])
+        ->create([
+            'amount'    => 0,
+            'gas_price' => 11 * 1e8,
+        ]);
 
     $largest = Transaction::factory()
         ->transfer()
         ->create([
             'amount' => 9000 * 1e8,
-            'fee'    => 10 * 1e8,
+            'gas_price' => 10 * 1e8,
         ]);
 
     Artisan::call('explorer:cache-transactions');
@@ -223,7 +236,7 @@ it('should trigger event if largest transaction has changed', function (): void 
         ->transfer()
         ->create([
             'amount' => 10000 * 1e8,
-            'fee'    => 10 * 1e8,
+            'gas_price' => 10 * 1e8,
         ]);
 
     Artisan::call('explorer:cache-transactions');
