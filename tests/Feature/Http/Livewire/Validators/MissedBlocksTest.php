@@ -811,15 +811,14 @@ it('should not sort for sqlite databases', function ($sortBy) {
         ->call('setIsReady')
         ->call('sortBy', $sortBy)
         ->assertSeeInOrder([
-            'validator-2',
-            'validator-1',
-            'validator-2',
-            'validator-1',
+            $wallet2->address,
+            $wallet1->address,
+            $wallet2->address,
+            $wallet1->address,
         ]);
 })->with([
     'height',
     'age',
-    'name',
     'no_of_voters',
     'votes',
     'percentage_votes',
