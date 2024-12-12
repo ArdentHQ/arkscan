@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Contracts\Network as NetworkContract;
-use App\Enums\ContractMethod;
 use App\Enums\StatsPeriods;
 use App\Enums\StatsTransactionType;
 use App\Events\Statistics\TransactionDetails;
@@ -17,7 +16,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Event;
 use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
-function stubNetwork(): void{
+function stubNetwork(): void
+{
     $networkStub = new NetworkStub(
         true,
         Carbon::parse('2024-04-06 15:22:19'),
@@ -38,12 +38,12 @@ it('should cache data', function (): void {
     $cache = new TransactionCache();
 
     Transaction::factory(2)->validatorRegistration('0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86')->create([
-        'amount' => 0,
+        'amount'    => 0,
         'gas_price' => 9,
     ]);
 
     Transaction::factory(3)->transfer()->create([
-        'amount' => 2000 * 1e18,
+        'amount'    => 2000 * 1e18,
         'gas_price' => 10,
     ]);
 
@@ -57,13 +57,13 @@ it('should cache data', function (): void {
     $largestTransaction = Transaction::factory()
         ->transfer()
         ->create([
-            'amount' => 9000 * 1e18,
+            'amount'    => 9000 * 1e18,
             'gas_price' => 10,
         ]);
 
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
-            'id' => $transaction->id,
+            'id'       => $transaction->id,
             'gas_used' => 1e9,
         ]);
     }
@@ -157,12 +157,12 @@ it('should not trigger event if nothing changed', function (): void {
     stubNetwork();
 
     Transaction::factory(2)->validatorRegistration('0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86')->create([
-        'amount' => 0,
+        'amount'    => 0,
         'gas_price' => 9 * 1e8,
     ]);
 
     Transaction::factory(3)->transfer()->create([
-        'amount' => 2000 * 1e8,
+        'amount'    => 2000 * 1e8,
         'gas_price' => 10 * 1e8,
     ]);
 
@@ -176,7 +176,7 @@ it('should not trigger event if nothing changed', function (): void {
     Transaction::factory()
         ->transfer()
         ->create([
-            'amount' => 9000 * 1e8,
+            'amount'    => 9000 * 1e8,
             'gas_price' => 10 * 1e8,
         ]);
 
@@ -201,12 +201,12 @@ it('should trigger event if largest transaction has changed', function (): void 
     $cache = new TransactionCache();
 
     Transaction::factory(2)->validatorRegistration('0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86')->create([
-        'amount' => 0,
+        'amount'    => 0,
         'gas_price' => 9 * 1e8,
     ]);
 
     Transaction::factory(3)->transfer()->create([
-        'amount' => 2000 * 1e8,
+        'amount'    => 2000 * 1e8,
         'gas_price' => 10 * 1e8,
     ]);
 
@@ -220,7 +220,7 @@ it('should trigger event if largest transaction has changed', function (): void 
     $largest = Transaction::factory()
         ->transfer()
         ->create([
-            'amount' => 9000 * 1e8,
+            'amount'    => 9000 * 1e8,
             'gas_price' => 10 * 1e8,
         ]);
 
@@ -235,7 +235,7 @@ it('should trigger event if largest transaction has changed', function (): void 
     Transaction::factory()
         ->transfer()
         ->create([
-            'amount' => 10000 * 1e8,
+            'amount'    => 10000 * 1e8,
             'gas_price' => 10 * 1e8,
         ]);
 
