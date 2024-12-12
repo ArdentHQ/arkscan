@@ -53,14 +53,12 @@ it('should show no results message if no missed blocks', function () {
 it('should sort height in ascending order', function () {
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'username'             => 'validator-1',
             'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'username'             => 'validator-2',
             'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
@@ -90,15 +88,13 @@ it('should sort height in ascending order', function () {
 it('should sort height in descending order', function () {
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'username'             => 'validator-1',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'username'             => 'validator-2',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
@@ -118,25 +114,23 @@ it('should sort height in descending order', function () {
         ->call('sortBy', 'height')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            'validator-2',
-            'validator-1',
-            'validator-2',
-            'validator-1',
+            $wallet2->address,
+            $wallet1->address,
+            $wallet2->address,
+            $wallet1->address,
         ]);
 });
 
 it('should sort by age by default', function () {
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'username'             => 'validator-2',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'username'             => 'validator-1',
-            'validatorVoteBalance' => 10000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
         ],
     ]);
 
@@ -155,25 +149,23 @@ it('should sort by age by default', function () {
         ->assertSet('sortKey', 'age')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            'validator-2',
-            'validator-1',
-            'validator-2',
-            'validator-1',
+            $wallet2->address,
+            $wallet1->address,
+            $wallet2->address,
+            $wallet1->address,
         ]);
 });
 
 it('should sort age in ascending order', function () {
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'username'             => 'validator-1',
-            'validatorVoteBalance' => 10000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
         ],
     ]);
 
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
-            'username'             => 'validator-2',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
@@ -193,80 +185,10 @@ it('should sort age in ascending order', function () {
         ->call('sortBy', 'age')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            'validator-1',
-            'validator-2',
-            'validator-1',
-            'validator-2',
-        ]);
-});
-
-it('should sort name in ascending order', function () {
-    $wallet1 = Wallet::factory()->activeValidator()->create([
-        'attributes' => [
-            'username'             => 'validator-1',
-            'validatorVoteBalance' => 10000 * 1e18,
-        ],
-    ]);
-
-    $wallet2 = Wallet::factory()->activeValidator()->create([
-        'attributes' => [
-            'username'             => 'validator-2',
-            'validatorVoteBalance' => 4000 * 1e18,
-        ],
-    ]);
-
-    ForgingStats::factory()->create([
-        'address'    => $wallet1->address,
-    ]);
-
-    ForgingStats::factory()->create([
-        'address'    => $wallet2->address,
-    ]);
-
-    Livewire::test(MissedBlocks::class)
-        ->call('setIsReady')
-        ->call('sortBy', 'name')
-        ->assertSet('sortDirection', SortDirection::ASC)
-        ->assertSeeInOrder([
-            'validator-1',
-            'validator-2',
-            'validator-1',
-            'validator-2',
-        ]);
-});
-
-it('should sort name in descending order', function () {
-    $wallet1 = Wallet::factory()->activeValidator()->create([
-        'attributes' => [
-            'username'             => 'validator-1',
-            'validatorVoteBalance' => 10000 * 1e18,
-        ],
-    ]);
-
-    $wallet2 = Wallet::factory()->activeValidator()->create([
-        'attributes' => [
-            'username'             => 'validator-2',
-            'validatorVoteBalance' => 4000 * 1e18,
-        ],
-    ]);
-
-    ForgingStats::factory()->create([
-        'address'    => $wallet1->address,
-    ]);
-
-    ForgingStats::factory()->create([
-        'address'    => $wallet2->address,
-    ]);
-
-    Livewire::test(MissedBlocks::class)
-        ->call('setIsReady')
-        ->call('sortBy', 'name')
-        ->set('sortDirection', SortDirection::DESC)
-        ->assertSeeInOrder([
-            'validator-2',
-            'validator-1',
-            'validator-2',
-            'validator-1',
+            $wallet1->address,
+            $wallet2->address,
+            $wallet1->address,
+            $wallet2->address,
         ]);
 });
 
@@ -274,21 +196,21 @@ it('should sort number of voters in ascending order', function () {
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-1',
-            'validatorVoteBalance' => 10000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
         ],
     ]);
 
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-2',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
     $walletWithoutVoters = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-3',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
@@ -327,21 +249,21 @@ it('should sort number of voters in descending order', function () {
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-1',
-            'validatorVoteBalance' => 10000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
         ],
     ]);
 
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-2',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
     $walletWithoutVoters = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-3',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
@@ -381,21 +303,21 @@ it('should handle no cached votes when sorting by number of voters', function ()
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-1',
-            'validatorVoteBalance' => 10000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
         ],
     ]);
 
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-2',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
     $walletWithoutVoters = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-3',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
@@ -429,14 +351,14 @@ it('should sort votes & percentage in ascending order', function (string $sortKe
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-1',
-            'validatorVoteBalance' => 10000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
         ],
     ]);
 
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-2',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
@@ -467,14 +389,14 @@ it('should sort votes & percentage in descending order', function (string $sortK
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-1',
-            'validatorVoteBalance' => 10000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
         ],
     ]);
 
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-2',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
@@ -505,7 +427,7 @@ it('should alternate sorting direction', function () {
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-1',
-            'validatorVoteBalance' => 10000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
         ],
     ]);
 
@@ -580,14 +502,14 @@ it('should parse sorting direction from query string', function () {
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-2',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-1',
-            'validatorVoteBalance' => 10000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
         ],
     ]);
 
@@ -626,14 +548,14 @@ it('should force ascending if invalid query string value', function () {
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-2',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-1',
-            'validatorVoteBalance' => 10000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
         ],
     ]);
 
@@ -858,14 +780,14 @@ it('should not sort for sqlite databases', function ($sortBy) {
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-2',
-            'validatorVoteBalance' => 4000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
         ],
     ]);
 
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username'             => 'validator-1',
-            'validatorVoteBalance' => 10000 * 1e18,
+            'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
         ],
     ]);
 
