@@ -212,7 +212,7 @@ it('should determine if the wallet is voting', function () {
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [
-            'vote' => Wallet::factory()->create()->public_key,
+            'vote' => Wallet::factory()->create()->address,
         ],
     ]));
 
@@ -226,7 +226,7 @@ it('should get the wallet of the vote', function () {
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [
-            'vote' => $vote->public_key,
+            'vote' => $vote->address,
         ],
     ]));
 
@@ -254,7 +254,7 @@ it('should fail to get the wallet of the vote if it is not cached', function () 
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [
-            'vote' => $vote->public_key,
+            'vote' => $vote->address,
         ],
     ]));
 
@@ -427,7 +427,7 @@ it('should get the vote weight as percentage', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'balance'    => 1e18,
         'attributes' => [
-            'vote' => $vote->public_key,
+            'vote' => $vote->address,
         ],
     ]));
 
@@ -451,7 +451,7 @@ it('should handle vote weight percentage with 0 vote balance', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'balance'    => 0,
         'attributes' => [
-            'vote' => $vote->public_key,
+            'vote' => $vote->address,
         ],
     ]));
 
@@ -473,7 +473,7 @@ it('should handle vote weight percentage with 1 arktoshi vote balance', function
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'balance'    => 1e18,
-        'attributes' => ['vote' => $vote->public_key],
+        'attributes' => ['vote' => $vote->address],
     ]));
 
     expect($this->subject->votePercentage())->toBeNull();
