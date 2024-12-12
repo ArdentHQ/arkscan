@@ -358,11 +358,11 @@ it('should determine if the validator is missing blocks', function () {
         'validators'   => [$this->wallet->public_key],
     ]);
 
-    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [false, true]);
+    Cache::tags('wallet')->put(md5("performance/{$this->subject->address()}"), [false, true]);
 
     expect($this->subject->keepsMissing())->toBeFalse();
 
-    Cache::tags('wallet')->put(md5("performance/{$this->subject->publicKey()}"), [false, false]);
+    Cache::tags('wallet')->put(md5("performance/{$this->subject->address()}"), [false, false]);
 
     expect($this->subject->keepsMissing())->toBeTrue();
 });
