@@ -38,12 +38,6 @@ it('should find wallets by public keys', function () {
     expect($this->subject->findByPublicKeys([$wallet->public_key]))->toBeInstanceOf(Collection::class);
 });
 
-it('should find a wallet by username', function () {
-    $wallet = Wallet::factory()->create();
-
-    expect($this->subject->findByUsername($wallet->attributes['username']))->toBeInstanceOf(Wallet::class);
-});
-
 it('should find a wallet by identifier', function () {
     $wallet = Wallet::factory()->create();
 
