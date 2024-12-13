@@ -7,16 +7,16 @@ use App\Services\Transactions\Aggregates\LargestTransactionAggregate;
 
 it('should get largest transaction', function () {
     Transaction::factory()->transfer()->create([
-        'amount' => 2000 * 1e18,
-        'fee'    => 10 * 1e18,
+        'amount'    => 2000 * 1e18,
+        'gas_price' => 10 * 1e18,
     ]);
     $transaction = Transaction::factory()->transfer()->create([
-        'amount' => 6000 * 1e18,
-        'fee'    => 10 * 1e18,
+        'amount'    => 6000 * 1e18,
+        'gas_price' => 10 * 1e18,
     ]);
     Transaction::factory()->transfer()->create([
-        'amount' => 3000 * 1e18,
-        'fee'    => 10 * 1e18,
+        'amount'    => 3000 * 1e18,
+        'gas_price' => 10 * 1e18,
     ]);
 
     expect((new LargestTransactionAggregate())->aggregate()->id)->toBe($transaction->id);

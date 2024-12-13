@@ -71,9 +71,10 @@ it('should cache unique addresses', function () {
     ]);
     $transactionTimestamp = Carbon::parse('2024-03-03 13:24:44')->getTimestampMs();
     $transaction          = Transaction::factory()->create([
+        'block_height'      => 1,
         'timestamp'         => $transactionTimestamp,
         'sender_public_key' => $newestWallet1->public_key,
-        'recipient_id'      => $newestWallet1->address,
+        'recipient_address' => $newestWallet1->address,
     ]);
 
     $largest = Wallet::factory()->create([
@@ -90,13 +91,13 @@ it('should cache unique addresses', function () {
     Transaction::factory()->transfer()->create([
         'block_height'      => 143,
         'sender_public_key' => $newest->public_key,
-        'recipient_id'      => $newest->address,
+        'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp,
     ]);
     Transaction::factory()->transfer()->create([
         'block_height'      => 144,
         'sender_public_key' => $newest->public_key,
-        'recipient_id'      => $newest->address,
+        'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp + 1,
     ]);
 
@@ -114,8 +115,8 @@ it('should cache unique addresses', function () {
     ]);
 
     expect($cache->getMostTransactions())->toBe([
-        'address' => $transaction->sender->address,
-        'value'   => 1,
+        'address' => $newest->address,
+        'value'   => 2,
     ]);
 
     expect($cache->getLargestAddress())->toBe([
@@ -131,7 +132,7 @@ it('should cache unique addresses', function () {
     $newestTransaction          = Transaction::factory()->create([
         'timestamp'         => $newestTransactionTimestamp,
         'sender_public_key' => $newestWallet2->public_key,
-        'recipient_id'      => $newestWallet2->address,
+        'recipient_address' => $newestWallet2->address,
     ]);
 
     $this->artisan('explorer:cache-address-statistics');
@@ -169,7 +170,7 @@ it('should should dispatch event if most transactions has changed', function () 
     Transaction::factory()->transfer()->create([
         'block_height'      => 1,
         'sender_public_key' => $genesisWallet->public_key,
-        'recipient_id'      => $genesisWallet->address,
+        'recipient_address' => $genesisWallet->address,
         'timestamp'         => Timestamp::fromUnix(Carbon::parse('2023-04-01 15:04:13')->unix())->unix(),
     ]);
 
@@ -187,13 +188,13 @@ it('should should dispatch event if most transactions has changed', function () 
     Transaction::factory()->transfer()->create([
         'block_height'      => 143,
         'sender_public_key' => $newest->public_key,
-        'recipient_id'      => $newest->address,
+        'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp,
     ]);
     Transaction::factory()->transfer()->create([
         'block_height'      => 144,
         'sender_public_key' => $newest->public_key,
-        'recipient_id'      => $newest->address,
+        'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp + 1,
     ]);
 
@@ -207,7 +208,7 @@ it('should should dispatch event if most transactions has changed', function () 
     Transaction::factory()->transfer()->create([
         'block_height'      => 145,
         'sender_public_key' => $newest->public_key,
-        'recipient_id'      => $newest->address,
+        'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp + 1,
     ]);
 
@@ -227,7 +228,7 @@ it('should should dispatch event if most transactions has changed', function () 
     Transaction::factory(5)->transfer()->create([
         'block_height'      => 146,
         'sender_public_key' => $mostTransactionsWallet->public_key,
-        'recipient_id'      => $mostTransactionsWallet->address,
+        'recipient_address' => $mostTransactionsWallet->address,
         'timestamp'         => $newestTimestamp,
     ]);
 
@@ -247,7 +248,7 @@ it('should should dispatch event if largest has changed', function () {
     Transaction::factory()->transfer()->create([
         'block_height'      => 1,
         'sender_public_key' => $genesisWallet->public_key,
-        'recipient_id'      => $genesisWallet->address,
+        'recipient_address' => $genesisWallet->address,
         'timestamp'         => Timestamp::fromUnix(Carbon::parse('2023-04-01 15:04:13')->unix())->unix(),
     ]);
 
@@ -265,13 +266,13 @@ it('should should dispatch event if largest has changed', function () {
     Transaction::factory()->transfer()->create([
         'block_height'      => 143,
         'sender_public_key' => $newest->public_key,
-        'recipient_id'      => $newest->address,
+        'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp,
     ]);
     Transaction::factory()->transfer()->create([
         'block_height'      => 144,
         'sender_public_key' => $newest->public_key,
-        'recipient_id'      => $newest->address,
+        'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp + 1,
     ]);
 
@@ -312,7 +313,7 @@ it('should not dispatch events if nothing changed', function () {
     Transaction::factory()->transfer()->create([
         'block_height'      => 1,
         'sender_public_key' => $genesisWallet->public_key,
-        'recipient_id'      => $genesisWallet->address,
+        'recipient_address' => $genesisWallet->address,
         'timestamp'         => Timestamp::fromUnix(Carbon::parse('2023-04-01 15:04:13')->unix())->unix(),
     ]);
 
@@ -330,13 +331,13 @@ it('should not dispatch events if nothing changed', function () {
     Transaction::factory()->transfer()->create([
         'block_height'      => 143,
         'sender_public_key' => $newest->public_key,
-        'recipient_id'      => $newest->address,
+        'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp,
     ]);
     Transaction::factory()->transfer()->create([
         'block_height'      => 144,
         'sender_public_key' => $newest->public_key,
-        'recipient_id'      => $newest->address,
+        'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp + 1,
     ]);
 
@@ -362,7 +363,7 @@ it('should cache newest address only since last run', function () {
     ]);
 
     Transaction::factory()->create([
-        'recipient_id'      => $wallet1->address,
+        'recipient_address' => $wallet1->address,
         'sender_public_key' => $wallet1->public_key,
     ]);
 
@@ -383,7 +384,7 @@ it('should cache newest address only since last run', function () {
     ]);
 
     Transaction::factory()->create([
-        'recipient_id'      => $wallet2->address,
+        'recipient_address' => $wallet2->address,
         'sender_public_key' => $wallet2->public_key,
         'timestamp'         => Carbon::parse('2024-04-18 13:23:44')->getTimestampMs(),
     ]);
@@ -400,7 +401,7 @@ it('should cache newest address only since last run', function () {
     ]);
 
     Transaction::factory()->create([
-        'recipient_id'      => $wallet3->address,
+        'recipient_address' => $wallet3->address,
         'sender_public_key' => $wallet3->public_key,
         'timestamp'         => Carbon::parse('2024-04-20 13:23:44')->getTimestampMs(),
     ]);
@@ -415,7 +416,7 @@ it('should cache newest address only since last run', function () {
     ]);
 
     Transaction::factory()->create([
-        'recipient_id'      => $wallet4->address,
+        'recipient_address' => $wallet4->address,
         'sender_public_key' => $wallet4->public_key,
         'timestamp'         => Carbon::parse('2024-04-15 13:23:44')->getTimestampMs(), // prior to most recent wallet's timestamp
     ]);
@@ -430,7 +431,7 @@ it('should cache newest address only since last run', function () {
     ]);
 
     Transaction::factory()->create([
-        'recipient_id'      => $wallet5->address,
+        'recipient_address' => $wallet5->address,
         'sender_public_key' => $wallet5->public_key,
         'timestamp'         => Carbon::parse('2024-04-20 13:23:44')->getTimestampMs(),
     ]);
