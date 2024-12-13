@@ -6,12 +6,14 @@ use App\Facades\Network;
 use App\Http\Livewire\WalletTransactionTable;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\NumberFormatter;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Livewire\Livewire;
 use function Tests\fakeCryptoCompare;
+use function Tests\faker;
 
 beforeEach(function () {
     fakeCryptoCompare();
@@ -324,9 +326,11 @@ it('should filter by multipayment transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $multiPayment = Transaction::factory()->multiPayment()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
+    $multiPayment = Transaction::factory()
+        ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+        ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
@@ -734,9 +738,11 @@ it('should show no transactions if no type filter', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $validatorRegistration = Transaction::factory()->validatorRegistration()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
+    $validatorRegistration = Transaction::factory()
+        ->validatorRegistration()
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+        ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
