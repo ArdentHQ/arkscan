@@ -14,15 +14,7 @@ it('should cache largest block by amount', function () {
 
     $cache = new BlockCache();
 
-    Transaction::factory()->create(['amount' => 0]);
-
-    $largestBlock = Block::factory()->create();
-    Transaction::factory()->create([
-        'amount'   => 1000 * 1e8,
-        'block_id' => $largestBlock->id,
-    ]);
-
-    Transaction::factory()->create(['amount' => 0]);
+    $largestBlock = Block::factory()->create(['total_amount' => 100 * 1e8]);
 
     (new CacheBlocks())->handle($cache);
 
@@ -97,20 +89,19 @@ it('should trigger event if largest block by amount changes', function () {
     $cache = new BlockCache();
 
     $largestByAmount = Block::factory()->create([
+        'total_amount'           => 1000 * 1e8,
         'total_fee'              => 1 * 1e8,
         'number_of_transactions' => 1,
     ]);
-    Transaction::factory()->create([
-        'amount'   => 1000 * 1e8,
-        'block_id' => $largestByAmount->id,
-    ]);
 
     $largestByFees = Block::factory()->create([
+        'total_amount'           => 100 * 1e8,
         'total_fee'              => 100 * 1e8,
         'number_of_transactions' => 1,
     ]);
 
     $largestByTransactions = Block::factory()->create([
+        'total_amount'           => 1 * 1e8,
         'total_fee'              => 1 * 1e8,
         'number_of_transactions' => 3,
     ]);
@@ -151,20 +142,19 @@ it('should trigger event if largest block by fee changes', function () {
     $cache = new BlockCache();
 
     $largestByAmount = Block::factory()->create([
+        'total_amount'           => 1000 * 1e8,
         'total_fee'              => 1 * 1e8,
         'number_of_transactions' => 1,
     ]);
-    Transaction::factory()->create([
-        'amount'   => 1000 * 1e8,
-        'block_id' => $largestByAmount->id,
-    ]);
 
     $largestByFees = Block::factory()->create([
+        'total_amount'           => 100 * 1e8,
         'total_fee'              => 100 * 1e8,
         'number_of_transactions' => 1,
     ]);
 
     $largestByTransactions = Block::factory()->create([
+        'total_amount'           => 1 * 1e8,
         'total_fee'              => 1 * 1e8,
         'number_of_transactions' => 3,
     ]);
@@ -201,20 +191,19 @@ it('should trigger event if largest block by transaction count changes', functio
     $cache = new BlockCache();
 
     $largestByAmount = Block::factory()->create([
+        'total_amount'           => 1000 * 1e8,
         'total_fee'              => 1 * 1e8,
         'number_of_transactions' => 1,
     ]);
-    Transaction::factory()->create([
-        'amount'   => 1000 * 1e8,
-        'block_id' => $largestByAmount->id,
-    ]);
 
     $largestByFees = Block::factory()->create([
+        'total_amount'           => 100 * 1e8,
         'total_fee'              => 100 * 1e8,
         'number_of_transactions' => 1,
     ]);
 
     $largestByTransactions = Block::factory()->create([
+        'total_amount'           => 1 * 1e8,
         'total_fee'              => 1 * 1e8,
         'number_of_transactions' => 3,
     ]);
