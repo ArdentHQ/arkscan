@@ -135,7 +135,7 @@ describe('Monitor', function () {
             ->call('setIsReady')
             ->call('pollValidators');
 
-        expect((new WalletCache())->getLastBlock($wallets->first()->public_key))->toBe([]);
+        expect((new WalletCache())->getLastBlock($wallets->first()->address))->toBe([]);
 
         foreach ($wallets->skip(1) as $wallet) {
             expect((new WalletCache())->getLastBlock($wallet->address))->not()->toBe([]);
@@ -413,17 +413,17 @@ describe('Monitor', function () {
         ], $this);
 
         createPartialRound($round, $height, null, $this, [
-            $validators->get(4)->public_key,
-            $validators->get(5)->public_key,
-            $validators->get(6)->public_key,
-            $validators->get(7)->public_key,
-            $validators->get(8)->public_key,
+            $validators->get(4)->address,
+            $validators->get(5)->address,
+            $validators->get(6)->address,
+            $validators->get(7)->address,
+            $validators->get(8)->address,
         ], [
-            $validators->get(4)->public_key,
-            $validators->get(5)->public_key,
-            $validators->get(6)->public_key,
-            $validators->get(7)->public_key,
-            $validators->get(8)->public_key,
+            $validators->get(4)->address,
+            $validators->get(5)->address,
+            $validators->get(6)->address,
+            $validators->get(7)->address,
+            $validators->get(8)->address,
         ], true, 53);
 
         expect($height)->toBe((3 * Network::validatorCount()) - 4);
@@ -456,17 +456,17 @@ describe('Monitor', function () {
         ], $this);
 
         createPartialRound($round, $height, 52, $this, [
-            $validators->get(4)->public_key,
-            $validators->get(5)->public_key,
-            $validators->get(6)->public_key,
-            $validators->get(7)->public_key,
-            $validators->get(8)->public_key,
+            $validators->get(4)->address,
+            $validators->get(5)->address,
+            $validators->get(6)->address,
+            $validators->get(7)->address,
+            $validators->get(8)->address,
         ], [
-            $validators->get(4)->public_key,
-            $validators->get(5)->public_key,
-            $validators->get(6)->public_key,
-            $validators->get(7)->public_key,
-            $validators->get(8)->public_key,
+            $validators->get(4)->address,
+            $validators->get(5)->address,
+            $validators->get(6)->address,
+            $validators->get(7)->address,
+            $validators->get(8)->address,
         ]);
 
         $component = Livewire::test(Monitor::class)
@@ -497,23 +497,23 @@ describe('Monitor', function () {
         ], $this);
 
         [$validators, $round, $height] = createPartialRound($round, $height, null, $this, [
-            $validators->get(4)->public_key,
-            $validators->get(5)->public_key,
-            $validators->get(6)->public_key,
-            $validators->get(7)->public_key,
-            $validators->get(8)->public_key,
+            $validators->get(4)->address,
+            $validators->get(5)->address,
+            $validators->get(6)->address,
+            $validators->get(7)->address,
+            $validators->get(8)->address,
         ], [
-            $validators->get(4)->public_key,
-            $validators->get(5)->public_key,
-            $validators->get(6)->public_key,
-            $validators->get(7)->public_key,
-            $validators->get(8)->public_key,
+            $validators->get(4)->address,
+            $validators->get(5)->address,
+            $validators->get(6)->address,
+            $validators->get(7)->address,
+            $validators->get(8)->address,
         ], true, 53);
 
         $validators = getRoundValidators(false, $round - 1);
 
-        createBlock($height, $validators->get(0)['publicKey'], $this);
-        createBlock($height + 1, $validators->get(1)['publicKey'], $this);
+        createBlock($height, $validators->get(0)['address'], $this);
+        createBlock($height + 1, $validators->get(1)['address'], $this);
 
         $component = Livewire::test(Monitor::class)
             ->call('setIsReady')
@@ -543,29 +543,29 @@ describe('Monitor', function () {
         ], $this);
 
         [$validators, $round, $height, $totalMissedSeconds] = createPartialRound($round, $height, null, $this, [
-            $validators->get(4)->public_key,
-            $validators->get(5)->public_key,
-            $validators->get(6)->public_key,
-            $validators->get(7)->public_key,
-            $validators->get(8)->public_key,
+            $validators->get(4)->address,
+            $validators->get(5)->address,
+            $validators->get(6)->address,
+            $validators->get(7)->address,
+            $validators->get(8)->address,
         ], [
-            $validators->get(4)->public_key,
-            $validators->get(5)->public_key,
-            $validators->get(6)->public_key,
-            $validators->get(7)->public_key,
-            $validators->get(8)->public_key,
+            $validators->get(4)->address,
+            $validators->get(5)->address,
+            $validators->get(6)->address,
+            $validators->get(7)->address,
+            $validators->get(8)->address,
         ], true, 53);
 
         $validators = getRoundValidators(false, $round - 1);
 
         // Overflow slot 1
-        createBlock($height, $validators->get(0)['publicKey'], $this);
+        createBlock($height, $validators->get(0)['address'], $this);
 
         // Overflow slot 2
         $this->travel(Network::blockTime() + 2)->seconds();
 
         // Overflow slot 3
-        createBlock($height + 1, $validators->get(2)['publicKey'], $this);
+        createBlock($height + 1, $validators->get(2)['address'], $this);
 
         $overflowForgeTime = Carbon::parse('2024-02-01 14:00:00Z')->addSeconds((Network::blockTime() * (Network::validatorCount() + 4)) + $totalMissedSeconds + 2);
 
@@ -607,9 +607,9 @@ describe('Monitor', function () {
         ], $this);
 
         [$validators, $round, $height] = createPartialRound($round, $height, null, $this, [
-            $validators->get(44)->public_key,
+            $validators->get(44)->address,
         ], [
-            $validators->get(44)->public_key,
+            $validators->get(44)->address,
         ], true, 49);
 
         expect($height)->toBe((3 * Network::validatorCount()) - 4);
@@ -739,7 +739,7 @@ describe('Data Boxes', function () {
         $validatorWallet = Wallet::first();
         $validator       = new WalletViewModel($validatorWallet);
 
-        expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBe(ValidatorForgingStatus::forging);
+        expect($component->instance()->getValidatorPerformance($validator->address()))->toBe(ValidatorForgingStatus::forging);
     });
 
     it('should determine if validators are not forging based on their round history', function () {
@@ -765,7 +765,7 @@ describe('Data Boxes', function () {
 
         expect($validator->performance())->toBe([false, false]);
 
-        expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBe(ValidatorForgingStatus::missing);
+        expect($component->instance()->getValidatorPerformance($validator->address()))->toBe(ValidatorForgingStatus::missing);
     });
 
     it('should determine if validators are forging after missing 4 slots based on their round history', function () {
@@ -778,7 +778,7 @@ describe('Data Boxes', function () {
         $validatorWallet = Wallet::first();
         $validator       = new WalletViewModel($validatorWallet);
 
-        expect($component->instance()->getValidatorPerformance($validator->publicKey()))->toBe(ValidatorForgingStatus::forging);
+        expect($component->instance()->getValidatorPerformance($validator->address()))->toBe(ValidatorForgingStatus::forging);
     });
 
     it('should return the block count', function () {
@@ -813,29 +813,29 @@ describe('Data Boxes', function () {
         ], $this);
 
         [$validators, $round, $height] = createPartialRound($round, $height, null, $this, [
-            $validators->get(4)->public_key,
-            $validators->get(5)->public_key,
-            $validators->get(6)->public_key,
-            $validators->get(7)->public_key,
-            $validators->get(8)->public_key,
+            $validators->get(4)->address,
+            $validators->get(5)->address,
+            $validators->get(6)->address,
+            $validators->get(7)->address,
+            $validators->get(8)->address,
         ], [
-            $validators->get(4)->public_key,
-            $validators->get(5)->public_key,
-            $validators->get(6)->public_key,
-            $validators->get(7)->public_key,
-            $validators->get(8)->public_key,
+            $validators->get(4)->address,
+            $validators->get(5)->address,
+            $validators->get(6)->address,
+            $validators->get(7)->address,
+            $validators->get(8)->address,
         ], true, 53);
 
         $validators = getRoundValidators(false, $round - 1);
 
         // Overflow slot 1
-        createBlock($height, $validators->get(0)['publicKey'], $this);
+        createBlock($height, $validators->get(0)['address'], $this);
 
         // Overflow slot 2
         $this->travel(Network::blockTime() + 2)->seconds();
 
         // Overflow slot 3
-        createBlock($height + 1, $validators->get(2)['publicKey'], $this);
+        createBlock($height + 1, $validators->get(2)['address'], $this);
 
         $component = Livewire::test(Monitor::class)
             ->call('setIsReady')
@@ -844,7 +844,7 @@ describe('Data Boxes', function () {
         $instance = $component->instance();
 
         expect($instance->getNextValidator())->toBeInstanceOf(WalletViewModel::class);
-        expect($instance->getNextValidator()->publicKey())->toBe($validators->get(4)['publicKey']);
+        expect($instance->getNextValidator()->address())->toBe($validators->get(4)['address']);
     });
 
     it('should not error if no cached validator data', function () {
@@ -910,7 +910,7 @@ describe('Data Boxes', function () {
         for ($i = 0; $i < 3; $i++) {
             createRoundEntry($round, $height, $validators);
             $validatorsOrder = getRoundValidators(false, $round);
-            $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['publicKey'] === $validators->get(4)->public_key);
+            $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['address'] === $validators->get(4)->address);
             if ($validatorIndex < 51) {
                 break;
             }
@@ -925,7 +925,7 @@ describe('Data Boxes', function () {
             ], $this);
         }
 
-        createPartialRound($round, $height, 51, $this, [], [$validators->get(4)->public_key]);
+        createPartialRound($round, $height, 51, $this, [], [$validators->get(4)->address]);
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, true]);
 
@@ -988,7 +988,7 @@ describe('Data Boxes', function () {
         for ($i = 0; $i < 3; $i++) {
             createRoundEntry($round, $height, $validators);
             $validatorsOrder = getRoundValidators(false, $round);
-            $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['publicKey'] === $validators->get(4)->public_key);
+            $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['address'] === $validators->get(4)->address);
             if ($validatorIndex < 51) {
                 break;
             }
@@ -998,7 +998,7 @@ describe('Data Boxes', function () {
             ], $this);
         }
 
-        createPartialRound($round, $height, 51, $this, [$validators->get(4)->public_key], [$validators->get(4)->public_key]);
+        createPartialRound($round, $height, 51, $this, [$validators->get(4)->address], [$validators->get(4)->address]);
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);
 
@@ -1073,7 +1073,7 @@ describe('Data Boxes', function () {
         for ($i = 0; $i < 3; $i++) {
             createRoundEntry($round, $height, $validators);
             $validatorsOrder = getRoundValidators(false, $round);
-            $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['publicKey'] === $validators->get(4)->public_key);
+            $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['address'] === $validators->get(4)->address);
             if ($validatorIndex < 51) {
                 break;
             }
@@ -1087,7 +1087,7 @@ describe('Data Boxes', function () {
             ], $this);
         }
 
-        createPartialRound($round, $height, 51, $this, [$validators->get(4)->public_key], [$validators->get(4)->public_key]);
+        createPartialRound($round, $height, 51, $this, [$validators->get(4)->address], [$validators->get(4)->address]);
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, false]);
 
