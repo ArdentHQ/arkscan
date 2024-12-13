@@ -13,7 +13,7 @@ it('should determine if the transaction is confirmed', function () {
     $transaction = Transaction::factory()->create([
         'block_height'      => 1000,
         'sender_public_key' => Wallet::factory()->create(['address' => 'sender'])->public_key,
-        'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
+        'recipient_address'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]);
 
     expect((new TransactionState($transaction))->isConfirmed())->toBeTrue();
@@ -25,7 +25,7 @@ it('should determine if the transaction is not confirmed', function () {
     $transaction = Transaction::factory()->create([
         'block_height'      => 999,
         'sender_public_key' => Wallet::factory()->create(['address' => 'sender'])->public_key,
-        'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
+        'recipient_address'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]);
 
     expect((new TransactionState($transaction))->isConfirmed())->toBeFalse();
