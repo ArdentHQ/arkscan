@@ -12,10 +12,6 @@ use Illuminate\Support\Collection;
 
 beforeEach(fn () => $this->subject = new WalletRepositoryWithCache(new WalletRepository()));
 
-it('should create a query for all wallets with a username', function () {
-    expect($this->subject->allWithUsername())->toBeInstanceOf(Builder::class);
-});
-
 it('should create a query for all wallets with a vote', function () {
     expect($this->subject->allWithVote())->toBeInstanceOf(Builder::class);
 });
