@@ -36,7 +36,6 @@ it('should find wallets by public keys', function () {
     expect($this->subject->findByPublicKeys([$wallet->public_key]))->toBeInstanceOf(Collection::class);
 });
 
-
 it('should find a wallet by identifier if could be public key', function () {
     $wallet = Wallet::factory()->create();
 
