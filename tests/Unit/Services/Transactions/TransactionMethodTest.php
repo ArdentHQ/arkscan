@@ -40,7 +40,7 @@ it('should determine the type', function (string $type, string $expected) {
 ]);
 
 it('should determine the type with vote', function () {
-    $validator    = Wallet::factory()->activeValidator()->create();
+    $validator         = Wallet::factory()->activeValidator()->create();
     $transaction       = Transaction::factory()->vote($validator->address)->create();
     $transactionMethod = new TransactionMethod($transaction);
 
