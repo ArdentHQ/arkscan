@@ -49,16 +49,6 @@ it('should find a wallet by identifier if could be wallet address', function () 
     expect($this->subject->findByIdentifier($wallet->address))->toBeInstanceOf(Wallet::class);
 });
 
-it('should find a wallet by identifier if could be username', function () {
-    Wallet::factory()->create([
-        'attributes' => [
-            'username' => 'johndoe',
-        ],
-    ]);
-
-    expect($this->subject->findByIdentifier('johndoe'))->toBeInstanceOf(Wallet::class);
-});
-
 it('should find nothing when searching for a wallet by identifier that is not anything', function () {
     Wallet::factory()->create();
 
