@@ -14,7 +14,6 @@ use App\ViewModels\ViewModelFactory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
-
 use function Tests\faker;
 
 it('should list the first page of records', function () {

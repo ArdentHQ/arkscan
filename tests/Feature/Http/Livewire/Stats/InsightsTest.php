@@ -28,9 +28,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
-use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
-
 use function Tests\faker;
+use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
 it('should render transaction details', function (): void {
     $wallet = Wallet::factory()->activeValidator()->create();
