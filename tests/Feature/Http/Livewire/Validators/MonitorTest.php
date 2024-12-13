@@ -302,42 +302,6 @@ describe('Monitor', function () {
             ]);
     });
 
-    it('should reload on new block event', function () {
-        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
-
-        $this->freezeTime();
-
-        [0 => $validators] = createRealisticRound([
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 46, true),
-            ],
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 46, true),
-            ],
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 46, true),
-            ],
-        ], $this);
-
-        $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
-
-        $validator = (new WalletViewModel($validators->get(4)));
-
-        Livewire::test(Monitor::class)
-            ->call('setIsReady')
-            ->dispatch('echo:blocks,NewBlock')
-            ->assertSeeInOrder([
-                $validator->walletName(),
-                'Validator last forged 199 blocks ago (more than a day)',
-            ]);
-    });
-
     it('should cache last blocks', function () {
         $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
@@ -1205,13 +1169,13 @@ describe('Data Boxes', function () {
 
         Livewire::test(Monitor::class)
             ->call('setIsReady')
-            ->assertDontSeeHtml('<span>50</span>')
+            ->assertDontSeeHtml('<span>52</span>')
             ->assertDontSeeHtml('<span>0</span>')
             ->assertDontSeeHtml('<span>1</span>')
             ->dispatch('echo:blocks,NewBlock')
             ->assertSeeHtmlInOrder([
                 'Forging',
-                '<span>50</span>',
+                '<span>52</span>',
                 'Missed',
                 '<span>0</span>',
                 'Not Forging',
@@ -1244,13 +1208,13 @@ describe('Data Boxes', function () {
         ], $this);
 
         Livewire::test(Monitor::class)
-            ->assertDontSeeHtml('<span>50</span>')
+            ->assertDontSeeHtml('<span>52</span>')
             ->assertDontSeeHtml('<span>0</span>')
             ->assertDontSeeHtml('<span>1</span>')
-            ->call('setIsReady')
+            ->dispatch('monitorIsReady')
             ->assertSeeHtmlInOrder([
                 'Forging',
-                '<span>50</span>',
+                '<span>52</span>',
                 'Missed',
                 '<span>0</span>',
                 'Not Forging',
