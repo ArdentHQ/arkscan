@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Livewire\Stats\CurrentAverageFee;
+use App\Models\Receipt;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
@@ -13,14 +14,33 @@ beforeEach(function () {
 });
 
 it('should render the component', function () {
-    Transaction::factory(5)->create();
+    Transaction::factory()->create([
+        'amount'    => 0,
+        'gas_price' => 100,
+    ]);
+
+    Transaction::factory()->create([
+        'amount'    => 0,
+        'gas_price' => 1,
+    ]);
+
+    Transaction::factory(5)->create([
+        'gas_price' => 50.2,
+    ]);
+
+    foreach (Transaction::all() as $transaction) {
+        Receipt::factory()->create([
+            'id'       => $transaction->id,
+            'gas_used' => 1e9,
+        ]);
+    }
 
     Artisan::call('explorer:cache-fees');
 
     Livewire::test(CurrentAverageFee::class)
         ->set('transactionType', 'transfer')
         ->assertSee(trans('pages.statistics.information-cards.current-average-fee', ['type' => 'Transfer']))
-        ->assertSee('50.2 DARK')
+        ->assertSee('50.28571429 DARK')
         ->assertSee(trans('pages.statistics.information-cards.min-fee'))
         ->assertSee('1 DARK')
         ->assertSee(trans('pages.statistics.information-cards.max-fee'))

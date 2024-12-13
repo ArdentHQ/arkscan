@@ -11,8 +11,10 @@ use App\Enums\StatsTransactionType;
 use App\Facades\Settings;
 use App\Http\Livewire\Stats\Insights;
 use App\Models\Block;
+use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\BlockCache;
 use App\Services\Cache\CryptoDataCache;
@@ -26,47 +28,47 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
+use function Tests\faker;
 use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
 it('should render transaction details', function (): void {
+    $wallet = Wallet::factory()->activeValidator()->create();
+
     Transaction::factory(12)->validatorRegistration()->create();
     Transaction::factory(13)->validatorResignation()->create();
-    Transaction::factory(14)->transfer()->create([
-        'amount' => 1 * 1e18,
-    ]);
-    Transaction::factory(15)->vote()->create();
+    Transaction::factory(14)->transfer()->create(['amount' => 1 * 1e18]);
+    Transaction::factory(15)->vote($wallet['address'])->create();
     Transaction::factory(16)->unvote()->create();
+    Transaction::factory(19)->usernameRegistration('test')->create();
+    Transaction::factory(20)->usernameResignation()->create();
 
-    $largest = Transaction::factory()->multiPayment()->create([
-        'amount' => 99 * 1e18,
-        'fee'    => 11 * 1e18,
-        'asset'  => [
-            'payments' => [
-                [
-                    'amount' => 99 * 1e18,
-                ],
-            ],
-        ],
-    ]);
+    $largest = Transaction::factory()
+        ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
+        ->create([
+            'amount'    => 9999 * 1e18,
+            'gas_price' => 11 * 1e18,
+        ]);
 
-    Transaction::factory(17)->multiPayment()->create([
-        'amount' => 2 * 1e18,
-        'fee'    => 11 * 1e18,
-        'asset'  => [
-            'payments' => [
-                [
-                    'amount' => 2 * 1e18,
-                ],
-            ],
-        ],
-    ]);
+    Transaction::factory(17)
+        ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
+        ->create([
+            'amount'    => 2 * 1e18,
+            'gas_price' => 11 * 1e18,
+        ]);
+
+    foreach (Transaction::all() as $transaction) {
+        Receipt::factory()->create([
+            'id'       => $transaction->id,
+            'gas_used' => 1e9,
+        ]);
+    }
 
     $transactionCache = new TransactionCache();
     $transactionCache->getCache()->flush();
 
     Artisan::call('explorer:cache-transactions');
 
-    $largestTransaction = Transaction::find($largest->id);
+    $largestTransaction = $largest->fresh();
 
     $transactionDetails = TransactionStatistics::make(
         [
@@ -76,13 +78,14 @@ it('should render transaction details', function (): void {
             'unvote'                 => 16,
             'validator_registration' => 12,
             'validator_resignation'  => 13,
+            'username_registration'  => 19,
+            'username_resignation'   => 20,
         ],
         TransactionAveragesStatistics::make($transactionCache->getHistoricalAverages()),
         TransactionRecordsStatistics::make($largestTransaction),
     );
 
-    Livewire::test(Insights::class)
-        ->assertViewHas('transactionDetails', $transactionDetails)
+    $component = Livewire::test(Insights::class)
         ->assertSeeInOrder([
             trans('pages.statistics.insights.transactions.header.transfer'),
             '14',
@@ -96,7 +99,17 @@ it('should render transaction details', function (): void {
             '12',
             trans('pages.statistics.insights.transactions.header.validator_resignation'),
             '13',
+            trans('pages.statistics.insights.transactions.header.username_registration'),
+            '19',
+            trans('pages.statistics.insights.transactions.header.username_resignation'),
+            '20',
         ]);
+
+    $actualTransactionDetails = $component->viewData('transactionDetails');
+
+    expect($actualTransactionDetails->details)->toEqual($transactionDetails->details);
+    expect($actualTransactionDetails->averages)->toEqual($transactionDetails->averages);
+    expect($actualTransactionDetails->records->largestTransaction->id())->toEqual($transactionDetails->records->largestTransaction->id());
 });
 
 it('should render transaction daily average', function (): void {
@@ -106,29 +119,33 @@ it('should render transaction daily average', function (): void {
     $transactionCache = new TransactionCache();
 
     Transaction::factory(2)->validatorRegistration()->create([
-        'amount' => 0,
-        'fee'    => 9 * 1e18,
+        'amount'    => 0,
+        'gas_price' => 9 * 1e18,
     ]);
+
     Transaction::factory(3)->transfer()->create([
-        'amount' => 2000 * 1e18,
-        'fee'    => 10 * 1e18,
+        'amount'    => 2000 * 1e18,
+        'gas_price' => 10 * 1e18,
     ]);
-    Transaction::factory(4)->multiPayment()->create([
-        'amount' => 3000 * 1e18,
-        'fee'    => 11 * 1e18,
-        'asset'  => [
-            'payments' => [
-                [
-                    'amount' => 3000 * 1e18,
-                ],
-            ],
-        ],
-    ]);
+
+    Transaction::factory(4)
+        ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
+        ->create([
+            'amount'    => 3000 * 1e18,
+            'gas_price' => 11 * 1e18,
+        ]);
+
+    foreach (Transaction::all() as $transaction) {
+        Receipt::factory()->create([
+            'id'       => $transaction->id,
+            'gas_used' => 1e9,
+        ]);
+    }
 
     expect(Transaction::count())->toBe(9);
 
     $transactionCount = (int) round(9 / 2);
-    $totalAmount      = (int) round(((4 * 3000) + (3 * 2000)) / 2);
+    $totalAmount      = (int) round(((3000 * 4) + (3 * 2000)) / 2);
     $totalFees        = (int) round(((9 * 2) + (10 * 3) + (11 * 4)) / 2);
 
     Artisan::call('explorer:cache-transactions');
@@ -141,8 +158,7 @@ it('should render transaction daily average', function (): void {
         TransactionRecordsStatistics::make(Transaction::find($transactionCache->getLargestIdByAmount())),
     );
 
-    Livewire::test(Insights::class)
-        ->assertViewHas('transactionDetails', $transactionDetails)
+    $component = Livewire::test(Insights::class)
         ->assertSeeInOrder([
             trans('pages.statistics.insights.transactions.header.transfer'),
             trans('pages.statistics.insights.transactions.header.multipayment'),
@@ -157,6 +173,12 @@ it('should render transaction daily average', function (): void {
             trans('pages.statistics.insights.transactions.header.transaction_fees'),
             number_format($totalFees).' DARK',
         ]);
+
+    $actualTransactionDetails = $component->viewData('transactionDetails');
+
+    expect($actualTransactionDetails->details)->toEqual($transactionDetails->details);
+    expect($actualTransactionDetails->averages)->toEqual($transactionDetails->averages);
+    expect($actualTransactionDetails->records->largestTransaction->id())->toEqual($transactionDetails->records->largestTransaction->id());
 });
 
 it('should render transaction records', function (): void {
@@ -246,11 +268,11 @@ it('should render validator statistics', function (): void {
     $randomWallet       = Wallet::factory()->activeValidator()->create();
 
     $cache = new StatisticsCache();
-    $cache->setMostUniqueVoters($walletMostUnique->public_key);
-    $cache->setLeastUniqueVoters($walletLeastUnique->public_key);
-    $cache->setOldestActiveValidator($walletOldestActive->public_key, $currentDate->subMonth()->timestamp);
-    $cache->setNewestActiveValidator($walletNewestActive->public_key, $currentDate->timestamp);
-    $cache->setMostBlocksForged($walletMostBlocks->public_key);
+    $cache->setMostUniqueVoters($walletMostUnique->address);
+    $cache->setLeastUniqueVoters($walletLeastUnique->address);
+    $cache->setOldestActiveValidator($walletOldestActive->address, $currentDate->subMonth()->timestamp);
+    $cache->setNewestActiveValidator($walletNewestActive->address, $currentDate->timestamp);
+    $cache->setMostBlocksForged($walletMostBlocks->address);
 
     Livewire::test(Insights::class)
         ->assertSeeInOrder([

@@ -7,12 +7,14 @@ use App\Http\Livewire\TransactionTable;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
+use function Tests\faker;
 
 it('should list the first page of records', function () {
     Transaction::factory(30)->transfer()->create([
@@ -164,7 +166,9 @@ it('should filter by transfer transactions', function () {
 it('should filter by multipayment transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $multipayment = Transaction::factory()->multiPayment()->create();
+    $multipayment = Transaction::factory()
+        ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
+        ->create();
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')

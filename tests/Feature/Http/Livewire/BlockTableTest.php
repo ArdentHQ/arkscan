@@ -9,6 +9,7 @@ use App\Models\Block;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\TransactionViewModel;
@@ -85,7 +86,7 @@ it('should update the records fiat tooltip when currency changed', function () {
         )
         ->concat(
             Transaction::factory(10)
-                ->multiPayment()
+                ->multiPayment([$wallet->address], [BigNumber::new(1e18)])
                 ->create([
                     'block_id'  => $block->id,
                     'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,

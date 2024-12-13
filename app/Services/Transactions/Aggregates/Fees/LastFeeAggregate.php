@@ -42,8 +42,8 @@ final class LastFeeAggregate
 
         return [
             'minimum' => $fees->min() ?? 0, // @phpstan-ignore-line
-            'average' => $fees->max() ?? 0,
-            'maximum' => $fees->avg() ?? 0, // @phpstan-ignore-line
+            'average' => $fees->avg() ?? 0,
+            'maximum' => $fees->max() ?? 0, // @phpstan-ignore-line
         ];
     }
 }
