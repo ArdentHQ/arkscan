@@ -13,6 +13,8 @@ use App\Models\Wallet;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use function Tests\faker;
+
 final class TransactionFactory extends Factory
 {
     protected $model = Transaction::class;
@@ -105,9 +107,13 @@ final class TransactionFactory extends Factory
             ]);
     }
 
-    public function validatorRegistration(string $address): Factory
+    public function validatorRegistration(?string $address = null): Factory
     {
         $method = ContractMethod::validatorRegistration();
+
+        if ($address === null) {
+            $address = faker()->wallet['address'];
+        }
 
         return $this->withPayload($method.str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT))
             ->state(fn () => [
