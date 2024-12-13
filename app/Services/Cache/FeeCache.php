@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Cache;
 
 use App\Contracts\Cache as Contract;
+use App\Services\BigNumber;
 use App\Services\Cache\Concerns\ManagesCache;
 use App\Services\Cache\Concerns\ManagesChart;
 use Illuminate\Cache\TaggedCache;
@@ -36,32 +37,47 @@ final class FeeCache implements Contract
         $this->put(sprintf('historical/%s', $period), $this->chartjs($data));
     }
 
-    public function getMinimum(string $key): float
+    public function getMinimum(string $key): BigNumber
     {
-        return (float) $this->get(sprintf('minimum/%s', $key));
+        $value = $this->get(sprintf('minimum/%s', $key));
+        if ($value === null) {
+            return BigNumber::zero();
+        }
+
+        return BigNumber::new($value);
     }
 
-    public function setMinimum(string $key, float $data): void
+    public function setMinimum(string $key, string | float $data): void
     {
         $this->put(sprintf('minimum/%s', $key), $data);
     }
 
-    public function getAverage(string $key): float
+    public function getAverage(string $key): BigNumber
     {
-        return (float) $this->get(sprintf('average/%s', $key));
+        $value = $this->get(sprintf('average/%s', $key));
+        if ($value === null) {
+            return BigNumber::zero();
+        }
+
+        return BigNumber::new($value);
     }
 
-    public function setAverage(string $key, float $data): void
+    public function setAverage(string $key, string | float $data): void
     {
         $this->put(sprintf('average/%s', $key), $data);
     }
 
-    public function getMaximum(string $key): float
+    public function getMaximum(string $key): BigNumber
     {
-        return (float) $this->get(sprintf('maximum/%s', $key));
+        $value = $this->get(sprintf('maximum/%s', $key));
+        if ($value === null) {
+            return BigNumber::zero();
+        }
+
+        return BigNumber::new($value);
     }
 
-    public function setMaximum(string $key, float $data): void
+    public function setMaximum(string $key, string | float $data): void
     {
         $this->put(sprintf('maximum/%s', $key), $data);
     }
