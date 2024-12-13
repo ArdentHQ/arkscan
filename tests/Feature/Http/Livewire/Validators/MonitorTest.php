@@ -105,6 +105,8 @@ describe('Monitor', function () {
             ->andReturnUsing(fn ($tag, $time, $closure) => $closure())
             ->shouldReceive('tags')
             ->andReturn($taggedCache)
+            ->shouldReceive('driver')
+            ->andReturn($taggedCache)
             ->shouldReceive('forget')
             ->andReturn(null);
 
