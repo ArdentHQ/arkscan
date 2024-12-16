@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-use Carbon\Carbon;
+use App\Events\Statistics\AnnualData;
 use App\Models\Block;
 use App\Models\Transaction;
-use App\Services\BigNumber;
-use App\Services\Timestamp;
-use App\Events\Statistics\AnnualData;
 use App\Models\Wallet;
-use Illuminate\Support\Facades\Event;
+use App\Services\BigNumber;
 use App\Services\Cache\StatisticsCache;
+use App\Services\Timestamp;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Event;
 
 beforeEach(fn () => $this->travelTo(Carbon::parse('2024-05-09 15:54:00')));
 
@@ -106,7 +106,7 @@ it('should cache annual data for all time', function () {
         )
         ->withReceipt()
         ->create([
-            'amount' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
+            'amount'    => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
             'timestamp' => $timestamp,
             'gas_price' => 0.1,
         ]);
@@ -134,7 +134,7 @@ it('should cache annual data for all time', function () {
     ]);
 
     Event::assertDispatchedTimes(AnnualData::class, 1);
-}); 
+});
 
 it('should handle null scenarios for annual data for current year', function () {
     Event::fake();
@@ -550,7 +550,7 @@ it('should not cache all annual data if already set', function () {
 
 it('should cache all annual data with flag even if not already set', function () {
     $addresses = Wallet::factory(2)->make()->pluck('address')->toArray();
-    
+
     $cache = new StatisticsCache();
 
     expect($cache->getAnnualData(2017))->toBeNull();
