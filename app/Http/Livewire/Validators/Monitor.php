@@ -35,7 +35,7 @@ final class Monitor extends Component
     /** @var mixed */
     protected $listeners = [
         'monitorIsReady',
-        'echo:blocks,NewBlock' => 'pollValidators',
+        'echo:blocks,NewBlock' => 'pollData',
     ];
 
     private array $validators = [];
