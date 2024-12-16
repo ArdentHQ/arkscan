@@ -12,10 +12,6 @@ use Illuminate\Support\Collection;
 
 beforeEach(fn () => $this->subject = new WalletRepositoryWithCache(new WalletRepository()));
 
-it('should create a query for all wallets with a username', function () {
-    expect($this->subject->allWithUsername())->toBeInstanceOf(Builder::class);
-});
-
 it('should create a query for all wallets with a vote', function () {
     expect($this->subject->allWithVote())->toBeInstanceOf(Builder::class);
 });
@@ -40,12 +36,6 @@ it('should find wallets by public keys', function () {
     $wallet = Wallet::factory()->create();
 
     expect($this->subject->findByPublicKeys([$wallet->public_key]))->toBeInstanceOf(Collection::class);
-});
-
-it('should find a wallet by username', function () {
-    $wallet = Wallet::factory()->create();
-
-    expect($this->subject->findByUsername($wallet->attributes['username']))->toBeInstanceOf(Wallet::class);
 });
 
 it('should find a wallet by identifier', function () {
