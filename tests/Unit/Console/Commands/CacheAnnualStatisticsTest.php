@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-use App\Events\Statistics\AnnualData;
+use Carbon\Carbon;
 use App\Models\Block;
 use App\Models\Transaction;
-use App\Services\Cache\StatisticsCache;
+use App\Services\BigNumber;
 use App\Services\Timestamp;
-use Carbon\Carbon;
+use App\Events\Statistics\AnnualData;
+use App\Models\Wallet;
 use Illuminate\Support\Facades\Event;
+use App\Services\Cache\StatisticsCache;
 
 beforeEach(fn () => $this->travelTo(Carbon::parse('2024-05-09 15:54:00')));
 
@@ -49,6 +51,8 @@ it('should cache annual data for current year', function () {
 it('should cache annual data for all time', function () {
     Event::fake();
 
+    $addresses = Wallet::factory(2)->make()->pluck('address')->toArray();
+
     $this->travelTo(Carbon::parse('2023-08-12'));
 
     $cache       = new StatisticsCache();
@@ -75,12 +79,14 @@ it('should cache annual data for all time', function () {
     Transaction::factory()->count(3)->create();
     Block::factory()->create();
     Transaction::factory()
-        ->multiPayment()
+        ->multiPayment(
+            $addresses,
+            [BigNumber::new(10 * 1e18), BigNumber::new(1 * 1e18)]
+        )
         ->count(3)
         ->withReceipt()
         ->create([
             'amount' => 0,
-            'asset'  => ['payments' => [['amount' => 10 * 1e18, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e18, 'recipientId' => 'Wallet2']]],
         ]);
 
     // Current year
@@ -94,12 +100,14 @@ it('should cache annual data for all time', function () {
         ]);
 
     Transaction::factory()
-        ->multiPayment()
+        ->multiPayment(
+            $addresses,
+            [BigNumber::new(10 * 1e18), BigNumber::new(1 * 1e18)]
+        )
         ->withReceipt()
         ->create([
+            'amount' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
             'timestamp' => $timestamp,
-            'amount'    => 0,
-            'asset'     => ['payments' => [['amount' => 10 * 1e18, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e18, 'recipientId' => 'Wallet2']]],
             'gas_price' => 0.1,
         ]);
 
@@ -118,7 +126,7 @@ it('should cache annual data for all time', function () {
     ]);
 
     expect($cache->getAnnualData($currentYear))->toBe([
-        'year'         => 2023,
+        'year'         => $currentYear,
         'transactions' => 6,
         'volume'       => '61.0000000000000000',
         'fees'         => '0.0000126',
@@ -515,7 +523,7 @@ it('should not cache all annual data if already set', function () {
         ->withReceipt()
         ->create([
             'amount' => 0,
-            'asset'  => ['payments' => [['amount' => 10 * 1e8, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipientId' => 'Wallet2']]],
+            'asset'  => ['payments' => [['amount' => 10 * 1e8, 'recipient_address' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipient_address' => 'Wallet2']]],
         ]);
 
     $this->artisan('explorer:cache-annual-statistics');
@@ -572,7 +580,7 @@ it('should cache all annual data with flag even if not already set', function ()
         ->withReceipt()
         ->create([
             'amount' => 0,
-            'asset'  => ['payments' => [['amount' => 10 * 1e8, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipientId' => 'Wallet2']]],
+            'asset'  => ['payments' => [['amount' => 10 * 1e8, 'recipient_address' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipient_address' => 'Wallet2']]],
         ]);
 
     $this->artisan('explorer:cache-annual-statistics --all');
