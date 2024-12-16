@@ -12,11 +12,9 @@ use Illuminate\Support\Facades\Cache;
 final class RequestScopedCache
 {
     /**
-     * @template TCacheValue
-     *
-     * @param  string  $key
-     * @param  \Closure(): TCacheValue  $callback
-     * @return TCacheValue
+     * @param  string           $key
+     * @param  \Closure():mixed $callback
+     * @return mixed
      */
     public static function remember(string $key, callable $callback): mixed
     {
