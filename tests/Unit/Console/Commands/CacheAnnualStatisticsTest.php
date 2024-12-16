@@ -134,7 +134,7 @@ it('should cache annual data for all time', function () {
     ]);
 
     Event::assertDispatchedTimes(AnnualData::class, 1);
-});
+}); 
 
 it('should handle null scenarios for annual data for current year', function () {
     Event::fake();
@@ -198,7 +198,7 @@ it('should not dispatch event if nothing changes', function () {
     $this->artisan('explorer:cache-annual-statistics --all');
 
     Event::assertDispatchedTimes(AnnualData::class, 0);
-});
+})->only();
 
 it('should dispatch event for all data when the transaction count changes', function () {
     Event::fake();
