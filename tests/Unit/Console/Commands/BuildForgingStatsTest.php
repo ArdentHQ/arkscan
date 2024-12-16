@@ -128,11 +128,11 @@ it('should store the height for missed blocks', function () {
         ->once()
         ->andReturn([
             50000 => [
-                'publicKey' => 'test-public-key',
+                'address' => 'test-address',
                 'forged'    => false,
             ],
             50001 => [
-                'publicKey' => 'test-public-key-2',
+                'address' => 'test-address-2',
                 'forged'    => false,
             ],
         ]);
@@ -155,7 +155,7 @@ it('should batch upsert every 1000 records', function () {
     $calculations = [];
     foreach (range(50001, 60000) as $index => $height) {
         $calculations[$height] = [
-            'publicKey' => 'test-public-key-'.$index,
+            'address' => 'test-address-'.$index,
             'forged'    => false,
         ];
     }
