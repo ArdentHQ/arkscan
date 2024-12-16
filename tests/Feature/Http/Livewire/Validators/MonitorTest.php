@@ -302,7 +302,7 @@ describe('Monitor', function () {
             ]);
     });
 
-    it('should reload on new block eventaa', function () {
+    it('should reload on new block event', function () {
         $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
         $this->freezeTime();
