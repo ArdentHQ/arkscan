@@ -61,7 +61,7 @@ it('should not double up currency for crypto', function () {
 
     $response = $this
         ->get(route('wallet', $wallet))
-        ->assertSee($wallet->walletName())
+        ->assertSee($wallet->address)
         ->assertSee('0 BTC');
 
     $content = preg_replace('/\s+/', ' ', str_replace("\n", '', strip_tags($response->getContent())));
@@ -81,7 +81,7 @@ it('should show currency symbol and code for crypto', function () {
 
     $response = $this
         ->get(route('wallet', $wallet))
-        ->assertSee($wallet->walletName())
+        ->assertSee($wallet->address)
         ->assertSeeInOrder([
             $wallet->balance->toFloat(),
             '£0.00',
@@ -102,7 +102,7 @@ it('should not show overview value if cannot be exchanged', function () {
 
     $this
         ->get(route('wallet', $wallet))
-        ->assertSee($wallet->walletName())
+        ->assertSee($wallet->address)
         ->assertSeeInOrder([
             'Value',
             'N/A',
@@ -194,7 +194,7 @@ it('should not trim 0 at the end of votes or total forged', function () {
 
     $this
         ->get(route('wallet', $wallet))
-        ->assertSee($wallet->walletName())
+        ->assertSee($wallet->address)
         ->assertSeeInOrder([
             '12,340 DARK',
             'Vote',
