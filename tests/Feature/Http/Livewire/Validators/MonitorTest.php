@@ -1189,17 +1189,17 @@ describe('Data Boxes', function () {
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, 46, true),
+                ...array_fill(0, 48, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, 46, true),
+                ...array_fill(0, 48, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, 46, true),
+                ...array_fill(0, 48, true),
             ],
         ], $this);
 
@@ -1229,17 +1229,17 @@ describe('Data Boxes', function () {
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, 46, true),
+                ...array_fill(0, 48, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, 46, true),
+                ...array_fill(0, 48, true),
             ],
             [
                 ...array_fill(0, 4, true),
                 false,
-                ...array_fill(0, 46, true),
+                ...array_fill(0, 48, true),
             ],
         ], $this);
 
