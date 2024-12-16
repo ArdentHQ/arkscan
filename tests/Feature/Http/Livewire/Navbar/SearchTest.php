@@ -6,6 +6,7 @@ use App\Http\Livewire\Navbar\Search;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\Cache\WalletCache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Laravel\Scout\Engines\MeilisearchEngine;
@@ -231,7 +232,7 @@ it('should search for known wallets addresses with meilisearch', function () {
 
     Config::set('arkscan.networks.development.knownWallets', $knownWalletsUrl);
 
-    Http::fake(Http::response([
+    (new WalletCache())->setKnown(fn () => [
         [
             'type'    => 'team',
             'name'    => 'Alfys hot Wallet',
@@ -247,7 +248,7 @@ it('should search for known wallets addresses with meilisearch', function () {
             'name'    => 'the alf wallet',
             'address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
         ],
-    ], 200));
+    ]);
 
     $knownWallet = Wallet::factory()->create([
         'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
@@ -305,7 +306,7 @@ it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisear
 
     Config::set('arkscan.networks.development.knownWallets', $knownWalletsUrl);
 
-    Http::fake(Http::response([
+    (new WalletCache())->setKnown(fn () => [
         [
             'type'    => 'team',
             'name'    => 'a1',
@@ -336,7 +337,7 @@ it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisear
             'name'    => 'a6',
             'address' => 'AKT8ji4purNoocKybdb3aHZYiVkaFimho9',
         ],
-    ], 200));
+    ]);
 
     $knownWallet = Wallet::factory()->create([
         'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
