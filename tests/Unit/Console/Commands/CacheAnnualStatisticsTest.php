@@ -86,7 +86,7 @@ it('should cache annual data for all time', function () {
         ->count(3)
         ->withReceipt()
         ->create([
-            'amount' => 0,
+            'amount' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 
     // Current year
