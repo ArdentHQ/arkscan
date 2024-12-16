@@ -13,7 +13,7 @@ it('should determine if the transaction is confirmed', function (int $transactio
     $transaction = Transaction::factory()->create([
         'block_height'      => $transactionHeight,
         'sender_public_key' => Wallet::factory()->create(['address' => 'sender'])->public_key,
-        'recipient_id'      => Wallet::factory()->create(['address' => 'recipient'])->address,
+        'recipient_address' => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]);
 
     expect((new TransactionStateIcon($transaction))->name())->toBe($icon);
