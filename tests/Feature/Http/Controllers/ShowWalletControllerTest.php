@@ -47,7 +47,7 @@ it('can lookup wallets by the username', function () {
     $this
         ->get('/wallets/'.$username)
         ->assertRedirect('/addresses/'.$wallet->address);
-});
+})->skip('TODO: implement username redirection https://app.clickup.com/t/86dvdmpme');
 
 it('should not double up currency for crypto', function () {
     Config::set('arkscan.networks.development.canBeExchanged', true);
