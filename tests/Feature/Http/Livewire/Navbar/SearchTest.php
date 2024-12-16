@@ -8,7 +8,6 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Http;
 use Laravel\Scout\Engines\MeilisearchEngine;
 use Livewire\Livewire;
 use Meilisearch\Client as MeilisearchClient;
