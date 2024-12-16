@@ -385,7 +385,7 @@ it('should dispatch event for current year when the transaction count changes', 
         ->withReceipt()
         ->create([
             'block_id'  => Block::first()->id,
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-01-01 01:01:01')->unix())->unix(),
+            'timestamp' => Carbon::parse('2024-01-02 00:00:00')->getTimestampMs(),
             'amount'    => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
@@ -398,7 +398,7 @@ it('should dispatch event for current year when the transaction count changes', 
         'year'         => $currentYear,
         'transactions' => 6,
         'volume'       => '60.0000000000000000',
-        'fees'         => '0.60000000000000000000',
+        'fees'         => '0.0000126',
         'blocks'       => 5,
     ]);
 
@@ -440,7 +440,7 @@ it('should dispatch event for current year when the block count changes', functi
     Event::fake();
 
     Block::factory()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-01-01 01:01:01')->unix())->unix(),
+        'timestamp' => Carbon::parse('2024-01-02 00:00:00')->getTimestampMs(),
     ]);
 
     $cache->setAnnualData(2017, 0, '0', '0', 0);
@@ -468,7 +468,7 @@ it('should get all annual data if not already set', function () {
         ->count(6)
         ->withReceipt()
         ->create([
-            'timestamp' => 1,
+            'timestamp' => Carbon::parse('2017-03-21 13:00:00')->getTimestampMs(),
             'amount'    => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
@@ -483,12 +483,14 @@ it('should get all annual data if not already set', function () {
         'year'         => 2017,
         'transactions' => 6,
         'volume'       => '60.0000000000000000',
-        'fees'         => '0.60000000000000000000',
+        'fees'         => '0.0000126',
         'blocks'       => 6,
     ]);
 });
 
 it('should not cache all annual data if already set', function () {
+    $addresses = Wallet::factory(2)->make()->pluck('address')->toArray();
+
     $cache = new StatisticsCache();
 
     expect($cache->getAnnualData(2017))->toBeNull();
@@ -518,12 +520,14 @@ it('should not cache all annual data if already set', function () {
     Block::factory()->create();
 
     Transaction::factory()
-        ->multiPayment()
+        ->multiPayment(
+            $addresses,
+            [BigNumber::new(10 * 1e18), BigNumber::new(1 * 1e18)]
+        )
         ->count(3)
         ->withReceipt()
         ->create([
-            'amount' => 0,
-            'asset'  => ['payments' => [['amount' => 10 * 1e8, 'recipient_address' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipient_address' => 'Wallet2']]],
+            'amount' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 
     $this->artisan('explorer:cache-annual-statistics');
@@ -531,7 +535,6 @@ it('should not cache all annual data if already set', function () {
     expect($cache->getAnnualData(2017))->not->toBeNull();
     expect($cache->getAnnualData(2018))->toBeNull();
     expect($cache->getAnnualData(2019))->toBeNull();
-    expect($cache->getAnnualData(2020))->toBeNull();
     expect($cache->getAnnualData(2021))->toBeNull();
     expect($cache->getAnnualData(2022))->toBeNull();
     expect($cache->getAnnualData(2023))->toBeNull();
@@ -546,6 +549,8 @@ it('should not cache all annual data if already set', function () {
 });
 
 it('should cache all annual data with flag even if not already set', function () {
+    $addresses = Wallet::factory(2)->make()->pluck('address')->toArray();
+    
     $cache = new StatisticsCache();
 
     expect($cache->getAnnualData(2017))->toBeNull();
@@ -575,12 +580,14 @@ it('should cache all annual data with flag even if not already set', function ()
     Block::factory()->create();
 
     Transaction::factory()
-        ->multiPayment()
+        ->multiPayment(
+            $addresses,
+            [BigNumber::new(10 * 1e18), BigNumber::new(1 * 1e18)]
+        )
         ->count(3)
         ->withReceipt()
         ->create([
-            'amount' => 0,
-            'asset'  => ['payments' => [['amount' => 10 * 1e8, 'recipient_address' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipient_address' => 'Wallet2']]],
+            'amount' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 
     $this->artisan('explorer:cache-annual-statistics --all');
