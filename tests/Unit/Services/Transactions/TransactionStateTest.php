@@ -23,9 +23,9 @@ it('should determine if the transaction is not confirmed', function () {
     (new NetworkCache())->setHeight(fn () => 1000);
 
     $transaction = Transaction::factory()->create([
-        'block_height'           => 999,
-        'sender_public_key'      => Wallet::factory()->create(['address' => 'sender'])->public_key,
-        'recipient_address'      => Wallet::factory()->create(['address' => 'recipient'])->address,
+        'block_height'      => 999,
+        'sender_public_key' => Wallet::factory()->create(['address' => 'sender'])->public_key,
+        'recipient_address' => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]);
 
     expect((new TransactionState($transaction))->isConfirmed())->toBeFalse();
