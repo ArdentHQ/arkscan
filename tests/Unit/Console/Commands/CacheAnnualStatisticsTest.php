@@ -86,6 +86,9 @@ it('should cache annual data for all time', function () {
         ->count(3)
         ->withReceipt()
         ->create([
+            // @TODO: Amount is the sum of all the individual payments but may not
+            // represent a real world scenario and should not be considered accurate
+            // @see https://app.clickup.com/t/86dvf5xcm
             'amount' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 
@@ -527,6 +530,9 @@ it('should not cache all annual data if already set', function () {
         ->count(3)
         ->withReceipt()
         ->create([
+            // @TODO: Amount is the sum of all the individual payments but may not
+            // represent a real world scenario and should not be considered accurate
+            //  @see https://app.clickup.com/t/86dvf5xcm
             'amount' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 
@@ -587,6 +593,9 @@ it('should cache all annual data with flag even if not already set', function ()
         ->count(3)
         ->withReceipt()
         ->create([
+            // @TODO: Amount is the sum of all the individual payments but may not
+            // represent a real world scenario and should not be considered accurate
+            // @see https://app.clickup.com/t/86dvf5xcm
             'amount' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 
