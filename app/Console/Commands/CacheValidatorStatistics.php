@@ -48,6 +48,7 @@ final class CacheValidatorStatistics extends Command
 
         $activeValidators = Rounds::current()->validators;
 
+        /** @var Transaction|null $newestActiveValidatorTx */
         $newestActiveValidatorTx = Transaction::withScope(ValidatorRegistrationScope::class)
             ->whereIn('sender_address', $activeValidators)
             ->orderBy('timestamp', 'desc')
@@ -61,6 +62,7 @@ final class CacheValidatorStatistics extends Command
             );
         }
 
+        /** @var Transaction|null $oldestActiveValidatorTx */
         $oldestActiveValidatorTx = Transaction::withScope(ValidatorRegistrationScope::class)
             ->whereIn('sender_address', $activeValidators)
             ->orderBy('timestamp', 'asc')
