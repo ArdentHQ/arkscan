@@ -16,6 +16,7 @@ final class CreateTransactionsTable extends Migration
             $table->string('block_height');
             $table->integer('sequence');
             $table->string('sender_public_key');
+            $table->string('sender_address');
             $table->string('recipient_address')->nullable();
             $table->unsignedBigInteger('timestamp');
             $table->addColumn('numeric', 'amount');
