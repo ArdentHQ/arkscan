@@ -740,20 +740,20 @@ it('should handle sorting an empty table', function () {
 it('should reset page on sorting change', function () {
     Livewire::test(Validators::class)
         ->call('setIsReady')
-        ->assertSet('page', 1)
+        ->assertSet('paginators.page', 1)
         ->assertSet('sortKey', 'rank')
         ->assertSet('sortDirection', SortDirection::ASC)
-        ->set('page', 12)
+        ->set('paginators.page', 12)
         ->call('sortBy', 'rank')
-        ->assertSet('page', 1)
+        ->assertSet('paginators.page', 1)
         ->assertSet('sortKey', 'rank')
         ->assertSet('sortDirection', SortDirection::DESC)
-        ->set('page', 12)
+        ->set('paginators.page', 12)
         ->call('sortBy', 'rank')
-        ->assertSet('page', 1)
+        ->assertSet('paginators.page', 1)
         ->assertSet('sortKey', 'rank')
         ->assertSet('sortDirection', SortDirection::ASC);
-})->only();
+});
 
 it('should parse sorting direction from query string', function () {
     Route::get('/test-validators', function () {
@@ -891,7 +891,7 @@ it('should handle sorting several pages of validators without cached data', func
     'votes'            => ['votes', 'attributes.validatorVoteBalance'],
     'percentage_votes' => ['percentage_votes', 'attributes.validatorVoteBalance'],
     'missed_blocks'    => ['missed_blocks', 'attributes.validatorRank'],
-]);
+])->only();
 
 it('should handle sorting several pages of validators with cached data', function ($columnSortBy, $modelSortBy) {
     $validatorData = [];
