@@ -15,6 +15,10 @@ const TableSorting = (
         secondarySortIndex: null,
         windowEvent: null,
 
+        getRef(ref) {
+            return this.$el.querySelector(`[sorting-id="${ref}"]`);
+        },
+
         init() {
             this.$nextTick(() => {
                 this.update();
@@ -40,7 +44,7 @@ const TableSorting = (
                         return;
                     }
 
-                    if (!this.$refs[this.sortBy]) {
+                    if (!this.getRef(this.sortBy)) {
                         if (this.windowEvent) {
                             window.removeEventListener(
                                 "updateTableSorting",
@@ -66,8 +70,7 @@ const TableSorting = (
         update(table) {
             this.secondarySortIndex = null;
             if (secondarySortBy) {
-                const secondaryElement = this.$refs[secondarySortBy];
-
+                const secondaryElement = this.getRef(secondarySortBy);
                 if (secondaryElement) {
                     this.secondarySortIndex = Array.from(
                         secondaryElement.parentNode.children
@@ -81,15 +84,15 @@ const TableSorting = (
                 }
             });
 
-            return this.sort(this.$refs[this.sortBy], table);
+            return this.sort(this.getRef(this.sortBy), table);
         },
 
         sortByColumn($event) {
             const header = $event.target.closest("th");
-            if (this.sortBy === header.getAttribute("x-ref")) {
+            if (this.sortBy === header.getAttribute("sorting-id")) {
                 this.sortAsc = !this.sortAsc;
             } else {
-                this.sortBy = header.getAttribute("x-ref");
+                this.sortBy = header.getAttribute("sorting-id");
                 this.sortAsc =
                     (header.dataset["initialSort"] ?? "asc") === "asc";
             }
