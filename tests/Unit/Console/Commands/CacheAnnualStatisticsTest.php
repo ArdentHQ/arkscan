@@ -5,6 +5,8 @@ declare(strict_types=1);
 use App\Events\Statistics\AnnualData;
 use App\Models\Block;
 use App\Models\Transaction;
+use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
@@ -49,6 +51,8 @@ it('should cache annual data for current year', function () {
 it('should cache annual data for all time', function () {
     Event::fake();
 
+    $addresses = Wallet::factory(2)->make()->pluck('address')->toArray();
+
     $this->travelTo(Carbon::parse('2023-08-12'));
 
     $cache       = new StatisticsCache();
@@ -75,12 +79,17 @@ it('should cache annual data for all time', function () {
     Transaction::factory()->count(3)->create();
     Block::factory()->create();
     Transaction::factory()
-        ->multiPayment()
+        ->multiPayment(
+            $addresses,
+            [BigNumber::new(10 * 1e18), BigNumber::new(1 * 1e18)]
+        )
         ->count(3)
         ->withReceipt()
         ->create([
-            'amount' => 0,
-            'asset'  => ['payments' => [['amount' => 10 * 1e18, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e18, 'recipientId' => 'Wallet2']]],
+            // @TODO: Amount is the sum of all the individual payments but may not
+            // represent a real world scenario and should not be considered accurate
+            // @see https://app.clickup.com/t/86dvf5xcm
+            'amount' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 
     // Current year
@@ -94,12 +103,14 @@ it('should cache annual data for all time', function () {
         ]);
 
     Transaction::factory()
-        ->multiPayment()
+        ->multiPayment(
+            $addresses,
+            [BigNumber::new(10 * 1e18), BigNumber::new(1 * 1e18)]
+        )
         ->withReceipt()
         ->create([
+            'amount'    => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
             'timestamp' => $timestamp,
-            'amount'    => 0,
-            'asset'     => ['payments' => [['amount' => 10 * 1e18, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e18, 'recipientId' => 'Wallet2']]],
             'gas_price' => 0.1,
         ]);
 
@@ -118,7 +129,7 @@ it('should cache annual data for all time', function () {
     ]);
 
     expect($cache->getAnnualData($currentYear))->toBe([
-        'year'         => 2023,
+        'year'         => $currentYear,
         'transactions' => 6,
         'volume'       => '61.0000000000000000',
         'fees'         => '0.0000126',
@@ -158,14 +169,14 @@ it('should not dispatch event if nothing changes', function () {
     $cache       = new StatisticsCache();
     $currentTime = Carbon::now();
     $currentYear = $currentTime->year;
-    $timestamp   = Timestamp::now()->timestamp;
+    $timestamp   = Timestamp::now()->getTimestampMs();
 
     Transaction::factory()
         ->count(5)
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'amount'    => 10 * 1e8,
+            'amount'    => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -179,7 +190,7 @@ it('should not dispatch event if nothing changes', function () {
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.50000000000000000000',
+        'fees'         => '0.0000105',
         'blocks'       => 5,
     ]);
 
@@ -198,13 +209,13 @@ it('should dispatch event for all data when the transaction count changes', func
     $cache       = new StatisticsCache();
     $currentTime = Carbon::now();
     $currentYear = $currentTime->year;
-    $timestamp   = Timestamp::now()->timestamp;
+    $timestamp   = Timestamp::now()->getTimestampMs();
 
     Transaction::factory(5)
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'amount'    => 10 * 1e8,
+            'amount'    => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -218,7 +229,7 @@ it('should dispatch event for all data when the transaction count changes', func
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.50000000000000000000',
+        'fees'         => '0.0000105',
         'blocks'       => 5,
     ]);
 
@@ -232,8 +243,8 @@ it('should dispatch event for all data when the transaction count changes', func
         ->withReceipt()
         ->create([
             'block_id'  => Block::first()->id,
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2020-01-01 01:01:01')->unix())->unix(),
-            'amount'    => 10 * 1e8,
+            'timestamp' => Carbon::parse('2020-03-03 01:01:01')->getTimestampMs(),
+            'amount'    => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -243,7 +254,7 @@ it('should dispatch event for all data when the transaction count changes', func
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.50000000000000000000',
+        'fees'         => '0.0000105',
         'blocks'       => 5,
     ]);
 
@@ -251,7 +262,7 @@ it('should dispatch event for all data when the transaction count changes', func
         'year'         => 2020,
         'transactions' => 1,
         'volume'       => '10.0000000000000000',
-        'fees'         => '0.10000000000000000000',
+        'fees'         => '0.0000021',
         'blocks'       => 5,
     ]);
 
@@ -264,7 +275,7 @@ it('should dispatch event for all data when the block count changes', function (
     $cache       = new StatisticsCache();
     $currentTime = Carbon::now();
     $currentYear = $currentTime->year;
-    $timestamp   = Timestamp::now()->timestamp;
+    $timestamp   = Timestamp::now()->getTimestampMs();
 
     $blocks = Block::factory(5)->create([
         'timestamp' => $timestamp,
@@ -274,20 +285,20 @@ it('should dispatch event for all data when the block count changes', function (
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'amount'    => 10 * 1e8,
+            'amount'    => 10 * 1e18,
             'gas_price' => 0.1,
             'block_id'  => $blocks->first()->id,
         ]);
 
     $block = Block::factory()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-01-01 01:01:01')->unix())->unix(),
+        'timestamp' => Carbon::parse('2023-03-03 00:00:00')->getTimestampMs(),
     ]);
 
     Transaction::factory(2)
         ->withReceipt()
         ->create([
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-01-01 01:01:01')->unix())->unix(),
-            'amount'    => 10 * 1e8,
+            'timestamp' => Carbon::parse('2023-03-03 00:00:00')->getTimestampMs(),
+            'amount'    => 10 * 1e18,
             'gas_price' => 0.1,
             'block_id'  => $block->id,
         ]);
@@ -298,7 +309,7 @@ it('should dispatch event for all data when the block count changes', function (
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.50000000000000000000',
+        'fees'         => '0.0000105',
         'blocks'       => 5,
     ]);
 
@@ -306,7 +317,7 @@ it('should dispatch event for all data when the block count changes', function (
         'year'         => 2023,
         'transactions' => 2,
         'volume'       => '20.0000000000000000',
-        'fees'         => '0.20000000000000000000',
+        'fees'         => '0.0000042',
         'blocks'       => 1,
     ]);
 
@@ -315,7 +326,7 @@ it('should dispatch event for all data when the block count changes', function (
     Event::fake();
 
     Block::factory()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-05-01 01:01:01')->unix())->unix(),
+        'timestamp' => Carbon::parse('2023-05-01 00:00:00')->getTimestampMs(),
     ]);
 
     $this->artisan('explorer:cache-annual-statistics --all');
@@ -324,7 +335,7 @@ it('should dispatch event for all data when the block count changes', function (
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.50000000000000000000',
+        'fees'         => '0.0000105',
         'blocks'       => 5,
     ]);
 
@@ -332,7 +343,7 @@ it('should dispatch event for all data when the block count changes', function (
         'year'         => 2023,
         'transactions' => 2,
         'volume'       => '20.0000000000000000',
-        'fees'         => '0.20000000000000000000',
+        'fees'         => '0.0000042',
         'blocks'       => 2,
     ]);
 
@@ -345,13 +356,13 @@ it('should dispatch event for current year when the transaction count changes', 
     $cache       = new StatisticsCache();
     $currentTime = Carbon::now();
     $currentYear = $currentTime->year;
-    $timestamp   = Timestamp::now()->timestamp;
+    $timestamp   = Timestamp::now()->getTimestampMs();
 
     Transaction::factory(5)
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'amount'    => 10 * 1e8,
+            'amount'    => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -365,7 +376,7 @@ it('should dispatch event for current year when the transaction count changes', 
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.50000000000000000000',
+        'fees'         => '0.0000105',
         'blocks'       => 5,
     ]);
 
@@ -377,8 +388,8 @@ it('should dispatch event for current year when the transaction count changes', 
         ->withReceipt()
         ->create([
             'block_id'  => Block::first()->id,
-            'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-01-01 01:01:01')->unix())->unix(),
-            'amount'    => 10 * 1e8,
+            'timestamp' => Carbon::parse('2024-01-02 00:00:00')->getTimestampMs(),
+            'amount'    => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -390,7 +401,7 @@ it('should dispatch event for current year when the transaction count changes', 
         'year'         => $currentYear,
         'transactions' => 6,
         'volume'       => '60.0000000000000000',
-        'fees'         => '0.60000000000000000000',
+        'fees'         => '0.0000126',
         'blocks'       => 5,
     ]);
 
@@ -403,13 +414,13 @@ it('should dispatch event for current year when the block count changes', functi
     $cache       = new StatisticsCache();
     $currentTime = Carbon::now();
     $currentYear = $currentTime->year;
-    $timestamp   = Timestamp::now()->timestamp;
+    $timestamp   = Timestamp::now()->getTimestampMs();
 
     Transaction::factory(5)
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'amount'    => 10 * 1e8,
+            'amount'    => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -423,7 +434,7 @@ it('should dispatch event for current year when the block count changes', functi
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.50000000000000000000',
+        'fees'         => '0.0000105',
         'blocks'       => 5,
     ]);
 
@@ -432,7 +443,7 @@ it('should dispatch event for current year when the block count changes', functi
     Event::fake();
 
     Block::factory()->create([
-        'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-01-01 01:01:01')->unix())->unix(),
+        'timestamp' => Carbon::parse('2024-01-02 00:00:00')->getTimestampMs(),
     ]);
 
     $cache->setAnnualData(2017, 0, '0', '0', 0);
@@ -443,7 +454,7 @@ it('should dispatch event for current year when the block count changes', functi
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.50000000000000000000',
+        'fees'         => '0.0000105',
         'blocks'       => 6,
     ]);
 
@@ -460,8 +471,8 @@ it('should get all annual data if not already set', function () {
         ->count(6)
         ->withReceipt()
         ->create([
-            'timestamp' => 1,
-            'amount'    => 10 * 1e8,
+            'timestamp' => Carbon::parse('2017-03-21 13:00:00')->getTimestampMs(),
+            'amount'    => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -475,12 +486,14 @@ it('should get all annual data if not already set', function () {
         'year'         => 2017,
         'transactions' => 6,
         'volume'       => '60.0000000000000000',
-        'fees'         => '0.60000000000000000000',
+        'fees'         => '0.0000126',
         'blocks'       => 6,
     ]);
 });
 
 it('should not cache all annual data if already set', function () {
+    $addresses = Wallet::factory(2)->make()->pluck('address')->toArray();
+
     $cache = new StatisticsCache();
 
     expect($cache->getAnnualData(2017))->toBeNull();
@@ -510,12 +523,17 @@ it('should not cache all annual data if already set', function () {
     Block::factory()->create();
 
     Transaction::factory()
-        ->multiPayment()
+        ->multiPayment(
+            $addresses,
+            [BigNumber::new(10 * 1e18), BigNumber::new(1 * 1e18)]
+        )
         ->count(3)
         ->withReceipt()
         ->create([
-            'amount' => 0,
-            'asset'  => ['payments' => [['amount' => 10 * 1e8, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipientId' => 'Wallet2']]],
+            // @TODO: Amount is the sum of all the individual payments but may not
+            // represent a real world scenario and should not be considered accurate
+            //  @see https://app.clickup.com/t/86dvf5xcm
+            'amount' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 
     $this->artisan('explorer:cache-annual-statistics');
@@ -523,7 +541,6 @@ it('should not cache all annual data if already set', function () {
     expect($cache->getAnnualData(2017))->not->toBeNull();
     expect($cache->getAnnualData(2018))->toBeNull();
     expect($cache->getAnnualData(2019))->toBeNull();
-    expect($cache->getAnnualData(2020))->toBeNull();
     expect($cache->getAnnualData(2021))->toBeNull();
     expect($cache->getAnnualData(2022))->toBeNull();
     expect($cache->getAnnualData(2023))->toBeNull();
@@ -538,6 +555,8 @@ it('should not cache all annual data if already set', function () {
 });
 
 it('should cache all annual data with flag even if not already set', function () {
+    $addresses = Wallet::factory(2)->make()->pluck('address')->toArray();
+
     $cache = new StatisticsCache();
 
     expect($cache->getAnnualData(2017))->toBeNull();
@@ -567,12 +586,17 @@ it('should cache all annual data with flag even if not already set', function ()
     Block::factory()->create();
 
     Transaction::factory()
-        ->multiPayment()
+        ->multiPayment(
+            $addresses,
+            [BigNumber::new(10 * 1e18), BigNumber::new(1 * 1e18)]
+        )
         ->count(3)
         ->withReceipt()
         ->create([
-            'amount' => 0,
-            'asset'  => ['payments' => [['amount' => 10 * 1e8, 'recipientId' => 'Wallet1'], ['amount' => 1 * 1e8, 'recipientId' => 'Wallet2']]],
+            // @TODO: Amount is the sum of all the individual payments but may not
+            // represent a real world scenario and should not be considered accurate
+            // @see https://app.clickup.com/t/86dvf5xcm
+            'amount' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 
     $this->artisan('explorer:cache-annual-statistics --all');

@@ -62,7 +62,7 @@
             </tr>
         </thead>
 
-        <tbody x-ref="tbody">
+        <tbody>
             @foreach($validators as $validator)
                 <x-tables.rows.desktop.validators.monitor-row :validator="$validator" />
             @endforeach
@@ -77,7 +77,7 @@
             :with-header="false"
             :rounded="false"
         >
-            <tbody x-ref="tbody">
+            <tbody>
                 @foreach($overflowValidators as $validator)
                     <x-tables.rows.desktop.validators.monitor-row :validator="$validator" />
                 @endforeach

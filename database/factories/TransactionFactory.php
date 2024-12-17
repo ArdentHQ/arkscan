@@ -78,8 +78,9 @@ final class TransactionFactory extends Factory
     public function multiPayment(array $recipients, array $amounts): Factory
     {
         $method  = ContractMethod::multiPayment();
+
         $method .= implode('', array_map(fn (string $recipient) => str_pad(preg_replace('/^0x/', '', $recipient), 64, '0', STR_PAD_LEFT), $recipients));
-        $method .= implode('', array_map(fn (BigNumber $amount) => str_pad(dechex($amount->toNumber()), 64, '0', STR_PAD_LEFT), $amounts));
+        $method .= implode('', array_map(fn (BigNumber $amount) => str_pad($amount->toHex(), 64, '0', STR_PAD_LEFT), $amounts));
 
         return $this->withPayload($method)
             ->state(fn () => [
