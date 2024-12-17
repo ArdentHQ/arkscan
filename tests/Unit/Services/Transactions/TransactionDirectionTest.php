@@ -39,8 +39,8 @@ it('should determine if the transaction is received', function () {
 
 it('should determine if the transaction is received if the recipient is missing', function () {
     $transaction = Transaction::factory()->create([
-        'sender_public_key'      => Wallet::factory()->create()->public_key,
-        'recipient_address'      => null,
+        'sender_public_key' => Wallet::factory()->create()->public_key,
+        'recipient_address' => null,
     ]);
 
     expect((new TransactionDirection($transaction))->isReceived('unknown'))->toBeFalse();
