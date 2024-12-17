@@ -16,11 +16,11 @@ it('should not dispatch unique addresses event if no change', function () {
 
     $this->travelTo('2024-04-19 00:15:44');
 
-    $wallet = Wallet::factory()->create();
-    $timestamp = Carbon::parse('2024-04-19 00:15:44')->getTimestampMs();
+    $wallet      = Wallet::factory()->create();
+    $timestamp   = Carbon::parse('2024-04-19 00:15:44')->getTimestampMs();
     $transaction = Transaction::factory()->transfer()->create([
         'sender_public_key' => $wallet->public_key,
-        'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
+        'timestamp'         => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
     ]);
 
     $wallet->fill(['updated_at' => $timestamp])->save();
@@ -47,11 +47,11 @@ it('should dispatch unique addresses event', function () {
 
     $this->travelTo('2024-04-19 00:15:43');
 
-    $walletA = Wallet::factory()->create();
-    $timestampA = Carbon::parse('2024-04-19 00:15:44')->getTimestampMs();
+    $walletA     = Wallet::factory()->create();
+    $timestampA  = Carbon::parse('2024-04-19 00:15:44')->getTimestampMs();
     $transaction = Transaction::factory()->transfer()->create([
         'sender_public_key' => $walletA->public_key,
-        'timestamp' => $timestampA,
+        'timestamp'         => $timestampA,
     ]);
 
     $walletA->fill(['updated_at' => $timestampA])->save();
@@ -70,11 +70,11 @@ it('should dispatch unique addresses event', function () {
 
     Event::fake();
 
-    $walletB = Wallet::factory()->create();
-    $timestampB = Carbon::parse('2024-04-20 00:15:44')->getTimestampMs();
+    $walletB     = Wallet::factory()->create();
+    $timestampB  = Carbon::parse('2024-04-20 00:15:44')->getTimestampMs();
     $transaction = Transaction::factory()->create([
         'sender_public_key' => $walletB->public_key,
-        'timestamp' => $timestampB,
+        'timestamp'         => $timestampB,
     ]);
 
     $walletB->fill(['updated_at' => $timestampB])->save();
