@@ -54,6 +54,10 @@ final class WalletViewModel implements ViewModel
 
     public function publicKey(): ?string
     {
+        if (is_string($this->wallet->public_key) && $this->wallet->public_key === '') {
+            return null;
+        }
+
         return $this->wallet->public_key;
     }
 
