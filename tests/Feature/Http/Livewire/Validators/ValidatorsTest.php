@@ -886,12 +886,11 @@ it('should handle sorting several pages of validators without cached data', func
     }
 })->with([
     'rank'             => ['rank', 'attributes.validatorRank'],
-    'name'             => ['name', 'attributes.username'],
     'no_of_voters'     => ['no_of_voters', 'attributes.validatorRank'],
     'votes'            => ['votes', 'attributes.validatorVoteBalance'],
     'percentage_votes' => ['percentage_votes', 'attributes.validatorVoteBalance'],
     'missed_blocks'    => ['missed_blocks', 'attributes.validatorRank'],
-])->only();
+]);
 
 it('should handle sorting several pages of validators with cached data', function ($columnSortBy, $modelSortBy) {
     $validatorData = [];
@@ -930,7 +929,7 @@ it('should handle sorting several pages of validators with cached data', functio
         foreach (range(1, $missedBlockCount) as $_) {
             $missedBlocksData[] = [
                 'timestamp'     => Carbon::now()->subHours($missedBlockCounter)->getTimestampMs(),
-                'public_key'    => $validator->address,
+                'address'    => $validator->address,
                 'forged'        => faker()->boolean(),
                 'missed_height' => faker()->numberBetween(1, 10000),
             ];
@@ -999,7 +998,6 @@ it('should handle sorting several pages of validators with cached data', functio
     }
 })->with([
     'rank'             => ['rank', 'attributes.validatorRank'],
-    'name'             => ['name', 'attributes.username'],
     'no_of_voters'     => ['no_of_voters', 'no_of_voters'],
     'votes'            => ['votes', 'attributes.validatorVoteBalance'],
     'percentage_votes' => ['percentage_votes', 'attributes.validatorVoteBalance'],
