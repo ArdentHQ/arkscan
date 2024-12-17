@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Console\Commands\CacheFees;
 use App\Models\Transaction;
+use App\Services\BigNumber;
 use App\Services\Cache\FeeCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
@@ -25,9 +26,9 @@ it('should execute the command', function () {
 
     foreach (['day', 'week', 'month', 'quarter', 'year'] as $period) {
         expect($cache->getHistorical($period))->toBeArray();
-        expect($cache->getMinimum($period))->toBeFloat();
-        expect($cache->getAverage($period))->toBeFloat();
-        expect($cache->getMaximum($period))->toBeFloat();
+        expect($cache->getMinimum($period))->toBeInstanceOf(BigNumber::class);
+        expect($cache->getAverage($period))->toBeInstanceOf(BigNumber::class);
+        expect($cache->getMaximum($period))->toBeInstanceOf(BigNumber::class);
     }
 
     expect($cache->all('day'))->toHaveKeys(['historical', 'min', 'avg', 'max']);
