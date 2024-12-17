@@ -59,7 +59,7 @@ abstract class TestCase extends BaseTestCase
     {
         Artisan::call('migrate:fresh', ['--path' => 'database/migrations']);
 
-        Artisan::call('migrate', [
+        Artisan::call('migrate:fresh', [
             '--database' => 'explorer',
             '--path'     => 'tests/migrations',
         ]);
