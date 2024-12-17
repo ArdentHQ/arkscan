@@ -929,7 +929,7 @@ it('should handle sorting several pages of validators with cached data', functio
         foreach (range(1, $missedBlockCount) as $_) {
             $missedBlocksData[] = [
                 'timestamp'     => Carbon::now()->subHours($missedBlockCounter)->getTimestampMs(),
-                'address'    => $validator->address,
+                'address'       => $validator->address,
                 'forged'        => faker()->boolean(),
                 'missed_height' => faker()->numberBetween(1, 10000),
             ];
