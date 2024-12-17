@@ -28,7 +28,7 @@
         $class,
     ])"
     :attributes="$attributes->merge([
-        'x-ref' => $sortingId,
+        'sorting-id' => $sortingId,
         'x-on:click' => ! $hideSorting && ! $livewireSort && $sortingId !== null ? 'sortByColumn' : null,
         'data-initial-sort' => ! $hideSorting && ! $livewireSort && $sortingId !== null ? $initialSort : null,
         'wire:loading.class' => $sortDisabled || (! $hideSorting && $livewireSort && $sortingId !== null) ? 'disabled' : null,
