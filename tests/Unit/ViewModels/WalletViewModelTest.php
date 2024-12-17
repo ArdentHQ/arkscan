@@ -529,11 +529,46 @@ it('should return 0 for productivity if the cached value is less than 0', functi
     expect($this->subject->productivity())->toBe(0.0);
 });
 
+it('should get the public key', function () {
+    expect($this->subject->publicKey())->not->toBeNull();
+    expect($this->subject->publicKey())->toEqual($this->wallet->public_key);
+});
+
+it('should handle null for public_key', function () {
+    expect($this->subject->isCold())->toBeFalse();
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'public_key' => null,
+    ]));
+
+    expect($this->subject->publicKey())->toBeNull();
+});
+
+it('should handle empty string for public_key', function () {
+    expect($this->subject->isCold())->toBeFalse();
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'public_key' => '',
+    ]));
+
+    expect($this->subject->publicKey())->toBeNull();
+});
+
 it('should determine if the wallet is cold', function () {
     expect($this->subject->isCold())->toBeFalse();
 
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'public_key' => null,
+    ]));
+
+    expect($this->subject->isCold())->toBeTrue();
+});
+
+it('should handle empty string for public_key to determine if the wallet is cold', function () {
+    expect($this->subject->isCold())->toBeFalse();
+
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'public_key' => '',
     ]));
 
     expect($this->subject->isCold())->toBeTrue();
