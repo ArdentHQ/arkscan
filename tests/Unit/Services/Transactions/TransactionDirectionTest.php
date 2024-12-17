@@ -9,7 +9,7 @@ use App\Services\Transactions\TransactionDirection;
 it('should determine if the transaction is sent', function () {
     $sender      = Wallet::factory()->create();
     $transaction = Transaction::factory()->create([
-        'sender_public_key' => $sender->public_key,
+        'sender_public_key'      => $sender->public_key,
         'recipient_address'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]);
 
@@ -28,7 +28,7 @@ it('should determine if the transaction is sent is missing', function () {
 
 it('should determine if the transaction is received', function () {
     $transaction = Transaction::factory()->create([
-        'sender_public_key' => Wallet::factory()->create()->public_key,
+        'sender_public_key'      => Wallet::factory()->create()->public_key,
         'recipient_address'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]);
 
@@ -39,7 +39,7 @@ it('should determine if the transaction is received', function () {
 
 it('should determine if the transaction is received if the recipient is missing', function () {
     $transaction = Transaction::factory()->create([
-        'sender_public_key' => Wallet::factory()->create()->public_key,
+        'sender_public_key'      => Wallet::factory()->create()->public_key,
         'recipient_address'      => null,
     ]);
 

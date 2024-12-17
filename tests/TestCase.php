@@ -63,6 +63,5 @@ abstract class TestCase extends BaseTestCase
             '--database' => 'explorer',
             '--path'     => 'tests/migrations',
         ]);
-        
     }
 }
