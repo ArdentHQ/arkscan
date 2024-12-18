@@ -148,8 +148,7 @@ jobs:
                 PGPASSWORD: password
 
             - name: Run Tests
-              # run: composer test:coverage
-              run: composer test
+              run: composer test:coverage
               env:
                   # Main database
                   DB_CONNECTION: pgsql
@@ -158,7 +157,6 @@ jobs:
                   DB_DATABASE: arkscan_test_db
                   DB_USERNAME: arkscan_test_db
                   DB_PASSWORD: password
-                  PDO_ATTR_PERSISTENT: false
                   # Explorer database
                   ARKSCAN_DB_HOST: 127.0.0.1
                   ARKSCAN_DB_PORT: 5432
