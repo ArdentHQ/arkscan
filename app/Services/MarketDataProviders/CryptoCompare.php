@@ -90,12 +90,12 @@ final class CryptoCompare extends AbstractMarketDataProvider
             $prices = new Collection();
 
             $maxDays = 2000;
-            $toDate = Network::epoch();
-            $days = $toDate->diffInDays();
+            $toDate  = Network::epoch();
+            $days    = $toDate->diffInDays();
 
             for ($i = 0; $i < $days; $i += $maxDays) {
                 $toDate->addDays($maxDays);
-                $toTs = $toDate->unix();
+                $toTs  = $toDate->unix();
                 $limit = min($maxDays, (int) ceil($days - $i));
 
                 try {
@@ -126,7 +126,7 @@ final class CryptoCompare extends AbstractMarketDataProvider
 
             return collect($prices)
                 ->map(fn ($volumeData) => [
-                    'time' => $volumeData['time'],
+                    'time'   => $volumeData['time'],
                     'volume' => $volumeData['total_volume_total'],
                 ]);
         });
