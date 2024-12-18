@@ -36,6 +36,13 @@ final class Wallet extends Model
     use Searchable;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * Indicates if the IDs are auto-incrementing.
      *
      * @var bool
@@ -178,15 +185,5 @@ final class Wallet extends Model
     public function getRouteKeyName()
     {
         return 'address';
-    }
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
     }
 }

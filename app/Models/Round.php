@@ -20,6 +20,13 @@ final class Round extends Model
     use HasFactory;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * Indicates if the IDs are auto-incrementing.
      *
      * @var bool
@@ -57,16 +64,6 @@ final class Round extends Model
         'round_height' => 'int',
         'validators'   => 'array',
     ];
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
-    }
 
     /**
      * @return Attribute

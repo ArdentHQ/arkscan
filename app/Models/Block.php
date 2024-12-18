@@ -37,6 +37,13 @@ final class Block extends Model
     use Searchable;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * The "type" of the primary key ID.
      *
      * @var string
@@ -149,13 +156,4 @@ final class Block extends Model
         return $this->hasOne(self::class, 'id', 'previous_block');
     }
 
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
-    }
 }

@@ -25,6 +25,13 @@ final class Receipt extends Model
     use HasFactory;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * Indicates if the IDs are auto-incrementing.
      *
      * @var bool
@@ -75,15 +82,5 @@ final class Receipt extends Model
     public function transaction(): HasOne
     {
         return $this->hasOne(Transaction::class, 'id', 'id');
-    }
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
     }
 }

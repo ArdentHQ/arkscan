@@ -18,6 +18,13 @@ final class State extends Model
     use HasFactory;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * Indicates if the model should be timestamped.
      *
      * @var bool
@@ -47,15 +54,5 @@ final class State extends Model
     public static function latest(): self
     {
         return self::where('id', 1)->firstOrFail();
-    }
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
     }
 }
