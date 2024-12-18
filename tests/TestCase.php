@@ -17,7 +17,7 @@ abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
 
-    // protected $connectionsToTransact = ['pgsql', 'explorer'];
+    protected $connectionsToTransact = ['pgsql', 'explorer'];
 
     /**
      * Setup the test environment.
