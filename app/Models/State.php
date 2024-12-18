@@ -18,18 +18,18 @@ final class State extends Model
     use HasFactory;
 
     /**
-     * The connection name for the model.
-     *
-     * @var string|null
-     */
-    protected $connection = 'explorer';
-
-    /**
      * Indicates if the model should be timestamped.
      *
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
 
     /**
      * The attributes that should be cast.
