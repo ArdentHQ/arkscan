@@ -148,7 +148,8 @@ jobs:
                 PGPASSWORD: password
 
             - name: Run Tests
-              run: composer test:coverage
+              # run: composer test:coverage
+              run: composer test
               env:
                   # Main database
                   DB_CONNECTION: pgsql
