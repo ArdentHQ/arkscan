@@ -17,7 +17,7 @@ abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
 
-    protected $connectionsToTransact = ['pgsql', 'explorer'];
+    // protected $connectionsToTransact = ['pgsql', 'explorer'];
 
     /**
      * Setup the test environment.
@@ -46,10 +46,7 @@ abstract class TestCase extends BaseTestCase
     protected function refreshTestDatabase()
     {
         if (! RefreshDatabaseState::$migrated) {
-            $this->artisan('migrate:fresh', [
-                ...$this->migrateFreshUsing(),
-                '--path'     => 'database/migrations',
-            ]);
+            $this->artisan('migrate:fresh', $this->migrateFreshUsing());
 
             $this->artisan('migrate:fresh', [
                 ...$this->migrateFreshUsing(),
