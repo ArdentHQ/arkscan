@@ -31,25 +31,11 @@ abstract class TestCase extends BaseTestCase
         Http::preventStrayRequests();
 
         Config::set('arkscan.networks.development.knownWallets', null);
-    }
 
-    /**
-     * Creates the application.
-     *
-     * @return \Illuminate\Foundation\Application
-     */
-    public function createApplication()
-    {
-        $app = require __DIR__.'/../bootstrap/app.php';
-
-        $app->make(Kernel::class)->bootstrap();
-
-        $app->singleton(
+        $this->app->singleton(
             MarketDataProvider::class,
             fn () => new CryptoCompare()
         );
-
-        return $app;
     }
 
     /**

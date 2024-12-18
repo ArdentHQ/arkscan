@@ -768,56 +768,56 @@ it('should handle sorting several pages with cached data', function ($columnSort
     'percentage_votes' => ['percentage_votes', 'percentage_votes'],
 ]);
 
-// it('should not sort for sqlite databases', function ($sortBy) {
-//     Config::set('database.default', 'sqlite');
-//     Config::set('database.connections.sqlite.database', ':memory:');
+it('should not sort for sqlite databases', function ($sortBy) {
+    Config::set('database.default', 'sqlite');
+    Config::set('database.connections.sqlite.database', ':memory:');
 
-//     $this->artisan('migrate:fresh');
+    $this->artisan('migrate:fresh');
 
-//     $wallet2 = Wallet::factory()->activeValidator()->create([
-//         'attributes' => [
-//             'username'             => 'validator-2',
-//             'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
-//         ],
-//     ]);
+    $wallet2 = Wallet::factory()->activeValidator()->create([
+        'attributes' => [
+            'username'             => 'validator-2',
+            'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
+        ],
+    ]);
 
-//     $wallet1 = Wallet::factory()->activeValidator()->create([
-//         'attributes' => [
-//             'username'             => 'validator-1',
-//             'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
-//         ],
-//     ]);
+    $wallet1 = Wallet::factory()->activeValidator()->create([
+        'attributes' => [
+            'username'             => 'validator-1',
+            'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
+        ],
+    ]);
 
-//     ForgingStats::factory()->create([
-//         'address'    => $wallet1->address,
-//         'timestamp'  => 100,
-//     ]);
+    ForgingStats::factory()->create([
+        'address'    => $wallet1->address,
+        'timestamp'  => 100,
+    ]);
 
-//     ForgingStats::factory()->create([
-//         'address'    => $wallet2->address,
-//         'timestamp'  => 134,
-//     ]);
+    ForgingStats::factory()->create([
+        'address'    => $wallet2->address,
+        'timestamp'  => 134,
+    ]);
 
-//     // Not missed
-//     ForgingStats::factory()->create([
-//         'address'       => $wallet2->address,
-//         'timestamp'     => 151,
-//         'missed_height' => null,
-//     ]);
+    // Not missed
+    ForgingStats::factory()->create([
+        'address'       => $wallet2->address,
+        'timestamp'     => 151,
+        'missed_height' => null,
+    ]);
 
-//     Livewire::test(MissedBlocks::class)
-//         ->call('setIsReady')
-//         ->call('sortBy', $sortBy)
-//         ->assertSeeInOrder([
-//             $wallet2->address,
-//             $wallet1->address,
-//             $wallet2->address,
-//             $wallet1->address,
-//         ]);
-// })->with([
-//     'height',
-//     'age',
-//     'no_of_voters',
-//     'votes',
-//     'percentage_votes',
-// ]);
+    Livewire::test(MissedBlocks::class)
+        ->call('setIsReady')
+        ->call('sortBy', $sortBy)
+        ->assertSeeInOrder([
+            $wallet2->address,
+            $wallet1->address,
+            $wallet2->address,
+            $wallet1->address,
+        ]);
+})->with([
+    'height',
+    'age',
+    'no_of_voters',
+    'votes',
+    'percentage_votes',
+]);
