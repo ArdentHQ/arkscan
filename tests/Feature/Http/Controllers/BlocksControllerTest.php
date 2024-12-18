@@ -19,6 +19,8 @@ it('should render the page without any errors', function () {
 });
 
 it('should get the block stats for the last 24 hours', function () {
+    $this->artisan('migrate:fresh');
+
     $this->travelTo('2021-04-14 16:02:04');
 
     foreach (range(1, 19) as $seconds) {
