@@ -14,8 +14,7 @@
             <div class="flex flex-col sm:flex-row sm:flex-1 leading-4.25">
                 <x-tables.rows.mobile.encapsulated.username
                     :model="$wallet"
-                    :class="Arr::toCssClasses([
-                        'sm:flex-1 mb-4 sm:mb-0' => $wallet->username(),
+                    :class="Arr::toCssClasses(['sm:flex-1 mb-4 sm:mb-0' => $wallet->username(),
                         'sm:flex-1 hidden sm:block' => ! $wallet->username(),
                     ])"
                 />
