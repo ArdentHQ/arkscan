@@ -49,13 +49,13 @@ abstract class TestCase extends BaseTestCase
             $this->artisan('migrate:fresh', [
                 ...$this->migrateFreshUsing(),
                 '--database' => 'pgsql',
-                '--path'     => database_path('migrations'),
+                '--realpath'     => database_path('migrations'),
             ]);
 
             $this->artisan('migrate:fresh', [
                 ...$this->migrateFreshUsing(),
                 '--database' => 'explorer',
-                '--path'     => base_path('tests/migrations')
+                '--realpath'     => base_path('tests/migrations')
             ]);
 
             $this->app[Kernel::class]->setArtisan(null);
