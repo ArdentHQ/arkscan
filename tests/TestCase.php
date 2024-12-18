@@ -55,7 +55,7 @@ abstract class TestCase extends BaseTestCase
             $this->artisan('migrate:fresh', [
                 ...$this->migrateFreshUsing(),
                 '--database' => 'explorer',
-                '--path'     => base_path('tests/migrations')
+                '--path'     => base_path('tests/migrations'),
             ]);
 
             $this->app[Kernel::class]->setArtisan(null);
