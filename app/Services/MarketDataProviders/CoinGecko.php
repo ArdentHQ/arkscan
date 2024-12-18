@@ -170,6 +170,11 @@ final class CoinGecko extends AbstractMarketDataProvider
         return $volume;
     }
 
+    public function exchangeVolume(string $source, string $target): Collection
+    {
+        throw new \Exception('Not implemented');
+    }
+
     private function isEmptyResponse(?array $data): bool
     {
         return $this->isAcceptableResponse(

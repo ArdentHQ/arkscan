@@ -84,6 +84,54 @@ final class CryptoCompare extends AbstractMarketDataProvider
         });
     }
 
+    public function exchangeVolume(string $source, string $target): Collection
+    {
+        return (new CryptoDataCache())->setExchangeVolume($source, function () use ($source, $target) {
+            $prices = new Collection();
+
+            $maxDays = 2000;
+            $toDate = Network::epoch();
+            $days = $toDate->diffInDays();
+
+            for ($i = 0; $i < $days; $i += $maxDays) {
+                $toDate->addDays($maxDays);
+                $toTs = $toDate->unix();
+                $limit = min($maxDays, (int) ceil($days - $i));
+
+                try {
+                    $data = Http::get(
+                        'https://min-api.cryptocompare.com/data/symbol/histoday',
+                        [
+                            'fsym'  => $source,
+                            'tsym'  => $target,
+                            'toTs'  => $toTs,
+                            'limit' => $limit,
+                        ]
+                    )->json();
+
+                    if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
+                        return collect([]);
+                    }
+
+                    $prices = $prices->concat($data['Data']);
+                } catch (\Throwable $e) {
+                    //
+                }
+            }
+
+            if ($prices->isEmpty()) {
+                /** @var Collection<string, MarketData> */
+                return collect([]);
+            }
+
+            return collect($prices)
+                ->map(fn ($volumeData) => [
+                    'time' => $volumeData['time'],
+                    'volume' => $volumeData['total_volume_total'],
+                ]);
+        });
+    }
+
     public function priceAndPriceChange(string $baseCurrency, Collection $targetCurrencies): Collection
     {
         $data = null;

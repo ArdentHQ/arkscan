@@ -24,4 +24,6 @@ interface MarketDataProvider
     public function exchangeDetails(Exchange $exchange): array;
 
     public function volume(string $baseCurrency): array;
+
+    public function exchangeVolume(string $source, string $target): Collection;
 }

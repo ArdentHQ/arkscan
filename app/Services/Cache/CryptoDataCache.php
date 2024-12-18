@@ -15,6 +15,8 @@ final class CryptoDataCache implements Contract
 {
     use ManagesCache;
 
+    const EXCHANGE_VOLUME_TTL = 3600;
+
     public function setHistorical(string $source, string $target, string $format, Closure $callback): Collection
     {
         $data = $callback();
@@ -64,6 +66,16 @@ final class CryptoDataCache implements Contract
     public function setPriceData(string $currency, array $data): void
     {
         $this->put(sprintf('price_data/%s', $currency), $data);
+    }
+
+    public function getExchangeVolume(string $currency): Collection
+    {
+        return $this->get(sprintf('exchange_volume/%s', $currency), collect([]));
+    }
+
+    public function setExchangeVolume(string $currency, Closure $data): Collection
+    {
+        return $this->remember(sprintf('exchange_volume/%s', $currency), self::EXCHANGE_VOLUME_TTL, $data);
     }
 
     /**

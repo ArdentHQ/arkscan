@@ -10,6 +10,7 @@ use App\Events\Statistics\MarketData;
 use App\Facades\Network;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\StatisticsCache;
+use App\Services\MarketDataProviders\CryptoCompare;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
@@ -54,11 +55,11 @@ final class CacheMarketDataStatistics extends Command
             }
 
             $this->cachePriceStats($currency, $allTimeData, $dailyData, $cache);
-            $this->cacheVolumeStats($currency, $allTimeData, $cache);
             $this->cacheMarketCapStats($currency, $allTimeData, $cache);
         });
 
         $this->cacheAllTimePrices($currencies, $cache, $crypto);
+        $this->cacheAllTimeVolume($currencies, $cache, $crypto);
 
         $this->dispatchEvent(MarketData::class);
     }
@@ -180,45 +181,43 @@ final class CacheMarketDataStatistics extends Command
         $cache->setPriceRangeDaily($currency, $priceDailyLow['value'], $priceDailyHigh['value']);
     }
 
-    /**
-     * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $data
-     */
-    private function cacheVolumeStats(string $currency, array $data, StatisticsCache $cache): void
+    private function cacheAllTimeVolume(Collection $currencies, StatisticsCache $statisticsCache, CryptoDataCache $cryptoCache): void
     {
-        $volumes = collect($data['total_volumes'])
-            ->map(fn ($item) => ['timestamp' => $item[0], 'value' => $item[1]]);
+        foreach ($currencies as $currency) {
+            $volume = (new CryptoCompare())->exchangeVolume(Network::currency(), $currency);
 
-        $volumeSorted = $volumes->sortBy('value');
+            $volumeSorted = $volume->sortBy('volume');
 
-        /** @var array{timestamp: int, value: float|null} $volumeAtl */
-        $volumeAtl = $volumeSorted->first();
-        /** @var array{timestamp: int, value: float|null} $volumeAth */
-        $volumeAth = $volumeSorted->last();
+            /** @var array{time: int, volume: float|null} $volumeAtl */
+            $volumeAtl = $volumeSorted->first();
+            /** @var array{time: int, volume: float|null} $volumeAth */
+            $volumeAth = $volumeSorted->last();
 
-        if ($volumeAtl['value'] !== null) {
-            if (! $this->hasChanges) {
-                $existingValue = $cache->getVolumeAtl($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $volumeAtl['timestamp'] / 1000) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== $volumeAtl['value']) {
-                    $this->hasChanges = true;
+            if ($volumeAtl !== null && $volumeAtl['volume'] !== null) {
+                if (! $this->hasChanges) {
+                    $existingValue = $statisticsCache->getVolumeAtl($currency) ?? [];
+                    if (Arr::get($existingValue, 'time') !== $volumeAtl['time']) {
+                        $this->hasChanges = true;
+                    } elseif (Arr::get($existingValue, 'volume') !== $volumeAtl['volume']) {
+                        $this->hasChanges = true;
+                    }
                 }
+
+                $statisticsCache->setVolumeAtl($currency, $volumeAtl['time'], $volumeAtl['volume']);
             }
 
-            $cache->setVolumeAtl($currency, $volumeAtl['timestamp'] / 1000, $volumeAtl['value']);
-        }
-
-        if ($volumeAth['value'] !== null) {
-            if (! $this->hasChanges) {
-                $existingValue = $cache->getVolumeAth($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $volumeAth['timestamp'] / 1000) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== $volumeAth['value']) {
-                    $this->hasChanges = true;
+            if ($volumeAth !== null && $volumeAth['volume'] !== null) {
+                if (! $this->hasChanges) {
+                    $existingValue = $statisticsCache->getVolumeAth($currency) ?? [];
+                    if (Arr::get($existingValue, 'time') !== $volumeAth['time']) {
+                        $this->hasChanges = true;
+                    } elseif (Arr::get($existingValue, 'volume') !== $volumeAth['volume']) {
+                        $this->hasChanges = true;
+                    }
                 }
-            }
 
-            $cache->setVolumeAth($currency, $volumeAth['timestamp'] / 1000, $volumeAth['value']);
+                $statisticsCache->setVolumeAth($currency, $volumeAth['time'], $volumeAth['volume']);
+            }
         }
     }
 
