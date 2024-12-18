@@ -232,11 +232,11 @@ describe('transaction', function () {
 
         $this->travelTo('2024-04-19 00:15:44');
 
-        $walletA = Wallet::factory()->create();
-        $timestamp = Carbon::parse('2024-04-19 00:15:44')->getTimestampMs();
+        $walletA     = Wallet::factory()->create();
+        $timestamp   = Carbon::parse('2024-04-19 00:15:44')->getTimestampMs();
         $transaction = Transaction::factory()->transfer()->create([
             'sender_public_key' => $walletA->public_key,
-            'timestamp' => $timestamp,
+            'timestamp'         => $timestamp,
         ]);
 
         $walletA->fill(['updated_at' => $timestamp])->save();
@@ -272,11 +272,11 @@ describe('transaction', function () {
             return $event->broadcastOn()->name === 'transactions.address';
         });
 
-        $walletB = Wallet::factory()->create();
-        $timestamp = Carbon::parse('2024-04-19 01:16:55')->getTimestampMs();
+        $walletB     = Wallet::factory()->create();
+        $timestamp   = Carbon::parse('2024-04-19 01:16:55')->getTimestampMs();
         $transaction = Transaction::factory()->create([
             'sender_public_key' => $walletB->public_key,
-            'timestamp' => $timestamp,
+            'timestamp'         => $timestamp,
         ]);
 
         $walletB->fill(['updated_at' => $timestamp])->save();
