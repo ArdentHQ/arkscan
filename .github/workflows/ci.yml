@@ -141,9 +141,16 @@ jobs:
             - name: Clear Config
               run: php artisan config:clear && php artisan route:clear
 
+            - name: Create second database for explorer
+              run: |
+                psql -h 127.0.0.1 -U arkscan_test_db -c "CREATE DATABASE arkscan_test_db_explorer;"
+              env:
+                PGPASSWORD: password
+
             - name: Run Tests
               run: composer test:coverage
               env:
+                  # Main database
                   DB_CONNECTION: pgsql
                   DB_HOST: 127.0.0.1
                   DB_PORT: 5432
@@ -151,3 +158,9 @@ jobs:
                   DB_USERNAME: arkscan_test_db
                   DB_PASSWORD: password
                   PDO_ATTR_PERSISTENT: false
+                  # Explorer database
+                  ARKSCAN_DB_HOST: 127.0.0.1
+                  ARKSCAN_DB_PORT: 5432
+                  ARKSCAN_DB_DATABASE: arkscan_test_db_explorer
+                  ARKSCAN_DB_USERNAME: arkscan_test_db
+                  ARKSCAN_DB_PASSWORD: password
