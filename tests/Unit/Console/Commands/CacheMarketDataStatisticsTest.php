@@ -36,12 +36,12 @@ it('should cache market data statistics', function () {
 
     expect($cache->getPriceAth($currency))->toBe([
         'timestamp' => Carbon::parse(Arr::get($priceData, 'market_data.ath_date.usd'))->timestamp,
-        'value' => Arr::get($priceData, 'market_data.ath.usd'),
+        'value'     => Arr::get($priceData, 'market_data.ath.usd'),
     ]);
 
     expect($cache->getPriceAtl($currency))->toBe([
         'timestamp' => Carbon::parse(Arr::get($priceData, 'market_data.atl_date.usd'))->timestamp,
-        'value' => Arr::get($priceData, 'market_data.atl.usd'),
+        'value'     => Arr::get($priceData, 'market_data.atl.usd'),
     ]);
 
     expect($cache->getVolumeAtl($currency))->toBe(['timestamp' => 1688774400, 'value' => 40548.95038391039]);

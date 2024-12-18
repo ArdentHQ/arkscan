@@ -15,7 +15,7 @@ final class CryptoDataCache implements Contract
 {
     use ManagesCache;
 
-    const EXCHANGE_VOLUME_TTL = 3600;
+    public const EXCHANGE_VOLUME_TTL = 3600;
 
     public function setHistorical(string $source, string $target, string $format, Closure $callback): Collection
     {
