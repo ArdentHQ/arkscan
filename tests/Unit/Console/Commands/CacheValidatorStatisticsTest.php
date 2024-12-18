@@ -24,8 +24,8 @@ it('should cache validator statistics', function () {
         'round'        => 1,
         'round_height' => 1,
         'validators'   => [
-            $oldestActive->public_key,
-            $newestActive->public_key,
+            $oldestActive->address,
+            $newestActive->address,
         ],
     ]);
 
@@ -37,14 +37,14 @@ it('should cache validator statistics', function () {
         'attributes' => ['vote' => $leastVoters->address],
     ]);
 
-    $t = Transaction::factory()->validatorRegistration()->create([
-        'timestamp'         => Carbon::now()->addSecond(1)->getTimestampMs(),
-        'sender_public_key' => $oldestActive->public_key,
+    Transaction::factory()->validatorRegistration()->create([
+        'timestamp'      => Carbon::now()->addSecond(1)->getTimestampMs(),
+        'sender_address' => $oldestActive->address,
     ]);
 
     Transaction::factory()->validatorRegistration()->create([
         'timestamp'         => Carbon::now()->addSecond(100)->getTimestampMs(),
-        'sender_public_key' => $newestActive->public_key,
+        'sender_address'    => $newestActive->address,
     ]);
 
     Block::factory()->count(10)->create([
