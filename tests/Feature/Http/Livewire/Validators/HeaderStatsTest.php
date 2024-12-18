@@ -16,6 +16,11 @@ beforeEach(function () {
         ->activeValidator()
         ->create();
 
+    $this->artisan('migrate:fresh', [
+        '--database' => 'pgsql',
+        '--path'     => 'database/migrations',
+    ]);
+
     createRoundEntry(112168, (112168 - 1) * Network::validatorCount(), $this->wallets);
 });
 
