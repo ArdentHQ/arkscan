@@ -46,7 +46,7 @@ abstract class TestCase extends BaseTestCase
     protected function refreshTestDatabase()
     {
         if (! RefreshDatabaseState::$migrated) {
-            $this->artisan('migrate:fresh', [
+            $this->artisan('migrate', [
                 '--database'     => 'pgsql',
                 '--path'         => database_path('migrations'),
                 '--realpath'     => true,
