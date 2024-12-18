@@ -20,8 +20,6 @@ use function Tests\faker;
 
 beforeEach(function () {
     State::factory()->create();
-
-    ForgingStats::truncate();
 });
 
 it('should render', function () {

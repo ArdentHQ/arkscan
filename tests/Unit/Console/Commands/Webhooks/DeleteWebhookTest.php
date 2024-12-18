@@ -6,8 +6,6 @@ use App\Models\Webhook;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 
-beforeEach(fn () => Webhook::truncate());
-
 it('should execute the command', function ($arg, $value) {
     Http::fake(Http::response(null, 201));
 
