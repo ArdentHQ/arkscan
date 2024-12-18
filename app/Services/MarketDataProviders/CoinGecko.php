@@ -102,6 +102,8 @@ final class CoinGecko extends AbstractMarketDataProvider
 
         try {
             $data = Http::get('https://api.coingecko.com/api/v3/coins/'.Str::lower($baseCurrency))->json();
+
+            (new CryptoDataCache())->setPriceData($baseCurrency, $data);
         } catch (\Throwable) {
             //
         }

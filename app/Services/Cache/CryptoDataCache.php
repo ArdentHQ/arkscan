@@ -45,11 +45,6 @@ final class CryptoDataCache implements Contract
         return $prices;
     }
 
-    public function getCache(): TaggedCache
-    {
-        return Cache::tags('crypto_compare');
-    }
-
     // Add caches for volume in all currencies
     public function getVolume(string $currency): ?string
     {
@@ -61,14 +56,17 @@ final class CryptoDataCache implements Contract
         $this->put(sprintf('volume/%s', $currency), $volume);
     }
 
-    public function setHistoricalFullResponse(string $source, string $target, array $values): void
+    /**
+     * @return array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]}|array{}
+     */
+    public function getPriceData(string $currency): array
     {
-        $this->put(sprintf('historical_full/all_time/%s/%s', $source, $target), $values);
+        return $this->get(sprintf('price_data/%s', $currency), []);
     }
 
-    public function setHistoricalHourlyFullResponse(string $source, string $target, array $values): void
+    public function setPriceData(string $currency, array $data): void
     {
-        $this->put(sprintf('historical_full/hourly/%s/%s', $source, $target), $values);
+        $this->put(sprintf('price_data/%s', $currency), $data);
     }
 
     /**
@@ -79,11 +77,26 @@ final class CryptoDataCache implements Contract
         return $this->get(sprintf('historical_full/all_time/%s/%s', $source, $target), []);
     }
 
+    public function setHistoricalFullResponse(string $source, string $target, array $values): void
+    {
+        $this->put(sprintf('historical_full/all_time/%s/%s', $source, $target), $values);
+    }
+
     /**
      * @return array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]}|array{}
      */
     public function getHistoricalHourlyFullResponse(string $source, string $target): array
     {
         return $this->get(sprintf('historical_full/hourly/%s/%s', $source, $target), []);
+    }
+
+    public function setHistoricalHourlyFullResponse(string $source, string $target, array $values): void
+    {
+        $this->put(sprintf('historical_full/hourly/%s/%s', $source, $target), $values);
+    }
+
+    public function getCache(): TaggedCache
+    {
+        return Cache::tags('crypto_compare');
     }
 }
