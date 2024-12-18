@@ -10,6 +10,7 @@ use App\Events\WalletVote;
 use App\Jobs\CacheBlocks;
 use App\Models\Block;
 use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\Addresses\Aggregates\LatestWalletAggregate;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\TransactionCache;
@@ -231,9 +232,14 @@ describe('transaction', function () {
 
         $this->travelTo('2024-04-19 00:15:44');
 
+        $walletA = Wallet::factory()->create();
+        $timestamp = Carbon::parse('2024-04-19 00:15:44')->getTimestampMs();
         $transaction = Transaction::factory()->transfer()->create([
-            'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
+            'sender_public_key' => $walletA->public_key,
+            'timestamp' => $timestamp,
         ]);
+
+        $walletA->fill(['updated_at' => $timestamp])->save();
 
         (new LatestWalletAggregate())->aggregate();
 
@@ -242,8 +248,8 @@ describe('transaction', function () {
         $cache = new StatisticsCache();
 
         expect($cache->getNewestAddress())->toEqual([
-            'address'   => $transaction->sender->address,
-            'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
+            'address'   => $walletA->address,
+            'timestamp' => $timestamp,
             'value'     => Carbon::createFromTimestamp($transaction->timestamp)->format(DateFormat::DATE),
         ]);
 
@@ -266,9 +272,14 @@ describe('transaction', function () {
             return $event->broadcastOn()->name === 'transactions.address';
         });
 
+        $walletB = Wallet::factory()->create();
+        $timestamp = Carbon::parse('2024-04-19 01:16:55')->getTimestampMs();
         $transaction = Transaction::factory()->create([
-            'timestamp' => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
+            'sender_public_key' => $walletB->public_key,
+            'timestamp' => $timestamp,
         ]);
+
+        $walletB->fill(['updated_at' => $timestamp])->save();
 
         $this
             ->post($secureUrl, $this->transaction)
