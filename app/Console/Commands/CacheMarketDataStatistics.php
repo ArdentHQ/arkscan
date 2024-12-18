@@ -76,10 +76,6 @@ final class CacheMarketDataStatistics extends Command
         $this->cacheDailyPriceStats($currency, $dailyData, $cache);
     }
 
-    /**
-     * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $allTimeData
-     * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $dailyData
-     */
     private function cacheAllTimePrices(Collection $currencies, StatisticsCache $statisticsCache, CryptoDataCache $cryptoCache): void
     {
         $priceData = $cryptoCache->getPriceData(Network::currency());
