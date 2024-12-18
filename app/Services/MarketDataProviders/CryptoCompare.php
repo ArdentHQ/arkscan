@@ -178,7 +178,7 @@ final class CryptoCompare extends AbstractMarketDataProvider
     {
         $errorCheck = fn () => false;
         if ($checkStatus) {
-            $errorCheck = fn ($data) => Arr::get($data, 'Response') !== 'Success';
+            $errorCheck = fn ($data) => Arr::get($data, 'Data', []) === [];
         }
 
         return $this->isAcceptableResponse(
@@ -195,7 +195,7 @@ final class CryptoCompare extends AbstractMarketDataProvider
     {
         $errorCheck = fn () => false;
         if ($checkStatus) {
-            $errorCheck = fn ($data) => Arr::get($data, 'Response') !== 'Success';
+            $errorCheck = fn ($data) => Arr::get($data, 'Response') === 'Error';
         }
 
         return $this->isAcceptableResponse(
