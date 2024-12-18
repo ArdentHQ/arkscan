@@ -104,14 +104,14 @@ final class CacheMarketDataStatistics extends Command
 
             $priceAthTimestamp = null;
             if ($priceAthDate !== null) {
-                $priceAthTimestamp = Carbon::parse($priceAtlDate)->getTimestamp();
+                $priceAthTimestamp = Carbon::parse($priceAthDate)->getTimestamp();
             }
 
             if ($priceAtl !== null && $priceAtlTimestamp !== null) {
                 $existingValue = $statisticsCache->getPriceAtl($currency) ?? [];
                 if (Arr::get($existingValue, 'timestamp') !== $priceAtlTimestamp) {
                     $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== $priceAtl) {
+                } elseif (Arr::get($existingValue, 'value') !== floatval($priceAtl)) {
                     $this->hasChanges = true;
                 }
 
@@ -122,7 +122,7 @@ final class CacheMarketDataStatistics extends Command
                 $existingValue = $statisticsCache->getPriceAth($currency) ?? [];
                 if (Arr::get($existingValue, 'timestamp') !== $priceAthTimestamp) {
                     $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== $priceAth) {
+                } elseif (Arr::get($existingValue, 'value') !== floatval($priceAth)) {
                     $this->hasChanges = true;
                 }
 
