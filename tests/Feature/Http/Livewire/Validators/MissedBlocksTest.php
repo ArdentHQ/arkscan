@@ -772,7 +772,7 @@ it('should not sort for sqlite databases', function ($sortBy) {
     Config::set('database.default', 'sqlite');
     Config::set('database.connections.sqlite.database', ':memory:');
 
-    $this->refreshDatabase();
+    $this->artisan('migrate:fresh');
 
     $wallet2 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
