@@ -150,4 +150,4 @@ jobs:
                   DB_DATABASE: arkscan_test_db
                   DB_USERNAME: arkscan_test_db
                   DB_PASSWORD: password
-                  PDO_ATTR_PERSISTENT: false
+                  # PDO_ATTR_PERSISTENT: false
