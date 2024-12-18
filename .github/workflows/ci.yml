@@ -147,7 +147,7 @@ jobs:
               env:
                 PGPASSWORD: password
 
-            - name: Run Tests
+            - name: Run Testsx
               run: composer test:coverage
               env:
                   # Main database
