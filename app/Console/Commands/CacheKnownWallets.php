@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Facades\Network;
+use App\Facades\Wallets;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
@@ -35,7 +36,8 @@ final class CacheKnownWallets extends Command
 
         $knownWallets = collect(Network::knownWallets());
 
-        Wallet::whereIn('address', $knownWallets->pluck('address'))
+        Wallets::allWithUsername()
+            ->orWhereIn('address', $knownWallets->pluck('address'))
             ->select([
                 'address',
                 'attributes',
@@ -48,6 +50,8 @@ final class CacheKnownWallets extends Command
                 $username = null;
                 if (! is_null($knownWallet)) {
                     $username = $knownWallet['name'];
+                } else {
+                    $username = $wallet->username();
                 }
 
                 if (! is_null($username)) {

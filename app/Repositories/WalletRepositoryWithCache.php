@@ -20,6 +20,11 @@ final class WalletRepositoryWithCache implements WalletRepository
     {
     }
 
+    public function allWithUsername(): Builder
+    {
+        return $this->wallets->allWithUsername();
+    }
+
     public function allWithValidatorPublicKey(): Builder
     {
         return $this->wallets->allWithValidatorPublicKey();
@@ -48,6 +53,11 @@ final class WalletRepositoryWithCache implements WalletRepository
     public function findByPublicKeys(array $publicKeys): Collection
     {
         return $this->remember(fn () => $this->wallets->findByPublicKeys($publicKeys));
+    }
+
+    public function findByUsername(string $username, bool $caseSensitive = true): Wallet
+    {
+        return $this->remember(fn () => $this->wallets->findByUsername($username, $caseSensitive));
     }
 
     public function findByIdentifier(string $identifier): Wallet

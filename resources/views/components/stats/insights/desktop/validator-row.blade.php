@@ -20,7 +20,11 @@
                     href="{{ route('wallet', $model->model()) }}"
                     class="link"
                 >
-                    {{ $model->address() }}
+                    @if ($model->hasUsername())
+                        {{ $model->usernameBeforeKnown() }}
+                    @else
+                        {{ $model->address() }}
+                    @endif
                 </a>
             @endif
         </div>

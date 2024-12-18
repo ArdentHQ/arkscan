@@ -5,8 +5,8 @@
         @endif
 
         <a href="{{ route('wallet', $model->address()) }}" class="max-w-full font-semibold link">
-            @if ($model->isKnownWallet())
-                {{ $model->walletName() }}
+            @if ($model->hasUsernameOrIsKnown())
+                {{ $model->usernameBeforeKnown() }}
             @else
                 @isset($withoutTruncate)
                     {{ $model->address() }}

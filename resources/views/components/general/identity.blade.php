@@ -6,6 +6,7 @@
     'suffix'          => false,
     'withoutTruncate' => false,
     'truncateLength'  => null,
+    'withoutUsername' => false,
     'addressVisible'  => false,
     'containerClass'  => null,
     'contentClass'    => null,
@@ -13,6 +14,8 @@
     'linkClass'       => null,
     'validatorNameClass' => null,
 ])
+
+@php ($hasUsername = $model->hasUsername())
 
 <div @class($containerClass)>
     <div {{ $attributes->class('flex items-center md:flex-row md:justify-start') }}>
@@ -32,16 +35,37 @@
                     @class(['font-semibold sm:hidden md:flex link', $linkClass])
                 >
             @endif
-                @if ($address)
-                    {{ $address }}
-                @else
-                    @if($withoutTruncate)
-                        {{ $model->address() }}
+                @if ($hasUsername && !$withoutUsername)
+                    @if ($prefix)
+                        <div @class([
+                            'validator-name-truncate-prefix',
+                            $validatorNameClass,
+                        ])>
+                    @elseif ($isListing)
+                        <div @class([
+                            'validator-name-truncate-listing',
+                            $validatorNameClass,
+                        ])>
                     @else
-                        <x-truncate-middle :length="$truncateLength">
+                        <div @class([
+                            'validator-name-truncate',
+                            $validatorNameClass,
+                        ])>
+                    @endif
+                        {{ $model->username() }}
+                    </div>
+                @else
+                    @if ($address)
+                        {{ $address }}
+                    @else
+                        @if($withoutTruncate)
                             {{ $model->address() }}
-                        </x-truncate-middle>
-                    @endisset
+                        @else
+                            <x-truncate-middle :length="$truncateLength">
+                                {{ $model->address() }}
+                            </x-truncate-middle>
+                        @endisset
+                    @endif
                 @endif
             @if ($withoutLink)
                 </div>
@@ -57,11 +81,21 @@
                     @class(['hidden font-semibold sm:flex md:hidden link', $linkClass])
                 >
             @endif
-                {{ $model->address() }}
+                @if ($hasUsername && !$withoutUsername)
+                    {{ $model->username() }}
+                @else
+                    {{ $model->address() }}
+                @endif
             @if ($withoutLink)
                 </div>
             @else
                 </a>
+            @endif
+
+            @if ($hasUsername && !$withoutUsername && $addressVisible)
+                <span class="ml-1 truncate">
+                    {{ $model->address() }}
+                </span>
             @endif
 
             @if ($suffix)

@@ -1,6 +1,7 @@
 @props([
     'model',
     'withoutTruncate' => false,
+    'withoutUsername' => false,
     'withoutClipboard' => false,
     'truncateBreakpoint' => 'xl',
     'withoutTransactionCount' => true,
@@ -25,6 +26,7 @@
             <x-general.identity
                 :model="$model"
                 :without-truncate="$withoutTruncate"
+                :without-username="$withoutUsername"
                 :validator-name-class="$validatorNameClass"
             >
                 <x-slot name="address">

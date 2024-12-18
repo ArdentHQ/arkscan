@@ -45,10 +45,10 @@ final class MemoryWallet
 
     public function hasUsername(): bool
     {
-        return $this->walletName() !== null;
+        return $this->username() !== null;
     }
 
-    public function walletName(): ?string
+    public function username(): ?string
     {
         return (new WalletCache())->getWalletNameByAddress($this->address);
     }
