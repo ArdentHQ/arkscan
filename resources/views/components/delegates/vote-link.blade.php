@@ -46,8 +46,7 @@
         >
             <x-slot
                 name="button"
-                :class="Arr::toCssClasses([
-                    'transition-default',
+                :class="Arr::toCssClasses(['transition-default',
                     $buttonClass,
                 ])"
                 ::class="{
