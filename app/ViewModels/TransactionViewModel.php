@@ -119,6 +119,8 @@ final class TransactionViewModel implements ViewModel
         return ExchangeRate::convert($this->fee(), $this->transaction->timestamp, $showSmallAmounts);
     }
 
+    // @codeCoverageIgnoreStart
+    // @TODO: adjust for evm https://app.clickup.com/t/86dvfymkn
     public function amountForItself(): float
     {
         /** @var array<int, array<string, mixed>> */
@@ -133,6 +135,7 @@ final class TransactionViewModel implements ViewModel
             ->sum('amount') / config('currencies.notation.crypto', 1e18);
     }
 
+    // @TODO: adjust for evm https://app.clickup.com/t/86dvfymkn
     public function amountExcludingItself(): float
     {
         /** @var array<int, array<string, mixed>> */
@@ -146,6 +149,7 @@ final class TransactionViewModel implements ViewModel
             })
             ->sum('amount') / config('currencies.notation.crypto', 1e18);
     }
+    // @codeCoverageIgnoreStart
 
     public function amount(): float
     {
