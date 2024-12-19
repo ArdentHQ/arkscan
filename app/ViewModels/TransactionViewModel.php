@@ -166,10 +166,13 @@ final class TransactionViewModel implements ViewModel
         return $this->amount();
     }
 
+    // @codeCoverageIgnoreStart
+    // @TODO: depends on https://app.clickup.com/t/86dvfymkn
     public function amountFiatExcludingItself(): string
     {
         return ExchangeRate::convert($this->amountExcludingItself(), $this->transaction->timestamp);
     }
+    // @codeCoverageIgnoreEnd
 
     public function amountFiat(bool $showSmallAmounts = false): string
     {
