@@ -13,10 +13,6 @@ use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 
-beforeEach(function () {
-    ForgingStats::truncate();
-});
-
 it('should make an instance that has all properties', function (string $status) {
     $wallet = Wallet::factory()->create();
 

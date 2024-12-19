@@ -5,8 +5,6 @@ declare(strict_types=1);
 use App\Models\Webhook;
 use Illuminate\Support\Facades\Artisan;
 
-beforeEach(fn () => Webhook::truncate());
-
 it('should execute the command', function () {
     $webhooks = Webhook::factory(3)->create();
 
