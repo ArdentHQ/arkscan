@@ -149,7 +149,7 @@ final class TransactionViewModel implements ViewModel
             })
             ->sum('amount') / config('currencies.notation.crypto', 1e18);
     }
-    // @codeCoverageIgnoreStart
+    // @codeCoverageIgnoreEnd
 
     public function amount(): float
     {
