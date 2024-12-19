@@ -347,7 +347,6 @@ it('should get the gas used', function () {
 it('should get the gas used if no receipt', function () {
     $transaction = Transaction::factory()->create();
 
-    
     $viewModel = new TransactionViewModel($transaction->fresh());
 
     expect($viewModel->gasUsed())->toEqual(0);
