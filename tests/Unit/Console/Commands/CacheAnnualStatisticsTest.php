@@ -48,6 +48,24 @@ it('should cache annual data for current year', function () {
     Event::assertDispatchedTimes(AnnualData::class, 1);
 });
 
+it('should not cache all years data if already cached', function () {
+    $cache       = new StatisticsCache();
+
+    // cache annual data for 2023
+    $cache->setAnnualData(2023, 6, '60.0000000000000000', '0.60000000000000000000', 6);
+
+    $this->artisan('explorer:cache-annual-statistics');
+
+    // data for 2023 should not be changed
+    expect($cache->getAnnualData(2023))->toBe([
+        'year'         => 2023,
+        'transactions' => 6,
+        'volume'       => '60.0000000000000000',
+        'fees'         => '0.60000000000000000000',
+        'blocks'       => 6,
+    ]);
+});
+
 it('should cache annual data for all time', function () {
     Event::fake();
 
