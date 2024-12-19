@@ -20,6 +20,7 @@ use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
 use function Tests\createRoundEntry;
 use function Tests\getRoundValidators;
+use function Tests\mockTaggedCache;
 
 describe('Monitor', function () {
     beforeEach(function () {
@@ -91,22 +92,16 @@ describe('Monitor', function () {
     it('should not throw an exception if only fails 2 times', function () {
         createRoundWithValidators();
 
-        $taggedCache = Cache::tags('tags');
-
         $component = Livewire::test(Monitor::class)
             ->call('setIsReady');
 
-        Cache::shouldReceive('remember')
+        mockTaggedCache(withTags:true)->shouldReceive('remember')
             ->once()
             ->andThrow(new Exception('Something went wrong!'))
             ->shouldReceive('increment')
             ->andReturn(1, 2, 3)
             ->shouldReceive('remember')
             ->andReturnUsing(fn ($tag, $time, $closure) => $closure())
-            ->shouldReceive('tags')
-            ->andReturn($taggedCache)
-            ->shouldReceive('driver')
-            ->andReturn($taggedCache)
             ->shouldReceive('forget')
             ->andReturn(null);
 
