@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Http;
 use Laravel\Scout\Events\ModelsImported;
 use Meilisearch\Client as MeilisearchClient;
 use Meilisearch\Endpoints\Indexes;
+use function Tests\mockTaggedCache;
 
 beforeEach(function () {
     // Default value, overriden in phpunit.xml for the tests
@@ -24,20 +25,12 @@ beforeEach(function () {
     $indexes->shouldReceive('addDocuments');
 });
 
-function mockCache()
-{
-    $taggedCache = Cache::tags('tags');
-
-    return Cache::shouldReceive('driver')
-        ->andReturn($taggedCache);
-}
-
 it('should index new blocks', function () {
     $this->travelTo(Carbon::parse('2024-04-09 13:32:44'));
 
     Event::fake();
 
-    mockCache()->shouldReceive('get')
+    mockTaggedCache()->shouldReceive('get')
         ->with('latest-indexed-timestamp:blocks')
         ->andReturn(null)
         ->shouldReceive('put')
@@ -89,7 +82,7 @@ it('should index blocks using the timestamp from cache', function () {
 
     $taggedCache = Cache::tags('tags');
 
-    mockCache()->shouldReceive('get')
+    mockTaggedCache()->shouldReceive('get')
         ->with('latest-indexed-timestamp:blocks')
         ->andReturn(1711978364000) // 8 days ago, so new ones are 1 and 5 days ago
         ->shouldReceive('put')
@@ -122,7 +115,7 @@ it('should index blocks using the timestamp from cache', function () {
 it('should not store any value on cache if no new transactions', function () {
     Event::fake();
 
-    mockCache()->shouldReceive('get')
+    mockTaggedCache()->shouldReceive('get')
         ->with('latest-indexed-timestamp:blocks')
         ->andReturn(6);
 

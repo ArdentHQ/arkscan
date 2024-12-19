@@ -20,6 +20,7 @@ use Faker\Generator;
 use FurqanSiddiqui\BIP39\BIP39;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
@@ -337,4 +338,12 @@ function getRoundValidators(bool $withBlock = true, int $roundNumber = null): Su
     }
 
     return $validators;
+}
+
+function mockTaggedCache()
+{
+    $taggedCache = Cache::tags('tags');
+
+    return Cache::shouldReceive('driver')
+        ->andReturn($taggedCache);
 }
