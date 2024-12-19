@@ -330,3 +330,25 @@ it('should should determine transaction has not failed', function () {
 
     expect($viewModel->hasFailedStatus())->toBeFalse();
 });
+
+it('should get the gas used', function () {
+    $transaction = Transaction::factory()->create();
+
+    Receipt::factory()->create([
+        'id'       => $transaction->id,
+        'gas_used' => 8,
+    ]);
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->gasUsed())->toEqual(8);
+});
+
+it('should get the gas used if no receipt', function () {
+    $transaction = Transaction::factory()->create();
+
+    
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->gasUsed())->toEqual(0);
+});
