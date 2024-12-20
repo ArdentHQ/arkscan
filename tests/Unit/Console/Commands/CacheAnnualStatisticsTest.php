@@ -287,6 +287,51 @@ it('should dispatch event for all data when the transaction count changes', func
     Event::assertDispatchedTimes(AnnualData::class, 1);
 });
 
+it('should dispatch event for specific year when the transaction count changes', function () {
+    Event::fake();
+
+    $cache       = new StatisticsCache();
+    $currentTime = Carbon::now();
+    $currentYear = $currentTime->year;
+    $timestamp   = Timestamp::now()->getTimestampMs();
+
+    // epoch year data previously cached
+    $cache->setAnnualData(
+        year: 2023,
+        transactions: 3,
+        volume: '50.0000000000000000',
+        fees: '0.0000105',
+        blocks: 3,
+    );
+
+    // Previously cached data
+    $cache->setAnnualData(
+        year: $currentYear,
+        transactions: 5,
+        volume: '50.0000000000000000',
+        fees: '0.0000105',
+        blocks: 5,
+    );
+
+    // since cached data points to 5 transactions it should mark as changed
+    // and dispatch event if transaction count changes
+    Transaction::factory(6)
+        ->withReceipt()
+        ->create([
+            'timestamp' => $timestamp,
+            'amount'    => 10 * 1e18,
+            'gas_price' => 0.1,
+        ]);
+
+    Block::factory(5)->create([
+        'timestamp' => $timestamp,
+    ]);
+
+    $this->artisan('explorer:cache-annual-statistics');
+
+    Event::assertDispatchedTimes(AnnualData::class, 1);
+});
+
 it('should dispatch event for all data when the block count changes', function () {
     Event::fake();
 
