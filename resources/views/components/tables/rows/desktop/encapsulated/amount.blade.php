@@ -62,8 +62,7 @@
     @unless ($withoutFee)
         <x-tables.rows.desktop.encapsulated.fee
             :model="$model"
-            :class="Arr::toCssClasses([
-                'hidden text-xs md:block text-theme-secondary-700 dark:text-theme-dark-200',
+            :class="Arr::toCssClasses(['hidden text-xs md:block text-theme-secondary-700 dark:text-theme-dark-200',
                 $feeBreakpointClass,
             ])"
             without-styling
