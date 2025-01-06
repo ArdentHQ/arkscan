@@ -10,8 +10,7 @@
     @foreach ($delegates as $delegate)
         <x-tables.rows.mobile
             wire:key="{{ Helpers::generateId('delegate-mobile', $delegate->address()) }}"
-            :expand-class="Arr::toCssClasses([
-                'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700' => ! $delegate->isResigned(),
+            :expand-class="Arr::toCssClasses(['space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700' => ! $delegate->isResigned(),
             ])"
             expandable
             :content-class="config('arkscan.arkconnect.enabled') ? '!pb-0 sm:!pb-3' : ''"
