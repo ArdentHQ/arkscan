@@ -53,12 +53,12 @@ it('should cache market data statistics', function () {
 
     expect($cache->getVolumeAtl($currency))->toBe([
         'timestamp' => 1491609600,
-        'value' => 58232.28,
+        'value'     => 58232.28,
     ]);
 
     expect($cache->getVolumeAth($currency))->toBe([
         'timestamp' => 1698624000,
-        'value' => 443394014.01,
+        'value'     => 443394014.01,
     ]);
 
     expect($cache->getMarketCapAtl($currency))->toBe(['timestamp' => 1490140800, 'value' => 3181903.0]);
