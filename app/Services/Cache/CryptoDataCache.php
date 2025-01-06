@@ -15,6 +15,7 @@ final class CryptoDataCache implements Contract
 {
     use ManagesCache;
 
+    // @TODO Review the data stored here - https://app.clickup.com/t/86dvm349z
     public function setHistorical(string $source, string $target, string $format, Closure $callback): Collection
     {
         $data = $callback();
@@ -24,6 +25,7 @@ final class CryptoDataCache implements Contract
         return $data;
     }
 
+    // @TODO Review the data stored here - https://app.clickup.com/t/86dvm349z
     public function setHistoricalHourly(string $source, string $target, string $format, int $limit, Closure $callback): Collection
     {
         $data = $callback();
