@@ -43,11 +43,6 @@ final class MemoryWallet
         return $this->publicKey;
     }
 
-    public function hasUsername(): bool
-    {
-        return $this->walletName() !== null;
-    }
-
     public function walletName(): ?string
     {
         return (new WalletCache())->getWalletNameByAddress($this->address);
