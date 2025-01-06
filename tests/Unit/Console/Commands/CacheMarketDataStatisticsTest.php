@@ -9,6 +9,10 @@ use App\Services\Cache\StatisticsCache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 
+beforeEach(function () {
+    $this->travelTo('2024-08-01 01:00:00');
+});
+
 it('should cache market data statistics', function () {
     $this->travelTo('2024-06-24 16:55:23');
 
