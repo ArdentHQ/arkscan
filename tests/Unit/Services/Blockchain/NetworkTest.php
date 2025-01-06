@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Models\State;
+use App\Services\BigNumber;
 use App\Services\Blockchain\Network;
 use ArkEcosystem\Crypto\Networks\Devnet;
 use ArkEcosystem\Crypto\Networks\Mainnet;
@@ -76,3 +78,21 @@ it('should have all required properties', function (array $config) {
         'contract_addresses'  => [],
     ]],
 ]);
+
+it('should return supply from first state', function () {
+    State::factory()->create(['supply' => BigNumber::new(123 * 1e18)]);
+
+    $subject = new Network([]);
+
+    expect($subject->supply())->toBeInstanceOf(BigNumber::class);
+
+    expect($subject->supply()->__toString())->toBe('123000000000000000000');
+});
+
+it('should return 0 as supply if no state', function () {
+    $subject = new Network([]);
+
+    expect($subject->supply())->toBeInstanceOf(BigNumber::class);
+
+    expect($subject->supply()->toInt())->toBe(0);
+});
