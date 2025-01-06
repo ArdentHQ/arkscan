@@ -196,9 +196,9 @@ final class CacheMarketDataStatistics extends Command
             if ($volumeAtl !== null && $volumeAtl['volume'] !== null) {
                 if (! $this->hasChanges) {
                     $existingValue = $statisticsCache->getVolumeAtl($currency) ?? [];
-                    if (Arr::get($existingValue, 'time') !== $volumeAtl['time']) {
+                    if (Arr::get($existingValue, 'timestamp') !== $volumeAtl['time']) {
                         $this->hasChanges = true;
-                    } elseif (Arr::get($existingValue, 'volume') !== $volumeAtl['volume']) {
+                    } elseif (Arr::get($existingValue, 'value') !== $volumeAtl['volume']) {
                         $this->hasChanges = true;
                     }
                 }
@@ -209,9 +209,9 @@ final class CacheMarketDataStatistics extends Command
             if ($volumeAth !== null && $volumeAth['volume'] !== null) {
                 if (! $this->hasChanges) {
                     $existingValue = $statisticsCache->getVolumeAth($currency) ?? [];
-                    if (Arr::get($existingValue, 'time') !== $volumeAth['time']) {
+                    if (Arr::get($existingValue, 'timestamp') !== $volumeAth['time']) {
                         $this->hasChanges = true;
-                    } elseif (Arr::get($existingValue, 'volume') !== $volumeAth['volume']) {
+                    } elseif (Arr::get($existingValue, 'value') !== $volumeAth['volume']) {
                         $this->hasChanges = true;
                     }
                 }

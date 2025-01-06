@@ -10,14 +10,13 @@ use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
-    $this->travelTo('2024-08-01 01:00:00');
+    $this->travelTo('2024-06-24 16:55:23');
 });
 
 it('should cache market data statistics', function () {
-    $this->travelTo('2024-06-24 16:55:23');
-
     Event::fake();
 
     Config::set('arkscan.networks.development.canBeExchanged', true);
@@ -28,6 +27,12 @@ it('should cache market data statistics', function () {
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
+
+    Http::fakeSequence('https://min-api.cryptocompare.com/*')
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200);
+
+    // $crypto->setExchangeVolume(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/exchange_volume.json')), true));
 
     $priceData = $crypto->getPriceData(Network::currency());
 
@@ -46,8 +51,15 @@ it('should cache market data statistics', function () {
         'value'     => Arr::get($priceData, 'market_data.atl.usd'),
     ]);
 
-    expect($cache->getVolumeAtl($currency))->toBe(['timestamp' => 1688774400, 'value' => 40548.95038391039]);
-    expect($cache->getVolumeAth($currency))->toBe(['timestamp' => 1698710400, 'value' => 443956833.91000223]);
+    expect($cache->getVolumeAtl($currency))->toBe([
+        'timestamp' => 1491609600,
+        'value' => 58232.28,
+    ]);
+
+    expect($cache->getVolumeAth($currency))->toBe([
+        'timestamp' => 1698624000,
+        'value' => 443394014.01,
+    ]);
 
     expect($cache->getMarketCapAtl($currency))->toBe(['timestamp' => 1490140800, 'value' => 3181903.0]);
     expect($cache->getMarketCapAth($currency))->toBe(['timestamp' => 1515542400, 'value' => 1001554886.9196]);
@@ -82,6 +94,10 @@ it('should exit early if network cannot be exchanged', function () {
 it('should handle null scenarios for statistics', function () {
     Event::fake();
 
+    Http::fake([
+        'https://min-api.cryptocompare.com/*' => Http::response([]),
+    ]);
+
     Config::set('arkscan.networks.development.canBeExchanged', true);
     $cache = new StatisticsCache();
 
@@ -114,6 +130,12 @@ it('should should not dispatch event if no changes', function () {
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
 
+    Http::fakeSequence('https://min-api.cryptocompare.com/*')
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200);
+
     $this->artisan('explorer:cache-market-data-statistics');
 
     Event::assertDispatchedTimes(MarketData::class, 1);
@@ -136,6 +158,14 @@ it('should should dispatch event if price atl changes', function () {
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
+
+    Http::fakeSequence('https://min-api.cryptocompare.com/*')
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200);
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -170,6 +200,14 @@ it('should should dispatch event if price ath changes', function () {
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
 
+    Http::fakeSequence('https://min-api.cryptocompare.com/*')
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200);
+
     $this->artisan('explorer:cache-market-data-statistics');
 
     Event::assertDispatchedTimes(MarketData::class, 1);
@@ -202,6 +240,14 @@ it('should should dispatch event if 52 week range changes', function () {
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
+
+    Http::fakeSequence('https://min-api.cryptocompare.com/*')
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200);
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -238,6 +284,14 @@ it('should should dispatch event if daily range changes', function () {
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
 
+    Http::fakeSequence('https://min-api.cryptocompare.com/*')
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200);
+
     $this->artisan('explorer:cache-market-data-statistics');
 
     Event::assertDispatchedTimes(MarketData::class, 1);
@@ -270,6 +324,14 @@ it('should should dispatch event if volume atl changes', function () {
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
+
+    Http::fakeSequence('https://min-api.cryptocompare.com/*')
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200);
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -304,6 +366,14 @@ it('should should dispatch event if volume ath changes', function () {
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
 
+    Http::fakeSequence('https://min-api.cryptocompare.com/*')
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200);
+
     $this->artisan('explorer:cache-market-data-statistics');
 
     Event::assertDispatchedTimes(MarketData::class, 1);
@@ -337,6 +407,14 @@ it('should should dispatch event if market cap atl changes', function () {
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
 
+    Http::fakeSequence('https://min-api.cryptocompare.com/*')
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200);
+
     $this->artisan('explorer:cache-market-data-statistics');
 
     Event::assertDispatchedTimes(MarketData::class, 1);
@@ -369,6 +447,14 @@ it('should should dispatch event if market cap ath changes', function () {
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
+
+    Http::fakeSequence('https://min-api.cryptocompare.com/*')
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/usd-histoday-page-2.json')), true), 200);
 
     $this->artisan('explorer:cache-market-data-statistics');
 

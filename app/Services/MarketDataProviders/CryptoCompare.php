@@ -86,7 +86,7 @@ final class CryptoCompare extends AbstractMarketDataProvider
 
     public function exchangeVolume(string $source, string $target): Collection
     {
-        return (new CryptoDataCache())->setExchangeVolume($source, function () use ($source, $target) {
+        return (new CryptoDataCache())->setExchangeVolume($source, $target, function () use ($source, $target) {
             $prices = new Collection();
 
             $maxDays = 2000;
