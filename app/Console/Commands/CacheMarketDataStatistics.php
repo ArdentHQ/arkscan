@@ -192,6 +192,9 @@ final class CacheMarketDataStatistics extends Command
             }
 
             $volume = (new CryptoCompare())->exchangeVolume(Network::currency(), $currency);
+            if ($volume->isEmpty()) {
+                continue;
+            }
 
             $volumeSorted = $volume->sortBy('volume');
 

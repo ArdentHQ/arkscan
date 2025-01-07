@@ -540,6 +540,31 @@ it('should not update exchange volume for a currency within 24 hours', function 
     expect($cache->getLastExchangeVolumeUpdate($currency)->format('Y-m-d H:i:s'))->toBe($timestamp);
 });
 
+it('should not update exchange volume if there is no data', function () {
+    $this->freezeTime();
+
+    Event::fake();
+
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+    $cache  = new StatisticsCache();
+    $crypto = new CryptoDataCache();
+
+    $currency = 'USD';
+    $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
+    $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
+    $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
+
+    Http::fake([
+        'https://min-api.cryptocompare.com/*' => Http::response([]),
+    ]);
+
+    expect($cache->getLastExchangeVolumeUpdate($currency))->toBeNull();
+
+    $this->artisan('explorer:cache-market-data-statistics');
+
+    expect($cache->getLastExchangeVolumeUpdate($currency))->toBeNull();
+});
+
 it('should should dispatch event if market cap atl changes', function () {
     Event::fake();
 
