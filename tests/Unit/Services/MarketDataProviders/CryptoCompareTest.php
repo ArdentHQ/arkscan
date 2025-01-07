@@ -95,7 +95,7 @@ it('should reset exception trigger for empty responses', function ($attempt) {
 it('should trigger exception for throttled requests', function ($attempt) {
     Http::fake([
         'cryptocompare.com/*' => Http::response([
-            'Response' => 'Failed',
+            'Response' => 'Error',
         ], 500),
     ]);
 
@@ -144,3 +144,29 @@ it('should throw an exception if the API response indicates throttling for excha
 it('should throw an exception for volume', function () {
     (new CryptoCompare())->volume('ARK');
 })->throws(Exception::class, 'Not implemented');
+
+it('should fetch the exchange volume for the given pair', function () {
+    Http::fakeSequence('cryptocompare.com/*')
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-2.json')), true), 200);
+
+    assertMatchesSnapshot((new CryptoCompare())->exchangeVolume('ARK', 'USD'));
+});
+
+it('should return an empty value if empty response for exchange volume', function () {
+    Http::fake([
+        'cryptocompare.com/*' => Http::response(null, 200),
+    ]);
+
+    expect((new CryptoCompare())->exchangeVolume('ARK', 'USD'))->toEqual(collect());
+});
+
+it('should return an empty value if failed response for exchange volume', function () {
+    Http::fake([
+        'cryptocompare.com/*' => Http::response([
+            'Response' => 'Error',
+        ], 500),
+    ]);
+
+    expect((new CryptoCompare())->exchangeVolume('ARK', 'USD'))->toEqual(collect());
+});

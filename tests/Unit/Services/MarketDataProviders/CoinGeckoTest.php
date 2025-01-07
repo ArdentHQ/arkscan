@@ -291,3 +291,7 @@ it('should throw an exception if the API response indicates throttling for volum
 
     (new CoinGecko())->volume('ARK');
 })->throws(CoinGeckoThrottledException::class);
+
+it('should throw an exception for exchange volume', function () {
+    (new CoinGecko())->exchangeVolume('ARK', 'USD');
+})->throws(Exception::class, 'Not implemented');
