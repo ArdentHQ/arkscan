@@ -189,12 +189,25 @@ it('should determine if the transaction is self-receiving', function (string $ty
     ['validatorResignation'],
 ]);
 
-it('should fallback to the sender if no recipient exists', function () {
+it('should fallback to the sender if no recipient address exists', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'recipient_address' => null,
     ]));
 
     expect($this->subject->recipient())->toEqual($this->subject->sender());
+});
+
+it('should fallback to receipt deployed contract address if set', function () {
+    $wallet = Wallet::factory()->create(['address' => 'deployedContractAddress']);
+
+    $receipt = Receipt::factory()
+        ->state(['deployed_contract_address' => $wallet->address]);
+
+    $this->subject = new TransactionViewModel(Transaction::factory()->has($receipt)->create([
+        'recipient_address' => null,
+    ]));
+
+    expect($this->subject->recipient()->address())->toBe('deployedContractAddress');
 });
 
 it('should get the voted validator', function () {
