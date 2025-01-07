@@ -23,10 +23,6 @@ trait InteractsWithVotes
 
         $method = (new AbiDecoder())->decodeFunctionData($payload);
 
-        if (count($method['args']) === 0) {
-            return null;
-        }
-
         /** @var string $address */
         $address = $method['args'][0];
 
