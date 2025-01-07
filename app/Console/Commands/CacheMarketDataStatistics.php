@@ -20,7 +20,7 @@ final class CacheMarketDataStatistics extends Command
 {
     use DispatchesStatisticsEvents;
 
-    const VOLUME_CACHE_TTL = 86400;
+    public const VOLUME_CACHE_TTL = 86400;
 
     /**
      * The name and signature of the console command.
