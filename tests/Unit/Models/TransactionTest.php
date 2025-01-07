@@ -52,6 +52,17 @@ it('should get recipient if vote', function () {
 
 it('should throw an exception if the transaction has no recipient', function () {
     $transaction = Transaction::factory()
+        ->create([
+            'recipient_address' => null,
+        ]);
+
+    $this->expectException(Exception::class);
+
+    $transaction->recipient();
+});
+
+it('should throw an exception if a vote has no recipient', function () {
+    $transaction = Transaction::factory()
         ->vote('') // Invalid address
         ->create([
             'recipient_address' => null,
