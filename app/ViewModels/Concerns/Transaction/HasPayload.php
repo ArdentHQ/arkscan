@@ -100,7 +100,7 @@ trait HasPayload
 
         try {
             $method = (new AbiDecoder())->decodeFunctionData($payload);
-            
+
             // @codeCoverageIgnoreStart
             // Unreachable on tests as all the methods in the `AbiDecoder` class
             // are covered. Still neccesary in case of future changes.
