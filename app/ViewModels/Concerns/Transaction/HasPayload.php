@@ -73,7 +73,7 @@ trait HasPayload
     {
         $methodData = $this->getMethodData();
         if ($methodData === null) {
-            return null; // @cover
+            return null;
         }
 
         [$functionName, $methodId, $arguments] = $methodData;
