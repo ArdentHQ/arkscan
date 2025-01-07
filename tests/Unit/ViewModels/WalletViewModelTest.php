@@ -87,6 +87,13 @@ it('should get the votes as percentage from supply', function () {
     expect($this->subject->votesPercentage())->toBe(10.0);
 });
 
+it('should get 0 votes percentage if no supply', function () {
+    (new NetworkCache())->setSupply(fn () => 0);
+
+    expect($this->subject->votesPercentage())->toBeFloat();
+    expect($this->subject->votesPercentage())->toBe(0.0);
+});
+
 it('should sum up the total forged', function () {
     (new ValidatorCache())->setTotalFees([$this->subject->address() => 10 * 1e18]);
     (new ValidatorCache())->setTotalRewards([$this->subject->address() => 10 * 1e18]);
