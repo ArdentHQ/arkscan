@@ -41,7 +41,7 @@ trait HasPayload
     {
         $payload = $this->rawPayload();
         if ($payload === null) {
-            return null; // @cover
+            return null;
         }
 
         $utf8 = hex2bin($payload);
