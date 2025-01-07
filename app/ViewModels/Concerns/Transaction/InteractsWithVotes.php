@@ -17,9 +17,9 @@ trait InteractsWithVotes
         }
 
         $payload = $this->rawPayload();
-        
+
         // @codeCoverageIgnoreStart
-        // It is possible to reach this point if `rawPayload` returns null, which 
+        // It is possible to reach this point if `rawPayload` returns null, which
         // is theoretically only possible if the `stream_get_contents` function
         // called in `app/ViewModels/Concerns/Transaction/HasPayload.php@rawPayload`
         // returns false, something I have not been able to replicate in tests.
