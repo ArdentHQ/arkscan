@@ -394,3 +394,13 @@ it('has a validator public key', function () {
 
     expect($viewModel->validatorPublicKey())->toBe('000000000000000000000000c5a19e23e99bdfb7aae4301a009763adc01c1b5b');
 });
+
+it('does not have a validator public key if is not validator registrion', function () {
+    $transaction = Transaction::factory()
+        ->transfer()
+        ->create();
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->validatorPublicKey())->toBeNull();
+});
