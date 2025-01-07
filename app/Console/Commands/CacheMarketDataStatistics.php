@@ -61,7 +61,7 @@ final class CacheMarketDataStatistics extends Command
         });
 
         $this->cacheAllTimePrices($currencies, $cache, $crypto);
-        $this->cacheAllTimeVolume($currencies, $cache, $crypto);
+        $this->cacheAllTimeVolume($currencies, $cache);
 
         $this->dispatchEvent(MarketData::class);
     }
@@ -183,7 +183,7 @@ final class CacheMarketDataStatistics extends Command
         $cache->setPriceRangeDaily($currency, $priceDailyLow['value'], $priceDailyHigh['value']);
     }
 
-    private function cacheAllTimeVolume(Collection $currencies, StatisticsCache $statisticsCache, CryptoDataCache $cryptoCache): void
+    private function cacheAllTimeVolume(Collection $currencies, StatisticsCache $statisticsCache): void
     {
         foreach ($currencies as $currency) {
             $lastUpdated = $statisticsCache->getLastExchangeVolumeUpdate($currency);
