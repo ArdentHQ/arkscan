@@ -20,3 +20,4 @@ coverage.xml
 auth.json
 TxtVoteReport.txt
 .env.testing
+/.phpunit.cache
