@@ -12,6 +12,7 @@ use App\Services\Cache\NetworkCache;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
@@ -384,3 +385,23 @@ it('should get null username if not set', function () {
 
     expect($viewModel->username())->toBeNull();
 });
+
+it('should determine if is certain transaction type', function (string $type, array $params = []) {
+    $transaction = Transaction::factory()
+        ->{Str::camel($type)}(...$params)
+        ->create();
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->{'is'.Str::camel($type)}())->toBeTrue();
+})->with([
+    ['transfer'],
+    ['tokenTransfer', ['0x0', 0]],
+    ['validatorRegistration'],
+    ['vote', ['0x0']],
+    ['unvote'],
+    ['validatorResignation'],
+    ['usernameRegistration'],
+    ['usernameResignation'],
+    ['contractDeployment'],
+]);
