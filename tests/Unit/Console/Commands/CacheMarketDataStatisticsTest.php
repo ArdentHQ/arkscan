@@ -425,19 +425,23 @@ it('should should dispatch event if volume atl changes', function () {
 
     $this->artisan('explorer:cache-market-data-statistics');
 
+    $allTimeLow = $cache->getVolumeAtl($currency);
+
     Event::assertDispatchedTimes(MarketData::class, 1);
 
     Event::fake();
 
-    $cache->setVolumeAtl($currency, 1688774400, 50548.95038391039);
+    $cache->setVolumeAtl($currency, $allTimeLow['timestamp'], 50548.95038391039);
 
     $this->artisan('explorer:cache-market-data-statistics');
 
+    $allTimeLow = $cache->getVolumeAtl($currency);
+
     Event::assertDispatchedTimes(MarketData::class, 1);
 
     Event::fake();
 
-    $cache->setVolumeAtl($currency, 1688774500, 40548.95038391039);
+    $cache->setVolumeAtl($currency, 1688774500, $allTimeLow['value']);
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -466,19 +470,23 @@ it('should should dispatch event if volume ath changes', function () {
 
     $this->artisan('explorer:cache-market-data-statistics');
 
+    $allTimeHigh = $cache->getVolumeAth($currency);
+
     Event::assertDispatchedTimes(MarketData::class, 1);
 
     Event::fake();
 
-    $cache->setVolumeAth($currency, 1698710400, 543956833.91000223);
+    $cache->setVolumeAth($currency, $allTimeHigh['timestamp'], 543956833.91000223);
 
     $this->artisan('explorer:cache-market-data-statistics');
 
+    $allTimeHigh = $cache->getVolumeAth($currency);
+
     Event::assertDispatchedTimes(MarketData::class, 1);
 
     Event::fake();
 
-    $cache->setVolumeAth($currency, 1698710500, 443956833.91000223);
+    $cache->setVolumeAth($currency, 1698710500, $allTimeHigh['value']);
 
     $this->artisan('explorer:cache-market-data-statistics');
 

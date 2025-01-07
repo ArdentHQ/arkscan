@@ -155,7 +155,7 @@ it('should fetch the exchange volume for the given pair', function () {
 
 it('should return an empty value if empty response for exchange volume', function () {
     Http::fake([
-        'cryptocompare.com/*' => Http::response(null, 200),
+        'cryptocompare.com/*' => Http::response(json_encode(['Data' => []]), 200),
     ]);
 
     expect((new CryptoCompare())->exchangeVolume('ARK', 'USD'))->toEqual(collect());
@@ -166,6 +166,14 @@ it('should return an empty value if failed response for exchange volume', functi
         'cryptocompare.com/*' => Http::response([
             'Response' => 'Error',
         ], 500),
+    ]);
+
+    expect((new CryptoCompare())->exchangeVolume('ARK', 'USD'))->toEqual(collect());
+});
+
+it('should return an empty value if exception for exchange volume', function () {
+    Http::fake([
+        'cryptocompare.com/*' => fn () => throw new Exception(),
     ]);
 
     expect((new CryptoCompare())->exchangeVolume('ARK', 'USD'))->toEqual(collect());
