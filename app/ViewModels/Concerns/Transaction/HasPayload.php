@@ -23,7 +23,8 @@ trait HasPayload
         
         $payloadContent = stream_get_contents($payload, offset: 0);
         // @codeCoverageIgnoreStart
-        // Wasnt able to replicate in tests.
+        // Not covered in tests, since it seems that the possibility of returning
+        // `false` instead of an exception seems to depends on the PHP configuration.
         if ($payloadContent === false) {
             return null;
         }
@@ -44,10 +45,14 @@ trait HasPayload
             return null;
         }
 
+        // @codeCoverageIgnoreStart
+        // Not covered in tests, since it seems that the possibility of returning
+        // `false` instead of an exception seems to depends on the PHP configuration.
         $utf8 = hex2bin($payload);
         if ($utf8 === false) {
-            return null; // @cover
+            return null;
         }
+        // @codeCoverageIgnoreEnd
 
         return $utf8;
     }
