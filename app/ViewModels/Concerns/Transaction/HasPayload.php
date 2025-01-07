@@ -20,7 +20,6 @@ trait HasPayload
             return null;
         }
 
-        
         $payloadContent = stream_get_contents($payload, offset: 0);
         // @codeCoverageIgnoreStart
         // Not covered in tests, since it seems that the possibility of returning
