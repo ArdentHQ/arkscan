@@ -297,6 +297,16 @@ final class StatisticsCache implements Contract
         return $this->get(sprintf('annual/%s', $year), null);
     }
 
+    public function getLastExchangeVolumeUpdate(string $currency): ?Carbon
+    {
+        return $this->get(sprintf('exchange_volume/%s', $currency), null);
+    }
+
+    public function setLastExchangeVolumeUpdate(string $currency, Carbon $timestamp): void
+    {
+        $this->put(sprintf('exchange_volume/%s', $currency), $timestamp);
+    }
+
     public function getCache(): TaggedCache
     {
         return Cache::tags('statistics');

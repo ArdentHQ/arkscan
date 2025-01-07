@@ -20,6 +20,8 @@ final class CacheMarketDataStatistics extends Command
 {
     use DispatchesStatisticsEvents;
 
+    const VOLUME_CACHE_TTL = 86400;
+
     /**
      * The name and signature of the console command.
      *
@@ -184,6 +186,11 @@ final class CacheMarketDataStatistics extends Command
     private function cacheAllTimeVolume(Collection $currencies, StatisticsCache $statisticsCache, CryptoDataCache $cryptoCache): void
     {
         foreach ($currencies as $currency) {
+            $lastUpdated = $statisticsCache->getLastExchangeVolumeUpdate($currency);
+            if ($lastUpdated !== null && $lastUpdated->isAfter(Carbon::now()->subSeconds(self::VOLUME_CACHE_TTL))) {
+                continue;
+            }
+
             $volume = (new CryptoCompare())->exchangeVolume(Network::currency(), $currency);
 
             $volumeSorted = $volume->sortBy('volume');
@@ -218,6 +225,8 @@ final class CacheMarketDataStatistics extends Command
 
                 $statisticsCache->setVolumeAth($currency, $volumeAth['time'], $volumeAth['volume']);
             }
+
+            $statisticsCache->setLastExchangeVolumeUpdate($currency, Carbon::now());
         }
     }
 

@@ -433,6 +433,8 @@ it('should should dispatch event if volume atl changes', function () {
 
     $cache->setVolumeAtl($currency, $allTimeLow['timestamp'], 50548.95038391039);
 
+    $cache->setLastExchangeVolumeUpdate($currency, now()->sub('day', 2));
+
     $this->artisan('explorer:cache-market-data-statistics');
 
     $allTimeLow = $cache->getVolumeAtl($currency);
@@ -442,6 +444,8 @@ it('should should dispatch event if volume atl changes', function () {
     Event::fake();
 
     $cache->setVolumeAtl($currency, 1688774500, $allTimeLow['value']);
+
+    $cache->setLastExchangeVolumeUpdate($currency, now()->sub('day', 2));
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -478,6 +482,8 @@ it('should should dispatch event if volume ath changes', function () {
 
     $cache->setVolumeAth($currency, $allTimeHigh['timestamp'], 543956833.91000223);
 
+    $cache->setLastExchangeVolumeUpdate($currency, now()->sub('day', 2));
+
     $this->artisan('explorer:cache-market-data-statistics');
 
     $allTimeHigh = $cache->getVolumeAth($currency);
@@ -488,9 +494,50 @@ it('should should dispatch event if volume ath changes', function () {
 
     $cache->setVolumeAth($currency, 1698710500, $allTimeHigh['value']);
 
+    $cache->setLastExchangeVolumeUpdate($currency, now()->sub('day', 2));
+
     $this->artisan('explorer:cache-market-data-statistics');
 
     Event::assertDispatchedTimes(MarketData::class, 1);
+});
+
+it('should not update exchange volume for a currency within 24 hours', function () {
+    $this->freezeTime();
+
+    $timestamp = now()->format('Y-m-d H:i:s');
+
+    Event::fake();
+
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+    $cache  = new StatisticsCache();
+    $crypto = new CryptoDataCache();
+
+    $currency = 'USD';
+    $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
+    $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
+    $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
+
+    Http::fakeSequence('https://min-api.cryptocompare.com/*')
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-1.json')), true), 200)
+        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-2.json')), true), 200);
+
+    expect($cache->getLastExchangeVolumeUpdate($currency))->toBeNull();
+
+    $this->artisan('explorer:cache-market-data-statistics');
+
+    Event::assertDispatchedTimes(MarketData::class, 1);
+
+    Event::fake();
+
+    expect($cache->getLastExchangeVolumeUpdate($currency)->format('Y-m-d H:i:s'))->toBe($timestamp);
+
+    $this->travel(1)->hour();
+
+    $this->artisan('explorer:cache-market-data-statistics');
+
+    Event::assertDispatchedTimes(MarketData::class, 0);
+
+    expect($cache->getLastExchangeVolumeUpdate($currency)->format('Y-m-d H:i:s'))->toBe($timestamp);
 });
 
 it('should should dispatch event if market cap atl changes', function () {
