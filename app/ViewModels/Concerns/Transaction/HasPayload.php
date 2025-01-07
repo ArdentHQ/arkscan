@@ -102,7 +102,7 @@ trait HasPayload
         try {
             $method = (new AbiDecoder())->decodeFunctionData($payload);
             if ($functionName === null) {
-                $functionName = $method['functionName']; // @cover
+                $functionName = $method['functionName'];
             }
 
             $arguments = $method['args'];

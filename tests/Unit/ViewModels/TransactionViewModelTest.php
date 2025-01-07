@@ -281,6 +281,20 @@ MethodID: 0x6dd7d8ea
 
         expect($transaction->formattedPayload())->toBeNull();
     });
+    
+    it('should get formatted payload if method id is not in the defined contracts', function () {
+        $transaction = new TransactionViewModel(Transaction::factory()
+            // `calculateTopValidators` method, not in the contracts 
+            // taken from `vendor/arkecosystem/crypto/src/Utils/Abi.Consensus.json >> methodIdentifiers`
+            ->withPayload('b5cfa68c000000000000000000000000000000000000000000000000000000000000000a')
+            ->create());
+
+        expect($transaction->formattedPayload())->toBe('Function: calculateTopValidators(uint8)
+
+MethodID: 0xb5cfa68c
+[0]: 10');
+            
+    });
 
     it('should get formatted payload without arguments', function () {
         $transaction = new TransactionViewModel(Transaction::factory()
