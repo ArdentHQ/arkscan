@@ -351,3 +351,23 @@ it('should get the gas used if no receipt', function () {
 
     expect($viewModel->gasUsed())->toEqual(0);
 });
+
+it('should get the username if set', function () {
+    $transaction = Transaction::factory()
+        ->usernameRegistration()
+        ->withPayload('36a941340000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000e7068705f73646b5f746573746572000000000000000000000000000000000000')
+        ->create();
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->username())->toBe('php_sdk_tester');
+});
+
+it('should get null username if not set', function () {
+    $transaction = Transaction::factory()
+        ->create();
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->username())->toBeNull();
+});
