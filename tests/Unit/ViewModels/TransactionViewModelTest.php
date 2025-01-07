@@ -384,3 +384,13 @@ it('should get null username if not set', function () {
 
     expect($viewModel->username())->toBeNull();
 });
+
+it('has a validator public key', function () {
+    $transaction = Transaction::factory()
+        ->validatorRegistration('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->create();
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->validatorPublicKey())->toBe('000000000000000000000000c5a19e23e99bdfb7aae4301a009763adc01c1b5b');
+});
