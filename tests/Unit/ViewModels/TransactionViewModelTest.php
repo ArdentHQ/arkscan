@@ -220,6 +220,18 @@ it('should get the voted validator', function () {
     expect($subject->voted())->toBeInstanceOf(WalletViewModel::class);
 });
 
+it('should fail to get the voted validator for unknown wallet', function () {
+    Wallet::factory()->create(['public_key' => 'publicKey']);
+
+    $transaction = Transaction::factory()
+        ->vote('0x'.str_repeat('0', 64))
+        ->create();
+
+    $subject = new TransactionViewModel($transaction);
+
+    expect($subject->voted())->toBeNull();
+});
+
 it('should fail to get the voted validator if the transaction is not an unvote', function () {
     $subject = new TransactionViewModel(Transaction::factory()->unvote()->create());
 
