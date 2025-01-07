@@ -20,10 +20,14 @@ trait HasPayload
             return null;
         }
 
+        
         $payloadContent = stream_get_contents($payload, offset: 0);
+        // @codeCoverageIgnoreStart
+        // Wasnt able to replicate in tests.
         if ($payloadContent === false) {
             return null;
         }
+        // @codeCoverageIgnoreEnd
 
         $payload = bin2hex($payloadContent);
         if (strlen($payload) === 0) {
@@ -37,12 +41,12 @@ trait HasPayload
     {
         $payload = $this->rawPayload();
         if ($payload === null) {
-            return null;
+            return null; // @cover
         }
 
         $utf8 = hex2bin($payload);
         if ($utf8 === false) {
-            return null;
+            return null; // @cover
         }
 
         return $utf8;
@@ -64,7 +68,7 @@ trait HasPayload
     {
         $methodData = $this->getMethodData();
         if ($methodData === null) {
-            return null;
+            return null; // @cover
         }
 
         [$functionName, $methodId, $arguments] = $methodData;
@@ -93,7 +97,7 @@ trait HasPayload
         try {
             $method = (new AbiDecoder())->decodeFunctionData($payload);
             if ($functionName === null) {
-                $functionName = $method['functionName'];
+                $functionName = $method['functionName']; // @cover
             }
 
             $arguments = $method['args'];
