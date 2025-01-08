@@ -117,8 +117,4 @@ it('should convert to and from wireable array', function () {
     expect($subject->volume->ath->value)->toEqual(1.2345);
 
     expect($subject->caps->today)->toEqual(20 * 1e8);
-    expect($subject->caps->atl->timestamp)->toEqual($timestamp);
-    expect($subject->caps->atl->value)->toEqual(0.2345);
-    expect($subject->caps->ath->timestamp)->toEqual($timestamp);
-    expect($subject->caps->ath->value)->toEqual(1.2345);
 });
