@@ -177,11 +177,7 @@ final class Insights extends Component
     {
         $currency = Settings::currency();
 
-        return MarketDataRecordStatistics::make(
-            MarketCap::get(Network::currency(), $currency),
-            TimestampedValue::fromArray($cache->getMarketCapAtl($currency)),
-            TimestampedValue::fromArray($cache->getMarketCapAth($currency)),
-        );
+        return MarketDataRecordStatistics::make(MarketCap::get(Network::currency(), $currency));
     }
 
     private function getDelegateDetails(StatisticsCache $cache): DelegateStatistics

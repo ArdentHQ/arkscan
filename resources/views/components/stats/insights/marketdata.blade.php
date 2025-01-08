@@ -301,114 +301,67 @@
         </x-stats.insights.container>
 
         <x-stats.insights.container :title="trans('pages.statistics.insights.market_data.market_cap')" full-width>
-            @foreach (['today_value', 'atl', 'ath'] as $item)
-                {{-- Mobile --}}
-                <div class="flex md:hidden">
-                    <div class="flex flex-col justify-between pt-3 space-y-3 w-full sm:flex-row sm:space-y-0">
-                        <div class="flex flex-col space-y-2">
-                            <span>
-                                @lang('pages.statistics.insights.market_data.header.'.$item)
-                            </span>
+            {{-- Mobile --}}
+            <div class="flex md:hidden">
+                <div class="flex flex-col justify-between pt-3 space-y-3 w-full sm:flex-row sm:space-y-0">
+                    <div class="flex flex-col space-y-2">
+                        <span>
+                            @lang('pages.statistics.insights.market_data.header.today_value')
+                        </span>
 
-                            <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                                <x-loading.text
-                                    wire:loading
-                                    wire:target="updateData"
-                                    wrapper-class="flex"
-                                    width="w-[100px]"
-                                />
-
-                                <span
-                                    wire:loading.remove
-                                    wire:target="updateData"
-                                >
-                                    {{ $data->caps->{Str::camel($item.'Value')}() }}
-                                </span>
-                            </span>
-                        </div>
-
-                        @if($item === 'atl' || $item === 'ath')
-                            <div class="flex flex-col space-y-2 w-[130px]">
-                                <span>
-                                    @lang('pages.statistics.insights.market_data.header.date'):
-                                </span>
-
-                                <div class="flex text-theme-secondary-900 dark:text-theme-dark-50">
-                                    <x-loading.text
-                                        wire:loading
-                                        wire:target="updateData"
-                                        wrapper-class="flex"
-                                    />
-
-                                    <span
-                                        wire:loading.remove
-                                        wire:target="updateData"
-                                    >
-                                        {{ $data->caps->{$item.'Date'}() }}
-                                    </span>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-
-                {{-- Desktop --}}
-                <div @class([
-                    'hidden justify-between w-full md:flex',
-                    'xl:w-[770px]' => $isFiat,
-                    'xl:w-[950px]' => ! $isFiat,
-                ])>
-                    <div @class([
-                        'flex',
-                        'flex-1' => $isFiat,
-                        'flex-1 md-lg:flex-none md-lg:w-[150px]' => ! $isFiat,
-                     ])">
-                        @lang('pages.statistics.insights.market_data.header.'.$item)
-                    </div>
-
-                    <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                        <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
+                        <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                             <x-loading.text
                                 wire:loading
                                 wire:target="updateData"
                                 wrapper-class="flex"
-                                width="w-[140px]"
+                                width="w-[100px]"
                             />
 
                             <span
                                 wire:loading.remove
                                 wire:target="updateData"
                             >
-                                {{ $data->caps->{Str::camel($item.'Value')}() }}
+                                {{ $data->caps->todayValue() }}
                             </span>
-                        </div>
-
-                        <div class="flex flex-1 justify-between space-x-2 w-full md-lg:pl-16">
-                            @if($item === 'atl' || $item === 'ath')
-                                <div>
-                                    @lang('pages.statistics.insights.market_data.header.date'):
-                                </div>
-
-                                <div class="flex text-theme-secondary-900 dark:text-theme-dark-50">
-                                    <x-loading.text
-                                        wire:loading
-                                        wire:target="updateData"
-                                        wrapper-class="flex"
-                                        width="w-[100px]"
-                                    />
-
-                                    <span
-                                        wire:loading.remove
-                                        wire:target="updateData"
-                                    >
-                                        {{ $data->caps->{$item.'Date'}() }}
-                                    </span>
-                                </div>
-                            @endif
-                        </div>
+                        </span>
                     </div>
                 </div>
-            @endforeach
+            </div>
+
+            {{-- Desktop --}}
+            <div @class([
+                'hidden justify-between w-full md:flex',
+                'xl:w-[770px]' => $isFiat,
+                'xl:w-[950px]' => ! $isFiat,
+            ])>
+                <div @class([
+                    'flex',
+                    'flex-1' => $isFiat,
+                    'flex-1 md-lg:flex-none md-lg:w-[150px]' => ! $isFiat,
+                    ])">
+                    @lang('pages.statistics.insights.market_data.header.today_value')
+                </div>
+
+                <div class="flex flex-col flex-1 justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
+                    <div class="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
+                        <x-loading.text
+                            wire:loading
+                            wire:target="updateData"
+                            wrapper-class="flex"
+                            width="w-[140px]"
+                        />
+
+                        <span
+                            wire:loading.remove
+                            wire:target="updateData"
+                        >
+                            {{ $data->caps->todayValue() }}
+                        </span>
+                    </div>
+
+                    <div class="flex flex-1 justify-between space-x-2 w-full md-lg:pl-16"></div>
+                </div>
+            </div>
         </x-stats.insights.container>
     </div>
 </div>

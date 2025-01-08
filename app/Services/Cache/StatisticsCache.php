@@ -252,32 +252,6 @@ final class StatisticsCache implements Contract
         return $this->get(sprintf('volumes/atl/%s', $currency), null);
     }
 
-    public function setMarketCapAth(string $currency, int $timestamp, float $value): void
-    {
-        $this->put(sprintf('market_caps/ath/%s', $currency), ['timestamp' => $timestamp, 'value' => $value]);
-    }
-
-    /**
-     * @return ?array{'timestamp': int, 'value': float}
-     */
-    public function getMarketCapAth(string $currency): ?array
-    {
-        return $this->get(sprintf('market_caps/ath/%s', $currency), null);
-    }
-
-    public function setMarketCapAtl(string $currency, int $timestamp, float $value): void
-    {
-        $this->put(sprintf('market_caps/atl/%s', $currency), ['timestamp' => $timestamp, 'value' => $value]);
-    }
-
-    /**
-     * @return ?array{'timestamp': int, 'value': float}
-     */
-    public function getMarketCapAtl(string $currency): ?array
-    {
-        return $this->get(sprintf('market_caps/atl/%s', $currency), null);
-    }
-
     public function setAnnualData(int $year, int $transactions, string $volume, string $fees, int $blocks): void
     {
         $this->put(sprintf('annual/%s', $year), [

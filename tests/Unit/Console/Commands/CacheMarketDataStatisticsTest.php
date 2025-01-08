@@ -63,9 +63,6 @@ it('should cache market data statistics', function () {
         'value'     => 443394014.01,
     ]);
 
-    expect($cache->getMarketCapAtl($currency))->toBe(['timestamp' => 1490140800, 'value' => 3181903.0]);
-    expect($cache->getMarketCapAth($currency))->toBe(['timestamp' => 1515542400, 'value' => 1001554886.9196]);
-
     Event::assertDispatchedTimes(MarketData::class, 1);
 });
 
@@ -125,9 +122,6 @@ it('should cache volume statistics for multiple currencies', function () {
         'value'     => 443394014.01,
     ]);
 
-    expect($cache->getMarketCapAtl('USD'))->toBe(['timestamp' => 1490140800, 'value' => 3181903.0]);
-    expect($cache->getMarketCapAth('USD'))->toBe(['timestamp' => 1515542400, 'value' => 1001554886.9196]);
-
     expect($cache->getPriceRangeDaily('AUD'))->toBe(['low' => 0.0339403, 'high' => 10.2219]);
     expect($cache->getPriceRange52('AUD'))->toBe(['low' => 0.23108521034764695, 'high' => 1.795718158629526]);
 
@@ -151,9 +145,6 @@ it('should cache volume statistics for multiple currencies', function () {
         'value'     => 698419508.98,
     ]);
 
-    expect($cache->getMarketCapAtl('AUD'))->toBe(['timestamp' => 1490140800, 'value' => 3181903.0]);
-    expect($cache->getMarketCapAth('AUD'))->toBe(['timestamp' => 1515542400, 'value' => 1001554886.9196]);
-
     Event::assertDispatchedTimes(MarketData::class, 1);
 });
 
@@ -174,9 +165,6 @@ it('should exit early if network cannot be exchanged', function () {
 
     expect($cache->getVolumeAtl($currency))->toBe(null);
     expect($cache->getVolumeAth($currency))->toBe(null);
-
-    expect($cache->getMarketCapAtl($currency))->toBe(null);
-    expect($cache->getMarketCapAth($currency))->toBe(null);
 
     Event::assertDispatchedTimes(MarketData::class, 0);
 });
@@ -202,9 +190,6 @@ it('should handle null scenarios for statistics', function () {
 
     expect($cache->getVolumeAtl($currency))->toBe(null);
     expect($cache->getVolumeAth($currency))->toBe(null);
-
-    expect($cache->getMarketCapAtl($currency))->toBe(null);
-    expect($cache->getMarketCapAth($currency))->toBe(null);
 
     Event::assertDispatchedTimes(MarketData::class, 0);
 });
@@ -563,86 +548,4 @@ it('should not update exchange volume if there is no data', function () {
     $this->artisan('explorer:cache-market-data-statistics');
 
     expect($cache->getLastExchangeVolumeUpdate($currency))->toBeNull();
-});
-
-it('should should dispatch event if market cap atl changes', function () {
-    Event::fake();
-
-    Config::set('arkscan.networks.development.canBeExchanged', true);
-    $cache  = new StatisticsCache();
-    $crypto = new CryptoDataCache();
-
-    $currency = 'USD';
-    $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
-    $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
-    $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
-
-    Http::fakeSequence('https://min-api.cryptocompare.com/*')
-        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-1.json')), true), 200)
-        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-2.json')), true), 200)
-        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-1.json')), true), 200)
-        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-2.json')), true), 200)
-        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-1.json')), true), 200)
-        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-2.json')), true), 200);
-
-    $this->artisan('explorer:cache-market-data-statistics');
-
-    Event::assertDispatchedTimes(MarketData::class, 1);
-
-    Event::fake();
-
-    $cache->setMarketCapAtl($currency, 1490140800, 4181903.0);
-
-    $this->artisan('explorer:cache-market-data-statistics');
-
-    Event::assertDispatchedTimes(MarketData::class, 1);
-
-    Event::fake();
-
-    $cache->setMarketCapAtl($currency, 1490140900, 3181903.0);
-
-    $this->artisan('explorer:cache-market-data-statistics');
-
-    Event::assertDispatchedTimes(MarketData::class, 1);
-});
-
-it('should should dispatch event if market cap ath changes', function () {
-    Event::fake();
-
-    Config::set('arkscan.networks.development.canBeExchanged', true);
-    $cache  = new StatisticsCache();
-    $crypto = new CryptoDataCache();
-
-    $currency = 'USD';
-    $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
-    $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
-    $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
-
-    Http::fakeSequence('https://min-api.cryptocompare.com/*')
-        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-1.json')), true), 200)
-        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-2.json')), true), 200)
-        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-1.json')), true), 200)
-        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-2.json')), true), 200)
-        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-1.json')), true), 200)
-        ->push(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/histoday-USD-page-2.json')), true), 200);
-
-    $this->artisan('explorer:cache-market-data-statistics');
-
-    Event::assertDispatchedTimes(MarketData::class, 1);
-
-    Event::fake();
-
-    $cache->setMarketCapAth($currency, 1515542400, 2001554886.9196);
-
-    $this->artisan('explorer:cache-market-data-statistics');
-
-    Event::assertDispatchedTimes(MarketData::class, 1);
-
-    Event::fake();
-
-    $cache->setMarketCapAth($currency, 1515542500, 1001554886.9196);
-
-    $this->artisan('explorer:cache-market-data-statistics');
-
-    Event::assertDispatchedTimes(MarketData::class, 1);
 });

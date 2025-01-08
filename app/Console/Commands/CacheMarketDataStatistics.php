@@ -57,7 +57,6 @@ final class CacheMarketDataStatistics extends Command
             }
 
             $this->cachePriceStats($currency, $allTimeData, $dailyData, $cache);
-            $this->cacheMarketCapStats($currency, $allTimeData, $cache);
         });
 
         $this->cacheAllTimePrices($currencies, $cache, $crypto);
@@ -67,8 +66,8 @@ final class CacheMarketDataStatistics extends Command
     }
 
     /**
-     * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $allTimeData
-     * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $dailyData
+     * @param array{prices: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $allTimeData
+     * @param array{prices: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $dailyData
      */
     private function cachePriceStats(string $currency, array $allTimeData, array $dailyData, StatisticsCache $cache): void
     {
@@ -157,7 +156,7 @@ final class CacheMarketDataStatistics extends Command
     }
 
     /**
-     * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $data
+     * @param array{prices: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $data
      */
     private function cacheDailyPriceStats(string $currency, array $data, StatisticsCache $cache): void
     {
@@ -230,48 +229,6 @@ final class CacheMarketDataStatistics extends Command
             }
 
             $statisticsCache->setLastExchangeVolumeUpdate($currency, Carbon::now());
-        }
-    }
-
-    /**
-     * @param array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]} $data
-     */
-    private function cacheMarketCapStats(string $currency, array $data, StatisticsCache $cache): void
-    {
-        $marketcaps = collect($data['market_caps'])
-            ->map(fn ($item) => ['timestamp' => $item[0], 'value' => $item[1]]);
-
-        $marketCapSorted = $marketcaps->sortBy('value');
-
-        /** @var array{timestamp: int, value: int|float|null} $marketCapAtl */
-        $marketCapAtl = $marketCapSorted->first();
-        /** @var array{timestamp: int, value: float|null} $marketCapAth */
-        $marketCapAth = $marketCapSorted->last();
-
-        if ($marketCapAtl['value'] !== null) {
-            if (! $this->hasChanges) {
-                $existingValue = $cache->getMarketCapAtl($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $marketCapAtl['timestamp'] / 1000) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== (float) $marketCapAtl['value']) {
-                    $this->hasChanges = true;
-                }
-            }
-
-            $cache->setMarketCapAtl($currency, $marketCapAtl['timestamp'] / 1000, $marketCapAtl['value']);
-        }
-
-        if ($marketCapAth['value'] !== null) {
-            if (! $this->hasChanges) {
-                $existingValue = $cache->getMarketCapAth($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $marketCapAth['timestamp'] / 1000) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== $marketCapAth['value']) {
-                    $this->hasChanges = true;
-                }
-            }
-
-            $cache->setMarketCapAth($currency, $marketCapAth['timestamp'] / 1000, $marketCapAth['value']);
         }
     }
 }

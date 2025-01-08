@@ -6,32 +6,22 @@ namespace App\DTO\Statistics;
 
 use App\Facades\Settings;
 use App\Services\NumberFormatter;
-use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
-use Carbon\Carbon;
 
 final class MarketDataRecordStatistics
 {
-    public function __construct(
-        public ?float $today,
-        public TimestampedValue $atl,
-        public TimestampedValue $ath,
-    ) {
+    public function __construct(public ?float $today)
+    {
         //
     }
 
-    public static function make(
-        ?float $today,
-        TimestampedValue $atl,
-        TimestampedValue $ath,
-    ): self {
+    public static function make(?float $today): self
+    {
         return new self(
             $today,
-            $atl,
-            $ath,
         );
     }
 
-    public function todayValueValue(): ?string
+    public function todayValue(): ?string
     {
         if ($this->today === null) {
             return null;
@@ -40,48 +30,10 @@ final class MarketDataRecordStatistics
         return $this->formatCurrency($this->today);
     }
 
-    public function atlValue(): ?string
-    {
-        if ($this->atl->value === null) {
-            return null;
-        }
-
-        return $this->formatCurrency($this->atl->value);
-    }
-
-    public function atlDate(): ?string
-    {
-        if ($this->atl->timestamp === null) {
-            return null;
-        }
-
-        return Carbon::createFromTimestamp($this->atl->timestamp)->format(DateFormat::DATE);
-    }
-
-    public function athValue(): ?string
-    {
-        if ($this->ath->value === null) {
-            return null;
-        }
-
-        return $this->formatCurrency($this->ath->value);
-    }
-
-    public function athDate(): ?string
-    {
-        if ($this->ath->timestamp === null) {
-            return null;
-        }
-
-        return Carbon::createFromTimestamp($this->ath->timestamp)->format(DateFormat::DATE);
-    }
-
     public function toArray(): array
     {
         return [
             'today' => $this->today,
-            'atl'   => $this->atl->toArray(),
-            'ath'   => $this->ath->toArray(),
         ];
     }
 

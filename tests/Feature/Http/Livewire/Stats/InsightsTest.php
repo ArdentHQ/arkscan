@@ -275,9 +275,6 @@ it('should render marketdata statistics for fiat', function (): void {
     $cache->setVolumeAtl($currency, $currentDate->subMonth()->timestamp, 10);
     $cache->setVolumeAth($currency, $currentDate->timestamp, 20000);
 
-    $cache->setMarketCapAtl($currency, $currentDate->subMonth()->timestamp, 15);
-    $cache->setMarketCapAth($currency, $currentDate->timestamp, 30000);
-
     (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 1.234);
     (new NetworkCache())->setSupply(fn () => 4.567 * 1e8);
 
@@ -298,11 +295,8 @@ it('should render marketdata statistics for fiat', function (): void {
             trans('pages.statistics.insights.market_data.header.ath'),
             '20,000',
 
+            trans('pages.statistics.insights.market_data.market_cap'),
             '6',
-            trans('pages.statistics.insights.market_data.header.atl'),
-            '15',
-            trans('pages.statistics.insights.market_data.header.ath'),
-            '30,000',
         ]);
 });
 
@@ -334,9 +328,6 @@ it('should render marketdata statistics for crypto', function (): void {
     $cache->setVolumeAtl($currency, $currentDate->subMonth()->timestamp, 0.000001);
     $cache->setVolumeAth($currency, $currentDate->timestamp, 0.0002);
 
-    $cache->setMarketCapAtl($currency, $currentDate->subMonth()->timestamp, 0.00000015);
-    $cache->setMarketCapAth($currency, $currentDate->timestamp, 0.0003);
-
     (new NetworkStatusBlockCache())->setPrice('ARK', 'BTC', 0.00001234);
     (new NetworkCache())->setSupply(fn () => 4.567 * 1e8);
 
@@ -357,11 +348,8 @@ it('should render marketdata statistics for crypto', function (): void {
             trans('pages.statistics.insights.market_data.header.ath'),
             '0.0002 BTC',
 
+            trans('pages.statistics.insights.market_data.market_cap'),
             '0.00005636 BTC',
-            trans('pages.statistics.insights.market_data.header.atl'),
-            '0.00000015 BTC',
-            trans('pages.statistics.insights.market_data.header.ath'),
-            '0.0003 BTC',
         ]);
 });
 
