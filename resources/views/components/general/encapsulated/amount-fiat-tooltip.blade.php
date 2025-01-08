@@ -1,6 +1,7 @@
 @props([
     'transaction' => null,
     'wallet' => null,
+    'block' => null,
     'isSent' => false,
     'isReceived' => false,
     'fiat' => null,
@@ -15,6 +16,9 @@
     $sentToSelfClass = null;
 
     $shouldShowFiat = $transaction && $transaction->shouldShowFiat();
+    if (! $transaction && $block) {
+        $shouldShowFiat = $block->shouldShowFiat();
+    }
 
     $isSentToSelf = $amountForItself !== null && $amountForItself > 0;
     if (! $withoutStyling) {

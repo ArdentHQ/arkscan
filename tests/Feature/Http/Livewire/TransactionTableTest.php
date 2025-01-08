@@ -9,7 +9,10 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
+use App\Services\Timestamp;
+use App\ViewModels\TransactionViewModel;
 use App\ViewModels\ViewModelFactory;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
@@ -35,23 +38,29 @@ it('should list the first page of records', function () {
 it('should update the records fiat tooltip when currency changed', function () {
     Config::set('arkscan.networks.development.canBeExchanged', true);
 
+    $now = Carbon::now();
+
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        '2020-10-19' => 24210,
+        $now->format('Y-m-d') => 24210,
     ]));
 
     (new CryptoDataCache())->setPrices('BTC.week', collect([
-        '2020-10-19' => 0.1234567,
+        $now->format('Y-m-d') => 0.1234567,
     ]));
 
-    Transaction::factory()->transfer()->create([
-        'timestamp' => 112982056,
+    $transaction = Transaction::factory()->transfer()->create([
+        'timestamp' => Timestamp::fromUnix($now->unix())->unix(),
         'amount'    => 499 * 1e8,
     ]);
+
+    expect((new TransactionViewModel($transaction))->shouldShowFiat())->toBeTrue();
 
     $component = Livewire::test(TransactionTable::class)
         ->call('setIsReady');
 
     $expectedValue = NumberFormatter::currency(12080790, 'USD');
+
+    expect($expectedValue)->toBe('$12,080,790.00');
 
     $component->assertSeeHtml('data-tippy-content="'.$expectedValue.'"');
     $component->assertDontSeeHtml('data-tippy-content="61.6048933 BTC"');
@@ -287,4 +296,46 @@ it('should reload on new transaction event', function () {
         $component->assertSee('481.00');
         $component->assertSee('0.48');
     }
+});
+
+it('should not show tooltip for transactions older than 1 year', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
+    $now = Carbon::now()->sub('day', 367);
+
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        $now->format('Y-m-d') => 24210,
+    ]));
+
+    (new CryptoDataCache())->setPrices('BTC.week', collect([
+        $now->format('Y-m-d') => 0.1234567,
+    ]));
+
+    $transaction = Transaction::factory()->transfer()->create([
+        'timestamp' => Timestamp::fromUnix($now->unix())->unix(),
+        'amount'    => 499 * 1e8,
+    ]);
+
+    expect((new TransactionViewModel($transaction))->shouldShowFiat())->toBeFalse();
+
+    $component = Livewire::test(TransactionTable::class)
+        ->call('setIsReady');
+
+    $expectedValue = NumberFormatter::currency(12080790, 'USD');
+
+    expect($expectedValue)->toBe('$12,080,790.00');
+
+    $component->assertDontSeeHtml('data-tippy-content="'.$expectedValue.'"');
+    $component->assertDontSeeHtml('data-tippy-content="61.6048933 BTC"');
+
+    $settings             = Settings::all();
+    $settings['currency'] = 'BTC';
+
+    Settings::shouldReceive('all')->andReturn($settings);
+    Settings::shouldReceive('currency')->andReturn('BTC');
+
+    $component->dispatch('currencyChanged', 'BTC');
+
+    $component->assertDontSeeHtml('data-tippy-content="'.$expectedValue.'"');
+    $component->assertDontSeeHtml('data-tippy-content="61.6048933 BTC"');
 });

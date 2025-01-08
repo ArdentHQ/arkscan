@@ -11,6 +11,8 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
+use App\Services\Timestamp;
+use App\ViewModels\BlockViewModel;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\ViewModelFactory;
 use Carbon\Carbon;
@@ -56,49 +58,73 @@ it('should list the first page of records', function () {
 it('should update the records fiat tooltip when currency changed', function () {
     Config::set('arkscan.networks.development.canBeExchanged', true);
 
+    $now = Carbon::now();
+
     $usdExchangeRate = 24210;
     $btcExchangeRate = 0.1234567;
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        '2020-10-19' => $usdExchangeRate,
+        $now->format('Y-m-d') => $usdExchangeRate,
     ]));
 
     (new CryptoDataCache())->setPrices('BTC.week', collect([
-        '2020-10-19' => $btcExchangeRate,
+        $now->format('Y-m-d') => $btcExchangeRate,
     ]));
 
-    $block = Block::factory()->create();
+    $block = Block::factory()->create([
+        'timestamp' => Timestamp::fromUnix($now->unix())->unix(),
+    ]);
+
+    expect(new BlockViewModel($block))->shouldShowFiat()->toBeTrue();
 
     $transactions = Transaction::factory(10)
         ->transfer()
         ->create([
+            'amount'    => 12 * 1e8,
             'block_id'  => $block->id,
-            'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+            'timestamp' => Timestamp::fromUnix($now->unix())->unix(),
         ])->concat(
             Transaction::factory(10)
                 ->vote()
                 ->create([
+                    'amount'    => 12 * 1e8,
                     'block_id'  => $block->id,
-                    'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+                    'timestamp' => Timestamp::fromUnix($now->unix())->unix(),
                 ])
         )->concat(
             Transaction::factory(10)
                 ->multiPayment()
                 ->create([
                     'block_id'  => $block->id,
-                    'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+                    'timestamp' => Timestamp::fromUnix($now->unix())->unix(),
+                    'asset' => [
+                        'payments' => [
+                            [
+                                'recipientId' => Wallet::factory()->create()->address,
+                                'amount'      => 12 * 1e8,
+                            ],
+                        ],
+                    ],
                 ])
         );
 
     $amount = 0;
     foreach ($transactions as $transaction) {
-        $amount += (new TransactionViewModel($transaction))->amount();
+        $viewModel = new TransactionViewModel($transaction);
+
+        $amount += $viewModel->amount();
+
+        expect($viewModel->shouldShowFiat())->toBeTrue();
     }
+
+    expect($amount)->toEqual(360);
 
     $component = Livewire::test(BlockTable::class)
         ->call('setIsReady');
 
     $expectedUsd = NumberFormatter::currency($amount * $usdExchangeRate, 'USD');
     $expectedBtc = NumberFormatter::currency($amount * $btcExchangeRate, 'BTC');
+
+    expect($expectedUsd)->toEqual('$8,715,600.00');
 
     $component->assertSeeHtml('data-tippy-content="'.$expectedUsd.'"');
     $component->assertDontSeeHtml('data-tippy-content="'.$expectedBtc.'"');
@@ -113,6 +139,9 @@ it('should update the records fiat tooltip when currency changed', function () {
 
     $expectedUsd = NumberFormatter::currency($amount * $usdExchangeRate, 'USD');
     $expectedBtc = NumberFormatter::currency($amount * $btcExchangeRate, 'BTC');
+
+    $component->assertDontSeeHtml('data-tippy-content="'.$expectedUsd.'"');
+    $component->assertSeeHtml('data-tippy-content="'.$expectedBtc.'"');
 });
 
 it('should handle a lot of blocks', function () {
@@ -164,4 +193,78 @@ it('should reload on new block event', function () {
     $component->assertDontSee($otherBlock->id)
         ->dispatch('echo:blocks,NewBlock')
         ->assertSee($otherBlock->id);
+});
+
+it('should not show fiat for old block', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
+    $now = Carbon::now()->sub('day', 367);
+
+    $usdExchangeRate = 24210;
+    $btcExchangeRate = 0.1234567;
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        $now->format('Y-m-d') => $usdExchangeRate,
+    ]));
+
+    (new CryptoDataCache())->setPrices('BTC.week', collect([
+        $now->format('Y-m-d') => $btcExchangeRate,
+    ]));
+
+    $block = Block::factory()->create([
+        'timestamp' => Timestamp::fromUnix($now->unix())->unix(),
+    ]);
+
+    expect(new BlockViewModel($block))->shouldShowFiat()->toBeFalse();
+
+    $transactions = Transaction::factory(10)
+        ->transfer()
+        ->create([
+            'amount'    => 12 * 1e8,
+            'block_id'  => $block->id,
+            'timestamp' => Timestamp::fromUnix($now->unix())->unix(),
+        ])->concat(
+            Transaction::factory(10)
+                ->vote()
+                ->create([
+                    'amount'    => 12 * 1e8,
+                    'block_id'  => $block->id,
+                    'timestamp' => Timestamp::fromUnix($now->unix())->unix(),
+                ])
+        );
+
+    $amount = 0;
+    foreach ($transactions as $transaction) {
+        $viewModel = new TransactionViewModel($transaction);
+
+        $amount += $viewModel->amount();
+
+        expect($viewModel->shouldShowFiat())->toBeFalse();
+    }
+
+    expect($amount)->toEqual(240);
+
+    $component = Livewire::test(BlockTable::class)
+        ->call('setIsReady');
+
+    $expectedUsd = NumberFormatter::currency($amount * $usdExchangeRate, 'USD');
+    $expectedBtc = NumberFormatter::currency($amount * $btcExchangeRate, 'BTC');
+
+    expect($expectedUsd)->toEqual('$5,810,400.00');
+
+    $component->assertDontSeeHtml('data-tippy-content="'.$expectedUsd.'"');
+    $component->assertDontSeeHtml('data-tippy-content="'.$expectedBtc.'"');
+
+    $settings             = Settings::all();
+    $settings['currency'] = 'BTC';
+
+    Settings::shouldReceive('all')->andReturn($settings);
+    Settings::shouldReceive('currency')->andReturn('BTC');
+
+    $component->dispatch('currencyChanged', 'BTC');
+
+    $expectedUsd = NumberFormatter::currency($amount * $usdExchangeRate, 'USD');
+    $expectedBtc = NumberFormatter::currency($amount * $btcExchangeRate, 'BTC');
+
+    $component->assertDontSeeHtml('data-tippy-content="'.$expectedUsd.'"');
+    $component->assertDontSeeHtml('data-tippy-content="'.$expectedBtc.'"');
 });

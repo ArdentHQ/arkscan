@@ -68,4 +68,9 @@ final class BlockViewModel implements ViewModel
     {
         return abs(CacheNetworkHeight::execute() - $this->block->height->toNumber());
     }
+
+    public function shouldShowFiat(): bool
+    {
+        return $this->dateTime()->isAfter(Carbon::now()->sub('year', 1));
+    }
 }

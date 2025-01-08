@@ -11,6 +11,7 @@
         :fiat="$model->totalRewardFiat(true)"
         :class="$class"
         :without-styling="$withoutStyling"
+        :block="$model"
     />
 
     @unless ($withoutValue)

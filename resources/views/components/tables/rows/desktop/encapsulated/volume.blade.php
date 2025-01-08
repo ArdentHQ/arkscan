@@ -9,4 +9,5 @@
     :fiat="$model->amountFiat(true)"
     :class="$class"
     :without-styling="$withoutStyling"
+    :block="$model"
 />
