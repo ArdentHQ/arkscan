@@ -160,13 +160,24 @@ it('should handle null scenarios for unique addresses', function () {
     Event::assertDispatchedTimes(UniqueAddresses::class, 0);
 });
 
-it('should should dispatch event if most transactions has changed', function () {
+it('should dispatch event if most transactions has changed', function () {
+    // Set a high "last_updated_at_height" so the LatestWalletAggregate query
+    // requires updated_at > this large number. We'll ensure all wallets have
+    // updated_at below that, forcing the query to return null which prevents
+    // marking the cache as having changes early and causing a flaky test.
+    Cache::put(
+        'commands:cache_address_statistics/last_updated_at_height',
+        999999999
+    );
+
     Event::fake();
 
     $genesisWallet = Wallet::factory()->create([
         'address'    => 'genesis-address',
-        'public_key' => 'genesis-public_key',
+        'public_key' => 'genesis_public_key',
+        'updated_at' => 999999998,
     ]);
+
     Transaction::factory()->transfer()->create([
         'block_height'      => 1,
         'sender_public_key' => $genesisWallet->public_key,
@@ -175,16 +186,19 @@ it('should should dispatch event if most transactions has changed', function () 
     ]);
 
     Wallet::factory()->create([
-        'balance' => BigNumber::new(1000000 * 1e18),
+        'balance'    => BigNumber::new(1000000 * 1e18),
+        'updated_at' => 999999998,
     ]);
 
     $newest = Wallet::factory()->create([
         'balance'    => BigNumber::new(10 * 1e18),
         'address'    => 'newest-address',
         'public_key' => 'newest-public_key',
+        'updated_at' => 999999998,
     ]);
 
     $newestTimestamp = Timestamp::fromUnix(Carbon::parse('2024-04-01 15:04:13')->unix())->unix();
+
     Transaction::factory()->transfer()->create([
         'block_height'      => 143,
         'sender_public_key' => $newest->public_key,
@@ -209,7 +223,7 @@ it('should should dispatch event if most transactions has changed', function () 
         'block_height'      => 145,
         'sender_public_key' => $newest->public_key,
         'recipient_address' => $newest->address,
-        'timestamp'         => $newestTimestamp + 1,
+        'timestamp'         => $newestTimestamp + 2,
     ]);
 
     $this->artisan('explorer:cache-address-statistics');
@@ -223,6 +237,7 @@ it('should should dispatch event if most transactions has changed', function () 
         'balance'    => BigNumber::new(10 * 1e18),
         'address'    => 'most-transactions_address',
         'public_key' => 'most-transactions_public_key',
+        'updated_at' => 999999998,
     ]);
 
     Transaction::factory(5)->transfer()->create([
