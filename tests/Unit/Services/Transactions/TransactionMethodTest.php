@@ -47,3 +47,14 @@ it('should determine the type with vote', function () {
     expect($transactionMethod->isVote())->toBeTrue();
     expect($transactionMethod->name())->toBe('Vote');
 });
+
+it('should determine the name from the contracts if unhandled type', function () {
+    $transaction       = Transaction::factory()
+        // getRounds, there is no isGetRounds method
+        ->withPayload('40f74f470000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000a')
+        ->create();
+
+    $transactionMethod = new TransactionMethod($transaction);
+
+    expect($transactionMethod->name())->toBe('getRounds');
+});
