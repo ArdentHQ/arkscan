@@ -21,9 +21,13 @@ trait HasPayload
         }
 
         $payloadContent = stream_get_contents($payload, offset: 0);
+        // @codeCoverageIgnoreStart
+        // Not covered in tests, since it seems that the possibility of returning
+        // `false` instead of an exception seems to depends on the PHP configuration.
         if ($payloadContent === false) {
             return null;
         }
+        // @codeCoverageIgnoreEnd
 
         $payload = bin2hex($payloadContent);
         if (strlen($payload) === 0) {
@@ -40,10 +44,14 @@ trait HasPayload
             return null;
         }
 
+        // @codeCoverageIgnoreStart
+        // Not covered in tests, since it seems that the possibility of returning
+        // `false` instead of an exception seems to depends on the PHP configuration.
         $utf8 = hex2bin($payload);
         if ($utf8 === false) {
             return null;
         }
+        // @codeCoverageIgnoreEnd
 
         return $utf8;
     }
@@ -92,9 +100,14 @@ trait HasPayload
 
         try {
             $method = (new AbiDecoder())->decodeFunctionData($payload);
+
+            // @codeCoverageIgnoreStart
+            // Unreachable on tests as all the methods in the `AbiDecoder` class
+            // are covered. Still neccesary in case of future changes.
             if ($functionName === null) {
                 $functionName = $method['functionName'];
             }
+            // @codeCoverageIgnoreEnd
 
             $arguments = $method['args'];
         } catch (\Throwable) {

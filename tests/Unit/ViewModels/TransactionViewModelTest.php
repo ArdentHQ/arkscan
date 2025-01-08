@@ -12,6 +12,7 @@ use App\Services\Cache\NetworkCache;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
@@ -220,6 +221,18 @@ it('should get the voted validator', function () {
     expect($subject->voted())->toBeInstanceOf(WalletViewModel::class);
 });
 
+it('should fail to get the voted validator for unknown wallet', function () {
+    Wallet::factory()->create(['public_key' => 'publicKey']);
+
+    $transaction = Transaction::factory()
+        ->vote('0x'.str_repeat('0', 64))
+        ->create();
+
+    $subject = new TransactionViewModel($transaction);
+
+    expect($subject->voted())->toBeNull();
+});
+
 it('should fail to get the voted validator if the transaction is not an unvote', function () {
     $subject = new TransactionViewModel(Transaction::factory()->unvote()->create());
 
@@ -255,6 +268,14 @@ describe('HasPayload trait', function () {
         expect($transaction->utf8Payload())->toBe('testing');
     });
 
+    it('should get null for utf-8 formatted payload if raw payload is null', function () {
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('')
+            ->create());
+
+        expect($transaction->utf8Payload())->toBeNull();
+    });
+
     it('should get formatted payload', function () {
         $transaction = new TransactionViewModel(Transaction::factory()
             ->withPayload('6dd7d8ea00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de')
@@ -264,6 +285,14 @@ describe('HasPayload trait', function () {
 
 MethodID: 0x6dd7d8ea
 [0]: 0x44083669cf29374D548b71c558EBD1e2F5DCC4De');
+    });
+
+    it('should fail to get formatted payload if no method data', function () {
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('')
+            ->create());
+
+        expect($transaction->formattedPayload())->toBeNull();
     });
 
     it('should get formatted payload without arguments', function () {
@@ -404,3 +433,23 @@ it('does not have a validator public key if is not validator registration', func
 
     expect($viewModel->validatorPublicKey())->toBeNull();
 });
+
+it('should determine if is certain transaction type', function (string $type, array $params = []) {
+    $transaction = Transaction::factory()
+        ->{Str::camel($type)}(...$params)
+        ->create();
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->{'is'.Str::camel($type)}())->toBeTrue();
+})->with([
+    ['transfer'],
+    ['tokenTransfer', ['0x0', 0]],
+    ['validatorRegistration'],
+    ['vote', ['0x0']],
+    ['unvote'],
+    ['validatorResignation'],
+    ['usernameRegistration'],
+    ['usernameResignation'],
+    ['contractDeployment'],
+]);
