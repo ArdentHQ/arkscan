@@ -96,7 +96,7 @@ it('should update the records fiat tooltip when currency changed', function () {
                 ->create([
                     'block_id'  => $block->id,
                     'timestamp' => Timestamp::fromUnix($now->unix())->unix(),
-                    'asset' => [
+                    'asset'     => [
                         'payments' => [
                             [
                                 'recipientId' => Wallet::factory()->create()->address,
