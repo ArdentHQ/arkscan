@@ -96,14 +96,6 @@ it('should convert to and from wireable array', function () {
 
         'caps'   => [
             'today' => 20 * 1e8,
-            'atl'   => [
-                'timestamp' => $timestamp,
-                'value'     => 0.2345,
-            ],
-            'ath' => [
-                'timestamp' => $timestamp,
-                'value'     => 1.2345,
-            ],
         ],
     ]);
 
