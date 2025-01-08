@@ -56,11 +56,7 @@ final class MarketDataStatistics implements Wireable
                 TimestampedValue::fromArray($value['volume']['atl']),
                 TimestampedValue::fromArray($value['volume']['ath']),
             ),
-            MarketDataRecordStatistics::make(
-                $value['caps']['today'],
-                TimestampedValue::fromArray($value['caps']['atl']),
-                TimestampedValue::fromArray($value['caps']['ath']),
-            ),
+            MarketDataRecordStatistics::make($value['caps']['today']),
         );
     }
 }
