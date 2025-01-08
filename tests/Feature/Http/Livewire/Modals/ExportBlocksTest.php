@@ -13,6 +13,7 @@ it('should render', function () {
 
     Livewire::test(ExportBlocks::class, [$wallet])
         ->assertSet('address', $wallet->address())
+        ->assertSet('username', $wallet->username())
         ->assertSee(trans('actions.export'))
         ->assertDontSee(trans('pages.wallet.export-blocks-modal.title'));
 });
@@ -22,6 +23,7 @@ it('should handle non-validators', function () {
 
     Livewire::test(ExportBlocks::class, [$wallet])
         ->assertSet('address', $wallet->address())
+        ->assertSet('username', null)
         ->assertSee(trans('actions.export'))
         ->assertDontSee(trans('pages.wallet.export-blocks-modal.title'));
 });
@@ -31,6 +33,7 @@ it('should open modal', function () {
 
     Livewire::test(ExportBlocks::class, [$wallet])
         ->assertSet('address', $wallet->address())
+        ->assertSet('username', $wallet->username())
         ->assertSee(trans('actions.export'))
         ->assertDontSee(trans('pages.wallet.export-blocks-modal.title'))
         ->call('openModal')
@@ -42,6 +45,7 @@ it('should close modal', function () {
 
     Livewire::test(ExportBlocks::class, [$wallet])
         ->assertSet('address', $wallet->address())
+        ->assertSet('username', $wallet->username())
         ->assertSee(trans('actions.export'))
         ->call('openModal')
         ->assertSee(trans('pages.wallet.export-blocks-modal.title'))

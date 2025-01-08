@@ -36,6 +36,7 @@ it('should list the first page of records', function () {
     foreach (ViewModelFactory::paginate(Block::withScope(OrderByTimestampScope::class)->paginate())->items() as $block) {
         $component->assertSee($block->id());
         $component->assertSee($block->timestamp());
+        $component->assertSee($block->username());
         $component->assertSee(NumberFormatter::number($block->height()));
         $component->assertSee(NumberFormatter::number($block->transactionCount()));
         $component->assertSeeInOrder([

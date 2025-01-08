@@ -34,6 +34,27 @@ it('should search for a wallet', function () {
         ->assertDontSee($otherWallet->address);
 });
 
+it('should search for a wallet username over a block generator', function () {
+    $wallet = Wallet::factory()->create([
+        'attributes' => [
+            'validator' => [
+                'username' => 'pieface',
+            ],
+        ],
+    ]);
+    $block = Block::factory()->create([
+        'generator_address' => $wallet->address,
+    ]);
+
+    Transaction::factory()
+        ->transfer()
+        ->create(['block_id' => $block->id]);
+
+    Livewire::test(Search::class)
+        ->set('query', $wallet->address)
+        ->assertSee($wallet->address);
+});
+
 it('should search for a transaction', function () {
     Transaction::factory()
         ->transfer()

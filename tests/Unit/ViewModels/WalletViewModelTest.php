@@ -608,7 +608,7 @@ it('should get the known wallet name before username', function () {
         ],
     ]));
 
-    expect($this->subject->walletName())->toBe('ACF Hot Wallet');
+    expect($this->subject->username())->toBe('ACF Hot Wallet');
 });
 
 it('should get the vote url with validator', function () {
@@ -669,7 +669,7 @@ it('should get known wallet name for wallet name', function () {
 
     $this->subject = new WalletViewModel($wallet);
 
-    expect($this->subject->walletName())->toBe('Altilly');
+    expect($this->subject->username())->toBe('Altilly');
 });
 
 it('should get no name if a standard wallet', function () {
@@ -679,7 +679,7 @@ it('should get no name if a standard wallet', function () {
         'attributes' => [],
     ]));
 
-    expect($this->subject->walletName())->toBeNull();
+    expect($this->subject->username())->toBeNull();
 });
 
 it('should get forged block count for validator', function () {
