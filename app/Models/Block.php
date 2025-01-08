@@ -51,6 +51,13 @@ final class Block extends Model
     public $incrementing = false;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
@@ -147,15 +154,5 @@ final class Block extends Model
     public function previous(): HasOne
     {
         return $this->hasOne(self::class, 'id', 'previous_block');
-    }
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
     }
 }

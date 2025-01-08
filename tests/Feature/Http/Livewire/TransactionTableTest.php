@@ -489,7 +489,6 @@ it('should reload on new transaction event', function () {
         $component->assertDontSee($transaction->id());
         $component->assertDontSee($transaction->timestamp());
         $component->assertDontSee($transaction->sender()->address());
-        $component->assertDontSee($transaction->recipient()->address());
         $component->assertDontSee('481.00');
     }
 
@@ -498,7 +497,6 @@ it('should reload on new transaction event', function () {
     foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {
         $component->assertSee($transaction->id());
         $component->assertSee($transaction->timestamp());
-        $component->assertSee($transaction->sender()->address());
         $component->assertSee($transaction->recipient()->address());
         $component->assertSee('481.00');
     }

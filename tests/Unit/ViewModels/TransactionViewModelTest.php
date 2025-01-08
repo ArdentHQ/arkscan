@@ -12,6 +12,7 @@ use App\Services\Cache\NetworkCache;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
@@ -189,12 +190,25 @@ it('should determine if the transaction is self-receiving', function (string $ty
     ['validatorResignation'],
 ]);
 
-it('should fallback to the sender if no recipient exists', function () {
+it('should fallback to the sender if no recipient address exists', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'recipient_address' => null,
     ]));
 
     expect($this->subject->recipient())->toEqual($this->subject->sender());
+});
+
+it('should fallback to receipt deployed contract address if set', function () {
+    $wallet = Wallet::factory()->create(['address' => 'deployedContractAddress']);
+
+    $receipt = Receipt::factory()
+        ->state(['deployed_contract_address' => $wallet->address]);
+
+    $this->subject = new TransactionViewModel(Transaction::factory()->has($receipt)->create([
+        'recipient_address' => null,
+    ]));
+
+    expect($this->subject->recipient()->address())->toBe('deployedContractAddress');
 });
 
 it('should get the voted validator', function () {
@@ -205,6 +219,18 @@ it('should get the voted validator', function () {
     $subject = new TransactionViewModel(Transaction::factory()->vote($validator->address)->create());
 
     expect($subject->voted())->toBeInstanceOf(WalletViewModel::class);
+});
+
+it('should fail to get the voted validator for unknown wallet', function () {
+    Wallet::factory()->create(['public_key' => 'publicKey']);
+
+    $transaction = Transaction::factory()
+        ->vote('0x'.str_repeat('0', 64))
+        ->create();
+
+    $subject = new TransactionViewModel($transaction);
+
+    expect($subject->voted())->toBeNull();
 });
 
 it('should fail to get the voted validator if the transaction is not an unvote', function () {
@@ -242,6 +268,14 @@ describe('HasPayload trait', function () {
         expect($transaction->utf8Payload())->toBe('testing');
     });
 
+    it('should get null for utf-8 formatted payload if raw payload is null', function () {
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('')
+            ->create());
+
+        expect($transaction->utf8Payload())->toBeNull();
+    });
+
     it('should get formatted payload', function () {
         $transaction = new TransactionViewModel(Transaction::factory()
             ->withPayload('6dd7d8ea00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de')
@@ -251,6 +285,14 @@ describe('HasPayload trait', function () {
 
 MethodID: 0x6dd7d8ea
 [0]: 0x44083669cf29374D548b71c558EBD1e2F5DCC4De');
+    });
+
+    it('should fail to get formatted payload if no method data', function () {
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('')
+            ->create());
+
+        expect($transaction->formattedPayload())->toBeNull();
     });
 
     it('should get formatted payload without arguments', function () {
@@ -330,3 +372,64 @@ it('should should determine transaction has not failed', function () {
 
     expect($viewModel->hasFailedStatus())->toBeFalse();
 });
+
+it('should get the gas used', function () {
+    $transaction = Transaction::factory()->create();
+
+    Receipt::factory()->create([
+        'id'       => $transaction->id,
+        'gas_used' => 8,
+    ]);
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->gasUsed())->toEqual(8);
+});
+
+it('should get the gas used if no receipt', function () {
+    $transaction = Transaction::factory()->create();
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->gasUsed())->toEqual(0);
+});
+
+it('should get the username if set', function () {
+    $transaction = Transaction::factory()
+        ->usernameRegistration()
+        ->withPayload('36a941340000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000e7068705f73646b5f746573746572000000000000000000000000000000000000')
+        ->create();
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->username())->toBe('php_sdk_tester');
+});
+
+it('should get null username if not set', function () {
+    $transaction = Transaction::factory()
+        ->create();
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->username())->toBeNull();
+});
+
+it('should determine if is certain transaction type', function (string $type, array $params = []) {
+    $transaction = Transaction::factory()
+        ->{Str::camel($type)}(...$params)
+        ->create();
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->{'is'.Str::camel($type)}())->toBeTrue();
+})->with([
+    ['transfer'],
+    ['tokenTransfer', ['0x0', 0]],
+    ['validatorRegistration'],
+    ['vote', ['0x0']],
+    ['unvote'],
+    ['validatorResignation'],
+    ['usernameRegistration'],
+    ['usernameResignation'],
+    ['contractDeployment'],
+]);

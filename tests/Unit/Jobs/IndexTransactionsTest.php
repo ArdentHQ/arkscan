@@ -5,13 +5,13 @@ declare(strict_types=1);
 use App\Jobs\IndexTransactions;
 use App\Models\Transaction;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Laravel\Scout\Events\ModelsImported;
 use Meilisearch\Client as MeilisearchClient;
 use Meilisearch\Endpoints\Indexes;
+use function Tests\mockTaggedCache;
 
 beforeEach(function () {
     // Default value, overriden in phpunit.xml for the tests
@@ -29,7 +29,7 @@ it('should index new Transactions', function () {
 
     Event::fake();
 
-    Cache::shouldReceive('get')
+    mockTaggedCache()->shouldReceive('get')
         ->with('latest-indexed-timestamp:transactions')
         ->andReturn(null)
         ->shouldReceive('put')
@@ -77,7 +77,7 @@ it('should index new Transactions', function () {
 it('should not store any value on cache if no new transactions', function () {
     Event::fake();
 
-    Cache::shouldReceive('get')
+    mockTaggedCache()->shouldReceive('get')
         ->with('latest-indexed-timestamp:transactions')
         ->andReturn(6);
 
@@ -95,7 +95,7 @@ it('should index transactions using the timestamp from cache', function () {
 
     Event::fake();
 
-    Cache::shouldReceive('get')
+    mockTaggedCache()->shouldReceive('get')
         ->with('latest-indexed-timestamp:transactions')
         ->andReturn(1711978364000) // 8 days ago, so new ones are 1 and 5 days ago
         ->shouldReceive('put')

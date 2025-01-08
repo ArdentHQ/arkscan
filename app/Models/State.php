@@ -25,6 +25,13 @@ final class State extends Model
     public $timestamps = false;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
@@ -47,15 +54,5 @@ final class State extends Model
     public static function latest(): self
     {
         return self::where('id', 1)->firstOrFail();
-    }
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
     }
 }

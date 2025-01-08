@@ -38,6 +38,7 @@ use Laravel\Scout\Searchable;
  * @property int $sequence
  * @property string $block_id
  * @property string|null $recipient_address
+ * @property string $sender_address
  * @property string $sender_public_key
  * @property int $block_height
  * @property resource|null $data

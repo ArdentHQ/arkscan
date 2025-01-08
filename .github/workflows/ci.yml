@@ -94,7 +94,11 @@ jobs:
                     POSTGRES_PASSWORD: password
                 ports:
                     - 5432:5432
-                options: --health-cmd pg_isready --health-interval 10s --health-retries 5 --health-timeout 5s
+                options: >-
+                    --health-cmd="pg_isready -d arkscan_test_db -U arkscan_test_db" 
+                    --health-interval=10s 
+                    --health-timeout=5s 
+                    --health-retries=5
 
         steps:
             - name: Checkout code
@@ -141,13 +145,31 @@ jobs:
             - name: Clear Config
               run: php artisan config:clear && php artisan route:clear
 
+            - name: Create second database for explorer
+              run: |
+                  psql -h 127.0.0.1 -U arkscan_test_db -c "CREATE DATABASE arkscan_test_db_explorer;"
+              env:
+                  PGPASSWORD: password
+
+            - name: Cache PHPUnit coverage
+              uses: actions/cache@v4
+              with:
+                  path: .phpunit.cache
+                  key: phpunit-cache-${{ runner.os }}-${{ hashFiles('composer.json') }}
+
             - name: Run Tests
               run: composer test:coverage
               env:
+                  # Main database
                   DB_CONNECTION: pgsql
                   DB_HOST: 127.0.0.1
                   DB_PORT: 5432
                   DB_DATABASE: arkscan_test_db
                   DB_USERNAME: arkscan_test_db
                   DB_PASSWORD: password
-                  PDO_ATTR_PERSISTENT: false
+                  # Explorer database
+                  ARKSCAN_DB_HOST: 127.0.0.1
+                  ARKSCAN_DB_PORT: 5432
+                  ARKSCAN_DB_DATABASE: arkscan_test_db_explorer
+                  ARKSCAN_DB_USERNAME: arkscan_test_db
+                  ARKSCAN_DB_PASSWORD: password

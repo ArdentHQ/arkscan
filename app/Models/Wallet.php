@@ -59,6 +59,13 @@ final class Wallet extends Model
     public $timestamps = false;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * The column name of the primary key.
      *
      * @var string
@@ -189,15 +196,5 @@ final class Wallet extends Model
     public function getRouteKeyName()
     {
         return 'address';
-    }
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
     }
 }

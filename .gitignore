@@ -19,3 +19,5 @@ coverage.xml
 .DS_Store
 auth.json
 TxtVoteReport.txt
+.env.testing
+/.phpunit.cache

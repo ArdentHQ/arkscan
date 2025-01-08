@@ -48,6 +48,24 @@ it('should cache annual data for current year', function () {
     Event::assertDispatchedTimes(AnnualData::class, 1);
 });
 
+it('should not cache all years data if already cached', function () {
+    $cache       = new StatisticsCache();
+
+    // cache annual data for 2023
+    $cache->setAnnualData(2023, 6, '60.0000000000000000', '0.60000000000000000000', 6);
+
+    $this->artisan('explorer:cache-annual-statistics');
+
+    // data for 2023 should not be changed
+    expect($cache->getAnnualData(2023))->toBe([
+        'year'         => 2023,
+        'transactions' => 6,
+        'volume'       => '60.0000000000000000',
+        'fees'         => '0.60000000000000000000',
+        'blocks'       => 6,
+    ]);
+});
+
 it('should cache annual data for all time', function () {
     Event::fake();
 
@@ -265,6 +283,51 @@ it('should dispatch event for all data when the transaction count changes', func
         'fees'         => '0.0000021',
         'blocks'       => 5,
     ]);
+
+    Event::assertDispatchedTimes(AnnualData::class, 1);
+});
+
+it('should dispatch event for specific year when the transaction count changes', function () {
+    Event::fake();
+
+    $cache       = new StatisticsCache();
+    $currentTime = Carbon::now();
+    $currentYear = $currentTime->year;
+    $timestamp   = Timestamp::now()->getTimestampMs();
+
+    // epoch year data previously cached
+    $cache->setAnnualData(
+        year: 2023,
+        transactions: 3,
+        volume: '50.0000000000000000',
+        fees: '0.0000105',
+        blocks: 3,
+    );
+
+    // Previously cached data
+    $cache->setAnnualData(
+        year: $currentYear,
+        transactions: 5,
+        volume: '50.0000000000000000',
+        fees: '0.0000105',
+        blocks: 5,
+    );
+
+    // since cached data points to 5 transactions it should mark as changed
+    // and dispatch event if transaction count changes
+    Transaction::factory(6)
+        ->withReceipt()
+        ->create([
+            'timestamp' => $timestamp,
+            'amount'    => 10 * 1e18,
+            'gas_price' => 0.1,
+        ]);
+
+    Block::factory(5)->create([
+        'timestamp' => $timestamp,
+    ]);
+
+    $this->artisan('explorer:cache-annual-statistics');
 
     Event::assertDispatchedTimes(AnnualData::class, 1);
 });

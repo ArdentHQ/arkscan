@@ -13,8 +13,6 @@ use function Tests\fakeKnownWallets;
 beforeEach(function () {
     $this->app->singleton(Contract::class, fn () => NetworkFactory::make('production'));
 
-    ForgingStats::truncate();
-
     $this->subject = new ForgingStatsViewModel(ForgingStats::factory()->create([
         'missed_height' => 54321,
         'timestamp'     => 1490103134,
