@@ -56,7 +56,7 @@ final class RouteServiceProvider extends ServiceProvider
             try {
                 return strlen($walletID) === Constants::ADDRESS_LENGTH
                         ? Wallets::findByAddress($walletID)
-                        : Wallets::findByName($walletID);
+                        : Wallets::findByUsername($walletID);
             } catch (Throwable) {
                 throw (new WalletNotFoundException())->setModel(Wallet::class, [$walletID]);
             }

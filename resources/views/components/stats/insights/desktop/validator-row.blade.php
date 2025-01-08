@@ -21,7 +21,7 @@
                     class="link"
                 >
                     @if ($model->hasUsername())
-                        {{ $model->usernameBeforeKnown() }}
+                        {{ $model->username() }}
                     @else
                         {{ $model->address() }}
                     @endif
