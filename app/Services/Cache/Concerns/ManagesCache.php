@@ -27,7 +27,6 @@ trait ManagesCache
      */
     private function remember(string $key, $ttl, Closure $callback)
     {
-        // @phpstan-ignore-next-line
         return $this->getCache()->remember(md5($key), $ttl, $callback);
     }
 
@@ -47,7 +46,11 @@ trait ManagesCache
      */
     private function forget(string $key)
     {
+        // @codeCoverageIgnoreStart
+        // This method is currently not used in the application, keeping it for
+        // completeness and potential future use.
         return $this->getCache()->forget(md5($key));
+        // @codeCoverageIgnoreEnd
     }
 
     private function blockTimeTTL(): int
