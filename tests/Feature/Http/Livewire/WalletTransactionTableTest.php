@@ -5,8 +5,10 @@ declare(strict_types=1);
 use App\Http\Livewire\WalletTransactionTable;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\Timestamp;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
+use Carbon\Carbon;
 use Livewire\Livewire;
 use function Tests\fakeCryptoCompare;
 
@@ -240,6 +242,7 @@ it('should show multipayment without amount sent to self', function () {
 
 it('should show transfer without amount sent to self', function () {
     $sent = Transaction::factory()->transfer()->create([
+        'timestamp'         => Timestamp::fromUnix(Carbon::now()->unix())->unix(),
         'sender_public_key' => $this->subject->public_key,
         'recipient_id'      => $this->subject->address,
     ]);
