@@ -107,10 +107,12 @@ final class CacheAddressStatistics extends Command
             ->limit(1)
             ->first();
 
+            
         if (count($mostTransactions) > 0) {
             if (! $this->hasChanges) {
                 $currentValue = $cache->getMostTransactions() ?? [];
                 if (Arr::get($currentValue, 'address') !== $mostTransactions['address']) {
+                    dd(":D");
                     $this->hasChanges = true;
                 } elseif (Arr::get($currentValue, 'value') !== $mostTransactions['tx_count']) {
                     $this->hasChanges = true;
