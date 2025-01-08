@@ -9,4 +9,5 @@
     :fiat="$model->feeFiat(true)"
     :class="$class"
     :without-styling="$withoutStyling"
+    :transaction="$model"
 />

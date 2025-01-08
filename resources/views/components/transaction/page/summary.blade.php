@@ -15,7 +15,7 @@
         :transaction="$transaction"
     />
 
-    @if (Network::canBeExchanged())
+    @if (Network::canBeExchanged() && $transaction->shouldShowFiat())
         @if (ExplorerNumberFormatter::isFiat(Settings::currency()) && ExchangeRate::convertNumerical($transaction->amountWithFee(), $transaction->model()->timestamp) < 0.01)
             <x-transaction.page.section-detail.row
                 :title="trans('pages.transaction.header.value')"

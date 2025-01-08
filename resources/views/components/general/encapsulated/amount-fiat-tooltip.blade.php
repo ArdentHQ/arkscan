@@ -14,6 +14,8 @@
     $class = ['inline-flex items-center font-semibold', $class];
     $sentToSelfClass = null;
 
+    $shouldShowFiat = $transaction && $transaction->shouldShowFiat();
+
     $isSentToSelf = $amountForItself !== null && $amountForItself > 0;
     if (! $withoutStyling) {
         if(! $isSent && ! $isReceived) {
@@ -63,7 +65,7 @@
     @endif
 
     <span
-        @if(Network::canBeExchanged())
+        @if(Network::canBeExchanged() && $shouldShowFiat)
             data-tippy-content="{{ $fiat }}"
         @endif
     >

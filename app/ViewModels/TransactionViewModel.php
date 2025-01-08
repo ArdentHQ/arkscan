@@ -95,6 +95,11 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction->nonce;
     }
 
+    public function shouldShowFiat(): bool
+    {
+        return $this->dateTime()->isAfter(Carbon::now()->sub('year', 1));
+    }
+
     public function fee(): float
     {
         return $this->transaction->fee->toFloat();

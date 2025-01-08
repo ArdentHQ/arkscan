@@ -6,6 +6,8 @@ namespace App\DTO;
 
 use App\Facades\Wallets;
 use App\Services\ExchangeRate;
+use App\Services\Timestamp;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
 final class Payment
@@ -46,5 +48,10 @@ final class Payment
     public function recipient(): self
     {
         return $this;
+    }
+
+    public function shouldShowFiat(): bool
+    {
+        return Timestamp::fromGenesis($this->timestamp)->isAfter(Carbon::now()->sub('year', 1));
     }
 }
