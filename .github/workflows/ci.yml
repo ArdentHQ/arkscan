@@ -151,6 +151,12 @@ jobs:
               env:
                   PGPASSWORD: password
 
+            - name: Cache PHPUnit coverage
+              uses: actions/cache@v4
+              with:
+                  path: .phpunit.cache
+                  key: phpunit-cache-${{ runner.os }}-${{ hashFiles('composer.json') }}
+
             - name: Run Tests
               run: composer test:coverage
               env:
